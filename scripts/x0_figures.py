@@ -395,6 +395,62 @@ def kmatch(out: Path, data: list[dict]) -> Path:
     return save(fig, plt, out, "kmatch")
 
 
+def kcurve(out: Path, data: list[dict]) -> Path:
+    """Excess against the number of atoms k, per dictionary, at the pre-registered layer (chat; the k-match runs).
+    Added after data."""
+    plt, F = style()
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10), sharey=True)
+    for j, (target, label) in enumerate(MODELS):
+        run = load(KMATCH[target])
+        pred = X.PREDICTED[target]
+        for i, w in enumerate(X.READERS):
+            ax = axes[i, j]
+            ax.grid(color=GRID, lw=0.8)
+            ax.set_axisbelow(True)
+            ax.set_title(f"{label} · L{pred} · {'lookup' if w == X.LOOKUP else 'recall'}")
+            if run is None or not run.cells("chat"):
+                empty(ax, "not run yet")
+                continue
+            cells = run.cells("chat")
+            for d, (ls, mk) in DICT_STYLE.items():
+                pts = sorted((k, c) for (rr, la, ww, dd, k, omp), c in cells.items()
+                             if la == pred and ww == w and dd == d and omp == "signed")  # fmt: skip
+                ks = [k for k, _ in pts]
+                col = (F.LOOKUP if w == X.LOOKUP else F.RECALL) if d == "jpp" else "#8a8a8a"
+                ax.plot(ks, [c["excess"][0] for _, c in pts], ls, marker=mk, ms=6, lw=2.2 if d == "jpp" else 1.5,
+                        color=col, label=DICT_NAME[d])  # fmt: skip
+                ax.fill_between(ks, [c["excess"][1] for _, c in pts], [c["excess"][2] for _, c in pts], color=col,
+                                alpha=0.10, lw=0)  # fmt: skip
+                for k, c in pts:
+                    sh = run.share[("chat", pred, d, k, "signed")]
+                    if d == "jpp":
+                        ax.annotate(f"share {sh:.2f}", (k, c["excess"][0]), xytext=(5, 6), textcoords="offset points",
+                                    fontsize=7.5, color=col)  # fmt: skip
+                    data.append({"figure": "kcurve", "model": target, "run": run.name, "rendering": "chat",
+                                 "subset": "all", "layer": pred, "reader": w, "dict": d, "k": k, "omp": "signed",
+                                 "quantity": "excess", "value": c["excess"][0], "lo": c["excess"][1],
+                                 "hi": c["excess"][2], "n": c["n"]})  # fmt: skip
+            thresholds(ax)
+            ax.set_xscale("log")
+            ax.set_xticks([25, 50, 100, 200], ["25", "50", "100", "200"])
+            ax.minorticks_off()
+            ax.set(ylim=(-0.3, 1.0))
+            if i == 1:
+                ax.set_xlabel("atoms removed, k (log scale)")
+            if j == 0:
+                ax.set_ylabel("excess (dictionary minus a random subspace of its share)")
+            ax.legend(loc="upper left", frameon=False, fontsize=8, ncol=2)
+            ax.text(0.98, 0.03, f"run {run.name}", transform=ax.transAxes, ha="right", fontsize=7.5, color=MUTED)
+    fig.suptitle("X0 · added after data · excess against the number of atoms, per dictionary · UNVERIFIED",
+                 fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
+    caption(fig, F, "Each dictionary's 25-200 atoms (signed OMP over the letter-token atoms) removed at the "
+            "pre-registered layer; excess = its dependence minus that of a random subspace of the same share, per "
+            "item.\nJ++ points carry the median share of ||Δ||² removed. Dotted lines: around ≤ 0.10, through ≥ 0.20. "
+            "Bands: 95% bootstrap over bridge entities. Chat.")  # fmt: skip
+    fig.tight_layout(rect=(0, 0.05, 1, 0.95), h_pad=2.5)
+    return save(fig, plt, out, "kcurve")
+
+
 def share_scatter(out: Path, data: list[dict]) -> Path:
     """J++ share of ||Δ||² against J++ dependence across valid layers (chat). Added after data."""
     plt, F = style()
@@ -477,10 +533,10 @@ def save(fig, plt, out: Path, stem: str) -> Path:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--only", nargs="*", default=None, help="overview detail kmatch share asked_first")
+    ap.add_argument("--only", nargs="*", default=None, help="overview detail kmatch kcurve share asked_first")
     ap.add_argument("--publish", action="store_true", help="also copy the PNGs and data.csv to figures/x0_necessity/")
     a = ap.parse_args()
-    want = set(a.only or ("overview", "detail", "kmatch", "share", "asked_first"))
+    want = set(a.only or ("overview", "detail", "kmatch", "kcurve", "share", "asked_first"))
     out = X.RESULTS / f"figures-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     data: list[dict] = []
@@ -491,6 +547,8 @@ def main() -> None:
             run = load(name)
             if run is not None and run.cells(key[1]):
                 detail(out, run, key[1], data)
+    if "kcurve" in want:
+        kcurve(out, data)
     if "kmatch" in want:
         kmatch(out, data)
     if "share" in want:

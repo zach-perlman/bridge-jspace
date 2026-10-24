@@ -5,7 +5,7 @@
 
 > "Iris picked the frog. The locker of the frog is 5. ..." The bridge is *frog*. A **lookup** ("Which locker belongs to Iris's pick?") takes the answer from a sentence in the prompt; a **recall** ("How many legs does Iris's pick have?") takes it from memory.
 
-> **Status, 24 Oct 2026, evening.** Built at b204e075 from the X0 run files. This page is the first experiment of the direction, X0 (pre-registered 24 Oct; [jobs/c3/X0.md](jobs/c3/X0.md)), and the plan it led to. Numbers are quoted from the run files (linked). Exploration phase: nothing here is hand-verified (UNVERIFIED). Models: Qwen3.6-27B and Qwen3.5-9B, hybrids with DeltaNet layers. The earlier claims (the late read, order then identity) are in [CHANGELOG.md](CHANGELOG.md).
+> **Status, 24 Oct 2026, evening.** Built at ab0f36d9 from the X0 run files. This page is the first experiment of the direction, X0 (pre-registered 24 Oct; [jobs/c3/X0.md](jobs/c3/X0.md)), and the plan it led to. Numbers are quoted from the run files (linked). Exploration phase: nothing here is hand-verified (UNVERIFIED). Models: Qwen3.6-27B and Qwen3.5-9B, hybrids with DeltaNet layers. The earlier claims (the late read, order then identity) are in [CHANGELOG.md](CHANGELOG.md).
 
 ## TL;DR
 
@@ -51,9 +51,12 @@
     - W_E (share 0.329): 0.34 / 0.09;
     - random atoms (share 0.323): 0.38 / 0.07.
   - So on the 9B, the lookup's cost does not depend on the dictionary and the recall's is J++-specific. On the 27B both are J++-specific, the lookup's less.
-- **The split** (lookup "around" and recall "through" at the same layer): 27B layer 30; 9B layers 12-14.
+- **The split** (lookup "around" and recall "through" at the same layer): 27B layer 30; 9B layers 12-14. On the 27B the lookup's decline with depth tracks the share of ‖Δ‖² that J++ takes (Spearman 0.79; weak spots).
+- **Replication of the 23 Oct cell; not part of X0's rule.** 27B layer 32: with the change at every context position, lookups lose nothing without the J++ part (84% → 87%) and recalls lose 41 points (random −1); this replicates 23 Oct on fresh scenes (n = 180; [verdict](results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.md)). At the bridge's word alone (the pre-registered X0 test) the lookup depends on J++ moderately (excess 0.14) and the rule is not met.
 
 ![Equal removed share](figures/x0_necessity/kmatch.png)
+
+![Excess against the number of atoms](figures/x0_necessity/kcurve.png)
 
 **Controls**
 - A random part at each dictionary's own share.
@@ -66,13 +69,12 @@
 - **The 27B's lookup uses J++ too, only less.** With more atoms its excess rises (0.30 at 50 atoms, 0.60 at 100), while the 9B's lookup stays around (−0.03, −0.08).
 - **Share tracks lookup dependence.** Across layers, the lookup's J-dependence tracks the share of ‖Δ‖² that J++ takes: 27B Pearson 0.54, Spearman 0.79 over 10 valid layers. The recall's does not (0.03). On the 9B, share and depth fall together. Added after data ([figure](figures/x0_necessity/share.png)).
 - **The whole edit fades for lookups** with depth (27B: 0.89 at layer 16, 0.43 at 32), not for recalls (0.98, 0.75).
-- **The alt changes a second pick.** On the items where the asked pick comes first, the 27B's lookups switch 24% at layer 32 ("can't tell"); recalls are unchanged. Added after data ([figure](figures/x0_necessity/asked_first.png)).
+- **The alt changes a second pick.** At the 27B's layer 32 (added after data; [figure](figures/x0_necessity/asked_first.png)):
+  - where the asked pick comes first (n = 103), lookups switch 24% ("can't tell"; excess 0.08 [0.00, 0.20]);
+  - where the other changed pick comes first (n = 97), they switch 63% [53, 72] with excess 0.16 [0.08, 0.27] (mixed);
+  - recalls are the same in both (excess 0.74). A single-change alt is next.
 - **On the 9B, "around" means no J-specific cost, not no cost.** J++ and a random part of the same share each cost its lookups 0.12-0.13 of switches.
-- **The 27B's categorical result depends on the position set.** Patching every context position at layer 32 (the 23 Oct cell, rerun on the fresh scenes with the 23 Oct code and filter; added after data):
-  - lookups switch 84% with the whole change and 87% without J++, so they lose nothing;
-  - recalls go from 77% to 36%; the random part costs them −1 point, so the difference is +42 [+34, +50] points (n = 180; [verdict](results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.md)).
-  - At the bridge's word alone, the lookup is "mixed".
-- **Without the chat template, neither model can be tested by the rule.**
+- **Without the chat template: can't test.** Post-trained models don't answer the bare QA format; this says nothing about the hypothesis.
   - **No chat template, thinking not disabled** (raw text): both models open a think block (gate 0%).
   - **No chat template, thinking off** (the template's empty think block added by hand): they answer in markdown or in words (" **6**", " **Seven**"), so the first-token read is right on 0% / 0% (9B) and 63% / 90.5% (27B) of lookups / recalls.
   - A descriptive arm that reads the first digit is running (amendment 3).
@@ -82,25 +84,27 @@
 ![27B detail](figures/x0_necessity/detail_x0_necessity_27b_chat_chat.png)
 ![9B detail](figures/x0_necessity/detail_qwen35_9b_x0_necessity_chat.png)
 
-- **The 23 Oct reading was post hoc.** The split depth was read per layer after a pre-registered rule failed ([27B](results/d1_verdict/d1_necessity_parts_27b_r2_20261023-164424/verdict.md), [9B](results/d1_verdict/qwen35_9b_d1_necessity_parts_r2_20261023-162800/verdict.md)). Its 27B headline (lookups 83% → 81%, recalls 78% → 27% at layer 32) was every context position, not the bridge's word. On the fresh scenes that cell repeats (84% → 87%, 77% → 36%; weak spots above).
+- **The 23 Oct reading was post hoc.** The split depth was read per layer after a pre-registered rule failed ([27B](results/d1_verdict/d1_necessity_parts_27b_r2_20261023-164424/verdict.md), [9B](results/d1_verdict/qwen35_9b_d1_necessity_parts_r2_20261023-162800/verdict.md)). Its 27B headline (lookups 83% → 81%, recalls 78% → 27% at layer 32) was every context position, not the bridge's word. On the fresh scenes that cell repeats (84% → 87%, 77% → 36%; replication above).
 - **Convergent evidence (Zach, quoted).** Knocking out the lens's top directions costs recall more points than lookups, on held-out bands chosen with lookups excluded.
 
 </details>
 
 ## What X0 led to: what does the lookup use instead?
 
-Each candidate for the lookup's route has one test. The rules are graded reader comparisons (D3 amendment, 24 Oct, after X0) and are committed to each spec before its run.
+Each candidate for the lookup's route has one test. The rules are graded reader comparisons (D3 amendment, 24 Oct, after X0), committed to each spec before its run. The decisive read is X0's top-token switch (cand logged); X3 keeps cand2.
+- **9B: confirmatory** (it passed X0). Order: X1, X2', X4, X3.
+- **27B: exploratory** (D3 amendment). Order: X2', X4, X1, X3. X2' and X4 add a descriptive arm at the context positions (in X2' the shared prefix before the K / M block).
 
 | Candidate | Test | Rule (fixed before the run) | Status |
 |---|---|---|---|
 | The bridge's input-token identity | X0's W_E dictionary | W_E lookup excess ≥ 0.20 | not supported: W_E is inert for both readers |
-| Where the final fact sits, or whether the model knows it | X2': the same question with the final fact made up in the passage, true in the passage, recalled, or recalled with the answer present | r = (excess_K − excess_lookup) / (excess_M − excess_lookup): ≤ 0.33 where it sits, ≥ 0.67 what it knows; can't tell if the denominator < 0.30 | first (Zach's natctl scenes; 144 of 256 pass the token checks) |
-| A verbatim-match shortcut | X4: the key stated verbatim, translated, or described | lookup excess, translated − verbatim: ≥ 0.20 verbatim, ≤ 0.10 not lexical; control: described − verbatim ≥ 0.20 | first, with X2' |
-| The J-form rebuilt downstream | X1: among lookups that still switch without J++ at layer 32, remove the rebuilt J++ part over layers 33-44 | share lost minus the random part's: ≥ 0.20 rebuilding matters, ≤ 0.10 it does not | next |
-| Generated lists only | X3: paired readers on natural passages (natplus) | C ≥ 0.30 with lower bound ≥ 0.15 holds; ≤ 0.10 fails | last (Zach has natural-text evidence) |
+| Where the final fact sits, or whether the model knows it | X2': X0's generator and digit answers; the final fact made up in the passage (the lookup), true in the passage (K), or recalled (M) | r = (excess_K − excess_lookup) / (excess_M − excess_lookup): ≤ 0.33 where it sits, ≥ 0.67 what it knows; can't tell if the denominator < 0.30 | spec next |
+| A verbatim-match shortcut | X4: the key stated verbatim, translated, or described | lookup excess, translated − verbatim: ≥ 0.20 verbatim, ≤ 0.10 not lexical; control: described − verbatim ≥ 0.20 | spec next |
+| The J-form rebuilt downstream | X1: among lookups that still switch without J++ at layer 32, remove the rebuilt J++ part over layers 33-44 | share lost minus the random part's: ≥ 0.20 rebuilding matters, ≤ 0.10 it does not | 9B first |
+| Generated lists only | X3: paired readers on natural passages (natplus) | C ≥ 0.30 with lower bound ≥ 0.15 holds; ≤ 0.10 fails | last (Zach has natural-text evidence); cand2 read |
 | A scene-relative address (order label) | the slot subspace removed (23 Oct) | – | open: not necessary (98% of lookups kept) |
 
-**Running now** (descriptive, added after data): the first-digit read without the chat template, thinking off (27B, 9B).
+**Running or next** (descriptive, added after data): the first-digit read without the chat template, thinking off (27B, 9B); J++ atoms of 20 + 20 items at the 27B's layer 32; a single-change alt (27B layers 28-34, 9B 10-14).
 
 ## Boring explanations
 
@@ -109,8 +113,8 @@ Each candidate for the lookup's route has one test. The rules are graded reader 
 | The J++ part is just small | A random part of the same share removed | Recalls lose 0.03 to it at the 27B's layer 32, 0.77 to J++ | checked |
 | The edit differs between lookups and recalls | The identical patch at the bridge's word | By design | checked |
 | Any token-aligned part would do | W_U, W_E and random atoms at 25 atoms; W_E at an equal share | All "around" at every layer; at equal shares only J++ costs the recall more than a random subspace (27B, 9B) | checked on the 27B and the 9B |
-| The chat template | No chat template, with thinking not disabled / off | Can't test: a think block, or answers in markdown | open: first-digit read running |
-| The alt's second changed pick | The asked-first subset | Recalls unchanged; the 27B's lookups switch less | partly checked |
+| The chat template | No chat template, with thinking not disabled / off | Can't test: post-trained models don't answer the bare QA format (a think block; markdown) | not a test of the hypothesis; first-digit read running |
+| The alt's second changed pick | Asked-first vs upstream-change items | Recalls the same; 27B lookups switch 24% vs 63%, excess 0.08 vs 0.16 | partly checked; a single-change alt next |
 | The lookup's layer profile is the J++ share | J-dependence against share across layers | 27B lookups track it (Spearman 0.79); recalls do not | open |
 
 ## Choices made after seeing the data (24 Oct; log in [jobs/c3/X0.md](jobs/c3/X0.md))
@@ -120,6 +124,7 @@ Each candidate for the lookup's route has one test. The rules are graded reader 
 | X1-X4 run on the 27B although X0 did not confirm it (D3 amendment) | The categorical premise failed there, but the graded contrast is large and J++-specific | X1-X4 become reader comparisons at layer 32 under graded rules; the X0 verdict stays "not confirmed" |
 | A "no chat template, thinking off" arm (amendment 2) | Without the template thinking is not disabled: raw prompts open a think block | Descriptive; it failed its gate too (markdown answers) |
 | A first-digit read without the gate (amendment 3) | Answers start with " **" or a word | Descriptive, labeled; chat stays the verdict |
+| X1-X4: confirmatory on the 9B, exploratory on the 27B; X2' on X0's generator, top-token read; a context-position arm on the 27B (Dan, ~17:00) | The 9B passed X0's gate; the 27B did not | Committed to each spec before its run |
 | Descriptive tables and figures (the critic's requests) | To check share, absolute drops, the upstream change, equal shares | Labeled "added after data", outside the rule |
 
 ## Pre-registered tests and Dan's predictions
@@ -131,8 +136,8 @@ Each candidate for the lookup's route has one test. The rules are graded reader 
 | The 27B's layer-32 cell is valid for both readers | the whole edit switches ≥ 30% and ≥ 30 items | both valid (lookups 43%) | only recalls, 80%: wrong |
 | W_E removal (H-token) | W_E lookup excess ≥ 0.20 with J++'s around | 9B: neither; 27B: not applicable (J++'s lookup mixed) | neither, 90%: right / wrong |
 | W_U removal | both readers around | both models | inert, 90%: right |
-| No chat template, thinking not disabled: gate | ≥ 80% for both readers | fails on both | both pass, 80%: wrong |
-| No chat template, thinking off: gate (amendment 2) | the same | fails on both | both pass, 80%: wrong |
+| No chat template, thinking not disabled: gate | ≥ 80% for both readers | can't test (bare QA format) | both pass, 80%: wrong |
+| No chat template, thinking off: gate (amendment 2) | the same | can't test (bare QA format) | both pass, 80%: wrong |
 
 Batch 25 is scored question by question in [predictions/2026-10-24_dan.md](predictions/2026-10-24_dan.md) (Brier and calibration from batch 25 on: [predictions/README.md](predictions/README.md)).
 
@@ -140,8 +145,8 @@ Batch 25 is scored question by question in [predictions/2026-10-24_dan.md](predi
 
 | Step | Decides | Cost |
 |---|---|---|
-| X2' (natctl, four final hops) and X4 (verbatim / translated / described key): specs with the graded rules, Dan's predictions, runs | where the route is set; whether "around" is lexical | ~1 h data + ~3 GPU-h |
-| X1: remove the rebuilt J++ form over layers 33-44 (27B) and 13-24 (9B) | whether the lookup re-reads a rebuilt J-form | ~1 GPU-h |
+| 9B, confirmatory: X1 (rebuilt J++ form over layers 13-24), X2', X4 | whether the lookup re-reads a rebuilt J-form; where the route is set; whether "around" is lexical | ~2 h data + ~2 GPU-h |
+| 27B, exploratory: X2', X4 (with the context arm), then X1 (layers 33-44) | the same, on the model X0 did not confirm | ~3 GPU-h |
 | X3: paired readers on natural passages | whether the contrast holds beyond generated lists | ~1.5 GPU-h |
 | Hand check of the X0 cells at the predicted layers | the "verified" mark | 1 h, Dan |
 
