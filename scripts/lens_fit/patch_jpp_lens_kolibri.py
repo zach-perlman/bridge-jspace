@@ -1,5 +1,6 @@
 """Adds Kolibri-1 (transformers 5.20 kolibri1) to a copy of jpp_lens at /workspace/ext/jpp_lens_kol (Zach, 2026-10-24,
-prereg amendment 28 note 2): cp -r of /workspace/ext/jpp_lens (LICENSE NOTICE README.md pyproject.toml scripts src), then
+prereg amendment 28 note 2): cp -r of /workspace/ext/jpp_lens (LICENSE NOTICE README.md pyproject.toml scripts src data assets; data/ holds the readout
+eval items that grading reads by relative path, forgotten at first and added 2026-10-24 ~09:50 UTC), then
 python3 scripts/lens_fit/patch_jpp_lens_kolibri.py. Each replacement must match exactly once. Run Kolibri J++ with
 PYTHONPATH=/workspace/ext/jpp_lens_kol/src and /workspace/ext/kolibri_env/bin/python (its jlens shadows Anthropic's)."""
 from pathlib import Path
