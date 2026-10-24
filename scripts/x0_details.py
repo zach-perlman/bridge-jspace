@@ -226,6 +226,13 @@ def probe_numbers(num: Numbers) -> None:
         num.add(f"probe_c_before_{m}", f2(rows["bridge identity"]["probe"][0]), src)
 
 
+def latest_patched(run: str, target: str) -> Path:
+    """The newest x0_probe_patched output of an x0_amnesic run for one target (runs before --target are the address)."""
+    paths = sorted((pins.RESULTS_DIR / "x0_amnesic" / run).glob("probe-patched-*/probe_patched.json"),
+                   key=lambda p: p.parent.name[-16:])  # by the UTC stamp, not the folder's name  # fmt: skip
+    return [p for p in paths if json.loads(p.read_text()).get("target", "address") == target][-1]
+
+
 def address_numbers(num: Numbers) -> None:
     """The address at the bridge's word (descriptive): the probes on 1,500 fresh scenes (locker-before), probe (a) with
     the locker index factored out, the probe subspace removed from or kept alone in the single-change edit (x0_amnesic),
@@ -252,10 +259,17 @@ def address_numbers(num: Numbers) -> None:
             num.add(f"amn_{'lk' if w == X.LOOKUP else 'rc'}_excess_{m}", ci(am[("before", w)]["excess"]), src)
         num.add(f"amn_share_{m}", pct(am[("before", X.LOOKUP)]["median_share"]).replace("1%", "1%"), src)
         num.add(f"amn_suff_lk_{m}", f2(am[("before", X.LOOKUP)]["probe_only"][0]), src)
-        path = sorted((pins.RESULTS_DIR / "x0_amnesic" / AMNESIC[m]).glob("probe-patched-*/probe_patched.json"))[-1]
+        path = latest_patched(AMNESIC[m], "address")
         src = str(path.relative_to(pins.REPO_ROOT))
         pr = json.loads(path.read_text())["results"]
         num.add(f"pair_right_{m}", ci(pr["pair right"]), src)
+        dup = pr["duplicate_pick_split"]  # which earlier mention of the alt item the readout follows
+        for key, name in (("lockerfirst", "before, the other pick is the latest earlier mention"),
+                          ("otherfirst", "before, the alt locker is the latest earlier mention")):  # fmt: skip
+            num.add(f"dup_{key}_alt_{m}", f2(dup[name]["alt right"][0]), src)
+            num.add(f"dup_{key}_reads_other_{m}", f2(dup[name]["alt state reads the other pick sentence"][0]), src)
+            num.add(f"dup_{key}_n_{m}", str(dup[name]["n"]), src)
+        num.add(f"dup_after_alt_{m}", f2(dup["after"]["alt right"][0]), src)
         num.add(f"pair_n_{m}", str(json.loads(path.read_text())["n"]), src)
         for k in (25, 100):
             num.add(f"patched_j{k}_alt_{m}", f2(pr[f"org + J++ part, k = {k}: reads the alt's"][0]), src)

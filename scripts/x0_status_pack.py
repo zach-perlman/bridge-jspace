@@ -359,10 +359,14 @@ def f8(plt, F, color, grey) -> None:
             ("org + rest, k = 25", "the rest\n(25 atoms)"), ("org + J++ part, k = 100", "J++ part\n(100 atoms)"),
             ("org + rest, k = 100", "the rest\n(100 atoms)"))  # fmt: skip
     fig, axes = plt.subplots(1, len(AMNESIC), figsize=(14, 5.6), sharey=True)
+    pair = {}
     for ax, (target, (label, run)) in zip(axes, AMNESIC.items(), strict=True):
-        path = sorted((pins.RESULTS_DIR / "x0_amnesic" / run).glob("probe-patched-*/probe_patched.json"))[-1]
+        from scripts.x0_details import latest_patched
+
+        path = latest_patched(run, "address")
         blob = json.loads(path.read_text())
         res, energy = blob["results"], blob["results"]["energy"]
+        pair[label] = (res["pair right"][0], blob["probe"], path.parent.name)
         for i, (key, _) in enumerate(bars):
             v, lo, hi = res[f"{key}: reads the alt's"]
             col = F.LOOKUP if "J++" in key else "#9e9e9e" if "rest" in key else "#555555"
@@ -384,10 +388,11 @@ def f8(plt, F, color, grey) -> None:
          "Probe (b) at the bridge word, read on the original state plus a part of the one-change edit (both locker "
          "sentences before the pick). Under each bar: the part's share of the change, and of the change's component "
          "in the probe's own directions (a random part of the same size would carry about its share).")  # fmt: skip
-    foot(fig, ["Probe trained on d1_topics_v3's locker-before states, cross-fitted by bridge entity; " + CI + ". On the same "
-               "pairs the probe gets both the original and the edited state right in 0.54 (27B) and 0.48 (9B); a layout-only "
-               "classifier gets 0 by construction. Unverified. Descriptive, added after the data. Runs: "
-               "results/x0_amnesic/*/probe-patched-*."])  # fmt: skip
+    both = "; ".join(f"{k} {v[0]:.2f}" for k, v in pair.items())
+    foot(fig, [f"Probe trained on the locker-before org states of {', '.join(v[1] for v in pair.values())} (fresh scenes), "
+               f"cross-fitted by bridge entity; {CI}. On the same pairs the probe gets both the original and the edited state "
+               f"right in {both}; a layout-only classifier gets 0 by construction. Unverified. Descriptive, added after the "
+               f"data. Runs: results/x0_amnesic/*/{{{', '.join(v[2] for v in pair.values())}}}."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.13, 1, 0.84))
     fig.savefig(OUT / "f8_address.png", dpi=150, facecolor="white")
     plt.close(fig)

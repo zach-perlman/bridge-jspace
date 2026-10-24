@@ -182,13 +182,13 @@ f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, bridge identity, locker bef
 f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, bridge identity, locker before",0.06728232189973615,,,
 f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, bridge identity, locker after",0.9986522911051213,0.9952377161055506,1.0,742
 f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, bridge identity, locker after",0.06334231805929919,,,
-f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,reads the alt's locker sentence: alt (org + Δ),0.547945205479452,0.44594594594594594,0.6521739130434783,73
-f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.0273972602739726,0.0,0.06523169336384418,73
-f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.5205479452054794,0.41974313022700116,0.6285714285714286,73
-f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.0273972602739726,0.0,0.06944444444444445,73
-f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.4794520547945205,0.3780487804878049,0.5932203389830508,73
-f8,qwen3.6-27b,x0_amnesic_27b,-,-,reads the alt's locker sentence: alt (org + Δ),0.5857142857142857,0.45714285714285713,0.7222222222222222,70
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,reads the alt's locker sentence: alt (org + Δ),0.547945205479452,0.4444444444444444,0.647887323943662,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.0,0.0,0.0,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.547945205479452,0.44303345388788423,0.6551724137931034,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.0273972602739726,0.0,0.06493506493506493,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.4794520547945205,0.3684210526315789,0.6,73
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,reads the alt's locker sentence: alt (org + Δ),0.5857142857142857,0.45901639344262296,0.7258119752540875,70
 f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.0,0.0,0.0,70
-f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.6,0.48,0.7297404547404546,70
-f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.0,0.0,0.0,70
-f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.5571428571428572,0.43209876543209874,0.6912047511312213,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.5142857142857142,0.40277326839826844,0.6463593974175034,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.04285714285714286,0.0,0.09230769230769231,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.5,0.3835405039742939,0.6268656716417911,70
