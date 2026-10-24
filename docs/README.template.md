@@ -11,7 +11,7 @@
 
 - **Recalls need the J-space form more than lookups do.** Remove the J++-readable part of an edit of the bridge, at a depth fixed in advance. Recalls lose most of their switches; lookups lose little more than to a random part of the same size. The graded contrast is {{q|0.60 [0.50, 0.69]}} on the 27B and {{q|0.53 [0.42, 0.61]}} on the 9B.
 - **It is about J++.** The logit lens's directions (W_U), the input embeddings (W_E) and random atoms do nothing comparable, also at a similar removed share.
-- **The categorical version is model-dependent.** "Lookups do not use the J-form" is confirmed on the 9B (layer {{q|12}}) and not confirmed on the 27B (layer {{q|32}}): there the lookup uses J++ too, less.
+- **The categorical version is model-dependent.** "Lookups do not use the J-form" is confirmed on the 9B (layer {{q|12}}) and not confirmed on the 27B (layer {{q|32}}): there the lookup depends on further J++ atoms (weak spots).
 - **Next**: what the lookup uses instead, and what decides the route (X2', X4, X1, X3), as graded reader comparisons.
 
 ![X0: lookup and recall excess by layer, two models, three renderings](figures/x0_necessity/overview.png)
@@ -66,7 +66,7 @@
 - A hardware gate reran a 23 Oct cell on the new box: {{q|0.99}} per-row agreement.
 
 **Weak spots**
-- **The 27B's lookup uses J++ too, only less.** With more atoms its excess rises ({{q|0.30}} at 50 atoms, {{q|0.60}} at 100), while the 9B's lookup stays around ({{q|−0.03}}, {{q|−0.08}}).
+- **The atoms the readers depend on.** Recall depends on the leading J++ atoms. On the 27B the lookup depends on further J++ atoms, and at k = 100 the two readers depend on J++ about equally (excess {{q|0.60}} vs {{q|0.67}}). On the 9B the lookup does not depend on J++ at any k ({{q|−0.03}} at 50, {{q|−0.08}} at 100). A digit check is running: the J++ dictionary has letter-bearing tokens only, so digits are excluded.
 - **Share tracks lookup dependence.** Across layers, the lookup's J-dependence tracks the share of ‖Δ‖² that J++ takes: 27B Pearson {{q|0.54}}, Spearman {{q|0.79}} over {{q|10}} valid layers. The recall's does not ({{q|0.03}}). On the 9B, share and depth fall together. Added after data ([figure](figures/x0_necessity/share.png)).
 - **The whole edit fades for lookups** with depth (27B: {{q|0.89}} at layer 16, {{q|0.43}} at 32), not for recalls ({{q|0.98}}, {{q|0.75}}).
 - **The alt changes a second pick.** At the 27B's layer 32 (added after data; [figure](figures/x0_necessity/asked_first.png)):

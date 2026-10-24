@@ -5,13 +5,13 @@
 
 > "Iris picked the frog. The locker of the frog is 5. ..." The bridge is *frog*. A **lookup** ("Which locker belongs to Iris's pick?") takes the answer from a sentence in the prompt; a **recall** ("How many legs does Iris's pick have?") takes it from memory.
 
-> **Status, 24 Oct 2026, evening.** Built at ab0f36d9 from the X0 run files. This page is the first experiment of the direction, X0 (pre-registered 24 Oct; [jobs/c3/X0.md](jobs/c3/X0.md)), and the plan it led to. Numbers are quoted from the run files (linked). Exploration phase: nothing here is hand-verified (UNVERIFIED). Models: Qwen3.6-27B and Qwen3.5-9B, hybrids with DeltaNet layers. The earlier claims (the late read, order then identity) are in [CHANGELOG.md](CHANGELOG.md).
+> **Status, 24 Oct 2026, evening.** Built at d5d82579 from the X0 run files. This page is the first experiment of the direction, X0 (pre-registered 24 Oct; [jobs/c3/X0.md](jobs/c3/X0.md)), and the plan it led to. Numbers are quoted from the run files (linked). Exploration phase: nothing here is hand-verified (UNVERIFIED). Models: Qwen3.6-27B and Qwen3.5-9B, hybrids with DeltaNet layers. The earlier claims (the late read, order then identity) are in [CHANGELOG.md](CHANGELOG.md).
 
 ## TL;DR
 
 - **Recalls need the J-space form more than lookups do.** Remove the J++-readable part of an edit of the bridge, at a depth fixed in advance. Recalls lose most of their switches; lookups lose little more than to a random part of the same size. The graded contrast is 0.60 [0.50, 0.69] on the 27B and 0.53 [0.42, 0.61] on the 9B.
 - **It is about J++.** The logit lens's directions (W_U), the input embeddings (W_E) and random atoms do nothing comparable, also at a similar removed share.
-- **The categorical version is model-dependent.** "Lookups do not use the J-form" is confirmed on the 9B (layer 12) and not confirmed on the 27B (layer 32): there the lookup uses J++ too, less.
+- **The categorical version is model-dependent.** "Lookups do not use the J-form" is confirmed on the 9B (layer 12) and not confirmed on the 27B (layer 32): there the lookup depends on further J++ atoms (weak spots).
 - **Next**: what the lookup uses instead, and what decides the route (X2', X4, X1, X3), as graded reader comparisons.
 
 ![X0: lookup and recall excess by layer, two models, three renderings](figures/x0_necessity/overview.png)
@@ -66,7 +66,7 @@
 - A hardware gate reran a 23 Oct cell on the new box: 0.99 per-row agreement.
 
 **Weak spots**
-- **The 27B's lookup uses J++ too, only less.** With more atoms its excess rises (0.30 at 50 atoms, 0.60 at 100), while the 9B's lookup stays around (−0.03, −0.08).
+- **The atoms the readers depend on.** Recall depends on the leading J++ atoms. On the 27B the lookup depends on further J++ atoms, and at k = 100 the two readers depend on J++ about equally (excess 0.60 vs 0.67). On the 9B the lookup does not depend on J++ at any k (−0.03 at 50, −0.08 at 100). A digit check is running: the J++ dictionary has letter-bearing tokens only, so digits are excluded.
 - **Share tracks lookup dependence.** Across layers, the lookup's J-dependence tracks the share of ‖Δ‖² that J++ takes: 27B Pearson 0.54, Spearman 0.79 over 10 valid layers. The recall's does not (0.03). On the 9B, share and depth fall together. Added after data ([figure](figures/x0_necessity/share.png)).
 - **The whole edit fades for lookups** with depth (27B: 0.89 at layer 16, 0.43 at 32), not for recalls (0.98, 0.75).
 - **The alt changes a second pick.** At the 27B's layer 32 (added after data; [figure](figures/x0_necessity/asked_first.png)):

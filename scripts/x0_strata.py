@@ -47,11 +47,36 @@ def features(case: dict) -> dict[str, str]:
             "org locker vs asked pick": locker(case["bridge"]), "alt locker vs asked pick": locker(case["cf_bridge"])}  # fmt: skip
 
 
+FEATURES = ("upstream", "domain", "asked pick place", "org locker vs asked pick", "alt locker vs asked pick")
+
+
+def readout_lines(readout: list[dict], feat: dict, features: list[str]) -> list[str]:
+    """The digit check (c) per stratum: in the org and the alt run, the J++ readout's rank of the org and the alt
+    answer digit among the 10 digits at the bridge's word (mean, and the share ranked first)."""
+    lines = ["## Digit check (c): the J++ readout of the answer digits at the bridge's word", "",
+             "| feature | value | reader | run | n | org digit: mean rank, share 1st | alt digit: mean rank, share 1st |",
+             "|---|---|---|---|---|---|---|"]  # fmt: skip
+    for key in features:
+        for value in sorted({f[key] for f in feat.values()}):
+            for w in X.READERS:
+                for run in ("org", "alt"):
+                    rs = [r for r in readout if r["reader"] == w and r["run"] == run and feat[r["scene"]][key] == value]
+                    if not rs:
+                        continue
+                    o, b = [r["rank_org_answer"] for r in rs], [r["rank_alt_answer"] for r in rs]
+                    lines.append(f"| {key} | {value} | {'lookup' if w == X.LOOKUP else 'recall'} | {run} | {len(rs)} | "
+                                 f"{sum(o) / len(o):.2f}, {sum(x == 1 for x in o) / len(o):.2f} | "
+                                 f"{sum(b) / len(b):.2f}, {sum(x == 1 for x in b) / len(b):.2f} |")  # fmt: skip
+    return [*lines, ""]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True)
     ap.add_argument("--layer", type=int, required=True)
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--all-dicts", action="store_true", help="every dictionary, k and fit, not only J++ k = 25")
+    ap.add_argument("--features", nargs="+", default=list(FEATURES), choices=list(FEATURES))
     a = ap.parse_args()
     src = X.RESULTS / a.name
     rows = [r for r in X.read_jsonl(src / "outcomes.jsonl") if r["rendering"] == "chat" and r["layer"] == a.layer]
@@ -61,21 +86,24 @@ def main() -> None:
              f"{NOTE} Bootstrap over the org bridge entity, {a.n_boot} resamples, seed {X.BOOT_SEED}. "
              "⚠ = fewer than 30 items switched by the whole edit (the cell is 'can't tell'). UNVERIFIED.", ""]  # fmt: skip
     blob: dict = {"run": a.name, "layer": a.layer, "note": NOTE, "strata": []}
-    for key in ("upstream", "domain", "asked pick place", "org locker vs asked pick", "alt locker vs asked pick"):
-        lines += [f"## {key}", "", "| value | reader | n | switched | S_whole | Jdep | Rdep | excess | label |",
-                  "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for key in a.features:
+        lines += [f"## {key}", "", "| value | reader | dict | k | fit | n | switched | S_whole | Jdep | Rdep | excess | "
+                  "label |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
         for value in sorted({f[key] for f in feat.values()}):
             cells = X.cells_of([r for r in rows if feat[r["scene"]][key] == value], a.n_boot)
-            for w in X.READERS:
-                c = cells.get(("chat", a.layer, w, *X.MAIN))
-                if c is None:
-                    continue
+            keys = sorted(k for k in cells if a.all_dicts or k[3:] == X.MAIN)
+            for k in sorted(keys, key=lambda k: (k[2] != X.LOOKUP, k[3] != "jpp", k[3], k[4], k[5])):
+                c, w = cells[k], k[2]
                 flag = " ⚠" if c["switched_whole"] < X.VALID_N else ""
-                lines.append(f"| {value} | {'lookup' if w == X.LOOKUP else 'recall'} | {c['n']} | {c['switched_whole']}{flag} "
-                             f"| {X.fmt3(c['S_whole'])} | {X.fmt3(c['Jdep'])} | {X.fmt3(c['Rdep'])} | "
-                             f"{X.fmt3(c['excess'])} | {c['label']} |")  # fmt: skip
-                blob["strata"].append({"feature": key, "value": value, "reader": w, **c})
+                lines.append(f"| {value} | {'lookup' if w == X.LOOKUP else 'recall'} | {k[3]} | {k[4]} | {k[5]} | {c['n']} | "
+                             f"{c['switched_whole']}{flag} | {X.fmt3(c['S_whole'])} | {X.fmt3(c['Jdep'])} | "
+                             f"{X.fmt3(c['Rdep'])} | {X.fmt3(c['excess'])} | {c['label']} |")  # fmt: skip
+                blob["strata"].append({"feature": key, "value": value, "reader": w, "dict": k[3], "k": k[4],
+                                       "omp": k[5], **c})  # fmt: skip
         lines.append("")
+    readout = [r for r in X.read_jsonl(src / "readout.jsonl") if r["rendering"] == "chat" and r["layer"] == a.layer]
+    if readout:
+        lines += readout_lines(readout, feat, a.features)
     out = src / f"strata-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
     (out / "strata.md").write_text("\n".join(lines) + "\n")

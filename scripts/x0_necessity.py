@@ -41,6 +41,7 @@ EXP = "x0_necessity"
 RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "X0.md"
 DICTS = ("jpp", "wu", "we", "rand")  # J++ (main arm), the logit lens's W_U, the input embeddings W_E, Gaussian
+K_OF = {"jppdig": 10}  # dictionaries with fewer atoms than K_MAIN: all of them removed (the digit check)
 K_MAIN = 25
 K_CURVE = (10, 50, 100)  # at the predicted layer only, for CURVE_DICTS
 CURVE_DICTS = ("jpp", "we")
@@ -173,6 +174,7 @@ RAW_STEPS = 4  # raw read: at most RAW_STEPS - 1 whitespace-only tokens skipped 
 READ = "first"  # non-chat read: the first non-whitespace token (amendment 1) or "digit" (amendment 3, descriptive)
 DESCRIPTIVE = False  # amendment 3: run on the items each reader gets right even if the gate fails (labeled)
 DIGIT_IDS: set[int] = set()  # the digit tokens, set by stage_run (the digit read)
+READOUT = False  # the digit check (c): the J++ readout of the answer digits at the bridge's word
 ALT = "cf"  # the alt: the generator's cf (two picks swap; X0) or "single" (only the asked pick changes; after data)
 CURVE_ALL = False  # the k curve at every layer, not only the predicted one (after data)
 Arm = tuple[str, int, str, str]  # (dictionary, k, fit, arm)
@@ -423,13 +425,19 @@ def gate_and_eligible(cases: list[dict], comp: list[dict]) -> tuple[dict, dict[s
 
 
 def dictionary(name: str, layer: int, model, lens, letters):
-    """[letters, d] unit atoms on the GPU: J++ (the lens's vectors at the layer), W_U (the same with J = identity),
-    W_E (input embeddings), or Gaussian rows drawn on the CPU (seed RAND_DICT_SEED + layer)."""
+    """Unit atoms on the GPU: J++ (the lens's vectors at the layer, letter tokens), W_U (the same with J = identity),
+    W_E (input embeddings), Gaussian rows drawn on the CPU (seed RAND_DICT_SEED + layer); the digit check (after
+    data): jppall = J++ over every non-special token, digits included; jppdig = J++ of the digit tokens only."""
     import torch
 
     norm = torch.nn.functional.normalize
     if name == "jpp":
         return lens.vectors(layer, letters)
+    if name == "jppall":
+        every = [i for i in range(len(model.decoded)) if i not in model.special_ids]
+        return lens.vectors(layer, torch.tensor(every, device="cuda"))
+    if name == "jppdig":
+        return lens.vectors(layer, torch.tensor(sorted(DIGIT_IDS), device="cuda"))
     if name == "wu":
         return norm(model.hf.lm_head.weight[letters].float() * model.norm_gain(), dim=-1)
     if name == "we":
@@ -438,6 +446,22 @@ def dictionary(name: str, layer: int, model, lens, letters):
     g = torch.Generator().manual_seed(RAND_DICT_SEED + layer)
     d = model.hf.lm_head.weight.shape[1]
     return norm(torch.randn((len(letters), d), generator=g), dim=-1).to("cuda")
+
+
+def digit_ranks(lens, h: dict, c: dict, layers, digits, rend: str) -> list[dict]:
+    """The digit check (c): at each layer, the J++ readout of the bridge's word in the org and the alt run; per reader,
+    the rank (1 = top) of its org and alt answer digits among the digit tokens, and the top digit."""
+    rows = []
+    for la in layers:
+        vec = lens.vectors(la, digits, unit=False)  # [10, d]
+        for run in ("org", "alt"):
+            scores = vec @ h[run][la][c["pos"]].float()
+            order = [int(digits[i]) for i in scores.argsort(descending=True)]
+            for w, rd in c["readers"].items():
+                rows.append({"scene": c["scene"], "rendering": rend, "layer": la, "reader": w, "run": run,
+                             "rank_org_answer": order.index(rd["tok_A"]) + 1, "rank_alt_answer": order.index(rd["tok_b"]) + 1,
+                             "top_digit": order[0]})  # fmt: skip
+    return rows
 
 
 def fit(dic, x, k: int, omp: str):
@@ -471,19 +495,25 @@ def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predi
     letters = model.letter_token_ids()
     rend = cases[0]["rendering"]
     with torch.no_grad():
-        deltas = []
+        deltas, readout = [], []
         for c in progress(cases, f"{rend}: Δ at the bridge's word (case)"):
             ids = c["readers"][LOOKUP]["ids"]
             h = {v: model.run(torch.tensor([ids[v]], device="cuda"), record=tuple(layers))[1] for v in ("org", "alt")}
             deltas.append(torch.stack([(h["alt"][la][c["pos"]] - h["org"][la][c["pos"]]).cpu() for la in layers]))
+            if READOUT:
+                readout += digit_ranks(lens, h, c, layers, digits, rend)
         delta = torch.stack(deltas)  # [n, layers, d] fp32, CPU
+        if READOUT:
+            with (out / "readout.jsonl").open("a") as f:
+                f.writelines(json.dumps(r) + "\n" for r in readout)
         examples = set(random.Random(EXAMPLES_SEED).sample(range(len(cases)), min(K_EXAMPLES, len(cases))))
         for li, la in enumerate(layers):
             x = delta[:, li].to("cuda")
             arms: dict[Arm, Any] = {WHOLE: x}
-            specs = [(name, K_MAIN, "signed") for name in DICTS]
+            specs = [(name, K_OF.get(name, K_MAIN), "signed") for name in DICTS]
             if la == predicted or CURVE_ALL:
-                specs += [(name, k, "signed") for name in CURVE_DICTS for k in K_CURVE] + [("jpp", K_MAIN, "nonneg")]
+                specs += [(name, k, "signed") for name in CURVE_DICTS for k in K_CURVE if name not in K_OF]
+                specs += [("jpp", K_MAIN, "nonneg")] if "jpp" in DICTS else []
             basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(SUBSPACE_SEED + la)).to("cuda")
             shares = []
             for name in dict.fromkeys(s[0] for s in specs):
@@ -545,6 +575,7 @@ def stage_run(
          "model": pins.model_pin(), "code": git_state(), "lens": lens_record(), "set": set_name,
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in (items, SPEC)},
          "layers": list(layers), "predicted": predicted, "renderings": renderings, "dicts": list(DICTS), "k": K_MAIN,
+         "k_of": {d: k for d, k in K_OF.items() if d in DICTS},
          "k_curve": {"dicts": list(CURVE_DICTS), "k": list(K_CURVE)}, "n": {"items": N_ITEMS, "min": N_MIN},
          "gate": GATE, "position": "bridge_word (the asked person's pick, one token)",
          "read": {"decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
@@ -554,7 +585,7 @@ def stage_run(
                   "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
                   "mode": READ, "digit": f"amendment 3: the step of the first digit token in {GEN_TOKENS} greedy tokens "
                                          "(non-chat renderings, when mode is digit)"},
-         "descriptive": DESCRIPTIVE, "alt": ALT, "curve_all_layers": CURVE_ALL,
+         "descriptive": DESCRIPTIVE, "alt": ALT, "curve_all_layers": CURVE_ALL, "readout": READOUT,
          "seeds": {"random_dictionary": f"{RAND_DICT_SEED} + layer (CPU)", "random_subspace": f"{SUBSPACE_SEED} + layer (CPU)",
                    "bootstrap": BOOT_SEED, "examples": EXAMPLES_SEED},
          "design": "jobs/c3/X0.md"}  # fmt: skip
@@ -793,7 +824,7 @@ def figures(verdict_dir: Path) -> list[Path]:
 
 
 def main() -> None:
-    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL  # from the command line; the manifest records them
+    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT  # the manifest records them
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name", required=True, help="run name (results/x0_necessity/<name>/)")
@@ -810,11 +841,14 @@ def main() -> None:
     ap.add_argument("--alt", choices=("cf", "single"), default=ALT,
                     help="run: the generator's cf (X0), or only the asked person's pick changed (after data)")  # fmt: skip
     ap.add_argument("--curve-all-layers", action="store_true", help="run: the k curve at every layer")
+    ap.add_argument("--dicts", nargs="+", default=list(DICTS), choices=["jpp", "wu", "we", "rand", "jppall", "jppdig"])
+    ap.add_argument("--readout", action="store_true", help="run: the J++ readout's answer-digit ranks (digit check)")
     ap.add_argument("--descriptive", action="store_true",
                     help="run: amendment 3, run on the items right even if the gate fails (labeled descriptive)")  # fmt: skip
     a = ap.parse_args()
     CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
     READ, DESCRIPTIVE, ALT, CURVE_ALL = a.read, a.descriptive, a.alt, a.curve_all_layers
+    DICTS, READOUT = tuple(a.dicts), a.readout
     if a.stage == "plan":  # tokenizer only
         from scripts import statement_positions as SP
 
