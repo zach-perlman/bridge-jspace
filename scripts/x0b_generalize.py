@@ -43,7 +43,7 @@ from scripts import x0_necessity as X
 EXP = "x0b_generalize"
 RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "X0b.md"
-LAYERS = {"qwen3.6-27b": (28, 30, 32, 34), "qwen3.5-9b": (10, 12, 14)}
+LAYERS = {"qwen3.6-27b": (28, 30, 32, 34), "qwen3.5-9b": (10, 12, 14), "qwen3.5-122b-a10b": (33,)}  # 122B: b6, L33 only
 CAP = 40  # eligible scenes per cell
 CHUNK = 500  # cases per run_rendering call (the batched OMP's memory)
 CELL = ("domain", "format", "level")
@@ -247,7 +247,10 @@ def gate_cells(cases: list[dict], comp: list[dict]) -> tuple[dict, list[dict]]:
     return gate, eligible
 
 
-def stage_run(name: str, why: str, set_name: str) -> Path:
+def stage_run(
+    name: str, why: str, set_name: str, formats: tuple[str, ...] = (), levels: tuple[int, ...] = (), curve: bool = True
+) -> Path:
+    """formats / levels: keep only those cells (the 122B's b6, Dan 25 Oct ~00:20); curve: the k = 50 / 100 curve."""
     import torch
 
     from bridge_jspace import chat
@@ -261,7 +264,7 @@ def stage_run(name: str, why: str, set_name: str) -> Path:
     X.DICTS, X.CURVE_DICTS, X.K_CURVE = (
         ("jpp",),
         ("jpp",),
-        K_CURVE,
+        K_CURVE if curve else (),
     )  # k = 25 everywhere; 50 / 100 at the predicted layer
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
@@ -275,11 +278,15 @@ def stage_run(name: str, why: str, set_name: str) -> Path:
                 "number that aligns); built here for every domain",
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED},
          "rule": {"hold": [HOLD_LOOKUP, HOLD_LOOKUP_HI, HOLD_C, HOLD_C_LO], "fail": [FAIL_LOOKUP, FAIL_C_HI]},
-         "k_curve": list(K_CURVE), "design": "jobs/c3/X0b.md (v2, exploratory)"}  # fmt: skip
+         "k_curve": list(K_CURVE) if curve else [], "formats": list(formats), "levels": list(levels),
+         "design": "jobs/c3/X0b.md (v2, exploratory)"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
     lens = JLens(model, "jpp")
     cases, counts = build_cases(model.tokenizer, set_name)
+    if formats or levels:
+        cases = [c for c in cases if (not formats or c["format"] in formats) and (not levels or c["level"] in levels)]
+        counts["kept_after_filter"] = {"formats": list(formats), "levels": list(levels), "cases": len(cases)}
     print(json.dumps(counts, indent=1), flush=True)
     ws = X.whitespace_mask(model)
     X.DIGIT_IDS.update(X.digit_ids(model.tokenizer))
@@ -487,6 +494,9 @@ def main() -> None:
     ap.add_argument("--name")
     ap.add_argument("--why", default="")
     ap.add_argument("--set", default="x0b_v2")
+    ap.add_argument("--formats", nargs="*", default=[], help="run: keep only these formats")
+    ap.add_argument("--levels", nargs="*", type=int, default=[], help="run: keep only these levels")
+    ap.add_argument("--no-curve", action="store_true", help="run: no k = 50 / 100 curve")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
@@ -498,7 +508,7 @@ def main() -> None:
         print("entities:", len({c["bridge"] for c in cases}), "levels:", collections.Counter(c["level"] for c in cases))
         print("median cases per cell:", statistics.median(counts["cases_per_cell"].values()))
     elif a.stage == "run":
-        stage_run(a.name, a.why, a.set)
+        stage_run(a.name, a.why, a.set, tuple(a.formats), tuple(a.levels), not a.no_curve)
         figures(write_verdict(a.name, a.n_boot))
     elif a.stage == "cross":
         cross(a.name, a.n_boot)
