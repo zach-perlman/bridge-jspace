@@ -873,3 +873,16 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   dependence on new relations and 2-3x the bridges); M - P >= 20; each test half's M - K within 15 of the other (an
   independent replication on disjoint facts); M - N two-sided: >= 10 would say lures inflate the M loss, within 10 that
   they do not; per relation, M - K > 0 in at least 6 of 8.
+
+## Amendment 34 (Zach, 2026-10-24 ~21:00 UTC): the J-swap and readout on the 122B, and on v2
+
+- **Seen when this was written:** amendment 32's J-swaps and readouts on the 27B, 9B (pre-registered) and on OLMo-3 32B
+  and Muse (diagnostics: sufficient, not necessary); the 9B's v2 knock-out; nothing on these runs.
+- **A. The 122B (jsuite_v1_facts_test_chat, L39-45, FP8):** scripts/bridge_readout.py and scripts/jswap.py as
+  amendment 32. Predictions as amendment 32 (PM and TM swap transfer >= 20 with the interval above 0; rotated and
+  logit-lens swaps < 5; lookups PP TP PK TK kept >= 80%); and necessity as its knock-out (the 122B lost +37 M - P on
+  module 1), so "remove" at the mention alone is reported, no prediction.
+- **B. v2 (jsuite_v2_test_chat):** the same two scripts adapted to v2's tables (scripts/jsuite_v2_tables.py) for the
+  27B (L32-40) and 9B (L12-16); OLMo-3 32B's J-swap on jsuite_v2_test_qa at L12-20. Predictions per model, all starts:
+  as amendment 32, plus the swap's transfer on the memory finals > 0 in at least 6 of the 8 relations; for OLMo the
+  same sufficiency predictions (its knock-out was null; sufficiency without necessity is what its v1 diagnostic showed).
