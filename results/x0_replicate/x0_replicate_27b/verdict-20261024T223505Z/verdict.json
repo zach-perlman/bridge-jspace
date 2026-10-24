@@ -1,0 +1,437 @@
+{
+ "run": "x0_replicate_27b",
+ "manifest": {
+  "exp": "x0_replicate",
+  "run": "x0_replicate_27b",
+  "written_utc": "2026-10-24T22:25:15Z",
+  "note": "Fixed in advance (Dan, 25 Oct morning item 4; spec jobs/c3/x0_replicate.yaml; prediction: batch 31).",
+  "model": {
+   "target": "qwen3.6-27b",
+   "repo": "Qwen/Qwen3.6-27B",
+   "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "fd76e6b1fa42726d5621e709b5654ca2b773eb28",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "set": "d1_topics_v5",
+  "inputs": {
+   "data/tasks_v2/d1_topics_v5/items.jsonl": "8bdf3b9c7dc916819631d3ab7554a1bcc750d3d24f9afaebc296c43d5bccb97e"
+  },
+  "layer": 32,
+  "decisive": false,
+  "alt": "single",
+  "items_rule": "chat; org and alt locker sentences both before the asked pick; eligible as in X0; the first N in scene order",
+  "n": {
+   "items": 200,
+   "min": 150
+  },
+  "gate": 0.8,
+  "parts": [
+   [
+    "jpp",
+    25,
+    "signed"
+   ],
+   [
+    "alf",
+    0,
+    "proj"
+   ],
+   [
+    "pca_eq",
+    0,
+    "eq"
+   ]
+  ],
+  "keep": [
+   [
+    "w",
+    0,
+    "lsq"
+   ],
+   [
+    "jwo",
+    25,
+    "signed"
+   ]
+  ],
+  "alf_from": "x0_probe_v4_27b",
+  "rule": "holds iff J++: recall excess >= 0.20 with lower CI > 0 and lookup excess <= 0.10; and Alf: lookup excess >= 0.20 with lower CI > 0 and recall excess <= 0.10 or at most half the lookup's (point estimates where no CI is named)",
+  "seeds": {
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0,
+   "pca_held_out": 0
+  },
+  "pca": {
+   "set": "d1_topics_v4",
+   "prompts": 200,
+   "tokens": 13790,
+   "seed": 0,
+   "n": 2000,
+   "variance_share": 0.9942538000900334
+  },
+  "items": 200
+ },
+ "rows": [
+  {
+   "part": "jpp",
+   "reader": "PP",
+   "median_share": 0.106255,
+   "n": 200,
+   "entities": 41,
+   "S_whole": [
+    0.99,
+    0.9643,
+    0.9973
+   ],
+   "S_no_part": [
+    0.985,
+    0.9568,
+    0.9949
+   ],
+   "S_no_rand": [
+    0.99,
+    0.9643,
+    0.9973
+   ],
+   "switched_whole": 198,
+   "valid": true,
+   "Jdep": [
+    0.005050505050505083,
+    0.0,
+    0.015957446808510526
+   ],
+   "Rdep": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "excess": [
+    0.005050505050505083,
+    0.0,
+    0.015957446808510526
+   ],
+   "label": "around"
+  },
+  {
+   "part": "jpp",
+   "reader": "PM",
+   "median_share": 0.106255,
+   "n": 200,
+   "entities": 41,
+   "S_whole": [
+    0.695,
+    0.628,
+    0.7546
+   ],
+   "S_no_part": [
+    0.425,
+    0.3585,
+    0.4943
+   ],
+   "S_no_rand": [
+    0.685,
+    0.6176,
+    0.7454
+   ],
+   "switched_whole": 139,
+   "valid": true,
+   "Jdep": [
+    0.38848920863309355,
+    0.2894695465077788,
+    0.4862385321100917
+   ],
+   "Rdep": [
+    0.014388489208632893,
+    -0.023076923076922995,
+    0.06164913147860466
+   ],
+   "excess": [
+    0.37410071942446066,
+    0.2777777777777779,
+    0.4649173806609546
+   ],
+   "label": "through"
+  },
+  {
+   "part": "alf",
+   "reader": "PP",
+   "median_share": 0.16144999999999998,
+   "n": 200,
+   "entities": 41,
+   "S_whole": [
+    0.99,
+    0.9643,
+    0.9973
+   ],
+   "S_no_part": [
+    0.795,
+    0.7337,
+    0.8451
+   ],
+   "S_no_rand": [
+    0.965,
+    0.9295,
+    0.9829
+   ],
+   "switched_whole": 198,
+   "valid": true,
+   "Jdep": [
+    0.1969696969696969,
+    0.14130281257676244,
+    0.2521036290622443
+   ],
+   "Rdep": [
+    0.025252525252525304,
+    0.0,
+    0.05291005291005291
+   ],
+   "excess": [
+    0.1717171717171716,
+    0.11715147333748774,
+    0.22388059701492535
+   ],
+   "label": "mixed"
+  },
+  {
+   "part": "alf",
+   "reader": "PM",
+   "median_share": 0.16144999999999998,
+   "n": 200,
+   "entities": 41,
+   "S_whole": [
+    0.695,
+    0.628,
+    0.7546
+   ],
+   "S_no_part": [
+    0.645,
+    0.5765,
+    0.708
+   ],
+   "S_no_rand": [
+    0.69,
+    0.6228,
+    0.75
+   ],
+   "switched_whole": 139,
+   "valid": true,
+   "Jdep": [
+    0.07194244604316535,
+    -0.00793809523809521,
+    0.1637931034482758
+   ],
+   "Rdep": [
+    0.007194244604316502,
+    -0.04761904761904767,
+    0.0634920634920636
+   ],
+   "excess": [
+    0.06474820143884885,
+    -0.014492753623188363,
+    0.14814814814814836
+   ],
+   "label": "around"
+  },
+  {
+   "part": "pca_eq",
+   "reader": "PP",
+   "median_share": 0.106825,
+   "n": 200,
+   "entities": 41,
+   "S_whole": [
+    0.99,
+    0.9643,
+    0.9973
+   ],
+   "S_no_part": [
+    0.99,
+    0.9643,
+    0.9973
+   ],
+   "S_no_rand": [
+    0.99,
+    0.9643,
+    0.9973
+   ],
+   "switched_whole": 198,
+   "valid": true,
+   "Jdep": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "Rdep": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "excess": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "label": "around"
+  },
+  {
+   "part": "pca_eq",
+   "reader": "PM",
+   "median_share": 0.106825,
+   "n": 200,
+   "entities": 41,
+   "S_whole": [
+    0.695,
+    0.628,
+    0.7546
+   ],
+   "S_no_part": [
+    0.66,
+    0.5919,
+    0.7221
+   ],
+   "S_no_rand": [
+    0.69,
+    0.6228,
+    0.75
+   ],
+   "switched_whole": 139,
+   "valid": true,
+   "Jdep": [
+    0.050359712230215736,
+    0.0067556230727371,
+    0.10084033613445376
+   ],
+   "Rdep": [
+    0.007194244604316502,
+    -0.03846153846153855,
+    0.05940594059405935
+   ],
+   "excess": [
+    0.043165467625899234,
+    0.0,
+    0.09160305343511455
+   ],
+   "label": "around"
+  }
+ ],
+ "rule": {
+  "jpp_clause": true,
+  "pointer_clause": false,
+  "holds": false
+ },
+ "kept": [
+  {
+   "part": "jwo",
+   "reader": "PP",
+   "n": 200,
+   "S": {
+    "whole": 0.99,
+    "keep_part": 0.005,
+    "keep_rand": 0.0
+   },
+   "kept": [
+    0.005050505050505051,
+    0.0,
+    0.015873015873015872
+   ],
+   "rand_kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "difference": [
+    0.005050505050505051,
+    0.0,
+    0.015873015873015872
+   ]
+  },
+  {
+   "part": "jwo",
+   "reader": "PM",
+   "n": 200,
+   "S": {
+    "whole": 0.695,
+    "keep_part": 0.02,
+    "keep_rand": 0.005
+   },
+   "kept": [
+    0.02877697841726619,
+    0.0,
+    0.061349693251533735
+   ],
+   "rand_kept": [
+    0.007194244604316547,
+    0.0,
+    0.025423728813559324
+   ],
+   "difference": [
+    0.02158273381294964,
+    -0.012660243489478352,
+    0.056962025316455694
+   ]
+  },
+  {
+   "part": "w",
+   "reader": "PP",
+   "n": 200,
+   "S": {
+    "whole": 0.99,
+    "keep_part": 0.0,
+    "keep_rand": 0.0
+   },
+   "kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "difference": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "part": "w",
+   "reader": "PM",
+   "n": 200,
+   "S": {
+    "whole": 0.695,
+    "keep_part": 0.0,
+    "keep_rand": 0.0
+   },
+   "kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "difference": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ ]
+}

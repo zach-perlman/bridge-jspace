@@ -1,0 +1,245 @@
+{
+ "run": "qwen35_122b_x0_amnesic",
+ "manifest": {
+  "exp": "x0_amnesic",
+  "run": "qwen35_122b_x0_amnesic",
+  "written_utc": "2026-10-24T23:07:24Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct ~18:45, item 6); not part of X0's rule.",
+  "single": "qwen35_122b_x0_single",
+  "single_code": {
+   "sha": "7320a96c75826d516910ea6d082d4cff51e0d92e",
+   "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 33,
+  "items": 200,
+  "probe": {
+   "probe_run": "qwen35_122b_x0_probe_v4",
+   "n": 758,
+   "classes": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "penalty": 0.1,
+   "rank": 4,
+   "cv_accuracy": 0.9182058047493403
+  },
+  "arms": [
+   "whole",
+   "no_probe",
+   "no_rand",
+   "probe_only",
+   "rand_only"
+  ],
+  "k_saved": [
+   25,
+   100
+  ],
+  "model": {
+   "target": "qwen3.5-122b-a10b",
+   "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+   "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "f66467bb0b1cda85e7e9adba506b97f63604404f",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "seeds": {
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  }
+ },
+ "rows": [
+  {
+   "order": "before",
+   "reader": "PP",
+   "n": 85,
+   "switched_whole": 81,
+   "S": {
+    "whole": 0.9529411764705882,
+    "no_probe": 0.9411764705882353,
+    "no_rand": 0.9411764705882353,
+    "probe_only": 0.0,
+    "rand_only": 0.0
+   },
+   "probe_dep": [
+    0.012345679012345623,
+    0.0,
+    0.042857142857142816
+   ],
+   "rand_dep": [
+    0.012345679012345623,
+    0.0,
+    0.042857142857142816
+   ],
+   "excess": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "probe_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sufficiency_diff": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "median_share": 0.02041
+  },
+  {
+   "order": "before",
+   "reader": "PM",
+   "n": 85,
+   "switched_whole": 80,
+   "S": {
+    "whole": 0.9411764705882353,
+    "no_probe": 0.9647058823529412,
+    "no_rand": 0.9529411764705882,
+    "probe_only": 0.011764705882352941,
+    "rand_only": 0.011764705882352941
+   },
+   "probe_dep": [
+    -0.025000000000000133,
+    -0.06382978723404253,
+    0.0
+   ],
+   "rand_dep": [
+    -0.012499999999999956,
+    -0.04615384615384621,
+    0.0
+   ],
+   "excess": [
+    -0.012500000000000178,
+    -0.03703703703703698,
+    0.0
+   ],
+   "probe_only": [
+    0.0125,
+    0.0,
+    0.04545454545454545
+   ],
+   "rand_only": [
+    0.0125,
+    0.0,
+    0.04545454545454545
+   ],
+   "sufficiency_diff": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "median_share": 0.02041
+  },
+  {
+   "order": "after",
+   "reader": "PP",
+   "n": 115,
+   "switched_whole": 13,
+   "S": {
+    "whole": 0.11304347826086956,
+    "no_probe": 0.10434782608695652,
+    "no_rand": 0.13043478260869565,
+    "probe_only": 0.0,
+    "rand_only": 0.008695652173913044
+   },
+   "probe_dep": [
+    0.07692307692307698,
+    0.0,
+    0.22222222222222232
+   ],
+   "rand_dep": [
+    -0.15384615384615374,
+    -0.6666666666666667,
+    0.11111111111111116
+   ],
+   "excess": [
+    0.23076923076923073,
+    0.0,
+    0.6999999999999997
+   ],
+   "probe_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_only": [
+    0.07692307692307693,
+    0.0,
+    0.2727272727272727
+   ],
+   "sufficiency_diff": [
+    -0.07692307692307693,
+    -0.2727272727272727,
+    0.0
+   ],
+   "median_share": 0.00111
+  },
+  {
+   "order": "after",
+   "reader": "PM",
+   "n": 115,
+   "switched_whole": 99,
+   "S": {
+    "whole": 0.8608695652173913,
+    "no_probe": 0.8695652173913043,
+    "no_rand": 0.8608695652173913,
+    "probe_only": 0.0,
+    "rand_only": 0.0
+   },
+   "probe_dep": [
+    -0.010101010101009944,
+    -0.050851781390522176,
+    0.02083333333333337
+   ],
+   "rand_dep": [
+    0.0,
+    -0.043478260869565195,
+    0.03883495145631066
+   ],
+   "excess": [
+    -0.010101010101009944,
+    -0.04717166839994078,
+    0.024096385542168537
+   ],
+   "probe_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sufficiency_diff": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "median_share": 0.00111
+  }
+ ]
+}

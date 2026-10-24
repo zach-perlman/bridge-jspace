@@ -1,3 +1,55 @@
+# Night of 25 Oct (Dan's ~00:20 / ~00:55 plan; agent). All numbers UNVERIFIED
+
+Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their cells say "closed" and are filled from the verdict files right after it. Extra loss = flips lost without the part minus flips lost without a random part of its own share; gap = recall's extra loss minus lookup's; 95% CIs from a cluster bootstrap over bridge entities (10,000 resamples, seed 0). "Two-pick" = the main test's edit (two people swap picks); "one-pick" = only the asked pick changes.
+
+## (i) The grid
+
+| Hypothesis | 9B (L12) | 27B (L32) | 122B (L33) |
+|---|---|---|---|
+| The split (main test; strict rule and graded gap) | held: strict confirmed; gap 0.53 [0.42, 0.61] | partial: strict missed (lookup 0.14 [0.08, 0.20] > 0.10); gap 0.60 [0.50, 0.69] | held: strict confirmed; gap 0.32 [0.20, 0.43] |
+| Not a post hoc artefact (fresh scenes, fixed in advance; the held-out 122B's one-pick cell) | closed (x0_replicate, decisive) | closed (x0_replicate, descriptive) | closed (b1) |
+| The input-token identity (W_E directions do what J++ does) | did not hold: W_E recall 0.01 [0.00, 0.02] vs J++ 0.50 [0.41, 0.57]; W_E lookup 0.06 [0.01, 0.11] | did not hold: W_E recall 0.00 [−0.03, 0.03] vs J++ 0.77 [0.69, 0.83] | did not hold: W_E recall 0.01 [−0.02, 0.03] vs J++ 0.32 [0.22, 0.41]; one-pick: closed (b1) |
+| J++ vs the other dictionaries (only J++ separates the readers; 25 atoms, two-pick) | held: W_U / W_E / random recall 0.00 / 0.01 / 0.00 | held: 0.01 / 0.00 / 0.01 | held: −0.01 / 0.01 / 0.00; one-pick: closed (b1) |
+| Natural passages (gap ≥ 0.30, lower CI ≥ 0.15) | closed (x5_natural) | closed (x5_natural) | queued (x5_natural_122b) |
+| A verbatim key needed (translated key, D ≥ 0.20) | did not hold: D −0.02 [−0.05, −0.00], 2 of 8 entities > 0 | did not hold: D 0.01 [−0.01, 0.04], 3 of 8 | queued (b5) |
+| The symbol control (D ≥ 0.20) | did not hold: −0.05 [−0.08, −0.02], 0 of 6 | partial: 0.15 [0.10, 0.19], 6 of 6 positive, below the bar | queued (b5) |
+| The digit route (the lookup reads the locker digit) | did not hold: 10 digit directions 0.00 | did not hold: 0.00; all tokens 0.13 vs letters 0.14 | did not hold: 0.00 |
+| The two-pick edit as the cause of the 27B miss | not applicable (no miss; one-pick lookup −0.02 [−0.05, 0.02]) | partial: one-pick lookup 0.05 [0.01, 0.09] vs two-pick 0.14 [0.08, 0.20]; paired −0.08 [−0.16, 0.00] | not applicable (no miss); one-pick: closed (b1) |
+| Sentence order (lookups move only when the locker comes first) | held: 86% vs 19% | held: 76% vs 9% | held: 89% vs 11% |
+| Varied scenes (X0b's pooled rule) | held: gap 0.22 [0.14, 0.31]; lookup 0.01 [−0.01, 0.03] | held: gap 0.47 [0.42, 0.53]; lookup 0.08 [0.06, 0.10] | queued (b6) |
+| At 100 atoms (the lookup still does not need J++) | held: −0.08 | did not hold: 0.60 (recall 0.67) | held: −0.12 (two-pick); one-pick: closed (b1) |
+| The J++ part is the word | did not hold: word alone 0.02 vs J++ 0.36 | did not hold: 0.16 vs 0.63 | closed (b2; atoms table b1_atoms) |
+| J++ is only the layer's main directions (PCA at J++'s share) | did not hold: 0.13 [0.06, 0.19] vs J++ 0.37 [0.29, 0.43] | did not hold: 0.16 [0.08, 0.23] vs 0.61 [0.51, 0.69] | closed (b2) |
+| The recall reads the bridge redundantly (word or rest) | held (descriptive): word 0.02 + word-orthogonal J++ 0.12 [0.06, 0.18] < J++ 0.37; keep-only arms closed (x0_replicate) | held (descriptive): 0.16 + 0.20 [0.10, 0.29] < 0.61; keep-only arms closed | closed (b2) |
+| The address at the word, outside J++ | held: probe 0.97 vs layout 0.53; J++ part holds 0.5% of the probe-direction component | held: 0.99 vs 0.53; 0.5% | closed (b3) |
+| The address is a first-mention pointer | held: 0.90 [0.80, 1.00] of other-pick-first pairs point at the other pick (nearest class mean: 0.80 in A, 0.83 in Alf) | partial: 0.56 [0.38, 0.74] (nearest class mean: 0.88, 0.88) | closed (b3, b4) |
+| The pointer is lexical | did not hold: translated 0.93 [0.90, 0.96]; transfer from verbatim 0.84 [0.79, 0.90] | did not hold: 0.99 [0.99, 1.00]; 0.94 [0.90, 0.97] | queued (b5) |
+| The lookup needs the probe's pointer (removing its directions) | did not hold: 0.05 [0.00, 0.10] | did not hold: 0.00 [0.00, 0.00] | closed (b3) |
+| The lookup uses the Alf directions, lookup-specifically | held (after the data): lookup 0.49 [0.38, 0.59], recall 0.12 [0.05, 0.21]; replication closed | did not hold: lookup 0.14 [0.07, 0.22], recall 0.16 [0.02, 0.31] | closed (b4) |
+| The lookup uses the value (V) | did not hold: 0.00 [0.00, 0.00] | did not hold: −0.01 [−0.05, 0.00] | closed (b4) |
+
+## (ii) Tonight's tests
+
+| Test (job) | Rule (fixed in advance) | Branch | Numbers [95% CI] | n |
+|---|---|---|---|---|
+| a. 9B replication of the double dissociation (x0_replicate; 27B descriptive) | J++: recall ≥ 0.20 (lower CI > 0), lookup ≤ 0.10; Alf: lookup ≥ 0.20 (lower CI > 0), recall ≤ 0.10 or ≤ half the lookup's | closed | closed | closed |
+| b1. 122B one-pick main cell (x0_122b_b1) | lookup ≤ 0.10 (upper ≤ 0.20) and gap ≥ 0.20 (lower ≥ 0.10) holds; lookup ≥ 0.20 or gap upper < 0.10 fails | closed | closed | closed |
+| b2. 122B parts (x0_122b_b2) | PCA: Q30.1's branches; word-orthogonal J++: ≥ 0.20 / ≤ 0.10 | closed | closed | closed |
+| b3. 122B probes, probe-direction removal, pair test (x0_122b_b3) | address probe ≥ 0.90 and ≥ 0.20 above layout | closed | closed | closed |
+| b4. 122B A / V / Alf (x0_122b_b4) | Alf: lookup-specific / both / neither / other; V: lookup lower CI > 0 | closed | closed | closed |
+| b1'. 122B atoms table (x0_122b_b1_atoms) | descriptive | closed | closed | closed |
+| c. Natural passages, 27B and 9B (x5_natural) | gap ≥ 0.30 (lower ≥ 0.15) holds; ≤ 0.10 fails | running | | |
+| b5. 122B translated / symbol keys (x0_122b_b5) | D_translated ≥ 0.20 / ≤ 0.10; D_symbol ≥ 0.20 | queued | | |
+| Natural passages, 122B (x5_natural_122b) | as c | queued | | |
+| b6. 122B varied scenes, prose and tables, levels 0-1 (x0_122b_b6) | X0b's pooled rule | queued (cancelled if not started by 07:30) | | |
+
+## (iii) Failed, odd, or didn't fit
+
+- No job has failed. b1's atoms step was moved to its own job after a device fix in x0_atoms (the split 122B); the pending b1 record on the box was edited to match (a git push to the box was denied).
+- jobq copies only run folders that are new to the box: CPU output that a later job writes into an earlier job's run folder is lost (b3's first-mention cross-tab in b1's folder; earlier, X4's probe-fit and verdict). Recomputed locally from the same files, output not opened.
+- Natural passages: 154 of 358 scenes pass the alt rule with the 27B's tokenizer; 201 of the 204 drops are a multi-token bridge or alt (landmarks gone, dishes 1, people 16).
+- The b6 pending file was renamed on the box so that x5_natural_122b runs right before it (Dan ~00:55).
+
 # Overnight 24-25 Oct (Dan's ~21:50-22:05 instructions; agent). All numbers UNVERIFIED
 
 95% CIs: cluster bootstrap over bridge entities (10,000 resamples, seed 0). Excess = flips lost without the part minus flips lost without a random part of its own share. Lookup = PP, recall = PM.
