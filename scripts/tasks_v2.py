@@ -620,7 +620,10 @@ def make_scene(rng: random.Random, group: str, words: list[str], domain: str, fm
                       "stratum": "secondary" if len(word) == 3 and domain in SECONDARY_THREE_STEP else "core",
                       "question": ch["question"],
                       "answer": ch["answer"], "kind": ch["kind"], "steps": [first, *ch["steps"]], "tier": dom.tier,
-                      "start_desc": desc})  # fmt: skip
+                      "start_desc": desc,
+                      # metadata only, no draw (X0b builds its own alt from it, 24 Oct)
+                      "facts": {"person": sc["person"], "x": x, "pick": sc["pick"], "locker": sc["locker"],
+                                "lookalike_picks": [list(p) for p in sc["lookalike_picks"]]}})  # fmt: skip
     if tok is None:
         return items
     assert dom.tier == "controlled", domain
