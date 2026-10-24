@@ -1,0 +1,24 @@
+{
+  "counts": {
+    "scenes": 358,
+    "cases": 154,
+    "dropped": {
+      "no alt entity fits (own fact sentence; both answers differ; one token at one position)": 204
+    },
+    "by_relation": {
+      "animals": 6,
+      "cities": 37,
+      "companies": 18,
+      "countries": 43,
+      "dishes": 1,
+      "languages": 33,
+      "people": 16
+    }
+  },
+  "org_read_accuracy": {
+    "PP": 0.7792207792207793,
+    "PM": 0.948051948051948
+  },
+  "pass": false,
+  "eligible": 83
+}

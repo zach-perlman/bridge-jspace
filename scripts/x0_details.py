@@ -139,6 +139,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     massmean_numbers(num)
     massmean_lf_numbers(num)
     dup_nearest_numbers(num)
+    same_scene_numbers(num)
     x4_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
@@ -297,6 +298,20 @@ def massmean_lf_numbers(num: Numbers) -> None:
                 num.add(f"mmlf_keep_{sp}_{w}_{m}", ci(r[f"keep_{sp}"]["difference"]), src)
                 if w == "lk":
                     num.add(f"mmlf_{sp}_share_{m}", pct(r[sp]["share"]), src)
+
+
+def same_scene_numbers(num: Numbers) -> None:
+    """F15 (Dan, 25 Oct): J++ and the main directions at J++'s share on the pointer directions' scenes (both locker
+    sentences before the pick), recomputed from x0_parts' per-scene outcomes."""
+    from scripts import x0_status_pack as SPK
+
+    for m, run in MASSMEAN_LF.items():
+        scenes = {r["scene"] for r in X.read_jsonl(pins.RESULTS_DIR / "x0_massmean" / run / "outcomes.jsonl")}
+        cells = SPK.same_scene_cells(PCAEQ[m], scenes)
+        src = f"results/x0_parts/{PCAEQ[m]}/outcomes.jsonl (scenes of results/x0_massmean/{run})"
+        for d, key in (("jpp", "jpp"), ("pca_eq", "pca")):
+            for w, wk in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
+                num.add(f"ss_{key}_{wk}_excess_{m}", ci(cells[(d, w)]["excess"]), src)
 
 
 def dup_nearest_numbers(num: Numbers) -> None:

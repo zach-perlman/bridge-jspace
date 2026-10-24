@@ -1995,6 +1995,38 @@
   "text": "25",
   "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
  },
+ "ss_jpp_lk_excess_9b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf)"
+ },
+ "ss_jpp_rc_excess_9b": {
+  "text": "0.06 [0.00, 0.12]",
+  "source": "results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf)"
+ },
+ "ss_pca_lk_excess_9b": {
+  "text": "0.06 [0.01, 0.11]",
+  "source": "results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf)"
+ },
+ "ss_pca_rc_excess_9b": {
+  "text": "0.03 [0.00, 0.07]",
+  "source": "results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf)"
+ },
+ "ss_jpp_lk_excess_27b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b)"
+ },
+ "ss_jpp_rc_excess_27b": {
+  "text": "0.46 [0.34, 0.57]",
+  "source": "results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b)"
+ },
+ "ss_pca_lk_excess_27b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b)"
+ },
+ "ss_pca_rc_excess_27b": {
+  "text": "0.04 [−0.04, 0.11]",
+  "source": "results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b)"
+ },
  "x4_probe_animals_same_9b": {
   "text": "0.99 [0.99, 1.00]",
   "source": "results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json"

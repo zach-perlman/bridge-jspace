@@ -38,12 +38,27 @@ Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their ce
 | b3. 122B probes, probe-direction removal, pair test (x0_122b_b3) | address probe ≥ 0.90 and ≥ 0.20 above layout | closed | closed | closed |
 | b4. 122B A / V / Alf (x0_122b_b4) | Alf: lookup-specific / both / neither / other; V: lookup lower CI > 0 | closed | closed | closed |
 | b1'. 122B atoms table (x0_122b_b1_atoms) | descriptive | closed | closed | closed |
-| c. Natural passages, 27B and 9B (x5_natural) | gap ≥ 0.30 (lower ≥ 0.15) holds; ≤ 0.10 fails | running | | |
+| c. Natural passages, 27B and 9B (x5_natural) | gap ≥ 0.30 (lower ≥ 0.15) holds; ≤ 0.10 fails | 27B: ran, closed. 9B: stopped at the gate fixed in advance (the lookup's unedited accuracy under the bar), so not tested; not a technical failure, not rerun (the job shows "failed" because one process stopped) | 27B closed | |
 | b5. 122B translated / symbol keys (x0_122b_b5) | D_translated ≥ 0.20 / ≤ 0.10; D_symbol ≥ 0.20 | queued | | |
 | Natural passages, 122B (x5_natural_122b) | as c | queued | | |
 | b6. 122B varied scenes, prose and tables, levels 0-1 (x0_122b_b6) | X0b's pooled rule | queued (cancelled if not started by 07:30) | | |
 
+## Figures (figures/status_2026-10-25/; the 24 Oct folder stays as shared)
+
+| Figure | Claim | Models | | Role |
+|---|---|---|---|---|
+| F1 | Removing the J++ part costs recall far more than lookup | 9B, 27B, 122B | fixed in advance | main |
+| F13 (+F18) | The recall-lookup gap holds in varied scenes (natural passages: closed) | 9B, 27B (122B queued) | rule fixed in advance | main |
+| F14 | At the same share, the main directions and J++ without the word's directions cost the recall far less than J++ | 9B, 27B (122B closed) | after the data | main |
+| F4 | Lookups move mostly when the locker sentence comes first | 9B, 27B, 122B | after the data | main |
+| F9 | The bridge word points at the first mention; the lookup still switches when it is wrong | 9B, 27B (122B closed) | after the data | main |
+| F15 (+F19) | On the same scenes, the pointer directions cost the 9B's lookup; J++ costs the 27B's recall but barely the 9B's (replication: closed) | 9B, 27B (122B closed) | after the data (F19 fixed in advance) | main |
+| F2, F3, F5, F6, F7, F8, F10, F16, F17 | depth; dictionaries; number of J++ directions; digits; probes; pointer outside J++; both swaps; translated keys; varied-scene parts | per figure | per figure | supplementary |
+| F11, F12 | superseded by F14 (unequal shares) and F15 | 9B, 27B | after the data | superseded |
+
 ## (iii) Failed, odd, or didn't fit
+
+- F15 recomputed on the same scenes (those with both locker sentences before the pick): the 9B's J++ part costs the recall only 0.06 [0.00, 0.12] there (0.37 [0.29, 0.43] on all 200 scenes), so the 9B's "mirror image" holds across scene sets, not within the same scenes; F15's title and README finding 6 changed accordingly. The 27B's J++ on the same scenes: 0.46 [0.34, 0.57].
 
 - No job has failed. b1's atoms step was moved to its own job after a device fix in x0_atoms (the split 122B); the pending b1 record on the box was edited to match (a git push to the box was denied).
 - jobq copies only run folders that are new to the box: CPU output that a later job writes into an earlier job's run folder is lost (b3's first-mention cross-tab in b1's folder; earlier, X4's probe-fit and verdict). Recomputed locally from the same files, output not opened.
