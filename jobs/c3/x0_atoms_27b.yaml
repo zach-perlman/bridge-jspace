@@ -1,0 +1,23 @@
+id: x0_atoms_27b
+title: "X0 descriptive (added after data), Qwen3.6-27B L32: which J++ atoms make up the bridge edit's J++ part?"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.15
+depends_on: [x0_hw_gate_27b]
+command: >-
+  uv run python scripts/x0_atoms.py run --name x0_atoms_27b --source x0_necessity_27b_chat --layer 32 --n 20 --seed 0
+question: >-
+  For 20 random X0 items at the 27B's L32 and 20 asked-first items (seed 0), which J++ atoms does the 25-atom (and 100-atom) signed OMP fit of Δ at the bridge's word select, with what coefficients: the bridge (org / alt), the other changed person's name, names, other context words, or other tokens?
+why_it_matters: >-
+  The lookup depends on J++ moderately at the word (excess 0.14) and more with more atoms; the atoms say what the removed part is made of, and whether the asked-first items differ.
+hypotheses:
+  H-bridge: 'the bridge tokens (org / alt) lead the ranks. Prior: none set (descriptive, after data)'
+  H-other: 'other tokens lead. Prior: none set'
+decision_rule: >-
+  Descriptive, added after data, not part of X0's rule (critic via Dan, 24 Oct). Reported: per item, ranks 1-25 (k = 25 fit) and 26-100 (k = 100 fit) with token, coefficient and mark; mark shares by rank band, all items vs asked-first. Check: the k = 25 share recomputed here vs X0's shares.jsonl for the same items.
+controls:
+- 'the k = 25 share against X0''s shares.jsonl (the same fit, recomputed)'
+n: '20 random items + 20 asked-first items of x0_necessity_27b_chat (seed 0)'
+seeds: [0]
+notes: "The Δ rows are not stored by X0, so this forwards the 40 items once (org and alt) on the GPU; the table stage is CPU. Cost: ~10 min (model load dominates)."

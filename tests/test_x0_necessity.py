@@ -210,3 +210,12 @@ def test_h_token_branches():
     assert X.h_token(around, needs).startswith("token identity")
     assert X.h_token(around, around).startswith("neither")
     assert X.h_token(needs, needs).startswith("not applicable")
+
+
+def test_single_change_alt(monkeypatch):
+    item = {"id": "x", "bridge": "frog", "cf_bridge": "tick", "question": "Which locker belongs to Iris's pick?",
+            "context": "Peter picked the rabbit. The locker of the tick is 2. Noah picked the tick. Iris picked the frog.",
+            "cf_context": "Peter picked the rabbit. The locker of the tick is 2. Noah picked the frog. Iris picked the tick."}  # fmt: skip
+    assert X.alt_context(item) == item["cf_context"]
+    monkeypatch.setattr(X, "ALT", "single")
+    assert X.alt_context(item) == item["context"].replace("Iris picked the frog.", "Iris picked the tick.")

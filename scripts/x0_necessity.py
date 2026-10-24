@@ -173,6 +173,8 @@ RAW_STEPS = 4  # raw read: at most RAW_STEPS - 1 whitespace-only tokens skipped 
 READ = "first"  # non-chat read: the first non-whitespace token (amendment 1) or "digit" (amendment 3, descriptive)
 DESCRIPTIVE = False  # amendment 3: run on the items each reader gets right even if the gate fails (labeled)
 DIGIT_IDS: set[int] = set()  # the digit tokens, set by stage_run (the digit read)
+ALT = "cf"  # the alt: the generator's cf (two picks swap; X0) or "single" (only the asked pick changes; after data)
+CURVE_ALL = False  # the k curve at every layer, not only the predicted one (after data)
 Arm = tuple[str, int, str, str]  # (dictionary, k, fit, arm)
 WHOLE: Arm = ("-", 0, "-", "whole")
 MAIN = ("jpp", K_MAIN, "signed")  # the decisive dictionary, k and fit
@@ -191,12 +193,25 @@ def render(tok, item: dict, rendering: str, context: str) -> str:
     return f"{context}\nQuestion: {item['question']}\n{think}Answer:"
 
 
+def alt_context(item: dict) -> str:
+    """The alt context: the generator's cf (two picks swap), or with ALT == "single" the org context with only the asked
+    person's pick changed to the cf bridge, which another person already picks; every other sentence as in org."""
+    if ALT == "cf":
+        return item["cf_context"]
+    from scripts import statement_positions as SP
+
+    sent = SP.tasks_statements(item)["bind_bridge"]
+    i = sent.rindex(item["bridge"])
+    assert item["context"].count(sent) == 1, f"{item['id']}: the asked pick sentence is not once in the context"
+    return item["context"].replace(sent, sent[:i] + item["cf_bridge"] + sent[i + len(item["bridge"]) :])
+
+
 def encode_bridge(tok, item: dict, rendering: str, alt: bool) -> tuple[list[int], list[int]]:
     """The rendered org (alt) prompt's ids and the token positions of the asked person's bridge word in it."""
     from bridge_jspace.tokens import raw_encoding
     from scripts import statement_positions as SP
 
-    context, bridge = (item["cf_context"], item["cf_bridge"]) if alt else (item["context"], item["bridge"])
+    context, bridge = (alt_context(item), item["cf_bridge"]) if alt else (item["context"], item["bridge"])
     text = render(tok, item, rendering, context)
     assert text.count(context) == 1, f"{item['id']}: the context is not once in the prompt"
     enc = raw_encoding(tok, text, offsets=True)
@@ -235,7 +250,7 @@ def scene_case(tok, pair: dict[str, dict], rendering: str) -> tuple[dict | None,
             return None, "the readers' prompts differ before the bridge"
     it = pair[LOOKUP]
     return {"scene": it["scene"], "rendering": rendering, "domain": it["domain"], "bridge": it["bridge"],
-            "cf_bridge": it["cf_bridge"], "context": it["context"], "cf_context": it["cf_context"], "pos": pos,
+            "cf_bridge": it["cf_bridge"], "context": it["context"], "cf_context": alt_context(it), "pos": pos,
             "upstream": readers[LOOKUP]["upstream"], "space": S.ids(tok, " "), "readers": readers}, None  # fmt: skip
 
 
@@ -467,7 +482,7 @@ def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predi
             x = delta[:, li].to("cuda")
             arms: dict[Arm, Any] = {WHOLE: x}
             specs = [(name, K_MAIN, "signed") for name in DICTS]
-            if la == predicted:
+            if la == predicted or CURVE_ALL:
                 specs += [(name, k, "signed") for name in CURVE_DICTS for k in K_CURVE] + [("jpp", K_MAIN, "nonneg")]
             basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(SUBSPACE_SEED + la)).to("cuda")
             shares = []
@@ -539,7 +554,7 @@ def stage_run(
                   "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
                   "mode": READ, "digit": f"amendment 3: the step of the first digit token in {GEN_TOKENS} greedy tokens "
                                          "(non-chat renderings, when mode is digit)"},
-         "descriptive": DESCRIPTIVE,
+         "descriptive": DESCRIPTIVE, "alt": ALT, "curve_all_layers": CURVE_ALL,
          "seeds": {"random_dictionary": f"{RAND_DICT_SEED} + layer (CPU)", "random_subspace": f"{SUBSPACE_SEED} + layer (CPU)",
                    "bootstrap": BOOT_SEED, "examples": EXAMPLES_SEED},
          "design": "jobs/c3/X0.md"}  # fmt: skip
@@ -778,7 +793,7 @@ def figures(verdict_dir: Path) -> list[Path]:
 
 
 def main() -> None:
-    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE  # from the command line; the manifest records them
+    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL  # from the command line; the manifest records them
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name", required=True, help="run name (results/x0_necessity/<name>/)")
@@ -792,11 +807,14 @@ def main() -> None:
     ap.add_argument("--curve-k", nargs="+", type=int, default=list(K_CURVE), help="run: the k curve's atom counts")
     ap.add_argument("--read", choices=("first", "digit"), default=READ,
                     help="run, non-chat renderings: first non-whitespace token, or the first digit token (amendment 3)")  # fmt: skip
+    ap.add_argument("--alt", choices=("cf", "single"), default=ALT,
+                    help="run: the generator's cf (X0), or only the asked person's pick changed (after data)")  # fmt: skip
+    ap.add_argument("--curve-all-layers", action="store_true", help="run: the k curve at every layer")
     ap.add_argument("--descriptive", action="store_true",
                     help="run: amendment 3, run on the items right even if the gate fails (labeled descriptive)")  # fmt: skip
     a = ap.parse_args()
     CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
-    READ, DESCRIPTIVE = a.read, a.descriptive
+    READ, DESCRIPTIVE, ALT, CURVE_ALL = a.read, a.descriptive, a.alt, a.curve_all_layers
     if a.stage == "plan":  # tokenizer only
         from scripts import statement_positions as SP
 
