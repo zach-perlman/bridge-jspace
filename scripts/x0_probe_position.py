@@ -9,8 +9,11 @@ import json
 import random
 import re
 import sys
+from pathlib import Path
 
-sys.path[:0] = ["src", "."]
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from bridge_jspace import pins
 from bridge_jspace.tokens import raw_encoding
 from scripts import statement_positions as SP
