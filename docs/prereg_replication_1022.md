@@ -909,3 +909,21 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   knock-out, and neither model's knock-out has shown a gap (Muse is added if its v2 run shows one). The 9B's full v2.1
   run stays queued; it re-runs every v2 item, so it also measures run-to-run agreement with the 9B's v2 run (reported,
   no prediction).
+
+## Amendment 36 (Zach, 2026-10-24 ~23:25 UTC, before the run): where the 122B's knock-out acts (position-restricted, v2)
+
+- **Seen when this was written:** the 122B's v1 knock-out (M - P +37, all positions) and its J-swap (amendment 34 A):
+  removing the top-10 J-part at the last token of each bridge mention alone keeps PM 87.6% / TM 91.5% right (~10
+  points lost; the 27B and 9B lose ~35-40 there), while swapping it moves the answer (+44 / +40); the 122B's v2
+  competence; NOT its v2 all-position knock-out (running, L39-45), the reference here.
+- **Procedure (scripts/queues/h200_posv2_1024.sh, after the GPU1 chain):** ablate_v2 --positions on the 122B at L39-45,
+  jsuite_v2_test_chat, the 15 facts words with the v2 knock-out's eligibility (same items as the reference),
+  paper10 and paper10_rot, cand2, scored by jsuite2_score; modes in order question (the question sentence on:
+  question, instruction, template, answer position), context (everything before it: the passage), bridge (only the
+  bridge's mention tokens; most bridges are one token, so this nearly repeats the J-swap's removal, on v2).
+- **Measure:** per start, the mode's paper10 M - K as a share of the reference's (the all-position v2 run).
+- **Predictions:** bridge, read and tracked starts (P, T): < 1/3 of the reference (as the J-swap's removal). Recalled
+  start (M), question: >= 2/3 (as amendment 30 on the 27B and 9B). Read and tracked starts, question vs context:
+  two-sided, readings fixed now: question >= 2/3 = the 122B re-retrieves the attribute from the question (unlike the
+  27B and 9B); context >= 2/3 = it sits in the passage beyond the mention's tokens; neither >= 2/3 = spread over both.
+  Rotated control < 10 in every mode. If the reference's M - K is < 15, the shares are not interpreted.
