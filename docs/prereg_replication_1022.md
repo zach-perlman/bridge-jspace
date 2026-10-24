@@ -801,3 +801,27 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   prompt-final words (P final, all starts) lose <= 20 points under paper10, (b) M - P >= 20, and (c) the rotated and
   the logit-lens controls each give M - P < 10; if (a) fails it is reported as general breakage (not testable this
   way), and if (c) fails as not J-specific. The pooled-lens run is reported beside it, read the same way.
+
+## Amendment 31 (Zach, 2026-10-24 ~15:00 UTC): a non-Qwen dense model with a published J++: OLMo-3 32B base
+
+- **Why:** the J-specific memory-final dependence is so far shown only in Qwen models (27B, 9B, 122B); Kolibri-1 was
+  not testable this way (note 3). OLMo-3 32B base (allenai/Olmo-3-1125-32B@c2b61da; Ai2, 2025-11; dense, 64 blocks,
+  Apache-2.0) is the one dense non-Qwen model (Gemma excluded by the TA review, Llama by Zach) with a published J++ by the
+  J++ authors (neuronpedia/jacobian-lens@e166deb, Ayonrinde & Lindsey; recall@10 50.0%, beside the 27B's 55.2% and the
+  122B's 48.4%), fit by the recipe of the published Qwen lenses (rlens, 64 WikiText prompts, target layer 63).
+- **Seen when this was written:** our Olmo-3-7B (instruct, our own weak J++: +0.10 over the logit lens) was null on the
+  toy suite and both natural sets; no Olmo model has run module 1; the 122B was null on the toy suite but J-specific on
+  module 1 (+37); the 9B's base model shows most of the instruct model's dependence (+34 vs +41); nothing on OLMo-3 32B.
+- **Procedure (scripts/queues/h200_olmo32_1024.sh):** register olmo-3-32b (the published J++, frozen) and
+  olmo-3-32b-jlens (the same repo's plain J-lens, secondary); BOS as the tokenizer defines it (the J++ fit prepended
+  it); the plain-text gate (removal_textloss, top10 vs rotated, layers 20-44; amendment 28's rule); module 1 in raw-text
+  framing (a base model takes no chat template): competence and the band sweep on jsuite_v1_facts_dev_qa (bridges
+  disjoint from test; windows of 9 by 4, as the 27B; choose_band), then the test split jsuite_v1_facts_test_qa at that
+  band (paper10 / rot / unembed10 / rot, 12 words, cand2, hop 1 by generation), jsuite_score; the plain J-lens at the
+  same band.
+- **Reading (as amendment 28 note 3):** a J-specific memory-final dependence if (a) the prompt-final words lose <= 20
+  points under paper10, (b) M - P >= 20, and (c) the rotated and logit-lens controls each give M - P < 10; if (a) fails,
+  general breakage (not testable this way); if (c) fails, not J-specific; otherwise a null.
+- **Predictions:** none directional. If the dependence belongs to pretrained transformers generally, OLMo-3 32B meets
+  (a)-(c); if it is a Qwen-family property, M - P < 10. The 7B's nulls (with a weak lens) and the 122B's module-1
+  reversal of its toy null pull opposite ways.
