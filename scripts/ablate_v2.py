@@ -212,15 +212,19 @@ def reads(logits, p: dict, read: str) -> dict:
     candidates (natural_v1), the top among its relation's candidate answers ("cand": format tokens cannot fail it).
     Both are recorded when the prompt has candidates. "cand2" (2026-10-23, amendment 20): the candidates in either case,
     right if the top is any form of the answer (and, for hop 1, of the bridge's other names); all three are recorded."""
-    top = int(logits.argmax()) == p["tok"]
+    top_id = int(logits.argmax())
+    top = top_id == p["tok"]
     if "cands" not in p:
-        return {"correct": top}
+        return {"correct": top, "top_id": top_id}
     c = torch.tensor(p["cands"], device=logits.device)
     cand = int(c[logits[c].argmax()]) == p["tok"]
     c2 = torch.tensor(p["cands2"], device=logits.device)
-    cand2 = int(c2[logits[c2].argmax()]) in p["ok2"]
+    pick2 = int(c2[logits[c2].argmax()])
+    cand2 = pick2 in p["ok2"]
+    # top_id / pick2 (2026-10-24, the dataset audit): the top token and the candidate reads pick, so a knock-outs wrong
+    # answers can be sorted into passage lures, priors and other candidates afterwards
     return {"correct": {"top": top, "cand": cand, "cand2": cand2}[read], "correct_top": top, "correct_cand": cand,
-            "correct_cand2": cand2}  # fmt: skip
+            "correct_cand2": cand2, "top_id": top_id, "pick2": pick2}  # fmt: skip
 
 
 def bridge_positions(tok, ids: list[int], word: str) -> list[int]:
