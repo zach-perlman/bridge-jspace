@@ -729,3 +729,13 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   card reports reasoning-on benchmarks; if it cannot do the tasks without reasoning, nothing else runs), and whether a
   lens can be fit on the FP8 weights at all (both fitters need gradients through every block; if the FP8 kernels have
   no backward, the fit needs the dequantized bf16 weights on two GPUs). The band is still chosen on the dev split.
+- **26 note (~03:40 UTC, after the 27B's QA competence and the 9B's QA and prefill runs):** in raw-text QA framing the
+  instruct models do not answer: after "Answer:" the 27B generates "<think> Here's a thinking process" on ~99% of
+  hop-1 prompts (hop 1 by generation right 1%, by the first-token candidate read 97%), so no tracked-start scene is
+  eligible and the 27B's QA knock-out did not run; the 9B starts thinking on 6% and its top read trails the candidate
+  read by 21 points (0.66 vs 0.87 whole). The candidate read ranks the relation's answers even when the model's mass is
+  elsewhere, so raw text is off-policy for instruct models and their QA runs are reported as such (the 27B's: not
+  testable this way). In chat and prefill framings the top and candidate reads agree within 1 point and module 1's
+  knock-out gives the same contrasts under the strict top read (27B M - P 50 vs 51, 9B 42 vs 46). For amendment 27
+  the instruct 9B (our J++) is also run in chat, its on-policy framing; the base's QA run is compared with it, and the
+  instruct QA run is kept as the framing-matched check.
