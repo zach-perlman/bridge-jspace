@@ -1,0 +1,18 @@
+{
+  "run": "qwen35_9b_jsuite_v1_facts_test_qa_competence_cand2_v1",
+  "why": "Zach (2026-10-24, prereg amendment 26): qwen3.5-9b on jsuite_v1_facts_test_qa",
+  "set": "jsuite_v1_facts_test_qa",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "a41601518e25bab4528a97a44a56d10632dc2084",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-24T02:23:23Z"
+}

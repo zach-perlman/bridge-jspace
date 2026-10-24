@@ -1,0 +1,352 @@
+{
+  "seconds": 2422,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 130,
+      "whole": 0.985,
+      "all_steps": 0.162,
+      "median_margin": -5.62,
+      "guess": 0.323,
+      "top_wrong": [
+        [
+          "",
+          2
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 130,
+      "whole": 0.977,
+      "all_steps": 0.4,
+      "median_margin": -6.0,
+      "guess": 0.231,
+      "top_wrong": [
+        [
+          "",
+          3
+        ]
+      ]
+    },
+    "PK/L0": {
+      "n": 130,
+      "whole": 1,
+      "all_steps": 0.338,
+      "median_margin": -4.88,
+      "guess": 0.254,
+      "top_wrong": []
+    },
+    "PK/L1": {
+      "n": 130,
+      "whole": 0.992,
+      "all_steps": 0.438,
+      "median_margin": -5.44,
+      "guess": 0.169,
+      "top_wrong": [
+        [
+          "",
+          1
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 130,
+      "whole": 0.992,
+      "all_steps": 0.315,
+      "median_margin": -5.25,
+      "guess": 0.285,
+      "top_wrong": [
+        [
+          "",
+          1
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 130,
+      "whole": 0.962,
+      "all_steps": 0.454,
+      "median_margin": -5.62,
+      "guess": 0.192,
+      "top_wrong": [
+        [
+          "",
+          5
+        ]
+      ]
+    },
+    "PA/L0": {
+      "n": 130,
+      "whole": 0.992,
+      "all_steps": 0.354,
+      "median_margin": -5.19,
+      "guess": 0.454,
+      "top_wrong": [
+        [
+          "",
+          1
+        ]
+      ]
+    },
+    "PA/L1": {
+      "n": 130,
+      "whole": 0.985,
+      "all_steps": 0.431,
+      "median_margin": -5.75,
+      "guess": 0.308,
+      "top_wrong": [
+        [
+          "",
+          2
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 130,
+      "whole": 0.954,
+      "all_steps": 0.146,
+      "median_margin": -5.38,
+      "guess": 0.577,
+      "top_wrong": [
+        [
+          "",
+          6
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 130,
+      "whole": 0.915,
+      "all_steps": 0.262,
+      "median_margin": -5.75,
+      "guess": 0.277,
+      "top_wrong": [
+        [
+          "",
+          11
+        ]
+      ]
+    },
+    "MK/L0": {
+      "n": 130,
+      "whole": 0.992,
+      "all_steps": 0.285,
+      "median_margin": -4.5,
+      "guess": 0.5,
+      "top_wrong": [
+        [
+          "<|im_end|>",
+          1
+        ]
+      ]
+    },
+    "MK/L1": {
+      "n": 130,
+      "whole": 1,
+      "all_steps": 0.362,
+      "median_margin": -4.75,
+      "guess": 0.346,
+      "top_wrong": []
+    },
+    "MM/L0": {
+      "n": 130,
+      "whole": 0.946,
+      "all_steps": 0.138,
+      "median_margin": -3.5,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "",
+          7
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 130,
+      "whole": 0.954,
+      "all_steps": 0.177,
+      "median_margin": -3.88,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "",
+          6
+        ]
+      ]
+    },
+    "MA/L0": {
+      "n": 130,
+      "whole": 0.985,
+      "all_steps": 0.146,
+      "median_margin": -3.62,
+      "guess": 0.454,
+      "top_wrong": [
+        [
+          "",
+          2
+        ]
+      ]
+    },
+    "MA/L1": {
+      "n": 130,
+      "whole": 0.977,
+      "all_steps": 0.162,
+      "median_margin": -3.88,
+      "guess": 0.131,
+      "top_wrong": [
+        [
+          "",
+          3
+        ]
+      ]
+    },
+    "TP/L0": {
+      "n": 130,
+      "whole": 0.854,
+      "all_steps": 0.008,
+      "median_margin": -5.88,
+      "guess": 0.377,
+      "top_wrong": [
+        [
+          "",
+          19
+        ]
+      ]
+    },
+    "TP/L1": {
+      "n": 130,
+      "whole": 0.769,
+      "all_steps": 0,
+      "median_margin": -6.12,
+      "guess": 0.354,
+      "top_wrong": [
+        [
+          "",
+          30
+        ]
+      ]
+    },
+    "TK/L0": {
+      "n": 130,
+      "whole": 0.969,
+      "all_steps": 0,
+      "median_margin": -5.12,
+      "guess": 0.362,
+      "top_wrong": [
+        [
+          "",
+          4
+        ]
+      ]
+    },
+    "TK/L1": {
+      "n": 130,
+      "whole": 0.946,
+      "all_steps": 0.023,
+      "median_margin": -5.38,
+      "guess": 0.331,
+      "top_wrong": [
+        [
+          "",
+          7
+        ]
+      ]
+    },
+    "TM/L0": {
+      "n": 130,
+      "whole": 0.908,
+      "all_steps": 0.015,
+      "median_margin": -5.41,
+      "guess": 0.362,
+      "top_wrong": [
+        [
+          "",
+          12
+        ]
+      ]
+    },
+    "TM/L1": {
+      "n": 130,
+      "whole": 0.892,
+      "all_steps": 0.015,
+      "median_margin": -5.62,
+      "guess": 0.308,
+      "top_wrong": [
+        [
+          "",
+          14
+        ]
+      ]
+    },
+    "TA/L0": {
+      "n": 130,
+      "whole": 0.938,
+      "all_steps": 0.015,
+      "median_margin": -5.25,
+      "guess": 0.438,
+      "top_wrong": [
+        [
+          "",
+          8
+        ]
+      ]
+    },
+    "TA/L1": {
+      "n": 130,
+      "whole": 0.915,
+      "all_steps": 0.023,
+      "median_margin": -5.44,
+      "guess": 0.423,
+      "top_wrong": [
+        [
+          "",
+          11
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "cities": {
+      "PP": 1,
+      "PK": 1,
+      "PM": 1,
+      "PA": 1,
+      "MP": 0.972,
+      "MK": 1,
+      "MM": 0.903,
+      "MA": 0.972,
+      "TP": 0.764,
+      "TK": 0.958,
+      "TM": 1,
+      "TA": 0.986
+    },
+    "countries": {
+      "PP": 0.967,
+      "PK": 1,
+      "PM": 1,
+      "PA": 1,
+      "MP": 0.978,
+      "MK": 0.989,
+      "MM": 1,
+      "MA": 0.989,
+      "TP": 0.837,
+      "TK": 0.967,
+      "TM": 0.978,
+      "TA": 0.978
+    },
+    "people": {
+      "PP": 0.979,
+      "PK": 0.99,
+      "PM": 0.938,
+      "PA": 0.969,
+      "MP": 0.865,
+      "MK": 1,
+      "MM": 0.938,
+      "MA": 0.979,
+      "TP": 0.823,
+      "TK": 0.948,
+      "TM": 0.75,
+      "TA": 0.833
+    }
+  },
+  "pick": {}
+}

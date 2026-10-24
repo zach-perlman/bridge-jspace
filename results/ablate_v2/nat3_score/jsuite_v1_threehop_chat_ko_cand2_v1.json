@@ -1,0 +1,992 @@
+{
+ "run": "jsuite_v1_threehop_chat_ko_cand2_v1",
+ "set": "jsuite_v1_threehop_chat",
+ "min_p": 0.0,
+ "drop": [],
+ "cells": {
+  "all/paper10": {
+   "PPP": {
+    "loss": 22.0,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 123,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 19.0,
+    "excess_over_PPP": -3.0,
+    "ci": [
+     -11,
+     6
+    ],
+    "n": 116,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 18.8,
+    "excess_over_PPP": -3.2,
+    "ci": [
+     -12,
+     5
+    ],
+    "n": 133,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 34.8,
+    "excess_over_PPP": 12.9,
+    "ci": [
+     2,
+     23
+    ],
+    "n": 181,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 46.4,
+    "excess_over_PPP": 24.5,
+    "ci": [
+     16,
+     33
+    ],
+    "n": 168,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 32.8,
+    "excess_over_PPP": 10.9,
+    "ci": [
+     -1,
+     24
+    ],
+    "n": 128,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 55.1,
+    "excess_over_PPP": 33.2,
+    "ci": [
+     22,
+     46
+    ],
+    "n": 205,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 57.1,
+    "excess_over_PPP": 35.1,
+    "ci": [
+     21,
+     49
+    ],
+    "n": 156,
+    "clean": false
+   }
+  },
+  "all/paper10_rot": {
+   "PPP": {
+    "loss": 19.5,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 123,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 25.0,
+    "excess_over_PPP": 5.5,
+    "ci": [
+     -5,
+     17
+    ],
+    "n": 116,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 15.8,
+    "excess_over_PPP": -3.7,
+    "ci": [
+     -14,
+     7
+    ],
+    "n": 133,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 9.4,
+    "excess_over_PPP": -10.1,
+    "ci": [
+     -19,
+     -1
+    ],
+    "n": 181,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 15.5,
+    "excess_over_PPP": -4.0,
+    "ci": [
+     -13,
+     4
+    ],
+    "n": 168,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 14.1,
+    "excess_over_PPP": -5.4,
+    "ci": [
+     -14,
+     3
+    ],
+    "n": 128,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 0.5,
+    "excess_over_PPP": -19.0,
+    "ci": [
+     -26,
+     -11
+    ],
+    "n": 205,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -19.5,
+    "ci": [
+     -26,
+     -12
+    ],
+    "n": 156,
+    "clean": false
+   }
+  },
+  "all/unembed10": {
+   "PPP": {
+    "loss": 11.4,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 123,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 12.1,
+    "excess_over_PPP": 0.7,
+    "ci": [
+     -7,
+     8
+    ],
+    "n": 116,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 13.5,
+    "excess_over_PPP": 2.2,
+    "ci": [
+     -6,
+     10
+    ],
+    "n": 133,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 2.8,
+    "excess_over_PPP": -8.6,
+    "ci": [
+     -15,
+     -3
+    ],
+    "n": 181,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 6.0,
+    "excess_over_PPP": -5.4,
+    "ci": [
+     -12,
+     1
+    ],
+    "n": 168,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 10.2,
+    "excess_over_PPP": -1.2,
+    "ci": [
+     -7,
+     5
+    ],
+    "n": 128,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 0.5,
+    "excess_over_PPP": -10.9,
+    "ci": [
+     -16,
+     -6
+    ],
+    "n": 205,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -11.4,
+    "ci": [
+     -17,
+     -7
+    ],
+    "n": 156,
+    "clean": false
+   }
+  },
+  "all/unembed10_rot": {
+   "PPP": {
+    "loss": 11.4,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 123,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 12.9,
+    "excess_over_PPP": 1.5,
+    "ci": [
+     -7,
+     10
+    ],
+    "n": 116,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 9.8,
+    "excess_over_PPP": -1.6,
+    "ci": [
+     -10,
+     6
+    ],
+    "n": 133,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 3.9,
+    "excess_over_PPP": -7.5,
+    "ci": [
+     -15,
+     0
+    ],
+    "n": 181,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 4.2,
+    "excess_over_PPP": -7.2,
+    "ci": [
+     -14,
+     0
+    ],
+    "n": 168,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 5.5,
+    "excess_over_PPP": -5.9,
+    "ci": [
+     -13,
+     1
+    ],
+    "n": 128,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -11.4,
+    "ci": [
+     -18,
+     -5
+    ],
+    "n": 205,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 0.6,
+    "excess_over_PPP": -10.7,
+    "ci": [
+     -17,
+     -5
+    ],
+    "n": 156,
+    "clean": false
+   }
+  },
+  "cities/paper10": {
+   "PPP": {
+    "loss": 34.9,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 63,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 21.2,
+    "excess_over_PPP": -13.8,
+    "ci": [
+     -24,
+     -2
+    ],
+    "n": 52,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 16.7,
+    "excess_over_PPP": -18.3,
+    "ci": [
+     -30,
+     -7
+    ],
+    "n": 84,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 38.3,
+    "excess_over_PPP": 3.4,
+    "ci": [
+     -11,
+     17
+    ],
+    "n": 107,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 53.1,
+    "excess_over_PPP": 18.2,
+    "ci": [
+     7,
+     30
+    ],
+    "n": 96,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 23.3,
+    "excess_over_PPP": -11.6,
+    "ci": [
+     -25,
+     4
+    ],
+    "n": 73,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 56.1,
+    "excess_over_PPP": 21.2,
+    "ci": [
+     6,
+     37
+    ],
+    "n": 114,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 55.1,
+    "excess_over_PPP": 20.2,
+    "ci": [
+     2,
+     39
+    ],
+    "n": 78,
+    "clean": false
+   }
+  },
+  "cities/paper10_rot": {
+   "PPP": {
+    "loss": 28.6,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 63,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 32.7,
+    "excess_over_PPP": 4.1,
+    "ci": [
+     -17,
+     26
+    ],
+    "n": 52,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 9.5,
+    "excess_over_PPP": -19.0,
+    "ci": [
+     -33,
+     -7
+    ],
+    "n": 84,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 8.4,
+    "excess_over_PPP": -20.2,
+    "ci": [
+     -33,
+     -8
+    ],
+    "n": 107,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 17.7,
+    "excess_over_PPP": -10.9,
+    "ci": [
+     -25,
+     2
+    ],
+    "n": 96,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 9.6,
+    "excess_over_PPP": -19.0,
+    "ci": [
+     -34,
+     -7
+    ],
+    "n": 73,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -28.6,
+    "ci": [
+     -41,
+     -18
+    ],
+    "n": 114,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -28.6,
+    "ci": [
+     -41,
+     -18
+    ],
+    "n": 78,
+    "clean": false
+   }
+  },
+  "cities/unembed10": {
+   "PPP": {
+    "loss": 12.7,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 63,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 13.5,
+    "excess_over_PPP": 0.8,
+    "ci": [
+     -12,
+     14
+    ],
+    "n": 52,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 13.1,
+    "excess_over_PPP": 0.4,
+    "ci": [
+     -11,
+     11
+    ],
+    "n": 84,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 2.8,
+    "excess_over_PPP": -9.9,
+    "ci": [
+     -19,
+     -1
+    ],
+    "n": 107,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 8.3,
+    "excess_over_PPP": -4.4,
+    "ci": [
+     -15,
+     6
+    ],
+    "n": 96,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 5.5,
+    "excess_over_PPP": -7.2,
+    "ci": [
+     -17,
+     2
+    ],
+    "n": 73,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -12.7,
+    "ci": [
+     -21,
+     -6
+    ],
+    "n": 114,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -12.7,
+    "ci": [
+     -21,
+     -6
+    ],
+    "n": 78,
+    "clean": false
+   }
+  },
+  "cities/unembed10_rot": {
+   "PPP": {
+    "loss": 11.1,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 63,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 19.2,
+    "excess_over_PPP": 8.1,
+    "ci": [
+     -6,
+     24
+    ],
+    "n": 52,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 4.8,
+    "excess_over_PPP": -6.3,
+    "ci": [
+     -16,
+     2
+    ],
+    "n": 84,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 2.8,
+    "excess_over_PPP": -8.3,
+    "ci": [
+     -18,
+     0
+    ],
+    "n": 107,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 5.2,
+    "excess_over_PPP": -5.9,
+    "ci": [
+     -15,
+     2
+    ],
+    "n": 96,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 4.1,
+    "excess_over_PPP": -7.0,
+    "ci": [
+     -17,
+     3
+    ],
+    "n": 73,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -11.1,
+    "ci": [
+     -20,
+     -3
+    ],
+    "n": 114,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 1.3,
+    "excess_over_PPP": -9.8,
+    "ci": [
+     -18,
+     -3
+    ],
+    "n": 78,
+    "clean": false
+   }
+  },
+  "people/paper10": {
+   "PPP": {
+    "loss": 8.3,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 60,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 17.2,
+    "excess_over_PPP": 8.9,
+    "ci": [
+     -2,
+     20
+    ],
+    "n": 64,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 22.4,
+    "excess_over_PPP": 14.1,
+    "ci": [
+     3,
+     24
+    ],
+    "n": 49,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 29.7,
+    "excess_over_PPP": 21.4,
+    "ci": [
+     7,
+     37
+    ],
+    "n": 74,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 37.5,
+    "excess_over_PPP": 29.2,
+    "ci": [
+     17,
+     41
+    ],
+    "n": 72,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 45.5,
+    "excess_over_PPP": 37.1,
+    "ci": [
+     24,
+     52
+    ],
+    "n": 55,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 53.8,
+    "excess_over_PPP": 45.5,
+    "ci": [
+     29,
+     62
+    ],
+    "n": 91,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 59.0,
+    "excess_over_PPP": 50.6,
+    "ci": [
+     33,
+     70
+    ],
+    "n": 78,
+    "clean": false
+   }
+  },
+  "people/paper10_rot": {
+   "PPP": {
+    "loss": 10.0,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 60,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 18.8,
+    "excess_over_PPP": 8.8,
+    "ci": [
+     0,
+     20
+    ],
+    "n": 64,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 26.5,
+    "excess_over_PPP": 16.5,
+    "ci": [
+     1,
+     34
+    ],
+    "n": 49,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 10.8,
+    "excess_over_PPP": 0.8,
+    "ci": [
+     -10,
+     14
+    ],
+    "n": 74,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 12.5,
+    "excess_over_PPP": 2.5,
+    "ci": [
+     -7,
+     13
+    ],
+    "n": 72,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 20.0,
+    "excess_over_PPP": 10.0,
+    "ci": [
+     -1,
+     23
+    ],
+    "n": 55,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 1.1,
+    "excess_over_PPP": -8.9,
+    "ci": [
+     -15,
+     -2
+    ],
+    "n": 91,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -10.0,
+    "ci": [
+     -16,
+     -4
+    ],
+    "n": 78,
+    "clean": false
+   }
+  },
+  "people/unembed10": {
+   "PPP": {
+    "loss": 10.0,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 60,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 10.9,
+    "excess_over_PPP": 0.9,
+    "ci": [
+     -8,
+     11
+    ],
+    "n": 64,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 14.3,
+    "excess_over_PPP": 4.3,
+    "ci": [
+     -6,
+     16
+    ],
+    "n": 49,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 2.7,
+    "excess_over_PPP": -7.3,
+    "ci": [
+     -14,
+     0
+    ],
+    "n": 74,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 2.8,
+    "excess_over_PPP": -7.2,
+    "ci": [
+     -15,
+     1
+    ],
+    "n": 72,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 16.4,
+    "excess_over_PPP": 6.4,
+    "ci": [
+     -2,
+     16
+    ],
+    "n": 55,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 1.1,
+    "excess_over_PPP": -8.9,
+    "ci": [
+     -16,
+     -2
+    ],
+    "n": 91,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -10.0,
+    "ci": [
+     -16,
+     -4
+    ],
+    "n": 78,
+    "clean": false
+   }
+  },
+  "people/unembed10_rot": {
+   "PPP": {
+    "loss": 11.7,
+    "excess_over_PPP": 0.0,
+    "ci": [
+     0,
+     0
+    ],
+    "n": 60,
+    "clean": true
+   },
+   "MPP": {
+    "loss": 7.8,
+    "excess_over_PPP": -3.9,
+    "ci": [
+     -14,
+     5
+    ],
+    "n": 64,
+    "clean": true
+   },
+   "PMP": {
+    "loss": 18.4,
+    "excess_over_PPP": 6.7,
+    "ci": [
+     -7,
+     20
+    ],
+    "n": 49,
+    "clean": true
+   },
+   "PPM": {
+    "loss": 5.4,
+    "excess_over_PPP": -6.3,
+    "ci": [
+     -18,
+     4
+    ],
+    "n": 74,
+    "clean": true
+   },
+   "MPM": {
+    "loss": 2.8,
+    "excess_over_PPP": -8.9,
+    "ci": [
+     -19,
+     1
+    ],
+    "n": 72,
+    "clean": true
+   },
+   "MMP": {
+    "loss": 7.3,
+    "excess_over_PPP": -4.4,
+    "ci": [
+     -16,
+     7
+    ],
+    "n": 55,
+    "clean": false
+   },
+   "PMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -11.7,
+    "ci": [
+     -21,
+     -4
+    ],
+    "n": 91,
+    "clean": false
+   },
+   "MMM": {
+    "loss": 0.0,
+    "excess_over_PPP": -11.7,
+    "ci": [
+     -21,
+     -4
+    ],
+    "n": 78,
+    "clean": false
+   }
+  }
+ }
+}

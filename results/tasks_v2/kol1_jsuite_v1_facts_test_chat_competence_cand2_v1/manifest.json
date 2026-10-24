@@ -1,0 +1,18 @@
+{
+  "run": "kol1_jsuite_v1_facts_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-24, prereg amendment 28 note): Kolibri-1, thinking off, can it do module 1",
+  "set": "jsuite_v1_facts_test_chat",
+  "model": {
+    "target": "kolibri-1",
+    "repo": "Aleph-Alpha/Kolibri-1",
+    "revision": "5bb7075ba22db733e3834b1c71d2245537cc14ed",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "95d108cd14ac970c5cc66bed5084cece7e6c6e59",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-24T03:12:26Z"
+}
