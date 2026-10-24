@@ -12,6 +12,9 @@ F7  the probes at the bridge's word (9B, 27B; 1,500 fresh scenes): the answer di
 F8  the probe's address read on patched states: the J++ part of the change vs the rest (single-change pairs).
 F9  the address readout follows the item's first mention (the duplicate pick).
 F10 the graded contrast C under the two-change and the one-change edit.
+F11 the parts of the change (word, J++ without the word, PCA, J++).
+F12 the mass-mean address and value subspaces.
+F13 X0b: pooled and by format.
 """
 
 from __future__ import annotations
@@ -520,6 +523,138 @@ def f10(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
+PARTS = {
+    "qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0_parts"),
+    "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0_parts_27b"),
+}
+MASSMEAN = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0_massmean"),
+            "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0_massmean_27b")}  # fmt: skip
+X0B = {
+    "qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0b_v2"),
+    "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0b_v2_27b"),
+}
+
+
+def bars(ax, groups: list[str], series: list[tuple[str, str, list]], target: str, fig_name: str, run: str) -> None:
+    """Grouped bars with 95% CIs: series = (name, colour, [[v, lo, hi] or None per group])."""
+    k = len(series)
+    for j, (name, col, vals) in enumerate(series):
+        for i, v in enumerate(vals):
+            if v is None:
+                continue
+            x = i + (j - (k - 1) / 2) * (0.8 / k)
+            ax.bar(x, v[0], width=0.8 / k * 0.95, color=col, edgecolor="white")
+            ax.errorbar(x, v[0], yerr=[[v[0] - v[1]], [v[2] - v[0]]], color="#333333", capsize=3, lw=1)
+            ax.text(x, max(v[2], v[0]) + 0.03, f"{v[0]:.2f}", ha="center", fontsize=9.5)
+            record(fig_name, target, run, "-", name, groups[i].replace("\n", " "), v[0], v[1], v[2])
+    ax.axhline(0, color="black", lw=0.6)
+    ax.set_xticks(range(len(groups)), groups, fontsize=9.5)
+    ax.grid(axis="y", color="#eeeeee")
+    ax.set_axisbelow(True)
+
+
+def f11(plt, F, color, grey) -> None:
+    """The parts of the one-change edit removed (each against a random part of its own share): the word alone, J++ with
+    the word's tokens banned, the layer's top-2,000 PCA directions, J++."""
+    import json
+
+    order = (("w", "the word only"), ("jw", "J++ without\nthe word"), ("pca", "PCA of the layer\n(top 2,000)"),
+             ("jpp", "J++"))  # fmt: skip
+    fig, axes = plt.subplots(1, len(PARTS), figsize=(14, 5.6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, PARTS.items(), strict=True):
+        path = sorted((pins.RESULTS_DIR / "x0_parts" / run).glob("verdict-*/verdict.json"))[-1]
+        rows = {(r["part"], r["reader"]): r for r in json.loads(path.read_text())["rows"]}
+        groups = [f"{name}\n({100 * rows[(d, X.LOOKUP)]['median_share']:.0f}% of the change)" for d, name in order]
+        bars(ax, groups, [("lookup", F.LOOKUP, [rows[(d, X.LOOKUP)]["excess"] for d, _ in order]),
+                          ("recall", F.RECALL, [rows[(d, X.RECALL)]["excess"] for d, _ in order])], target, "f11", run)  # fmt: skip
+        ax.set_title(label)
+        ax.set_ylim(-0.2, 1.0)
+    axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
+    head(fig, "The recall's loss is J++ beyond the word; the layer's PCA directions cost both readers",
+         "Parts of the one-change edit removed at the pre-registered layer. The bridge word alone carries little; J++ with "
+         "the bridge's own tokens banned costs the recall as much as J++; a PCA dictionary of the layer, at about twice "
+         "J++'s share, costs the lookup too, so it is not reader-specific.", h, ["lookup", "recall"])  # fmt: skip
+    foot(fig, [f"n = 200 single-change items per model; {CI}. 'The word only': least squares on the J++ directions of the "
+               "org and alt bridge tokens and their one-token variants. The parts are not at equal shares (under each "
+               "group). Unverified. Descriptive, added after the data (Dan's audit). Runs: results/x0_parts/*."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
+    fig.savefig(OUT / "f11_parts.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
+def f12(plt, F, color, grey) -> None:
+    """The mass-mean address (A) and value (V) subspaces removed from, or kept alone in, the one-change edit."""
+    import json
+
+    fig, axes = plt.subplots(1, len(MASSMEAN), figsize=(14, 5.6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, MASSMEAN.items(), strict=True):
+        path = sorted((pins.RESULTS_DIR / "x0_massmean" / run).glob("verdict-*/verdict.json"))[-1]
+        rows = {r["reader"]: r for r in json.loads(path.read_text())["rows"]}
+        share = rows[X.LOOKUP]["A"]["share"]
+        groups = [
+            f"remove A\n(address, {100 * share:.0f}%)",
+            "remove V\n(value)",
+            "remove A + V",
+            "keep only A + V\n(minus random)",
+        ]
+        vals = {w: [rows[w]["A"]["excess"], rows[w]["V"]["excess"], rows[w]["AV"]["excess"], rows[w]["keep"]["difference"]]
+                for w in X.READERS}  # fmt: skip
+        bars(
+            ax, groups, [("lookup", F.LOOKUP, vals[X.LOOKUP]), ("recall", F.RECALL, vals[X.RECALL])], target, "f12", run
+        )
+        ax.set_title(f"{label} (n = {rows[X.LOOKUP]['n']})")
+        ax.set_ylim(-0.2, 1.0)
+    axes[0].set_ylabel("extra flips lost (remove) or\nextra flips made (keep), vs. random")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
+    head(fig, "The mass-mean address subspace matters to the 9B's lookup, little to the 27B's",
+         "Mass-mean subspaces from fresh scenes' bridge-word states: A for which sentence holds the locker (rank 4), V for the "
+         "locker number (rank 8). Removed from the one-change edit, or kept alone, each against a random part of its own "
+         "size. Reading pending (Dan).", h, ["lookup", "recall"])  # fmt: skip
+    foot(fig, [f"Single-change items with both locker sentences before the pick; {CI}. Unverified. Descriptive, added after "
+               "the data (Dan's last causal test this week). Runs: results/x0_massmean/*."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
+    fig.savefig(OUT / "f12_massmean.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
+def f13(plt, F, color, grey) -> None:
+    """X0b: the lookup's and the recall's extra loss pooled over every passing cell, and by format (locker-before)."""
+    import json
+
+    fig, axes = plt.subplots(1, len(X0B), figsize=(14, 5.6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, X0B.items(), strict=True):
+        root = pins.RESULTS_DIR / "x0b_generalize" / run
+        v = json.loads(sorted(root.glob("verdict-*/verdict.json"))[-1].read_text())
+        pred = v["predicted"]
+        cells = {(c["layer"], c["reader"], c["dict"], c["k"], c["omp"]): c for c in v["cells"]}
+        cross = {
+            (r["format"], r["order"], r["reader"]): r
+            for r in json.loads(sorted(root.glob("cross-*/cross.json"))[-1].read_text())
+        }
+        fmts = ("prose", "json", "table")
+        groups = [f"pooled\n(n = {cells[(pred, X.LOOKUP, *X.MAIN)]['n']:,})",
+                  *(f"{f}, locker before\n(n = {cross[(f, 'before', X.LOOKUP)]['n']})" for f in fmts)]  # fmt: skip
+        series = [(name, col, [cells[(pred, w, *X.MAIN)]["excess"], *(cross[(f, "before", w)]["excess"] for f in fmts)])
+                  for name, col, w in (("lookup", F.LOOKUP, X.LOOKUP), ("recall", F.RECALL, X.RECALL))]  # fmt: skip
+        bars(ax, groups, series, target, "f13", run)
+        ax.set_title(f"{label}: X0b rule {v['verdict']}")
+        ax.set_ylim(-0.2, 1.0)
+        ax.axhspan(-0.2, X.AROUND_EXCESS, color="#f6f6f6", lw=0, zorder=0)
+    axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
+    head(fig, "The contrast holds beyond one scene type",
+         "X0b: 7 topics x prose / JSON / tables x 3 difficulty levels, one-change edit, 75% of scenes with the locker "
+         "sentence before the pick. Pooled over the cells that pass the competence gate, and by format in locker-before "
+         "scenes.", h, ["lookup", "recall"])  # fmt: skip
+    foot(fig, [f"J++ at 25 atoms at the pre-registered layer; {CI}. Light band: 'not needed' (<= 0.10). Exploratory; the "
+               "pooled rule (lookup <= 0.10, C >= 0.20) was fixed before the run. Unverified. Runs: "
+               "results/x0b_generalize/*."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
+    fig.savefig(OUT / "f13_x0b.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
 def f3(plt, F, color, grey) -> None:
     fig, axes = plt.subplots(2, len(MODELS), figsize=(18, 9), sharey=True)
     for j, (target, label, _, kmatch) in enumerate(MODELS):
@@ -628,6 +763,9 @@ def main() -> None:
     f8(plt, F, color, grey)
     f9(plt, F, color, grey)
     f10(plt, F, color, grey)
+    f11(plt, F, color, grey)
+    f12(plt, F, color, grey)
+    f13(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]
