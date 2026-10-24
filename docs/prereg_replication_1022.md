@@ -887,7 +887,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   as amendment 32, plus the swap's transfer on the memory finals > 0 in at least 6 of the 8 relations; for OLMo the
   same sufficiency predictions (its knock-out was null; sufficiency without necessity is what its v1 diagnostic showed).
 
-## Amendment 35 (Zach, 2026-10-24 ~21:15 UTC): v1 retired; jsuite_v2_1 is the dataset of record for new work
+## Amendment 35 (Zach, 2026-10-24 ~20:50 UTC): v1 retired; jsuite_v2_1 is the dataset of record for new work
 
 - **Decision (Zach):** the combined suite v1 (jsuite_v1_*) is retired for new runs; its files stay frozen because every
   result through amendment 34 references them. v1's one condition v2 lacked, a recalled start that never names the
