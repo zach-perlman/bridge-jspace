@@ -49,14 +49,17 @@ def main() -> None:
     ap.add_argument("--single", required=True, help="the single-change X0 run (its cases: contexts and alt bridges)")
     ap.add_argument("--states", required=True, help="x0_amnesic run with h_org, Δ and the J++ parts")
     ap.add_argument("--parts", default=None, help="x0_parts run with the w and jw parts (optional)")
+    ap.add_argument("--target", choices=("address", "value"), default="address",
+                    help="address: probe (b), the locker sentence; value: probe (a), the locker number")  # fmt: skip
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
+    key = "locker_index" if a.target == "address" else "answer"
     # the probe: locker-before org states of the probe run's set, folds by entity
     src = P.RESULTS / a.probe
     items = X.read_jsonl(src / "items.jsonl")
     keep = [i for i, it in enumerate(items) if it["order"] == "before"]
     h = np.load(src / "states.npz")["h"].astype(np.float64)[keep]
-    y = [items[i]["locker_index"] for i in keep]
+    y = [items[i][key] for i in keep]
     ents = [items[i]["entity"] for i in keep]
     rel = P.select_penalty(h, y, ents)
     fold = P.folds(y, ents, True, P.K_OUTER)
@@ -82,9 +85,11 @@ def main() -> None:
         f = ST.features(c)
         if f["org locker vs asked pick"] == "before" and f["alt locker vs asked pick"] == "before":
             test.append(i)
-            labels.append(
-                (locker_index(c["context"], c["bridge"]), locker_index(c["context"], c["cf_bridge"]), c["bridge"])
-            )
+            if a.target == "address":
+                org, alt = locker_index(c["context"], c["bridge"]), locker_index(c["context"], c["cf_bridge"])
+            else:  # the locker numbers: the lookup's org and alt answers
+                org, alt = c["readers"][X.LOOKUP]["answer"], c["readers"][X.LOOKUP]["cf_answer"]
+            labels.append((org, alt, c["bridge"]))
     # cross-fitted predictions: the fold model that left the item's entity out
     pred = {name: [None] * len(test) for name in states}
     for f in range(P.K_OUTER):
@@ -109,14 +114,15 @@ def main() -> None:
     r = X.resampled_rates(hits, ent, a.n_boot)
     res = {k: [float(np.mean(v)), *X.interval(r[k])] for k, v in hits.items()}
     ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
-    lines = [f"# Probe (b) on single-change pairs and patched states: {a.states}", "",
+    what = "(b), the locker sentence" if a.target == "address" else "(a), the locker number"
+    lines = [f"# Probe {what}, on single-change pairs and patched states: {a.states}", "",
              f"{NOTE} Probe trained on {a.probe} (locker-before, n = {len(y)}, penalty {rel}), cross-fitted by entity; "
              f"test: the {len(test)} single-change items of {a.single} with both lockers before the pick. Bootstrap over "
              f"bridge entities ({a.n_boot} resamples). UNVERIFIED.", "",
              "## Pair test (identical layout, different labels; a layout-only classifier scores 0 by construction)", "",
              "| measure | share |", "|---|---|"]  # fmt: skip
     lines += [f"| {k} | {ci(res[k])} |" for k in ("org right", "alt right", "pair right", "same prediction")]
-    lines += ["", "## Patched states: which locker sentence the probe reads", "",
+    lines += ["", f"## Patched states: which {'locker sentence' if a.target == 'address' else 'locker number'} the probe reads", "",
               "| state | reads the alt's | reads the org's |", "|---|---|---|"]  # fmt: skip
     for name in states:
         if name != "org":
@@ -141,9 +147,12 @@ def main() -> None:
         for n, e in energy.items()
     ]
     res["energy"] = energy
-    out = pins.RESULTS_DIR / "x0_amnesic" / a.states / f"probe-patched-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    out = (
+        pins.RESULTS_DIR / "x0_amnesic" / a.states / f"probe-patched-{'' if a.target == 'address' else 'value-'}{stamp}"
+    )
     out.mkdir()
-    (out / "probe_patched.json").write_text(json.dumps({"note": NOTE, "probe": a.probe, "single": a.single, "states": a.states,
+    (out / "probe_patched.json").write_text(json.dumps({"note": NOTE, "target": a.target, "probe": a.probe, "single": a.single, "states": a.states,
                                                         "parts": a.parts, "n": len(test), "penalty": rel, "results": res},
                                                        indent=1) + "\n")  # fmt: skip
     (out / "probe_patched.md").write_text("\n".join(lines) + "\n")
