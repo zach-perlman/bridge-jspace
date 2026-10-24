@@ -1,0 +1,19 @@
+{
+  "run": "olmo32_jswap_v1",
+  "why": "Zach (2026-10-24, beside amendment 31; diagnostics): OLMo-3 32B at its dev band L12-20",
+  "target": "olmo-3-32b",
+  "band": "12-20",
+  "set": "jsuite_v1_facts_test_qa",
+  "competence": "olmo32_jsuite_v1_facts_test_qa_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "d1b71b64659c083aaca1f13f8fede6c7e7df2d18",
+  "limit": 0
+}
