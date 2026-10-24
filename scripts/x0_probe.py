@@ -124,9 +124,12 @@ def ridge(xtr: np.ndarray, ytr: list, xte: np.ndarray, rels: tuple[float, ...]) 
     return out
 
 
-def cv_predict(x: np.ndarray, y: list, groups: list[str], grouped: bool) -> tuple[list, np.ndarray, list[float]]:
+def cv_predict(
+    x: np.ndarray, y: list, groups: list[str], grouped: bool, resid: list | None = None
+) -> tuple[list, np.ndarray, list[float]]:
     """Out-of-fold predictions, the outer fold of each item, and the penalty chosen per outer fold (inner CV; ties go
-    to the larger penalty)."""
+    to the larger penalty). resid: a label per item whose class means, from the training folds only, are subtracted
+    from the states first (the probe then reads only what the label's class means do not carry)."""
     outer = folds(y, groups, grouped, K_OUTER)
     pred: list = [None] * len(y)
     chosen = []
@@ -134,6 +137,12 @@ def cv_predict(x: np.ndarray, y: list, groups: list[str], grouped: bool) -> tupl
         tr, te = np.flatnonzero(outer != f), np.flatnonzero(outer == f)
         if not len(te):
             continue
+        if resid is not None:
+            means = {c: x[[i for i in tr if resid[i] == c]].mean(0) for c in {resid[i] for i in tr}}
+            overall = x[tr].mean(0)
+            x = x.copy()
+            for i in (*tr, *te):
+                x[i] = x[i] - means.get(resid[i], overall)
         ytr, gtr = [y[i] for i in tr], [groups[i] for i in tr]
         inner = folds(ytr, gtr, grouped, K_INNER)
         acc = np.zeros(len(RELS))
@@ -269,6 +278,56 @@ def stage_fit(name: str, n_boot: int) -> Path:
                      f"{r['chance']:.2f} | {ci(r['structure']) if 'structure' in r else '-'} | "
                      f"{ci(r['layout']) if 'layout' in r else '-'} | {ci(r['probe_minus_best'])} ({r['best_baseline']}) |")  # fmt: skip
     (out / "probe.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
+def stage_a_given_b(name: str, n_boot: int) -> Path:
+    """Probe (a) with the locker index factored out (Dan's audit item 3), locker-before: the answer digit from the locker
+    index alone (training folds' most frequent digit per index, entity-held-out), probe (a) on states residualised on
+    the locker index (class means from the training folds), and probe (a)'s accuracy within each locker-index class."""
+    src = RESULTS / name
+    m = json.loads((src / "manifest.json").read_text())
+    h = np.load(src / "states.npz")["h"].astype(np.float64)
+    items = X.read_jsonl(src / "items.jsonl")
+    out = src / f"a-given-b-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
+    lines = [f"# Probe (a) with the locker index factored out: {name} (layer {m['layer']}, locker-before)", "",
+             f"{NOTE} (Dan's audit item 3.) Folds by bridge entity; {n_boot} cluster-bootstrap resamples over entities. "
+             "UNVERIFIED.", "",
+             "| subset | n | probe (a) | the locker index alone | probe (a), residualised on the index | chance | "
+             "residualised - index alone |", "|---|---|---|---|---|---|---|"]  # fmt: skip
+    blob: dict = {"run": name, "note": NOTE, "subsets": {}}
+    per_class = []
+    for subset in ("x0", "all") if m["source"] else ("all",):
+        idx = [i for i, it in enumerate(items) if it["order"] == "before" and (subset == "all" or it["x0"])]
+        sub = [items[i] for i in idx]
+        y, ents, b = [it["answer"] for it in sub], [it["entity"] for it in sub], [it["locker_index"] for it in sub]
+        pred, outer, _ = cv_predict(h[idx], y, ents, True)
+        pred_r, _, _ = cv_predict(h[idx], y, ents, True, resid=b)
+        right = {"probe": [int(p == t) for p, t in zip(pred, y, strict=True)],
+                 "index_alone": [int(p == t) for p, t in zip(baseline(y, outer, b), y, strict=True)],
+                 "residualised": [int(p == t) for p, t in zip(pred_r, y, strict=True)]}  # fmt: skip
+        r = X.resampled_rates(right, ents, n_boot)
+        res = {k: [float(np.mean(v)), *X.interval(r[k])] for k, v in right.items()}
+        res["residualised_minus_index"] = [res["residualised"][0] - res["index_alone"][0],
+                                           *X.interval(r["residualised"] - r["index_alone"])]  # fmt: skip
+        res["chance"] = 1 / len(set(y))
+        blob["subsets"][subset] = res
+        lines.append(f"| {'X0 items' if subset == 'x0' else 'every scene'} | {len(y)} | {ci(res['probe'])} | "
+                     f"{ci(res['index_alone'])} | {ci(res['residualised'])} | {res['chance']:.2f} | "
+                     f"{ci(res['residualised_minus_index'])} |")  # fmt: skip
+        for c in sorted(set(b)):
+            k = [j for j, v in enumerate(b) if v == c]
+            per_class.append((subset, c, len(k), float(np.mean([right["probe"][j] for j in k])),
+                              float(np.mean([right["residualised"][j] for j in k]))))  # fmt: skip
+    lines += ["", "Within each locker-index class (point estimates):", "",
+              "| subset | locker index | n | probe (a) | residualised |", "|---|---|---|---|---|"]  # fmt: skip
+    lines += [f"| {s} | {c} | {n} | {a:.2f} | {r_:.2f} |" for s, c, n, a, r_ in per_class]
+    blob["per_class"] = per_class
+    (out / "a_given_b.json").write_text(json.dumps(blob, indent=1) + "\n")
+    (out / "a_given_b.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     return out
 
@@ -416,7 +475,7 @@ def stage_run(name: str, source: str | None, layer: int, set_name: str | None = 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["run", "fit", "figures", "perclass"])
+    ap.add_argument("stage", choices=["run", "fit", "figures", "perclass", "a_given_b"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--source", default="x0_necessity_27b_chat")
     ap.add_argument("--set", default=None, help="run: a fresh tasks_v2 set instead of the source run's (no X0 items)")
@@ -427,6 +486,8 @@ def main() -> None:
         stage_run(a.name, None if a.set else a.source, a.layer, a.set)
     if a.stage == "perclass":
         stage_perclass(a.name, a.n_boot)
+    elif a.stage == "a_given_b":
+        stage_a_given_b(a.name, a.n_boot)
     elif a.stage in ("run", "fit"):
         figures(stage_fit(a.name, a.n_boot))
     else:
