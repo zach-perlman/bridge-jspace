@@ -1,0 +1,76 @@
+{
+  "set": "jsuite_v2_dev_chat",
+  "seed": 2601,
+  "split": "dev",
+  "n": 6460,
+  "git_commit": "abc8b1757ec3aba22d3e87247d20ac4281b89925",
+  "script": "scripts/jsuite_v2.py",
+  "modules": {
+    "facts": 5130,
+    "threehop": 689,
+    "numbers": 641
+  },
+  "words": {
+    "PP": 342,
+    "PK": 342,
+    "PM": 342,
+    "PA": 342,
+    "PN": 342,
+    "MP": 342,
+    "MK": 342,
+    "MM": 342,
+    "MA": 342,
+    "MN": 342,
+    "TP": 342,
+    "TK": 342,
+    "TM": 342,
+    "TA": 342,
+    "TN": 342,
+    "PMP": 86,
+    "MPP": 81,
+    "MPM": 91,
+    "MMM": 95,
+    "PPM": 81,
+    "PMM": 81,
+    "MMP": 80,
+    "PPP": 94,
+    "nPL": 51,
+    "nPM": 51,
+    "nPR": 59,
+    "nKR": 60,
+    "nKL": 50,
+    "nKM": 50,
+    "nAL": 52,
+    "nAM": 52,
+    "nAR": 54,
+    "nML": 56,
+    "nMM": 56,
+    "nMR": 50
+  },
+  "relations": {
+    "countries": 720,
+    "languages": 570,
+    "people": 870,
+    "cities": 750,
+    "companies": 600,
+    "landmarks": 630,
+    "dishes": 510,
+    "animals": 480
+  },
+  "bridges": 163,
+  "halves": {
+    "null": 5130
+  },
+  "scenes_per_bridge": 1,
+  "threehop_scenes": 2,
+  "numbers_reps": 8,
+  "threehop_dropped": {
+    "cities": [
+      "Cape Town"
+    ],
+    "people": [
+      "Mandela",
+      "Tutu"
+    ]
+  }
+}

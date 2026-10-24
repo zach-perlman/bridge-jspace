@@ -846,3 +846,30 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   TK keep >= 80% (the entity's identity and its stated facts stay). Paste moves the lookups too (identity moves with the
   whole residual). If the swap's transfer is < 5 on PM and TM, the J-part is necessary but not sufficient (it is not
   where the attribute is held, or the attribute needs more than the top-10 span).
+
+## Amendment 33 (Zach, 2026-10-24 ~18:30 UTC): the combined suite v2, one dataset (jsuite_v2)
+
+- **Why:** the dataset audit of 2026-10-24 (read-only, module 1 on the 27B): the effect survived every check (no leak;
+  difficulty, length, genre, popularity, level do not explain it; 60 of 65 bridges positive), but it found (1) the P
+  final asks a different, fictional relation, so M - K (same question and answer) is the clean contrast; (2) M-final
+  passages offer only wrong answer words, so part of the M loss may be lure capture (the A final loses half as much);
+  (3) the recalled start's MP/MK passages name the bridge and MM/MA never do, and P/K passages name the bridge twice to
+  M/A's once; (4) the sample is 65 bridges, 34 answers, 3 relations (effective n ~225 memory-final items), and the second
+  rendering seed reuses the same facts; (5) filler is drawn with replacement (786 sentences over 3,120 items). Zach asked
+  for one combined dataset, the modules not separated unless needed.
+- **Seen when this was written:** everything through amendment 32 and its 9B smoke; nothing on v2.
+- **Design (scripts/jsuite_v2.py, tables scripts/jsuite_v2_tables.py):** one set per split (jsuite_v2_dev_chat,
+  jsuite_v2_test_chat; framings derived later), field "module" in facts / threehop / numbers. Facts: 8 relations
+  (countries -> continent, countries -> language, people -> nationality, cities -> country, companies -> country,
+  landmarks -> country, dishes -> country, animals -> class), one scene per bridge, level and start; finals P K M A and N
+  (recall with no answer-vocabulary word in the passage); the bridge named equally often in every final of a start (a
+  neutral sentence where it has no final-hop fact); test bridges in halves A and B; filler dealt without replacement.
+  Three-hop: natural3's chains (jsuite_threehop's drops). Numbers: jsuite_numbers' design, words prefixed "n". Scorer
+  scripts/jsuite2_score.py; the knock-out also logs its top token and candidate pick (b4edc90).
+- **Procedure:** competence (cand2, hop 1 by generation) on dev and test for the 27B and 9B; the facts words (15) at the
+  pre-registered bands (27B L32-40, 9B L12-16), paper10 / rot / unembed10 / rot; the three-hop and numbers words in their
+  own runs (per-item eligibility; numbers with --dict-digits), from the same set.
+- **Predictions (facts, all starts, per model):** M - K >= 30 with the logit-lens and rotated controls < 10 (the
+  dependence on new relations and 2-3x the bridges); M - P >= 20; each test half's M - K within 15 of the other (an
+  independent replication on disjoint facts); M - N two-sided: >= 10 would say lures inflate the M loss, within 10 that
+  they do not; per relation, M - K > 0 in at least 6 of 8.
