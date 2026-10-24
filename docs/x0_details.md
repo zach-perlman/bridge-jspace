@@ -69,6 +69,21 @@ Qwen3.6-27B (n = 200 scenes, 44 bridge entities; pre-registered layer 32):
 | 40 | recall | 200 | 0.17 | 0.14 | 0.21 | 0.40 [0.24, 0.60] | 0.127 | can't tell |
 | 40 | lookup | 200 | 0.08 | 0.07 | 0.07 | 0.06 [−0.14, 0.36] | 0.127 | can't tell |
 
+Qwen3.5-122B-A10B (n = 200 scenes, 40 bridge entities; pre-registered layer 33; FP8 weights, mixture of experts, J++ fitted on the bf16 weights, 2x H100, hardware gate 0.998):
+
+| layer | reader | n | S whole | S without J++ | S without random | excess | J++ share | label |
+|---|---|---|---|---|---|---|---|---|
+| 24 | recall | 200 | 0.96 | 0.47 | 0.93 | 0.47 [0.37, 0.56] | 0.275 | through |
+| 24 | lookup | 200 | 0.83 | 0.32 | 0.67 | 0.42 [0.32, 0.50] | 0.275 | through |
+| 27 | recall | 200 | 0.93 | 0.18 | 0.88 | 0.75 [0.65, 0.82] | 0.306 | through |
+| 27 | lookup | 200 | 0.77 | 0.14 | 0.56 | 0.56 [0.47, 0.64] | 0.306 | through |
+| 30 | recall | 200 | 0.93 | 0.48 | 0.91 | 0.45 [0.36, 0.55] | 0.308 | through |
+| 30 | lookup | 200 | 0.64 | 0.35 | 0.52 | 0.26 [0.18, 0.33] | 0.308 | through |
+| 33 | recall | 200 | 0.92 | 0.56 | 0.84 | 0.32 [0.22, 0.41] | 0.252 | through |
+| 33 | lookup | 200 | 0.45 | 0.35 | 0.35 | 0.00 [−0.06, 0.06] | 0.252 | around |
+| 36 | recall | 200 | 0.77 | 0.48 | 0.77 | 0.37 [0.28, 0.46] | 0.204 | through |
+| 36 | lookup | 200 | 0.29 | 0.28 | 0.28 | −0.02 [−0.10, 0.06] | 0.204 | can't tell |
+
 ![27B detail](../figures/x0_necessity/detail_x0_necessity_27b_chat_chat.png)
 ![9B detail](../figures/x0_necessity/detail_qwen35_9b_x0_necessity_chat.png)
 
@@ -150,6 +165,31 @@ Qwen3.6-27B, layer 32:
 | W_U | 200 | lookup | 0.399 | 0.28 [0.18, 0.37] | 0.37 [0.26, 0.47] | −0.09 [−0.18, 0.00] | around |
 | W_U | 200 | recall | 0.399 | 0.21 [0.09, 0.33] | 0.28 [0.15, 0.39] | −0.07 [−0.13, −0.01] | around |
 
+Qwen3.5-122B, layer 33 (from its X0 run: J++ at 25 / 50 / 100 atoms; W_U, W_E and random atoms at 25 only; J++ over every token and the digit directions):
+
+| dictionary | atoms | reader | share removed | dependence | random dependence | excess | label |
+|---|---|---|---|---|---|---|---|
+| J++ | 25 | lookup | 0.252 | 0.20 [0.11, 0.30] | 0.20 [0.10, 0.31] | 0.00 [−0.06, 0.06] | around |
+| J++ | 25 | recall | 0.252 | 0.40 [0.30, 0.49] | 0.08 [0.04, 0.13] | 0.32 [0.22, 0.41] | through |
+| J++ | 50 | lookup | 0.334 | 0.26 [0.15, 0.37] | 0.28 [0.17, 0.39] | −0.02 [−0.09, 0.05] | around |
+| J++ | 50 | recall | 0.334 | 0.64 [0.54, 0.71] | 0.18 [0.11, 0.26] | 0.45 [0.35, 0.54] | through |
+| J++ | 100 | lookup | 0.436 | 0.36 [0.26, 0.45] | 0.48 [0.38, 0.59] | −0.12 [−0.22, −0.04] | around |
+| J++ | 100 | recall | 0.436 | 0.83 [0.74, 0.89] | 0.40 [0.32, 0.48] | 0.43 [0.32, 0.51] | through |
+| J++ (every token) | 25 | lookup | 0.253 | 0.18 [0.08, 0.28] | 0.18 [0.07, 0.30] | 0.00 [−0.08, 0.08] | around |
+| J++ (every token) | 25 | recall | 0.253 | 0.37 [0.27, 0.47] | 0.10 [0.05, 0.15] | 0.27 [0.17, 0.38] | through |
+| J++ (every token) | 50 | lookup | 0.334 | 0.21 [0.11, 0.33] | 0.31 [0.20, 0.42] | −0.10 [−0.19, −0.03] | around |
+| J++ (every token) | 50 | recall | 0.334 | 0.61 [0.50, 0.71] | 0.18 [0.12, 0.25] | 0.43 [0.32, 0.52] | through |
+| J++ (every token) | 100 | lookup | 0.434 | 0.33 [0.21, 0.44] | 0.51 [0.40, 0.62] | −0.18 [−0.30, −0.07] | around |
+| J++ (every token) | 100 | recall | 0.434 | 0.83 [0.75, 0.89] | 0.42 [0.34, 0.51] | 0.41 [0.30, 0.49] | through |
+| the 10 digit directions | 10 | lookup | 0.008 | 0.00 [−0.06, 0.05] | 0.01 [−0.04, 0.06] | −0.01 [−0.04, 0.00] | around |
+| the 10 digit directions | 10 | recall | 0.008 | 0.01 [−0.02, 0.04] | −0.01 [−0.03, 0.02] | 0.01 [−0.01, 0.03] | around |
+| random atoms | 25 | lookup | 0.134 | 0.10 [0.04, 0.17] | 0.09 [0.03, 0.16] | 0.01 [−0.04, 0.06] | around |
+| random atoms | 25 | recall | 0.134 | 0.01 [−0.01, 0.03] | 0.01 [−0.01, 0.03] | 0.00 [−0.02, 0.02] | around |
+| W_E | 25 | lookup | 0.178 | 0.11 [0.04, 0.19] | 0.11 [0.05, 0.19] | 0.00 [−0.06, 0.06] | around |
+| W_E | 25 | recall | 0.178 | 0.03 [0.00, 0.06] | 0.03 [0.00, 0.06] | 0.01 [−0.02, 0.03] | around |
+| W_U | 25 | lookup | 0.125 | 0.08 [0.02, 0.15] | 0.09 [0.03, 0.16] | −0.01 [−0.05, 0.03] | around |
+| W_U | 25 | recall | 0.125 | 0.00 [−0.01, 0.02] | 0.01 [−0.01, 0.03] | −0.01 [−0.02, 0.00] | around |
+
 ![Equal removed share](../figures/x0_necessity/kmatch.png)
 ![Excess against the number of atoms](../figures/x0_necessity/kcurve.png)
 ![Share against J-dependence](../figures/x0_necessity/share.png)
@@ -220,6 +260,35 @@ Qwen3.6-27B:
 | alt locker vs asked pick | after | recall | 93 | 78 | 0.74 [0.65, 0.84] | through |
 | alt locker vs asked pick | before | lookup | 107 | 74 | 0.14 [0.07, 0.21] | mixed |
 | alt locker vs asked pick | before | recall | 107 | 72 | 0.74 [0.59, 0.86] | through |
+
+Qwen3.5-122B:
+
+| split | value | reader | n | flipped by the whole edit | excess | label |
+|---|---|---|---|---|---|---|
+| upstream | no | lookup | 117 | 38 | −0.05 [−0.15, 0.05] | around |
+| upstream | no | recall | 117 | 105 | 0.37 [0.23, 0.50] | through |
+| upstream | yes | lookup | 83 | 51 | 0.04 [−0.06, 0.13] | around |
+| upstream | yes | recall | 83 | 79 | 0.24 [0.15, 0.34] | through |
+| domain | animals | lookup | 48 | 29 (too few) | 0.00 [−0.13, 0.15] | can't tell |
+| domain | animals | recall | 48 | 43 | 0.33 [0.21, 0.45] | through |
+| domain | elements | lookup | 81 | 33 | 0.00 [−0.08, 0.08] | around |
+| domain | elements | recall | 81 | 78 | 0.38 [0.20, 0.58] | through |
+| domain | greek | lookup | 71 | 27 (too few) | 0.00 [−0.11, 0.10] | can't tell |
+| domain | greek | recall | 71 | 63 | 0.22 [0.09, 0.33] | mixed |
+| asked pick place | 1st | lookup | 81 | 19 (too few) | −0.11 [−0.28, 0.12] | can't tell |
+| asked pick place | 1st | recall | 81 | 69 | 0.45 [0.29, 0.60] | through |
+| asked pick place | 2nd | lookup | 64 | 34 | 0.00 [−0.07, 0.10] | around |
+| asked pick place | 2nd | recall | 64 | 63 | 0.19 [0.08, 0.31] | mixed |
+| asked pick place | 3rd | lookup | 55 | 36 | 0.06 [−0.06, 0.16] | around |
+| asked pick place | 3rd | recall | 55 | 52 | 0.29 [0.16, 0.43] | through |
+| org locker vs asked pick | after | lookup | 115 | 13 (too few) | 0.08 [0.00, 0.23] | can't tell |
+| org locker vs asked pick | after | recall | 115 | 103 | 0.41 [0.26, 0.54] | through |
+| org locker vs asked pick | before | lookup | 85 | 76 | −0.01 [−0.08, 0.06] | around |
+| org locker vs asked pick | before | recall | 85 | 81 | 0.20 [0.10, 0.30] | mixed |
+| alt locker vs asked pick | after | lookup | 114 | 26 (too few) | 0.00 [−0.18, 0.20] | can't tell |
+| alt locker vs asked pick | after | recall | 114 | 102 | 0.42 [0.27, 0.57] | through |
+| alt locker vs asked pick | before | lookup | 86 | 63 | 0.00 [−0.06, 0.06] | around |
+| alt locker vs asked pick | before | recall | 86 | 82 | 0.18 [0.09, 0.29] | mixed |
 
 ![Upstream change](../figures/x0_necessity/asked_first.png)
 
@@ -296,11 +365,45 @@ Qwen3.6-27B, layer 32:
 | after | recall | J++ (every token) | 100 | 99 | 75 | 0.64 [0.53, 0.76] | through |
 | after | recall | the 10 digit directions | 10 | 99 | 75 | 0.00 [0.00, 0.00] | around |
 
+Qwen3.5-122B, layer 33 (its X0 run; the readout ranks the answer digit first in 8% of locker-before items):
+
+| locker vs pick | reader | dictionary | atoms | n | flipped by the whole edit | excess | label |
+|---|---|---|---|---|---|---|---|
+| before | lookup | J++ (letters) | 25 | 85 | 76 | −0.01 [−0.08, 0.06] | around |
+| before | lookup | J++ (letters) | 50 | 85 | 76 | −0.01 [−0.08, 0.06] | around |
+| before | lookup | J++ (letters) | 100 | 85 | 76 | −0.11 [−0.22, −0.01] | around |
+| before | lookup | J++ (every token) | 25 | 85 | 76 | 0.00 [−0.08, 0.09] | around |
+| before | lookup | J++ (every token) | 50 | 85 | 76 | −0.08 [−0.16, 0.00] | around |
+| before | lookup | J++ (every token) | 100 | 85 | 76 | −0.18 [−0.31, −0.06] | around |
+| before | lookup | the 10 digit directions | 10 | 85 | 76 | 0.00 [0.00, 0.00] | around |
+| before | recall | J++ (letters) | 25 | 85 | 81 | 0.20 [0.10, 0.30] | mixed |
+| before | recall | J++ (letters) | 50 | 85 | 81 | 0.36 [0.24, 0.45] | through |
+| before | recall | J++ (letters) | 100 | 85 | 81 | 0.43 [0.27, 0.57] | through |
+| before | recall | J++ (every token) | 25 | 85 | 81 | 0.10 [0.01, 0.19] | around |
+| before | recall | J++ (every token) | 50 | 85 | 81 | 0.35 [0.20, 0.46] | through |
+| before | recall | J++ (every token) | 100 | 85 | 81 | 0.42 [0.25, 0.56] | through |
+| before | recall | the 10 digit directions | 10 | 85 | 81 | −0.01 [−0.05, 0.00] | around |
+| after | lookup | J++ (letters) | 25 | 115 | 13 | 0.08 [0.00, 0.23] | can't tell |
+| after | lookup | J++ (letters) | 50 | 115 | 13 | −0.08 [−0.23, 0.00] | can't tell |
+| after | lookup | J++ (letters) | 100 | 115 | 13 | −0.23 [−0.39, 0.00] | can't tell |
+| after | lookup | J++ (every token) | 25 | 115 | 13 | 0.00 [−0.19, 0.33] | can't tell |
+| after | lookup | J++ (every token) | 50 | 115 | 13 | −0.23 [−0.50, 0.00] | can't tell |
+| after | lookup | J++ (every token) | 100 | 115 | 13 | −0.15 [−0.33, 0.00] | can't tell |
+| after | lookup | the 10 digit directions | 10 | 115 | 13 | −0.08 [−0.23, 0.00] | can't tell |
+| after | recall | J++ (letters) | 25 | 115 | 103 | 0.41 [0.26, 0.54] | through |
+| after | recall | J++ (letters) | 50 | 115 | 103 | 0.52 [0.38, 0.66] | through |
+| after | recall | J++ (letters) | 100 | 115 | 103 | 0.43 [0.32, 0.53] | through |
+| after | recall | J++ (every token) | 25 | 115 | 103 | 0.41 [0.26, 0.55] | through |
+| after | recall | J++ (every token) | 50 | 115 | 103 | 0.50 [0.36, 0.62] | through |
+| after | recall | J++ (every token) | 100 | 115 | 103 | 0.41 [0.30, 0.50] | through |
+| after | recall | the 10 digit directions | 10 | 115 | 103 | 0.03 [0.00, 0.07] | around |
+
 ![The digit check](../figures/status_2026-10-24/f6_digits.png)
 
 ## The J++ atoms of the bridge edit (27B, layer 32, 20 random items; added after the data)
 
 - The first atom is the bridge's own token (before or after the edit) in 13 of 20 items.
+- Over all 40 items (random and asked-first), the bridge's own tokens are among the top 25 atoms in 28 of 40 and carry a median 12% of the part's Σcoef²: the J++ part is mostly not the bridge word (Dan's audit, 24 Oct ~19:30). Ranks 26-100 hold no bridge, name, digit or context token.
 - The rest of the top 25 are mostly tokens that are neither context words nor names. Some of them are the bridge in other scripts (フライ for *fly*, 小熊 for *bear*).
 - Digits never enter the top 25, even when every token is allowed (0 of 500). Number words enter 3 of 500.
 
@@ -350,6 +453,7 @@ Tables: [letter atoms](../results/x0_atoms/x0_atoms_27b_letters/tables.md), [eve
 |---|---|---|---|
 | X0, 27B at layer 32 | lookup excess ≤ 0.10 and recall J-dependence ≥ 0.30; killed if excess ≥ 0.20 or recall < 0.20 | not confirmed | confirmed, 80%: wrong |
 | X0, 9B at layer 12 | the same | confirmed | confirmed, 80%: right |
+| X0, 122B at layer 33 | the same | confirmed | not confirmed, 70%: wrong |
 | The 27B's layer-32 cell is valid for both readers | the whole edit flips ≥ 30% and ≥ 30 items | both valid | only recalls, 80%: wrong |
 | W_E removal (H-token) | W_E lookup excess ≥ 0.20 with J++'s around | 9B: neither; 27B: not applicable | neither, 90%: right / wrong |
 | W_U removal | both readers around | both models | inert, 90%: right |

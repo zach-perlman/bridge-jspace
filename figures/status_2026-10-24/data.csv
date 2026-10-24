@@ -9,6 +9,11 @@ f1,qwen3.6-27b,x0_necessity_27b_chat,32,PP,"flips lost (points), random part rem
 f1,qwen3.6-27b,x0_necessity_27b_chat,32,PM,"flips lost (points), J++ part removed",57.49999999999999,48.587570621468934,65.40089387485753,200
 f1,qwen3.6-27b,x0_necessity_27b_chat,32,PM,"flips lost (points), random part removed",2.0000000000000018,-1.2578616352201255,4.869142230748148,200
 f1,qwen3.6-27b,x0_necessity_27b_chat,32,recall-lookup,graded contrast C (excess),0.6004651162790698,0.5025567065985861,0.6918870812495038,
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"flips lost (points), J++ part removed",9.000000000000002,4.672897196261683,14.22018348623853,200
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"flips lost (points), random part removed",9.000000000000002,4.273049645390073,14.59874518166161,200
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"flips lost (points), J++ part removed",36.5,27.450980392156865,45.263157894736835,200
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"flips lost (points), random part removed",7.500000000000007,3.6457806174088994,11.905015197568387,200
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,recall-lookup,graded contrast C (excess),0.3152173913043478,0.20015931372549006,0.42544360341800097,
 f2,qwen3.5-9b,qwen35_9b_x0_necessity,6,PP,extra loss,0.6163522012578616,0.5294117647058824,0.6951219512195121,200
 f2,qwen3.5-9b,qwen35_9b_x0_necessity,8,PP,extra loss,0.3700787401574802,0.2950790187522113,0.44852941176470595,200
 f2,qwen3.5-9b,qwen35_9b_x0_necessity,10,PP,extra loss,0.26086956521739124,0.18811669628501307,0.32999999999999985,200
@@ -51,6 +56,16 @@ f2,qwen3.6-27b,x0_necessity_27b_chat,34,PM,extra loss,0.7333333333333334,0.60868
 f2,qwen3.6-27b,x0_necessity_27b_chat,36,PM,extra loss,0.7741935483870969,0.6530541383219954,0.896551724137931,200
 f2,qwen3.6-27b,x0_necessity_27b_chat,38,PM,extra loss,0.7419354838709679,0.5975570161545772,0.9047619047619048,200
 f2,qwen3.6-27b,x0_necessity_27b_chat,40,PM,extra loss,0.40000000000000013,0.24242424242424243,0.6000000000000002,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,24,PP,extra loss,0.42168674698795183,0.32351809954751126,0.5027041959086158,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,27,PP,extra loss,0.5620915032679737,0.4672878045043664,0.6405254289215685,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,30,PP,extra loss,0.25984251968503935,0.1788545296167247,0.3307692307692308,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,extra loss,0.0,-0.061855670103092786,0.06382978723404253,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,36,PP,extra loss,-0.016949152542372947,-0.09615384615384603,0.05769230769230782,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,24,PM,extra loss,0.4739583333333335,0.36892859602010597,0.5645988392698917,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,27,PM,extra loss,0.745945945945946,0.6493482264004652,0.8205128205128205,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,30,PM,extra loss,0.4540540540540541,0.35761589403973515,0.5513313123008939,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,extra loss,0.3152173913043478,0.2191673801369863,0.41011596081820795,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,36,PM,extra loss,0.3701298701298702,0.27819247316151346,0.46153846153846156,200
 f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=25",-0.01941747572815533,-0.07207207207207211,0.04395604395604402,200
 f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=50",-0.029126213592232886,-0.10476190476190472,0.04210526315789476,200
 f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=100",-0.07766990291262132,-0.15384615384615385,-0.009259259259259297,200
@@ -67,10 +82,18 @@ f3,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=25",0.7651006711409396,0.6
 f3,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=50",0.7986577181208054,0.7203375014815693,0.8666666666666666,200
 f3,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=100",0.6711409395973155,0.6013986013986015,0.745225897060569,200
 f3,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=200",0.4966442953020135,0.41290041260315063,0.5878477742448329,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=25",0.0,-0.061855670103092786,0.06382978723404253,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=50",-0.022471910112359605,-0.09090909090909094,0.045467607105538016,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=100",-0.12359550561797739,-0.2207860560492141,-0.042553191489361764,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=25",0.3152173913043478,0.2191673801369863,0.41011596081820795,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=50",0.45108695652173914,0.34848240469208214,0.5380957719410635,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=100",0.42934782608695654,0.3178294573643411,0.508695652173913,200
 f4,qwen3.5-9b,qwen35_9b_x0_necessity,12,PP,"share flipped by the whole edit, locker before pick",86.0,77.86263961619277,91.4737342455351,100
 f4,qwen3.5-9b,qwen35_9b_x0_necessity,12,PP,"share flipped by the whole edit, locker after pick",19.0,12.514653992704261,27.779024070807857,100
 f4,qwen3.6-27b,x0_necessity_27b_chat,32,PP,"share flipped by the whole edit, locker before pick",76.23762376237624,67.07230292337555,83.48014953824273,101
 f4,qwen3.6-27b,x0_necessity_27b_chat,32,PP,"share flipped by the whole edit, locker after pick",9.090909090909092,4.856521249187528,16.381576952318476,99
+f4,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"share flipped by the whole edit, locker before pick",89.41176470588236,81.0862973602443,94.32882348404489,85
+f4,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"share flipped by the whole edit, locker after pick",11.304347826086957,6.72634370361053,18.384055348573217,115
 f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=25",-0.01941747572815533,-0.07207207207207211,0.04395604395604402,200
 f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=50",-0.029126213592232886,-0.10476190476190472,0.04210526315789476,200
 f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=100",-0.07766990291262132,-0.15384615384615385,-0.009259259259259297,200
@@ -87,6 +110,12 @@ f5,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=25",0.7651006711409396,0.6
 f5,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=50",0.7986577181208054,0.7203375014815693,0.8666666666666666,200
 f5,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=100",0.6711409395973155,0.6013986013986015,0.745225897060569,200
 f5,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=200",0.4966442953020135,0.41290041260315063,0.5878477742448329,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=25",0.0,-0.061855670103092786,0.06382978723404253,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=50",-0.022471910112359605,-0.09090909090909094,0.045467607105538016,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=100",-0.12359550561797739,-0.2207860560492141,-0.042553191489361764,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=25",0.3152173913043478,0.2191673801369863,0.41011596081820795,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=50",0.45108695652173914,0.34848240469208214,0.5380957719410635,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=100",0.42934782608695654,0.3178294573643411,0.508695652173913,200
 f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jpp k=25, locker before",0.0,-0.043010752688172005,0.04999999999999993,100
 f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jpp k=50, locker before",-0.023255813953488413,-0.10170356278104456,0.05555555555555558,100
 f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jpp k=100, locker before",-0.09302325581395354,-0.18311296349525732,-0.01041666666666674,100
@@ -115,3 +144,41 @@ f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jppall k=25, locker before",0.
 f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jppall k=50, locker before",0.7866666666666666,0.6825396825396826,0.8823529411764707,101
 f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jppall k=100, locker before",0.7199999999999999,0.6153846153846154,0.8142857142857142,101
 f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, digit directions only, locker before",0.0,0.0,0.0,101
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jpp k=25, locker before",-0.013157894736842257,-0.08333333333333337,0.05882352941176461,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jpp k=50, locker before",-0.013157894736842146,-0.08045977011494254,0.05882352941176472,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jpp k=100, locker before",-0.10526315789473673,-0.21875,-0.01063549832026876,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jppall k=25, locker before",0.0,-0.08000000000000007,0.08536585365853655,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jppall k=50, locker before",-0.07894736842105254,-0.15625,0.0,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jppall k=100, locker before",-0.1842105263157895,-0.311708603896104,-0.05555555555555558,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, digit directions only, locker before",0.0,0.0,0.0,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jpp k=25, locker before",0.19753086419753085,0.10144468904788113,0.2967075892857143,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jpp k=50, locker before",0.3580246913580247,0.2407407407407407,0.4528301886792452,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jpp k=100, locker before",0.4320987654320989,0.265625,0.5670103092783505,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=25, locker before",0.09876543209876543,0.009898563385750243,0.1898734177215189,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=50, locker before",0.345679012345679,0.20000000000000007,0.4565217391304347,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=100, locker before",0.41975308641975306,0.2500000000000001,0.5596330275229358,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, digit directions only, locker before",-0.012345679012345734,-0.045454545454545636,0.0,85
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, answer digit, locker before",0.13,0.06329113924050633,0.1941747572815534,100
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, answer digit, locker before",0.1111,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, answer digit, locker after",0.07,0.025974025974025976,0.11764705882352941,100
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, answer digit, locker after",0.1111,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, locker sentence, locker before",0.82,0.7387361793611794,0.8910944898837709,100
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, locker sentence, locker before",0.44,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, locker sentence, locker after",0.4,0.30927835051546393,0.48214285714285715,100
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, locker sentence, locker after",0.4,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, bridge identity, locker before",0.83,0.7142857142857143,0.9090909090909091,100
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, bridge identity, locker before",0.08,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, bridge identity, locker after",0.87,0.7530092592592593,0.9369387103639072,100
+f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, bridge identity, locker after",0.12,,,
+f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, answer digit, locker before",0.13861386138613863,0.07271631982475357,0.2111111111111111,101
+f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, answer digit, locker before",0.1111,,,
+f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, answer digit, locker after",0.04040404040404041,0.00909090909090909,0.08602150537634409,99
+f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, answer digit, locker after",0.1111,,,
+f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, locker sentence, locker before",0.8514851485148515,0.7899978991596639,0.9112928746427112,101
+f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, locker sentence, locker before",0.5148514851485149,,,
+f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, locker sentence, locker after",0.29292929292929293,0.1978021978021978,0.3780487804878049,99
+f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, locker sentence, locker after",0.36363636363636365,,,
+f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, bridge identity, locker before",0.6732673267326733,0.5316455696202531,0.7751937984496124,101
+f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, bridge identity, locker before",0.07920792079207921,,,
+f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, bridge identity, locker after",0.8080808080808081,0.676056338028169,0.8914728682170543,99
+f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, bridge identity, locker after",0.1111111111111111,,,

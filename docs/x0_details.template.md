@@ -24,6 +24,10 @@ Qwen3.6-27B (n = {{num|n_27b}} scenes, {{num|ents_27b}} bridge entities; pre-reg
 
 {{tbl|layers_27b}}
 
+Qwen3.5-122B-A10B (n = {{num|n_122b}} scenes, {{num|ents_122b}} bridge entities; pre-registered layer {{num|layer_122b}}; FP8 weights, mixture of experts, J++ fitted on the bf16 weights, 2x H100, hardware gate 0.998):
+
+{{tbl|layers_122b}}
+
 ![27B detail](../figures/x0_necessity/detail_x0_necessity_27b_chat_chat.png)
 ![9B detail](../figures/x0_necessity/detail_qwen35_9b_x0_necessity_chat.png)
 
@@ -38,6 +42,10 @@ Qwen3.5-9B, layer {{num|layer_9b}}:
 Qwen3.6-27B, layer {{num|layer_27b}}:
 
 {{tbl|dicts_27b}}
+
+Qwen3.5-122B, layer {{num|layer_122b}} (from its X0 run: J++ at 25 / 50 / 100 atoms; W_U, W_E and random atoms at 25 only; J++ over every token and the digit directions):
+
+{{tbl|dicts_122b}}
 
 ![Equal removed share](../figures/x0_necessity/kmatch.png)
 ![Excess against the number of atoms](../figures/x0_necessity/kcurve.png)
@@ -60,6 +68,10 @@ Qwen3.6-27B:
 
 {{tbl|strata_27b}}
 
+Qwen3.5-122B:
+
+{{tbl|strata_122b}}
+
 ![Upstream change](../figures/x0_necessity/asked_first.png)
 
 ## The digit check (the pre-registered layer; added after the data)
@@ -77,11 +89,16 @@ Qwen3.6-27B, layer 32:
 
 {{tbl|digit_27b}}
 
+Qwen3.5-122B, layer {{num|layer_122b}} (its X0 run; the readout ranks the answer digit first in {{num|dig_readout_first_before_122b}} of locker-before items):
+
+{{tbl|digit_122b}}
+
 ![The digit check](../figures/status_2026-10-24/f6_digits.png)
 
 ## The J++ atoms of the bridge edit (27B, layer 32, 20 random items; added after the data)
 
 - The first atom is the bridge's own token (before or after the edit) in {{num|atoms_first_bridge_letters}} items.
+- Over all 40 items (random and asked-first), the bridge's own tokens are among the top 25 atoms in {{num|atoms_bridge_top25_letters}} and carry a median {{num|atoms_bridge_coef2_letters}} of the part's Σcoef²: the J++ part is mostly not the bridge word (Dan's audit, 24 Oct ~19:30). Ranks 26-100 hold no bridge, name, digit or context token.
 - The rest of the top 25 are mostly tokens that are neither context words nor names. Some of them are the bridge in other scripts (フライ for *fly*, 小熊 for *bear*).
 - Digits never enter the top 25, even when every token is allowed ({{num|atoms_digit_top25_all}}). Number words enter {{num|atoms_number_word_top25_all}}.
 
@@ -131,6 +148,7 @@ Tables: [letter atoms](../results/x0_atoms/x0_atoms_27b_letters/tables.md), [eve
 |---|---|---|---|
 | X0, 27B at layer 32 | lookup excess ≤ 0.10 and recall J-dependence ≥ 0.30; killed if excess ≥ 0.20 or recall < 0.20 | {{num|verdict_27b}} | confirmed, 80%: wrong |
 | X0, 9B at layer 12 | the same | {{num|verdict_9b}} | confirmed, 80%: right |
+| X0, 122B at layer 33 | the same | {{num|verdict_122b}} | not confirmed, 70%: wrong |
 | The 27B's layer-32 cell is valid for both readers | the whole edit flips ≥ 30% and ≥ 30 items | both valid | only recalls, 80%: wrong |
 | W_E removal (H-token) | W_E lookup excess ≥ 0.20 with J++'s around | 9B: neither; 27B: not applicable | neither, 90%: right / wrong |
 | W_U removal | both readers around | both models | inert, 90%: right |

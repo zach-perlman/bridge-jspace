@@ -27,10 +27,13 @@ DOCS = pins.REPO_ROOT / "docs"
 NUMBERS = DOCS / "x0_numbers.json"
 TEMPLATE = DOCS / "x0_details.template.md"
 MODELS = {"9b": ("qwen3.5-9b", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
-          "27b": ("qwen3.6-27b", "x0_necessity_27b_chat", "x0_kmatch_27b")}  # fmt: skip
+          "27b": ("qwen3.6-27b", "x0_necessity_27b_chat", "x0_kmatch_27b"),
+          "122b": ("qwen3.5-122b-a10b", "qwen35_122b_x0_necessity_r2", "qwen35_122b_x0_necessity_r2")}  # fmt: skip
 CTX = "results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json"
 NOCHAT = {"9b": "qwen35_9b_x0_necessity_nothink", "27b": "x0_necessity_27b_nothink"}
-DIGIT = {"9b": "qwen35_9b_x0_digit_r2", "27b": "x0_digit_27b_r2"}
+DIGIT = {"9b": "qwen35_9b_x0_digit_r2", "27b": "x0_digit_27b_r2", "122b": "qwen35_122b_x0_necessity_r2"}
+SINGLE = {"9b": "qwen35_9b_x0_single_r2", "27b": "x0_single_27b_r2"}
+PROBES = {"9b": "qwen35_9b_x0_probe", "27b": "x0_probe_27b"}
 ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all"}
 ORDER = "org locker vs asked pick"
 
@@ -100,7 +103,12 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
             num.add(f"lk_excess_{name}_{m}", f2(c["excess"][0]), src)
             num.add(f"lk_swhole_{name}_{m}", pct(c["S_whole"][0]), src)
             num.add(f"lk_n_{name}_{m}", str(c["n"]), src)
-        # no chat template, thinking off: the gate under the first-token read
+        # no chat template, thinking off: the gate under the first-token read (the 9B and the 27B)
+        if m not in NOCHAT:
+            tables[f"layers_{m}"] = table_layers(cells, r)
+            tables[f"dicts_{m}"] = table_dicts(cells, r, la)
+            tables[f"strata_{m}"] = table_strata(rows, cases, la)
+            continue
         g = json.loads((X.RESULTS / NOCHAT[m] / "gate.json").read_text())["gate"]["nothink"]["org_accuracy"]
         num.add(f"nochat_gate_{m}", f"{100 * g['PP']:.1f}% / {100 * g['PM']:.1f}%".replace(".0%", "%"),
                 f"results/x0_necessity/{NOCHAT[m]}/gate.json")  # fmt: skip
@@ -112,6 +120,8 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     for m, run in DIGIT.items():
         digit_numbers(num, tables, m, run)
     atoms_numbers(num)
+    single_numbers(num)
+    probe_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -144,7 +154,8 @@ def digit_numbers(num: Numbers, tables: dict[str, list[str]], m: str, run: str) 
         out.append(f"| {s['value']} | {'lookup' if w == 'lk' else 'recall'} | {name[s['dict']]} | {s['k']} | {s['n']} | "
                    f"{s['switched_whole']} | {ci(s['excess'])} | {s['label']} |")  # fmt: skip
     tables[f"digit_{m}"] = out
-    readout = X.read_jsonl(X.RESULTS / run / "readout.jsonl")
+    la = X.PREDICTED[MODELS[m][0]]  # the 122B's X0 run reads out at every layer; the digit runs at one
+    readout = [r for r in X.read_jsonl(X.RESULTS / run / "readout.jsonl") if r["layer"] == la]
     cases = {c["scene"]: c for c in X.read_jsonl(X.RESULTS / run / "cases.jsonl") if c["rendering"] == "chat"}
     for order in ("before", "after"):
         mine = [r for r in readout if r["reader"] == X.LOOKUP and r["run"] == "org"
@@ -164,6 +175,50 @@ def atoms_numbers(num: Numbers) -> None:
         for mark in ("digit", "number_word"):
             k = sum(a["mark"] == mark for r in rows for a in r["atoms"][:25])
             num.add(f"atoms_{mark}_top25_{v}", f"{k} of {25 * len(rows)}", src)
+        every = X.read_jsonl(pins.RESULTS_DIR / "x0_atoms" / run / "atoms.jsonl")  # random and asked-first items
+        bridge = ("bridge_org", "bridge_alt")
+        has = sum(any(a["mark"] in bridge for a in r["atoms"][:25]) for r in every)
+        num.add(f"atoms_bridge_top25_{v}", f"{has} of {len(every)}", src)
+        share = [sum(a["coef_k25"] ** 2 for a in r["atoms"][:25] if a["mark"] in bridge)
+                 / sum(a["coef_k25"] ** 2 for a in r["atoms"][:25]) for r in every]  # fmt: skip
+        num.add(f"atoms_bridge_coef2_{v}", pct(sorted(share)[len(share) // 2] if len(share) % 2
+                                                else sum(sorted(share)[len(share) // 2 - 1 : len(share) // 2 + 1]) / 2), src)  # fmt: skip
+
+
+def single_numbers(num: Numbers) -> None:
+    """The single-change edit (only the asked pick changes; after data) at the pre-registered layer: the lookup's and
+    the recall's excess at k = 25, and the lookup's at k = 100."""
+    for m, run in SINGLE.items():
+        r = XF.Run(run)
+        la = X.PREDICTED[MODELS[m][0]]
+        cells = r.cells("chat")
+        src = f"results/x0_necessity/{run}/outcomes.jsonl"
+        num.add(f"single_lk_excess_{m}", ci(cells[("chat", la, X.LOOKUP, *X.MAIN)]["excess"]), src)
+        num.add(f"single_lk_excess_pt_{m}", f2(cells[("chat", la, X.LOOKUP, *X.MAIN)]["excess"][0]), src)
+        num.add(f"single_rc_excess_{m}", ci(cells[("chat", la, X.RECALL, *X.MAIN)]["excess"]), src)
+        num.add(f"single_lk_excess_k100_{m}", f2(cells[("chat", la, X.LOOKUP, "jpp", 100, "signed")]["excess"][0]), src)
+        paired = sorted((X.RESULTS / run).glob("paired-*/paired.json"))[-1]  # single minus two-change, shared items
+        for w, d in json.loads(paired.read_text())["readers"].items():
+            num.add(f"paired_{'lk' if w == X.LOOKUP else 'rc'}_excess_{m}", ci(d["paired_difference"]["excess"]),
+                    str(paired.relative_to(pins.REPO_ROOT)))  # fmt: skip
+
+
+def probe_numbers(num: Numbers) -> None:
+    """The probes at the bridge's word (X0 items, locker-before; descriptive): (a) the answer digit, (b) the locker
+    sentence's index with its visible-layout baseline, (c) the bridge's identity."""
+    for m, run in PROBES.items():
+        path = sorted((pins.RESULTS_DIR / "x0_probe" / run).glob("probe-*/probe.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        rows = {
+            r["target"]: r
+            for r in json.loads(path.read_text())["rows"]
+            if r["subset"] == "x0" and r["stratum"] == "before"
+        }
+        num.add(f"probe_a_before_{m}", f2(rows["answer digit"]["probe"][0]), src)
+        num.add(f"probe_a_chance_{m}", f2(rows["answer digit"]["chance"]), src)
+        num.add(f"probe_b_before_{m}", f2(rows["locker sentence"]["probe"][0]), src)
+        num.add(f"probe_b_layout_before_{m}", f2(rows["locker sentence"]["layout"][0]), src)
+        num.add(f"probe_c_before_{m}", f2(rows["bridge identity"]["probe"][0]), src)
 
 
 def table_layers(cells: dict, run: Any) -> list[str]:
@@ -180,7 +235,8 @@ def table_layers(cells: dict, run: Any) -> list[str]:
 def table_dicts(cells: dict, run: Any, la: int) -> list[str]:
     out = ["| dictionary | atoms | reader | share removed | dependence | random dependence | excess | label |",
            "|---|---|---|---|---|---|---|---|"]  # fmt: skip
-    name = {"jpp": "J++", "wu": "W_U", "we": "W_E", "rand": "random atoms"}
+    name = {"jpp": "J++", "wu": "W_U", "we": "W_E", "rand": "random atoms", "jppall": "J++ (every token)",
+            "jppdig": "the 10 digit directions"}  # fmt: skip
     order = lambda kv: (kv[0][3] != "jpp", kv[0][3], kv[0][4], kv[0][2] != X.LOOKUP)  # noqa: E731
     for (_rr, l2, w, d, k, omp), c in sorted(cells.items(), key=order):
         if l2 == la and omp == "signed":

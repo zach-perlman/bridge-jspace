@@ -1,5 +1,5 @@
 """x0_status_pack: four plain-language X0 figures for a status update (Dan, 24 Oct), from existing rows only. Writes
-figures/status_2026-10-24/{f1_readers, f2_depth, f3_dictionaries, f4_order, f5_atoms, f6_digits}.png and data.csv. UNVERIFIED.
+figures/status_2026-10-24/{f1_readers, f2_depth, f3_dictionaries, f4_order, f5_atoms, f6_digits, f7_probe}.png and data.csv. UNVERIFIED.
 
 F1  the pre-registered layers (9B L12, 27B L32): flips lost (points of all items) without the J++ part and without a
     random part of the same size, per reader; the rule's verdict and the graded contrast C under each model.
@@ -8,6 +8,7 @@ F3  extra flips lost against the share of the change removed: J++, and W_U / W_E
 F4  the share of lookups the whole edit flips, locker sentence before vs after the pick sentence.
 F5  extra flips lost against the number of J++ atoms removed (25-200), at the pre-registered layer.
 F6  the digit check: J++ over letter tokens vs every token, and the digit directions alone (locker-before).
+F7  the probes at the bridge's word (9B, 27B): the answer digit, the locker sentence's index, the bridge's identity.
 """
 
 from __future__ import annotations
@@ -31,7 +32,13 @@ from scripts import x0_strata as ST
 
 OUT = pins.REPO_ROOT / "figures" / "status_2026-10-24"
 MODELS = (("qwen3.5-9b", "Qwen3.5-9B", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
-          ("qwen3.6-27b", "Qwen3.6-27B", "x0_necessity_27b_chat", "x0_kmatch_27b"))  # fmt: skip
+          ("qwen3.6-27b", "Qwen3.6-27B", "x0_necessity_27b_chat", "x0_kmatch_27b"),
+          ("qwen3.5-122b-a10b", "Qwen3.5-122B", "qwen35_122b_x0_necessity_r2", "qwen35_122b_x0_necessity_r2"))  # fmt: skip
+RUNS = ", ".join(m[2] for m in MODELS)
+BIG = (
+    "122B: FP8 weights, mixture of experts, J++ fitted on the bf16 weights, 2x H100 (hardware gate 0.998); its k-curve, "
+    "dictionaries and digit arm come from its X0 run (k = 25-100)."
+)
 NAME = {X.LOOKUP: "lookup", X.RECALL: "recall"}
 CI = "95% CIs: bootstrap over bridge entities (10,000 resamples)"
 rows_csv: list[dict] = []
@@ -78,7 +85,7 @@ def record(fig_name, model, run, layer, reader, what, v, lo=None, hi=None, n=Non
 
 
 def f1(plt, F, color, grey) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(13, 6.2), sharey=True)
+    fig, axes = plt.subplots(1, len(MODELS), figsize=(18, 6.2), sharey=True)
     for ax, (target, label, run, _) in zip(axes, MODELS, strict=True):
         r = XF.Run(run)
         la = X.PREDICTED[target]
@@ -110,13 +117,13 @@ def f1(plt, F, color, grey) -> None:
                plt.Rectangle((0, 0), 1, 1, color=grey)]  # fmt: skip
     labels = ["lookup: J++ part removed", "recall: J++ part removed", "random part of the same size removed"]
     head(fig, "Removing the J++ part costs recall far more than lookup",
-         "At the layers fixed before the run, removing the J++-readable part of the bridge edit costs recalls many flips "
+         "At the layers fixed before the run, removing the J++ part of the bridge change costs recalls many flips "
          "and lookups few.\nA flip = the answer changes to the edited bridge's answer. Extra loss = flips lost without the "
          "J++ part minus flips lost without a random part of the same size.", handles, labels)  # fmt: skip
-    foot(fig, [f"n = 200 scenes per model (both readers on the same items); {CI}. Unverified.",
+    foot(fig, [f"n = 200 scenes per model (both readers on the same items); {CI}. Unverified. {BIG}",
                "Verdict by the rule fixed in advance (lookup extra loss ≤ 0.10 and recall dependence ≥ 0.30). Runs: "
-               "results/x0_necessity/qwen35_9b_x0_necessity, x0_necessity_27b_chat."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.08, 1, 0.80))
+               f"results/x0_necessity/: {RUNS}."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.08, 1, 0.86))
     fig.savefig(OUT / "f1_readers.png", dpi=150, facecolor="white")
     plt.close(fig)
 
@@ -124,7 +131,7 @@ def f1(plt, F, color, grey) -> None:
 def f2(plt, F, color, grey) -> None:
     """Extra flips lost by relative depth, lookup and recall, valid cells only; the 'not needed' band; the values at
     the pre-registered layer."""
-    fig, axes = plt.subplots(1, 2, figsize=(13, 5.8), sharey=True)
+    fig, axes = plt.subplots(1, len(MODELS), figsize=(18, 5.8), sharey=True)
     invalid = []
     for ax, (target, label, run, _) in zip(axes, MODELS, strict=True):
         r = XF.Run(run)
@@ -177,21 +184,23 @@ def f2(plt, F, color, grey) -> None:
     axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
     axes[0].set_ylim(-0.2, 1.0)
     h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2), plt.Line2D([], [], color=F.RECALL, lw=2.2)]
-    head(fig, "Recall depends on the J++ form at every depth; lookup only early",
-         "Extra flips lost = flips lost when the J++ part is removed minus flips lost when a random part of the same size "
-         "is removed (share of the edit's flips). Dashed line: the layer fixed before the run.", h, ["lookup", "recall"])  # fmt: skip
+    head(fig, "27B: both readers depend on the J++ part up to L26; from L28 only recall does",
+         "9B: recall depends more at every layer. 122B: both readers depend on it up to L30; at L33 only recall does. "
+         "Extra flips lost = flips lost when the J++ part of the change is removed minus flips lost when a random part of "
+         "the same size is removed (share of the edit's flips). Dashed line: the layer fixed before the run.", h,
+         ["lookup", "recall"])  # fmt: skip
     foot(fig, [f"Not enough flips to measure (the whole edit flips < 30% or < 30 items), not drawn: {'; '.join(invalid)}.",
                f"n = 200 scenes per layer; {CI}. Unverified. On the 27B the lookup's profile tracks the share of the change "
                "J++ takes (Spearman 0.79). No chat template: can't test (the models open a think block or answer in "
-               "markdown). Runs: qwen35_9b_x0_necessity, x0_necessity_27b_chat."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.09, 1, 0.82))
+               f"markdown). {BIG} Runs: {RUNS}."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.10, 1, 0.85))
     fig.savefig(OUT / "f2_depth.png", dpi=150, facecolor="white")
     plt.close(fig)
 
 
 def f5(plt, F, color, grey) -> None:
     """Extra flips lost against the number of J++ atoms removed, at the pre-registered layer (the k-match runs)."""
-    fig, axes = plt.subplots(1, 2, figsize=(13, 5.6), sharey=True)
+    fig, axes = plt.subplots(1, len(MODELS), figsize=(18, 5.6), sharey=True)
     for ax, (target, label, _, kmatch) in zip(axes, MODELS, strict=True):
         r = XF.Run(kmatch)
         la = X.PREDICTED[target]
@@ -225,16 +234,19 @@ def f5(plt, F, color, grey) -> None:
     axes[0].set_ylim(-0.3, 1.0)
     h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2, marker="o"), plt.Line2D([], [], color=F.RECALL, lw=2.2, marker="o")]
     head(fig, "On the 27B, with more J++ atoms the lookup needs J++ too",
-         "The J++ part grown from 25 to 200 atoms at the layer fixed before the run. The 9B's lookup stays at or below a "
-         "random part of the same size at every size; the 27B's rises to the recall's level.", h, ["lookup", "recall"])  # fmt: skip
+         "The J++ part grown from 25 to 200 atoms at the layer fixed before the run. The 9B's and the 122B's lookups stay "
+         "at or below a random part of the same size at every size; the 27B's rises to the recall's level.", h,
+         ["lookup", "recall"])  # fmt: skip
     foot(fig, [f"n = 200 scenes per point; {CI}. Light band: 0 to 0.10, counts as 'not needed'; dotted line: 0.20, "
-               "counts as 'needed'. Unverified. Descriptive, added after the data. Runs: qwen35_9b_x0_kmatch, x0_kmatch_27b."])  # fmt: skip
+               f"counts as 'needed'. Unverified. Descriptive, added after the data. {BIG} Runs: qwen35_9b_x0_kmatch, "
+               "x0_kmatch_27b, qwen35_122b_x0_necessity_r2."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.06, 1, 0.82))
     fig.savefig(OUT / "f5_atoms.png", dpi=150, facecolor="white")
     plt.close(fig)
 
 
-DIGIT = {"qwen3.5-9b": "qwen35_9b_x0_digit_r2", "qwen3.6-27b": "x0_digit_27b_r2"}
+DIGIT = {"qwen3.5-9b": "qwen35_9b_x0_digit_r2", "qwen3.6-27b": "x0_digit_27b_r2",
+         "qwen3.5-122b-a10b": "qwen35_122b_x0_necessity_r2"}  # fmt: skip
 
 
 def f6(plt, F, color, grey) -> None:
@@ -242,7 +254,7 @@ def f6(plt, F, color, grey) -> None:
     included) at 25 / 50 / 100 atoms, and with the 10 digit directions alone."""
     import json
 
-    fig, axes = plt.subplots(1, 2, figsize=(13, 5.6), sharey=True)
+    fig, axes = plt.subplots(1, len(MODELS), figsize=(18, 5.6), sharey=True)
     xs = {"jppdig": 0, 25: 1, 50: 2, 100: 3}
     for ax, (target, label, _, _) in zip(axes, MODELS, strict=True):
         run = DIGIT[target]
@@ -278,17 +290,66 @@ def f6(plt, F, color, grey) -> None:
          "Items where the locker sentence comes before the pick sentence (where lookups flip). J++ over letter-bearing "
          "tokens (as in X0) and over every token, digits included, give the same extra loss; the 10 digit directions alone "
          "give none.", h, ["lookup", "recall", "J++, letter tokens", "J++, every token"])  # fmt: skip
-    foot(fig, [f"n = 100-101 scenes per point (locker-before items of the X0 scenes, recomputed); {CI}. Light band: 0 to "
+    foot(fig, [f"n = 85-101 scenes per point (locker-before items of the X0 scenes); {CI}. Light band: 0 to "
                "0.10, counts as 'not needed'; dotted line: 0.20, counts as 'needed'. Unverified. Descriptive, added after "
                "the data (the pre-stated reading: if digits made the lookup 'needed', X0's lookup result was the excluded "
-               "digit). Runs: qwen35_9b_x0_digit_r2, x0_digit_27b_r2."])  # fmt: skip
+               f"digit). {BIG} Runs: qwen35_9b_x0_digit_r2, x0_digit_27b_r2, qwen35_122b_x0_necessity_r2."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.07, 1, 0.80))
     fig.savefig(OUT / "f6_digits.png", dpi=150, facecolor="white")
     plt.close(fig)
 
 
+PROBES = {"qwen3.5-9b": ("Qwen3.5-9B", "qwen35_9b_x0_probe"), "qwen3.6-27b": ("Qwen3.6-27B", "x0_probe_27b")}
+
+
+def f7(plt, F, color, grey) -> None:
+    """The probes on the X0 items (descriptive): accuracy per target, locker before vs after, beside the best baseline."""
+    import json
+
+    from scripts import x0_probe as P
+
+    targets = list(P.TARGETS)
+    fig, axes = plt.subplots(1, len(PROBES), figsize=(14, 5.6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, PROBES.items(), strict=True):
+        blob = json.loads(sorted((P.RESULTS / run).glob("probe-*/probe.json"))[-1].read_text())
+        rows = {(r["target"], r["stratum"]): r for r in blob["rows"] if r["subset"] == "x0"}
+        for i, tg in enumerate(targets):
+            for j, order in enumerate(("before", "after")):
+                r = rows[(tg, order)]
+                x = i * 2.6 + j
+                v, lo, hi = r["probe"]
+                base = max([r["chance"]] + [r[k][0] for k in ("majority", "structure", "layout") if k in r])
+                ax.bar(x, v, width=0.9, color=F.LOOKUP if order == "before" else "#c9b6dd", edgecolor="white")
+                ax.errorbar(x, v, yerr=[[v - lo], [hi - v]], color="#333333", capsize=3, lw=1)
+                ax.plot([x - 0.45, x + 0.45], [base, base], color="black", lw=1.6)
+                ax.text(x, hi + 0.03, f"{v:.2f}", ha="center", fontsize=10)
+                record("f7", target, run, blob["manifest"]["layer"], "-", f"probe accuracy, {tg}, locker {order}", v, lo,
+                       hi, r["n"])  # fmt: skip
+                record("f7", target, run, blob["manifest"]["layer"], "-", f"best baseline, {tg}, locker {order}", base)
+        ax.set_xticks([i * 2.6 + 0.5 for i in range(len(targets))], ["answer digit", "which sentence\nholds the locker",
+                                                                     "bridge identity\n(control)"])  # fmt: skip
+        ax.set_title(f"{label}, layer {blob['manifest']['layer']}")
+        ax.set_ylim(0, 1.1)
+        ax.grid(axis="y", color="#eeeeee")
+        ax.set_axisbelow(True)
+    axes[0].set_ylabel("cross-validated accuracy")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color="#c9b6dd"),
+         plt.Line2D([], [], color="black", lw=1.6)]  # fmt: skip
+    head(fig, "The bridge word holds where its locker is; the locker number is not detected at this n",
+         "A linear probe at the bridge word (org run, X0 items) reads which sentence holds the bridge's locker when that "
+         "sentence comes before the pick; the answer digit is not detected at this n.", h,
+         ["locker sentence before the pick", "after the pick", "best baseline (chance, majority, pick index, layout)"])  # fmt: skip
+    foot(fig, ["n = 99-101 scenes per bar; (a) and (b) cross-validated by bridge entity, (c) by scene; " + CI + ". The "
+               "identity control reaches only 0.67-0.87 here: the probes are data-starved (a run on 1,500 fresh scenes is "
+               "done, unopened). Unverified. Descriptive, added after the data. Runs: results/x0_probe/x0_probe_27b, "
+               "qwen35_9b_x0_probe."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.08, 1, 0.84))
+    fig.savefig(OUT / "f7_probe.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
 def f3(plt, F, color, grey) -> None:
-    fig, axes = plt.subplots(2, 2, figsize=(13, 9), sharey=True)
+    fig, axes = plt.subplots(2, len(MODELS), figsize=(18, 9), sharey=True)
     for j, (target, label, _, kmatch) in enumerate(MODELS):
         r = XF.Run(kmatch)
         la = X.PREDICTED[target]
@@ -302,7 +363,12 @@ def f3(plt, F, color, grey) -> None:
                 xs_d = [p[0] for p in pts[d]]
                 ax.fill_between(xs_d, [p[1]["excess"][1] for p in pts[d]], [p[1]["excess"][2] for p in pts[d]],
                                 color=grey, alpha=0.45, lw=0)  # fmt: skip
-                ax.plot(xs_d, [p[1]["excess"][0] for p in pts[d]], "-", color="#9e9e9e", lw=1)
+                ax.plot(xs_d, [p[1]["excess"][0] for p in pts[d]], "-o" if len(xs_d) == 1 else "-", color="#9e9e9e", lw=1,
+                        ms=4)  # fmt: skip
+                if len(xs_d) == 1:  # one atom count only (the 122B): its interval as an error bar
+                    c = pts[d][0][1]
+                    ax.errorbar(xs_d, [c["excess"][0]], yerr=[[c["excess"][0] - c["excess"][1]], [c["excess"][2] - c["excess"][0]]],
+                                color="#9e9e9e", capsize=2, lw=1)  # fmt: skip
             xs = [p[0] for p in pts["jpp"]]
             ax.fill_between(xs, [p[1]["excess"][1] for p in pts["jpp"]], [p[1]["excess"][2] for p in pts["jpp"]],
                             color=color[w], alpha=0.12, lw=0)  # fmt: skip
@@ -324,13 +390,13 @@ def f3(plt, F, color, grey) -> None:
     axes[0, 0].set_ylim(-0.3, 1.0)
     h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2, marker="o"), plt.Line2D([], [], color=F.RECALL, lw=2.2, marker="o"),
          plt.Rectangle((0, 0), 1, 1, color=grey, alpha=0.6)]  # fmt: skip
-    head(fig, "It is J++, not any dictionary; the 27B lookup needs more J++ atoms",
+    head(fig, "It is J++, not any dictionary; the 27B lookup needs more J++ atoms, the 122B's does not",
          "Each dictionary's 25-200 atoms removed at the pre-registered layer. Extra flips lost = flips lost minus those "
          "lost to a random part of the same size.", h,
          ["J++ (lookup)", "J++ (recall)", "logit lens (W_U), input embeddings (W_E), random atoms"])  # fmt: skip
     foot(fig, [f"n = 200 scenes per point; {CI}; grey = each of the three other dictionaries with its interval. "
-               "Unverified. Runs: qwen35_9b_x0_kmatch, x0_kmatch_27b."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.05, 1, 0.86))
+               f"Unverified. {BIG} Runs: qwen35_9b_x0_kmatch, x0_kmatch_27b, qwen35_122b_x0_necessity_r2."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.06, 1, 0.89))
     fig.savefig(OUT / "f3_dictionaries.png", dpi=150, facecolor="white")
     plt.close(fig)
 
@@ -338,7 +404,7 @@ def f3(plt, F, color, grey) -> None:
 def f4(plt, F, color, grey) -> None:
     from bridge_jspace.stats import wilson
 
-    fig, ax = plt.subplots(figsize=(10, 5.8))
+    fig, ax = plt.subplots(figsize=(13, 5.8))
     xs, labels = [], []
     for i, (target, label, run, _) in enumerate(MODELS):
         r = XF.Run(run)
@@ -355,10 +421,12 @@ def f4(plt, F, color, grey) -> None:
             ax.errorbar(x, p, yerr=[[p - lo], [hi - p]], color="#333333", capsize=3, lw=1)
             ax.text(x, hi + 2, f"{p:.0f}%\n({k} of {n})", ha="center", fontsize=10.5)
             xs.append(x)
-            labels.append(f"{label}, layer {la}\nlocker {order} pick")
+            labels.append(f"locker {order}\npick")
             record(
                 "f4", target, run, la, X.LOOKUP, f"share flipped by the whole edit, locker {order} pick", p, lo, hi, n
             )
+        ax.text(i * 3 + 0.5, -0.17, f"{label}, layer {la}", transform=ax.get_xaxis_transform(), ha="center",
+                va="top", fontsize=11, weight="bold")  # fmt: skip
     ax.set_xticks(xs, labels, fontsize=10)
     ax.set_ylim(0, 105)
     ax.set_ylabel("lookups flipped by the whole edit (%)")
@@ -369,8 +437,8 @@ def f4(plt, F, color, grey) -> None:
          "(\"The locker of the frog is 5.\" … \"Iris picked the frog.\").")  # fmt: skip
     foot(fig, ["Whole edit, no part removed; X0 items at the pre-registered layers; 95% Wilson intervals. Unverified. "
                "Descriptive, added "
-               "after the data. Runs: qwen35_9b_x0_necessity, x0_necessity_27b_chat."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.06, 1, 0.84))
+               f"after the data. Runs: {RUNS}."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.07, 1, 0.86))
     fig.savefig(OUT / "f4_order.png", dpi=150, facecolor="white")
     plt.close(fig)
 
@@ -384,6 +452,7 @@ def main() -> None:
     f4(plt, F, color, grey)
     f5(plt, F, color, grey)
     f6(plt, F, color, grey)
+    f7(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]

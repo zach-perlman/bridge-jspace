@@ -1,0 +1,90 @@
+{
+  "exp": "x0_necessity",
+  "run": "qwen35_122b_x0_necessity_r2",
+  "why": "X0 on the 122B (X0.md: layers 30 / 33 / 36 by the rule, predicted 33; 24 and 27 descriptive; Dan 24 Oct): the word, chat, J++ k = 25 with W_U, W_E, random; the k-curve at 33; the digit arm (jppall, jppdig, readout) descriptive",
+  "written_utc": "2026-10-24T16:46:03Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "490b12dfd0d3b988e8a00fd3ccb2aa4b8f31bd32",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "90190bcb8a761b2c58b51a77d3999bab4eeea9e10d77aaccaf781bae818a540e"
+  },
+  "layers": [
+    24,
+    27,
+    30,
+    33,
+    36
+  ],
+  "predicted": 33,
+  "renderings": [
+    "chat"
+  ],
+  "dicts": [
+    "jpp",
+    "wu",
+    "we",
+    "rand",
+    "jppall",
+    "jppdig"
+  ],
+  "k": 25,
+  "k_of": {
+    "jppdig": 10
+  },
+  "k_curve": {
+    "dicts": [
+      "jpp",
+      "jppall"
+    ],
+    "k": [
+      50,
+      100
+    ]
+  },
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+    "mode": "first",
+    "digit": "amendment 3: the step of the first digit token in 8 greedy tokens (non-chat renderings, when mode is digit)"
+  },
+  "descriptive": false,
+  "alt": "cf",
+  "curve_all_layers": false,
+  "readout": true,
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}

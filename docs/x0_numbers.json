@@ -303,6 +303,146 @@
   "text": "63% / 90.5%",
   "source": "results/x0_necessity/x0_necessity_27b_nothink/gate.json"
  },
+ "layer_122b": {
+  "text": "33",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "n_122b": {
+  "text": "200",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "ents_122b": {
+  "text": "40",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "verdict_122b": {
+  "text": "confirmed",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_excess_122b": {
+  "text": "0.00 [−0.06, 0.06]",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_jdep_122b": {
+  "text": "0.20",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_rdep_122b": {
+  "text": "0.20",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_whole_122b": {
+  "text": "89",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_noj_122b": {
+  "text": "71",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_norand_122b": {
+  "text": "71",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_dropj_122b": {
+  "text": "9.0",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_droprand_122b": {
+  "text": "9.0",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_excess_122b": {
+  "text": "0.32 [0.22, 0.41]",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_jdep_122b": {
+  "text": "0.40",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_rdep_122b": {
+  "text": "0.08",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_whole_122b": {
+  "text": "184",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_noj_122b": {
+  "text": "111",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_norand_122b": {
+  "text": "169",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_dropj_122b": {
+  "text": "36.5",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_droprand_122b": {
+  "text": "7.5",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "contrast_122b": {
+  "text": "0.32 [0.20, 0.43]",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_excess_k25_122b": {
+  "text": "0.00",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_excess_k50_122b": {
+  "text": "−0.02",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_excess_k100_122b": {
+  "text": "−0.12",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_excess_k25_122b": {
+  "text": "0.32",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_excess_k50_122b": {
+  "text": "0.45",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "rc_excess_k100_122b": {
+  "text": "0.43",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_order_before_122b": {
+  "text": "89%",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_order_after_122b": {
+  "text": "11%",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_excess_up_122b": {
+  "text": "0.04",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_swhole_up_122b": {
+  "text": "61%",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_n_up_122b": {
+  "text": "83",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_excess_af_122b": {
+  "text": "−0.05",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_swhole_af_122b": {
+  "text": "32%",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_n_af_122b": {
+  "text": "117",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
  "dig_lk_jpp_k25_before_9b": {
   "text": "0.00",
   "source": "results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json"
@@ -543,6 +683,126 @@
   "text": "8%",
   "source": "results/x0_necessity/x0_digit_27b_r2/readout.jsonl"
  },
+ "dig_lk_jpp_k25_before_122b": {
+  "text": "−0.01",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jpp_k50_before_122b": {
+  "text": "−0.01",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jpp_k100_before_122b": {
+  "text": "−0.11",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jppall_k25_before_122b": {
+  "text": "0.00",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jppall_k50_before_122b": {
+  "text": "−0.08",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jppall_k100_before_122b": {
+  "text": "−0.18",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jppdig_k10_before_122b": {
+  "text": "0.00",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jpp_k25_before_122b": {
+  "text": "0.20",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jpp_k50_before_122b": {
+  "text": "0.36",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jpp_k100_before_122b": {
+  "text": "0.43",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jppall_k25_before_122b": {
+  "text": "0.10",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jppall_k50_before_122b": {
+  "text": "0.35",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jppall_k100_before_122b": {
+  "text": "0.42",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jppdig_k10_before_122b": {
+  "text": "−0.01",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jpp_k25_after_122b": {
+  "text": "0.08",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jpp_k50_after_122b": {
+  "text": "−0.08",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jpp_k100_after_122b": {
+  "text": "−0.23",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jppall_k25_after_122b": {
+  "text": "0.00",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jppall_k50_after_122b": {
+  "text": "−0.23",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jppall_k100_after_122b": {
+  "text": "−0.15",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_lk_jppdig_k10_after_122b": {
+  "text": "−0.08",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jpp_k25_after_122b": {
+  "text": "0.41",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jpp_k50_after_122b": {
+  "text": "0.52",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jpp_k100_after_122b": {
+  "text": "0.43",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jppall_k25_after_122b": {
+  "text": "0.41",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jppall_k50_after_122b": {
+  "text": "0.50",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jppall_k100_after_122b": {
+  "text": "0.41",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_rc_jppdig_k10_after_122b": {
+  "text": "0.03",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json"
+ },
+ "dig_readout_first_before_122b": {
+  "text": "8%",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/readout.jsonl"
+ },
+ "dig_readout_first_after_122b": {
+  "text": "10%",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/readout.jsonl"
+ },
  "atoms_first_bridge_letters": {
   "text": "13 of 20",
   "source": "results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl"
@@ -553,6 +813,14 @@
  },
  "atoms_number_word_top25_letters": {
   "text": "3 of 500",
+  "source": "results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl"
+ },
+ "atoms_bridge_top25_letters": {
+  "text": "28 of 40",
+  "source": "results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl"
+ },
+ "atoms_bridge_coef2_letters": {
+  "text": "12%",
   "source": "results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl"
  },
  "atoms_first_bridge_all": {
@@ -566,6 +834,102 @@
  "atoms_number_word_top25_all": {
   "text": "3 of 500",
   "source": "results/x0_atoms/x0_atoms_27b_all/atoms.jsonl"
+ },
+ "atoms_bridge_top25_all": {
+  "text": "28 of 40",
+  "source": "results/x0_atoms/x0_atoms_27b_all/atoms.jsonl"
+ },
+ "atoms_bridge_coef2_all": {
+  "text": "12%",
+  "source": "results/x0_atoms/x0_atoms_27b_all/atoms.jsonl"
+ },
+ "single_lk_excess_9b": {
+  "text": "−0.02 [−0.05, 0.02]",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl"
+ },
+ "single_lk_excess_pt_9b": {
+  "text": "−0.02",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl"
+ },
+ "single_rc_excess_9b": {
+  "text": "0.37 [0.29, 0.43]",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl"
+ },
+ "single_lk_excess_k100_9b": {
+  "text": "0.12",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl"
+ },
+ "paired_lk_excess_9b": {
+  "text": "0.01 [−0.07, 0.08]",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/paired-20261024T172817Z/paired.json"
+ },
+ "paired_rc_excess_9b": {
+  "text": "−0.13 [−0.19, −0.08]",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/paired-20261024T172817Z/paired.json"
+ },
+ "single_lk_excess_27b": {
+  "text": "0.05 [0.01, 0.09]",
+  "source": "results/x0_necessity/x0_single_27b_r2/outcomes.jsonl"
+ },
+ "single_lk_excess_pt_27b": {
+  "text": "0.05",
+  "source": "results/x0_necessity/x0_single_27b_r2/outcomes.jsonl"
+ },
+ "single_rc_excess_27b": {
+  "text": "0.61 [0.51, 0.69]",
+  "source": "results/x0_necessity/x0_single_27b_r2/outcomes.jsonl"
+ },
+ "single_lk_excess_k100_27b": {
+  "text": "0.49",
+  "source": "results/x0_necessity/x0_single_27b_r2/outcomes.jsonl"
+ },
+ "paired_lk_excess_27b": {
+  "text": "−0.08 [−0.16, 0.00]",
+  "source": "results/x0_necessity/x0_single_27b_r2/paired-20261024T172816Z/paired.json"
+ },
+ "paired_rc_excess_27b": {
+  "text": "−0.15 [−0.22, −0.08]",
+  "source": "results/x0_necessity/x0_single_27b_r2/paired-20261024T172816Z/paired.json"
+ },
+ "probe_a_before_9b": {
+  "text": "0.13",
+  "source": "results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json"
+ },
+ "probe_a_chance_9b": {
+  "text": "0.11",
+  "source": "results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json"
+ },
+ "probe_b_before_9b": {
+  "text": "0.82",
+  "source": "results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json"
+ },
+ "probe_b_layout_before_9b": {
+  "text": "0.44",
+  "source": "results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json"
+ },
+ "probe_c_before_9b": {
+  "text": "0.83",
+  "source": "results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json"
+ },
+ "probe_a_before_27b": {
+  "text": "0.14",
+  "source": "results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json"
+ },
+ "probe_a_chance_27b": {
+  "text": "0.11",
+  "source": "results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json"
+ },
+ "probe_b_before_27b": {
+  "text": "0.85",
+  "source": "results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json"
+ },
+ "probe_b_layout_before_27b": {
+  "text": "0.51",
+  "source": "results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json"
+ },
+ "probe_c_before_27b": {
+  "text": "0.67",
+  "source": "results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json"
  },
  "share_rho_27b": {
   "text": "0.79",
