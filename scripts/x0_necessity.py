@@ -756,6 +756,7 @@ def figures(verdict_dir: Path) -> list[Path]:
 
 
 def main() -> None:
+    global CURVE_DICTS, K_CURVE  # set from the command line: the manifest records them; run_rendering reads them
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name", required=True, help="run name (results/x0_necessity/<name>/)")
@@ -764,7 +765,11 @@ def main() -> None:
     ap.add_argument("--renderings", nargs="+", default=list(RENDERINGS), choices=list(RENDERINGS))
     ap.add_argument("--layers", nargs="+", type=int, default=None)
     ap.add_argument("--n-boot", type=int, default=N_BOOT)
+    ap.add_argument("--curve-dicts", nargs="+", default=list(CURVE_DICTS), choices=list(DICTS),
+                    help="run: dictionaries of the k curve at the predicted layer")  # fmt: skip
+    ap.add_argument("--curve-k", nargs="+", type=int, default=list(K_CURVE), help="run: the k curve's atom counts")
     a = ap.parse_args()
+    CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
     if a.stage == "plan":  # tokenizer only
         from scripts import statement_positions as SP
 
