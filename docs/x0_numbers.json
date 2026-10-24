@@ -1231,6 +1231,118 @@
   "text": "25",
   "source": "results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json"
  },
+ "x0b_verdict_9b": {
+  "text": "holds",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_lk_excess_9b": {
+  "text": "0.01 [−0.01, 0.03]",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_rc_excess_9b": {
+  "text": "0.23",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_c_9b": {
+  "text": "0.22 [0.14, 0.31]",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_n_9b": {
+  "text": "1,010",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_ents_9b": {
+  "text": "53",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_lk_k100_9b": {
+  "text": "0.11",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_cells_9b": {
+  "text": "36 of 51",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/gate.json"
+ },
+ "x0b_probe_json_9b": {
+  "text": "0.70",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_probe_prose_9b": {
+  "text": "0.72",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_probe_table_9b": {
+  "text": "0.84",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json"
+ },
+ "x0b_lk_before_prose_9b": {
+  "text": "−0.00",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/cross-20261024T192343Z/cross.json"
+ },
+ "x0b_lk_before_json_9b": {
+  "text": "0.00",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/cross-20261024T192343Z/cross.json"
+ },
+ "x0b_lk_before_table_9b": {
+  "text": "0.00",
+  "source": "results/x0b_generalize/qwen35_9b_x0b_v2/cross-20261024T192343Z/cross.json"
+ },
+ "x0b_verdict_27b": {
+  "text": "holds",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_lk_excess_27b": {
+  "text": "0.08 [0.06, 0.10]",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_rc_excess_27b": {
+  "text": "0.56",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_c_27b": {
+  "text": "0.47 [0.42, 0.53]",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_n_27b": {
+  "text": "1,635",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_ents_27b": {
+  "text": "61",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_lk_k100_27b": {
+  "text": "0.57",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_cells_27b": {
+  "text": "49 of 51",
+  "source": "results/x0b_generalize/x0b_v2_27b/gate.json"
+ },
+ "x0b_probe_json_27b": {
+  "text": "0.80",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_probe_prose_27b": {
+  "text": "0.74",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_probe_table_27b": {
+  "text": "0.88",
+  "source": "results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json"
+ },
+ "x0b_lk_before_prose_27b": {
+  "text": "0.11",
+  "source": "results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json"
+ },
+ "x0b_lk_before_json_27b": {
+  "text": "0.03",
+  "source": "results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json"
+ },
+ "x0b_lk_before_table_27b": {
+  "text": "0.06",
+  "source": "results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json"
+ },
  "share_rho_27b": {
   "text": "0.79",
   "source": "results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json"

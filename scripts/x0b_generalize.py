@@ -448,9 +448,42 @@ def figures(verdict_dir: Path) -> Path:
     return path
 
 
+def cross(name: str, n_boot: int = X.N_BOOT) -> Path:
+    """Descriptive: both readers' cells at the predicted layer by format x locker order (Q27.12 asks about the lookup by
+    format in locker-before scenes)."""
+    src = RESULTS / name
+    m = json.loads((src / "manifest.json").read_text())
+    cases = {c["scene"]: c for c in X.read_jsonl(src / "cases.jsonl")}
+    rows = [r for r in X.read_jsonl(src / "outcomes.jsonl") if r["layer"] == m["predicted"]]
+    lines = [f"# X0b: format x locker order, layer {m['predicted']} ({name})", "",
+             "Descriptive. J++ k = 25 signed; bootstrap over bridge entities. UNVERIFIED. ⚠ = fewer than 30 switched.", "",
+             "| format | locker vs pick | reader | n | switched | S_whole | Jdep | Rdep | excess | label |",
+             "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    blob = []
+    for fmt in ("prose", "json", "table"):
+        for order in ("before", "after"):
+            sub = [r for r in rows if cases[r["scene"]]["format"] == fmt and cases[r["scene"]]["order"] == order]
+            if not sub:
+                continue
+            cells = X.cells_of(sub, n_boot)
+            for w in X.READERS:
+                c = cells[("chat", m["predicted"], w, *X.MAIN)]
+                blob.append({"format": fmt, "order": order, "reader": w, **c})
+                flag = " ⚠" if c["switched_whole"] < X.VALID_N else ""
+                lines.append(f"| {fmt} | {order} | {'lookup' if w == X.LOOKUP else 'recall'} | {c['n']} | "
+                             f"{c['switched_whole']}{flag} | {X.fmt3(c['S_whole'])} | {X.fmt3(c['Jdep'])} | "
+                             f"{X.fmt3(c['Rdep'])} | {X.fmt3(c['excess'])} | {c['label']} |")  # fmt: skip
+    out = src / f"cross-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    (out / "cross.json").write_text(json.dumps(blob, indent=1) + "\n")
+    (out / "cross.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
+    ap.add_argument("stage", choices=["plan", "run", "verdict", "figures", "cross"])
     ap.add_argument("--name")
     ap.add_argument("--why", default="")
     ap.add_argument("--set", default="x0b_v2")
@@ -467,6 +500,8 @@ def main() -> None:
     elif a.stage == "run":
         stage_run(a.name, a.why, a.set)
         figures(write_verdict(a.name, a.n_boot))
+    elif a.stage == "cross":
+        cross(a.name, a.n_boot)
     elif a.stage == "verdict":
         figures(write_verdict(a.name, a.n_boot))
     else:

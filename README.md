@@ -9,7 +9,7 @@
 
 **Status (24 Oct 2026).**
 - Models: Qwen3.5-9B, Qwen3.6-27B and Qwen3.5-122B-A10B (FP8 weights, mixture of experts, split over two H100s; its J++ was fitted on the bf16 weights; a hardware gate reproduced a 23 Oct cell first, 0.998 per-row agreement).
-- All numbers are unverified (not yet hand-checked); the layers, the rule and Dan's predictions were fixed before any result was opened. Built at 825db9ef from the X0 run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
+- All numbers are unverified (not yet hand-checked); the layers, the rule and Dan's predictions were fixed before any result was opened. Built at 71ee8da1 from the X0 run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
 
 ## Main findings
 
@@ -21,6 +21,7 @@
    - **122B:** the pre-registered test at layer 33: **confirmed** (lookup 0.00 [−0.06, 0.06]; recalls lose 0.40 of their flips). At 100 atoms the lookup stays at −0.12. Up to layer 30 both readers need the J++ part. Its J++ part takes no smaller a share of the change (0.25) than the 27B's (0.16) or the 9B's (0.23), so its weaker recall dependence is not a smaller J++ share; its cause is open.
 4. **Not a missing digit.** Lookups flip mostly when the locker sentence comes *before* the pick sentence, so the lookup might read a locker number already attached to the bridge word, which our letter-only J++ dictionary cannot remove. The digit tokens are not the route: with every token allowed, digits included, the 27B lookup's extra loss is 0.13 (letters only: 0.14), and the 10 digit directions alone give 0.00 on all three models.
 5. **The address and the value at the bridge word, outside the J++ part (descriptive, probes).** On 1,500 fresh scenes, where the locker sentence comes before the pick, both are linearly readable at the bridge word: which sentence holds the bridge's locker (0.99 on the 27B, 0.97 on the 9B; the layout alone gives 0.53) and the locker number (0.40 and 0.27, chance 0.11; 0.38 and 0.28 with the sentence factored out). On the one-change pairs the address readout follows the edit (both members of a pair right in 0.57 [0.44, 0.71] on the 27B, 0.51 [0.40, 0.61] on the 9B; the layout alone gets none). The readout tracks the item's first mention in the context, which in these scenes is the locker sentence. Where another person's pick of the item comes first, it points there: on the 9B in 0.90 of such pairs, and the lookup still switches to the alt's locker in 1.00 (27B: 0.56 and 1.00; the same without the J++ part). So the bridge word carries a first-mention pointer that a linear probe reads and the lens does not, and the lookup does not need it (the model may hold another pointer in other directions). The change of address sits in the rest of the edit, not in its J++ part: at 25 atoms the J++ part holds 10% of the change but 0.5% of its component along the probe's directions (27B). Removing the ridge probe's 4 address directions (1% of the change), or keeping only them, changes no lookup (0.00 [0.00, 0.00]): the probe's directions are not what the lookup reads.
+6. **Beyond one scene type (X0b, exploratory; one-change edit).** On 7 topics × prose / JSON / tables × 3 difficulty levels, the pooled rule holds on both models: 27B lookup 0.08 [0.06, 0.10], C 0.47 [0.42, 0.53] (1,635 scenes, 49 of 51 cells pass the gate); 9B lookup 0.01 [−0.01, 0.03], C 0.22 [0.14, 0.31] (1,010 scenes; under the brief's stricter C threshold, 0.30, only the 27B passes). On the 27B, locker-before lookups are around in JSON (0.03) and tables (0.06) and mixed in prose (0.11); at 100 atoms the 27B lookup reaches 0.57, as on X0's scenes. The address probe (which locker row is the bridge's) reads above every baseline in every format (locker-before, 27B: prose 0.74, JSON 0.80, tables 0.88).
 
 ![Removing the J++ part costs recall far more than lookup](figures/status_2026-10-24/f1_readers.png)
 
@@ -68,7 +69,7 @@ How to read this:
 | Lookup flips depend on sentence order: locker before pick 76%–89%, after 9%–19% | figure F4; X0b fixes the order by design |
 | The two-change edit inflated the extra loss: on the same items, one change instead of two moves the recall's by −0.15 [−0.22, −0.08] (27B) and −0.13 [−0.19, −0.08] (9B), the 27B lookup's by −0.08 [−0.16, 0.00] | the one-change edit from X0b on (it makes two people pick the same item) |
 | On the 27B, the lookup's drop with depth follows how much of the change J++ captures (Spearman 0.79) | stated beside the depth figure |
-| Three models from one family, generated scenes only | X0b (running); natural-text sets planned |
+| Three models from one family, generated scenes only | X0b: 7 topics, 3 formats, 3 levels (holds on both models); natural text parked (X3) |
 
 ![What moves lookups: sentence order](figures/status_2026-10-24/f4_order.png)
 
@@ -77,7 +78,6 @@ How to read this:
 | Step | What it tells us |
 |---|---|
 | Word only, J++ without the word, and a PCA dictionary (27B, 9B) | whether recall's loss is the bridge word, J++ beyond the word, or any direction the layer favours |
-| X0b: 7 topics, 3 formats, 3 difficulty levels, one-change edit (running) | whether the contrast holds beyond one simple scene type, and whether the address forms in JSON and tables |
 | X3 (natural passages) or X4 (the locker key written word for word, translated, or described); Dan decides | whether the contrast holds on natural text, or whether the address forms only when the key matches word for word |
 
 ## More

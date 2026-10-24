@@ -36,6 +36,7 @@ SINGLE = {"9b": "qwen35_9b_x0_single_r2", "27b": "x0_single_27b_r2"}
 PROBES = {"9b": "qwen35_9b_x0_probe", "27b": "x0_probe_27b"}
 PROBES_V4 = {"9b": "qwen35_9b_x0_probe_v4", "27b": "x0_probe_v4_27b"}
 AMNESIC = {"9b": "qwen35_9b_x0_amnesic", "27b": "x0_amnesic_27b"}
+X0B = {"9b": "qwen35_9b_x0b_v2", "27b": "x0b_v2_27b"}
 ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all"}
 ORDER = "org locker vs asked pick"
 
@@ -127,6 +128,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     probe_numbers(num)
     address_numbers(num)
     first_mention_numbers(num)
+    x0b_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -225,6 +227,41 @@ def probe_numbers(num: Numbers) -> None:
         num.add(f"probe_b_before_{m}", f2(rows["locker sentence"]["probe"][0]), src)
         num.add(f"probe_b_layout_before_{m}", f2(rows["locker sentence"]["layout"][0]), src)
         num.add(f"probe_c_before_{m}", f2(rows["bridge identity"]["probe"][0]), src)
+
+
+def x0b_numbers(num: Numbers) -> None:
+    """X0b v2 (exploratory): the pooled rule at the predicted layer, the gate, the k = 100 lookup, probe (b) per format
+    (locker-before), and the 27B's locker-before lookups by format (the cross stage)."""
+    for m, run in X0B.items():
+        root = pins.RESULTS_DIR / "x0b_generalize" / run
+        path = sorted(root.glob("verdict-*/verdict.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        v = json.loads(path.read_text())
+        pred = v["predicted"]
+        cells = {(c["layer"], c["reader"], c["dict"], c["k"], c["omp"]): c for c in v["cells"]}
+        lk, rc = cells[(pred, X.LOOKUP, *X.MAIN)], cells[(pred, X.RECALL, *X.MAIN)]
+        num.add(f"x0b_verdict_{m}", v["verdict"], src)
+        num.add(f"x0b_lk_excess_{m}", ci(lk["excess"]), src)
+        num.add(f"x0b_rc_excess_{m}", f2(rc["excess"][0]), src)
+        num.add(f"x0b_c_{m}", ci(v["contrast"][str(pred)]), src)
+        num.add(f"x0b_n_{m}", f"{lk['n']:,}", src)
+        num.add(f"x0b_ents_{m}", str(lk["entities"]), src)
+        num.add(f"x0b_lk_k100_{m}", f2(cells[(pred, X.LOOKUP, "jpp", 100, "signed")]["excess"][0]), src)
+        gate = json.loads((root / "gate.json").read_text())["gate"]
+        num.add(
+            f"x0b_cells_{m}",
+            f"{sum(g['pass'] for g in gate.values())} of {len(gate)}",
+            str((root / "gate.json").relative_to(pins.REPO_ROOT)),
+        )
+        for r in v["probe_b"]:
+            if r["order"] == "before":
+                num.add(f"x0b_probe_{r['format']}_{m}", f2(r["probe"][0]), src)
+        cross = sorted(root.glob("cross-*/cross.json"))
+        if cross:
+            src_c = str(cross[-1].relative_to(pins.REPO_ROOT))
+            for r in json.loads(cross[-1].read_text()):
+                if r["order"] == "before" and r["reader"] == X.LOOKUP:
+                    num.add(f"x0b_lk_before_{r['format']}_{m}", f2(r["excess"][0]), src_c)
 
 
 def first_mention_numbers(num: Numbers) -> None:

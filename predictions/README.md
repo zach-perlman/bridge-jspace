@@ -28,11 +28,12 @@ Calibration, by confidence bucket, across batches from 25 on (filled as results 
 |---|---|---|---|---|
 | 50% | 0 | – | – | – |
 | 60% | 0 | – | – | – |
-| 70% | 14 | 4 | 0.29 | 0.38 |
-| 80% | 10 | 2 | 0.20 | 0.52 |
-| 90% | 11 | 8 | 0.73 | 0.23 |
+| 70% | 16 | 5 | 0.31 | 0.36 |
+| 80% | 11 | 3 | 0.27 | 0.48 |
+| 85% | 1 | 1 | 1.00 | 0.02 |
+| 90% | 12 | 8 | 0.67 | 0.28 |
 | 95% | 2 | 1 | 0.50 | 0.45 |
 
-Batches 25-27 so far (37 scored answers with a confidence; Q27.9-Q27.13 pending on X0b): mean Brier 0.38 ("50%, no prior" everywhere would score 0.25); 15 of 37 top options happened. Not in the Brier totals: Q25.5 and Q25.10 (no confidence given; both wrong) and Q25.12 (X-fig, descriptive). The 95% row holds the two answers given at 95% (outside the 50-90% scale). Multi-option answers are scored on their top option.
+Batches 25-27 (42 scored answers with a confidence): mean Brier 0.36 ("50%, no prior" everywhere would score 0.25); 18 of 42 top options happened. Not in the Brier totals: Q25.5 and Q25.10 (no confidence given; both wrong) and Q25.12 (X-fig, descriptive). Rows at 85% and 95% hold answers given off the 50-90% scale. Multi-option answers are scored on their top option. Batches 28-29: pending.
 
 **Open:** batch 12 (opened early at Dan's request; answers count as written after the results). Batches 13-15 are scored (23 Oct); the runs still pending then are named in each verdict.
