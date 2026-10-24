@@ -119,16 +119,76 @@ def equal_share(top, x, target):
     return torch.zeros_like(coef).scatter(-1, order, c) @ top, k
 
 
-def stage_run(name: str, single: str, x0b: str | None = None, used: tuple[str, ...] | None = None) -> Path:
+def word_parts(lens, tok, layer: int, letters, jdic, cases: list[dict], x, want: set[str]) -> tuple[dict, list[int]]:
+    """Per item, the parts of Δ tied to the bridge word (want: any of w, jw, jwo): w, the least-squares fit on the J++
+    directions of the org and alt bridge tokens' one-token variants; jw, signed OMP (k = K) over the letter atoms with
+    those variants banned, fit on the whole Δ; jwo, the same fit on Δ - w over the atoms projected off the word's span
+    (so it holds none of the word's energy; checked per item). Returns ({part: [n, d]}, variants per item)."""
+    import torch
+
+    from bridge_jspace.utils import progress
+    from scripts.exp04_brew_parts import signed_omp
+
+    row_of = {int(t): i for i, t in enumerate(letters.tolist())}
+    out = {d: torch.zeros_like(x) for d in want | {"w"}}
+    n_var = []
+    for i, c in enumerate(progress(cases if want else [], "word and J++-without-word parts (case)")):
+        ban = variant_ids(tok, [c["bridge"], c["cf_bridge"]])
+        n_var.append(len(ban))
+        v = lens.vectors(layer, torch.tensor(ban, device="cuda"))  # [m, d] unit
+        out["w"][i] = torch.linalg.lstsq(v.T, x[i][:, None]).solution[:, 0] @ v
+        keep = torch.ones(len(letters), dtype=torch.bool, device="cuda")
+        keep[[row_of[b] for b in ban if b in row_of]] = False
+        if "jw" in want:
+            out["jw"][i] = signed_omp(jdic[keep], x[i : i + 1], K)[0]
+        if "jwo" in want:
+            q = torch.linalg.qr(v.T.float()).Q  # [d, m]
+            dk = jdic[keep].float()
+            dk.addmm_(dk @ q, q.T, alpha=-1.0)
+            norm = dk.norm(dim=-1, keepdim=True)
+            dk.mul_((norm > 1e-3) / norm.clamp_min(1e-3))  # atoms (almost) inside the word's span: zero rows
+            out["jwo"][i] = signed_omp(dk, (x[i] - out["w"][i])[None], K)[0]
+            del dk
+            leak = float((out["jwo"][i] @ q).norm() ** 2 / out["jwo"][i].norm().clamp_min(1e-30) ** 2)
+            assert leak < 1e-3, f"jwo holds {leak:.2e} of its energy in the word's span ({c['scene']})"
+    return out, n_var
+
+
+def keep_cells(rows: list[dict], n_boot: int) -> list[dict]:
+    """The keep-only arms (arm keep_part / keep_rand per dict): per dict and reader, the part alone's switches as a
+    share of the whole change's, the random part alone's, and their paired difference (cluster bootstrap)."""
+    from scripts import x0_amnesic as AM
+
+    out = []
+    for d in sorted({r["dict"] for r in rows if r["arm"] == "keep_part"}):
+        for w in X.READERS:
+            mine = [r for r in rows if r["reader"] == w and (r["arm"] == "whole" or r["dict"] == d)]
+            scenes = sorted({r["scene"] for r in mine})
+            got = {(r["scene"], r["arm"]): r["switched"] for r in mine}
+            ent = {r["scene"]: r["entity"] for r in mine}
+            sw = {a: [got[(s, a)] for s in scenes] for a in ("whole", "keep_part", "keep_rand")}
+            r_ = X.resampled_rates(sw, [ent[s] for s in scenes], n_boot)
+            s = {a: float(np.mean(v)) for a, v in sw.items()}
+            out.append({"part": d, "reader": w, "n": len(scenes), "S": s,
+                        "kept": AM.with_ci(AM.of_whole, s, r_, "keep_part"),
+                        "rand_kept": AM.with_ci(AM.of_whole, s, r_, "keep_rand"),
+                        "difference": AM.paired(AM.of_whole, s, r_, "keep_part", "keep_rand")})  # fmt: skip
+    return out
+
+
+def stage_run(
+    name: str, single: str, x0b: str | None = None, used: tuple[str, ...] | None = None, keep: tuple[str, ...] = ()
+) -> Path:
     """The single-change run's items (the four parts, or `used`), or with x0b an X0b run's eligible items (w, jw, jpp:
-    Dan's item 6, the X0b arms)."""
+    Dan's item 6, the X0b arms). keep: parts also pasted alone, against the random part of their share alone (Dan,
+    25 Oct ~00:20)."""
     import torch
 
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
     from bridge_jspace.utils import git_state, progress
     from scripts import statement_positions as SP
-    from scripts.exp04_brew_parts import AddRows, signed_omp
+    from scripts.exp04_brew_parts import AddRows
 
     pins.check_run_name(name)
     out = RESULTS / name
@@ -140,6 +200,7 @@ def stage_run(name: str, single: str, x0b: str | None = None, used: tuple[str, .
     assert x0b or sm["alt"] == "single", f"{single} is not a single-change run"
     used = used or (("w", "jw", "jpp") if x0b else PARTS)
     assert "pca_eq" not in used or "jpp" in used, "pca_eq matches the jpp part's share: run jpp beside it"
+    assert set(keep) <= set(used), "a kept part must be one of the parts"
     layer = sm["predicted"]
     scenes = sorted({r["scene"] for r in X.read_jsonl(src_dir / "outcomes.jsonl") if r["rendering"] == "chat"})
     X.ALT = "single"
@@ -152,23 +213,22 @@ def stage_run(name: str, single: str, x0b: str | None = None, used: tuple[str, .
     pca, pca_info = pca_dictionary(model, layer) if {"pca", "pca_eq"} & set(used) else (None, None)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "single": x0b or single, "source_exp": "x0b_generalize" if x0b else X.EXP, "single_code": sm["code"],
-         "set": sm["set"], "layer": layer, "items": len(scenes), "k": K, "parts": list(used), "pca": pca_info, "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
+         "set": sm["set"], "layer": layer, "items": len(scenes), "k": K, "parts": list(used), "keep": list(keep), "pca": pca_info, "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED, "held_out": HELD_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     print(json.dumps(pca_info), flush=True)
     ws = X.whitespace_mask(model)
     digits = torch.tensor(X.digit_ids(tok), device="cuda")
     letters = model.letter_token_ids()
-    row_of = {int(t): i for i, t in enumerate(letters.tolist())}
     jdic = lens.vectors(layer, letters)
     with torch.no_grad():
         h_org, deltas = [], []
         for c in progress(cases, "Δ at the bridge's word (case)"):
             ids = c["readers"][X.LOOKUP]["ids"]
             h = {
-                v: model.run(torch.tensor([ids[v]], device="cuda"), record=(layer,))[1][layer][c["pos"]]
+                v: model.run(torch.tensor([ids[v]], device="cuda"), record=(layer,))[1][layer][c["pos"]].to("cuda")
                 for v in ("org", "alt")
-            }
+            }  # .to: a model split over two GPUs (the 122B) records this layer on either
             h_org.append(h["org"].float())
             deltas.append((h["alt"] - h["org"]).float())
         x = torch.stack(deltas)
@@ -183,31 +243,8 @@ def stage_run(name: str, single: str, x0b: str | None = None, used: tuple[str, .
             mine = torch.zeros_like(coef).scatter(-1, idx, coef.gather(-1, idx)) @ pca
             err = float(((mine - parts["pca"]).norm(dim=-1) / parts["pca"].norm(dim=-1).clamp_min(1e-30)).max())
             assert err < 1e-3, f"top-|coef| order differs from signed OMP on the PCA atoms (max rel. err {err:.2e})"
-        w_part, jw_part, jwo_part, n_var = torch.zeros_like(x), torch.zeros_like(x), torch.zeros_like(x), []
-        for i, c in enumerate(
-            progress(cases if {"w", "jw", "jwo"} & set(used) else [], "word and J++-without-word parts (case)")
-        ):
-            ban = variant_ids(tok, [c["bridge"], c["cf_bridge"]])
-            n_var.append(len(ban))
-            v = lens.vectors(layer, torch.tensor(ban, device="cuda"))  # [m, d] unit
-            coef = torch.linalg.lstsq(v.T, x[i][:, None]).solution[:, 0]
-            w_part[i] = coef @ v
-            keep = torch.ones(len(letters), dtype=torch.bool, device="cuda")
-            keep[[row_of[b] for b in ban if b in row_of]] = False
-            if "jw" in used:
-                jw_part[i] = signed_omp(jdic[keep], x[i : i + 1], K)[0]
-            if "jwo" in used:
-                # the atoms and Δ projected off the word's span, so the part holds none of the word's energy
-                q = torch.linalg.qr(v.T.float()).Q  # [d, m]
-                dk = jdic[keep].float()
-                dk.addmm_(dk @ q, q.T, alpha=-1.0)
-                norm = dk.norm(dim=-1, keepdim=True)
-                dk.mul_((norm > 1e-3) / norm.clamp_min(1e-3))  # atoms (almost) inside the word's span: zero rows
-                jwo_part[i] = signed_omp(dk, (x[i] - w_part[i])[None], K)[0]
-                del dk
-                leak = float((jwo_part[i] @ q).norm() ** 2 / jwo_part[i].norm().clamp_min(1e-30) ** 2)
-                assert leak < 1e-3, f"jwo holds {leak:.2e} of its energy in the word's span ({c['scene']})"
-        parts.update({"w": w_part, "jw": jw_part, "jwo": jwo_part})
+        words, n_var = word_parts(lens, tok, layer, letters, jdic, cases, x, {"w", "jw", "jwo"} & set(used))
+        parts.update(words)
         basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to("cuda")
         arms, shares = {X.WHOLE: x}, []
         for d in used:
@@ -217,6 +254,8 @@ def stage_run(name: str, single: str, x0b: str | None = None, used: tuple[str, .
             k = 0 if d in ("w", "pca_eq") else K
             arms[(d, k, fit, "no_part")] = x - parts[d]
             arms[(d, k, fit, "no_rand")] = x - rand
+            if d in keep:
+                arms[(d, k, fit, "keep_part")], arms[(d, k, fit, "keep_rand")] = parts[d], rand
             shares += [{"scene": c["scene"], "dict": d, "k": k, "omp": fit, "share": round(float(share[i]), 5),
                         **({"variants": n_var[i]} if d == "w" else {}),
                         **({"k_eq": int(k_eq[i])} if d == "pca_eq" else {})} for i, c in enumerate(cases)]  # fmt: skip
@@ -298,7 +337,16 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
                   "still loses >= 0.20 with the word intact -> 'recall needs J++ components beyond the word'; <= 0.10 -> "
                   "'the word and the other J++ components are redundant: either suffices'. 'Loses' (set by the agent "
                   f"before the run): the point estimate of the recall's excess. This run: {X.fmt3(rc)} -> {branch}."]  # fmt: skip
-    (out / "verdict.json").write_text(json.dumps({"run": name, "manifest": m, "rows": blob}, indent=1) + "\n")
+    kept = keep_cells(rows, n_boot) if m.get("keep") else []
+    if kept:
+        lines += ["", "## Each part pasted alone (Dan, 25 Oct ~00:20): its switches as a share of the whole change's, against "
+                  "the random part of its share alone", "", "| part | reader | n | kept / whole | random kept / whole | "
+                  "difference |", "|---|---|---|---|---|---|"]  # fmt: skip
+        lines += [f"| {label[k['part']]} | {'lookup' if k['reader'] == X.LOOKUP else 'recall'} | {k['n']} | {X.fmt3(k['kept'])} | "
+                  f"{X.fmt3(k['rand_kept'])} | {X.fmt3(k['difference'])} |" for k in kept]  # fmt: skip
+    (out / "verdict.json").write_text(
+        json.dumps({"run": name, "manifest": m, "rows": blob, "kept": kept}, indent=1) + "\n"
+    )
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     return out
@@ -311,12 +359,13 @@ def main() -> None:
     ap.add_argument("--single", default="x0_single_27b_r2")
     ap.add_argument("--x0b", default=None, help="run: an X0b run's eligible items instead (parts w, jw, jpp)")
     ap.add_argument("--parts", default=None, help=f"run: comma-separated, of {PARTS}, pca_eq, jwo (default: {PARTS})")
+    ap.add_argument("--keep", default="", help="run: comma-separated parts also pasted alone (keep-only arms)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "run":
         used = tuple(a.parts.split(",")) if a.parts else None
         assert used is None or set(used) <= {*PARTS, "pca_eq", "jwo"}, used
-        stage_run(a.name, a.single, a.x0b, used)
+        stage_run(a.name, a.single, a.x0b, used, tuple(k for k in a.keep.split(",") if k))
     stage_verdict(a.name, a.n_boot)
 
 

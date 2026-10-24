@@ -1,0 +1,27 @@
+id: x0_replicate
+title: "Replication of the 9B's double dissociation, fixed in advance (Dan, 25 Oct ~00:00 / ~00:20): fresh one-change items, J++ / Alf (not refit) / PCA at J++'s share, plus keep-only word and word-orthogonal arms; 9B L12 on GPU1 (decisive), 27B L32 on GPU0 (descriptive)"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 1.0
+depends_on: [x0_pcaeq_mmlf]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x0_replicate.py run --name x0_replicate_27b & p27=$!;
+  CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0_replicate.py run --name qwen35_9b_x0_replicate & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  On fresh scenes (d1_topics_v5, seed 2510, no scene shared with v3 or v4), with an edit that changes only the asked pick and both locker sentences before the pick, does removing the J++ part cost the recall and not the lookup, and removing the layout-free pointer directions (Alf, fit on the old fresh scenes, not refit) cost the lookup and not the recall, on the 9B?
+why_it_matters: >-
+  The 9B's double dissociation (J++: recall 0.37, lookup -0.02; Alf: lookup 0.49, recall 0.12) was found after the data, on 73 items, with Alf fit on states from the same generator. A fresh-scene replication fixed in advance decides whether it goes on the slides as a finding.
+hypotheses:
+  H-dissociation: 'the rule holds on the 9B. Prior: Dan''s Q31.1 (batch 31, committed before the results are opened)'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct). Decisive on the 9B: holds iff J++: recall excess >= 0.20 with lower CI > 0 and lookup excess <= 0.10; and Alf: lookup excess >= 0.20 with lower CI > 0 and recall excess <= 0.10 or at most half the lookup's (point estimates where no CI is named). The 27B: the same rule, descriptive. PCA at J++'s share: descriptive. Keep-only arms (the word part alone, J++ orthogonal to the word alone; both readers, each against the random part of its share alone): descriptive. Items: chat, the edit that changes only the asked pick, org and alt locker sentences both before the pick, eligible as in X0 (both readers say and read the org and alt answers right; X0's gate 0.80 on these cases), the first 200 in scene order. Cluster bootstrap over bridge entities (10,000 resamples, seed 0); top-token read, both readers on the identical patch. Results stay closed until Dan's batch-31 commit.
+controls:
+- 'each part against a random-subspace part of its own share; each kept part against the random part alone'
+- 'both readers on the identical patch'
+- 'fresh scenes (no context shared with d1_topics_v3 or v4); Alf fit on d1_topics_v4 and not refit'
+n: '200 items per model (528 cases with both locker sentences before the pick, before the eligibility filter)'
+seeds: [0]
+notes: "One 2-GPU job, two processes. Queue (Dan ~00:20): this -> 122B b1-b4 -> natural passages -> 122B b5 -> b6; no new job after 07:30."

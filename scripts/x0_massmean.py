@@ -148,7 +148,7 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
         for c in progress(cases, "Δ at the bridge's word (case)"):
             ids = c["readers"][X.LOOKUP]["ids"]
             h = {
-                v: model.run(torch.tensor([ids[v]], device="cuda"), record=(layer,))[1][layer][c["pos"]]
+                v: model.run(torch.tensor([ids[v]], device="cuda"), record=(layer,))[1][layer][c["pos"]].to("cuda")
                 for v in ("org", "alt")
             }
             deltas.append((h["alt"] - h["org"]).float())
