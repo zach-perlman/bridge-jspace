@@ -92,7 +92,9 @@ def pca_dictionary(model, layer: int) -> tuple[object, dict]:
     }
 
 
-def stage_run(name: str, single: str) -> Path:
+def stage_run(name: str, single: str, x0b: str | None = None) -> Path:
+    """The single-change run's items (all four parts), or with x0b an X0b run's eligible items (w, jw, jpp: Dan's
+    item 6, the X0b arms)."""
     import torch
 
     from bridge_jspace.lens import JLens
@@ -104,23 +106,25 @@ def stage_run(name: str, single: str) -> Path:
     pins.check_run_name(name)
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
-    sm = json.loads((X.RESULTS / single / "manifest.json").read_text())
-    assert sm["alt"] == "single", f"{single} is not a single-change run"
+    from scripts import x0b_generalize as B
+
+    src_dir = B.RESULTS / x0b if x0b else X.RESULTS / single
+    sm = json.loads((src_dir / "manifest.json").read_text())
+    assert x0b or sm["alt"] == "single", f"{single} is not a single-change run"
+    used = ("w", "jw", "jpp") if x0b else PARTS
     layer = sm["predicted"]
-    scenes = sorted(
-        {r["scene"] for r in X.read_jsonl(X.RESULTS / single / "outcomes.jsonl") if r["rendering"] == "chat"}
-    )
+    scenes = sorted({r["scene"] for r in X.read_jsonl(src_dir / "outcomes.jsonl") if r["rendering"] == "chat"})
     X.ALT = "single"
     model = load_model()
     lens = JLens(model, "jpp")
     tok = model.tokenizer
-    cases, _ = X.build_cases(tok, sm["set"])
+    cases, _ = B.build_cases(tok, sm["set"]) if x0b else X.build_cases(tok, sm["set"])
     by_scene = {c["scene"]: c for c in cases if c["rendering"] == "chat"}
     cases = [by_scene[s] for s in scenes]
-    pca, pca_info = pca_dictionary(model, layer)
+    pca, pca_info = pca_dictionary(model, layer) if "pca" in used else (None, None)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
-         "single": single, "single_code": sm["code"], "set": sm["set"], "layer": layer, "items": len(scenes), "k": K,
-         "parts": list(PARTS), "pca": pca_info, "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
+         "single": x0b or single, "source_exp": "x0b_generalize" if x0b else X.EXP, "single_code": sm["code"],
+         "set": sm["set"], "layer": layer, "items": len(scenes), "k": K, "parts": list(used), "pca": pca_info, "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED, "held_out": HELD_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     print(json.dumps(pca_info), flush=True)
@@ -140,7 +144,9 @@ def stage_run(name: str, single: str) -> Path:
             h_org.append(h["org"].float())
             deltas.append((h["alt"] - h["org"]).float())
         x = torch.stack(deltas)
-        parts = {"jpp": X.fit(jdic, x, K, "signed"), "pca": X.fit(pca, x, K, "signed")}
+        parts = {"jpp": X.fit(jdic, x, K, "signed")}
+        if pca is not None:
+            parts["pca"] = X.fit(pca, x, K, "signed")
         w_part, jw_part, n_var = torch.zeros_like(x), torch.zeros_like(x), []
         for i, c in enumerate(progress(cases, "word and J++-without-word parts (case)")):
             ban = variant_ids(tok, [c["bridge"], c["cf_bridge"]])
@@ -154,7 +160,7 @@ def stage_run(name: str, single: str) -> Path:
         parts.update({"w": w_part, "jw": jw_part})
         basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to("cuda")
         arms, shares = {X.WHOLE: x}, []
-        for d in PARTS:
+        for d in used:
             share = parts[d].norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
             rand = SP.random_subspace_part(x, share, basis)
             fit = "lsq" if d == "w" else "signed"
@@ -178,7 +184,7 @@ def stage_run(name: str, single: str) -> Path:
     X.write_jsonl(out / "shares.jsonl", shares)
     f16 = lambda t: t.cpu().numpy().astype(np.float16)  # noqa: E731
     np.savez_compressed(out / "states.npz", scene=np.array(scenes), h_org=f16(torch.stack(h_org)), delta=f16(x),
-                        **{f"part_{d}": f16(parts[d]) for d in PARTS})  # fmt: skip
+                        **{f"part_{d}": f16(parts[d]) for d in used})  # fmt: skip
     print("wrote", out, flush=True)
     return out
 
@@ -191,20 +197,22 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     cells = X.cells_of(rows, n_boot)
     out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
-    med = {d: statistics.median(s["share"] for s in shares if s["dict"] == d) for d in PARTS}
+    used = m["parts"]
+    med = {d: statistics.median(s["share"] for s in shares if s["dict"] == d) for d in used}
     nvar = [s["variants"] for s in shares if s["dict"] == "w"]
-    label = {"w": "word only (least squares)", "jw": "J++ without the word (k = 25)", "pca": f"PCA top {m['pca']['n']} (k = 25)",
+    label = {"w": "word only (least squares)", "jw": "J++ without the word (k = 25)", "pca": f"PCA top {N_PCA} (k = 25)",
              "jpp": "J++ (k = 25, reference)"}  # fmt: skip
     lines = [f"# Word, J++ without the word, PCA: {name}", "",
              f"{NOTE} Model {m['model']['target']}, layer {m['layer']}, the single-change items of {m['single']} (n = "
              f"{m['items']}); each part removed against a random subspace of its own share; bootstrap over bridge entities "
              f"({n_boot} resamples). Word variants per item: median {statistics.median(nvar)} (range {min(nvar)}-{max(nvar)}). "
-             f"PCA: {m['pca']['prompts']} held-out prompts of {m['pca']['set']} ({m['pca']['tokens']} tokens), the top "
-             f"{m['pca']['n']} directions hold {m['pca']['variance_share']:.3f} of the residual variance. UNVERIFIED.", "",
+             + (f"PCA: {m['pca']['prompts']} held-out prompts of {m['pca']['set']} ({m['pca']['tokens']} tokens), the top "
+                f"{m['pca']['n']} directions hold {m['pca']['variance_share']:.3f} of the residual variance. " if m["pca"] else "")
+             + "UNVERIFIED.", "",
              "| part | reader | median share of ‖Δ‖² | S_whole | S_no | S_noRand | Jdep | Rdep | excess | label |",
              "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     blob = []
-    for d in PARTS:
+    for d in used:
         for w in X.READERS:
             key = next(k for k in cells if k[2] == w and k[3] == d)
             c = cells[key]
@@ -226,10 +234,11 @@ def main() -> None:
     ap.add_argument("stage", choices=["run", "verdict"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--single", default="x0_single_27b_r2")
+    ap.add_argument("--x0b", default=None, help="run: an X0b run's eligible items instead (parts w, jw, jpp)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "run":
-        stage_run(a.name, a.single)
+        stage_run(a.name, a.single, a.x0b)
     stage_verdict(a.name, a.n_boot)
 
 

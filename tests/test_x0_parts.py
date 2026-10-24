@@ -14,7 +14,7 @@ def test_verdict_reads_planted_effects(tmp_path, monkeypatch):
     monkeypatch.setattr(W, "RESULTS", tmp_path)
     src = tmp_path / "fake"
     src.mkdir()
-    m = {"model": {"target": "fake"}, "layer": 32, "single": "s", "items": 120,
+    m = {"model": {"target": "fake"}, "layer": 32, "single": "s", "items": 120, "parts": list(W.PARTS),
          "pca": {"n": 2000, "prompts": 200, "set": "x", "tokens": 1, "variance_share": 0.9}}  # fmt: skip
     (src / "manifest.json").write_text(json.dumps(m))
     rows, shares = [], []
