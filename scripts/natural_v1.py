@@ -330,6 +330,25 @@ def make(name: str, seed: int, n_scenes: int) -> None:
         print(f"{name}_{fr}: {len(its)} items", dict(collections.Counter((it["domain"], it["word"]) for it in its)))
 
 
+def derive_prefill(name: str) -> None:
+    """NAME_prefill from NAME_chat (2026-10-24, amendment 26): the same items and passages in the chat turn, with the
+    assistant turn prefilled "Answer:" (bridge_jspace.chat.chat_text), read after it with a leading space (kind
+    "word"): the answer position is then fixed by the prefill, not by how the model opens its reply."""
+    src, dst = DATA / f"{name}_chat", DATA / f"{name}_prefill"
+    assert not dst.exists(), f"{dst} exists; sets are written once"
+    items = []
+    for line in (src / "items.jsonl").read_text().splitlines():
+        it = json.loads(line)
+        it.update(id=it["id"].replace(":chat:", ":prefill:"), framing="prefill", kind="word", answer_kind="word")
+        it["steps"] = [{**st, "kind": "word"} for st in it["steps"]]
+        items.append(it)
+    dst.mkdir(parents=True)
+    (dst / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in items))
+    (dst / "manifest.json").write_text(json.dumps({"set": dst.name, "from": src.name, "n": len(items),
+                                                   "script": "scripts/natural_v1.py derive-prefill"}, indent=2) + "\n")
+    print(f"{dst.name}: {len(items)} items")
+
+
 def derive_qa(name: str) -> None:
     """NAME_qa from NAME_chat (2026-10-23): the same items and passages as raw text with a fixed two-example
     Question/Answer preamble, read after "Answer:" (kind "word"). The plain cloze stems failed on the 9B (whole question
@@ -340,7 +359,7 @@ def derive_qa(name: str) -> None:
     items = []
     for line in (src / "items.jsonl").read_text().splitlines():
         it = json.loads(line)
-        it.update(id=it["id"].replace("nat:chat:", "nat:qa:"), framing="qa", kind="word", answer_kind="word")
+        it.update(id=it["id"].replace("nat:chat:", "nat:qa:").replace(":chat:", ":qa:"), framing="qa", kind="word", answer_kind="word")
         it["steps"] = [{**st, "kind": "word"} for st in it["steps"]]
         items.append(it)
     dst.mkdir(parents=True)
@@ -478,7 +497,7 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("stage", choices=["make", "competence", "derive-qa"])
+    ap.add_argument("stage", choices=["make", "competence", "derive-qa", "derive-prefill"])
     ap.add_argument("--name")
     ap.add_argument("--seed", type=int, default=801)
     ap.add_argument("--scenes", type=int, default=2, help="make: scenes per bridge, level and start group")
@@ -492,5 +511,7 @@ if __name__ == "__main__":
         make(a.name, a.seed, a.scenes)
     elif a.stage == "derive-qa":
         derive_qa(a.name)
+    elif a.stage == "derive-prefill":
+        derive_prefill(a.name)
     else:
         competence(a.set_name, a.name, a.why, a.read, a.limit, a.hop1)

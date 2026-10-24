@@ -662,3 +662,15 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Predictions:** as amendment 15's post hoc reading, now stated in advance: read as knock-out minus rotation, the
   memory hops whose output is not in the prompt (PPM, MPM, MMP, PMM, MMM) each lose >= 15 more than PPP; MPP and PMP
   within 10 of PPP.
+
+## Amendment 26 (Zach, 2026-10-24 ~00:35 UTC): framings of the combined suite (TA review: no chat template; prefills)
+
+- **Sets:** jsuite_v1_facts_test_qa (raw text, natural_v1's two-example Question/Answer preamble, read after
+  "Answer:") and jsuite_v1_facts_test_prefill (the chat turn with the assistant turn prefilled "Answer:", thinking off),
+  both derived item for item from jsuite_v1_facts_test_chat (natural_v1.py derive-qa / derive-prefill; kind "word":
+  the answer is read with a leading space).
+- **Procedure:** as amendment 23 (cand2, --hop1 gen, scene eligibility, the same conditions and band) for the 27B and
+  the 9B.
+- **Prediction:** the framing changes no start's K - M or M - P by more than 10 points from the chat run (the
+  memory-vs-prompt split is not a chat-template effect); if the prefill run differs, the chat run's answer position is
+  the suspect (post-training placing information on template tokens).

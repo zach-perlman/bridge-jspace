@@ -572,6 +572,8 @@ def render(tok, item: dict) -> str:
     if item.get("framing") == "qa":  # natural_v1_qa: raw text, a fixed two-example preamble, read after "Answer:"
         bos = tok.bos_token if pins.TARGETS[pins.TARGET]["bos"] and tok.bos_token else ""
         return f"{bos}{NATURAL_QA_SHOTS}{item['context']}\n\nQuestion: {q}\nAnswer:"
+    if item.get("framing") == "prefill":  # 2026-10-24 (amendment 26): the chat turn, the assistant turn prefilled "Answer:"
+        return chat.chat_text(tok, f"{item['context']}\n\n{q} {NATURAL_CHAT_INSTRUCTION}")
     if item.get("framing") == "chat":  # natural_v1: one user turn, thinking off, no "Answer:" prefill (on-policy)
         msgs = [{"role": "user", "content": f"{item['context']}\n\n{q} {NATURAL_CHAT_INSTRUCTION}"}]
         return tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, enable_thinking=False)
