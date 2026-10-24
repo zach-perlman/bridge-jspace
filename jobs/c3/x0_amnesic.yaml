@@ -1,0 +1,29 @@
+id: x0_amnesic
+title: "Probe-(b) subspace, remove vs keep only (Dan's item 6; descriptive, after data): single-change Δ at the bridge's word, 27B L32 on GPU0 and 9B L12 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 0.6
+depends_on: [x0_probe_power]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x0_amnesic.py run --name x0_amnesic_27b --single x0_single_27b_r2 --probe x0_probe_v4_27b & p27=$!;
+  CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0_amnesic.py run --name qwen35_9b_x0_amnesic --single qwen35_9b_x0_single_r2 --probe qwen35_9b_x0_probe_v4 & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  On the single-change items (x0_single_27b_r2 at L32, qwen35_9b_x0_single_r2 at L12; locker-before primary), with P the probe-(b) subspace (the decision directions of a linear probe for the index of the bridge's locker sentence, fit on fresh d1_topics_v4 org states, locker-before; rank = classes - 1): (1) does removing PΔ from the bridge edit cost the lookup more flips than removing a random part of the same share, while the recall loses no more than with the random part? (2) does PΔ alone flip the lookup more than the random part alone?
+why_it_matters: >-
+  The probe reads the address (which sentence holds the bridge's locker) at the bridge's word in locker-before scenes, and not the answer digit. If the lookup acts on the bridge through that address, removing it should cost the lookup, not the recall; keeping only it should carry the lookup's flips. Expected direction (Dan): the lookup loses flips, the recall does not.
+hypotheses:
+  H-lookup: 'lookup: probe dependence - random dependence > 0 (lower CI > 0), locker-before. Prior: Dan''s, predictions batch 27'
+  H-recall: 'recall: probe dependence - random dependence <= 0.10. Prior: Dan''s, batch 27'
+  H-sufficiency: 'lookup: S_probe_only / S_whole - S_rand_only / S_whole > 0 (lower CI > 0). Prior: Dan''s, batch 27'
+decision_rule: >-
+  Descriptive, added after data (Dan, 24 Oct ~18:45, item 6). Per model, reader and locker order: S for whole, no_probe (Δ - PΔ), no_rand (Δ minus X0's random-subspace part at PΔ's share), probe_only (PΔ), rand_only (the random part alone, the agent's matched control); probe dependence 1 - S_no_probe / S_whole against the random one (excess, paired), and S_probe_only / S_whole against S_rand_only / S_whole (paired); 95% CIs from a cluster bootstrap over bridge entities (10,000 resamples, seed 0); top-token read, both readers on the identical patch. Locker-before is primary; locker-after descriptive (lookups rarely flip there). Results not opened or summarized before Dan's batch-27 commit.
+controls:
+- 'the random-subspace part at PΔ''s share (removal) and the random part alone (sufficiency)'
+- 'both readers on the identical patch'
+- 'the probe trained on fresh scenes (d1_topics_v4), disjoint from the test items (d1_topics_v3)'
+n: 'the 200 single-change items per model (~100 locker-before)'
+seeds: [0]
+notes: "One 2-GPU job, two processes (27B on GPU0, 9B on GPU1). Depends on x0_probe_power (its states train P). The run also saves h_org, Δ and the J++ parts of Δ at k = 25 and 100 per item (states.npz), for Dan's items 2 and 3 (the probe on h_alt and on patched states, CPU). Cost: 200 items x 6 reads x 2 readers + OMP at k = 100: ~15 min per model."

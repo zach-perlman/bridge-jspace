@@ -150,6 +150,34 @@ def cv_predict(x: np.ndarray, y: list, groups: list[str], grouped: bool) -> tupl
     return pred, outer, chosen
 
 
+def select_penalty(x: np.ndarray, y: list, groups: list[str]) -> float:
+    """The relative penalty with the best entity-held-out CV accuracy (K_OUTER folds; ties to the larger)."""
+    f = folds(y, groups, True, K_OUTER)
+    acc = np.zeros(len(RELS))
+    for g in range(K_OUTER):
+        tr, te = np.flatnonzero(f != g), np.flatnonzero(f == g)
+        for j, p in enumerate(ridge(x[tr], [y[i] for i in tr], x[te], RELS)):
+            acc[j] += sum(pi == y[i] for pi, i in zip(p, te, strict=True))
+    return RELS[max(range(len(RELS)), key=lambda j: (acc[j], j))]
+
+
+def subspace(x: np.ndarray, y: list, rel: float) -> np.ndarray:
+    """An orthonormal basis [d, classes - 1] of the probe's decision directions in raw state space: the one-hot ridge
+    weights over standardized features, divided by the feature scales, centered across classes."""
+    classes = sorted(set(y), key=str)
+    mu, sd = x.mean(0), x.std(0)
+    sd[sd < 1e-6] = 1.0
+    a = (x - mu) / sd
+    t = np.array([[v == c for c in classes] for v in y], dtype=float)
+    s, u = np.linalg.eigh(a @ a.T)
+    s = np.clip(s, 0.0, None)
+    alpha = u @ ((u.T @ (t - t.mean(0))) / (s + rel * s.sum() / len(s))[:, None])
+    w = (a.T @ alpha) / sd[:, None]  # [d, classes]
+    w -= w.mean(1, keepdims=True)
+    q, sv, _ = np.linalg.svd(w, full_matrices=False)
+    return q[:, : int((sv > sv.max() * 1e-6).sum())]
+
+
 def mode(values: list):
     count = collections.Counter(values)
     return max(sorted(count, key=str), key=lambda v: count[v])
