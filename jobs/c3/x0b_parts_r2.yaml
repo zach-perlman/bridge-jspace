@@ -1,0 +1,27 @@
+id: x0b_parts_r2
+title: "X0b arms (Dan's audit item 6; descriptive, after data): word only and J++ without the word on the X0b v2 eligible items, 27B L32 on GPU0 and 9B L12 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 130
+est_gpu_hours: 1.5
+depends_on: [x0b_v2]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x0_parts.py run --name x0b_parts_27b --x0b x0b_v2_27b & p27=$!;
+  CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0_parts.py run --name qwen35_9b_x0b_parts --x0b qwen35_9b_x0b_v2 & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  On X0b v2's eligible items (7 domains, prose / json / table, levels 0-2, single-change edit) at the predicted layer, both readers: the flips lost when Δ loses (w) its least-squares fit on the J++ directions of the org and alt bridge tokens and their one-token variants, (jw) its 25-atom J++ part with those variants banned, and (jpp) X0's J++ part, each against a random part of its own share.
+why_it_matters: >-
+  The same separation as x0_parts (the word vs J++ beyond the word) on the diverse set, where the bridge sits in JSON and tables too. Dan asked for these arms in X0b's forward passes; X0b v2 had started already, so they run on its items as a second pass (Dan, 24 Oct ~19:35).
+hypotheses:
+  H-word: 'recall''s loss mostly in w on X0b. Prior: Dan''s, predictions batch 27'
+decision_rule: >-
+  Descriptive, added after data (Dan's audit, 24 Oct ~19:30, item 6). As x0_parts (no PCA arm here): per model, reader and part, median share of ||Δ||², S_whole, S_no, S_noRand, Jdep, Rdep, excess; cluster bootstrap over bridge entities (10,000 resamples, seed 0). The J++ k = 100 arm is in X0b v2 itself. Results not opened or summarized before Dan's batch-27 commit.
+controls:
+- 'a random-subspace part at each part''s own share, per item'
+- 'X0''s J++ part on the same items (reference)'
+- 'both readers on the identical patch'
+n: 'X0b v2''s eligible items per model (at most 40 per passing cell)'
+seeds: [0]
+notes: "Re-queued as _r2 after x0_massmean (Dan ~20:05: X0b v2 -> x0_parts -> x0_massmean -> x0b_parts); x0b_parts was cancelled before it ran. One 2-GPU job, two processes. Depends on x0b_v2 (its eligible items and cases). Cost: ~1,500-2,000 items x 8 reads x 2 readers and as many masked J++ OMPs on the 27B: ~1 h; the 9B ~0.4 h."
