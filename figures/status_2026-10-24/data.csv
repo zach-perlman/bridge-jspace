@@ -192,31 +192,36 @@ f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ pa
 f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.5142857142857142,0.40277326839826844,0.6463593974175034,70
 f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.04285714285714286,0.0,0.09230769230769231,70
 f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.5,0.3835405039742939,0.6268656716417911,70
-f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,alt state reads the alt item's locker sentence: after,1.0,1.0,1.0,15
-f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,alt state reads the other person's pick sentence: after,0.0,0.0,0.0,15
-f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state reads the alt item's locker sentence: before, the other pick is the latest earlier mention",0.8571428571428571,0.7037037037037037,0.9666666666666667,28
-f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state reads the other person's pick sentence: before, the other pick is the latest earlier mention",0.03571428571428571,0.0,0.12,28
-f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state reads the alt item's locker sentence: before, the alt locker is the latest earlier mention",0.03333333333333333,0.0,0.09375,30
-f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state reads the other person's pick sentence: before, the alt locker is the latest earlier mention",0.9,0.8,1.0,30
-f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup switched, the whole edit, first mention: locker",0.9767441860465116,0.9210526315789473,1.0,43
-f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup switched, without the J++ part, first mention: locker",0.9767441860465116,0.9210526315789473,1.0,43
-f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup switched, the whole edit, first mention: other pick",1.0,1.0,1.0,30
-f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup switched, without the J++ part, first mention: other pick",1.0,1.0,1.0,30
-f9,qwen3.6-27b,x0_amnesic_27b,-,-,alt state reads the alt item's locker sentence: after,1.0,1.0,1.0,17
-f9,qwen3.6-27b,x0_amnesic_27b,-,-,alt state reads the other person's pick sentence: after,0.0,0.0,0.0,17
-f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state reads the alt item's locker sentence: before, the other pick is the latest earlier mention",0.6428571428571429,0.45454545454545453,0.8333333333333334,28
-f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state reads the other person's pick sentence: before, the other pick is the latest earlier mention",0.14285714285714285,0.034482758620689655,0.2727272727272727,28
-f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state reads the alt item's locker sentence: before, the alt locker is the latest earlier mention",0.24,0.1,0.4,25
-f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state reads the other person's pick sentence: before, the alt locker is the latest earlier mention",0.56,0.375,0.7407407407407407,25
-f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup switched, the whole edit, first mention: locker",1.0,1.0,1.0,45
-f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup switched, without the J++ part, first mention: locker",1.0,1.0,1.0,45
-f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup switched, the whole edit, first mention: other pick",1.0,1.0,1.0,25
-f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup switched, without the J++ part, first mention: other pick",1.0,1.0,1.0,25
-f10,qwen3.5-9b,qwen35_9b_x0_necessity,12,recall-lookup,"C, two-change edit (X0)",0.5260333575054386,0.42372781210953087,0.614298830454014,
-f10,qwen3.5-9b,qwen35_9b_x0_single_r2,12,recall-lookup,"C, one-change edit",0.3853600711251606,0.3017726686721099,0.4565331126571755,
-f10,qwen3.6-27b,x0_necessity_27b_chat,32,recall-lookup,"C, two-change edit (X0)",0.6004651162790698,0.5025567065985861,0.6918870812495038,
-f10,qwen3.6-27b,x0_single_27b_r2,32,recall-lookup,"C, one-change edit",0.556957462148522,0.45171762557731554,0.650708709100594,
-f10,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,recall-lookup,"C, two-change edit (X0)",0.3152173913043478,0.20015931372549006,0.42544360341800097,
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,alt state points at the new pick's locker sentence: after,1.0,1.0,1.0,15
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,alt state points at the other person's pick sentence: after,0.0,0.0,0.0,15
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the new pick's locker sentence: before, the other pick is the latest earlier mention",0.8571428571428571,0.7037037037037037,0.9666666666666667,28
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the other person's pick sentence: before, the other pick is the latest earlier mention",0.03571428571428571,0.0,0.12,28
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the new pick's locker sentence: before, the alt locker is the latest earlier mention",0.03333333333333333,0.0,0.09375,30
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the other person's pick sentence: before, the alt locker is the latest earlier mention",0.9,0.8,1.0,30
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup lookup switched, the whole edit, first mention: locker",0.9767441860465116,0.9210526315789473,1.0,43
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup lookup switched, without the J++ part, first mention: locker",0.9767441860465116,0.9210526315789473,1.0,43
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup lookup switched, the whole edit, first mention: other pick",1.0,1.0,1.0,30
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup lookup switched, without the J++ part, first mention: other pick",1.0,1.0,1.0,30
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,alt state points at the new pick's locker sentence: after,1.0,1.0,1.0,17
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,alt state points at the other person's pick sentence: after,0.0,0.0,0.0,17
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state points at the new pick's locker sentence: before, the other pick is the latest earlier mention",0.6428571428571429,0.45454545454545453,0.8333333333333334,28
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state points at the other person's pick sentence: before, the other pick is the latest earlier mention",0.14285714285714285,0.034482758620689655,0.2727272727272727,28
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state points at the new pick's locker sentence: before, the alt locker is the latest earlier mention",0.24,0.1,0.4,25
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state points at the other person's pick sentence: before, the alt locker is the latest earlier mention",0.56,0.375,0.7407407407407407,25
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, the whole edit, first mention: locker",1.0,1.0,1.0,45
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, without the J++ part, first mention: locker",1.0,1.0,1.0,45
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, the whole edit, first mention: other pick",1.0,1.0,1.0,25
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, without the J++ part, first mention: other pick",1.0,1.0,1.0,25
+f10,qwen3.5-9b,qwen35_9b_x0_necessity,12,recall-lookup,"C, edit changes
+two picks",0.5260333575054386,0.42372781210953087,0.614298830454014,
+f10,qwen3.5-9b,qwen35_9b_x0_single_r2,12,recall-lookup,"C, edit changes
+one pick",0.3853600711251606,0.3017726686721099,0.4565331126571755,
+f10,qwen3.6-27b,x0_necessity_27b_chat,32,recall-lookup,"C, edit changes
+two picks",0.6004651162790698,0.5025567065985861,0.6918870812495038,
+f10,qwen3.6-27b,x0_single_27b_r2,32,recall-lookup,"C, edit changes
+one pick",0.556957462148522,0.45171762557731554,0.650708709100594,
+f10,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,recall-lookup,"C, edit changes
+two picks",0.3152173913043478,0.20015931372549006,0.42544360341800097,
 f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,the word only (4% of the change),0.0,-0.027027027027027084,0.02941176470588225,
 f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,J++ without the word (19% of the change),-0.01904761904761909,-0.0672268907563025,0.025976849237718768,
 f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,"PCA of the layer (top 2,000) (39% of the change)",0.38095238095238093,0.2936489733508082,0.4750061881188119,
@@ -265,34 +270,30 @@ f13,qwen3.6-27b,x0b_v2_27b,-,recall,"pooled (n = 1,635)",0.5553555355535553,0.5,
 f13,qwen3.6-27b,x0b_v2_27b,-,recall,"prose, locker before (n = 548)",0.5689655172413793,0.49299496394302406,0.6415108547397134,
 f13,qwen3.6-27b,x0b_v2_27b,-,recall,"json, locker before (n = 181)",0.3910256410256411,0.2631578947368419,0.5172413793103448,
 f13,qwen3.6-27b,x0b_v2_27b,-,recall,"table, locker before (n = 498)",0.4316939890710383,0.34756029202668715,0.5280571303098051,
-f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,PCA of the layer at J++'s share (19% of the change),0.08490566037735847,0.01869158878504673,0.15116279069767435,
-f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,"J++ without the word, orthogonal to it (16% of the change)",0.0,-0.027027027027027084,0.024590163934426146,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,the layer's main directions (PCA) (19% of the change),0.08490566037735847,0.01869158878504673,0.15116279069767435,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,J++ without the word's directions (16% of the change),0.0,-0.027027027027027084,0.024590163934426146,
 f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,J++ (19% of the change),-0.018867924528301883,-0.05434782608695654,0.018691588785046623,
-f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,recall,PCA of the layer at J++'s share (19% of the change),0.13089005235602091,0.06321560093739526,0.19209582790091256,
-f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,recall,"J++ without the word, orthogonal to it (16% of the change)",0.11518324607329844,0.06040268456375841,0.17727272727272736,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,recall,the layer's main directions (PCA) (19% of the change),0.13089005235602091,0.06321560093739526,0.19209582790091256,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,recall,J++ without the word's directions (16% of the change),0.11518324607329844,0.06040268456375841,0.17727272727272736,
 f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,recall,J++ (19% of the change),0.3664921465968587,0.2947976878612717,0.4269022274788093,
-f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,PCA of the layer at J++'s share (14% of the change),0.02083333333333326,0.0,0.045454545454545414,
-f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,"J++ without the word, orthogonal to it (11% of the change)",0.03125,0.0,0.07317632579995534,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,the layer's main directions (PCA) (14% of the change),0.02083333333333326,0.0,0.045454545454545414,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,J++ without the word's directions (11% of the change),0.03125,0.0,0.07317632579995534,
 f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,J++ (14% of the change),0.05208333333333326,0.012816455696202496,0.09195780399274041,
-f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,PCA of the layer at J++'s share (14% of the change),0.15753424657534243,0.07975348981950751,0.2267441860465116,
-f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,"J++ without the word, orthogonal to it (11% of the change)",0.1986301369863014,0.09836065573770492,0.29487179487179493,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,the layer's main directions (PCA) (14% of the change),0.15753424657534243,0.07975348981950751,0.2267441860465116,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,J++ without the word's directions (11% of the change),0.1986301369863014,0.09836065573770492,0.29487179487179493,
 f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,J++ (14% of the change),0.6095890410958904,0.5114460770246227,0.6932535787321064,
-f15,qwen3.5-9b,qwen35_9b_x0_massmean_lf,-,lookup,remove A,0.3055555555555556,0.180327868852459,0.4415659921473874,
-f15,qwen3.5-9b,qwen35_9b_x0_massmean_lf,-,lookup,remove Alf (layout-free),0.48611111111111105,0.38235294117647056,0.59375,
-f15,qwen3.5-9b,qwen35_9b_x0_massmean_lf,-,lookup,keep only A (minus random),0.25,0.15151515151515152,0.35616831994961423,
-f15,qwen3.5-9b,qwen35_9b_x0_massmean_lf,-,lookup,keep only Alf (minus random),0.3611111111111111,0.25,0.47827617881200224,
-f15,qwen3.5-9b,qwen35_9b_x0_massmean_lf,-,recall,remove A,0.11111111111111105,0.04054054054054057,0.19480519480519487,
-f15,qwen3.5-9b,qwen35_9b_x0_massmean_lf,-,recall,remove Alf (layout-free),0.12499999999999989,0.05405405405405406,0.2058823529411764,
-f15,qwen3.5-9b,qwen35_9b_x0_massmean_lf,-,recall,keep only A (minus random),0.041666666666666664,0.0,0.08823529411764706,
-f15,qwen3.5-9b,qwen35_9b_x0_massmean_lf,-,recall,keep only Alf (minus random),0.06944444444444445,0.01694915254237288,0.1267605633802817,
-f15,qwen3.6-27b,x0_massmean_lf_27b,-,lookup,remove A,0.042857142857142816,0.0,0.08571428571428574,
-f15,qwen3.6-27b,x0_massmean_lf_27b,-,lookup,remove Alf (layout-free),0.1428571428571429,0.06779661016949157,0.22222222222222232,
-f15,qwen3.6-27b,x0_massmean_lf_27b,-,lookup,keep only A (minus random),0.0,0.0,0.0,
-f15,qwen3.6-27b,x0_massmean_lf_27b,-,lookup,keep only Alf (minus random),0.07142857142857142,0.016122631848438304,0.140625,
-f15,qwen3.6-27b,x0_massmean_lf_27b,-,recall,remove A,0.10204081632653061,0.0,0.1923076923076923,
-f15,qwen3.6-27b,x0_massmean_lf_27b,-,recall,remove Alf (layout-free),0.16326530612244905,0.02127659574468077,0.30612244897959184,
-f15,qwen3.6-27b,x0_massmean_lf_27b,-,recall,keep only A (minus random),0.0,0.0,0.0,
-f15,qwen3.6-27b,x0_massmean_lf_27b,-,recall,keep only Alf (minus random),-0.020408163265306124,-0.06382978723404255,0.0,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,lookup,J++ part (19% of the change; n = 200),-0.018867924528301883,-0.05434782608695654,0.018691588785046623,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,lookup,pointer directions (18%; n = 73),0.48611111111111105,0.38235294117647056,0.59375,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,lookup,the layer's main directions (19%; n = 200),0.08490566037735847,0.01869158878504673,0.15116279069767435,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,recall,J++ part (19% of the change; n = 200),0.3664921465968587,0.2947976878612717,0.4269022274788093,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,recall,pointer directions (18%; n = 73),0.12499999999999989,0.05405405405405406,0.2058823529411764,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,recall,the layer's main directions (19%; n = 200),0.13089005235602091,0.06321560093739526,0.19209582790091256,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,lookup,J++ part (14% of the change; n = 200),0.05208333333333326,0.012816455696202496,0.09195780399274041,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,lookup,pointer directions (15%; n = 70),0.1428571428571429,0.06779661016949157,0.22222222222222232,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,lookup,the layer's main directions (14%; n = 200),0.02083333333333326,0.0,0.045454545454545414,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,recall,J++ part (14% of the change; n = 200),0.6095890410958904,0.5114460770246227,0.6932535787321064,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,recall,pointer directions (15%; n = 70),0.16326530612244905,0.02127659574468077,0.30612244897959184,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,recall,the layer's main directions (14%; n = 200),0.15753424657534243,0.07975348981950751,0.2267441860465116,
 f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"animals, verbatim (n = 400)",-0.007499999999999951,-0.01382488479262678,-0.0024937655860348684,
 f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"animals, translated (n = 377)",-0.029569892473118253,-0.05602240896358546,-0.01055408970976257,
 f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"elements, verbatim (n = 398)",-0.020253164556962022,-0.03201970443349755,-0.007692307692307554,

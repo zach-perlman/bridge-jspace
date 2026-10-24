@@ -138,6 +138,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     parts_numbers(num)
     massmean_numbers(num)
     massmean_lf_numbers(num)
+    dup_nearest_numbers(num)
     x4_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
@@ -296,6 +297,21 @@ def massmean_lf_numbers(num: Numbers) -> None:
                 num.add(f"mmlf_keep_{sp}_{w}_{m}", ci(r[f"keep_{sp}"]["difference"]), src)
                 if w == "lk":
                     num.add(f"mmlf_{sp}_share_{m}", pct(r[sp]["share"]), src)
+
+
+def dup_nearest_numbers(num: Numbers) -> None:
+    """x0_dup_nearest: on the duplicate-pick pairs, where the alt state's nearest class mean in A and in Alf points
+    (the alt's locker sentence or the other pick sentence), by which earlier mention of the alt item comes first."""
+    for m, run in MASSMEAN_LF.items():
+        path = sorted((pins.RESULTS_DIR / "x0_massmean" / run).glob("dup-nearest-*/dup_nearest.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        res = json.loads(path.read_text())["results"]
+        for sp, r in res.items():
+            num.add(f"dupnn_{sp}_org_{m}", ci(r["org state: org's locker sentence"]["share"]), src)
+            for key in ("after", "lockerfirst", "otherfirst"):
+                num.add(f"dupnn_{sp}_{key}_alt_{m}", ci(r[f"{key}: alt's locker sentence"]["share"]), src)
+                num.add(f"dupnn_{sp}_{key}_other_{m}", ci(r[f"{key}: other pick sentence"]["share"]), src)
+                num.add(f"dupnn_{sp}_{key}_n_{m}", str(r[f"{key}: other pick sentence"]["n"]), src)
 
 
 def x4_numbers(num: Numbers) -> None:

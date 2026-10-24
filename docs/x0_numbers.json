@@ -1835,6 +1835,166 @@
   "text": "−0.02 [−0.06, 0.00]",
   "source": "results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json"
  },
+ "dupnn_A_org_9b": {
+  "text": "0.89 [0.81, 0.96]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_after_alt_9b": {
+  "text": "0.93 [0.81, 1.00]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_after_other_9b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_after_n_9b": {
+  "text": "15",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_lockerfirst_alt_9b": {
+  "text": "0.86 [0.72, 0.97]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_lockerfirst_other_9b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_lockerfirst_n_9b": {
+  "text": "28",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_otherfirst_alt_9b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_otherfirst_other_9b": {
+  "text": "0.80 [0.65, 0.93]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_otherfirst_n_9b": {
+  "text": "30",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_org_9b": {
+  "text": "0.62 [0.49, 0.74]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_after_alt_9b": {
+  "text": "0.67 [0.43, 0.88]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_after_other_9b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_after_n_9b": {
+  "text": "15",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_lockerfirst_alt_9b": {
+  "text": "0.68 [0.48, 0.84]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_lockerfirst_other_9b": {
+  "text": "0.14 [0.03, 0.28]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_lockerfirst_n_9b": {
+  "text": "28",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_otherfirst_alt_9b": {
+  "text": "0.03 [0.00, 0.09]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_otherfirst_other_9b": {
+  "text": "0.83 [0.68, 0.97]",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_otherfirst_n_9b": {
+  "text": "30",
+  "source": "results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_org_27b": {
+  "text": "0.90 [0.83, 0.96]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_after_alt_27b": {
+  "text": "0.94 [0.86, 1.00]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_after_other_27b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_after_n_27b": {
+  "text": "17",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_lockerfirst_alt_27b": {
+  "text": "0.82 [0.65, 0.94]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_lockerfirst_other_27b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_lockerfirst_n_27b": {
+  "text": "28",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_otherfirst_alt_27b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_otherfirst_other_27b": {
+  "text": "0.88 [0.71, 1.00]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_A_otherfirst_n_27b": {
+  "text": "25",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_org_27b": {
+  "text": "0.63 [0.52, 0.74]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_after_alt_27b": {
+  "text": "0.71 [0.47, 0.88]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_after_other_27b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_after_n_27b": {
+  "text": "17",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_lockerfirst_alt_27b": {
+  "text": "0.50 [0.31, 0.70]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_lockerfirst_other_27b": {
+  "text": "0.14 [0.04, 0.27]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_lockerfirst_n_27b": {
+  "text": "28",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_otherfirst_alt_27b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_otherfirst_other_27b": {
+  "text": "0.88 [0.75, 1.00]",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
+ "dupnn_Alf_otherfirst_n_27b": {
+  "text": "25",
+  "source": "results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json"
+ },
  "x4_probe_animals_same_9b": {
   "text": "0.99 [0.99, 1.00]",
   "source": "results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json"

@@ -16,7 +16,7 @@ F11 the parts of the change (word, J++ without the word, PCA, J++).
 F12 the mass-mean address and value subspaces.
 F13 X0b: pooled and by format.
 F14 PCA at J++'s share and the word-orthogonal J++ part.
-F15 the layout-free mass-mean address.
+F15 J++, the pointer directions and the layer's main directions, per reader.
 F16 X4: the lookup per key form and D per entity.
 F17 X0b's items: word, J++ without the word, J++.
 """
@@ -46,8 +46,8 @@ MODELS = (("qwen3.5-9b", "Qwen3.5-9B", "qwen35_9b_x0_necessity", "qwen35_9b_x0_k
           ("qwen3.5-122b-a10b", "Qwen3.5-122B", "qwen35_122b_x0_necessity_r2", "qwen35_122b_x0_necessity_r2"))  # fmt: skip
 RUNS = ", ".join(m[2] for m in MODELS)
 BIG = (
-    "122B: FP8 weights, mixture of experts, J++ fitted on the bf16 weights, 2x H100 (hardware gate 0.998); its k-curve, "
-    "dictionaries and digit arm come from its X0 run (k = 25-100)."
+    "122B: FP8 weights, mixture of experts, J++ fitted on the bf16 weights, 2x H100 (hardware gate 0.998); its curve "
+    "over the number of J++ directions, the dictionaries and the digit check come from its main-test run (25-100)."
 )
 NAME = {X.LOOKUP: "lookup", X.RECALL: "recall"}
 CI = "95% CIs: bootstrap over bridge entities (10,000 resamples)"
@@ -85,6 +85,10 @@ def head(fig, title: str, subtitle: str, handles=None, labels=None) -> None:
 
 
 def foot(fig, lines: list[str]) -> None:
+    """The figure's small print, without run names (Dan, 25 Oct: they belong in the README's run table and data.csv)."""
+    import re
+
+    lines = [re.sub(r"\s*Runs?: .*$", "", line, flags=re.S) for line in lines]
     text = "\n".join(wrap(line, fig, 8.5) for line in lines)
     fig.text(0.01, 0.01, text, ha="left", va="bottom", fontsize=8.5, color="#666666", linespacing=1.4)
 
@@ -364,9 +368,9 @@ def f8(plt, F, color, grey) -> None:
     the alt state and from h_org plus the J++ part of the change, or plus the rest, at 25 and 100 atoms."""
     import json
 
-    bars = (("alt (org + Δ)", "the whole change"), ("org + J++ part, k = 25", "J++ part\n(25 atoms)"),
-            ("org + rest, k = 25", "the rest\n(25 atoms)"), ("org + J++ part, k = 100", "J++ part\n(100 atoms)"),
-            ("org + rest, k = 100", "the rest\n(100 atoms)"))  # fmt: skip
+    bars = (("alt (org + Δ)", "the whole change"), ("org + J++ part, k = 25", "J++ part\n(25 directions)"),
+            ("org + rest, k = 25", "the rest\n(25 directions)"), ("org + J++ part, k = 100", "J++ part\n(100 directions)"),
+            ("org + rest, k = 100", "the rest\n(100 directions)"))  # fmt: skip
     fig, axes = plt.subplots(1, len(AMNESIC), figsize=(14, 5.6), sharey=True)
     pair = {}
     for ax, (target, (label, run)) in zip(axes, AMNESIC.items(), strict=True):
@@ -378,7 +382,7 @@ def f8(plt, F, color, grey) -> None:
         pair[label] = (res["pair right"][0], blob["probe"], path.parent.name)
         for i, (key, _) in enumerate(bars):
             v, lo, hi = res[f"{key}: reads the alt's"]
-            col = F.LOOKUP if "J++" in key else "#9e9e9e" if "rest" in key else "#555555"
+            col = "#d9a441" if "J++" in key else "#9e9e9e" if "rest" in key else "#555555"
             ax.bar(i, v, width=0.7, color=col, edgecolor="white")
             ax.errorbar(i, v, yerr=[[v - lo], [hi - v]], color="#333333", capsize=3, lw=1)
             ax.text(i, hi + 0.03, f"{v:.2f}", ha="center", fontsize=10.5)
@@ -392,14 +396,13 @@ def f8(plt, F, color, grey) -> None:
         ax.set_ylim(0, 1.0)
         ax.grid(axis="y", color="#eeeeee")
         ax.set_axisbelow(True)
-    axes[0].set_ylabel("probe reads the edited bridge's\nlocker sentence")
-    head(fig, "The address is in the rest of the change, not in its J++ part",
-         "Probe (b) at the bridge word, read on the original state plus a part of the one-change edit (both locker "
-         "sentences before the pick). Under each bar: the part's share of the change, and of the change's component "
-         "in the probe's own directions (a random part of the same size would carry about its share).")  # fmt: skip
+    axes[0].set_ylabel("probe points at the new pick's\nlocker sentence")
+    head(fig, "The pointer is in the rest of the change, not in its J++ part",
+         "A probe for 'which sentence holds the bridge's locker', read at the bridge word on the original state plus a "
+         "part of an edit that changes one pick (both locker sentences before the pick). Under each bar: the part's share "
+         "of the change, and of the change's component in the probe's own directions.")  # fmt: skip
     both = "; ".join(f"{k} {v[0]:.2f}" for k, v in pair.items())
-    foot(fig, [f"Probe trained on the locker-before org states of {', '.join(v[1] for v in pair.values())} (fresh scenes), "
-               f"cross-fitted by bridge entity; {CI}. On the same pairs the probe gets both the original and the edited state "
+    foot(fig, [f"Probe trained on fresh scenes' locker-before states, cross-fitted by bridge entity; {CI}. On the same pairs the probe gets both the original and the edited state "
                f"right in {both}; a layout-only classifier gets 0 by construction. Unverified. Descriptive, added after the "
                f"data. Runs: results/x0_amnesic/*/{{{', '.join(v[2] for v in pair.values())}}}."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.13, 1, 0.84))
@@ -421,10 +424,10 @@ def f9(plt, F, color, grey) -> None:
     groups = (("after", "the other picker\ncomes after the pick"),
               ("before, the other pick is the latest earlier mention", "both earlier:\nlocker sentence first"),
               ("before, the alt locker is the latest earlier mention", "both earlier:\nother pick first"))  # fmt: skip
-    top_cols = ((("alt right", F.LOOKUP, "reads the alt item's locker sentence")),
-                ("alt state reads the other pick sentence", "#bdbdbd", "reads the other person's pick sentence"))  # fmt: skip
-    bottom_cols = (("whole", "#2f2f2f", "switched, the whole edit"),
-                   ("without the J++ part", "#8c8c8c", "switched, without the J++ part"))  # fmt: skip
+    top_cols = ((("alt right", "#4a7fb5", "points at the new pick's locker sentence")),
+                ("alt state reads the other pick sentence", "#bdbdbd", "points at the other person's pick sentence"))  # fmt: skip
+    bottom_cols = (("whole", F.LOOKUP, "lookup switched, the whole edit"),
+                   ("without the J++ part", "#c9b6dd", "lookup switched, without the J++ part"))  # fmt: skip
     fig, axes = plt.subplots(2, len(AMNESIC), figsize=(14, 10), sharey="row")
     read = {}
     for col_i, (target, (label, run)) in enumerate(AMNESIC.items()):
@@ -440,7 +443,7 @@ def f9(plt, F, color, grey) -> None:
                 ax.text(x, hi + 0.03, f"{v:.2f}", ha="center", fontsize=10)
                 record("f9", target, run, "-", "-", f"alt state {what}: {key}", v, lo, hi, d["n"])
         ax.set_xticks(range(len(groups)), [f"{g[1]}\n(n = {dup[g[0]]['n']})" for g in groups], fontsize=9.5)
-        ax.set_title(f"{label}: what the probe reads on the edited state", fontsize=11, pad=30)
+        ax.set_title(f"{label}: where the probe points on the edited state", fontsize=11, pad=30)
         ax.set_ylim(0, 1.15)
         bx = axes[1, col_i]
         fm_path = sorted((X.RESULTS / SINGLE[target]).glob("first-mention-*/first_mention.json"))[-1]
@@ -457,7 +460,7 @@ def f9(plt, F, color, grey) -> None:
         bx.set_xticks(
             range(len(fm)), [f"first mention:\n{r['first']} sentence (n = {r['n']})" for r in fm], fontsize=9.5
         )
-        bx.set_title(f"{label}: lookups switched to the alt's locker", fontsize=11, pad=30)
+        bx.set_title(f"{label}: lookups switched to the new pick's locker", fontsize=11, pad=30)
         bx.set_ylim(0, 1.15)
         for a_ in (ax, bx):
             a_.grid(axis="y", color="#eeeeee")
@@ -471,16 +474,15 @@ def f9(plt, F, color, grey) -> None:
     axes[1, 0].legend([plt.Rectangle((0, 0), 1, 1, color=c) for _, c, _ in bottom_cols], [w for _, _, w in bottom_cols],
                       loc="lower left", bbox_to_anchor=(0, 1.01), ncol=2, frameon=False, fontsize=10)  # fmt: skip
     nine, twenty_seven = read["Qwen3.5-9B"], read["Qwen3.6-27B"]
-    head(fig, "A first-mention pointer the lens does not read, and the lookup does not need",
-         f"On the 9B, where another person's pick of the alt item comes before its locker sentence, the probe points at that "
-         f"pick sentence (no locker number in it) in {nine[0]:.2f} of the pairs, and the lookup still switches to the alt's "
-         f"locker in {nine[1]:.2f}; the 27B: {twenty_seven[0]:.2f} and {twenty_seven[1]:.2f}. Top: what the probe for "
-         "'which sentence holds the locker' reads on the edited state. Bottom: the lookups switched; this row sits at "
-         "ceiling, so it shows that the wrong pointer does not stop the lookup, not how strongly the lookup depends on "
-         "anything. Its left group (first mention: the locker sentence) pools the top row's two left groups.")  # fmt: skip
-    foot(fig, [f"Single-change pairs with both locker sentences before the pick; probe trained on the fresh scenes' "
-               f"locker-before states, cross-fitted by bridge entity; {CI}. In X0's ordinary scenes the first mention is "
-               "always the locker sentence. Unverified. Descriptive, added after the data (Dan's duplicate-pick check and "
+    head(fig, "The bridge word points at the item's first mention; the lookup still switches when that pointer is wrong",
+         f"When the new pick was already picked by another person earlier in the scene, the probe points at that pick "
+         f"sentence (no locker number in it) in {nine[0]:.2f} of the pairs on the 9B, and the lookup still switches to the "
+         f"right locker in {nine[1]:.2f}; the 27B: {twenty_seven[0]:.2f} and {twenty_seven[1]:.2f}. Top: where the probe for "
+         "'which sentence holds the locker' points. Bottom: lookups switched; this row sits at ceiling, so it shows that "
+         "the wrong pointer does not stop the lookup, not how strongly the lookup depends on anything.")  # fmt: skip
+    foot(fig, [f"Edits that change one pick, both locker sentences before the pick; probe trained on fresh scenes' "
+               f"locker-before states, cross-fitted by bridge entity; {CI}. In the main test's scenes the first mention is "
+               "always the locker sentence. Unverified. After the data (Dan's duplicate-pick check and "
                "cross-tab). Runs: results/x0_amnesic/*/probe-patched-* (address); results/x0_necessity/*_single_r2/"
                "first-mention-*."])  # fmt: skip
     fig.subplots_adjust(left=0.06, right=0.98, top=0.76, bottom=0.12, hspace=0.75, wspace=0.12)
@@ -495,8 +497,8 @@ def f10(plt, F, color, grey) -> None:
     xs, labels = [], []
     for i, (target, label, run, _) in enumerate(MODELS):
         la = X.PREDICTED[target]
-        for j, (edit, src, col) in enumerate((("two-change edit (X0)", run, "#555555"),
-                                              ("one-change edit", SINGLE.get(target), "#a8a8a8"))):  # fmt: skip
+        for j, (edit, src, col) in enumerate((("edit changes\ntwo picks", run, "#555555"),
+                                              ("edit changes\none pick", SINGLE.get(target), "#a8a8a8"))):  # fmt: skip
             x = i * 3 + j
             xs.append(x)
             labels.append(f"{edit.split(' (')[0]}")
@@ -513,15 +515,14 @@ def f10(plt, F, color, grey) -> None:
     ax.set_xticks(xs, labels, fontsize=9.5)
     ax.axhline(0, color="black", lw=0.6)
     ax.set_ylim(0, 0.9)
-    ax.set_ylabel("C = recall's extra loss\nminus lookup's extra loss")
+    ax.set_ylabel("recall-lookup gap\n(recall's extra loss minus lookup's)")
     ax.grid(axis="y", color="#eeeeee")
     ax.set_axisbelow(True)
-    head(fig, "The graded contrast holds under both edits",
-         "C at the layer fixed before the run: how much more the recall loses than the lookup when the J++ part of the "
-         "bridge change is removed (each against a random part of the same size).")  # fmt: skip
-    foot(fig, [f"n = 200 scenes per bar; {CI}. Two-change edit: X0 as pre-registered (two people swap picks); one-change "
-               "edit: only the asked person's pick changes (added after the data; not run on the 122B). Unverified. Runs: "
-               f"{RUNS}, {', '.join(SINGLE.values())}."])  # fmt: skip
+    head(fig, "Recall needs the J++ part far more than lookup does, on all three models",
+         "The recall-lookup gap at the layer fixed in advance: how many more of its answer switches the recall loses than "
+         "the lookup when the J++ part of the bridge change is removed (each against a random part of the same size).")  # fmt: skip
+    foot(fig, [f"n = 200 scenes per bar; {CI}. Two picks: as fixed in advance (two people swap picks); one pick: only "
+               "the asked person's pick changes (after the data; not run on the 122B). Unverified."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.1, 1, 0.82))
     fig.savefig(OUT / "f10_contrast.png", dpi=150, facecolor="white")
     plt.close(fig)
@@ -642,18 +643,17 @@ def f13(plt, F, color, grey) -> None:
         series = [(name, col, [cells[(pred, w, *X.MAIN)]["excess"], *(cross[(f, "before", w)]["excess"] for f in fmts)])
                   for name, col, w in (("lookup", F.LOOKUP, X.LOOKUP), ("recall", F.RECALL, X.RECALL))]  # fmt: skip
         bars(ax, groups, series, target, "f13", run)
-        ax.set_title(f"{label}: X0b rule {v['verdict']}")
+        ax.set_title(f"{label}: rule fixed in advance {v['verdict']}")
         ax.set_ylim(-0.2, 1.0)
         ax.axhspan(-0.2, X.AROUND_EXCESS, color="#f6f6f6", lw=0, zorder=0)
     axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
-    head(fig, "The contrast holds beyond one scene type",
-         "X0b: 7 topics x prose / JSON / tables x 3 difficulty levels, one-change edit, 75% of scenes with the locker "
-         "sentence before the pick. Pooled over the cells that pass the competence gate, and by format in locker-before "
-         "scenes.", h, ["lookup", "recall"])  # fmt: skip
-    foot(fig, [f"J++ at 25 atoms at the pre-registered layer; {CI}. Light band: 'not needed' (<= 0.10). Exploratory; the "
-               "pooled rule (lookup <= 0.10, C >= 0.20) was fixed before the run. Unverified. Runs: "
-               "results/x0b_generalize/*."])  # fmt: skip
+    head(fig, "The recall-lookup gap holds in varied scenes",
+         "7 topics x prose / JSON / tables x 3 difficulty levels; an edit that changes one pick; 75% of scenes with the "
+         "locker sentence before the pick. Pooled over the cells where the model answers the unedited questions, and by "
+         "format in locker-before scenes.", h, ["lookup", "recall"])  # fmt: skip
+    foot(fig, [f"25 J++ directions at the layer fixed in advance; {CI}. Light band: 'not needed' (<= 0.10). The pooled "
+               "rule (lookup extra loss <= 0.10, recall-lookup gap >= 0.20) was fixed before the run. Unverified."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.07, 1, 0.80))
     fig.savefig(OUT / "f13_x0b.png", dpi=150, facecolor="white")
     plt.close(fig)
@@ -697,16 +697,14 @@ def parts_figure(plt, F, runs: dict, order: tuple, fig_name: str, out: str, titl
 
 def f14(plt, F, color, grey) -> None:
     """PCA at J++'s share (k per item), J++ without the word fit orthogonal to the word, and J++ (same items, same run)."""
-    parts_figure(plt, F, PCAEQ, (("pca_eq", "PCA of the layer\nat J++'s share"),
-                                 ("jwo", "J++ without the word,\northogonal to it"), ("jpp", "J++")), "f14",
-                 "f14_pcaeq.png", "At J++'s share, the PCA part and the word-orthogonal J++ part cost the recall 0.12-0.20; J++ "
-                 "costs it 0.37-0.61",
-                 "Single-change items at the pre-registered layer, each part against a random part of its own share. PCA: the "
-                 "layer's top 2,000 directions, k per item matched to that item's J++ share. Word-orthogonal: J++ (k = 25) "
-                 "fit on the change minus its word part, over atoms projected off the word's span.",
-                 "Pre-stated readings (Dan): PCA, none of the three branches on either model (Q30.1: 'mixed'); word-"
-                 "orthogonal, neither branch (recall excess between 0.10 and 0.20). Descriptive, after the data. Runs: "
-                 "results/x0_parts/*pcaeq*.")  # fmt: skip
+    parts_figure(plt, F, PCAEQ, (("pca_eq", "the layer's main\ndirections (PCA)"),
+                                 ("jwo", "J++ without the\nword's directions"), ("jpp", "J++")), "f14",
+                 "f14_pcaeq.png", "At the same share, the layer's main directions and J++ without the word's directions "
+                 "cost the recall far less than J++",
+                 "An edit that changes one pick, at the layer fixed in advance; each part against a random part of its own "
+                 "share. Main directions: the layer's top 2,000 principal directions, as many per scene as match its J++ "
+                 "share. J++ without the word's directions: 25 J++ directions fit to the change after its word part is taken out.",
+                 "200 scenes per model. After the data.")  # fmt: skip
 
 
 def f17(plt, F, color, grey) -> None:
@@ -720,40 +718,42 @@ def f17(plt, F, color, grey) -> None:
 
 
 def f15(plt, F, color, grey) -> None:
-    """The mass-mean address A and its layout-free version Alf, removed or kept alone (same items, same run)."""
+    """The 9B's double dissociation (Dan, 25 Oct): J++, the layout-free pointer directions and the layer's PCA directions
+    at J++'s share, each removed against a random part of its own share, per reader and model."""
     import json
 
-    fig, axes = plt.subplots(1, len(MASSMEAN_LF), figsize=(14, 5.6), sharey=True)
-    for ax, (target, (label, run)) in zip(axes, MASSMEAN_LF.items(), strict=True):
-        path = sorted((pins.RESULTS_DIR / "x0_massmean" / run).glob("verdict-*/verdict.json"))[-1]
-        v = json.loads(path.read_text())
-        rows = {r["reader"]: r for r in v["rows"]}
-        groups = [
-            "remove A",
-            "remove Alf\n(layout-free)",
-            "keep only A\n(minus random)",
-            "keep only Alf\n(minus random)",
-        ]
-        vals = {w: [rows[w]["A"]["excess"], rows[w]["Alf"]["excess"], rows[w]["keep_A"]["difference"],
-                    rows[w]["keep_Alf"]["difference"]] for w in X.READERS}  # fmt: skip
-        bars(
-            ax, groups, [("lookup", F.LOOKUP, vals[X.LOOKUP]), ("recall", F.RECALL, vals[X.RECALL])], target, "f15", run
-        )
-        ax.set_title(
-            f"{label} (n = {rows[X.LOOKUP]['n']}; A-Alf overlap {v['manifest']['subspaces']['A_Alf_overlap']:.2f})"
-        )
+    fig, axes = plt.subplots(1, len(PCAEQ), figsize=(14, 5.8), sharey=True)
+    for ax, target in zip(axes, PCAEQ, strict=True):
+        label, run = PCAEQ[target]
+        path = sorted((pins.RESULTS_DIR / "x0_parts" / run).glob("verdict-*/verdict.json"))[-1]
+        parts = {(r["part"], r["reader"]): r for r in json.loads(path.read_text())["rows"]}
+        lf_run = MASSMEAN_LF[target][1]
+        path = sorted((pins.RESULTS_DIR / "x0_massmean" / lf_run).glob("verdict-*/verdict.json"))[-1]
+        lf = {r["reader"]: r for r in json.loads(path.read_text())["rows"]}
+        groups = [f"J++ part\n({100 * parts[('jpp', X.LOOKUP)]['median_share']:.0f}% of the change; "
+                  f"n = {parts[('jpp', X.LOOKUP)]['n']})",
+                  f"pointer directions\n({100 * lf[X.LOOKUP]['Alf']['share']:.0f}%; n = {lf[X.LOOKUP]['n']})",
+                  f"the layer's main directions\n({100 * parts[('pca_eq', X.LOOKUP)]['median_share']:.0f}%; "
+                  f"n = {parts[('pca_eq', X.LOOKUP)]['n']})"]  # fmt: skip
+        vals = {
+            w: [parts[("jpp", w)]["excess"], lf[w]["Alf"]["excess"], parts[("pca_eq", w)]["excess"]] for w in X.READERS
+        }
+        bars(ax, groups, [("lookup", F.LOOKUP, vals[X.LOOKUP]), ("recall", F.RECALL, vals[X.RECALL])], target, "f15",
+             f"{run} + {lf_run}")  # fmt: skip
+        ax.set_title(label)
         ax.set_ylim(-0.2, 1.0)
-    axes[0].set_ylabel("extra flips lost (remove) or\nextra flips made (keep), vs. random")
+    axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
-    head(fig, "Removing the layout-free address subspace still costs the 9B's lookup",
-         "A: the mass-mean subspace of the locker sentence's index (rank 4). Alf: the same after subtracting each layout "
-         "group's mean (which sentences before the pick are locker sentences; 31 groups). Removed from the one-change edit, or "
-         "kept alone, each against a random part of its own size.", h, ["lookup", "recall"])  # fmt: skip
-    foot(fig, [f"Single-change items with both locker sentences before the pick; {CI}. Pre-stated reading (Dan): if the 9B "
-               "lookup effect disappears with Alf, 'position information', not 'address'; it does not disappear (lower CI > "
-               "0). Descriptive, after the data; no prediction committed. Unverified. Runs: results/x0_massmean/*_lf*."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
-    fig.savefig(OUT / "f15_massmean_layout_free.png", dpi=150, facecolor="white")
+    head(fig, "On the 9B, removing the pointer directions costs the lookup and removing J++ costs the recall",
+         "Three parts of an edit that changes one pick, each removed against a random part of its own share, at the layer "
+         "fixed in advance. Pointer directions: the 4 directions that separate 'which sentence holds the locker' on fresh "
+         "scenes, after each layout's average is taken out. On the 27B the pointer directions cost both readers.",
+         h, ["lookup", "recall"])  # fmt: skip
+    foot(fig, [f"{CI}. J++ and the main directions: 200 scenes; pointer directions: the 73 (9B) and 70 (27B) of them with "
+               "both locker sentences before the pick. After the data; a replication fixed in advance is pending. "
+               "Unverified."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.07, 1, 0.78))
+    fig.savefig(OUT / "f15_pointer.png", dpi=150, facecolor="white")
     plt.close(fig)
 
 
@@ -781,7 +781,7 @@ def f16(plt, F, color, grey) -> None:
             ax.plot(xs, ds, "o", color=grey, ms=7)
             d0, lo, hi = r["difference"]
             ax.errorbar(i + 0.35, d0, yerr=[[d0 - lo], [hi - d0]], fmt="D", color="black", capsize=4)
-            ax.text(i + 0.42, d0, f"{d0:.2f} [{lo:.2f}, {hi:.2f}]\nD > 0: {r['entities_D_positive']} of {len(ds)}",
+            ax.text(i + 0.42, d0, f"{d0:.2f} [{lo:.2f}, {hi:.2f}]\npositive: {r['entities_D_positive']} of {len(ds)}",
                     va="center", fontsize=9)  # fmt: skip
             record("f16", target, run, "-", "D", domain, d0, lo, hi)
         ax.axhline(0, color="black", lw=0.6)
@@ -793,16 +793,21 @@ def f16(plt, F, color, grey) -> None:
         ax.set_ylim(-0.2, 0.5)
         ax.grid(axis="y", color="#eeeeee")
     axes[0, 0].set_ylabel("lookup: extra flips lost\nvs. a random part of the same size")
-    axes[1, 0].set_ylabel("D (dots: one per entity;\ndiamond: all, entity bootstrap)")
+    axes[1, 0].set_ylabel("difference in the lookup's extra loss\n(dots: one per animal or element)")
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP),
          plt.Line2D([], [], marker="o", color=grey, ls=""), plt.Line2D([], [], marker="D", color="black", ls="")]  # fmt: skip
-    head(fig, "X4: the lookup does not need the J++ part even without a verbatim match; the symbol control fails on both models",
-         "The locker statements name the item verbatim, in French / Spanish / German (animals), or by chemical symbol "
-         "(elements, the positive control); picks stay in English. Dashed line: D = 0.20, the brief's bar (translated: "
-         "needs a verbatim match; symbol: the control passes).", h, ["lookup excess", "D per entity", "D, all entities"])  # fmt: skip
-    foot(fig, [f"{CI}; the entity bootstrap is unreliable below 10 clusters (8 animals, 6 elements). Light band: 'not "
-               "needed' (<= 0.10). The control fails on both models, so the method may not see a lookup that needs J++ "
-               "(X4.md). Unverified. Runs: results/x4_alias/*."])  # fmt: skip
+    sym = {t_: json.loads(sorted((pins.RESULTS_DIR / "x4_alias" / r_).glob("verdict-*/verdict.json"))[-1].read_text())
+           ["rules"]["elements"] for t_, (_, r_) in X4.items()}  # fmt: skip
+    s27 = sym["qwen3.6-27b"]
+    head(fig, "With the locker key in another language, the lookup still does not need the J++ part",
+         "The locker statements name the item in English, in French / Spanish / German (animals), or by chemical symbol "
+         "(elements, the positive control); picks stay in English. Bottom: the lookup's extra loss with the other key "
+         "minus with the English key; dashed line: 0.20, the bar set in advance.", h,
+         ["lookup's extra loss", "difference, one animal or element", "difference, all"])  # fmt: skip
+    foot(fig, [f"{CI}; with 8 animals and 6 elements this interval is unreliable. Light band: 'not needed' (<= 0.10). "
+               f"The symbol control is below its bar on the 27B ({s27['difference'][0]:.2f} [{s27['difference'][1]:.2f}, "
+               f"{s27['difference'][2]:.2f}] vs 0.20) but positive for {s27['entities_D_positive']} of "
+               f"{len(s27['per_entity'])} elements; null on the 9B. Unverified."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.05, 1, 0.86))
     fig.savefig(OUT / "f16_x4.png", dpi=150, facecolor="white")
     plt.close(fig)
@@ -837,7 +842,7 @@ def f3(plt, F, color, grey) -> None:
                 v, lo, hi = c["excess"]
                 record("f3", target, kmatch, la, w, f"extra loss, J++ k={k}", v, lo, hi, c["n"])
                 if k in (25, 100):
-                    ax.annotate(f"{k} atoms: {c['excess'][0]:.2f}", (x, c["excess"][0]), xytext=(6, -14 if k == 100 else 6),
+                    ax.annotate(f"{k} directions: {c['excess'][0]:.2f}", (x, c["excess"][0]), xytext=(6, -14 if k == 100 else 6),
                                 textcoords="offset points", fontsize=10, color=color[w])  # fmt: skip
             ax.axhline(0, color="black", lw=0.6)
             ax.set_title(f"{label}, layer {la}, {NAME[w]}")
@@ -850,10 +855,10 @@ def f3(plt, F, color, grey) -> None:
     axes[0, 0].set_ylim(-0.3, 1.0)
     h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2, marker="o"), plt.Line2D([], [], color=F.RECALL, lw=2.2, marker="o"),
          plt.Rectangle((0, 0), 1, 1, color=grey, alpha=0.6)]  # fmt: skip
-    head(fig, "Of the dictionaries tried, only J++ separates the readers; the 27B lookup needs more J++ atoms, the 122B's does not",
-         "Each dictionary's 25-200 atoms removed at the pre-registered layer. Extra flips lost = flips lost minus those "
-         "lost to a random part of the same size.", h,
-         ["J++ (lookup)", "J++ (recall)", "logit lens (W_U), input embeddings (W_E), random atoms"])  # fmt: skip
+    head(fig, "Logit-lens, input-embedding and random directions do nothing; only J++ separates the readers",
+         "25-200 directions of each dictionary removed at the layer fixed in advance. Extra flips lost = answer switches "
+         "lost minus those lost to a random part of the same size. On the 27B, the lookup needs J++ too at 100 directions.",
+         h, ["J++ (lookup)", "J++ (recall)", "logit lens, input embeddings, random directions"])  # fmt: skip
     foot(fig, [f"n = 200 scenes per point; {CI}; grey = each of the three other dictionaries with its interval. "
                f"Unverified. {BIG} Runs: qwen35_9b_x0_kmatch, x0_kmatch_27b, qwen35_122b_x0_necessity_r2."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.06, 1, 0.89))
@@ -892,10 +897,11 @@ def f4(plt, F, color, grey) -> None:
     ax.set_ylabel("lookups flipped by the whole edit (%)")
     ax.grid(axis="y", color="#eeeeee")
     ax.set_axisbelow(True)
-    head(fig, "What moves lookups: sentence order",
+    head(fig, "Lookups move only when the locker sentence comes first",
          "The edit at the bridge's word flips a lookup mostly when the locker sentence comes before the pick sentence "
          "(\"The locker of the frog is 5.\" … \"Iris picked the frog.\").")  # fmt: skip
-    foot(fig, ["Whole edit, no part removed; X0 items at the pre-registered layers; 95% Wilson intervals. Unverified. "
+    foot(fig, ["Whole edit, no part removed; the main test's scenes at the layers fixed in advance; 95% Wilson "
+               "intervals. Unverified. "
                "Descriptive, added "
                f"after the data. Runs: {RUNS}."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.07, 1, 0.86))

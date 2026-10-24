@@ -1,88 +1,122 @@
 <!-- grid: results/cross_model/20261023T210238Z -->
-# bridge-jspace
+# When a model answers a two-step question, does it use the part of the in-between entity that a lens can read, and does that depend on what it does with that entity next?
 
-**Question.** To answer a two-step question, a model first finds an entity in between (the **bridge**) and then uses it. A lens called **J++** reads hidden states as words. Does the model use the part of the bridge's representation that J++ can read, or does it reach the bridge another way? And does that depend on what the model does with the bridge next?
+**Answer.** Recalling a fact about the in-between entity from memory needs the lens-readable (J++) part of its representation far more than looking its answer up in the prompt does, on three Qwen models (at the default 25 J++ directions), and on two of them in varied scenes. The lookup instead uses something at that word the lens does not read; on the 9B, a few directions that point at where the item was first mentioned carry the lookup (after the data; a replication fixed in advance is pending).
 
-> **Example.** "Iris picked the frog. The locker of the frog is 5. …" The bridge is *frog*.
-> - **Lookup:** "Which locker belongs to Iris's pick?" The answer is written in the prompt.
-> - **Recall:** "How many legs does Iris's pick have?" The answer comes from the model's memory.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B. All numbers are unverified until hand-checked. 25 Oct 2026. Built at {{head}} from the run files.
 
-**Status (24 Oct 2026).**
-- Models: Qwen3.5-9B, Qwen3.6-27B and Qwen3.5-122B-A10B (FP8 weights, mixture of experts, split over two H100s; its J++ was fitted on the bf16 weights; a hardware gate reproduced a 23 Oct cell first, 0.998 per-row agreement).
-- All numbers are unverified (not yet hand-checked); the layers, the rules and Dan's predictions were fixed before any result was opened. Built at {{head}} from the run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
+## How to read this page
 
-## Main findings
+> "Iris picked the frog. The locker of the frog is 5. …" The in-between entity, the **bridge**, is *frog*.
+> - **Lookup:** "Which locker belongs to Iris's pick?" (the answer is written in the prompt)
+> - **Recall:** "How many legs does Iris's pick have?" (the answer comes from the model's memory)
 
-1. **Recall needs the J++ part of the change.** Removing the J++ part of a bridge change costs recalls {{num|rc_jdep_9b}} (9B), {{num|rc_jdep_27b}} (27B) and {{num|rc_jdep_122b}} (122B) of their answer flips. A random part of the same size costs {{num|rc_rdep_9b}}, {{num|rc_rdep_27b}} and {{num|rc_rdep_122b}}.
-2. **Of the dictionaries tried, only J++ separates the readers:** logit lens, input embeddings and random do nothing at equal share; the layer's PCA directions, at about twice J++'s share, hurt both readers (27B lookup {{num|parts_pca_lk_excess_27b}}, recall {{num|parts_pca_rc_excess_27b}}). At J++'s share (k per item; descriptive, Q30.1 committed before the run), the PCA part costs the lookup {{num|pcaeq_pca_eq_lk_excess_27b}} and the recall {{num|pcaeq_pca_eq_rc_excess_27b}} on the 27B ({{num|pcaeq_pca_eq_lk_excess_9b}} and {{num|pcaeq_pca_eq_rc_excess_9b}} on the 9B; J++ on the same items: recall {{num|pcaeq_jpp_rc_excess_27b}} and {{num|pcaeq_jpp_rc_excess_9b}}): none of the three pre-stated branches (recall-specific like J++, hurts both, inert) on either model.
-   - **The word.** The bridge word alone costs the recall {{num|parts_w_rc_excess_27b}} (27B) and {{num|parts_w_rc_excess_9b}} (9B); J++ with the bridge's own tokens banned costs it {{num|parts_jw_rc_excess_27b}} and {{num|parts_jw_rc_excess_9b}}, as much as J++ (on X0b's items, 27B: {{num|x0bparts_jw_rc_excess_27b}}), but that part was fit on the whole change and still holds {{num|parts_jw_wenergy_27b}} and {{num|parts_jw_wenergy_9b}} of the word part's energy. Fit orthogonal to the word (descriptive, no prediction committed), J++ costs the recall {{num|pcaeq_jwo_rc_excess_27b}} (27B; {{num|pcaeq_jwo_rc_point_27b}}, just under 0.20) and {{num|pcaeq_jwo_rc_excess_9b}} (9B): neither pre-stated branch (at least 0.20: recall needs J++ components beyond the word; at most 0.10: the word and the other J++ components are redundant).
-3. **Lookups need it much less.**
-   - **9B:** not at any number of J++ atoms (extra loss {{num|lk_excess_k25_9b}} at 25 atoms to {{num|lk_excess_k200_9b}} at 200). The pre-registered test: **confirmed**.
-   - **27B:** a little at 25 atoms, so the pre-registered test was **not confirmed**; at 100 atoms about as much as recall ({{num|lk_excess_k100_27b}} vs {{num|rc_excess_k100_27b}}). Added after the data: with an edit that changes only the asked pick, its lookup's extra loss is {{num|single_lk_excess_27b}} (9B: {{num|single_lk_excess_pt_9b}}); at 100 atoms still {{num|single_lk_excess_k100_27b}}.
-   - **122B:** the pre-registered test at layer 33: **confirmed** (lookup {{num|lk_excess_122b}}; recalls lose {{num|rc_jdep_122b}} of their flips); at 100 atoms the lookup stays at {{num|lk_excess_k100_122b}}. Up to layer 30 both readers need the J++ part. Its J++ part takes no smaller a share of the change ({{num|jshare_122b}}) than the 27B's ({{num|jshare_27b}}) or the 9B's ({{num|jshare_9b}}), so its weaker recall dependence is not a smaller J++ share; its cause is open.
-4. **It holds beyond one scene type (X0b, exploratory; one-change edit).** On 7 topics × prose / JSON / tables × 3 difficulty levels, the pooled rule holds on both models: 27B lookup {{num|x0b_lk_excess_27b}}, C {{num|x0b_c_27b}} ({{num|x0b_n_27b}} scenes, {{num|x0b_cells_27b}} cells pass the gate); 9B lookup {{num|x0b_lk_excess_9b}}, C {{num|x0b_c_9b}} ({{num|x0b_n_9b}} scenes; under the brief's stricter C threshold, 0.30, only the 27B passes). On the 27B, locker-before lookups are around in JSON ({{num|x0b_lk_before_json_27b}}) and tables ({{num|x0b_lk_before_table_27b}}), mixed in prose ({{num|x0b_lk_before_prose_27b}}).
-5. **Not a missing digit.** Lookups flip mostly when the locker sentence comes *before* the pick, so the lookup might read a locker number attached to the bridge word, which our letter-only J++ cannot remove. The digit tokens are not the route: with every token allowed the 27B lookup's extra loss is {{num|dig_lk_jppall_k25_before_27b}} (letters only: {{num|dig_lk_jpp_k25_before_27b}}), and the 10 digit directions alone give {{num|dig_lk_jppdig_k10_before_27b}} on all three models.
-6. **An address and a value at the bridge word, outside the J++ part (descriptive, probes).** On 1,500 fresh locker-before scenes a linear probe at the bridge word reads which sentence holds the bridge's locker ({{num|v4_b_before_27b}} on the 27B, {{num|v4_b_before_9b}} on the 9B; the layout alone {{num|v4_b_layout_before_27b}}) and the locker number ({{num|v4_a_before_27b}} and {{num|v4_a_before_9b}}, chance 0.11; {{num|v4_a_resid_27b}} and {{num|v4_a_resid_9b}} with the sentence factored out). The address readout tracks the item's first mention: where another person's pick of the item comes first, it points there (9B: {{num|dup_otherfirst_reads_other_9b}} of such pairs), and the lookup still switches to the alt's locker ({{num|fm_lk_whole_other_9b}}): the bridge word carries a first-mention pointer that a linear probe reads and the lens does not, and the lookup does not need it. Its change sits outside the J++ part ({{num|patched_j25_share_27b}} of the change, {{num|patched_j25_probe_energy_27b}} of its component along the probe's directions, 27B), and the ridge probe's directions are not what the lookup reads (removing them: {{num|amn_lk_excess_27b}}).
-7. **The mass-mean address subspace matters to the 9B's lookup (descriptive; reading pending).** Removing it (rank 4, {{num|mm_A_share_9b}} of the change) costs the 9B lookup {{num|mm_A_lk_excess_9b}} and its recall {{num|mm_A_rc_excess_9b}}; kept alone with the value subspace it flips {{num|mm_keep_lk_9b}} more lookups than a random part. On the 27B: {{num|mm_A_lk_excess_27b}} (A alone), {{num|mm_AV_lk_excess_27b}} (A and V, the recall {{num|mm_AV_rc_excess_27b}}). The value subspace alone does nothing on either. Rebuilt after subtracting each layout group's mean (descriptive, no prediction committed; overlap with A {{num|mmlf_overlap_9b}}), removing it costs the 9B lookup {{num|mmlf_Alf_lk_excess_9b}} and kept alone it flips {{num|mmlf_keep_Alf_lk_9b}} more lookups than a random part (27B: {{num|mmlf_Alf_lk_excess_27b}}): the 9B lookup effect does not disappear, so the pre-stated reading 'position information, not address' does not apply.
-8. **X4: a translated locker key (descriptive, Dan's batch 29 committed first).** With the locker statements in French, Spanish or German (animals), D_translated, the lookup's extra loss translated minus verbatim, is {{num|x4_D_animals_27b}} on the 27B (D > 0 for {{num|x4_Dpos_animals_27b}} entities) and {{num|x4_D_animals_9b}} on the 9B ({{num|x4_Dpos_animals_9b}}): in locker-before scenes, the lookup does not need the J++ part at the pick word even without a verbatim match. The model may have linked the translated name to its English concept at the locker statement, so a null does not mean that no concept is needed anywhere. The positive control fails on both models (chemical symbols, D_symbol {{num|x4_D_elements_27b}} and {{num|x4_D_elements_9b}}, bar 0.20): the method may not see a lookup that needs J++. A probe at the bridge word reads which statement is the bridge's in every form (translated: {{num|x4_probe_animals_xlang_27b}}, 27B; trained on verbatim scenes: {{num|x4_transfer_animals_27b}}). With 8 and 6 entities the entity intervals are unreliable.
+**The one test used throughout.** We change the bridge (frog → tick) and, at one layer, take the change in the hidden state at the bridge word. We add the change back into the unedited prompt's forward pass at that word in three ways: whole, without its J++ part, or without a random part of the same size. Both questions (the two readers) read the same edited prompt, so any difference between them comes from the reader, not the edit. The main test's edit swaps two people's picks; later tests change only the asked person's pick. Brackets are {{q|95%}} intervals from resampling the bridge items (10,000 resamples, seed 0).
 
-![Removing the J++ part costs recall far more than lookup](figures/status_2026-10-24/f1_readers.png)
+- **J++ part:** J++ is a lens that reads a hidden state as words; each word has a direction. The J++ part is the combination of 25 such directions (by default) that best rebuilds the change; its share is its fraction of the change's squared length.
+- **Extra loss:** a reader's answer switches when it gives the new bridge's answer. Extra loss = the share of the switches the whole change causes that are lost without the J++ part, minus the share lost without the random part.
+- **Recall-lookup gap:** the recall's extra loss minus the lookup's.
+- **Tags:** [fixed in advance] = the test, the layer and the pass bar were written down before any result; [after the data] = added after seeing results.
 
-## How we test it
+## 1. Recall needs the J++ part far more than lookup does [fixed in advance]
 
-- **Change the bridge.** Make a copy of the prompt where Iris picks a different animal (frog → tick). At one layer, take the difference between the two hidden states at the bridge word.
-- **Paste the change back in three ways:** whole; without its J++ part (the 25 J++ directions that best describe it); without a random part of the same size.
-- **Ask both questions on the same patched prompt.** The question comes after the patch, so both readers get the exact same edit. Any difference comes from the reader, not the edit.
-- **Measure** how many answers flip to the new animal's answer. The key number is the **extra loss**: the flips lost without the J++ part, minus the flips lost without the random part, both as shares of the whole change's flips.
+- **Hypothesis.** At the layer fixed in advance, recall needs the J++ part of the bridge change and lookup does not. It would be wrong if the lookup's extra loss were above 0.10 or if recall lost less than 0.30 of its switches without the J++ part (raw, not extra loss).
+- **Experiment.** At one layer per model fixed in advance (9B layer {{num|layer_9b}}, 27B layer {{num|layer_27b}}, 122B layer {{num|layer_122b}}), 200 scenes each, an edit that swaps two people's picks. The J++ part (25 directions) is removed, and as a control a random part of the same size.
+- **Result.** The recall-lookup gap is {{num|contrast_9b}} on the 9B, {{num|contrast_27b}} on the 27B and {{num|contrast_122b}} on the 122B: without the J++ part, recall loses that much more of its answer switches than lookup does. The strict test passed on the 9B and the 122B and missed on the 27B, whose lookup lost {{num|lk_excess_27b}} (bar 0.10); with an edit that changes one pick (after the data), {{num|single_lk_excess_27b}}. In counts (27B, 200 scenes): recall switches {{num|rc_whole_27b}} → {{num|rc_noj_27b}} without the J++ part and {{num|rc_whole_27b}} → {{num|rc_norand_27b}} without the random part; lookup {{num|lk_whole_27b}} → {{num|lk_noj_27b}} and {{num|lk_whole_27b}} → {{num|lk_norand_27b}}.
 
-## Results at the pre-registered layer
+![Recall needs the J++ part far more than lookup does, on all three models](figures/status_2026-10-24/f10_contrast.png)
+*The recall-lookup gap per model. Compare the dark bars (an edit that changes two picks, fixed in advance) with the light ones (one pick, after the data): both stay well above zero.*
 
-| Model, layer | Lookup: extra loss | Recall: extra loss | Rule (pre-registered, two-change edit) | Recall minus lookup, C: two-change edit | C: one-change edit | J++ part's median share of the change's ‖Δ‖² |
-|---|---|---|---|---|---|---|
-| 9B, {{num|layer_9b}} | {{num|lk_excess_9b}} | {{num|rc_excess_9b}} | **{{num|verdict_9b}}** | {{num|contrast_9b}} | {{num|single_contrast_9b}} | {{num|jshare_9b}} |
-| 27B, {{num|layer_27b}} | {{num|lk_excess_27b}} | {{num|rc_excess_27b}} | **{{num|verdict_27b}}** | {{num|contrast_27b}} | {{num|single_contrast_27b}} | {{num|jshare_27b}} |
-| 122B, {{num|layer_122b}} | {{num|lk_excess_122b}} | {{num|rc_excess_122b}} | **{{num|verdict_122b}}** | {{num|contrast_122b}} | not run | {{num|jshare_122b}} |
+- **How to read it.** The lookup still uses the bridge (its answers switch with it); it just does not need the bridge's J++ part to do so. This does not say the lookup never needs J++: on the 27B it does at 100 J++ directions (finding 3's second figure). Main caveat: lookups were measured almost only in scenes where the locker sentence comes first (finding 4).
 
-How to read this:
-- The rule asked for a lookup extra loss of at most 0.10, and for recalls to lose at least 0.30 of their flips without the J++ part. The headline is C, the recall's extra loss minus the lookup's, under both edits; the categorical verdicts are the pre-registered ones (two-change edit).
-- In answer counts (27B, {{num|n_27b}} scenes): lookups go {{num|lk_whole_27b}} → {{num|lk_noj_27b}} without J++ and {{num|lk_whole_27b}} → {{num|lk_norand_27b}} without the random part; recalls go {{num|rc_whole_27b}} → {{num|rc_noj_27b}} and {{num|rc_whole_27b}} → {{num|rc_norand_27b}}.
-- Scope: almost all of the lookup's flips at the bridge word come from scenes where the locker sentence comes before the pick; the lookup results describe those scenes. {{q|95%}} intervals come from resampling the bridge entities ({{num|ents_9b}} on the 9B, {{num|ents_27b}} on the 27B, {{num|ents_122b}} on the 122B).
+## 2. It holds beyond the simple scenes [after the data; its pass bars were fixed before its own run]
 
-![The graded contrast holds under both edits](figures/status_2026-10-24/f10_contrast.png) ![The contrast holds beyond one scene type](figures/status_2026-10-24/f13_x0b.png) ![27B: both readers depend on the J++ part up to L26; from L28 only recall does](figures/status_2026-10-24/f2_depth.png) ![On the 27B, with more J++ atoms the lookup needs J++ too](figures/status_2026-10-24/f5_atoms.png)
+- **Hypothesis.** The gap is not a quirk of one scene template or of the locker key matching the pick word. It would be wrong if, in varied scenes, the lookup's extra loss rose above 0.10 or the gap fell below 0.20 (bars fixed before that run), or if a translated locker key raised the lookup's extra loss by 0.20 or more.
+- **Experiment.** Varied scenes: 7 topics, prose / JSON / tables, 3 difficulty levels; {{num|x0b_n_27b}} scenes on the 27B and {{num|x0b_n_9b}} on the 9B; an edit that changes one pick. Locker key in another language: the locker statements name 8 animals in French, Spanish or German while the picks stay in English (about 400 scenes per form); the same with 6 chemical elements named by symbol, as a positive control (a symbol such as O can be matched to "oxygen" only through knowledge, so there the lookup should need J++).
+- **Result.** In varied scenes the recall-lookup gap is {{num|x0b_c_27b}} (27B) and {{num|x0b_c_9b}} (9B), with the lookup's extra loss at {{num|x0b_lk_excess_27b}} and {{num|x0b_lk_excess_9b}}. With the locker key in another language, the lookup's extra loss changes by {{num|x4_D_animals_27b}} (27B) and {{num|x4_D_animals_9b}} (9B) against the English key.
 
-![Of the dictionaries tried, only J++ separates the readers](figures/status_2026-10-24/f3_dictionaries.png) ![The word alone costs the recall little; the layer's PCA directions at twice J++'s share cost both readers](figures/status_2026-10-24/f11_parts.png) ![Adding the digit tokens to J++ changes nothing](figures/status_2026-10-24/f6_digits.png) ![The bridge word holds where its locker is](figures/status_2026-10-24/f7_probe.png) ![The address is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png) ![A first-mention pointer the lens does not read, and the lookup does not need](figures/status_2026-10-24/f9_first_mention.png) ![The mass-mean address subspace matters to the 9B's lookup, little to the 27B's](figures/status_2026-10-24/f12_massmean.png) ![Removing the layout-free address subspace still costs the 9B's lookup](figures/status_2026-10-24/f15_massmean_layout_free.png) ![At J++'s share, the PCA part and the word-orthogonal J++ part cost the recall 0.12-0.20](figures/status_2026-10-24/f14_pcaeq.png) ![On X0b's items, the word part alone costs the recall little](figures/status_2026-10-24/f17_x0b_parts.png) ![X4: no verbatim match needed; the symbol control fails](figures/status_2026-10-24/f16_x4.png)
+![The recall-lookup gap holds in varied scenes](figures/status_2026-10-24/f13_x0b.png) ![With the locker key in another language, the lookup still does not need the J++ part](figures/status_2026-10-24/f16_x4.png)
+*Left: compare the purple (lookup) and dark (recall) bar in each group. Right, bottom: compare each diamond with the dashed line at 0.20.*
+
+- **How to read it.** In locker-first scenes, the lookup does not need the J++ part at the pick word even without a word-for-word match. The model may have linked the translated name to its English concept at the locker statement, so this does not mean that no concept is needed anywhere. Caveats: the positive control stayed below its bar (Limits); the 9B's gap in varied scenes is below the sprint plan's stricter bar of 0.30.
+
+## 3. The J++ part is more than the layer's main directions, and recall can use either the word or the rest [after the data]
+
+- **Hypothesis.** If J++ only picked out the layer's most common directions, those directions at the same share would cost recall as much as J++; if recall read only the bridge word itself, the word's directions alone would cost as much as J++.
+- **Experiment.** An edit that changes one pick, 200 scenes per model (9B, 27B). Removed in turn, each against a random part of its own share: the layer's main directions (top 2,000 principal directions, as many per scene as match that scene's J++ share); the bridge word's own J++ directions (the word and its spelling variants); J++ without the word's directions (fit after the word part is taken out). Also logit-lens directions, input embeddings and random directions at 25-200 directions, on all three models.
+- **Result.** Recall's extra loss: J++ {{num|pcaeq_jpp_rc_excess_27b}} (27B) and {{num|pcaeq_jpp_rc_excess_9b}} (9B); the main directions at the same share {{num|pcaeq_pca_eq_rc_excess_27b}} and {{num|pcaeq_pca_eq_rc_excess_9b}}; the word alone {{num|parts_w_rc_excess_27b}} and {{num|parts_w_rc_excess_9b}}; J++ without the word's directions {{num|pcaeq_jwo_rc_excess_27b}} and {{num|pcaeq_jwo_rc_excess_9b}}. Logit-lens, input-embedding and random directions cost neither reader anything comparable.
+
+![At the same share, the layer's main directions and J++ without the word's directions cost the recall far less than J++](figures/status_2026-10-24/f14_pcaeq.png) ![Logit-lens, input-embedding and random directions do nothing; only J++ separates the readers](figures/status_2026-10-24/f3_dictionaries.png)
+*Left: compare the dark (recall) bar of J++ with the other two parts, which take about the same share of the change. Right: compare the J++ lines with the grey bands.*
+
+- **How to read it.** Word alone {{num|parts_w_rc_excess_27b}} / {{num|parts_w_rc_excess_9b}}, J++ without the word's directions {{num|pcaeq_jwo_rc_excess_27b}} / {{num|pcaeq_jwo_rc_excess_9b}}, both together (J++) {{num|pcaeq_jpp_rc_excess_27b}} / {{num|pcaeq_jpp_rc_excess_9b}}: super-additive, i.e. the recall reads the bridge from either part (descriptive). This does not make J++ the only route: at twice J++'s share, the main directions cost both readers ({{num|parts_pca_lk_excess_27b}} lookup, {{num|parts_pca_rc_excess_27b}} recall on the 27B). Caveat: two models, after the data.
+
+## 4. Lookups move only when the locker sentence comes first [after the data]
+
+- **Hypothesis.** An edit at the bridge word should switch the lookup's answer whatever the sentence order. It would be wrong if switching depended on whether the locker sentence comes before or after the pick.
+- **Experiment.** The whole edit, no part removed, in the main test's scenes, split by sentence order; about 100 scenes per group, all three models.
+- **Result.** {{num|lk_order_before_27b}}-{{num|lk_order_before_122b}} of lookups switch when the locker sentence comes before the pick, {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} when it comes after.
+
+![Lookups move only when the locker sentence comes first](figures/status_2026-10-24/f4_order.png)
+*Compare the dark purple bar (locker first) with the light one (locker after) for each model.*
+
+- **How to read it.** In locker-after scenes the lookup rarely depends on the bridge word at all, so there is little to measure there; every lookup claim on this page describes locker-first scenes. It does not say how the lookup works in locker-after scenes.
+
+## 5. The bridge word holds a pointer to the item's first mention, outside the J++ part [after the data]
+
+- **Hypothesis.** If the lookup goes through the bridge word, that word's state should say where the locker is. It would be wrong if a linear probe could not beat what the scene's layout alone predicts.
+- **Experiment.** A linear probe at the bridge word, trained on 1,500 fresh locker-first scenes (tested on items it did not see), answers "which sentence holds this item's locker?". It is then read on edited states, on parts of the change, in scenes with the locker key in another language, and in pairs where the new pick was already picked by another person earlier in the scene.
+- **Result.** The probe is right in {{num|v4_b_before_27b}} (27B) and {{num|v4_b_before_9b}} (9B) of scenes, against {{num|v4_b_layout_before_27b}} for a guess from which sentences before the pick are locker sentences. It forms for translated statements too (27B: {{num|x4_probe_animals_xlang_27b}}; trained on English keys, tested on translated ones: {{num|x4_transfer_animals_27b}}) and for symbols ({{num|x4_probe_elements_syn_27b}}). Of the part of the change the probe's directions can see, the J++ part holds {{num|patched_j25_probe_energy_27b}} (27B). When another person's pick of the item comes first, the probe points at that pick sentence in {{num|dup_otherfirst_reads_other_9b}} of 9B pairs ({{num|dup_otherfirst_reads_other_27b}} on the 27B), and the lookup still switches to the right locker in {{num|fm_lk_whole_other_9b}}.
+
+![The bridge word points at the item's first mention; the lookup still switches when that pointer is wrong](figures/status_2026-10-24/f9_first_mention.png) ![The pointer is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png)
+*Left, top: compare the grey bars (pointing at the other person's pick) with the blue ones (pointing at the new pick's locker). Right: compare the J++ part with the rest.*
+
+- **How to read it.** The pointer is not lexical: it is a first-mention pointer at the entity level, which the lens does not read. It does not show that the lookup reads this pointer: the lookup switches correctly even when the pointer points the wrong way, and it switches in nearly every such pair whatever is removed, so that comparison cannot show a dependence. Read by the pointer directions of finding 6 (nearest class average) instead of the probe, the edited state also points at the other pick: {{num|dupnn_Alf_otherfirst_other_9b}} (9B), {{num|dupnn_Alf_otherfirst_other_27b}} (27B).
+
+## 6. On the 9B, pointer directions outside the lens carry the lookup, the mirror image of J++ [after the data; replication pending]
+
+- **Hypothesis.** If the lookup reads the pointer, removing the directions that encode it should cost the lookup and not the recall. It would be wrong if it cost both readers or neither.
+- **Experiment.** The **pointer directions** are the 4 directions that separate the average state for each "which sentence holds the locker" answer on fresh scenes, after each layout's average is taken out (so they do not just encode which sentences are locker sentences). They are removed from an edit that changes one pick, against a random part of the same share, and compared with the J++ part and the layer's main directions at about the same share. Pointer directions: the {{num|mmlf_n_lk_9b}} (9B) and {{num|mmlf_n_lk_27b}} (27B) of those scenes whose old and new pick both have their locker sentence before the pick; J++ and main directions: all 200 scenes.
+- **Result.** On the 9B the pointer directions cost the lookup {{num|mmlf_Alf_lk_excess_9b}} and the recall {{num|mmlf_Alf_rc_excess_9b}}; J++ costs the recall {{num|pcaeq_jpp_rc_excess_9b}} and the lookup {{num|pcaeq_jpp_lk_excess_9b}}; the main directions {{num|pcaeq_pca_eq_lk_excess_9b}} and {{num|pcaeq_pca_eq_rc_excess_9b}}. On the 27B the pointer directions cost both readers ({{num|mmlf_Alf_lk_excess_27b}} lookup, {{num|mmlf_Alf_rc_excess_27b}} recall).
+
+![On the 9B, removing the pointer directions costs the lookup and removing J++ costs the recall](figures/status_2026-10-24/f15_pointer.png)
+*Compare the purple (lookup) and dark (recall) bar across the three parts in the 9B panel, then in the 27B panel.*
+
+- **How to read it.** On the 9B the two readers depend on different parts of the same change. It does not show that the pointer is how the lookup finds its answer: these directions also point at the other person's pick when that comes first (finding 5), while the lookup still switches correctly; how both hold is open. Caveats: one model, after the data, 73 scenes for the pointer directions; a replication fixed in advance is pending.
 
 ## What did not hold
 
-- **"Past mid-depth, lookups don't use the J++ part of the change at all."** It holds on the 9B, and on the 122B from layer 33. On the 27B it holds only when the change is pasted across the whole context (lookups {{num|ctx_lookup_full}} → {{num|ctx_lookup_noj}} without J++, recalls {{num|ctx_recall_full}} → {{num|ctx_recall_noj}}). That repeats a 23 Oct result on fresh scenes, but at the bridge word alone it does not hold.
-- **"The lookup reads the answer digit at the bridge word"** (stated before the check). Digit tokens change nothing (above), and the J++ readout at the bridge word ranks the lookup's answer digit first in {{num|dig_readout_first_before_27b}} of items (27B; chance is {{q|10%}}).
-- **Prompts without the chat template.** Can't test: the models open a thinking block or answer in markdown. This says nothing about the question.
+- **The lookup reads the locker number at the bridge word.** Adding all digit tokens to J++ leaves the 27B lookup's extra loss unchanged ({{num|dig_lk_jppall_k25_before_27b}} with them, {{num|dig_lk_jpp_k25_before_27b}} with letters only); the 10 digit directions alone give {{num|dig_lk_jppdig_k10_before_27b}}.
+- **The probe's own directions carry the lookup.** Removing them changes no lookup ({{num|amn_lk_excess_27b}} on the 27B, {{num|amn_lk_excess_9b}} on the 9B). These 4 directions come from a probe fit on standardized states, which favours rare directions; finding 6's pointer directions are class averages, a different set.
+- **The strict test on the 27B.** Its lookup lost {{num|lk_excess_27b}} (bar 0.10), and at 100 J++ directions about as much as recall ({{num|lk_excess_k100_27b}} vs {{num|rc_excess_k100_27b}}).
 
-## Weak spots we know about
+## Limits
 
-| Weak spot | Status |
-|---|---|
-| How the lookup reads what it needs is open: not the J++ part (9B, 122B), not a digit, not the first-mention pointer a linear probe reads; the mass-mean address subspace (also layout-free) costs the 9B lookup but little on the 27B, and that sits beside the lookup surviving a misdirected pointer | DAS after the sprint |
-| At J++'s share, neither the PCA comparison nor the word-orthogonal J++ part lands in a pre-stated branch; the J++ part fit on the whole change holds most of the word's energy | F14; no further runs this week |
-| X4's positive control (chemical symbols) failed on both models: the patch test may not see a lookup that needs J++ | stated with finding 8 |
-| Lookup flips depend on sentence order: locker before pick {{num|lk_order_before_27b}}–{{num|lk_order_before_122b}}, after {{num|lk_order_after_27b}}–{{num|lk_order_after_9b}} | figure F4; X0b fixed the order by design ({{q|75%}} before) |
-| The two-change edit inflated the extra loss: on the same items, one change instead of two moves the recall's by {{num|paired_rc_excess_27b}} (27B) and {{num|paired_rc_excess_9b}} (9B), the 27B lookup's by {{num|paired_lk_excess_27b}} | the one-change edit from X0b on (it makes two people pick the same item) |
-| On the 27B, the lookup's drop with depth follows how much of the change J++ captures (Spearman {{num|share_rho_27b}}) | stated beside the depth figure |
-| Three models from one family; generated scenes only | X0b: 7 topics, 3 formats, 3 levels; natural text parked (X3) |
-
-![What moves lookups: sentence order](figures/status_2026-10-24/f4_order.png)
+- **Positive control.** Chemical symbols should make the lookup need J++ (bar 0.20): on the 27B {{num|x4_D_elements_27b}}, below the bar but positive for {{num|x4_Dpos_elements_27b}} elements; null on the 9B ({{num|x4_D_elements_9b}}).
+- **The 122B** was tested at one layer for most checks, in FP8 weights, with J++ fitted on the bf16 weights.
+- **One model family** (Qwen) and generated scenes only.
+- **Prompts without the chat template** could not be tested: the models open a thinking block or answer in markdown.
+- **The edit that changes one pick** makes two people pick the same item; that is how the pairs in finding 5 arise.
 
 ## Next
 
 | Step | What it tells us |
 |---|---|
-| Slides (Thu-Fri; no new GPU runs after Thu 12:00) | the three-model table, the dictionary controls, sentence order, the probe and the lens's blindness to it, the parts, the mass-mean result, X4, the process (calibration) |
-| After the sprint: distributed alignment search (DAS) on the bridge word | how the lookup reads what it needs outside the J++ part |
+| A replication of finding 6, fixed in advance (fresh scenes; spec and Dan's predictions first) | whether the 9B's lookup and recall really depend on different parts of the change |
+| Slides (Thu-Fri) | the six findings for the sprint review |
+| After the sprint: distributed alignment search at the bridge word | how the lookup reads what it needs |
 
-## More
+## Where the runs are
 
-- [Detailed results](docs/x0_details.md): every layer, every dictionary and number of atoms, subsets, controls, simple explanations we ruled out.
-- [Pre-registration and every change made after the data](jobs/c3/X0.md) · [X0b](jobs/c3/X0b.md) · [X4](jobs/c3/X4.md) · [Dan's predictions and scores](predictions/2026-10-24_dan.md).
-- [Earlier claims and history](CHANGELOG.md) · [Zach's breadth results](https://github.com/zach-perlman/bridge-jspace/tree/zach/v8-breadth-1021).
+| Finding | Run folders (results/) | Spec | Predictions |
+|---|---|---|---|
+| 1 | x0_necessity/{qwen35_9b_x0_necessity, x0_necessity_27b_chat, qwen35_122b_x0_necessity_r2, *_single_r2} | [X0.md](jobs/c3/X0.md) | batches 25, 26 |
+| 2 | x0b_generalize/*x0b_v2*; x4_alias/* | [X0b.md](jobs/c3/X0b.md), [X4.md](jobs/c3/X4.md) | batches 27, 29 |
+| 3 | x0_parts/{*x0_parts*, *pcaeq*, *x0b_parts*}; x0_necessity/*kmatch* | [x0_parts.yaml](jobs/c3/x0_parts.yaml), [x0_pcaeq_mmlf.yaml](jobs/c3/x0_pcaeq_mmlf.yaml) | batches 25, 28, 30 |
+| 4 | x0_necessity/* (cases and outcomes) | [X0.md](jobs/c3/X0.md) | — |
+| 5 | x0_probe/*v4*; x0_amnesic/*/probe-patched-*; x4_alias/*probe*; x0_massmean/*_lf/dup-nearest-* | [x0_probe_power.yaml](jobs/c3/x0_probe_power.yaml) | batches 27, 29 |
+| 6 | x0_massmean/{*massmean*, *_lf}; x0_parts/*pcaeq* | [x0_massmean.yaml](jobs/c3/x0_massmean.yaml), [x0_pcaeq_mmlf.yaml](jobs/c3/x0_pcaeq_mmlf.yaml) | batch 28 |
+
+Internal names: X0 = the main test, X0b = varied scenes, X4 = the locker key in another language or as a symbol, Alf = the pointer directions. [Detailed results](docs/x0_details.md) · [Dan's predictions and scores](predictions/2026-10-24_dan.md) · [calibration](predictions/README.md) · [earlier claims](CHANGELOG.md) · [Zach's breadth results](https://github.com/zach-perlman/bridge-jspace/tree/zach/v8-breadth-1021).
 
 Prior work: the workspace paper (Gurnee et al. 2026); two-hop recall resolves its bridge early (Biran et al. 2024); mass-mean probing (Marks & Tegmark 2023).

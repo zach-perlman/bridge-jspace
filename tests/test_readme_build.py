@@ -101,3 +101,17 @@ def test_template_types_no_result_number():
     text = ALLOWED.sub("", text)
     typed = re.findall(r"\b\d+(?:\.\d+)?\s*(?:%|points?\b)", text)
     assert not typed, f"typed numbers in the template (use a marker or {{{{q|...}}}}): {typed}"
+
+
+MAX_LINES = 150  # Dan, 25 Oct: the README rework raised the page budget from 90 to 150 rendered lines
+CODES = re.compile(r"\bX0b?\b|\bX[1-4]\b|\bAlf\b|\bjwo?\b|\bPP\b|\bPM\b|\bJdep\b|\bRdep\b| C |k =|\bcf\b")
+
+
+def test_readme_fits_the_page_budget():
+    assert len((B.REPO / "README.md").read_text().splitlines()) <= MAX_LINES
+
+
+def test_readme_body_has_no_internal_codes():
+    """Internal run codes appear only in the bottom table that maps findings to runs (Dan, 25 Oct)."""
+    body = (B.REPO / "README.md").read_text().split("## Where the runs are")[0]
+    assert not CODES.findall(body), CODES.findall(body)
