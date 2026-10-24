@@ -164,8 +164,8 @@ def nan_round(x: float, nd: int = 3) -> float | None:
 
 # ---- cases (tokenizer only) ---------------------------------------------------------------------------------------
 
-RENDERINGS = ("chat", "raw", "nothink")  # nothink: amendment 2 (raw + the chat template's empty think block)
-NOTHINK = "<think>\n\n</think>\n\n"  # what the template inserts with thinking off, before the 'Answer:' prefill
+RENDERINGS = ("chat", "raw", "nochat")  # nochat: amendment 2 (no chat template, thinking off)
+EMPTY_THINK = "<think>\n\n</think>\n\n"  # what the template inserts with thinking off, before the 'Answer:' prefill
 LAYERS = {"qwen3.6-27b": tuple(range(16, 41, 2)), "qwen3.5-9b": tuple(range(6, 21, 2))}
 N_ITEMS, N_MIN, GATE = 200, 150, 0.80
 K_EXAMPLES, EXAMPLES_SEED, GEN_TOKENS = 10, 0, 8
@@ -181,13 +181,13 @@ EXAMPLE_ARMS: tuple[Arm, ...] = (WHOLE, ("jpp", K_MAIN, "signed", "no_part"), ("
 
 def render(tok, item: dict, rendering: str, context: str) -> str:
     """chat: tasks_v2's prompt as on 23 Oct (the template, the digit instruction, thinking off, 'Answer:' prefilled);
-    raw: no template and no instruction, '<context>\\nQuestion: <q>\\nAnswer:'; nothink: raw with the template's empty
+    raw: no template and no instruction, '<context>\\nQuestion: <q>\\nAnswer:'; nochat: raw with the template's empty
     think block before 'Answer:', no roles and no instruction (jobs/c3/X0.md, amendment 2)."""
     from scripts import tasks_v2 as T
 
     if rendering == "chat":
         return T.render(tok, {**item, "context": context})
-    think = NOTHINK if rendering == "nothink" else ""
+    think = EMPTY_THINK if rendering == "nochat" else ""
     return f"{context}\nQuestion: {item['question']}\n{think}Answer:"
 
 

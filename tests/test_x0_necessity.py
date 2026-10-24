@@ -179,7 +179,7 @@ def test_digit_read_takes_the_first_digit_token(monkeypatch):
     monkeypatch.setattr(X, "READ", "digit")
     monkeypatch.setattr(X, "DIGIT_IDS", {5, 6})
     edits = [{"say": [7, 8, 5, 9]}, {"say": [6]}, {"say": [7, 7, 7]}]  # ' **' 'Locker' '5' / '6' / no digit
-    logits, skipped = X.read_logits(FakeGenModel(), [1, 2], edits, "nothink", [3], None)
+    logits, skipped = X.read_logits(FakeGenModel(), [1, 2], edits, "nochat", [3], None)
     assert skipped == [2, 0, -1]
     assert [int(lg.argmax()) for lg in logits] == [5, 6, 7]  # no digit: read at the first step, switches nothing
     chat, _ = X.read_logits(FakeModel(3), [3, 5, 6], [{}], "chat", [1], X.whitespace_mask(FakeModel(3)))
@@ -187,21 +187,21 @@ def test_digit_read_takes_the_first_digit_token(monkeypatch):
 
 
 def test_descriptive_keeps_items_when_the_gate_fails(monkeypatch):
-    cases = [{"scene": f"s{i}", "rendering": "nothink"} for i in range(40)]
-    comp = [{"scene": f"s{i}", "rendering": "nothink", "reader": w, "variant": v, "right": True, "read_right": i < 20,
+    cases = [{"scene": f"s{i}", "rendering": "nochat"} for i in range(40)]
+    comp = [{"scene": f"s{i}", "rendering": "nochat", "reader": w, "variant": v, "right": True, "read_right": i < 20,
              "cand_right": True} for i in range(40) for w in X.READERS for v in ("org", "alt")]  # fmt: skip
     gate, eligible = X.gate_and_eligible(cases, comp)
-    assert not gate["nothink"]["pass"] and eligible["nothink"] == []
+    assert not gate["nochat"]["pass"] and eligible["nochat"] == []
     monkeypatch.setattr(X, "DESCRIPTIVE", True)
     gate, eligible = X.gate_and_eligible(cases, comp)
-    assert gate["nothink"]["descriptive"] and len(eligible["nothink"]) == 20
+    assert gate["nochat"]["descriptive"] and len(eligible["nochat"]) == 20
 
 
 def test_raw_renderings_end_without_a_trailing_space():
     item = {"question": "Which locker belongs to Iris's pick?"}
-    raw, nothink = (X.render(None, item, r, "Iris picked the frog.") for r in ("raw", "nothink"))
+    raw, nochat = (X.render(None, item, r, "Iris picked the frog.") for r in ("raw", "nochat"))
     assert raw == "Iris picked the frog.\nQuestion: Which locker belongs to Iris's pick?\nAnswer:"
-    assert nothink == raw.replace("\nAnswer:", "\n<think>\n\n</think>\n\nAnswer:")
+    assert nochat == raw.replace("\nAnswer:", "\n<think>\n\n</think>\n\nAnswer:")
 
 
 def test_h_token_branches():

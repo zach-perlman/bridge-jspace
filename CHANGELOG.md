@@ -2,6 +2,14 @@
 
 Newest first. What changed in the claims, the runs and the rules; the README shows only the current state.
 
+## 24 Oct 2026, evening: README rebuilt around X0 (Dan, ~16:40)
+
+- C1 (the late read) and C2 (order, then identity) were removed from the README at Dan's request. The page is now the first experiment of the direction, X0 (C3's pre-registered test), and the plan it led to (X2', X4, X1, X3 under graded rules). The last README with C1-C3 is at 135dc0e (`git show 135dc0e:README.md`). Their numbers, figures and verdicts are unchanged in `results/` and `figures/cross_model/`.
+- C3's headline changed:
+  - old: post hoc, "lookups 83% → 81%, recalls 78% → 27%" at the 27B's layer 32, on a different position set (every context position);
+  - new: X0 at the bridge's word, pre-registered. 27B L32 is not confirmed (lookup excess 0.14, recall J-dependence 0.77); 9B L12 is confirmed (−0.03, 0.53). The graded contrast is 0.60 and 0.53. Figures are in `figures/x0_necessity/`, copied from `results/x0_necessity/figures-20261024T143451Z`.
+- The "pre-registered tests" table now lists the X0 rows. The 23 Oct rows are in the README at 135dc0e.
+
 ## 24 Oct 2026: the lens pin, the X0 hardware gate
 
 - Lens pin (Dan, 24 Oct): `pins.LENS_REVISION` and the Qwen3.5-0.8B, 2B, 4B and Qwen3.6-27B model configs moved from neuronpedia/jacobian-lens@9fa267f8 (no longer on the Hub: "Invalid rev id") to e166deb5. The 27B J++ file at e166deb5, downloaded into a clean directory, has sha256 bbef480b…f2b58f8f = `FROZEN_LENS_SHA256`: the frozen lens is byte-identical. Every file pinned at the old revision exists at e166deb5; the 27B J-lens's LFS oid (1718c8c5) equals the sha256 `scripts/lens_table.py` recorded at 9fa267f8. The pins are shared with Zach's branch.

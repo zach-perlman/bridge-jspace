@@ -89,7 +89,8 @@ ZACH_ONLY = (("Qwen3-32B", "qwen3_32b_ctrl_sweep_v1"), ("Olmo-Hybrid-7B", "olmoh
 # README.md (135dc0e) "Next steps": "at a predicted layer: 9B 12, 27B 32 at the word, 122B 33"; "Weak spots": "OLMo-3
 # shows no split"
 SPLIT: dict[str, int | None] = {"9b": 12, "27b": 32, "122b": 33, "olmo": None}
-SPLIT_SOURCE = "README.md (Weak spots; Next steps, split-depth confirmation)"
+README_COMMIT = "135dc0ef"  # the README that stated the split layers (rebuilt around X0 on 24 Oct)
+SPLIT_SOURCE = f"README.md @ {README_COMMIT} (Weak spots; Next steps, split-depth confirmation)"
 MEMORY_FINAL, LOOKUP_FINAL = ("PM", "MM"), ("PP", "MP")  # scripts/c1_v2.py MEMORY_FINAL, PROMPT_FINAL
 WORDS = LOOKUP_FINAL + MEMORY_FINAL
 KNOCKOUT = "paper10"
@@ -338,7 +339,9 @@ class Panel:
 
 def gather(inputs: Inputs) -> dict[str, Panel]:
     pins_text = (inputs.zach("all", "src/bridge_jspace/pins.py") or b"").decode()
-    inputs.dan("all", REPO / "README.md")
+    readme = at_commit("README.md", README_COMMIT)
+    assert readme is not None, f"README.md at {README_COMMIT}"
+    inputs.files.append(Input("dan", "all", "README.md", README_COMMIT, sha256(readme), readme.count(b"\n")))
     out = {}
     for m in PANELS:
         p = Panel(m, load_dan(m, inputs), load_sweep(m, inputs, pins_text))
@@ -646,7 +649,7 @@ def data_rows(p: Panel, s: Shown, head: str) -> list[dict[str, Any]]:
             "ci_lo": None, "ci_hi": None, "n": None}  # fmt: skip
     out.append({**base, "side": "dan", "quantity": "split_layer", "drawn": s.split is not None,
                 "x_depth_pct": None if s.split is None else depth(s.split, s.n_layers), "layers": str(s.split or ""),
-                "value": s.split, "source_file": "README.md", "row_key": SPLIT_SOURCE,
+                "value": s.split, "source_file": f"README.md @ {README_COMMIT}", "row_key": SPLIT_SOURCE,
                 "note": "read after seeing the data; = split_depth.split_of" if s.split is not None else "no split"})  # fmt: skip
     z = p.zach
     zc = {"model": s.model, "side": "zach", "source_commit": ZACH_COMMIT, "lens": f"jpp {z.lens['file']}",
