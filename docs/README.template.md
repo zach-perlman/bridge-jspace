@@ -68,6 +68,10 @@
 - **The whole edit fades for lookups** with depth (27B: {{q|0.89}} at layer 16, {{q|0.43}} at 32), not for recalls ({{q|0.98}}, {{q|0.75}}).
 - **The alt changes a second pick.** On the items where the asked pick comes first, the 27B's lookups switch {{q|24%}} at layer 32 ("can't tell"); recalls are unchanged. Added after data ([figure](figures/x0_necessity/asked_first.png)).
 - **On the 9B, "around" means no J-specific cost, not no cost.** J++ and a random part of the same share each cost its lookups {{q|0.12-0.13}} of switches.
+- **The 27B's categorical result depends on the position set.** Patching every context position at layer 32 (the 23 Oct cell, rerun on the fresh scenes with the 23 Oct code and filter; added after data):
+  - lookups switch {{q|84%}} with the whole change and {{q|87%}} without J++, so they lose nothing;
+  - recalls go from {{q|77%}} to {{q|36%}}; the random part costs them {{q|−1}} point, so the difference is {{q|+42 [+34, +50]}} points (n = {{q|180}}; [verdict](results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.md)).
+  - At the bridge's word alone, the lookup is "mixed".
 - **Without the chat template, neither model can be tested by the rule.**
   - **No chat template, thinking not disabled** (raw text): both models open a think block (gate {{q|0%}}).
   - **No chat template, thinking off** (the template's empty think block added by hand): they answer in markdown or in words (" **6**", " **Seven**"), so the first-token read is right on {{q|0% / 0%}} (9B) and {{q|63% / 90.5%}} (27B) of lookups / recalls.
@@ -78,7 +82,7 @@
 ![27B detail](figures/x0_necessity/detail_x0_necessity_27b_chat_chat.png)
 ![9B detail](figures/x0_necessity/detail_qwen35_9b_x0_necessity_chat.png)
 
-- **The 23 Oct reading was post hoc.** The split depth was read per layer after a pre-registered rule failed ([27B](results/d1_verdict/d1_necessity_parts_27b_r2_20261023-164424/verdict.md), [9B](results/d1_verdict/qwen35_9b_d1_necessity_parts_r2_20261023-162800/verdict.md)). Its 27B headline (lookups {{q|83% → 81%}}, recalls {{q|78% → 27%}} at layer 32) was every context position, not the bridge's word. That cell is being rerun on the fresh scenes (`x0_ctx_27b`).
+- **The 23 Oct reading was post hoc.** The split depth was read per layer after a pre-registered rule failed ([27B](results/d1_verdict/d1_necessity_parts_27b_r2_20261023-164424/verdict.md), [9B](results/d1_verdict/qwen35_9b_d1_necessity_parts_r2_20261023-162800/verdict.md)). Its 27B headline (lookups {{q|83% → 81%}}, recalls {{q|78% → 27%}} at layer 32) was every context position, not the bridge's word. On the fresh scenes that cell repeats ({{q|84% → 87%}}, {{q|77% → 36%}}; weak spots above).
 - **Convergent evidence (Zach, quoted).** Knocking out the lens's top directions costs recall more points than lookups, on held-out bands chosen with lookups excluded.
 
 </details>
@@ -96,10 +100,7 @@ Each candidate for the lookup's route has one test. The rules are graded reader 
 | Generated lists only | X3: paired readers on natural passages (natplus) | C ≥ {{q|0.30}} with lower bound ≥ {{q|0.15}} holds; ≤ {{q|0.10}} fails | last (Zach has natural-text evidence) |
 | A scene-relative address (order label) | the slot subspace removed (23 Oct) | – | open: not necessary ({{q|98%}} of lookups kept) |
 
-**Running now** (descriptive, added after data):
-- Every dictionary at 50-200 atoms on the 9B (the 27B is done, above).
-- The 23 Oct context cell on the fresh scenes.
-- The first-digit read without the template (27B, 9B).
+**Running now** (descriptive, added after data): the first-digit read without the chat template, thinking off (27B, 9B).
 
 ## Boring explanations
 
@@ -107,7 +108,7 @@ Each candidate for the lookup's route has one test. The rules are graded reader 
 |---|---|---|---|
 | The J++ part is just small | A random part of the same share removed | Recalls lose {{q|0.03}} to it at the 27B's layer 32, {{q|0.77}} to J++ | checked |
 | The edit differs between lookups and recalls | The identical patch at the bridge's word | By design | checked |
-| Any token-aligned part would do | W_U, W_E and random atoms at 25 atoms; W_E at an equal share | All "around" at every layer; at equal shares only J++ costs more than a random subspace (27B) | checked on the 27B; the 9B running |
+| Any token-aligned part would do | W_U, W_E and random atoms at 25 atoms; W_E at an equal share | All "around" at every layer; at equal shares only J++ costs the recall more than a random subspace (27B, 9B) | checked on the 27B and the 9B |
 | The chat template | No chat template, with thinking not disabled / off | Can't test: a think block, or answers in markdown | open: first-digit read running |
 | The alt's second changed pick | The asked-first subset | Recalls unchanged; the 27B's lookups switch less | partly checked |
 | The lookup's layer profile is the J++ share | J-dependence against share across layers | 27B lookups track it (Spearman {{q|0.79}}); recalls do not | open |
