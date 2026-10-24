@@ -37,6 +37,20 @@ from scripts import x0_strata as ST
 NOTE = "Descriptive, added after data (Dan, 24 Oct ~18:45 items 2-3; audit ~19:30 item 4); not part of X0's rule."
 
 
+PICK = re.compile(r"\b([A-Z][a-z]+) picked (?:the )?([\w-]+)\.")
+
+
+def other_pick(case: dict) -> tuple[str, int]:
+    """Where the alt item's original picker's sentence sits relative to the asked person's pick sentence (before /
+    after), and its sentence index: in the single-change alt, two people pick the alt item."""
+    sents = [s if s.endswith(".") else s + "." for s in case["context"].split(". ")]
+    asked = re.search(r"([A-Z][a-z]+)'s pick", case["readers"][X.LOOKUP]["question"]).group(1)  # type: ignore[union-attr]
+    picks = [(i, m.group(1), m.group(2)) for i, s in enumerate(sents) if (m := PICK.search(s))]
+    mine = next(i for i, who, _ in picks if who == asked)
+    other = next(i for i, who, what in picks if who != asked and what == case["cf_bridge"])
+    return ("before" if other < mine else "after"), other
+
+
 def locker_index(context: str, thing: str) -> int:
     """The index of the thing's locker sentence among the context's sentences."""
     sents = context.split(". ")
@@ -79,7 +93,7 @@ def main() -> None:
         for d, what in (("w", "word part"), ("jw", "J++ without the word")):
             states[f"org + {what}"] = h_org + zp[f"part_{d}"].astype(np.float64)
     cases = {c["scene"]: c for c in X.read_jsonl(X.RESULTS / a.single / "cases.jsonl") if c["rendering"] == "chat"}
-    test, labels = [], []
+    test, labels, others = [], [], []
     for i, s in enumerate(scenes):
         c = cases[s]
         f = ST.features(c)
@@ -90,6 +104,7 @@ def main() -> None:
             else:  # the locker numbers: the lookup's org and alt answers
                 org, alt = c["readers"][X.LOOKUP]["answer"], c["readers"][X.LOOKUP]["cf_answer"]
             labels.append((org, alt, c["bridge"]))
+            others.append(other_pick(c))
     # cross-fitted predictions: the fold model that left the item's entity out
     pred = {name: [None] * len(test) for name in states}
     for f in range(P.K_OUTER):
@@ -113,6 +128,27 @@ def main() -> None:
         hits[f"{name}: reads the org's"] = [int(p == o) for p, o in zip(pred[name], org_lab, strict=True)]
     r = X.resampled_rates(hits, ent, a.n_boot)
     res = {k: [float(np.mean(v)), *X.interval(r[k])] for k, v in hits.items()}
+    # the duplicate pick: alt right by the other picker's side, and readouts pointing at the other pick sentence
+    split = {}
+    for side in ("before", "after"):
+        k = [t for t, (sd, _) in enumerate(others) if sd == side]
+        if not k:
+            continue
+        sub = {"alt right": [hits["alt right"][t] for t in k], "pair right": [hits["pair right"][t] for t in k],
+               "alt state reads the other pick sentence": [int(pred["alt (org + Δ)"][t] == others[t][1]) for t in k]}  # fmt: skip
+        rs = X.resampled_rates(sub, [ent[t] for t in k], a.n_boot)
+        split[side] = {"n": len(k), **{m: [float(np.mean(v)), *X.interval(rs[m])] for m, v in sub.items()}}
+    if a.target == "address":  # among 'before': which earlier mention of the alt item is the most recent one
+        for name, keep in (("before, the other pick is the latest earlier mention", lambda t: others[t][1] > alt_lab[t]),
+                           ("before, the alt locker is the latest earlier mention", lambda t: others[t][1] < alt_lab[t])):  # fmt: skip
+            k = [t for t, (sd, _) in enumerate(others) if sd == "before" and keep(t)]
+            if not k:
+                continue
+            sub = {"alt right": [hits["alt right"][t] for t in k], "pair right": [hits["pair right"][t] for t in k],
+                   "alt state reads the other pick sentence": [int(pred["alt (org + Δ)"][t] == others[t][1]) for t in k]}  # fmt: skip
+            rs = X.resampled_rates(sub, [ent[t] for t in k], a.n_boot)
+            split[name] = {"n": len(k), **{m: [float(np.mean(v)), *X.interval(rs[m])] for m, v in sub.items()}}
+    res["duplicate_pick_split"] = split
     ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
     what = "(b), the locker sentence" if a.target == "address" else "(a), the locker number"
     lines = [f"# Probe {what}, on single-change pairs and patched states: {a.states}", "",
@@ -122,6 +158,14 @@ def main() -> None:
              "## Pair test (identical layout, different labels; a layout-only classifier scores 0 by construction)", "",
              "| measure | share |", "|---|---|"]  # fmt: skip
     lines += [f"| {k} | {ci(res[k])} |" for k in ("org right", "alt right", "pair right", "same prediction")]
+    lines += ["", "## The duplicate pick: by where the alt item's other picker's sentence sits (Dan ~20:45)", "",
+              "In the alt, two people pick the alt item. If the alt state's address pointed to the previous occurrence of "
+              "the same word, alt right would be high when the other pick comes after the asked pick and low when it "
+              "comes before.", "", "| other pick vs asked pick | n | alt right | pair right | alt state reads the other "
+              "pick sentence |", "|---|---|---|---|---|"]  # fmt: skip
+    for side, d in split.items():
+        lines.append(f"| {side} | {d['n']} | {ci(d['alt right'])} | {ci(d['pair right'])} | "
+                     f"{ci(d['alt state reads the other pick sentence'])} |")  # fmt: skip
     lines += ["", f"## Patched states: which {'locker sentence' if a.target == 'address' else 'locker number'} the probe reads", "",
               "| state | reads the alt's | reads the org's |", "|---|---|---|"]  # fmt: skip
     for name in states:
