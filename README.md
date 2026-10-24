@@ -3,7 +3,7 @@
 
 **Answer.** Recalling a fact about the in-between entity from memory needs the lens-readable (J++) part of its representation far more than looking its answer up in the prompt does, on three Qwen models (at the default 25 J++ directions), and on two of them in varied scenes. The lookup instead uses something at that word the lens does not read; on the 9B, a few directions that point at where the item was first mentioned carry the lookup (after the data; a replication fixed in advance is pending).
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B. All numbers are unverified until hand-checked. 25 Oct 2026. Built at d2c1efa0 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B. All numbers are unverified until hand-checked. 25 Oct 2026. Built at f93d310a from the run files.
 
 ## How to read this page
 
@@ -66,7 +66,7 @@
 
 - **Hypothesis.** If the lookup goes through the bridge word, that word's state should say where the locker is. It would be wrong if a linear probe could not beat what the scene's layout alone predicts.
 - **Experiment.** A linear probe at the bridge word, trained on 1,500 fresh locker-first scenes (tested on items it did not see), answers "which sentence holds this item's locker?". It is then read on edited states, on parts of the change, in scenes with the locker key in another language, and in pairs where the new pick was already picked by another person earlier in the scene.
-- **Result.** The probe is right in 0.99 (27B) and 0.97 (9B) of scenes, against 0.53 for a guess from which sentences before the pick are locker sentences. It forms for translated statements too (27B: 0.99 [0.99, 1.00]; trained on English keys, tested on translated ones: 0.94 [0.90, 0.97]) and for symbols (0.97 [0.90, 1.00]). Of the part of the change the probe's directions can see, the J++ part holds 0.5% (27B). When another person's pick of the item comes first, the probe points at that pick sentence in 0.90 of 9B pairs (0.56 on the 27B), and the lookup still switches to the right locker in 1.00.
+- **Result.** The probe is right in 0.99 (27B) and 0.97 (9B) of scenes, against 0.53 for a guess from which sentences before the pick are locker sentences. It forms for translated statements too (27B: 0.99 [0.99, 1.00]; 9B: 0.93 [0.90, 0.96]; trained on English keys, tested on translated ones: 0.94 [0.90, 0.97] and 0.84 [0.79, 0.90]) and for symbols (0.97 [0.90, 1.00] and 0.89 [0.83, 0.95]; transfer 0.97 [0.90, 1.00] and 0.81 [0.74, 0.87]). Of the part of the change the probe's directions can see, the J++ part holds 0.5% (27B). When another person's pick of the item comes first, the probe points at that pick sentence in 0.90 of 9B pairs (0.56 on the 27B), and the lookup still switches to the right locker in 1.00.
 
 ![The bridge word points at the item's first mention; the lookup still switches when that pointer is wrong](figures/status_2026-10-24/f9_first_mention.png) ![The pointer is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png)
 *Left, top: compare the grey bars (pointing at the other person's pick) with the blue ones (pointing at the new pick's locker). Right: compare the J++ part with the rest.*
