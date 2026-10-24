@@ -739,3 +739,36 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   knock-out gives the same contrasts under the strict top read (27B M - P 50 vs 51, 9B 42 vs 46). For amendment 27
   the instruct 9B (our J++) is also run in chat, its on-policy framing; the base's QA run is compared with it, and the
   instruct QA run is kept as the framing-matched check.
+- **28 note 2 (~04:10 UTC, after Kolibri-1's test competence and the FP8 backward check, before any Kolibri lens or
+  knock-out data):** seen: Kolibri-1 on the module 1 test split (chat, thinking off, cand2, hop 1 by generation; 3,120
+  items): whole 0.79 (27B 0.96, 9B 0.83, Muse 0.80), hop 1 0.91, hop 2 0.99, answerable without hop 1 0.30 (27B 0.34);
+  weakest words TP 0.43, TM 0.62, MP 0.71, MM 0.77. It does the tasks without reasoning. The FP8 backward fails (no
+  autograd formula for the FP8 grouped expert matmul), so no lens can be fit on the FP8 weights. Plan
+  (scripts/queues/h200_kolfit_1024.sh): our J++ recipe (as the 28 note), the Jacobians on the FP8 checkpoint
+  dequantized to bf16 on load over both GPUs (jpp_cli --dequantize-fp8 --device-map auto, the path the J++ authors use
+  for DeepSeek-V4; the dequantization is exact: one expert's weights equal a hand dequantization), with the published
+  MoE lens's settings (the 122B's: lrp_mode r+moe, 64 WikiText prompts, 128 tokens, the first 16 positions skipped,
+  every block but the last a source (0-48), the final block the target); 8 router clusters; grading, readout weights
+  and the held-out evaluation on the FP8 model, the one the knock-outs run (as the 122B's bf16-fit lens is used on its
+  FP8 weights). Kolibri's modules are added to a copy of jpp_lens (scripts/lens_fit/patch_jpp_lens_kolibri.py): its
+  RMSNorm takes the Qwen2 LN rule (identical forward), its shared expert the gated-MLP rules, its routed experts the
+  fused-experts loop (with the stock sentinel slot), and its ungated MoE block the backward-only x4 on the shared expert
+  (no gate to detach). Checked on CPU (scripts/lens_fit/test_kolibri_*): on a tiny random Kolibri the patched forward
+  equals stock to 4e-7, the block's gradient equals J_experts + 4 J_shared to 6e-8, the rules change a deep Jacobian row
+  (cosine 0.86 with stock); on the real first two blocks, dequantized, the forward is within one bf16 ulp and every
+  residual norm, shared expert, expert loop and MoE block is patched; jpp_cli runs end to end under transformers 5.20.
+  The rows per pass (exact batching of the Jacobian's rows) are the widest of 128, 64, 32 that a 1-prompt smoke fits.
+  **Found on the way:** every published neuronpedia "jpp" lens we use (27B and 9B: rlens; 122B: r+moe) is a pooled
+  RelP lens (0 clusters, 64 prompts, no expert weighting; their provenance), while our own fits (Muse, Qwen3-32B,
+  Gemma, the Olmos) registered the weighted J++. The cross-model table therefore mixes two lens kinds; reported as a
+  caveat. Kolibri: the weighted J++ is primary (target kolibri-1, per the 28 note); the same fit's pooled lens is
+  secondary (target kolibri-1-pooled, the published kind), run at the same dev-chosen band. Order: fit, the plain-text
+  gate (amendment 28), lens check, dev competence and sweep (windows of 7 by 3), choose_band, the test knock-out, the
+  pooled lens. Predictions as amendment 28. To free both GPUs for the fit, the 27B's seed-2 run (amendment 29 A) moves
+  from GPU 0's overnight queue to GPU 1 after the fit.
+- **27 note 2 (~04:10 UTC, during the 9B-Base fit, before any of its lens or knock-out data):** the published 9B
+  "J++" is a pooled RelP lens (64 prompts, no expert weighting), not the weighted J++ that h200_q9fit_1024.sh
+  registers (32 prompts). The weighted lenses stay the pre-registered primary for base vs instruct (they match each
+  other), but the instruct-ourjpp vs published comparison is not like for like in lens kind. Each fit's pooled lens (32
+  prompts) is kept (scripts/queues/keep_pooled_1024.sh); a run of the pooled instruct lens would be the like-for-like
+  check (secondary, if GPU time allows).
