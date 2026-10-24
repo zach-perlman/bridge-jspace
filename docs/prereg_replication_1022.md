@@ -674,3 +674,19 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Prediction:** the framing changes no start's K - M or M - P by more than 10 points from the chat run (the
   memory-vs-prompt split is not a chat-template effect); if the prefill run differs, the chat run's answer position is
   the suspect (post-training placing information on template tokens).
+
+## Amendment 27 (Zach, 2026-10-24 ~03:00 UTC): base vs instruct (Qwen3.5-9B-Base) and the 122B on module 1
+
+- **Seen when this was written:** module 1 on the 27B (M - P +50, J-specific), 9B (+42) and Muse (+68, two thirds
+  shared with the logit lens); module 2 on the 9B and 27B; the 9B's module 1 framings not yet.
+- **A. Base vs instruct:** our own J++ fit with one recipe (scripts/queues/h200_q9fit_1024.sh: jpp_lens@93f02cd as
+  patched, 32 WikiText prompts, layers 0-30) on Qwen3.5-9B-Base (target qwen3.5-9b-base) and on Qwen3.5-9B
+  (qwen3.5-9b-ourjpp), so the two are compared on matched lenses (the published base lens is a plain J-lens, the
+  published instruct lens J++). Then module 1 in raw-text framing (jsuite_v1_facts_test_qa; base models take no chat
+  template) at the 9B's band L12-16, as amendment 23. The instruct 9B's published-J++ QA run is the reference.
+- **Predictions:** the instruct-ourjpp run reproduces the published-J++ QA run within 10 points on M - P (our recipe
+  works on Qwen3.5). Base vs instruct is two-sided: if post-training creates the dependence (the paper: post-training
+  installs the Assistant's point of view in the workspace), the base's M - P is >= 15 points below the instruct's; if
+  the dependence is a pretraining property, within 10.
+- **B. The 122B on module 1:** Qwen3.5-122B-A10B (FP8) at its pre-registered C1 band L39-45, chat framing, as
+  amendment 23. Prediction (from its toy and natural nulls and the redundancy diagnostic): M - P < 15.
