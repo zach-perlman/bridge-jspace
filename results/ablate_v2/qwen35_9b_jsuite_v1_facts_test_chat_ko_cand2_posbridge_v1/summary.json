@@ -1,0 +1,169 @@
+{
+  "seconds": 233,
+  "band_seconds": {
+    "L12-16": 45
+  },
+  "unedited_accuracy": {
+    "PP/clean": 0.9945652173913043,
+    "TA/clean": 1,
+    "PK/clean": 1,
+    "MP/clean": 0.9865771812080537,
+    "PM/clean": 0.9945652173913043,
+    "TK/clean": 1,
+    "PA/clean": 1,
+    "MM/clean": 1,
+    "MA/clean": 1,
+    "MK/clean": 1,
+    "TP/clean": 0.975,
+    "TM/clean": 1
+  },
+  "cells": {
+    "L12-16": {
+      "PP/clean": {
+        "paper10": {
+          "n": 184,
+          "accuracy": 0.9782608695652174,
+          "dlogp": 0.011686309025484978
+        },
+        "paper10_rot": {
+          "n": 184,
+          "accuracy": 0.9728260869565217,
+          "dlogp": -0.028720699797502122
+        }
+      },
+      "TA/clean": {
+        "paper10": {
+          "n": 80,
+          "accuracy": 0.8125,
+          "dlogp": -0.618623201281298
+        },
+        "paper10_rot": {
+          "n": 80,
+          "accuracy": 0.9875,
+          "dlogp": -0.03281419103150256
+        }
+      },
+      "PK/clean": {
+        "paper10": {
+          "n": 184,
+          "accuracy": 1,
+          "dlogp": -0.0138272246227327
+        },
+        "paper10_rot": {
+          "n": 184,
+          "accuracy": 1,
+          "dlogp": -0.0031254520553493817
+        }
+      },
+      "MP/clean": {
+        "paper10": {
+          "n": 149,
+          "accuracy": 0.9395973154362416,
+          "dlogp": -0.07270158045915824
+        },
+        "paper10_rot": {
+          "n": 149,
+          "accuracy": 0.9731543624161074,
+          "dlogp": -0.033089401574661614
+        }
+      },
+      "PM/clean": {
+        "paper10": {
+          "n": 184,
+          "accuracy": 0.5,
+          "dlogp": -2.294056493909169
+        },
+        "paper10_rot": {
+          "n": 184,
+          "accuracy": 0.9836956521739131,
+          "dlogp": -0.021158531194605926
+        }
+      },
+      "TK/clean": {
+        "paper10": {
+          "n": 80,
+          "accuracy": 0.975,
+          "dlogp": -0.050512125954264776
+        },
+        "paper10_rot": {
+          "n": 80,
+          "accuracy": 1,
+          "dlogp": -0.01186283842253033
+        }
+      },
+      "PA/clean": {
+        "paper10": {
+          "n": 184,
+          "accuracy": 0.7228260869565217,
+          "dlogp": -1.065156289534966
+        },
+        "paper10_rot": {
+          "n": 184,
+          "accuracy": 0.9945652173913043,
+          "dlogp": -0.012153885099826806
+        }
+      },
+      "MM/clean": {
+        "paper10": {
+          "n": 149,
+          "accuracy": 1,
+          "dlogp": 0.0
+        },
+        "paper10_rot": {
+          "n": 149,
+          "accuracy": 1,
+          "dlogp": 0.0
+        }
+      },
+      "MA/clean": {
+        "paper10": {
+          "n": 149,
+          "accuracy": 1,
+          "dlogp": 0.0
+        },
+        "paper10_rot": {
+          "n": 149,
+          "accuracy": 1,
+          "dlogp": 0.0
+        }
+      },
+      "MK/clean": {
+        "paper10": {
+          "n": 149,
+          "accuracy": 1,
+          "dlogp": -0.008449171602490807
+        },
+        "paper10_rot": {
+          "n": 149,
+          "accuracy": 1,
+          "dlogp": -0.0022743959126829156
+        }
+      },
+      "TP/clean": {
+        "paper10": {
+          "n": 80,
+          "accuracy": 0.9875,
+          "dlogp": 0.03714268496260047
+        },
+        "paper10_rot": {
+          "n": 80,
+          "accuracy": 0.975,
+          "dlogp": 0.0008313263766467571
+        }
+      },
+      "TM/clean": {
+        "paper10": {
+          "n": 80,
+          "accuracy": 0.3125,
+          "dlogp": -2.1250333301140927
+        },
+        "paper10_rot": {
+          "n": 80,
+          "accuracy": 0.9625,
+          "dlogp": -0.058276272797957065
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}
