@@ -39,6 +39,7 @@ AMNESIC = {"9b": "qwen35_9b_x0_amnesic", "27b": "x0_amnesic_27b"}
 X0B = {"9b": "qwen35_9b_x0b_v2", "27b": "x0b_v2_27b"}
 ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all", "letters_9b": "qwen35_9b_x0_atoms_letters"}
 PARTS = {"9b": "qwen35_9b_x0_parts", "27b": "x0_parts_27b"}
+MASSMEAN = {"9b": "qwen35_9b_x0_massmean", "27b": "x0_massmean_27b"}
 ORDER = "org locker vs asked pick"
 
 
@@ -131,6 +132,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     first_mention_numbers(num)
     x0b_numbers(num)
     parts_numbers(num)
+    massmean_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -229,6 +231,21 @@ def probe_numbers(num: Numbers) -> None:
         num.add(f"probe_b_before_{m}", f2(rows["locker sentence"]["probe"][0]), src)
         num.add(f"probe_b_layout_before_{m}", f2(rows["locker sentence"]["layout"][0]), src)
         num.add(f"probe_c_before_{m}", f2(rows["bridge identity"]["probe"][0]), src)
+
+
+def massmean_numbers(num: Numbers) -> None:
+    """x0_massmean: the mass-mean address (A) and value (V) subspaces removed from, or kept alone in, the single-change
+    edit (items with both lockers before the pick): each reader's excess, A's share, and the kept-alone difference."""
+    for m, run in MASSMEAN.items():
+        path = sorted((pins.RESULTS_DIR / "x0_massmean" / run).glob("verdict-*/verdict.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        for r in json.loads(path.read_text())["rows"]:
+            w = "lk" if r["reader"] == X.LOOKUP else "rc"
+            for sp in ("A", "V", "AV"):
+                num.add(f"mm_{sp}_{w}_excess_{m}", ci(r[sp]["excess"]), src)
+            num.add(f"mm_keep_{w}_{m}", ci(r["keep"]["difference"]), src)
+            if w == "lk":
+                num.add(f"mm_A_share_{m}", pct(r["A"]["share"]), src)
 
 
 def parts_numbers(num: Numbers) -> None:
