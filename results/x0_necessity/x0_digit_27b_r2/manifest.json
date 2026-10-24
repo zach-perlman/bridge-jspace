@@ -1,0 +1,83 @@
+{
+  "exp": "x0_necessity",
+  "run": "x0_digit_27b_r2",
+  "why": "X0 digit check A (Dan, 24 Oct ~17:00; after data): J++ over the full vocabulary (digits included) at k = 25 / 50 / 100; the digit tokens' J++ directions alone; the J++ readout of the answer digits; split by locker-before / locker-after",
+  "written_utc": "2026-10-24T15:13:42Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "9a8dcb783e83789763d0c66b0e16e7a52f104035",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "6ae0c66eeadf3113ef57e4109eb180e4fa641181bb8bf9f3851f7aceb239f702"
+  },
+  "layers": [
+    32
+  ],
+  "predicted": 32,
+  "renderings": [
+    "chat"
+  ],
+  "dicts": [
+    "jpp",
+    "jppall",
+    "jppdig"
+  ],
+  "k": 25,
+  "k_of": {
+    "jppdig": 10
+  },
+  "k_curve": {
+    "dicts": [
+      "jpp",
+      "jppall"
+    ],
+    "k": [
+      50,
+      100
+    ]
+  },
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+    "mode": "first",
+    "digit": "amendment 3: the step of the first digit token in 8 greedy tokens (non-chat renderings, when mode is digit)"
+  },
+  "descriptive": false,
+  "alt": "cf",
+  "curve_all_layers": false,
+  "readout": true,
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}
