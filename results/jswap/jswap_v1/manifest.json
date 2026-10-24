@@ -1,0 +1,19 @@
+{
+  "run": "jswap_v1",
+  "why": "Zach (2026-10-24, prereg amendment 32): the 27B at L32-40",
+  "target": "qwen3.6-27b",
+  "band": "32-40",
+  "set": "jsuite_v1_facts_test_chat",
+  "competence": "jsuite_v1_facts_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "808460d4cb6f4a75ecc9cba8758df6dc78c18646",
+  "limit": 0
+}
