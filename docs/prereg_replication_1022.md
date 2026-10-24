@@ -720,3 +720,12 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   jsuite_v1_facts_dev_chat (bridges disjoint from the test split, unlike natplus_dev), choose_band on PP PM MP MM. If a
   model's dev band differs from its toy band, module 1's test split is rerun at the dev band and reported beside the
   toy-band run (the toy-band run stays the pre-registered test).
+- **28 note (~03:15 UTC, before any Kolibri-1 data):** the lens plan above is revised. Every other model in the
+  cross-model comparison uses J++ (published for the 27B and 9B; our own fits for Muse, Qwen3-32B and the Olmos), and
+  lens type moves the result (Qwen3-32B: gap 12 with its plain J-lens vs 22 with J++), so a Kolibri-1 null under a
+  plain J-lens could not be told from a weaker lens. J++ (our recipe, as for every model we fit) is Kolibri's primary
+  lens; the plain J-lens (the paper's own method, with the 27B's plain-J-lens run beside it) is secondary. Order:
+  feasibility first (scripts/queues/h200_kolchk_1024.sh): competence with thinking off on the test split (Kolibri's
+  card reports reasoning-on benchmarks; if it cannot do the tasks without reasoning, nothing else runs), and whether a
+  lens can be fit on the FP8 weights at all (both fitters need gradients through every block; if the FP8 kernels have
+  no backward, the fit needs the dequantized bf16 weights on two GPUs). The band is still chosen on the dev split.
