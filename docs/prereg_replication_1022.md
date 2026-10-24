@@ -825,3 +825,24 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Predictions:** none directional. If the dependence belongs to pretrained transformers generally, OLMo-3 32B meets
   (a)-(c); if it is a Qwen-family property, M - P < 10. The 7B's nulls (with a weak lens) and the 122B's module-1
   reversal of its toy null pull opposite ways.
+
+## Amendment 32 (Zach, 2026-10-24 ~17:30 UTC): the J-subspace swap at the bridge's mention (a sufficiency test)
+
+- **Why:** amendment 30 put the whole memory-final dependence of a read or tracked bridge on the bridge's own mention
+  tokens, and the logit-lens control there removes nothing (27B and 9B, 0 points): the knock-out shows those J-directions
+  are necessary. Whether they carry the recalled attribute (sufficiency) is untested; the old write experiments (C2)
+  wrote the bridge's name direction at the question and final positions, where tonight's results put nothing.
+- **Seen when this was written:** amendments 30's position runs (27B, 9B) and their logit-lens controls; nothing from
+  this procedure.
+- **Procedure (scripts/jswap.py):** module 1 test split (chat), the read and tracked starts (PP PK PM PA TP TK TM TA),
+  the knock-out's eligibility; at the last token of each mention of the bridge X, in every band layer (9B L12-16, 27B
+  L32-40), six patches after one clean forward: swap (X's top-10 J-part replaced by a donor D's, D another passage entity
+  with a different answer), remove, swap_rot (the same-size change rotated), swap_u (the logit lens's top-10 directions),
+  swap_comp (all but the J-part from D), paste (D's whole residual). Answers (the candidate read's pick) classed kept /
+  donor / third (a third passage entity's answer, the chance of landing on any entity) / other; transfer index = donor %
+  - third %, 95% bootstrap over bridges. An 8-per-word smoke first; the 9B, then the 27B.
+- **Predictions:** if the J-part at the mention carries the recalled attribute: for the memory finals PM and TM, swap
+  transfer >= 20 with a bootstrap interval above 0, and swap_rot and swap_u transfer < 5; the passage lookups PP, TP, PK,
+  TK keep >= 80% (the entity's identity and its stated facts stay). Paste moves the lookups too (identity moves with the
+  whole residual). If the swap's transfer is < 5 on PM and TM, the J-part is necessary but not sufficient (it is not
+  where the attribute is held, or the attribute needs more than the top-10 span).
