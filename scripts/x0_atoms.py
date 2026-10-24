@@ -128,7 +128,7 @@ def stage_run(name: str, source: str, layer: int, n: int, seed: int, vocab: str)
                 c = by_scene[s]
                 ids = c["readers"][X.LOOKUP]["ids"]
                 h = {
-                    v: model.run(torch.tensor([ids[v]], device="cuda"), record=(layer,))[1][layer][c["pos"]]
+                    v: model.run(torch.tensor([ids[v]], device="cuda"), record=(layer,))[1][layer][c["pos"]].to("cuda")
                     for v in ("org", "alt")
                 }
                 x = (h["alt"] - h["org"]).float()
