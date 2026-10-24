@@ -1,0 +1,730 @@
+{
+ "PP/none": {
+  "n": 222,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 188,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TM/none": {
+  "n": 141,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 141,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TA/none": {
+  "n": 140,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 140,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PP/swap": {
+  "n": 222,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 188,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TM/swap": {
+  "n": 141,
+  "kept": 50.4,
+  "donor": 42.6,
+  "third": 2.8,
+  "other": 4.3,
+  "n_third": 141,
+  "transfer": 39.7,
+  "ci": [
+   29.1,
+   51.5
+  ]
+ },
+ "TA/swap": {
+  "n": 140,
+  "kept": 55.7,
+  "donor": 41.4,
+  "third": 0.0,
+  "other": 2.9,
+  "n_third": 140,
+  "transfer": 41.4,
+  "ci": [
+   31.2,
+   51.1
+  ]
+ },
+ "PP/remove": {
+  "n": 222,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 188,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TM/remove": {
+  "n": 141,
+  "kept": 91.5,
+  "donor": 2.1,
+  "third": 1.4,
+  "other": 5.0,
+  "n_third": 141,
+  "transfer": 0.7,
+  "ci": [
+   -2.2,
+   3.5
+  ]
+ },
+ "TA/remove": {
+  "n": 140,
+  "kept": 92.9,
+  "donor": 1.4,
+  "third": 0.0,
+  "other": 5.7,
+  "n_third": 140,
+  "transfer": 1.4,
+  "ci": [
+   0.0,
+   3.5
+  ]
+ },
+ "PP/swap_rot": {
+  "n": 222,
+  "kept": 99.5,
+  "donor": 0.0,
+  "third": 0.5,
+  "other": 0.0,
+  "n_third": 188,
+  "transfer": -0.5,
+  "ci": [
+   -1.7,
+   0.0
+  ]
+ },
+ "TM/swap_rot": {
+  "n": 141,
+  "kept": 97.9,
+  "donor": 0.7,
+  "third": 0.7,
+  "other": 0.7,
+  "n_third": 141,
+  "transfer": 0.0,
+  "ci": [
+   -2.1,
+   2.1
+  ]
+ },
+ "TA/swap_rot": {
+  "n": 140,
+  "kept": 97.9,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 2.1,
+  "n_third": 140,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PP/swap_u": {
+  "n": 222,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 188,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TM/swap_u": {
+  "n": 141,
+  "kept": 99.3,
+  "donor": 0.0,
+  "third": 0.7,
+  "other": 0.0,
+  "n_third": 141,
+  "transfer": -0.7,
+  "ci": [
+   -2.3,
+   0.0
+  ]
+ },
+ "TA/swap_u": {
+  "n": 140,
+  "kept": 98.6,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.4,
+  "n_third": 140,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PP/swap_comp": {
+  "n": 222,
+  "kept": 96.8,
+  "donor": 1.8,
+  "third": 1.4,
+  "other": 0.0,
+  "n_third": 188,
+  "transfer": 0.0,
+  "ci": [
+   -2.6,
+   2.6
+  ]
+ },
+ "TM/swap_comp": {
+  "n": 141,
+  "kept": 29.8,
+  "donor": 16.3,
+  "third": 22.0,
+  "other": 31.9,
+  "n_third": 141,
+  "transfer": -5.7,
+  "ci": [
+   -14.0,
+   2.6
+  ]
+ },
+ "TA/swap_comp": {
+  "n": 140,
+  "kept": 54.3,
+  "donor": 12.9,
+  "third": 7.1,
+  "other": 25.7,
+  "n_third": 140,
+  "transfer": 5.7,
+  "ci": [
+   -1.4,
+   13.1
+  ]
+ },
+ "PP/paste": {
+  "n": 222,
+  "kept": 96.4,
+  "donor": 1.8,
+  "third": 1.8,
+  "other": 0.0,
+  "n_third": 188,
+  "transfer": -0.5,
+  "ci": [
+   -3.2,
+   2.2
+  ]
+ },
+ "TM/paste": {
+  "n": 141,
+  "kept": 29.8,
+  "donor": 21.3,
+  "third": 20.6,
+  "other": 28.4,
+  "n_third": 141,
+  "transfer": 0.7,
+  "ci": [
+   -8.3,
+   10.2
+  ]
+ },
+ "TA/paste": {
+  "n": 140,
+  "kept": 50.0,
+  "donor": 20.7,
+  "third": 5.7,
+  "other": 23.6,
+  "n_third": 140,
+  "transfer": 15.0,
+  "ci": [
+   6.9,
+   22.7
+  ]
+ },
+ "PK/none": {
+  "n": 226,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TK/none": {
+  "n": 139,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 139,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PK/swap": {
+  "n": 226,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TK/swap": {
+  "n": 139,
+  "kept": 97.1,
+  "donor": 2.2,
+  "third": 0.0,
+  "other": 0.7,
+  "n_third": 139,
+  "transfer": 2.2,
+  "ci": [
+   0.0,
+   4.8
+  ]
+ },
+ "PK/remove": {
+  "n": 226,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TK/remove": {
+  "n": 139,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 139,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PK/swap_rot": {
+  "n": 226,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TK/swap_rot": {
+  "n": 139,
+  "kept": 99.3,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.7,
+  "n_third": 139,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PK/swap_u": {
+  "n": 226,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TK/swap_u": {
+  "n": 139,
+  "kept": 99.3,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.7,
+  "n_third": 139,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PK/swap_comp": {
+  "n": 226,
+  "kept": 99.6,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.4,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TK/swap_comp": {
+  "n": 139,
+  "kept": 95.7,
+  "donor": 0.0,
+  "third": 1.4,
+  "other": 2.9,
+  "n_third": 139,
+  "transfer": -1.4,
+  "ci": [
+   -3.8,
+   0.0
+  ]
+ },
+ "PK/paste": {
+  "n": 226,
+  "kept": 99.6,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.4,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TK/paste": {
+  "n": 139,
+  "kept": 94.2,
+  "donor": 1.4,
+  "third": 0.7,
+  "other": 3.6,
+  "n_third": 139,
+  "transfer": 0.7,
+  "ci": [
+   -1.5,
+   2.9
+  ]
+ },
+ "PM/none": {
+  "n": 226,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PA/none": {
+  "n": 226,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PM/swap": {
+  "n": 226,
+  "kept": 51.3,
+  "donor": 46.0,
+  "third": 0.9,
+  "other": 1.8,
+  "n_third": 212,
+  "transfer": 44.3,
+  "ci": [
+   36.5,
+   52.1
+  ]
+ },
+ "PA/swap": {
+  "n": 226,
+  "kept": 65.0,
+  "donor": 32.3,
+  "third": 0.4,
+  "other": 2.2,
+  "n_third": 212,
+  "transfer": 32.1,
+  "ci": [
+   24.0,
+   40.3
+  ]
+ },
+ "PM/remove": {
+  "n": 226,
+  "kept": 87.6,
+  "donor": 3.5,
+  "third": 3.5,
+  "other": 5.3,
+  "n_third": 212,
+  "transfer": -0.5,
+  "ci": [
+   -3.9,
+   3.1
+  ]
+ },
+ "PA/remove": {
+  "n": 226,
+  "kept": 91.6,
+  "donor": 3.1,
+  "third": 0.9,
+  "other": 4.4,
+  "n_third": 212,
+  "transfer": 1.9,
+  "ci": [
+   -1.0,
+   6.4
+  ]
+ },
+ "PM/swap_rot": {
+  "n": 226,
+  "kept": 99.1,
+  "donor": 0.4,
+  "third": 0.0,
+  "other": 0.4,
+  "n_third": 212,
+  "transfer": 0.5,
+  "ci": [
+   0.0,
+   1.8
+  ]
+ },
+ "PA/swap_rot": {
+  "n": 226,
+  "kept": 98.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.3,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PM/swap_u": {
+  "n": 226,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "PA/swap_u": {
+  "n": 226,
+  "kept": 99.6,
+  "donor": 0.4,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 212,
+  "transfer": 0.5,
+  "ci": [
+   0.0,
+   1.4
+  ]
+ },
+ "PM/swap_comp": {
+  "n": 226,
+  "kept": 40.3,
+  "donor": 22.1,
+  "third": 14.6,
+  "other": 23.0,
+  "n_third": 212,
+  "transfer": 5.2,
+  "ci": [
+   -2.8,
+   13.1
+  ]
+ },
+ "PA/swap_comp": {
+  "n": 226,
+  "kept": 71.7,
+  "donor": 11.9,
+  "third": 5.3,
+  "other": 11.1,
+  "n_third": 212,
+  "transfer": 5.7,
+  "ci": [
+   0.0,
+   11.9
+  ]
+ },
+ "PM/paste": {
+  "n": 226,
+  "kept": 35.4,
+  "donor": 30.1,
+  "third": 13.7,
+  "other": 20.8,
+  "n_third": 212,
+  "transfer": 14.6,
+  "ci": [
+   5.9,
+   23.3
+  ]
+ },
+ "PA/paste": {
+  "n": 226,
+  "kept": 67.3,
+  "donor": 17.3,
+  "third": 5.3,
+  "other": 10.2,
+  "n_third": 212,
+  "transfer": 10.4,
+  "ci": [
+   4.6,
+   16.6
+  ]
+ },
+ "TP/none": {
+  "n": 136,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 136,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TP/swap": {
+  "n": 136,
+  "kept": 97.8,
+  "donor": 0.7,
+  "third": 0.7,
+  "other": 0.7,
+  "n_third": 136,
+  "transfer": 0.0,
+  "ci": [
+   -2.1,
+   2.2
+  ]
+ },
+ "TP/remove": {
+  "n": 136,
+  "kept": 98.5,
+  "donor": 0.7,
+  "third": 0.0,
+  "other": 0.7,
+  "n_third": 136,
+  "transfer": 0.7,
+  "ci": [
+   0.0,
+   2.3
+  ]
+ },
+ "TP/swap_rot": {
+  "n": 136,
+  "kept": 98.5,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.5,
+  "n_third": 136,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "TP/swap_u": {
+  "n": 136,
+  "kept": 99.3,
+  "donor": 0.7,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 136,
+  "transfer": 0.7,
+  "ci": [
+   0.0,
+   2.3
+  ]
+ },
+ "TP/swap_comp": {
+  "n": 136,
+  "kept": 94.9,
+  "donor": 0.7,
+  "third": 2.2,
+  "other": 2.2,
+  "n_third": 136,
+  "transfer": -1.5,
+  "ci": [
+   -5.8,
+   1.5
+  ]
+ },
+ "TP/paste": {
+  "n": 136,
+  "kept": 93.4,
+  "donor": 0.7,
+  "third": 2.9,
+  "other": 2.9,
+  "n_third": 136,
+  "transfer": -2.2,
+  "ci": [
+   -6.2,
+   0.8
+  ]
+ }
+}
