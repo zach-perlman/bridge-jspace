@@ -1,0 +1,723 @@
+{
+ "seconds": 976,
+ "band": "L32-40",
+ "cells": {
+  "PP/none": {
+   "n": 100,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 100,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [],
+   "class_by_domain": {
+    "animals": {
+     "answer": 25
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": []
+  },
+  "PP/paper10": {
+   "n": 100,
+   "cand_acc": 0.98,
+   "class": {
+    "answer": 98,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 2,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 2
+   },
+   "top_wrong_replies": [
+    [
+     "Asia",
+     1
+    ],
+    [
+     "Spanish",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 25
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "people": {
+     "other_cand": 1,
+     "answer": 24
+    }
+   },
+   "other_examples": []
+  },
+  "PP/paper10_rot": {
+   "n": 100,
+   "cand_acc": 0.97,
+   "class": {
+    "answer": 97,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 3,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 3
+   },
+   "top_wrong_replies": [
+    [
+     "Asia",
+     1
+    ],
+    [
+     "Spanish",
+     1
+    ],
+    [
+     "Poland",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 25
+    },
+    "cities": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "countries": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "people": {
+     "other_cand": 1,
+     "answer": 24
+    }
+   },
+   "other_examples": []
+  },
+  "PP/unembed10": {
+   "n": 100,
+   "cand_acc": 0.99,
+   "class": {
+    "answer": 99,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 1,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Spanish",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 25
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "other_cand": 1,
+     "answer": 24
+    }
+   },
+   "other_examples": []
+  },
+  "PM/none": {
+   "n": 100,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 97,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 3
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "Reptilia",
+     2
+    ],
+    [
+     "Mammalia",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 22,
+     "other": 3
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": [
+    "Reptilia",
+    "Mammalia",
+    "Reptilia"
+   ]
+  },
+  "PM/paper10": {
+   "n": 100,
+   "cand_acc": 0.44,
+   "class": {
+    "answer": 43,
+    "lure": 39,
+    "bridge": 1,
+    "other_cand": 15,
+    "other": 2
+   },
+   "class_of_cand_failures": {
+    "other_cand": 15,
+    "lure": 39,
+    "bridge": 1,
+    "other": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Dutch",
+     5
+    ],
+    [
+     "South America",
+     4
+    ],
+    [
+     "Danish",
+     4
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "lure": 13,
+     "answer": 10,
+     "other": 1,
+     "other_cand": 1
+    },
+    "cities": {
+     "other_cand": 5,
+     "lure": 5,
+     "answer": 14,
+     "other": 1
+    },
+    "countries": {
+     "answer": 15,
+     "other_cand": 2,
+     "lure": 7,
+     "bridge": 1
+    },
+    "people": {
+     "answer": 4,
+     "lure": 14,
+     "other_cand": 7
+    }
+   },
+   "other_examples": [
+    "Philippines",
+    "Mammalia"
+   ]
+  },
+  "PM/paper10_rot": {
+   "n": 100,
+   "cand_acc": 0.98,
+   "class": {
+    "answer": 93,
+    "lure": 1,
+    "bridge": 0,
+    "other_cand": 1,
+    "other": 5
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1,
+    "lure": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Mammalia",
+     3
+    ],
+    [
+     "Danish",
+     2
+    ],
+    [
+     "Reptilia",
+     2
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 20,
+     "other": 5
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 23,
+     "other_cand": 1,
+     "lure": 1
+    }
+   },
+   "other_examples": [
+    "Mammalia",
+    "Reptilia",
+    "Mammalia",
+    "Reptilia",
+    "Mammalia"
+   ]
+  },
+  "PM/unembed10": {
+   "n": 100,
+   "cand_acc": 0.98,
+   "class": {
+    "answer": 92,
+    "lure": 1,
+    "bridge": 0,
+    "other_cand": 1,
+    "other": 6
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1,
+    "lure": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Mammalia",
+     3
+    ],
+    [
+     "Reptilia",
+     2
+    ],
+    [
+     "Danish",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 18,
+     "lure": 1,
+     "other": 6
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": [
+    "Mammalia",
+    "Insecta",
+    "Reptilia",
+    "Mammalia",
+    "Mammalia"
+   ]
+  },
+  "MP/none": {
+   "n": 93,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 93,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [],
+   "class_by_domain": {
+    "animals": {
+     "answer": 18
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": []
+  },
+  "MP/paper10": {
+   "n": 93,
+   "cand_acc": 0.935,
+   "class": {
+    "answer": 87,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 6,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 6
+   },
+   "top_wrong_replies": [
+    [
+     "German",
+     1
+    ],
+    [
+     "Australia",
+     1
+    ],
+    [
+     "Canada",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "other_cand": 1,
+     "answer": 17
+    },
+    "cities": {
+     "answer": 21,
+     "other_cand": 4
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 24,
+     "other_cand": 1
+    }
+   },
+   "other_examples": []
+  },
+  "MP/paper10_rot": {
+   "n": 93,
+   "cand_acc": 0.989,
+   "class": {
+    "answer": 92,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 1,
+    "other": 0
+   },
+   "class_of_cand_failures": {
+    "other_cand": 1
+   },
+   "top_wrong_replies": [
+    [
+     "South America",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 18
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 24,
+     "other_cand": 1
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": []
+  },
+  "MP/unembed10": {
+   "n": 93,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 93,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 0,
+    "other": 0
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [],
+   "class_by_domain": {
+    "animals": {
+     "answer": 18
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 25
+    }
+   },
+   "other_examples": []
+  },
+  "MM/none": {
+   "n": 92,
+   "cand_acc": 1.0,
+   "class": {
+    "answer": 83,
+    "lure": 0,
+    "bridge": 2,
+    "other_cand": 0,
+    "other": 7
+   },
+   "class_of_cand_failures": {},
+   "top_wrong_replies": [
+    [
+     "Mammalia",
+     4
+    ],
+    [
+     "American",
+     1
+    ],
+    [
+     "Shark",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 10,
+     "other": 6,
+     "bridge": 2
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 23,
+     "other": 1
+    }
+   },
+   "other_examples": [
+    "American",
+    "Mammalia",
+    "Mammalia",
+    "Insecta",
+    "Mammalia"
+   ]
+  },
+  "MM/paper10": {
+   "n": 92,
+   "cand_acc": 0.457,
+   "class": {
+    "answer": 35,
+    "lure": 0,
+    "bridge": 0,
+    "other_cand": 38,
+    "other": 19
+   },
+   "class_of_cand_failures": {
+    "other_cand": 38,
+    "other": 12
+   },
+   "top_wrong_replies": [
+    [
+     "Peru",
+     6
+    ],
+    [
+     "Africa",
+     4
+    ],
+    [
+     "Asia",
+     4
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 6,
+     "other": 10,
+     "other_cand": 2
+    },
+    "cities": {
+     "other_cand": 15,
+     "other": 1,
+     "answer": 9
+    },
+    "countries": {
+     "answer": 13,
+     "other_cand": 11,
+     "other": 1
+    },
+    "people": {
+     "other_cand": 10,
+     "answer": 7,
+     "other": 7
+    }
+   },
+   "other_examples": [
+    "Peru",
+    "American",
+    "Peruvian",
+    "The text provided does not contain information about the author of the",
+    "American"
+   ]
+  },
+  "MM/paper10_rot": {
+   "n": 92,
+   "cand_acc": 0.978,
+   "class": {
+    "answer": 80,
+    "lure": 0,
+    "bridge": 2,
+    "other_cand": 1,
+    "other": 9
+   },
+   "class_of_cand_failures": {
+    "other": 1,
+    "other_cand": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Mammalia",
+     4
+    ],
+    [
+     "Amphibia",
+     2
+    ],
+    [
+     "American",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 7,
+     "other": 8,
+     "other_cand": 1,
+     "bridge": 2
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 23,
+     "other": 1
+    }
+   },
+   "other_examples": [
+    "American",
+    "Mammalia",
+    "Mammalia",
+    "Amphibia",
+    "Insecta"
+   ]
+  },
+  "MM/unembed10": {
+   "n": 92,
+   "cand_acc": 0.989,
+   "class": {
+    "answer": 83,
+    "lure": 0,
+    "bridge": 2,
+    "other_cand": 0,
+    "other": 7
+   },
+   "class_of_cand_failures": {
+    "other": 1
+   },
+   "top_wrong_replies": [
+    [
+     "Mammalia",
+     4
+    ],
+    [
+     "American",
+     1
+    ],
+    [
+     "shark",
+     1
+    ]
+   ],
+   "class_by_domain": {
+    "animals": {
+     "answer": 10,
+     "other": 6,
+     "bridge": 2
+    },
+    "cities": {
+     "answer": 25
+    },
+    "countries": {
+     "answer": 25
+    },
+    "people": {
+     "answer": 23,
+     "other": 1
+    }
+   },
+   "other_examples": [
+    "American",
+    "Mammalia",
+    "Mammalia",
+    "Insecta",
+    "Mammalia"
+   ]
+  }
+ },
+ "check": {
+  "run": "natplus_v1_chat_ko_cand2_v1",
+  "read": "cand2",
+  "n": 1544,
+  "agree": 1530
+ }
+}
