@@ -246,9 +246,148 @@ def stage_run(name: str, why: str, probe_only: bool) -> Path:
     return out
 
 
+def form_key(c: dict) -> str:
+    return f"{c['domain']}/{c['condition']}"
+
+
+def stage_probe_fit(name: str, n_boot: int = X.N_BOOT) -> Path:
+    """Probe (b), the index of the bridge's locker statement, on the run's org states: within each form (one-hot ridge,
+    cross-validated by bridge entity; baselines chance, majority, the asked pick's position) and trained on the
+    verbatim scenes, tested on the translated / symbol scenes of the same domain (transfer)."""
+    from scripts import x0_probe as P
+
+    src = RESULTS / name
+    cases = X.read_jsonl(src / "cases.jsonl")
+    z = np.load(src / "states.npz")
+    h = z["h"].astype(np.float64)
+    assert [str(s) for s in z["scene"]] == [c["scene"] for c in cases], "states and cases disagree"
+    items = [{"entity": c["bridge"], "locker_index": c["locker_index"], "pick_index": c["asked_pick"], "form": form_key(c)}
+             for c in cases]  # fmt: skip
+    ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
+    lines = [f"# X4 probe: the bridge's locker statement (its first mention), {name}", "",
+             f"Descriptive (jobs/c3/X4.md). Org states at the bridge word; one-hot ridge; bootstrap over bridge entities "
+             f"({n_boot} resamples). UNVERIFIED.", "", "## Within each form (cross-validated by bridge entity)", "",
+             "| form | n | entities | probe | majority | pick position only | chance | probe - best baseline |",
+             "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    blob: dict = {"run": name, "within": {}, "transfer": {}}
+    for form in sorted({it["form"] for it in items}):
+        idx = [i for i, it in enumerate(items) if it["form"] == form]
+        r = P.score(h[idx], [items[i] for i in idx], "locker sentence", n_boot)
+        blob["within"][form] = r
+        lines.append(f"| {form} | {r['n']} | {r['entities']} | {ci(r['probe'])} | {ci(r['majority'])} | "
+                     f"{ci(r['structure'])} | {r['chance']:.2f} | {ci(r['probe_minus_best'])} ({r['best_baseline']}) |")  # fmt: skip
+    lines += ["", "## Transfer: trained on the verbatim scenes, tested on the other form (same domain)", "",
+              "| domain | test form | n | accuracy | chance |", "|---|---|---|---|---|"]  # fmt: skip
+    for domain, (same, alias) in CONDITIONS.items():
+        tr = [i for i, it in enumerate(items) if it["form"] == f"{domain}/{same}"]
+        te = [i for i, it in enumerate(items) if it["form"] == f"{domain}/{alias}"]
+        if not tr or not te:
+            continue
+        y = [items[i]["locker_index"] for i in tr]
+        rel = P.select_penalty(h[tr], y, [items[i]["entity"] for i in tr])
+        pred = P.ridge(h[tr], y, h[te], (rel,))[0]
+        right = [int(p_ == items[i]["locker_index"]) for p_, i in zip(pred, te, strict=True)]
+        r_ = X.resampled_rates({"right": right}, [items[i]["entity"] for i in te], n_boot)["right"]
+        acc = [float(np.mean(right)), *X.interval(r_)]
+        chance = 1 / len({items[i]["locker_index"] for i in te})
+        blob["transfer"][f"{domain}/{alias}"] = {"n": len(te), "accuracy": acc, "chance": chance, "penalty": rel}
+        lines.append(f"| {domain} | {alias} | {len(te)} | {ci(acc)} | {chance:.2f} |")
+    out = src / f"probe-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    (out / "probe.json").write_text(json.dumps(blob, indent=1) + "\n")
+    (out / "probe.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
+def excess_resamples(rows: list[dict], scenes: set, keys: list[str], pick: np.ndarray) -> tuple[float, np.ndarray]:
+    """A reader's lookup-style excess (Jdep - Rdep, J++ k = 25) on the given scenes, and its value on each bootstrap
+    resample of the entity keys (pick: [n_boot, n_keys] indices into keys), so that two forms share the draws."""
+    arms = {"whole": ("-", 0, "-", "whole"), "no_part": ("jpp", X.K_MAIN, "signed", "no_part"),
+            "no_rand": ("jpp", X.K_MAIN, "signed", "no_rand")}  # fmt: skip
+    got = {(r["scene"], (r["dict"], r["k"], r["omp"], r["arm"])): r["switched"] for r in rows if r["scene"] in scenes}
+    ent = {r["scene"]: r["entity"] for r in rows if r["scene"] in scenes}
+    index = {e: i for i, e in enumerate(keys)}
+    e_idx = np.array([index[ent[s]] for s in sorted(scenes)])
+    counts = np.bincount(e_idx, minlength=len(keys)).astype(float)
+    n_r = counts[pick].sum(1)
+    rate, point = {}, {}
+    for a, key in arms.items():
+        v = np.array([got[(s, key)] for s in sorted(scenes)], dtype=float)
+        sums = np.bincount(e_idx, weights=v, minlength=len(keys))
+        rate[a] = sums[pick].sum(1) / np.where(n_r > 0, n_r, np.nan)
+        point[a] = float(v.mean())
+    ex = lambda r: X.dependence(r["whole"], r["no_part"]) - X.dependence(r["whole"], r["no_rand"])  # noqa: E731
+    return float(ex(point)), ex(rate)
+
+
+def rule(d: list[float]) -> str:
+    if d[0] >= HOLD:
+        return "needs a verbatim match"
+    if d[0] <= NOT_NEEDED:
+        return "does not need a verbatim match"
+    return "mixed"
+
+
+def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
+    src = RESULTS / name
+    m = json.loads((src / "manifest.json").read_text())
+    rows = X.read_jsonl(src / "outcomes.jsonl")
+    cases = {c["scene"]: c for c in X.read_jsonl(src / "cases.jsonl")}
+    gate = json.loads((src / "gate.json").read_text())["gate"]
+    elig = {r["key"]: set(r["scenes"]) for r in X.read_jsonl(src / "eligible.jsonl")}
+    ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
+    lines = [f"# X4 verdict: {name} ({m['model']['target']}, layer {m['layer']})", "",
+             "jobs/c3/X4.md section 2. J++ k = 25 against a random part of its share; bootstrap over bridge entities "
+             f"({n_boot} resamples, seed {X.BOOT_SEED}), the same draws for both forms of a domain. UNVERIFIED.", "",
+             "## Gate (unedited org accuracy, decisive read, >= 0.80 per form and reader)", "",
+             "| form / reader | cases | accuracy | pass | eligible |", "|---|---|---|---|---|"]  # fmt: skip
+    lines += [
+        f"| {k} | {g['cases']} | {g['org_accuracy']:.2f} | {g['pass']} | {g['eligible']} |" for k, g in gate.items()
+    ]
+    lines += ["", "## Cells per form and reader (eligible items)", "",
+              "| form | reader | n | S_whole | Jdep | Rdep | excess | label |", "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    blob: dict = {"run": name, "cells": {}, "rules": {}}
+    for key in sorted(elig):
+        domain, cond, w = key.split("/")
+        mine = [r for r in rows if r["scene"] in elig[key] and r["reader"] == w]
+        if not mine:
+            continue
+        c = X.cells_of(mine, n_boot)[("chat", m["layer"], w, *X.MAIN)]
+        blob["cells"][key] = c
+        lines.append(f"| {domain}/{cond} | {'lookup' if w == X.LOOKUP else 'recall'} | {c['n']} | {X.fmt3(c['S_whole'])} | "
+                     f"{X.fmt3(c['Jdep'])} | {X.fmt3(c['Rdep'])} | {X.fmt3(c['excess'])} | {c['label']} |")  # fmt: skip
+    lines += ["", "## The graded rules (lookup)", "",
+              "| domain | difference | value | reading |", "|---|---|---|---|"]  # fmt: skip
+    for domain, (same, alias) in CONDITIONS.items():
+        a, b = elig.get(f"{domain}/{same}/{X.LOOKUP}", set()), elig.get(f"{domain}/{alias}/{X.LOOKUP}", set())
+        if not a or not b:
+            lines.append(f"| {domain} | {alias} - {same} | can't test (a form failed its gate or has no items) | - |")
+            continue
+        keys = sorted({cases[s]["bridge"] for s in a | b})
+        pick = np.random.default_rng(X.BOOT_SEED).integers(0, len(keys), size=(n_boot, len(keys)))
+        lookups = [r for r in rows if r["reader"] == X.LOOKUP]
+        ea, ra = excess_resamples(lookups, a, keys, pick)
+        eb, rb = excess_resamples(lookups, b, keys, pick)
+        d = [eb - ea, *X.interval(rb - ra)]
+        reading = (
+            rule(d)
+            if alias == "xlang"
+            else ("passes" if d[0] >= HOLD else "fails: the method may not see a lookup that needs J++")
+        )
+        blob["rules"][domain] = {"difference": d, "alias": alias, "reading": reading}
+        lines.append(f"| {domain} | excess ({alias}) - excess ({same}) | {ci(d)} | {reading} |")
+    out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    (out / "verdict.json").write_text(json.dumps(blob, indent=1) + "\n")
+    (out / "verdict.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "probe", "run"])
+    ap.add_argument("stage", choices=["plan", "probe", "run", "probe_fit", "verdict"])
     ap.add_argument("--name")
     ap.add_argument("--why", default="")
     a = ap.parse_args()
@@ -257,8 +396,15 @@ def main() -> None:
 
         _, counts = build_cases(SP.load_tokenizer())
         print(json.dumps(counts, indent=1))
+    elif a.stage == "probe_fit":
+        stage_probe_fit(a.name)
+    elif a.stage == "verdict":
+        stage_verdict(a.name)
     else:
         stage_run(a.name, a.why, probe_only=a.stage == "probe")
+        stage_probe_fit(a.name)
+        if a.stage == "run":
+            stage_verdict(a.name)
 
 
 if __name__ == "__main__":
