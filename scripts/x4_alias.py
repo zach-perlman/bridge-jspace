@@ -53,6 +53,7 @@ N_PICKS, SEED = 3, 2910
 RECALL_Q = {"animals": "How many legs does {p}'s pick have?", "elements": "What is the atomic number of {p}'s pick?"}
 LOOKUP_Q = "Which locker belongs to {p}'s pick?"
 HOLD, NOT_NEEDED = 0.20, 0.10  # graded rules on excess(alias) - excess(verbatim), X4.md
+C_MIN = 30  # items eligible for both readers below which C is not reported (X4.md)
 
 
 def load(domain: str, condition: str) -> list[dict]:
@@ -345,7 +346,8 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     lines += [
         f"| {k} | {g['cases']} | {g['org_accuracy']:.2f} | {g['pass']} | {g['eligible']} |" for k, g in gate.items()
     ]
-    lines += ["", "## Cells per form and reader (eligible items)", "",
+    lines += ["", "## Cells per form and reader (each reader on its own eligible items; the recall's rows are a stability "
+              "check, X4.md)", "",
               "| form | reader | n | S_whole | Jdep | Rdep | excess | label |", "|---|---|---|---|---|---|---|---|"]  # fmt: skip
     blob: dict = {"run": name, "cells": {}, "rules": {}}
     for key in sorted(elig):
@@ -357,6 +359,11 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
         blob["cells"][key] = c
         lines.append(f"| {domain}/{cond} | {'lookup' if w == X.LOOKUP else 'recall'} | {c['n']} | {X.fmt3(c['S_whole'])} | "
                      f"{X.fmt3(c['Jdep'])} | {X.fmt3(c['Rdep'])} | {X.fmt3(c['excess'])} | {c['label']} |")  # fmt: skip
+    per_lines = [
+        "| domain | entity | n verbatim | n alias | excess verbatim | excess alias | D |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    notes: list[str] = []
     lines += ["", "## The graded rules (lookup)", "",
               "| domain | difference | value | reading |", "|---|---|---|---|"]  # fmt: skip
     for domain, (same, alias) in CONDITIONS.items():
@@ -375,14 +382,122 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
             if alias == "xlang"
             else ("passes" if d[0] >= HOLD else "fails: the method may not see a lookup that needs J++")
         )
-        blob["rules"][domain] = {"difference": d, "alias": alias, "reading": reading}
+        per = []
+        for e in keys:
+            ae, be = {s for s in a if cases[s]["bridge"] == e}, {s for s in b if cases[s]["bridge"] == e}
+            if ae and be:
+                one = np.zeros((1, len(keys)), dtype=int)
+                per.append({"entity": e, "n_verbatim": len(ae), "n_alias": len(be),
+                            "excess_verbatim": excess_resamples(lookups, ae, keys, one)[0],
+                            "excess_alias": excess_resamples(lookups, be, keys, one)[0]})  # fmt: skip
+                per[-1]["D"] = per[-1]["excess_alias"] - per[-1]["excess_verbatim"]
+        scene_d = scene_bootstrap(lookups, a, b, n_boot)
+        blob["rules"][domain] = {"difference": d, "alias": alias, "reading": reading, "per_entity": per,
+                                 "entities_D_positive": sum(x["D"] > 0 for x in per if x["D"] == x["D"]),
+                                 "scene_bootstrap_within_these_entities": [d[0], *X.interval(scene_d)]}  # fmt: skip
         lines.append(f"| {domain} | excess ({alias}) - excess ({same}) | {ci(d)} | {reading} |")
+        per_lines += [f"| {domain} | {x['entity']} | {x['n_verbatim']} | {x['n_alias']} | {x['excess_verbatim']:.2f} | "
+                      f"{x['excess_alias']:.2f} | {x['D']:.2f} |" for x in per]  # fmt: skip
+        notes.append(
+            f"- {domain}: D > 0 for {blob['rules'][domain]['entities_D_positive']} of {len(per)} entities; the "
+            f"entity-bootstrap interval {ci(d)} is unreliable with {len(keys)} clusters (fewer than 10); a "
+            f"bootstrap over scenes, within these entities only: {ci(blob['rules'][domain]['scene_bootstrap_within_these_entities'])}."
+        )
+    lines += ["", "## Every entity (the unit; X4.md)", "", *per_lines, "", *notes]
+    # C only on items eligible for both readers (>= C_MIN), X4.md
+    lines += ["", "## C = recall excess - lookup excess, on items eligible for both readers", "",
+              "| form | n | C |", "|---|---|---|"]  # fmt: skip
+    blob["contrast"] = {}
+    for form in sorted({k.rsplit("/", 1)[0] for k in elig}):
+        both = elig.get(f"{form}/{X.LOOKUP}", set()) & elig.get(f"{form}/{X.RECALL}", set())
+        if len(both) < C_MIN:
+            lines.append(
+                f"| {form} | {len(both)} | not reported (fewer than {C_MIN} items eligible for both readers) |"
+            )
+            continue
+        sw = {f"{w}/{a_}": [] for w in X.READERS for a_ in ("whole", "no_part", "no_rand")}
+        got = {
+            (r["scene"], r["reader"], (r["dict"], r["k"], r["omp"], r["arm"])): r["switched"]
+            for r in rows
+            if r["scene"] in both
+        }
+        arm = {"whole": ("-", 0, "-", "whole"), "no_part": ("jpp", X.K_MAIN, "signed", "no_part"),
+               "no_rand": ("jpp", X.K_MAIN, "signed", "no_rand")}  # fmt: skip
+        scenes = sorted(both)
+        for w in X.READERS:
+            for a_, key in arm.items():
+                sw[f"{w}/{a_}"] = [got[(s, w, key)] for s in scenes]
+        r_ = X.resampled_rates(sw, [cases[s]["bridge"] for s in scenes], n_boot)
+        pt = {k: float(np.mean(v)) for k, v in sw.items()}
+        c = [float(reader_excess(pt, X.RECALL) - reader_excess(pt, X.LOOKUP)),
+             *X.interval(reader_excess(r_, X.RECALL) - reader_excess(r_, X.LOOKUP))]  # fmt: skip
+        blob["contrast"][form] = {"n": len(both), "C": c}
+        lines.append(f"| {form} | {len(both)} | {ci(c)} |")
     out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
     (out / "verdict.json").write_text(json.dumps(blob, indent=1) + "\n")
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
+    figure(out, blob, m)
     return out
+
+
+def reader_excess(src: dict, w: str):
+    """Jdep - Rdep for reader w from rates keyed '<reader>/<arm>' (points or bootstrap arrays)."""
+    return X.dependence(src[f"{w}/whole"], src[f"{w}/no_part"]) - X.dependence(src[f"{w}/whole"], src[f"{w}/no_rand"])
+
+
+def scene_bootstrap(rows: list[dict], a: set, b: set, n_boot: int) -> np.ndarray:
+    """D = excess(b) - excess(a) on scene resamples within each form (within these entities only; X4.md)."""
+    arms = {"whole": ("-", 0, "-", "whole"), "no_part": ("jpp", X.K_MAIN, "signed", "no_part"),
+            "no_rand": ("jpp", X.K_MAIN, "signed", "no_rand")}  # fmt: skip
+    got = {(r["scene"], (r["dict"], r["k"], r["omp"], r["arm"])): r["switched"] for r in rows}
+    rng = np.random.default_rng(X.BOOT_SEED)
+
+    def draws(scenes: set) -> np.ndarray:
+        sc = sorted(scenes)
+        v = {k: np.array([got[(s, key)] for s in sc], dtype=float) for k, key in arms.items()}
+        idx = rng.integers(0, len(sc), size=(n_boot, len(sc)))
+        r = {k: x[idx].mean(1) for k, x in v.items()}
+        return X.dependence(r["whole"], r["no_part"]) - X.dependence(r["whole"], r["no_rand"])
+
+    return draws(b) - draws(a)
+
+
+def figure(out: Path, blob: dict, m: dict) -> Path:
+    """D per entity (dots) with the pooled D and its entity-bootstrap interval, per domain."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    doms = [d for d in CONDITIONS if d in blob["rules"]]
+    if not doms:
+        return out
+    fig, axes = plt.subplots(1, len(doms), figsize=(5.5 * len(doms), 4.8), sharey=True, squeeze=False)
+    for ax, d in zip(axes[0], doms, strict=True):
+        r = blob["rules"][d]
+        per = r["per_entity"]
+        ax.axhspan(-1, NOT_NEEDED, color="#f1f1f1", lw=0, zorder=0)
+        ax.axhline(HOLD, color="#bbbbbb", lw=0.8, ls=":")
+        ax.axhline(0, color="black", lw=0.6)
+        for i, x in enumerate(per):
+            ax.plot(i, x["D"], "o", color="#6a3d9a", ms=7)
+            ax.text(i, x["D"] + 0.03, x["entity"], ha="center", fontsize=8.5, rotation=45)
+        v, lo, hi = r["difference"]
+        ax.errorbar(len(per) + 0.8, v, yerr=[[v - lo], [hi - v]], fmt="s", color="#333333", capsize=4, ms=8)
+        ax.set_xticks([*range(len(per)), len(per) + 0.8], [""] * len(per) + ["pooled\n(entity bootstrap,\nunreliable < 10)"],
+                      fontsize=8.5)  # fmt: skip
+        ax.set_title(f"{d}: excess ({r['alias']}) - excess (verbatim)", fontsize=11)
+        ax.set_ylim(-0.6, 1.0)
+        ax.grid(axis="y", color="#eeeeee")
+    axes[0][0].set_ylabel("D (lookup extra loss, alias minus verbatim)")
+    fig.suptitle(f"X4, {m['model']['target']} layer {m['layer']}: D per bridge entity (UNVERIFIED)", fontsize=11)
+    fig.tight_layout()
+    path = out / "x4_D_per_entity.png"
+    fig.savefig(path, dpi=150, facecolor="white")
+    plt.close(fig)
+    return path
 
 
 def main() -> None:

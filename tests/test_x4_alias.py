@@ -50,6 +50,9 @@ def test_verdict_reads_planted_differences(tmp_path, monkeypatch):
     assert abs(blob["rules"]["animals"]["difference"][0] - 0.3) < 1e-9
     assert blob["rules"]["animals"]["reading"] == "needs a verbatim match"
     assert blob["rules"]["elements"]["reading"] == "passes"
+    assert blob["rules"]["animals"]["entities_D_positive"] == 8 == len(blob["rules"]["animals"]["per_entity"])
+    assert abs(blob["contrast"]["animals/same"]["C"][0]) < 1e-9  # neither reader loses flips in the verbatim form
+    assert abs(blob["contrast"]["animals/xlang"]["C"][0] + 0.3) < 1e-9  # only the lookup loses them in xlang
 
 
 def test_statement_index_in_every_form():
