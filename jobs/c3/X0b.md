@@ -54,3 +54,4 @@ What the outcomes mean (Dan, step 3): holds: the contrast generalizes beyond the
 - v1 (`x0b_v1`, post-hoc order, X0's rule) was queued and cancelled before it ran, after Dan's v2 decisions (~18:45). Its data stays in `data/tasks_v2/x0b_v1/`, unused.
 - The job runs the 27B and the 9B in parallel inside one 2-GPU job (one process per GPU), because the box's 2-GPU worker would otherwise run them one after the other on one GPU.
 - tasks_v2 changes for X0b, both off by default: each item records its scene's facts (metadata only); `--locker-before` (the order knob).
+- **The C threshold** (Dan, 24 Oct ~20:45): the brief's graded threshold for C is >= 0.30 with lower CI >= 0.15, to be used unless the run had started. x0b_v2 started at ~19:29 Paris (17:29 UTC), before this decision, so its rule keeps C >= 0.20 (lower CI >= 0.10) as written above; the brief's threshold is reported beside it, as a description.

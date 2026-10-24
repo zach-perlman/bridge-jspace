@@ -83,6 +83,10 @@
   "text": "0.53 [0.42, 0.61]",
   "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
  },
+ "jshare_9b": {
+  "text": "0.23",
+  "source": "results/x0_necessity/qwen35_9b_x0_necessity/shares.jsonl"
+ },
  "lk_excess_k25_9b": {
   "text": "−0.02",
   "source": "results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl"
@@ -235,6 +239,10 @@
   "text": "0.60 [0.50, 0.69]",
   "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
  },
+ "jshare_27b": {
+  "text": "0.16",
+  "source": "results/x0_necessity/x0_necessity_27b_chat/shares.jsonl"
+ },
  "lk_excess_k25_27b": {
   "text": "0.12",
   "source": "results/x0_necessity/x0_kmatch_27b/outcomes.jsonl"
@@ -386,6 +394,10 @@
  "contrast_122b": {
   "text": "0.32 [0.20, 0.43]",
   "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "jshare_122b": {
+  "text": "0.25",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/shares.jsonl"
  },
  "lk_excess_k25_122b": {
   "text": "0.00",
@@ -859,6 +871,10 @@
   "text": "0.12",
   "source": "results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl"
  },
+ "single_contrast_9b": {
+  "text": "0.39 [0.30, 0.46]",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl"
+ },
  "paired_lk_excess_9b": {
   "text": "0.01 [−0.07, 0.08]",
   "source": "results/x0_necessity/qwen35_9b_x0_single_r2/paired-20261024T172817Z/paired.json"
@@ -881,6 +897,10 @@
  },
  "single_lk_excess_k100_27b": {
   "text": "0.49",
+  "source": "results/x0_necessity/x0_single_27b_r2/outcomes.jsonl"
+ },
+ "single_contrast_27b": {
+  "text": "0.56 [0.45, 0.65]",
   "source": "results/x0_necessity/x0_single_27b_r2/outcomes.jsonl"
  },
  "paired_lk_excess_27b": {
@@ -980,44 +1000,44 @@
   "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/verdict-20261024T172802Z/verdict.json"
  },
  "pair_right_9b": {
-  "text": "0.48 [0.38, 0.58]",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.08 [0.03, 0.14]",
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "pair_n_9b": {
   "text": "73",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "patched_j25_alt_9b": {
-  "text": "0.03",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.12",
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "patched_rest25_alt_9b": {
-  "text": "0.52",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.16",
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "patched_j25_share_9b": {
   "text": "18%",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "patched_j25_probe_energy_9b": {
-  "text": "0.5%",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "12.5%",
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "patched_j100_alt_9b": {
-  "text": "0.03",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.16",
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "patched_rest100_alt_9b": {
-  "text": "0.48",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.15",
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "patched_j100_share_9b": {
   "text": "37%",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "patched_j100_probe_energy_9b": {
-  "text": "2.7%",
-  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "20.3%",
+  "source": "results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-value-20261024T180536Z/probe_patched.json"
  },
  "v4_n_before_27b": {
   "text": "758",
@@ -1068,44 +1088,44 @@
   "source": "results/x0_amnesic/x0_amnesic_27b/verdict-20261024T172846Z/verdict.json"
  },
  "pair_right_27b": {
-  "text": "0.54 [0.40, 0.69]",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.03 [0.00, 0.08]",
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "pair_n_27b": {
   "text": "70",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "patched_j25_alt_27b": {
-  "text": "0.00",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.04",
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "patched_rest25_alt_27b": {
-  "text": "0.60",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.21",
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "patched_j25_share_27b": {
   "text": "10%",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "patched_j25_probe_energy_27b": {
-  "text": "0.4%",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "6.3%",
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "patched_j100_alt_27b": {
-  "text": "0.00",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.06",
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "patched_rest100_alt_27b": {
-  "text": "0.56",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "0.19",
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "patched_j100_share_27b": {
   "text": "24%",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "patched_j100_probe_energy_27b": {
-  "text": "2.5%",
-  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T174535Z/probe_patched.json"
+  "text": "16.4%",
+  "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-value-20261024T180533Z/probe_patched.json"
  },
  "share_rho_27b": {
   "text": "0.79",

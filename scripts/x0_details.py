@@ -85,6 +85,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
             num.add(f"{w}_dropj_{m}", f"{100 * c['drop_noD'][0]:.1f}", src)
             num.add(f"{w}_droprand_{m}", f"{100 * c['drop_noRand'][0]:.1f}", src)
         num.add(f"contrast_{m}", ci(XF.contrast(r, "chat", la)), src)
+        num.add(f"jshare_{m}", f2(r.share[("chat", la, *X.MAIN)]), f"results/x0_necessity/{run}/shares.jsonl")
         # k-match: J++ at 25-200 atoms
         km = XF.Run(kmatch)
         kcells = km.cells("chat")
@@ -200,6 +201,7 @@ def single_numbers(num: Numbers) -> None:
         num.add(f"single_lk_excess_pt_{m}", f2(cells[("chat", la, X.LOOKUP, *X.MAIN)]["excess"][0]), src)
         num.add(f"single_rc_excess_{m}", ci(cells[("chat", la, X.RECALL, *X.MAIN)]["excess"]), src)
         num.add(f"single_lk_excess_k100_{m}", f2(cells[("chat", la, X.LOOKUP, "jpp", 100, "signed")]["excess"][0]), src)
+        num.add(f"single_contrast_{m}", ci(XF.contrast(r, "chat", la)), src)  # C under the one-change edit
         paired = sorted((X.RESULTS / run).glob("paired-*/paired.json"))[-1]  # single minus two-change, shared items
         for w, d in json.loads(paired.read_text())["readers"].items():
             num.add(f"paired_{'lk' if w == X.LOOKUP else 'rc'}_excess_{m}", ci(d["paired_difference"]["excess"]),

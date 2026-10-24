@@ -20,7 +20,7 @@
    - **27B:** a little at 25 atoms, so the pre-registered test was **not confirmed**; at 100 atoms about as much as recall ({{num|lk_excess_k100_27b}} vs {{num|rc_excess_k100_27b}}). Added after the data: with an edit that changes only the asked pick, the 27B lookup's extra loss is {{num|single_lk_excess_27b}} (9B: {{num|single_lk_excess_pt_9b}}). At 100 atoms it is still {{num|single_lk_excess_k100_27b}}.
    - **122B:** the pre-registered test at layer 33: **confirmed** (lookup {{num|lk_excess_122b}}; recalls lose {{num|rc_jdep_122b}} of their flips). At 100 atoms the lookup stays at {{num|lk_excess_k100_122b}}. Up to layer 30 both readers need the J++ part.
 4. **Not a missing digit.** Lookups flip mostly when the locker sentence comes *before* the pick sentence, so the lookup might read a locker number already attached to the bridge word, which our letter-only J++ dictionary cannot remove. The digit tokens are not the route: with every token allowed, digits included, the 27B lookup's extra loss is {{num|dig_lk_jppall_k25_before_27b}} (letters only: {{num|dig_lk_jpp_k25_before_27b}}), and the 10 digit directions alone give {{num|dig_lk_jppdig_k10_before_27b}} on all three models.
-5. **The address and the value at the bridge word, outside the J++ part (descriptive, probes).** On 1,500 fresh scenes, where the locker sentence comes before the pick, both are linearly readable at the bridge word: which sentence holds the bridge's locker ({{num|v4_b_before_27b}} on the 27B, {{num|v4_b_before_9b}} on the 9B; the layout alone gives {{num|v4_b_layout_before_27b}}) and the locker number ({{num|v4_a_before_27b}} and {{num|v4_a_before_9b}}, chance 0.11; {{num|v4_a_resid_27b}} and {{num|v4_a_resid_9b}} with the sentence factored out). On the one-change pairs the change of address follows the edit (both members right in {{num|pair_right_27b}} of the 27B's pairs; the layout alone gets none), and it sits in the rest of the change, not in its J++ part: at 25 atoms the J++ part holds {{num|patched_j25_share_27b}} of the change but {{num|patched_j25_probe_energy_27b}} of its component along the probe's directions (27B). Removing the ridge probe's 4 address directions ({{num|amn_share_27b}} of the change), or keeping only them, changes no lookup ({{num|amn_lk_excess_27b}}): the probe's directions are not what the lookup reads.
+5. **The address and the value at the bridge word, outside the J++ part (descriptive, probes).** On 1,500 fresh scenes, where the locker sentence comes before the pick, both are linearly readable at the bridge word: which sentence holds the bridge's locker ({{num|v4_b_before_27b}} on the 27B, {{num|v4_b_before_9b}} on the 9B; the layout alone gives {{num|v4_b_layout_before_27b}}) and the locker number ({{num|v4_a_before_27b}} and {{num|v4_a_before_9b}}, chance 0.11; {{num|v4_a_resid_27b}} and {{num|v4_a_resid_9b}} with the sentence factored out). On the one-change pairs the change of address follows the edit (both members right in {{num|pair_right_27b}} of the 27B's pairs; the layout alone gets none), and the readout follows the item's first mention in the context (in these scenes, the locker sentence), not the locker sentence as such, and it sits in the rest of the change, not in its J++ part: at 25 atoms the J++ part holds {{num|patched_j25_share_27b}} of the change but {{num|patched_j25_probe_energy_27b}} of its component along the probe's directions (27B). Removing the ridge probe's 4 address directions ({{num|amn_share_27b}} of the change), or keeping only them, changes no lookup ({{num|amn_lk_excess_27b}}): the probe's directions are not what the lookup reads.
 
 ![Removing the J++ part costs recall far more than lookup](figures/status_2026-10-24/f1_readers.png)
 
@@ -33,14 +33,14 @@
 
 ## Results at the pre-registered layer
 
-| Model, layer | Lookup: extra loss | Recall: extra loss | Rule | Recall minus lookup |
-|---|---|---|---|---|
-| 9B, {{num|layer_9b}} | {{num|lk_excess_9b}} | {{num|rc_excess_9b}} | **{{num|verdict_9b}}** | {{num|contrast_9b}} |
-| 27B, {{num|layer_27b}} | {{num|lk_excess_27b}} | {{num|rc_excess_27b}} | **{{num|verdict_27b}}** | {{num|contrast_27b}} |
-| 122B, {{num|layer_122b}} | {{num|lk_excess_122b}} | {{num|rc_excess_122b}} | **{{num|verdict_122b}}** | {{num|contrast_122b}} |
+| Model, layer | Lookup: extra loss | Recall: extra loss | Rule (pre-registered, two-change edit) | Recall minus lookup, C: two-change edit | C: one-change edit | J++ part's median share of the change's ‖Δ‖² |
+|---|---|---|---|---|---|---|
+| 9B, {{num|layer_9b}} | {{num|lk_excess_9b}} | {{num|rc_excess_9b}} | **{{num|verdict_9b}}** | {{num|contrast_9b}} | {{num|single_contrast_9b}} | {{num|jshare_9b}} |
+| 27B, {{num|layer_27b}} | {{num|lk_excess_27b}} | {{num|rc_excess_27b}} | **{{num|verdict_27b}}** | {{num|contrast_27b}} | {{num|single_contrast_27b}} | {{num|jshare_27b}} |
+| 122B, {{num|layer_122b}} | {{num|lk_excess_122b}} | {{num|rc_excess_122b}} | **{{num|verdict_122b}}** | {{num|contrast_122b}} | not run | {{num|jshare_122b}} |
 
 How to read this:
-- The rule asked for a lookup extra loss of at most 0.10, and for recalls to lose at least 0.30 of their flips without the J++ part.
+- The rule asked for a lookup extra loss of at most 0.10, and for recalls to lose at least 0.30 of their flips without the J++ part. The headline is C, the recall's extra loss minus the lookup's, under both edits; the categorical verdicts are the pre-registered ones (two-change edit).
 - In answer counts (27B, {{num|n_27b}} scenes): lookups go {{num|lk_whole_27b}} → {{num|lk_noj_27b}} without J++ and {{num|lk_whole_27b}} → {{num|lk_norand_27b}} without the random part; recalls go {{num|rc_whole_27b}} → {{num|rc_noj_27b}} and {{num|rc_whole_27b}} → {{num|rc_norand_27b}}.
 - Scope: almost all of the lookup's flips at the bridge word come from scenes where the locker sentence comes before the pick; the lookup results describe those scenes.
 - {{q|95%}} intervals come from resampling the bridge entities ({{num|ents_9b}} on the 9B, {{num|ents_27b}} on the 27B, {{num|ents_122b}} on the 122B).
@@ -78,8 +78,7 @@ How to read this:
 |---|---|
 | Word only, J++ without the word, and a PCA dictionary (27B, 9B) | whether recall's loss is the bridge word, J++ beyond the word, or any direction the layer favours |
 | X0b: 7 topics, 3 formats, 3 difficulty levels, one-change edit (running) | whether the contrast holds beyond one simple scene type, and whether the address forms in JSON and tables |
-| X4 (9B): the locker key written word for word, translated, or described; the probe first | whether the address forms only when the key matches word for word |
-| X2' (9B): the final fact made up in the text, true in the text, or from memory | whether the route depends on where the fact sits or on what the model knows |
+| X3 (natural passages) or X4 (the locker key written word for word, translated, or described); Dan decides | whether the contrast holds on natural text, or whether the address forms only when the key matches word for word |
 
 ## More
 
