@@ -650,3 +650,15 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   knock-out at each model's band with both dictionaries (letters; --dict-digits), per-item eligibility.
 - **Predictions:** (1) report: KR and AR within 10 of PR, MR >= PR + 15 (the 9B's ctxcomp pattern); (2) final rule:
   for each start, SM - SL >= 20; (3) computation feeding a lookup: KL and AL within 10 of PL.
+
+## Amendment 25 (Zach, 2026-10-24 ~00:20 UTC): the combined suite, module 3 (three-hop, jsuite_v1_threehop)
+
+- **Seen when this was written:** amendment 15's 27B three-step results (cand read) and the amendment 20 review
+  (South Africa leak; rotated control > 10 on 5 of 8 words); not the cand2 rerun of nat3 (running).
+- **Set:** scripts/jsuite_threehop.py (seed 2501): natural3's design with South Africa, Cape Town, Mandela and Tutu
+  removed from its tables; everything else as nat3_v1.
+- **Procedure:** the 27B only (the 9B and Muse do not compose three hops): competence (cand2, --hop1 gen) and the
+  knock-out at L32-40 (paper10, paper10_rot, unembed10, unembed10_rot), per-item eligibility as nat3, nat3_score.
+- **Predictions:** as amendment 15's post hoc reading, now stated in advance: read as knock-out minus rotation, the
+  memory hops whose output is not in the prompt (PPM, MPM, MMP, PMM, MMM) each lose >= 15 more than PPP; MPP and PMP
+  within 10 of PPP.

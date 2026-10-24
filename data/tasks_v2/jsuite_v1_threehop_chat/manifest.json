@@ -1,0 +1,22 @@
+{
+  "set": "jsuite_v1_threehop_chat",
+  "seed": 2501,
+  "scenes_per_start": 2,
+  "n": 1696,
+  "dropped_no_unique_route": {},
+  "git_commit": "55e0f9a5ee1067c523670218544d96d3ec52db6f",
+  "script": "scripts/natural3.py",
+  "wrapper": "scripts/jsuite_threehop.py",
+  "dropped": {
+    "country": [
+      "South Africa"
+    ],
+    "cities": [
+      "Cape Town"
+    ],
+    "people": [
+      "Mandela",
+      "Tutu"
+    ]
+  }
+}
