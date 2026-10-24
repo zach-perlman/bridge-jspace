@@ -1,4 +1,4 @@
-id: x0_necessity_27b_raw
+id: x0_necessity_27b_notemplate
 title: "X0, Qwen3.6-27B, raw text: does C3's split hold without the chat template?"
 thread: C3
 gpus: 1
@@ -6,8 +6,8 @@ mem_gb: 75
 est_gpu_hours: 1.8
 depends_on: [x0_hw_gate_27b]
 command: >-
-  uv run python scripts/x0_necessity.py run --name x0_necessity_27b_raw --set d1_topics_v3 --renderings raw --why "X0 (jobs/c3/X0.md, amendment 1): the 27B's raw rendering (no template, '... Question: ... Answer:', first non-whitespace token read); bridge word, layers 16-40 every 2, predicted 32"
-figures_command: uv run python scripts/x0_necessity.py figures --name x0_necessity_27b_raw
+  uv run python scripts/x0_necessity.py run --name x0_necessity_27b_notemplate --set d1_topics_v3 --renderings raw --why "X0 (jobs/c3/X0.md, amendment 1): the 27B's raw rendering (no template, '... Question: ... Answer:', first non-whitespace token read); bridge word, layers 16-40 every 2, predicted 32"
+figures_command: uv run python scripts/x0_necessity.py figures --name x0_necessity_27b_notemplate
 question: >-
   The same test as x0_necessity_27b_chat in raw text (no template, no instruction, the prompt ending 'Answer:' with no trailing space; the read is the first non-whitespace token): can the 27B read these prompts (gate), and does it get the chat verdict at layer 32?
 why_it_matters: >-
