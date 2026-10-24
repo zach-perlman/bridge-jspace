@@ -1,0 +1,190 @@
+"""x0_details: every X0 number the README quotes, recomputed from the run files, and the details page.
+
+Writes docs/x0_numbers.json (key -> {"text", "source"}; the README's {{num|key}} markers read it through
+scripts/readme_build.py) and docs/x0_details.md, rendered from docs/x0_details.template.md: {{num|key}} becomes the
+number, {{tbl|name}} a table generated from the runs. UNVERIFIED like the runs.
+
+uv run python scripts/x0_details.py
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from bridge_jspace import pins
+from scripts import x0_descriptive as D
+from scripts import x0_figures as XF
+from scripts import x0_necessity as X
+from scripts import x0_strata as ST
+
+DOCS = pins.REPO_ROOT / "docs"
+NUMBERS = DOCS / "x0_numbers.json"
+TEMPLATE = DOCS / "x0_details.template.md"
+MODELS = {"9b": ("qwen3.5-9b", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
+          "27b": ("qwen3.6-27b", "x0_necessity_27b_chat", "x0_kmatch_27b")}  # fmt: skip
+CTX = "results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json"
+NOCHAT = {"9b": "qwen35_9b_x0_necessity_nothink", "27b": "x0_necessity_27b_nothink"}
+
+
+def f2(x: float) -> str:
+    return f"{x:.2f}".replace("-", "−")
+
+
+def ci(v: list[float]) -> str:
+    return f"{f2(v[0])} [{f2(v[1])}, {f2(v[2])}]"
+
+
+def pct(x: float) -> str:
+    return f"{100 * x:.0f}%"
+
+
+class Numbers:
+    def __init__(self) -> None:
+        self.d: dict[str, dict[str, str]] = {}
+
+    def add(self, key: str, text: str, source: str) -> None:
+        assert key not in self.d, key
+        self.d[key] = {"text": text, "source": source}
+
+
+def compute() -> tuple[Numbers, dict[str, list[str]]]:
+    num, tables = Numbers(), {}
+    for m, (target, run, kmatch) in MODELS.items():
+        r = XF.Run(run)
+        src = f"results/x0_necessity/{run}/outcomes.jsonl"
+        la = X.PREDICTED[target]
+        rows = [x for x in r.rows if x["rendering"] == "chat"]
+        cells = D.all_cells(rows, X.N_BOOT)
+        lk, rc = cells[("chat", la, X.LOOKUP, *X.MAIN)], cells[("chat", la, X.RECALL, *X.MAIN)]
+        num.add(f"layer_{m}", str(la), src)
+        num.add(f"n_{m}", str(lk["n"]), src)
+        num.add(f"ents_{m}", str(lk["entities"]), src)
+        num.add(f"verdict_{m}", X.verdict(lk, rc), src)
+        for w, c in (("lk", lk), ("rc", rc)):
+            num.add(f"{w}_excess_{m}", ci(c["excess"]), src)
+            num.add(f"{w}_jdep_{m}", f2(c["Jdep"][0]), src)
+            num.add(f"{w}_rdep_{m}", f2(c["Rdep"][0]), src)
+            n = c["n"]
+            num.add(f"{w}_whole_{m}", str(round(c["S_whole"][0] * n)), src)
+            num.add(f"{w}_noj_{m}", str(round(c["S_no_part"][0] * n)), src)
+            num.add(f"{w}_norand_{m}", str(round(c["S_no_rand"][0] * n)), src)
+            num.add(f"{w}_dropj_{m}", f"{100 * c['drop_noD'][0]:.1f}", src)
+            num.add(f"{w}_droprand_{m}", f"{100 * c['drop_noRand'][0]:.1f}", src)
+        num.add(f"contrast_{m}", ci(XF.contrast(r, "chat", la)), src)
+        # k-match: J++ at 25-200 atoms
+        km = XF.Run(kmatch)
+        kcells = km.cells("chat")
+        for (_, l2, w, d, k, omp), c in kcells.items():
+            if l2 == la and d == "jpp" and omp == "signed":
+                num.add(f"{'lk' if w == X.LOOKUP else 'rc'}_excess_k{k}_{m}", f2(c["excess"][0]),
+                        f"results/x0_necessity/{kmatch}/outcomes.jsonl")  # fmt: skip
+        # sentence order (whole edit, lookups)
+        cases = {c["scene"]: c for c in X.read_jsonl(r.dir / "cases.jsonl") if c["rendering"] == "chat"}
+        whole = [x for x in rows if x["layer"] == la and x["reader"] == X.LOOKUP and x["arm"] == "whole"]
+        for order in ("before", "after"):
+            mine = [x for x in whole if ST.features(cases[x["scene"]])["org locker vs asked pick"] == order]
+            num.add(f"lk_order_{order}_{m}", pct(sum(x["switched"] for x in mine) / len(mine)), src)
+        # upstream change
+        for name, keep in (("up", lambda x: x["upstream"]), ("af", lambda x: not x["upstream"])):
+            sub = X.cells_of([x for x in rows if x["layer"] == la and keep(x)])
+            c = sub[("chat", la, X.LOOKUP, *X.MAIN)]
+            num.add(f"lk_excess_{name}_{m}", f2(c["excess"][0]), src)
+            num.add(f"lk_swhole_{name}_{m}", pct(c["S_whole"][0]), src)
+            num.add(f"lk_n_{name}_{m}", str(c["n"]), src)
+        # no chat template, thinking off: the gate under the first-token read
+        g = json.loads((X.RESULTS / NOCHAT[m] / "gate.json").read_text())["gate"]["nothink"]["org_accuracy"]
+        num.add(f"nochat_gate_{m}", f"{100 * g['PP']:.1f}% / {100 * g['PM']:.1f}%".replace(".0%", "%"),
+                f"results/x0_necessity/{NOCHAT[m]}/gate.json")  # fmt: skip
+        tables[f"layers_{m}"] = table_layers(cells, r)
+        tables[f"dicts_{m}"] = table_dicts(
+            D.all_cells([x for x in km.rows if x["rendering"] == "chat"], X.N_BOOT), km, la
+        )
+        tables[f"strata_{m}"] = table_strata(rows, cases, la)
+    corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
+    num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
+            f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
+    ctx = json.loads((pins.REPO_ROOT / CTX).read_text())["cells"]["context:32"]
+    for w in ("lookup", "recall"):
+        num.add(f"ctx_{w}_full", pct(ctx[w]["full"][0]), CTX)
+        num.add(f"ctx_{w}_noj", pct(ctx[w]["not_jspace"][0]), CTX)
+    nec = ctx["necessity"]
+    num.add("ctx_recall_drop", f"{100 * nec['recall_drop_J']:.0f}", CTX)
+    num.add("ctx_recall_droprand", f"{100 * nec['recall_drop_rand']:.0f}".replace("-", "−"), CTX)
+    num.add("ctx_recall_diff", ci(nec["recall_dropJ_minus_droprand"]), CTX)
+    num.add("ctx_n", str(nec["n_lookup"]), CTX)
+    return num, tables
+
+
+def table_layers(cells: dict, run: Any) -> list[str]:
+    out = ["| layer | reader | n | S whole | S without J++ | S without random | excess | J++ share | label |",
+           "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for (rr, la, w, *d), c in sorted(cells.items()):
+        if tuple(d) == X.MAIN:
+            share = run.share[(rr, la, *X.MAIN)]
+            out.append(f"| {la} | {'lookup' if w == X.LOOKUP else 'recall'} | {c['n']} | {f2(c['S_whole'][0])} | "
+                       f"{f2(c['S_no_part'][0])} | {f2(c['S_no_rand'][0])} | {ci(c['excess'])} | {share:.3f} | {c['label']} |")  # fmt: skip
+    return out
+
+
+def table_dicts(cells: dict, run: Any, la: int) -> list[str]:
+    out = ["| dictionary | atoms | reader | share removed | dependence | random dependence | excess | label |",
+           "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    name = {"jpp": "J++", "wu": "W_U", "we": "W_E", "rand": "random atoms"}
+    order = lambda kv: (kv[0][3] != "jpp", kv[0][3], kv[0][4], kv[0][2] != X.LOOKUP)  # noqa: E731
+    for (_rr, l2, w, d, k, omp), c in sorted(cells.items(), key=order):
+        if l2 == la and omp == "signed":
+            out.append(f"| {name[d]} | {k} | {'lookup' if w == X.LOOKUP else 'recall'} | "
+                       f"{run.share[('chat', la, d, k, omp)]:.3f} | {ci(c['Jdep'])} | {ci(c['Rdep'])} | {ci(c['excess'])} | "
+                       f"{c['label']} |")  # fmt: skip
+    return out
+
+
+def table_strata(rows: list[dict], cases: dict, la: int) -> list[str]:
+    out = [
+        "| split | value | reader | n | flipped by the whole edit | excess | label |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    feat = {s: ST.features(cases[s]) for s in {x["scene"] for x in rows}}
+    for key in ST.FEATURES:
+        for value in sorted({f[key] for f in feat.values()}):
+            cells = X.cells_of([x for x in rows if x["layer"] == la and feat[x["scene"]][key] == value])
+            for w in X.READERS:
+                c = cells[("chat", la, w, *X.MAIN)]
+                flag = " (too few)" if c["switched_whole"] < X.VALID_N else ""
+                out.append(f"| {key} | {value} | {'lookup' if w == X.LOOKUP else 'recall'} | {c['n']} | "
+                           f"{c['switched_whole']}{flag} | {ci(c['excess'])} | {c['label']} |")  # fmt: skip
+    return out
+
+
+def render(text: str, num: Numbers, tables: dict[str, list[str]]) -> str:
+    import re
+
+    out = []
+    for line in text.splitlines():
+        m = re.fullmatch(r"\{\{tbl\|([\w]+)\}\}", line.strip())
+        if m:
+            out += tables[m.group(1)]
+            continue
+        out.append(re.sub(r"\{\{num\|([\w]+)\}\}", lambda x: num.d[x.group(1)]["text"], line))
+    return "\n".join(out).rstrip() + "\n"
+
+
+def main() -> None:
+    num, tables = compute()
+    NUMBERS.write_text(json.dumps(num.d, indent=1, ensure_ascii=False) + "\n")
+    page = render(TEMPLATE.read_text(), num, tables)
+    (DOCS / "x0_details.md").write_text(
+        "<!-- Generated by scripts/x0_details.py from docs/x0_details.template.md and the X0 runs; edit the template. -->\n"
+        + page
+    )
+    print(NUMBERS, len(num.d), "numbers;", DOCS / "x0_details.md")
+
+
+if __name__ == "__main__":
+    main()

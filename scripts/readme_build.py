@@ -15,6 +15,7 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{conf|f}}                   "medium (holds 7 of 8; Muse: prose fails, 5 items)"
   {{table|f|setting,...}}      one row per judged model (its first listed setting with a value), the rest below
   {{q|text}}                   a number quoted from outside the grid, rendered as is
+  {{num|key}}                  an X0 number from docs/x0_numbers.json (scripts/x0_details.py, from the run files)
   {{grid}}                     the grid folder
   {{head}}                     the commit the README is built at
 
@@ -24,6 +25,7 @@ uv run python scripts/readme_build.py [--grid DIR] [--runs]   # writes README.md
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import subprocess
 import sys
@@ -249,6 +251,11 @@ def one(x: re.Match[str], book: Book) -> str:
         return book.conf(args[0])
     if kind == "q":
         return "|".join(args)
+    if kind == "num":  # an X0 number, recomputed from the run files by scripts/x0_details.py
+        numbers = json.loads((REPO / "docs" / "x0_numbers.json").read_text())
+        if args[0] not in numbers:
+            raise ValueError(f"{x.group(0)}: no such key in docs/x0_numbers.json (run scripts/x0_details.py)")
+        return numbers[args[0]]["text"]
     if kind == "grid":
         return str(book.grid_dir.relative_to(REPO))
     raise ValueError(f"unknown marker {x.group(0)}")
