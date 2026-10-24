@@ -791,3 +791,13 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Predictions (M - P, all starts, against the same model's every-position run):** question keeps >= 2/3 of the gap;
   context <= 1/3 (context removal may cost every final alike through hop 1, which M - P cancels); bridge-only (P and T
   starts) M - P < 10; final-only: no directional prediction (reported). The rotated control stays within 10 everywhere.
+- **28 note 3 (~10:25 UTC, after Kolibri-1's lens and plain-text gate, before any Kolibri knock-out data):** seen:
+  its lens is weak (held-out macro pass@10: J++ 0.484, pooled 0.274, logit lens 0.447; the 9B's J++ 0.62 against
+  its logit lens 0.39-0.40), and the gate passes only by its letter: at layers 15-35 the top-10 removal adds 6.36 nats
+  to Kolibri's plain-text loss (unedited 4.75) and the rotation adds 1.17, so the rule (untestable if top10 >= +2
+  while the rotation stays within 0.3) lets it through because the rotation also hurts. Its J removal breaks plain
+  text as much as Gemma's (+6.6, untestable), and Kolibri is fragile to a random edit of the same size. Reading fixed
+  now: Kolibri's module 1 result at its dev band counts as a J-specific memory-final dependence only if (a) the
+  prompt-final words (P final, all starts) lose <= 20 points under paper10, (b) M - P >= 20, and (c) the rotated and
+  the logit-lens controls each give M - P < 10; if (a) fails it is reported as general breakage (not testable this
+  way), and if (c) fails as not J-specific. The pooled-lens run is reported beside it, read the same way.
