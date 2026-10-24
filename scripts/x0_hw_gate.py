@@ -4,7 +4,9 @@ A parts run of one cell of d1_necessity_parts_27b_r2 (bridge_word:16, both reade
 compared row by row with the 23 Oct rows: same item, set, layer, part, source and null flag. Gate (hardware addendum
 v2): per-item agreement of the read's role (b / A / other) >= 97% over the rows whose arm draws no random tensor (the
 whole change and its lens parts); the arms that draw random tensors (on CUDA in that code) are reported beside, not
-gated. Exit code 3 on a failed gate, so the queue's dependent X0 jobs do not start.
+gated. Exit code 3 on a failed gate, so the queue's dependent X0 jobs do not start. With --drift-floor F (the 122B,
+Dan 24 Oct): agreement >= 0.97 is PASS; in [F, 0.97) DRIFT (exit 0: the dependent run goes ahead, every number of
+it labelled 'hardware drift', the per-part disagreement reported); below F FAIL (exit 3).
 
   uv run python scripts/x0_hw_gate.py --new RUN [--ref d1_necessity_parts_27b_r2] [--cell bridge_word:16]
 """
@@ -37,7 +39,16 @@ def rows_of(run: str, s: str, layer: int) -> dict[tuple, dict]:
     return {tuple(r[k] for k in KEY): r for r in rows if r["set"] == s and r["layer"] == layer}
 
 
-def compare(new: dict[tuple, dict], ref: dict[tuple, dict]) -> dict:
+def status(agreement: float, rows: int, floor: float | None) -> str:
+    """PASS (>= MIN_AGREEMENT), DRIFT (in [floor, MIN_AGREEMENT) when a floor is given) or FAIL."""
+    if rows and agreement >= MIN_AGREEMENT:
+        return "PASS"
+    if rows and floor is not None and agreement >= floor:
+        return "DRIFT"
+    return "FAIL"
+
+
+def compare(new: dict[tuple, dict], ref: dict[tuple, dict], floor: float | None = None) -> dict:
     shared = sorted(set(new) & set(ref))
     by: dict[str, list[int]] = collections.defaultdict(list)
     ld: dict[str, list[float]] = collections.defaultdict(list)
@@ -53,7 +64,9 @@ def compare(new: dict[tuple, dict], ref: dict[tuple, dict]) -> dict:
     gated = table.get("gated", {"rows": 0, "agreement": 0.0})
     return {"shared_rows": len(shared), "only_new": len(set(new) - set(ref)), "only_ref": len(set(ref) - set(new)),
             "groups": table, "gate": {"rows": gated["rows"], "agreement": gated["agreement"], "min": MIN_AGREEMENT,
-                                      "pass": gated["rows"] > 0 and gated["agreement"] >= MIN_AGREEMENT}}  # fmt: skip
+                                      "pass": gated["rows"] > 0 and gated["agreement"] >= MIN_AGREEMENT,
+                                      "drift_floor": floor,
+                                      "status": status(gated["agreement"], gated["rows"], floor)}}  # fmt: skip
 
 
 def figure(run: str) -> Path:
@@ -75,7 +88,8 @@ def figure(run: str) -> Path:
     ax.axvline(MIN_AGREEMENT, color="red", lw=1, ls="--")
     ax.set_xlim(0.9, 1.0)
     ax.set_xlabel("share of rows whose read role matches the 23 Oct row")
-    ax.set_title(f"Hardware gate {'PASS' if res['gate']['pass'] else 'FAIL'}: {res['gate']['agreement']:.4f} over "
+    ax.set_title(f"Hardware gate {res['gate'].get('status', 'PASS' if res['gate']['pass'] else 'FAIL')}: "
+                 f"{res['gate']['agreement']:.4f} over "
                  f"{res['gate']['rows']} gated rows (purple; grey = random draws, reported)", fontsize=9)  # fmt: skip
     fig.tight_layout()
     folder = OUT / run / f"analysis-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-figures"
@@ -92,27 +106,29 @@ def main() -> int:
     ap.add_argument("--ref", default="d1_necessity_parts_27b_r2")
     ap.add_argument("--cell", default="bridge_word:16")
     ap.add_argument("--figures", action="store_true", help="the figure of an existing verdict of --new")
+    ap.add_argument("--drift-floor", type=float, default=None, help="DRIFT (exit 0) between this and 0.97")
     a = ap.parse_args()
     if a.figures:
         figure(a.new)
         return 0
     s, la = a.cell.split(":")
-    res = compare(rows_of(a.new, s, int(la)), rows_of(a.ref, s, int(la)))
+    res = compare(rows_of(a.new, s, int(la)), rows_of(a.ref, s, int(la)), a.drift_floor)
     res = {"new": a.new, "ref": a.ref, "cell": a.cell, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
            "inputs": {r: sha256_of(PARTS_DIR / r / "outcomes.jsonl") for r in (a.new, a.ref)}, **res}  # fmt: skip
     out = OUT / a.new
     out.mkdir(parents=True, exist_ok=False)
     (out / "verdict.json").write_text(json.dumps(res, indent=2) + "\n")
     lines = [f"# Hardware gate: {a.new} vs {a.ref} at {a.cell}", "",
-             f"Gate: {'PASS' if res['gate']['pass'] else 'FAIL'}: agreement {res['gate']['agreement']:.4f} over "
-             f"{res['gate']['rows']} rows without random draws (bar {MIN_AGREEMENT}). Rows only in the new run: "
+             f"Gate: {res['gate']['status']}: agreement {res['gate']['agreement']:.4f} over "
+             f"{res['gate']['rows']} rows without random draws (bar {MIN_AGREEMENT}"
+             f"{f'; drift floor {a.drift_floor}' if a.drift_floor is not None else ''}). Rows only in the new run: "
              f"{res['only_new']}; only in the reference: {res['only_ref']}.", "",
              "| group | rows | agreement | median abs ld diff |", "|---|---|---|---|",
              *(f"| {g} | {v['rows']} | {v['agreement']:.4f} | {v['median_abs_ld_diff']} |"
                for g, v in res["groups"].items())]  # fmt: skip
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
-    return 0 if res["gate"]["pass"] else 3
+    return 3 if res["gate"]["status"] == "FAIL" else 0
 
 
 if __name__ == "__main__":
