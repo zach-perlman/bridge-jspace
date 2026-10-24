@@ -223,6 +223,89 @@ Qwen3.6-27B:
 
 ![Upstream change](../figures/x0_necessity/asked_first.png)
 
+## The digit check (the pre-registered layer; added after the data)
+
+The question: the J++ dictionary has letter-bearing tokens only. Does the lookup read the answer digit at the bridge's word, which no letter-only dictionary can remove?
+- The pre-stated reading (Dan, before the run): if J++ over every token, or the 10 digit directions alone, makes the lookup "through" in locker-before items, X0's "around" was the excluded digit.
+- The reference: letter-only J++ at the same number of atoms.
+- Result: the digits change nothing. The J++ readout at the bridge's word ranks the lookup's answer digit first in 8% (9B) and 13% (27B) of locker-before items, against a chance of 10%.
+
+Qwen3.5-9B, layer 12:
+
+| locker vs pick | reader | dictionary | atoms | n | flipped by the whole edit | excess | label |
+|---|---|---|---|---|---|---|---|
+| before | lookup | J++ (letters) | 25 | 100 | 86 | 0.00 [−0.04, 0.05] | around |
+| before | lookup | J++ (letters) | 50 | 100 | 86 | −0.02 [−0.10, 0.06] | around |
+| before | lookup | J++ (letters) | 100 | 100 | 86 | −0.09 [−0.18, −0.01] | around |
+| before | lookup | J++ (every token) | 25 | 100 | 86 | −0.02 [−0.07, 0.04] | around |
+| before | lookup | J++ (every token) | 50 | 100 | 86 | −0.03 [−0.11, 0.04] | around |
+| before | lookup | J++ (every token) | 100 | 100 | 86 | −0.10 [−0.19, −0.02] | around |
+| before | lookup | the 10 digit directions | 10 | 100 | 86 | 0.00 [−0.03, 0.03] | around |
+| before | recall | J++ (letters) | 25 | 100 | 100 | 0.35 [0.26, 0.43] | through |
+| before | recall | J++ (letters) | 50 | 100 | 100 | 0.53 [0.40, 0.64] | through |
+| before | recall | J++ (letters) | 100 | 100 | 100 | 0.43 [0.26, 0.57] | through |
+| before | recall | J++ (every token) | 25 | 100 | 100 | 0.35 [0.26, 0.43] | through |
+| before | recall | J++ (every token) | 50 | 100 | 100 | 0.52 [0.40, 0.62] | through |
+| before | recall | J++ (every token) | 100 | 100 | 100 | 0.45 [0.30, 0.58] | through |
+| before | recall | the 10 digit directions | 10 | 100 | 100 | 0.00 [0.00, 0.00] | around |
+| after | lookup | J++ (letters) | 25 | 100 | 20 | −0.20 [−0.40, −0.05] | can't tell |
+| after | lookup | J++ (letters) | 50 | 100 | 20 | −0.05 [−0.23, 0.12] | can't tell |
+| after | lookup | J++ (letters) | 100 | 100 | 20 | −0.05 [−0.18, 0.00] | can't tell |
+| after | lookup | J++ (every token) | 25 | 100 | 20 | −0.25 [−0.45, −0.08] | can't tell |
+| after | lookup | J++ (every token) | 50 | 100 | 20 | −0.05 [−0.23, 0.12] | can't tell |
+| after | lookup | J++ (every token) | 100 | 100 | 20 | 0.00 [0.00, 0.00] | can't tell |
+| after | lookup | the 10 digit directions | 10 | 100 | 20 | 0.05 [0.00, 0.20] | can't tell |
+| after | recall | J++ (letters) | 25 | 100 | 97 | 0.65 [0.57, 0.73] | through |
+| after | recall | J++ (letters) | 50 | 100 | 97 | 0.74 [0.62, 0.84] | through |
+| after | recall | J++ (letters) | 100 | 100 | 97 | 0.52 [0.40, 0.62] | through |
+| after | recall | J++ (every token) | 25 | 100 | 97 | 0.66 [0.58, 0.74] | through |
+| after | recall | J++ (every token) | 50 | 100 | 97 | 0.72 [0.60, 0.82] | through |
+| after | recall | J++ (every token) | 100 | 100 | 97 | 0.54 [0.42, 0.65] | through |
+| after | recall | the 10 digit directions | 10 | 100 | 97 | 0.00 [0.00, 0.00] | around |
+
+Qwen3.6-27B, layer 32:
+
+| locker vs pick | reader | dictionary | atoms | n | flipped by the whole edit | excess | label |
+|---|---|---|---|---|---|---|---|
+| before | lookup | J++ (letters) | 25 | 101 | 77 | 0.14 [0.07, 0.22] | mixed |
+| before | lookup | J++ (letters) | 50 | 101 | 77 | 0.32 [0.23, 0.41] | through |
+| before | lookup | J++ (letters) | 100 | 101 | 77 | 0.61 [0.49, 0.73] | through |
+| before | lookup | J++ (every token) | 25 | 101 | 77 | 0.13 [0.06, 0.21] | mixed |
+| before | lookup | J++ (every token) | 50 | 101 | 77 | 0.30 [0.21, 0.39] | through |
+| before | lookup | J++ (every token) | 100 | 101 | 77 | 0.61 [0.49, 0.73] | through |
+| before | lookup | the 10 digit directions | 10 | 101 | 77 | 0.00 [0.00, 0.00] | around |
+| before | recall | J++ (letters) | 25 | 101 | 75 | 0.65 [0.56, 0.74] | through |
+| before | recall | J++ (letters) | 50 | 101 | 75 | 0.80 [0.70, 0.89] | through |
+| before | recall | J++ (letters) | 100 | 101 | 75 | 0.71 [0.61, 0.79] | through |
+| before | recall | J++ (every token) | 25 | 101 | 75 | 0.69 [0.61, 0.77] | through |
+| before | recall | J++ (every token) | 50 | 101 | 75 | 0.79 [0.68, 0.88] | through |
+| before | recall | J++ (every token) | 100 | 101 | 75 | 0.72 [0.62, 0.81] | through |
+| before | recall | the 10 digit directions | 10 | 101 | 75 | 0.00 [0.00, 0.00] | around |
+| after | lookup | J++ (letters) | 25 | 99 | 8 | 0.12 [0.00, 0.44] | can't tell |
+| after | lookup | J++ (letters) | 50 | 99 | 8 | 0.25 [0.00, 0.67] | can't tell |
+| after | lookup | J++ (letters) | 100 | 99 | 8 | 0.50 [0.17, 0.83] | can't tell |
+| after | lookup | J++ (every token) | 25 | 99 | 8 | 0.12 [0.00, 0.44] | can't tell |
+| after | lookup | J++ (every token) | 50 | 99 | 8 | 0.25 [0.00, 0.67] | can't tell |
+| after | lookup | J++ (every token) | 100 | 99 | 8 | 0.37 [0.00, 0.69] | can't tell |
+| after | lookup | the 10 digit directions | 10 | 99 | 8 | 0.00 [0.00, 0.00] | can't tell |
+| after | recall | J++ (letters) | 25 | 99 | 75 | 0.80 [0.68, 0.91] | through |
+| after | recall | J++ (letters) | 50 | 99 | 75 | 0.81 [0.70, 0.92] | through |
+| after | recall | J++ (letters) | 100 | 99 | 75 | 0.63 [0.52, 0.75] | through |
+| after | recall | J++ (every token) | 25 | 99 | 75 | 0.79 [0.66, 0.90] | through |
+| after | recall | J++ (every token) | 50 | 99 | 75 | 0.81 [0.70, 0.92] | through |
+| after | recall | J++ (every token) | 100 | 99 | 75 | 0.64 [0.53, 0.76] | through |
+| after | recall | the 10 digit directions | 10 | 99 | 75 | 0.00 [0.00, 0.00] | around |
+
+![The digit check](../figures/status_2026-10-24/f6_digits.png)
+
+## The J++ atoms of the bridge edit (27B, layer 32, 20 random items; added after the data)
+
+- The first atom is the bridge's own token (before or after the edit) in 13 of 20 items.
+- The rest of the top 25 are mostly tokens that are neither context words nor names. Some of them are the bridge in other scripts (フライ for *fly*, 小熊 for *bear*).
+- Digits never enter the top 25, even when every token is allowed (0 of 500). Number words enter 3 of 500.
+
+Tables: [letter atoms](../results/x0_atoms/x0_atoms_27b_letters/tables.md), [every token](../results/x0_atoms/x0_atoms_27b_all/tables.md).
+
 ## The 23 Oct context cell on the fresh scenes (a replication; not part of X0's rule)
 
 27B at layer 32, with the change at every context position, using the 23 Oct code, filter and read (n = 180 per reader):

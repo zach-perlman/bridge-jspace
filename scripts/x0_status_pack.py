@@ -1,5 +1,5 @@
 """x0_status_pack: four plain-language X0 figures for a status update (Dan, 24 Oct), from existing rows only. Writes
-figures/status_2026-10-24/{f1_readers, f2_depth, f3_dictionaries, f4_order, f5_atoms}.png and data.csv. UNVERIFIED.
+figures/status_2026-10-24/{f1_readers, f2_depth, f3_dictionaries, f4_order, f5_atoms, f6_digits}.png and data.csv. UNVERIFIED.
 
 F1  the pre-registered layers (9B L12, 27B L32): flips lost (points of all items) without the J++ part and without a
     random part of the same size, per reader; the rule's verdict and the graded contrast C under each model.
@@ -7,6 +7,7 @@ F2  extra flips lost by relative depth, lookup and recall, valid cells only.
 F3  extra flips lost against the share of the change removed: J++, and W_U / W_E / random atoms as one grey band.
 F4  the share of lookups the whole edit flips, locker sentence before vs after the pick sentence.
 F5  extra flips lost against the number of J++ atoms removed (25-200), at the pre-registered layer.
+F6  the digit check: J++ over letter tokens vs every token, and the digit directions alone (locker-before).
 """
 
 from __future__ import annotations
@@ -233,6 +234,59 @@ def f5(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
+DIGIT = {"qwen3.5-9b": "qwen35_9b_x0_digit_r2", "qwen3.6-27b": "x0_digit_27b_r2"}
+
+
+def f6(plt, F, color, grey) -> None:
+    """The digit check, locker-before items: extra flips lost with J++ over letter tokens vs every token (digits
+    included) at 25 / 50 / 100 atoms, and with the 10 digit directions alone."""
+    import json
+
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5.6), sharey=True)
+    xs = {"jppdig": 0, 25: 1, 50: 2, 100: 3}
+    for ax, (target, label, _, _) in zip(axes, MODELS, strict=True):
+        run = DIGIT[target]
+        path = sorted((X.RESULTS / run).glob("strata-*/strata.json"))[-1]
+        rows = [s for s in json.loads(path.read_text())["strata"]
+                if s["feature"] == "org locker vs asked pick" and s["value"] == "before" and s["omp"] == "signed"]  # fmt: skip
+        ax.axhspan(0, X.AROUND_EXCESS, color="#f1f1f1", lw=0, zorder=0)
+        ax.axhline(X.THROUGH_EXCESS, color="#bbbbbb", lw=0.8, ls=":")
+        ax.axhline(0, color="black", lw=0.6)
+        for w in X.READERS:
+            for d, ls in (("jpp", "-"), ("jppall", "--")):
+                pts = sorted((s["k"], s) for s in rows if s["reader"] == w and s["dict"] == d)
+                x = [xs[k] for k, _ in pts]
+                ax.plot(x, [s["excess"][0] for _, s in pts], ls, marker="o", color=color[w], lw=2.2 if d == "jpp" else 1.6,
+                        ms=5, alpha=1 if d == "jpp" else 0.8)  # fmt: skip
+                for k, s in pts:
+                    record("f6", target, run, X.PREDICTED[target], w, f"extra loss, {d} k={k}, locker before",
+                           s["excess"][0], s["excess"][1], s["excess"][2], s["n"])  # fmt: skip
+            dig = next(s for s in rows if s["reader"] == w and s["dict"] == "jppdig")
+            ax.errorbar(xs["jppdig"], dig["excess"][0], yerr=[[dig["excess"][0] - dig["excess"][1]],
+                        [dig["excess"][2] - dig["excess"][0]]], fmt="s", color=color[w], ms=7, capsize=3)  # fmt: skip
+            record("f6", target, run, X.PREDICTED[target], w, "extra loss, digit directions only, locker before",
+                   dig["excess"][0], dig["excess"][1], dig["excess"][2], dig["n"])  # fmt: skip
+        ax.set_xticks(list(xs.values()), ["10 digit\ndirections only", "25 atoms", "50 atoms", "100 atoms"])
+        ax.set_title(f"{label}, layer {X.PREDICTED[target]}")
+        ax.grid(axis="y", color="#eeeeee")
+        ax.set_axisbelow(True)
+    axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
+    axes[0].set_ylim(-0.3, 1.0)
+    h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2, marker="o"), plt.Line2D([], [], color=F.RECALL, lw=2.2, marker="o"),
+         plt.Line2D([], [], color="#777777", lw=2.2), plt.Line2D([], [], color="#777777", lw=1.6, ls="--")]  # fmt: skip
+    head(fig, "Adding the digit tokens to J++ changes nothing",
+         "Items where the locker sentence comes before the pick sentence (where lookups flip). J++ over letter-bearing "
+         "tokens (as in X0) and over every token, digits included, give the same extra loss; the 10 digit directions alone "
+         "give none.", h, ["lookup", "recall", "J++, letter tokens", "J++, every token"])  # fmt: skip
+    foot(fig, [f"n = 100-101 scenes per point (locker-before items of the X0 scenes, recomputed); {CI}. Light band: 0 to "
+               "0.10, counts as 'not needed'; dotted line: 0.20, counts as 'needed'. Unverified. Descriptive, added after "
+               "the data (the pre-stated reading: if digits made the lookup 'needed', X0's lookup result was the excluded "
+               "digit). Runs: qwen35_9b_x0_digit_r2, x0_digit_27b_r2."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
+    fig.savefig(OUT / "f6_digits.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
 def f3(plt, F, color, grey) -> None:
     fig, axes = plt.subplots(2, 2, figsize=(13, 9), sharey=True)
     for j, (target, label, _, kmatch) in enumerate(MODELS):
@@ -329,6 +383,7 @@ def main() -> None:
     f3(plt, F, color, grey)
     f4(plt, F, color, grey)
     f5(plt, F, color, grey)
+    f6(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]

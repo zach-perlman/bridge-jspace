@@ -62,6 +62,31 @@ Qwen3.6-27B:
 
 ![Upstream change](../figures/x0_necessity/asked_first.png)
 
+## The digit check (the pre-registered layer; added after the data)
+
+The question: the J++ dictionary has letter-bearing tokens only. Does the lookup read the answer digit at the bridge's word, which no letter-only dictionary can remove?
+- The pre-stated reading (Dan, before the run): if J++ over every token, or the 10 digit directions alone, makes the lookup "through" in locker-before items, X0's "around" was the excluded digit.
+- The reference: letter-only J++ at the same number of atoms.
+- Result: the digits change nothing. The J++ readout at the bridge's word ranks the lookup's answer digit first in {{num|dig_readout_first_before_9b}} (9B) and {{num|dig_readout_first_before_27b}} (27B) of locker-before items, against a chance of 10%.
+
+Qwen3.5-9B, layer 12:
+
+{{tbl|digit_9b}}
+
+Qwen3.6-27B, layer 32:
+
+{{tbl|digit_27b}}
+
+![The digit check](../figures/status_2026-10-24/f6_digits.png)
+
+## The J++ atoms of the bridge edit (27B, layer 32, 20 random items; added after the data)
+
+- The first atom is the bridge's own token (before or after the edit) in {{num|atoms_first_bridge_letters}} items.
+- The rest of the top 25 are mostly tokens that are neither context words nor names. Some of them are the bridge in other scripts (フライ for *fly*, 小熊 for *bear*).
+- Digits never enter the top 25, even when every token is allowed ({{num|atoms_digit_top25_all}}). Number words enter {{num|atoms_number_word_top25_all}}.
+
+Tables: [letter atoms](../results/x0_atoms/x0_atoms_27b_letters/tables.md), [every token](../results/x0_atoms/x0_atoms_27b_all/tables.md).
+
 ## The 23 Oct context cell on the fresh scenes (a replication; not part of X0's rule)
 
 27B at layer 32, with the change at every context position, using the 23 Oct code, filter and read (n = {{num|ctx_n}} per reader):

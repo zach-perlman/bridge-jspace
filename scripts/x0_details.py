@@ -30,6 +30,9 @@ MODELS = {"9b": ("qwen3.5-9b", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
           "27b": ("qwen3.6-27b", "x0_necessity_27b_chat", "x0_kmatch_27b")}  # fmt: skip
 CTX = "results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json"
 NOCHAT = {"9b": "qwen35_9b_x0_necessity_nothink", "27b": "x0_necessity_27b_nothink"}
+DIGIT = {"9b": "qwen35_9b_x0_digit_r2", "27b": "x0_digit_27b_r2"}
+ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all"}
+ORDER = "org locker vs asked pick"
 
 
 def f2(x: float) -> str:
@@ -106,6 +109,9 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
             D.all_cells([x for x in km.rows if x["rendering"] == "chat"], X.N_BOOT), km, la
         )
         tables[f"strata_{m}"] = table_strata(rows, cases, la)
+    for m, run in DIGIT.items():
+        digit_numbers(num, tables, m, run)
+    atoms_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -119,6 +125,45 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     num.add("ctx_recall_diff", ci(nec["recall_dropJ_minus_droprand"]), CTX)
     num.add("ctx_n", str(nec["n_lookup"]), CTX)
     return num, tables
+
+
+def digit_numbers(num: Numbers, tables: dict[str, list[str]], m: str, run: str) -> None:
+    """The digit check: lookups and recalls by locker order, J++ over letters (jpp) vs every token (jppall) at
+    25 / 50 / 100 atoms, and the 10 digit directions alone (jppdig); the answer-digit readout."""
+    path = sorted((X.RESULTS / run).glob("strata-*/strata.json"))[-1]
+    src = str(path.relative_to(pins.REPO_ROOT))
+    rows = [s for s in json.loads(path.read_text())["strata"] if s["feature"] == ORDER and s["omp"] == "signed"]
+    out = ["| locker vs pick | reader | dictionary | atoms | n | flipped by the whole edit | excess | label |",
+           "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    name = {"jpp": "J++ (letters)", "jppall": "J++ (every token)", "jppdig": "the 10 digit directions"}
+    for s in sorted(rows, key=lambda s: (s["value"] != "before", s["reader"] != X.LOOKUP, s["dict"], s["k"])):
+        if s["dict"] not in name:
+            continue
+        w = "lk" if s["reader"] == X.LOOKUP else "rc"
+        num.add(f"dig_{w}_{s['dict']}_k{s['k']}_{s['value']}_{m}", f2(s["excess"][0]), src)
+        out.append(f"| {s['value']} | {'lookup' if w == 'lk' else 'recall'} | {name[s['dict']]} | {s['k']} | {s['n']} | "
+                   f"{s['switched_whole']} | {ci(s['excess'])} | {s['label']} |")  # fmt: skip
+    tables[f"digit_{m}"] = out
+    readout = X.read_jsonl(X.RESULTS / run / "readout.jsonl")
+    cases = {c["scene"]: c for c in X.read_jsonl(X.RESULTS / run / "cases.jsonl") if c["rendering"] == "chat"}
+    for order in ("before", "after"):
+        mine = [r for r in readout if r["reader"] == X.LOOKUP and r["run"] == "org"
+                and ST.features(cases[r["scene"]])[ORDER] == order]  # fmt: skip
+        num.add(f"dig_readout_first_{order}_{m}", pct(sum(r["rank_org_answer"] == 1 for r in mine) / len(mine)),
+                f"results/x0_necessity/{run}/readout.jsonl")  # fmt: skip
+
+
+def atoms_numbers(num: Numbers) -> None:
+    """The J++ atoms of the bridge edit (27B L32, 20 random items): how often the first atom is the bridge's own
+    token, and whether a digit or number word enters the top 25 when every token is allowed."""
+    for v, run in ATOMS.items():
+        rows = [r for r in X.read_jsonl(pins.RESULTS_DIR / "x0_atoms" / run / "atoms.jsonl") if r["subset"] == "all"]
+        src = f"results/x0_atoms/{run}/atoms.jsonl"
+        first = sum(r["atoms"][0]["mark"] in ("bridge_org", "bridge_alt") for r in rows)
+        num.add(f"atoms_first_bridge_{v}", f"{first} of {len(rows)}", src)
+        for mark in ("digit", "number_word"):
+            k = sum(a["mark"] == mark for r in rows for a in r["atoms"][:25])
+            num.add(f"atoms_{mark}_top25_{v}", f"{k} of {25 * len(rows)}", src)
 
 
 def table_layers(cells: dict, run: Any) -> list[str]:
