@@ -3,7 +3,7 @@
 
 **Answer.** Recalling a fact about the in-between entity from memory needs the lens-readable (J++) part of its representation far more than looking its answer up in the prompt does, on three Qwen models (at the default 25 J++ directions), and on two of them in varied scenes. The lookup instead uses something at that word the lens does not read; on the 9B, a few directions that point at where the item was first mentioned carry the lookup (after the data; a replication fixed in advance is pending).
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B. All numbers are unverified until hand-checked. 25 Oct 2026. Built at f93d310a from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B. All numbers are unverified until hand-checked. 25 Oct 2026. Built at e81a82d5 from the run files.
 
 ## How to read this page
 
@@ -71,18 +71,18 @@
 ![The bridge word points at the item's first mention; the lookup still switches when that pointer is wrong](figures/status_2026-10-24/f9_first_mention.png) ![The pointer is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png)
 *Left, top: compare the grey bars (pointing at the other person's pick) with the blue ones (pointing at the new pick's locker). Right: compare the J++ part with the rest.*
 
-- **How to read it.** The pointer is not lexical: it is a first-mention pointer at the entity level, which the lens does not read. It does not show that the lookup reads this pointer: the lookup switches correctly even when the pointer points the wrong way, and it switches in nearly every such pair whatever is removed, so that comparison cannot show a dependence. Read by the pointer directions of finding 6 (nearest class average) instead of the probe, the edited state also points at the other pick: 0.83 [0.68, 0.97] (9B), 0.88 [0.75, 1.00] (27B).
+- **How to read it.** The pointer is not lexical: it is a first-mention pointer at the entity level, which the lens does not read. It does not show that the lookup reads this pointer: the lookup switches correctly even when the pointer points the wrong way, and it switches in nearly every such pair whatever is removed, so that comparison cannot show a dependence.
 
 ## 6. On the 9B, pointer directions outside the lens carry the lookup, the mirror image of J++ [after the data; replication pending]
 
 - **Hypothesis.** If the lookup reads the pointer, removing the directions that encode it should cost the lookup and not the recall. It would be wrong if it cost both readers or neither.
 - **Experiment.** The **pointer directions** are the 4 directions that separate the average state for each "which sentence holds the locker" answer on fresh scenes, after each layout's average is taken out (so they do not just encode which sentences are locker sentences). They are removed from an edit that changes one pick, against a random part of the same share, and compared with the J++ part and the layer's main directions at about the same share. Pointer directions: the 73 (9B) and 70 (27B) of those scenes whose old and new pick both have their locker sentence before the pick; J++ and main directions: all 200 scenes.
-- **Result.** On the 9B the pointer directions cost the lookup 0.49 [0.38, 0.59] and the recall 0.12 [0.05, 0.21]; J++ costs the recall 0.37 [0.29, 0.43] and the lookup −0.02 [−0.05, 0.02]; the main directions 0.08 [0.02, 0.15] and 0.13 [0.06, 0.19]. On the 27B the pointer directions cost both readers (0.14 [0.07, 0.22] lookup, 0.16 [0.02, 0.31] recall).
+- **Result.** On the 9B the pointer directions cost the lookup 0.49 [0.38, 0.59] and the recall 0.12 [0.05, 0.21]; J++ costs the recall 0.37 [0.29, 0.43] and the lookup −0.02 [−0.05, 0.02]; the main directions 0.08 [0.02, 0.15] and 0.13 [0.06, 0.19]. On the 27B the pointer directions cost both readers (0.14 [0.07, 0.22] lookup, 0.16 [0.02, 0.31] recall). In the pairs where another person's pick of the new item comes first, the edited state's nearest class average points at that pick sentence, not at the new item's locker sentence: 0.80 [0.65, 0.93] with the layout averages kept and 0.83 [0.68, 0.97] in the pointer directions on the 9B (0.88 [0.71, 1.00] and 0.88 [0.75, 1.00] on the 27B), and the lookup still switches to the right locker (1.00 on the 9B).
 
 ![On the 9B, removing the pointer directions costs the lookup and removing J++ costs the recall](figures/status_2026-10-24/f15_pointer.png)
 *Compare the purple (lookup) and dark (recall) bar across the three parts in the 9B panel, then in the 27B panel.*
 
-- **How to read it.** On the 9B the two readers depend on different parts of the same change. It does not show that the pointer is how the lookup finds its answer: these directions also point at the other person's pick when that comes first (finding 5), while the lookup still switches correctly; how both hold is open. Caveats: one model, after the data, 73 scenes for the pointer directions; a replication fixed in advance is pending.
+- **How to read it.** On the 9B the two readers depend on different parts of the same change. The 9B lookup needs the pointer directions, but the 'where' they encode can point to the wrong sentence without hurting the lookup, so the lookup reads something else from them. Caveats: one model, after the data, 73 scenes for the pointer directions; a replication fixed in advance is pending.
 
 ## What did not hold
 

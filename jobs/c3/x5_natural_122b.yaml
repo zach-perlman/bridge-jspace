@@ -1,0 +1,24 @@
+id: x5_natural_122b
+title: "Natural passages on the 122B (Dan, 25 Oct ~00:55): the same set, spec and rule as x5_natural, at L33; queued right before b6"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.8
+depends_on: [x0_replicate]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x5_natural.py run --name qwen35_122b_x5_natural
+question: >-
+  On natural passages (Zach's jsuite_v2_1 test set: facts, start P), is the recall-lookup gap on the 122B at L33 at least 0.30, as asked of the 27B and the 9B in x5_natural?
+why_it_matters: >-
+  Fills the grid's natural-passages cell for the held-out model.
+hypotheses:
+  H-holds: 'the gap holds on the 122B. Prior: Dan''s Q31.9 (batch 31, committed before the results are opened)'
+decision_rule: >-
+  Fixed in advance, as x5_natural (Dan, 25 Oct ~00:20 / ~00:55): the recall-lookup gap >= 0.30 with lower CI >= 0.15 holds; <= 0.10 fails; otherwise mixed. By relation and by half: descriptive; the recall's lure reported separately. Same read (cand2), gate (0.80 per reader), eligibility and alt rule as x5_natural; the scenes that pass the alt rule are re-derived with the 122B's tokenizer. Results stay closed until Dan's batch-31 commit.
+controls:
+- 'a random-subspace part at the J++ part''s share'
+- 'both readers on the identical patch (one passage)'
+- 'the lure reported separately from the switch'
+n: 'the eligible items of the scenes that pass the alt rule'
+seeds: [0]
+notes: "122B on both GPUs. Queued right before b6 (Dan ~00:55): its pending file sorts before b6's; if b6 cannot start by 07:30, b6 is cancelled."
