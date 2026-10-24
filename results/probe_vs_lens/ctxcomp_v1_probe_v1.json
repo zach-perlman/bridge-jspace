@@ -1,0 +1,3565 @@
+{
+ "words": {
+  "PR": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.009,
+    "rand": 0.0058
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.006,
+    "rand": 0.0064
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0056,
+    "rand": 0.0054
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0056,
+    "rand": 0.0064
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.19,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0057
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0064,
+    "rand": 0.0085
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0052,
+    "rand": 0.0061
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.214,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0057
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0066,
+    "rand": 0.0069
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.214,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0076,
+    "rand": 0.0079
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0065
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0089,
+    "rand": 0.0073
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.226,
+    "jlens": 0.155,
+    "logit": 0.155,
+    "jshare": 0.0081,
+    "rand": 0.007
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.214,
+    "jlens": 0.095,
+    "logit": 0.143,
+    "jshare": 0.0105,
+    "rand": 0.0072
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.226,
+    "jlens": 0.143,
+    "logit": 0.179,
+    "jshare": 0.0086,
+    "rand": 0.0065
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.25,
+    "jlens": 0.155,
+    "logit": 0.19,
+    "jshare": 0.008,
+    "rand": 0.0066
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.143,
+    "logit": 0.155,
+    "jshare": 0.007,
+    "rand": 0.0071
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.286,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0071,
+    "rand": 0.0066
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.274,
+    "jlens": 0.202,
+    "logit": 0.179,
+    "jshare": 0.0069,
+    "rand": 0.0077
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.298,
+    "jlens": 0.167,
+    "logit": 0.155,
+    "jshare": 0.0066,
+    "rand": 0.0063
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.298,
+    "jlens": 0.155,
+    "logit": 0.155,
+    "jshare": 0.0079,
+    "rand": 0.0077
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.274,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0096,
+    "rand": 0.0058
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.476,
+    "jlens": 0.238,
+    "logit": 0.143,
+    "jshare": 0.0162,
+    "rand": 0.0075
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.452,
+    "jlens": 0.226,
+    "logit": 0.143,
+    "jshare": 0.0131,
+    "rand": 0.0065
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.429,
+    "jlens": 0.19,
+    "logit": 0.143,
+    "jshare": 0.0132,
+    "rand": 0.0068
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.417,
+    "jlens": 0.202,
+    "logit": 0.143,
+    "jshare": 0.0149,
+    "rand": 0.0062
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.976,
+    "logit": 1.0,
+    "jshare": 0.1015,
+    "rand": 0.0073
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.631,
+    "logit": 0.857,
+    "jshare": 0.0898,
+    "rand": 0.0072
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.94,
+    "logit": 1.0,
+    "jshare": 0.2135,
+    "rand": 0.007
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.393,
+    "logit": 1.0,
+    "jshare": 0.064,
+    "rand": 0.0071
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 1.0,
+    "logit": 1.0,
+    "jshare": 0.3057,
+    "rand": 0.0067
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 1.0,
+    "logit": 1.0,
+    "jshare": 0.1967,
+    "rand": 0.0064
+   }
+  ],
+  "PP": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0092,
+    "rand": 0.0063
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0062,
+    "rand": 0.0058
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0073
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0052,
+    "rand": 0.0079
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.179,
+    "logit": 0.143,
+    "jshare": 0.0053,
+    "rand": 0.0061
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0059,
+    "rand": 0.0052
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0047,
+    "rand": 0.0064
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0059,
+    "rand": 0.0072
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0058
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0067,
+    "rand": 0.0069
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.19,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.006,
+    "rand": 0.0063
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.083,
+    "logit": 0.143,
+    "jshare": 0.0084,
+    "rand": 0.0059
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0064,
+    "rand": 0.0068
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.214,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0086,
+    "rand": 0.0061
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.119,
+    "logit": 0.131,
+    "jshare": 0.0069,
+    "rand": 0.0065
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0072,
+    "rand": 0.0068
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.226,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.006,
+    "rand": 0.0063
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.274,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.008,
+    "rand": 0.0079
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.405,
+    "jlens": 0.143,
+    "logit": 0.155,
+    "jshare": 0.0051,
+    "rand": 0.0062
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.405,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0063,
+    "rand": 0.0071
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.405,
+    "jlens": 0.19,
+    "logit": 0.143,
+    "jshare": 0.0082,
+    "rand": 0.0072
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.452,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0078,
+    "rand": 0.0061
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.607,
+    "jlens": 0.262,
+    "logit": 0.262,
+    "jshare": 0.0223,
+    "rand": 0.0063
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.631,
+    "jlens": 0.25,
+    "logit": 0.25,
+    "jshare": 0.0135,
+    "rand": 0.0077
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.667,
+    "jlens": 0.464,
+    "logit": 0.5,
+    "jshare": 0.0307,
+    "rand": 0.0073
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.798,
+    "jlens": 0.595,
+    "logit": 0.679,
+    "jshare": 0.0759,
+    "rand": 0.0064
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.762,
+    "jlens": 0.643,
+    "logit": 0.702,
+    "jshare": 0.1433,
+    "rand": 0.0075
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.75,
+    "jlens": 0.631,
+    "logit": 0.655,
+    "jshare": 0.1231,
+    "rand": 0.0072
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.655,
+    "jlens": 0.607,
+    "logit": 0.69,
+    "jshare": 0.0972,
+    "rand": 0.0065
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 0.667,
+    "jlens": 0.452,
+    "logit": 0.69,
+    "jshare": 0.0414,
+    "rand": 0.0102
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 0.5,
+    "jlens": 0.774,
+    "logit": 0.81,
+    "jshare": 0.1148,
+    "rand": 0.0071
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 0.417,
+    "jlens": 0.44,
+    "logit": 0.857,
+    "jshare": 0.0647,
+    "rand": 0.0065
+   }
+  ],
+  "PM": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0088,
+    "rand": 0.0063
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.006,
+    "rand": 0.0062
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0057
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.095,
+    "logit": 0.143,
+    "jshare": 0.0057,
+    "rand": 0.0051
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0055,
+    "rand": 0.0069
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0063,
+    "rand": 0.0088
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.005,
+    "rand": 0.0058
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0057
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0055,
+    "rand": 0.0067
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0064,
+    "rand": 0.0075
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.083,
+    "logit": 0.143,
+    "jshare": 0.0062,
+    "rand": 0.0064
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0077,
+    "rand": 0.0056
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0065,
+    "rand": 0.0074
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0085,
+    "rand": 0.0066
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.131,
+    "logit": 0.202,
+    "jshare": 0.0077,
+    "rand": 0.0067
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0079,
+    "rand": 0.0073
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.19,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0071,
+    "rand": 0.0068
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.274,
+    "jlens": 0.155,
+    "logit": 0.167,
+    "jshare": 0.0101,
+    "rand": 0.0057
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.274,
+    "jlens": 0.143,
+    "logit": 0.155,
+    "jshare": 0.0069,
+    "rand": 0.008
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.298,
+    "jlens": 0.179,
+    "logit": 0.214,
+    "jshare": 0.0077,
+    "rand": 0.0061
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.31,
+    "jlens": 0.167,
+    "logit": 0.214,
+    "jshare": 0.0105,
+    "rand": 0.0065
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.321,
+    "jlens": 0.19,
+    "logit": 0.155,
+    "jshare": 0.012,
+    "rand": 0.006
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.464,
+    "jlens": 0.298,
+    "logit": 0.25,
+    "jshare": 0.0358,
+    "rand": 0.0074
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.476,
+    "jlens": 0.286,
+    "logit": 0.238,
+    "jshare": 0.0312,
+    "rand": 0.0062
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.452,
+    "jlens": 0.357,
+    "logit": 0.286,
+    "jshare": 0.0532,
+    "rand": 0.0067
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.643,
+    "jlens": 0.476,
+    "logit": 0.595,
+    "jshare": 0.1415,
+    "rand": 0.0068
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.833,
+    "logit": 0.929,
+    "jshare": 0.1503,
+    "rand": 0.0069
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.869,
+    "logit": 0.929,
+    "jshare": 0.1512,
+    "rand": 0.0067
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.905,
+    "logit": 1.0,
+    "jshare": 0.1333,
+    "rand": 0.0052
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.75,
+    "logit": 0.988,
+    "jshare": 0.0363,
+    "rand": 0.007
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.976,
+    "logit": 1.0,
+    "jshare": 0.1372,
+    "rand": 0.0071
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.857,
+    "logit": 1.0,
+    "jshare": 0.0704,
+    "rand": 0.0065
+   }
+  ],
+  "KR": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0091,
+    "rand": 0.007
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0059,
+    "rand": 0.0071
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0063,
+    "rand": 0.0066
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0071,
+    "rand": 0.0076
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0067,
+    "rand": 0.0081
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0076,
+    "rand": 0.009
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.095,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.006
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0051,
+    "rand": 0.006
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0057,
+    "rand": 0.0068
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.0057
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.095,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.0062
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0065,
+    "rand": 0.0062
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.095,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0065,
+    "rand": 0.0061
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.19,
+    "logit": 0.143,
+    "jshare": 0.0091,
+    "rand": 0.0056
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.167,
+    "logit": 0.131,
+    "jshare": 0.0082,
+    "rand": 0.0055
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.119,
+    "logit": 0.155,
+    "jshare": 0.0066,
+    "rand": 0.0075
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.19,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.007,
+    "rand": 0.0056
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.25,
+    "jlens": 0.226,
+    "logit": 0.143,
+    "jshare": 0.0124,
+    "rand": 0.0063
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.345,
+    "jlens": 0.202,
+    "logit": 0.155,
+    "jshare": 0.0133,
+    "rand": 0.0071
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.357,
+    "jlens": 0.214,
+    "logit": 0.214,
+    "jshare": 0.0173,
+    "rand": 0.0049
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.488,
+    "jlens": 0.179,
+    "logit": 0.298,
+    "jshare": 0.0649,
+    "rand": 0.0068
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.488,
+    "jlens": 0.536,
+    "logit": 0.262,
+    "jshare": 0.0608,
+    "rand": 0.0071
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.69,
+    "jlens": 0.607,
+    "logit": 0.286,
+    "jshare": 0.0985,
+    "rand": 0.0071
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.655,
+    "jlens": 0.56,
+    "logit": 0.286,
+    "jshare": 0.0609,
+    "rand": 0.005
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.869,
+    "jlens": 0.714,
+    "logit": 0.56,
+    "jshare": 0.1387,
+    "rand": 0.0088
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.833,
+    "jlens": 0.857,
+    "logit": 0.869,
+    "jshare": 0.2124,
+    "rand": 0.0062
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.893,
+    "logit": 0.929,
+    "jshare": 0.2651,
+    "rand": 0.0069
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.893,
+    "logit": 0.905,
+    "jshare": 0.2708,
+    "rand": 0.0055
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.869,
+    "logit": 0.988,
+    "jshare": 0.2096,
+    "rand": 0.0066
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.631,
+    "logit": 1.0,
+    "jshare": 0.1,
+    "rand": 0.0067
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 1.0,
+    "logit": 1.0,
+    "jshare": 0.2989,
+    "rand": 0.0075
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 1.0,
+    "logit": 1.0,
+    "jshare": 0.1802,
+    "rand": 0.0081
+   }
+  ],
+  "KP": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.008,
+    "rand": 0.0076
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0065,
+    "rand": 0.0082
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0062,
+    "rand": 0.0051
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.007,
+    "rand": 0.0074
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.006,
+    "rand": 0.0069
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0074,
+    "rand": 0.0056
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0063
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0051,
+    "rand": 0.0078
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0074
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0053,
+    "rand": 0.0093
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.007
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0066,
+    "rand": 0.0069
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0049,
+    "rand": 0.0058
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0066,
+    "rand": 0.0091
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.119,
+    "logit": 0.155,
+    "jshare": 0.0056,
+    "rand": 0.0055
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.167,
+    "logit": 0.143,
+    "jshare": 0.0059,
+    "rand": 0.0086
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.006,
+    "rand": 0.0075
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0069,
+    "rand": 0.0066
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.274,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0073,
+    "rand": 0.0075
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.262,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0077,
+    "rand": 0.0069
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.274,
+    "jlens": 0.143,
+    "logit": 0.25,
+    "jshare": 0.0096,
+    "rand": 0.0055
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.19,
+    "logit": 0.155,
+    "jshare": 0.0094,
+    "rand": 0.0064
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.369,
+    "jlens": 0.31,
+    "logit": 0.214,
+    "jshare": 0.016,
+    "rand": 0.0078
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.393,
+    "jlens": 0.25,
+    "logit": 0.31,
+    "jshare": 0.0126,
+    "rand": 0.008
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.488,
+    "jlens": 0.429,
+    "logit": 0.476,
+    "jshare": 0.0253,
+    "rand": 0.0065
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.738,
+    "jlens": 0.702,
+    "logit": 0.81,
+    "jshare": 0.1335,
+    "rand": 0.0055
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.786,
+    "jlens": 0.702,
+    "logit": 0.762,
+    "jshare": 0.2062,
+    "rand": 0.007
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.774,
+    "jlens": 0.702,
+    "logit": 0.726,
+    "jshare": 0.1934,
+    "rand": 0.0058
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.702,
+    "jlens": 0.726,
+    "logit": 0.738,
+    "jshare": 0.1031,
+    "rand": 0.0069
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 0.679,
+    "jlens": 0.595,
+    "logit": 0.738,
+    "jshare": 0.0489,
+    "rand": 0.006
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 0.548,
+    "jlens": 0.774,
+    "logit": 0.821,
+    "jshare": 0.1095,
+    "rand": 0.0062
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 0.464,
+    "jlens": 0.44,
+    "logit": 0.833,
+    "jshare": 0.0583,
+    "rand": 0.0065
+   }
+  ],
+  "KM": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0084,
+    "rand": 0.006
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.006,
+    "rand": 0.0064
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.0074
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0079,
+    "rand": 0.0059
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0065,
+    "rand": 0.0066
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0065,
+    "rand": 0.0061
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0056,
+    "rand": 0.006
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0048,
+    "rand": 0.0076
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0048,
+    "rand": 0.0077
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0049,
+    "rand": 0.008
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0053,
+    "rand": 0.0079
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.007,
+    "rand": 0.0074
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0063
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0075,
+    "rand": 0.0063
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.143,
+    "logit": 0.119,
+    "jshare": 0.0073,
+    "rand": 0.0077
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.107,
+    "logit": 0.131,
+    "jshare": 0.0077,
+    "rand": 0.0084
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0064,
+    "rand": 0.0055
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.143,
+    "logit": 0.167,
+    "jshare": 0.0084,
+    "rand": 0.0055
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.143,
+    "logit": 0.19,
+    "jshare": 0.0086,
+    "rand": 0.0072
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.143,
+    "logit": 0.202,
+    "jshare": 0.0089,
+    "rand": 0.0048
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.19,
+    "jlens": 0.143,
+    "logit": 0.25,
+    "jshare": 0.0115,
+    "rand": 0.0083
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.155,
+    "logit": 0.214,
+    "jshare": 0.0122,
+    "rand": 0.0077
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.25,
+    "jlens": 0.262,
+    "logit": 0.25,
+    "jshare": 0.0299,
+    "rand": 0.007
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.214,
+    "jlens": 0.31,
+    "logit": 0.31,
+    "jshare": 0.0296,
+    "rand": 0.0064
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.429,
+    "jlens": 0.512,
+    "logit": 0.44,
+    "jshare": 0.0678,
+    "rand": 0.0089
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.798,
+    "jlens": 0.786,
+    "logit": 0.75,
+    "jshare": 0.2288,
+    "rand": 0.0066
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.917,
+    "jlens": 0.845,
+    "logit": 0.881,
+    "jshare": 0.2064,
+    "rand": 0.0058
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.917,
+    "jlens": 0.881,
+    "logit": 0.881,
+    "jshare": 0.1903,
+    "rand": 0.0066
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.964,
+    "jlens": 0.893,
+    "logit": 0.964,
+    "jshare": 0.1327,
+    "rand": 0.0056
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 0.952,
+    "jlens": 0.631,
+    "logit": 0.929,
+    "jshare": 0.041,
+    "rand": 0.0064
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 0.952,
+    "jlens": 0.964,
+    "logit": 0.952,
+    "jshare": 0.1634,
+    "rand": 0.0066
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 0.976,
+    "jlens": 0.786,
+    "logit": 0.964,
+    "jshare": 0.0849,
+    "rand": 0.0057
+   }
+  ],
+  "AR": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0078,
+    "rand": 0.0082
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0063,
+    "rand": 0.0056
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0069
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0062
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0059,
+    "rand": 0.0063
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0067,
+    "rand": 0.0075
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.19,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0064
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0048,
+    "rand": 0.0074
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.083,
+    "logit": 0.143,
+    "jshare": 0.0055,
+    "rand": 0.0073
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0064,
+    "rand": 0.0062
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0073,
+    "rand": 0.0066
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.214,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0088,
+    "rand": 0.0069
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.083,
+    "logit": 0.143,
+    "jshare": 0.0077,
+    "rand": 0.0065
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0094,
+    "rand": 0.0067
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.131,
+    "logit": 0.167,
+    "jshare": 0.0083,
+    "rand": 0.0071
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.131,
+    "logit": 0.155,
+    "jshare": 0.0082,
+    "rand": 0.0079
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0095,
+    "rand": 0.0063
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.143,
+    "logit": 0.131,
+    "jshare": 0.0087,
+    "rand": 0.0058
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.179,
+    "logit": 0.131,
+    "jshare": 0.0076,
+    "rand": 0.0052
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0086,
+    "rand": 0.0079
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.155,
+    "logit": 0.155,
+    "jshare": 0.0115,
+    "rand": 0.0068
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.214,
+    "jlens": 0.131,
+    "logit": 0.179,
+    "jshare": 0.0122,
+    "rand": 0.0063
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.262,
+    "jlens": 0.238,
+    "logit": 0.179,
+    "jshare": 0.0198,
+    "rand": 0.007
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.262,
+    "jlens": 0.226,
+    "logit": 0.214,
+    "jshare": 0.0181,
+    "rand": 0.0056
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.298,
+    "jlens": 0.476,
+    "logit": 0.31,
+    "jshare": 0.0301,
+    "rand": 0.0064
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.345,
+    "jlens": 0.345,
+    "logit": 0.333,
+    "jshare": 0.0322,
+    "rand": 0.008
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.583,
+    "jlens": 0.512,
+    "logit": 0.655,
+    "jshare": 0.0619,
+    "rand": 0.0068
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.786,
+    "jlens": 0.798,
+    "logit": 0.905,
+    "jshare": 0.0843,
+    "rand": 0.0066
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.952,
+    "jlens": 0.857,
+    "logit": 1.0,
+    "jshare": 0.1251,
+    "rand": 0.0064
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 0.988,
+    "jlens": 0.548,
+    "logit": 1.0,
+    "jshare": 0.0532,
+    "rand": 0.0072
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 1.0,
+    "logit": 1.0,
+    "jshare": 0.2658,
+    "rand": 0.0068
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 1.0,
+    "logit": 1.0,
+    "jshare": 0.15,
+    "rand": 0.0063
+   }
+  ],
+  "AP": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.095,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0063,
+    "rand": 0.0062
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0062
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0048,
+    "rand": 0.0081
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.0053
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.0076
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0067,
+    "rand": 0.0074
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0071
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0052,
+    "rand": 0.0066
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.167,
+    "logit": 0.143,
+    "jshare": 0.0057,
+    "rand": 0.0077
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0053,
+    "rand": 0.0059
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.007,
+    "rand": 0.0063
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.095,
+    "logit": 0.143,
+    "jshare": 0.0087,
+    "rand": 0.0065
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0071,
+    "rand": 0.0074
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0105,
+    "rand": 0.0076
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0092,
+    "rand": 0.0063
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0091,
+    "rand": 0.0064
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.008,
+    "rand": 0.0059
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.19,
+    "jlens": 0.179,
+    "logit": 0.143,
+    "jshare": 0.0093,
+    "rand": 0.0058
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.155,
+    "logit": 0.155,
+    "jshare": 0.0075,
+    "rand": 0.0067
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.143,
+    "logit": 0.155,
+    "jshare": 0.0071,
+    "rand": 0.0059
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.155,
+    "jlens": 0.143,
+    "logit": 0.179,
+    "jshare": 0.0078,
+    "rand": 0.0071
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.119,
+    "logit": 0.131,
+    "jshare": 0.0075,
+    "rand": 0.0077
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.143,
+    "logit": 0.155,
+    "jshare": 0.0113,
+    "rand": 0.0053
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.262,
+    "jlens": 0.167,
+    "logit": 0.179,
+    "jshare": 0.0097,
+    "rand": 0.006
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.262,
+    "jlens": 0.25,
+    "logit": 0.298,
+    "jshare": 0.0149,
+    "rand": 0.008
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.274,
+    "jlens": 0.345,
+    "logit": 0.369,
+    "jshare": 0.0769,
+    "rand": 0.0067
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.298,
+    "jlens": 0.333,
+    "logit": 0.452,
+    "jshare": 0.1079,
+    "rand": 0.0059
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.31,
+    "jlens": 0.369,
+    "logit": 0.429,
+    "jshare": 0.0859,
+    "rand": 0.0057
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.333,
+    "logit": 0.369,
+    "jshare": 0.0421,
+    "rand": 0.0063
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 0.25,
+    "jlens": 0.202,
+    "logit": 0.381,
+    "jshare": 0.0214,
+    "rand": 0.0069
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 0.333,
+    "jlens": 0.655,
+    "logit": 0.679,
+    "jshare": 0.071,
+    "rand": 0.0081
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 0.31,
+    "jlens": 0.333,
+    "logit": 0.881,
+    "jshare": 0.0392,
+    "rand": 0.0067
+   }
+  ],
+  "AM": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.179,
+    "logit": 0.143,
+    "jshare": 0.0057,
+    "rand": 0.0071
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0052,
+    "rand": 0.0068
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0052,
+    "rand": 0.0071
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0064
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0071
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0074
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0056,
+    "rand": 0.0078
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0049,
+    "rand": 0.0067
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.131,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0051,
+    "rand": 0.0069
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0057,
+    "rand": 0.0064
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.071,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0072,
+    "rand": 0.0081
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.01,
+    "rand": 0.0069
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.095,
+    "logit": 0.143,
+    "jshare": 0.0078,
+    "rand": 0.0065
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.095,
+    "jlens": 0.083,
+    "logit": 0.143,
+    "jshare": 0.0114,
+    "rand": 0.0055
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.095,
+    "jlens": 0.143,
+    "logit": 0.107,
+    "jshare": 0.0103,
+    "rand": 0.0066
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0098,
+    "rand": 0.0056
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.06,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0086,
+    "rand": 0.0065
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.131,
+    "logit": 0.131,
+    "jshare": 0.0085,
+    "rand": 0.0086
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.107,
+    "jlens": 0.143,
+    "logit": 0.167,
+    "jshare": 0.0077,
+    "rand": 0.0087
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.155,
+    "logit": 0.155,
+    "jshare": 0.0067,
+    "rand": 0.0075
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.083,
+    "jlens": 0.131,
+    "logit": 0.179,
+    "jshare": 0.011,
+    "rand": 0.0067
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.119,
+    "jlens": 0.131,
+    "logit": 0.155,
+    "jshare": 0.0104,
+    "rand": 0.0061
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.167,
+    "jlens": 0.19,
+    "logit": 0.179,
+    "jshare": 0.0163,
+    "rand": 0.0065
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.143,
+    "jlens": 0.202,
+    "logit": 0.214,
+    "jshare": 0.0171,
+    "rand": 0.0063
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.179,
+    "jlens": 0.226,
+    "logit": 0.238,
+    "jshare": 0.0245,
+    "rand": 0.0072
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.298,
+    "jlens": 0.381,
+    "logit": 0.405,
+    "jshare": 0.0996,
+    "rand": 0.007
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.44,
+    "jlens": 0.417,
+    "logit": 0.429,
+    "jshare": 0.1315,
+    "rand": 0.0056
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.44,
+    "jlens": 0.464,
+    "logit": 0.524,
+    "jshare": 0.1197,
+    "rand": 0.0074
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.595,
+    "jlens": 0.571,
+    "logit": 0.726,
+    "jshare": 0.1165,
+    "rand": 0.0077
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 0.583,
+    "jlens": 0.381,
+    "logit": 0.702,
+    "jshare": 0.0411,
+    "rand": 0.0079
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 0.833,
+    "jlens": 0.893,
+    "logit": 0.881,
+    "jshare": 0.2391,
+    "rand": 0.0063
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 0.833,
+    "jlens": 0.702,
+    "logit": 0.929,
+    "jshare": 0.0913,
+    "rand": 0.007
+   }
+  ],
+  "MR": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.238,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0106,
+    "rand": 0.0073
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.464,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0063
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.298,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0055,
+    "rand": 0.0072
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.333,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0051,
+    "rand": 0.0061
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.333,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0051,
+    "rand": 0.0046
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.369,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0066
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.429,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0046,
+    "rand": 0.0054
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.417,
+    "jlens": 0.202,
+    "logit": 0.143,
+    "jshare": 0.0041,
+    "rand": 0.0056
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.417,
+    "jlens": 0.167,
+    "logit": 0.143,
+    "jshare": 0.0052,
+    "rand": 0.0079
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.417,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0067,
+    "rand": 0.0081
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.476,
+    "jlens": 0.167,
+    "logit": 0.143,
+    "jshare": 0.008,
+    "rand": 0.0045
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.5,
+    "jlens": 0.131,
+    "logit": 0.119,
+    "jshare": 0.0078,
+    "rand": 0.007
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.536,
+    "jlens": 0.143,
+    "logit": 0.107,
+    "jshare": 0.0063,
+    "rand": 0.0055
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.583,
+    "jlens": 0.179,
+    "logit": 0.143,
+    "jshare": 0.0071,
+    "rand": 0.0072
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.56,
+    "jlens": 0.131,
+    "logit": 0.19,
+    "jshare": 0.007,
+    "rand": 0.0085
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.631,
+    "jlens": 0.155,
+    "logit": 0.19,
+    "jshare": 0.0065,
+    "rand": 0.0054
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.619,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0049,
+    "rand": 0.0053
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.714,
+    "jlens": 0.202,
+    "logit": 0.143,
+    "jshare": 0.008,
+    "rand": 0.0045
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.774,
+    "jlens": 0.19,
+    "logit": 0.143,
+    "jshare": 0.0098,
+    "rand": 0.0067
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.786,
+    "jlens": 0.274,
+    "logit": 0.143,
+    "jshare": 0.0097,
+    "rand": 0.0061
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.81,
+    "jlens": 0.19,
+    "logit": 0.143,
+    "jshare": 0.0125,
+    "rand": 0.0073
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.798,
+    "jlens": 0.31,
+    "logit": 0.143,
+    "jshare": 0.0124,
+    "rand": 0.0091
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.929,
+    "jlens": 0.536,
+    "logit": 0.286,
+    "jshare": 0.0228,
+    "rand": 0.0081
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.905,
+    "jlens": 0.381,
+    "logit": 0.298,
+    "jshare": 0.0206,
+    "rand": 0.0063
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.929,
+    "jlens": 0.667,
+    "logit": 0.655,
+    "jshare": 0.0417,
+    "rand": 0.0086
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.964,
+    "jlens": 0.893,
+    "logit": 0.726,
+    "jshare": 0.06,
+    "rand": 0.0088
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.988,
+    "jlens": 0.81,
+    "logit": 0.81,
+    "jshare": 0.0633,
+    "rand": 0.0079
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.988,
+    "jlens": 0.929,
+    "logit": 0.833,
+    "jshare": 0.0659,
+    "rand": 0.0084
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.988,
+    "jlens": 0.988,
+    "logit": 0.964,
+    "jshare": 0.043,
+    "rand": 0.0057
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 0.571,
+    "logit": 0.952,
+    "jshare": 0.0241,
+    "rand": 0.0082
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 1.0,
+    "logit": 1.0,
+    "jshare": 0.1567,
+    "rand": 0.0058
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 1.0,
+    "jlens": 1.0,
+    "logit": 0.988,
+    "jshare": 0.0992,
+    "rand": 0.0059
+   }
+  ],
+  "MP": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.262,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0099,
+    "rand": 0.0072
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.345,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0056,
+    "rand": 0.0064
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.321,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0056,
+    "rand": 0.0075
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.321,
+    "jlens": 0.167,
+    "logit": 0.143,
+    "jshare": 0.0056,
+    "rand": 0.0068
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.298,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.0069
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.31,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0066
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.345,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0051,
+    "rand": 0.0067
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.345,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0046,
+    "rand": 0.0077
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.345,
+    "jlens": 0.167,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0073
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.333,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0053,
+    "rand": 0.0082
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.357,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0052,
+    "rand": 0.0063
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.345,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.007,
+    "rand": 0.0051
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.44,
+    "jlens": 0.179,
+    "logit": 0.143,
+    "jshare": 0.0059,
+    "rand": 0.0055
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.405,
+    "jlens": 0.202,
+    "logit": 0.143,
+    "jshare": 0.0076,
+    "rand": 0.0073
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.369,
+    "jlens": 0.179,
+    "logit": 0.202,
+    "jshare": 0.0074,
+    "rand": 0.0071
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.417,
+    "jlens": 0.155,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.006
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.5,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.005,
+    "rand": 0.0062
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.595,
+    "jlens": 0.179,
+    "logit": 0.143,
+    "jshare": 0.008,
+    "rand": 0.0073
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.607,
+    "jlens": 0.25,
+    "logit": 0.155,
+    "jshare": 0.0073,
+    "rand": 0.0073
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.571,
+    "jlens": 0.226,
+    "logit": 0.143,
+    "jshare": 0.0079,
+    "rand": 0.0077
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.56,
+    "jlens": 0.167,
+    "logit": 0.238,
+    "jshare": 0.0112,
+    "rand": 0.0065
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.595,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.011,
+    "rand": 0.0076
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.702,
+    "jlens": 0.214,
+    "logit": 0.167,
+    "jshare": 0.0191,
+    "rand": 0.0071
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.81,
+    "jlens": 0.25,
+    "logit": 0.202,
+    "jshare": 0.0137,
+    "rand": 0.0067
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.798,
+    "jlens": 0.321,
+    "logit": 0.298,
+    "jshare": 0.0172,
+    "rand": 0.0063
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.786,
+    "jlens": 0.44,
+    "logit": 0.536,
+    "jshare": 0.0466,
+    "rand": 0.0066
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.714,
+    "jlens": 0.643,
+    "logit": 0.679,
+    "jshare": 0.1042,
+    "rand": 0.0071
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.726,
+    "jlens": 0.56,
+    "logit": 0.607,
+    "jshare": 0.0705,
+    "rand": 0.0083
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.607,
+    "jlens": 0.536,
+    "logit": 0.619,
+    "jshare": 0.0493,
+    "rand": 0.0078
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 0.607,
+    "jlens": 0.333,
+    "logit": 0.619,
+    "jshare": 0.0249,
+    "rand": 0.0077
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 0.571,
+    "jlens": 0.702,
+    "logit": 0.726,
+    "jshare": 0.082,
+    "rand": 0.0078
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 0.56,
+    "jlens": 0.417,
+    "logit": 0.75,
+    "jshare": 0.0474,
+    "rand": 0.0061
+   }
+  ],
+  "MM": [
+   {
+    "layer": 0,
+    "n": 84,
+    "probe": 0.202,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0089,
+    "rand": 0.007
+   },
+   {
+    "layer": 2,
+    "n": 84,
+    "probe": 0.357,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0056,
+    "rand": 0.0068
+   },
+   {
+    "layer": 4,
+    "n": 84,
+    "probe": 0.25,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0054,
+    "rand": 0.0057
+   },
+   {
+    "layer": 6,
+    "n": 84,
+    "probe": 0.25,
+    "jlens": 0.179,
+    "logit": 0.143,
+    "jshare": 0.0055,
+    "rand": 0.0064
+   },
+   {
+    "layer": 8,
+    "n": 84,
+    "probe": 0.226,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0052,
+    "rand": 0.0059
+   },
+   {
+    "layer": 10,
+    "n": 84,
+    "probe": 0.31,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0058,
+    "rand": 0.0062
+   },
+   {
+    "layer": 12,
+    "n": 84,
+    "probe": 0.286,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0051,
+    "rand": 0.0049
+   },
+   {
+    "layer": 14,
+    "n": 84,
+    "probe": 0.333,
+    "jlens": 0.167,
+    "logit": 0.143,
+    "jshare": 0.0044,
+    "rand": 0.0073
+   },
+   {
+    "layer": 16,
+    "n": 84,
+    "probe": 0.321,
+    "jlens": 0.19,
+    "logit": 0.143,
+    "jshare": 0.0055,
+    "rand": 0.0075
+   },
+   {
+    "layer": 18,
+    "n": 84,
+    "probe": 0.357,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0063,
+    "rand": 0.0055
+   },
+   {
+    "layer": 20,
+    "n": 84,
+    "probe": 0.321,
+    "jlens": 0.107,
+    "logit": 0.143,
+    "jshare": 0.0059,
+    "rand": 0.0071
+   },
+   {
+    "layer": 22,
+    "n": 84,
+    "probe": 0.31,
+    "jlens": 0.131,
+    "logit": 0.143,
+    "jshare": 0.0073,
+    "rand": 0.0081
+   },
+   {
+    "layer": 24,
+    "n": 84,
+    "probe": 0.321,
+    "jlens": 0.119,
+    "logit": 0.143,
+    "jshare": 0.0061,
+    "rand": 0.0063
+   },
+   {
+    "layer": 26,
+    "n": 84,
+    "probe": 0.333,
+    "jlens": 0.179,
+    "logit": 0.143,
+    "jshare": 0.0081,
+    "rand": 0.0065
+   },
+   {
+    "layer": 28,
+    "n": 84,
+    "probe": 0.286,
+    "jlens": 0.167,
+    "logit": 0.19,
+    "jshare": 0.0077,
+    "rand": 0.0068
+   },
+   {
+    "layer": 30,
+    "n": 84,
+    "probe": 0.321,
+    "jlens": 0.179,
+    "logit": 0.155,
+    "jshare": 0.0069,
+    "rand": 0.0066
+   },
+   {
+    "layer": 32,
+    "n": 84,
+    "probe": 0.369,
+    "jlens": 0.143,
+    "logit": 0.143,
+    "jshare": 0.0049,
+    "rand": 0.0072
+   },
+   {
+    "layer": 34,
+    "n": 84,
+    "probe": 0.548,
+    "jlens": 0.238,
+    "logit": 0.131,
+    "jshare": 0.0093,
+    "rand": 0.0068
+   },
+   {
+    "layer": 36,
+    "n": 84,
+    "probe": 0.583,
+    "jlens": 0.143,
+    "logit": 0.155,
+    "jshare": 0.0097,
+    "rand": 0.0076
+   },
+   {
+    "layer": 38,
+    "n": 84,
+    "probe": 0.536,
+    "jlens": 0.131,
+    "logit": 0.119,
+    "jshare": 0.0094,
+    "rand": 0.0063
+   },
+   {
+    "layer": 40,
+    "n": 84,
+    "probe": 0.583,
+    "jlens": 0.131,
+    "logit": 0.238,
+    "jshare": 0.0114,
+    "rand": 0.0089
+   },
+   {
+    "layer": 42,
+    "n": 84,
+    "probe": 0.571,
+    "jlens": 0.214,
+    "logit": 0.202,
+    "jshare": 0.0112,
+    "rand": 0.0064
+   },
+   {
+    "layer": 44,
+    "n": 84,
+    "probe": 0.619,
+    "jlens": 0.321,
+    "logit": 0.19,
+    "jshare": 0.0227,
+    "rand": 0.0064
+   },
+   {
+    "layer": 46,
+    "n": 84,
+    "probe": 0.619,
+    "jlens": 0.262,
+    "logit": 0.274,
+    "jshare": 0.0217,
+    "rand": 0.007
+   },
+   {
+    "layer": 48,
+    "n": 84,
+    "probe": 0.619,
+    "jlens": 0.298,
+    "logit": 0.298,
+    "jshare": 0.035,
+    "rand": 0.0062
+   },
+   {
+    "layer": 50,
+    "n": 84,
+    "probe": 0.786,
+    "jlens": 0.429,
+    "logit": 0.655,
+    "jshare": 0.099,
+    "rand": 0.0062
+   },
+   {
+    "layer": 52,
+    "n": 84,
+    "probe": 0.845,
+    "jlens": 0.536,
+    "logit": 0.702,
+    "jshare": 0.121,
+    "rand": 0.0087
+   },
+   {
+    "layer": 54,
+    "n": 84,
+    "probe": 0.857,
+    "jlens": 0.583,
+    "logit": 0.643,
+    "jshare": 0.1128,
+    "rand": 0.0065
+   },
+   {
+    "layer": 56,
+    "n": 84,
+    "probe": 0.905,
+    "jlens": 0.56,
+    "logit": 0.714,
+    "jshare": 0.0741,
+    "rand": 0.0063
+   },
+   {
+    "layer": 58,
+    "n": 84,
+    "probe": 0.893,
+    "jlens": 0.357,
+    "logit": 0.702,
+    "jshare": 0.0236,
+    "rand": 0.007
+   },
+   {
+    "layer": 60,
+    "n": 84,
+    "probe": 0.893,
+    "jlens": 0.786,
+    "logit": 0.774,
+    "jshare": 0.144,
+    "rand": 0.0073
+   },
+   {
+    "layer": 62,
+    "n": 84,
+    "probe": 0.857,
+    "jlens": 0.679,
+    "logit": 0.774,
+    "jshare": 0.0675,
+    "rand": 0.0065
+   }
+  ]
+ },
+ "run": "ctxcomp_v1_probe_v1",
+ "set": "ctxcomp_v1_chat",
+ "competence": "ctxcomp_v1_chat_competence_cand2_v1",
+ "target": "x",
+ "every": 2,
+ "pca": 64,
+ "select": "step1",
+ "git_commit": "b40bbb608fbc7147b8573a2e0e2242c809b7017e",
+ "model": {
+  "target": "qwen3.6-27b",
+  "repo": "Qwen/Qwen3.6-27B",
+  "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+  "dtype": "bfloat16",
+  "attn": "sdpa"
+ },
+ "lens": [
+  "jpp",
+  "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+ ],
+ "classes": [
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "surface_ids": {
+  "2": [
+   17,
+   1330,
+   8771,
+   11280,
+   19186
+  ],
+  "3": [
+   18,
+   2250,
+   14095,
+   19041,
+   26952
+  ],
+  "4": [
+   19,
+   2943,
+   12937,
+   26108,
+   32897
+  ],
+  "5": [
+   20,
+   4097,
+   20285,
+   35792,
+   50897
+  ],
+  "6": [
+   21,
+   4590,
+   18117,
+   40087,
+   48671
+  ],
+  "7": [
+   22,
+   7840,
+   28970,
+   57517,
+   77420
+  ],
+  "8": [
+   23,
+   7810,
+   34656,
+   57087,
+   65254
+  ]
+ },
+ "why": "Zach (2026-10-23, amendment 22 + 21 note 2): 27B probe ceiling vs J-lens for X",
+ "seconds": 301
+}
