@@ -10,8 +10,9 @@ CASE = {"context": "Peter picked the rabbit. The locker of the tick is 2. Noah p
 
 
 def test_marks():
-    assert [A.mark(t, CASE) for t in (" frog", "tick", " Noah", "Iris", " Peter", " locker", " zebra", " ")] == [
-        "bridge_org", "bridge_alt", "other_person", "asked_person", "name", "context", "other", "other"]  # fmt: skip
+    assert [A.mark(t, CASE) for t in (" frog", "tick", " Noah", "Iris", " Peter", " locker", " zebra", " ", "2", " five")] == [
+        "bridge_org", "bridge_alt", "other_person", "asked_person", "name", "context", "other", "other", "digit",
+        "number_word"]  # fmt: skip
 
 
 def test_ordered_omp_recovers_a_sparse_signal():

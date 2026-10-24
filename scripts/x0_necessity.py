@@ -167,7 +167,11 @@ def nan_round(x: float, nd: int = 3) -> float | None:
 
 RENDERINGS = ("chat", "raw", "nochat")  # nochat: amendment 2 (no chat template, thinking off)
 EMPTY_THINK = "<think>\n\n</think>\n\n"  # what the template inserts with thinking off, before the 'Answer:' prefill
-LAYERS = {"qwen3.6-27b": tuple(range(16, 41, 2)), "qwen3.5-9b": tuple(range(6, 21, 2))}
+LAYERS = {
+    "qwen3.6-27b": tuple(range(16, 41, 2)),
+    "qwen3.5-9b": tuple(range(6, 21, 2)),
+    "qwen3.5-122b-a10b": (24, 27, 30, 33, 36),
+}  # 122B: 30 / 33 / 36 by X0.md, 24 and 27 descriptive (Dan)
 N_ITEMS, N_MIN, GATE = 200, 150, 0.80
 K_EXAMPLES, EXAMPLES_SEED, GEN_TOKENS = 10, 0, 8
 RAW_STEPS = 4  # raw read: at most RAW_STEPS - 1 whitespace-only tokens skipped before the read

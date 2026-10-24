@@ -31,7 +31,8 @@ EXP = "x0_atoms"
 RESULTS = pins.RESULTS_DIR / EXP
 K_MAX, K_MAIN = 100, X.K_MAIN
 PICK = re.compile(r"\b([A-Z][a-z]+) picked (?:the )?([\w-]+)\.")
-MARKS = ("bridge_org", "bridge_alt", "other_person", "asked_person", "name", "context", "other")
+MARKS = ("bridge_org", "bridge_alt", "other_person", "asked_person", "name", "digit", "number_word", "context", "other")
+NUMBER_WORDS = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"}
 
 
 def ordered_omp(dic, x, k_max: int, k_keep: tuple[int, ...]):
@@ -80,12 +81,16 @@ def mark(token: str, case: dict) -> str:
         return "asked_person"
     if w in {n.lower() for n in org}:
         return "name"
+    if w.isdigit():
+        return "digit"
+    if w in NUMBER_WORDS:
+        return "number_word"
     if w in {t.lower() for t in re.findall(r"[A-Za-z]+", case["context"])}:
         return "context"
     return "other"
 
 
-def stage_run(name: str, source: str, layer: int, n: int, seed: int) -> Path:
+def stage_run(name: str, source: str, layer: int, n: int, seed: int, vocab: str) -> Path:
     import torch
 
     from bridge_jspace.lens import JLens
@@ -106,12 +111,13 @@ def stage_run(name: str, source: str, layer: int, n: int, seed: int) -> Path:
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "source": source,
          "source_code": sm["code"], "set": sm["set"], "layer": layer, "n": n, "seed": seed, "k_max": K_MAX,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
-         "note": "descriptive, added after data (critic via Dan, 24 Oct); not part of X0's rule",
+         "note": "descriptive, added after data (critic via Dan, 24 Oct); not part of X0's rule", "vocab": vocab,
          "samples": {"all": pick_all, "asked_first": pick_first}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
     lens = JLens(model, "jpp")
-    letters = model.letter_token_ids()
+    letters = model.letter_token_ids() if vocab == "letters" else torch.tensor(
+        [i for i in range(len(model.decoded)) if i not in model.special_ids], device="cuda")  # fmt: skip
     dic = lens.vectors(layer, letters)
     cases, _ = X.build_cases(model.tokenizer, sm["set"])
     by_scene = {c["scene"]: c for c in cases if c["rendering"] == "chat"}
@@ -143,13 +149,14 @@ def stage_table(name: str) -> Path:
     out = RESULTS / name
     m = json.loads((out / "manifest.json").read_text())
     rows = X.read_jsonl(out / "atoms.jsonl")
-    lines = [f"# J++ atoms of the bridge edit: {name}", "",
+    lines = [f"# J++ atoms of the bridge edit: {name} (atoms: {m.get('vocab', 'letters')})", "",
              f"Source {m['source']} (layer {m['layer']}, set {m['set']}); {m['n']} random items and {m['n']} asked-first "
              f"items, seed {m['seed']}; signed OMP over the J++ letter-token atoms up to {m['k_max']} atoms, in selection "
              "order. Descriptive, added after data; not part of X0's rule. UNVERIFIED.", "",
              "Marks: bridge_org / bridge_alt = the asked person's pick before / after the change; other_person = the "
              "other changed person's name; asked_person; name = another person in the context; context = another word "
-             "of the context; other = none of these.", ""]  # fmt: skip
+             "of the context; digit / number_word = a digit token or a number word (zero-ten); other = none of these.",
+             ""]  # fmt: skip
     gap = [abs(r["share_k25"] - r["source_share_k25"]) for r in rows if r["source_share_k25"] is not None]
     if gap:
         lines += [f"Check: the k = 25 share here vs X0's shares.jsonl, max |difference| {max(gap):.4f} over {len(gap)} "
@@ -187,9 +194,11 @@ def main() -> None:
     ap.add_argument("--layer", type=int, default=32)
     ap.add_argument("--n", type=int, default=20)
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--vocab", choices=("letters", "all"), default="letters",
+                    help="letters: X0's J++ atoms; all: every non-special token, digits included")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "run":
-        stage_run(a.name, a.source, a.layer, a.n, a.seed)
+        stage_run(a.name, a.source, a.layer, a.n, a.seed, a.vocab)
     stage_table(a.name)
 
 
