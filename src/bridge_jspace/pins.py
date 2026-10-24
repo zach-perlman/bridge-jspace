@@ -445,6 +445,32 @@ TARGETS: dict[str, dict[str, Any]] = {
         "lenses": {"jpp": ("local", "cache/qwen3.5-9b-ourjpp/lenses/jpp/Qwen3.5-9B_jpp_lens.pt", "690f19e7caba242b5aa027d7d4c326f546b98bd2c720bd8fdee772965f49f7eb")},
         "frozen_lens_sha256": "690f19e7caba242b5aa027d7d4c326f546b98bd2c720bd8fdee772965f49f7eb",
     },
+    # allenai/Olmo-3-1125-32B (OLMo 3 32B base, Ai2, 2025-11; dense, 64 blocks, sliding-window and full attention,
+    # post-norm sublayers; Apache-2.0): the non-Qwen dense model with a published J++ by the J++ authors (Ayonrinde &
+    # Lindsey; neuronpedia recall@10 50.0%; rlens, 64 WikiText prompts, target layer 63), prereg amendment 31 (Zach,
+    # 2026-10-24). A base model: module 1 in raw-text framing. BOS as the tokenizer defines it (the J++ fit prepended it).
+    "olmo-3-32b": {
+        "repo": "allenai/Olmo-3-1125-32B",
+        "revision": "c2b61dae89a1ad10e4ad5653d0e46b590902607b",
+        "n_layers": 64,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo32_",
+        "lenses": {"jpp": (LENS_REPO, "olmo-3-1125-32b/jpp/Salesforce-wikitext/Olmo-3-1125-32B_jpp_lens.pt", "e166deb5ad540932100ef803c8c9bcc2a5453694")},
+        "frozen_lens_sha256": "bf3efcf2007fb8ff9683ae23833027dd16d674aecc4ff9e6f0e66d14210e4466",
+    },
+    # The same model with the plain J-lens of the same repo (the paper's own lens): the secondary lens (amendment 31).
+    "olmo-3-32b-jlens": {
+        "repo": "allenai/Olmo-3-1125-32B",
+        "revision": "c2b61dae89a1ad10e4ad5653d0e46b590902607b",
+        "n_layers": 64,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo32j_",
+        "frozen_lens": "jlens",
+        "lenses": {"jlens": (LENS_REPO, "olmo-3-1125-32b/jlens/Salesforce-wikitext/Olmo-3-1125-32B_jacobian_lens.pt", "e166deb5ad540932100ef803c8c9bcc2a5453694")},
+        "frozen_lens_sha256": "c6ee7d22c3a224fd1a6f9bb66ee9d23c7c4ac678f2f554e0f3815bbe0540a508",
+    },
     "qwen3-32b-jlens": {
         "repo": "Qwen/Qwen3-32B",
         "revision": "9216db5781bf21249d130ec9da846c4624c16137",
