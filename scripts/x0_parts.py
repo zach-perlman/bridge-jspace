@@ -87,7 +87,7 @@ def pca_dictionary(model, layer: int) -> tuple[object, dict]:
     with torch.no_grad():
         for it in progress(picked, f"residuals at layer {layer} (held-out prompt)"):
             ids = model.tokenizer(T.render(model.tokenizer, it), add_special_tokens=False)["input_ids"]
-            rows.append(model.run(torch.tensor([ids], device="cuda"), record=(layer,))[1][layer].float())
+            rows.append(model.run(torch.tensor([ids], device="cuda"), record=(layer,))[1][layer].float().to("cuda"))
         h = torch.cat(rows)
         h = h - h.mean(0)
         evals, evecs = torch.linalg.eigh((h.T @ h).double() / len(h))

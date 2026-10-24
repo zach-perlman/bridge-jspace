@@ -54,6 +54,12 @@ RESULTS = pins.RESULTS_DIR / EXP
 MODES = {
     "main": {"remove": ("A", "V", "AV"), "keep": {"AV": "keep_rand"}},
     "layout_free": {"remove": ("A", "Alf"), "keep": {"A": "keep_A_rand", "Alf": "keep_Alf_rand"}},
+    # the 122B grid (Dan, 25 Oct ~00:20): A, V and Alf removed and kept alone; pca: the layer's top-2,000 PCA directions at
+    # Alf's share per item (x0_parts.equal_share), the reference at the same share
+    "grid": {
+        "remove": ("A", "V", "Alf", "pca"),
+        "keep": {"A": "keep_A_rand", "V": "keep_V_rand", "Alf": "keep_Alf_rand"},
+    },
 }
 NOTE = "Descriptive, added after data (Dan, 24 Oct ~20:05; layout-free arm ~21:50); not part of X0's rule."
 
@@ -157,8 +163,14 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
         md, names = MODES[mode], arms_of(mode)
         arms, shares = {"whole": x}, {}
         for s in md["remove"]:
-            q = torch.tensor(basis_np[s], dtype=torch.float32, device="cuda")
-            part = (x @ q) @ q.T
+            if s == "pca":  # at Alf's share, item by item (Alf comes first in the grid's remove list)
+                from scripts import x0_parts as XP
+
+                pca, info["pca"] = XP.pca_dictionary(model, layer)
+                part, _ = XP.equal_share(pca, x, torch.tensor(shares["Alf"], device="cuda"))
+            else:
+                q = torch.tensor(basis_np[s], dtype=torch.float32, device="cuda")
+                part = (x @ q) @ q.T
             share = part.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
             rand = SP.random_subspace_part(x, share, basis)
             arms[f"no_{s}"], arms[f"no_{s}_rand"] = x - part, x - rand
@@ -174,6 +186,7 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
                     rows.append({"scene": c["scene"], "entity": c["bridge"], "reader": w, "arm": a,
                                  **{f"share_{s}": round(shares[s][i], 5) for s in md["remove"]}, **X.read_row(lg, rd, digits)})  # fmt: skip
     X.write_jsonl(out / "outcomes.jsonl", rows)
+    (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")  # with the PCA dictionary's record (grid)
     print("wrote", out, flush=True)
     return out
 
@@ -231,6 +244,14 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
         lines += ["", "Pre-stated reading (Dan): the lookup loses flips under A (or V) while the recall does not -> 'the "
                   "lookup uses the address (or the value)'; no arm changes the lookup -> 'the lookup's channel is not a "
                   "low-rank linear readout of the address or the value; what it is stays open'."]  # fmt: skip
+    elif mode == "grid":
+        lk, rc = (next(r for r in blob if r["reader"] == w)["Alf"]["excess"] for w in X.READERS)
+        branch = ("(a) lookup-specific" if lk[0] >= 0.20 and lk[1] > 0 and (rc[0] <= 0.10 or rc[0] <= lk[0] / 2) else
+                  "(c) neither" if lk[1] <= 0 else "(b) both readers" if lk[0] >= 0.10 and rc[0] >= 0.10 else "(d) none of these")  # fmt: skip
+        lines += ["", "Rule (Dan, 25 Oct ~00:20, the 9B / 27B thresholds; batch 31's Q31.5): Alf removed is (a) lookup-specific "
+                  "iff lookup excess >= 0.20 (lower CI > 0) and recall <= 0.10 or at most half the lookup's; (b) both readers "
+                  "iff both lose >= 0.10 and not (a); (c) neither iff the lookup's lower CI <= 0; else (d). This run: lookup "
+                  f"{ci(lk)}, recall {ci(rc)} -> {branch}."]  # fmt: skip
     else:
         lk = next(r for r in blob if r["reader"] == X.LOOKUP)["Alf"]["excess"]
         gone = lk[1] <= 0
