@@ -1,0 +1,60 @@
+{
+  "run": "qwen35_9b_x0_necessity_nothink",
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "gate": {
+    "counts": {
+      "scenes": 600,
+      "cases": {
+        "chat": 600,
+        "raw": 600,
+        "nothink": 600
+      },
+      "dropped": {}
+    },
+    "gate": {
+      "nothink": {
+        "cases": 600,
+        "org_accuracy": {
+          "PP": 0,
+          "PM": 0
+        },
+        "said_accuracy": {
+          "PP": 0.97,
+          "PM": 0.76
+        },
+        "cand_accuracy": {
+          "PP": 0.8033,
+          "PM": 0.5067
+        },
+        "pass": false,
+        "eligible": 0,
+        "enough": false
+      }
+    }
+  },
+  "verdict": {
+    "predicted": 12,
+    "nothink": {
+      "verdict": "can't test (no rows)"
+    },
+    "asked_first_subset": null,
+    "reads_agree_on_whole": null
+  },
+  "cells": []
+}

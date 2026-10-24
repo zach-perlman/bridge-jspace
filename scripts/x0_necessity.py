@@ -170,6 +170,9 @@ LAYERS = {"qwen3.6-27b": tuple(range(16, 41, 2)), "qwen3.5-9b": tuple(range(6, 2
 N_ITEMS, N_MIN, GATE = 200, 150, 0.80
 K_EXAMPLES, EXAMPLES_SEED, GEN_TOKENS = 10, 0, 8
 RAW_STEPS = 4  # raw read: at most RAW_STEPS - 1 whitespace-only tokens skipped before the read
+READ = "first"  # non-chat read: the first non-whitespace token (amendment 1) or "digit" (amendment 3, descriptive)
+DESCRIPTIVE = False  # amendment 3: run on the items each reader gets right even if the gate fails (labeled)
+DIGIT_IDS: set[int] = set()  # the digit tokens, set by stage_run (the digit read)
 Arm = tuple[str, int, str, str]  # (dictionary, k, fit, arm)
 WHOLE: Arm = ("-", 0, "-", "whole")
 MAIN = ("jpp", K_MAIN, "signed")  # the decisive dictionary, k and fit
@@ -319,6 +322,17 @@ def read_logits(
 
     if rendering == "chat":
         return forward([ids + space] * len(edits), edits), [0] * len(edits)
+    if READ == "digit":  # amendment 3: the step of the first digit token in GEN_TOKENS greedy tokens (none: step 0)
+        rows, skipped_d = [], []
+        for s in range(0, len(edits), P.BATCH):
+            chunk = edits[s : s + P.BATCH]
+            prompt = torch.tensor([ids] * len(chunk), device=model.device)
+            _, step_logits, new = model.generate_batch(prompt, GEN_TOKENS, chunk, steps=True)
+            for r in range(len(chunk)):
+                j = next((i for i, t in enumerate(new[r].tolist()) if t in DIGIT_IDS), None)
+                rows.append(step_logits[r, j if j is not None else 0])
+                skipped_d.append(j if j is not None else -1)
+        return torch.stack(rows), skipped_d
     out: list[Any] = [None] * len(edits)
     skipped = [0] * len(edits)
     prompts = [list(ids) for _ in edits]
@@ -388,7 +402,8 @@ def gate_and_eligible(cases: list[dict], comp: list[dict]) -> tuple[dict, dict[s
                       "cand_accuracy": org_rate(right, mine, rend, "cand_right"),
                       "pass": bool(acc) and all(a >= GATE for a in acc.values()),
                       "eligible": len(ok), "enough": len(ok) >= N_MIN}  # fmt: skip
-        eligible[rend] = ok[:N_ITEMS] if gate[rend]["pass"] and gate[rend]["enough"] else []
+        gate[rend]["descriptive"] = DESCRIPTIVE
+        eligible[rend] = ok[:N_ITEMS] if DESCRIPTIVE or (gate[rend]["pass"] and gate[rend]["enough"]) else []
     return gate, eligible
 
 
@@ -521,7 +536,10 @@ def stage_run(
                   "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
                   "raw": f"the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' "
                          f"(no trailing space; at most {RAW_STEPS} forwards)",
-                  "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)"},
+                  "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+                  "mode": READ, "digit": f"amendment 3: the step of the first digit token in {GEN_TOKENS} greedy tokens "
+                                         "(non-chat renderings, when mode is digit)"},
+         "descriptive": DESCRIPTIVE,
          "seeds": {"random_dictionary": f"{RAND_DICT_SEED} + layer (CPU)", "random_subspace": f"{SUBSPACE_SEED} + layer (CPU)",
                    "bootstrap": BOOT_SEED, "examples": EXAMPLES_SEED},
          "design": "jobs/c3/X0.md"}  # fmt: skip
@@ -538,6 +556,7 @@ def stage_run(
     import torch
 
     ws = whitespace_mask(model)
+    DIGIT_IDS.update(digit_ids(model.tokenizer))
     comp = competence(model, cases, torch.tensor(digit_ids(model.tokenizer), device="cuda"), ws)
     gate, eligible = gate_and_eligible(cases, comp)
     write_jsonl(out / "competence.jsonl", comp)
@@ -628,7 +647,10 @@ def write_verdict(run: str, n_boot: int = N_BOOT) -> Path:
     lens = m["lens"]
     lines = [f"# X0 verdict: {run}", "",
              f"Model {m['model']['target']} ({m['model']['revision'][:8]}); lens J++ `{lens['source'][1]}` sha256 "
-             f"{lens['sha256'][:16]}; set {m['set']}; predicted layer {m['predicted']}; UNVERIFIED.", "",
+             f"{lens['sha256'][:16]}; set {m['set']}; predicted layer {m['predicted']}; non-chat read "
+             f"{m.get('read', {}).get('mode', 'first')}; UNVERIFIED.", "",
+             *(["DESCRIPTIVE (amendment 3, after data): run on the items each reader gets right whether or not the "
+                "gate passed; not part of the X0 rule.", ""] if m.get("descriptive") else []),
              "Gate (unedited org accuracy under the decisive read >= 0.80 for both readers): " + "; ".join(
                  f"{r}: {g['org_accuracy']} (greedy text {g.get('said_accuracy')}, cand {g.get('cand_accuracy')}) "
                  f"pass={g['pass']}, eligible {g['eligible']}"
@@ -756,7 +778,7 @@ def figures(verdict_dir: Path) -> list[Path]:
 
 
 def main() -> None:
-    global CURVE_DICTS, K_CURVE  # set from the command line: the manifest records them; run_rendering reads them
+    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE  # from the command line; the manifest records them
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name", required=True, help="run name (results/x0_necessity/<name>/)")
@@ -768,8 +790,13 @@ def main() -> None:
     ap.add_argument("--curve-dicts", nargs="+", default=list(CURVE_DICTS), choices=list(DICTS),
                     help="run: dictionaries of the k curve at the predicted layer")  # fmt: skip
     ap.add_argument("--curve-k", nargs="+", type=int, default=list(K_CURVE), help="run: the k curve's atom counts")
+    ap.add_argument("--read", choices=("first", "digit"), default=READ,
+                    help="run, non-chat renderings: first non-whitespace token, or the first digit token (amendment 3)")  # fmt: skip
+    ap.add_argument("--descriptive", action="store_true",
+                    help="run: amendment 3, run on the items right even if the gate fails (labeled descriptive)")  # fmt: skip
     a = ap.parse_args()
     CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
+    READ, DESCRIPTIVE = a.read, a.descriptive
     if a.stage == "plan":  # tokenizer only
         from scripts import statement_positions as SP
 

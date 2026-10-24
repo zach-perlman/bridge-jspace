@@ -192,14 +192,20 @@ class Model:
 
     @torch.no_grad()
     def generate_batch(
-        self, ids: torch.Tensor, max_new_tokens: int, edits: list[dict[int, Edit]], first_logits: bool = False
+        self,
+        ids: torch.Tensor,
+        max_new_tokens: int,
+        edits: list[dict[int, Edit]],
+        first_logits: bool = False,
+        steps: bool = False,
     ) -> Any:
         """Greedy continuations under several edit sets at once, one batch row per set (a row without an edit at a layer
         passes through): of one prompt [1, seq], or of as many prompts of one length [len(edits), seq]. Each row is
         `generate(ids[row], max_new_tokens, edits[row])` up to batched-kernel rounding; one batched call pays the
         per-kernel launch cost once instead of once per row, which is what bounds generation speed on this model
         (thousands of small kernels per token). Returns the decoded continuations, and with first_logits also the
-        first step's raw logits [len(edits), vocab] (fp32), as `generate` returns them."""
+        first step's raw logits [len(edits), vocab] (fp32), as `generate` returns them. With steps: (texts, every
+        step's raw logits [len(edits), steps, vocab] fp32, the new token ids [len(edits), steps])."""
         edits = [self.homed(row_edits) for row_edits in edits]
         prompt_len = ids.shape[1]
 
@@ -225,10 +231,12 @@ class Model:
                 max_new_tokens=max_new_tokens,
                 do_sample=False,
                 pad_token_id=self.tokenizer.eos_token_id,
-                output_logits=first_logits,
+                output_logits=first_logits or steps,
                 return_dict_in_generate=True,
             )
         texts = [self.tokenizer.decode(seq[prompt_len:], skip_special_tokens=True) for seq in out.sequences]
+        if steps:
+            return texts, torch.stack(out.logits, dim=1).float(), out.sequences[:, prompt_len:]
         return (texts, out.logits[0].float()) if first_logits else texts
 
     def surface_ids(self, word: str) -> list[int]:
