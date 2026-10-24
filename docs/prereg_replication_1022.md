@@ -709,3 +709,14 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Predictions:** Kolibri-1: if it passes the gate, M - P < 15 (as the other MoE, the 122B, which routed around the
   knock-out); a J-specific M - P >= 20 (logit-lens < 10) would show the dependence is not specific to the Qwen dense
   hybrids. The 27B with the plain J-lens: M - P >= 30 (the plain lens may be weaker than J++, as on Qwen3-32B).
+
+## Amendment 29 (Zach, 2026-10-24 ~03:35 UTC): module 1 robustness: a second rendering seed and held-out bands
+
+- **A. Rendering seed:** jsuite_v1_facts_s2 (scripts/jsuite_facts.py --seed 2302 --split-from jsuite_v1_facts): the
+  same facts and dev/test split, new passages and wordings (no passage shared with seed 2301). Module 1 on its test
+  split for the 27B (L32-40) and 9B (L12-16) as amendment 23. Prediction: each start's M - P and K - M within 10 points
+  of seed 2301's.
+- **B. Bands on held-out bridges:** the 27B (windows of 9 by 4) and 9B (windows of 5 by 2) swept on
+  jsuite_v1_facts_dev_chat (bridges disjoint from the test split, unlike natplus_dev), choose_band on PP PM MP MM. If a
+  model's dev band differs from its toy band, module 1's test split is rerun at the dev band and reported beside the
+  toy-band run (the toy-band run stays the pre-registered test).

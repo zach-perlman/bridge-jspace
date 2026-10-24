@@ -17,7 +17,7 @@ bands are chosen on dev only. Question templates fixed for grammar; filler is co
 in . ! or ?, ASCII only, no digits. Hop 1 is checked at competence by generation (natural_v1 competence --hop1 gen),
 since bridge names share first tokens in every tokenizer; final answers have distinct first tokens in all six.
 
-python scripts/jsuite_facts.py --name jsuite_v1_facts --seed 2301 [--scenes 2]
+python scripts/jsuite_facts.py --name jsuite_v1_facts --seed 2301 [--scenes 2] [--split-from jsuite_v1_facts]
 """
 
 from __future__ import annotations
@@ -120,17 +120,25 @@ def split_bridges(rng: random.Random, facts: dict) -> dict[str, str]:
     return out
 
 
-def make(name: str, seed: int, n_scenes: int) -> None:
+def make(name: str, seed: int, n_scenes: int, split_from: str | None = None) -> None:
     rng = random.Random(seed)
     banned = {b for t in NP.TYPES.values() for b in t["facts"]} | {v[0] for t in NP.TYPES.values() for v in t["facts"].values()}
     banned |= {w for n in NP.PEOPLE_NAMES + N.ABSENT_NAMES for w in n.split()} | {"Olympic", "Olympics", "continent", "exhibition", "podcast", "tour"}
     paras = clean_paras(banned)
     items = {"dev": [], "test": []}
+    fixed_split = {}
+    if split_from:
+        for sp in ("dev", "test"):
+            for line in (DATA / f"{split_from}_{sp}_chat" / "items.jsonl").read_text().splitlines():
+                fixed_split[json.loads(line)["bridge"]] = sp
     k = 0
     for tname in RELS:
         t = NP.TYPES[tname]
         facts = t["facts"]
         split = split_bridges(rng, facts)
+        if split_from:  # a rendering seed of an existing set: its dev/test split, the bridges unchanged
+            split = {x: sp for x, sp in fixed_split.items() if x in facts}
+            assert set(split) == set(facts), set(facts) ^ set(split)
         vocab = sorted({v[0] for v in facts.values()})
         people = tname == "people"
         for level, knobs in N.LEVELS.items():
@@ -231,7 +239,7 @@ def make(name: str, seed: int, n_scenes: int) -> None:
         out.mkdir(parents=True)
         (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in its))
         (out / "manifest.json").write_text(json.dumps({"set": out.name, "seed": seed, "scenes_per_bridge": n_scenes,
-                                                       "split": sp, "n": len(its), "git_commit": commit,
+                                                       "split": sp, "split_from": split_from, "n": len(its), "git_commit": commit,
                                                        "script": "scripts/jsuite_facts.py"}, indent=2) + "\n")  # fmt: skip
         print(f"{out.name}: {len(its)} items", dict(collections.Counter(it["word"] for it in its)))
 
@@ -241,5 +249,6 @@ if __name__ == "__main__":
     ap.add_argument("--name", required=True)
     ap.add_argument("--seed", type=int, default=2301)
     ap.add_argument("--scenes", type=int, default=2)
+    ap.add_argument("--split-from", default=None, help="reuse an existing set's dev/test bridge split (a rendering seed)")
     a = ap.parse_args()
-    make(a.name, a.seed, a.scenes)
+    make(a.name, a.seed, a.scenes, a.split_from)
