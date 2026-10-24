@@ -1,0 +1,18 @@
+{
+  "run": "muse30_jsuite_v1_facts_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-23, prereg amendment 23): muse-glimmer-30b on jsuite_v1_facts_test_chat",
+  "set": "jsuite_v1_facts_test_chat",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "b6a667fe39cf4e7066fc82458b89f653553cb09b",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-23T23:38:54Z"
+}
