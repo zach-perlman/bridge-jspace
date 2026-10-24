@@ -9,7 +9,7 @@
 
 **Status (24 Oct 2026).**
 - Models: Qwen3.5-9B, Qwen3.6-27B and Qwen3.5-122B-A10B (FP8 weights, mixture of experts, split over two H100s; its J++ was fitted on the bf16 weights; a hardware gate reproduced a 23 Oct cell first, 0.998 per-row agreement).
-- All numbers are unverified (not yet hand-checked); the layers, the rule and Dan's predictions were fixed before any result was opened. Built at 71ee8da1 from the X0 run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
+- All numbers are unverified (not yet hand-checked); the layers, the rule and Dan's predictions were fixed before any result was opened. Built at faed2c71 from the X0 run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
 
 ## Main findings
 
@@ -64,7 +64,7 @@ How to read this:
 
 | Weak spot | Status |
 |---|---|
-| The J++ part is mostly not the bridge word: the bridge's own tokens are among its top 25 atoms in 28 of 40 items and carry 12% of it (27B, layer 32), so a "word form" is not shown; and "specific to J++" may only mean "aligned with the layer's geometry" | word only vs J++ without the word vs a PCA dictionary (next) |
+| The J++ part is mostly not the bridge word: the bridge's own tokens are among its top 25 atoms in 28 of 40 items and carry 12% of it (27B; 9B: 25 of 40, 5%). Removing the word alone costs the recall 0.16 (27B) and 0.02 (9B); J++ without the word costs it 0.63 and 0.37, as much as J++ (0.63, 0.36): the recall's loss is J++ beyond the word. A PCA dictionary of the layer (top 2,000 directions, 25 atoms, 34% of the change on the 27B) costs both readers (lookup 0.38, recall 0.43): it is not reader-specific, J++ is (not at equal share) | descriptive, done (x0_parts) |
 | The lookup's route: an address at the bridge word (descriptive, probe; it tracks the item's first mention), outside the J++ part; not J++ on the 9B and the 122B, not a digit on any model. The ridge probe's 4 directions are not what the lookup reads: removing them, or keeping only them, changes no lookup (0.00 [0.00, 0.00] on the 27B, 0.05 [0.00, 0.10] on the 9B) | mass-mean address and value subspaces (next); X4 |
 | Lookup flips depend on sentence order: locker before pick 76%–89%, after 9%–19% | figure F4; X0b fixes the order by design |
 | The two-change edit inflated the extra loss: on the same items, one change instead of two moves the recall's by −0.15 [−0.22, −0.08] (27B) and −0.13 [−0.19, −0.08] (9B), the 27B lookup's by −0.08 [−0.16, 0.00] | the one-change edit from X0b on (it makes two people pick the same item) |
@@ -77,8 +77,7 @@ How to read this:
 
 | Step | What it tells us |
 |---|---|
-| Word only, J++ without the word, and a PCA dictionary (27B, 9B) | whether recall's loss is the bridge word, J++ beyond the word, or any direction the layer favours |
-| X3 (natural passages) or X4 (the locker key written word for word, translated, or described); Dan decides | whether the contrast holds on natural text, or whether the address forms only when the key matches word for word |
+| X4 (queued): the locker key written word for word, translated (animals) or by chemical symbol (elements, the positive control); the probe first | whether the contrast holds on natural text, or whether the address forms only when the key matches word for word |
 
 ## More
 

@@ -1,0 +1,55 @@
+{
+  "exp": "x0_parts",
+  "run": "x0_parts_27b",
+  "written_utc": "2026-10-24T19:22:47Z",
+  "note": "Descriptive, added after data (Dan's audit, 24 Oct ~19:30, item 2); not part of X0's rule.",
+  "single": "x0_single_27b_r2",
+  "single_code": {
+    "sha": "03ca856181a32ccf71f64dd5b0d2a46db71f3ce0",
+    "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 32,
+  "items": 200,
+  "k": 25,
+  "parts": [
+    "w",
+    "jw",
+    "pca",
+    "jpp"
+  ],
+  "pca": {
+    "set": "d1_topics_v4",
+    "prompts": 200,
+    "tokens": 13790,
+    "seed": 0,
+    "n": 2000,
+    "variance_share": 0.9942538000900334
+  },
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "b74d4f8970387f25d3a35724fd933fa8c285402c",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "held_out": 0
+  }
+}

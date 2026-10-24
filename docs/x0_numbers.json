@@ -855,6 +855,26 @@
   "text": "12%",
   "source": "results/x0_atoms/x0_atoms_27b_all/atoms.jsonl"
  },
+ "atoms_first_bridge_letters_9b": {
+  "text": "8 of 20",
+  "source": "results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl"
+ },
+ "atoms_digit_top25_letters_9b": {
+  "text": "0 of 500",
+  "source": "results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl"
+ },
+ "atoms_number_word_top25_letters_9b": {
+  "text": "0 of 500",
+  "source": "results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl"
+ },
+ "atoms_bridge_top25_letters_9b": {
+  "text": "25 of 40",
+  "source": "results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl"
+ },
+ "atoms_bridge_coef2_letters_9b": {
+  "text": "5%",
+  "source": "results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl"
+ },
  "single_lk_excess_9b": {
   "text": "−0.02 [−0.05, 0.02]",
   "source": "results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl"
@@ -1342,6 +1362,102 @@
  "x0b_lk_before_table_27b": {
   "text": "0.06",
   "source": "results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json"
+ },
+ "parts_w_lk_excess_9b": {
+  "text": "0.00",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_w_share_9b": {
+  "text": "4%",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_w_rc_excess_9b": {
+  "text": "0.02",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_jw_lk_excess_9b": {
+  "text": "−0.02",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_jw_share_9b": {
+  "text": "19%",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_jw_rc_excess_9b": {
+  "text": "0.37",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_pca_lk_excess_9b": {
+  "text": "0.38",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_pca_share_9b": {
+  "text": "39%",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_pca_rc_excess_9b": {
+  "text": "0.47",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_jpp_lk_excess_9b": {
+  "text": "−0.01",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_jpp_share_9b": {
+  "text": "19%",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_jpp_rc_excess_9b": {
+  "text": "0.36",
+  "source": "results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json"
+ },
+ "parts_w_lk_excess_27b": {
+  "text": "0.00",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_w_share_27b": {
+  "text": "3%",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_w_rc_excess_27b": {
+  "text": "0.16",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_jw_lk_excess_27b": {
+  "text": "0.05",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_jw_share_27b": {
+  "text": "13%",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_jw_rc_excess_27b": {
+  "text": "0.63",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_pca_lk_excess_27b": {
+  "text": "0.38",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_pca_share_27b": {
+  "text": "34%",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_pca_rc_excess_27b": {
+  "text": "0.43",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_jpp_lk_excess_27b": {
+  "text": "0.04",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_jpp_share_27b": {
+  "text": "14%",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
+ },
+ "parts_jpp_rc_excess_27b": {
+  "text": "0.63",
+  "source": "results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json"
  },
  "share_rho_27b": {
   "text": "0.79",

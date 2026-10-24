@@ -64,7 +64,7 @@ How to read this:
 
 | Weak spot | Status |
 |---|---|
-| The J++ part is mostly not the bridge word: the bridge's own tokens are among its top 25 atoms in {{num|atoms_bridge_top25_letters}} items and carry {{num|atoms_bridge_coef2_letters}} of it (27B, layer 32), so a "word form" is not shown; and "specific to J++" may only mean "aligned with the layer's geometry" | word only vs J++ without the word vs a PCA dictionary (next) |
+| The J++ part is mostly not the bridge word: the bridge's own tokens are among its top 25 atoms in {{num|atoms_bridge_top25_letters}} items and carry {{num|atoms_bridge_coef2_letters}} of it (27B; 9B: {{num|atoms_bridge_top25_letters_9b}}, {{num|atoms_bridge_coef2_letters_9b}}). Removing the word alone costs the recall {{num|parts_w_rc_excess_27b}} (27B) and {{num|parts_w_rc_excess_9b}} (9B); J++ without the word costs it {{num|parts_jw_rc_excess_27b}} and {{num|parts_jw_rc_excess_9b}}, as much as J++ ({{num|parts_jpp_rc_excess_27b}}, {{num|parts_jpp_rc_excess_9b}}): the recall's loss is J++ beyond the word. A PCA dictionary of the layer (top 2,000 directions, 25 atoms, {{num|parts_pca_share_27b}} of the change on the 27B) costs both readers (lookup {{num|parts_pca_lk_excess_27b}}, recall {{num|parts_pca_rc_excess_27b}}): it is not reader-specific, J++ is (not at equal share) | descriptive, done (x0_parts) |
 | The lookup's route: an address at the bridge word (descriptive, probe; it tracks the item's first mention), outside the J++ part; not J++ on the 9B and the 122B, not a digit on any model. The ridge probe's 4 directions are not what the lookup reads: removing them, or keeping only them, changes no lookup ({{num|amn_lk_excess_27b}} on the 27B, {{num|amn_lk_excess_9b}} on the 9B) | mass-mean address and value subspaces (next); X4 |
 | Lookup flips depend on sentence order: locker before pick {{num|lk_order_before_27b}}–{{num|lk_order_before_122b}}, after {{num|lk_order_after_27b}}–{{num|lk_order_after_9b}} | figure F4; X0b fixes the order by design |
 | The two-change edit inflated the extra loss: on the same items, one change instead of two moves the recall's by {{num|paired_rc_excess_27b}} (27B) and {{num|paired_rc_excess_9b}} (9B), the 27B lookup's by {{num|paired_lk_excess_27b}} | the one-change edit from X0b on (it makes two people pick the same item) |
@@ -77,8 +77,7 @@ How to read this:
 
 | Step | What it tells us |
 |---|---|
-| Word only, J++ without the word, and a PCA dictionary (27B, 9B) | whether recall's loss is the bridge word, J++ beyond the word, or any direction the layer favours |
-| X3 (natural passages) or X4 (the locker key written word for word, translated, or described); Dan decides | whether the contrast holds on natural text, or whether the address forms only when the key matches word for word |
+| X4 (queued): the locker key written word for word, translated (animals) or by chemical symbol (elements, the positive control); the probe first | whether the contrast holds on natural text, or whether the address forms only when the key matches word for word |
 
 ## More
 

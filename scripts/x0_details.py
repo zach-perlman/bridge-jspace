@@ -37,7 +37,8 @@ PROBES = {"9b": "qwen35_9b_x0_probe", "27b": "x0_probe_27b"}
 PROBES_V4 = {"9b": "qwen35_9b_x0_probe_v4", "27b": "x0_probe_v4_27b"}
 AMNESIC = {"9b": "qwen35_9b_x0_amnesic", "27b": "x0_amnesic_27b"}
 X0B = {"9b": "qwen35_9b_x0b_v2", "27b": "x0b_v2_27b"}
-ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all"}
+ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all", "letters_9b": "qwen35_9b_x0_atoms_letters"}
+PARTS = {"9b": "qwen35_9b_x0_parts", "27b": "x0_parts_27b"}
 ORDER = "org locker vs asked pick"
 
 
@@ -129,6 +130,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     address_numbers(num)
     first_mention_numbers(num)
     x0b_numbers(num)
+    parts_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -227,6 +229,19 @@ def probe_numbers(num: Numbers) -> None:
         num.add(f"probe_b_before_{m}", f2(rows["locker sentence"]["probe"][0]), src)
         num.add(f"probe_b_layout_before_{m}", f2(rows["locker sentence"]["layout"][0]), src)
         num.add(f"probe_c_before_{m}", f2(rows["bridge identity"]["probe"][0]), src)
+
+
+def parts_numbers(num: Numbers) -> None:
+    """x0_parts: the word part (w), J++ without the word (jw), the PCA part (pca) and J++ (jpp), each against a random
+    part of its own share, on the single-change items: share of ||Δ||² and each reader's excess."""
+    for m, run in PARTS.items():
+        path = sorted((pins.RESULTS_DIR / "x0_parts" / run).glob("verdict-*/verdict.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        for r in json.loads(path.read_text())["rows"]:
+            w = "lk" if r["reader"] == X.LOOKUP else "rc"
+            num.add(f"parts_{r['part']}_{w}_excess_{m}", f2(r["excess"][0]), src)
+            if w == "lk":
+                num.add(f"parts_{r['part']}_share_{m}", pct(r["median_share"]), src)
 
 
 def x0b_numbers(num: Numbers) -> None:

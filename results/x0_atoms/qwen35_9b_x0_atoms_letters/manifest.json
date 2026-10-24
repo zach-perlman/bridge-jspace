@@ -1,0 +1,84 @@
+{
+  "exp": "x0_atoms",
+  "run": "qwen35_9b_x0_atoms_letters",
+  "written_utc": "2026-10-24T19:23:42Z",
+  "source": "qwen35_9b_x0_necessity",
+  "source_code": {
+    "sha": "502b920fa2d72975e1cff43f258ebc4488698642",
+    "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 12,
+  "n": 20,
+  "seed": 0,
+  "k_max": 100,
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "b74d4f8970387f25d3a35724fd933fa8c285402c",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "note": "descriptive, added after data (critic via Dan, 24 Oct); not part of X0's rule",
+  "vocab": "letters",
+  "samples": {
+    "all": [
+      "P2-L0-0017",
+      "P2-L0-0034",
+      "P2-L0-0047",
+      "P2-L0-0076",
+      "P2-L0-0091",
+      "P2-L0-0096",
+      "P2-L0-0105",
+      "P2-L0-0110",
+      "P2-L0-0134",
+      "P2-L0-0142",
+      "P2-L0-0149",
+      "P2-L0-0154",
+      "P2-L0-0181",
+      "P2-L0-0184",
+      "P2-L0-0191",
+      "P2-L0-0193",
+      "P2-L0-0224",
+      "P2-L0-0239",
+      "P2-L0-0289",
+      "P2-L0-0290"
+    ],
+    "asked_first": [
+      "P2-L0-0020",
+      "P2-L0-0046",
+      "P2-L0-0067",
+      "P2-L0-0099",
+      "P2-L0-0108",
+      "P2-L0-0113",
+      "P2-L0-0121",
+      "P2-L0-0127",
+      "P2-L0-0143",
+      "P2-L0-0153",
+      "P2-L0-0155",
+      "P2-L0-0164",
+      "P2-L0-0187",
+      "P2-L0-0190",
+      "P2-L0-0200",
+      "P2-L0-0209",
+      "P2-L0-0221",
+      "P2-L0-0240",
+      "P2-L0-0255",
+      "P2-L0-0284"
+    ]
+  }
+}
