@@ -690,3 +690,22 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   the dependence is a pretraining property, within 10.
 - **B. The 122B on module 1:** Qwen3.5-122B-A10B (FP8) at its pre-registered C1 band L39-45, chat framing, as
   amendment 23. Prediction (from its toy and natural nulls and the redundancy diagnostic): M - P < 15.
+
+## Amendment 28 (Zach, 2026-10-24 ~03:20 UTC): a strong non-Qwen model, Kolibri-1, with the paper's own lens
+
+- **Why:** every model with a strong, J-specific memory-final dependence so far is a Qwen3.5/3.6 dense hybrid. The
+  strongest open non-Qwen model that fits one H200 (chosen by benchmarks on 2026-10-23: GPQA Diamond 84.3 vs
+  Qwen3.6-27B 87.8; LiveCodeBench v6 85.9 vs 83.9) is Kolibri-1 (Aleph Alpha, 2026-10-03; MoE 78B total / 3.46B
+  active, FP8; sliding-window and full attention; Apache 2.0). No published lens exists for it.
+- **Seen when this was written:** module 1 on the 27B, 9B and Muse; module 2 on the 27B and 9B; nothing on Kolibri.
+- **Procedure (scripts/queues/h200_kol_1024.sh):** transformers >= 5.20 in a separate env; a plain J-lens fit with
+  Anthropic's jlens (scripts/lens_fit/fit_jlens.py; 500 pinned WikiText rows; Neuronpedia's recipe otherwise); target
+  kolibri-1; lens_agreement; plain-text gate (removal_textloss, top10 vs rotated, layers 15-35; as for Gemma and
+  gpt-oss: untestable if the top-10 removal alone raises plain-text loss by >= 2 nats while the rotation stays within
+  0.3); the band chosen on the jsuite dev split (bridges disjoint from the test split; choose_band on PP PM MP MM,
+  windows of 7 layers by 3); module 1 on the test split at that band, as amendment 23.
+- **Lens-matched comparison:** the 27B on module 1 with its published plain J-lens (target qwen3.6-27b-jlens) at
+  L32-40.
+- **Predictions:** Kolibri-1: if it passes the gate, M - P < 15 (as the other MoE, the 122B, which routed around the
+  knock-out); a J-specific M - P >= 20 (logit-lens < 10) would show the dependence is not specific to the Qwen dense
+  hybrids. The 27B with the plain J-lens: M - P >= 30 (the plain lens may be weaker than J++, as on Qwen3-32B).
