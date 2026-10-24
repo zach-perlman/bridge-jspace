@@ -1,0 +1,19 @@
+{
+  "run": "muse30_jswap_l14_20_v1",
+  "why": "Zach (2026-10-24, beside amendment 32; exploratory, third and last Muse band: L36-42 (pre-registered) had no paste ceiling, L7-13 (max J-minus-logit readout gap) had the attribute outside the J top-10 (median rank 12-132); L14-20 = the first 7-layer window whose readout median rank of the attribute is <= 10 at every layer, rule stated before running)",
+  "target": "muse-glimmer-30b",
+  "band": "14-20",
+  "set": "jsuite_v1_facts_test_chat",
+  "competence": "muse30_jsuite_v1_facts_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "7b08c596783d72ccdc31697e3a5eb4300e53b1df",
+  "limit": 0
+}

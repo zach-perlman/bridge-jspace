@@ -1,0 +1,19 @@
+{
+  "run": "muse30_jswap_v1",
+  "why": "Zach (2026-10-24, beside amendment 32; diagnostics): Muse Glimmer 30B at its pre-registered band L36-42",
+  "target": "muse-glimmer-30b",
+  "band": "36-42",
+  "set": "jsuite_v1_facts_test_chat",
+  "competence": "muse30_jsuite_v1_facts_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "7b08c596783d72ccdc31697e3a5eb4300e53b1df",
+  "limit": 0
+}

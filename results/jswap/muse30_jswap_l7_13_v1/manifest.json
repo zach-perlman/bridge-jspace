@@ -1,0 +1,19 @@
+{
+  "run": "muse30_jswap_l7_13_v1",
+  "why": "Zach (2026-10-24, beside amendment 32; exploratory: the pre-registered L36-42 is uninformative (paste moves nothing); band L7-13 chosen by a rule stated before computing it: the 7-layer window with the largest mean J-minus-logit readout gap at the mention, from muse30_bridge_readout_v1)",
+  "target": "muse-glimmer-30b",
+  "band": "7-13",
+  "set": "jsuite_v1_facts_test_chat",
+  "competence": "muse30_jsuite_v1_facts_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "7b08c596783d72ccdc31697e3a5eb4300e53b1df",
+  "limit": 0
+}
