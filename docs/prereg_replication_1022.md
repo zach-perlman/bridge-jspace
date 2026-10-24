@@ -772,3 +772,22 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   other), but the instruct-ourjpp vs published comparison is not like for like in lens kind. Each fit's pooled lens (32
   prompts) is kept (scripts/queues/keep_pooled_1024.sh); a run of the pooled instruct lens would be the like-for-like
   check (secondary, if GPU time allows).
+
+## Amendment 30 (Zach, 2026-10-24 ~05:00 UTC): where the knock-out acts (position-restricted knock-outs, module 1)
+
+- **Why:** every knock-out so far edits every position in the band. The memory-final dependence is consistent with a
+  workspace holding recalled content and with a deflationary reading (directions that matter when the answer must be
+  recalled, not when it can be copied); where along the prompt the removal must act separates readings (critique pass,
+  2026-10-24).
+- **Seen when this was written:** module 1 at every position for the 27B (M - P +50), 9B (+42) and Muse; the 9B's dev
+  depth profile; no position-restricted run on module 1 (the --positions context / question sets exist since 2026-10-21;
+  final and bridge are added now, scripts/ablate_v2.py outside_positions, CPU-checked on real prompts).
+- **Procedure (scripts/queues/h200_pos_1024.sh):** the 27B at L32-40 and the 9B at L12-16 (their pre-registered bands),
+  jsuite_v1_facts_test_chat, 12 words, paper10 and paper10_rot, cand2, the models' test competence, jsuite_score; one
+  run per position set: context (the template prefix and passage, before the question), question (the question, the
+  instruction and the template from there on), final (the answer position only), bridge (the bridge's mentions only:
+  about 2 positions for read and tracked starts; a recalled start rarely names its bridge, so it is mostly unedited).
+  Queued at the end of each GPU's queue.
+- **Predictions (M - P, all starts, against the same model's every-position run):** question keeps >= 2/3 of the gap;
+  context <= 1/3 (context removal may cost every final alike through hop 1, which M - P cancels); bridge-only (P and T
+  starts) M - P < 10; final-only: no directional prediction (reported). The rotated control stays within 10 everywhere.

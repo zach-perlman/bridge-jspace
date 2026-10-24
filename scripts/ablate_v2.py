@@ -255,6 +255,15 @@ def question_start(tok, ids: list[int]) -> int:
     return next(i for i, s in enumerate(starts) if s + len(pieces[i]) > q_start)
 
 
+def outside_positions(mode: str, n: int, q0: int, bridge_pos: list[int]) -> list[int]:
+    """Positions a removal leaves unedited under --positions: all (none), context (the question on), question (before
+    it), final (every position but the last, the answer position; 2026-10-24) or bridge (every position but the
+    bridge's mentions; a prompt that never names its bridge, e.g. a recalled start, is left unedited; 2026-10-24)."""
+    keep = set(bridge_pos)
+    return {"all": [], "context": list(range(q0, n)), "question": list(range(q0)), "final": list(range(n - 1)),
+            "bridge": [i for i in range(n) if i not in keep]}[mode]  # fmt: skip
+
+
 def make_bands(plan: str, n_layers: int, spec: list[str], workspace: int | None = None) -> list[tuple[int, ...]]:
     if plan == "v1check":
         return [(32, 36, 40)]
@@ -363,9 +372,7 @@ def main(args) -> None:
     for p in prompts:
         p["skip"] = bridge_positions(tok, p["ids"], p["bridge"]) if p["bridge"] else []
         q0 = question_start(tok, p["ids"])
-        p["outside"] = {"all": [], "context": list(range(q0, len(p["ids"]))), "question": list(range(q0))}[
-            args.positions
-        ]
+        p["outside"] = outside_positions(args.positions, len(p["ids"]), q0, p["skip"])
     print(len(prompts), "prompts;", len(bands), "bands;", len(args.conditions), "conditions", flush=True)
 
     lens = JLens(model, pins.FROZEN_LENS)
@@ -586,9 +593,10 @@ if __name__ == "__main__":
     )
     ap.add_argument("--tasks-per-word", action="store_true", help="tasks_v2: judge each item on its own (three-step)")
     ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
-    ap.add_argument("--positions", default="all", choices=["all", "context", "question"],
-                    help="where to remove: every position, only before the question (the facts), or only from the "
-                         "question on (question, instruction, 'Answer:'); see question_start")  # fmt: skip
+    ap.add_argument("--positions", default="all", choices=["all", "context", "question", "final", "bridge"],
+                    help="where to remove: every position, only before the question (the facts), only from the "
+                         "question on (question, instruction, 'Answer:'; see question_start), only the last position, "
+                         "or only the bridge's mentions (bridge_positions)")  # fmt: skip
     a = ap.parse_args()
     bad = [c for c in a.conditions if c not in CONDITIONS and top_k(c) is None]
     assert not bad, f"unknown conditions {bad}"
