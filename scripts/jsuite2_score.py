@@ -8,8 +8,10 @@ modules from one rows file, each scored by its own design (the module comes from
             MR - PR (amendment 21's contrasts)
 Writes results/ablate_v2/jsuite2_score/RUN.json.
 
-python scripts/jsuite2_score.py RUN --set jsuite_v2_test_chat [--by-relation]
-(v2.1, 2026-10-24: start R, the never-named recall, is kept out of the start=all cells and scored as RF - MF)
+python scripts/jsuite2_score.py RUN --set jsuite_v2_test_chat [--by-relation] [--with RUN2 ...]
+(v2.1, 2026-10-24: start R, the never-named recall, is kept out of the start=all cells and scored as RF - MF.
+--with: rows of other runs on the same model, band, conditions, lens and read, on other items (a model's R-only run
+beside its v2 run; ids are shared across v2 and v2.1), scored as one; written to RUN+RUN2.json)
 """
 
 from __future__ import annotations
@@ -48,14 +50,22 @@ def boot(sel: dict[str, list[tuple[str, bool]]], contrasts, rng: random.Random, 
     return out
 
 
-def main(run: str, set_name: str, by_relation: bool) -> None:
+def main(run: str, set_name: str, by_relation: bool, withs: list[str] | None = None) -> None:
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / set_name / "items.jsonl").read_text().splitlines()}
     rows = [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
+    same = ("model", "lens", "bands", "conditions", "read", "positions")
+    man = json.loads((RES / run / "manifest.json").read_text())
+    for w in withs or []:
+        m2 = json.loads((RES / w / "manifest.json").read_text())
+        assert all(man.get(k) == m2.get(k) for k in same), f"{w} differs from {run} in {[k for k in same if man.get(k) != m2.get(k)]}"
+        r2 = [json.loads(line) for line in (RES / w / "rows.jsonl").read_text().splitlines()]
+        assert not {r["id"] for r in rows} & {r["id"] for r in r2}, f"{w} shares items with {run}"
+        rows += r2
     rows = [r for r in rows if r["kind"] == "clean" and r["id"] in items]
     ok = {(r["family"], r["id"]) for r in rows if r["condition"] == "none" and r["correct"]}
     conds = list(dict.fromkeys(r["condition"] for r in rows if r["condition"] != "none"))
     rng = random.Random(0)
-    out: dict = {"run": run, "set": set_name, "facts": {}, "threehop": {}, "numbers": {}}
+    out: dict = {"run": run, "with": withs or [], "set": set_name, "facts": {}, "threehop": {}, "numbers": {}}
     for cond in conds:
         rs = [r for r in rows if r["condition"] == cond and (r["family"], r["id"]) in ok]
         fr = [r for r in rs if items[r["id"]]["module"] == "facts"]
@@ -112,7 +122,7 @@ def main(run: str, set_name: str, by_relation: bool) -> None:
             print(f"numbers {cond:14s} lost " + " ".join(f"{w} {v:.0f}" for w, v in sorted(cell["loss"].items())) + "  "
                   + " ".join(f"{k} {v['diff']:+.0f} {v['ci']}" for k, v in cell["contrasts"].items()))  # fmt: skip
     (RES / "jsuite2_score").mkdir(exist_ok=True)
-    (RES / "jsuite2_score" / f"{run}.json").write_text(json.dumps(out, indent=1) + "\n")
+    (RES / "jsuite2_score" / ("+".join([run, *(withs or [])]) + ".json")).write_text(json.dumps(out, indent=1) + "\n")
 
 
 if __name__ == "__main__":
@@ -120,5 +130,6 @@ if __name__ == "__main__":
     ap.add_argument("run")
     ap.add_argument("--set", required=True)
     ap.add_argument("--by-relation", action="store_true")
+    ap.add_argument("--with", dest="withs", nargs="+", help="other runs' rows scored with RUN's (see above)")
     a = ap.parse_args()
-    main(a.run, a.set, a.by_relation)
+    main(a.run, a.set, a.by_relation, a.withs)

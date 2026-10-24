@@ -898,3 +898,14 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Predictions (when run):** all-position knock-out: RM - MM within 10 (two-sided; the dependence does not hinge on a
   passing mention); position-restricted knock-out (question only), if run: RM keeps >= 2/3 of its all-position loss
   (as v1's recalled bridge); MM two-sided (a passing mention may move part of the dependence to the mention).
+- **Note 1 (Zach, 2026-10-24 ~21:20 UTC, before any R item ran):** v2.1 is v2 plus R with v2's items unchanged, so the
+  other models run only the R items: scripts/natural_v1.py competence --words RM RA RN (candidate pools from the whole
+  set), the knock-out on RM RA RN at the model's v2 band with its v2 conditions, and scripts/jsuite2_score.py --with,
+  which scores the R run with the model's v2 run (it asserts model, lens, band, conditions, read and positions match and
+  that the items are disjoint; on the 9B's v2 run split in two by start it reproduces the original scores exactly).
+  Knock-out, eligibility and competence code is unchanged since the v2 runs (5c88cbc). Queued
+  (scripts/queues/h200_v21r_1024.sh, after the GPU1 chain): the 27B (L32-40), the 122B (L39-45), the 9B base (raw text,
+  L12-16). Same prediction per model: RM - MM within 10 points. Not run on Muse or OLMo-3 32B: R changes only the
+  knock-out, and neither model's knock-out has shown a gap (Muse is added if its v2 run shows one). The 9B's full v2.1
+  run stays queued; it re-runs every v2 item, so it also measures run-to-run agreement with the 9B's v2 run (reported,
+  no prediction).

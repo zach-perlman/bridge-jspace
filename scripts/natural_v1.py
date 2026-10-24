@@ -381,11 +381,13 @@ def vocab_of(items: list[dict]) -> dict:
     return v
 
 
-def competence(set_name: str, run: str, why: str, read: str = "top", limit: int = 0, hop1: str = "read") -> None:
+def competence(set_name: str, run: str, why: str, read: str = "top", limit: int = 0, hop1: str = "read",
+               words: list[str] | None = None) -> None:
     """Whole question, each hop alone and the guess prompt, one forward each. read "top": correct = the answer's first
     token is the top token (a person's first name counts for hop 1); read "cand" (2026-10-23): the top among the
     relation's candidate answers (bridges for hop 1), so format tokens cannot fail it, as ablate_v2 --read cand. Both
-    reads are recorded either way. Rows and summary in tasks_v2's competence format."""
+    reads are recorded either way. Rows and summary in tasks_v2's competence format. words (2026-10-24, amendment 35):
+    only the items of these words (v2.1's R items beside a model's v2 run); the candidate pools stay the whole set's."""
     import statistics
 
     from bridge_jspace.model import load_model
@@ -399,12 +401,12 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(),
                                                    "git_commit": commit, "guess": True,
-                                                   "read": read, "hop1": hop1, "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+                                                   "read": read, "hop1": hop1, "words": words, "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
                                                    "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
     jobs = []
-    for it in T.load(set_name)[: limit or None]:
+    for it in [x for x in T.load(set_name) if not words or x["word"] in words][: limit or None]:
         parts = [("whole", it["question"], it["answer"])] + [(f"step{i}", s["question"], s["answer"])
                                                              for i, s in enumerate(it["steps"], 1)]
         parts.append(("guess", it["guess_question"], it["answer"]))
@@ -506,6 +508,7 @@ if __name__ == "__main__":
     ap.add_argument("--read", choices=["top", "cand", "cand2"], default="top", help="competence: the read that sets correct")
     ap.add_argument("--limit", type=int, default=0, help="competence: only the first N items (smoke tests)")
     ap.add_argument("--hop1", choices=["read", "gen"], default="read", help="competence: hop 1 also checked by its generated name (amendment 23)")
+    ap.add_argument("--words", nargs="+", help="competence: only the items of these words (candidate pools from the whole set)")
     a = ap.parse_args()
     if a.stage == "make":
         make(a.name, a.seed, a.scenes)
@@ -514,4 +517,4 @@ if __name__ == "__main__":
     elif a.stage == "derive-prefill":
         derive_prefill(a.name)
     else:
-        competence(a.set_name, a.name, a.why, a.read, a.limit, a.hop1)
+        competence(a.set_name, a.name, a.why, a.read, a.limit, a.hop1, a.words)
