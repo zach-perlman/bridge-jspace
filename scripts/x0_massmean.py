@@ -18,7 +18,14 @@ Pre-stated reading (Dan): the lookup loses flips under A (or V) while the recall
 (or the value)"; no arm changes the lookup -> "the lookup's channel is not a low-rank linear readout of the address or
 the value; what it is stays open".
 
+--mode layout_free (Dan, 24 Oct ~21:50): Alf, the address rebuilt after subtracting from each state the mean of its
+layout group (which sentences before the asked pick are locker sentences, x0_probe.layout; groups of one item dropped),
+beside A: remove A, remove Alf (each against the random part of its own share), keep only A, keep only Alf (each against
+the random part alone), both readers, the same items. Pre-stated reading (Dan): if the 9B lookup effect disappears with
+the layout-free A, the reading is "position information", not "address".
+
 uv run python scripts/x0_massmean.py run --name x0_massmean_27b --single x0_single_27b_r2 --states x0_probe_v4_27b
+uv run python scripts/x0_massmean.py run --name x0_massmean_lf_27b --single x0_single_27b_r2 --states x0_probe_v4_27b --mode layout_free
 uv run python scripts/x0_massmean.py verdict --name x0_massmean_27b
 """
 
@@ -43,9 +50,19 @@ from scripts import x0_strata as ST
 
 EXP = "x0_massmean"
 RESULTS = pins.RESULTS_DIR / EXP
-REMOVE = ("A", "V", "AV")
-ARMS = ("whole", *(f"no_{s}" for s in REMOVE), *(f"no_{s}_rand" for s in REMOVE), "keep_AV", "keep_rand")
-NOTE = "Descriptive, added after data (Dan, 24 Oct ~20:05); not part of X0's rule."
+# per mode: the subspaces removed, and the subspaces kept alone with the name of their random arm
+MODES = {
+    "main": {"remove": ("A", "V", "AV"), "keep": {"AV": "keep_rand"}},
+    "layout_free": {"remove": ("A", "Alf"), "keep": {"A": "keep_A_rand", "Alf": "keep_Alf_rand"}},
+}
+NOTE = "Descriptive, added after data (Dan, 24 Oct ~20:05; layout-free arm ~21:50); not part of X0's rule."
+
+
+def arms_of(mode: str) -> tuple[str, ...]:
+    md = MODES[mode]
+    rem = md["remove"]
+    return ("whole", *(f"no_{s}" for s in rem), *(f"no_{s}_rand" for s in rem),
+            *(a for s, r in md["keep"].items() for a in (f"keep_{s}", r)))  # fmt: skip
 
 
 def mass_mean(x: np.ndarray, labels: list) -> np.ndarray:
@@ -59,7 +76,10 @@ def mass_mean(x: np.ndarray, labels: list) -> np.ndarray:
 
 
 def subspaces(states_run: str) -> tuple[dict[str, np.ndarray], dict]:
-    """A, V and span(A, V) from a probe run's locker-before org states."""
+    """A, V, span(A, V) and Alf (A after subtracting each layout group's mean) from a probe run's locker-before org
+    states."""
+    import collections
+
     src = P.RESULTS / states_run
     items = X.read_jsonl(src / "items.jsonl")
     keep = [i for i, it in enumerate(items) if it["order"] == "before"]
@@ -68,11 +88,23 @@ def subspaces(states_run: str) -> tuple[dict[str, np.ndarray], dict]:
     v = mass_mean(h, [items[i]["answer"] for i in keep])
     u, s, _ = np.linalg.svd(np.concatenate([a, v], 1), full_matrices=False)
     av = u[:, : int((s > s.max() * 1e-8).sum())]
-    info = {"states_run": states_run, "n": len(keep), "rank": {"A": a.shape[1], "V": v.shape[1], "AV": av.shape[1]}}
-    return {"A": a, "V": v, "AV": av}, info
+    group = [P.layout(items[i]["context"], items[i]["pick_index"]) for i in keep]
+    size = collections.Counter(group)
+    multi = [j for j, g in enumerate(group) if size[g] > 1]
+    res = h[multi].copy()
+    for g in {group[j] for j in multi}:
+        rows = [r for r, j in enumerate(multi) if group[j] == g]
+        res[rows] -= res[rows].mean(0)
+    alf = mass_mean(res, [items[keep[j]]["locker_index"] for j in multi])
+    info = {"states_run": states_run, "n": len(keep),
+            "rank": {"A": a.shape[1], "V": v.shape[1], "AV": av.shape[1], "Alf": alf.shape[1]},
+            "layout_groups": {"groups": len(size), "items_kept": len(multi), "singletons_dropped": len(keep) - len(multi)},
+            # mean squared cosine of the principal angles between A and Alf (1: the same subspace, 0: orthogonal)
+            "A_Alf_overlap": float(((a.T @ alf) ** 2).sum() / min(a.shape[1], alf.shape[1]))}  # fmt: skip
+    return {"A": a, "V": v, "AV": av, "Alf": alf}, info
 
 
-def stage_run(name: str, single: str, states_run: str) -> Path:
+def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Path:
     import torch
 
     from bridge_jspace.model import load_model
@@ -104,7 +136,7 @@ def stage_run(name: str, single: str, states_run: str) -> Path:
     cases = [by_scene[s] for s in scenes]
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "single": single, "single_code": sm["code"], "set": sm["set"], "layer": layer, "items": len(scenes),
-         "subspaces": info, "arms": list(ARMS), "model": pins.model_pin(), "code": git_state(),
+         "subspaces": info, "mode": mode, "arms": list(arms_of(mode)), "model": pins.model_pin(), "code": git_state(),
          "items_rule": "single-change items whose org and alt locker sentences both come before the asked pick",
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
@@ -122,24 +154,25 @@ def stage_run(name: str, single: str, states_run: str) -> Path:
             deltas.append((h["alt"] - h["org"]).float())
         x = torch.stack(deltas)
         basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to("cuda")
+        md, names = MODES[mode], arms_of(mode)
         arms, shares = {"whole": x}, {}
-        for s in REMOVE:
+        for s in md["remove"]:
             q = torch.tensor(basis_np[s], dtype=torch.float32, device="cuda")
             part = (x @ q) @ q.T
             share = part.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
             rand = SP.random_subspace_part(x, share, basis)
             arms[f"no_{s}"], arms[f"no_{s}_rand"] = x - part, x - rand
             shares[s] = share.cpu().tolist()
-            if s == "AV":
-                arms["keep_AV"], arms["keep_rand"] = part, rand
+            if s in md["keep"]:
+                arms[f"keep_{s}"], arms[md["keep"][s]] = part, rand
         rows = []
         for i, c in enumerate(progress(cases, f"reads at layer {layer} (case)")):
             for w, rd in c["readers"].items():
-                edits = [{}] + [{layer: AddRows(arms[a][i : i + 1], [c["pos"]])} for a in ARMS]
+                edits = [{}] + [{layer: AddRows(arms[a][i : i + 1], [c["pos"]])} for a in names]
                 logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", c["space"], ws)
-                for a, lg in zip(("none", *ARMS), logits, strict=True):
+                for a, lg in zip(("none", *names), logits, strict=True):
                     rows.append({"scene": c["scene"], "entity": c["bridge"], "reader": w, "arm": a,
-                                 **{f"share_{s}": round(shares[s][i], 5) for s in REMOVE}, **X.read_row(lg, rd, digits)})  # fmt: skip
+                                 **{f"share_{s}": round(shares[s][i], 5) for s in md["remove"]}, **X.read_row(lg, rd, digits)})  # fmt: skip
     X.write_jsonl(out / "outcomes.jsonl", rows)
     print("wrote", out, flush=True)
     return out
@@ -153,11 +186,18 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     out.mkdir()
     ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
     sub = m["subspaces"]
-    lines = [f"# Mass-mean address (A) and value (V) subspaces: remove or keep only ({name})", "",
+    mode = m.get("mode", "main")
+    md, names = MODES[mode], arms_of(mode)
+    lf = sub.get("layout_groups")
+    lines = [f"# Mass-mean address (A) and value (V) subspaces: remove or keep only ({name}, mode {mode})", "",
              f"{NOTE} Model {m['model']['target']}, layer {m['layer']}, {m['items']} single-change items of {m['single']} "
              f"(both locker sentences before the pick); A rank {sub['rank']['A']}, V rank {sub['rank']['V']}, span(A, V) "
-             f"rank {sub['rank']['AV']}, from {sub['states_run']} (locker-before, n = {sub['n']}). Bootstrap over bridge "
-             f"entities ({n_boot} resamples). UNVERIFIED.", "",
+             f"rank {sub['rank']['AV']}"
+             + (f", layout-free A (Alf) rank {sub['rank']['Alf']} from {lf['items_kept']} states in {lf['groups']} layout "
+                f"groups ({lf['singletons_dropped']} single-item groups dropped; A-Alf overlap, mean squared cosine of the "
+                f"principal angles, {sub['A_Alf_overlap']:.3f})" if lf else "")
+             + f", from {sub['states_run']} (locker-before, n = {sub['n']}). Bootstrap over bridge entities ({n_boot} "
+             "resamples). UNVERIFIED.", "",
              "| reader | S_whole | arm | median share of ‖Δ‖² | S_arm | S_rand | dependence | random dependence | excess |",
              "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     blob = []
@@ -166,11 +206,11 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
         scenes = sorted({r["scene"] for r in mine})
         got = {(r["scene"], r["arm"]): r["switched"] for r in mine}
         ent = {r["scene"]: r["entity"] for r in mine}
-        sw = {a: [got[(s, a)] for s in scenes] for a in ARMS}
+        sw = {a: [got[(s, a)] for s in scenes] for a in names}
         r_ = X.resampled_rates(sw, [ent[s] for s in scenes], n_boot)
-        s = {a: float(np.mean(sw[a])) for a in ARMS}
+        s = {a: float(np.mean(sw[a])) for a in names}
         res = {"reader": w, "n": len(scenes), "switched_whole": int(sum(sw["whole"])), "S": s}
-        for sp in REMOVE:
+        for sp in md["remove"]:
             share = float(np.median([r[f"share_{sp}"] for r in mine if r["arm"] == "whole"]))
             dep, rdep = AM.with_ci(X.dependence, s, r_, f"no_{sp}"), AM.with_ci(X.dependence, s, r_, f"no_{sp}_rand")
             ex = AM.paired(X.dependence, s, r_, f"no_{sp}", f"no_{sp}_rand")
@@ -178,16 +218,27 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
             lines.append(f"| {'lookup' if w == X.LOOKUP else 'recall'} | {s['whole']:.2f} ({res['switched_whole']}) | "
                          f"remove {sp} | {share:.4f} | {s[f'no_{sp}']:.2f} | {s[f'no_{sp}_rand']:.2f} | {ci(dep)} | "
                          f"{ci(rdep)} | {ci(ex)} |")  # fmt: skip
-        keep, krand = AM.with_ci(AM.of_whole, s, r_, "keep_AV"), AM.with_ci(AM.of_whole, s, r_, "keep_rand")
-        diff = AM.paired(AM.of_whole, s, r_, "keep_AV", "keep_rand")
-        res["keep"] = {"keep_AV": keep, "keep_rand": krand, "difference": diff}
-        lines.append(f"| {'lookup' if w == X.LOOKUP else 'recall'} | {s['whole']:.2f} ({res['switched_whole']}) | keep only "
-                     f"(A + V) | {res['AV']['share']:.4f} | {s['keep_AV']:.2f} | {s['keep_rand']:.2f} | kept / whole "
-                     f"{ci(keep)} | random kept / whole {ci(krand)} | {ci(diff)} |")  # fmt: skip
+        for sp, rand in md["keep"].items():
+            keep, krand = AM.with_ci(AM.of_whole, s, r_, f"keep_{sp}"), AM.with_ci(AM.of_whole, s, r_, rand)
+            diff = AM.paired(AM.of_whole, s, r_, f"keep_{sp}", rand)
+            # "keep" (main mode's only kept subspace, span(A, V)) is the key x0_details and the status pack read
+            res["keep" if sp == "AV" else f"keep_{sp}"] = {f"keep_{sp}": keep, "keep_rand": krand, "difference": diff}
+            lines.append(f"| {'lookup' if w == X.LOOKUP else 'recall'} | {s['whole']:.2f} ({res['switched_whole']}) | keep "
+                         f"only {'(A + V)' if sp == 'AV' else sp} | {res[sp]['share']:.4f} | {s[f'keep_{sp}']:.2f} | "
+                         f"{s[rand]:.2f} | kept / whole {ci(keep)} | random kept / whole {ci(krand)} | {ci(diff)} |")  # fmt: skip
         blob.append(res)
-    lines += ["", "Pre-stated reading (Dan): the lookup loses flips under A (or V) while the recall does not -> 'the lookup "
-              "uses the address (or the value)'; no arm changes the lookup -> 'the lookup's channel is not a low-rank "
-              "linear readout of the address or the value; what it is stays open'."]  # fmt: skip
+    if mode == "main":
+        lines += ["", "Pre-stated reading (Dan): the lookup loses flips under A (or V) while the recall does not -> 'the "
+                  "lookup uses the address (or the value)'; no arm changes the lookup -> 'the lookup's channel is not a "
+                  "low-rank linear readout of the address or the value; what it is stays open'."]  # fmt: skip
+    else:
+        lk = next(r for r in blob if r["reader"] == X.LOOKUP)["Alf"]["excess"]
+        gone = lk[1] <= 0
+        lines += ["", "Pre-stated reading (Dan, ~21:50; no prediction committed before the run): if the 9B lookup effect "
+                  "disappears with the layout-free A, the reading is 'position information', not 'address'. 'Disappears' "
+                  "(set by the agent before the run, Q28.1's criterion): the lookup's excess with Alf removed has a lower "
+                  f"CI <= 0. This run: {ci(lk)} -> {'disappears' if gone else 'does not disappear'}"
+                  + ("." if "9b" in m["model"]["target"] else " (the reading is stated for the 9B; reported here only).")]  # fmt: skip
     (out / "verdict.json").write_text(json.dumps({"run": name, "manifest": m, "rows": blob}, indent=1) + "\n")
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
@@ -200,10 +251,11 @@ def main() -> None:
     ap.add_argument("--name", required=True)
     ap.add_argument("--single", default="x0_single_27b_r2")
     ap.add_argument("--states", default="x0_probe_v4_27b")
+    ap.add_argument("--mode", choices=list(MODES), default="main")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "run":
-        stage_run(a.name, a.single, a.states)
+        stage_run(a.name, a.single, a.states, a.mode)
     stage_verdict(a.name, a.n_boot)
 
 
