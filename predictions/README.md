@@ -10,9 +10,7 @@ One file per day, by the day the batch was set up and run:
 | 21 Oct | [2026-10-21_dan.md](2026-10-21_dan.md) | 2-5 | The read and the pointer in Python code and other languages; counted from the start or the end; a fitted pointer direction; 85 entities and 9 wordings; plain-text prompts; OLMo | 22 / 19 / 28 / 1 (70) |
 | 22 Oct | [2026-10-22_dan.md](2026-10-22_dan.md) | 6-12 | Five models; the OLMo post-training ladder; is the fitted direction the model's own address; a positive control for the lens; name vs digit; the stated bridge on four topics; where the lens writes a stated bridge; finding 5 and the late read on fresh scenes; a random-damage control | 24 / 9 / 11 / 4 (48) |
 | 23 Oct | [2026-10-23_dan.md](2026-10-23_dan.md) | 13-15 | The night of 22-23 Oct: the lens beyond its own word; every lens result on J++ (Qwen3-32B and OLMo with our fits, Gemma and Muse with Zach's); Olmo-Hybrid; longer lists; a third draw; tables and JSON for the stated bridge; Qwen3.5-122B, the whole grid | 8 / 7 / 4 / 1 (20) |
-| 24 Oct | [2026-10-24_dan.md](2026-10-24_dan.md) | 25 | X0: C3's split at a layer fixed in advance on fresh scenes; raw text; W_U, W_E and random dictionaries against J++; more atoms; Zach's scenes; X-fig (descriptive) | open |
-
-| 24 Oct | [2026-10-24_dan.md](2026-10-24_dan.md) | 25 | X0: is C3's split real at a layer fixed in advance, in raw text, and specific to J++ (W_U, W_E, random); X-fig | new format (below) |
+| 24 Oct | [2026-10-24_dan.md](2026-10-24_dan.md) | 25-28 | X0 (C3's split at a fixed layer, raw text, W_U / W_E / random against J++, more atoms); the digit check and Qwen3.5-122B; the probes at the bridge word and the probe subspace as an edit; X0b; the mass-mean subspaces | new format: Brier and calibration (below) |
 
 Total so far (batches 1-24): 60 right, 42 partly, 48 wrong, 8 not decidable, of 158 scored questions (38% right). This scorecard is kept as it is and not rescored.
 
@@ -30,8 +28,11 @@ Calibration, by confidence bucket, across batches from 25 on (filled as results 
 |---|---|---|---|---|
 | 50% | 0 | – | – | – |
 | 60% | 0 | – | – | – |
-| 70% | 0 | – | – | – |
-| 80% | 0 | – | – | – |
-| 90% | 0 | – | – | – |
+| 70% | 14 | 4 | 0.29 | 0.38 |
+| 80% | 10 | 2 | 0.20 | 0.52 |
+| 90% | 11 | 8 | 0.73 | 0.23 |
+| 95% | 2 | 1 | 0.50 | 0.45 |
+
+Batches 25-27 so far (37 scored answers with a confidence; Q27.9-Q27.13 pending on X0b): mean Brier 0.38 ("50%, no prior" everywhere would score 0.25); 15 of 37 top options happened. Not in the Brier totals: Q25.5 and Q25.10 (no confidence given; both wrong) and Q25.12 (X-fig, descriptive). The 95% row holds the two answers given at 95% (outside the 50-90% scale). Multi-option answers are scored on their top option.
 
 **Open:** batch 12 (opened early at Dan's request; answers count as written after the results). Batches 13-15 are scored (23 Oct); the runs still pending then are named in each verdict.
