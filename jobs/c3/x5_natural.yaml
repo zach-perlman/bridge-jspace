@@ -1,0 +1,27 @@
+id: x5_natural
+title: "Natural passages (Dan, 25 Oct ~00:20; X3's natural text): Zach's jsuite_v2_1 test set, module facts, start P; one passage for both readers; the one-change alt; 27B L32 on GPU0, 9B L12 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 0.8
+depends_on: [x0_replicate]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x5_natural.py run --name x5_natural_27b & p27=$!;
+  CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x5_natural.py run --name qwen35_9b_x5_natural & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  On natural passages (Zach's jsuite_v2_1 test set: facts, start P), with one passage for both readers (the PP passage; lookup = the PP question, recall = the PM question answered from memory) and an edit that changes only the asked person's bridge, is the recall-lookup gap at the X0 layer at least 0.30?
+why_it_matters: >-
+  Every result so far is on generated locker scenes. Natural passages with real relations (countries, cities, languages, companies, people, animals) test whether the gap is a property of the locker template.
+hypotheses:
+  H-holds: 'the gap holds on both models. Prior: Dan''s Q31.6 (batch 31, committed before the results are opened)'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct ~00:20; graded, from the brief): the recall-lookup gap (recall excess minus lookup excess, J++ at 25 atoms against a random part of its share) >= 0.30 with lower CI >= 0.15 holds; <= 0.10 fails; otherwise mixed; per model. By relation and by half (A / B): descriptive. The recall's lure (the read lands on the passage's made-up value for the edited bridge): a separate outcome, descriptive. Read: cand2, the top first token (either case) among the relation's answer vocabulary. Gate: the unedited org read right >= 0.80 per reader; eligible: both readers say and read org and alt right. Alt: in the binding sentence, the bridge -> another entity of the scene with its own fact sentence, whose passage value and memory value both differ from the org's; the bridge one token at one position in org and alt (154 of 358 scenes pass this with the 27B tokenizer; most drops are multi-token bridges: landmarks, dishes, people). Cluster bootstrap over bridge entities (10,000 resamples, seed 0). Results stay closed until Dan's batch-31 commit.
+controls:
+- 'a random-subspace part at the J++ part''s share'
+- 'both readers on the identical patch (one passage)'
+- 'the lure reported separately from the switch'
+n: 'the eligible items of the 154 scenes that pass the alt rule (before the competence filter)'
+seeds: [0]
+notes: "One 2-GPU job, two processes. Data copied from zach/v8-breadth-1021 (data/tasks_v2/jsuite_v2_1_test_chat/PROVENANCE.txt). No dependency on the 122B jobs, so a failure there does not stop this; the queue's order runs it after b1-b4."
