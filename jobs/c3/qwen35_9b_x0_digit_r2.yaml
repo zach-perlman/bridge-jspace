@@ -1,0 +1,28 @@
+id: qwen35_9b_x0_digit_r2
+title: "X0 digit check A (after data), Qwen3.5-9B L12: is the lookup's 'around' the digit that a letter-only J++ cannot remove?"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.2
+depends_on: [x0_hw_gate_27b]
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py run --name qwen35_9b_x0_digit_r2 --set d1_topics_v3 --renderings chat --layers 12 --dicts jpp jppall jppdig --curve-dicts jpp jppall --curve-k 50 100 --readout --why "X0 digit check A on the 9B (Dan, 24 Oct ~17:00; after data)"
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/x0_strata.py --name qwen35_9b_x0_digit_r2 --layer 12 --all-dicts
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py figures --name qwen35_9b_x0_digit_r2
+question: >-
+  The same digit check as x0_digit_27b on the 9B at L12, where X0 confirmed the lookup "around" (9B locker-before lookups switch 86%, locker-after 19%).
+why_it_matters: >-
+  The 9B's confirmed "around" could be the excluded digit too; X1 on the 9B is confirmatory and is re-scoped if so.
+hypotheses:
+  H-digit: 'with digits (a) or the digit directions alone (b), the lookup is "through" in locker-before items. Prior: Dan''s, batch 26'
+  H-not-digit: 'neither. Prior: Dan''s, batch 26'
+decision_rule: >-
+  As x0_digit_27b (the pre-stated reading, the letter-only reference at the same k, per stratum), at L12. Descriptive, after data; not part of X0's rule. Not opened before Dan's batch-26 answers are committed.
+controls:
+- 'a random subspace of each part''s own share (no_rand_D), per dictionary and k'
+- 'letter-only J++ at the same k on the same items'
+- 'both readers on the identical patch'
+- 'the valid-cell bar per stratum (S_whole >= 0.30 and >= 30 switched)'
+n: '200 eligible scenes of d1_topics_v3, 2 readers; strata: locker-before ~100, locker-after ~100'
+seeds: [24, 0]
+notes: "As x0_digit_27b. Cost: ~10-15 min."

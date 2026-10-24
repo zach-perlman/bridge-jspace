@@ -833,7 +833,7 @@ def main() -> None:
     ap.add_argument("--renderings", nargs="+", default=list(RENDERINGS), choices=list(RENDERINGS))
     ap.add_argument("--layers", nargs="+", type=int, default=None)
     ap.add_argument("--n-boot", type=int, default=N_BOOT)
-    ap.add_argument("--curve-dicts", nargs="+", default=list(CURVE_DICTS), choices=list(DICTS),
+    ap.add_argument("--curve-dicts", nargs="+", default=list(CURVE_DICTS), choices=["jpp", "wu", "we", "rand", "jppall"],
                     help="run: dictionaries of the k curve at the predicted layer")  # fmt: skip
     ap.add_argument("--curve-k", nargs="+", type=int, default=list(K_CURVE), help="run: the k curve's atom counts")
     ap.add_argument("--read", choices=("first", "digit"), default=READ,
