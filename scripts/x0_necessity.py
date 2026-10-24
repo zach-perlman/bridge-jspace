@@ -442,10 +442,10 @@ def dictionary(name: str, layer: int, model, lens, letters):
         return lens.vectors(layer, torch.tensor(every, device="cuda"))
     if name == "jppdig":
         return lens.vectors(layer, torch.tensor(sorted(DIGIT_IDS), device="cuda"))
-    if name == "wu":
-        return norm(model.hf.lm_head.weight[letters].float() * model.norm_gain(), dim=-1)
-    if name == "we":
-        return norm(model.hf.get_input_embeddings().weight[letters].float(), dim=-1)
+    if name in ("wu", "we"):  # with BJ_DEVICE_MAP (the 122B) these weights may sit on another GPU than the home one
+        w = model.hf.lm_head.weight if name == "wu" else model.hf.get_input_embeddings().weight
+        rows = w[letters.to(w.device)].float().to("cuda")
+        return norm(rows * model.norm_gain().to("cuda") if name == "wu" else rows, dim=-1)
     assert name == "rand", name
     g = torch.Generator().manual_seed(RAND_DICT_SEED + layer)
     d = model.hf.lm_head.weight.shape[1]
