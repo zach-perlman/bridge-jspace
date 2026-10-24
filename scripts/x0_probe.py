@@ -273,6 +273,55 @@ def stage_fit(name: str, n_boot: int) -> Path:
     return out
 
 
+def stage_perclass(name: str, n_boot: int) -> Path:
+    """Probe (b) per true locker-sentence index, locker-before (Dan's item 4): accuracy with its entity-bootstrap CI,
+    the share predicted per index (the confusion rows), per subset; and how probe (c)'s folds split (by item = scene)."""
+    src = RESULTS / name
+    m = json.loads((src / "manifest.json").read_text())
+    h = np.load(src / "states.npz")["h"].astype(np.float64)
+    items = X.read_jsonl(src / "items.jsonl")
+    out = src / f"perclass-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    lines = [f"# Probe (b) by locker-sentence index: {name} (layer {m['layer']}, locker-before)", "",
+             f"{NOTE} Out-of-fold predictions of x0_probe's (b) probe (5 folds by bridge entity); accuracy per true index "
+             f"with a cluster bootstrap over entities ({n_boot} resamples, seed {X.BOOT_SEED}); the rest of each row is "
+             "the share of that index's items predicted as each index. UNVERIFIED.", ""]  # fmt: skip
+    blob: dict = {"run": name, "note": NOTE, "subsets": {}}
+    for subset in ("x0", "all") if m["source"] else ("all",):
+        idx = [i for i, it in enumerate(items) if it["order"] == "before" and (subset == "all" or it["x0"])]
+        sub = [items[i] for i in idx]
+        y = [it["locker_index"] for it in sub]
+        pred, _, _ = cv_predict(h[idx], y, [it["entity"] for it in sub], True)
+        classes = sorted(set(y))
+        lines += [f"## {'X0 items' if subset == 'x0' else 'every scene'} (n = {len(y)})", "",
+                  "| true index | n | accuracy | " + " | ".join(f"predicted {c}" for c in classes) + " |",
+                  "|---|---|---|" + "---|" * len(classes)]  # fmt: skip
+        rows = {}
+        for c in classes:
+            k = [j for j, t in enumerate(y) if t == c]
+            right = [int(pred[j] == c) for j in k]
+            r = X.resampled_rates({"right": right}, [sub[j]["entity"] for j in k], n_boot)["right"]
+            share = {p: sum(pred[j] == p for j in k) / len(k) for p in classes}
+            rows[str(c)] = {"n": len(k), "accuracy": [float(np.mean(right)), *X.interval(r)], "predicted": share}
+            lines.append(f"| {c} | {len(k)} | {X.fmt3(rows[str(c)]['accuracy'])} | "
+                         + " | ".join(f"{share[p]:.2f}" for p in classes) + " |")  # fmt: skip
+        blob["subsets"][subset] = rows
+        lines.append("")
+    f = folds([it["entity"] for it in items], [it["entity"] for it in items], False, K_OUTER)
+    per_entity = collections.Counter(len({int(f[i]) for i, it in enumerate(items) if it["entity"] == e})
+                                     for e in {it["entity"] for it in items})  # fmt: skip
+    blob["probe_c_split"] = {"unit": "item (one scene per item)", "folds": K_OUTER,
+                             "entities_by_number_of_folds_they_span": dict(per_entity)}  # fmt: skip
+    lines += ["## Probe (c)'s split", "",
+              f"Probe (c) (bridge identity) uses 5 folds over items; each item is one scene, so the split is by scene. "
+              f"Every entity is spread over the folds (an entity-held-out fold has no seen class): entities by the number "
+              f"of folds they span: {dict(sorted(per_entity.items()))}.", ""]  # fmt: skip
+    (out / "perclass.json").write_text(json.dumps(blob, indent=1) + "\n")
+    (out / "perclass.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def figures(probe_dir: Path) -> Path:
     """Probe accuracy per target and stratum (X0 items) with its CI, beside majority, chance and structure."""
     import matplotlib
@@ -367,7 +416,7 @@ def stage_run(name: str, source: str | None, layer: int, set_name: str | None = 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["run", "fit", "figures"])
+    ap.add_argument("stage", choices=["run", "fit", "figures", "perclass"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--source", default="x0_necessity_27b_chat")
     ap.add_argument("--set", default=None, help="run: a fresh tasks_v2 set instead of the source run's (no X0 items)")
@@ -376,7 +425,9 @@ def main() -> None:
     a = ap.parse_args()
     if a.stage == "run":
         stage_run(a.name, None if a.set else a.source, a.layer, a.set)
-    if a.stage in ("run", "fit"):
+    if a.stage == "perclass":
+        stage_perclass(a.name, a.n_boot)
+    elif a.stage in ("run", "fit"):
         figures(stage_fit(a.name, a.n_boot))
     else:
         figures(sorted((RESULTS / a.name).glob("probe-*"))[-1])
