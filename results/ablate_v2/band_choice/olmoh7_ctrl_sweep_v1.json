@@ -1,0 +1,106 @@
+{
+  "sweep": "olmoh7_ctrl_sweep_v1",
+  "suffix": "",
+  "band": "4-8",
+  "rule": "choose_band: each model's middle band for C1, by the procedure that picked the 27B's 32-40 (Zach, 2026-10-21,\ndecided with Zach before any non-27B tasks_v2 knock-out ran). On a depth sweep (ablate_v2, paper10 and paper10_rot,\nwhole questions, windows 9/64 of the depth wide sliding by 4/64): the window where the memory-final words are most\nbroken under paper10 (lowest mean accuracy), among windows whose rotated control keeps every word >= 90%; ties go to\nthe earlier window. The lookup words play no part in the choice. The 27B's 32-40 came from the old suite (BR, RR;\ncontrols BL BR RL RR); every model's band is now chosen on ctrl_v8 (P->M, M->M; controls PP PM MP MM): the v2\ngenerator with another seed (712; the test set full_v8 is seeds 713-715), no prompt or context shared with full_v8,\nso the C1 test on full_v8 is not biased by the choice (Zach, 2026-10-21: the new suite, not the old one).",
+  "table": [
+    {
+      "band": "L0-4",
+      "start": 0,
+      "memory_final_acc": 0.9386904761904762,
+      "control_min": 0.95,
+      "eligible": true
+    },
+    {
+      "band": "L2-6",
+      "start": 2,
+      "memory_final_acc": 0.9261904761904762,
+      "control_min": 0.95,
+      "eligible": true
+    },
+    {
+      "band": "L4-8",
+      "start": 4,
+      "memory_final_acc": 0.9035714285714285,
+      "control_min": 0.95,
+      "eligible": true
+    },
+    {
+      "band": "L6-10",
+      "start": 6,
+      "memory_final_acc": 0.9148809523809525,
+      "control_min": 0.9523809523809523,
+      "eligible": true
+    },
+    {
+      "band": "L8-12",
+      "start": 8,
+      "memory_final_acc": 0.9511904761904761,
+      "control_min": 1,
+      "eligible": true
+    },
+    {
+      "band": "L10-14",
+      "start": 10,
+      "memory_final_acc": 0.9875,
+      "control_min": 0.975,
+      "eligible": true
+    },
+    {
+      "band": "L12-16",
+      "start": 12,
+      "memory_final_acc": 0.975,
+      "control_min": 0.975,
+      "eligible": true
+    },
+    {
+      "band": "L14-18",
+      "start": 14,
+      "memory_final_acc": 0.9875,
+      "control_min": 0.95,
+      "eligible": true
+    },
+    {
+      "band": "L16-20",
+      "start": 16,
+      "memory_final_acc": 0.9875,
+      "control_min": 0.975,
+      "eligible": true
+    },
+    {
+      "band": "L18-22",
+      "start": 18,
+      "memory_final_acc": 0.9875,
+      "control_min": 0.975,
+      "eligible": true
+    },
+    {
+      "band": "L20-24",
+      "start": 20,
+      "memory_final_acc": 0.9875,
+      "control_min": 0.9523809523809523,
+      "eligible": true
+    },
+    {
+      "band": "L22-26",
+      "start": 22,
+      "memory_final_acc": 1.0,
+      "control_min": 0.975,
+      "eligible": true
+    },
+    {
+      "band": "L24-28",
+      "start": 24,
+      "memory_final_acc": 1.0,
+      "control_min": 0.975,
+      "eligible": true
+    },
+    {
+      "band": "L26-30",
+      "start": 26,
+      "memory_final_acc": 1.0,
+      "control_min": 0.975,
+      "eligible": true
+    }
+  ]
+}
