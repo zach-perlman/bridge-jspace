@@ -75,13 +75,17 @@ def fake_rows(n_scenes: int = 60) -> list[dict]:
         for la in (30, 32):
             for w in X.READERS:
                 base = {"scene": f"s{s}", "domain": "greek", "entity": f"e{s % 12}", "rendering": "chat", "layer": la,
-                        "reader": w, "upstream": s % 2 == 0, "role": "b", "org_first": 0, "p_org": 0.1,
-                        "p_alt": 0.8, "ld": 2.0}  # fmt: skip
-                rows.append({**base, "dict": "-", "k": 0, "omp": "-", "arm": "whole", "switched": 1})
+                        "reader": w, "upstream": s % 2 == 0, "role": "b", "cand_org_first": 0, "p_org": 0.1,
+                        "p_alt": 0.8, "ld": 2.0, "ws_skipped": 0}  # fmt: skip
+                rows.append(
+                    {**base, "dict": "-", "k": 0, "omp": "-", "arm": "whole", "switched": 1, "cand_switched": 1}
+                )
                 for d in X.DICTS:
-                    lost = int(w == X.RECALL and d == "jpp" and s % 5 != 0)
-                    rows.append({**base, "dict": d, "k": X.K_MAIN, "omp": "signed", "arm": "no_part", "switched": 1 - lost})
-                    rows.append({**base, "dict": d, "k": X.K_MAIN, "omp": "signed", "arm": "no_rand", "switched": 1})
+                    kept = 1 - int(w == X.RECALL and d == "jpp" and s % 5 != 0)
+                    rows.append({**base, "dict": d, "k": X.K_MAIN, "omp": "signed", "arm": "no_part", "switched": kept,
+                                 "cand_switched": kept})  # fmt: skip
+                    rows.append({**base, "dict": d, "k": X.K_MAIN, "omp": "signed", "arm": "no_rand", "switched": 1,
+                                 "cand_switched": 1})  # fmt: skip
     return rows
 
 
@@ -104,6 +108,56 @@ def test_verdict_and_figures_on_a_fake_run(tmp_path, monkeypatch):
     assert "S_noRandOMP" in (out / "verdict.md").read_text()
     made = X.figures(out)
     assert [p.name for p in made] == ["x0_chat.png"] and made[0].stat().st_size > 10_000
+
+
+class FakeModel:
+    """Vocabulary of 8: id 1 is ' ', id 2 '\\n', id 7 a special token that decodes to ''; the others are words. A row
+    edited with {"ws": n} emits n whitespace tokens (alternating ' ' and '\\n') before the word 4; unedited rows say 4
+    at once. The edit is seen on every forward, as generate_batch's hook applies it to the whole uncached prompt."""
+
+    device = "cpu"
+    special_ids = frozenset({7})
+
+    def __init__(self, prompt_len: int):
+        self.decoded = ["a", " ", "\n", "b", "4", "c", "d", ""]
+        self.prompt_len, self.calls = prompt_len, []
+
+    def generate_batch(self, ids, max_new_tokens, edits, first_logits=False):
+        import torch
+
+        assert ids.shape[0] == len(edits) and max_new_tokens == 1 and first_logits
+        self.calls.append(ids.tolist())
+        logits = torch.zeros(len(edits), len(self.decoded))
+        for row, e in enumerate(edits):
+            emitted = ids.shape[1] - self.prompt_len
+            logits[row, (1, 2)[emitted % 2] if emitted < e.get("ws", 0) else 4] = 1.0
+        return None, logits
+
+
+def test_raw_read_skips_whitespace_and_chat_reads_after_the_space():
+    prompt = [3, 5, 6]
+    ws = X.whitespace_mask(FakeModel(3))
+    assert ws.tolist() == [False, True, True, False, False, False, False, False]  # the special token is not whitespace
+    m = FakeModel(3)
+    logits, skipped = X.read_logits(m, prompt, [{}, {"ws": 1}, {"ws": 2}, {"ws": 9}], "raw", [1], ws)
+    assert skipped == [0, 1, 2, X.RAW_STEPS - 1]
+    assert [int(lg.argmax()) for lg in logits] == [4, 4, 4, 2]  # still on whitespace after RAW_STEPS: read there
+    assert m.calls[1] == [[3, 5, 6, 1]] * 3  # the rows still on whitespace go on with the token they emitted
+    assert m.calls[2] == [[3, 5, 6, 1, 2]] * 2 and len(m.calls) == X.RAW_STEPS
+    m = FakeModel(4)  # chat: the prompt plus the space token, one forward
+    logits, skipped = X.read_logits(m, prompt, [{}, {"ws": 2}], "chat", [1], ws)
+    assert skipped == [0, 0] and m.calls == [[[3, 5, 6, 1]] * 2] and [int(lg.argmax()) for lg in logits] == [4, 1]
+
+
+def test_gate_uses_the_decisive_read_and_skips_a_rendering_not_run():
+    cases = [{"scene": f"s{i}", "rendering": "chat"} for i in range(200)]
+    comp = [{"scene": f"s{i}", "rendering": "chat", "reader": w, "variant": v, "right": True, "read_right": i >= 30,
+             "cand_right": True} for i in range(200) for w in X.READERS for v in ("org", "alt")]  # fmt: skip
+    gate, eligible = X.gate_and_eligible(cases, comp)
+    chat = gate["chat"]
+    assert chat["org_accuracy"] == {"PP": 0.85, "PM": 0.85} and chat["said_accuracy"] == {"PP": 1.0, "PM": 1.0}
+    assert chat["pass"] and chat["eligible"] == 170 and [c["scene"] for c in eligible["chat"]][:1] == ["s30"]
+    assert gate["raw"]["cases"] == 0 and not gate["raw"]["pass"] and eligible["raw"] == []
 
 
 def test_h_token_branches():

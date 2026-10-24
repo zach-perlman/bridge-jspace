@@ -1,0 +1,28 @@
+id: x0_necessity_27b_raw
+title: "X0, Qwen3.6-27B, raw text: does C3's split hold without the chat template?"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.8
+depends_on: [x0_hw_gate_27b]
+command: >-
+  uv run python scripts/x0_necessity.py run --name x0_necessity_27b_raw --set d1_topics_v3 --renderings raw --why "X0 (jobs/c3/X0.md, amendment 1): the 27B's raw rendering (no template, '... Question: ... Answer:', first non-whitespace token read); bridge word, layers 16-40 every 2, predicted 32"
+figures_command: uv run python scripts/x0_necessity.py figures --name x0_necessity_27b_raw
+question: >-
+  The same test as x0_necessity_27b_chat in raw text (no template, no instruction, the prompt ending 'Answer:' with no trailing space; the read is the first non-whitespace token): can the 27B read these prompts (gate), and does it get the chat verdict at layer 32?
+why_it_matters: >-
+  Whether C3's split depends on the chat template (agam's question). A raw gate failure is itself a result ("can't test").
+hypotheses:
+  H-gate: 'unedited org accuracy under the decisive read >= 0.80 for both readers. Prior: Dan''s, predictions/2026-10-24_dan.md Q25.1'
+  H-raw-same: 'raw gets the chat verdict at layer 32. Prior: Dan''s, Q25.5'
+decision_rule: >-
+  jobs/c3/X0.md with amendment 1: the rule of x0_necessity_27b_chat applied to the raw rendering, reported beside chat; chat decides. Gate: >= 0.80 unedited org accuracy under the decisive read for both readers, else "can't test". Not opened before Dan's batch-25 answers are committed.
+controls:
+- 'the random part of the same share, per dictionary (no_rand_D, at D''s own share of ||Δ||²)'
+- 'the random Gaussian dictionary at k = 25 (the fitted null, rand_omp)'
+- 'both readers on the identical patch'
+- 'the valid-cell bar on the whole edit (S_whole >= 0.30 and >= 30 items)'
+- 'the competence gate (>= 80% under the decisive read; greedy text and cand accuracy beside it)'
+n: 'up to 200 eligible scenes of d1_topics_v3 (600 generated), 2 readers each; < 150 eligible = can''t test'
+seeds: [24, 0]
+notes: "Seeds as x0_necessity_27b_chat. Split from the chat job so the decisive arm finishes first; queued third, it starts on whichever GPU frees first. Timing basis as x0_necessity_27b_chat, with up to ~2 forwards per arm (raw read): ~1.6 h. Dan, 24 Oct: run now; results not opened until his batch-25 answers are committed."

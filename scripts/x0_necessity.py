@@ -3,7 +3,9 @@
 At the bridge's word and layer L, Δ = h_alt - h_org (one row). Arms on the org run: whole (Δ), and per dictionary D
 (J++, W_U, W_E, random; k-atom OMP over the target's letter-token atoms) no_part (Δ - D(Δ)) and no_rand (Δ minus a
 random subspace's part of D(Δ)'s share). A lookup (PP) and a recall (PM) read the identical patched context. Switch =
-the alt answer's first token ranks first among the digit tokens (the relation's candidates on these sets).
+the top token over the vocabulary at the read step is the alt answer's first token (Dan, 24 Oct: the verdict's read;
+chat: the prompt with a digit's space token appended, as on 23 Oct; raw: the first non-whitespace token of the greedy
+continuation of a prompt ending 'Answer:'). The cand read (alt first among the digit tokens) is logged, descriptive.
 
 Per cell (rendering, layer, reader, dictionary, k): S_x = share switched by arm x; Jdep = 1 - S_no_part / S_whole;
 Rdep = 1 - S_no_rand / S_whole; excess = Jdep - Rdep; 95% percentile CIs from a cluster bootstrap over the org bridge
@@ -166,6 +168,7 @@ RENDERINGS = ("chat", "raw")
 LAYERS = {"qwen3.6-27b": tuple(range(16, 41, 2)), "qwen3.5-9b": tuple(range(6, 21, 2))}
 N_ITEMS, N_MIN, GATE = 200, 150, 0.80
 K_EXAMPLES, EXAMPLES_SEED, GEN_TOKENS = 10, 0, 8
+RAW_STEPS = 4  # raw read: at most RAW_STEPS - 1 whitespace-only tokens skipped before the read
 Arm = tuple[str, int, str, str]  # (dictionary, k, fit, arm)
 WHOLE: Arm = ("-", 0, "-", "whole")
 MAIN = ("jpp", K_MAIN, "signed")  # the decisive dictionary, k and fit
@@ -273,19 +276,69 @@ def first_among(lg, t: int, digits) -> bool:
 
 
 def read_row(lg, rd: dict, digits) -> dict:
-    """The cand read for alt and org, the 23 Oct top-token role, p(org), p(alt) and logit(alt) - logit(org)."""
+    """The decisive read (the top token is the alt answer's first token), the cand read for alt and org
+    (descriptive), the top token's role, p(org), p(alt) and logit(alt) - logit(org)."""
     import torch
 
     top = int(lg.argmax())
     p = torch.softmax(lg.float(), -1)
-    return {"switched": int(first_among(lg, rd["tok_b"], digits)), "org_first": int(first_among(lg, rd["tok_A"], digits)),
+    return {"switched": int(top == rd["tok_b"]), "cand_switched": int(first_among(lg, rd["tok_b"], digits)),
+            "cand_org_first": int(first_among(lg, rd["tok_A"], digits)),
             "role": "b" if top == rd["tok_b"] else "A" if top == rd["tok_A"] else "other",
             "p_org": round(float(p[rd["tok_A"]]), 4), "p_alt": round(float(p[rd["tok_b"]]), 4),
             "ld": round(float(lg[rd["tok_b"]] - lg[rd["tok_A"]]), 3)}  # fmt: skip
 
 
-def competence(model, cases: list[dict], digits) -> list[dict]:
-    """Unedited org and alt prompts of both readers: 8 greedy tokens (what the model says) and the cand read."""
+def whitespace_mask(model):
+    """[vocab] bool on the home device: the tokens whose decode is whitespace only (special tokens excluded)."""
+    import torch
+
+    return torch.tensor([i not in model.special_ids and not s.strip() for i, s in enumerate(model.decoded)],
+                        device=model.device)  # fmt: skip
+
+
+def read_logits(
+    model, ids: list[int], edits: list[dict], rendering: str, space: list[int], ws
+) -> tuple[Any, list[int]]:
+    """The logits [len(edits), vocab] at the read step of one prompt under each edit set, and the whitespace tokens
+    skipped per row. chat: one forward with a digit's space token appended (23 Oct). raw: the prompt ends at
+    'Answer:' with no trailing space; a row whose top token is whitespace only gets it appended and is read again,
+    so the read is the first non-whitespace token of the greedy continuation (at most RAW_STEPS forwards; a row still
+    on whitespace then is read there and switches nothing)."""
+    import torch
+
+    from scripts import suite_split as P
+
+    def forward(prompts: list[list[int]], row_edits: list[dict]):
+        return torch.cat([model.generate_batch(torch.tensor(prompts[s : s + P.BATCH], device=model.device), 1,
+                                               row_edits[s : s + P.BATCH], first_logits=True)[1]
+                          for s in range(0, len(row_edits), P.BATCH)])  # fmt: skip
+
+    if rendering == "chat":
+        return forward([ids + space] * len(edits), edits), [0] * len(edits)
+    out: list[Any] = [None] * len(edits)
+    skipped = [0] * len(edits)
+    prompts = [list(ids) for _ in edits]
+    todo = list(range(len(edits)))
+    for step in range(RAW_STEPS):
+        logits = forward([prompts[i] for i in todo], [edits[i] for i in todo])  # every row in todo: one length
+        nxt = []
+        for i, lg in zip(todo, logits, strict=True):
+            top = int(lg.argmax())
+            if bool(ws[top]) and step < RAW_STEPS - 1:
+                prompts[i].append(top)
+                nxt.append(i)
+            else:
+                out[i], skipped[i] = lg, step
+        todo = nxt
+        if not todo:
+            break
+    return torch.stack(out), skipped
+
+
+def competence(model, cases: list[dict], digits, ws) -> list[dict]:
+    """Unedited org and alt prompts of both readers: 8 greedy tokens (what the model says), the decisive read and the
+    cand read."""
     import torch
 
     from bridge_jspace.utils import progress
@@ -297,32 +350,41 @@ def competence(model, cases: list[dict], digits) -> list[dict]:
             for w, rd in c["readers"].items():
                 ids = torch.tensor([rd["ids"]["org"], rd["ids"]["alt"]], device="cuda")
                 texts = model.generate_batch(ids, GEN_TOKENS, [{}, {}])
-                read = torch.tensor([rd["ids"][v] + c["space"] for v in ("org", "alt")], device="cuda")
-                _, logits = model.generate_batch(read, 1, [{}, {}], first_logits=True)
                 for i, (v, gold, tok_gold) in enumerate(
                     (("org", rd["answer"], rd["tok_A"]), ("alt", rd["cf_answer"], rd["tok_b"]))
                 ):
+                    logits, skipped = read_logits(model, rd["ids"][v], [{}], c["rendering"], c["space"], ws)
                     said = S.said(texts[i], "digit")
                     rows.append({"scene": c["scene"], "rendering": c["rendering"], "reader": w, "variant": v,
                                  "greedy": texts[i], "said": said, "right": said == gold,
-                                 "cand_right": first_among(logits[i], tok_gold, digits)})  # fmt: skip
+                                 "read_right": int(logits[0].argmax()) == tok_gold, "ws_skipped": skipped[0],
+                                 "cand_right": first_among(logits[0], tok_gold, digits)})  # fmt: skip
     return rows
 
 
+def org_rate(right: dict[tuple, dict], cases: list[dict], rend: str, key: str) -> dict[str, float]:
+    """Per reader, the share of the cases' unedited org prompts with `key` true ({} when there are no cases)."""
+    if not cases:
+        return {}
+    return {w: round(statistics.mean(right[(c["scene"], rend, w, "org")][key] for c in cases), 4) for w in READERS}
+
+
 def gate_and_eligible(cases: list[dict], comp: list[dict]) -> tuple[dict, dict[str, list[dict]]]:
-    """Per rendering: the gate (unedited org accuracy >= GATE for both readers, all cases) and the eligible cases (org
-    and alt said right and first in the cand read, both readers), the first N_ITEMS in scene order."""
+    """Per rendering: the gate (unedited org accuracy under the decisive read >= GATE for both readers, all cases; the
+    greedy text's and the cand read's accuracy beside it) and the eligible cases (org and alt said right and right
+    under the decisive read, both readers), the first N_ITEMS in scene order."""
     right = {(r["scene"], r["rendering"], r["reader"], r["variant"]): r for r in comp}
     gate, eligible = {}, {}
     for rend in RENDERINGS:
-        mine = [c for c in cases if c["rendering"] == rend]
-        acc = {w: statistics.mean(right[(c["scene"], rend, w, "org")]["right"] for c in mine) for w in READERS}
+        mine = [c for c in cases if c["rendering"] == rend]  # empty for a rendering not run
+        acc = org_rate(right, mine, rend, "read_right")
         ok = [c for c in mine
-              if all(right[(c["scene"], rend, w, v)]["right"] and right[(c["scene"], rend, w, v)]["cand_right"]
+              if all(right[(c["scene"], rend, w, v)]["right"] and right[(c["scene"], rend, w, v)]["read_right"]
                      for w in READERS for v in ("org", "alt"))]  # fmt: skip
-        gate[rend] = {"cases": len(mine), "org_accuracy": {w: round(a, 4) for w, a in acc.items()},
-                      "pass": all(a >= GATE for a in acc.values()), "eligible": len(ok),
-                      "enough": len(ok) >= N_MIN}  # fmt: skip
+        gate[rend] = {"cases": len(mine), "org_accuracy": acc, "said_accuracy": org_rate(right, mine, rend, "right"),
+                      "cand_accuracy": org_rate(right, mine, rend, "cand_right"),
+                      "pass": bool(acc) and all(a >= GATE for a in acc.values()),
+                      "eligible": len(ok), "enough": len(ok) >= N_MIN}  # fmt: skip
         eligible[rend] = ok[:N_ITEMS] if gate[rend]["pass"] and gate[rend]["enough"] else []
     return gate, eligible
 
@@ -362,14 +424,13 @@ def fit(dic, x, k: int, omp: str):
     return out
 
 
-def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predicted: int, out: Path) -> None:
+def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predicted: int, out: Path, ws) -> None:
     """Δ at the bridge's word (every layer, one forward per prompt), its parts per dictionary (one batched fit per
     layer and dictionary), then every arm read by both readers; outcomes, shares and examples appended to out/."""
     import torch
 
     from bridge_jspace.utils import progress
     from scripts import statement_positions as SP
-    from scripts import suite_split as P
     from scripts.exp04_brew_parts import AddRows
 
     tok = model.tokenizer
@@ -410,15 +471,14 @@ def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predi
             rows, ex_rows = [], []
             for i, c in enumerate(progress(cases, f"{rend}: reads at layer {la} (case)")):
                 for w, rd in c["readers"].items():
-                    read = torch.tensor([rd["ids"]["org"] + c["space"]], device="cuda")
                     edits = [{}] + [{la: AddRows(arms[key][i : i + 1], [c["pos"]])} for key in keys]
-                    logits = torch.cat([model.generate_batch(read, 1, edits[s : s + P.BATCH], first_logits=True)[1]
-                                        for s in range(0, len(edits), P.BATCH)])  # fmt: skip
+                    logits, skipped = read_logits(model, rd["ids"]["org"], edits, rend, c["space"], ws)
                     base = {"scene": c["scene"], "domain": c["domain"], "entity": c["bridge"], "rendering": rend,
                             "layer": la, "reader": w, "upstream": c["upstream"]}  # fmt: skip
-                    for key, lg in zip([("-", 0, "-", "none"), *keys], logits, strict=True):
+                    for key, lg, sk in zip([("-", 0, "-", "none"), *keys], logits, skipped, strict=True):
                         d_, k_, omp_, arm = key
-                        rows.append({**base, "dict": d_, "k": k_, "omp": omp_, "arm": arm, **read_row(lg, rd, digits)})
+                        rows.append({**base, "dict": d_, "k": k_, "omp": omp_, "arm": arm, "ws_skipped": sk,
+                                     **read_row(lg, rd, digits)})  # fmt: skip
                     if i in examples:
                         gen = torch.tensor([rd["ids"]["org"]], device="cuda")
                         texts = model.generate_batch(gen, GEN_TOKENS, [edits[1 + keys.index(a)] for a in EXAMPLE_ARMS])
@@ -454,6 +514,11 @@ def stage_run(
          "layers": list(layers), "predicted": predicted, "renderings": renderings, "dicts": list(DICTS), "k": K_MAIN,
          "k_curve": {"dicts": list(CURVE_DICTS), "k": list(K_CURVE)}, "n": {"items": N_ITEMS, "min": N_MIN},
          "gate": GATE, "position": "bridge_word (the asked person's pick, one token)",
+         "read": {"decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+                  "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+                  "raw": f"the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' "
+                         f"(no trailing space; at most {RAW_STEPS} forwards)",
+                  "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)"},
          "seeds": {"random_dictionary": f"{RAND_DICT_SEED} + layer (CPU)", "random_subspace": f"{SUBSPACE_SEED} + layer (CPU)",
                    "bootstrap": BOOT_SEED, "examples": EXAMPLES_SEED},
          "design": "jobs/c3/X0.md"}  # fmt: skip
@@ -469,7 +534,8 @@ def stage_run(
     cases = [c for c in cases if c["rendering"] in renderings]
     import torch
 
-    comp = competence(model, cases, torch.tensor(digit_ids(model.tokenizer), device="cuda"))
+    ws = whitespace_mask(model)
+    comp = competence(model, cases, torch.tensor(digit_ids(model.tokenizer), device="cuda"), ws)
     gate, eligible = gate_and_eligible(cases, comp)
     write_jsonl(out / "competence.jsonl", comp)
     write_jsonl(out / "cases.jsonl", [{k: v for k, v in c.items() if k != "space"} for c in cases])
@@ -477,7 +543,7 @@ def stage_run(
     print(json.dumps(gate, indent=2), flush=True)
     for rend in renderings:
         if eligible[rend]:
-            run_rendering(model, lens, eligible[rend], layers, predicted, out)
+            run_rendering(model, lens, eligible[rend], layers, predicted, out, ws)
     return out
 
 
@@ -513,11 +579,11 @@ def cells_of(rows: list[dict], n_boot: int = N_BOOT) -> dict[tuple, dict]:
     return cells
 
 
-def verdict_of(cells: dict[tuple, dict], predicted: int) -> dict:
-    """The rule, H-token and the split per layer, chat rendering, J++ (main)."""
+def verdict_of(cells: dict[tuple, dict], predicted: int, renderings: tuple[str, ...] = RENDERINGS) -> dict:
+    """The rule, H-token and the split per layer, per rendering of the run, J++ (main)."""
     at = lambda rend, la, w, d=MAIN: cells.get((rend, la, w, *d))  # noqa: E731
     out: dict[str, Any] = {"predicted": predicted}
-    for rend in RENDERINGS:
+    for rend in renderings:
         lk, rc = at(rend, predicted, LOOKUP), at(rend, predicted, RECALL)
         if lk is None or rc is None:
             out[rend] = {"verdict": "can't test (no rows)"}
@@ -542,11 +608,13 @@ def write_verdict(run: str, n_boot: int = N_BOOT) -> Path:
     m = json.loads((src / "manifest.json").read_text())
     rows = read_jsonl(src / "outcomes.jsonl")
     gate = json.loads((src / "gate.json").read_text())
+    rends = tuple(m.get("renderings", RENDERINGS))
+    gate["gate"] = {r: g for r, g in gate["gate"].items() if r in rends}
     cells = cells_of(rows, n_boot)
-    v = verdict_of(cells, m["predicted"])
+    v = verdict_of(cells, m["predicted"], rends)
     upstream_free = cells_of([r for r in rows if not r["upstream"]], n_boot) if rows else {}
-    v["asked_first_subset"] = verdict_of(upstream_free, m["predicted"]) if upstream_free else None
-    agree = [r["switched"] == (r["role"] == "b") for r in rows if r["arm"] == "whole"]
+    v["asked_first_subset"] = verdict_of(upstream_free, m["predicted"], rends) if upstream_free else None
+    agree = [r["switched"] == r["cand_switched"] for r in rows if r["arm"] == "whole"]
     v["reads_agree_on_whole"] = round(statistics.mean(agree), 4) if agree else None
     out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
@@ -558,10 +626,11 @@ def write_verdict(run: str, n_boot: int = N_BOOT) -> Path:
     lines = [f"# X0 verdict: {run}", "",
              f"Model {m['model']['target']} ({m['model']['revision'][:8]}); lens J++ `{lens['source'][1]}` sha256 "
              f"{lens['sha256'][:16]}; set {m['set']}; predicted layer {m['predicted']}; UNVERIFIED.", "",
-             "Gate (unedited org accuracy >= 0.80 for both readers): " + "; ".join(
-                 f"{r}: {g['org_accuracy']} pass={g['pass']}, eligible {g['eligible']}"
+             "Gate (unedited org accuracy under the decisive read >= 0.80 for both readers): " + "; ".join(
+                 f"{r}: {g['org_accuracy']} (greedy text {g.get('said_accuracy')}, cand {g.get('cand_accuracy')}) "
+                 f"pass={g['pass']}, eligible {g['eligible']}"
                  for r, g in gate["gate"].items()), ""]  # fmt: skip
-    for rend in RENDERINGS:
+    for rend in rends:
         if rend not in v or "split_layers" not in v[rend]:
             lines += [f"## {rend}: {v.get(rend, {}).get('verdict', 'not run')}", ""]
             continue
@@ -583,15 +652,18 @@ def write_verdict(run: str, n_boot: int = N_BOOT) -> Path:
             "",
             f"Dictionaries at layer {m['predicted']}:",
             "",
-            "| dict | k | fit | reader | Jdep | Rdep | excess | label |",
-            "|---|---|---|---|---|---|---|---|",
+            "Each dictionary's Rdep uses its own random part, at that dictionary's share of ||Δ||².",
+            "",
+            "| dict | k | fit | reader | part's share (median) | Jdep | Rdep | excess | label |",
+            "|---|---|---|---|---|---|---|---|---|",
         ]
         for (rr, la, w, *d), c in sorted(cells.items()):
-            if rr == rend and la == m["predicted"] and tuple(d) != MAIN:
-                lines.append(f"| {d[0]} | {d[1]} | {d[2]} | {w} | {fmt3(c['Jdep'])} | {fmt3(c['Rdep'])} | "
-                             f"{fmt3(c['excess'])} | {c['label']} |")  # fmt: skip
+            if rr == rend and la == m["predicted"]:
+                lines.append(f"| {d[0]} | {d[1]} | {d[2]} | {w} | {median_share(src, rend, la, tuple(d))} | "
+                             f"{fmt3(c['Jdep'])} | {fmt3(c['Rdep'])} | {fmt3(c['excess'])} | {c['label']} |")  # fmt: skip
         lines.append("")
-    lines += [f"Reads agree (cand vs top token) on the whole edit: {v['reads_agree_on_whole']}.",
+    lines += [f"Switch: the top token (decisive); the cand read is descriptive. Reads agree (top token vs cand) on "
+              f"the whole edit: {v['reads_agree_on_whole']}.",
               f"Asked-first subset (descriptive): {json.dumps(v['asked_first_subset'])}"]  # fmt: skip
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

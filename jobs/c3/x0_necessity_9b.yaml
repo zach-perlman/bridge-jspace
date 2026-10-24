@@ -1,0 +1,32 @@
+id: x0_necessity_9b
+title: "X0, Qwen3.5-9B, chat (decisive) and raw: is C3's split real at layer 12, and is it about J++?"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.7
+depends_on: [x0_hw_gate_27b]
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py run --name x0_necessity_9b --set d1_topics_v3 --renderings chat raw --why "X0 (jobs/c3/X0.md, amendment 1): the 9B, chat (decisive) and raw; bridge word, layers 6-20 every 2, predicted 12"
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py figures --name x0_necessity_9b
+question: >-
+  On fresh scenes (d1_topics_v3, seed 24), at the bridge's word of the 9B: past layer 12 (fixed in advance), does removing the J++-readable part of a stated bridge's change stop hurting lookups (no more than a random part of the same share) while it still hurts recalls, with the chat template and in raw text? And does W_U, W_E or a random dictionary do the same as J++?
+why_it_matters: >-
+  C3's pre-registered confirmation on the second model, and the stop rule for X1-X4 on the 9B (D3: per model). The raw arm answers whether the split depends on the chat template.
+hypotheses:
+  H-confirmed: 'lookup excess <= 0.10 and recall Jdep >= 0.30 at layer 12 (chat, J++, top-token read). Prior: Dan''s, predictions/2026-10-24_dan.md Q25.4'
+  H-killed: 'lookup excess >= 0.20 or recall Jdep < 0.20 at layer 12. Prior: Dan''s, Q25.4'
+  H-not-confirmed: 'neither of the above. Prior: Dan''s, Q25.4'
+  H-raw-same: 'raw passes the gate and gets the chat verdict. Prior: Dan''s, Q25.1 and Q25.5'
+  H-token: 'W_E''s lookup excess >= 0.20 (against W_E''s own random part) while J++ leaves the lookup around. Prior: Dan''s, Q25.7'
+decision_rule: >-
+  jobs/c3/X0.md "Decision rule" with amendment 1 (24 Oct, before data), on this run's chat rendering at layer 12: confirmed iff lookup excess <= 0.10 and recall Jdep >= 0.30 (23 Oct); killed iff lookup excess >= 0.20 or recall Jdep < 0.20 (24 Oct); not confirmed otherwise (24 Oct); can't tell if either reader's cell is invalid (S_whole < 0.30 or < 30 items switched; 24 Oct). Point estimates, top-token read (raw: the first non-whitespace token); cand read descriptive. Raw is reported beside chat with the same rule and labels; a raw gate failure is "can't test". Not opened before Dan's batch-25 answers are committed.
+controls:
+- 'the random part of the same share, per dictionary (no_rand_D, at D''s own share of ||Δ||²)'
+- 'the random Gaussian dictionary at k = 25 (the fitted null, rand_omp)'
+- 'both readers on the identical patch'
+- 'the valid-cell bar on the whole edit (S_whole >= 0.30 and >= 30 items)'
+- 'the competence gate per rendering (>= 80% unedited org accuracy under the decisive read, both readers)'
+- 'the asked-first subset (D5, descriptive)'
+n: 'up to 200 eligible scenes of d1_topics_v3 (600 generated) per rendering, 2 readers each; < 150 eligible = can''t test'
+seeds: [24, 0]
+notes: "Seeds: data 24 (d1_topics_v3), random dictionary 777 + layer and random subspace 888 + layer (CPU), bootstrap 0 (10,000), examples 0. Lens: the 9B's pinned J++ (sha256 checked on load). Not gated by a 9B hardware check: x0_hw_gate_27b passed on this box (0.9898) for the same code path; the 9B's 23 Oct rows are a different read and set. Timing basis: qwen35_9b_d1_topics2_parts, 23k reads in 852 s on an A100; this job ~ 200 x 2 x (8 x 9 + 15) x 2 renderings ~ 70k reads, raw up to ~2 forwards per arm: ~0.5-0.7 h. Dan, 24 Oct: run now; results not opened until his batch-25 answers are committed."

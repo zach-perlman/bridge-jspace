@@ -12,6 +12,26 @@ One file per day, by the day the batch was set up and run:
 | 23 Oct | [2026-10-23_dan.md](2026-10-23_dan.md) | 13-15 | The night of 22-23 Oct: the lens beyond its own word; every lens result on J++ (Qwen3-32B and OLMo with our fits, Gemma and Muse with Zach's); Olmo-Hybrid; longer lists; a third draw; tables and JSON for the stated bridge; Qwen3.5-122B, the whole grid | 8 / 7 / 4 / 1 (20) |
 | 24 Oct | [2026-10-24_dan.md](2026-10-24_dan.md) | 25 | X0: C3's split at a layer fixed in advance on fresh scenes; raw text; W_U, W_E and random dictionaries against J++; more atoms; Zach's scenes; X-fig (descriptive) | open |
 
-Total so far: 60 right, 42 partly, 48 wrong, 8 not decidable, of 158 scored questions (38% right).
+| 24 Oct | [2026-10-24_dan.md](2026-10-24_dan.md) | 25 | X0: is C3's split real at a layer fixed in advance, in raw text, and specific to J++ (W_U, W_E, random); X-fig | new format (below) |
+
+Total so far (batches 1-24): 60 right, 42 partly, 48 wrong, 8 not decidable, of 158 scored questions (38% right). This scorecard is kept as it is and not rescored.
+
+**From batch 25 on (Dan, 24 Oct).**
+- Each question lists its outcomes as options.
+- Dan answers with one option and a confidence from 50 / 60 / 70 / 80 / 90%, with an optional one-line why.
+- "50%, no prior" is a valid answer. A skipped question is recorded as skipped and not scored.
+- Each answer is scored by its Brier score, (confidence − outcome)², where the outcome is 1 if the chosen option happened. Lower is better: always answering "50%, no prior" scores 0.25.
+- Exact numbers are optional. A range is scored by whether it covers the result (covered / not), apart from the Brier score.
+- Descriptive questions on data Dan has already seen (e.g. X-fig) are scored separately, not in the totals.
+
+Calibration, by confidence bucket, across batches from 25 on (filled as results come in):
+
+| Confidence | Answers | Happened | Share happened | Mean Brier |
+|---|---|---|---|---|
+| 50% | 0 | – | – | – |
+| 60% | 0 | – | – | – |
+| 70% | 0 | – | – | – |
+| 80% | 0 | – | – | – |
+| 90% | 0 | – | – | – |
 
 **Open:** batch 12 (opened early at Dan's request; answers count as written after the results). Batches 13-15 are scored (23 Oct); the runs still pending then are named in each verdict.
