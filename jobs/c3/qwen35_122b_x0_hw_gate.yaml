@@ -14,7 +14,7 @@ why_it_matters: >-
   The 122B's X0 compares with nothing earlier, but its 23 Oct numbers drifted 4-7 points between H200 and H100; the gate shows this box's reads are stable before X0 runs on it.
 hypotheses:
   H-same: 'the reads agree on >= 97% of rows without random draws. Prior: Dan''s, predictions/2026-10-24_dan.md Q26.8'
-  H-differs: 'below 97%: the 122B's X0 does not start; the disagreeing rows are reported. Prior: Dan''s, Q26.8'
+  H-differs: 'below 97%: the 122B''s X0 does not start; the disagreeing rows are reported. Prior: Dan''s, Q26.8'
 decision_rule: >-
   As x0_hw_gate_27b: rows matched on item, set, layer, part, source and null flag; PASS iff the share of rows without random draws (full, lens2, not_lens2, jspace, not_jspace, jspace_wo_own, not_jspace_matched; non-null; both readers) whose read role matches the 23 Oct row is >= 0.97; else FAIL (exit 3) and the 122B's X0 does not run. The random-draw arms are reported, not gated.
 controls:
