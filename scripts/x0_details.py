@@ -126,6 +126,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     single_numbers(num)
     probe_numbers(num)
     address_numbers(num)
+    first_mention_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -224,6 +225,21 @@ def probe_numbers(num: Numbers) -> None:
         num.add(f"probe_b_before_{m}", f2(rows["locker sentence"]["probe"][0]), src)
         num.add(f"probe_b_layout_before_{m}", f2(rows["locker sentence"]["layout"][0]), src)
         num.add(f"probe_c_before_{m}", f2(rows["bridge identity"]["probe"][0]), src)
+
+
+def first_mention_numbers(num: Numbers) -> None:
+    """The lookup's switch by the alt item's first earlier mention (x0_first_mention; single-change items, both lockers
+    before the pick), with the whole edit and without the J++ part."""
+    for m, run in SINGLE.items():
+        path = sorted((X.RESULTS / run).glob("first-mention-*/first_mention.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        for r in json.loads(path.read_text())["rows"]:
+            if r["reader"] != X.LOOKUP:
+                continue
+            key = "locker" if r["first"] == "locker" else "other"
+            num.add(f"fm_lk_whole_{key}_{m}", f2(r["whole"][0]), src)
+            num.add(f"fm_lk_noj_{key}_{m}", f2(r["without the J++ part"][0]), src)
+            num.add(f"fm_n_{key}_{m}", str(r["n"]), src)
 
 
 def latest_patched(run: str, target: str) -> Path:

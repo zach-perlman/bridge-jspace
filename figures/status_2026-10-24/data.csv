@@ -198,12 +198,20 @@ f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state reads the alt's locker sentenc
 f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state reads the other pick sentence: before, the other pick is the latest earlier mention",0.03571428571428571,0.0,0.12,28
 f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state reads the alt's locker sentence: before, the alt locker is the latest earlier mention",0.03333333333333333,0.0,0.09375,30
 f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state reads the other pick sentence: before, the alt locker is the latest earlier mention",0.9,0.8,1.0,30
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup switched (whole), first mention: locker",0.9767441860465116,0.9210526315789473,1.0,43
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup switched (without the J++ part), first mention: locker",0.9767441860465116,0.9210526315789473,1.0,43
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup switched (whole), first mention: other pick",1.0,1.0,1.0,30
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup switched (without the J++ part), first mention: other pick",1.0,1.0,1.0,30
 f9,qwen3.6-27b,x0_amnesic_27b,-,-,alt state reads the alt's locker sentence: after,1.0,1.0,1.0,17
 f9,qwen3.6-27b,x0_amnesic_27b,-,-,alt state reads the other pick sentence: after,0.0,0.0,0.0,17
 f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state reads the alt's locker sentence: before, the other pick is the latest earlier mention",0.6428571428571429,0.45454545454545453,0.8333333333333334,28
 f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state reads the other pick sentence: before, the other pick is the latest earlier mention",0.14285714285714285,0.034482758620689655,0.2727272727272727,28
 f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state reads the alt's locker sentence: before, the alt locker is the latest earlier mention",0.24,0.1,0.4,25
 f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state reads the other pick sentence: before, the alt locker is the latest earlier mention",0.56,0.375,0.7407407407407407,25
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup switched (whole), first mention: locker",1.0,1.0,1.0,45
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup switched (without the J++ part), first mention: locker",1.0,1.0,1.0,45
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup switched (whole), first mention: other pick",1.0,1.0,1.0,25
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup switched (without the J++ part), first mention: other pick",1.0,1.0,1.0,25
 f10,qwen3.5-9b,qwen35_9b_x0_necessity,12,recall-lookup,"C, two-change edit (X0)",0.5260333575054386,0.42372781210953087,0.614298830454014,
 f10,qwen3.5-9b,qwen35_9b_x0_single_r2,12,recall-lookup,"C, one-change edit",0.3853600711251606,0.3017726686721099,0.4565331126571755,
 f10,qwen3.6-27b,x0_necessity_27b_chat,32,recall-lookup,"C, two-change edit (X0)",0.6004651162790698,0.5025567065985861,0.6918870812495038,

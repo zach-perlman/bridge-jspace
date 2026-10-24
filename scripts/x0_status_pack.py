@@ -405,7 +405,7 @@ SINGLE = {"qwen3.5-9b": "qwen35_9b_x0_single_r2", "qwen3.6-27b": "x0_single_27b_
 
 def f9(plt, F, color, grey) -> None:
     """The duplicate pick: on the single-change pairs, what the alt state's address readout points at, by where the alt
-    item's earlier mentions sit (its original picker's sentence and its locker sentence)."""
+    item's earlier mentions sit (top); the lookup's switch rate by the alt item's first earlier mention (bottom)."""
     import json
 
     from scripts.x0_details import latest_patched
@@ -413,8 +413,9 @@ def f9(plt, F, color, grey) -> None:
     groups = (("after", "the other picker\ncomes after the pick"),
               ("before, the other pick is the latest earlier mention", "both earlier:\nlocker sentence first"),
               ("before, the alt locker is the latest earlier mention", "both earlier:\nother pick first"))  # fmt: skip
-    fig, axes = plt.subplots(1, len(AMNESIC), figsize=(14, 5.6), sharey=True)
-    for ax, (target, (label, run)) in zip(axes, AMNESIC.items(), strict=True):
+    fig, axes = plt.subplots(2, len(AMNESIC), figsize=(14, 9.4), sharey="row")
+    for col_i, (target, (label, run)) in enumerate(AMNESIC.items()):
+        ax = axes[0, col_i]
         path = latest_patched(run, "address")
         dup = json.loads(path.read_text())["results"]["duplicate_pick_split"]
         for i, (key, _) in enumerate(groups):
@@ -428,21 +429,46 @@ def f9(plt, F, color, grey) -> None:
                 ax.text(x, hi + 0.03, f"{v:.2f}", ha="center", fontsize=10)
                 record("f9", target, run, "-", "-", f"alt state reads {what}: {key}", v, lo, hi, d["n"])
         ax.set_xticks(range(len(groups)), [f"{g[1]}\n(n = {dup[g[0]]['n']})" for g in groups], fontsize=9.5)
-        ax.set_title(label)
-        ax.set_ylim(0, 1.1)
-        ax.grid(axis="y", color="#eeeeee")
-        ax.set_axisbelow(True)
-    axes[0].set_ylabel("share of pairs")
-    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color="#9e9e9e")]
-    head(fig, "The address readout follows the item's first mention",
-         "In the one-change edit two people pick the alt item. The probe for 'which sentence holds the locker', read on the "
-         "edited state, points at whichever mention of the item comes first: the locker sentence or the other person's pick.",
-         h, ["reads the alt item's locker sentence", "reads the other person's pick sentence"])  # fmt: skip
+        ax.set_title(f"{label}: what the probe reads on the edited state", fontsize=11)
+        ax.set_ylim(0, 1.15)
+        # bottom: the lookup's switch rate by the first earlier mention
+        bx = axes[1, col_i]
+        fm_path = sorted((X.RESULTS / SINGLE[target]).glob("first-mention-*/first_mention.json"))[-1]
+        fm = [r for r in json.loads(fm_path.read_text())["rows"] if r["reader"] == X.LOOKUP]
+        for i, r in enumerate(fm):
+            for j, (arm, col) in enumerate((("whole", "#555555"), ("without the J++ part", F.LOOKUP))):
+                v, lo, hi = r[arm]
+                x = i + (j - 0.5) * 0.36
+                bx.bar(x, v, width=0.34, color=col, edgecolor="white")
+                bx.errorbar(x, v, yerr=[[v - lo], [hi - v]], color="#333333", capsize=3, lw=1)
+                bx.text(x, hi + 0.03, f"{v:.2f}", ha="center", fontsize=10)
+                record("f9", target, SINGLE[target], X.PREDICTED[target], X.LOOKUP,
+                       f"lookup switched ({arm}), first mention: {r['first']}", v, lo, hi, r["n"])  # fmt: skip
+        bx.set_xticks(
+            range(len(fm)), [f"first mention:\n{r['first']} sentence (n = {r['n']})" for r in fm], fontsize=9.5
+        )
+        bx.set_title(f"{label}: lookups switched to the alt's locker", fontsize=11)
+        bx.set_ylim(0, 1.15)
+        for a_ in (ax, bx):
+            a_.grid(axis="y", color="#eeeeee")
+            a_.set_axisbelow(True)
+    axes[0, 0].set_ylabel("share of pairs")
+    axes[1, 0].set_ylabel("share of lookups switched")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color="#9e9e9e"),
+         plt.Rectangle((0, 0), 1, 1, color="#555555")]  # fmt: skip
+    head(fig, "A first-mention pointer the lens does not read, and the lookup does not need",
+         "Top: in the one-change edit two people pick the alt item; the probe for 'which sentence holds the locker', read on "
+         "the edited state, points at whichever mention of the item comes first. Bottom: the lookup switches to the alt's "
+         "locker just as often when that first mention is the other person's pick (a sentence with no locker number), with "
+         "the whole edit and without its J++ part.",
+         h, ["reads the alt's locker sentence / switched without the J++ part", "reads the other person's pick sentence",
+             "switched, whole edit"])  # fmt: skip
     foot(fig, [f"Single-change pairs with both locker sentences before the pick; probe trained on the fresh scenes' "
                f"locker-before states, cross-fitted by bridge entity; {CI}. In X0's ordinary scenes the first mention is "
-               "always the locker sentence. Unverified. Descriptive, added after the data (Dan's duplicate-pick check). "
-               "Runs: results/x0_amnesic/*/probe-patched-* (address)."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.1, 1, 0.80))
+               "always the locker sentence. Unverified. Descriptive, added after the data (Dan's duplicate-pick check and "
+               "cross-tab). Runs: results/x0_amnesic/*/probe-patched-* (address); results/x0_necessity/*_single_r2/"
+               "first-mention-*."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.06, 1, 0.82))
     fig.savefig(OUT / "f9_first_mention.png", dpi=150, facecolor="white")
     plt.close(fig)
 

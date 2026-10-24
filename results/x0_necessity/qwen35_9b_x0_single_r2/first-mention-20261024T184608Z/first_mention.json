@@ -1,0 +1,67 @@
+{
+ "run": "qwen35_9b_x0_single_r2",
+ "layer": 12,
+ "note": "Descriptive, added after data (Dan's cross-tab, 24 Oct evening); not part of X0's rule.",
+ "rows": [
+  {
+   "reader": "PP",
+   "first": "locker",
+   "n": 43,
+   "whole": [
+    0.9767441860465116,
+    0.9210526315789473,
+    1.0
+   ],
+   "without the J++ part": [
+    0.9767441860465116,
+    0.9210526315789473,
+    1.0
+   ]
+  },
+  {
+   "reader": "PP",
+   "first": "other pick",
+   "n": 30,
+   "whole": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "without the J++ part": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "reader": "PM",
+   "first": "locker",
+   "n": 43,
+   "whole": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "without the J++ part": [
+    0.8604651162790697,
+    0.7647058823529411,
+    0.9500304878048775
+   ]
+  },
+  {
+   "reader": "PM",
+   "first": "other pick",
+   "n": 30,
+   "whole": [
+    0.9666666666666667,
+    0.8888888888888888,
+    1.0
+   ],
+   "without the J++ part": [
+    0.9333333333333333,
+    0.8333333333333334,
+    1.0
+   ]
+  }
+ ]
+}

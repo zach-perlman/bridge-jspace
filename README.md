@@ -9,7 +9,7 @@
 
 **Status (24 Oct 2026).**
 - Models: Qwen3.5-9B, Qwen3.6-27B and Qwen3.5-122B-A10B (FP8 weights, mixture of experts, split over two H100s; its J++ was fitted on the bf16 weights; a hardware gate reproduced a 23 Oct cell first, 0.998 per-row agreement).
-- All numbers are unverified (not yet hand-checked); the layers, the rule and Dan's predictions were fixed before any result was opened. Built at 4e62f050 from the X0 run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
+- All numbers are unverified (not yet hand-checked); the layers, the rule and Dan's predictions were fixed before any result was opened. Built at 00cfed59 from the X0 run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
 
 ## Main findings
 
@@ -20,7 +20,7 @@
    - **27B:** a little at 25 atoms, so the pre-registered test was **not confirmed**; at 100 atoms about as much as recall (0.60 vs 0.67). Added after the data: with an edit that changes only the asked pick, the 27B lookup's extra loss is 0.05 [0.01, 0.09] (9B: −0.02). At 100 atoms it is still 0.49.
    - **122B:** the pre-registered test at layer 33: **confirmed** (lookup 0.00 [−0.06, 0.06]; recalls lose 0.40 of their flips). At 100 atoms the lookup stays at −0.12. Up to layer 30 both readers need the J++ part.
 4. **Not a missing digit.** Lookups flip mostly when the locker sentence comes *before* the pick sentence, so the lookup might read a locker number already attached to the bridge word, which our letter-only J++ dictionary cannot remove. The digit tokens are not the route: with every token allowed, digits included, the 27B lookup's extra loss is 0.13 (letters only: 0.14), and the 10 digit directions alone give 0.00 on all three models.
-5. **The address and the value at the bridge word, outside the J++ part (descriptive, probes).** On 1,500 fresh scenes, where the locker sentence comes before the pick, both are linearly readable at the bridge word: which sentence holds the bridge's locker (0.99 on the 27B, 0.97 on the 9B; the layout alone gives 0.53) and the locker number (0.40 and 0.27, chance 0.11; 0.38 and 0.28 with the sentence factored out). On the one-change pairs the address readout follows the edit (both members of a pair right in 0.57 [0.44, 0.71] on the 27B, 0.51 [0.40, 0.61] on the 9B; the layout alone gets none). It tracks the item's first mention in the context, which in these scenes is the locker sentence: where another person's pick of the item comes first, the readout points there (0.90 of such pairs on the 9B, 0.56 on the 27B). The change of address sits in the rest of the edit, not in its J++ part: at 25 atoms the J++ part holds 10% of the change but 0.5% of its component along the probe's directions (27B). Removing the ridge probe's 4 address directions (1% of the change), or keeping only them, changes no lookup (0.00 [0.00, 0.00]): the probe's directions are not what the lookup reads.
+5. **The address and the value at the bridge word, outside the J++ part (descriptive, probes).** On 1,500 fresh scenes, where the locker sentence comes before the pick, both are linearly readable at the bridge word: which sentence holds the bridge's locker (0.99 on the 27B, 0.97 on the 9B; the layout alone gives 0.53) and the locker number (0.40 and 0.27, chance 0.11; 0.38 and 0.28 with the sentence factored out). On the one-change pairs the address readout follows the edit (both members of a pair right in 0.57 [0.44, 0.71] on the 27B, 0.51 [0.40, 0.61] on the 9B; the layout alone gets none). It tracks the item's first mention in the context, which in these scenes is the locker sentence: where another person's pick of the item comes first, the readout points there (0.90 of such pairs on the 9B, 0.56 on the 27B). Yet the lookup still switches to the alt's locker as often either way (1.00 when the first mention is the locker sentence, 1.00 when it is the other pick, 27B; 0.98 and 1.00 on the 9B; the same without the J++ part): the bridge word carries a first-mention pointer the lens does not read, but the lookup does not need it. The change of address sits in the rest of the edit, not in its J++ part: at 25 atoms the J++ part holds 10% of the change but 0.5% of its component along the probe's directions (27B). Removing the ridge probe's 4 address directions (1% of the change), or keeping only them, changes no lookup (0.00 [0.00, 0.00]): the probe's directions are not what the lookup reads.
 
 ![Removing the J++ part costs recall far more than lookup](figures/status_2026-10-24/f1_readers.png)
 
@@ -51,7 +51,7 @@ How to read this:
 
 ![It is J++, not any dictionary](figures/status_2026-10-24/f3_dictionaries.png) ![Adding the digit tokens to J++ changes nothing](figures/status_2026-10-24/f6_digits.png)
 
-![The bridge word holds where its locker is](figures/status_2026-10-24/f7_probe.png) ![The address is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png) ![The address readout follows the item's first mention](figures/status_2026-10-24/f9_first_mention.png)
+![The bridge word holds where its locker is](figures/status_2026-10-24/f7_probe.png) ![The address is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png) ![A first-mention pointer the lens does not read, and the lookup does not need](figures/status_2026-10-24/f9_first_mention.png)
 
 ## What did not hold
 

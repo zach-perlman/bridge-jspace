@@ -1183,6 +1183,54 @@
   "text": "2.8%",
   "source": "results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json"
  },
+ "fm_lk_whole_locker_9b": {
+  "text": "0.98",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json"
+ },
+ "fm_lk_noj_locker_9b": {
+  "text": "0.98",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json"
+ },
+ "fm_n_locker_9b": {
+  "text": "43",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json"
+ },
+ "fm_lk_whole_other_9b": {
+  "text": "1.00",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json"
+ },
+ "fm_lk_noj_other_9b": {
+  "text": "1.00",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json"
+ },
+ "fm_n_other_9b": {
+  "text": "30",
+  "source": "results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json"
+ },
+ "fm_lk_whole_locker_27b": {
+  "text": "1.00",
+  "source": "results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json"
+ },
+ "fm_lk_noj_locker_27b": {
+  "text": "1.00",
+  "source": "results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json"
+ },
+ "fm_n_locker_27b": {
+  "text": "45",
+  "source": "results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json"
+ },
+ "fm_lk_whole_other_27b": {
+  "text": "1.00",
+  "source": "results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json"
+ },
+ "fm_lk_noj_other_27b": {
+  "text": "1.00",
+  "source": "results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json"
+ },
+ "fm_n_other_27b": {
+  "text": "25",
+  "source": "results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json"
+ },
  "share_rho_27b": {
   "text": "0.79",
   "source": "results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json"
