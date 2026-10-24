@@ -34,6 +34,8 @@ NOCHAT = {"9b": "qwen35_9b_x0_necessity_nothink", "27b": "x0_necessity_27b_nothi
 DIGIT = {"9b": "qwen35_9b_x0_digit_r2", "27b": "x0_digit_27b_r2", "122b": "qwen35_122b_x0_necessity_r2"}
 SINGLE = {"9b": "qwen35_9b_x0_single_r2", "27b": "x0_single_27b_r2"}
 PROBES = {"9b": "qwen35_9b_x0_probe", "27b": "x0_probe_27b"}
+PROBES_V4 = {"9b": "qwen35_9b_x0_probe_v4", "27b": "x0_probe_v4_27b"}
+AMNESIC = {"9b": "qwen35_9b_x0_amnesic", "27b": "x0_amnesic_27b"}
 ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all"}
 ORDER = "org locker vs asked pick"
 
@@ -122,6 +124,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     atoms_numbers(num)
     single_numbers(num)
     probe_numbers(num)
+    address_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -219,6 +222,45 @@ def probe_numbers(num: Numbers) -> None:
         num.add(f"probe_b_before_{m}", f2(rows["locker sentence"]["probe"][0]), src)
         num.add(f"probe_b_layout_before_{m}", f2(rows["locker sentence"]["layout"][0]), src)
         num.add(f"probe_c_before_{m}", f2(rows["bridge identity"]["probe"][0]), src)
+
+
+def address_numbers(num: Numbers) -> None:
+    """The address at the bridge's word (descriptive): the probes on 1,500 fresh scenes (locker-before), probe (a) with
+    the locker index factored out, the probe subspace removed from or kept alone in the single-change edit (x0_amnesic),
+    and probe (b) on the single-change pairs and on patched states (x0_probe_patched)."""
+    for m in PROBES_V4:
+        path = sorted((pins.RESULTS_DIR / "x0_probe" / PROBES_V4[m]).glob("probe-*/probe.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        rows = {(r["target"], r["stratum"]): r for r in json.loads(path.read_text())["rows"] if r["subset"] == "all"}
+        num.add(f"v4_n_before_{m}", str(rows[("locker sentence", "before")]["n"]), src)
+        num.add(f"v4_b_before_{m}", f2(rows[("locker sentence", "before")]["probe"][0]), src)
+        num.add(f"v4_b_layout_before_{m}", f2(rows[("locker sentence", "before")]["layout"][0]), src)
+        num.add(f"v4_a_before_{m}", f2(rows[("answer digit", "before")]["probe"][0]), src)
+        num.add(f"v4_a_after_{m}", f2(rows[("answer digit", "after")]["probe"][0]), src)
+        num.add(f"v4_b_after_{m}", f2(rows[("locker sentence", "after")]["probe"][0]), src)
+        path = sorted((pins.RESULTS_DIR / "x0_probe" / PROBES_V4[m]).glob("a-given-b-*/a_given_b.json"))[-1]
+        res = json.loads(path.read_text())["subsets"]["all"]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        num.add(f"v4_a_resid_{m}", f2(res["residualised"][0]), src)
+        num.add(f"v4_a_index_alone_{m}", f2(res["index_alone"][0]), src)
+        path = sorted((pins.RESULTS_DIR / "x0_amnesic" / AMNESIC[m]).glob("verdict-*/verdict.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        am = {(r["order"], r["reader"]): r for r in json.loads(path.read_text())["rows"]}
+        for w in X.READERS:
+            num.add(f"amn_{'lk' if w == X.LOOKUP else 'rc'}_excess_{m}", ci(am[("before", w)]["excess"]), src)
+        num.add(f"amn_share_{m}", pct(am[("before", X.LOOKUP)]["median_share"]).replace("1%", "1%"), src)
+        num.add(f"amn_suff_lk_{m}", f2(am[("before", X.LOOKUP)]["probe_only"][0]), src)
+        path = sorted((pins.RESULTS_DIR / "x0_amnesic" / AMNESIC[m]).glob("probe-patched-*/probe_patched.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        pr = json.loads(path.read_text())["results"]
+        num.add(f"pair_right_{m}", ci(pr["pair right"]), src)
+        num.add(f"pair_n_{m}", str(json.loads(path.read_text())["n"]), src)
+        for k in (25, 100):
+            num.add(f"patched_j{k}_alt_{m}", f2(pr[f"org + J++ part, k = {k}: reads the alt's"][0]), src)
+            num.add(f"patched_rest{k}_alt_{m}", f2(pr[f"org + rest, k = {k}: reads the alt's"][0]), src)
+            e = pr["energy"][f"org + J++ part, k = {k}"]
+            num.add(f"patched_j{k}_share_{m}", pct(e["share_of_delta"]), src)
+            num.add(f"patched_j{k}_probe_energy_{m}", f"{100 * e['share_in_probe_subspace']:.1f}%", src)
 
 
 def table_layers(cells: dict, run: Any) -> list[str]:

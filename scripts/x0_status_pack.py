@@ -1,5 +1,5 @@
 """x0_status_pack: four plain-language X0 figures for a status update (Dan, 24 Oct), from existing rows only. Writes
-figures/status_2026-10-24/{f1_readers, f2_depth, f3_dictionaries, f4_order, f5_atoms, f6_digits, f7_probe}.png and data.csv. UNVERIFIED.
+figures/status_2026-10-24/{f1_readers, f2_depth, f3_dictionaries, f4_order, f5_atoms, f6_digits, f7_probe, f8_address}.png and data.csv. UNVERIFIED.
 
 F1  the pre-registered layers (9B L12, 27B L32): flips lost (points of all items) without the J++ part and without a
     random part of the same size, per reader; the rule's verdict and the graded contrast C under each model.
@@ -8,7 +8,8 @@ F3  extra flips lost against the share of the change removed: J++, and W_U / W_E
 F4  the share of lookups the whole edit flips, locker sentence before vs after the pick sentence.
 F5  extra flips lost against the number of J++ atoms removed (25-200), at the pre-registered layer.
 F6  the digit check: J++ over letter tokens vs every token, and the digit directions alone (locker-before).
-F7  the probes at the bridge's word (9B, 27B): the answer digit, the locker sentence's index, the bridge's identity.
+F7  the probes at the bridge's word (9B, 27B; 1,500 fresh scenes): the answer digit, the locker sentence, identity.
+F8  the probe's address read on patched states: the J++ part of the change vs the rest (single-change pairs).
 """
 
 from __future__ import annotations
@@ -299,7 +300,8 @@ def f6(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
-PROBES = {"qwen3.5-9b": ("Qwen3.5-9B", "qwen35_9b_x0_probe"), "qwen3.6-27b": ("Qwen3.6-27B", "x0_probe_27b")}
+PROBES = {"qwen3.5-9b": ("Qwen3.5-9B", "qwen35_9b_x0_probe_v4"), "qwen3.6-27b": ("Qwen3.6-27B", "x0_probe_v4_27b")}
+AMNESIC = {"qwen3.5-9b": ("Qwen3.5-9B", "qwen35_9b_x0_amnesic"), "qwen3.6-27b": ("Qwen3.6-27B", "x0_amnesic_27b")}
 
 
 def f7(plt, F, color, grey) -> None:
@@ -312,7 +314,7 @@ def f7(plt, F, color, grey) -> None:
     fig, axes = plt.subplots(1, len(PROBES), figsize=(14, 5.6), sharey=True)
     for ax, (target, (label, run)) in zip(axes, PROBES.items(), strict=True):
         blob = json.loads(sorted((P.RESULTS / run).glob("probe-*/probe.json"))[-1].read_text())
-        rows = {(r["target"], r["stratum"]): r for r in blob["rows"] if r["subset"] == "x0"}
+        rows = {(r["target"], r["stratum"]): r for r in blob["rows"] if r["subset"] == "all"}
         for i, tg in enumerate(targets):
             for j, order in enumerate(("before", "after")):
                 r = rows[(tg, order)]
@@ -335,16 +337,59 @@ def f7(plt, F, color, grey) -> None:
     axes[0].set_ylabel("cross-validated accuracy")
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color="#c9b6dd"),
          plt.Line2D([], [], color="black", lw=1.6)]  # fmt: skip
-    head(fig, "The bridge word holds where its locker is; the locker number is not detected at this n",
-         "A linear probe at the bridge word (org run, X0 items) reads which sentence holds the bridge's locker when that "
-         "sentence comes before the pick; the answer digit is not detected at this n.", h,
+    head(fig, "The bridge word holds where its locker is, and more weakly the locker number",
+         "Linear probes at the bridge word (org run, 1,500 fresh scenes) when the locker sentence comes before the pick: "
+         "which sentence holds the bridge's locker, almost always; the locker number, above chance, also with the "
+         "sentence factored out. When the locker sentence comes after the pick, neither.", h,
          ["locker sentence before the pick", "after the pick", "best baseline (chance, majority, pick index, layout)"])  # fmt: skip
-    foot(fig, ["n = 99-101 scenes per bar; (a) and (b) cross-validated by bridge entity, (c) by scene; " + CI + ". The "
-               "identity control reaches only 0.67-0.87 here: the probes are data-starved (a run on 1,500 fresh scenes is "
-               "done, unopened). Unverified. Descriptive, added after the data. Runs: results/x0_probe/x0_probe_27b, "
-               "qwen35_9b_x0_probe."])  # fmt: skip
+    foot(fig, ["n = 742-758 scenes per bar (d1_topics_v4, fresh, seed 2411); the answer digit and the locker sentence "
+               "cross-validated by bridge entity, identity by scene; " + CI + ". Unverified. Descriptive, added after "
+               "the data. Runs: results/x0_probe/x0_probe_v4_27b, qwen35_9b_x0_probe_v4."])  # fmt: skip
     fig.tight_layout(rect=(0, 0.08, 1, 0.84))
     fig.savefig(OUT / "f7_probe.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
+def f8(plt, F, color, grey) -> None:
+    """The probe's address on the single-change pairs: how often probe (b) reads the alt bridge's locker sentence from
+    the alt state and from h_org plus the J++ part of the change, or plus the rest, at 25 and 100 atoms."""
+    import json
+
+    bars = (("alt (org + Δ)", "the whole change"), ("org + J++ part, k = 25", "J++ part\n(25 atoms)"),
+            ("org + rest, k = 25", "the rest\n(25 atoms)"), ("org + J++ part, k = 100", "J++ part\n(100 atoms)"),
+            ("org + rest, k = 100", "the rest\n(100 atoms)"))  # fmt: skip
+    fig, axes = plt.subplots(1, len(AMNESIC), figsize=(14, 5.6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, AMNESIC.items(), strict=True):
+        path = sorted((pins.RESULTS_DIR / "x0_amnesic" / run).glob("probe-patched-*/probe_patched.json"))[-1]
+        blob = json.loads(path.read_text())
+        res, energy = blob["results"], blob["results"]["energy"]
+        for i, (key, _) in enumerate(bars):
+            v, lo, hi = res[f"{key}: reads the alt's"]
+            col = F.LOOKUP if "J++" in key else "#9e9e9e" if "rest" in key else "#555555"
+            ax.bar(i, v, width=0.7, color=col, edgecolor="white")
+            ax.errorbar(i, v, yerr=[[v - lo], [hi - v]], color="#333333", capsize=3, lw=1)
+            ax.text(i, hi + 0.03, f"{v:.2f}", ha="center", fontsize=10.5)
+            if key in energy:
+                e = energy[key]
+                ax.text(i, -0.27, f"{100 * e['share_of_delta']:.0f}% of the change\n{100 * e['share_in_probe_subspace']:.1f}% of its "
+                        "address", ha="center", va="top", fontsize=8.5, color="#666666", transform=ax.get_xaxis_transform())  # fmt: skip
+            record("f8", target, run, "-", "-", f"reads the alt's locker sentence: {key}", v, lo, hi, blob["n"])
+        ax.set_xticks(range(len(bars)), [b[1] for b in bars], fontsize=9.5)
+        ax.set_title(f"{label} (n = {blob['n']} pairs)")
+        ax.set_ylim(0, 1.0)
+        ax.grid(axis="y", color="#eeeeee")
+        ax.set_axisbelow(True)
+    axes[0].set_ylabel("probe reads the edited bridge's\nlocker sentence")
+    head(fig, "The address is in the rest of the change, not in its J++ part",
+         "Probe (b) at the bridge word, read on the original state plus a part of the one-change edit (both locker "
+         "sentences before the pick). Under each bar: the part's share of the change, and of the change's component "
+         "in the probe's own directions (a random part of the same size would carry about its share).")  # fmt: skip
+    foot(fig, ["Probe trained on d1_topics_v3's locker-before states, cross-fitted by bridge entity; " + CI + ". On the same "
+               "pairs the probe gets both the original and the edited state right in 0.54 (27B) and 0.48 (9B); a layout-only "
+               "classifier gets 0 by construction. Unverified. Descriptive, added after the data. Runs: "
+               "results/x0_amnesic/*/probe-patched-*."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.13, 1, 0.84))
+    fig.savefig(OUT / "f8_address.png", dpi=150, facecolor="white")
     plt.close(fig)
 
 
@@ -453,6 +498,7 @@ def main() -> None:
     f5(plt, F, color, grey)
     f6(plt, F, color, grey)
     f7(plt, F, color, grey)
+    f8(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]

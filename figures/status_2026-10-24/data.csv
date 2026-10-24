@@ -158,27 +158,37 @@ f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=25,
 f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=50, locker before",0.345679012345679,0.20000000000000007,0.4565217391304347,85
 f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=100, locker before",0.41975308641975306,0.2500000000000001,0.5596330275229358,85
 f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, digit directions only, locker before",-0.012345679012345734,-0.045454545454545636,0.0,85
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, answer digit, locker before",0.13,0.06329113924050633,0.1941747572815534,100
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, answer digit, locker before",0.1111,,,
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, answer digit, locker after",0.07,0.025974025974025976,0.11764705882352941,100
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, answer digit, locker after",0.1111,,,
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, locker sentence, locker before",0.82,0.7387361793611794,0.8910944898837709,100
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, locker sentence, locker before",0.44,,,
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, locker sentence, locker after",0.4,0.30927835051546393,0.48214285714285715,100
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, locker sentence, locker after",0.4,,,
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, bridge identity, locker before",0.83,0.7142857142857143,0.9090909090909091,100
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, bridge identity, locker before",0.08,,,
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"probe accuracy, bridge identity, locker after",0.87,0.7530092592592593,0.9369387103639072,100
-f7,qwen3.5-9b,qwen35_9b_x0_probe,12,-,"best baseline, bridge identity, locker after",0.12,,,
-f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, answer digit, locker before",0.13861386138613863,0.07271631982475357,0.2111111111111111,101
-f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, answer digit, locker before",0.1111,,,
-f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, answer digit, locker after",0.04040404040404041,0.00909090909090909,0.08602150537634409,99
-f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, answer digit, locker after",0.1111,,,
-f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, locker sentence, locker before",0.8514851485148515,0.7899978991596639,0.9112928746427112,101
-f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, locker sentence, locker before",0.5148514851485149,,,
-f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, locker sentence, locker after",0.29292929292929293,0.1978021978021978,0.3780487804878049,99
-f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, locker sentence, locker after",0.36363636363636365,,,
-f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, bridge identity, locker before",0.6732673267326733,0.5316455696202531,0.7751937984496124,101
-f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, bridge identity, locker before",0.07920792079207921,,,
-f7,qwen3.6-27b,x0_probe_27b,32,-,"probe accuracy, bridge identity, locker after",0.8080808080808081,0.676056338028169,0.8914728682170543,99
-f7,qwen3.6-27b,x0_probe_27b,32,-,"best baseline, bridge identity, locker after",0.1111111111111111,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, answer digit, locker before",0.2704485488126649,0.23641684813179104,0.30677367551616386,758
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, answer digit, locker before",0.1111,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, answer digit, locker after",0.10377358490566038,0.07969863683599243,0.12555066079295155,742
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, answer digit, locker after",0.1347708894878706,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, locker sentence, locker before",0.9683377308707124,0.9563252146517103,0.9795457449279851,758
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, locker sentence, locker before",0.5303430079155673,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, locker sentence, locker after",0.33557951482479786,0.3044057905299309,0.36933366834170855,742
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, locker sentence, locker after",0.3692722371967655,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, bridge identity, locker before",0.9986807387862797,0.9953416149068323,1.0,758
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, bridge identity, locker before",0.06728232189973615,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, bridge identity, locker after",1.0,1.0,1.0,742
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, bridge identity, locker after",0.06334231805929919,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, answer digit, locker before",0.3997361477572559,0.36042316782157774,0.43950630986147077,758
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, answer digit, locker before",0.1111,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, answer digit, locker after",0.11185983827493262,0.08098134671269965,0.14265555913780398,742
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, answer digit, locker after",0.1347708894878706,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, locker sentence, locker before",0.9894459102902374,0.9817905918057663,0.995907508979035,758
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, locker sentence, locker before",0.5303430079155673,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, locker sentence, locker after",0.33827493261455527,0.3089960886571056,0.36916010086193646,742
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, locker sentence, locker after",0.3692722371967655,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, bridge identity, locker before",0.9986807387862797,0.9953416149068323,1.0,758
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, bridge identity, locker before",0.06728232189973615,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, bridge identity, locker after",0.9986522911051213,0.9952377161055506,1.0,742
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, bridge identity, locker after",0.06334231805929919,,,
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,reads the alt's locker sentence: alt (org + Δ),0.547945205479452,0.44594594594594594,0.6521739130434783,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.0273972602739726,0.0,0.06523169336384418,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.5205479452054794,0.41974313022700116,0.6285714285714286,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.0273972602739726,0.0,0.06944444444444445,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.4794520547945205,0.3780487804878049,0.5932203389830508,73
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,reads the alt's locker sentence: alt (org + Δ),0.5857142857142857,0.45714285714285713,0.7222222222222222,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.0,0.0,0.0,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.6,0.48,0.7297404547404546,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.0,0.0,0.0,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.5571428571428572,0.43209876543209874,0.6912047511312213,70
