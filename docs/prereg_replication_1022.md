@@ -886,3 +886,15 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   27B (L32-40) and 9B (L12-16); OLMo-3 32B's J-swap on jsuite_v2_test_qa at L12-20. Predictions per model, all starts:
   as amendment 32, plus the swap's transfer on the memory finals > 0 in at least 6 of the 8 relations; for OLMo the
   same sufficiency predictions (its knock-out was null; sufficiency without necessity is what its v1 diagnostic showed).
+
+## Amendment 35 (Zach, 2026-10-24 ~21:15 UTC): v1 retired; jsuite_v2_1 is the dataset of record for new work
+
+- **Decision (Zach):** the combined suite v1 (jsuite_v1_*) is retired for new runs; its files stay frozen because every
+  result through amendment 34 references them. v1's one condition v2 lacked, a recalled start that never names the
+  bridge (v1's MM / MA; the basis of amendment 30's "a recalled bridge's dependence sits in the question span"), is
+  added to v2 as start R: scripts/jsuite_v2_1.py copies every v2 item unchanged (same ids: runs on v2 stay valid) and
+  adds, for each v2 recalled-start memory item (MM, MA, MN), the same scene with its one neutral bridge sentence deleted
+  (words RM, RA, RN; test 1,074 items, dev 1,026; scorer: RF - MF per final, R kept out of the start=all cells).
+- **Predictions (when run):** all-position knock-out: RM - MM within 10 (two-sided; the dependence does not hinge on a
+  passing mention); position-restricted knock-out (question only), if run: RM keeps >= 2/3 of its all-position loss
+  (as v1's recalled bridge); MM two-sided (a passing mention may move part of the dependence to the mention).

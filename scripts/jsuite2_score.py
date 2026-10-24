@@ -9,6 +9,7 @@ modules from one rows file, each scored by its own design (the module comes from
 Writes results/ablate_v2/jsuite2_score/RUN.json.
 
 python scripts/jsuite2_score.py RUN --set jsuite_v2_test_chat [--by-relation]
+(v2.1, 2026-10-24: start R, the never-named recall, is kept out of the start=all cells and scored as RF - MF)
 """
 
 from __future__ import annotations
@@ -68,6 +69,8 @@ def main(run: str, set_name: str, by_relation: bool) -> None:
                     it = items[r["id"]]
                     if kind == "start" and val != "all" and it["start"] != val:
                         continue
+                    if it["start"] == "R":  # v2.1's never-named recall (memory finals only) is scored apart, below
+                        continue
                     if kind == "half" and it.get("half") != val:
                         continue
                     if kind == "relation" and it["relation"] != val:
@@ -78,6 +81,17 @@ def main(run: str, set_name: str, by_relation: bool) -> None:
                     out["facts"][f"{cond}/{kind}={val}"] = cell
                     print(f"facts {cond:14s} {kind}={val:9s} lost " + " ".join(f"{f} {cell['loss'].get(f, float('nan')):4.0f}" for f in "PKMAN")
                           + f"  n {[cell['n'].get(f, 0) for f in 'PKMAN']}  " + "  ".join(f"{k} {v['diff']:+.0f} {v['ci']}" for k, v in cell["contrasts"].items()))  # fmt: skip
+        rr = [r for r in fr if items[r["id"]]["start"] in "MR"]
+        if any(items[r["id"]]["start"] == "R" for r in rr):  # v2.1 (amendment 35): RF - MF, the bridge never named vs named once
+            sel = collections.defaultdict(list)
+            for r in rr:
+                it = items[r["id"]]
+                if it["final"] in "MAN":
+                    sel[it["start"] + it["final"]].append((f"{it['relation']}:{it['bridge']}", r["correct"]))
+            cell = boot(sel, [("R" + f, "M" + f) for f in "MAN"], rng)
+            out["facts"][f"{cond}/never_named"] = cell
+            print(f"facts {cond:14s} never-named lost " + " ".join(f"{w} {v:.0f}" for w, v in sorted(cell["loss"].items()))
+                  + "  " + "  ".join(f"{k} {v['diff']:+.0f} {v['ci']}" for k, v in cell["contrasts"].items()))  # fmt: skip
         tr = [r for r in rs if items[r["id"]]["module"] == "threehop"]
         if tr:
             sel = collections.defaultdict(list)

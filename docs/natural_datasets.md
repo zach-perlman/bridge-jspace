@@ -1,5 +1,8 @@
 # Natural-text task sets (Zach, 2026-10-23)
 
+> **Status (2026-10-24):** for new work use the combined suite `jsuite_v2_1_*` (docs/jsuite_v2.md, amendment 35). The
+> combined suite v1 (`jsuite_v1_*`) is retired and the sets below are kept frozen for the results that cite them.
+
 Two- and three-hop questions over passages, built from real facts, in the tasks_v2 item format. A word names the
 source of each hop in order: **P** read from the passage, **M** recalled from memory. Example (natplus, countries):
 the passage binds "Paul Whitaker was raised in Argentina"; **PM** asks "Which continent is the country where Paul
