@@ -1,0 +1,18 @@
+{
+  "run": "olmo32_jsuite_v1_facts_test_qa_competence_cand2_v1",
+  "why": "Zach (2026-10-24, prereg amendment 31): olmo-3-32b on jsuite_v1_facts_test_qa",
+  "set": "jsuite_v1_facts_test_qa",
+  "model": {
+    "target": "olmo-3-32b",
+    "repo": "allenai/Olmo-3-1125-32B",
+    "revision": "c2b61dae89a1ad10e4ad5653d0e46b590902607b",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "808460d4cb6f4a75ecc9cba8758df6dc78c18646",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-24T18:16:19Z"
+}

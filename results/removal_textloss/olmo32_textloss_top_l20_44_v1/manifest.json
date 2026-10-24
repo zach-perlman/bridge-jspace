@@ -1,0 +1,49 @@
+{
+  "run": "olmo32_textloss_top_l20_44_v1",
+  "why": "Zach (2026-10-24, prereg amendment 31): olmo-3-32b plain-text gate",
+  "written_utc": "2026-10-24T16:42:04Z",
+  "model": {
+    "target": "olmo-3-32b",
+    "repo": "allenai/Olmo-3-1125-32B",
+    "revision": "c2b61dae89a1ad10e4ad5653d0e46b590902607b",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bf3efcf2007fb8ff9683ae23833027dd16d674aecc4ff9e6f0e66d14210e4466"
+  ],
+  "layers": [
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44
+  ],
+  "conditions": [
+    "none",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}
