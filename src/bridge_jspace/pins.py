@@ -395,7 +395,8 @@ TARGETS: dict[str, dict[str, Any]] = {
     },
     # Aleph-Alpha/Kolibri-1 (Aleph Alpha, 2026-10-03; MoE, 78B total / 3.46B active, FP8 weights; sliding-window and
     # full attention; prereg amendment 28; Zach, 2026-10-24): needs transformers >= 5.20 (/workspace/ext/kolibri_env).
-    # Registered before its lens (competence needs none); the lens is added once fit and checked.
+    # Lens: our J++ (Jacobians on the FP8 checkpoint dequantized to bf16, r+moe, 64 WikiText prompts, layers 0-48;
+    # readout weights on the FP8 model; scripts/queues/h200_kolfit_1024.sh, amendment 28 note 2). held-out macro pass@10: {'Kolibri-1_jpp_lens': 0.484, 'logit': 0.447, 'pooled_lens': 0.274}.
     "kolibri-1": {
         "repo": "Aleph-Alpha/Kolibri-1",
         "revision": "5bb7075ba22db733e3834b1c71d2245537cc14ed",
@@ -403,7 +404,20 @@ TARGETS: dict[str, dict[str, Any]] = {
         "norm_gain": "weight",
         "bos": False,
         "run_prefix": "kol1_",
-        "lenses": {},
+        "lenses": {"jpp": ("local", "cache/kolibri-1/lenses/jpp/Kolibri-1_jpp_lens.pt", "cc8d19282258a20416d7fd106ad20a784ce8f1fd80983d12b8bfc7f2e245ac54")},
+        "frozen_lens_sha256": "cc8d19282258a20416d7fd106ad20a784ce8f1fd80983d12b8bfc7f2e245ac54",
+    },
+    # Kolibri-1 with the same fit's pooled RelP lens (no expert weighting; the kind of every published neuronpedia
+    # jpp lens): its secondary lens (amendment 28 note 2).
+    "kolibri-1-pooled": {
+        "repo": "Aleph-Alpha/Kolibri-1",
+        "revision": "5bb7075ba22db733e3834b1c71d2245537cc14ed",
+        "n_layers": 50,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "kol1p_",
+        "lenses": {"jpp": ("local", "cache/kolibri-1-pooled/lenses/jpp/Kolibri-1_pooled_lens.pt", "fef79744e08be7ea1af1e21db1b0177565dd1f8c73c9cdf3e0d5cfe4535d7ada")},
+        "frozen_lens_sha256": "fef79744e08be7ea1af1e21db1b0177565dd1f8c73c9cdf3e0d5cfe4535d7ada",
     },
     # Qwen/Qwen3.5-9B-Base (Qwen3.5 hybrid: Gated DeltaNet linear attention and full attention, base, pre-trained only; base vs instruct on matched lenses, prereg amendment 27; Zach, 2026-10-24): our own J++, the
     # safety-research/jpp_lens@93f02cd recipe (as patched in /workspace/ext/jpp_lens), 32 WikiText prompts, one shard,
