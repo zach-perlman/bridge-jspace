@@ -1,0 +1,52 @@
+{
+  "exp": "x4_alias",
+  "run": "x4_patch_27b",
+  "why": "X4 patch test (jobs/c3/X4.md)",
+  "written_utc": "2026-10-24T20:06:01Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "921407645a9f6b1debad3b87f62fb930b967e39d",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "layer": 32,
+  "k": 25,
+  "conditions": {
+    "animals": [
+      "same",
+      "xlang"
+    ],
+    "elements": [
+      "same",
+      "syn"
+    ]
+  },
+  "picks": 3,
+  "seed": 2910,
+  "probe_only": false,
+  "inputs": {
+    "data/alias_pointer_v1/main/animals_DL_e5f0-xlang.json": "2f41da15e46b6220d6b794fcbaaf6bb58ac8490885c758e719d83ed7d6416e20",
+    "data/alias_pointer_v1/main/animals_DL_e5f0.json": "4834240b6c412fcfcf4ed3f051e329d41d8d5594d5c115a81b262432c60bebb7",
+    "data/alias_pointer_v1/main/elements_DL_e5f0-syn.json": "eaef98467b934a4f7b3dfab59159ef54801a8759399ebac7c8008d6cffb5eafb",
+    "data/alias_pointer_v1/main/elements_DL_e5f0.json": "4e81a1c5334aec4b100359b6d93147b1eeaa27ff29f9c6cfc1990a7900be8319",
+    "jobs/c3/X4.md": "04bb252372e3afe674cdada03f2300217a388bdb427f01c124d9ade8a787dcc9"
+  },
+  "gate": "per condition and reader: >= 0.8 unedited org accuracy (decisive read)",
+  "eligibility": "per reader: org and alt right (said and read); the recall also needs its answers to differ",
+  "design": "jobs/c3/X4.md"
+}

@@ -15,6 +15,10 @@ F10 the graded contrast C under the two-change and the one-change edit.
 F11 the parts of the change (word, J++ without the word, PCA, J++).
 F12 the mass-mean address and value subspaces.
 F13 X0b: pooled and by format.
+F14 PCA at J++'s share and the word-orthogonal J++ part.
+F15 the layout-free mass-mean address.
+F16 X4: the lookup per key form and D per entity.
+F17 X0b's items: word, J++ without the word, J++.
 """
 
 from __future__ import annotations
@@ -655,6 +659,155 @@ def f13(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
+PCAEQ = {
+    "qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0_pcaeq"),
+    "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0_pcaeq_27b"),
+}
+MASSMEAN_LF = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0_massmean_lf"),
+               "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0_massmean_lf_27b")}  # fmt: skip
+X4 = {
+    "qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x4_patch"),
+    "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x4_patch_27b"),
+}
+X0BPARTS = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0b_parts"),
+            "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0b_parts_27b")}  # fmt: skip
+
+
+def parts_figure(plt, F, runs: dict, order: tuple, fig_name: str, out: str, title: str, sub: str, note: str) -> None:
+    """Grouped bars of x0_parts verdict rows (one panel per model): each part's excess per reader, its share below."""
+    import json
+
+    fig, axes = plt.subplots(1, len(runs), figsize=(14, 5.6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, runs.items(), strict=True):
+        path = sorted((pins.RESULTS_DIR / "x0_parts" / run).glob("verdict-*/verdict.json"))[-1]
+        rows = {(r["part"], r["reader"]): r for r in json.loads(path.read_text())["rows"]}
+        groups = [f"{name}\n({100 * rows[(d, X.LOOKUP)]['median_share']:.0f}% of the change)" for d, name in order]
+        bars(ax, groups, [("lookup", F.LOOKUP, [rows[(d, X.LOOKUP)]["excess"] for d, _ in order]),
+                          ("recall", F.RECALL, [rows[(d, X.RECALL)]["excess"] for d, _ in order])], target, fig_name, run)  # fmt: skip
+        ax.set_title(f"{label} (n = {rows[(order[0][0], X.LOOKUP)]['n']})")
+        ax.set_ylim(-0.2, 1.0)
+    axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
+    head(fig, title, sub, h, ["lookup", "recall"])
+    foot(fig, [f"{CI}. {note} Unverified."])
+    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
+    fig.savefig(OUT / out, dpi=150, facecolor="white")
+    plt.close(fig)
+
+
+def f14(plt, F, color, grey) -> None:
+    """PCA at J++'s share (k per item), J++ without the word fit orthogonal to the word, and J++ (same items, same run)."""
+    parts_figure(plt, F, PCAEQ, (("pca_eq", "PCA of the layer\nat J++'s share"),
+                                 ("jwo", "J++ without the word,\northogonal to it"), ("jpp", "J++")), "f14",
+                 "f14_pcaeq.png", "At J++'s share, the PCA part and the word-orthogonal J++ part cost the recall 0.12-0.20; J++ "
+                 "costs it 0.37-0.61",
+                 "Single-change items at the pre-registered layer, each part against a random part of its own share. PCA: the "
+                 "layer's top 2,000 directions, k per item matched to that item's J++ share. Word-orthogonal: J++ (k = 25) "
+                 "fit on the change minus its word part, over atoms projected off the word's span.",
+                 "Pre-stated readings (Dan): PCA, none of the three branches on either model (Q30.1: 'mixed'); word-"
+                 "orthogonal, neither branch (recall excess between 0.10 and 0.20). Descriptive, after the data. Runs: "
+                 "results/x0_parts/*pcaeq*.")  # fmt: skip
+
+
+def f17(plt, F, color, grey) -> None:
+    """X0b's items: the word part, J++ without the word (fit on the whole change), J++."""
+    parts_figure(plt, F, X0BPARTS, (("w", "the word only"), ("jw", "J++ without\nthe word"), ("jpp", "J++")), "f17",
+                 "f17_x0b_parts.png", "On X0b's 7 topics and 3 formats, the word part alone costs the recall little",
+                 "X0b's single-change items at the pre-registered layer, each part against a random part of its own share. "
+                 "'J++ without the word' was fit on the whole change: on X0's items it still holds about two thirds of the "
+                 "word part's energy.",
+                 "Descriptive, after the data (Dan's audit). Runs: results/x0_parts/*x0b_parts*.")  # fmt: skip
+
+
+def f15(plt, F, color, grey) -> None:
+    """The mass-mean address A and its layout-free version Alf, removed or kept alone (same items, same run)."""
+    import json
+
+    fig, axes = plt.subplots(1, len(MASSMEAN_LF), figsize=(14, 5.6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, MASSMEAN_LF.items(), strict=True):
+        path = sorted((pins.RESULTS_DIR / "x0_massmean" / run).glob("verdict-*/verdict.json"))[-1]
+        v = json.loads(path.read_text())
+        rows = {r["reader"]: r for r in v["rows"]}
+        groups = [
+            "remove A",
+            "remove Alf\n(layout-free)",
+            "keep only A\n(minus random)",
+            "keep only Alf\n(minus random)",
+        ]
+        vals = {w: [rows[w]["A"]["excess"], rows[w]["Alf"]["excess"], rows[w]["keep_A"]["difference"],
+                    rows[w]["keep_Alf"]["difference"]] for w in X.READERS}  # fmt: skip
+        bars(
+            ax, groups, [("lookup", F.LOOKUP, vals[X.LOOKUP]), ("recall", F.RECALL, vals[X.RECALL])], target, "f15", run
+        )
+        ax.set_title(
+            f"{label} (n = {rows[X.LOOKUP]['n']}; A-Alf overlap {v['manifest']['subspaces']['A_Alf_overlap']:.2f})"
+        )
+        ax.set_ylim(-0.2, 1.0)
+    axes[0].set_ylabel("extra flips lost (remove) or\nextra flips made (keep), vs. random")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
+    head(fig, "Removing the layout-free address subspace still costs the 9B's lookup",
+         "A: the mass-mean subspace of the locker sentence's index (rank 4). Alf: the same after subtracting each layout "
+         "group's mean (which sentences before the pick are locker sentences; 31 groups). Removed from the one-change edit, or "
+         "kept alone, each against a random part of its own size.", h, ["lookup", "recall"])  # fmt: skip
+    foot(fig, [f"Single-change items with both locker sentences before the pick; {CI}. Pre-stated reading (Dan): if the 9B "
+               "lookup effect disappears with Alf, 'position information', not 'address'; it does not disappear (lower CI > "
+               "0). Descriptive, after the data; no prediction committed. Unverified. Runs: results/x0_massmean/*_lf*."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
+    fig.savefig(OUT / "f15_massmean_layout_free.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
+def f16(plt, F, color, grey) -> None:
+    """X4: the lookup's excess per key form (top), and D per entity (bottom), both models."""
+    import json
+
+    fig, axes = plt.subplots(2, len(X4), figsize=(14, 9.5), sharey="row")
+    forms = (("animals", "same", "animals,\nverbatim"), ("animals", "xlang", "animals,\ntranslated"),
+             ("elements", "same", "elements,\nverbatim"), ("elements", "syn", "elements,\nchemical symbol"))  # fmt: skip
+    for j, (target, (label, run)) in enumerate(X4.items()):
+        v = json.loads(sorted((pins.RESULTS_DIR / "x4_alias" / run).glob("verdict-*/verdict.json"))[-1].read_text())
+        ax = axes[0, j]
+        groups = [f"{name}\n(n = {v['cells'][f'{d}/{f}/{X.LOOKUP}']['n']})" for d, f, name in forms]
+        bars(ax, groups, [("lookup", F.LOOKUP, [v["cells"][f"{d}/{f}/{X.LOOKUP}"]["excess"] for d, f, _ in forms])],
+             target, "f16", run)  # fmt: skip
+        ax.set_title(label)
+        ax.set_ylim(-0.2, 0.5)
+        ax.axhspan(-0.2, X.AROUND_EXCESS, color="#f6f6f6", lw=0, zorder=0)
+        ax = axes[1, j]
+        for i, domain in enumerate(("animals", "elements")):
+            r = v["rules"][domain]
+            ds = [e["D"] for e in r["per_entity"]]
+            xs = [i + (k - (len(ds) - 1) / 2) * 0.06 for k in range(len(ds))]
+            ax.plot(xs, ds, "o", color=grey, ms=7)
+            d0, lo, hi = r["difference"]
+            ax.errorbar(i + 0.35, d0, yerr=[[d0 - lo], [hi - d0]], fmt="D", color="black", capsize=4)
+            ax.text(i + 0.42, d0, f"{d0:.2f} [{lo:.2f}, {hi:.2f}]\nD > 0: {r['entities_D_positive']} of {len(ds)}",
+                    va="center", fontsize=9)  # fmt: skip
+            record("f16", target, run, "-", "D", domain, d0, lo, hi)
+        ax.axhline(0, color="black", lw=0.6)
+        ax.axhline(0.20, color="#999999", lw=0.8, ls="--")
+        ax.set_xticks(
+            [0, 1], ["animals: translated\nminus verbatim", "elements: symbol minus\nverbatim (positive control)"]
+        )
+        ax.set_xlim(-0.5, 1.9)
+        ax.set_ylim(-0.2, 0.5)
+        ax.grid(axis="y", color="#eeeeee")
+    axes[0, 0].set_ylabel("lookup: extra flips lost\nvs. a random part of the same size")
+    axes[1, 0].set_ylabel("D (dots: one per entity;\ndiamond: all, entity bootstrap)")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP),
+         plt.Line2D([], [], marker="o", color=grey, ls=""), plt.Line2D([], [], marker="D", color="black", ls="")]  # fmt: skip
+    head(fig, "X4: the lookup does not need the J++ part even without a verbatim match; the symbol control fails on both models",
+         "The locker statements name the item verbatim, in French / Spanish / German (animals), or by chemical symbol "
+         "(elements, the positive control); picks stay in English. Dashed line: D = 0.20, the brief's bar (translated: "
+         "needs a verbatim match; symbol: the control passes).", h, ["lookup excess", "D per entity", "D, all entities"])  # fmt: skip
+    foot(fig, [f"{CI}; the entity bootstrap is unreliable below 10 clusters (8 animals, 6 elements). Light band: 'not "
+               "needed' (<= 0.10). The control fails on both models, so the method may not see a lookup that needs J++ "
+               "(X4.md). Unverified. Runs: results/x4_alias/*."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.05, 1, 0.86))
+    fig.savefig(OUT / "f16_x4.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
 def f3(plt, F, color, grey) -> None:
     fig, axes = plt.subplots(2, len(MODELS), figsize=(18, 9), sharey=True)
     for j, (target, label, _, kmatch) in enumerate(MODELS):
@@ -697,7 +850,7 @@ def f3(plt, F, color, grey) -> None:
     axes[0, 0].set_ylim(-0.3, 1.0)
     h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2, marker="o"), plt.Line2D([], [], color=F.RECALL, lw=2.2, marker="o"),
          plt.Rectangle((0, 0), 1, 1, color=grey, alpha=0.6)]  # fmt: skip
-    head(fig, "It is J++, not any dictionary; the 27B lookup needs more J++ atoms, the 122B's does not",
+    head(fig, "Of the dictionaries tried, only J++ separates the readers; the 27B lookup needs more J++ atoms, the 122B's does not",
          "Each dictionary's 25-200 atoms removed at the pre-registered layer. Extra flips lost = flips lost minus those "
          "lost to a random part of the same size.", h,
          ["J++ (lookup)", "J++ (recall)", "logit lens (W_U), input embeddings (W_E), random atoms"])  # fmt: skip
@@ -766,6 +919,10 @@ def main() -> None:
     f11(plt, F, color, grey)
     f12(plt, F, color, grey)
     f13(plt, F, color, grey)
+    f14(plt, F, color, grey)
+    f15(plt, F, color, grey)
+    f16(plt, F, color, grey)
+    f17(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]

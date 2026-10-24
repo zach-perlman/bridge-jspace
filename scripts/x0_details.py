@@ -40,6 +40,10 @@ X0B = {"9b": "qwen35_9b_x0b_v2", "27b": "x0b_v2_27b"}
 ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all", "letters_9b": "qwen35_9b_x0_atoms_letters"}
 PARTS = {"9b": "qwen35_9b_x0_parts", "27b": "x0_parts_27b"}
 MASSMEAN = {"9b": "qwen35_9b_x0_massmean", "27b": "x0_massmean_27b"}
+MASSMEAN_LF = {"9b": "qwen35_9b_x0_massmean_lf", "27b": "x0_massmean_lf_27b"}
+PCAEQ = {"9b": "qwen35_9b_x0_pcaeq", "27b": "x0_pcaeq_27b"}
+X0BPARTS = {"9b": "qwen35_9b_x0b_parts", "27b": "x0b_parts_27b"}
+X4 = {"9b": ("qwen35_9b_x4_probe", "qwen35_9b_x4_patch"), "27b": ("x4_probe_27b", "x4_patch_27b")}
 ORDER = "org locker vs asked pick"
 
 
@@ -133,6 +137,8 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     x0b_numbers(num)
     parts_numbers(num)
     massmean_numbers(num)
+    massmean_lf_numbers(num)
+    x4_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -250,15 +256,72 @@ def massmean_numbers(num: Numbers) -> None:
 
 def parts_numbers(num: Numbers) -> None:
     """x0_parts: the word part (w), J++ without the word (jw), the PCA part (pca) and J++ (jpp), each against a random
-    part of its own share, on the single-change items: share of ||Δ||² and each reader's excess."""
+    part of its own share, on the single-change items: share of ||Δ||² and each reader's excess (parts_*: point
+    estimates; pcaeq_* (PCA at J++'s share, word-orthogonal jw) and x0bparts_* (X0b's items): with CIs). Also the
+    word part's energy inside jw (fit on the whole Δ): the median of ((jw · w) / ||w||²)²."""
+    import numpy as np
+
+    for runs, prefix, fmt in ((PARTS, "parts", lambda v: f2(v[0])), (PCAEQ, "pcaeq", ci), (X0BPARTS, "x0bparts", ci)):
+        for m, run in runs.items():
+            path = sorted((pins.RESULTS_DIR / "x0_parts" / run).glob("verdict-*/verdict.json"))[-1]
+            src = str(path.relative_to(pins.REPO_ROOT))
+            for r in json.loads(path.read_text())["rows"]:
+                w = "lk" if r["reader"] == X.LOOKUP else "rc"
+                num.add(f"{prefix}_{r['part']}_{w}_excess_{m}", fmt(r["excess"]), src)
+                if prefix == "pcaeq":  # the readings' bars are on the point estimate: three decimals beside the CI
+                    num.add(f"{prefix}_{r['part']}_{w}_point_{m}", f"{r['excess'][0]:.3f}", src)
+                if w == "lk":
+                    num.add(f"{prefix}_{r['part']}_share_{m}", pct(r["median_share"]), src)
     for m, run in PARTS.items():
-        path = sorted((pins.RESULTS_DIR / "x0_parts" / run).glob("verdict-*/verdict.json"))[-1]
+        path = pins.RESULTS_DIR / "x0_parts" / run / "states.npz"
+        z = np.load(path)
+        w, jw = (z[k].astype(np.float64) for k in ("part_w", "part_jw"))
+        inside = ((w * jw).sum(1) / (w * w).sum(1)) ** 2
+        num.add(f"parts_jw_wenergy_{m}", pct(float(np.median(inside))), str(path.relative_to(pins.REPO_ROOT)))
+
+
+def massmean_lf_numbers(num: Numbers) -> None:
+    """x0_massmean, layout-free mode: A and Alf (A after subtracting each layout group's mean) removed from, or kept
+    alone in, the single-change edit: each reader's excess and kept-alone difference, Alf's share, the A-Alf overlap."""
+    for m, run in MASSMEAN_LF.items():
+        path = sorted((pins.RESULTS_DIR / "x0_massmean" / run).glob("verdict-*/verdict.json"))[-1]
         src = str(path.relative_to(pins.REPO_ROOT))
-        for r in json.loads(path.read_text())["rows"]:
+        v = json.loads(path.read_text())
+        num.add(f"mmlf_overlap_{m}", f2(v["manifest"]["subspaces"]["A_Alf_overlap"]), src)
+        for r in v["rows"]:
             w = "lk" if r["reader"] == X.LOOKUP else "rc"
-            num.add(f"parts_{r['part']}_{w}_excess_{m}", f2(r["excess"][0]), src)
-            if w == "lk":
-                num.add(f"parts_{r['part']}_share_{m}", pct(r["median_share"]), src)
+            num.add(f"mmlf_n_{w}_{m}", str(r["n"]), src)
+            for sp in ("A", "Alf"):
+                num.add(f"mmlf_{sp}_{w}_excess_{m}", ci(r[sp]["excess"]), src)
+                num.add(f"mmlf_keep_{sp}_{w}_{m}", ci(r[f"keep_{sp}"]["difference"]), src)
+                if w == "lk":
+                    num.add(f"mmlf_{sp}_share_{m}", pct(r[sp]["share"]), src)
+
+
+def x4_numbers(num: Numbers) -> None:
+    """X4: the probe within each form and as a transfer; each form's and reader's excess; D per domain (entity
+    bootstrap), entities with D > 0; C on items eligible for both readers."""
+    for m, (probe_run, patch_run) in X4.items():
+        path = sorted((pins.RESULTS_DIR / "x4_alias" / probe_run).glob("probe-*/probe.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        p = json.loads(path.read_text())
+        for form, r in p["within"].items():
+            num.add(f"x4_probe_{form.replace('/', '_')}_{m}", ci(r["probe"]), src)
+        for form, r in p["transfer"].items():
+            num.add(f"x4_transfer_{form.split('/')[0]}_{m}", ci(r["accuracy"]), src)
+        path = sorted((pins.RESULTS_DIR / "x4_alias" / patch_run).glob("verdict-*/verdict.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        v = json.loads(path.read_text())
+        for key, c in v["cells"].items():
+            domain, form, reader = key.split("/")
+            w = "lk" if reader == X.LOOKUP else "rc"
+            num.add(f"x4_{domain}_{form}_{w}_excess_{m}", ci(c["excess"]), src)
+            num.add(f"x4_{domain}_{form}_{w}_n_{m}", str(c["n"]), src)
+        for domain, r in v["rules"].items():
+            num.add(f"x4_D_{domain}_{m}", ci(r["difference"]), src)
+            num.add(f"x4_Dpos_{domain}_{m}", f"{r['entities_D_positive']} of {len(r['per_entity'])}", src)
+        for form, r in v["contrast"].items():
+            num.add(f"x4_C_{form.replace('/', '_')}_{m}", ci(r["C"]), src)
 
 
 def x0b_numbers(num: Numbers) -> None:
