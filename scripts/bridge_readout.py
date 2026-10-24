@@ -31,6 +31,7 @@ from scripts.ablate_v2 import bridge_positions, tasks_prompts  # noqa: E402
 RES = pins.RESULTS_DIR / "bridge_readout"
 DATA = Path(__file__).resolve().parents[1] / "data" / "tasks_v2"
 ALL_WORDS = ("PP", "PK", "PM", "PA", "MP", "MK", "MM", "MA", "TP", "TK", "TM", "TA")
+ALL_WORDS_V2 = tuple(s + f for s in "PMT" for f in "PKMAN")  # v2 (amendment 34 B): memory finals PM TM PN TN read
 
 
 @torch.no_grad()
@@ -46,7 +47,9 @@ def main(a) -> None:
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "set": a.set, "competence": a.competence,
                                                        "layers": layers, "git_commit": commit}, indent=2) + "\n")  # fmt: skip
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / a.set / "items.jsonl").read_text().splitlines()}
-    prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(ALL_WORDS), 1000, ["clean"], "all") if p["family"] in ("PM", "TM")]
+    v2 = a.set.startswith("jsuite_v2")
+    fams = ("PM", "TM", "PN", "TN") if v2 else ("PM", "TM")
+    prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(ALL_WORDS_V2 if v2 else ALL_WORDS), 1000, ["clean"], "all") if p["family"] in fams]
     letters = model.letter_token_ids()
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     row_of = torch.full((model.hf.lm_head.weight.shape[0],), -1, dtype=torch.long, device="cuda")
@@ -106,7 +109,7 @@ def main(a) -> None:
     (out_dir / "summary.json").write_text(json.dumps(summ, indent=1) + "\n")
     for la in layers:
         line = f"L{la:>2}"
-        for f in ("PM", "TM"):
+        for f in fams:
             for ln in ("jlens", "logit"):
                 c = summ.get(f"L{la}/{ln}/{f}")
                 if c:

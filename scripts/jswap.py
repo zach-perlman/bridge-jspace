@@ -44,6 +44,7 @@ from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.ablate import LensDictionary, rotation, top_span_removal  # noqa: E402
 from bridge_jspace.lens import JLens  # noqa: E402
 from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from scripts import jsuite_v2_tables as TB  # noqa: E402
 from scripts import natplus as NP  # noqa: E402
 from scripts import suite_v1 as S  # noqa: E402
 from scripts.ablate_v2 import bridge_positions, tasks_prompts  # noqa: E402
@@ -52,6 +53,9 @@ RES = pins.RESULTS_DIR / "jswap"
 DATA = Path(__file__).resolve().parents[1] / "data" / "tasks_v2"
 ALL_WORDS = ("PP", "PK", "PM", "PA", "MP", "MK", "MM", "MA", "TP", "TK", "TM", "TA")
 WORDS = ("PP", "PK", "PM", "PA", "TP", "TK", "TM", "TA")
+# v2 (jsuite_v2_*, amendment 34 B): 15 facts words (finals P K M A N) for eligibility, the read and tracked starts swapped
+ALL_WORDS_V2 = tuple(s + f for s in "PMT" for f in "PKMAN")
+WORDS_V2 = tuple(s + f for s in "PT" for f in "PKMAN")
 CONDS = ("swap", "remove", "swap_rot", "swap_u", "swap_comp", "paste")
 SEED_ROT = 888
 
@@ -102,12 +106,14 @@ def main(a) -> None:
     model = load_model()
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / a.set / "items.jsonl").read_text().splitlines()}
-    prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(ALL_WORDS), 1000, ["clean"], "all") if p["family"] in WORDS]
+    v2 = a.set.startswith("jsuite_v2")
+    words_all, words = (ALL_WORDS_V2, WORDS_V2) if v2 else (ALL_WORDS, WORDS)
+    prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(words_all), 1000, ["clean"], "all") if p["family"] in words]
     jobs = []
     for p in prompts:
         it = items[p["id"]]
         x, dom, kind = it["bridge"], it["domain"], it["kind"]  # the whole question's read kind (chat: "open")
-        t = NP.TYPES[dom]
+        t = TB.REL2[it["relation"]] if it.get("module") == "facts" else NP.TYPES[dom]
         vocab = it["answer_vocab"]
         if it["final"] == "P":
             tpl = t["pfact"][it["wording"]]
@@ -134,7 +140,7 @@ def main(a) -> None:
         per = collections.defaultdict(list)
         for j in jobs:
             per[j["family"]].append(j)
-        jobs = [j for f in WORDS for j in per[f][: a.limit]]
+        jobs = [j for f in words for j in per[f][: a.limit]]
     print(f"{len(prompts)} eligible prompts; {len(jobs)} with a donor; by word {dict(collections.Counter(j['family'] for j in jobs))}", flush=True)
 
     lens = JLens(model, pins.FROZEN_LENS)
@@ -210,7 +216,7 @@ def main(a) -> None:
     (out_dir / "rows.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     summ = score(rows)
     (out_dir / "summary.json").write_text(json.dumps(summ, indent=1) + "\n")
-    for f in WORDS:
+    for f in words:
         for c in ("none",) + CONDS:
             cell = summ.get(f"{f}/{c}")
             if cell:
