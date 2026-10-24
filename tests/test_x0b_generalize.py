@@ -42,6 +42,26 @@ def test_order_matches_the_statement_offsets(fmt):
     assert seen == {"before", "after"}
 
 
+@pytest.mark.parametrize("fmt", ["prose", "json", "table"])
+def test_ordinals_match_the_rendered_order(fmt):
+    pp, _ = scene(fmt, 1, domain="greek", seed=7)
+    o = B.ordinals(pp)
+    f, ctx = pp["facts"], pp["context"]
+    starts = sorted(ctx.index(B.statements(pp, f["person"], t)[1]) for t in f["locker"])
+    assert starts[o["locker_index"]] == ctx.index(B.statements(pp, f["person"], f["x"])[1])
+    before, total = map(int, o["layout"].split("/"))
+    assert total == len(f["locker"]) and (before > o["locker_index"]) == (B.order_of(pp) == "before")
+
+
+def test_rule_bars():
+    cell = lambda ex, hi, valid=True: {"valid": valid, "excess": [ex, ex - 0.05, hi]}  # noqa: E731
+    assert B.rule(cell(0.05, 0.12), cell(0.6, 0.7), [0.5, 0.3, 0.7]) == "holds"
+    assert B.rule(cell(0.05, 0.25), cell(0.6, 0.7), [0.5, 0.3, 0.7]) == "mixed"
+    assert B.rule(cell(0.22, 0.30), cell(0.6, 0.7), [0.5, 0.3, 0.7]) == "fails"
+    assert B.rule(cell(0.05, 0.12), cell(0.1, 0.2), [0.05, -0.05, 0.08]) == "fails"
+    assert B.rule(cell(0.05, 0.12, valid=False), cell(0.6, 0.7), [0.5, 0.3, 0.7]) == "can't tell"
+
+
 def test_candidates_differ_in_locker_and_memory_number():
     pp, pm = scene("prose", 2, domain="instruments", seed=3)
     values = T.DOMAINS["instruments"].values

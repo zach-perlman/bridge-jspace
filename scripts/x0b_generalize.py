@@ -7,11 +7,17 @@ domain (Dan, 24 Oct evening): the asked person's pick becomes another person's p
 whose locker and memory number both differ and whose name is one token at the bridge's position); nothing else
 changes. Gate per cell (domain x format x level): unedited org accuracy under the decisive read >= 0.80 for both
 readers; a failing cell is "can't test" and left out. Eligible: org and alt right for both readers (said and read), at
-most CAP per cell, in scene order. The X0 rule at the predicted layer on the pooled eligible items (exploratory), and
-per stratum (format, level, domain, the bridge's locker before / after the asked pick, number style) descriptive.
+most CAP per cell, in scene order.
 
-uv run python scripts/x0b_generalize.py plan --set x0b_v1                     # tokenizer only: cases and drops
-uv run python scripts/x0b_generalize.py run --name x0b_27b --set x0b_v1        # GPU, then verdict and figures
+The rule (X0b.md v2, Dan 24 Oct ~19:30), pooled at the predicted layer, J++ k = 25: the lookup's excess and the
+contrast C = recall excess - lookup excess (paired, bootstrap by entity): holds iff lookup excess <= 0.10 (upper CI <=
+0.20) and C >= 0.20 (lower CI >= 0.10); fails iff lookup excess >= 0.20 or C's upper CI < 0.10; can't tell if a
+reader's cell is invalid; else mixed. Descriptive: the k-curve (50, 100) at the predicted layer, the strata (format,
+level, domain, locker order, number style), and probe (b) on the org states at the bridge's word (the bridge's locker
+row ordinal among the locker statements, per format and order, cross-validated by entity).
+
+uv run python scripts/x0b_generalize.py plan --set x0b_v2                     # tokenizer only: cases and drops
+uv run python scripts/x0b_generalize.py run --name x0b_27b --set x0b_v2        # GPU, then verdict and figures
 uv run python scripts/x0b_generalize.py verdict --name x0b_27b                 # CPU
 """
 
@@ -28,6 +34,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import numpy as np
+
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
 from scripts import x0_necessity as X
@@ -40,6 +48,9 @@ CAP = 40  # eligible scenes per cell
 CHUNK = 500  # cases per run_rendering call (the batched OMP's memory)
 CELL = ("domain", "format", "level")
 STRATA = ("format", "level", "domain", "order", "numbers")
+K_CURVE = (50, 100)
+HOLD_LOOKUP, HOLD_LOOKUP_HI, HOLD_C, HOLD_C_LO = 0.10, 0.20, 0.20, 0.10
+FAIL_LOOKUP, FAIL_C_HI = 0.20, 0.10
 
 
 def statements(item: dict, person: str, thing: str) -> tuple[str, str]:
@@ -71,6 +82,52 @@ def order_of(item: dict) -> str:
     ctx = item["context"]
     assert ctx.count(locker) == 1, f"{item['id']}: {locker!r} is not once in the context"
     return "before" if ctx.index(locker) < ctx.index(pick) else "after"
+
+
+def ordinals(item: dict) -> dict:
+    """Probe (b)'s target and baselines' keys: the bridge's locker statement's ordinal among the locker statements, the
+    asked pick's ordinal among the pick statements (look-alikes included), and how many locker statements precede the
+    asked pick, of how many (what the word can see of the layout)."""
+    f, ctx = item["facts"], item["context"]
+    lock = {t: ctx.index(statements(item, f["person"], t)[1]) for t in f["locker"]}
+    picks = [*f["pick"].items(), *(tuple(p) for p in f["lookalike_picks"])]
+    at = {p: ctx.index(statements(item, p, t)[0]) for p, t in picks}
+    asked = at[f["person"]]
+    return {"locker_index": sorted(lock.values()).index(lock[f["x"]]), "pick_index": sorted(at.values()).index(asked),
+            "layout": f"{sum(o < asked for o in lock.values())}/{len(lock)}"}  # fmt: skip
+
+
+def rule(lookup: dict, recall: dict, c: list[float]) -> str:
+    """X0b's pooled rule: holds / fails / mixed / can't tell (module docstring)."""
+    if not (lookup["valid"] and recall["valid"]):
+        return "can't tell"
+    ex, _, ex_hi = lookup["excess"]
+    if ex <= HOLD_LOOKUP and ex_hi <= HOLD_LOOKUP_HI and c[0] >= HOLD_C and c[1] >= HOLD_C_LO:
+        return "holds"
+    if ex >= FAIL_LOOKUP or c[2] < FAIL_C_HI:
+        return "fails"
+    return "mixed"
+
+
+def contrast(rows: list[dict], layer: int, spec: tuple, n_boot: int) -> list[float]:
+    """C = recall excess - lookup excess at one layer and dictionary spec, on the same items and the same resamples."""
+    got = {(r["scene"], r["reader"], r["arm"] if r["arm"] == "whole" else (r["dict"], r["k"], r["omp"], r["arm"])):
+           r["switched"] for r in rows if r["layer"] == layer}  # fmt: skip
+    ent = {r["scene"]: r["entity"] for r in rows}
+    scenes = sorted(
+        {s for s, w, a in got if a == "whole" and (s, X.RECALL, "whole") in got and (s, X.LOOKUP, "whole") in got}
+    )
+    sw = {f"{w}/{a}": [got[(s, w, "whole" if a == "whole" else (*spec, a))] for s in scenes]
+          for w in X.READERS for a in ("whole", "no_part", "no_rand")}  # fmt: skip
+    r = X.resampled_rates(sw, [ent[s] for s in scenes], n_boot)
+    m = {k: float(sum(v) / len(v)) for k, v in sw.items()}
+
+    def excess(src: dict, w: str):
+        return X.dependence(src[f"{w}/whole"], src[f"{w}/no_part"]) - X.dependence(
+            src[f"{w}/whole"], src[f"{w}/no_rand"]
+        )
+
+    return [float(excess(m, X.RECALL) - excess(m, X.LOOKUP)), *X.interval(excess(r, X.RECALL) - excess(r, X.LOOKUP))]
 
 
 def alt_candidates(pp: dict, pm: dict) -> list[str]:
@@ -145,7 +202,7 @@ def scene_case(tok, pair: dict[str, dict]) -> tuple[dict | None, str | None]:
         return {"scene": pp["scene"], "rendering": "chat", "domain": pp["domain"], "format": pp["format"],
                 "level": pp["level"], "numbers": pp["numbers"], "order": order_of(pp), "bridge": x, "cf_bridge": t,
                 "context": pp["context"], "cf_context": alt_context(pp, t), "pos": pos, "upstream": False,
-                "space": S.ids(tok, " "), "readers": readers}, None  # fmt: skip
+                "space": S.ids(tok, " "), "readers": readers, "facts": pp["facts"]}, None  # fmt: skip
     return None, why
 
 
@@ -196,12 +253,16 @@ def stage_run(name: str, why: str, set_name: str) -> Path:
     from bridge_jspace import chat
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
-    from bridge_jspace.utils import git_state
+    from bridge_jspace.utils import git_state, progress
 
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "run with BJ_FORMAT unset"
     layers, predicted = LAYERS[pins.TARGET], X.PREDICTED[pins.TARGET]
-    X.DICTS, X.CURVE_DICTS, X.K_CURVE = ("jpp",), (), ()  # J++ k = 25 with its random part (and X0's nonneg arm)
+    X.DICTS, X.CURVE_DICTS, X.K_CURVE = (
+        ("jpp",),
+        ("jpp",),
+        K_CURVE,
+    )  # k = 25 everywhere; 50 / 100 at the predicted layer
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     items = pins.DATA_DIR / "tasks_v2" / set_name / "items.jsonl"
@@ -213,7 +274,8 @@ def stage_run(name: str, why: str, set_name: str) -> Path:
          "alt": "the asked pick becomes another person's pick (first by name with a different locker and memory "
                 "number that aligns); built here for every domain",
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED},
-         "design": "jobs/c3/X0b.md (exploratory)"}  # fmt: skip
+         "rule": {"hold": [HOLD_LOOKUP, HOLD_LOOKUP_HI, HOLD_C, HOLD_C_LO], "fail": [FAIL_LOOKUP, FAIL_C_HI]},
+         "k_curve": list(K_CURVE), "design": "jobs/c3/X0b.md (v2, exploratory)"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
     lens = JLens(model, "jpp")
@@ -229,8 +291,41 @@ def stage_run(name: str, why: str, set_name: str) -> Path:
         json.dumps({"counts": counts, "gate": gate, "eligible": len(eligible)}, indent=1) + "\n"
     )
     print(f"eligible {len(eligible)} in {sum(g['pass'] for g in gate.values())} of {len(gate)} cells", flush=True)
+    states = []
+    with torch.no_grad():  # probe (b): the org state at the bridge's word, predicted layer, every aligned case
+        for c in progress(cases, f"h_org at layer {predicted} (case)"):
+            ids = torch.tensor([c["readers"][X.LOOKUP]["ids"]["org"]], device="cuda")
+            states.append(model.run(ids, record=(predicted,))[1][predicted][c["pos"]].float().cpu().numpy())
+    np.savez_compressed(
+        out / "states.npz", h=np.stack(states).astype(np.float16), scene=np.array([c["scene"] for c in cases])
+    )
     for s in range(0, len(eligible), CHUNK):
         X.run_rendering(model, lens, eligible[s : s + CHUNK], layers, predicted, out, ws)
+    return out
+
+
+def probe_rows(src: Path, cases: dict[str, dict], n_boot: int) -> list[dict]:
+    """Probe (b) per format and locker order on the run's states (x0_probe's ridge, folds and baselines)."""
+    from scripts import x0_probe as P
+
+    if not (src / "states.npz").exists():
+        return []
+    z = np.load(src / "states.npz")
+    h, scenes = z["h"].astype(np.float64), [str(s) for s in z["scene"]]
+    items = [{"entity": cases[s]["bridge"], "format": cases[s]["format"], "order": cases[s]["order"], **ordinals(cases[s])}
+             for s in scenes]  # fmt: skip
+    out = []
+    for fmt in sorted({it["format"] for it in items}):
+        for order in ("before", "after"):
+            idx = [i for i, it in enumerate(items) if it["format"] == fmt and it["order"] == order]
+            sub = [items[i] for i in idx]
+            if (
+                len(idx) < 2 * P.K_OUTER
+                or len({it["entity"] for it in sub}) < P.K_OUTER
+                or len({it["locker_index"] for it in sub}) < 2
+            ):
+                continue
+            out.append({"format": fmt, "order": order, **P.score(h[idx], sub, "locker sentence", n_boot)})
     return out
 
 
@@ -244,7 +339,10 @@ def write_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     main = lambda cells, w: cells.get(("chat", pred, w, *X.MAIN))  # noqa: E731
     cells = X.cells_of(rows, n_boot)
     lk, rc = main(cells, X.LOOKUP), main(cells, X.RECALL)
-    v = X.verdict(lk, rc) if lk and rc else "can't test (no rows)"
+    layers = sorted({k[1] for k in cells})
+    cs = {la: contrast(rows, la, X.MAIN, n_boot) for la in layers}
+    v = rule(lk, rc, cs[pred]) if lk and rc else "can't test (no rows)"
+    probe = probe_rows(src, cases, n_boot)
     strata = []
     for key in STRATA:
         for value in sorted({str(c[key]) for c in cases.values()}):
@@ -256,6 +354,7 @@ def write_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
     blob = {"run": name, "model": m["model"], "lens": m["lens"], "predicted": pred, "verdict": v,
+            "contrast": {str(la): c for la, c in cs.items()}, "probe_b": probe,
             "cells": [{"layer": k[1], "reader": k[2], "dict": k[3], "k": k[4], "omp": k[5], **c}
                       for k, c in sorted(cells.items())], "strata": strata}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=1) + "\n")
@@ -265,12 +364,31 @@ def write_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
              f"k = {X.K_MAIN} signed, the random part of its share; the alt built here (single change). UNVERIFIED.", "",
              f"Gate per cell: {n_pass} of {len(gate['gate'])} cells pass; {gate['eligible']} eligible scenes used "
              f"(at most {m['cap_per_cell']} per cell).", "",
-             f"## X0's rule at layer {pred}, pooled: {v.upper()}", "",
-             "| layer | reader | n | entities | S_whole | Jdep | Rdep | excess | label |", "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+             f"## X0b's rule at layer {pred}, pooled: {v.upper()} (C = {X.fmt3(cs[pred])})", "",
+             f"Holds iff lookup excess <= {HOLD_LOOKUP} (upper CI <= {HOLD_LOOKUP_HI}) and C >= {HOLD_C} (lower CI >= "
+             f"{HOLD_C_LO}); fails iff lookup excess >= {FAIL_LOOKUP} or C's upper CI < {FAIL_C_HI}.", "",
+             "| layer | reader | n | entities | S_whole | Jdep | Rdep | excess | label | C (recall - lookup) |",
+             "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for (_, la, w, *d), c in sorted(cells.items()):
         if tuple(d) == X.MAIN:
             lines.append(f"| {la} | {w} | {c['n']} | {c['entities']} | {X.fmt3(c['S_whole'])} | {X.fmt3(c['Jdep'])} | "
-                         f"{X.fmt3(c['Rdep'])} | {X.fmt3(c['excess'])} | {c['label']} |")  # fmt: skip
+                         f"{X.fmt3(c['Rdep'])} | {X.fmt3(c['excess'])} | {c['label']} | {X.fmt3(cs[la])} |")  # fmt: skip
+    lines += ["", f"## The k-curve at layer {pred} (descriptive)", "",
+              "| k | reader | Jdep | Rdep | excess | label |", "|---|---|---|---|---|---|"]  # fmt: skip
+    for (_, la, w, d, k, omp), c in sorted(cells.items(), key=lambda kv: (kv[0][4], kv[0][2])):
+        if la == pred and d == "jpp" and omp == "signed":
+            lines.append(
+                f"| {k} | {w} | {X.fmt3(c['Jdep'])} | {X.fmt3(c['Rdep'])} | {X.fmt3(c['excess'])} | {c['label']} |"
+            )
+    lines += ["", f"## Probe (b) at layer {pred}: the bridge's locker row ordinal (descriptive)", "",
+              "Org states at the bridge's word of every aligned scene; cross-validated by bridge entity. 'layout': the "
+              "most frequent ordinal given how many locker statements precede the asked pick, of how many.", "",
+              "| format | locker vs pick | n | entities | classes | probe | majority | chance | pick ordinal only | "
+              "layout | probe - best baseline |", "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for p in probe:
+        lines.append(f"| {p['format']} | {p['order']} | {p['n']} | {p['entities']} | {p['classes']} | {X.fmt3(p['probe'])} | "
+                     f"{X.fmt3(p['majority'])} | {p['chance']:.2f} | {X.fmt3(p['structure'])} | {X.fmt3(p['layout'])} | "
+                     f"{X.fmt3(p['probe_minus_best'])} ({p['best_baseline']}) |")  # fmt: skip
     lines += ["", f"## Strata at layer {pred} (descriptive)", "", "⚠ = fewer than 30 switched by the whole edit.", "",
               "| feature | value | reader | n | switched | S_whole | Jdep | Rdep | excess | label |",
               "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
@@ -335,7 +453,7 @@ def main() -> None:
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name")
     ap.add_argument("--why", default="")
-    ap.add_argument("--set", default="x0b_v1")
+    ap.add_argument("--set", default="x0b_v2")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":

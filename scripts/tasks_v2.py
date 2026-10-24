@@ -511,9 +511,17 @@ def wrong_routes(word: str, dom: Domain, sc: dict, x: str, dom2: Domain | None) 
 
 
 # ---- formats ------------------------------------------------------------------------------------------------------
-def render_facts(fmt: str, dom: Domain, sc: dict, rng: random.Random, n_filler: int, rels: tuple[str, ...]) -> str:
+def render_facts(fmt: str, dom: Domain, sc: dict, rng: random.Random, n_filler: int, rels: tuple[str, ...],
+                 locker_before: float | None = None) -> str:  # fmt: skip
     """The scene's picks and the relations in rels (partner, locker, bin) in one format. The draws depend only on the
-    scene's sizes and rels, so a generator seeded alike renders C and O with the clean prompt's layout."""
+    scene's sizes and rels, so a generator seeded alike renders C and O with the clean prompt's layout. locker_before
+    (X0b, 24 Oct; default None = unchanged): the probability that the start thing's locker statement comes before the
+    queried person's pick, drawn per scene from its own seeded stream and enforced after the shuffle by swapping those
+    two statements (prose) or the picks and lockers blocks (json, table); no other draw moves."""
+    want = None
+    if locker_before is not None and "locker" in rels:
+        key = f"order|{sorted(sc['pick'].items())}|{sorted(sc['locker'].items())}"
+        want = random.Random(key).random() < locker_before
     st = sc["numbers"]
     d = dom_name(dom)
     picks = list(sc["pick"].items()) + sc["lookalike_picks"]
@@ -530,6 +538,11 @@ def render_facts(fmt: str, dom: Domain, sc: dict, rng: random.Random, n_filler: 
         intro = fill[: min(3, n_filler)] if fmt == "document" else []
         lines += fill[len(intro) :]
         rng.shuffle(lines)
+        if want is not None:
+            i = lines.index(f"{sc['person']} picked {ref(dom, sc['x'])}.")
+            j = next(k for k, s in enumerate(lines) if s.startswith(f"The locker of {ref(dom, sc['x'])} is "))
+            if (j < i) != want:
+                lines[i], lines[j] = lines[j], lines[i]
         text = " ".join(lines)
         if fmt == "document":
             return " ".join(["Club newsletter, autumn term.", *intro, "From the club's records:", text,
@@ -547,6 +560,9 @@ def render_facts(fmt: str, dom: Domain, sc: dict, rng: random.Random, n_filler: 
         rel["rooms"] = ("room", "paint", rooms)
     order = list(rel)
     rng.shuffle(order)
+    if want is not None and (order.index("lockers") < order.index("picks")) != want:
+        i, j = order.index("lockers"), order.index("picks")
+        order[i], order[j] = order[j], order[i]
     if fmt == "json":
         tool = {"bins": f"get_bins_by_{BIN_KEY[d]}"}
         return "\n".join(f"Tool output from {tool.get(k, 'get_' + k)}:\n" + json.dumps([{rel[k][0]: a, rel[k][1]: b} for a, b in rel[k][2]])
@@ -612,7 +628,8 @@ def make_scene(rng: random.Random, group: str, words: list[str], domain: str, fm
             return None
         others = [t for t in sc["things"] if t != x]
         chance = sum(follow(word, dom, sc, t, d2)[0] == ch["answer"] for t in others) / len(others)
-        context = render_facts(fmt, dom, sc, random.Random(render_seed), knobs["filler"], CONTEXT_RELS[word])
+        context = render_facts(fmt, dom, sc, random.Random(render_seed), knobs["filler"], CONTEXT_RELS[word],
+                               knobs.get("locker_before"))  # fmt: skip
         items.append({"chance_same_answer": round(chance, 3), "word": word, "domain": domain, "format": fmt, "knobs": knobs, "c_op": c_op,
                       "domain2": dom2_name if d2 else None, "numbers": style, "n_things": len(sc["things"]),
                       "context": context, "context_rels": list(CONTEXT_RELS[word]), "render_seed": render_seed,
@@ -769,12 +786,15 @@ def groups_of(words: list[str]) -> dict[str, list[str]]:
 
 
 def make(name: str, n: int, words: list[str], domains: list[str], formats: list[str], levels: list[int], seed: int,
-         counterfactuals: bool = False, three_step_domains: list[str] | None = None) -> None:  # fmt: skip
+         counterfactuals: bool = False, three_step_domains: list[str] | None = None,
+         locker_before: float | None = None) -> None:  # fmt: skip
     """n scenes per start group x level, each asked with every word of its group, spread evenly over the domain x
     format combinations that can carry the group, each word's digit answers capped at twice their uniform share.
-    Write-once; a shortfall (fewer than n scenes) stops it."""
+    locker_before: render_facts' order knob (recorded in each item's knobs). Write-once; a shortfall (fewer than n
+    scenes) stops it."""
     unknown = [w for w in words if w not in CONTEXT_RELS]
     assert not unknown, f"unknown words {unknown} (v6 dropped PMM and MMM)"
+    assert not (counterfactuals and locker_before is not None), "the order knob does not render C and O alike"
     out = DATA / name
     out.mkdir(parents=True, exist_ok=True)
     assert not (out / "items.jsonl").exists(), f"{out} exists; data sets are written once"
@@ -787,6 +807,9 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
         tok = load_tokenizer()
     items, seen, coverage = [], set(), {}
     cap_n = math.ceil(2 * n / 9)
+    knobs_at = {
+        lv: LEVELS[lv] if locker_before is None else {**LEVELS[lv], "locker_before": locker_before} for lv in levels
+    }
     for level in levels:
         for group, gwords in groups_of(words).items():
             doms = [d for d in domains if group[1] == "2" or d in (three_step_domains or THREE_STEP_DOMAINS)]
@@ -799,7 +822,7 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
                     if got >= n or (d, f) in dead:
                         continue
                     for _ in range(60):  # a combination that yields nothing in 60 draws cannot carry this group
-                        its = make_scene(rng, group[0], gwords, d, f, LEVELS[level], domains, tok)
+                        its = make_scene(rng, group[0], gwords, d, f, knobs_at[level], domains, tok)
                         if its is None or (its[0]["context"], tuple(it["question"] for it in its)) in seen:
                             continue
                         if any(it["kind"] == "digit" and answers[it["word"]][it["answer"]] >= cap_n for it in its):
@@ -824,7 +847,7 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
     meta = {"set": name, "n_scenes_per_group_level": n, "words": words, "domains": domains, "formats": formats,
             "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make (v8)",
             "git_commit": commit, "counterfactuals": counterfactuals, "n_items": len(items), "coverage": coverage,
-            "three_step_domains": list(three_step_domains or THREE_STEP_DOMAINS)}  # fmt: skip
+            "three_step_domains": list(three_step_domains or THREE_STEP_DOMAINS), "locker_before": locker_before}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(meta, indent=2) + "\n")
     print("wrote", out / "items.jsonl", len(items), "items")
 
@@ -1089,6 +1112,9 @@ if __name__ == "__main__":
         default=None,
         help="make: domains for three-step words (default THREE_STEP_DOMAINS; e.g. planets greek to measure them)",
     )
+    ap.add_argument(
+        "--locker-before", type=float, default=None, help="make: P(the start thing's locker before the pick)"
+    )
     ap.add_argument("--guess", action="store_true", help="competence: add the guess prompt (start made unknown)")
     args = ap.parse_args()
     if args.stage == "examples":
@@ -1104,6 +1130,7 @@ if __name__ == "__main__":
             args.seed,
             args.counterfactuals,
             args.three_step_domains,
+            args.locker_before,
         )
     else:
         competence(args.set_name, args.name, args.why, args.guess)

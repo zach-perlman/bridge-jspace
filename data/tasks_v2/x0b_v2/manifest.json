@@ -1,0 +1,141 @@
+{
+  "set": "x0b_v2",
+  "n_scenes_per_group_level": 1470,
+  "words": [
+    "PP",
+    "PM"
+  ],
+  "domains": [
+    "animals",
+    "planets",
+    "elements",
+    "greek",
+    "shapes",
+    "vehicles",
+    "instruments"
+  ],
+  "formats": [
+    "prose",
+    "json",
+    "table"
+  ],
+  "levels": {
+    "0": {
+      "entities": 3,
+      "distractors": false,
+      "filler": 0,
+      "paraphrase": false,
+      "hard_cues": false
+    },
+    "1": {
+      "entities": 6,
+      "distractors": true,
+      "filler": 5,
+      "paraphrase": false,
+      "hard_cues": false
+    },
+    "2": {
+      "entities": 9,
+      "distractors": true,
+      "filler": 10,
+      "paraphrase": true,
+      "hard_cues": true
+    }
+  },
+  "seed": 2410,
+  "generator": "scripts/tasks_v2.py make (v8)",
+  "git_commit": "771b47269ebeb2c79c276b0956228a625bf80fca",
+  "counterfactuals": false,
+  "n_items": 8820,
+  "coverage": {
+    "P2/L0": {
+      "scenes": 1470,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "instruments/table": 70,
+        "greek/prose": 70,
+        "elements/json": 70,
+        "vehicles/prose": 70,
+        "instruments/json": 70,
+        "animals/prose": 70,
+        "greek/table": 70,
+        "shapes/json": 70,
+        "animals/table": 70,
+        "animals/json": 70,
+        "elements/prose": 70,
+        "shapes/table": 70,
+        "planets/table": 70,
+        "vehicles/json": 70,
+        "shapes/prose": 70,
+        "greek/json": 70,
+        "elements/table": 70,
+        "planets/json": 70,
+        "instruments/prose": 70,
+        "vehicles/table": 70,
+        "planets/prose": 70
+      }
+    },
+    "P2/L1": {
+      "scenes": 1470,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "planets/table": 70,
+        "elements/prose": 70,
+        "elements/json": 70,
+        "planets/json": 70,
+        "shapes/prose": 70,
+        "shapes/table": 70,
+        "elements/table": 70,
+        "greek/json": 70,
+        "shapes/json": 70,
+        "greek/table": 70,
+        "planets/prose": 70,
+        "animals/table": 70,
+        "instruments/table": 70,
+        "instruments/prose": 70,
+        "vehicles/prose": 70,
+        "greek/prose": 70,
+        "vehicles/table": 70,
+        "animals/prose": 70,
+        "instruments/json": 70,
+        "vehicles/json": 70,
+        "animals/json": 70
+      }
+    },
+    "P2/L2": {
+      "scenes": 1470,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "shapes/prose": 70,
+        "animals/prose": 70,
+        "vehicles/prose": 70,
+        "instruments/table": 70,
+        "vehicles/table": 70,
+        "shapes/table": 70,
+        "greek/prose": 70,
+        "planets/json": 70,
+        "greek/table": 70,
+        "vehicles/json": 70,
+        "elements/table": 70,
+        "instruments/json": 70,
+        "greek/json": 70,
+        "planets/table": 70,
+        "animals/table": 70,
+        "planets/prose": 70,
+        "animals/json": 70,
+        "elements/json": 70,
+        "elements/prose": 70,
+        "instruments/prose": 70,
+        "shapes/json": 70
+      }
+    }
+  },
+  "three_step_domains": [
+    "animals",
+    "vehicles",
+    "shapes",
+    "elements",
+    "planets"
+  ],
+  "locker_before": 0.75
+}
