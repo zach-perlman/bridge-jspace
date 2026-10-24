@@ -1,0 +1,18 @@
+{
+  "run": "kol1_jsuite_v1_facts_dev_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-24, prereg amendment 28 note 2): kolibri-1 on jsuite_v1_facts_dev_chat",
+  "set": "jsuite_v1_facts_dev_chat",
+  "model": {
+    "target": "kolibri-1",
+    "repo": "Aleph-Alpha/Kolibri-1",
+    "revision": "5bb7075ba22db733e3834b1c71d2245537cc14ed",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "089f7fba015c0cfb585828cf5d03227fa5683ca2",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-24T09:47:11Z"
+}

@@ -1,0 +1,45 @@
+{
+  "run": "kol1_textloss_top_l15_35_v1",
+  "why": "Zach (2026-10-24, prereg amendment 28 note 2): kolibri-1 plain-text gate (amendment 28)",
+  "written_utc": "2026-10-24T10:21:39Z",
+  "model": {
+    "target": "kolibri-1",
+    "repo": "Aleph-Alpha/Kolibri-1",
+    "revision": "5bb7075ba22db733e3834b1c71d2245537cc14ed",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "cc8d19282258a20416d7fd106ad20a784ce8f1fd80983d12b8bfc7f2e245ac54"
+  ],
+  "layers": [
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+  ],
+  "conditions": [
+    "none",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}
