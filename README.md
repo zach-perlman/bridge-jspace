@@ -5,7 +5,7 @@
 
 > "Iris picked the frog. The locker of the frog is 5. ..." The bridge is *frog*. A **lookup** ("Which locker belongs to Iris's pick?") takes the answer from a sentence in the prompt; a **recall** ("How many legs does Iris's pick have?") takes it from memory.
 
-> **Status, 24 Oct 2026, evening.** Built at d5d82579 from the X0 run files. This page is the first experiment of the direction, X0 (pre-registered 24 Oct; [jobs/c3/X0.md](jobs/c3/X0.md)), and the plan it led to. Numbers are quoted from the run files (linked). Exploration phase: nothing here is hand-verified (UNVERIFIED). Models: Qwen3.6-27B and Qwen3.5-9B, hybrids with DeltaNet layers. The earlier claims (the late read, order then identity) are in [CHANGELOG.md](CHANGELOG.md).
+> **Status, 24 Oct 2026, evening.** Built at f116ef14 from the X0 run files. This page is the first experiment of the direction, X0 (pre-registered 24 Oct; [jobs/c3/X0.md](jobs/c3/X0.md)), and the plan it led to. Numbers are quoted from the run files (linked). Exploration phase: nothing here is hand-verified (UNVERIFIED). Models: Qwen3.6-27B and Qwen3.5-9B, hybrids with DeltaNet layers. The earlier claims (the late read, order then identity) are in [CHANGELOG.md](CHANGELOG.md).
 
 ## TL;DR
 
@@ -14,7 +14,9 @@
 - **The categorical version is model-dependent.** "Lookups do not use the J-form" is confirmed on the 9B (layer 12) and not confirmed on the 27B (layer 32): there the lookup depends on further J++ atoms (weak spots).
 - **Next**: what the lookup uses instead, and what decides the route (X2', X4, X1, X3), as graded reader comparisons.
 
-![X0: lookup and recall excess by layer, two models, three renderings](figures/x0_necessity/overview.png)
+![Removing the J++ part costs recall far more than lookup](figures/status_2026-10-24/f1_readers.png)
+
+![Recall depends on the J++ form at every depth; lookup only early](figures/status_2026-10-24/f2_depth.png)
 
 ## The experiment: X0
 
@@ -56,7 +58,7 @@
 
 ![Equal removed share](figures/x0_necessity/kmatch.png)
 
-![Excess against the number of atoms](figures/x0_necessity/kcurve.png)
+![On the 27B, with more J++ atoms the lookup needs J++ too](figures/status_2026-10-24/f5_atoms.png)
 
 **Controls**
 - A random part at each dictionary's own share.

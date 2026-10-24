@@ -14,7 +14,9 @@
 - **The categorical version is model-dependent.** "Lookups do not use the J-form" is confirmed on the 9B (layer {{q|12}}) and not confirmed on the 27B (layer {{q|32}}): there the lookup depends on further J++ atoms (weak spots).
 - **Next**: what the lookup uses instead, and what decides the route (X2', X4, X1, X3), as graded reader comparisons.
 
-![X0: lookup and recall excess by layer, two models, three renderings](figures/x0_necessity/overview.png)
+![Removing the J++ part costs recall far more than lookup](figures/status_2026-10-24/f1_readers.png)
+
+![Recall depends on the J++ form at every depth; lookup only early](figures/status_2026-10-24/f2_depth.png)
 
 ## The experiment: X0
 
@@ -56,7 +58,7 @@
 
 ![Equal removed share](figures/x0_necessity/kmatch.png)
 
-![Excess against the number of atoms](figures/x0_necessity/kcurve.png)
+![On the 27B, with more J++ atoms the lookup needs J++ too](figures/status_2026-10-24/f5_atoms.png)
 
 **Controls**
 - A random part at each dictionary's own share.

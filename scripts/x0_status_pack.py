@@ -1,11 +1,12 @@
 """x0_status_pack: four plain-language X0 figures for a status update (Dan, 24 Oct), from existing rows only. Writes
-figures/status_2026-10-24/{f1_readers, f2_depth, f3_dictionaries, f4_order}.png and data.csv. UNVERIFIED.
+figures/status_2026-10-24/{f1_readers, f2_depth, f3_dictionaries, f4_order, f5_atoms}.png and data.csv. UNVERIFIED.
 
 F1  the pre-registered layers (9B L12, 27B L32): flips lost (points of all items) without the J++ part and without a
     random part of the same size, per reader; the rule's verdict and the graded contrast C under each model.
-F2  share of flips lost by relative depth: lookup and recall without the J++ part; grey band = without a random part.
+F2  extra flips lost by relative depth, lookup and recall, valid cells only.
 F3  extra flips lost against the share of the change removed: J++, and W_U / W_E / random atoms as one grey band.
 F4  the share of lookups the whole edit flips, locker sentence before vs after the pick sentence.
+F5  extra flips lost against the number of J++ atoms removed (25-200), at the pre-registered layer.
 """
 
 from __future__ import annotations
@@ -98,8 +99,8 @@ def f1(plt, F, color, grey) -> None:
         record("f1", target, run, la, "recall-lookup", "graded contrast C (excess)", cc[0], cc[1], cc[2])
         ax.set_xticks(xs, ["lookup", "recall"])
         ax.set_title(f"{label}, layer {la}")
-        ax.text(0.5, -0.17, f"{label.split('-')[1]}: {verdict}   ·   recall − lookup extra loss C = {cc[0]:.2f} "
-                f"[{cc[1]:.2f}, {cc[2]:.2f}]", transform=ax.transAxes, ha="center", fontsize=11)  # fmt: skip
+        ax.text(0.5, -0.15, f"{label.split('-')[1]}, layer {la}: {verdict}", transform=ax.transAxes, ha="center",
+                fontsize=12, weight="bold")  # fmt: skip
         ax.grid(axis="y", color="#e8e8e8")
         ax.set_axisbelow(True)
     axes[0].set_ylabel("flips lost (percentage points of all items)")
@@ -107,7 +108,7 @@ def f1(plt, F, color, grey) -> None:
     handles = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL),
                plt.Rectangle((0, 0), 1, 1, color=grey)]  # fmt: skip
     labels = ["lookup: J++ part removed", "recall: J++ part removed", "random part of the same size removed"]
-    head(fig, "Recall needs the J++ form; lookup much less",
+    head(fig, "Removing the J++ part costs recall far more than lookup",
          "At the layers fixed before the run, removing the J++-readable part of the bridge edit costs recalls many flips "
          "and lookups few.\nA flip = the answer changes to the edited bridge's answer. Extra loss = flips lost without the "
          "J++ part minus flips lost without a random part of the same size.", handles, labels)  # fmt: skip
@@ -120,50 +121,115 @@ def f1(plt, F, color, grey) -> None:
 
 
 def f2(plt, F, color, grey) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(13, 5.8), sharey=True, sharex=True)
+    """Extra flips lost by relative depth, lookup and recall, valid cells only; the 'not needed' band; the values at
+    the pre-registered layer."""
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5.8), sharey=True)
+    invalid = []
     for ax, (target, label, run, _) in zip(axes, MODELS, strict=True):
         r = XF.Run(run)
         cells = r.cells("chat")
         n_layers = pins.TARGETS[target]["n_layers"]
         layers = sorted({k[1] for k in cells})
-        depth = [100 * la / n_layers for la in layers]
-        valid = [(d, [cells[("chat", la, w, *X.MAIN)] for w in X.READERS]) for d, la in zip(depth, layers, strict=True)]
-        valid = [(d, [c for c in cs if c["valid"]]) for d, cs in valid]
-        valid = [(d, cs) for d, cs in valid if cs]
-        ax.fill_between([d for d, _ in valid], [min(c["Rdep"][1] for c in cs) for _, cs in valid],
-                        [max(c["Rdep"][2] for c in cs) for _, cs in valid], color=grey, alpha=0.6, lw=0)  # fmt: skip
+        ax.axhspan(0, X.AROUND_EXCESS, color="#f1f1f1", lw=0, zorder=0)
+        ax.text(0.99, X.AROUND_EXCESS / 2, "counts as 'not needed'", transform=ax.get_yaxis_transform(), ha="right",
+                va="center", fontsize=8.5, color="#888888")  # fmt: skip
+        ax.axhline(X.THROUGH_EXCESS, color="#bbbbbb", lw=0.8, ls=":")
+        ax.text(0.99, X.THROUGH_EXCESS + 0.01, "counts as 'needed'", transform=ax.get_yaxis_transform(), ha="right",
+                va="bottom", fontsize=8.5, color="#888888")  # fmt: skip
+        ax.axhline(0, color="black", lw=0.6)
+        series = {}
         for w in X.READERS:
-            cs = [cells[("chat", la, w, *X.MAIN)] for la in layers]
-            ys = [c["Jdep"][0] for c in cs]
-            ax.plot(depth, ys, "-", color=color[w], lw=2.2)
-            for d, c in zip(depth, cs, strict=True):
-                ax.plot(d, c["Jdep"][0], "o", ms=6, color=color[w], mfc=color[w] if c["valid"] else "white")
-                v, lo, hi = c["Jdep"]
-                record("f2", target, run, round(d * n_layers / 100), w, "flips lost without J++ (share)", v, lo, hi,
-                       c["n"])  # fmt: skip
+            pts = [(100 * la / n_layers, cells[("chat", la, w, *X.MAIN)]) for la in layers]
+            bad = [la for la in layers if not cells[("chat", la, w, *X.MAIN)]["valid"]]
+            if bad:
+                invalid.append(f"{label.split('-')[1]} {NAME[w]}s at layers {bad[0]}-{bad[-1]}" if len(bad) > 1
+                               else f"{label.split('-')[1]} {NAME[w]}s at layer {bad[0]}")  # fmt: skip
+            d = [x for x, c in pts if c["valid"]]
+            y = [c["excess"][0] for _, c in pts if c["valid"]]
+            ax.fill_between(d, [c["excess"][1] for _, c in pts if c["valid"]], [c["excess"][2] for _, c in pts if c["valid"]],
+                            color=color[w], alpha=0.13, lw=0)  # fmt: skip
+            ax.plot(d, y, "-o", color=color[w], lw=2.2, ms=4)
+            series[w] = dict(zip(d, y, strict=True))
+            for x, c in pts:
+                lo, hi = c["excess"][1], c["excess"][2]
+                record("f2", target, run, round(x * n_layers / 100), w, "extra loss", c["excess"][0], lo, hi, c["n"])
+        both = sorted(set(series[X.LOOKUP]) & set(series[X.RECALL]))
+        ax.fill_between(both, [series[X.LOOKUP][x] for x in both], [series[X.RECALL][x] for x in both], color="#9e9e9e",
+                        alpha=0.08, lw=0)  # fmt: skip
         pred = X.PREDICTED[target]
         pd = 100 * pred / n_layers
         ax.axvline(pd, color="#999999", lw=1, ls="--")
         lk, rc = cells[("chat", pred, X.LOOKUP, *X.MAIN)], cells[("chat", pred, X.RECALL, *X.MAIN)]
-        ax.annotate(f"layer {pred}: recall {rc['Jdep'][0]:.2f}, lookup {lk['Jdep'][0]:.2f}", (pd, 1.0), xytext=(4, 0),
-                    textcoords="offset points", fontsize=10, va="top")  # fmt: skip
-        ax.set_title(label)
+        ax.annotate(f"layer {pred}:\nlookup {lk['excess'][0]:.2f}\nrecall {rc['excess'][0]:.2f}", (pd, 0.42), xytext=(-6, 0),
+                    textcoords="offset points", fontsize=10, va="center", ha="right",
+                    bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="none", alpha=0.85))  # fmt: skip
+        top = ax.secondary_xaxis(
+            "top", functions=(lambda x, n=n_layers: x * n / 100, lambda la, n=n_layers: 100 * la / n)
+        )
+        top.set_xticks(layers[::2])
+        top.tick_params(labelsize=8, colors="#888888")
+        top.set_xlabel("layer", fontsize=8.5, color="#888888")
+        ax.set_title(label, pad=24)
         ax.set_xlabel("depth (% of the model's layers)")
         ax.grid(color="#eeeeee")
         ax.set_axisbelow(True)
-    axes[0].set_ylabel("share of flips lost")
-    axes[0].set_ylim(-0.1, 1.05)
-    h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2), plt.Line2D([], [], color=F.RECALL, lw=2.2),
-         plt.Rectangle((0, 0), 1, 1, color=grey, alpha=0.6)]  # fmt: skip
-    head(fig, "Where in depth: recall keeps needing the J++ form; the lookup's need falls with depth",
-         "Share of the edit's flips lost when the J++ part is removed, by depth. The grey band is the same for a random "
-         "part of the same size;\nthe gap above it is the extra loss. Dashed line: the layer fixed before the run.", h,
-         ["lookup, J++ part removed", "recall, J++ part removed", "random part removed (valid cells, both readers)"])  # fmt: skip
-    foot(fig, ["Hollow markers: invalid cells (the whole edit flips < 30% or < 30 items). On the 27B the lookup's profile "
-               "tracks the share of the change J++ takes (Spearman 0.79).",
-               f"n = 200 scenes per layer; {CI}. Unverified. Runs: qwen35_9b_x0_necessity, x0_necessity_27b_chat."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.08, 1, 0.80))
+    axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
+    axes[0].set_ylim(-0.2, 1.0)
+    h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2), plt.Line2D([], [], color=F.RECALL, lw=2.2)]
+    head(fig, "Recall depends on the J++ form at every depth; lookup only early",
+         "Extra flips lost = flips lost when the J++ part is removed minus flips lost when a random part of the same size "
+         "is removed (share of the edit's flips). Dashed line: the layer fixed before the run.", h, ["lookup", "recall"])  # fmt: skip
+    foot(fig, [f"Not enough flips to measure (the whole edit flips < 30% or < 30 items), not drawn: {'; '.join(invalid)}.",
+               f"n = 200 scenes per layer; {CI}. Unverified. On the 27B the lookup's profile tracks the share of the change "
+               "J++ takes (Spearman 0.79). No chat template: can't test (the models open a think block or answer in "
+               "markdown). Runs: qwen35_9b_x0_necessity, x0_necessity_27b_chat."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.09, 1, 0.82))
     fig.savefig(OUT / "f2_depth.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
+def f5(plt, F, color, grey) -> None:
+    """Extra flips lost against the number of J++ atoms removed, at the pre-registered layer (the k-match runs)."""
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5.6), sharey=True)
+    for ax, (target, label, _, kmatch) in zip(axes, MODELS, strict=True):
+        r = XF.Run(kmatch)
+        la = X.PREDICTED[target]
+        cells = r.cells("chat")
+        ax.axhspan(0, X.AROUND_EXCESS, color="#f1f1f1", lw=0, zorder=0)
+        ax.axhline(X.THROUGH_EXCESS, color="#bbbbbb", lw=0.8, ls=":")
+        ax.axhline(0, color="black", lw=0.6)
+        for w in X.READERS:
+            pts = sorted((k, c) for (rr, l2, ww, d, k, omp), c in cells.items()
+                         if l2 == la and ww == w and d == "jpp" and omp == "signed")  # fmt: skip
+            ks = [k for k, _ in pts]
+            ax.fill_between(ks, [c["excess"][1] for _, c in pts], [c["excess"][2] for _, c in pts], color=color[w],
+                            alpha=0.13, lw=0)  # fmt: skip
+            ax.plot(ks, [c["excess"][0] for _, c in pts], "-o", color=color[w], lw=2.2, ms=5)
+            for k, c in pts:
+                record("f5", target, kmatch, la, w, f"extra loss, J++ k={k}", c["excess"][0], c["excess"][1],
+                       c["excess"][2], c["n"])  # fmt: skip
+                last = k == max(ks)
+                ax.annotate(f"{c['excess'][0]:.2f}", (k, c["excess"][0]),
+                            xytext=(8, 0) if last else (0, 8 if w == X.RECALL else -15), textcoords="offset points",
+                            ha="left" if last else "center", va="center" if last else "baseline", fontsize=9,
+                            color=color[w])  # fmt: skip
+        ax.set_xscale("log")
+        ax.set_xticks([25, 50, 100, 200], ["25", "50", "100", "200"])
+        ax.minorticks_off()
+        ax.set_title(f"{label}, layer {la}")
+        ax.set_xlabel("J++ atoms removed")
+        ax.grid(color="#eeeeee")
+        ax.set_axisbelow(True)
+    axes[0].set_ylabel("extra flips lost\nvs. a random part of the same size")
+    axes[0].set_ylim(-0.3, 1.0)
+    h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2, marker="o"), plt.Line2D([], [], color=F.RECALL, lw=2.2, marker="o")]
+    head(fig, "On the 27B, with more J++ atoms the lookup needs J++ too",
+         "The J++ part grown from 25 to 200 atoms at the layer fixed before the run. The 9B's lookup stays at or below a "
+         "random part of the same size at every size; the 27B's rises to the recall's level.", h, ["lookup", "recall"])  # fmt: skip
+    foot(fig, [f"n = 200 scenes per point; {CI}. Light band: 0 to 0.10, counts as 'not needed'; dotted line: 0.20, "
+               "counts as 'needed'. Unverified. Descriptive, added after the data. Runs: qwen35_9b_x0_kmatch, x0_kmatch_27b."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.06, 1, 0.82))
+    fig.savefig(OUT / "f5_atoms.png", dpi=150, facecolor="white")
     plt.close(fig)
 
 
@@ -262,6 +328,7 @@ def main() -> None:
     f2(plt, F, color, grey)
     f3(plt, F, color, grey)
     f4(plt, F, color, grey)
+    f5(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]
