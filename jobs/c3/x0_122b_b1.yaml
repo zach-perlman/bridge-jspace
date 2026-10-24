@@ -1,0 +1,25 @@
+id: x0_122b_b1
+title: "122B grid b1 (Dan, 25 Oct ~00:20; held-out model): the main cell at L33 with the one-change edit; J++ at 25 / 50 / 100 atoms; logit-lens, input-embedding and random dictionaries; the atoms table"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.0
+depends_on: [x0_replicate]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_BATCH=16 uv run python scripts/x0_necessity.py run --name qwen35_122b_x0_single --set d1_topics_v3 --renderings chat --layers 33 --alt single --dicts jpp wu we rand --curve-dicts jpp --curve-k 50 100 --why "122B grid b1 (Dan, 25 Oct ~00:20): the one-change edit at L33, held-out model"
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0_atoms.py run --name qwen35_122b_x0_atoms_letters --source qwen35_122b_x0_necessity_r2 --layer 33 --n 20 --seed 0 --vocab letters
+question: >-
+  On the 122B at L33 (fixed in X0.md), with the edit that changes only the asked pick (as on the 9B and 27B), does the main cell hold by the one-change thresholds (lookup excess <= 0.10 with upper CI <= 0.20; recall-lookup gap >= 0.20 with lower CI >= 0.10), and what do 50 and 100 J++ atoms and the other dictionaries do?
+why_it_matters: >-
+  The 122B is the held-out model for findings first seen on the 9B and 27B; its one-change cell fills the grid's main-test row under the edit used from varied scenes on.
+hypotheses:
+  H-holds: 'the one-change rule holds on the 122B. Prior: Dan''s Q31.2 (batch 31, committed before the results are opened)'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct ~00:20: each 122B spec states its rule before the run with the 9B / 27B thresholds). Holds iff lookup excess <= 0.10 (upper CI <= 0.20) and recall-lookup gap >= 0.20 (lower CI >= 0.10); fails iff lookup excess >= 0.20 or the gap's upper CI < 0.10; otherwise mixed (X0b's pooled rule, the one-change thresholds). Descriptive: 50 / 100 atoms; W_U, W_E and random dictionaries each against a random part of its own share (X0's arms); the atoms table (on the two-change run, as for the 27B). Cluster bootstrap over bridge entities (10,000 resamples, seed 0). Results stay closed until Dan's batch-31 commit.
+controls:
+- 'a random-subspace part at each part''s own share'
+- 'both readers on the identical patch'
+- 'X0''s gate (0.80 per reader) and eligibility'
+n: '200 eligible single-change items of d1_topics_v3'
+seeds: [0]
+notes: "122B on both GPUs (BJ_DEVICE_MAP=auto). Queue (Dan ~00:20): x0_replicate -> b1 -> b2 -> b3 -> b4 -> natural passages -> b5 -> b6; no new job after 07:30."
