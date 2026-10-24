@@ -160,6 +160,13 @@ def test_gate_uses_the_decisive_read_and_skips_a_rendering_not_run():
     assert gate["raw"]["cases"] == 0 and not gate["raw"]["pass"] and eligible["raw"] == []
 
 
+def test_raw_renderings_end_without_a_trailing_space():
+    item = {"question": "Which locker belongs to Iris's pick?"}
+    raw, nothink = (X.render(None, item, r, "Iris picked the frog.") for r in ("raw", "nothink"))
+    assert raw == "Iris picked the frog.\nQuestion: Which locker belongs to Iris's pick?\nAnswer:"
+    assert nothink == raw.replace("\nAnswer:", "\n<think>\n\n</think>\n\nAnswer:")
+
+
 def test_h_token_branches():
     around = X.cell(outcomes(200, 160, 156, 156), ents(200), n_boot=500)
     needs = X.cell(outcomes(200, 160, 100, 156), ents(200), n_boot=500)
