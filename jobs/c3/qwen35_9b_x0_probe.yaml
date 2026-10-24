@@ -1,0 +1,26 @@
+id: qwen35_9b_x0_probe
+title: "X0 descriptive (added after data), Qwen3.5-9B L12: what does the bridge's word hold in the org run (answer digit, locker sentence, identity)?"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.1
+depends_on: [x0_hw_gate_27b]
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/x0_probe.py run --name qwen35_9b_x0_probe --source qwen35_9b_x0_necessity --layer 12
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/x0_probe.py figures --name qwen35_9b_x0_probe
+question: >-
+  At the 9B's layer 12, at the asked person's bridge word in the org run (chat), split by whether the bridge's locker sentence comes before or after the asked pick sentence: can a linear probe read (a) the lookup's answer digit, (b) the index of the sentence holding the bridge's locker, (c) the bridge's identity (positive control), above the majority and chance baselines?
+why_it_matters: >-
+  On the 9B the lookup is around J++ at every k and the digit check found no digit route. The probes ask what the word holds instead: the answer value itself, or an address of where it is.
+hypotheses:
+  H-value: '(a) high in locker-before and at chance in locker-after: the answer value is stored at the word, not in J++ form. Prior: none set (descriptive, after data; Dan''s reading)'
+  H-address: '(b) high in locker-before with (a) at chance: the word stores an address (a lookback-style pointer). Prior: none set (Dan''s reading)'
+decision_rule: >-
+  As x0_probe_27b (descriptive, added after data, Dan 24 Oct evening), at layer 12 of the 9B, on the 200 X0 items of qwen35_9b_x0_necessity (primary) and every chat scene of d1_topics_v3 (secondary).
+controls:
+- 'locker-after scenes: the locker sentence follows the word, so (a) and (b) cannot be read from it there (control by construction)'
+- 'the bridge identity probe (positive control)'
+- 'majority-class and chance baselines, cross-validated; the structure-only baseline for (b)'
+n: '200 X0 items (100 locker-before, 100 locker-after; 35 / 28 entities) and every chat scene of d1_topics_v3 (600)'
+seeds: [0]
+notes: "Order (Dan, 24 Oct evening): after the single-change alt, before the 122B. Cost: one model load, 600 forwards (~5 min)."
