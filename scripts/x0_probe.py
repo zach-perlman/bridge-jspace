@@ -203,11 +203,14 @@ def stage_fit(name: str, n_boot: int) -> Path:
     h, scenes = z["h"].astype(np.float64), [str(s) for s in z["scene"]]
     items = X.read_jsonl(src / "items.jsonl")
     assert [it["scene"] for it in items] == scenes, "items.jsonl and states.npz disagree on the scene order"
-    contexts = {c["scene"]: c["context"] for c in X.read_jsonl(X.RESULTS / m["source"] / "cases.jsonl")}
+    if m["source"]:
+        contexts = {c["scene"]: c["context"] for c in X.read_jsonl(X.RESULTS / m["source"] / "cases.jsonl")}
+    else:  # a fresh set (no X0 run): the items carry their contexts
+        contexts = {it["scene"]: it["context"] for it in items}
     for it in items:
         it["layout"] = layout(contexts[it["scene"]], it["pick_index"])
     rows = []
-    for subset in ("x0", "all"):
+    for subset in ("x0", "all") if m["source"] else ("all",):
         for stratum in STRATA:
             idx = [i for i, it in enumerate(items) if (subset == "all" or it["x0"])
                    and (stratum == "both" or it["order"] == stratum)]  # fmt: skip
@@ -254,7 +257,8 @@ def figures(probe_dir: Path) -> Path:
     from scripts.figs import common as F
 
     blob = json.loads((probe_dir / "probe.json").read_text())
-    rows = [r for r in blob["rows"] if r["subset"] == "x0"]
+    subset = "x0" if blob["manifest"]["source"] else "all"
+    rows = [r for r in blob["rows"] if r["subset"] == subset]
     fig, axes = plt.subplots(1, len(TARGETS), figsize=(13, 4.6), sharey=True)
     for ax, target in zip(axes, TARGETS, strict=True):
         for j, stratum in enumerate(STRATA):
@@ -283,7 +287,8 @@ def figures(probe_dir: Path) -> Path:
              "or given which earlier sentences are locker sentences (no binding).", ha="center", fontsize=8,
              color=F.CAPTION_INK)  # fmt: skip
     m = blob["manifest"]
-    fig.suptitle(f"What the bridge's word holds: {m['model']['target']}, layer {m['layer']}, X0 items (UNVERIFIED; "
+    what = "X0 items" if subset == "x0" else f"every scene of {m['set']}"
+    fig.suptitle(f"What the bridge's word holds: {m['model']['target']}, layer {m['layer']}, {what} (UNVERIFIED; "
                  "descriptive, added after data)", fontsize=11)  # fmt: skip
     fig.tight_layout(rect=(0, 0.04, 1, 0.86))
     path = probe_dir / "probe.png"
@@ -296,7 +301,9 @@ def figures(probe_dir: Path) -> Path:
 # ---- states (GPU) -------------------------------------------------------------------------------------------------
 
 
-def stage_run(name: str, source: str, layer: int) -> Path:
+def stage_run(name: str, source: str | None, layer: int, set_name: str | None = None) -> Path:
+    """States at the bridge's word for every chat scene of the source X0 run's set (its items flagged x0), or of a
+    fresh set (source None: no X0 items)."""
     import torch
 
     from bridge_jspace.model import load_model
@@ -305,8 +312,8 @@ def stage_run(name: str, source: str, layer: int) -> Path:
     pins.check_run_name(name)
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
-    sm = json.loads((X.RESULTS / source / "manifest.json").read_text())
-    x0 = {r["scene"] for r in X.read_jsonl(X.RESULTS / source / "outcomes.jsonl") if r["rendering"] == "chat"}
+    sm = json.loads((X.RESULTS / source / "manifest.json").read_text()) if source else {"code": None, "set": set_name}
+    x0 = {r["scene"] for r in X.read_jsonl(X.RESULTS / source / "outcomes.jsonl") if r["rendering"] == "chat"} if source else set()  # fmt: skip
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "source": source, "source_code": sm["code"], "set": sm["set"], "layer": layer, "x0_items": len(x0),
          "model": pins.model_pin(), "code": git_state(), "position": "the asked person's bridge word, org run, chat",
@@ -325,7 +332,7 @@ def stage_run(name: str, source: str, layer: int) -> Path:
     h = np.stack(states)
     h = h.astype(np.float16) if np.abs(h).max() < 6e4 else h  # fp16 when it fits (size), else fp32
     np.savez_compressed(out / "states.npz", h=h, scene=np.array([c["scene"] for c in cases]))
-    X.write_jsonl(out / "items.jsonl", [item_of(c, c["scene"] in x0) for c in cases])
+    X.write_jsonl(out / "items.jsonl", [{**item_of(c, c["scene"] in x0), "context": c["context"]} for c in cases])
     print("wrote", out / "states.npz", h.shape, h.dtype, flush=True)
     return out
 
@@ -335,11 +342,12 @@ def main() -> None:
     ap.add_argument("stage", choices=["run", "fit", "figures"])
     ap.add_argument("--name", required=True)
     ap.add_argument("--source", default="x0_necessity_27b_chat")
+    ap.add_argument("--set", default=None, help="run: a fresh tasks_v2 set instead of the source run's (no X0 items)")
     ap.add_argument("--layer", type=int, default=32)
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "run":
-        stage_run(a.name, a.source, a.layer)
+        stage_run(a.name, None if a.set else a.source, a.layer, a.set)
     if a.stage in ("run", "fit"):
         figures(stage_fit(a.name, a.n_boot))
     else:
