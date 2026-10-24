@@ -1,0 +1,6 @@
+{
+  "set": "jsuite_v1_facts_dev_qa",
+  "from": "jsuite_v1_facts_dev_chat",
+  "n": 3024,
+  "script": "scripts/natural_v1.py derive-qa"
+}
