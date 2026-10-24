@@ -393,6 +393,18 @@ TARGETS: dict[str, dict[str, Any]] = {
         "dequantize_mxfp4": True,
         "lenses": {},
     },
+    # Aleph-Alpha/Kolibri-1 (Aleph Alpha, 2026-10-03; MoE, 78B total / 3.46B active, FP8 weights; sliding-window and
+    # full attention; prereg amendment 28; Zach, 2026-10-24): needs transformers >= 5.20 (/workspace/ext/kolibri_env).
+    # Registered before its lens (competence needs none); the lens is added once fit and checked.
+    "kolibri-1": {
+        "repo": "Aleph-Alpha/Kolibri-1",
+        "revision": "5bb7075ba22db733e3834b1c71d2245537cc14ed",
+        "n_layers": 50,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "kol1_",
+        "lenses": {},
+    },
     "qwen3-32b-jlens": {
         "repo": "Qwen/Qwen3-32B",
         "revision": "9216db5781bf21249d130ec9da846c4624c16137",
