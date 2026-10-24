@@ -9,7 +9,7 @@
 
 **Status (24 Oct 2026).**
 - Models: Qwen3.5-9B, Qwen3.6-27B and Qwen3.5-122B-A10B (FP8 weights, mixture of experts, split over two H100s; its J++ was fitted on the bf16 weights; a hardware gate reproduced a 23 Oct cell first, 0.998 per-row agreement).
-- All numbers are unverified (not yet hand-checked); the layers, the rule and Dan's predictions were fixed before any result was opened. Built at 1510b61b from the X0 run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
+- All numbers are unverified (not yet hand-checked); the layers, the rule and Dan's predictions were fixed before any result was opened. Built at 4e62f050 from the X0 run files. Full log: [jobs/c3/X0.md](jobs/c3/X0.md).
 
 ## Main findings
 
@@ -45,13 +45,13 @@ How to read this:
 - Scope: almost all of the lookup's flips at the bridge word come from scenes where the locker sentence comes before the pick; the lookup results describe those scenes.
 - 95% intervals come from resampling the bridge entities (40 on the 9B, 44 on the 27B, 40 on the 122B).
 
-![27B: both readers depend on the J++ part up to L26; from L28 only recall does](figures/status_2026-10-24/f2_depth.png)
+![The graded contrast holds under both edits](figures/status_2026-10-24/f10_contrast.png) ![27B: both readers depend on the J++ part up to L26; from L28 only recall does](figures/status_2026-10-24/f2_depth.png)
 
 ![On the 27B, with more J++ atoms the lookup needs J++ too](figures/status_2026-10-24/f5_atoms.png)
 
 ![It is J++, not any dictionary](figures/status_2026-10-24/f3_dictionaries.png) ![Adding the digit tokens to J++ changes nothing](figures/status_2026-10-24/f6_digits.png)
 
-![The bridge word holds where its locker is](figures/status_2026-10-24/f7_probe.png) ![The address is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png)
+![The bridge word holds where its locker is](figures/status_2026-10-24/f7_probe.png) ![The address is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png) ![The address readout follows the item's first mention](figures/status_2026-10-24/f9_first_mention.png)
 
 ## What did not hold
 

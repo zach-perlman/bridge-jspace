@@ -45,13 +45,13 @@ How to read this:
 - Scope: almost all of the lookup's flips at the bridge word come from scenes where the locker sentence comes before the pick; the lookup results describe those scenes.
 - {{q|95%}} intervals come from resampling the bridge entities ({{num|ents_9b}} on the 9B, {{num|ents_27b}} on the 27B, {{num|ents_122b}} on the 122B).
 
-![27B: both readers depend on the J++ part up to L26; from L28 only recall does](figures/status_2026-10-24/f2_depth.png)
+![The graded contrast holds under both edits](figures/status_2026-10-24/f10_contrast.png) ![27B: both readers depend on the J++ part up to L26; from L28 only recall does](figures/status_2026-10-24/f2_depth.png)
 
 ![On the 27B, with more J++ atoms the lookup needs J++ too](figures/status_2026-10-24/f5_atoms.png)
 
 ![It is J++, not any dictionary](figures/status_2026-10-24/f3_dictionaries.png) ![Adding the digit tokens to J++ changes nothing](figures/status_2026-10-24/f6_digits.png)
 
-![The bridge word holds where its locker is](figures/status_2026-10-24/f7_probe.png) ![The address is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png)
+![The bridge word holds where its locker is](figures/status_2026-10-24/f7_probe.png) ![The address is in the rest of the change, not in its J++ part](figures/status_2026-10-24/f8_address.png) ![The address readout follows the item's first mention](figures/status_2026-10-24/f9_first_mention.png)
 
 ## What did not hold
 

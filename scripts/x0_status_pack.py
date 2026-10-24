@@ -10,6 +10,8 @@ F5  extra flips lost against the number of J++ atoms removed (25-200), at the pr
 F6  the digit check: J++ over letter tokens vs every token, and the digit directions alone (locker-before).
 F7  the probes at the bridge's word (9B, 27B; 1,500 fresh scenes): the answer digit, the locker sentence, identity.
 F8  the probe's address read on patched states: the J++ part of the change vs the rest (single-change pairs).
+F9  the address readout follows the item's first mention (the duplicate pick).
+F10 the graded contrast C under the two-change and the one-change edit.
 """
 
 from __future__ import annotations
@@ -398,6 +400,92 @@ def f8(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
+SINGLE = {"qwen3.5-9b": "qwen35_9b_x0_single_r2", "qwen3.6-27b": "x0_single_27b_r2"}
+
+
+def f9(plt, F, color, grey) -> None:
+    """The duplicate pick: on the single-change pairs, what the alt state's address readout points at, by where the alt
+    item's earlier mentions sit (its original picker's sentence and its locker sentence)."""
+    import json
+
+    from scripts.x0_details import latest_patched
+
+    groups = (("after", "the other picker\ncomes after the pick"),
+              ("before, the other pick is the latest earlier mention", "both earlier:\nlocker sentence first"),
+              ("before, the alt locker is the latest earlier mention", "both earlier:\nother pick first"))  # fmt: skip
+    fig, axes = plt.subplots(1, len(AMNESIC), figsize=(14, 5.6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, AMNESIC.items(), strict=True):
+        path = latest_patched(run, "address")
+        dup = json.loads(path.read_text())["results"]["duplicate_pick_split"]
+        for i, (key, _) in enumerate(groups):
+            d = dup[key]
+            for j, (m, col, what) in enumerate((("alt right", F.LOOKUP, "the alt's locker sentence"),
+                                                ("alt state reads the other pick sentence", "#9e9e9e", "the other pick sentence"))):  # fmt: skip
+                v, lo, hi = d[m]
+                x = i + (j - 0.5) * 0.36
+                ax.bar(x, v, width=0.34, color=col, edgecolor="white")
+                ax.errorbar(x, v, yerr=[[v - lo], [hi - v]], color="#333333", capsize=3, lw=1)
+                ax.text(x, hi + 0.03, f"{v:.2f}", ha="center", fontsize=10)
+                record("f9", target, run, "-", "-", f"alt state reads {what}: {key}", v, lo, hi, d["n"])
+        ax.set_xticks(range(len(groups)), [f"{g[1]}\n(n = {dup[g[0]]['n']})" for g in groups], fontsize=9.5)
+        ax.set_title(label)
+        ax.set_ylim(0, 1.1)
+        ax.grid(axis="y", color="#eeeeee")
+        ax.set_axisbelow(True)
+    axes[0].set_ylabel("share of pairs")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color="#9e9e9e")]
+    head(fig, "The address readout follows the item's first mention",
+         "In the one-change edit two people pick the alt item. The probe for 'which sentence holds the locker', read on the "
+         "edited state, points at whichever mention of the item comes first: the locker sentence or the other person's pick.",
+         h, ["reads the alt item's locker sentence", "reads the other person's pick sentence"])  # fmt: skip
+    foot(fig, [f"Single-change pairs with both locker sentences before the pick; probe trained on the fresh scenes' "
+               f"locker-before states, cross-fitted by bridge entity; {CI}. In X0's ordinary scenes the first mention is "
+               "always the locker sentence. Unverified. Descriptive, added after the data (Dan's duplicate-pick check). "
+               "Runs: results/x0_amnesic/*/probe-patched-* (address)."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.1, 1, 0.80))
+    fig.savefig(OUT / "f9_first_mention.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
+def f10(plt, F, color, grey) -> None:
+    """The headline C (recall extra loss minus lookup extra loss) at the pre-registered layer, under the two-change edit
+    (X0, pre-registered verdicts) and the one-change edit (after data), per model."""
+    fig, ax = plt.subplots(figsize=(11, 5.6))
+    xs, labels = [], []
+    for i, (target, label, run, _) in enumerate(MODELS):
+        la = X.PREDICTED[target]
+        for j, (edit, src, col) in enumerate((("two-change edit (X0)", run, "#555555"),
+                                              ("one-change edit", SINGLE.get(target), "#a8a8a8"))):  # fmt: skip
+            x = i * 3 + j
+            xs.append(x)
+            labels.append(f"{edit.split(' (')[0]}")
+            if src is None:
+                ax.text(x, 0.03, "not run", ha="center", fontsize=9.5, color="#888888", rotation=90, va="bottom")
+                continue
+            c = XF.contrast(XF.Run(src), "chat", la)
+            ax.bar(x, c[0], width=0.8, color=col, edgecolor="white")
+            ax.errorbar(x, c[0], yerr=[[c[0] - c[1]], [c[2] - c[0]]], color="#333333", capsize=3, lw=1)
+            ax.text(x, c[2] + 0.02, f"{c[0]:.2f}", ha="center", fontsize=10.5)
+            record("f10", target, src, la, "recall-lookup", f"C, {edit}", c[0], c[1], c[2])
+        ax.text(i * 3 + 0.5, -0.2, f"{label}, layer {la}", transform=ax.get_xaxis_transform(), ha="center", va="top",
+                fontsize=11, weight="bold")  # fmt: skip
+    ax.set_xticks(xs, labels, fontsize=9.5)
+    ax.axhline(0, color="black", lw=0.6)
+    ax.set_ylim(0, 0.9)
+    ax.set_ylabel("C = recall's extra loss\nminus lookup's extra loss")
+    ax.grid(axis="y", color="#eeeeee")
+    ax.set_axisbelow(True)
+    head(fig, "The graded contrast holds under both edits",
+         "C at the layer fixed before the run: how much more the recall loses than the lookup when the J++ part of the "
+         "bridge change is removed (each against a random part of the same size).")  # fmt: skip
+    foot(fig, [f"n = 200 scenes per bar; {CI}. Two-change edit: X0 as pre-registered (two people swap picks); one-change "
+               "edit: only the asked person's pick changes (added after the data; not run on the 122B). Unverified. Runs: "
+               f"{RUNS}, {', '.join(SINGLE.values())}."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.1, 1, 0.82))
+    fig.savefig(OUT / "f10_contrast.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
 def f3(plt, F, color, grey) -> None:
     fig, axes = plt.subplots(2, len(MODELS), figsize=(18, 9), sharey=True)
     for j, (target, label, _, kmatch) in enumerate(MODELS):
@@ -504,6 +592,8 @@ def main() -> None:
     f6(plt, F, color, grey)
     f7(plt, F, color, grey)
     f8(plt, F, color, grey)
+    f9(plt, F, color, grey)
+    f10(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]
