@@ -67,6 +67,12 @@ def positions(case: dict) -> tuple[int, int, int]:
     return pick, locker, len(sents)
 
 
+def layout(context: str, pick: int) -> str:
+    """What the word can see of the scene's layout, without any binding: which sentences before the asked pick are
+    locker sentences (e.g. '.LLL.' for a pick at index 5); the layout baseline's key."""
+    return "".join("L" if s.startswith("The locker of") else "." for s in context.split(". ")[:pick])
+
+
 def item_of(case: dict, x0: bool) -> dict:
     pick, locker, n = positions(case)
     stated = case["context"].split(". ")[locker].rsplit(" is ", 1)[1].rstrip(".")
@@ -171,6 +177,9 @@ def score(x: np.ndarray, items: list[dict], target: str, n_boot: int) -> dict:
     if target == "locker sentence":
         right["structure"] = [int(p == t) for p, t in
                               zip(baseline(y, outer, [it["pick_index"] for it in items]), y, strict=True)]  # fmt: skip
+        if all("layout" in it for it in items):
+            right["layout"] = [int(p == t) for p, t in
+                               zip(baseline(y, outer, [it["layout"] for it in items]), y, strict=True)]  # fmt: skip
     chance = 1.0 / len(set(y))
     r = X.resampled_rates(right, ents, n_boot)
     out = {"n": len(y), "entities": len(set(ents)), "classes": len(set(y)), "chance": round(chance, 4),
@@ -194,6 +203,9 @@ def stage_fit(name: str, n_boot: int) -> Path:
     h, scenes = z["h"].astype(np.float64), [str(s) for s in z["scene"]]
     items = X.read_jsonl(src / "items.jsonl")
     assert [it["scene"] for it in items] == scenes, "items.jsonl and states.npz disagree on the scene order"
+    contexts = {c["scene"]: c["context"] for c in X.read_jsonl(X.RESULTS / m["source"] / "cases.jsonl")}
+    for it in items:
+        it["layout"] = layout(contexts[it["scene"]], it["pick_index"])
     rows = []
     for subset in ("x0", "all"):
         for stratum in STRATA:
@@ -211,19 +223,20 @@ def stage_fit(name: str, n_boot: int) -> Path:
     ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
     lines = [f"# X0 probes: {name} ({m['model']['target']}, layer {m['layer']}, the bridge's word, org run)", "",
              f"{NOTE} Source run {m['source']} (set {m['set']}). Probes cross-validated by bridge entity ((a), (b)) or by "
-             f"item ((c)); {n_boot} cluster-bootstrap resamples over entities, seed {X.BOOT_SEED}. 'structure' (b only) "
-             "is the agent's addition: the most frequent locker index given the asked pick's sentence index. "
-             "UNVERIFIED.", "",
+             f"item ((c)); {n_boot} cluster-bootstrap resamples over entities, seed {X.BOOT_SEED}. 'structure' and "
+             "'layout' (b only) are the agent's additions: the training folds' most frequent locker index given the "
+             "asked pick's sentence index (structure), or given which sentences before the pick are locker sentences "
+             "(layout: what the word can see of the scene, with no binding). UNVERIFIED.", "",
              "Pre-stated reading (Dan): (a) high in locker-before and at chance in locker-after -> the answer value is "
              "stored at the word, not in J++ form; (b) high in locker-before with (a) at chance -> the word stores an "
              "address. Locker-after: the locker sentence follows the word, so the stratum is a control by construction.",
              "", "| subset | locker vs pick | target | n | entities | classes | probe | majority | chance | structure | "
-             "probe - best baseline |", "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+             "layout | probe - best baseline |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for r in rows:
         lines.append(f"| {'X0 items' if r['subset'] == 'x0' else 'every scene'} | {r['stratum']} | {r['target']} | "
                      f"{r['n']} | {r['entities']} | {r['classes']} | {ci(r['probe'])} | {ci(r['majority'])} | "
                      f"{r['chance']:.2f} | {ci(r['structure']) if 'structure' in r else '-'} | "
-                     f"{ci(r['probe_minus_best'])} ({r['best_baseline']}) |")  # fmt: skip
+                     f"{ci(r['layout']) if 'layout' in r else '-'} | {ci(r['probe_minus_best'])} ({r['best_baseline']}) |")  # fmt: skip
     (out / "probe.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     return out
@@ -252,6 +265,8 @@ def figures(probe_dir: Path) -> Path:
             ax.plot(j, r["majority"][0], "D", color=F.CONTROL, ms=7)
             if "structure" in r:
                 ax.plot(j, r["structure"][0], "s", color="#c27c0e", ms=7)
+            if "layout" in r:
+                ax.plot(j, r["layout"][0], "^", color="#7a4ea3", ms=8)
             ax.text(j, 1.02, f"n={r['n']}", ha="center", fontsize=8, color=F.CAPTION_INK)
         ax.set_xticks(range(len(STRATA)), ["locker before", "locker after", "both"])
         ax.set_title(target)
@@ -260,13 +275,17 @@ def figures(probe_dir: Path) -> Path:
         ax.set_axisbelow(True)
     axes[0].set_ylabel("cross-validated accuracy")
     h = [Rectangle((0, 0), 1, 1, color="#4a6fa5"), Line2D([], [], color="black", ls="--"),
-         Line2D([], [], marker="D", color=F.CONTROL, ls=""), Line2D([], [], marker="s", color="#c27c0e", ls="")]  # fmt: skip
-    fig.legend(h, ["probe (95% CI)", "chance", "majority class", "structure only (agent's addition)"], ncol=4,
+         Line2D([], [], marker="D", color=F.CONTROL, ls=""), Line2D([], [], marker="s", color="#c27c0e", ls=""),
+         Line2D([], [], marker="^", color="#7a4ea3", ls="")]  # fmt: skip
+    fig.legend(h, ["probe (95% CI)", "chance", "majority class", "pick index only*", "visible layout only*"], ncol=5,
                loc="upper center", bbox_to_anchor=(0.5, 0.93), frameon=False, fontsize=9)  # fmt: skip
+    fig.text(0.5, 0.01, "* agent's additions, (b) only: the most frequent locker index given the pick's sentence index, "
+             "or given which earlier sentences are locker sentences (no binding).", ha="center", fontsize=8,
+             color=F.CAPTION_INK)  # fmt: skip
     m = blob["manifest"]
     fig.suptitle(f"What the bridge's word holds: {m['model']['target']}, layer {m['layer']}, X0 items (UNVERIFIED; "
                  "descriptive, added after data)", fontsize=11)  # fmt: skip
-    fig.tight_layout(rect=(0, 0, 1, 0.86))
+    fig.tight_layout(rect=(0, 0.04, 1, 0.86))
     path = probe_dir / "probe.png"
     fig.savefig(path, dpi=150, facecolor="white")
     plt.close(fig)
