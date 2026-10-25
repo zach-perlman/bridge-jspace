@@ -577,8 +577,8 @@ TARGETS["nemotron-3.5-lightning"] = {
     "run_prefix": "nem35l_",
     "use_kernels": True,  # HF-hub kernels (kernels-community/mamba-ssm & co.): 9-12x the torch Mamba path; WikiText NLL 2.4642 vs 2.4634 (amendment 42)
     "frozen_lens": "jpp",  # our J++, LN rule only (amendment 45; Zach: no plain J-lenses)
-    "lenses": {"jpp": ("local", "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt", None)},
-    "frozen_lens_sha256": None,  # set when the Lightning fit is done
+    "lenses": {"jpp": ("local", "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt", "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44")},  # our J++, LN rule only (h200_nemfit_1025.sh); held-out macro pass@10: {'NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens': 0.587, 'logit': 0.443, 'pooled_lens': 0.481}
+    "frozen_lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44",
 }
 
 # 2026-10-25 (amendment 40, note 1): NVIDIA Nemotron 3.5 Bolt 74B-A9B, the language model of its multimodal checkpoint
