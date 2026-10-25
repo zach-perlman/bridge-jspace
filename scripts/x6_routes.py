@@ -231,6 +231,8 @@ def stage_run(
     X.write_jsonl(out / "competence.jsonl", comp)
     X.write_jsonl(out / "cases.jsonl", [{k: v for k, v in c.items() if k != "space"} for c in cases])
     (out / "gate.json").write_text(json.dumps({"dropped": dropped, "gate": gate}, indent=2) + "\n")
+    if not chosen:
+        raise SystemExit("no condition passed the gate fixed in advance (or none had eligible items); see gate.json")
     alf = torch.tensor(MM.subspaces(STATES[target])[0]["Alf"], dtype=torch.float32, device="cuda") if pointer else None
     jdic = JLens(model, "jpp").vectors(layer, model.letter_token_ids())
     rows, norms = [], []
