@@ -21,6 +21,7 @@ import argparse
 import collections
 import json
 import math
+import os
 import random
 import statistics
 import sys
@@ -173,7 +174,9 @@ LAYERS = {
     "qwen3.5-122b-a10b": (24, 27, 30, 33, 36),
     "muse-glimmer-30b": (13, 26, 34),  # 25 / 50 / 65% depth, fixed before any Muse result (Dan, 25 Oct ~23:00)
 }  # 122B: 30 / 33 / 36 by X0.md, 24 and 27 descriptive (Dan)
-N_ITEMS, N_MIN, GATE = 200, 150, 0.80
+# BJ_GATE: a lowered, descriptive readers' gate after the data (Dan: 0.75 for the gate-lowered reruns and batch 38's
+# fallback); every script reads X.GATE, and a run's manifest records the value it used
+N_ITEMS, N_MIN, GATE = 200, 150, float(os.environ.get("BJ_GATE", "0.80"))
 K_EXAMPLES, EXAMPLES_SEED, GEN_TOKENS = 10, 0, 8
 RAW_STEPS = 4  # raw read: at most RAW_STEPS - 1 whitespace-only tokens skipped before the read
 READ = "first"  # non-chat read: the first non-whitespace token (amendment 1) or "digit" (amendment 3, descriptive)
