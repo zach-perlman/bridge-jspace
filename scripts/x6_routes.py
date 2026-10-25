@@ -18,7 +18,12 @@ Arms: whole; without the J++ part (k = 25, signed); without a random part of its
 (Alf, fit on the old fresh scenes, not refit, as in F15) and without a random part of their share.
 Read: X0's chat read (the top token after the digit's space); each lookup answer classified as identity / position /
 value / original / other (C1: identity = original). Eligible (X0): both readers say and read O's and S's answers
-right; the first N per condition. Gate: O's read accuracy, rounded to 2 decimals, >= 0.80 per reader and condition.
+right; the first N per condition. Gate: O's read accuracy >= 0.80 per reader and condition (--gate: a lowered,
+descriptive gate after the data, Dan 25 Oct ~13:20).
+--bothoff (x6_routes_bothoff, Dan 25 Oct ~13:20): two more arms, without the union of the J++ part's span and the
+pointer directions (each item's 25 signed-OMP atoms together with Alf; least-squares projection) and without a random
+part of the union's share; per condition and reader, each part's extra loss and the union's minus the pointer
+directions' (paired bootstrap).
 Rule (Dan, fixed in advance): a route counts as used if its share is >= 0.20 with lower CI >= 0.10 (cluster bootstrap
 over the bridge item, 10,000 resamples, seed 0). C0 must reproduce the one-pick lookup switch rate within 0.10, or the
 run stops.
@@ -52,9 +57,8 @@ CONDITIONS = ("C0", "C1", "C2")
 ROUTES = ("identity", "position", "value", "original", "other")
 USED_SHARE, USED_LO = 0.20, 0.10
 C0_TOL = 0.10
-# the read-accuracy gate compares the accuracy rounded to 2 decimals (Dan, 25 Oct ~13:15, after the 122B's recall read
-# 0.797 of the original prompts right; added after the data)
-GATE_DECIMALS = 2
+ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "no_both_rand")
+PARTS = (("jpp", "no_jpp", "no_jpp_rand"), ("alf", "no_alf", "no_alf_rand"), ("both", "no_both", "no_both_rand"))
 # the one-pick lookup switch rate in scenes with both locker sentences before the pick (x0_massmean_lf's items, the
 # whole change), the reference C0 must reproduce (Dan: within 0.10)
 C0_REF = {"qwen3.5-9b": ("qwen35_9b_x0_massmean_lf", "whole"), "qwen3.6-27b": ("x0_massmean_lf_27b", "whole"),
@@ -184,8 +188,31 @@ def c0_reference(target: str) -> float:
     return float(np.mean([r["switched"] for r in rows if r["reader"] == X.LOOKUP and r["arm"] == arm]))
 
 
+def union_part(jdic, alf, x, k: int):
+    """Each row of x projected onto the span of its k signed-OMP J++ atoms together with the pointer directions."""
+    import torch
+
+    from scripts.x0_parts import omp_atoms
+
+    atoms = omp_atoms(jdic, x, k)
+    out = torch.empty_like(x)
+    for i in range(x.shape[0]):
+        span = torch.cat([jdic[atoms[i]].T.double(), alf.double()], dim=1)  # [d, k + r]
+        u, s, _ = torch.linalg.svd(span, full_matrices=False)
+        u = u[:, s > s[0] * 1e-6]  # an atom inside the pointer span adds no direction
+        out[i] = (u @ (u.T @ x[i].double())).float()
+    return out
+
+
 def stage_run(
-    name: str, smoke: bool, layer: int | None = None, c0_min: float | None = None, pointer: bool = True
+    name: str,
+    smoke: bool,
+    layer: int | None = None,
+    c0_min: float | None = None,
+    pointer: bool = True,
+    conds: tuple[str, ...] = CONDITIONS,
+    bothoff: bool = False,
+    gate_min: float = X.GATE,
 ) -> Path:
     import torch
 
@@ -201,12 +228,13 @@ def stage_run(
     layer = layer if layer is not None else X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
-    conds = ("C0",) if smoke else CONDITIONS
+    assert pointer or not bothoff, "--bothoff needs the pointer directions"
+    conds = ("C0",) if smoke else conds
     n = N_SMOKE if smoke else N_ITEMS
     ref = c0_reference(target)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
-         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": X.GATE, "gate_decimals": GATE_DECIMALS,
+         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff,
          "alf_from": STATES[target] if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
          "c0_reference": {"run": C0_REF[target][0], "lookup_switch": ref, "tolerance": C0_TOL},
          "rule": f"a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}",
@@ -227,8 +255,8 @@ def stage_run(
         acc = {w: float(np.mean([right[(c["scene"], w, "org")]["read_right"] for c in mine])) for w in X.READERS}
         ok = [c for c in mine if all(right[(c["scene"], w, v)]["right"] and right[(c["scene"], w, v)]["read_right"]
                                      for w in X.READERS for v in ("org", "alt"))]  # fmt: skip
-        gate[cond] = {"cases": len(mine), "org_read_accuracy": acc,
-                      "pass": all(round(a, GATE_DECIMALS) >= X.GATE for a in acc.values()), "eligible": len(ok)}  # fmt: skip
+        gate[cond] = {"cases": len(mine), "org_read_accuracy": acc, "pass": all(a >= gate_min for a in acc.values()),
+                      "eligible": len(ok)}  # fmt: skip
         if gate[cond]["pass"]:
             chosen += ok[:n]
     X.write_jsonl(out / "competence.jsonl", comp)
@@ -250,13 +278,18 @@ def stage_run(
         jpp = X.fit(jdic, x, X.K_MAIN, "signed")
         ptr = (x @ alf) @ alf.T if pointer else torch.zeros_like(x)
         basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to("cuda")
-        sh = {k: v.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30) for k, v in (("jpp", jpp), ("alf", ptr))}
+        both = union_part(jdic, alf, x, X.K_MAIN) if bothoff else torch.zeros_like(x)
+        sh = {k: v.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
+              for k, v in (("jpp", jpp), ("alf", ptr), ("both", both))}  # fmt: skip
         arms = {"whole": x, "no_jpp": x - jpp, "no_jpp_rand": x - SP.random_subspace_part(x, sh["jpp"], basis)}
         if pointer:
             arms.update({"no_alf": x - ptr, "no_alf_rand": x - SP.random_subspace_part(x, sh["alf"], basis)})
+        if bothoff:
+            arms.update({"no_both": x - both, "no_both_rand": x - SP.random_subspace_part(x, sh["both"], basis)})
         for i, c in enumerate(progress(chosen, f"reads at layer {layer} (case)")):
             norms.append({"scene": c["scene"], "condition": c["condition"], "norm": round(float(x[i].norm()), 4),
-                          "share_jpp": round(float(sh["jpp"][i]), 5), "share_alf": round(float(sh["alf"][i]), 5)})  # fmt: skip
+                          "share_jpp": round(float(sh["jpp"][i]), 5), "share_alf": round(float(sh["alf"][i]), 5),
+                          "share_both": round(float(sh["both"][i]), 5)})  # fmt: skip
             for w, rd in c["readers"].items():
                 edits = [{}] + [{layer: AddRows(arms[a][i : i + 1], [c["pos"]])} for a in arms]
                 logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", c["space"], ws)
@@ -282,6 +315,33 @@ def stage_run(
     return out
 
 
+def extra_losses(
+    rows: list[dict], conds: list[str], n_boot: int = X.N_BOOT, norms: list[dict] | None = None
+) -> list[dict]:
+    """Per condition and reader: X0's cell (Jdep, Rdep, extra loss) for J++, the pointer directions and their union,
+    each against its own random part; then the union's extra loss minus the pointer directions' on the same resamples."""
+    out = []
+    for cond in [c for c in CONDITIONS if c in conds]:
+        for w in X.READERS:
+            by = {a: {r["scene"]: r for r in rows if r["condition"] == cond and r["reader"] == w and r["arm"] == a}
+                  for a in ARMS}  # fmt: skip
+            scenes_ = sorted(by["whole"])
+            ents = [by["whole"][s]["entity"] for s in scenes_]
+            sw = {a: [int(by[a][s]["switched"]) for s in scenes_] for a in ARMS}
+            rr = X.resampled_rates(sw, ents, n_boot)
+            ex = {}
+            for part, no, rand in PARTS:
+                c = X.cell({"whole": sw["whole"], "no_part": sw[no], "no_rand": sw[rand]}, ents, n_boot)
+                ex[part] = X.dependence(rr["whole"], rr[no]) - X.dependence(rr["whole"], rr[rand])
+                share = [n[f"share_{part}"] for n in (norms or []) if n["condition"] == cond]
+                out.append({"condition": cond, "reader": w, "part": part, **c,
+                            "share": float(np.median(share)) if share else float("nan")})  # fmt: skip
+            point = out[-1]["excess"][0] - out[-2]["excess"][0]
+            out.append({"condition": cond, "reader": w, "part": "both - alf", "n": len(scenes_),
+                        "excess": [point, *X.interval(ex["both"] - ex["alf"])]})  # fmt: skip
+    return out
+
+
 def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     src = RESULTS / name
     m = json.loads((src / "manifest.json").read_text())
@@ -294,7 +354,7 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
              f"Cluster bootstrap over the bridge item ({n_boot} resamples). UNVERIFIED.", "",
              "| condition | arm | n | " + " | ".join(ROUTES) + " | recall follows S |", "|---|---|---|" + "---|" * (len(ROUTES) + 1)]  # fmt: skip
     blob = []
-    arms = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand")
+    arms = tuple(a for a in ARMS if any(r["arm"] == a for r in rows))
     for cond in [c for c in CONDITIONS if c in m["conditions"]]:
         for arm in arms:
             lk = [r for r in rows if r["condition"] == cond and r["arm"] == arm and r["reader"] == X.LOOKUP]
@@ -316,7 +376,23 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     lines += ["", f"Rule (fixed in advance): a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}. "
               "C1: identity = original (both a). Median norm of the change per condition: "
               + ", ".join(f"{b['condition']} {b['median_norm']:.2f}" for b in blob if b["arm"] == "whole") + "."]  # fmt: skip
-    (out / "verdict.json").write_text(json.dumps({"run": name, "manifest": m, "rows": blob}, indent=1) + "\n")
+    extra = extra_losses(rows, m["conditions"], n_boot, norms) if "no_both" in arms else []
+    if extra:
+        lines += ["", "Extra loss of the switch (Jdep - Rdep, each part against a random part of its own share); "
+                  "'both - alf': the union's extra loss minus the pointer directions' (paired resamples).", "",
+                  "| condition | reader | part | n | S_whole | Jdep | Rdep | extra loss | median share |",
+                  "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+        for e in extra:
+            if e["part"] == "both - alf":
+                lines.append(
+                    f"| {e['condition']} | {e['reader']} | both - alf | {e['n']} | | | | {ci(e['excess'])} | |"
+                )
+            else:
+                lines.append(f"| {e['condition']} | {e['reader']} | {e['part']} | {e['n']} | {e['S_whole'][0]:.2f} | "
+                             f"{ci(e['Jdep'])} | {ci(e['Rdep'])} | {ci(e['excess'])} | {e['share']:.3f} |")  # fmt: skip
+    (out / "verdict.json").write_text(
+        json.dumps({"run": name, "manifest": m, "rows": blob, "extra": extra}, indent=1) + "\n"
+    )
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     return out
@@ -330,13 +406,20 @@ def main() -> None:
     ap.add_argument("--layer", type=int, default=None, help="run: a layer other than the one fixed in advance")
     ap.add_argument("--c0-min", type=float, default=None, help="run: a descriptive C0 gate (stop only below this rate)")
     ap.add_argument("--no-pointer", action="store_true", help="run: no pointer-direction arms")
+    ap.add_argument("--conditions", default=",".join(CONDITIONS), help="run: the conditions, comma-separated")
+    ap.add_argument(
+        "--bothoff", action="store_true", help="run: also without the union of J++ and the pointer directions"
+    )
+    ap.add_argument("--gate", type=float, default=X.GATE, help="run: a lowered, descriptive read-accuracy gate")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
         return
     if a.stage == "run":
-        stage_run(a.name, a.smoke, a.layer, a.c0_min, not a.no_pointer)
+        conds = tuple(c for c in a.conditions.split(",") if c)
+        assert set(conds) <= set(CONDITIONS), f"conditions {conds}"
+        stage_run(a.name, a.smoke, a.layer, a.c0_min, not a.no_pointer, conds, a.bothoff, a.gate)
     if not a.smoke:
         stage_verdict(a.name, a.n_boot)
 

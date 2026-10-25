@@ -1,6 +1,14 @@
 # Results opened, 25 Oct ~12:45 (agent; after Dan's batch-31 / 32 commit). All numbers UNVERIFIED
 
-Every number below is read from docs/x0_numbers.json or figures/status_2026-10-25/data.csv. Queue: x6_routes_early_r2 (running; batch 32's Q32.7 / Q32.8, closed), x0_jppother (queued; batch 33, closed until Dan answers), x0_122b_b7 (queued; F17's 122B panel).
+Every number below is read from docs/x0_numbers.json or figures/status_2026-10-25/data.csv. Queue (~13:40): x6_routes_early_r2 and x0_jppother done (not opened yet; batch 33 closed until Dan's Q33.1 answer is committed); x0_122b_b7 running (F17's 122B panel); then x6_routes_bothoff (batch 34, closed until Dan answers), x6_routes_122b_g75, x5_natural_9b_g75.
+
+## Decisions (Dan, 25 Oct ~13:15-13:20)
+
+- ~13:15, in chat: "round to 2 decimals, the 122B passes the gate". Queued as x6_routes_122b_r2 (gate on the accuracy rounded to 2 decimals), then cancelled before it ran: Dan's terms ~13:20 replace it.
+- ~13:20, both reruns yes, on these terms: (1) the verdicts fixed in advance stay "not tested" (gate missed: 122B recall 0.797, 9B lookup 0.78, bar 0.80), and the panels say so; (2) the reruns are a separate descriptive line, "after the data, gate lowered to 0.75", scored against no prediction, drawn hatched or in a separate panel; (3) order after b7: x6_routes_bothoff, the 122B routes (x6_routes_122b_g75), the 9B natural passages (x5_natural_9b_g75).
+- x6_routes_bothoff (new, before the reruns): C0 and swap 2, 9B L12 and 27B L32, 300 per condition; arms without J++, without the pointer directions, without both together (the union of the two spans), without a random part of the union's share. Agent's choices, recorded in the spec: the random parts at J++'s and the pointer directions' own shares are kept too (each part's extra loss needs its own); the union is each item's 25 signed-OMP J++ atoms plus the pointer directions, the change projected onto their span by least squares; Q34.1 is scored on the point estimate of (union's extra loss - pointer directions' extra loss), the paired CI reported. Batch 34 (Q34.1) committed without an answer (bf898993); Dan's uncommitted Q33.1 answer was left out of that commit.
+- README finding 7 and F20: in swap 1, "identity" renamed "unchanged (same item)" (identity and nothing changed give the same answer there).
+- Plan to the claims freeze (Dan, ~13:40), GPU order x0_jppother, bothoff, 122B routes, b7, 9B natural passages. Default taken: x0_122b_b7 had already started (x0_jppother finished ~13:35) and is left running, not killed; the rest follow in Dan's order.
 
 ## (i) The grid
 

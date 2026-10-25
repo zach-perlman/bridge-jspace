@@ -1168,7 +1168,7 @@ def f20(plt, F, color, grey) -> None:
          "Beth picked the goose.' Lookup: 2. The change from a swapped prompt is added at the bridge word (goose) and the "
          "lookup is read on the original prompt.\n"
          "Swap 1, the same item with its locker sentence moved: the goose's locker sentence sits in the duck's slot, with "
-         "a new digit 8. Identity -> 2 (the goose's locker; the same as the original answer), position -> 4 (what that "
+         "a new digit 8. Unchanged (same item) -> 2 (the goose's locker, the original answer; blue here), position -> 4 (what that "
          "slot holds in the original), value -> 8.\n"
          "Swap 2, another item with its locker sentence moved: Beth picks the rabbit, whose locker sentence sits in the "
          "duck's slot with a new digit 7. Identity -> 3 (the rabbit's locker), position -> 4, value -> 7, original -> 2.",

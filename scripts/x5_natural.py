@@ -11,7 +11,8 @@ the bridge is one token at one position in org and alt; the first alt candidate 
 Read (cand2): the top token among the first tokens (after 'Answer:', with the leading space, either case) of the
 relation's answer vocabulary; switched iff it is the alt answer's; org and alt first tokens distinct. The recall's
 lure: the read lands on the passage value of the edited bridge (reported separately).
-Gate: per reader, the unedited org read right >= 0.80; eligible: both readers say and read org and alt right (X0).
+Gate: per reader, the unedited org read right >= 0.80 (--gate: a lowered, descriptive gate after the data, Dan 25 Oct
+~13:20); eligible: both readers say and read org and alt right (X0).
 At the model's X0 layer (27B L32, 9B L12), Δ = h_alt - h_org at the bridge word; arms whole / without the J++ part
 (k = 25, signed) / without a random part of its share; both readers on the identical patch.
 Rule (graded, from the brief): the recall-lookup gap >= 0.30 with lower CI >= 0.15 holds; <= 0.10 fails; otherwise
@@ -192,7 +193,7 @@ def stage_plan() -> None:
         )
 
 
-def stage_run(name: str) -> Path:
+def stage_run(name: str, gate_min: float = X.GATE) -> Path:
     import torch
 
     from bridge_jspace.lens import JLens
@@ -209,7 +210,7 @@ def stage_run(name: str) -> Path:
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "set": SET,
          "inputs": {str(ITEMS.relative_to(pins.REPO_ROOT)): X.sha256_of(ITEMS)}, "layer": layer, "k": X.K_MAIN,
-         "gate": X.GATE, "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
+         "gate": gate_min, "gate_fixed_in_advance": X.GATE, "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
          "rule": f"gap >= {HOLD_GAP} with lower CI >= {HOLD_LO} holds; <= {FAIL_GAP} fails; otherwise mixed",
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
@@ -240,7 +241,7 @@ def stage_run(name: str) -> Path:
     gate = {
         "counts": counts,
         "org_read_accuracy": acc,
-        "pass": all(a >= X.GATE for a in acc.values()),
+        "pass": all(a >= gate_min for a in acc.values()),
         "eligible": len(ok),
     }
     (out / "gate.json").write_text(json.dumps(gate, indent=2) + "\n")
@@ -353,13 +354,14 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict"])
     ap.add_argument("--name")
+    ap.add_argument("--gate", type=float, default=X.GATE, help="run: a lowered, descriptive read-accuracy gate")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
         return
     if a.stage == "run":
-        stage_run(a.name)
+        stage_run(a.name, a.gate)
     stage_verdict(a.name, a.n_boot)
 
 
