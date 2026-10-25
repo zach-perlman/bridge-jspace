@@ -737,8 +737,11 @@ X4 = {
     "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x4_patch_27b"),
     "qwen3.5-122b-a10b": ("Qwen3.5-122B, layer 33", "qwen35_122b_x4_patch"),
 }
-X0BPARTS = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0b_parts"),
-            "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0b_parts_27b")}  # fmt: skip
+X0BPARTS = {
+    "qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0b_parts"),
+    "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0b_parts_27b"),
+    "qwen3.5-122b-a10b": ("Qwen3.5-122B, layer 33", "qwen35_122b_x0b_parts"),
+}  # fmt: skip  (not run)
 
 
 def parts_figure(plt, F, runs: dict, order: tuple, fig_name: str, out: str, title: str, sub: str, note: str) -> None:
@@ -1100,7 +1103,8 @@ def f19(plt, F, color, grey) -> None:
 
 
 ROUTES_RUNS = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x6_routes"),
-               "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x6_routes_27b")}  # fmt: skip
+               "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x6_routes_27b"),
+               "qwen3.5-122b-a10b": ("Qwen3.5-122B, layer 33", "qwen35_122b_x6_routes")}  # fmt: skip
 ROUTE_COLOURS = (("identity", "#4a7fb5"), ("position", "#d9a441"), ("value", "#2a9d8f"), ("original", "#9e9e9e"),
                  ("other", "#e3e3e3"))  # fmt: skip
 
@@ -1116,6 +1120,10 @@ def f20(plt, F, color, grey) -> None:
     fig, axes = plt.subplots(1, len(ROUTES_RUNS), figsize=(9 * len(ROUTES_RUNS), 6), sharey=True)
     for ax, (target, (label, run)) in zip(axes, ROUTES_RUNS.items(), strict=True):
         found = sorted((pins.RESULTS_DIR / "x6_routes" / run).glob("verdict-*/verdict.json"))
+        c0 = pins.RESULTS_DIR / "x6_routes" / f"{run}_c0" / "gate.json"
+        if not found and c0.exists() and not any(g["pass"] for g in json.loads(c0.read_text())["gate"].values()):
+            placeholder(ax, label, "not tested: the C0 check missed\nthe gate fixed in advance")
+            continue
         if (st := state(run, bool(found))) != "open":
             placeholder(ax, label, st)
             continue
