@@ -1,0 +1,23 @@
+id: x6_routes_122b
+title: "x6_routes on the 122B at L33 (Dan, 25 Oct ~02:20), both GPUs: the C0 check on 20 scenes, then C0-C2 on 300 scenes each"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.5
+depends_on: [x0_replicate]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_c0 --smoke
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes
+question: >-
+  On the 122B at L33, which route does the lookup follow in C1 and C2, and how do removing the J++ part and the pointer directions shift it?
+why_it_matters: >-
+  The held-out model for the route test.
+hypotheses:
+  H-122b: 'Dan''s Q32.9 (batch 32, committed before the results are shown)'
+decision_rule: >-
+  As x6_routes: a route is used if its share is >= 0.20 with lower CI >= 0.10; C0 must reproduce the one-pick, locker-first lookup switch rate within 0.10 (the 122B's reference: the whole change on its one-pick scenes with both locker sentences before the pick), or the run stops. The pointer directions from the 122B's fresh-scene states at L33. Results stay closed with the rest of batch 32.
+controls:
+- 'C0; the recall as a control route; random parts at the J++ part''s and the pointer directions'' shares'
+n: '300 eligible scenes per condition'
+seeds: [2510]
+notes: "122B on both GPUs; queued after x6_routes_early (Dan ~02:20)."

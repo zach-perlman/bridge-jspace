@@ -181,7 +181,9 @@ def c0_reference(target: str) -> float:
     return float(np.mean([r["switched"] for r in rows if r["reader"] == X.LOOKUP and r["arm"] == arm]))
 
 
-def stage_run(name: str, smoke: bool) -> Path:
+def stage_run(
+    name: str, smoke: bool, layer: int | None = None, c0_min: float | None = None, pointer: bool = True
+) -> Path:
     import torch
 
     from bridge_jspace.lens import JLens
@@ -193,7 +195,7 @@ def stage_run(name: str, smoke: bool) -> Path:
 
     pins.check_run_name(name)
     target = pins.model_pin()["target"]
-    layer = X.PREDICTED[target]
+    layer = layer if layer is not None else X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     conds = ("C0",) if smoke else CONDITIONS
@@ -201,7 +203,8 @@ def stage_run(name: str, smoke: bool) -> Path:
     ref = c0_reference(target)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
-         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": X.GATE, "alf_from": STATES[target],
+         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": X.GATE,
+         "alf_from": STATES[target] if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
          "c0_reference": {"run": C0_REF[target][0], "lookup_switch": ref, "tolerance": C0_TOL},
          "rule": f"a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}",
          "seeds": {"scenes": SEED, "random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED}}  # fmt: skip
@@ -228,7 +231,7 @@ def stage_run(name: str, smoke: bool) -> Path:
     X.write_jsonl(out / "competence.jsonl", comp)
     X.write_jsonl(out / "cases.jsonl", [{k: v for k, v in c.items() if k != "space"} for c in cases])
     (out / "gate.json").write_text(json.dumps({"dropped": dropped, "gate": gate}, indent=2) + "\n")
-    alf = torch.tensor(MM.subspaces(STATES[target])[0]["Alf"], dtype=torch.float32, device="cuda")
+    alf = torch.tensor(MM.subspaces(STATES[target])[0]["Alf"], dtype=torch.float32, device="cuda") if pointer else None
     jdic = JLens(model, "jpp").vectors(layer, model.letter_token_ids())
     rows, norms = [], []
     with torch.no_grad():
@@ -240,11 +243,12 @@ def stage_run(name: str, smoke: bool) -> Path:
             deltas.append((h["alt"] - h["org"]).float())
         x = torch.stack(deltas)
         jpp = X.fit(jdic, x, X.K_MAIN, "signed")
-        ptr = (x @ alf) @ alf.T
+        ptr = (x @ alf) @ alf.T if pointer else torch.zeros_like(x)
         basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to("cuda")
         sh = {k: v.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30) for k, v in (("jpp", jpp), ("alf", ptr))}
-        arms = {"whole": x, "no_jpp": x - jpp, "no_jpp_rand": x - SP.random_subspace_part(x, sh["jpp"], basis),
-                "no_alf": x - ptr, "no_alf_rand": x - SP.random_subspace_part(x, sh["alf"], basis)}  # fmt: skip
+        arms = {"whole": x, "no_jpp": x - jpp, "no_jpp_rand": x - SP.random_subspace_part(x, sh["jpp"], basis)}
+        if pointer:
+            arms.update({"no_alf": x - ptr, "no_alf_rand": x - SP.random_subspace_part(x, sh["alf"], basis)})
         for i, c in enumerate(progress(chosen, f"reads at layer {layer} (case)")):
             norms.append({"scene": c["scene"], "condition": c["condition"], "norm": round(float(x[i].norm()), 4),
                           "share_jpp": round(float(sh["jpp"][i]), 5), "share_alf": round(float(sh["alf"][i]), 5)})  # fmt: skip
@@ -263,10 +267,12 @@ def stage_run(name: str, smoke: bool) -> Path:
     if "C0" in conds:
         c0 = [r["switched"] for r in rows if r["condition"] == "C0" and r["reader"] == X.LOOKUP and r["arm"] == "whole"]
         rate = float(np.mean(c0)) if c0 else float("nan")
-        ok = abs(rate - ref) <= C0_TOL
-        (out / "c0_check.json").write_text(json.dumps({"c0_lookup_switch": rate, "reference": ref, "ok": ok}) + "\n")
+        ok = rate >= c0_min if c0_min is not None else abs(rate - ref) <= C0_TOL
+        (out / "c0_check.json").write_text(json.dumps({"c0_lookup_switch": rate, "reference": ref, "c0_min": c0_min,
+                                                       "ok": ok}) + "\n")  # fmt: skip
         if not ok:
-            raise SystemExit(f"C0 sanity failed: the lookup switch rate is not within {C0_TOL} of the reference; stop")
+            raise SystemExit("C0 sanity failed (" + (f"below {c0_min}" if c0_min is not None else f"not within {C0_TOL} of the "
+                             "reference") + "); stop")  # fmt: skip
     print("wrote", out, flush=True)
     return out
 
@@ -316,13 +322,16 @@ def main() -> None:
     ap.add_argument("stage", choices=["plan", "run", "verdict"])
     ap.add_argument("--name")
     ap.add_argument("--smoke", action="store_true", help="run: C0 on 20 scenes only (the sanity check)")
+    ap.add_argument("--layer", type=int, default=None, help="run: a layer other than the one fixed in advance")
+    ap.add_argument("--c0-min", type=float, default=None, help="run: a descriptive C0 gate (stop only below this rate)")
+    ap.add_argument("--no-pointer", action="store_true", help="run: no pointer-direction arms")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
         return
     if a.stage == "run":
-        stage_run(a.name, a.smoke)
+        stage_run(a.name, a.smoke, a.layer, a.c0_min, not a.no_pointer)
     if not a.smoke:
         stage_verdict(a.name, a.n_boot)
 

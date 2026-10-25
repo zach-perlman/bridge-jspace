@@ -2,7 +2,7 @@
 
 Updated 02:15. Results of batches 31 and 32 are pulled and committed unopened.
 
-**Queue** (in order): x0_122b_b5 (running) → x5_natural_122b → x6_routes → x0_122b_b6 (last; cancelled if not started by 07:30).
+**Queue** (in order): x0_122b_b5 (running) → x5_natural_122b → x6_routes → x0_122b_b6 (cancelled if not started by 07:30) → x6_routes_early → x6_routes_122b.
 
 **Finished tonight:** x0_replicate, x0_122b_b1, x0_122b_b2, x0_122b_b3, x0_122b_b4, x0_122b_b1_atoms (all exit 0); x5_natural (the 27B process exit 0; the 9B process stopped at the gate fixed in advance, so the job shows "failed").
 
@@ -21,6 +21,8 @@ Updated 02:15. Results of batches 31 and 32 are pulled and committed unopened.
 **Decisions taken overnight**
 - x6_routes' C0 reference = the one-pick, locker-first lookup switch rate; the extra arm with a random part of the pointer directions' share kept (both accepted by Dan, ~02:15).
 - x6_routes queued before b6, so b6 runs last and is the one dropped if the night runs out (Dan ~00:20: drop b6 first).
+- x6_routes_early (9B L6, 27B L16) runs without the pointer-direction arms: the pointer directions exist only at the layers fixed in advance, and fitting them at L6 / L16 needs a new probe-state run, which is more than a parameter (Dan ~02:20: skip what needs more than a parameter). The early layer's questions (Q32.7, Q32.8) do not need those arms. x6_routes got three parameters for this (--layer, --c0-min, --no-pointer); the defaults leave the main run unchanged.
+- The 07:30 cutoff is applied to b6 only (Dan ~02:20: leave b6's rule as is); x6_routes_early and x6_routes_122b start whenever the queue reaches them.
 - b3's first-mention cross-tab for the 122B was recomputed locally (the box's copy loses CPU output written into an earlier job's run folder); its output not opened.
 
 # Night of 25 Oct (Dan's ~00:20 / ~00:55 plan; agent). All numbers UNVERIFIED
