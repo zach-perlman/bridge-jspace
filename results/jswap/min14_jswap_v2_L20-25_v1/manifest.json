@@ -1,0 +1,19 @@
+{
+  "run": "min14_jswap_v2_L20-25_v1",
+  "why": "Zach (2026-10-25, prereg amendment 41): ministral-3-14b, the swap at mid depth L20-25",
+  "target": "ministral-3-14b",
+  "band": "20-25",
+  "set": "jsuite_v2_test_chat",
+  "competence": "min14_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "186df7c86678c349e94486d05fac50da21ab918b",
+  "limit": 0
+}
