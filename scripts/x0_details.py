@@ -401,9 +401,9 @@ def composition_numbers(num: Numbers) -> None:
         "only the asked pick (replication, fresh scenes)": "rep",
     }
     orders = {"all": "all", "both locker sentences before the pick": "both", "only the original's before": "org",
-              "the original's after": "after"}  # fmt: skip
+              "the original's after": "after", "first mention: yes": "fmyes", "first mention: no": "fmno"}  # fmt: skip
     for r in json.loads(found[-1].read_text())["rows"]:
-        m = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b"}[r["model"]]
+        m = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "qwen3.5-122b-a10b": "122b"}[r["model"]]
         key = f"comp_{swaps[r['swap']]}_{orders[r['order']]}"
         num.add(f"{key}_n_{m}", str(r["n"]), src)
         for w, wk in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):

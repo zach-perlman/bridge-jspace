@@ -3,7 +3,8 @@ split by the swap (two people swap picks: the main test; only the asked pick cha
 replication) and by sentence order (both the original and the new bridge's locker sentences before the asked pick;
 only the original bridge's before; the original bridge's after), from the per-item outcome files at the layer fixed in
 advance (25 J++ directions, signed OMP, against a random part of the same share; cluster bootstrap over bridge
-entities, 10,000 resamples, seed 0). The question: why the 9B recall's J++ loss is 0.06-0.12 on both-locker-first
+entities, 10,000 resamples, seed 0); also by whether the asked pick is the bridge's first mention (README v2, table 3c;
+the 122B added). The question: why the 9B recall's J++ loss is 0.06-0.12 on both-locker-first
 scenes and 0.37 on all one-pick scenes. The pointer directions' scenes (x0_massmean_lf) are the one-pick runs' both-before
 scenes; the script checks that and says so.
 
@@ -14,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -38,6 +40,9 @@ RUNS = {
                          ("only the asked pick", "x0_necessity/x0_single_27b_r2"),
                          ("only the asked pick (replication, fresh scenes)", "x0_replicate/x0_replicate_27b")],
                     "x0_massmean/x0_massmean_lf_27b"),
+    "qwen3.5-122b-a10b": (33, [("two people swap", "x0_necessity/qwen35_122b_x0_necessity_r2"),
+                               ("only the asked pick", "x0_necessity/qwen35_122b_x0_single")],
+                          "x0_massmean/qwen35_122b_x0_massmean_grid"),
 }  # fmt: skip
 ORDERS = ("both locker sentences before the pick", "only the original's before", "the original's after")
 
@@ -47,6 +52,16 @@ def order_of(case: dict) -> str:
     if f["org locker vs asked pick"] != "before":
         return ORDERS[2]
     return ORDERS[0] if f["alt locker vs asked pick"] == "before" else ORDERS[1]
+
+
+def first_mention(case: dict) -> str:
+    """'first mention: yes' if the asked pick sentence is the first sentence that names the original bridge."""
+    q = case["readers"][X.LOOKUP]["question"]
+    asked = re.search(r"([A-Z][a-z]+)'s pick", q).group(1)  # type: ignore[union-attr]
+    sents = [s if s.endswith(".") else s + "." for s in case["context"].split(". ")]
+    mine = next(i for i, s in enumerate(sents) if s.startswith(f"{asked} picked"))
+    first = next(i for i, s in enumerate(sents) if re.search(rf"\b{re.escape(case['bridge'])}\b", s))
+    return f"first mention: {'yes' if first == mine else 'no'}"
 
 
 def cells(rows: list[dict], layer: int, scenes: set[str], n_boot: int) -> dict[str, dict]:
@@ -84,7 +99,9 @@ def main() -> None:
                 r["scene"] for r in rows if r["rendering"] == "chat" and r["layer"] == layer and r["arm"] == "whole"
             }
             order = {s: order_of(cases[s]) for s in done}
+            fm = {s: first_mention(cases[s]) for s in done}
             groups = [("all", set(done))] + [(o, {s for s in done if order[s] == o}) for o in ORDERS]
+            groups += [(g, {s for s in done if fm[s] == g}) for g in ("first mention: yes", "first mention: no")]
             for o, scenes in groups:
                 if not scenes:
                     continue
