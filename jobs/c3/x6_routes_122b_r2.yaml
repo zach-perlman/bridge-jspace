@@ -1,0 +1,22 @@
+id: x6_routes_122b_r2
+title: "x6_routes on the 122B at L33, rerun with the read-accuracy gate rounded to 2 decimals (Dan, 25 Oct ~13:15): the C0 check on 20 scenes, then C0-C2 on 300 scenes each"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.5
+depends_on: [x0_122b_b6]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_c0_r2 --smoke && BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes
+question: >-
+  On the 122B at L33, which route does the lookup follow in swap 1 and swap 2, and how do removing the J++ part and the pointer directions shift it?
+why_it_matters: >-
+  The held-out model's panel of F20. x6_routes_122b stopped at the read-accuracy gate (the recall read 0.797 of the original prompts right, bar 0.80); Dan decided to compare the accuracy rounded to 2 decimals, so the 122B passes.
+hypotheses:
+  H-122b: 'Q32.9 (batch 32) stays void (Dan); descriptive'
+decision_rule: >-
+  As x6_routes: a route is used if its share is >= 0.20 with lower CI >= 0.10; C0 must reproduce the one-pick, locker-first lookup switch rate within 0.10 (the 122B's reference), or the run stops. Changed after the data (Dan, 25 Oct ~13:15): each reader's read accuracy on the original prompts is rounded to 2 decimals before the 0.80 gate. Eligible items are unchanged: both readers say and read the original and swapped prompts' answers right.
+controls:
+- 'C0; the recall as a control route; random parts at the J++ part''s and the pointer directions'' shares'
+n: '300 eligible scenes per condition'
+seeds: [2510]
+notes: "122B on both GPUs. The first C0 run name (qwen35_122b_x6_routes_c0) is taken by the stopped run, so the C0 check writes qwen35_122b_x6_routes_c0_r2. Put ahead of x0_122b_b7 in the queue (Dan wants F20 first)."

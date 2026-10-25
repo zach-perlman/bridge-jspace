@@ -18,7 +18,7 @@ Arms: whole; without the J++ part (k = 25, signed); without a random part of its
 (Alf, fit on the old fresh scenes, not refit, as in F15) and without a random part of their share.
 Read: X0's chat read (the top token after the digit's space); each lookup answer classified as identity / position /
 value / original / other (C1: identity = original). Eligible (X0): both readers say and read O's and S's answers
-right; the first N per condition. Gate: O's read accuracy >= 0.80 per reader and condition.
+right; the first N per condition. Gate: O's read accuracy, rounded to 2 decimals, >= 0.80 per reader and condition.
 Rule (Dan, fixed in advance): a route counts as used if its share is >= 0.20 with lower CI >= 0.10 (cluster bootstrap
 over the bridge item, 10,000 resamples, seed 0). C0 must reproduce the one-pick lookup switch rate within 0.10, or the
 run stops.
@@ -52,6 +52,9 @@ CONDITIONS = ("C0", "C1", "C2")
 ROUTES = ("identity", "position", "value", "original", "other")
 USED_SHARE, USED_LO = 0.20, 0.10
 C0_TOL = 0.10
+# the read-accuracy gate compares the accuracy rounded to 2 decimals (Dan, 25 Oct ~13:15, after the 122B's recall read
+# 0.797 of the original prompts right; added after the data)
+GATE_DECIMALS = 2
 # the one-pick lookup switch rate in scenes with both locker sentences before the pick (x0_massmean_lf's items, the
 # whole change), the reference C0 must reproduce (Dan: within 0.10)
 C0_REF = {"qwen3.5-9b": ("qwen35_9b_x0_massmean_lf", "whole"), "qwen3.6-27b": ("x0_massmean_lf_27b", "whole"),
@@ -203,7 +206,7 @@ def stage_run(
     ref = c0_reference(target)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
-         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": X.GATE,
+         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": X.GATE, "gate_decimals": GATE_DECIMALS,
          "alf_from": STATES[target] if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
          "c0_reference": {"run": C0_REF[target][0], "lookup_switch": ref, "tolerance": C0_TOL},
          "rule": f"a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}",
@@ -224,8 +227,8 @@ def stage_run(
         acc = {w: float(np.mean([right[(c["scene"], w, "org")]["read_right"] for c in mine])) for w in X.READERS}
         ok = [c for c in mine if all(right[(c["scene"], w, v)]["right"] and right[(c["scene"], w, v)]["read_right"]
                                      for w in X.READERS for v in ("org", "alt"))]  # fmt: skip
-        gate[cond] = {"cases": len(mine), "org_read_accuracy": acc, "pass": all(a >= X.GATE for a in acc.values()),
-                      "eligible": len(ok)}  # fmt: skip
+        gate[cond] = {"cases": len(mine), "org_read_accuracy": acc,
+                      "pass": all(round(a, GATE_DECIMALS) >= X.GATE for a in acc.values()), "eligible": len(ok)}  # fmt: skip
         if gate[cond]["pass"]:
             chosen += ok[:n]
     X.write_jsonl(out / "competence.jsonl", comp)
