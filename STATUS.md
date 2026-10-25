@@ -1,3 +1,28 @@
+# Queue overnight, 25 Oct (monitor only; agent). No numbers from batches 31 / 32
+
+Updated 02:15. Results of batches 31 and 32 are pulled and committed unopened.
+
+**Queue** (in order): x0_122b_b5 (running) → x5_natural_122b → x6_routes → x0_122b_b6 (last; cancelled if not started by 07:30).
+
+**Finished tonight:** x0_replicate, x0_122b_b1, x0_122b_b2, x0_122b_b3, x0_122b_b4, x0_122b_b1_atoms (all exit 0); x5_natural (the 27B process exit 0; the 9B process stopped at the gate fixed in advance, so the job shows "failed").
+
+**Failed jobs, last 24 h** (left as they are):
+
+| Job | Exit | Replaced by a later run? |
+|---|---|---|
+| x0_necessity_9b | 1 | yes: qwen35_9b_x0_necessity (done) |
+| x0_necessity_27b_raw | 1 | yes: x0_necessity_27b_notemplate and x0_necessity_27b_nothink (done) |
+| x0_digit_27b | 2 | yes: x0_digit_27b_r2 (done) |
+| qwen35_9b_x0_digit | 2 | yes: qwen35_9b_x0_digit_r2 (done) |
+| x0_nochat_digit_27b | 143 (killed) | no (the 9B's qwen35_9b_x0_nochat_digit is done) |
+| qwen35_122b_x0_necessity | 1 | yes: qwen35_122b_x0_necessity_r2 (done) |
+| x5_natural | 1 | no: the 9B stopped at the gate fixed in advance (not a technical failure); the 27B finished |
+
+**Decisions taken overnight**
+- x6_routes' C0 reference = the one-pick, locker-first lookup switch rate; the extra arm with a random part of the pointer directions' share kept (both accepted by Dan, ~02:15).
+- x6_routes queued before b6, so b6 runs last and is the one dropped if the night runs out (Dan ~00:20: drop b6 first).
+- b3's first-mention cross-tab for the 122B was recomputed locally (the box's copy loses CPU output written into an earlier job's run folder); its output not opened.
+
 # Night of 25 Oct (Dan's ~00:20 / ~00:55 plan; agent). All numbers UNVERIFIED
 
 Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their cells say "closed" and are filled from the verdict files right after it. Extra loss = flips lost without the part minus flips lost without a random part of its own share; gap = recall's extra loss minus lookup's; 95% CIs from a cluster bootstrap over bridge entities (10,000 resamples, seed 0). "Two-pick" = the main test's edit (two people swap picks); "one-pick" = only the asked pick changes.
