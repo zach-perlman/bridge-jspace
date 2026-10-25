@@ -1,0 +1,19 @@
+{
+  "run": "olmo32_jswap_v2_v1",
+  "why": "Zach (2026-10-24, prereg amendment 34 B): OLMo-3 32B on v2 (raw text) at L12-20",
+  "target": "olmo-3-32b",
+  "band": "12-20",
+  "set": "jsuite_v2_test_qa",
+  "competence": "olmo32_jsuite_v2_test_qa_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "1ecdc035d51eac0e7633a3ae72309458c10000e5",
+  "limit": 0
+}
