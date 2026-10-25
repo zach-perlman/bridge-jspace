@@ -1,10 +1,10 @@
 # Queue overnight, 25 Oct (monitor only; agent). No numbers from batches 31 / 32
 
-Updated 02:15. Results of batches 31 and 32 are pulled and committed unopened.
+Updated 11:15. Results of batches 31 and 32 are pulled and committed unopened; they open after Dan commits his answers (Dan, ~11:10).
 
-**Queue** (in order): x0_122b_b5 (running) → x5_natural_122b → x6_routes → x0_122b_b6 (cancelled if not started by 07:30) → x6_routes_early → x6_routes_122b.
+**Queue** (in order): x6_routes_r2 → x6_routes_early_r2 (reruns of the two jobs whose command failed; see below).
 
-**Finished tonight:** x0_replicate, x0_122b_b1, x0_122b_b2, x0_122b_b3, x0_122b_b4, x0_122b_b1_atoms (all exit 0); x5_natural (the 27B process exit 0; the 9B process stopped at the gate fixed in advance, so the job shows "failed").
+**Finished tonight:** x0_replicate, x0_122b_b1, x0_122b_b2, x0_122b_b3, x0_122b_b4, x0_122b_b1_atoms, x0_122b_b5, x0_122b_b6 (started before 07:30), x5_natural_122b (all exit 0); x5_natural (the 27B process exit 0; the 9B process stopped at the gate fixed in advance, so the job shows "failed").
 
 **Failed jobs, last 24 h** (left as they are):
 
@@ -17,8 +17,13 @@ Updated 02:15. Results of batches 31 and 32 are pulled and committed unopened.
 | x0_nochat_digit_27b | 143 (killed) | no (the 9B's qwen35_9b_x0_nochat_digit is done) |
 | qwen35_122b_x0_necessity | 1 | yes: qwen35_122b_x0_necessity_r2 (done) |
 | x5_natural | 1 | no: the 9B stopped at the gate fixed in advance (not a technical failure); the 27B finished |
+| x6_routes | 2 | yes: x6_routes_r2 (queued). A bash syntax error before any run started: the folded YAML command kept the indented '&&' lines as new lines |
+| x6_routes_early | 2 | yes: x6_routes_early_r2 (queued); the same syntax error |
+| x6_routes_122b | 1 | no: its C0 check stopped at the gate fixed in advance (the 122B is not tested on routes); the script then crashed on an empty list instead of stopping cleanly (fixed: it now stops with a message) |
 
 **Decisions taken overnight**
+- The ~04:15 sync did not happen (the session was idle); synced at ~11:10 instead.
+- Reruns (Dan, ~11:10): only the technical failures (x6_routes, x6_routes_early). Not rerun: the gate stops (x5_natural's 9B, x6_routes_122b) and x0_nochat_digit_27b (cancelled on 24 Oct).
 - x6_routes' C0 reference = the one-pick, locker-first lookup switch rate; the extra arm with a random part of the pointer directions' share kept (both accepted by Dan, ~02:15).
 - x6_routes queued before b6, so b6 runs last and is the one dropped if the night runs out (Dan ~00:20: drop b6 first).
 - x6_routes_early (9B L6, 27B L16) runs without the pointer-direction arms: the pointer directions exist only at the layers fixed in advance, and fitting them at L6 / L16 needs a new probe-state run, which is more than a parameter (Dan ~02:20: skip what needs more than a parameter). The early layer's questions (Q32.7, Q32.8) do not need those arms. x6_routes got three parameters for this (--layer, --c0-min, --no-pointer); the defaults leave the main run unchanged.
