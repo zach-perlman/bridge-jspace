@@ -1,0 +1,308 @@
+{
+ "run": "qwen35_122b_x6_routes_sweep_l24_g75",
+ "manifest": {
+  "exp": "x6_routes",
+  "run": "qwen35_122b_x6_routes_sweep_l24_g75",
+  "written_utc": "2026-10-25T20:25:09Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+   "target": "qwen3.5-122b-a10b",
+   "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+   "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "1013ca4ad205417bf52f6f976573a1d56011cafc",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "layer": 24,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+   "C0",
+   "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.75,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "keeponly": false,
+  "alf_from": null,
+  "c0_min": 0.5,
+  "fixed_layer": 33,
+  "c0_reference": {
+   "run": "qwen35_122b_x0_massmean_grid",
+   "lookup_switch": 1.0,
+   "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+   "scenes": 2510,
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "items": {
+   "C0": 300,
+   "C2": 300
+  }
+ },
+ "rows": [
+  {
+   "condition": "C0",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "recall_follows_s": [
+     0.99,
+     0.9792384976333002,
+     1.0
+    ]
+   },
+   "used": [],
+   "median_norm": 3.04685
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.30666666666666664,
+     0.22448811207651378,
+     0.38047516689385197
+    ],
+    "other": [
+     0.6933333333333334,
+     0.6195248331061479,
+     0.7755118879234861
+    ],
+    "recall_follows_s": [
+     0.6166666666666667,
+     0.5287327295947986,
+     0.7246991024071806
+    ]
+   },
+   "used": [
+    "original"
+   ],
+   "median_norm": 3.04685
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "recall_follows_s": [
+     0.9733333333333334,
+     0.9422492401215805,
+     0.9965520203815618
+    ]
+   },
+   "used": [],
+   "median_norm": 3.04685
+  },
+  {
+   "condition": "C2",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9433333333333334,
+     0.9115036994051936,
+     0.973384030418251
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 3.0351999999999997
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.45,
+     0.3707482993197279,
+     0.5337843849187265
+    ],
+    "position": [
+     0.0033333333333333335,
+     0.0,
+     0.010753655140403794
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.5466666666666666,
+     0.46229005148842994,
+     0.62667055393586
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.4066666666666667,
+     0.32222035794183446,
+     0.5103800653306259
+    ]
+   },
+   "used": [
+    "identity",
+    "original"
+   ],
+   "median_norm": 3.0351999999999997
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.9966666666666667,
+     0.9893992932862191,
+     1.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0033333333333333335,
+     0.0,
+     0.01060070671378092
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9333333333333333,
+     0.9020973833288373,
+     0.9626556016597511
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 3.0351999999999997
+  }
+ ],
+ "extra": [],
+ "ctrl": []
+}
