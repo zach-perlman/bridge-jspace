@@ -18,7 +18,7 @@
 
 ![One prompt, two questions about the same in-between word](figures/story/fig0_setup.png)
 
-The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its locker, written in the prompt; the **recall** asks for a fact from memory. We swap the bridge (frog → tick), take **the change** in the hidden state at the bridge word at one layer, and add it into the original prompt there: whole, without its **J++ part** (the 25 lens directions that best rebuild it), or without a random part of the same size. A reader switches when it gives the swapped bridge's answer. **Extra loss** = the share of switches lost without the J++ part minus the share lost without the random part. **Gap** = the recall's extra loss minus the lookup's. **Matched scenes**: the asked pick is not the bridge's first mention. Brackets: {{q|95%}} intervals from resampling bridge items.
+The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its locker, written in the prompt; the **recall** asks for a fact from memory. We swap the bridge (frog → tick), take **the change** in the hidden state at the bridge word at one layer, and add it into the original prompt there: whole, without its **J++ part** (the 25 lens directions that best rebuild it), or without a random part of the same size. A reader switches when it gives the swapped bridge's answer. **Extra loss** = the share of switches lost without the J++ part minus the share lost without the random part. **Gap** = the recall's extra loss minus the lookup's. **Matched scenes**: the asked pick is not the bridge's first mention. Brackets: {{q|95%}} bootstrap intervals.
 
 ## 1. Recall needs the lens-readable part of the bridge; the lookup mostly doesn't
 
@@ -78,11 +78,11 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 *J++ extra loss, after the data; italics: under 30 lookup switches (count shown); n in Appendix A.*
 
-- **Caveat.** Removing both costs the recall too ({{num|rtb_ex_C0_both_rc_9b}}, {{num|rtb_ex_C0_both_rc_27b}}); the 122B's runs are after the data (both minus the pointer: {{num|rtb_ex_C0_both_minus_alf_lk_122b}}).
+- **Caveat.** Removing both costs the recall too ({{num|rtb_ex_C0_both_rc_9b}}, {{num|rtb_ex_C0_both_rc_27b}}); the 122B's runs are after the data (both minus the pointer: {{num|rtb_ex_C0_both_minus_alf_lk_122b}}; J++ against random: {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}}).
 
 ## 4. What did not hold, and limits
 
-- The strict rule on the 27B: its lookup lost {{num|lk_excess_27b}} (bar 0.10).
+- The 27B's strict rule: lookup lost {{num|lk_excess_27b}} (bar 0.10).
 - The 9B's double dissociation on fresh scenes, fixed in advance: its J++ clause failed (recall {{num|rep_jpp_rc_excess_9b}}).
 - The gap everywhere: the 122B's varied scenes ({{num|x0b_c_122b}}) and the 27B's natural passages ({{num|nat_gap_27b}}) are in between.
 - On the 122B the layer's main directions at J++'s share cost the recall {{num|pcaeq_pca_eq_rc_excess_122b}}, near J++'s {{num|pcaeq_jpp_rc_excess_122b}}.
@@ -116,7 +116,7 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | Early layer, recall still switching without J++ | {{num|rte_C2_no_jpp_recall_follows_s_9b}} | {{num|rte_C2_no_jpp_recall_follows_s_27b}} | {{num|rte_C2_no_jpp_recall_follows_s_122b}} (after the data) |
 | Routes, position share at each tested layer (another item moved) | L6 {{num|rte_C2_whole_position_9b}}; L8 {{num|rts8_C2_whole_position_9b}}; L10 {{num|rts10_C2_whole_position_9b}}; L12 {{num|rt_C2_whole_position_9b}} | L16 {{num|rte_C2_whole_position_27b}}; L20 {{num|rts20_C2_whole_position_27b}}; L24 {{num|rts24_C2_whole_position_27b}}; L28 {{num|rts28_C2_whole_position_27b}}; L32 {{num|rt_C2_whole_position_27b}} | L27 {{num|rte_C2_whole_position_122b}}; L33 {{num|rtg_C2_whole_position_122b}}; L24 / L30 / L36 pending (after the data) |
 | Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | {{num|rtk_C2_keep_alf_position_9b}} / {{num|rtk_C2_keep_alf_rand_position_9b}}; {{num|rtk_C2_keep_jpp_identity_9b}} | {{num|rtk_C2_keep_alf_position_27b}} / {{num|rtk_C2_keep_alf_rand_position_27b}}; {{num|rtk_C2_keep_jpp_identity_27b}} | pending (after the data) |
-| Sanity swap, switches lost: pointer + J++ minus pointer + random | {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} | pending (after the data) |
+| Sanity swap, switches lost: pointer + J++ minus pointer + random | {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}} (after the data) |
 | Sanity swap, lookup without both / pointer alone | {{num|rtb_ex_C0_both_lk_9b}} / {{num|rtb_ex_C0_alf_lk_9b}} | {{num|rtb_ex_C0_both_lk_27b}} / {{num|rtb_ex_C0_alf_lk_27b}} | {{num|rtb_ex_C0_both_lk_122b}} / {{num|rtb_ex_C0_alf_lk_122b}} (after the data) |
 
 ## Appendix B. Supplementary figures

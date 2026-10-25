@@ -1,6 +1,6 @@
 # Results matrix, 25 Oct ~20:45 (agent). All numbers UNVERIFIED
 
-Every cell from docs/x0_numbers.json (in figures/story/data.csv). Lookup / recall = the two readers; extra loss and gap as in the README. 122B routes runs are after the data (gate 0.75). Pending cells fill when x0_122b_b9 lands (running since ~20:22: the 122B's bothoff control, keep-only parts, routes at L24 / L30 / L36, fresh scenes).
+Regenerated as x0_122b_b9's parts land. Every cell from docs/x0_numbers.json (in figures/story/data.csv). Lookup / recall = the two readers; extra loss and gap as in the README. 122B routes runs are after the data (gate 0.75). Pending cells fill when x0_122b_b9 lands (running since ~20:22: the 122B's bothoff control, keep-only parts, routes at L24 / L30 / L36, fresh scenes).
 
 | Hypothesis | 9B (L12) | 27B (L32) | 122B (L33) |
 |---|---|---|---|
@@ -18,7 +18,7 @@ Every cell from docs/x0_numbers.json (in figures/story/data.csv). Lookup / recal
 | Early layer: identity only; without J++ the original answer | L6 1.00 [1.00, 1.00]; 0.99 [0.97, 1.00] | L16 1.00 [1.00, 1.00]; 0.99 [0.98, 1.00] | L27 (after the data) 1.00 [1.00, 1.00]; 0.84 [0.78, 0.89] |
 | Position appears where the lookup stops needing J++ (Q35.1) | held: L6 0.00 [0.00, 0.00], L8 0.03 [0.01, 0.05], L10 0.02 [0.01, 0.04], L12 0.51 [0.46, 0.56] | did not hold: L24 0.00 [0.00, 0.00] (lookup no longer needs J++), L28 0.34 [0.29, 0.40] | L27 0.00 [0.00, 0.00], L33 0.38 [0.33, 0.44]; L24 / L30 / L36 pending (b9) |
 | Removing J++ and the pointer together costs the lookup >= 0.15 more than the pointer (Q34.1) | no: 0.12 [0.04, 0.19] | yes: 0.26 [0.19, 0.32] | no (after the data): 0.09 [0.03, 0.16] |
-| ... and J++ beats a random part of its size there (Q36.1, switches lost) | no: −0.08 [−0.11, −0.04] | yes: 0.23 [0.18, 0.27] | pending (b9) |
+| ... and J++ beats a random part of its size there (Q36.1, switches lost) | no: −0.08 [−0.11, −0.04] | yes: 0.23 [0.18, 0.27] | no (after the data): 0.00 [−0.02, 0.03] |
 | The pointer part alone gives position answers (Q37.1) | yes: 0.26 [0.20, 0.32] vs 0.00 [0.00, 0.00] | no: 0.09 [0.06, 0.12] vs 0.00 [0.00, 0.01] | pending (b9) |
 | The J++ part alone gives identity answers (Q37.2) | no: 0.00 [0.00, 0.00] | no: 0.00 [0.00, 0.00] | pending (b9) |
 | Recall needs J++ more where the pick is the bridge's first mention (only the asked pick changes: yes / no) | 0.57 [0.47, 0.67] / 0.17 [0.11, 0.23]; fresh scenes 0.12 [0.06, 0.19] | 0.73 [0.58, 0.86] / 0.49 [0.39, 0.60]; fresh scenes 0.37 [0.28, 0.46] | 0.40 [0.25, 0.54] / 0.10 [0.03, 0.17]; fresh scenes pending (b9) |

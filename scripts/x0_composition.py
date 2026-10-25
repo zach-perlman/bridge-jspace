@@ -41,7 +41,8 @@ RUNS = {
                          ("only the asked pick (replication, fresh scenes)", "x0_replicate/x0_replicate_27b")],
                     "x0_massmean/x0_massmean_lf_27b"),
     "qwen3.5-122b-a10b": (33, [("two people swap", "x0_necessity/qwen35_122b_x0_necessity_r2"),
-                               ("only the asked pick", "x0_necessity/qwen35_122b_x0_single")],
+                               ("only the asked pick", "x0_necessity/qwen35_122b_x0_single"),
+                               ("only the asked pick (replication, fresh scenes)", "x0_replicate/qwen35_122b_x0_replicate")],
                           "x0_massmean/qwen35_122b_x0_massmean_grid"),
 }  # fmt: skip
 ORDERS = ("both locker sentences before the pick", "only the original's before", "the original's after")
@@ -93,6 +94,9 @@ def main() -> None:
     for target, (layer, runs, mm) in RUNS.items():
         for swap, d in runs:
             src = pins.RESULTS_DIR / d
+            if not (src / "outcomes.jsonl").exists():  # not run yet (the 122B's replication, x0_122b_b9)
+                notes.append(f"{target}: {d} not run yet.")
+                continue
             cases = {c["scene"]: c for c in X.read_jsonl(src / "cases.jsonl") if c["rendering"] == "chat"}
             rows = X.read_jsonl(src / "outcomes.jsonl")
             done = {

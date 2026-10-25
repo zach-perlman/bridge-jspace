@@ -55,12 +55,17 @@ ROUTES_MORE = {"rte": {"9b": "qwen35_9b_x6_routes_l6", "27b": "x6_routes_l16_27b
                "rtg": {"122b": "qwen35_122b_x6_routes_g75"},
                "rtb": {"9b": "qwen35_9b_x6_routes_bothoff", "27b": "x6_routes_bothoff_27b",
                        "122b": "qwen35_122b_x6_routes_bothoff_g75"},
-               "rtc": {"9b": "qwen35_9b_x6_routes_bothoff_ctrl", "27b": "x6_routes_bothoff_ctrl_27b"},
+               "rtc": {"9b": "qwen35_9b_x6_routes_bothoff_ctrl", "27b": "x6_routes_bothoff_ctrl_27b",
+                       "122b": "qwen35_122b_x6_routes_bothoff_ctrl_g75"},
                # the layer sweep (batch 35): rts<layer>_*
                "rts8": {"9b": "qwen35_9b_x6_routes_sweep_l8"}, "rts10": {"9b": "qwen35_9b_x6_routes_sweep_l10"},
-               "rts20": {"27b": "x6_routes_sweep_l20_27b"}, "rts24": {"27b": "x6_routes_sweep_l24_27b"},
+               "rts20": {"27b": "x6_routes_sweep_l20_27b"},
+               "rts24": {"27b": "x6_routes_sweep_l24_27b", "122b": "qwen35_122b_x6_routes_sweep_l24_g75"},
+               "rts30": {"122b": "qwen35_122b_x6_routes_sweep_l30_g75"},
+               "rts36": {"122b": "qwen35_122b_x6_routes_sweep_l36_g75"},
                "rts28": {"27b": "x6_routes_sweep_l28_27b"},
-               "rtk": {"9b": "qwen35_9b_x6_routes_keeponly", "27b": "x6_routes_keeponly_27b"}}  # fmt: skip
+               "rtk": {"9b": "qwen35_9b_x6_routes_keeponly", "27b": "x6_routes_keeponly_27b",
+                       "122b": "qwen35_122b_x6_routes_keeponly_g75"}}  # fmt: skip
 NATURAL_G75 = {"9b": "qwen35_9b_x5_natural_g75"}
 ORDER = "org locker vs asked pick"
 

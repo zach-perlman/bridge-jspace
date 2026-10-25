@@ -12,13 +12,13 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Compare the lookup and recall dot in each row; grey band: not needed.*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 1013ca4a from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at e5e5341e from the run files.
 
 ## Setup
 
 ![One prompt, two questions about the same in-between word](figures/story/fig0_setup.png)
 
-The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its locker, written in the prompt; the **recall** asks for a fact from memory. We swap the bridge (frog → tick), take **the change** in the hidden state at the bridge word at one layer, and add it into the original prompt there: whole, without its **J++ part** (the 25 lens directions that best rebuild it), or without a random part of the same size. A reader switches when it gives the swapped bridge's answer. **Extra loss** = the share of switches lost without the J++ part minus the share lost without the random part. **Gap** = the recall's extra loss minus the lookup's. **Matched scenes**: the asked pick is not the bridge's first mention. Brackets: 95% intervals from resampling bridge items.
+The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its locker, written in the prompt; the **recall** asks for a fact from memory. We swap the bridge (frog → tick), take **the change** in the hidden state at the bridge word at one layer, and add it into the original prompt there: whole, without its **J++ part** (the 25 lens directions that best rebuild it), or without a random part of the same size. A reader switches when it gives the swapped bridge's answer. **Extra loss** = the share of switches lost without the J++ part minus the share lost without the random part. **Gap** = the recall's extra loss minus the lookup's. **Matched scenes**: the asked pick is not the bridge's first mention. Brackets: 95% bootstrap intervals.
 
 ## 1. Recall needs the lens-readable part of the bridge; the lookup mostly doesn't
 
@@ -78,11 +78,11 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 *J++ extra loss, after the data; italics: under 30 lookup switches (count shown); n in Appendix A.*
 
-- **Caveat.** Removing both costs the recall too (0.34 [0.28, 0.40], 0.44 [0.37, 0.52]); the 122B's runs are after the data (both minus the pointer: 0.09 [0.03, 0.16]).
+- **Caveat.** Removing both costs the recall too (0.34 [0.28, 0.40], 0.44 [0.37, 0.52]); the 122B's runs are after the data (both minus the pointer: 0.09 [0.03, 0.16]; J++ against random: 0.00 [−0.02, 0.03]).
 
 ## 4. What did not hold, and limits
 
-- The strict rule on the 27B: its lookup lost 0.14 [0.08, 0.20] (bar 0.10).
+- The 27B's strict rule: lookup lost 0.14 [0.08, 0.20] (bar 0.10).
 - The 9B's double dissociation on fresh scenes, fixed in advance: its J++ clause failed (recall 0.12 [0.06, 0.19]).
 - The gap everywhere: the 122B's varied scenes (0.15 [0.12, 0.18]) and the 27B's natural passages (0.27 [0.13, 0.41]) are in between.
 - On the 122B the layer's main directions at J++'s share cost the recall 0.21 [0.13, 0.30], near J++'s 0.26 [0.16, 0.36].
@@ -116,7 +116,7 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | Early layer, recall still switching without J++ | 0.05 [0.02, 0.08] | 0.01 [0.00, 0.02] | 0.20 [0.13, 0.28] (after the data) |
 | Routes, position share at each tested layer (another item moved) | L6 0.00 [0.00, 0.00]; L8 0.03 [0.01, 0.05]; L10 0.02 [0.01, 0.04]; L12 0.51 [0.46, 0.56] | L16 0.00 [0.00, 0.00]; L20 0.00 [0.00, 0.00]; L24 0.00 [0.00, 0.00]; L28 0.34 [0.29, 0.40]; L32 0.34 [0.28, 0.39] | L27 0.00 [0.00, 0.00]; L33 0.38 [0.33, 0.44]; L24 / L30 / L36 pending (after the data) |
 | Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01]; 0.00 [0.00, 0.00] | pending (after the data) |
-| Sanity swap, switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | pending (after the data) |
+| Sanity swap, switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03] (after the data) |
 | Sanity swap, lookup without both / pointer alone | 0.43 [0.39, 0.47] / 0.31 [0.26, 0.37] | 0.41 [0.35, 0.47] / 0.15 [0.12, 0.19] | 0.35 [0.29, 0.41] / 0.26 [0.22, 0.30] (after the data) |
 
 ## Appendix B. Supplementary figures

@@ -330,7 +330,9 @@ def fig5(plt) -> None:
               "27b": (("x6_routes_l16_27b", 16, "fixed"), ("x6_routes_sweep_l20_27b", 20, "fixed"),
                       ("x6_routes_sweep_l24_27b", 24, "fixed"), ("x6_routes_sweep_l28_27b", 28, "fixed"),
                       ("x6_routes_27b", 32, "fixed")),
-              "122b": (("qwen35_122b_x6_routes_l27_g75", 27, "rerun"), ("qwen35_122b_x6_routes_g75", 33, "rerun"))}  # fmt: skip
+              "122b": (("qwen35_122b_x6_routes_sweep_l24_g75", 24, "rerun"), ("qwen35_122b_x6_routes_l27_g75", 27, "rerun"),
+                       ("qwen35_122b_x6_routes_sweep_l30_g75", 30, "rerun"), ("qwen35_122b_x6_routes_g75", 33, "rerun"),
+                       ("qwen35_122b_x6_routes_sweep_l36_g75", 36, "rerun"))}  # fmt: skip
     fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharex="col", gridspec_kw={"height_ratios": [1.25, 1]})
     fig.subplots_adjust(left=0.105, right=0.98, top=0.84, bottom=0.10, wspace=0.14, hspace=0.26)
     # Dan's wording (~14:30), until the layer sweep lands; 77 characters
@@ -421,7 +423,8 @@ def fig6(plt) -> None:
     (batch 36's bar: the random union + 0.15, dotted). The recall as small grey dots."""
     runs = (("qwen3.5-9b", "9b", "9B", "qwen35_9b_x6_routes_bothoff", "qwen35_9b_x6_routes_bothoff_ctrl", "fixed"),
             ("qwen3.6-27b", "27b", "27B", "x6_routes_bothoff_27b", "x6_routes_bothoff_ctrl_27b", "fixed"),
-            ("qwen3.5-122b-a10b", "122b", "122B, after the data", "qwen35_122b_x6_routes_bothoff_g75", None, "rerun"))  # fmt: skip
+            ("qwen3.5-122b-a10b", "122b", "122B, after the data", "qwen35_122b_x6_routes_bothoff_g75",
+             "qwen35_122b_x6_routes_bothoff_ctrl_g75", "rerun"))  # fmt: skip
     parts = (("jpp", "without J++"), ("alf", "without the pointer"), ("both", "without both"))
     ctrl = (
         ("alf", "pointer"),
@@ -462,7 +465,7 @@ def fig6(plt) -> None:
             for i, (arm, label) in enumerate(ctrl):
                 lk, rc = cc[("C0", X.LOOKUP, arm)]["lost"], cc[("C0", X.RECALL, arm)]["lost"]
                 bot.plot([rc[0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
-                S.dot(bot, 0, -i, lk, S.COL["lookup"], "fixed")
+                S.dot(bot, 0, -i, lk, S.COL["lookup"], kind)
                 S.record(
                     "fig6",
                     target,

@@ -5715,6 +5715,234 @@
   "text": "0.98",
   "source": "results/x6_routes/x6_routes_bothoff_ctrl_27b/c0_check.json"
  },
+ "rtc_C0_whole_identity_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_whole_position_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_whole_value_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_whole_original_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_whole_recall_follows_s_122b": {
+  "text": "0.91 [0.86, 0.96]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_identity_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_position_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_value_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_original_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_recall_follows_s_122b": {
+  "text": "0.82 [0.74, 0.89]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_rand_identity_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_rand_position_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_rand_value_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_rand_original_122b": {
+  "text": "0.00 [0.00, 0.01]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_jpp_rand_recall_follows_s_122b": {
+  "text": "0.85 [0.79, 0.92]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_identity_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_position_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_value_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_original_122b": {
+  "text": "0.25 [0.21, 0.30]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_recall_follows_s_122b": {
+  "text": "0.74 [0.66, 0.83]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_rand_identity_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_rand_position_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_rand_value_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_rand_original_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_rand_recall_follows_s_122b": {
+  "text": "0.86 [0.79, 0.93]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_identity_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_position_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_value_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_original_122b": {
+  "text": "0.49 [0.44, 0.55]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_recall_follows_s_122b": {
+  "text": "0.45 [0.37, 0.55]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_rand_identity_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_rand_position_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_rand_value_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_rand_original_122b": {
+  "text": "0.15 [0.11, 0.19]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_both_rand_recall_follows_s_122b": {
+  "text": "0.67 [0.58, 0.77]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_jrand_identity_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_jrand_position_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_jrand_value_122b": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_jrand_original_122b": {
+  "text": "0.50 [0.45, 0.55]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_C0_no_alf_jrand_recall_follows_s_122b": {
+  "text": "0.52 [0.44, 0.62]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_ex_C0_jpp_lk_122b": {
+  "text": "−0.00 [−0.01, 0.00]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_ex_C0_alf_lk_122b": {
+  "text": "0.26 [0.22, 0.31]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_ex_C0_both_lk_122b": {
+  "text": "0.35 [0.30, 0.42]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_ex_C0_both_minus_alf_lk_122b": {
+  "text": "0.09 [0.03, 0.16]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_ex_C0_jpp_rc_122b": {
+  "text": "0.04 [0.01, 0.07]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_ex_C0_alf_rc_122b": {
+  "text": "0.13 [0.07, 0.18]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_ex_C0_both_rc_122b": {
+  "text": "0.24 [0.19, 0.29]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_ex_C0_both_minus_alf_rc_122b": {
+  "text": "0.11 [0.03, 0.18]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_lost_C0_alf_lk_122b": {
+  "text": "0.26 [0.22, 0.31]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_lost_C0_alf_jpp_lk_122b": {
+  "text": "0.50 [0.45, 0.55]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_lost_C0_alf_rand_lk_122b": {
+  "text": "0.50 [0.45, 0.55]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_lost_C0_jpp_minus_rand_lk_122b": {
+  "text": "0.00 [−0.02, 0.03]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_lost_C0_alf_rc_122b": {
+  "text": "0.19 [0.13, 0.24]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_lost_C0_alf_jpp_rc_122b": {
+  "text": "0.50 [0.41, 0.58]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_lost_C0_alf_rand_rc_122b": {
+  "text": "0.43 [0.34, 0.51]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_lost_C0_jpp_minus_rand_rc_122b": {
+  "text": "0.07 [0.04, 0.11]",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json"
+ },
+ "rtc_c0_122b": {
+  "text": "1.00",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/c0_check.json"
+ },
  "rts8_C0_whole_identity_9b": {
   "text": "0.00 [0.00, 0.00]",
   "source": "results/x6_routes/qwen35_9b_x6_routes_sweep_l8/verdict-20261025T141741Z/verdict.json"
