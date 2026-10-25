@@ -1254,3 +1254,28 @@ run in them.
 and Bolt's plain J-lenses are fit on 32 prompts, as our J++ lenses were (the paper: the J-lens beats the logit lens with
 as few as 10). Flagged on both models' results. Chains relaunched (h200nemL9, h200bolt7, h200qrend27c); nothing had run
 in them.
+
+## Amendment 45 (Zach, 2026-10-25 18:58 UTC, before any Nemotron lens is fit): no plain J-lenses; J++ for the Nemotrons
+
+- **Zach: "Don't do plain j lenses anywhere."** Lightning's and Bolt's plain J-lens fits (amendments 40, 42, 44) are
+  withdrawn before any ran (chains h200nemL9 and h200bolt7 stopped while waiting; no lens file exists). Earlier
+  plain-J-lens runs (Muse's published J-lens comparison, gpt-oss's neuronpedia J-lens, Mistral-Small-24B's community
+  J-lens, the 27B's q27jlens) are not used for any claim. Then Zach: "Go ahead. A": J++ for both Nemotrons; the
+  `kernels` package (0.16.2, as the harness env) installed into jpp_lens's env (nothing else changed).
+- **Lightning's J++ (scripts/queues/h200_nemfit_1025.sh):** Ministral's recipe (router 64 prompts, one shard of 32
+  prompts, source layers 0-50, target the final block, merge, grade, readout weights, held-out evaluation, export,
+  sha256 into pins). Changes:
+  - The LN rule alone (--lrp-mode ln, gpt-oss's mode). The fitter refuses rlens because Nemotron has no gated MLPs
+    (relu^2). The Mamba, attention and MoE layers keep standard gradients, as OLMo-Hybrid's GatedDeltaNet did. Checked
+    on an empty Lightning: 53 norms patched (52 blocks + norm_f); the Mamba mixers' gated norms untouched.
+  - jpp_lens patches: NemotronHRMSNorm registered with Qwen2's rule (its forward is line-for-line Qwen2RMSNorm's); for
+    NemotronH, jlens.from_hf gets its layout (norm_f, embeddings) and no BOS, as the harness feeds it. The full diff
+    is scripts/lens_fit/jpp_lens_bridge.patch.
+  - The model is loaded from its pinned local snapshot (a9904d2): jpp_cli loads by name, which would resolve to the
+    hub's latest revision.
+  - The HF-hub mamba-ssm kernels (the harness's pinned kernel) via scripts/lens_fit/jpp_cli_hubmamba.py.
+  - The working directory is in /dev/shm.
+  The lens check (lens_agreement) follows, and the held-out pass@10 vs the logit lens is reported. Then amendment 42's
+  design runs unchanged (gate, profile, dose, test and swap at the pick, mid-depth swap L26-32).
+- **Bolt's J++:** pins switched to J++; its fit needs jpp_cli to load Bolt's own code over two GPUs. It gets its own
+  note before it runs.

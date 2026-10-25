@@ -567,8 +567,7 @@ TARGETS["ministral-3-14b"] = {
 # 2026-10-25 (amendment 40): NVIDIA Nemotron 3.5 Lightning 30B-A3B (hybrid: 52 blocks, each one Mamba-2, attention or MoE
 # mixer; final norm norm_f, a plain weight). Its tokenizer adds no BOS (add_bos_token false) and its chat template writes
 # none, so bos False. Thinking off via the template's enable_thinking (chat.chat_text). No published lens, and the J++
-# fitter has no Mamba rules: our plain J-lens (scripts/lens_fit/fit_jlens.py, Anthropic's jlens, 500 WikiText prompts,
-# --no-bos); its sha256 replaces the None placeholders when the fit ends (scripts/queues/h200_nem_1025.sh).
+# fitter has no Mamba rules: (superseded 2026-10-25, amendment 45: our J++ with the LN rule alone, no plain J-lens); its sha256 replaces the None placeholders when the fit ends (scripts/queues/h200_nem_1025.sh).
 TARGETS["nemotron-3.5-lightning"] = {
     "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
     "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
@@ -577,8 +576,8 @@ TARGETS["nemotron-3.5-lightning"] = {
     "bos": False,
     "run_prefix": "nem35l_",
     "use_kernels": True,  # HF-hub kernels (kernels-community/mamba-ssm & co.): 9-12x the torch Mamba path; WikiText NLL 2.4642 vs 2.4634 (amendment 42)
-    "frozen_lens": "jlens",
-    "lenses": {"jlens": ("local", "cache/nemotron-3.5-lightning/lenses/jlens/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jlens.pt", None)},
+    "frozen_lens": "jpp",  # our J++, LN rule only (amendment 45; Zach: no plain J-lenses)
+    "lenses": {"jpp": ("local", "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt", None)},
     "frozen_lens_sha256": None,  # set when the Lightning fit is done
 }
 
@@ -602,8 +601,8 @@ TARGETS["nemotron-3.5-bolt"] = {
         # amendment 44: the prebuilt HF-hub mamba-ssm, the revision transformers fetched for Lightning
         "hub_mamba": {"repo": "kernels-community/mamba-ssm", "revision": "28017f36635a6b94d911333812beeed5dd901ac0"},
     },
-    "frozen_lens": "jlens",
-    "lenses": {"jlens": ("local", "cache/nemotron-3.5-bolt/lenses/jlens/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jlens.pt", None)},
+    "frozen_lens": "jpp",  # our J++ (amendment 45; Zach: no plain J-lenses); fit not yet built
+    "lenses": {"jpp": ("local", "cache/nemotron-3.5-bolt/lenses/jpp/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jpp_lens.pt", None)},
     "frozen_lens_sha256": None,  # set when the Bolt fit is done
 }
 

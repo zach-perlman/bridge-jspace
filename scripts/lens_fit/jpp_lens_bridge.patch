@@ -1,0 +1,112 @@
+diff --git a/src/workspace_lens/__init__.py b/src/workspace_lens/__init__.py
+index 2bb8d8b..2f83560 100644
+--- a/src/workspace_lens/__init__.py
++++ b/src/workspace_lens/__init__.py
+@@ -37,7 +37,13 @@ def get_hf_model(
+         # loading attributes from this one: dequantize=True unpacks the FP8 blocks and the FP4
+         # experts to bf16 on load.
+         from_pretrained_kwargs["quantization_config"] = FineGrainedFP8Config(dequantize=True)
+-    hf_model = AutoModelForCausalLM.from_pretrained(
++    from transformers import AutoConfig, AutoModelForImageTextToText
++    from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING_NAMES
++
++    auto_class = AutoModelForCausalLM
++    if AutoConfig.from_pretrained(model_name).model_type not in MODEL_FOR_CAUSAL_LM_MAPPING_NAMES:
++        auto_class = AutoModelForImageTextToText  # bridge-jspace 2026-10-22: Muse Glimmer has no causal-LM class
++    hf_model = auto_class.from_pretrained(
+         model_name,
+         dtype=t.bfloat16,
+         attn_implementation=attn_implementation,
+@@ -46,6 +52,12 @@ def get_hf_model(
+     )
+     if device_map is None:
+         hf_model = hf_model.cuda()
+-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+-    model = jlens.from_hf(hf_model, tokenizer)
++    # bridge-jspace patch (2026-10-25): Mistral tokenizers need fix_mistral_regex=True or they mis-tokenize (transformers warns)
++    tokenizer = AutoTokenizer.from_pretrained(model_name, **({"fix_mistral_regex": True} if "mistral" in model_name.lower() else {}))
++    # bridge-jspace patch (2026-10-25, amendment 45): NemotronH names its final norm norm_f and its embedding embeddings,
++    # which jlens's layout search does not know; and its tokenizer adds no BOS, so the lens reads text as the model does
++    if hasattr(getattr(hf_model, "model", None), "norm_f"):
++        model = jlens.from_hf(hf_model, tokenizer, layout=jlens.hf.Layout("model", norm="norm_f", embed="embeddings"), force_bos=False)
++    else:
++        model = jlens.from_hf(hf_model, tokenizer)
+     return model  # type: ignore[return-value]
+diff --git a/src/workspace_lens/lrp/lrp.py b/src/workspace_lens/lrp/lrp.py
+index d310df3..dfb171a 100644
+--- a/src/workspace_lens/lrp/lrp.py
++++ b/src/workspace_lens/lrp/lrp.py
+@@ -88,12 +88,16 @@ _QK_NORM_NAMES = ("q_norm", "k_norm")
+ # gate_proj/up_proj attributes) and are matched separately under the
+ # routed_experts flag; at dense scope they keep standard gradients.
+ _KNOWN_GATED_MLPS = (
++    "MuseGlimmerTextMLP",  # SiLU; down(act(gate(x)) * up(x)), as Qwen3_5MLP (bridge-jspace, 2026-10-22)
+     "Qwen3_5MLP",
+     "Qwen2MLP",
++    "MistralMLP",  # down(act(gate(x)) * up(x)), as Qwen2MLP (bridge-jspace patch, 2026-10-25)
++    "Ministral3MLP",  # byte-identical to MistralMLP (transformers 5.17; bridge-jspace patch, 2026-10-25)
+     "Qwen3MLP",
+     "Qwen3_5MoeMLP",
+     "Qwen3MoeMLP",
+     "Olmo3MLP",  # SiLU; forward byte-identical to Qwen3_5MLP's (transformers 5.14.1)
++    "OlmoHybridMLP",  # forward byte-identical to Olmo3MLP's (bridge-jspace, 2026-10-22; transformers 5.14.1 / 5.17)
+     "Gemma4TextMLP",  # GELU-tanh; same down(act(gate(x)) * up(x)) forward
+     # DeepSeek-V4's dense / shared-expert MLP: down(act(clamp(gate(x))) * clamp(up(x)))
+     # with a ``limit`` attribute (swiglu_limit); the patcher reproduces the clamps.
+@@ -216,6 +220,10 @@ def lrp_rule_config_for_mode(lrp_mode: str) -> LrpRuleConfig:
+     presets: dict[str, LrpRuleConfig] = {
+         "none": LrpRuleConfig(),
+         "rlens": LrpRuleConfig(**base),
++        # The LN rule alone (bridge-jspace, 2026-10-23): for a model whose only MLPs are routed experts (gpt-oss), the
++        # rlens scope reduces to this, since rlens leaves routed experts with standard gradients; rlens itself would
++        # raise there (its identity/half family matches no dense gated MLP).
++        "ln": LrpRuleConfig(ln_rule=True),
+         # DeepSeek-V4: the minimal RelP rules plus a freeze of the hyper-connection
+         # mixing coefficients.
+         "r+mhc": LrpRuleConfig(**base, mhc_detach=True),
+@@ -325,11 +333,24 @@ _RMSNORM_LRP_FORWARDS = {
+     # Value-identical family: zero-init (1+w), same eps attr, same cast order.
+     "Qwen3_5MoeRMSNorm": _qwen3_5_rmsnorm_lrp_forward,
+     "Qwen2RMSNorm": _qwen2_rmsnorm_lrp_forward,
++    "MistralRMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2RMSNorm (bridge-jspace patch, 2026-10-25)
++    "Ministral3RMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to MistralRMSNorm (bridge-jspace patch, 2026-10-25)
++    "Mistral3RMSNorm": _qwen2_rmsnorm_lrp_forward,  # Ministral 3 multimodal projector norm; byte-identical to Qwen2RMSNorm (bridge-jspace patch, 2026-10-25)
++    "NemotronHRMSNorm": _qwen2_rmsnorm_lrp_forward,  # Nemotron 3.5; forward line-for-line Qwen2RMSNorm (bridge-jspace patch, 2026-10-25)
+     "Qwen3RMSNorm": _qwen2_rmsnorm_lrp_forward,  # same forward as Qwen2's
+     "Qwen3MoeRMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2's
+     "DeepseekV4RMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2's
+     "Olmo3RMSNorm": _olmo3_rmsnorm_lrp_forward,
++    # Olmo Hybrid (bridge-jspace, 2026-10-22): OlmoHybridRMSNorm's forward is byte-identical to Olmo3RMSNorm's; its
++    # OlmoHybridRMSNormGated (inside the GatedDeltaNet) is not a residual-stream norm and keeps standard gradients.
++    "OlmoHybridRMSNorm": _olmo3_rmsnorm_lrp_forward,
++    "GptOssRMSNorm": _olmo3_rmsnorm_lrp_forward,  # forward byte-identical to Olmo3RMSNorm's (bridge-jspace, 2026-10-23)
+     "Gemma4RMSNorm": _gemma4_rmsnorm_lrp_forward,
++    # Muse Glimmer (bridge-jspace, 2026-10-22): the blocks' CenteredRMSNorm is the Qwen3.5 form (x_f * rsqrt(...)
++    # * (1 + w_f), type_as; eps attr) and the final / embedding RMSNorm the Gemma 4 form (pow(..., -0.5), optional
++    # plain w_f via with_scale, type_as); value-exactness checked in bridge-jspace scripts/lens_fit/check_muse_lrp.py.
++    "MuseGlimmerTextCenteredRMSNorm": _qwen3_5_rmsnorm_lrp_forward,
++    "MuseGlimmerRMSNorm": _gemma4_rmsnorm_lrp_forward,
+ }
+ 
+ 
+@@ -536,7 +557,7 @@ def _is_qk_norm(qualified_name: str) -> bool:
+ 
+ 
+ _MULTIMODAL_MODULE_SEGMENTS = frozenset(
+-    {"vision_tower", "audio_tower", "embed_vision", "embed_audio"}
++    {"vision_tower", "audio_tower", "embed_vision", "embed_audio", "vision_adapter", "vision_projection"}  # Muse Glimmer: adapter, projection
+ )
+ 
+ 
+diff --git a/src/workspace_lens/lrp/types.py b/src/workspace_lens/lrp/types.py
+index e59cc79..e7651cd 100644
+--- a/src/workspace_lens/lrp/types.py
++++ b/src/workspace_lens/lrp/types.py
+@@ -3,6 +3,7 @@ from typing import Literal, get_args
+ LrpMode = Literal[
+     "none",
+     "rlens",
++    "ln",  # the LN rule only (bridge-jspace, 2026-10-23: gpt-oss, which has no dense gated MLP)
+     "r+mhc",
+     "all-c4+mhc",
+     "r+moe",
