@@ -1,0 +1,1566 @@
+figure,model,quantity,value,lo,hi,n,source
+fig1,qwen3.5-9b,"Simple scenes, two people swap picks: lookup extra loss",-0.03,-0.08,0.03,,lk_excess_9b
+fig1,qwen3.5-9b,"Simple scenes, two people swap picks: recall extra loss",0.5,0.41,0.57,,rc_excess_9b
+fig1,qwen3.5-9b,"Simple scenes, two people swap picks: gap",0.53,,,,contrast_9b
+fig1,qwen3.5-9b,"Simple scenes, only the asked person's pick changes: lookup extra loss",-0.02,-0.05,0.02,,single_lk_excess_9b
+fig1,qwen3.5-9b,"Simple scenes, only the asked person's pick changes: recall extra loss",0.37,0.29,0.43,,single_rc_excess_9b
+fig1,qwen3.5-9b,"Simple scenes, only the asked person's pick changes: gap",0.39,,,,single_contrast_9b
+fig1,qwen3.5-9b,Both locker sentences first (same scenes for both readers): lookup extra loss,0.0,0.0,0.0,,ss_jpp_lk_excess_9b
+fig1,qwen3.5-9b,Both locker sentences first (same scenes for both readers): recall extra loss,0.06,0.0,0.12,,ss_jpp_rc_excess_9b
+fig1,qwen3.5-9b,Both locker sentences first (same scenes for both readers): gap,0.06,,,,recall minus lookup
+fig1,qwen3.5-9b,Varied scenes: lookup extra loss,0.008805031446540879,-0.005807854239256629,0.02803776873014404,,x0b_lk_excess_9b
+fig1,qwen3.5-9b,Varied scenes: recall extra loss,0.2302158273381295,0.14437833246054607,0.3261264744978109,,x0b_rc_excess_9b
+fig1,qwen3.5-9b,Varied scenes: gap,0.22,,,,x0b_c_9b
+fig1,qwen3.6-27b,"Simple scenes, two people swap picks: lookup extra loss",0.14,0.08,0.2,,lk_excess_27b
+fig1,qwen3.6-27b,"Simple scenes, two people swap picks: recall extra loss",0.74,0.66,0.8,,rc_excess_27b
+fig1,qwen3.6-27b,"Simple scenes, two people swap picks: gap",0.6,,,,contrast_27b
+fig1,qwen3.6-27b,"Simple scenes, only the asked person's pick changes: lookup extra loss",0.05,0.01,0.09,,single_lk_excess_27b
+fig1,qwen3.6-27b,"Simple scenes, only the asked person's pick changes: recall extra loss",0.61,0.51,0.69,,single_rc_excess_27b
+fig1,qwen3.6-27b,"Simple scenes, only the asked person's pick changes: gap",0.56,,,,single_contrast_27b
+fig1,qwen3.6-27b,Both locker sentences first (same scenes for both readers): lookup extra loss,0.0,0.0,0.0,,ss_jpp_lk_excess_27b
+fig1,qwen3.6-27b,Both locker sentences first (same scenes for both readers): recall extra loss,0.46,0.34,0.57,,ss_jpp_rc_excess_27b
+fig1,qwen3.6-27b,Both locker sentences first (same scenes for both readers): gap,0.46,,,,recall minus lookup
+fig1,qwen3.6-27b,Varied scenes: lookup extra loss,0.083102493074792,0.0630855279832261,0.10440167252936892,,x0b_lk_excess_27b
+fig1,qwen3.6-27b,Varied scenes: recall extra loss,0.5553555355535553,0.5,0.610909443068581,,x0b_rc_excess_27b
+fig1,qwen3.6-27b,Varied scenes: gap,0.47,,,,x0b_c_27b
+fig1,qwen3.6-27b,Natural passages: lookup extra loss,0.32,0.2,0.45,,nat_lk_excess_27b
+fig1,qwen3.6-27b,Natural passages: recall extra loss,0.59,0.5,0.67,,nat_rc_excess_27b
+fig1,qwen3.6-27b,Natural passages: gap,0.27,,,,nat_gap_27b
+fig1,qwen3.5-122b-a10b,"Simple scenes, two people swap picks: lookup extra loss",0.0,-0.06,0.06,,lk_excess_122b
+fig1,qwen3.5-122b-a10b,"Simple scenes, two people swap picks: recall extra loss",0.32,0.22,0.41,,rc_excess_122b
+fig1,qwen3.5-122b-a10b,"Simple scenes, two people swap picks: gap",0.32,,,,contrast_122b
+fig1,qwen3.5-122b-a10b,"Simple scenes, only the asked person's pick changes: lookup extra loss",-0.01,-0.06,0.04,,single_lk_excess_122b
+fig1,qwen3.5-122b-a10b,"Simple scenes, only the asked person's pick changes: recall extra loss",0.27,0.16,0.36,,single_rc_excess_122b
+fig1,qwen3.5-122b-a10b,"Simple scenes, only the asked person's pick changes: gap",0.28,,,,single_contrast_122b
+fig1,qwen3.5-122b-a10b,Both locker sentences first (same scenes for both readers): lookup extra loss,0.0,0.0,0.0,,ss_jpp_lk_excess_122b
+fig1,qwen3.5-122b-a10b,Both locker sentences first (same scenes for both readers): recall extra loss,0.1,0.02,0.18,,ss_jpp_rc_excess_122b
+fig1,qwen3.5-122b-a10b,Both locker sentences first (same scenes for both readers): gap,0.1,,,,recall minus lookup
+fig1,qwen3.5-122b-a10b,Varied scenes: lookup extra loss,-0.015898251192368873,-0.030418376687388133,-0.0033275110857251167,,x0b_lk_excess_122b
+fig1,qwen3.5-122b-a10b,Varied scenes: recall extra loss,0.1328320802005012,0.10872043368103582,0.16216216216216217,,x0b_rc_excess_122b
+fig1,qwen3.5-122b-a10b,Varied scenes: gap,0.15,,,,x0b_c_122b
+fig1,qwen3.5-122b-a10b,Natural passages: lookup extra loss,-0.11,-0.2,-0.03,,nat_lk_excess_122b
+fig1,qwen3.5-122b-a10b,Natural passages: recall extra loss,0.34,0.24,0.43,,nat_rc_excess_122b
+fig1,qwen3.5-122b-a10b,Natural passages: gap,0.44,,,,nat_gap_122b
+fig2,qwen3.5-9b,J++: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,J++: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,J++: share of the change,0.18579,,,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,J++ without the word's directions: recall extra loss,0.11518324607329844,0.06040268456375841,0.17727272727272736,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,J++ without the word's directions: lookup extra loss,0.0,-0.027027027027027084,0.024590163934426146,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,J++ without the word's directions: share of the change,0.15773500000000001,,,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,The word alone: recall extra loss,0.020942408376963262,-0.004926108374384122,0.05696284514986561,,qwen35_9b_x0_parts
+fig2,qwen3.5-9b,The word alone: lookup extra loss,0.0,-0.027027027027027084,0.02941176470588225,,qwen35_9b_x0_parts
+fig2,qwen3.5-9b,The word alone: share of the change,0.041335,,,,qwen35_9b_x0_parts
+fig2,qwen3.5-9b,Main directions at J++'s share: recall extra loss,0.13089005235602091,0.06321560093739526,0.19209582790091256,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,Main directions at J++'s share: lookup extra loss,0.08490566037735847,0.01869158878504673,0.15116279069767435,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,Main directions at J++'s share: share of the change,0.188635,,,,qwen35_9b_x0_pcaeq
+fig2,qwen3.5-9b,J++ fitted to another scene: recall extra loss,-0.005235602094240788,-0.017751479289940808,0.0,,qwen35_9b_x0_jppother
+fig2,qwen3.5-9b,J++ fitted to another scene: lookup extra loss,-0.009433962264150941,-0.028301886792452935,0.0,,qwen35_9b_x0_jppother
+fig2,qwen3.5-9b,J++ fitted to another scene: share of the change,0.01771,,,,qwen35_9b_x0_jppother
+fig2,qwen3.5-9b,Logit lens †: recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
+fig2,qwen3.5-9b,Logit lens †: lookup extra loss,-0.01904761904761898,-0.07377049180327866,0.030612244897959107,,qwen35_9b_x0_necessity
+fig2,qwen3.5-9b,Logit lens †: share of the change,0.09013499999999999,,,,qwen35_9b_x0_necessity
+fig2,qwen3.5-9b,Input embeddings †: recall extra loss,0.005076142131979711,0.0,0.017545791792255995,,qwen35_9b_x0_necessity
+fig2,qwen3.5-9b,Input embeddings †: lookup extra loss,0.03809523809523807,-0.011494252873563315,0.08849557522123896,,qwen35_9b_x0_necessity
+fig2,qwen3.5-9b,Input embeddings †: share of the change,0.10935500000000001,,,,qwen35_9b_x0_necessity
+fig2,qwen3.5-9b,Random directions †: recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
+fig2,qwen3.5-9b,Random directions †: lookup extra loss,0.0,-0.03571428571428581,0.0387615714608263,,qwen35_9b_x0_necessity
+fig2,qwen3.5-9b,Random directions †: share of the change,0.10142999999999999,,,,qwen35_9b_x0_necessity
+fig2,qwen3.6-27b,J++: recall extra loss,0.6095890410958904,0.5114460770246227,0.6932535787321064,,x0_pcaeq_27b
+fig2,qwen3.6-27b,J++: lookup extra loss,0.05208333333333326,0.012816455696202496,0.09195780399274041,,x0_pcaeq_27b
+fig2,qwen3.6-27b,J++: share of the change,0.135005,,,,x0_pcaeq_27b
+fig2,qwen3.6-27b,J++ without the word's directions: recall extra loss,0.1986301369863014,0.09836065573770492,0.29487179487179493,,x0_pcaeq_27b
+fig2,qwen3.6-27b,J++ without the word's directions: lookup extra loss,0.03125,0.0,0.07317632579995534,,x0_pcaeq_27b
+fig2,qwen3.6-27b,J++ without the word's directions: share of the change,0.11108499999999999,,,,x0_pcaeq_27b
+fig2,qwen3.6-27b,The word alone: recall extra loss,0.1586206896551724,0.0821917808219178,0.23376885211562623,,x0_parts_27b
+fig2,qwen3.6-27b,The word alone: lookup extra loss,0.0,0.0,0.0,,x0_parts_27b
+fig2,qwen3.6-27b,The word alone: share of the change,0.02908,,,,x0_parts_27b
+fig2,qwen3.6-27b,Main directions at J++'s share: recall extra loss,0.15753424657534243,0.07975348981950751,0.2267441860465116,,x0_pcaeq_27b
+fig2,qwen3.6-27b,Main directions at J++'s share: lookup extra loss,0.02083333333333326,0.0,0.045454545454545414,,x0_pcaeq_27b
+fig2,qwen3.6-27b,Main directions at J++'s share: share of the change,0.138185,,,,x0_pcaeq_27b
+fig2,qwen3.6-27b,J++ fitted to another scene: recall extra loss,0.020547945205479534,-0.010114442295293407,0.054216867469879415,,x0_jppother_27b
+fig2,qwen3.6-27b,J++ fitted to another scene: lookup extra loss,0.0,0.0,0.0,,x0_jppother_27b
+fig2,qwen3.6-27b,J++ fitted to another scene: share of the change,0.01051,,,,x0_jppother_27b
+fig2,qwen3.6-27b,Logit lens †: recall extra loss,0.013333333333333308,-0.011428571428571458,0.03797468354430378,,x0_necessity_27b_chat
+fig2,qwen3.6-27b,Logit lens †: lookup extra loss,-0.023255813953488413,-0.061224489795918324,0.0,,x0_necessity_27b_chat
+fig2,qwen3.6-27b,Logit lens †: share of the change,0.073435,,,,x0_necessity_27b_chat
+fig2,qwen3.6-27b,Input embeddings †: recall extra loss,0.0,-0.03267973856209161,0.02958579881656798,,x0_necessity_27b_chat
+fig2,qwen3.6-27b,Input embeddings †: lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,,x0_necessity_27b_chat
+fig2,qwen3.6-27b,Input embeddings †: share of the change,0.08374999999999999,,,,x0_necessity_27b_chat
+fig2,qwen3.6-27b,Random directions †: recall extra loss,0.0,-0.02654867256637161,0.024844720496894457,,x0_necessity_27b_chat
+fig2,qwen3.6-27b,Random directions †: lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,,x0_necessity_27b_chat
+fig2,qwen3.6-27b,Random directions †: share of the change,0.08176,,,,x0_necessity_27b_chat
+fig2,qwen3.5-122b-a10b,J++: recall extra loss,0.2637362637362637,0.15517241379310354,0.36158492607284526,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,J++: lookup extra loss,-0.01098901098901095,-0.05952380952380942,0.039473684210526216,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,J++: share of the change,0.21142499999999997,,,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,J++ without the word's directions: recall extra loss,0.038461538461538436,0.004328537841468841,0.07777777777777772,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,J++ without the word's directions: lookup extra loss,-0.03296703296703296,-0.07407407407407407,0.0,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,J++ without the word's directions: share of the change,0.139135,,,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,The word alone: recall extra loss,0.13736263736263743,0.08000000000000007,0.19999999999999996,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,The word alone: lookup extra loss,-0.010989010989011061,-0.05434782608695654,0.02409638554216864,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,The word alone: share of the change,0.09171,,,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,Main directions at J++'s share: recall extra loss,0.2142857142857143,0.1306532663316583,0.2954545454545454,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,Main directions at J++'s share: lookup extra loss,0.08791208791208793,0.02325581395348841,0.15306352270637988,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,Main directions at J++'s share: share of the change,0.21511,,,,qwen35_122b_x0_parts
+fig2,qwen3.5-122b-a10b,Logit lens †: recall extra loss,-0.010869565217391353,-0.02450980392156854,0.0,,qwen35_122b_x0_necessity_r2
+fig2,qwen3.5-122b-a10b,Logit lens †: lookup extra loss,-0.011235955056179692,-0.04999999999999982,0.027027027027026976,,qwen35_122b_x0_necessity_r2
+fig2,qwen3.5-122b-a10b,Logit lens †: share of the change,0.125025,,,,qwen35_122b_x0_necessity_r2
+fig2,qwen3.5-122b-a10b,Input embeddings †: recall extra loss,0.005434782608695676,-0.023121387283237094,0.03191489361702127,,qwen35_122b_x0_necessity_r2
+fig2,qwen3.5-122b-a10b,Input embeddings †: lookup extra loss,0.0,-0.0641025641025641,0.061543209876543145,,qwen35_122b_x0_necessity_r2
+fig2,qwen3.5-122b-a10b,Input embeddings †: share of the change,0.178205,,,,qwen35_122b_x0_necessity_r2
+fig2,qwen3.5-122b-a10b,Random directions †: recall extra loss,0.0,-0.015873015873015928,0.015151515151515138,,qwen35_122b_x0_necessity_r2
+fig2,qwen3.5-122b-a10b,Random directions †: lookup extra loss,0.011235955056179692,-0.041095890410958846,0.05617977528089879,,qwen35_122b_x0_necessity_r2
+fig2,qwen3.5-122b-a10b,Random directions †: share of the change,0.13390000000000002,,,,qwen35_122b_x0_necessity_r2
+fig4,qwen3.5-9b,"another item moved, whole: identity share",0.48,0.4259790139811488,0.5333333333333333,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, whole: position share",0.51,0.4595447389136709,0.5611529144031713,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, whole: original share",0.01,0.0,0.021352313167259787,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, whole: other share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp: identity share",0.35,0.3117283950617284,0.39361702127659576,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp: position share",0.6066666666666667,0.557375743969928,0.6498422712933754,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp: original share",0.043333333333333335,0.024388390540440362,0.06472491909385113,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp: other share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp_rand: identity share",0.4066666666666667,0.36245846093699097,0.45634987216363054,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp_rand: position share",0.5033333333333333,0.45018450184501846,0.5527289666854884,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp_rand: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp_rand: original share",0.09,0.0630876221570228,0.1196027486725161,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_jpp_rand: other share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf: identity share",0.36333333333333334,0.3238434163701068,0.40001461988304077,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf: position share",0.08333333333333333,0.051118210862619806,0.11654192997832002,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf: original share",0.5533333333333333,0.5014747099888407,0.6070175438596491,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf: other share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf_rand: identity share",0.4,0.3580645161290323,0.4460431654676259,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf_rand: position share",0.5433333333333333,0.4883701485572062,0.594251461812044,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf_rand: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf_rand: original share",0.056666666666666664,0.031948032084834474,0.08480565371024736,300,qwen35_9b_x6_routes
+fig4,qwen3.5-9b,"another item moved, no_alf_rand: other share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
+fig4,qwen3.6-27b,"another item moved, whole: identity share",0.6566666666666666,0.6028356438579583,0.7104377104377104,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, whole: position share",0.33666666666666667,0.2843442648624945,0.3906810035842294,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, whole: value share",0.0,0.0,0.0,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, whole: original share",0.0033333333333333335,0.0,0.010344827586206896,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, whole: other share",0.0033333333333333335,0.0,0.010676156583629894,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp: identity share",0.45,0.4143302180685358,0.4884488448844885,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp: position share",0.42333333333333334,0.37808974779303733,0.4645161290322581,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp: value share",0.0,0.0,0.0,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp: original share",0.12333333333333334,0.08727211714460037,0.1594694576361005,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp: other share",0.0033333333333333335,0.0,0.010676156583629894,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp_rand: identity share",0.7,0.6442298689138577,0.7553191489361702,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp_rand: position share",0.2833333333333333,0.23049645390070922,0.3362620921462534,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp_rand: value share",0.0,0.0,0.0,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp_rand: original share",0.013333333333333334,0.003289473684210526,0.025157798289670144,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_jpp_rand: other share",0.0033333333333333335,0.0,0.011278195488721804,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf: identity share",0.7233333333333334,0.6835443037974683,0.767175572519084,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf: position share",0.06,0.033669261421555,0.08841463414634146,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf: value share",0.0,0.0,0.0,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf: original share",0.21333333333333335,0.17549668874172186,0.25077399380804954,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf: other share",0.0033333333333333335,0.0,0.01079136690647482,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf_rand: identity share",0.6966666666666667,0.6398601398601399,0.756578947368421,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf_rand: position share",0.25333333333333335,0.1946564885496183,0.3104623506207216,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf_rand: value share",0.0,0.0,0.0,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf_rand: original share",0.04666666666666667,0.0243161094224924,0.07017690547438829,300,x6_routes_27b
+fig4,qwen3.6-27b,"another item moved, no_alf_rand: other share",0.0033333333333333335,0.0,0.011278195488721804,300,x6_routes_27b
+fig5,qwen3.5-9b,layer 6: lookup J++ extra loss,0.6163522012578616,0.5294117647058824,0.6951219512195121,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 8: lookup J++ extra loss,0.3700787401574802,0.2950790187522113,0.44852941176470595,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 10: lookup J++ extra loss,0.26086956521739124,0.18811669628501307,0.32999999999999985,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 12: lookup J++ extra loss,-0.02857142857142847,-0.07826086956521738,0.028846153846153855,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 14: lookup J++ extra loss,-0.09890109890109888,-0.15384615384615385,-0.04901362984218081,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 6: recall J++ extra loss,0.8527918781725888,0.789155601999836,0.9066683937823835,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 8: recall J++ extra loss,0.6717171717171717,0.5663716814159293,0.7708333333333333,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 10: recall J++ extra loss,0.5909090909090908,0.5070398082942097,0.6619718309859155,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 12: recall J++ extra loss,0.4974619289340101,0.4108083976833977,0.5714285714285713,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 14: recall J++ extra loss,0.6250000000000001,0.5341614906832298,0.6945812807881773,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 16: recall J++ extra loss,0.8306451612903225,0.7142857142857144,0.913907284768212,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,layer 18: recall J++ extra loss,0.6728971962616822,0.5376310483870966,0.7802197802197802,200,qwen35_9b_x0_necessity
+fig5,qwen3.5-9b,"layer 6: position share (another item moved, whole change)",0.0,0.0,0.0,300,qwen35_9b_x6_routes_l6
+fig5,qwen3.5-9b,"layer 12: position share (another item moved, whole change)",0.51,0.4595447389136709,0.5611529144031713,300,qwen35_9b_x6_routes
+fig5,qwen3.6-27b,layer 16: lookup J++ extra loss,0.9265536723163842,0.8888888888888888,0.9644980905619204,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 18: lookup J++ extra loss,0.8202247191011235,0.7581395348837209,0.8765432098765432,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 20: lookup J++ extra loss,0.2767295597484276,0.2058741830065359,0.34751773049645385,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 22: lookup J++ extra loss,0.32258064516129037,0.2532467532467533,0.3951659789947487,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 24: lookup J++ extra loss,0.10204081632653073,0.052631578947368474,0.15168636187524207,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 26: lookup J++ extra loss,0.3857142857142858,0.31538288288288274,0.45341614906832284,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 28: lookup J++ extra loss,0.11764705882352944,0.06034482758620685,0.1785714285714285,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 30: lookup J++ extra loss,0.09734513274336276,0.04807499999999983,0.14814814814814814,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 32: lookup J++ extra loss,0.13953488372093015,0.07608695652173902,0.20481927710843362,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 34: lookup J++ extra loss,0.17105263157894735,0.07042253521126762,0.2727272727272727,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 16: recall J++ extra loss,0.9030612244897959,0.8388888888888889,0.9556658040780696,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 18: recall J++ extra loss,0.8666666666666667,0.8039184661206253,0.9211623367332337,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 20: recall J++ extra loss,0.360215053763441,0.26950170874214524,0.4578359238480641,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 22: recall J++ extra loss,0.4402173913043478,0.34462622067572113,0.5327102803738317,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 24: recall J++ extra loss,0.17391304347826086,0.10059088955737007,0.25,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 26: recall J++ extra loss,0.6201117318435754,0.5373114480787551,0.6946107784431138,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 28: recall J++ extra loss,0.5714285714285714,0.4615384615384617,0.6592932509967908,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 30: recall J++ extra loss,0.6054054054054054,0.5187958176691728,0.676470588235294,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 32: recall J++ extra loss,0.74,0.6646706586826348,0.8021420586724674,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 34: recall J++ extra loss,0.7333333333333334,0.6086865942028986,0.8345864661654134,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 36: recall J++ extra loss,0.7741935483870969,0.6530541383219954,0.896551724137931,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,layer 38: recall J++ extra loss,0.7419354838709679,0.5975570161545772,0.9047619047619048,200,x0_necessity_27b_chat
+fig5,qwen3.6-27b,"layer 16: position share (another item moved, whole change)",0.0,0.0,0.0,300,x6_routes_l16_27b
+fig5,qwen3.6-27b,"layer 32: position share (another item moved, whole change)",0.33666666666666667,0.2843442648624945,0.3906810035842294,300,x6_routes_27b
+fig5,qwen3.5-122b-a10b,layer 24: lookup J++ extra loss,0.42168674698795183,0.32351809954751126,0.5027041959086158,200,qwen35_122b_x0_necessity_r2
+fig5,qwen3.5-122b-a10b,layer 27: lookup J++ extra loss,0.5620915032679737,0.4672878045043664,0.6405254289215685,200,qwen35_122b_x0_necessity_r2
+fig5,qwen3.5-122b-a10b,layer 30: lookup J++ extra loss,0.25984251968503935,0.1788545296167247,0.3307692307692308,200,qwen35_122b_x0_necessity_r2
+fig5,qwen3.5-122b-a10b,layer 33: lookup J++ extra loss,0.0,-0.061855670103092786,0.06382978723404253,200,qwen35_122b_x0_necessity_r2
+fig5,qwen3.5-122b-a10b,layer 24: recall J++ extra loss,0.4739583333333335,0.36892859602010597,0.5645988392698917,200,qwen35_122b_x0_necessity_r2
+fig5,qwen3.5-122b-a10b,layer 27: recall J++ extra loss,0.745945945945946,0.6493482264004652,0.8205128205128205,200,qwen35_122b_x0_necessity_r2
+fig5,qwen3.5-122b-a10b,layer 30: recall J++ extra loss,0.4540540540540541,0.35761589403973515,0.5513313123008939,200,qwen35_122b_x0_necessity_r2
+fig5,qwen3.5-122b-a10b,layer 33: recall J++ extra loss,0.3152173913043478,0.2191673801369863,0.41011596081820795,200,qwen35_122b_x0_necessity_r2
+fig5,qwen3.5-122b-a10b,layer 36: recall J++ extra loss,0.3701298701298702,0.27819247316151346,0.46153846153846156,200,qwen35_122b_x0_necessity_r2
+fig6,qwen3.5-9b,"the sanity swap, lookup extra loss without J++",-0.003355704697986628,-0.011029411764705843,0.0,,qwen35_9b_x6_routes_bothoff
+fig6,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer",0.3120805369127516,0.2556378966585792,0.37353183581124755,,qwen35_9b_x6_routes_bothoff
+fig6,qwen3.5-9b,"the sanity swap, lookup extra loss without both",0.4295302013422818,0.3885350318471339,0.47039957430340545,,qwen35_9b_x6_routes_bothoff
+fig6,qwen3.5-9b,the bar fixed in advance (pointer alone + 0.15),0.4621,,,,qwen35_9b_x6_routes_bothoff
+fig6,qwen3.6-27b,"the sanity swap, lookup extra loss without J++",-0.003401360544217802,-0.01479344729344747,0.007407407407407529,,x6_routes_bothoff_27b
+fig6,qwen3.6-27b,"the sanity swap, lookup extra loss without the pointer",0.15306122448979587,0.11742424242424243,0.19133750282039702,,x6_routes_bothoff_27b
+fig6,qwen3.6-27b,"the sanity swap, lookup extra loss without both",0.40816326530612235,0.35215829862898307,0.467680608365019,,x6_routes_bothoff_27b
+fig6,qwen3.6-27b,the bar fixed in advance (pointer alone + 0.15),0.3031,,,,x6_routes_bothoff_27b
+numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,verdict_9b,confirmed,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_excess_9b,"−0.03 [−0.08, 0.03]",,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_jdep_9b,0.22,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_rdep_9b,0.25,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_whole_9b,105,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_noj_9b,82,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_norand_9b,79,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_dropj_9b,11.5,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_droprand_9b,13.0,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_excess_9b,"0.50 [0.41, 0.57]",,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_jdep_9b,0.53,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_rdep_9b,0.04,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_whole_9b,197,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_noj_9b,92,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_norand_9b,190,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_dropj_9b,52.5,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_droprand_9b,3.5,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,contrast_9b,"0.53 [0.42, 0.61]",,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,jshare_9b,0.23,,,,results/x0_necessity/qwen35_9b_x0_necessity/shares.jsonl
+numbers,,lk_excess_k25_9b,−0.02,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,lk_excess_k50_9b,−0.03,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,lk_excess_k100_9b,−0.08,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,lk_excess_k200_9b,−0.17,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,rc_excess_k25_9b,0.50,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,rc_excess_k50_9b,0.62,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,rc_excess_k100_9b,0.47,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,rc_excess_k200_9b,0.18,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,lk_order_before_9b,86%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_after_9b,19%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_excess_up_9b,−0.03,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_swhole_up_9b,69%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_n_up_9b,108,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_excess_af_9b,−0.03,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_swhole_af_9b,34%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_n_af_9b,92,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,nochat_gate_9b,0% / 0%,,,,results/x0_necessity/qwen35_9b_x0_necessity_nothink/gate.json
+numbers,,layer_27b,32,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,n_27b,200,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,ents_27b,44,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,verdict_27b,not confirmed,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_excess_27b,"0.14 [0.08, 0.20]",,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_jdep_27b,0.17,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_rdep_27b,0.03,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_whole_27b,86,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_noj_27b,71,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_norand_27b,83,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_dropj_27b,7.5,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_droprand_27b,1.5,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_excess_27b,"0.74 [0.66, 0.80]",,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_jdep_27b,0.77,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_rdep_27b,0.03,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_whole_27b,150,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_noj_27b,35,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_norand_27b,146,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_dropj_27b,57.5,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_droprand_27b,2.0,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,contrast_27b,"0.60 [0.50, 0.69]",,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,jshare_27b,0.16,,,,results/x0_necessity/x0_necessity_27b_chat/shares.jsonl
+numbers,,lk_excess_k25_27b,0.12,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,lk_excess_k50_27b,0.30,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,lk_excess_k100_27b,0.60,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,lk_excess_k200_27b,0.58,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,rc_excess_k25_27b,0.77,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,rc_excess_k50_27b,0.80,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,rc_excess_k100_27b,0.67,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,rc_excess_k200_27b,0.50,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,lk_order_before_27b,76%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_order_after_27b,9%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_excess_up_27b,0.16,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_swhole_up_27b,63%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_n_up_27b,97,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_excess_af_27b,0.08,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_swhole_af_27b,24%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_n_af_27b,103,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,nochat_gate_27b,63% / 90.5%,,,,results/x0_necessity/x0_necessity_27b_nothink/gate.json
+numbers,,layer_122b,33,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,n_122b,200,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,ents_122b,40,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,verdict_122b,confirmed,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_excess_122b,"0.00 [−0.06, 0.06]",,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_jdep_122b,0.20,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_rdep_122b,0.20,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_whole_122b,89,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_noj_122b,71,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_norand_122b,71,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_dropj_122b,9.0,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_droprand_122b,9.0,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_excess_122b,"0.32 [0.22, 0.41]",,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_jdep_122b,0.40,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_rdep_122b,0.08,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_whole_122b,184,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_noj_122b,111,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_norand_122b,169,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_dropj_122b,36.5,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_droprand_122b,7.5,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,contrast_122b,"0.32 [0.20, 0.43]",,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,jshare_122b,0.25,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/shares.jsonl
+numbers,,lk_excess_k25_122b,0.00,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_excess_k50_122b,−0.02,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_excess_k100_122b,−0.12,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_excess_k25_122b,0.32,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_excess_k50_122b,0.45,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_excess_k100_122b,0.43,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_order_before_122b,89%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_order_after_122b,11%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_excess_up_122b,0.04,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_swhole_up_122b,61%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_n_up_122b,83,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_excess_af_122b,−0.05,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_swhole_af_122b,32%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_n_af_122b,117,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,dig_lk_jpp_k25_before_9b,0.00,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jpp_k50_before_9b,−0.02,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jpp_k100_before_9b,−0.09,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jppall_k25_before_9b,−0.02,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jppall_k50_before_9b,−0.03,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jppall_k100_before_9b,−0.10,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jppdig_k10_before_9b,0.00,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jpp_k25_before_9b,0.35,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jpp_k50_before_9b,0.53,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jpp_k100_before_9b,0.43,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jppall_k25_before_9b,0.35,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jppall_k50_before_9b,0.52,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jppall_k100_before_9b,0.45,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jppdig_k10_before_9b,0.00,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jpp_k25_after_9b,−0.20,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jpp_k50_after_9b,−0.05,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jpp_k100_after_9b,−0.05,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jppall_k25_after_9b,−0.25,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jppall_k50_after_9b,−0.05,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jppall_k100_after_9b,0.00,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_lk_jppdig_k10_after_9b,0.05,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jpp_k25_after_9b,0.65,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jpp_k50_after_9b,0.74,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jpp_k100_after_9b,0.52,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jppall_k25_after_9b,0.66,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jppall_k50_after_9b,0.72,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jppall_k100_after_9b,0.54,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_rc_jppdig_k10_after_9b,0.00,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/strata-20261024T152117Z/strata.json
+numbers,,dig_readout_first_before_9b,8%,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/readout.jsonl
+numbers,,dig_readout_first_after_9b,8%,,,,results/x0_necessity/qwen35_9b_x0_digit_r2/readout.jsonl
+numbers,,dig_lk_jpp_k25_before_27b,0.14,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jpp_k50_before_27b,0.32,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jpp_k100_before_27b,0.61,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jppall_k25_before_27b,0.13,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jppall_k50_before_27b,0.30,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jppall_k100_before_27b,0.61,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jppdig_k10_before_27b,0.00,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jpp_k25_before_27b,0.65,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jpp_k50_before_27b,0.80,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jpp_k100_before_27b,0.71,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jppall_k25_before_27b,0.69,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jppall_k50_before_27b,0.79,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jppall_k100_before_27b,0.72,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jppdig_k10_before_27b,0.00,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jpp_k25_after_27b,0.12,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jpp_k50_after_27b,0.25,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jpp_k100_after_27b,0.50,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jppall_k25_after_27b,0.12,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jppall_k50_after_27b,0.25,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jppall_k100_after_27b,0.37,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_lk_jppdig_k10_after_27b,0.00,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jpp_k25_after_27b,0.80,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jpp_k50_after_27b,0.81,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jpp_k100_after_27b,0.63,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jppall_k25_after_27b,0.79,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jppall_k50_after_27b,0.81,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jppall_k100_after_27b,0.64,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_rc_jppdig_k10_after_27b,0.00,,,,results/x0_necessity/x0_digit_27b_r2/strata-20261024T152513Z/strata.json
+numbers,,dig_readout_first_before_27b,13%,,,,results/x0_necessity/x0_digit_27b_r2/readout.jsonl
+numbers,,dig_readout_first_after_27b,8%,,,,results/x0_necessity/x0_digit_27b_r2/readout.jsonl
+numbers,,dig_lk_jpp_k25_before_122b,−0.01,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jpp_k50_before_122b,−0.01,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jpp_k100_before_122b,−0.11,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jppall_k25_before_122b,0.00,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jppall_k50_before_122b,−0.08,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jppall_k100_before_122b,−0.18,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jppdig_k10_before_122b,0.00,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jpp_k25_before_122b,0.20,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jpp_k50_before_122b,0.36,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jpp_k100_before_122b,0.43,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jppall_k25_before_122b,0.10,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jppall_k50_before_122b,0.35,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jppall_k100_before_122b,0.42,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jppdig_k10_before_122b,−0.01,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jpp_k25_after_122b,0.08,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jpp_k50_after_122b,−0.08,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jpp_k100_after_122b,−0.23,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jppall_k25_after_122b,0.00,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jppall_k50_after_122b,−0.23,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jppall_k100_after_122b,−0.15,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_lk_jppdig_k10_after_122b,−0.08,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jpp_k25_after_122b,0.41,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jpp_k50_after_122b,0.52,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jpp_k100_after_122b,0.43,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jppall_k25_after_122b,0.41,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jppall_k50_after_122b,0.50,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jppall_k100_after_122b,0.41,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_rc_jppdig_k10_after_122b,0.03,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/strata-20261024T171514Z/strata.json
+numbers,,dig_readout_first_before_122b,8%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/readout.jsonl
+numbers,,dig_readout_first_after_122b,10%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/readout.jsonl
+numbers,,atoms_first_bridge_letters,13 of 20,,,,results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl
+numbers,,atoms_digit_top25_letters,0 of 500,,,,results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl
+numbers,,atoms_number_word_top25_letters,3 of 500,,,,results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl
+numbers,,atoms_bridge_top25_letters,28 of 40,,,,results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl
+numbers,,atoms_bridge_coef2_letters,12%,,,,results/x0_atoms/x0_atoms_27b_letters/atoms.jsonl
+numbers,,atoms_first_bridge_all,13 of 20,,,,results/x0_atoms/x0_atoms_27b_all/atoms.jsonl
+numbers,,atoms_digit_top25_all,0 of 500,,,,results/x0_atoms/x0_atoms_27b_all/atoms.jsonl
+numbers,,atoms_number_word_top25_all,3 of 500,,,,results/x0_atoms/x0_atoms_27b_all/atoms.jsonl
+numbers,,atoms_bridge_top25_all,28 of 40,,,,results/x0_atoms/x0_atoms_27b_all/atoms.jsonl
+numbers,,atoms_bridge_coef2_all,12%,,,,results/x0_atoms/x0_atoms_27b_all/atoms.jsonl
+numbers,,atoms_first_bridge_letters_9b,8 of 20,,,,results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl
+numbers,,atoms_digit_top25_letters_9b,0 of 500,,,,results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl
+numbers,,atoms_number_word_top25_letters_9b,0 of 500,,,,results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl
+numbers,,atoms_bridge_top25_letters_9b,25 of 40,,,,results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl
+numbers,,atoms_bridge_coef2_letters_9b,5%,,,,results/x0_atoms/qwen35_9b_x0_atoms_letters/atoms.jsonl
+numbers,,single_lk_excess_9b,"−0.02 [−0.05, 0.02]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
+numbers,,single_lk_excess_pt_9b,−0.02,,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
+numbers,,single_rc_excess_9b,"0.37 [0.29, 0.43]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
+numbers,,single_lk_excess_k100_9b,0.12,,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
+numbers,,single_contrast_9b,"0.39 [0.30, 0.46]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
+numbers,,paired_lk_excess_9b,"0.01 [−0.07, 0.08]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/paired-20261024T172817Z/paired.json
+numbers,,paired_rc_excess_9b,"−0.13 [−0.19, −0.08]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/paired-20261024T172817Z/paired.json
+numbers,,single_lk_excess_27b,"0.05 [0.01, 0.09]",,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
+numbers,,single_lk_excess_pt_27b,0.05,,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
+numbers,,single_rc_excess_27b,"0.61 [0.51, 0.69]",,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
+numbers,,single_lk_excess_k100_27b,0.49,,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
+numbers,,single_contrast_27b,"0.56 [0.45, 0.65]",,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
+numbers,,paired_lk_excess_27b,"−0.08 [−0.16, 0.00]",,,,results/x0_necessity/x0_single_27b_r2/paired-20261024T172816Z/paired.json
+numbers,,paired_rc_excess_27b,"−0.15 [−0.22, −0.08]",,,,results/x0_necessity/x0_single_27b_r2/paired-20261024T172816Z/paired.json
+numbers,,single_lk_excess_122b,"−0.01 [−0.06, 0.04]",,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
+numbers,,single_lk_excess_pt_122b,−0.01,,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
+numbers,,single_rc_excess_122b,"0.27 [0.16, 0.36]",,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
+numbers,,single_lk_excess_k100_122b,−0.09,,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
+numbers,,single_contrast_122b,"0.28 [0.15, 0.39]",,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
+numbers,,probe_a_before_9b,0.13,,,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json
+numbers,,probe_a_chance_9b,0.11,,,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json
+numbers,,probe_b_before_9b,0.82,,,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json
+numbers,,probe_b_layout_before_9b,0.44,,,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json
+numbers,,probe_c_before_9b,0.83,,,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json
+numbers,,probe_a_before_27b,0.14,,,,results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json
+numbers,,probe_a_chance_27b,0.11,,,,results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json
+numbers,,probe_b_before_27b,0.85,,,,results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json
+numbers,,probe_b_layout_before_27b,0.51,,,,results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json
+numbers,,probe_c_before_27b,0.67,,,,results/x0_probe/x0_probe_27b/probe-20261024T163337Z/probe.json
+numbers,,v4_n_before_9b,758,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
+numbers,,v4_b_before_9b,0.97,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
+numbers,,v4_b_layout_before_9b,0.53,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
+numbers,,v4_a_before_9b,0.27,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
+numbers,,v4_a_after_9b,0.10,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
+numbers,,v4_b_after_9b,0.34,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
+numbers,,v4_a_resid_9b,0.28,,,,results/x0_probe/qwen35_9b_x0_probe_v4/a-given-b-20261024T174724Z/a_given_b.json
+numbers,,v4_a_index_alone_9b,0.12,,,,results/x0_probe/qwen35_9b_x0_probe_v4/a-given-b-20261024T174724Z/a_given_b.json
+numbers,,amn_lk_excess_9b,"0.05 [0.00, 0.10]",,,,results/x0_amnesic/qwen35_9b_x0_amnesic/verdict-20261024T172802Z/verdict.json
+numbers,,amn_rc_excess_9b,"0.01 [0.00, 0.04]",,,,results/x0_amnesic/qwen35_9b_x0_amnesic/verdict-20261024T172802Z/verdict.json
+numbers,,amn_share_9b,2%,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/verdict-20261024T172802Z/verdict.json
+numbers,,amn_suff_lk_9b,0.00,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/verdict-20261024T172802Z/verdict.json
+numbers,,pair_right_9b,"0.51 [0.40, 0.61]",,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,dup_lockerfirst_alt_9b,0.86,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,dup_lockerfirst_reads_other_9b,0.04,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,dup_lockerfirst_n_9b,28,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,dup_otherfirst_alt_9b,0.03,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,dup_otherfirst_reads_other_9b,0.90,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,dup_otherfirst_n_9b,30,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,dup_after_alt_9b,1.00,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,pair_n_9b,73,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,patched_j25_alt_9b,0.00,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,patched_rest25_alt_9b,0.55,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,patched_j25_share_9b,18%,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,patched_j25_probe_energy_9b,0.5%,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,patched_j100_alt_9b,0.03,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,patched_rest100_alt_9b,0.48,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,patched_j100_share_9b,37%,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,patched_j100_probe_energy_9b,3.2%,,,,results/x0_amnesic/qwen35_9b_x0_amnesic/probe-patched-20261024T183447Z/probe_patched.json
+numbers,,v4_n_before_27b,758,,,,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
+numbers,,v4_b_before_27b,0.99,,,,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
+numbers,,v4_b_layout_before_27b,0.53,,,,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
+numbers,,v4_a_before_27b,0.40,,,,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
+numbers,,v4_a_after_27b,0.11,,,,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
+numbers,,v4_b_after_27b,0.34,,,,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
+numbers,,v4_a_resid_27b,0.38,,,,results/x0_probe/x0_probe_v4_27b/a-given-b-20261024T174722Z/a_given_b.json
+numbers,,v4_a_index_alone_27b,0.12,,,,results/x0_probe/x0_probe_v4_27b/a-given-b-20261024T174722Z/a_given_b.json
+numbers,,amn_lk_excess_27b,"0.00 [0.00, 0.00]",,,,results/x0_amnesic/x0_amnesic_27b/verdict-20261024T172846Z/verdict.json
+numbers,,amn_rc_excess_27b,"0.01 [0.00, 0.04]",,,,results/x0_amnesic/x0_amnesic_27b/verdict-20261024T172846Z/verdict.json
+numbers,,amn_share_27b,1%,,,,results/x0_amnesic/x0_amnesic_27b/verdict-20261024T172846Z/verdict.json
+numbers,,amn_suff_lk_27b,0.00,,,,results/x0_amnesic/x0_amnesic_27b/verdict-20261024T172846Z/verdict.json
+numbers,,pair_right_27b,"0.57 [0.44, 0.71]",,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,dup_lockerfirst_alt_27b,0.64,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,dup_lockerfirst_reads_other_27b,0.14,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,dup_lockerfirst_n_27b,28,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,dup_otherfirst_alt_27b,0.24,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,dup_otherfirst_reads_other_27b,0.56,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,dup_otherfirst_n_27b,25,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,dup_after_alt_27b,1.00,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,pair_n_27b,70,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,patched_j25_alt_27b,0.00,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,patched_rest25_alt_27b,0.51,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,patched_j25_share_27b,10%,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,patched_j25_probe_energy_27b,0.5%,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,patched_j100_alt_27b,0.04,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,patched_rest100_alt_27b,0.50,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,patched_j100_share_27b,24%,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,patched_j100_probe_energy_27b,2.8%,,,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json
+numbers,,v4_n_before_122b,758,,,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json
+numbers,,v4_b_before_122b,0.92,,,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json
+numbers,,v4_b_layout_before_122b,0.53,,,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json
+numbers,,v4_a_before_122b,0.25,,,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json
+numbers,,v4_a_after_122b,0.11,,,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json
+numbers,,v4_b_after_122b,0.33,,,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json
+numbers,,v4_a_resid_122b,0.26,,,,results/x0_probe/qwen35_122b_x0_probe_v4/a-given-b-20261025T112514Z/a_given_b.json
+numbers,,v4_a_index_alone_122b,0.12,,,,results/x0_probe/qwen35_122b_x0_probe_v4/a-given-b-20261025T112514Z/a_given_b.json
+numbers,,amn_lk_excess_122b,"0.00 [0.00, 0.00]",,,,results/x0_amnesic/qwen35_122b_x0_amnesic/verdict-20261024T231104Z/verdict.json
+numbers,,amn_rc_excess_122b,"−0.01 [−0.04, 0.00]",,,,results/x0_amnesic/qwen35_122b_x0_amnesic/verdict-20261024T231104Z/verdict.json
+numbers,,amn_share_122b,2%,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/verdict-20261024T231104Z/verdict.json
+numbers,,amn_suff_lk_122b,0.00,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/verdict-20261024T231104Z/verdict.json
+numbers,,pair_right_122b,"0.44 [0.30, 0.60]",,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,dup_lockerfirst_alt_122b,0.83,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,dup_lockerfirst_reads_other_122b,0.00,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,dup_lockerfirst_n_122b,18,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,dup_otherfirst_alt_122b,0.00,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,dup_otherfirst_reads_other_122b,0.96,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,dup_otherfirst_n_122b,24,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,dup_after_alt_122b,1.00,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,pair_n_122b,54,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,patched_j25_alt_122b,0.06,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,patched_rest25_alt_122b,0.50,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,patched_j25_share_122b,18%,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,patched_j25_probe_energy_122b,0.5%,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,patched_j100_alt_122b,0.09,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,patched_rest100_alt_122b,0.46,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,patched_j100_share_122b,34%,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,patched_j100_probe_energy_122b,2.5%,,,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json
+numbers,,fm_lk_whole_locker_9b,0.98,,,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json
+numbers,,fm_lk_noj_locker_9b,0.98,,,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json
+numbers,,fm_n_locker_9b,43,,,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json
+numbers,,fm_lk_whole_other_9b,1.00,,,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json
+numbers,,fm_lk_noj_other_9b,1.00,,,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json
+numbers,,fm_n_other_9b,30,,,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json
+numbers,,fm_lk_whole_locker_27b,1.00,,,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json
+numbers,,fm_lk_noj_locker_27b,1.00,,,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json
+numbers,,fm_n_locker_27b,45,,,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json
+numbers,,fm_lk_whole_other_27b,1.00,,,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json
+numbers,,fm_lk_noj_other_27b,1.00,,,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json
+numbers,,fm_n_other_27b,25,,,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json
+numbers,,fm_lk_whole_locker_122b,1.00,,,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json
+numbers,,fm_lk_noj_locker_122b,1.00,,,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json
+numbers,,fm_n_locker_122b,30,,,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json
+numbers,,fm_lk_whole_other_122b,1.00,,,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json
+numbers,,fm_lk_noj_other_122b,1.00,,,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json
+numbers,,fm_n_other_122b,24,,,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json
+numbers,,x0b_verdict_9b,holds,,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_lk_excess_9b,"0.01 [−0.01, 0.03]",,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_rc_excess_9b,0.23,,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_c_9b,"0.22 [0.14, 0.31]",,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_n_9b,"1,010",,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_ents_9b,53,,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_lk_k100_9b,0.11,,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_cells_9b,36 of 51,,,,results/x0b_generalize/qwen35_9b_x0b_v2/gate.json
+numbers,,x0b_probe_json_9b,0.70,,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_probe_prose_9b,0.72,,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_probe_table_9b,0.84,,,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json
+numbers,,x0b_lk_before_prose_9b,−0.00,,,,results/x0b_generalize/qwen35_9b_x0b_v2/cross-20261024T192343Z/cross.json
+numbers,,x0b_lk_before_json_9b,0.00,,,,results/x0b_generalize/qwen35_9b_x0b_v2/cross-20261024T192343Z/cross.json
+numbers,,x0b_lk_before_table_9b,0.00,,,,results/x0b_generalize/qwen35_9b_x0b_v2/cross-20261024T192343Z/cross.json
+numbers,,x0b_verdict_27b,holds,,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_lk_excess_27b,"0.08 [0.06, 0.10]",,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_rc_excess_27b,0.56,,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_c_27b,"0.47 [0.42, 0.53]",,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_n_27b,"1,635",,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_ents_27b,61,,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_lk_k100_27b,0.57,,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_cells_27b,49 of 51,,,,results/x0b_generalize/x0b_v2_27b/gate.json
+numbers,,x0b_probe_json_27b,0.80,,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_probe_prose_27b,0.74,,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_probe_table_27b,0.88,,,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
+numbers,,x0b_lk_before_prose_27b,0.11,,,,results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json
+numbers,,x0b_lk_before_json_27b,0.03,,,,results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json
+numbers,,x0b_lk_before_table_27b,0.06,,,,results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json
+numbers,,x0b_verdict_122b,mixed,,,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json
+numbers,,x0b_lk_excess_122b,"−0.02 [−0.03, −0.00]",,,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json
+numbers,,x0b_rc_excess_122b,0.13,,,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json
+numbers,,x0b_c_122b,"0.15 [0.12, 0.18]",,,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json
+numbers,,x0b_n_122b,852,,,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json
+numbers,,x0b_ents_122b,60,,,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json
+numbers,,x0b_cells_122b,26 of 28,,,,results/x0b_generalize/qwen35_122b_x0b_v2/gate.json
+numbers,,x0b_probe_prose_122b,0.78,,,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json
+numbers,,x0b_probe_table_122b,0.88,,,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json
+numbers,,x0b_lk_before_prose_122b,−0.01,,,,results/x0b_generalize/qwen35_122b_x0b_v2/cross-20261025T112138Z/cross.json
+numbers,,x0b_lk_before_table_122b,−0.01,,,,results/x0b_generalize/qwen35_122b_x0b_v2/cross-20261025T112138Z/cross.json
+numbers,,parts_w_lk_excess_9b,0.00,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_w_share_9b,4%,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_w_rc_excess_9b,0.02,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_jw_lk_excess_9b,−0.02,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_jw_share_9b,19%,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_jw_rc_excess_9b,0.37,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_pca_lk_excess_9b,0.38,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_pca_share_9b,39%,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_pca_rc_excess_9b,0.47,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_jpp_lk_excess_9b,−0.01,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_jpp_share_9b,19%,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_jpp_rc_excess_9b,0.36,,,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json
+numbers,,parts_w_lk_excess_27b,0.00,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_w_share_27b,3%,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_w_rc_excess_27b,0.16,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_jw_lk_excess_27b,0.05,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_jw_share_27b,13%,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_jw_rc_excess_27b,0.63,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_pca_lk_excess_27b,0.38,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_pca_share_27b,34%,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_pca_rc_excess_27b,0.43,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_jpp_lk_excess_27b,0.04,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_jpp_share_27b,14%,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,parts_jpp_rc_excess_27b,0.63,,,,results/x0_parts/x0_parts_27b/verdict-20261024T192452Z/verdict.json
+numbers,,pcaeq_pca_eq_lk_excess_9b,"0.08 [0.02, 0.15]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_pca_eq_lk_point_9b,0.085,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_pca_eq_share_9b,19%,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_pca_eq_rc_excess_9b,"0.13 [0.06, 0.19]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_pca_eq_rc_point_9b,0.131,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jwo_lk_excess_9b,"0.00 [−0.03, 0.02]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jwo_lk_point_9b,0.000,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jwo_share_9b,16%,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jwo_rc_excess_9b,"0.12 [0.06, 0.18]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jwo_rc_point_9b,0.115,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jpp_lk_excess_9b,"−0.02 [−0.05, 0.02]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jpp_lk_point_9b,-0.019,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jpp_share_9b,19%,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jpp_rc_excess_9b,"0.37 [0.29, 0.43]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_jpp_rc_point_9b,0.366,,,,results/x0_parts/qwen35_9b_x0_pcaeq/verdict-20261024T200012Z/verdict.json
+numbers,,pcaeq_pca_eq_lk_excess_27b,"0.02 [0.00, 0.05]",,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_pca_eq_lk_point_27b,0.021,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_pca_eq_share_27b,14%,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_pca_eq_rc_excess_27b,"0.16 [0.08, 0.23]",,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_pca_eq_rc_point_27b,0.158,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jwo_lk_excess_27b,"0.03 [0.00, 0.07]",,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jwo_lk_point_27b,0.031,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jwo_share_27b,11%,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jwo_rc_excess_27b,"0.20 [0.10, 0.29]",,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jwo_rc_point_27b,0.199,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jpp_lk_excess_27b,"0.05 [0.01, 0.09]",,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jpp_lk_point_27b,0.052,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jpp_share_27b,14%,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jpp_rc_excess_27b,"0.61 [0.51, 0.69]",,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_jpp_rc_point_27b,0.610,,,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json
+numbers,,pcaeq_w_lk_excess_122b,"−0.01 [−0.05, 0.02]",,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_w_lk_point_122b,-0.011,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_w_share_122b,9%,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_w_rc_excess_122b,"0.14 [0.08, 0.20]",,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_w_rc_point_122b,0.137,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jwo_lk_excess_122b,"−0.03 [−0.07, 0.00]",,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jwo_lk_point_122b,-0.033,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jwo_share_122b,14%,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jwo_rc_excess_122b,"0.04 [0.00, 0.08]",,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jwo_rc_point_122b,0.038,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_pca_eq_lk_excess_122b,"0.09 [0.02, 0.15]",,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_pca_eq_lk_point_122b,0.088,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_pca_eq_share_122b,22%,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_pca_eq_rc_excess_122b,"0.21 [0.13, 0.30]",,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_pca_eq_rc_point_122b,0.214,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jpp_lk_excess_122b,"−0.01 [−0.06, 0.04]",,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jpp_lk_point_122b,-0.011,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jpp_share_122b,21%,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jpp_rc_excess_122b,"0.26 [0.16, 0.36]",,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,pcaeq_jpp_rc_point_122b,0.264,,,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json
+numbers,,x0bparts_w_lk_excess_9b,"0.01 [−0.00, 0.02]",,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_w_share_9b,5%,,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_w_rc_excess_9b,"0.05 [0.03, 0.09]",,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_jw_lk_excess_9b,"0.02 [0.00, 0.03]",,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_jw_share_9b,20%,,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_jw_rc_excess_9b,"0.24 [0.16, 0.34]",,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_jpp_lk_excess_9b,"0.01 [−0.00, 0.03]",,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_jpp_share_9b,20%,,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_jpp_rc_excess_9b,"0.23 [0.15, 0.33]",,,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json
+numbers,,x0bparts_w_lk_excess_27b,"0.01 [0.00, 0.02]",,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_w_share_27b,4%,,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_w_rc_excess_27b,"0.12 [0.08, 0.15]",,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_jw_lk_excess_27b,"0.08 [0.06, 0.10]",,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_jw_share_27b,14%,,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_jw_rc_excess_27b,"0.55 [0.49, 0.60]",,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_jpp_lk_excess_27b,"0.08 [0.06, 0.10]",,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_jpp_share_27b,14%,,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_jpp_rc_excess_27b,"0.56 [0.50, 0.62]",,,,results/x0_parts/x0b_parts_27b/verdict-20261024T195620Z/verdict.json
+numbers,,x0bparts_w_lk_excess_122b,"−0.00 [−0.01, 0.01]",,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,x0bparts_w_share_122b,9%,,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,x0bparts_w_rc_excess_122b,"0.07 [0.05, 0.09]",,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,x0bparts_jw_lk_excess_122b,"−0.01 [−0.02, 0.00]",,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,x0bparts_jw_share_122b,20%,,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,x0bparts_jw_rc_excess_122b,"0.14 [0.11, 0.17]",,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,x0bparts_jpp_lk_excess_122b,"−0.02 [−0.04, −0.01]",,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,x0bparts_jpp_share_122b,21%,,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,x0bparts_jpp_rc_excess_122b,"0.14 [0.11, 0.18]",,,,results/x0_parts/qwen35_122b_x0b_parts/verdict-20261025T120146Z/verdict.json
+numbers,,jppother_jpp_other_lk_excess_9b,"−0.01 [−0.03, 0.00]",,,,results/x0_parts/qwen35_9b_x0_jppother/verdict-20261025T114225Z/verdict.json
+numbers,,jppother_jpp_other_share_9b,2%,,,,results/x0_parts/qwen35_9b_x0_jppother/verdict-20261025T114225Z/verdict.json
+numbers,,jppother_jpp_other_rc_excess_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_parts/qwen35_9b_x0_jppother/verdict-20261025T114225Z/verdict.json
+numbers,,jppother_jpp_lk_excess_9b,"−0.02 [−0.05, 0.02]",,,,results/x0_parts/qwen35_9b_x0_jppother/verdict-20261025T114225Z/verdict.json
+numbers,,jppother_jpp_share_9b,19%,,,,results/x0_parts/qwen35_9b_x0_jppother/verdict-20261025T114225Z/verdict.json
+numbers,,jppother_jpp_rc_excess_9b,"0.37 [0.29, 0.43]",,,,results/x0_parts/qwen35_9b_x0_jppother/verdict-20261025T114225Z/verdict.json
+numbers,,jppother_jpp_other_lk_excess_27b,"0.00 [0.00, 0.00]",,,,results/x0_parts/x0_jppother_27b/verdict-20261025T114313Z/verdict.json
+numbers,,jppother_jpp_other_share_27b,1%,,,,results/x0_parts/x0_jppother_27b/verdict-20261025T114313Z/verdict.json
+numbers,,jppother_jpp_other_rc_excess_27b,"0.02 [−0.01, 0.05]",,,,results/x0_parts/x0_jppother_27b/verdict-20261025T114313Z/verdict.json
+numbers,,jppother_jpp_lk_excess_27b,"0.05 [0.01, 0.09]",,,,results/x0_parts/x0_jppother_27b/verdict-20261025T114313Z/verdict.json
+numbers,,jppother_jpp_share_27b,14%,,,,results/x0_parts/x0_jppother_27b/verdict-20261025T114313Z/verdict.json
+numbers,,jppother_jpp_rc_excess_27b,"0.61 [0.51, 0.69]",,,,results/x0_parts/x0_jppother_27b/verdict-20261025T114313Z/verdict.json
+numbers,,parts_jw_wenergy_9b,66%,,,,results/x0_parts/qwen35_9b_x0_parts/states.npz
+numbers,,parts_jw_wenergy_27b,67%,,,,results/x0_parts/x0_parts_27b/states.npz
+numbers,,mm_A_lk_excess_9b,"0.31 [0.18, 0.44]",,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_V_lk_excess_9b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_AV_lk_excess_9b,"0.46 [0.35, 0.58]",,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_keep_lk_9b,"0.40 [0.29, 0.53]",,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_A_share_9b,15%,,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_A_rc_excess_9b,"0.11 [0.04, 0.19]",,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_V_rc_excess_9b,"0.01 [0.00, 0.05]",,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_AV_rc_excess_9b,"0.19 [0.10, 0.30]",,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_keep_rc_9b,"0.11 [0.04, 0.19]",,,,results/x0_massmean/qwen35_9b_x0_massmean/verdict-20261024T192614Z/verdict.json
+numbers,,mm_A_lk_excess_27b,"0.04 [0.00, 0.09]",,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mm_V_lk_excess_27b,"−0.01 [−0.05, 0.00]",,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mm_AV_lk_excess_27b,"0.14 [0.06, 0.24]",,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mm_keep_lk_27b,"0.04 [0.00, 0.10]",,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mm_A_share_27b,16%,,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mm_A_rc_excess_27b,"0.10 [0.00, 0.19]",,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mm_V_rc_excess_27b,"0.00 [−0.08, 0.08]",,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mm_AV_rc_excess_27b,"0.20 [0.06, 0.37]",,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mm_keep_rc_27b,"−0.02 [−0.06, 0.00]",,,,results/x0_massmean/x0_massmean_27b/verdict-20261024T192639Z/verdict.json
+numbers,,mmlf_overlap_9b,0.72,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_n_lk_9b,73,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_A_lk_excess_9b,"0.31 [0.18, 0.44]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_keep_A_lk_9b,"0.25 [0.15, 0.36]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_A_share_9b,15%,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_Alf_lk_excess_9b,"0.49 [0.38, 0.59]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_keep_Alf_lk_9b,"0.36 [0.25, 0.48]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_Alf_share_9b,18%,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_n_rc_9b,73,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_A_rc_excess_9b,"0.11 [0.04, 0.19]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_keep_A_rc_9b,"0.04 [0.00, 0.09]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_Alf_rc_excess_9b,"0.12 [0.05, 0.21]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_keep_Alf_rc_9b,"0.07 [0.02, 0.13]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/verdict-20261024T200057Z/verdict.json
+numbers,,mmlf_overlap_27b,0.71,,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_n_lk_27b,70,,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_A_lk_excess_27b,"0.04 [0.00, 0.09]",,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_keep_A_lk_27b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_A_share_27b,16%,,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_Alf_lk_excess_27b,"0.14 [0.07, 0.22]",,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_keep_Alf_lk_27b,"0.07 [0.02, 0.14]",,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_Alf_share_27b,15%,,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_n_rc_27b,70,,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_A_rc_excess_27b,"0.10 [0.00, 0.19]",,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_keep_A_rc_27b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_Alf_rc_excess_27b,"0.16 [0.02, 0.31]",,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_keep_Alf_rc_27b,"−0.02 [−0.06, 0.00]",,,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json
+numbers,,mmlf_overlap_122b,0.72,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_n_lk_122b,54,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_A_lk_excess_122b,"0.24 [0.13, 0.37]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_keep_A_lk_122b,"0.22 [0.13, 0.30]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_A_share_122b,18%,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_Alf_lk_excess_122b,"0.31 [0.20, 0.43]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_keep_Alf_lk_122b,"0.24 [0.15, 0.32]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_Alf_share_122b,18%,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_n_rc_122b,54,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_A_rc_excess_122b,"0.08 [0.02, 0.16]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_keep_A_rc_122b,"0.08 [0.02, 0.15]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_Alf_rc_excess_122b,"0.13 [0.02, 0.26]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,mmlf_keep_Alf_rc_122b,"0.10 [0.02, 0.17]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json
+numbers,,dupnn_A_org_9b,"0.89 [0.81, 0.96]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_after_alt_9b,"0.93 [0.81, 1.00]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_after_other_9b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_after_n_9b,15,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_alt_9b,"0.86 [0.72, 0.97]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_other_9b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_n_9b,28,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_alt_9b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_other_9b,"0.80 [0.65, 0.93]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_n_9b,30,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_org_9b,"0.62 [0.49, 0.74]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_after_alt_9b,"0.67 [0.43, 0.88]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_after_other_9b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_after_n_9b,15,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_alt_9b,"0.68 [0.48, 0.84]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_other_9b,"0.14 [0.03, 0.28]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_n_9b,28,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_alt_9b,"0.03 [0.00, 0.09]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_other_9b,"0.83 [0.68, 0.97]",,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_n_9b,30,,,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_org_27b,"0.90 [0.83, 0.96]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_after_alt_27b,"0.94 [0.86, 1.00]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_after_other_27b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_after_n_27b,17,,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_alt_27b,"0.82 [0.65, 0.94]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_other_27b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_n_27b,28,,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_alt_27b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_other_27b,"0.88 [0.71, 1.00]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_n_27b,25,,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_org_27b,"0.63 [0.52, 0.74]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_after_alt_27b,"0.71 [0.47, 0.88]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_after_other_27b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_after_n_27b,17,,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_alt_27b,"0.50 [0.31, 0.70]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_other_27b,"0.14 [0.04, 0.27]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_n_27b,28,,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_alt_27b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_other_27b,"0.88 [0.75, 1.00]",,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_n_27b,25,,,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json
+numbers,,dupnn_A_org_122b,"0.81 [0.74, 0.89]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_after_alt_122b,"1.00 [1.00, 1.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_after_other_122b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_after_n_122b,12,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_alt_122b,"0.89 [0.71, 1.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_other_122b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_lockerfirst_n_122b,18,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_alt_122b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_other_122b,"0.92 [0.78, 1.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_A_otherfirst_n_122b,24,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_org_122b,"0.65 [0.55, 0.75]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_after_alt_122b,"0.92 [0.73, 1.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_after_other_122b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_after_n_122b,12,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_alt_122b,"0.72 [0.47, 0.93]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_other_122b,"0.11 [0.00, 0.29]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_lockerfirst_n_122b,18,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_alt_122b,"0.00 [0.00, 0.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_other_122b,"0.96 [0.85, 1.00]",,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,dupnn_Alf_otherfirst_n_122b,24,,,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json
+numbers,,ss_jpp_lk_excess_9b,"0.00 [0.00, 0.00]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf)
+numbers,,ss_jpp_rc_excess_9b,"0.06 [0.00, 0.12]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf)
+numbers,,ss_pca_lk_excess_9b,"0.06 [0.01, 0.11]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf)
+numbers,,ss_pca_rc_excess_9b,"0.03 [0.00, 0.07]",,,,results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf)
+numbers,,ss_jpp_lk_excess_27b,"0.00 [0.00, 0.00]",,,,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b)
+numbers,,ss_jpp_rc_excess_27b,"0.46 [0.34, 0.57]",,,,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b)
+numbers,,ss_pca_lk_excess_27b,"0.00 [0.00, 0.00]",,,,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b)
+numbers,,ss_pca_rc_excess_27b,"0.04 [−0.04, 0.11]",,,,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b)
+numbers,,ss_jpp_lk_excess_122b,"0.00 [0.00, 0.00]",,,,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl (scenes of results/x0_massmean/qwen35_122b_x0_massmean_grid)
+numbers,,ss_jpp_rc_excess_122b,"0.10 [0.02, 0.18]",,,,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl (scenes of results/x0_massmean/qwen35_122b_x0_massmean_grid)
+numbers,,ss_pca_lk_excess_122b,"0.06 [0.00, 0.13]",,,,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl (scenes of results/x0_massmean/qwen35_122b_x0_massmean_grid)
+numbers,,ss_pca_rc_excess_122b,"0.02 [−0.07, 0.10]",,,,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl (scenes of results/x0_massmean/qwen35_122b_x0_massmean_grid)
+numbers,,rep_jpp_lk_excess_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_jpp_share_9b,18%,,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_jpp_rc_excess_9b,"0.12 [0.06, 0.19]",,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_alf_lk_excess_9b,"0.47 [0.41, 0.53]",,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_alf_share_9b,17%,,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_alf_rc_excess_9b,"0.15 [0.10, 0.21]",,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_pca_eq_lk_excess_9b,"0.03 [0.00, 0.05]",,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_pca_eq_share_9b,18%,,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_pca_eq_rc_excess_9b,"0.06 [0.03, 0.10]",,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_verdict_9b,does not hold,,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_jpp_clause_9b,not met,,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_ptr_clause_9b,met,,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_n_9b,200,,,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json
+numbers,,rep_jpp_lk_excess_27b,"0.01 [0.00, 0.02]",,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_jpp_share_27b,11%,,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_jpp_rc_excess_27b,"0.37 [0.28, 0.46]",,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_alf_lk_excess_27b,"0.17 [0.12, 0.22]",,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_alf_share_27b,16%,,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_alf_rc_excess_27b,"0.06 [−0.01, 0.15]",,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_pca_eq_lk_excess_27b,"0.00 [0.00, 0.00]",,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_pca_eq_share_27b,11%,,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_pca_eq_rc_excess_27b,"0.04 [0.00, 0.09]",,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_verdict_27b,does not hold,,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_jpp_clause_27b,met,,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_ptr_clause_27b,not met,,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,rep_n_27b,200,,,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json
+numbers,,nat_cases_9b,154 of 358,,,,results/x5_natural/qwen35_9b_x5_natural/gate.json
+numbers,,nat_gate_lk_9b,0.78,,,,results/x5_natural/qwen35_9b_x5_natural/gate.json
+numbers,,nat_cases_27b,154 of 358,,,,results/x5_natural/x5_natural_27b/gate.json
+numbers,,nat_gate_lk_27b,0.99,,,,results/x5_natural/x5_natural_27b/gate.json
+numbers,,nat_gap_27b,"0.27 [0.13, 0.41]",,,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json
+numbers,,nat_label_27b,mixed,,,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json
+numbers,,nat_n_27b,137,,,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json
+numbers,,nat_lk_excess_27b,"0.32 [0.20, 0.45]",,,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json
+numbers,,nat_rc_excess_27b,"0.59 [0.50, 0.67]",,,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json
+numbers,,nat_cases_122b,154 of 358,,,,results/x5_natural/qwen35_122b_x5_natural/gate.json
+numbers,,nat_gate_lk_122b,0.92,,,,results/x5_natural/qwen35_122b_x5_natural/gate.json
+numbers,,nat_gap_122b,"0.44 [0.32, 0.58]",,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
+numbers,,nat_label_122b,holds,,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
+numbers,,nat_n_122b,114,,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
+numbers,,nat_lk_excess_122b,"−0.11 [−0.20, −0.03]",,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
+numbers,,nat_rc_excess_122b,"0.34 [0.24, 0.43]",,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
+numbers,,rt_C0_whole_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_whole_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_whole_original_9b,"0.00 [0.00, 0.01]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_whole_recall_follows_s_9b,"0.97 [0.94, 0.99]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_recall_follows_s_9b,"0.94 [0.91, 0.98]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_original_9b,"0.00 [0.00, 0.01]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_recall_follows_s_9b,"0.96 [0.93, 0.98]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_original_9b,"0.30 [0.25, 0.35]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_recall_follows_s_9b,"0.84 [0.79, 0.89]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_rand_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_rand_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_rand_original_9b,"0.01 [0.00, 0.02]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C0_no_alf_rand_recall_follows_s_9b,"0.95 [0.93, 0.98]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_whole_identity_9b,"0.36 [0.30, 0.43]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_whole_position_9b,"0.62 [0.56, 0.69]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_whole_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_whole_recall_follows_s_9b,"0.78 [0.71, 0.84]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_identity_9b,"0.43 [0.35, 0.50]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_position_9b,"0.56 [0.48, 0.63]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_recall_follows_s_9b,"0.83 [0.77, 0.88]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_identity_9b,"0.44 [0.37, 0.51]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_position_9b,"0.55 [0.47, 0.62]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_recall_follows_s_9b,"0.83 [0.77, 0.89]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_identity_9b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_recall_follows_s_9b,"0.99 [0.97, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_rand_identity_9b,"0.97 [0.95, 0.99]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_rand_position_9b,"0.03 [0.01, 0.05]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_rand_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C1_no_alf_rand_recall_follows_s_9b,"0.94 [0.91, 0.97]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_whole_identity_9b,"0.48 [0.43, 0.53]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_whole_position_9b,"0.51 [0.46, 0.56]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_whole_original_9b,"0.01 [0.00, 0.02]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_whole_recall_follows_s_9b,"0.83 [0.77, 0.88]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_identity_9b,"0.35 [0.31, 0.39]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_position_9b,"0.61 [0.56, 0.65]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_original_9b,"0.04 [0.02, 0.06]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_recall_follows_s_9b,"0.60 [0.55, 0.66]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_identity_9b,"0.41 [0.36, 0.46]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_position_9b,"0.50 [0.45, 0.55]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_original_9b,"0.09 [0.06, 0.12]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_recall_follows_s_9b,"0.75 [0.70, 0.80]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_identity_9b,"0.36 [0.32, 0.40]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_position_9b,"0.08 [0.05, 0.12]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_original_9b,"0.55 [0.50, 0.61]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_recall_follows_s_9b,"0.75 [0.66, 0.84]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_rand_identity_9b,"0.40 [0.36, 0.45]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_rand_position_9b,"0.54 [0.49, 0.59]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_rand_original_9b,"0.06 [0.03, 0.08]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_C2_no_alf_rand_recall_follows_s_9b,"0.77 [0.72, 0.82]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
+numbers,,rt_c0_9b,0.99,,,,results/x6_routes/qwen35_9b_x6_routes/c0_check.json
+numbers,,rt_C0_whole_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_whole_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_whole_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_whole_recall_follows_s_27b,"0.54 [0.43, 0.65]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_recall_follows_s_27b,"0.36 [0.26, 0.46]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_jpp_rand_recall_follows_s_27b,"0.50 [0.39, 0.62]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_original_27b,"0.15 [0.11, 0.18]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_recall_follows_s_27b,"0.36 [0.27, 0.47]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_rand_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_rand_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_rand_original_27b,"0.01 [0.00, 0.02]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C0_no_alf_rand_recall_follows_s_27b,"0.46 [0.35, 0.57]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_whole_identity_27b,"0.52 [0.46, 0.57]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_whole_position_27b,"0.44 [0.39, 0.49]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_whole_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_whole_recall_follows_s_27b,"0.96 [0.93, 0.99]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_identity_27b,"0.62 [0.55, 0.68]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_position_27b,"0.35 [0.30, 0.41]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_recall_follows_s_27b,"0.96 [0.93, 0.99]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_identity_27b,"0.58 [0.52, 0.64]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_position_27b,"0.38 [0.32, 0.44]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_value_27b,"0.00 [0.00, 0.01]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_jpp_rand_recall_follows_s_27b,"0.97 [0.94, 0.99]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_identity_27b,"0.99 [0.98, 1.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_position_27b,"0.01 [0.00, 0.02]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_recall_follows_s_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_rand_identity_27b,"0.97 [0.95, 0.99]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_rand_position_27b,"0.03 [0.01, 0.05]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_rand_value_27b,"0.00 [0.00, 0.01]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_rand_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C1_no_alf_rand_recall_follows_s_27b,"0.99 [0.98, 1.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_whole_identity_27b,"0.66 [0.60, 0.71]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_whole_position_27b,"0.34 [0.28, 0.39]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_whole_original_27b,"0.00 [0.00, 0.01]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_whole_recall_follows_s_27b,"0.47 [0.37, 0.57]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_identity_27b,"0.45 [0.41, 0.49]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_position_27b,"0.42 [0.38, 0.46]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_original_27b,"0.12 [0.09, 0.16]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_recall_follows_s_27b,"0.15 [0.09, 0.23]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_identity_27b,"0.70 [0.64, 0.76]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_position_27b,"0.28 [0.23, 0.34]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_original_27b,"0.01 [0.00, 0.03]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_jpp_rand_recall_follows_s_27b,"0.40 [0.29, 0.51]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_identity_27b,"0.72 [0.68, 0.77]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_position_27b,"0.06 [0.03, 0.09]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_original_27b,"0.21 [0.18, 0.25]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_recall_follows_s_27b,"0.31 [0.21, 0.41]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_rand_identity_27b,"0.70 [0.64, 0.76]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_rand_position_27b,"0.25 [0.19, 0.31]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_rand_original_27b,"0.05 [0.02, 0.07]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_C2_no_alf_rand_recall_follows_s_27b,"0.36 [0.26, 0.46]",,,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json
+numbers,,rt_c0_27b,0.98,,,,results/x6_routes/x6_routes_27b/c0_check.json
+numbers,,rte_C0_whole_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_whole_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_whole_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_whole_recall_follows_s_9b,"1.00 [0.99, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_original_9b,"0.98 [0.96, 0.99]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_recall_follows_s_9b,"0.04 [0.02, 0.07]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_original_9b,"0.12 [0.07, 0.16]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_recall_follows_s_9b,"0.85 [0.79, 0.91]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_whole_identity_9b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_whole_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_whole_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_whole_recall_follows_s_9b,"1.00 [0.99, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_identity_9b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_recall_follows_s_9b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_identity_9b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_recall_follows_s_9b,"1.00 [0.99, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_whole_identity_9b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_whole_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_whole_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_whole_recall_follows_s_9b,"0.97 [0.94, 0.99]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_identity_9b,"0.01 [0.00, 0.03]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_original_9b,"0.99 [0.97, 1.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_recall_follows_s_9b,"0.05 [0.02, 0.08]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_identity_9b,"0.78 [0.73, 0.83]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_original_9b,"0.22 [0.17, 0.27]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_recall_follows_s_9b,"0.78 [0.72, 0.85]",,,,results/x6_routes/qwen35_9b_x6_routes_l6/verdict-20261025T112609Z/verdict.json
+numbers,,rte_c0_9b,1.00,,,,results/x6_routes/qwen35_9b_x6_routes_l6/c0_check.json
+numbers,,rte_C0_whole_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_whole_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_whole_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_whole_recall_follows_s_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_original_27b,"0.98 [0.96, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_recall_follows_s_27b,"0.02 [0.01, 0.04]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C0_no_jpp_rand_recall_follows_s_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_whole_identity_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_whole_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_whole_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_whole_recall_follows_s_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_identity_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_recall_follows_s_27b,"1.00 [0.99, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_identity_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C1_no_jpp_rand_recall_follows_s_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_whole_identity_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_whole_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_whole_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_whole_recall_follows_s_27b,"1.00 [0.99, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_identity_27b,"0.01 [0.00, 0.02]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_original_27b,"0.99 [0.98, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_recall_follows_s_27b,"0.01 [0.00, 0.02]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_identity_27b,"1.00 [1.00, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_C2_no_jpp_rand_recall_follows_s_27b,"1.00 [0.99, 1.00]",,,,results/x6_routes/x6_routes_l16_27b/verdict-20261025T114028Z/verdict.json
+numbers,,rte_c0_27b,1.00,,,,results/x6_routes/x6_routes_l16_27b/c0_check.json
+numbers,,rtb_C0_whole_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_whole_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_whole_original_9b,"0.00 [0.00, 0.01]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_whole_recall_follows_s_9b,"0.97 [0.94, 0.99]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_original_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_recall_follows_s_9b,"0.94 [0.91, 0.98]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_original_9b,"0.00 [0.00, 0.01]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_recall_follows_s_9b,"0.96 [0.93, 0.98]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_original_9b,"0.30 [0.25, 0.35]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_recall_follows_s_9b,"0.84 [0.79, 0.89]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_original_9b,"0.01 [0.00, 0.02]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_recall_follows_s_9b,"0.96 [0.93, 0.99]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_original_9b,"0.55 [0.50, 0.59]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_recall_follows_s_9b,"0.46 [0.39, 0.54]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_rand_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_rand_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_rand_original_9b,"0.12 [0.08, 0.17]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C0_no_both_rand_recall_follows_s_9b,"0.79 [0.74, 0.84]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_whole_identity_9b,"0.48 [0.43, 0.53]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_whole_position_9b,"0.51 [0.46, 0.56]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_whole_original_9b,"0.01 [0.00, 0.02]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_whole_recall_follows_s_9b,"0.83 [0.77, 0.88]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_identity_9b,"0.35 [0.31, 0.39]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_position_9b,"0.61 [0.56, 0.65]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_original_9b,"0.04 [0.02, 0.06]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_recall_follows_s_9b,"0.60 [0.55, 0.66]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_identity_9b,"0.40 [0.36, 0.45]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_position_9b,"0.51 [0.46, 0.56]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_original_9b,"0.09 [0.06, 0.12]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_recall_follows_s_9b,"0.75 [0.70, 0.80]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_identity_9b,"0.36 [0.32, 0.40]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_position_9b,"0.08 [0.05, 0.12]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_original_9b,"0.55 [0.50, 0.61]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_recall_follows_s_9b,"0.75 [0.66, 0.84]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_identity_9b,"0.41 [0.36, 0.45]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_position_9b,"0.54 [0.48, 0.59]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_original_9b,"0.05 [0.03, 0.08]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_recall_follows_s_9b,"0.77 [0.71, 0.82]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_identity_9b,"0.17 [0.13, 0.21]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_position_9b,"0.01 [0.00, 0.03]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_original_9b,"0.82 [0.78, 0.86]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_recall_follows_s_9b,"0.30 [0.23, 0.38]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_rand_identity_9b,"0.26 [0.22, 0.30]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_rand_position_9b,"0.28 [0.23, 0.33]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_rand_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_rand_original_9b,"0.47 [0.40, 0.52]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_C2_no_both_rand_recall_follows_s_9b,"0.53 [0.45, 0.62]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C0_jpp_lk_9b,"−0.00 [−0.01, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C0_alf_lk_9b,"0.31 [0.26, 0.37]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C0_both_lk_9b,"0.43 [0.39, 0.47]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C0_both_minus_alf_lk_9b,"0.12 [0.04, 0.19]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C0_jpp_rc_9b,"0.01 [−0.00, 0.03]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C0_alf_rc_9b,"0.12 [0.08, 0.17]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C0_both_rc_9b,"0.34 [0.28, 0.40]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C0_both_minus_alf_rc_9b,"0.22 [0.16, 0.28]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C2_jpp_lk_9b,"nan [nan, nan]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C2_alf_lk_9b,"nan [nan, nan]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C2_both_lk_9b,"nan [nan, nan]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C2_both_minus_alf_lk_9b,"nan [nan, nan]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C2_jpp_rc_9b,"0.18 [0.13, 0.24]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C2_alf_rc_9b,"0.02 [−0.06, 0.11]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C2_both_rc_9b,"0.27 [0.21, 0.34]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_ex_C2_both_minus_alf_rc_9b,"0.25 [0.16, 0.35]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/verdict-20261025T121636Z/verdict.json
+numbers,,rtb_c0_9b,0.99,,,,results/x6_routes/qwen35_9b_x6_routes_bothoff/c0_check.json
+numbers,,rtb_C0_whole_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_whole_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_whole_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_whole_recall_follows_s_27b,"0.54 [0.43, 0.65]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_recall_follows_s_27b,"0.36 [0.25, 0.47]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_original_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_jpp_rand_recall_follows_s_27b,"0.50 [0.39, 0.62]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_original_27b,"0.15 [0.11, 0.18]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_recall_follows_s_27b,"0.37 [0.28, 0.47]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_original_27b,"0.01 [0.00, 0.02]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_alf_rand_recall_follows_s_27b,"0.45 [0.35, 0.56]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_original_27b,"0.47 [0.42, 0.52]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_recall_follows_s_27b,"0.10 [0.06, 0.14]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_rand_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_rand_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_rand_original_27b,"0.08 [0.05, 0.11]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C0_no_both_rand_recall_follows_s_27b,"0.34 [0.25, 0.44]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_whole_identity_27b,"0.66 [0.60, 0.71]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_whole_position_27b,"0.34 [0.28, 0.39]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_whole_original_27b,"0.00 [0.00, 0.01]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_whole_recall_follows_s_27b,"0.46 [0.36, 0.57]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_identity_27b,"0.45 [0.41, 0.49]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_position_27b,"0.43 [0.38, 0.47]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_original_27b,"0.12 [0.09, 0.16]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_recall_follows_s_27b,"0.16 [0.09, 0.23]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_identity_27b,"0.70 [0.64, 0.76]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_position_27b,"0.28 [0.23, 0.34]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_original_27b,"0.01 [0.00, 0.03]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_jpp_rand_recall_follows_s_27b,"0.39 [0.29, 0.50]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_identity_27b,"0.72 [0.68, 0.77]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_position_27b,"0.06 [0.03, 0.09]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_original_27b,"0.21 [0.18, 0.25]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_recall_follows_s_27b,"0.30 [0.21, 0.39]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_identity_27b,"0.69 [0.63, 0.75]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_position_27b,"0.26 [0.20, 0.32]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_original_27b,"0.05 [0.03, 0.07]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_alf_rand_recall_follows_s_27b,"0.35 [0.26, 0.46]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_identity_27b,"0.29 [0.25, 0.33]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_position_27b,"0.03 [0.01, 0.04]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_original_27b,"0.68 [0.63, 0.73]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_recall_follows_s_27b,"0.06 [0.03, 0.10]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_rand_identity_27b,"0.64 [0.58, 0.69]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_rand_position_27b,"0.12 [0.08, 0.17]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_rand_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_rand_original_27b,"0.24 [0.19, 0.28]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_C2_no_both_rand_recall_follows_s_27b,"0.27 [0.18, 0.37]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C0_jpp_lk_27b,"−0.00 [−0.01, 0.01]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C0_alf_lk_27b,"0.15 [0.12, 0.19]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C0_both_lk_27b,"0.41 [0.35, 0.47]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C0_both_minus_alf_lk_27b,"0.26 [0.19, 0.32]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C0_jpp_rc_27b,"0.27 [0.20, 0.34]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C0_alf_rc_27b,"0.15 [0.09, 0.22]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C0_both_rc_27b,"0.44 [0.37, 0.52]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C0_both_minus_alf_rc_27b,"0.29 [0.19, 0.39]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C2_jpp_lk_27b,"nan [nan, nan]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C2_alf_lk_27b,"nan [nan, nan]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C2_both_lk_27b,"nan [nan, nan]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C2_both_minus_alf_lk_27b,"nan [nan, nan]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C2_jpp_rc_27b,"0.51 [0.42, 0.61]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C2_alf_rc_27b,"0.12 [0.04, 0.21]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C2_both_rc_27b,"0.46 [0.38, 0.54]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_ex_C2_both_minus_alf_rc_27b,"0.33 [0.26, 0.40]",,,,results/x6_routes/x6_routes_bothoff_27b/verdict-20261025T122441Z/verdict.json
+numbers,,rtb_c0_27b,0.98,,,,results/x6_routes/x6_routes_bothoff_27b/c0_check.json
+numbers,,rt_c0gate_lk_122b,1.000,,,,results/x6_routes/qwen35_122b_x6_routes_c0/gate.json
+numbers,,rt_c0gate_rc_122b,0.797,,,,results/x6_routes/qwen35_122b_x6_routes_c0/gate.json
+numbers,,rt_c0gate_eligible_122b,479 of 700,,,,results/x6_routes/qwen35_122b_x6_routes_c0/gate.json
+numbers,,comp_two_all_n_9b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_all_lk_9b,"−0.03 [−0.08, 0.03]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_all_rc_9b,"0.50 [0.41, 0.57]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_n_9b,75,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_lk_9b,"−0.04 [−0.10, 0.02]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_rc_9b,"0.23 [0.14, 0.31]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_n_9b,25,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_lk_9b,"0.29 [0.07, 0.57]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_rc_9b,"0.72 [0.57, 0.88]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_n_9b,100,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_lk_9b,"−0.21 [−0.43, −0.05]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_rc_9b,"0.65 [0.57, 0.73]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_n_9b,100,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_lk_9b,"−0.21 [−0.43, −0.05]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_rc_9b,"0.65 [0.57, 0.73]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_n_9b,100,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_lk_9b,"0.01 [−0.04, 0.07]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_rc_9b,"0.35 [0.26, 0.43]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_n_9b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_lk_9b,"−0.02 [−0.05, 0.02]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_rc_9b,"0.37 [0.29, 0.43]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_n_9b,73,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_lk_9b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_rc_9b,"0.06 [0.00, 0.12]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_n_9b,27,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_lk_9b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_rc_9b,"0.50 [0.33, 0.69]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_n_9b,100,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_lk_9b,"−0.11 [−0.29, 0.10]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_rc_9b,"0.57 [0.47, 0.67]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_n_9b,100,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_lk_9b,"−0.11 [−0.29, 0.10]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_rc_9b,"0.57 [0.47, 0.67]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_n_9b,100,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_lk_9b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_rc_9b,"0.17 [0.11, 0.23]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_all_n_9b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_all_lk_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_all_rc_9b,"0.12 [0.06, 0.19]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_both_n_9b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_both_lk_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_both_rc_9b,"0.12 [0.06, 0.19]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_fmno_n_9b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_fmno_lk_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_fmno_rc_9b,"0.12 [0.06, 0.19]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_all_n_27b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_all_lk_27b,"0.14 [0.08, 0.20]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_all_rc_27b,"0.74 [0.66, 0.80]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_n_27b,69,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_lk_27b,"0.14 [0.06, 0.21]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_rc_27b,"0.73 [0.61, 0.83]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_n_27b,32,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_lk_27b,"0.18 [0.00, 0.45]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_rc_27b,"0.54 [0.32, 0.79]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_n_27b,99,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_lk_27b,"0.11 [0.00, 0.40]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_rc_27b,"0.81 [0.71, 0.91]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_n_27b,99,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_lk_27b,"0.11 [0.00, 0.40]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_rc_27b,"0.81 [0.71, 0.91]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_n_27b,101,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_lk_27b,"0.14 [0.07, 0.22]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_rc_27b,"0.67 [0.58, 0.76]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_n_27b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_lk_27b,"0.05 [0.01, 0.09]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_rc_27b,"0.61 [0.51, 0.69]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_n_27b,70,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_lk_27b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_rc_27b,"0.46 [0.34, 0.57]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_n_27b,33,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_lk_27b,"0.08 [0.00, 0.27]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_rc_27b,"0.56 [0.32, 0.80]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_n_27b,97,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_lk_27b,"0.33 [0.10, 0.60]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_rc_27b,"0.73 [0.58, 0.86]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_n_27b,97,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_lk_27b,"0.33 [0.10, 0.60]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_rc_27b,"0.73 [0.58, 0.86]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_n_27b,103,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_lk_27b,"0.01 [0.00, 0.04]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_rc_27b,"0.49 [0.39, 0.60]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_all_n_27b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_all_lk_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_all_rc_27b,"0.37 [0.28, 0.46]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_both_n_27b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_both_lk_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_both_rc_27b,"0.37 [0.28, 0.46]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_fmno_n_27b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_fmno_lk_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_rep_fmno_rc_27b,"0.37 [0.28, 0.46]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_all_n_122b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_all_lk_122b,"0.00 [−0.06, 0.06]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_all_rc_122b,"0.32 [0.22, 0.41]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_n_122b,53,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_lk_122b,"−0.02 [−0.09, 0.04]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_both_rc_122b,"0.14 [0.05, 0.23]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_n_122b,32,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_lk_122b,"0.00 [−0.18, 0.21]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_org_rc_122b,"0.30 [0.12, 0.48]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_n_122b,115,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_lk_122b,"0.08 [0.00, 0.23]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_after_rc_122b,"0.41 [0.26, 0.54]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_n_122b,115,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_lk_122b,"0.08 [0.00, 0.23]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmyes_rc_122b,"0.41 [0.26, 0.54]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_n_122b,85,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_lk_122b,"−0.01 [−0.08, 0.06]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_two_fmno_rc_122b,"0.20 [0.10, 0.30]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_n_122b,200,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_lk_122b,"−0.01 [−0.06, 0.04]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_all_rc_122b,"0.27 [0.16, 0.36]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_n_122b,54,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_both_rc_122b,"0.08 [0.02, 0.15]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_n_122b,31,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_lk_122b,"−0.04 [−0.19, 0.14]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_org_rc_122b,"0.13 [0.03, 0.26]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_n_122b,115,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_after_rc_122b,"0.40 [0.25, 0.54]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_n_122b,115,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmyes_rc_122b,"0.40 [0.25, 0.54]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_n_122b,85,,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_lk_122b,"−0.01 [−0.07, 0.04]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,comp_one_fmno_rc_122b,"0.10 [0.03, 0.17]",,,,results/x0_composition/x0_composition_20261025b/composition.json
+numbers,,natsplit_all_n_27b,137,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_all_lk_27b,"0.32 [0.20, 0.45]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_all_lk_sw_27b,60,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_all_rc_27b,"0.59 [0.50, 0.67]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_all_rc_sw_27b,126,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_after_n_27b,62,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_after_lk_27b,"0.40 [0.00, 1.50]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_after_lk_sw_27b,5,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_after_rc_27b,"0.66 [0.54, 0.77]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_after_rc_sw_27b,56,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_before_n_27b,75,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_before_lk_27b,"0.31 [0.18, 0.46]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_before_lk_sw_27b,55,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_before_rc_27b,"0.53 [0.41, 0.65]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_before_rc_sw_27b,70,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_both_n_27b,46,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_both_lk_27b,"0.28 [0.12, 0.45]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_both_lk_sw_27b,36,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_both_rc_27b,"0.44 [0.30, 0.59]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_both_rc_sw_27b,43,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_org_n_27b,29,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_org_lk_27b,"0.37 [0.15, 0.64]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_org_lk_sw_27b,19,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_org_rc_27b,"0.67 [0.46, 0.84]",,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,natsplit_org_rc_sw_27b,27,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
+numbers,,x4_probe_animals_same_9b,"0.99 [0.99, 1.00]",,,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json
+numbers,,x4_probe_animals_xlang_9b,"0.93 [0.90, 0.96]",,,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json
+numbers,,x4_probe_elements_same_9b,"0.98 [0.94, 1.00]",,,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json
+numbers,,x4_probe_elements_syn_9b,"0.89 [0.83, 0.95]",,,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json
+numbers,,x4_transfer_animals_9b,"0.84 [0.79, 0.90]",,,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json
+numbers,,x4_transfer_elements_9b,"0.81 [0.74, 0.87]",,,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json
+numbers,,x4_animals_same_rc_excess_9b,"0.04 [0.00, 0.09]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_animals_same_rc_n_9b,179,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_animals_same_lk_excess_9b,"−0.01 [−0.01, −0.00]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_animals_same_lk_n_9b,400,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_animals_xlang_rc_excess_9b,"0.20 [0.11, 0.34]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_animals_xlang_rc_n_9b,180,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_animals_xlang_lk_excess_9b,"−0.03 [−0.06, −0.01]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_animals_xlang_lk_n_9b,377,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_elements_same_rc_excess_9b,"0.23 [0.08, 0.37]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_elements_same_rc_n_9b,400,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_elements_same_lk_excess_9b,"−0.02 [−0.03, −0.01]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_elements_same_lk_n_9b,398,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_elements_syn_rc_excess_9b,"0.72 [0.54, 0.89]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_elements_syn_rc_n_9b,395,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_elements_syn_lk_excess_9b,"−0.07 [−0.09, −0.05]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_elements_syn_lk_n_9b,341,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_D_animals_9b,"−0.02 [−0.05, −0.00]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_Dpos_animals_9b,2 of 8,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_D_elements_9b,"−0.05 [−0.08, −0.02]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_Dpos_elements_9b,0 of 6,,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_C_animals_same_9b,"0.05 [0.01, 0.10]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_C_animals_xlang_9b,"0.24 [0.14, 0.38]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_C_elements_same_9b,"0.25 [0.09, 0.40]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_C_elements_syn_9b,"0.78 [0.59, 0.95]",,,,results/x4_alias/qwen35_9b_x4_patch/verdict-20261024T215022Z/verdict.json
+numbers,,x4_probe_animals_same_27b,"1.00 [1.00, 1.00]",,,,results/x4_alias/x4_probe_27b/probe-20261024T215014Z/probe.json
+numbers,,x4_probe_animals_xlang_27b,"0.99 [0.99, 1.00]",,,,results/x4_alias/x4_probe_27b/probe-20261024T215014Z/probe.json
+numbers,,x4_probe_elements_same_27b,"0.99 [0.98, 1.00]",,,,results/x4_alias/x4_probe_27b/probe-20261024T215014Z/probe.json
+numbers,,x4_probe_elements_syn_27b,"0.97 [0.90, 1.00]",,,,results/x4_alias/x4_probe_27b/probe-20261024T215014Z/probe.json
+numbers,,x4_transfer_animals_27b,"0.94 [0.90, 0.97]",,,,results/x4_alias/x4_probe_27b/probe-20261024T215014Z/probe.json
+numbers,,x4_transfer_elements_27b,"0.97 [0.90, 1.00]",,,,results/x4_alias/x4_probe_27b/probe-20261024T215014Z/probe.json
+numbers,,x4_animals_same_rc_excess_27b,"0.43 [0.33, 0.52]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_animals_same_rc_n_27b,181,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_animals_same_lk_excess_27b,"0.01 [−0.01, 0.03]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_animals_same_lk_n_27b,395,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_animals_xlang_rc_excess_27b,"0.56 [0.49, 0.63]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_animals_xlang_rc_n_27b,181,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_animals_xlang_lk_excess_27b,"0.02 [0.00, 0.03]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_animals_xlang_lk_n_27b,394,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_elements_same_rc_excess_27b,"0.71 [0.60, 0.83]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_elements_same_rc_n_27b,400,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_elements_same_lk_excess_27b,"0.00 [−0.01, 0.01]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_elements_same_lk_n_27b,400,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_elements_syn_rc_excess_27b,"0.98 [0.91, 1.03]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_elements_syn_rc_n_27b,400,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_elements_syn_lk_excess_27b,"0.15 [0.11, 0.19]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_elements_syn_lk_n_27b,374,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_D_animals_27b,"0.01 [−0.01, 0.04]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_Dpos_animals_27b,3 of 8,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_D_elements_27b,"0.15 [0.10, 0.19]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_Dpos_elements_27b,6 of 6,,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_C_animals_same_27b,"0.43 [0.32, 0.53]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_C_animals_xlang_27b,"0.54 [0.46, 0.59]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_C_elements_same_27b,"0.71 [0.59, 0.83]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_C_elements_syn_27b,"0.83 [0.71, 0.92]",,,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json
+numbers,,x4_probe_animals_same_122b,"0.98 [0.97, 1.00]",,,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json
+numbers,,x4_probe_animals_xlang_122b,"0.90 [0.83, 0.94]",,,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json
+numbers,,x4_probe_elements_same_122b,"0.98 [0.95, 1.00]",,,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json
+numbers,,x4_probe_elements_syn_122b,"0.89 [0.81, 0.95]",,,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json
+numbers,,x4_transfer_animals_122b,"0.85 [0.80, 0.91]",,,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json
+numbers,,x4_transfer_elements_122b,"0.90 [0.83, 0.96]",,,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json
+numbers,,x4_animals_same_rc_excess_122b,"0.07 [0.01, 0.13]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_animals_same_rc_n_122b,178,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_animals_same_lk_excess_122b,"0.00 [−0.01, 0.01]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_animals_same_lk_n_122b,396,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_animals_xlang_rc_excess_122b,"0.20 [0.08, 0.28]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_animals_xlang_rc_n_122b,179,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_animals_xlang_lk_excess_122b,"−0.00 [−0.01, 0.00]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_animals_xlang_lk_n_122b,394,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_elements_same_rc_excess_122b,"0.03 [0.01, 0.06]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_elements_same_rc_n_122b,400,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_elements_same_lk_excess_122b,"0.00 [0.00, 0.00]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_elements_same_lk_n_122b,400,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_elements_syn_rc_excess_122b,"0.54 [0.39, 0.71]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_elements_syn_rc_n_122b,394,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_elements_syn_lk_excess_122b,"0.02 [−0.01, 0.07]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_elements_syn_lk_n_122b,381,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_D_animals_122b,"−0.00 [−0.01, 0.00]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_Dpos_animals_122b,1 of 8,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_D_elements_122b,"0.02 [−0.01, 0.07]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_Dpos_elements_122b,2 of 6,,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_C_animals_same_122b,"0.07 [0.01, 0.13]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_C_animals_xlang_122b,"0.21 [0.08, 0.30]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_C_elements_same_122b,"0.03 [0.01, 0.06]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,x4_C_elements_syn_122b,"0.51 [0.39, 0.64]",,,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json
+numbers,,share_rho_27b,0.79,,,,results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json
+numbers,,ctx_lookup_full,84%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
+numbers,,ctx_lookup_noj,87%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
+numbers,,ctx_recall_full,77%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
+numbers,,ctx_recall_noj,36%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
+numbers,,ctx_recall_drop,41,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
+numbers,,ctx_recall_droprand,−1,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
+numbers,,ctx_recall_diff,"0.42 [0.34, 0.50]",,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
+numbers,,ctx_n,180,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json

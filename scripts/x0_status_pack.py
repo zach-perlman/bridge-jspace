@@ -1199,7 +1199,7 @@ def routes_panel(ax, target, label, run, layer, hatched, conds, arms, fig_name) 
 def routes_figure(plt, panels, arms, fig_name, out, title, sub, note, ncols) -> None:
     nrows = -(-len(panels) // ncols)
     fig, axes = plt.subplots(nrows, ncols, figsize=(8.5 * ncols, 5.4 * nrows + 2.7), squeeze=False)
-    for ax, (target, label, run, layer, hatched) in zip(axes.flat, panels):
+    for ax, (target, label, run, layer, hatched) in zip(axes.flat, panels, strict=False):
         routes_panel(ax, target, label, run, layer, hatched, SWAPS, arms, fig_name)
     for ax in axes.flat[len(panels) :]:
         ax.set_visible(False)

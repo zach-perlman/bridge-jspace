@@ -103,15 +103,23 @@ def test_template_types_no_result_number():
     assert not typed, f"typed numbers in the template (use a marker or {{{{q|...}}}}): {typed}"
 
 
-MAX_LINES = 150  # Dan, 25 Oct: the README rework raised the page budget from 90 to 150 rendered lines
-CODES = re.compile(r"\bX0b?\b|\bX[1-4]\b|\bAlf\b|\bjwo?\b|\bPP\b|\bPM\b|\bJdep\b|\bRdep\b| C |k =|\bcf\b")
+MAX_BODY_WORDS = 1500  # Dan, 25 Oct (README v2): the main body, before the appendices, at most 1,500 words
+CODES = re.compile(
+    r"\bX[0-6]b?\b|\bAlf\b|\bjwo?\b|\bPP\b|\bPM\b|\bJdep\b|\bRdep\b| C |k =|\bcf\b|\bC[0-2]\b|\b[Ss]wap [12]\b"
+    r"|\bone-pick\b|\btwo-pick\b|\bedit(?:ed)?\b"
+)
 
 
-def test_readme_fits_the_page_budget():
-    assert len((B.REPO / "README.md").read_text().splitlines()) <= MAX_LINES
+def body_text() -> str:
+    return (B.REPO / "README.md").read_text().split("## Appendix A")[0]
+
+
+def test_readme_body_fits_the_word_budget():
+    words = re.sub(r"!\[[^\]]*\]\([^)]*\)|<!--.*?-->|\|[-|]+\|", " ", body_text())
+    assert len(words.split()) <= MAX_BODY_WORDS, len(words.split())
 
 
 def test_readme_body_has_no_internal_codes():
-    """Internal run codes appear only in the bottom table that maps findings to runs (Dan, 25 Oct)."""
-    body = (B.REPO / "README.md").read_text().split("## Where the runs are")[0]
+    """Internal run codes and the banned terms appear only in Appendix C, which maps sections to runs (Dan, 25 Oct)."""
+    body = re.sub(r"<!--.*?-->", "", (B.REPO / "README.md").read_text().split("## Appendix C")[0], flags=re.S)
     assert not CODES.findall(body), CODES.findall(body)

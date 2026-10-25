@@ -1,0 +1,417 @@
+"""README v2's figures (Dan, 25 Oct: one story, figures that read at a glance) into figures/story/ (SVG + PNG) and
+figures/story/data.csv, in story_style's look. Fig. 0 and Fig. 3 are schematics (no data); the others read the run
+files (X0 cells, verdicts) or docs/x0_numbers.json, and record every plotted number.
+
+uv run python scripts/readme_story_figures.py
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from bridge_jspace import pins
+from scripts import story_style as S
+from scripts import x0_figures as XF
+from scripts import x0_necessity as X
+
+N = S.numbers()
+MAIN_RUNS = {"9b": "qwen35_9b_x0_necessity", "27b": "x0_necessity_27b_chat", "122b": "qwen35_122b_x0_necessity_r2"}
+NEEDS = 0.30  # the lookup "still needs J++" where its extra loss is at least this (Dan's Q35.1 bar), for Fig. 5's shade
+
+
+def latest(path: Path, pattern: str):
+    found = sorted(path.glob(pattern))
+    return json.loads(found[-1].read_text()) if found else None
+
+
+def fig0(plt) -> None:
+    """The setup: the prompt as sentence boxes, the bridge word, where the change is added, the two questions."""
+    fig = plt.figure(figsize=(S.WIDTH, 3.5))
+    ax = fig.add_axes((0, 0, 1, 0.9))
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0, 40)
+    ax.axis("off")
+    S.title(fig, "One prompt, two questions about the same in-between word")
+    sents = ["The locker of the frog is 5.", "The locker of the tick is 2.", "Iris picked the frog."]
+    x = 2.0
+    for i, s in enumerate(sents):
+        w = 2.2 + 0.93 * len(s)
+        ax.add_patch(plt.Rectangle((x, 27), w, 7, fc="#f5f5f5", ec="#bbbbbb", lw=1))
+        if i == 2:
+            ax.text(x + 1.1, 30.5, "Iris picked the ", va="center", fontsize=11)
+            ax.text(x + 1.1 + 0.93 * 16.3, 30.5, "frog", va="center", fontsize=11, weight="bold", color="#b23b3b",
+                    bbox=dict(boxstyle="round,pad=0.15", fc="#fde3e3", ec="none"))  # fmt: skip
+            bx = x + 1.1 + 0.93 * 18
+        else:
+            ax.text(x + 1.1, 30.5, s, va="center", fontsize=11)
+        x += w + 1.5
+    ax.annotate("the change is added here (frog → tick, at one layer)", (bx, 26.6), (40, 19.5), fontsize=10.5,
+                color="#b23b3b", ha="left", va="center",
+                arrowprops=dict(arrowstyle="->", color="#b23b3b", lw=1.4))  # fmt: skip
+    ax.text(bx, 36.2, "the bridge", fontsize=10, color="#b23b3b", ha="center")
+    for y, name, q, a, col in ((10.5, "Lookup", "Which locker belongs to Iris's pick?", "5, written in the prompt", S.COL["lookup"]),
+                               (3.0, "Recall", "How many legs does Iris's pick have?", "4, from the model's memory", S.COL["recall"])):  # fmt: skip
+        ax.text(3, y, f"{name}:", fontsize=11, weight="bold", color=col, va="center")
+        ax.text(15, y, q, fontsize=11, va="center")
+        ax.text(62, y, f"→ {a}", fontsize=11, va="center", color=col)
+    S.save(fig, "fig0_setup")
+
+
+def fig1(plt) -> None:
+    """Hero: per model, the lookup's and the recall's J++ extra loss in each setting, joined; the gap printed."""
+    rows = [("Simple scenes,\ntwo people swap picks", "lk_excess_{m}", "rc_excess_{m}", "contrast_{m}", {}),
+            ("Simple scenes, only the asked\nperson's pick changes", "single_lk_excess_{m}", "single_rc_excess_{m}",
+             "single_contrast_{m}", {"9b": "after", "27b": "after"}),
+            ("Both locker sentences first\n(same scenes for both readers)", "ss_jpp_lk_excess_{m}", "ss_jpp_rc_excess_{m}",
+             None, {"9b": "after", "27b": "after", "122b": "after"}),
+            ("Varied scenes", "x0b_lk_excess_{m}", "x0b_rc_excess_{m}", "x0b_c_{m}", {}),
+            ("Natural passages", "nat_lk_excess_{m}", "nat_rc_excess_{m}", "nat_gap_{m}", {})]  # fmt: skip
+    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 4.9), sharey=True)
+    fig.subplots_adjust(left=0.285, right=0.995, top=0.80, bottom=0.12, wspace=0.10)
+    S.title(fig, "Recall needs the J++ part; the lookup mostly doesn't")
+    for ax, (target, m, name) in zip(axes, S.MODELS, strict=True):
+        S.extra_axis(ax)
+        ax.set_title(name.replace("Qwen3.5-", "").replace("Qwen3.6-", ""), fontsize=11.5, weight="bold")
+        for i, (label, lk_k, rc_k, gap_k, kinds) in enumerate(rows):
+            y = -i
+            lk, rc = S.parse(N.get(lk_k.format(m=m))), S.parse(N.get(rc_k.format(m=m)))
+            if label == "Varied scenes":
+                lk, rc = x0b_cell(target, X.LOOKUP), x0b_cell(target, X.RECALL)
+            kind = kinds.get(m, "fixed")
+            if lk is None or rc is None:
+                rerun = latest(pins.RESULTS_DIR / "x5_natural" / "qwen35_9b_x5_natural_g75", "verdict-*/verdict.json")
+                if label == "Natural passages" and m == "9b" and rerun:
+                    lk, rc = rerun["main"]["excess"][X.LOOKUP], rerun["main"]["excess"][X.RECALL]
+                    kind = "rerun"
+                else:
+                    ax.text(0.4, y, "not tested: gate" if label == "Natural passages" else "not run", ha="center",
+                            va="center", fontsize=9.5, color=S.COL["muted"])  # fmt: skip
+                    continue
+            ax.plot([lk[0], rc[0]], [y, y], color="#cccccc", lw=2.2, zorder=1, ls="--" if kind == "rerun" else "-")
+            S.dot(ax, 0, y, lk, S.COL["lookup"], kind)
+            S.dot(ax, 0, y, rc, S.COL["recall"], kind)
+            g = S.parse(N.get(gap_k.format(m=m))) if gap_k else None
+            gap = g[0] if g and kind != "rerun" else rc[0] - lk[0]
+            ax.text(
+                (lk[0] + rc[0]) / 2, y + 0.3, f"gap {gap:.2f}", ha="center", va="bottom", fontsize=9.5, color="#444444"
+            )
+            for w, v in ((X.LOOKUP, lk), (X.RECALL, rc)):
+                S.record("fig1", target, f"{label.replace(chr(10), ' ')}: {'lookup' if w == X.LOOKUP else 'recall'} extra loss",
+                         *v, source=lk_k.format(m=m) if w == X.LOOKUP else rc_k.format(m=m))  # fmt: skip
+            S.record(
+                "fig1",
+                target,
+                f"{label.replace(chr(10), ' ')}: gap",
+                round(gap, 4),
+                source=gap_k.format(m=m) if gap_k else "recall minus lookup",
+            )
+        ax.set_ylim(-len(rows) + 0.4, 0.7)
+        ax.grid(axis="x", color="#eeeeee")
+    axes[0].set_yticks([-i for i in range(len(rows))], [r[0] for r in rows])
+    axes[0].tick_params(axis="y", length=0)
+    marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7),
+             plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=7),
+             plt.Line2D([], [], marker="o", ls="", mfc="#555555", mec="#555555", ms=7),
+             plt.Line2D([], [], marker="o", ls="", mfc="white", mec="#555555", ms=7, mew=1.5),
+             plt.Line2D([], [], marker="o", ls="--", mfc="white", mec="#555555", color="#555555", ms=7, mew=1.5)]  # fmt: skip
+    fig.legend(marks, ["lookup", "recall", "fixed in advance", "after the data", "rerun, gate lowered"], loc="upper left",
+               bbox_to_anchor=(0.0, 0.925), ncol=5, frameon=False, fontsize=9.5, handletextpad=0.3,
+               columnspacing=1.0)  # fmt: skip
+    S.save(fig, "fig1_readers")
+
+
+def x0b_cell(target: str, reader: str):
+    """X0b's pooled cell at the layer fixed in advance (its verdict's cells), as (v, lo, hi)."""
+    run = {"qwen3.5-9b": "qwen35_9b_x0b_v2", "qwen3.6-27b": "x0b_v2_27b", "qwen3.5-122b-a10b": "qwen35_122b_x0b_v2"}[
+        target
+    ]
+    v = latest(pins.RESULTS_DIR / "x0b_generalize" / run, "verdict-*/verdict.json")
+    c = next(c for c in v["cells"] if c["layer"] == X.PREDICTED[target] and c["reader"] == reader and c["dict"] == "jpp"
+             and c["k"] == X.K_MAIN and c["omp"] == "signed")  # fmt: skip
+    return tuple(c["excess"])
+
+
+def parts_cells() -> dict[str, dict[str, dict]]:
+    """Fig. 2's cells per model: part -> {lookup, recall, share, kind}; from the parts runs' verdicts and the main
+    runs' X0 cells (logit lens, input embeddings, random: two people swap picks)."""
+    out: dict[str, dict[str, dict]] = {}
+    runs = {"9b": ("qwen35_9b_x0_pcaeq", "qwen35_9b_x0_parts", "qwen35_9b_x0_jppother"),
+            "27b": ("x0_pcaeq_27b", "x0_parts_27b", "x0_jppother_27b"),
+            "122b": ("qwen35_122b_x0_parts", "qwen35_122b_x0_parts", "qwen35_122b_x0_jppother")}  # fmt: skip
+    for m, (pcaeq, word, other) in runs.items():
+        cells: dict[str, dict] = {}
+        for run, parts in ((pcaeq, ("jpp", "jwo", "pca_eq")), (word, ("w",)), (other, ("jpp_other",))):
+            v = latest(pins.RESULTS_DIR / "x0_parts" / run, "verdict-*/verdict.json")
+            for r in (v or {}).get("rows", []):
+                if r["part"] in parts:
+                    c = cells.setdefault(r["part"], {"share": r["median_share"], "source": run})
+                    c["lookup" if r["reader"] == X.LOOKUP else "recall"] = r["excess"]
+        run = XF.Run(MAIN_RUNS[m])
+        layer = X.PREDICTED[{"9b": "qwen3.5-9b", "27b": "qwen3.6-27b", "122b": "qwen3.5-122b-a10b"}[m]]
+        allc = run.cells("chat")
+        for d in ("wu", "we", "rand"):
+            key = ("chat", layer, X.LOOKUP, d, X.K_MAIN, "signed")
+            if key in allc:
+                cells[d] = {"lookup": allc[key]["excess"], "recall": allc[("chat", layer, X.RECALL, d, X.K_MAIN, "signed")]["excess"],
+                            "share": run.share.get(("chat", layer, d, X.K_MAIN, "signed")), "source": MAIN_RUNS[m]}  # fmt: skip
+        out[m] = cells
+    return out
+
+
+def fig2(plt) -> None:
+    parts = [("jpp", "J++"), ("jwo", "J++ without the\nword's directions"), ("w", "The word alone"),
+             ("pca_eq", "Main directions at\nJ++'s share"), ("jpp_other", "J++ fitted to\nanother scene"),
+             ("wu", "Logit lens †"), ("we", "Input embeddings †"), ("rand", "Random directions †")]  # fmt: skip
+    cells = parts_cells()
+    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 5.4), sharey=True)
+    fig.subplots_adjust(left=0.215, right=0.995, top=0.83, bottom=0.10, wspace=0.12)
+    S.title(fig, "No other part costs the recall as much as the scene's own J++")
+    for ax, (target, m, name) in zip(axes, S.MODELS, strict=True):
+        S.extra_axis(ax)
+        ax.set_title(name.replace("Qwen3.5-", "").replace("Qwen3.6-", ""), fontsize=11.5, weight="bold")
+        for i, (p, label) in enumerate(parts):
+            y = -i
+            c = cells[m].get(p)
+            if c is None or "recall" not in c:
+                ax.text(0.4, y, "not run yet", ha="center", va="center", fontsize=9.5, color=S.COL["muted"])
+                continue
+            S.dot(ax, 0, y, c["recall"], S.COL["recall"], "after")
+            ax.plot([c["lookup"][0]], [y], "o", ms=4.5, color=S.COL["lookup"], zorder=4)
+            if c["share"] is not None:
+                ax.text(1.0, y, f"{100 * c['share']:.0f}%", ha="right", va="center", fontsize=9.5, color=S.COL["muted"],
+                        transform=ax.get_yaxis_transform())  # fmt: skip
+            S.record(
+                "fig2", target, f"{label.replace(chr(10), ' ')}: recall extra loss", *c["recall"], source=c["source"]
+            )
+            S.record(
+                "fig2", target, f"{label.replace(chr(10), ' ')}: lookup extra loss", *c["lookup"], source=c["source"]
+            )
+            if c["share"] is not None:
+                S.record(
+                    "fig2",
+                    target,
+                    f"{label.replace(chr(10), ' ')}: share of the change",
+                    c["share"],
+                    source=c["source"],
+                )
+        ax.set_ylim(-len(parts) + 0.4, 0.7)
+        ax.grid(axis="x", color="#eeeeee")
+    axes[0].set_yticks([-i for i in range(len(parts))], [p[1] for p in parts])
+    axes[0].tick_params(axis="y", length=0)
+    marks = [plt.Line2D([], [], marker="o", ls="", mfc="white", mec=S.COL["recall"], mew=1.6, ms=7),
+             plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=4.5),
+             plt.Line2D([], [], ls="", marker="")]  # fmt: skip
+    fig.legend(marks, ["recall (95% CI)", "lookup", "grey % = the part's share of the change"], loc="upper left",
+               bbox_to_anchor=(0.0, 0.94), ncol=3, frameon=False, fontsize=9.5, handletextpad=0.3)  # fmt: skip
+    S.save(fig, "fig2_parts")
+
+
+def fig3(plt) -> None:
+    """The routes design: the original prompt's locker slots, the swapped prompt (another item moved), and the
+    answer each route predicts."""
+    fig = plt.figure(figsize=(S.WIDTH, 3.9))
+    ax = fig.add_axes((0, 0, 1, 0.88))
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0, 44)
+    ax.axis("off")
+    S.title(fig, "The routes test: each route predicts a different locker")
+    rows = (("Original prompt", 33, [("duck", "4"), ("rabbit", "3"), ("goose", "2")], "Beth picked the goose."),
+            ("Swapped prompt", 21, [("rabbit", "7"), ("duck", "4"), ("goose", "2")], "Beth picked the rabbit."))  # fmt: skip
+    for label, y, slots, pick in rows:
+        ax.text(1, y + 2.5, label, fontsize=10.5, weight="bold", va="center")
+        for j, (item, digit) in enumerate(slots):
+            x = 22 + 17 * j
+            hl = label == "Swapped prompt" and item == "rabbit"
+            ax.add_patch(plt.Rectangle((x, y), 15.5, 5.5, fc="#fff4e6" if hl else "#f5f5f5", ec="#bbbbbb", lw=1))
+            ax.text(x + 7.75, y + 2.75, f"slot {j + 1}: {item} {digit}", ha="center", va="center", fontsize=10)
+        ax.text(74, y + 2.75, pick, fontsize=10.5, va="center")
+    routes = (("identity", "3: the rabbit's locker in the original", S.COL["identity"]),
+              ("position", "4: what slot 1 holds in the original", S.COL["position"]),
+              ("value", "7: the new digit in the swapped prompt", S.COL["value"]),
+              ("unchanged", "2: the original answer (the goose)", "#8f8f8f"))  # fmt: skip
+    ax.text(1, 14.5, "The change at 'goose' comes from the swapped prompt's 'rabbit'; the lookup is asked on the original:",
+            fontsize=10.5, va="center")  # fmt: skip
+    for k, (name, what, col) in enumerate(routes):
+        x, y = 3 + 48 * (k % 2), 8.2 - 5.6 * (k // 2)
+        ax.add_patch(plt.Rectangle((x, y - 1.6), 2.6, 3.2, fc=col, ec="none"))
+        ax.text(x + 4, y, f"{name} → {what}", fontsize=10.2, va="center")
+    S.save(fig, "fig3_routes_design")
+
+
+ARMS4 = (("whole", "whole change"), ("no_jpp", "without J++"), ("no_jpp_rand", "without random (J++ size)"),
+         ("no_alf", "without the pointer"), ("no_alf_rand", "without random (pointer size)"))  # fmt: skip
+ROUTES = (
+    ("identity", "identity"),
+    ("position", "position"),
+    ("value", "value"),
+    ("original", "unchanged"),
+    ("other", "other"),
+)
+ROUTE_COL = {"identity": S.COL["identity"], "position": S.COL["position"], "value": S.COL["value"],
+             "original": S.COL["original"], "other": S.COL["other"]}  # fmt: skip
+
+
+def fig4(plt) -> None:
+    runs = (("qwen3.5-9b", "9B", "qwen35_9b_x6_routes", "fixed"), ("qwen3.6-27b", "27B", "x6_routes_27b", "fixed"),
+            ("qwen3.5-122b-a10b", "122B, after the data", "qwen35_122b_x6_routes_g75", "rerun"))  # fmt: skip
+    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 3.9), sharey=True)
+    fig.subplots_adjust(left=0.255, right=0.975, top=0.74, bottom=0.14, wspace=0.16)
+    S.title(fig, "The lookup follows identity or position, never the value")
+    for ax, (target, name, run, kind) in zip(axes, runs, strict=True):
+        ax.set_title(name, fontsize=11.5, weight="bold")
+        v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
+        ax.set_xlim(0, 1)
+        ax.set_xticks([0, 0.5, 1], ["0", "50", "100"])
+        if v is None:
+            S.empty(ax, "not run yet" if kind == "rerun" else "not run")
+            continue
+        rows = {(r["condition"], r["arm"]): r for r in v["rows"]}
+        for i, (arm, _) in enumerate(ARMS4):
+            r = rows.get(("C2", arm))
+            if r is None:
+                continue
+            left = 0.0
+            for route, _ in ROUTES:
+                s = r["share"][route][0]
+                ax.barh(-i, s, left=left, height=0.72, color=ROUTE_COL[route], edgecolor="white", lw=0.8,
+                        hatch="//" if kind == "rerun" else None)  # fmt: skip
+                if s >= 0.15:
+                    ax.text(left + s / 2, -i, f"{100 * s:.0f}", ha="center", va="center", fontsize=9,
+                            color="white" if route in ("identity", "value") else "#222222")  # fmt: skip
+                S.record(
+                    "fig4",
+                    target,
+                    f"another item moved, {arm}: {route} share",
+                    *r["share"][route],
+                    n=r["n"],
+                    source=run,
+                )
+                left += s
+        ax.set_ylim(-len(ARMS4) + 0.4, 0.6)
+    axes[1].set_xlabel("% of lookup answers")
+    axes[0].set_yticks([-i for i in range(len(ARMS4))], [a[1] for a in ARMS4])
+    axes[0].tick_params(axis="y", length=0)
+    hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[r]) for r, _ in ROUTES[:4]]
+    fig.legend(hs, [n for _, n in ROUTES[:4]], loc="upper left", bbox_to_anchor=(0.005, 0.915), ncol=4, frameon=False,
+               fontsize=10, handlelength=1.2)  # fmt: skip
+    S.save(fig, "fig4_routes")
+
+
+def fig5(plt) -> None:
+    """Top: the J++ extra loss by depth (valid X0 cells); bottom: the position share (another item moved, whole change)
+    at each layer the routes test ran; shaded where the lookup's J++ extra loss is at least NEEDS."""
+    routes = {"9b": (("qwen35_9b_x6_routes_l6", 6, "fixed"), ("qwen35_9b_x6_routes", 12, "fixed")),
+              "27b": (("x6_routes_l16_27b", 16, "fixed"), ("x6_routes_27b", 32, "fixed")),
+              "122b": (("qwen35_122b_x6_routes_l27_g75", 27, "rerun"), ("qwen35_122b_x6_routes_g75", 33, "rerun"))}  # fmt: skip
+    fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharex=True, gridspec_kw={"height_ratios": [1.25, 1]})
+    fig.subplots_adjust(left=0.105, right=0.995, top=0.84, bottom=0.10, wspace=0.10, hspace=0.18)
+    S.title(fig, "With depth, the bridge adds a pointer the lens can't see")
+    for j, (target, m, name) in enumerate(S.MODELS):
+        top, bot = axes[0, j], axes[1, j]
+        n_layers = pins.TARGETS[target]["n_layers"]
+        cells = XF.Run(MAIN_RUNS[m]).cells("chat")
+        layers = sorted({k[1] for k in cells})
+        top.axhspan(S.XLIM[0], S.NOT_NEEDED, color=S.COL["band"], lw=0, zorder=0)
+        for w, col in ((X.LOOKUP, S.COL["lookup"]), (X.RECALL, S.COL["recall"])):
+            pts = [(100 * la / n_layers, cells[("chat", la, w, *X.MAIN)], la) for la in layers]
+            pts = [(d, c, la) for d, c, la in pts if c["valid"]]
+            top.plot([d for d, _, _ in pts], [c["excess"][0] for _, c, _ in pts], "-o", color=col, lw=2, ms=3.5)
+            top.fill_between([d for d, _, _ in pts], [c["excess"][1] for _, c, _ in pts], [c["excess"][2] for _, c, _ in pts],
+                             color=col, alpha=0.12, lw=0)  # fmt: skip
+            for d, c, la in pts:
+                S.record("fig5", target, f"layer {la}: {'lookup' if w == X.LOOKUP else 'recall'} J++ extra loss", *c["excess"],
+                         n=c["n"], source=MAIN_RUNS[m])  # fmt: skip
+                if w == X.LOOKUP and c["excess"][0] >= NEEDS:
+                    half = 100 / n_layers
+                    for ax in (top, bot):
+                        ax.axvspan(d - half, d + half, color="#efe9fb", lw=0, zorder=0)
+        top.set_ylim(*S.XLIM)
+        top.set_title(name.replace("Qwen3.5-", "").replace("Qwen3.6-", ""), fontsize=11.5, weight="bold")
+        top.grid(axis="y", color="#eeeeee")
+        bot.set_ylim(0, 1)
+        if not any(latest(pins.RESULTS_DIR / "x6_routes" / r, "verdict-*/verdict.json") for r, _, _ in routes[m]):
+            S.empty(bot, "routes test\nnot run yet")
+        for run, layer, kind in routes[m]:
+            v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
+            d = 100 * layer / n_layers
+            r = next((r for r in (v or {}).get("rows", []) if r["condition"] == "C2" and r["arm"] == "whole"), None)
+            if r is None:
+                continue
+            pos = r["share"]["position"]
+            bot.plot([d, d], [pos[1], pos[2]], color=S.COL["position"], lw=1.6, ls="--" if kind == "rerun" else "-")
+            bot.plot(
+                [d],
+                [pos[0]],
+                "o",
+                ms=7.5,
+                mfc=S.COL["position"] if kind == "fixed" else "white",
+                mec=S.COL["position"],
+                mew=1.6,
+            )
+            bot.text(d + 2.5, pos[0] + 0.07, f"layer {layer}", fontsize=9, va="bottom", color=S.COL["muted"])
+            S.record(
+                "fig5",
+                target,
+                f"layer {layer}: position share (another item moved, whole change)",
+                *pos,
+                n=r["n"],
+                source=run,
+            )
+        bot.grid(axis="y", color="#eeeeee")
+        bot.set_xlim(0, 100)
+        bot.set_xlabel("depth (% of layers)")
+    axes[0, 0].set_ylabel("J++ extra loss")
+    axes[1, 0].set_ylabel("position share")
+    for ax in axes[:, 1:].flat:
+        ax.tick_params(labelleft=False)
+    axes[0, 0].text(0.04, 0.93, "lookup", color=S.COL["lookup"], transform=axes[0, 0].transAxes, fontsize=9.5, va="top")
+    axes[0, 0].text(0.04, 0.80, "recall", color=S.COL["recall"], transform=axes[0, 0].transAxes, fontsize=9.5, va="top")
+    S.save(fig, "fig5_depth")
+
+
+def fig6(plt) -> None:
+    runs = (("qwen3.5-9b", "9b", "9B", "qwen35_9b_x6_routes_bothoff", "fixed"),
+            ("qwen3.6-27b", "27b", "27B", "x6_routes_bothoff_27b", "fixed"),
+            ("qwen3.5-122b-a10b", "122b", "122B, after the data", "qwen35_122b_x6_routes_bothoff_g75", "rerun"))  # fmt: skip
+    parts = (("jpp", "without J++"), ("alf", "without the pointer"), ("both", "without both"))
+    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 3.0), sharey=True)
+    fig.subplots_adjust(left=0.20, right=0.995, top=0.76, bottom=0.18, wspace=0.10)
+    S.title(fig, "Removing J++ and the pointer directions together")
+    for ax, (target, m, name, run, kind) in zip(axes, runs, strict=True):
+        S.extra_axis(ax)
+        ax.set_title(name, fontsize=11.5, weight="bold")
+        v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
+        ex = {(e["condition"], e["reader"], e["part"]): e for e in (v or {}).get("extra", [])}
+        if not ex:
+            S.empty(ax, "pending")
+            continue
+        for i, (p, _) in enumerate(parts):
+            e = ex[("C0", X.LOOKUP, p)]["excess"]
+            S.dot(ax, 0, -i, e, S.COL["lookup"], "rerun" if kind == "rerun" else "fixed")
+            S.record("fig6", target, f"the sanity swap, lookup extra loss {parts[i][1]}", *e, source=run)
+        bar = ex[("C0", X.LOOKUP, "alf")]["excess"][0] + 0.15
+        ax.plot([bar, bar], [-2.35, -1.65], color="#333333", lw=1.6, ls=":")
+        if m == "9b":
+            ax.text(bar + 0.03, -1.62, "bar", ha="left", va="bottom", fontsize=9, color="#333333")
+        S.record("fig6", target, "the bar fixed in advance (pointer alone + 0.15)", round(bar, 4), source=run)
+        ax.set_ylim(-len(parts) + 0.4, 0.6)
+    axes[0].set_yticks([-i for i in range(len(parts))], [p[1] for p in parts])
+    axes[0].tick_params(axis="y", length=0)
+    S.save(fig, "fig6_both_removed")
+
+
+def main() -> None:
+    plt = S.setup()
+    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6):
+        f(plt)
+    S.write_data()
+    print(S.OUT)
+
+
+if __name__ == "__main__":
+    main()

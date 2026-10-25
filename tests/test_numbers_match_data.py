@@ -1,17 +1,19 @@
-"""Every number README.md and STATUS.md's current block quote is in figures/status_2026-10-25/data.csv (Dan, 25 Oct: the
-address / value mix-up). An interval 'v [lo, hi]' must match one row's value, lo and hi; a lone decimal or percentage
-must match some row's value. Rule bars (0.05, 0.10, 0.15, 0.20, 0.30, 0.80, 95%) and integers (counts) are skipped."""
+"""Every number README.md and STATUS.md's current block quote is in figures/story/data.csv (Dan, 25 Oct: the address /
+value mix-up; README v2 moved the data file from the frozen figures/status_2026-10-25/). An interval 'v [lo, hi]' must
+match one row's value, lo and hi; a lone decimal or percentage must match some row's value. Rule bars (0.05, 0.10,
+0.15, 0.20, 0.30, 0.75, 0.80, 95%) and integers (counts) are skipped."""
 
+import contextlib
 import csv
 import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-DATA = REPO / "figures" / "status_2026-10-25" / "data.csv"
+DATA = REPO / "figures" / "story" / "data.csv"
 NUM = r"[−-]?\d+\.\d+"
 TRIPLE = re.compile(rf"({NUM}) \[({NUM}), ({NUM})\]")
 SINGLE = re.compile(rf"(?<![\w.\[])({NUM}|\d+(?:\.\d+)?%)(?![\d\]])")
-BARS = {0.05, 0.10, 0.15, 0.20, 0.30, 0.80}
+BARS = {0.05, 0.10, 0.15, 0.20, 0.30, 0.75, 0.80}
 
 
 def f(s: str) -> float:
@@ -25,10 +27,8 @@ def known() -> tuple[list[tuple[float, float, float]], set[float], set[float]]:
         for m in TRIPLE.finditer(v):
             triples.append(tuple(f(x) for x in m.groups()))
         if r["lo"] and r["hi"]:
-            try:
+            with contextlib.suppress(ValueError):
                 triples.append((float(r["value"]), float(r["lo"]), float(r["hi"])))
-            except ValueError:
-                pass
         for m in re.finditer(rf"{NUM}|\d+(?:\.\d+)?%", v):
             (pcts if m.group().endswith("%") else singles).add(round(f(m.group()), 3))
         try:

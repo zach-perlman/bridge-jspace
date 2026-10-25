@@ -19,4 +19,4 @@ controls:
 - 'C0; the recall as a control route; random parts at the J++ part''s and the pointer directions'' shares'
 n: '300 eligible scenes per condition'
 seeds: [2510]
-notes: "122B on both GPUs. The first C0 run name (qwen35_122b_x6_routes_c0) is taken by the stopped run, so the C0 check writes qwen35_122b_x6_routes_c0_r2. Put ahead of x0_122b_b7 in the queue (Dan wants F20 first)."
+notes: "CANCELLED before it ran (Dan, 25 Oct ~13:20, then README v2 item 0): the gate fixed in advance compares the unrounded accuracy; the 122B routes run is x6_routes_122b_g75 (gate lowered to 0.75, after the data, descriptive); the rounding in x6_routes.py was removed in f1a3eb9f. 122B on both GPUs. The first C0 run name (qwen35_122b_x6_routes_c0) is taken by the stopped run, so the C0 check writes qwen35_122b_x6_routes_c0_r2. Put ahead of x0_122b_b7 in the queue (Dan wants F20 first)."
