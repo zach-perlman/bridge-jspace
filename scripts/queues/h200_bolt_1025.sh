@@ -2,7 +2,7 @@
 # Zach (2026-10-25, prereg amendment 40 note 1): NVIDIA Nemotron 3.5 Bolt 74B-A9B on v2, last in the queue, on GPUs 0,1.
 # Disk (Zach's approval): once DeepSeek's chain (h200nqDS's first script) has finished with 0 failures, DeepSeek's cache
 # is dropped (scratch/cache_drop.py; its lens is kept); with failures, the cache is kept and the chain stops. Then Bolt's
-# download (stop if under 160 GB free); once DeepSeek's chain (Ministral's test and swap) and Lightning's chain have
+# download (stop if under 160 GB free); once DeepSeek's, Ministral's and Lightning's chains have
 # exited: smoke (new_model_smoke + competence on the first 120 dev items; stop if the unembed's top-1 differs or plain-text
 # NLL >= 4 nats), our plain J-lens (fit_jlens --harness: NVIDIA's language model as the harness loads it, over two GPUs;
 # 500 WikiText prompts, --no-bos; dim_batch 64, else 32), its sha256 into pins, commit, lens check; then h200_nq40_1025.sh
@@ -16,7 +16,7 @@ R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 KEY=nemotron-3.5-bolt; P=nem35b_
 REPO=nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16; REV=e09a4cedb1787db1760375ee5539f222cae0c672
 LENS=cache/$KEY/lenses/jlens/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jlens.pt
-DS=$R-h200nqDS-1025-0505.log
+DS=$R-h200nqDS2-1025-0845.log
 export BJ_TARGET=$KEY
 echo "=== start $(date -u +%FT%TZ)"
 until grep -qs "=== nq deepseek-v4-flash done\|^EXIT" $DS; do sleep 60; done
@@ -36,7 +36,7 @@ from huggingface_hub import snapshot_download
 print('=== BOLTDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-for j in h200nqDS-1025-0505 h200nemL2-1025-0558; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
+for j in h200nqDS2-1025-0845 h200min2-1025-0845 h200nemL3-1025-0845; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
 for g in 0 1; do until [ "$(nvidia-smi -i $g --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 120000 ]; do sleep 60; done; done
 echo "=== GPUs 0,1 free $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 < /dev/null || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Zach (2026-10-25, prereg amendment 40): NVIDIA Nemotron 3.5 Lightning 30B-A3B on v2, at the end of the queue. Download
 # once DeepSeek's download and OLMo's cache drop are done (disk); on GPU G once DeepSeek's chain has finished
-# (h200nqDS's first script; Ministral's test and swap then hold GPU 0): smoke (scripts/new_model_smoke.py + competence
+# (h200nqDS2's nq part; Ministral's chain h200min2 then holds GPU 0): smoke (scripts/new_model_smoke.py + competence
 # on the first 120 dev items; stop if the unembed check's top-1 differs or plain-text NLL >= 4 nats); our plain J-lens
 # (scripts/lens_fit/fit_jlens.py: Anthropic's jlens, 500 WikiText prompts, --no-bos), its sha256 into pins, commit,
 # lens check; then amendment 39's procedure (h200_nq40_1025.sh): gate, dev, test, swap. Usage: h200_nem_1025.sh GPU
@@ -20,13 +20,13 @@ echo "=== start $(date -u +%FT%TZ)"
 for j in dsdisk-1025-0505 olmodrop-1025-0505; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
 free=$(df -BG --output=avail /workspace | tail -1 | tr -dc 0-9)
 echo "=== $KEY download, $free GB free $(date -u +%T)"
-[ "$free" -ge 80 ] || { echo "=== $KEY download: only $free GB free, stopped"; exit 1; }
+[ "$free" -ge 80 ] || [ -d /workspace/hf_cache/hub/models--nvidia--NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16/snapshots/$REV ] || { echo "=== $KEY download: only $free GB free, stopped"; exit 1; }
 CUDA_VISIBLE_DEVICES="" .venv/bin/python -c "
 from huggingface_hub import snapshot_download
 print('=== NEMDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-until grep -qs "=== nq deepseek-v4-flash done\|^EXIT" $R-h200nqDS-1025-0505.log; do sleep 60; done
+until grep -qs "=== nq deepseek-v4-flash done" $R-h200nqDS2-1025-0845.log; do sleep 60; done  # 2026-10-25: DeepSeek's relaunched chain; its gate-to-swap part only
 until [ "$(nvidia-smi -i $G --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 100000 ]; do sleep 60; done
 echo "=== GPU $G free after DeepSeek $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }

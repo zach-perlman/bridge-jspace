@@ -545,6 +545,7 @@ TARGETS["deepseek-v4-flash"] = {
     "bos": True,
     "run_prefix": "dsv4f_",
     "split_gpus": 22,
+    "attn": "eager",  # DeepseekV4 supports eager only (per-head attention sinks; transformers 5.17), 2026-10-25
     "chat_template": DEEPSEEK_V4_CHAT_TEMPLATE,
     "lenses": {"jpp": (LENS_REPO, "deepseek-v4-flash/jpp/Salesforce-wikitext/DeepSeek-V4-Flash_jpp_lens.pt", "e166deb5ad540932100ef803c8c9bcc2a5453694")},
     "frozen_lens_sha256": "e7dc42a68afb8411c4cba01605ce51eec17d7ad0f3150009173224e96864633e",
@@ -622,7 +623,7 @@ if TARGET != "qwen3.6-27b":
 
 def model_pin() -> dict[str, str]:
     """The target model as manifests record it."""
-    return {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": "sdpa"}
+    return {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": TARGETS[TARGET].get("attn", "sdpa")}
 
 
 def check_run_name(name: str) -> None:

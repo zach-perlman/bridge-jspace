@@ -1091,3 +1091,20 @@ code for Bolt after reading it.
 - **Fix to amendment 40 (no run affected):** the Lightning and Bolt pins placeholders now differ from Ministral's, which
   its fit script requires to be unique. The Lightning chain (h200nemL-1025-0522, still waiting before its download) was
   stopped and relaunched with the fix.
+
+**Amendment 39, note 1 (Zach, 2026-10-25 08:37 UTC; no DeepSeek or Ministral knock-out, swap or band data seen):
+two failures at start, fixed; new order.** (1) Ministral's J++ fit stopped before fitting: jpp_lens's rule patcher met
+Mistral3RMSNorm (the multimodal projector's norm, not on the text path) with no rule registered. It is now registered
+with _qwen2_rmsnorm_lrp_forward (its forward is line-for-line Qwen2RMSNorm's). The patcher was checked on an empty
+Ministral on the CPU: 82 norms patched (2 per block, the final norm, the projector's), no error.
+scripts/lens_fit/jpp_lens_ministral3.patch is regenerated. Its router (64 prompts, done before the failure) is reused.
+The chain (h200nqA) was stopped, and its dev competence, cut off a minute in, was moved out of results. (2) DeepSeek's
+chain (h200nqDS) failed at load in every step: transformers' DeepseekV4 supports no sdpa (per-head attention sinks).
+pins sets attn eager for it, and pins.model_pin now records each target's attn (it recorded "sdpa" for every target,
+gpt-oss's eager runs included). Its two empty result directories (manifests only) were moved out. (3) Order, both GPUs
+being free: DeepSeek first (scripts/queues/h200_ds2_1025.sh: new_model_smoke with amendment 40's stop rule, then gate,
+dev, test, swap). Then Ministral's whole procedure on GPU 0 (fit, gate, dev, test, swap; job h200min2), beside
+Lightning on GPU 1, then Bolt. Lightning's chain had been released by DeepSeek's failure, and was stopped before its
+smoke wrote anything. Bolt's guard held (DeepSeek's cache kept). Ministral's test competence
+(min14_jsuite_v2_test_chat_competence_cand2_v1) ran early, at 06:31, for Zach's keep-or-replace question; its test
+step reuses it. Procedures and readings unchanged.
