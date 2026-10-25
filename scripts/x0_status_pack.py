@@ -39,10 +39,12 @@ from scripts import x0_strata as ST
 
 OUT = pins.REPO_ROOT / "figures" / "status_2026-10-25"  # the 24 Oct folder stays as shared (Dan, 25 Oct)
 # batch 31 (Dan, 25 Oct ~00:20): these runs stay closed until his answers are committed
-CLOSED_RUNS = {"qwen35_9b_x0_replicate", "x0_replicate_27b", "qwen35_122b_x0_single", "qwen35_122b_x0_parts",
-               "qwen35_122b_x0_probe_v4", "qwen35_122b_x0_amnesic", "qwen35_122b_x0_massmean_grid", "x5_natural_27b",
-               "qwen35_9b_x5_natural", "qwen35_122b_x5_natural", "qwen35_122b_x4_patch", "qwen35_122b_x0b_v2",
-               "x6_routes_27b", "qwen35_9b_x6_routes"}  # x6_routes: batch 32  # fmt: skip
+CLOSED_RUNS = {
+    "x0_jppother_27b",
+    "qwen35_9b_x0_jppother",  # batch 33
+    "x6_routes_l16_27b",
+    "qwen35_9b_x6_routes_l6",
+}  # batch 32, Q32.7 / Q32.8
 SHOW_CLOSED = False
 YL = "extra flips lost vs a random part of the same size\n(share of the change's flips)"
 MODELS = (("qwen3.5-9b", "Qwen3.5-9B", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
@@ -115,7 +117,7 @@ def placeholder(ax, title: str, st: str) -> None:
     ax.set_title(title)
     text = {"closed": "closed until the batch-31\nanswers are committed", "not run yet": "not run yet"}.get(st, st)
     ax.text(0.5, 0.5, text, transform=ax.transAxes, ha="center", va="center", fontsize=12, color="#888888")
-    ax.tick_params(left=False, labelleft=False, bottom=False, labelbottom=False)
+    ax.tick_params(bottom=False, labelbottom=False)  # keep the y labels: panels share the y axis
     for s in ax.spines.values():
         s.set_visible(False)
 
@@ -702,7 +704,7 @@ def f13(plt, F, color, grey) -> None:
             (r["format"], r["order"], r["reader"]): r
             for r in json.loads(sorted(root.glob("cross-*/cross.json"))[-1].read_text())
         }
-        fmts = ("prose", "json", "table")
+        fmts = [f for f in ("prose", "json", "table") if (f, "before", X.LOOKUP) in cross]  # the 122B: prose, tables
         groups = [f"pooled\n(n = {cells[(pred, X.LOOKUP, *X.MAIN)]['n']:,})",
                   *(f"{f}, locker before\n(n = {cross[(f, 'before', X.LOOKUP)]['n']})" for f in fmts)]  # fmt: skip
         series = [(name, col, [cells[(pred, w, *X.MAIN)]["excess"], *(cross[(f, "before", w)]["excess"] for f in fmts)])
@@ -713,7 +715,7 @@ def f13(plt, F, color, grey) -> None:
         ax.axhspan(-0.2, X.AROUND_EXCESS, color="#f6f6f6", lw=0, zorder=0)
     axes[0].set_ylabel(YL)
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
-    head(fig, "The recall-lookup gap holds in varied scenes",
+    head(fig, "The recall-lookup gap holds in varied scenes on the 9B and 27B; on the 122B it is smaller",
          "7 topics x prose / JSON / tables x 3 difficulty levels; the swapped prompt changes only the asked person's pick; 75% of scenes with the "
          "locker sentence before the pick. Pooled over the cells where the model answers the unedited questions, and by "
          "format in locker-before scenes.", h, ["lookup", "recall"])  # fmt: skip
@@ -774,8 +776,8 @@ def f14(plt, F, color, grey) -> None:
     """PCA at J++'s share (k per item), J++ without the word fit orthogonal to the word, and J++ (same items, same run)."""
     parts_figure(plt, F, PCAEQ, (("pca_eq", "the layer's main\ndirections (PCA)"),
                                  ("jwo", "J++ without the\nword's directions"), ("jpp", "J++")), "f14",
-                 "f14_pcaeq.png", "At the same share, the layer's main directions and J++ without the word's directions "
-                 "cost the recall far less than J++",
+                 "f14_pcaeq.png", "J++ without the word's directions costs the recall far less than J++; the layer's main "
+                 "directions do too on the 9B and 27B, not on the 122B",
                  "The swapped prompt changes only the asked person's pick; at the layer fixed in advance; each part against a random part of its own "
                  "share. Main directions: the layer's top 2,000 principal directions, as many per scene as match its J++ "
                  "share. J++ without the word's directions: 25 J++ directions fit to the change after its word part is taken out.",
@@ -835,7 +837,7 @@ def f15(plt, F, color, grey) -> None:
         ax.set_ylim(-0.2, 1.0)
     axes[0].set_ylabel(YL)
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
-    head(fig, "On the same scenes, the pointer directions cost the 9B's lookup; J++ costs the 27B's recall but barely the 9B's",
+    head(fig, "On the same scenes, the pointer directions cost the lookup on the 9B and 122B; J++ costs the recall most on the 27B",
          "Three parts of the change (the swapped prompt changes only the asked person's pick), each removed against a "
          "random part of its own share, at the layer fixed in advance, on the same scenes: those with both locker "
          "sentences before the pick. Pointer directions: the 4 directions that separate 'which sentence holds the "
@@ -1049,7 +1051,7 @@ def f18(plt, F, color, grey) -> None:
     axes[0].set_ylabel(YL)
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
     n_txt = f"{passed['cases']} of {passed['scenes']} scenes" if passed else "the scenes"
-    head(fig, "Natural passages: the recall-lookup gap",
+    head(fig, "On natural passages the gap holds on the 122B and is mixed on the 27B, whose lookup needs J++ too",
          "Natural passages with real relations (countries, cities, languages, companies, people, animals); one passage for "
          "both questions; the swapped prompt changes only the asked person's bridge to another entity of the passage. "
          f"{n_txt} passed the rule fixed in advance for the swap (one-token bridge at one position, both answers "
@@ -1150,7 +1152,7 @@ def f20(plt, F, color, grey) -> None:
         ax.set_title(f"{label} (n per bar in data.csv)")
     axes[0].set_ylabel("share of lookup answers")
     h = [plt.Rectangle((0, 0), 1, 1, color=c) for _, c in ROUTE_COLOURS]
-    head(fig, "Which information from the bridge word the lookup follows",
+    head(fig, "The lookup follows the bridge's identity or its locker sentence's position, never the new value",
          "C1: the bridge stays, its locker sentence moves to another slot and gets a new digit (identity = original, "
          "position, value). C2: the bridge changes and moves (identity, position, value, original). The change from the "
          "swapped prompt is added at the bridge word at the layer fixed in advance; each arm removes a part of it.",

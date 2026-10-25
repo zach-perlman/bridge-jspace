@@ -251,6 +251,18 @@ f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, bridge identity, locker bef
 f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, bridge identity, locker before",0.06728232189973615,,,
 f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, bridge identity, locker after",0.9986522911051213,0.9952377161055506,1.0,742
 f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, bridge identity, locker after",0.06334231805929919,,,
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"probe accuracy, answer digit, locker before",0.24802110817941952,0.21170511623080118,0.28477040085328575,758
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"best baseline, answer digit, locker before",0.1111,,,
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"probe accuracy, answer digit, locker after",0.11320754716981132,0.09090909090909091,0.13513513513513514,742
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"best baseline, answer digit, locker after",0.1347708894878706,,,
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"probe accuracy, locker sentence, locker before",0.9182058047493403,0.8957702697383312,0.9401610198889916,758
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"best baseline, locker sentence, locker before",0.5303430079155673,,,
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"probe accuracy, locker sentence, locker after",0.3288409703504043,0.30536398668584686,0.3529432448084719,742
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"best baseline, locker sentence, locker after",0.3692722371967655,,,
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"probe accuracy, bridge identity, locker before",0.9986807387862797,0.9953416149068323,1.0,758
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"best baseline, bridge identity, locker before",0.06728232189973615,,,
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"probe accuracy, bridge identity, locker after",1.0,1.0,1.0,742
+f7,qwen3.5-122b-a10b,qwen35_122b_x0_probe_v4,33,-,"best baseline, bridge identity, locker after",0.06334231805929919,,,
 f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,reads the alt's locker sentence: alt (org + Δ),0.547945205479452,0.4444444444444444,0.647887323943662,73
 f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.0,0.0,0.0,73
 f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.547945205479452,0.44303345388788423,0.6551724137931034,73
@@ -261,6 +273,11 @@ f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ pa
 f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.5142857142857142,0.40277326839826844,0.6463593974175034,70
 f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.04285714285714286,0.0,0.09230769230769231,70
 f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.5,0.3835405039742939,0.6268656716417911,70
+f8,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,reads the alt's locker sentence: alt (org + Δ),0.5,0.3606393442622951,0.6481481481481481,54
+f8,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.05555555555555555,0.0,0.109375,54
+f8,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.5,0.3606393442622951,0.6481481481481481,54
+f8,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.09259259259259259,0.023255813953488372,0.16129032258064516,54
+f8,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.46296296296296297,0.31912475822050296,0.6304347826086957,54
 f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,alt state points at the new pick's locker sentence: after,1.0,1.0,1.0,15
 f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,alt state points at the other person's pick sentence: after,0.0,0.0,0.0,15
 f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the new pick's locker sentence: before, the other pick is the latest earlier mention",0.8571428571428571,0.7037037037037037,0.9666666666666667,28
@@ -281,6 +298,16 @@ f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, the whole change,
 f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, without the J++ part, first mention: locker",1.0,1.0,1.0,45
 f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, the whole change, first mention: other pick",1.0,1.0,1.0,25
 f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, without the J++ part, first mention: other pick",1.0,1.0,1.0,25
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,alt state points at the new pick's locker sentence: after,1.0,1.0,1.0,12
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,alt state points at the other person's pick sentence: after,0.0,0.0,0.0,12
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,"alt state points at the new pick's locker sentence: before, the other pick is the latest earlier mention",0.8333333333333334,0.5714285714285714,1.0,18
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,"alt state points at the other person's pick sentence: before, the other pick is the latest earlier mention",0.0,0.0,0.0,18
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,"alt state points at the new pick's locker sentence: before, the alt locker is the latest earlier mention",0.0,0.0,0.0,24
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_amnesic,-,-,"alt state points at the other person's pick sentence: before, the alt locker is the latest earlier mention",0.9583333333333334,0.8461538461538461,1.0,24
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_single,33,PP,"lookup lookup switched, the whole change, first mention: locker",1.0,1.0,1.0,30
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_single,33,PP,"lookup lookup switched, without the J++ part, first mention: locker",1.0,1.0,1.0,30
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_single,33,PP,"lookup lookup switched, the whole change, first mention: other pick",1.0,1.0,1.0,24
+f9,qwen3.5-122b-a10b,qwen35_122b_x0_single,33,PP,"lookup lookup switched, without the J++ part, first mention: other pick",1.0,1.0,1.0,24
 f10,qwen3.5-9b,qwen35_9b_x0_necessity,12,recall-lookup,"C, two people
 swap picks",0.5260333575054386,0.42372781210953087,0.614298830454014,
 f10,qwen3.5-9b,qwen35_9b_x0_single_r2,12,recall-lookup,"C, only the asked person's
@@ -291,6 +318,8 @@ f10,qwen3.6-27b,x0_single_27b_r2,32,recall-lookup,"C, only the asked person's
 pick changes",0.556957462148522,0.45171762557731554,0.650708709100594,
 f10,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,recall-lookup,"C, two people
 swap picks",0.3152173913043478,0.20015931372549006,0.42544360341800097,
+f10,qwen3.5-122b-a10b,qwen35_122b_x0_single,33,recall-lookup,"C, only the asked person's
+pick changes",0.27583166803808623,0.15151443950786042,0.38700769048897066,
 f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,the word only (4% of the change),0.0,-0.027027027027027084,0.02941176470588225,
 f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,J++ with the word's own tokens banned (19% of the change),-0.01904761904761909,-0.0672268907563025,0.025976849237718768,
 f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,"PCA of the layer (top 2,000) (39% of the change)",0.38095238095238093,0.2936489733508082,0.4750061881188119,
@@ -339,6 +368,12 @@ f13,qwen3.6-27b,x0b_v2_27b,-,recall,"pooled (n = 1,635)",0.5553555355535553,0.5,
 f13,qwen3.6-27b,x0b_v2_27b,-,recall,"prose, locker before (n = 548)",0.5689655172413793,0.49299496394302406,0.6415108547397134,
 f13,qwen3.6-27b,x0b_v2_27b,-,recall,"json, locker before (n = 181)",0.3910256410256411,0.2631578947368419,0.5172413793103448,
 f13,qwen3.6-27b,x0b_v2_27b,-,recall,"table, locker before (n = 498)",0.4316939890710383,0.34756029202668715,0.5280571303098051,
+f13,qwen3.5-122b-a10b,qwen35_122b_x0b_v2,-,lookup,pooled (n = 852),-0.015898251192368873,-0.030418376687388133,-0.0033275110857251167,
+f13,qwen3.5-122b-a10b,qwen35_122b_x0b_v2,-,lookup,"prose, locker before (n = 309)",-0.006993006993006978,-0.0234375,0.009463722397476396,
+f13,qwen3.5-122b-a10b,qwen35_122b_x0b_v2,-,lookup,"table, locker before (n = 307)",-0.006644518272425293,-0.01831501831501825,0.0,
+f13,qwen3.5-122b-a10b,qwen35_122b_x0b_v2,-,recall,pooled (n = 852),0.1328320802005012,0.10872043368103582,0.16216216216216217,
+f13,qwen3.5-122b-a10b,qwen35_122b_x0b_v2,-,recall,"prose, locker before (n = 309)",0.0610169491525423,0.03272727272727283,0.09901069180400476,
+f13,qwen3.5-122b-a10b,qwen35_122b_x0b_v2,-,recall,"table, locker before (n = 307)",0.01379310344827589,-0.010948905109488986,0.03975578607172645,
 f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,the layer's main directions (PCA) (19% of the change),0.08490566037735847,0.01869158878504673,0.15116279069767435,
 f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,J++ without the word's directions (16% of the change),0.0,-0.027027027027027084,0.024590163934426146,
 f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,J++ (19% of the change),-0.018867924528301883,-0.05434782608695654,0.018691588785046623,
@@ -351,6 +386,12 @@ f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,J++ (14% of the change),0.0520833333333332
 f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,the layer's main directions (PCA) (14% of the change),0.15753424657534243,0.07975348981950751,0.2267441860465116,
 f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,J++ without the word's directions (11% of the change),0.1986301369863014,0.09836065573770492,0.29487179487179493,
 f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,J++ (14% of the change),0.6095890410958904,0.5114460770246227,0.6932535787321064,
+f14,qwen3.5-122b-a10b,qwen35_122b_x0_parts,-,lookup,the layer's main directions (PCA) (22% of the change),0.08791208791208793,0.02325581395348841,0.15306352270637988,
+f14,qwen3.5-122b-a10b,qwen35_122b_x0_parts,-,lookup,J++ without the word's directions (14% of the change),-0.03296703296703296,-0.07407407407407407,0.0,
+f14,qwen3.5-122b-a10b,qwen35_122b_x0_parts,-,lookup,J++ (21% of the change),-0.01098901098901095,-0.05952380952380942,0.039473684210526216,
+f14,qwen3.5-122b-a10b,qwen35_122b_x0_parts,-,recall,the layer's main directions (PCA) (22% of the change),0.2142857142857143,0.1306532663316583,0.2954545454545454,
+f14,qwen3.5-122b-a10b,qwen35_122b_x0_parts,-,recall,J++ without the word's directions (14% of the change),0.038461538461538436,0.004328537841468841,0.07777777777777772,
+f14,qwen3.5-122b-a10b,qwen35_122b_x0_parts,-,recall,J++ (21% of the change),0.2637362637362637,0.15517241379310354,0.36158492607284526,
 f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf (same 73 scenes),-,lookup,J++ part (18% of the change),0.0,0.0,0.0,
 f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf (same 73 scenes),-,lookup,pointer directions (18%),0.48611111111111105,0.38235294117647056,0.59375,
 f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf (same 73 scenes),-,lookup,the layer's main directions (18%),0.05555555555555558,0.012820512820512886,0.11290322580645162,
@@ -363,6 +404,12 @@ f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b (same 70 scenes),-,lookup,the 
 f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b (same 70 scenes),-,recall,J++ part (10% of the change),0.45999999999999996,0.3396226415094339,0.5740740740740741,
 f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b (same 70 scenes),-,recall,pointer directions (15%),0.16326530612244905,0.02127659574468077,0.30612244897959184,
 f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b (same 70 scenes),-,recall,the layer's main directions (11%),0.040000000000000036,-0.036363636363636376,0.11111111111111116,
+f15,qwen3.5-122b-a10b,qwen35_122b_x0_parts + qwen35_122b_x0_massmean_grid (same 54 scenes),-,lookup,J++ part (18% of the change),0.0,0.0,0.0,
+f15,qwen3.5-122b-a10b,qwen35_122b_x0_parts + qwen35_122b_x0_massmean_grid (same 54 scenes),-,lookup,pointer directions (18%),0.31481481481481477,0.19999999999999996,0.4339622641509434,
+f15,qwen3.5-122b-a10b,qwen35_122b_x0_parts + qwen35_122b_x0_massmean_grid (same 54 scenes),-,lookup,the layer's main directions (18%),0.05555555555555558,0.0,0.13210691823899323,
+f15,qwen3.5-122b-a10b,qwen35_122b_x0_parts + qwen35_122b_x0_massmean_grid (same 54 scenes),-,recall,J++ part (18% of the change),0.09615384615384615,0.024390243902439046,0.1818560606060601,
+f15,qwen3.5-122b-a10b,qwen35_122b_x0_parts + qwen35_122b_x0_massmean_grid (same 54 scenes),-,recall,pointer directions (18%),0.1346153846153847,0.021739130434782702,0.2641798228725449,
+f15,qwen3.5-122b-a10b,qwen35_122b_x0_parts + qwen35_122b_x0_massmean_grid (same 54 scenes),-,recall,the layer's main directions (18%),0.019230769230769273,-0.06666666666666676,0.10416666666666663,
 f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"animals, verbatim (n = 400)",-0.007499999999999951,-0.01382488479262678,-0.0024937655860348684,
 f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"animals, translated (n = 377)",-0.029569892473118253,-0.05602240896358546,-0.01055408970976257,
 f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"elements, verbatim (n = 398)",-0.020253164556962022,-0.03201970443349755,-0.007692307692307554,
@@ -375,6 +422,12 @@ f16,qwen3.6-27b,x4_patch_27b,-,lookup,"elements, verbatim (n = 400)",0.002717391
 f16,qwen3.6-27b,x4_patch_27b,-,lookup,"elements, chemical symbol (n = 374)",0.14920634920634923,0.11038961038961037,0.19269102990033227,
 f16,qwen3.6-27b,x4_patch_27b,-,D,animals,0.010228827260291284,-0.012308760753133712,0.0363258640771946,
 f16,qwen3.6-27b,x4_patch_27b,-,D,elements,0.14648895790200134,0.10404267953511101,0.19269102990033216,
+f16,qwen3.5-122b-a10b,qwen35_122b_x4_patch,-,lookup,"animals, verbatim (n = 396)",0.0,-0.0071258907363420665,0.008021390374331583,
+f16,qwen3.5-122b-a10b,qwen35_122b_x4_patch,-,lookup,"animals, translated (n = 394)",-0.0025510204081632404,-0.007957559681697646,0.0,
+f16,qwen3.5-122b-a10b,qwen35_122b_x4_patch,-,lookup,"elements, verbatim (n = 400)",0.0,0.0,0.0,
+f16,qwen3.5-122b-a10b,qwen35_122b_x4_patch,-,lookup,"elements, chemical symbol (n = 381)",0.023872679045092937,-0.011299435028248594,0.07416879795396414,
+f16,qwen3.5-122b-a10b,qwen35_122b_x4_patch,-,D,animals,-0.0025510204081632404,-0.011073451573962334,0.00497512437810943,
+f16,qwen3.5-122b-a10b,qwen35_122b_x4_patch,-,D,elements,0.023872679045092937,-0.011299435028248594,0.07416879795396414,
 f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,lookup,the word only (5% of the change),0.006281407035175879,-0.0030737704918033515,0.01931649331352148,
 f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,lookup,J++ with the word's own tokens banned (20% of the change),0.01633165829145733,0.003840983904121434,0.03146944945369691,
 f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,lookup,J++ (20% of the change),0.011306532663316604,-0.0030441400304414,0.02898600768676425,
@@ -387,6 +440,133 @@ f17,qwen3.6-27b,x0b_parts_27b,-,lookup,J++ (14% of the change),0.082255083179297
 f17,qwen3.6-27b,x0b_parts_27b,-,recall,the word only (4% of the change),0.11562782294489615,0.0811313655581499,0.15232476693028263,
 f17,qwen3.6-27b,x0b_parts_27b,-,recall,J++ with the word's own tokens banned (14% of the change),0.5474254742547424,0.4916964653074977,0.6037981600608703,
 f17,qwen3.6-27b,x0b_parts_27b,-,recall,J++ (14% of the change),0.5591689250225835,0.501750265690721,0.6155532428625867,
+f18,qwen3.5-9b,qwen35_9b_x5_natural,12,PP,gate: original-prompt read accuracy,0.7792207792207793,,,
+f18,qwen3.6-27b,x5_natural_27b,-,lookup,pooled (n = 137),0.31666666666666665,0.2033898305084746,0.44999999999999996,
+f18,qwen3.6-27b,x5_natural_27b,-,lookup,half A (n = 67),0.33333333333333326,0.1785714285714286,0.5,
+f18,qwen3.6-27b,x5_natural_27b,-,lookup,half B (n = 70),0.29999999999999993,0.1428571428571428,0.5357142857142856,
+f18,qwen3.6-27b,x5_natural_27b,-,recall,pooled (n = 137),0.5873015873015872,0.5038167938931298,0.6694915254237288,
+f18,qwen3.6-27b,x5_natural_27b,-,recall,half A (n = 67),0.532258064516129,0.39655172413793105,0.6612903225806451,
+f18,qwen3.6-27b,x5_natural_27b,-,recall,half B (n = 70),0.640625,0.5441176470588235,0.7424242424242423,
+f18,qwen3.6-27b,x5_natural_27b,32,recall-lookup,gap,0.27063492063492056,0.1260467344832669,0.40544411380206535,137
+f18,qwen3.5-122b-a10b,qwen35_122b_x5_natural,-,lookup,pooled (n = 114),-0.1071428571428572,-0.19999999999999996,-0.034468147282291126,
+f18,qwen3.5-122b-a10b,qwen35_122b_x5_natural,-,lookup,half A (n = 56),-0.1333333333333333,-0.2592592592592593,-0.032258064516129004,
+f18,qwen3.5-122b-a10b,qwen35_122b_x5_natural,-,lookup,half B (n = 58),-0.07692307692307687,-0.22222222222222232,0.0,
+f18,qwen3.5-122b-a10b,qwen35_122b_x5_natural,-,recall,pooled (n = 114),0.33644859813084116,0.2429906542056075,0.4311971577621875,
+f18,qwen3.5-122b-a10b,qwen35_122b_x5_natural,-,recall,half A (n = 56),0.28846153846153855,0.15217391304347816,0.44000000000000006,
+f18,qwen3.5-122b-a10b,qwen35_122b_x5_natural,-,recall,half B (n = 58),0.38181818181818183,0.26923076923076916,0.5,
+f18,qwen3.5-122b-a10b,qwen35_122b_x5_natural,33,recall-lookup,gap,0.44359145527369837,0.322114448051948,0.5764718802961374,114
+f19,qwen3.5-9b,qwen35_9b_x0_replicate,-,lookup,J++ part (18% of the change),-0.005025125628140725,-0.015810276679841917,0.0,
+f19,qwen3.5-9b,qwen35_9b_x0_replicate,-,lookup,pointer directions (17%),0.4723618090452262,0.40932582238823945,0.532967032967033,
+f19,qwen3.5-9b,qwen35_9b_x0_replicate,-,lookup,the layer's main directions (18%),0.025125628140703515,0.0,0.04972375690607744,
+f19,qwen3.5-9b,qwen35_9b_x0_replicate,-,recall,J++ part (18% of the change),0.125,0.06435643564356441,0.18888888888888888,
+f19,qwen3.5-9b,qwen35_9b_x0_replicate,-,recall,pointer directions (17%),0.15104166666666663,0.09580551815030225,0.2086980410893453,
+f19,qwen3.5-9b,qwen35_9b_x0_replicate,-,recall,the layer's main directions (18%),0.0625,0.033333333333333326,0.09644781369667818,
+f19,qwen3.6-27b,x0_replicate_27b,-,lookup,J++ part (11% of the change),0.005050505050505083,0.0,0.015957446808510526,
+f19,qwen3.6-27b,x0_replicate_27b,-,lookup,pointer directions (16%),0.1717171717171716,0.11715147333748774,0.22388059701492535,
+f19,qwen3.6-27b,x0_replicate_27b,-,lookup,the layer's main directions (11%),0.0,0.0,0.0,
+f19,qwen3.6-27b,x0_replicate_27b,-,recall,J++ part (11% of the change),0.37410071942446066,0.2777777777777779,0.4649173806609546,
+f19,qwen3.6-27b,x0_replicate_27b,-,recall,pointer directions (16%),0.06474820143884885,-0.014492753623188363,0.14814814814814836,
+f19,qwen3.6-27b,x0_replicate_27b,-,recall,the layer's main directions (11%),0.043165467625899234,0.0,0.09160305343511455,
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 whole share identity,0.36333333333333334,0.3021530178454639,0.42857142857142855,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 whole share position,0.6233333333333333,0.5566666666666666,0.6854612513237777,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 whole share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 whole share original,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 whole share other,0.013333333333333334,0.0030959752321981426,0.027303754266211604,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp share identity,0.4266666666666667,0.35405306766620637,0.5034246575342466,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp share position,0.56,0.47959183673469385,0.6342439397695548,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp share original,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp share other,0.013333333333333334,0.003115264797507788,0.02651672455451523,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp_rand share identity,0.43666666666666665,0.36551724137931035,0.5082576226372637,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp_rand share position,0.55,0.47368421052631576,0.6233344155844155,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp_rand share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp_rand share original,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_jpp_rand share other,0.013333333333333334,0.003115264797507788,0.02651672455451523,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf share identity,1.0,1.0,1.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf share position,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf share original,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf share other,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf_rand share identity,0.9733333333333334,0.9526785825613147,0.9901960784313726,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf_rand share position,0.02666666666666667,0.00980392156862745,0.04732141743868526,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf_rand share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf_rand share original,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C1 no_alf_rand share other,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 whole share identity,0.48,0.4259790139811488,0.5333333333333333,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 whole share position,0.51,0.4595447389136709,0.5611529144031713,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 whole share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 whole share original,0.01,0.0,0.021352313167259787,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 whole share other,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp share identity,0.35,0.3117283950617284,0.39361702127659576,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp share position,0.6066666666666667,0.557375743969928,0.6498422712933754,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp share original,0.043333333333333335,0.024388390540440362,0.06472491909385113,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp share other,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp_rand share identity,0.4066666666666667,0.36245846093699097,0.45634987216363054,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp_rand share position,0.5033333333333333,0.45018450184501846,0.5527289666854884,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp_rand share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp_rand share original,0.09,0.0630876221570228,0.1196027486725161,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_jpp_rand share other,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf share identity,0.36333333333333334,0.3238434163701068,0.40001461988304077,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf share position,0.08333333333333333,0.051118210862619806,0.11654192997832002,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf share original,0.5533333333333333,0.5014747099888407,0.6070175438596491,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf share other,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf_rand share identity,0.4,0.3580645161290323,0.4460431654676259,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf_rand share position,0.5433333333333333,0.4883701485572062,0.594251461812044,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf_rand share value,0.0,0.0,0.0,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf_rand share original,0.056666666666666664,0.031948032084834474,0.08480565371024736,300
+f20,qwen3.5-9b,qwen35_9b_x6_routes,12,PP,C2 no_alf_rand share other,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 whole share identity,0.5166666666666667,0.45859585182459933,0.5709342560553633,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 whole share position,0.44,0.3901639344262295,0.4927536231884058,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 whole share value,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 whole share original,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 whole share other,0.043333333333333335,0.023076923076923078,0.063198425672952,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp share identity,0.6166666666666667,0.5537961798540386,0.6754098360655738,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp share position,0.35333333333333333,0.2986577181208054,0.4117647058823529,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp share value,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp share original,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp share other,0.03,0.014491445612933607,0.045977892955362795,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp_rand share identity,0.5833333333333334,0.5227963525835866,0.6417921139289227,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp_rand share position,0.38,0.3238425690560922,0.4380960344003822,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp_rand share value,0.0033333333333333335,0.0,0.011363636363636364,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp_rand share original,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_jpp_rand share other,0.03333333333333333,0.015723270440251572,0.05063291139240506,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf share identity,0.9933333333333333,0.9839228295819936,1.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf share position,0.006666666666666667,0.0,0.01607717041800643,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf share value,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf share original,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf share other,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf_rand share identity,0.97,0.95,0.9890909090909091,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf_rand share position,0.02666666666666667,0.007904360275123713,0.046511627906976744,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf_rand share value,0.0033333333333333335,0.0,0.010714285714285714,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf_rand share original,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C1 no_alf_rand share other,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 whole share identity,0.6566666666666666,0.6028356438579583,0.7104377104377104,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 whole share position,0.33666666666666667,0.2843442648624945,0.3906810035842294,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 whole share value,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 whole share original,0.0033333333333333335,0.0,0.010344827586206896,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 whole share other,0.0033333333333333335,0.0,0.010676156583629894,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp share identity,0.45,0.4143302180685358,0.4884488448844885,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp share position,0.42333333333333334,0.37808974779303733,0.4645161290322581,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp share value,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp share original,0.12333333333333334,0.08727211714460037,0.1594694576361005,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp share other,0.0033333333333333335,0.0,0.010676156583629894,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp_rand share identity,0.7,0.6442298689138577,0.7553191489361702,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp_rand share position,0.2833333333333333,0.23049645390070922,0.3362620921462534,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp_rand share value,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp_rand share original,0.013333333333333334,0.003289473684210526,0.025157798289670144,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_jpp_rand share other,0.0033333333333333335,0.0,0.011278195488721804,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf share identity,0.7233333333333334,0.6835443037974683,0.767175572519084,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf share position,0.06,0.033669261421555,0.08841463414634146,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf share value,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf share original,0.21333333333333335,0.17549668874172186,0.25077399380804954,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf share other,0.0033333333333333335,0.0,0.01079136690647482,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf_rand share identity,0.6966666666666667,0.6398601398601399,0.756578947368421,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf_rand share position,0.25333333333333335,0.1946564885496183,0.3104623506207216,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf_rand share value,0.0,0.0,0.0,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf_rand share original,0.04666666666666667,0.0243161094224924,0.07017690547438829,300
+f20,qwen3.6-27b,x6_routes_27b,32,PP,C2 no_alf_rand share other,0.0033333333333333335,0.0,0.011278195488721804,300
 numbers,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl,,,layer_9b,12,,,
 numbers,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl,,,n_9b,200,,,
 numbers,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl,,,ents_9b,40,,,
@@ -620,6 +800,11 @@ numbers,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl,,,single_lk_excess
 numbers,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl,,,single_contrast_27b,"0.56 [0.45, 0.65]",,,
 numbers,,results/x0_necessity/x0_single_27b_r2/paired-20261024T172816Z/paired.json,,,paired_lk_excess_27b,"−0.08 [−0.16, 0.00]",,,
 numbers,,results/x0_necessity/x0_single_27b_r2/paired-20261024T172816Z/paired.json,,,paired_rc_excess_27b,"−0.15 [−0.22, −0.08]",,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl,,,single_lk_excess_122b,"−0.01 [−0.06, 0.04]",,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl,,,single_lk_excess_pt_122b,−0.01,,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl,,,single_rc_excess_122b,"0.27 [0.16, 0.36]",,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl,,,single_lk_excess_k100_122b,−0.09,,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl,,,single_contrast_122b,"0.28 [0.15, 0.39]",,,
 numbers,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json,,,probe_a_before_9b,0.13,,,
 numbers,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json,,,probe_a_chance_9b,0.11,,,
 numbers,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json,,,probe_b_before_9b,0.82,,,
@@ -688,6 +873,35 @@ numbers,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_
 numbers,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json,,,patched_rest100_alt_27b,0.50,,,
 numbers,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json,,,patched_j100_share_27b,24%,,,
 numbers,,results/x0_amnesic/x0_amnesic_27b/probe-patched-20261024T183445Z/probe_patched.json,,,patched_j100_probe_energy_27b,2.8%,,,
+numbers,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json,,,v4_n_before_122b,758,,,
+numbers,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json,,,v4_b_before_122b,0.92,,,
+numbers,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json,,,v4_b_layout_before_122b,0.53,,,
+numbers,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json,,,v4_a_before_122b,0.25,,,
+numbers,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json,,,v4_a_after_122b,0.11,,,
+numbers,,results/x0_probe/qwen35_122b_x0_probe_v4/probe-20261024T230718Z/probe.json,,,v4_b_after_122b,0.33,,,
+numbers,,results/x0_probe/qwen35_122b_x0_probe_v4/a-given-b-20261025T112514Z/a_given_b.json,,,v4_a_resid_122b,0.26,,,
+numbers,,results/x0_probe/qwen35_122b_x0_probe_v4/a-given-b-20261025T112514Z/a_given_b.json,,,v4_a_index_alone_122b,0.12,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/verdict-20261024T231104Z/verdict.json,,,amn_lk_excess_122b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/verdict-20261024T231104Z/verdict.json,,,amn_rc_excess_122b,"−0.01 [−0.04, 0.00]",,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/verdict-20261024T231104Z/verdict.json,,,amn_share_122b,2%,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/verdict-20261024T231104Z/verdict.json,,,amn_suff_lk_122b,0.00,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,pair_right_122b,"0.44 [0.30, 0.60]",,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,dup_lockerfirst_alt_122b,0.83,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,dup_lockerfirst_reads_other_122b,0.00,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,dup_lockerfirst_n_122b,18,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,dup_otherfirst_alt_122b,0.00,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,dup_otherfirst_reads_other_122b,0.96,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,dup_otherfirst_n_122b,24,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,dup_after_alt_122b,1.00,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,pair_n_122b,54,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,patched_j25_alt_122b,0.06,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,patched_rest25_alt_122b,0.50,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,patched_j25_share_122b,18%,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,patched_j25_probe_energy_122b,0.5%,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,patched_j100_alt_122b,0.09,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,patched_rest100_alt_122b,0.46,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,patched_j100_share_122b,34%,,,
+numbers,,results/x0_amnesic/qwen35_122b_x0_amnesic/probe-patched-20261024T231111Z/probe_patched.json,,,patched_j100_probe_energy_122b,2.5%,,,
 numbers,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json,,,fm_lk_whole_locker_9b,0.98,,,
 numbers,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json,,,fm_lk_noj_locker_9b,0.98,,,
 numbers,,results/x0_necessity/qwen35_9b_x0_single_r2/first-mention-20261024T184608Z/first_mention.json,,,fm_n_locker_9b,43,,,
@@ -700,6 +914,12 @@ numbers,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/fi
 numbers,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json,,,fm_lk_whole_other_27b,1.00,,,
 numbers,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json,,,fm_lk_noj_other_27b,1.00,,,
 numbers,,results/x0_necessity/x0_single_27b_r2/first-mention-20261024T184607Z/first_mention.json,,,fm_n_other_27b,25,,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json,,,fm_lk_whole_locker_122b,1.00,,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json,,,fm_lk_noj_locker_122b,1.00,,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json,,,fm_n_locker_122b,30,,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json,,,fm_lk_whole_other_122b,1.00,,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json,,,fm_lk_noj_other_122b,1.00,,,
+numbers,,results/x0_necessity/qwen35_122b_x0_single/first-mention-20261024T232524Z/first_mention.json,,,fm_n_other_122b,24,,,
 numbers,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json,,,x0b_verdict_9b,holds,,,
 numbers,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json,,,x0b_lk_excess_9b,"0.01 [−0.01, 0.03]",,,
 numbers,,results/x0b_generalize/qwen35_9b_x0b_v2/verdict-20261024T182331Z/verdict.json,,,x0b_rc_excess_9b,0.23,,,
@@ -728,6 +948,17 @@ numbers,,results/x0b_generalize/x0b_v2_27b/verdict-20261024T192113Z/verdict.json
 numbers,,results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json,,,x0b_lk_before_prose_27b,0.11,,,
 numbers,,results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json,,,x0b_lk_before_json_27b,0.03,,,
 numbers,,results/x0b_generalize/x0b_v2_27b/cross-20261024T192342Z/cross.json,,,x0b_lk_before_table_27b,0.06,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json,,,x0b_verdict_122b,mixed,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json,,,x0b_lk_excess_122b,"−0.02 [−0.03, −0.00]",,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json,,,x0b_rc_excess_122b,0.13,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json,,,x0b_c_122b,"0.15 [0.12, 0.18]",,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json,,,x0b_n_122b,852,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json,,,x0b_ents_122b,60,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/gate.json,,,x0b_cells_122b,26 of 28,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json,,,x0b_probe_prose_122b,0.78,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/verdict-20261025T015139Z/verdict.json,,,x0b_probe_table_122b,0.88,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/cross-20261025T112138Z/cross.json,,,x0b_lk_before_prose_122b,−0.01,,,
+numbers,,results/x0b_generalize/qwen35_122b_x0b_v2/cross-20261025T112138Z/cross.json,,,x0b_lk_before_table_122b,−0.01,,,
 numbers,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json,,,parts_w_lk_excess_9b,0.00,,,
 numbers,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json,,,parts_w_share_9b,4%,,,
 numbers,,results/x0_parts/qwen35_9b_x0_parts/verdict-20261024T192339Z/verdict.json,,,parts_w_rc_excess_9b,0.02,,,
@@ -782,6 +1013,26 @@ numbers,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json,,,p
 numbers,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json,,,pcaeq_jpp_share_27b,14%,,,
 numbers,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json,,,pcaeq_jpp_rc_excess_27b,"0.61 [0.51, 0.69]",,,
 numbers,,results/x0_parts/x0_pcaeq_27b/verdict-20261024T200116Z/verdict.json,,,pcaeq_jpp_rc_point_27b,0.610,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_w_lk_excess_122b,"−0.01 [−0.05, 0.02]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_w_lk_point_122b,-0.011,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_w_share_122b,9%,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_w_rc_excess_122b,"0.14 [0.08, 0.20]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_w_rc_point_122b,0.137,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jwo_lk_excess_122b,"−0.03 [−0.07, 0.00]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jwo_lk_point_122b,-0.033,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jwo_share_122b,14%,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jwo_rc_excess_122b,"0.04 [0.00, 0.08]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jwo_rc_point_122b,0.038,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_pca_eq_lk_excess_122b,"0.09 [0.02, 0.15]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_pca_eq_lk_point_122b,0.088,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_pca_eq_share_122b,22%,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_pca_eq_rc_excess_122b,"0.21 [0.13, 0.30]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_pca_eq_rc_point_122b,0.214,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jpp_lk_excess_122b,"−0.01 [−0.06, 0.04]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jpp_lk_point_122b,-0.011,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jpp_share_122b,21%,,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jpp_rc_excess_122b,"0.26 [0.16, 0.36]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/verdict-20261024T230111Z/verdict.json,,,pcaeq_jpp_rc_point_122b,0.264,,,
 numbers,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json,,,x0bparts_w_lk_excess_9b,"0.01 [−0.00, 0.02]",,,
 numbers,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json,,,x0bparts_w_share_9b,5%,,,
 numbers,,results/x0_parts/qwen35_9b_x0b_parts/verdict-20261024T193837Z/verdict.json,,,x0bparts_w_rc_excess_9b,"0.05 [0.03, 0.09]",,,
@@ -846,6 +1097,19 @@ numbers,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict
 numbers,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json,,,mmlf_keep_A_rc_27b,"0.00 [0.00, 0.00]",,,
 numbers,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json,,,mmlf_Alf_rc_excess_27b,"0.16 [0.02, 0.31]",,,
 numbers,,results/x0_massmean/x0_massmean_lf_27b/verdict-20261024T200223Z/verdict.json,,,mmlf_keep_Alf_rc_27b,"−0.02 [−0.06, 0.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_overlap_122b,0.72,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_n_lk_122b,54,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_A_lk_excess_122b,"0.24 [0.13, 0.37]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_keep_A_lk_122b,"0.22 [0.13, 0.30]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_A_share_122b,18%,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_Alf_lk_excess_122b,"0.31 [0.20, 0.43]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_keep_Alf_lk_122b,"0.24 [0.15, 0.32]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_Alf_share_122b,18%,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_n_rc_122b,54,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_A_rc_excess_122b,"0.08 [0.02, 0.16]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_keep_A_rc_122b,"0.08 [0.02, 0.15]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_Alf_rc_excess_122b,"0.13 [0.02, 0.26]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/verdict-20261024T231441Z/verdict.json,,,mmlf_keep_Alf_rc_122b,"0.10 [0.02, 0.17]",,,
 numbers,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json,,,dupnn_A_org_9b,"0.89 [0.81, 0.96]",,,
 numbers,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json,,,dupnn_A_after_alt_9b,"0.93 [0.81, 1.00]",,,
 numbers,,results/x0_massmean/qwen35_9b_x0_massmean_lf/dup-nearest-20261024T220705Z/dup_nearest.json,,,dupnn_A_after_other_9b,"0.00 [0.00, 0.00]",,,
@@ -886,6 +1150,26 @@ numbers,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup
 numbers,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json,,,dupnn_Alf_otherfirst_alt_27b,"0.00 [0.00, 0.00]",,,
 numbers,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json,,,dupnn_Alf_otherfirst_other_27b,"0.88 [0.75, 1.00]",,,
 numbers,,results/x0_massmean/x0_massmean_lf_27b/dup-nearest-20261024T220705Z/dup_nearest.json,,,dupnn_Alf_otherfirst_n_27b,25,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_org_122b,"0.81 [0.74, 0.89]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_after_alt_122b,"1.00 [1.00, 1.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_after_other_122b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_after_n_122b,12,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_lockerfirst_alt_122b,"0.89 [0.71, 1.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_lockerfirst_other_122b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_lockerfirst_n_122b,18,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_otherfirst_alt_122b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_otherfirst_other_122b,"0.92 [0.78, 1.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_A_otherfirst_n_122b,24,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_org_122b,"0.65 [0.55, 0.75]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_after_alt_122b,"0.92 [0.73, 1.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_after_other_122b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_after_n_122b,12,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_lockerfirst_alt_122b,"0.72 [0.47, 0.93]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_lockerfirst_other_122b,"0.11 [0.00, 0.29]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_lockerfirst_n_122b,18,,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_otherfirst_alt_122b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_otherfirst_other_122b,"0.96 [0.85, 1.00]",,,
+numbers,,results/x0_massmean/qwen35_122b_x0_massmean_grid/dup-nearest-20261024T231443Z/dup_nearest.json,,,dupnn_Alf_otherfirst_n_122b,24,,,
 numbers,,results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf),,,ss_jpp_lk_excess_9b,"0.00 [0.00, 0.00]",,,
 numbers,,results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf),,,ss_jpp_rc_excess_9b,"0.06 [0.00, 0.12]",,,
 numbers,,results/x0_parts/qwen35_9b_x0_pcaeq/outcomes.jsonl (scenes of results/x0_massmean/qwen35_9b_x0_massmean_lf),,,ss_pca_lk_excess_9b,"0.06 [0.01, 0.11]",,,
@@ -894,6 +1178,204 @@ numbers,,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_mass
 numbers,,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b),,,ss_jpp_rc_excess_27b,"0.46 [0.34, 0.57]",,,
 numbers,,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b),,,ss_pca_lk_excess_27b,"0.00 [0.00, 0.00]",,,
 numbers,,results/x0_parts/x0_pcaeq_27b/outcomes.jsonl (scenes of results/x0_massmean/x0_massmean_lf_27b),,,ss_pca_rc_excess_27b,"0.04 [−0.04, 0.11]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl (scenes of results/x0_massmean/qwen35_122b_x0_massmean_grid),,,ss_jpp_lk_excess_122b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl (scenes of results/x0_massmean/qwen35_122b_x0_massmean_grid),,,ss_jpp_rc_excess_122b,"0.10 [0.02, 0.18]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl (scenes of results/x0_massmean/qwen35_122b_x0_massmean_grid),,,ss_pca_lk_excess_122b,"0.06 [0.00, 0.13]",,,
+numbers,,results/x0_parts/qwen35_122b_x0_parts/outcomes.jsonl (scenes of results/x0_massmean/qwen35_122b_x0_massmean_grid),,,ss_pca_rc_excess_122b,"0.02 [−0.07, 0.10]",,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_jpp_lk_excess_9b,"−0.01 [−0.02, 0.00]",,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_jpp_share_9b,18%,,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_jpp_rc_excess_9b,"0.12 [0.06, 0.19]",,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_alf_lk_excess_9b,"0.47 [0.41, 0.53]",,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_alf_share_9b,17%,,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_alf_rc_excess_9b,"0.15 [0.10, 0.21]",,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_pca_eq_lk_excess_9b,"0.03 [0.00, 0.05]",,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_pca_eq_share_9b,18%,,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_pca_eq_rc_excess_9b,"0.06 [0.03, 0.10]",,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_verdict_9b,does not hold,,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_jpp_clause_9b,not met,,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_ptr_clause_9b,met,,,
+numbers,,results/x0_replicate/qwen35_9b_x0_replicate/verdict-20261024T223149Z/verdict.json,,,rep_n_9b,200,,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_jpp_lk_excess_27b,"0.01 [0.00, 0.02]",,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_jpp_share_27b,11%,,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_jpp_rc_excess_27b,"0.37 [0.28, 0.46]",,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_alf_lk_excess_27b,"0.17 [0.12, 0.22]",,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_alf_share_27b,16%,,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_alf_rc_excess_27b,"0.06 [−0.01, 0.15]",,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_pca_eq_lk_excess_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_pca_eq_share_27b,11%,,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_pca_eq_rc_excess_27b,"0.04 [0.00, 0.09]",,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_verdict_27b,does not hold,,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_jpp_clause_27b,met,,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_ptr_clause_27b,not met,,,
+numbers,,results/x0_replicate/x0_replicate_27b/verdict-20261024T223505Z/verdict.json,,,rep_n_27b,200,,,
+numbers,,results/x5_natural/qwen35_9b_x5_natural/gate.json,,,nat_cases_9b,154 of 358,,,
+numbers,,results/x5_natural/qwen35_9b_x5_natural/gate.json,,,nat_gate_lk_9b,0.78,,,
+numbers,,results/x5_natural/x5_natural_27b/gate.json,,,nat_cases_27b,154 of 358,,,
+numbers,,results/x5_natural/x5_natural_27b/gate.json,,,nat_gate_lk_27b,0.99,,,
+numbers,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json,,,nat_gap_27b,"0.27 [0.13, 0.41]",,,
+numbers,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json,,,nat_label_27b,mixed,,,
+numbers,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json,,,nat_n_27b,137,,,
+numbers,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json,,,nat_lk_excess_27b,"0.32 [0.20, 0.45]",,,
+numbers,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json,,,nat_rc_excess_27b,"0.59 [0.50, 0.67]",,,
+numbers,,results/x5_natural/qwen35_122b_x5_natural/gate.json,,,nat_cases_122b,154 of 358,,,
+numbers,,results/x5_natural/qwen35_122b_x5_natural/gate.json,,,nat_gate_lk_122b,0.92,,,
+numbers,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json,,,nat_gap_122b,"0.44 [0.32, 0.58]",,,
+numbers,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json,,,nat_label_122b,holds,,,
+numbers,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json,,,nat_n_122b,114,,,
+numbers,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json,,,nat_lk_excess_122b,"−0.11 [−0.20, −0.03]",,,
+numbers,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json,,,nat_rc_excess_122b,"0.34 [0.24, 0.43]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_whole_identity_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_whole_position_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_whole_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_whole_original_9b,"0.00 [0.00, 0.01]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_whole_recall_follows_s_9b,"0.97 [0.94, 0.99]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_identity_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_position_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_original_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_recall_follows_s_9b,"0.94 [0.91, 0.98]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_rand_identity_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_rand_position_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_rand_original_9b,"0.00 [0.00, 0.01]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_jpp_rand_recall_follows_s_9b,"0.96 [0.93, 0.98]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_identity_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_position_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_original_9b,"0.30 [0.25, 0.35]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_recall_follows_s_9b,"0.84 [0.79, 0.89]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_rand_identity_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_rand_position_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_rand_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_rand_original_9b,"0.01 [0.00, 0.02]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C0_no_alf_rand_recall_follows_s_9b,"0.95 [0.93, 0.98]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_whole_identity_9b,"0.36 [0.30, 0.43]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_whole_position_9b,"0.62 [0.56, 0.69]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_whole_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_whole_original_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_whole_recall_follows_s_9b,"0.78 [0.71, 0.84]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_identity_9b,"0.43 [0.35, 0.50]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_position_9b,"0.56 [0.48, 0.63]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_original_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_recall_follows_s_9b,"0.83 [0.77, 0.88]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_rand_identity_9b,"0.44 [0.37, 0.51]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_rand_position_9b,"0.55 [0.47, 0.62]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_rand_original_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_jpp_rand_recall_follows_s_9b,"0.83 [0.77, 0.89]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_identity_9b,"1.00 [1.00, 1.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_position_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_original_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_recall_follows_s_9b,"0.99 [0.97, 1.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_rand_identity_9b,"0.97 [0.95, 0.99]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_rand_position_9b,"0.03 [0.01, 0.05]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_rand_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_rand_original_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C1_no_alf_rand_recall_follows_s_9b,"0.94 [0.91, 0.97]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_whole_identity_9b,"0.48 [0.43, 0.53]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_whole_position_9b,"0.51 [0.46, 0.56]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_whole_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_whole_original_9b,"0.01 [0.00, 0.02]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_whole_recall_follows_s_9b,"0.83 [0.77, 0.88]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_identity_9b,"0.35 [0.31, 0.39]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_position_9b,"0.61 [0.56, 0.65]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_original_9b,"0.04 [0.02, 0.06]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_recall_follows_s_9b,"0.60 [0.55, 0.66]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_rand_identity_9b,"0.41 [0.36, 0.46]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_rand_position_9b,"0.50 [0.45, 0.55]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_rand_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_rand_original_9b,"0.09 [0.06, 0.12]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_jpp_rand_recall_follows_s_9b,"0.75 [0.70, 0.80]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_identity_9b,"0.36 [0.32, 0.40]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_position_9b,"0.08 [0.05, 0.12]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_original_9b,"0.55 [0.50, 0.61]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_recall_follows_s_9b,"0.75 [0.66, 0.84]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_rand_identity_9b,"0.40 [0.36, 0.45]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_rand_position_9b,"0.54 [0.49, 0.59]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_rand_value_9b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_rand_original_9b,"0.06 [0.03, 0.08]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json,,,rt_C2_no_alf_rand_recall_follows_s_9b,"0.77 [0.72, 0.82]",,,
+numbers,,results/x6_routes/qwen35_9b_x6_routes/c0_check.json,,,rt_c0_9b,0.99,,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_whole_identity_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_whole_position_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_whole_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_whole_original_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_whole_recall_follows_s_27b,"0.54 [0.43, 0.65]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_identity_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_position_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_original_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_recall_follows_s_27b,"0.36 [0.26, 0.46]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_rand_identity_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_rand_position_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_rand_original_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_jpp_rand_recall_follows_s_27b,"0.50 [0.39, 0.62]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_identity_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_position_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_original_27b,"0.15 [0.11, 0.18]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_recall_follows_s_27b,"0.36 [0.27, 0.47]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_rand_identity_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_rand_position_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_rand_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_rand_original_27b,"0.01 [0.00, 0.02]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C0_no_alf_rand_recall_follows_s_27b,"0.46 [0.35, 0.57]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_whole_identity_27b,"0.52 [0.46, 0.57]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_whole_position_27b,"0.44 [0.39, 0.49]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_whole_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_whole_original_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_whole_recall_follows_s_27b,"0.96 [0.93, 0.99]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_identity_27b,"0.62 [0.55, 0.68]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_position_27b,"0.35 [0.30, 0.41]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_original_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_recall_follows_s_27b,"0.96 [0.93, 0.99]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_rand_identity_27b,"0.58 [0.52, 0.64]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_rand_position_27b,"0.38 [0.32, 0.44]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_rand_value_27b,"0.00 [0.00, 0.01]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_rand_original_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_jpp_rand_recall_follows_s_27b,"0.97 [0.94, 0.99]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_identity_27b,"0.99 [0.98, 1.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_position_27b,"0.01 [0.00, 0.02]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_original_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_recall_follows_s_27b,"1.00 [1.00, 1.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_rand_identity_27b,"0.97 [0.95, 0.99]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_rand_position_27b,"0.03 [0.01, 0.05]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_rand_value_27b,"0.00 [0.00, 0.01]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_rand_original_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C1_no_alf_rand_recall_follows_s_27b,"0.99 [0.98, 1.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_whole_identity_27b,"0.66 [0.60, 0.71]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_whole_position_27b,"0.34 [0.28, 0.39]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_whole_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_whole_original_27b,"0.00 [0.00, 0.01]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_whole_recall_follows_s_27b,"0.47 [0.37, 0.57]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_identity_27b,"0.45 [0.41, 0.49]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_position_27b,"0.42 [0.38, 0.46]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_original_27b,"0.12 [0.09, 0.16]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_recall_follows_s_27b,"0.15 [0.09, 0.23]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_rand_identity_27b,"0.70 [0.64, 0.76]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_rand_position_27b,"0.28 [0.23, 0.34]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_rand_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_rand_original_27b,"0.01 [0.00, 0.03]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_jpp_rand_recall_follows_s_27b,"0.40 [0.29, 0.51]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_identity_27b,"0.72 [0.68, 0.77]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_position_27b,"0.06 [0.03, 0.09]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_original_27b,"0.21 [0.18, 0.25]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_recall_follows_s_27b,"0.31 [0.21, 0.41]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_rand_identity_27b,"0.70 [0.64, 0.76]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_rand_position_27b,"0.25 [0.19, 0.31]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_rand_value_27b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_rand_original_27b,"0.05 [0.02, 0.07]",,,
+numbers,,results/x6_routes/x6_routes_27b/verdict-20261025T105901Z/verdict.json,,,rt_C2_no_alf_rand_recall_follows_s_27b,"0.36 [0.26, 0.46]",,,
+numbers,,results/x6_routes/x6_routes_27b/c0_check.json,,,rt_c0_27b,0.98,,,
 numbers,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json,,,x4_probe_animals_same_9b,"0.99 [0.99, 1.00]",,,
 numbers,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json,,,x4_probe_animals_xlang_9b,"0.93 [0.90, 0.96]",,,
 numbers,,results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json,,,x4_probe_elements_same_9b,"0.98 [0.94, 1.00]",,,
@@ -954,6 +1436,36 @@ numbers,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json,,,x
 numbers,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json,,,x4_C_animals_xlang_27b,"0.54 [0.46, 0.59]",,,
 numbers,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json,,,x4_C_elements_same_27b,"0.71 [0.59, 0.83]",,,
 numbers,,results/x4_alias/x4_patch_27b/verdict-20261024T215021Z/verdict.json,,,x4_C_elements_syn_27b,"0.83 [0.71, 0.92]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json,,,x4_probe_animals_same_122b,"0.98 [0.97, 1.00]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json,,,x4_probe_animals_xlang_122b,"0.90 [0.83, 0.94]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json,,,x4_probe_elements_same_122b,"0.98 [0.95, 1.00]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json,,,x4_probe_elements_syn_122b,"0.89 [0.81, 0.95]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json,,,x4_transfer_animals_122b,"0.85 [0.80, 0.91]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_probe/probe-20261024T233321Z/probe.json,,,x4_transfer_elements_122b,"0.90 [0.83, 0.96]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_animals_same_rc_excess_122b,"0.07 [0.01, 0.13]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_animals_same_rc_n_122b,178,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_animals_same_lk_excess_122b,"0.00 [−0.01, 0.01]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_animals_same_lk_n_122b,396,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_animals_xlang_rc_excess_122b,"0.20 [0.08, 0.28]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_animals_xlang_rc_n_122b,179,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_animals_xlang_lk_excess_122b,"−0.00 [−0.01, 0.00]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_animals_xlang_lk_n_122b,394,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_elements_same_rc_excess_122b,"0.03 [0.01, 0.06]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_elements_same_rc_n_122b,400,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_elements_same_lk_excess_122b,"0.00 [0.00, 0.00]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_elements_same_lk_n_122b,400,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_elements_syn_rc_excess_122b,"0.54 [0.39, 0.71]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_elements_syn_rc_n_122b,394,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_elements_syn_lk_excess_122b,"0.02 [−0.01, 0.07]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_elements_syn_lk_n_122b,381,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_D_animals_122b,"−0.00 [−0.01, 0.00]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_Dpos_animals_122b,1 of 8,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_D_elements_122b,"0.02 [−0.01, 0.07]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_Dpos_elements_122b,2 of 6,,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_C_animals_same_122b,"0.07 [0.01, 0.13]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_C_animals_xlang_122b,"0.21 [0.08, 0.30]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_C_elements_same_122b,"0.03 [0.01, 0.06]",,,
+numbers,,results/x4_alias/qwen35_122b_x4_patch/verdict-20261025T003459Z/verdict.json,,,x4_C_elements_syn_122b,"0.51 [0.39, 0.64]",,,
 numbers,,results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json,,,share_rho_27b,0.79,,,
 numbers,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json,,,ctx_lookup_full,84%,,,
 numbers,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json,,,ctx_lookup_noj,87%,,,

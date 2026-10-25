@@ -32,18 +32,22 @@ MODELS = {"9b": ("qwen3.5-9b", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
 CTX = "results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json"
 NOCHAT = {"9b": "qwen35_9b_x0_necessity_nothink", "27b": "x0_necessity_27b_nothink"}
 DIGIT = {"9b": "qwen35_9b_x0_digit_r2", "27b": "x0_digit_27b_r2", "122b": "qwen35_122b_x0_necessity_r2"}
-SINGLE = {"9b": "qwen35_9b_x0_single_r2", "27b": "x0_single_27b_r2"}
+SINGLE = {"9b": "qwen35_9b_x0_single_r2", "27b": "x0_single_27b_r2", "122b": "qwen35_122b_x0_single"}
 PROBES = {"9b": "qwen35_9b_x0_probe", "27b": "x0_probe_27b"}
-PROBES_V4 = {"9b": "qwen35_9b_x0_probe_v4", "27b": "x0_probe_v4_27b"}
-AMNESIC = {"9b": "qwen35_9b_x0_amnesic", "27b": "x0_amnesic_27b"}
-X0B = {"9b": "qwen35_9b_x0b_v2", "27b": "x0b_v2_27b"}
+PROBES_V4 = {"9b": "qwen35_9b_x0_probe_v4", "27b": "x0_probe_v4_27b", "122b": "qwen35_122b_x0_probe_v4"}
+AMNESIC = {"9b": "qwen35_9b_x0_amnesic", "27b": "x0_amnesic_27b", "122b": "qwen35_122b_x0_amnesic"}
+X0B = {"9b": "qwen35_9b_x0b_v2", "27b": "x0b_v2_27b", "122b": "qwen35_122b_x0b_v2"}
 ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all", "letters_9b": "qwen35_9b_x0_atoms_letters"}
 PARTS = {"9b": "qwen35_9b_x0_parts", "27b": "x0_parts_27b"}
 MASSMEAN = {"9b": "qwen35_9b_x0_massmean", "27b": "x0_massmean_27b"}
-MASSMEAN_LF = {"9b": "qwen35_9b_x0_massmean_lf", "27b": "x0_massmean_lf_27b"}
-PCAEQ = {"9b": "qwen35_9b_x0_pcaeq", "27b": "x0_pcaeq_27b"}
+MASSMEAN_LF = {"9b": "qwen35_9b_x0_massmean_lf", "27b": "x0_massmean_lf_27b", "122b": "qwen35_122b_x0_massmean_grid"}
+PCAEQ = {"9b": "qwen35_9b_x0_pcaeq", "27b": "x0_pcaeq_27b", "122b": "qwen35_122b_x0_parts"}
 X0BPARTS = {"9b": "qwen35_9b_x0b_parts", "27b": "x0b_parts_27b"}
-X4 = {"9b": ("qwen35_9b_x4_probe", "qwen35_9b_x4_patch"), "27b": ("x4_probe_27b", "x4_patch_27b")}
+X4 = {"9b": ("qwen35_9b_x4_probe", "qwen35_9b_x4_patch"), "27b": ("x4_probe_27b", "x4_patch_27b"),
+      "122b": ("qwen35_122b_x4_probe", "qwen35_122b_x4_patch")}  # fmt: skip
+REPLICATE = {"9b": "qwen35_9b_x0_replicate", "27b": "x0_replicate_27b"}
+NATURAL = {"9b": "qwen35_9b_x5_natural", "27b": "x5_natural_27b", "122b": "qwen35_122b_x5_natural"}
+ROUTES = {"9b": "qwen35_9b_x6_routes", "27b": "x6_routes_27b"}
 ORDER = "org locker vs asked pick"
 
 
@@ -140,6 +144,9 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     massmean_lf_numbers(num)
     dup_nearest_numbers(num)
     same_scene_numbers(num)
+    replicate_numbers(num)
+    natural_numbers(num)
+    routes_numbers(num)
     x4_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
@@ -217,7 +224,10 @@ def single_numbers(num: Numbers) -> None:
         num.add(f"single_rc_excess_{m}", ci(cells[("chat", la, X.RECALL, *X.MAIN)]["excess"]), src)
         num.add(f"single_lk_excess_k100_{m}", f2(cells[("chat", la, X.LOOKUP, "jpp", 100, "signed")]["excess"][0]), src)
         num.add(f"single_contrast_{m}", ci(XF.contrast(r, "chat", la)), src)  # C under the one-change edit
-        paired = sorted((X.RESULTS / run).glob("paired-*/paired.json"))[-1]  # single minus two-change, shared items
+        found = sorted((X.RESULTS / run).glob("paired-*/paired.json"))  # single minus two-change, shared items
+        if not found:  # the 122B: no paired comparison was run
+            continue
+        paired = found[-1]
         for w, d in json.loads(paired.read_text())["readers"].items():
             num.add(f"paired_{'lk' if w == X.LOOKUP else 'rc'}_excess_{m}", ci(d["paired_difference"]["excess"]),
                     str(paired.relative_to(pins.REPO_ROOT)))  # fmt: skip
@@ -300,6 +310,63 @@ def massmean_lf_numbers(num: Numbers) -> None:
                     num.add(f"mmlf_{sp}_share_{m}", pct(r[sp]["share"]), src)
 
 
+def replicate_numbers(num: Numbers) -> None:
+    """x0_replicate (fixed in advance): each part's extra loss per reader on fresh scenes, the rule's clauses."""
+    for m, run in REPLICATE.items():
+        path = sorted((pins.RESULTS_DIR / "x0_replicate" / run).glob("verdict-*/verdict.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        v = json.loads(path.read_text())
+        for r in v["rows"]:
+            w = "lk" if r["reader"] == X.LOOKUP else "rc"
+            num.add(f"rep_{r['part']}_{w}_excess_{m}", ci(r["excess"]), src)
+            if w == "lk":
+                num.add(f"rep_{r['part']}_share_{m}", pct(r["median_share"]), src)
+        num.add(f"rep_verdict_{m}", "holds" if v["rule"]["holds"] else "does not hold", src)
+        num.add(f"rep_jpp_clause_{m}", "met" if v["rule"]["jpp_clause"] else "not met", src)
+        num.add(f"rep_ptr_clause_{m}", "met" if v["rule"]["pointer_clause"] else "not met", src)
+        num.add(f"rep_n_{m}", str(v["manifest"]["items"]), src)
+
+
+def natural_numbers(num: Numbers) -> None:
+    """x5_natural (fixed in advance): the gap and each reader's extra loss; the gate; the scenes the swap rule kept."""
+    for m, run in NATURAL.items():
+        root = pins.RESULTS_DIR / "x5_natural" / run
+        g = json.loads((root / "gate.json").read_text())
+        num.add(
+            f"nat_cases_{m}",
+            f"{g['counts']['cases']} of {g['counts']['scenes']}",
+            str((root / "gate.json").relative_to(pins.REPO_ROOT)),
+        )
+        num.add(
+            f"nat_gate_lk_{m}",
+            f2(g["org_read_accuracy"][X.LOOKUP]),
+            str((root / "gate.json").relative_to(pins.REPO_ROOT)),
+        )
+        found = sorted(root.glob("verdict-*/verdict.json"))
+        if not found:
+            continue
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        v = json.loads(found[-1].read_text())
+        num.add(f"nat_gap_{m}", ci(v["main"]["gap"]), src)
+        num.add(f"nat_label_{m}", v["label"], src)
+        num.add(f"nat_n_{m}", str(v["main"]["n"]), src)
+        for w, k in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
+            num.add(f"nat_{k}_excess_{m}", ci(v["main"]["excess"][w]), src)
+
+
+def routes_numbers(num: Numbers) -> None:
+    """x6_routes (fixed in advance): the share of lookup answers per route, condition and arm; C0's switch rate."""
+    for m, run in ROUTES.items():
+        root = pins.RESULTS_DIR / "x6_routes" / run
+        path = sorted(root.glob("verdict-*/verdict.json"))[-1]
+        src = str(path.relative_to(pins.REPO_ROOT))
+        for r in json.loads(path.read_text())["rows"]:
+            for route in ("identity", "position", "value", "original", "recall_follows_s"):
+                num.add(f"rt_{r['condition']}_{r['arm']}_{route}_{m}", ci(r["share"][route]), src)
+        c0 = json.loads((root / "c0_check.json").read_text())
+        num.add(f"rt_c0_{m}", f2(c0["c0_lookup_switch"]), str((root / "c0_check.json").relative_to(pins.REPO_ROOT)))
+
+
 def same_scene_numbers(num: Numbers) -> None:
     """F15 (Dan, 25 Oct): J++ and the main directions at J++'s share on the pointer directions' scenes (both locker
     sentences before the pick), recomputed from x0_parts' per-scene outcomes."""
@@ -372,7 +439,8 @@ def x0b_numbers(num: Numbers) -> None:
         num.add(f"x0b_c_{m}", ci(v["contrast"][str(pred)]), src)
         num.add(f"x0b_n_{m}", f"{lk['n']:,}", src)
         num.add(f"x0b_ents_{m}", str(lk["entities"]), src)
-        num.add(f"x0b_lk_k100_{m}", f2(cells[(pred, X.LOOKUP, "jpp", 100, "signed")]["excess"][0]), src)
+        if (pred, X.LOOKUP, "jpp", 100, "signed") in cells:  # the 122B's run had no k-curve
+            num.add(f"x0b_lk_k100_{m}", f2(cells[(pred, X.LOOKUP, "jpp", 100, "signed")]["excess"][0]), src)
         gate = json.loads((root / "gate.json").read_text())["gate"]
         num.add(
             f"x0b_cells_{m}",
