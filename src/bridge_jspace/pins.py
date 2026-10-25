@@ -544,7 +544,7 @@ TARGETS["deepseek-v4-flash"] = {
     "norm_gain": "weight",
     "bos": True,
     "run_prefix": "dsv4f_",
-    "split_gpus": 22,
+    "split_gpus": 14,  # blocks 0-13 on cuda:0 (was 22), so it fits beside Ministral on GPU 0 (2026-10-25, amendment 39 note 2)
     "attn": "eager",  # DeepseekV4 supports eager only (per-head attention sinks; transformers 5.17), 2026-10-25
     "chat_template": DEEPSEEK_V4_CHAT_TEMPLATE,
     "lenses": {"jpp": (LENS_REPO, "deepseek-v4-flash/jpp/Salesforce-wikitext/DeepSeek-V4-Flash_jpp_lens.pt", "e166deb5ad540932100ef803c8c9bcc2a5453694")},

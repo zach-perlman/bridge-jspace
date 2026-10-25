@@ -1,7 +1,7 @@
 #!/bin/bash
 # Zach (2026-10-25, prereg amendment 40): NVIDIA Nemotron 3.5 Lightning 30B-A3B on v2, at the end of the queue. Download
 # once DeepSeek's download and OLMo's cache drop are done (disk); on GPU G once DeepSeek's chain has finished
-# (h200nqDS2's nq part; Ministral's chain h200min2 then holds GPU 0): smoke (scripts/new_model_smoke.py + competence
+# (h200nqDS3's nq part; Ministral's chain h200min2 then holds GPU 0): smoke (scripts/new_model_smoke.py + competence
 # on the first 120 dev items; stop if the unembed check's top-1 differs or plain-text NLL >= 4 nats); our plain J-lens
 # (scripts/lens_fit/fit_jlens.py: Anthropic's jlens, 500 WikiText prompts, --no-bos), its sha256 into pins, commit,
 # lens check; then amendment 39's procedure (h200_nq40_1025.sh): gate, dev, test, swap. Usage: h200_nem_1025.sh GPU
@@ -26,7 +26,7 @@ from huggingface_hub import snapshot_download
 print('=== NEMDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-until grep -qs "=== nq deepseek-v4-flash done" $R-h200nqDS2-1025-0845.log; do sleep 60; done  # 2026-10-25: DeepSeek's relaunched chain; its gate-to-swap part only
+until grep -qs "=== nq deepseek-v4-flash done" $R-h200nqDS3-1025-0900.log; do sleep 60; done  # 2026-10-25: DeepSeek's third chain; its gate-to-swap part only
 until [ "$(nvidia-smi -i $G --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 100000 ]; do sleep 60; done
 echo "=== GPU $G free after DeepSeek $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }

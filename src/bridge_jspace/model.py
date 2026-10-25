@@ -392,9 +392,32 @@ def _bridged(module, hook):
     return wrapped
 
 
+def _streamed(hook):
+    """A forward hook for a block whose output is several parallel residual streams [B, S, R, D] (DeepSeek-V4's
+    hyper-connections, 2026-10-25): the hook sees the lens's residual, the mean over the streams [B, S, D] (the
+    convention of the published DeepSeek-V4 J++: jpp_lens's residual_streams.py), and what it returns is lifted back by
+    adding its change to the mean to every stream (the uniform shift under which that lens's Jacobian is defined), so
+    the streams' mean moves exactly as edited and a no-op edit leaves them bit-identical. Single-stream outputs pass
+    through unchanged."""
+
+    def wrapped(m, args, out):
+        x = out[0] if isinstance(out, tuple) else out
+        if x.dim() != 4:
+            return hook(m, args, out)
+        mean = x.mean(dim=2)
+        r = hook(m, args, (mean, *out[1:]) if isinstance(out, tuple) else mean)
+        if r is None:
+            return None
+        new = r[0] if isinstance(r, tuple) else r
+        y = (x.float() + (new.float() - mean.float()).unsqueeze(2)).to(x.dtype)
+        return (y, *out[1:]) if isinstance(out, tuple) else y
+
+    return wrapped
+
+
 @contextlib.contextmanager
 def _forward_hooks(pairs):
-    handles = [module.register_forward_hook(_bridged(module, hook)) for module, hook in pairs]
+    handles = [module.register_forward_hook(_bridged(module, _streamed(hook))) for module, hook in pairs]
     try:
         yield
     finally:

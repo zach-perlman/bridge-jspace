@@ -1,7 +1,10 @@
 """new_model_smoke (Zach, 2026-10-25, prereg amendment 40): load checks on a new target (BJ_TARGET) before its lens fit
 and runs, no lens needed; the numbers are for a human to read.
 1. Blocks: the model's block count is pins' n_layers; the final norm the harness reads (NemotronH: norm_f).
-2. Unembed: model.unembed(the last block's output) against the model's own final-position logits.
+2. Unembed: model.unembed(the last block's output) against the model's own final-position logits. For a model with
+   parallel residual streams (DeepSeek-V4), the last block's raw streams collapsed by the model's own head (hc_head)
+   first; the lens's convention, the streams' mean, is reported beside it (its top-1 only). No-op: an identity edit at
+   a middle layer, through the harness's hooks, leaves the logits bit-identical (amendment 39 note 2).
 3. Plain text: mean next-token NLL over the first 32 pinned WikiText rows of >= 64 words (128 tokens), encoded as the
    harness encodes raw text (tokens.raw_encoding: a BOS only if pins says so), and with a BOS first, for comparison.
 4. Chat: chat.chat_text on one short question (thinking off, "Answer:" prefilled), and the greedy continuation.
@@ -39,8 +42,21 @@ def main() -> None:
     out: dict = {"model": pins.model_pin(), "n_layers": pins.N_LAYERS, "final_norm": type(m.final_norm).__name__,
                  "bos": pins.TARGETS[pins.TARGET]["bos"], "load_s": round(time.time() - t0)}  # fmt: skip
     last = pins.N_LAYERS - 1
-    logits, rec = m.run(m.encode("The capital of France is"), record=(last,))
-    mine = m.unembed(rec[last][-1:])[0]
+    ids0 = m.encode("The capital of France is")
+    raw = {}
+    handle = m.layers[last].register_forward_hook(lambda _m, _a, o: raw.update(x=(o[0] if isinstance(o, tuple) else o).detach()))
+    logits, rec = m.run(ids0, record=(last,))
+    handle.remove()
+    x = raw["x"].to(logits.device)
+    if x.dim() == 4:  # parallel residual streams: the model's own collapse, then the shared norm and lm_head
+        out["streams"] = x.shape[2]
+        out["stream_mean_top1"] = m.decoded[int(m.unembed(rec[last][-1:])[0].argmax())]
+        mine = m.unembed(m.text.hc_head(x)[0, -1:].float())[0]
+    else:
+        mine = m.unembed(rec[last][-1:])[0]
+    mid = pins.N_LAYERS // 2
+    same, _ = m.run(ids0, edits={mid: lambda h: h})
+    out["noop_edit_max_abs_diff"] = (same - logits).abs().max().item()
     out["unembed"] = {"max_abs_diff": round((mine - logits).abs().max().item(), 4), "top1_same": int(mine.argmax()) == int(logits.argmax()),
                       "top1": m.decoded[int(logits.argmax())]}  # fmt: skip
     rows = [r[:2000] for r in pins.wikitext_rows() if len(r.split()) >= 64][:32]

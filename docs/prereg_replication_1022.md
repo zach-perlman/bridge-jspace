@@ -1108,3 +1108,22 @@ Lightning on GPU 1, then Bolt. Lightning's chain had been released by DeepSeek's
 smoke wrote anything. Bolt's guard held (DeepSeek's cache kept). Ministral's test competence
 (min14_jsuite_v2_test_chat_competence_cand2_v1) ran early, at 06:31, for Zach's keep-or-replace question; its test
 step reuses it. Procedures and readings unchanged.
+
+**Amendment 39, note 2 (Zach, 2026-10-25 08:46 UTC; no DeepSeek knock-out, swap or band data seen): DeepSeek-V4's
+residual streams.** The second chain's smoke stopped it as designed. The model is sound (WikiText NLL 1.79; "Paris";
+greedy chat answer "Canberra"), but model.unembed(the last block's output) did not reproduce its logits (max diff 31.5,
+top-1 differs). DeepSeek-V4's blocks carry 4 parallel residual streams [B, S, 4, D] (manifold hyper-connections),
+collapsed by a learned head (hc_head) only before the final norm, and the harness had been reading the first stream.
+Fix (model._streamed, inside model._forward_hooks, so every script's hooks): a hook sees the lens's residual, the mean
+over the streams. That is the published DeepSeek-V4 J++'s convention (jpp_lens residual_streams.py: lens residual =
+stream mean at every source layer and at the target; its Jacobian is for a uniform shift of the streams). What a hook
+returns is lifted back by adding its change to the mean to every stream, so the mean moves exactly as edited and a
+no-op edit leaves the streams bit-identical (unit check: identity edit equal; +1 edit moves the mean and each stream by
+1; single-stream outputs untouched). This is the lift jpp_lens names for interventions but does not implement; the
+knock-out and the swap act on the stream mean, through all 4 streams equally. new_model_smoke now compares the model's
+own collapse (hc_head on the last block's streams) with its logits, reports the stream mean's top-1 beside it, and
+checks that a no-op edit leaves the logits bit-identical. The stop rule adds: no-op diff must be 0. DeepSeek's split
+moves to blocks 0-13 on cuda:0 (was 0-21) so it fits beside Ministral's fit on GPU 0; the two-GPU check on the 9B
+(270 of 270 rows identical) is what makes the split point immaterial. Chain: scripts/queues/h200_ds3_1025.sh (waits
+for 60 GB free on GPU 0 and 120 GB on GPU 1), then amendment 39's procedure unchanged. Lightning (relaunched as
+h200nemL4) and Bolt (h200bolt3) wait on it. The second smoke's check file is kept in scratch (killed_1025).
