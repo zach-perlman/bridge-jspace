@@ -1,0 +1,19 @@
+{
+  "run": "min14_jswap_v2_v1",
+  "why": "Zach (2026-10-25, prereg amendment 39): ministral-3-14b on v2 at L32-37 (dev-chosen)",
+  "target": "ministral-3-14b",
+  "band": "32-37",
+  "set": "jsuite_v2_test_chat",
+  "competence": "min14_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "575d903a17992a2219dc2660b9f81c7d5d824c8d",
+  "limit": 0
+}

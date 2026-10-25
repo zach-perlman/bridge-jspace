@@ -1,0 +1,29 @@
+{
+  "run": "min14_bridge_readout_v2_v1",
+  "target": "ministral-3-14b",
+  "set": "jsuite_v2_test_chat",
+  "competence": "min14_jsuite_v2_test_chat_competence_cand2_v1",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38
+  ],
+  "git_commit": "575d903a17992a2219dc2660b9f81c7d5d824c8d"
+}

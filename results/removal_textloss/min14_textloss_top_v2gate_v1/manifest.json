@@ -1,0 +1,39 @@
+{
+  "run": "min14_textloss_top_v2gate_v1",
+  "why": "Zach (2026-10-25, prereg amendment 39): ministral-3-14b plain-text gate",
+  "written_utc": "2026-10-25T10:28:16Z",
+  "model": {
+    "target": "ministral-3-14b",
+    "repo": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+    "revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "45977bd89f5310ec93726d69c198dd788b64b77c8f3b5884ef21fc58652ed3e3"
+  ],
+  "layers": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27
+  ],
+  "conditions": [
+    "none",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}
