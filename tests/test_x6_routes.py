@@ -45,3 +45,34 @@ def test_extra_losses_read_planted_effects():
     assert abs(ex[("PP", "both - alf")]["excess"][0] - 0.5) < 1e-9
     assert ex[("PM", "both - alf")]["excess"][0] == 0.0 and ex[("PP", "jpp")]["excess"][0] == 0.0
     assert ex[("PP", "both")]["share"] == 0.12
+
+
+def test_extra_losses_without_the_control_arm():
+    """Runs before --bothoff-ctrl have no no_alf_jrand rows; the extra losses still read."""
+    rows = [{"scene": f"s{i}", "condition": "C0", "entity": f"e{i % 30}", "reader": w, "arm": a, "switched": 1}
+            for i in range(60) for w in ("PP", "PM") for a in R.ARMS if a != "no_alf_jrand"]  # fmt: skip
+    assert {e["part"] for e in R.extra_losses(rows, ["C0"], 100)} == {"jpp", "alf", "both", "both - alf"}
+
+
+def test_random_union_holds_the_pointer_and_the_share():
+    _, alf, x = _setup(2, n=8, d=40)
+    basis, _ = torch.linalg.qr(torch.randn(40, 40, generator=torch.Generator().manual_seed(3)))
+    share = torch.full((8,), 0.3)
+    part = R.union_rand_part(alf, x, share, basis)
+    assert torch.allclose(((x - part) @ alf), torch.zeros(8, alf.shape[1]), atol=1e-4)  # nothing left in the pointer
+    k = R.random_k(x, share, basis)
+    rand = (x @ basis[:, : int(k[0])]) @ basis[:, : int(k[0])].T
+    assert part[0].norm() ** 2 >= rand[0].norm() ** 2 - 1e-4  # holds at least the random part's energy
+
+
+def test_ctrl_losses_read_planted_effects():
+    rows = []
+    for i in range(100):
+        for w in ("PP", "PM"):
+            for a in ("whole", "no_alf", "no_both", "no_alf_jrand"):
+                lost = w == "PP" and (a == "no_both" or (a == "no_alf_jrand" and i % 4 == 0))
+                rows.append({"scene": f"s{i}", "condition": "C0", "entity": f"e{i % 25}", "reader": w, "arm": a,
+                             "switched": int(not lost)})  # fmt: skip
+    c = {(r["reader"], r["arm"]): r["lost"][0] for r in R.ctrl_losses(rows, ["C0"], 100)}
+    assert c[("PP", "alf + J++")] == 1.0 and c[("PP", "alf + random (J++ share)")] == 0.25
+    assert abs(c[("PP", "alf + J++ - alf + random")] - 0.75) < 1e-9 and c[("PM", "alf + J++ - alf + random")] == 0.0

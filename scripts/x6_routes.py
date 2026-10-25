@@ -24,6 +24,9 @@ descriptive gate after the data, Dan 25 Oct ~13:20).
 pointer directions (each item's 25 signed-OMP atoms together with Alf; least-squares projection) and without a random
 part of the union's share; per condition and reader, each part's extra loss and the union's minus the pointer
 directions' (paired bootstrap).
+--bothoff-ctrl (x6_routes_bothoff_ctrl, Dan 25 Oct ~14:30): one more arm, without the union of the pointer directions
+and a random part of the J++ part's share (orthonormalized); per condition and reader, the switches lost without the
+pointer directions, without them and J++, without them and the random part, and the second minus the third.
 Rule (Dan, fixed in advance): a route counts as used if its share is >= 0.20 with lower CI >= 0.10 (cluster bootstrap
 over the bridge item, 10,000 resamples, seed 0). C0 must reproduce the one-pick lookup switch rate within 0.10, or the
 run stops.
@@ -57,7 +60,10 @@ CONDITIONS = ("C0", "C1", "C2")
 ROUTES = ("identity", "position", "value", "original", "other")
 USED_SHARE, USED_LO = 0.20, 0.10
 C0_TOL = 0.10
-ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "no_both_rand")
+ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "no_both_rand", "no_alf_jrand")
+# --bothoff-ctrl: switches lost (Jdep) without the pointer directions, without them and J++, without them and a random
+# part of J++'s share; the question is the second minus the third (Dan's Q36.1)
+CTRL = (("alf", "no_alf"), ("alf + J++", "no_both"), ("alf + random (J++ share)", "no_alf_jrand"))
 PARTS = (("jpp", "no_jpp", "no_jpp_rand"), ("alf", "no_alf", "no_alf_rand"), ("both", "no_both", "no_both_rand"))
 # the one-pick lookup switch rate in scenes with both locker sentences before the pick (x0_massmean_lf's items, the
 # whole change), the reference C0 must reproduce (Dan: within 0.10)
@@ -204,6 +210,32 @@ def union_part(jdic, alf, x, k: int):
     return out
 
 
+def random_k(x, share, basis):
+    """Per row of x, the number of leading columns of `basis` whose projection keeps share[row] of the row's squared
+    norm (the rule of statement_positions.random_subspace_part)."""
+    import torch
+
+    coef = x.float() @ basis
+    cum = torch.cumsum(coef**2, dim=-1) / (x.float().norm(dim=-1, keepdim=True) ** 2).clamp_min(1e-30)
+    cum = torch.cat([torch.zeros_like(cum[:, :1]), cum], dim=-1)
+    return (cum - share.float()[:, None]).abs().argmin(dim=-1)
+
+
+def union_rand_part(alf, x, share, basis):
+    """Each row of x projected onto the span of the pointer directions together with a random part of the given share
+    (the leading random_k columns of `basis`), orthonormalized."""
+    import torch
+
+    k = random_k(x, share, basis)
+    out = torch.empty_like(x)
+    for i in range(x.shape[0]):
+        span = torch.cat([basis[:, : int(k[i])].double(), alf.double()], dim=1)
+        u, s, _ = torch.linalg.svd(span, full_matrices=False)
+        u = u[:, s > s[0] * 1e-6]
+        out[i] = (u @ (u.T @ x[i].double())).float()
+    return out
+
+
 def stage_run(
     name: str,
     smoke: bool,
@@ -213,6 +245,7 @@ def stage_run(
     conds: tuple[str, ...] = CONDITIONS,
     bothoff: bool = False,
     gate_min: float = X.GATE,
+    ctrl: bool = False,
 ) -> Path:
     import torch
 
@@ -229,12 +262,13 @@ def stage_run(
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     assert pointer or not bothoff, "--bothoff needs the pointer directions"
+    assert bothoff or not ctrl, "--bothoff-ctrl needs --bothoff"
     conds = ("C0",) if smoke else conds
     n = N_SMOKE if smoke else N_ITEMS
     ref = c0_reference(target)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
-         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff,
+         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff, "bothoff_ctrl": ctrl,
          "alf_from": STATES[target] if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
          "c0_reference": {"run": C0_REF[target][0], "lookup_switch": ref, "tolerance": C0_TOL},
          "rule": f"a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}",
@@ -286,6 +320,8 @@ def stage_run(
             arms.update({"no_alf": x - ptr, "no_alf_rand": x - SP.random_subspace_part(x, sh["alf"], basis)})
         if bothoff:
             arms.update({"no_both": x - both, "no_both_rand": x - SP.random_subspace_part(x, sh["both"], basis)})
+        if ctrl:
+            arms["no_alf_jrand"] = x - union_rand_part(alf, x, sh["jpp"], basis)
         for i, c in enumerate(progress(chosen, f"reads at layer {layer} (case)")):
             norms.append({"scene": c["scene"], "condition": c["condition"], "norm": round(float(x[i].norm()), 4),
                           "share_jpp": round(float(sh["jpp"][i]), 5), "share_alf": round(float(sh["alf"][i]), 5),
@@ -327,7 +363,7 @@ def extra_losses(
                   for a in ARMS}  # fmt: skip
             scenes_ = sorted(by["whole"])
             ents = [by["whole"][s]["entity"] for s in scenes_]
-            sw = {a: [int(by[a][s]["switched"]) for s in scenes_] for a in ARMS}
+            sw = {a: [int(by[a][s]["switched"]) for s in scenes_] for a in ARMS if by[a]}
             rr = X.resampled_rates(sw, ents, n_boot)
             ex = {}
             for part, no, rand in PARTS:
@@ -339,6 +375,31 @@ def extra_losses(
             point = out[-1]["excess"][0] - out[-2]["excess"][0]
             out.append({"condition": cond, "reader": w, "part": "both - alf", "n": len(scenes_),
                         "excess": [point, *X.interval(ex["both"] - ex["alf"])]})  # fmt: skip
+    return out
+
+
+def ctrl_losses(rows: list[dict], conds: list[str], n_boot: int = X.N_BOOT) -> list[dict]:
+    """Per condition and reader: the switches lost (Jdep) without each CTRL arm, and the J++ union's minus the random
+    union's (paired resamples)."""
+    out = []
+    for cond in [c for c in CONDITIONS if c in conds]:
+        for w in X.READERS:
+            by = {a: {r["scene"]: r for r in rows if r["condition"] == cond and r["reader"] == w and r["arm"] == a}
+                  for a in ("whole", *(arm for _, arm in CTRL))}  # fmt: skip
+            scenes_ = sorted(by["whole"])
+            ents = [by["whole"][s]["entity"] for s in scenes_]
+            sw = {a: [int(v[s]["switched"]) for s in scenes_] for a, v in by.items()}
+            rr = X.resampled_rates(sw, ents, n_boot)
+            mean = {a: float(np.mean(v)) for a, v in sw.items()}
+            lost = {}
+            for label, arm in CTRL:
+                lost[arm] = X.dependence(rr["whole"], rr[arm])
+                point = float(X.dependence(mean["whole"], mean[arm]))
+                out.append({"condition": cond, "reader": w, "arm": label, "n": len(scenes_), "S_whole": mean["whole"],
+                            "lost": [point, *X.interval(lost[arm])]})  # fmt: skip
+            point = out[-2]["lost"][0] - out[-1]["lost"][0]
+            out.append({"condition": cond, "reader": w, "arm": "alf + J++ - alf + random", "n": len(scenes_),
+                        "lost": [point, *X.interval(lost["no_both"] - lost["no_alf_jrand"])]})  # fmt: skip
     return out
 
 
@@ -390,8 +451,15 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
             else:
                 lines.append(f"| {e['condition']} | {e['reader']} | {e['part']} | {e['n']} | {e['S_whole'][0]:.2f} | "
                              f"{ci(e['Jdep'])} | {ci(e['Rdep'])} | {ci(e['excess'])} | {e['share']:.3f} |")  # fmt: skip
+    ctrl = ctrl_losses(rows, m["conditions"], n_boot) if "no_alf_jrand" in arms else []
+    if ctrl:
+        lines += ["", "Switches lost (share of the whole change's switches; no random control subtracted) without the "
+                  "pointer directions, without them and J++, and without them and a random part of J++'s share; the "
+                  "last row: J++'s union minus the random union (paired resamples).", "",
+                  "| condition | reader | removed | n | switches lost |", "|---|---|---|---|---|"]  # fmt: skip
+        lines += [f"| {c['condition']} | {c['reader']} | {c['arm']} | {c['n']} | {ci(c['lost'])} |" for c in ctrl]
     (out / "verdict.json").write_text(
-        json.dumps({"run": name, "manifest": m, "rows": blob, "extra": extra}, indent=1) + "\n"
+        json.dumps({"run": name, "manifest": m, "rows": blob, "extra": extra, "ctrl": ctrl}, indent=1) + "\n"
     )
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
@@ -411,6 +479,9 @@ def main() -> None:
         "--bothoff", action="store_true", help="run: also without the union of J++ and the pointer directions"
     )
     ap.add_argument("--gate", type=float, default=X.GATE, help="run: a lowered, descriptive read-accuracy gate")
+    ap.add_argument(
+        "--bothoff-ctrl", action="store_true", help="run: also without the pointer and a random J++-size part"
+    )
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
@@ -419,7 +490,7 @@ def main() -> None:
     if a.stage == "run":
         conds = tuple(c for c in a.conditions.split(",") if c)
         assert set(conds) <= set(CONDITIONS), f"conditions {conds}"
-        stage_run(a.name, a.smoke, a.layer, a.c0_min, not a.no_pointer, conds, a.bothoff, a.gate)
+        stage_run(a.name, a.smoke, a.layer, a.c0_min, not a.no_pointer, conds, a.bothoff, a.gate, a.bothoff_ctrl)
     if not a.smoke:
         stage_verdict(a.name, a.n_boot)
 
