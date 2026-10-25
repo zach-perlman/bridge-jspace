@@ -599,6 +599,8 @@ TARGETS["nemotron-3.5-bolt"] = {
         "model": "modeling_nemotron_h_puzzle.NemotronHPuzzleForCausalLM",
         "config_key": "llm_config",
         "key_mapping": {r"^language_model\.backbone\.": "model.", r"^language_model\.": ""},
+        # amendment 44: the prebuilt HF-hub mamba-ssm, the revision transformers fetched for Lightning
+        "hub_mamba": {"repo": "kernels-community/mamba-ssm", "revision": "28017f36635a6b94d911333812beeed5dd901ac0"},
     },
     "frozen_lens": "jlens",
     "lenses": {"jlens": ("local", "cache/nemotron-3.5-bolt/lenses/jlens/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jlens.pt", None)},

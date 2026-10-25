@@ -1224,3 +1224,20 @@ wait on it.
   instruction and the "Answer:" prefill. The ~half of a named-once recalled bridge's dependence that neither the
   passage-only nor the question-only run carries (9B) is therefore not in those tokens. It needs both spans at once:
   redundancy.
+
+## Amendment 44 (Zach, 2026-10-25 17:13 UTC, before any Bolt run): Bolt with hub Mamba kernels, 100-prompt lens, the amendment-42 design
+
+- **Why (Zach: "Bolt, not llama"):** Bolt is the next non-Qwen model, after Lightning (amendment 40 note 1's loading
+  path, approved).
+- **Kernels.** Bolt's own code imports mamba_ssm directly, so set_use_kernels cannot reach it. model._hub_mamba_ssm
+  loads the prebuilt HF-hub mamba-ssm, at the revision transformers fetched for Lightning (kernels-community/mamba-ssm
+  @28017f3), registers it as mamba_ssm and the submodules that code imports, and reports mamba_ssm available. Checked
+  (imports only, a GPU visible): the code's fast path is on, with all five kernels present. Before any run, Bolt's
+  chain compares kernels and the torch path on 32 WikiText rows (scripts/kernel_nll.py; BJ_NO_KERNELS=1 turns them
+  off). It stops unless |mean NLL diff| <= 0.01 and top-1 agreement >= 0.95; Lightning's was 0.0008 and 97.6%.
+- **Lens:** our plain J-lens on 100 prompts. The jlens README: "~100 prompts is usable", "quality saturates quickly";
+  the paper used 1000. Flagged on Bolt's results. Lightning keeps 200.
+- **Procedure (scripts/queues/h200_bolt_1025.sh):** smoke, kernel check, competence smoke, fit, gate, the dev depth
+  profile, the dose curve at its pick, the test knock-out and swap at the pick, and the swap at mid depth L44-55 (50-62%
+  of 88). Readings as amendments 39 and 42. Disk: DeepSeek's cache is dropped only once h200ds42 and h200dsdose both
+  end with 0 failures. The 27B renderings (amendment 38 B) run after Bolt (h200qrend27).

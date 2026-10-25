@@ -10,6 +10,7 @@ Conventions
 """
 
 import contextlib
+import os
 import re
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -275,7 +276,7 @@ def load_model() -> Model:
     if pins.TARGETS[pins.TARGET].get("split_gpus"):  # 2026-10-25 (DeepSeek-V4-Flash, 160 GB): two GPUs, see _split_map
         device_map = _split_map(auto, path, pins.TARGETS[pins.TARGET]["split_gpus"], cfg)
     hf = auto.from_pretrained(path, dtype=torch.bfloat16, device_map=device_map, attn_implementation=attn, **extra).eval()
-    if pins.TARGETS[pins.TARGET].get("use_kernels"):  # Nemotron 3.5 (2026-10-25, amendment 42): HF-hub kernels (mamba-ssm & co.)
+    if pins.TARGETS[pins.TARGET].get("use_kernels") and not os.environ.get("BJ_NO_KERNELS"):  # Nemotron 3.5 (amendment 42): HF-hub kernels
         hf.set_use_kernels(True)
     n = hf.config.get_text_config().num_hidden_layers
     assert n == pins.N_LAYERS, f"{pins.MODEL_REPO} has {n} blocks; pins.TARGETS says {pins.N_LAYERS}"
@@ -302,10 +303,30 @@ def _remote_lm(path: str, spec: dict[str, Any]):
     def special(o):
         return float(o["__float__"]) if set(o) == {"__float__"} else o
 
+    if spec.get("hub_mamba") and not os.environ.get("BJ_NO_KERNELS"):
+        _hub_mamba_ssm(**spec["hub_mamba"])
     _gated_rmsnorm_shim()
     raw = json.loads((Path(path) / "config.json").read_text(), object_hook=special)[spec["config_key"]]
     cfg = get_class_from_dynamic_module(spec["config"], path).from_dict(raw)
     return get_class_from_dynamic_module(spec["model"], path), cfg
+
+
+def _hub_mamba_ssm(repo: str, revision: str) -> None:
+    """Bolt's code imports mamba_ssm itself, so transformers' set_use_kernels cannot reach it (2026-10-25, amendment 44).
+    Load the prebuilt HF-hub mamba-ssm (the package transformers fetches for Lightning, pinned) and register it as
+    mamba_ssm and the submodules Bolt's code imports, and report mamba_ssm as available to transformers' check, so that
+    code takes its kernel path. Nothing is compiled or installed."""
+    import importlib
+    import sys
+
+    import kernels
+    import transformers.utils.import_utils as iu
+
+    k = kernels.get_kernel(repo, revision=revision)
+    sys.modules["mamba_ssm"] = k
+    for sub in ("ops", "ops.triton", "ops.triton.ssd_combined", "ops.triton.selective_state_update", "ops.triton.layernorm_gated"):
+        sys.modules[f"mamba_ssm.{sub}"] = importlib.import_module(f"{k.__name__}.{sub}")
+    iu.is_mamba_2_ssm_available = lambda: True
 
 
 def _gated_rmsnorm_shim() -> None:
