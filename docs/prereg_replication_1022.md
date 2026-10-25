@@ -1241,3 +1241,11 @@ wait on it.
   profile, the dose curve at its pick, the test knock-out and swap at the pick, and the swap at mid depth L44-55 (50-62%
   of 88). Readings as amendments 39 and 42. Disk: DeepSeek's cache is dropped only once h200ds42 and h200dsdose both
   end with 0 failures. The 27B renderings (amendment 38 B) run after Bolt (h200qrend27).
+
+**Amendment 44, note 1 (Zach, 2026-10-25 17:26 UTC, before either fit):** Lightning's and Bolt's plain J-lenses are fit
+on 64 prompts, not 200 and 100. Zach asked whether fewer suffice. The paper's appendix (Methodological details,
+Data: Amount) sweeps 1 to 1000 prompts and says "J-lens beats the logit lens and tuned lens baselines with as few as
+10 prompts", with small gains beyond. Our J++ lenses at 32 prompts beat the logit lens clearly (Ministral held-out
+pass@10 0.651 vs 0.461). 64 keeps a margin for the top-10 directions the knock-out uses, and saves ~2 h on Lightning's
+fit and ~1.5 h on Bolt's, which now run in a row. Chains relaunched (h200nemL8, h200bolt6, h200qrend27b); nothing had
+run in them.
