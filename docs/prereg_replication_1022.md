@@ -1326,3 +1326,94 @@ nothing is claimed with that lens. Ministral's was 0.651 vs 0.461.
   - Not read if swap_srel < 10: the J-part does not transfer across prompts at all.
   - Predictions: swap_xrel_rot and swap_xrel_u < 5; lookups (PP PK TP TK) kept >= 80% under swap_xrel.
 - **Run (scripts/queues/h200_xrel_1025.sh, GPU 0):** after the 9B renderings, the 9B then the 27B.
+
+## Amendment 48 (Zach, 2026-10-25 20:40 UTC, before any run below; smokes on the 9B ran first for the mechanics, and their numbers were seen, listed under "Seen"): the TA's follow-ups, i.e. probability scoring, a variance control, a probe ceiling
+
+- **Why (Zach: "Have we properly addressed the TAs comments … are we using probes as a ceiling where appropriate? Is
+  logit lens and rotated a sufficient control?", then "Go ahead"):** the TA's notes of 23 Oct asked for sampling at
+  temperature 1, probes as an upper ceiling, and precise interventions. Our controls so far are the rotated span (same
+  size, random direction) and the logit lens (same selection rule, the unembedding's directions). Neither is a
+  supervised ceiling, and neither asks whether the J++ split is just "remove the residual's biggest directions".
+- **A. Probability scoring (scripts/soft_score.py; post hoc, on existing rows, already run, all numbers seen).** Points
+  lost = 100 x (mean p unedited - mean p edited), where p is the answer's first-token probability. That is the
+  expected accuracy under temperature-1 sampling, no thinking. Computed on the same eligible items as the candidate
+  pick, and reported beside every hard M - K in the write-up as secondary. Where they disagree, the hard split is
+  called a threshold effect. Seen, paper10 at each model's test band:
+
+  | Model | soft M - K | hard M - K |
+  |---|---|---|
+  | 27B | +50 | +51 |
+  | 9B | +35 | +43 |
+  | Muse | +49 | +60 |
+  | Ministral | +37 | +23 |
+  | DeepSeek L18-23 | +21 | +18 |
+  | 122B late band | +2 | +49 |
+
+  For the 122B, soft K is lost 84: a global probability collapse that leaves the argmax in place on K.
+- **B. Variance control (ablate_v2 conditions pca1, pca3, pca10).** At each band layer, a dictionary of the top 256
+  principal directions of the residual, each with both signs. The directions come from 64 pinned WikiText rows of 128
+  tokens, with the first position left out, centred. At each position, the K directions with the largest projection
+  are removed (paper10's per-position top-K rule, over the residual's own highest-variance directions). No atoms are
+  protected: paper10's protection indexes token rows, and principal directions have none.
+  - Items: the test knock-out's items, band and eligibility, so the comparison is item-matched with paper10.
+  - Removal size: scripts/removal_size.py --pca at the band layers, K = 1, 3, 10, beside paper10's and unembed10's.
+  - Readings, fixed now:
+    - The damage-matched dose is the pca dose whose K loss is nearest paper10's K loss (ties go to the smaller K).
+    - If its M - K is <= 1/3 of paper10's, the J++ split is not a variance effect.
+    - If it is >= 2/3, removing the residual's biggest directions gives the split too, so J++ is not needed for it.
+    - Otherwise, mixed.
+    - Not read if paper10's M - K < 10 at that band.
+    - All doses are reported, hard and soft.
+- **C. Probe ceiling (scripts/probe_ceiling.py).**
+  - **Readout.** At the last token of an entity's first mention, a multinomial logistic probe per relation predicts
+    the entity's value of the item's relation.
+    - Train: every entity mention in the dev prompts, never a test bridge.
+    - Test: the test bridges' first mention, starts P and T, finals M and N.
+    - L2 penalty: chosen by entity-grouped 4-fold cross-validation at the band's middle layer.
+    - Beside it, on the same items: the J++ lens's pick and the logit lens's pick among the relation's answer tokens.
+    - Fact-table coverage: most relations hold one or two entities per value (cities 51 entities over 30 values;
+      dishes 36 over 20; landmarks 42 over 27), so an unseen value can't be predicted. Test items, and CV held-out
+      items, whose value no training entity has are left out.
+    - A relation's probe is valid if its dev CV accuracy at the middle layer beats the held-out majority rate by
+      0.10. This check uses dev data only.
+    - Measure, per valid relation: the share of the probe's above-chance accuracy that J++ reads,
+      (J++ - chance) / (probe - chance), at the band layers. It is also pooled over valid relations, weighted by test n.
+    - Readings: >= 2/3 means the lens reads near the linear ceiling; <= 1/3 means the lens misses much of what is
+      linearly present; otherwise, mixed.
+    - Not read for a model with no valid relation. The ratio is not read where probe accuracy is <= chance + 0.10 on
+      test.
+    - With 33-60 entities per relation, the probe is data-starved. It is a ceiling only where valid, and J++ may beat
+      it elsewhere. That case is reported as such, not as a ceiling result.
+  - **Causal, at the band, at each mention of X (jswap's design, donor D from the same passage).**
+    - Conditions:
+      - swap: J++ top-10;
+      - swap_probe: X's component in the probe subspace replaced by D's;
+      - swap_probe_rot: the same-size change in a fixed random direction (seed 4242 + layer);
+      - remove and remove_probe;
+      - paste: the ceiling.
+    - The probe subspace per relation and layer: the top min(10, values - 1) right singular vectors of the probe's
+      centred class weights in residual units. It is smaller than J++'s 10 on relations with few values, and its
+      size is reported.
+    - Measure: transfer (donor - third) on the memory finals pooled (PM PA PN TM TA TN), 95% bootstrap over bridges.
+      Pooled over all relations, and over valid relations (memory_valid, the one read).
+    - Readings:
+      - swap_probe >= swap: a supervised subspace carries at least what J++'s does, so the lens is a convenient basis,
+        not a privileged one;
+      - swap_probe <= 1/3 of swap: J++'s directions carry what the decodable subspace does not;
+      - otherwise, mixed.
+    - Predictions: swap_probe_rot < 5; lookups (PP PK TP TK) kept >= 80% under swap_probe and remove_probe.
+    - Not read if swap < 10 or paste < 20.
+- **Runs (scripts/queues/h200_ta_1025.sh).**
+  - DeepSeek at L18-23 tonight, after its dose chain, before Lightning. Its cache is dropped for Bolt after that.
+  - Monday after Bolt, beside the 27B renderings:
+    - 27B at L32-40;
+    - 9B at L12-16;
+    - Ministral: probe at L20-25 (mid, where its swap transferred little) and pca at L32-37 (its test band).
+  - Each logs to W&B and EXPERIMENTS.md.
+- **Seen (9B, smokes; mechanics only; their items are in the 9B's real runs):**
+  - probe_ceiling smoke 1: 2 items per word, readout at stride 8 before the CV fix.
+    - Per relation, at L12-16, probe / J++: countries 0.85 / 0.84; cities 0.70 / 0.81; companies 0.40 / 0.90;
+      people 0.33 / 0.77; animals 0.60 / 0.19.
+    - Pooled memory transfer, n 12: swap +50, swap_probe +25, swap_probe_rot 0, paste +42.
+  - Smoke 2: 1 item per word, after the CV fix.
+  - pca smoke: dev, L12-16, 4 items per word (PK, PM). pca10 lost PK 3/4 and PM 4/4; paper10 lost PK 0/4 and PM 2/4.

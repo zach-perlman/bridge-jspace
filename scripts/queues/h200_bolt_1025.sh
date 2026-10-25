@@ -1,7 +1,7 @@
 #!/bin/bash
 # Zach (2026-10-25, prereg amendments 40 note 1, 42, 44, 46): NVIDIA Nemotron 3.5 Bolt 74B-A9B on v2, on GPUs 0,1, after
 # Lightning. Disk (Zach's approval): DeepSeek's cache is dropped only once its profile chain (h200ds42) and its dose
-# chain (h200dsdose) have both ended with 0 failures; else it is kept and this chain stops. Then Bolt's download (stop
+# chain (h200dsdose) have both ended with 0 failures and amendment 48's DeepSeek runs (h200dsta) have exited; else it is kept and this chain stops. Then Bolt's download (stop
 # if under 160 GB free). Once Lightning's chain, the 9B renderings and the profiles have exited, these steps:
 #   - smoke (new_model_smoke; stop if the unembed's top-1 differs, plain-text NLL >= 4 nats, or a no-op edit changes the
 #     logits);
@@ -22,10 +22,11 @@ R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 KEY=nemotron-3.5-bolt; P=nem35b_
 REPO=nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16; REV=e09a4cedb1787db1760375ee5539f222cae0c672
 LENS=cache/$KEY/lenses/jpp/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jpp_lens.pt
-DS=$R-h200ds42-1025-1700.log; DD=$R-h200dsdose-1025-1715.log
+DS=$R-h200ds42-1025-1700.log; DD=$R-h200dsdose-1025-1715.log; DT=$R-h200dsta-1025-2100.log  # DT: amendment 48's DeepSeek runs
 export BJ_TARGET=$KEY
 echo "=== start $(date -u +%FT%TZ)"
-until grep -qs "^EXIT" $DS && grep -qs "^EXIT" $DD; do sleep 60; done
+until grep -qs "^EXIT" $DS && grep -qs "^EXIT" $DD && grep -qs "^EXIT" $DT; do sleep 60; done
+echo "=== DeepSeek amendment-48 runs: $(grep -a "=== ta done" $DT | tail -1) (the cache is dropped either way: Bolt comes first)"
 if grep -qs "=== nq deepseek-v4-flash done, 0 failed" $DS && grep -qs "=== dsdose done, 0 failed" $DD; then
   echo "=== DeepSeek chains done with 0 failures $(date -u +%T); df before: $(df -h /workspace | tail -1 | awk '{print $4}')"
   [ -d /workspace/hf_cache/hub/models--deepseek-ai--DeepSeek-V4-Flash ] && python3 /workspace/scratch/cache_drop.py models--deepseek-ai--DeepSeek-V4-Flash
@@ -41,7 +42,7 @@ from huggingface_hub import snapshot_download
 print('=== BOLTDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-for j in h200nemL10-1025-1900 h200qrend9-1025-1720 h200qprof-1025-1700; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
+for j in h200nemL11-1025-2100 h200qrend9-1025-1720 h200qprof-1025-1700; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
 for g in 0 1; do until [ "$(nvidia-smi -i $g --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 120000 ]; do sleep 60; done; done
 echo "=== GPUs 0,1 free $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 < /dev/null || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }

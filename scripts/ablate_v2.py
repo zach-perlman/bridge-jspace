@@ -70,7 +70,7 @@ COMPETENCE = {  # the 27B's competence runs per suite family (eligibility: every
     "TBL": "competence_tool_v1", "TBR": "competence_tool_v1",
 }  # fmt: skip
 CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "paper10_rdict", "keep_own",
-              "skip_subject", "gauss", "unembed10", "unembed10_rot")  # fmt: skip
+              "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10")  # fmt: skip
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
 
 
@@ -303,8 +303,38 @@ def top_k(cond: str) -> int | None:
     if cond.startswith("paper10"):
         return 10
     # topK: the J-lens dictionary; unembedK (2026-10-22, the size-matched specificity control): the unembedding rows
-    m = re.fullmatch(r"(?:top|unembed)(\d+)(_nosink)?(_rot|_rdict)?", cond)
+    m = re.fullmatch(r"(?:top|unembed|pca)(\d+)(_nosink)?(_rot|_rdict)?", cond)
     return int(m[1]) if m else None
+
+
+PCA_ROWS, PCA_K = 64, 256
+
+
+@torch.no_grad()
+def pca_dictionaries(model, layers) -> dict:
+    """pca10 (2026-10-25, the TA's variance control): at each layer, the top PCA_K principal directions of the block's
+    output over the first PCA_ROWS pinned WikiText rows of >= 64 words (128 tokens, as the harness encodes raw text;
+    centred), each with both signs, as a MatrixDictionary. Its top-10 removal takes, at each position, the span of the
+    10 principal directions with the largest projection there (paper10's per-position selection, over the residual's
+    own highest-variance directions instead of the lens's)."""
+    from bridge_jspace import tokens
+
+    rows = [r[:2000] for r in pins.wikitext_rows() if len(r.split()) >= 64][:PCA_ROWS]
+    acts = {la: [] for la in layers}
+    for r in rows:
+        ids = torch.tensor([tokens.raw_encoding(model.tokenizer, r)["input_ids"][:128]], device="cuda")
+        _, rec = model.run(ids, record=tuple(layers))
+        for la in layers:
+            acts[la].append(rec[la][1:])  # the first position (BOS / sink) left out
+    out = {}
+    for la in layers:
+        X = torch.cat(acts[la]).double()
+        X = X - X.mean(0, keepdim=True)
+        _, _, V = torch.linalg.svd(X, full_matrices=False)
+        P = V[:PCA_K].float()
+        out[la] = MatrixDictionary(torch.cat([P, -P]))
+    print(f"pca10: top {PCA_K} principal directions per layer from {len(rows)} WikiText rows", flush=True)
+    return out
 
 
 def conditions_for(band: tuple[int, ...], conditions: list[str]) -> list[str]:
@@ -395,6 +425,9 @@ def main(args) -> None:
     unembed = None  # the logit lens's directions: the same dictionary with J = identity, one for every layer
     if any(c.startswith("unembed") for c in args.conditions):
         unembed = LensDictionary(wg, torch.eye(wg.shape[1], device="cuda"))
+    pca = {}  # 2026-10-25 (TA note, variance control): the residual's top principal directions at each layer, +/- each
+    if any(c.startswith("pca") for c in args.conditions):
+        pca = pca_dictionaries(model, layers)
     gauss = {}
     if "gauss" in args.conditions:
         for la in layers:  # v1's control, drawn exactly as ablate_pilot did
@@ -449,7 +482,9 @@ def main(args) -> None:
                 for cond in conditions_for(band, args.conditions):
                     edits = {}
                     for la in band:
-                        if top_k(cond) is not None and "keepown" in cond:  # C1's kill test under paper10 (2026-10-21)
+                        if cond.startswith("pca"):  # the variance control: no protected atoms (they index token rows)
+                            rs = [RowSettings(skip=p["outside"]) for p in chunk]
+                        elif top_k(cond) is not None and "keepown" in cond:  # C1's kill test under paper10 (2026-10-21)
                             rs = [RowSettings(skip=p["outside"], protected=torch.cat([protected[i], own_rows(p["bridge"], la)])
                                               if p["bridge"] else protected[i]) for i, p in enumerate(chunk)]  # fmt: skip
                         elif top_k(cond) is not None:
@@ -462,7 +497,7 @@ def main(args) -> None:
                         else:
                             rs = [RowSettings(skip=p["outside"]) for p in chunk]
                         method = "top" if top_k(cond) is not None else "omp"
-                        d = (unembed if cond.startswith("unembed") else rdict[la] if cond.endswith("_rdict")
+                        d = (unembed if cond.startswith("unembed") else pca[la] if cond.startswith("pca") else rdict[la] if cond.endswith("_rdict")
                              else gauss[la] if cond == "gauss" else dic[la])  # fmt: skip
                         edits[la] = removal_edit(
                             method,
