@@ -26,7 +26,7 @@ from huggingface_hub import snapshot_download
 print('=== NEMDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-until grep -qs "=== nq deepseek-v4-flash done" $R-h200ds42-1025-1700.log; do sleep 60; done  # 2026-10-25 (amendment 42): DeepSeek's profile chain
+until grep -qs "^EXIT" $R-h200dsdose-1025-1715.log; do sleep 60; done  # 2026-10-25 (amendment 43): after DeepSeek's profile, test, swap and dose chains
 until [ "$(nvidia-smi -i $G --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 100000 ]; do sleep 60; done
 echo "=== GPU $G free after DeepSeek $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }
@@ -82,6 +82,7 @@ bash scripts/queues/h200_nq40_1025.sh $G $KEY $P gate
 bash scripts/queues/h200_profile_1025.sh $G prof:$KEY:$P:16:40
 band=$($PY scripts/profile_pick.py ${P}jsuite_v2_dev_chat_profile_cand2_v1 2>/dev/null)
 echo "=== NEMPICK $KEY: '$band'"
+bash scripts/queues/h200_dose_1025.sh $G dose:$KEY:$P:16:40  # amendment 43: removal sizes at the pick (dev)
 [[ "$band" =~ ^[0-9]+-[0-9]+$ ]] && echo "$band" > /workspace/scratch/${P}v2band.txt && bash scripts/queues/h200_nq40_1025.sh $G $KEY $P test swap
 r=${P}jswap_v2_L26-32_v1
 echo "=== jswap/$r $(date -u +%T)"

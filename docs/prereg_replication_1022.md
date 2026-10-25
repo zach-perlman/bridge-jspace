@@ -1205,3 +1205,22 @@ wait on it.
   kernels. Convergence is read from jlens's per-prompt relative change of the running mean; we report its value at the
   last prompts and the lens's readout check. Bolt stays paused: its code calls mamba_ssm directly and would need the
   hub kernels wired in; decided after Lightning's profile.
+
+## Amendment 43 (Zach, 2026-10-25 16:59 UTC, before any run below): removal-size curves, DeepSeek's question-only run, renderings overnight
+
+- **Why (Zach: "Yes queue what you think is worth it"):** the plan's "Strong" outcome needs a non-Qwen family at C1
+  >= 30, J-specific. Top-10 may be too blunt for DeepSeek (its gate +1.68 nats; its L36-41 broke everything) and too
+  weak for Ministral (+23). The Qwens already have removal-size curves (full2_dose_v1).
+- **Dose (scripts/queues/h200_dose_1025.sh; descriptive, dev):** at each new model's profile pick: top1 / top3 /
+  paper10 / top30, each with its rotation, PP PK PM MP MK MM, n 40, M - K per condition (profile_score.py). DeepSeek
+  (h200dsdose, after h200ds42), Ministral (h200mindose, GPU 0, after its profile), Lightning (in its chain, after its
+  profile).
+- **DeepSeek question-only:** only if its test M - K at the pick is >= 15, the question-only knock-out there (paper10 /
+  rot). Reading as amendment 37 A: question >= 2/3 = question-located, as the 27B at L52-60.
+- **Renderings (amendment 38 B, pre-registered on 25 Oct 04:06 UTC, unchanged):** GPU 0 overnight (h200qrend, after
+  the profiles): the 9B (L12-16) and the 27B (L32-40) on jsuite_v2r2 and jsuite_v2r3. Prediction: M - K within 10 of
+  v2 (27B +51, 9B +43); rotated and logit lens < 10; halves within 15.
+- **Correction to earlier readings:** ablate_v2's "question" mode removes from the question on, so it includes the
+  instruction and the "Answer:" prefill. The ~half of a named-once recalled bridge's dependence that neither the
+  passage-only nor the question-only run carries (9B) is therefore not in those tokens. It needs both spans at once:
+  redundancy.
