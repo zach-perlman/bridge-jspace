@@ -577,7 +577,30 @@ TARGETS["nemotron-3.5-lightning"] = {
     "run_prefix": "nem35l_",
     "frozen_lens": "jlens",
     "lenses": {"jlens": ("local", "cache/nemotron-3.5-lightning/lenses/jlens/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jlens.pt", None)},
-    "frozen_lens_sha256": None,  # set when the fit is done
+    "frozen_lens_sha256": None,  # set when the Lightning fit is done
+}
+
+# 2026-10-25 (amendment 40, note 1): NVIDIA Nemotron 3.5 Bolt 74B-A9B, the language model of its multimodal checkpoint
+# (88 blocks: Mamba-2, attention, and MoE blocks of per-layer sizes; final norm norm_f), built by NVIDIA's own code at the
+# pinned revision (model._remote_lm), over two GPUs. No BOS, thinking off, our plain J-lens: as Lightning's.
+TARGETS["nemotron-3.5-bolt"] = {
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+    "revision": "e09a4cedb1787db1760375ee5539f222cae0c672",
+    "n_layers": 88,
+    "norm_gain": "weight",
+    "bos": False,
+    "run_prefix": "nem35b_",
+    "split_gpus": 44,
+    "tokenizer_kwargs": {"trust_remote_code": False},  # its tokenizer_config names a remote AutoProcessor; the tokenizer needs none
+    "remote_lm": {
+        "config": "configuration_nemotron_h_puzzle.NemotronHPuzzleConfig",
+        "model": "modeling_nemotron_h_puzzle.NemotronHPuzzleForCausalLM",
+        "config_key": "llm_config",
+        "key_mapping": {r"^language_model\.backbone\.": "model.", r"^language_model\.": ""},
+    },
+    "frozen_lens": "jlens",
+    "lenses": {"jlens": ("local", "cache/nemotron-3.5-bolt/lenses/jlens/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jlens.pt", None)},
+    "frozen_lens_sha256": None,  # set when the Bolt fit is done
 }
 
 # 2026-10-25: the 9B split over two GPUs (blocks 0-15 on cuda:0, 16-31 on cuda:1), to check model.split_gpus against the

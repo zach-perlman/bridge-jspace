@@ -1066,3 +1066,28 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Bolt (74B-A9B, 2026-10):** not queued by this amendment. Its checkpoint is a multimodal wrapper whose language
   model has heterogeneous MoE blocks and ships NVIDIA's own model code, and its 150 GB do not fit the disk next to
   DeepSeek's cache. It gets its own note here, with the loading path and the disk plan, before any Bolt run.
+
+**Amendment 40, note 1 (Zach, 2026-10-25 05:58 UTC, before any Bolt run): Nemotron 3.5 Bolt 74B-A9B, last in the queue.**
+Zach approved both open points ("Yes go ahead with that"): drop DeepSeek's cache after its runs, and run NVIDIA's own model
+code for Bolt after reading it.
+- **Model.** nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16 @e09a4ce, a multimodal checkpoint. Only its language model
+  is loaded: NemotronHPuzzleForCausalLM from the repo's own code (modeling_nemotron_h*.py and configuration_nemotron_h*.py,
+  read before use: model code only, its one side effect a checkpoint-key renaming backbone. -> model.). It has 88 blocks
+  (40 Mamba-2, 40 MoE with 240-496 experts by layer, 8 attention) and hidden size 4096. The vision tower is left
+  unloaded, and the run uses two GPUs (blocks 0-43 / 44-87). That code imports mamba_ssm's Triton gated RMSNorm
+  unconditionally; this env has no mamba_ssm (not installed: the env is shared by the running chains). So
+  model._gated_rmsnorm_shim registers mamba_ssm's pure-torch reference of that one function (equal to transformers'
+  Zamba2RMSNormGated in fp32: max diff 0.0), and the Mamba scan takes the code's own torch path, as Lightning's does.
+  CPU check without weights (scripts/bolt_load_check.py, results/checks/nem35b_load_check.txt): all 28,331 tensors of
+  the class map to checkpoint keys, and the 394 unmatched checkpoint keys are all the vision tower's. Tokenizer:
+  trust_remote_code False (TokenizersBackend), no BOS, thinking off: `<|im_start|>system\n<|im_end|>\n<|im_start|>user\n...
+  <|im_end|>\n<|im_start|>assistant\n<think></think>Answer:`.
+- **Lens, smoke, procedure, readings:** as Lightning's (amendment 40): our plain J-lens (fit_jlens --harness, 500
+  prompts, --no-bos; dim_batch 64, 32 on out-of-memory), the same smoke stop rule, then h200_nq40_1025.sh gate, dev,
+  test, swap on GPUs 0,1. The lens-kind caveat applies.
+- **Order and disk (scripts/queues/h200_bolt_1025.sh):** DeepSeek's cache is dropped once its chain's DeepSeek part
+  ends with 0 failures, else kept and the chain stops. Then the download (150 GB; stop if under 160 GB free). Runs start
+  once DeepSeek's chain (Ministral's test and swap) and Lightning's chain have exited.
+- **Fix to amendment 40 (no run affected):** the Lightning and Bolt pins placeholders now differ from Ministral's, which
+  its fit script requires to be unique. The Lightning chain (h200nemL-1025-0522, still waiting before its download) was
+  stopped and relaunched with the fix.

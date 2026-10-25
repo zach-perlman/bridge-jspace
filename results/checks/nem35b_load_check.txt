@@ -1,0 +1,13 @@
+class NemotronHPuzzleForCausalLM layers 88 time_step_limit [0.0, inf] moe_latent 1024
+The fast path is not available because one of `(selective_state_update, causal_conv1d_fn, causal_conv1d_update)` is None. Falling back to the naive implementation. To install follow https://github.com/state-spaces/mamba/#installation and https://github.com/Dao-AILab/causal-conv1d
+model tensors 28331 checkpoint keys 28725 missing 0 []
+unexpected by prefix Counter({'vision_model': 391, 'mlp1': 3})
+final norm NemotronHRMSNorm mixers Counter({'NemotronHMamba2Mixer': 40, 'NemotronHMoE': 40, 'NemotronHAttention': 8})
+moe (experts, top_k) per block {(240, None): 12, (304, None): 6, (432, None): 10, (368, None): 9, (496, None): 3}
+split map Counter({0: 47, 1: 44}) ['lm_head', 'model.embeddings', 'model.norm_f']
+'<|im_start|>system\n<|im_end|>\n<|im_start|>user\nWhat is the capital of Australia? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think></think>Answer:'
+ids start [10, 25708, 1010, 11] bos 1
+fast path False rmsnorm_fn is the shim bridge_jspace.model
+bf16 inputs, shim vs transformers' torch gated norm (output rounding): max abs diff 0.06918525695800781 scale 0.4354763627052307
+fp32: max abs diff 0.0 max rel 0.0
+bf16 in: shim vs fp32 math 0.05117988586425781 | transformers vs fp32 math 0.05775260925292969

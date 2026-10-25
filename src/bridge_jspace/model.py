@@ -257,10 +257,15 @@ def load_model() -> Model:
         ignore_patterns=pins.TARGETS[pins.TARGET].get("snapshot_ignore"),
     )
     tokenizer = tokens.load_tokenizer()
-    architectures = AutoConfig.from_pretrained(path).architectures or []
-    multimodal = any(a.endswith("ForConditionalGeneration") for a in architectures)
-    auto = AutoModelForImageTextToText if multimodal else AutoModelForCausalLM  # Gemma 4: the checkpoint's own class
-    extra = {}
+    extra: dict[str, Any] = {}
+    cfg = None
+    if remote := pins.TARGETS[pins.TARGET].get("remote_lm"):  # Nemotron 3.5 Bolt (2026-10-25): see _remote_lm
+        auto, cfg = _remote_lm(path, remote)
+        extra.update(config=cfg, key_mapping=remote["key_mapping"])
+    else:
+        architectures = AutoConfig.from_pretrained(path).architectures or []
+        multimodal = any(a.endswith("ForConditionalGeneration") for a in architectures)
+        auto = AutoModelForImageTextToText if multimodal else AutoModelForCausalLM  # Gemma 4: the checkpoint's own class
     if pins.TARGETS[pins.TARGET].get("dequantize_mxfp4"):  # gpt-oss (2026-10-23): bf16 experts, as the J++ fitter loads them
         from transformers import Mxfp4Config
 
@@ -268,7 +273,7 @@ def load_model() -> Model:
     attn = pins.TARGETS[pins.TARGET].get("attn", "sdpa")  # gpt-oss: eager (learned attention sinks)
     device_map: Any = "cuda"
     if pins.TARGETS[pins.TARGET].get("split_gpus"):  # 2026-10-25 (DeepSeek-V4-Flash, 160 GB): two GPUs, see _split_map
-        device_map = _split_map(auto, path, pins.TARGETS[pins.TARGET]["split_gpus"])
+        device_map = _split_map(auto, path, pins.TARGETS[pins.TARGET]["split_gpus"], cfg)
     hf = auto.from_pretrained(path, dtype=torch.bfloat16, device_map=device_map, attn_implementation=attn, **extra).eval()
     n = hf.config.get_text_config().num_hidden_layers
     assert n == pins.N_LAYERS, f"{pins.MODEL_REPO} has {n} blocks; pins.TARGETS says {pins.N_LAYERS}"
@@ -281,16 +286,75 @@ def load_model() -> Model:
     return Model(hf, tokenizer, decoded, special, mask)
 
 
-def _split_map(auto, path: str, cut: int) -> dict[str, int]:
+def _remote_lm(path: str, spec: dict[str, Any]):
+    """The language model alone out of a multimodal checkpoint whose code ships with it (Nemotron 3.5 Bolt: NVIDIA's
+    NemotronHPuzzleForCausalLM, heterogeneous MoE blocks, which transformers' own NemotronH cannot build), at the pinned
+    revision, read before use (Zach approved running it, 2026-10-25). Returns (class, config): the config from the
+    checkpoint's config.json under spec["config_key"], its special floats decoded as transformers does; the checkpoint's
+    keys are mapped onto the class by spec["key_mapping"] and the vision tower's weights are left unloaded."""
+    import json
+    from pathlib import Path
+
+    from transformers.dynamic_module_utils import get_class_from_dynamic_module
+
+    def special(o):
+        return float(o["__float__"]) if set(o) == {"__float__"} else o
+
+    _gated_rmsnorm_shim()
+    raw = json.loads((Path(path) / "config.json").read_text(), object_hook=special)[spec["config_key"]]
+    cfg = get_class_from_dynamic_module(spec["config"], path).from_dict(raw)
+    return get_class_from_dynamic_module(spec["model"], path), cfg
+
+
+def _gated_rmsnorm_shim() -> None:
+    """Bolt's code imports mamba_ssm's Triton gated RMSNorm (rmsnorm_fn) unconditionally and fails without mamba_ssm,
+    which this env lacks (its Mamba scan then takes the code's own torch path, as Lightning's does). If mamba_ssm is
+    absent, register mamba_ssm.ops.triton.layernorm_gated with rmsnorm_fn = mamba_ssm's pure-torch reference of that
+    kernel (rms_norm_ref: fp32, gate silu(z) before the norm when norm_before_gate is False, per-group RMS, weight and bias
+    in fp32, cast back), so nothing else of the code changes. Only modules the import names are added."""
+    import importlib.machinery
+    import importlib.util
+    import sys
+    import types
+
+    if importlib.util.find_spec("mamba_ssm") is not None:
+        return
+
+    def rmsnorm_fn(x, weight, bias=None, z=None, eps=1e-6, group_size=None, norm_before_gate=True, upcast=True):
+        dtype = x.dtype
+        weight = weight.float()
+        bias = bias.float() if bias is not None else None
+        if upcast:
+            x = x.float()
+            z = z.float() if z is not None else z
+        if z is not None and not norm_before_gate:
+            x = x * torch.nn.functional.silu(z)
+        g = x.shape[-1] if group_size is None else group_size
+        xg = x.view(*x.shape[:-1], x.shape[-1] // g, g)
+        out = (xg * torch.rsqrt(xg.square().mean(dim=-1, keepdim=True) + eps)).view(x.shape) * weight
+        if bias is not None:
+            out = out + bias
+        if z is not None and norm_before_gate:
+            out = out * torch.nn.functional.silu(z)
+        return out.to(dtype)
+
+    for name in ("mamba_ssm", "mamba_ssm.ops", "mamba_ssm.ops.triton", "mamba_ssm.ops.triton.layernorm_gated"):
+        mod = types.ModuleType(name)
+        mod.__spec__ = importlib.machinery.ModuleSpec(name, None)
+        sys.modules[name] = mod
+    sys.modules["mamba_ssm.ops.triton.layernorm_gated"].rmsnorm_fn = rmsnorm_fn
+
+
+def _split_map(auto, path: str, cut: int, cfg=None) -> dict[str, int]:
     """A device map over two GPUs: decoder blocks below `cut` on cuda:0, the rest on cuda:1, everything else (embeddings,
     final norm, lm_head, rotary tables) on cuda:0, so inputs, logits and the lens's tensors stay on cuda:0 as on one
     GPU. Blocks on cuda:1 are bridged by _forward_hooks."""
     from accelerate import init_empty_weights
     from transformers import AutoConfig
 
-    cfg = AutoConfig.from_pretrained(path)
+    cfg = cfg if cfg is not None else AutoConfig.from_pretrained(path)
     with init_empty_weights():
-        skel = auto.from_config(cfg)
+        skel = auto.from_config(cfg) if hasattr(auto, "from_config") else auto(cfg)
     n = cfg.get_text_config().num_hidden_layers
     layers_path = next(name for name, mod in skel.named_modules()
                        if isinstance(mod, torch.nn.ModuleList) and name.endswith("layers") and len(mod) >= n)  # fmt: skip

@@ -56,7 +56,7 @@ lens, sha = sys.argv[1:]
 p = Path("src/bridge_jspace/pins.py")
 s = p.read_text()
 o1 = f'"lenses": {{"jlens": ("local", "{lens}", None)}},'
-o2 = '"frozen_lens_sha256": None,  # set when the fit is done'
+o2 = '"frozen_lens_sha256": None,  # set when the Lightning fit is done'
 assert s.count(o1) == 1 and s.count(o2) == 1, "the Lightning entry's placeholders"
 s = s.replace(o1, f'"lenses": {{"jlens": ("local", "{lens}", "{sha}")}},  # our plain J-lens (h200_nem_1025.sh)')
 s = s.replace(o2, f'"frozen_lens_sha256": "{sha}",')
