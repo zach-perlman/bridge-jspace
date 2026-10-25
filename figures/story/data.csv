@@ -314,6 +314,7 @@ fig5,qwen3.5-122b-a10b,layer 33: recall J++ extra loss,0.3152173913043478,0.2191
 fig5,qwen3.5-122b-a10b,layer 36: recall J++ extra loss,0.3701298701298702,0.27819247316151346,0.46153846153846156,200,qwen35_122b_x0_necessity_r2
 fig5,qwen3.5-122b-a10b,"layer 24: position share (another item moved, whole change)",0.0,0.0,0.0,300,qwen35_122b_x6_routes_sweep_l24_g75
 fig5,qwen3.5-122b-a10b,"layer 27: position share (another item moved, whole change)",0.0,0.0,0.0,300,qwen35_122b_x6_routes_l27_g75
+fig5,qwen3.5-122b-a10b,"layer 30: position share (another item moved, whole change)",0.0,0.0,0.0,300,qwen35_122b_x6_routes_sweep_l30_g75
 fig5,qwen3.5-122b-a10b,"layer 33: position share (another item moved, whole change)",0.38333333333333336,0.32786885245901637,0.4384858044164038,300,qwen35_122b_x6_routes_g75
 fig6,qwen3.5-9b,"the sanity swap, lookup extra loss without J++",-0.003355704697986628,-0.011029411764705843,0.0,,qwen35_9b_x6_routes_bothoff
 fig6,qwen3.5-9b,"the sanity swap, recall extra loss without J++",0.013793103448275779,-0.0035211267605633756,0.03214285714285725,,qwen35_9b_x6_routes_bothoff
@@ -1998,6 +1999,37 @@ numbers,,rts24_C2_no_jpp_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_route
 numbers,,rts24_C2_no_jpp_rand_original_122b,"0.00 [0.00, 0.01]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l24_g75/verdict-20261025T210453Z/verdict.json
 numbers,,rts24_C2_no_jpp_rand_recall_follows_s_122b,"0.93 [0.90, 0.96]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l24_g75/verdict-20261025T210453Z/verdict.json
 numbers,,rts24_c0_122b,1.00,,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l24_g75/c0_check.json
+numbers,,rts30_C0_whole_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_whole_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_whole_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_whole_original_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_whole_recall_follows_s_122b,"0.93 [0.89, 0.97]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_original_122b,"0.17 [0.11, 0.22]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_recall_follows_s_122b,"0.63 [0.53, 0.75]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_rand_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_rand_original_122b,"0.00 [0.00, 0.01]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C0_no_jpp_rand_recall_follows_s_122b,"0.87 [0.81, 0.94]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_whole_identity_122b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_whole_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_whole_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_whole_original_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_whole_recall_follows_s_122b,"0.91 [0.87, 0.95]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_identity_122b,"0.59 [0.53, 0.65]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_position_122b,"0.02 [0.01, 0.04]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_original_122b,"0.39 [0.33, 0.45]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_recall_follows_s_122b,"0.46 [0.37, 0.57]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_rand_identity_122b,"0.94 [0.91, 0.98]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_rand_original_122b,"0.06 [0.02, 0.09]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_C2_no_jpp_rand_recall_follows_s_122b,"0.79 [0.71, 0.87]",,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/verdict-20261025T214507Z/verdict.json
+numbers,,rts30_c0_122b,1.00,,,,results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75/c0_check.json
 numbers,,rts28_C0_whole_identity_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_sweep_l28_27b/verdict-20261025T151055Z/verdict.json
 numbers,,rts28_C0_whole_position_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_sweep_l28_27b/verdict-20261025T151055Z/verdict.json
 numbers,,rts28_C0_whole_value_27b,"0.00 [0.00, 0.00]",,,,results/x6_routes/x6_routes_sweep_l28_27b/verdict-20261025T151055Z/verdict.json

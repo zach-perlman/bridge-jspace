@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Compare the lookup and recall dot in each row; grey band: not needed.*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 187f2a5b from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 384ba5d2 from the run files.
 
 ## Setup
 
@@ -114,7 +114,7 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | Pointer probe right; another person's earlier pick read as first mention | 0.97; 0.90 | 0.99; 0.56 | 0.92; 0.96 |
 | Routes, another item moved, position without the pointer / without a random part of its size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] (after the data) |
 | Early layer, recall still switching without J++ | 0.05 [0.02, 0.08] | 0.01 [0.00, 0.02] | 0.20 [0.13, 0.28] (after the data) |
-| Routes, position share at each tested layer (another item moved) | L6 0.00 [0.00, 0.00]; L8 0.03 [0.01, 0.05]; L10 0.02 [0.01, 0.04]; L12 0.51 [0.46, 0.56] | L16 0.00 [0.00, 0.00]; L20 0.00 [0.00, 0.00]; L24 0.00 [0.00, 0.00]; L28 0.34 [0.29, 0.40]; L32 0.34 [0.28, 0.39] | L24 0.00 [0.00, 0.00]; L27 0.00 [0.00, 0.00]; L33 0.38 [0.33, 0.44]; L30 / L36 pending (after the data) |
+| Routes, position share at each tested layer (another item moved) | L6 0.00 [0.00, 0.00]; L8 0.03 [0.01, 0.05]; L10 0.02 [0.01, 0.04]; L12 0.51 [0.46, 0.56] | L16 0.00 [0.00, 0.00]; L20 0.00 [0.00, 0.00]; L24 0.00 [0.00, 0.00]; L28 0.34 [0.29, 0.40]; L32 0.34 [0.28, 0.39] | L24 0.00 [0.00, 0.00]; L27 0.00 [0.00, 0.00]; L30 0.00 [0.00, 0.00]; L33 0.38 [0.33, 0.44]; L36 pending (after the data) |
 | Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01]; 0.00 [0.00, 0.00] | 0.21 [0.16, 0.26] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00] (after the data) |
 | Sanity swap, switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03] (after the data) |
 | Sanity swap, lookup without both / pointer alone | 0.43 [0.39, 0.47] / 0.31 [0.26, 0.37] | 0.41 [0.35, 0.47] / 0.15 [0.12, 0.19] | 0.35 [0.29, 0.41] / 0.26 [0.22, 0.30] (after the data) |
