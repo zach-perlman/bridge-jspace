@@ -560,8 +560,8 @@ TARGETS["ministral-3-14b"] = {
     "snapshot_ignore": ["consolidated.safetensors"],
     "tokenizer_kwargs": {"fix_mistral_regex": True},
     "chat_template": MISTRAL_CHAT_TEMPLATE,
-    "lenses": {"jpp": ("local", "cache/ministral-3-14b/lenses/jpp/Ministral-3-14B-Instruct-2512-BF16_jpp_lens.pt", None)},
-    "frozen_lens_sha256": None,  # set when the fit is done
+    "lenses": {"jpp": ("local", "cache/ministral-3-14b/lenses/jpp/Ministral-3-14B-Instruct-2512-BF16_jpp_lens.pt", "45977bd89f5310ec93726d69c198dd788b64b77c8f3b5884ef21fc58652ed3e3")},  # our J++ (h200_minfit_1025.sh); held-out macro pass@10: {'Ministral-3-14B-Instruct-2512-BF16_jpp_lens': 0.651, 'logit': 0.461, 'pooled_lens': 0.545}
+    "frozen_lens_sha256": "45977bd89f5310ec93726d69c198dd788b64b77c8f3b5884ef21fc58652ed3e3",
 }
 
 # 2026-10-25 (amendment 40): NVIDIA Nemotron 3.5 Lightning 30B-A3B (hybrid: 52 blocks, each one Mamba-2, attention or MoE
