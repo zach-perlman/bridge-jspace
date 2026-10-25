@@ -41,7 +41,8 @@ OUT = pins.REPO_ROOT / "figures" / "status_2026-10-25"  # the 24 Oct folder stay
 # batch 31 (Dan, 25 Oct ~00:20): these runs stay closed until his answers are committed
 CLOSED_RUNS = {"qwen35_9b_x0_replicate", "x0_replicate_27b", "qwen35_122b_x0_single", "qwen35_122b_x0_parts",
                "qwen35_122b_x0_probe_v4", "qwen35_122b_x0_amnesic", "qwen35_122b_x0_massmean_grid", "x5_natural_27b",
-               "qwen35_9b_x5_natural", "qwen35_122b_x5_natural", "qwen35_122b_x4_patch", "qwen35_122b_x0b_v2"}  # fmt: skip
+               "qwen35_9b_x5_natural", "qwen35_122b_x5_natural", "qwen35_122b_x4_patch", "qwen35_122b_x0b_v2",
+               "x6_routes_27b", "qwen35_9b_x6_routes"}  # x6_routes: batch 32  # fmt: skip
 SHOW_CLOSED = False
 YL = "extra flips lost vs a random part of the same size\n(share of the change's flips)"
 MODELS = (("qwen3.5-9b", "Qwen3.5-9B", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
@@ -1098,6 +1099,63 @@ def f19(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
+ROUTES_RUNS = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x6_routes"),
+               "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x6_routes_27b")}  # fmt: skip
+ROUTE_COLOURS = (("identity", "#4a7fb5"), ("position", "#d9a441"), ("value", "#2a9d8f"), ("original", "#9e9e9e"),
+                 ("other", "#e3e3e3"))  # fmt: skip
+
+
+def f20(plt, F, color, grey) -> None:
+    """Which route the lookup follows (x6_routes): per model, condition (C1, C2) and arm, the share of lookup answers
+    that follow the item's identity, its locker sentence's position, the new locker value, the original answer, or
+    none; stacked, with each share's 95% CI in data.csv."""
+    import json
+
+    arms = (("whole", "whole"), ("no_jpp", "without\nJ++"), ("no_jpp_rand", "without\nrandom"),
+            ("no_alf", "without\npointer dirs"), ("no_alf_rand", "without\nrandom (ptr)"))  # fmt: skip
+    fig, axes = plt.subplots(1, len(ROUTES_RUNS), figsize=(9 * len(ROUTES_RUNS), 6), sharey=True)
+    for ax, (target, (label, run)) in zip(axes, ROUTES_RUNS.items(), strict=True):
+        found = sorted((pins.RESULTS_DIR / "x6_routes" / run).glob("verdict-*/verdict.json"))
+        if (st := state(run, bool(found))) != "open":
+            placeholder(ax, label, st)
+            continue
+        rows = {(r["condition"], r["arm"]): r for r in json.loads(found[-1].read_text())["rows"]}
+        xs, ticks = [], []
+        for ci_, cond in enumerate(("C1", "C2")):
+            for ai, (arm, name) in enumerate(arms):
+                r = rows.get((cond, arm))
+                x = ci_ * (len(arms) + 1) + ai
+                xs.append(x)
+                ticks.append(name)
+                if r is None:
+                    continue
+                bottom = 0.0
+                for route, col in ROUTE_COLOURS:
+                    v, lo, hi = r["share"][route]
+                    ax.bar(x, v, bottom=bottom, width=0.8, color=col, edgecolor="white")
+                    bottom += v
+                    record("f20", target, run, X.PREDICTED[target], X.LOOKUP, f"{cond} {arm} share {route}", v, lo, hi,
+                           r["n"])  # fmt: skip
+            ax.text(ci_ * (len(arms) + 1) + (len(arms) - 1) / 2, 1.04, cond, ha="center", fontsize=12, weight="bold")
+        ax.set_xticks(xs, ticks, fontsize=8.5)
+        ax.set_ylim(0, 1.1)
+        ax.set_title(f"{label} (n per bar in data.csv)")
+    axes[0].set_ylabel("share of lookup answers")
+    h = [plt.Rectangle((0, 0), 1, 1, color=c) for _, c in ROUTE_COLOURS]
+    head(fig, "Which information from the bridge word the lookup follows",
+         "C1: the bridge stays, its locker sentence moves to another slot and gets a new digit (identity = original, "
+         "position, value). C2: the bridge changes and moves (identity, position, value, original). The change from the "
+         "swapped prompt is added at the bridge word at the layer fixed in advance; each arm removes a part of it.",
+         h, [r for r, _ in ROUTE_COLOURS])  # fmt: skip
+    foot(
+        fig,
+        [f"{CI}. Rule fixed in advance: a route is used if its share is >= 0.20 with lower CI >= 0.10. Unverified."],
+    )
+    fig.tight_layout(rect=(0, 0.06, 1, 0.80))
+    fig.savefig(OUT / "f20_routes.png", dpi=150, facecolor="white")
+    plt.close(fig)
+
+
 def main() -> None:
     import argparse
     import json
@@ -1131,6 +1189,7 @@ def main() -> None:
     f17(plt, F, color, grey)
     f18(plt, F, color, grey)
     f19(plt, F, color, grey)
+    f20(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]

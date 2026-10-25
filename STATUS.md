@@ -41,7 +41,8 @@ Tonight's results stay closed until Dan's batch-31 commit (Dan ~00:20); their ce
 | c. Natural passages, 27B and 9B (x5_natural) | gap ≥ 0.30 (lower ≥ 0.15) holds; ≤ 0.10 fails | 27B: ran, closed. 9B: stopped at the gate fixed in advance (the lookup's unedited accuracy under the bar), so not tested; not a technical failure, not rerun (the job shows "failed" because one process stopped) | 27B closed | |
 | b5. 122B translated / symbol keys (x0_122b_b5) | D_translated ≥ 0.20 / ≤ 0.10; D_symbol ≥ 0.20 | queued | | |
 | Natural passages, 122B (x5_natural_122b) | as c | queued | | |
-| b6. 122B varied scenes, prose and tables, levels 0-1 (x0_122b_b6) | X0b's pooled rule | queued (cancelled if not started by 07:30) | | |
+| Which route the lookup follows, identity / position / value (x6_routes; 27B and 9B; batch 32) | a route is used if its share is ≥ 0.20 with lower CI ≥ 0.10; C0 must reproduce the one-pick lookup switch rate within 0.10, or the model's run stops | queued before b6 | | 300 per condition (planned) |
+| b6. 122B varied scenes, prose and tables, levels 0-1 (x0_122b_b6) | X0b's pooled rule | queued last (cancelled if not started by 07:30) | | |
 
 ## Figures (figures/status_2026-10-25/; the 24 Oct folder stays as shared)
 
