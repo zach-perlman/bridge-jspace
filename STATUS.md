@@ -25,6 +25,27 @@ Regenerated as x0_122b_b9's parts land. Every cell from docs/x0_numbers.json (in
 
 Scored today: Q32.7, Q32.8 right; Q33.1, Q34.1, Q35.1, Q36.1, Q37.1 wrong; Q37.2 right (predictions/2026-10-25_dan.md; calibration in predictions/README.md).
 
+## Overnight 25-26 Oct: the Muse grid, defaults taken, DeepSeek-V4-Flash note (agent)
+
+Queue on the H100 box (check: `make queue-status QUEUE=h100`): x0_122b_b11 (the 122B replication rerun at gate 0.75, after the data; it replaced b10, which the queue blocked because it depended on b9, which ended FAILED), then muse_g1 ... muse_g6 (2-GPU jobs, one lane per GPU; muse_g6 one GPU). Every Muse step runs through scripts/muse_step.sh, so nothing waits for me.
+
+Defaults taken (Dan: log, don't ask):
+- Muse target copied from origin/zach/v8-breadth-1021, not merged: MUSE_TEMPLATE_EDITS (no date line, reasoning low, the answer channel opened), the final norm's gain "weight", the output multiplier in Model.unembed. Kept ours: the run prefix muse30b_ and the lens from the Hub (the same file: sha256 90fc5e52..., verified on the box). Weights downloaded to /ephemeral/hf and checked file by file against the Hub.
+- Smoke: tokenizer-level on every grid script (all plan stages run on Muse); one GPU smoke of x6_routes (20 sanity-swap scenes, L26, no pointer arms) passed end to end. The other scripts were not GPU-smoked: the GPUs were busy with b9 until it ended.
+- G1 fallback (Dan ~00:20): a run whose gate.json says the readers' gate missed at 0.80 is redone as *_g75 with BJ_GATE=0.75 (X0's gate is now an env override), after the data, descriptive, not scored; if it misses at 0.75 too it is "not tested". Per-cell gates (varied scenes, keys) are partial by design and not redone.
+- G2: every Muse routes run has --c0-min 0.5 (Muse has no C0 reference run). G3 (J++ >= 10% of the change at L26) is read from the outputs afterwards.
+- Varied scenes on Muse: prose and tables, levels 0-1, no curve (as on the 122B), not all three formats.
+- The overnight shell chain I first wrote was never started (Dan asked for the jobq queue instead).
+- The 122B replication fixed in advance stopped at its gate (recall 0.77 < 0.80): not tested; b11 is the descriptive rerun.
+
+DeepSeek-V4-Flash feasibility (CPU only, no download):
+- Weights: 284B total, 13B active (MoE); "FP4 + FP8 mixed" (experts FP4, the rest FP8); about 150-170 GB on disk by third-party counts.
+- Our box (2x H100, 160 GB): does not fit, before activations. H100 has no native FP4; transformers would dequantize the experts to bf16 (about 570 GB). vLLM's recipes list H200 / B200 and larger.
+- HF implementation: transformers model type deepseek_v4 (AutoModelForCausalLM). The residual is 4 parallel streams (mHC, hc_mult = 4), shape [B, S, 4, D] through each block, mixed by attn_hc / ffn_hc, collapsed to one stream by a final head before the model norm. Whether output_hidden_states returns the 4 streams or a collapse was not stated in the docs found.
+- Lens: koayon/jpp-lenses has a J++ for it (deepseek-v4-flash/lens.pt, layers 0-41, its recall@10 on its card, hyper-connections detached in the fit); its card does not say which stream (or which collapse) it reads.
+- Chat: no Jinja template; a Python encoder (encoding_dsv4: encode_messages); modes non-think / think high / think max.
+- Verdict: not on this box. It needs about 4x H200-class memory or a box with native FP4, and an answer to which residual the lens reads.
+
 # Results opened, 25 Oct ~12:45 (agent; after Dan's batch-31 / 32 commit). All numbers UNVERIFIED
 
 Every number below is read from docs/x0_numbers.json or figures/status_2026-10-25/data.csv. Queue (~13:40): x6_routes_early_r2 and x0_jppother done (not opened yet; batch 33 closed until Dan's Q33.1 answer is committed); x0_122b_b7 running (F17's 122B panel); then x6_routes_bothoff (batch 34, closed until Dan answers), x6_routes_122b_g75, x5_natural_9b_g75.
