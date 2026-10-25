@@ -1,0 +1,144 @@
+{
+ "v2": "qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1",
+ "r": "qwen35_122b_jsuite_v2_1_test_chat_R_ko_cand2_v1",
+ "n_pairs": 731,
+ "by_word_pairs": {
+  "RN": 244,
+  "RM": 243,
+  "RA": 244
+ },
+ "cells": {
+  "paper10": {
+   "loss": {
+    "MM": 34.2,
+    "MA": 14.8,
+    "MN": 25.8,
+    "RM": 37.9,
+    "RN": 30.3,
+    "RA": 20.5
+   },
+   "contrasts": {
+    "RM-MM": {
+     "diff": 3.7,
+     "ci": [
+      -2,
+      10
+     ]
+    },
+    "RA-MA": {
+     "diff": 5.7,
+     "ci": [
+      1,
+      10
+     ]
+    },
+    "RN-MN": {
+     "diff": 4.5,
+     "ci": [
+      -1,
+      10
+     ]
+    }
+   }
+  },
+  "paper10_rot": {
+   "loss": {
+    "MM": 1.6,
+    "MA": 0.8,
+    "MN": 1.2,
+    "RM": 3.7,
+    "RN": 4.1,
+    "RA": 2.0
+   },
+   "contrasts": {
+    "RM-MM": {
+     "diff": 2.1,
+     "ci": [
+      0,
+      4
+     ]
+    },
+    "RA-MA": {
+     "diff": 1.2,
+     "ci": [
+      0,
+      3
+     ]
+    },
+    "RN-MN": {
+     "diff": 2.9,
+     "ci": [
+      1,
+      5
+     ]
+    }
+   }
+  },
+  "unembed10": {
+   "loss": {
+    "MM": 3.7,
+    "MA": 1.2,
+    "MN": 2.0,
+    "RM": 5.3,
+    "RN": 3.3,
+    "RA": 1.2
+   },
+   "contrasts": {
+    "RM-MM": {
+     "diff": 1.6,
+     "ci": [
+      -2,
+      5
+     ]
+    },
+    "RA-MA": {
+     "diff": 0.0,
+     "ci": [
+      -2,
+      2
+     ]
+    },
+    "RN-MN": {
+     "diff": 1.2,
+     "ci": [
+      0,
+      3
+     ]
+    }
+   }
+  },
+  "unembed10_rot": {
+   "loss": {
+    "MM": 0.0,
+    "MA": 0.0,
+    "MN": 0.4,
+    "RM": 0.8,
+    "RN": 1.2,
+    "RA": 0.0
+   },
+   "contrasts": {
+    "RM-MM": {
+     "diff": 0.8,
+     "ci": [
+      0,
+      2
+     ]
+    },
+    "RA-MA": {
+     "diff": 0.0,
+     "ci": [
+      0,
+      0
+     ]
+    },
+    "RN-MN": {
+     "diff": 0.8,
+     "ci": [
+      0,
+      2
+     ]
+    }
+   }
+  }
+ }
+}

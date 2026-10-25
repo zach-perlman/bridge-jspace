@@ -23,7 +23,10 @@ def main(v2: str, rrun: str, set_name: str) -> None:
     rows = [json.loads(x) for run in (v2, rrun) for x in (RES / run / "rows.jsonl").read_text().splitlines()]
     rows = [r for r in rows if r["kind"] == "clean" and r["id"] in items]
     ok = {r["id"] for r in rows if r["condition"] == "none" and r["correct"]}
-    pairs = [(i, items[i]["derived_from"]) for i in ok if items[i].get("start") == "R" and items[i]["derived_from"] in ok]
+    # the M twin by id (jsuite_v2_1 made R ids from M ids); derived_from names the chat item even in the qa view
+    twin = lambda i: i.replace(":facts:R", ":facts:M")  # noqa: E731
+    assert all(twin(i).split(":", 2)[2] == items[i]["derived_from"].split(":", 2)[2] for i in items if items[i].get("start") == "R")
+    pairs = [(i, twin(i)) for i in ok if items[i].get("start") == "R" and twin(i) in ok]
     keep = {x for p in pairs for x in p}
     out = {"v2": v2, "r": rrun, "n_pairs": len(pairs), "by_word_pairs": dict(collections.Counter(items[r]["word"] for r, _ in pairs)), "cells": {}}
     print(f"{len(pairs)} matched pairs {out['by_word_pairs']}")

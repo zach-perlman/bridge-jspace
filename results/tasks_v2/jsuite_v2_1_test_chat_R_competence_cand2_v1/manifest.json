@@ -1,0 +1,23 @@
+{
+  "run": "jsuite_v2_1_test_chat_R_competence_cand2_v1",
+  "why": "Zach (2026-10-24, prereg amendment 35 note 1): qwen3.6-27b, R items of jsuite_v2_1_test_chat",
+  "set": "jsuite_v2_1_test_chat",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "befea152a32fd0e963ac899b6207bd514d31d674",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "RM",
+    "RA",
+    "RN"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-25T00:32:15Z"
+}
