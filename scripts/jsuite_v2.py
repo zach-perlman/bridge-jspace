@@ -25,6 +25,8 @@ Facts, changes from v1 (the dataset audit of 2026-10-24):
   - Primary contrast M - K (same question, same answer; the fact recalled vs stated).
 
 python scripts/jsuite_v2.py --name jsuite_v2 --seed 2601 [--scenes 1] [--threehop-scenes 2] [--numbers-reps 8]
+  [--split-from jsuite_v2]   (2026-10-25, amendment 38: a second rendering keeps that set's facts dev / test split and test
+  halves exactly; only the passages, filler, wordings and orders are redrawn with --seed)
 """
 
 from __future__ import annotations
@@ -90,12 +92,29 @@ def words_in(text: str, words: list[str]) -> list[str]:
     return [w for w in words if re.search(r"(?i)\b" + re.escape(w) + r"\b", text)]
 
 
-def facts_items(rng: random.Random, n_scenes: int, deck: Deck) -> tuple[dict[str, list[dict]], dict[str, str]]:
+def imposed_splits(name: str) -> dict[str, tuple[dict[str, str], dict[str, str]]]:
+    """relation -> (split, half) of an existing set's facts module (both splits)."""
+    out: dict = collections.defaultdict(lambda: ({}, {}))
+    for sp in ("dev", "test"):
+        for line in (DATA / f"{name}_{sp}_chat" / "items.jsonl").read_text().splitlines():
+            it = json.loads(line)
+            if it.get("module") == "facts":
+                out[it["relation"]][0][it["bridge"]] = it["split"]
+                if it.get("half"):
+                    out[it["relation"]][1][it["bridge"]] = it["half"]
+    return dict(out)
+
+
+def facts_items(rng: random.Random, n_scenes: int, deck: Deck, imposed: dict | None = None) -> tuple[dict[str, list[dict]], dict[str, str]]:
     items, split_of = {"dev": [], "test": []}, {}
     k = 0
     for rel, t in TB.REL2.items():
         facts = t["facts"]
-        split, half = split_halves(rng, facts)
+        if imposed is not None:
+            split, half = imposed[rel]
+            assert set(split) == set(facts), f"{rel}: the imposed split does not cover the facts"
+        else:
+            split, half = split_halves(rng, facts)
         split_of.update({f"{rel}:{x}": s for x, s in split.items()})
         vocab = sorted({v[0] for v in facts.values()})
         people = rel == "people"
@@ -220,7 +239,7 @@ def main(a) -> None:
     banned |= {w for n in NP.PEOPLE_NAMES + N.ABSENT_NAMES for w in n.split()}
     banned |= {"Olympic", "Olympics", "continent", "exhibition", "podcast", "tour", "language", "cuisine", "dish", "company"}
     deck = Deck(rng, JF.clean_paras(banned))
-    items, split_of = facts_items(rng, a.scenes, deck)
+    items, split_of = facts_items(rng, a.scenes, deck, imposed_splits(a.split_from) if a.split_from else None)
     # three-hop: jsuite_threehop's drops, natural3's generator; the split by the first bridge when it is a facts bridge
     with tempfile.TemporaryDirectory() as td:
         dropped = {"cities": [c for c, v in N3.CITIES.items() if v[0] == "South Africa"],
@@ -251,7 +270,7 @@ def main(a) -> None:
         assert not out.exists(), f"{out} exists; sets are written once"
         out.mkdir(parents=True)
         (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in its))
-        man = {"set": out.name, "seed": a.seed, "split": sp, "n": len(its), "git_commit": commit, "script": "scripts/jsuite_v2.py",
+        man = {"set": out.name, "seed": a.seed, "split_from": a.split_from, "split": sp, "n": len(its), "git_commit": commit, "script": "scripts/jsuite_v2.py",
                "modules": dict(collections.Counter(it["module"] for it in its)),
                "words": dict(collections.Counter(it["word"] for it in its)),
                "relations": dict(collections.Counter(it["relation"] for it in its if it["module"] == "facts")),
@@ -270,4 +289,5 @@ if __name__ == "__main__":
     ap.add_argument("--scenes", type=int, default=1)
     ap.add_argument("--threehop-scenes", type=int, default=2)
     ap.add_argument("--numbers-reps", type=int, default=8)
+    ap.add_argument("--split-from", help="keep this set's facts split and halves (a second rendering)")
     main(ap.parse_args())

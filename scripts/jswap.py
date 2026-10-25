@@ -12,6 +12,12 @@ lookups (P and K finals) stay with X. Conditions (one patched forward each, afte
   swap_rot   h_X + (J10(h_D) - J10(h_X)) R^T   (the same-size change in a fixed random direction)
   swap_u     the swap over the logit lens's top-10 directions (J = identity)
   swap_comp  J10(h_X) + h_D - J10(h_D)         (everything but the J-part from D)
+  (2026-10-25, amendment 38; --conds chooses; not in the default set)
+  swap_ans      h_X - A(h_X) + A(h_D), A = the projection onto the unit J-lens vectors of X's and D's answers' first
+                tokens (both cases): only the answer directions swapped
+  swap_ans_u    the same over the answers' unit unembedding rows (the logit lens's answer directions)
+  swap_ans_rot  h_X + (A(h_D) - A(h_X)) R^T   (the same-size change in a fixed random direction)
+  swap_noans    swap with both answers' tokens also protected: the top-10 J-part without the answer directions
   paste      h_D                               (the whole residual: the ceiling)
 Each answer (the candidate read's pick among the relation's answers) is classed as kept (X's answer), donor (D's), third
 (the answer of a third passage entity T, the chance a disrupted answer lands on any given entity's value) or other.
@@ -57,6 +63,16 @@ WORDS = ("PP", "PK", "PM", "PA", "TP", "TK", "TM", "TA")
 ALL_WORDS_V2 = tuple(s + f for s in "PMT" for f in "PKMAN")
 WORDS_V2 = tuple(s + f for s in "PT" for f in "PKMAN")
 CONDS = ("swap", "remove", "swap_rot", "swap_u", "swap_comp", "paste")
+ANS_CONDS = ("swap_ans", "swap_ans_u", "swap_ans_rot", "swap_noans")
+
+
+def span_proj(dic, x: torch.Tensor, idx: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    """Each row of x [m, d] projected onto the span of its own atoms idx [m, k] (mask [m, k]: 0 = padding); a pseudo-
+    inverse, so repeated or padded atoms are harmless."""
+    A = dic.atoms(idx.clamp(min=0)).double() * mask.double().unsqueeze(-1)  # [m, k, d]
+    G = A @ A.transpose(1, 2)
+    c = torch.linalg.pinv(G, hermitian=True) @ (A @ x.double().unsqueeze(2))
+    return (A.transpose(1, 2) @ c).squeeze(2).float()
 SEED_ROT = 888
 
 
@@ -101,7 +117,7 @@ def main(a) -> None:
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     band = list(range(int(a.band.split("-")[0]), int(a.band.split("-")[1]) + 1))
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "band": a.band,
-                                                       "set": a.set, "competence": a.competence, "conditions": CONDS, "k": 10,
+                                                       "set": a.set, "competence": a.competence, "conditions": a.conds, "k": 10,
                                                        "git_commit": commit, "limit": a.limit}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -195,14 +211,29 @@ def main(a) -> None:
             xi = torch.tensor([xp for j in chunk for xp, _ in j["pairs"]], device="cuda")
             di = torch.tensor([dp for j in chunk for _, dp in j["pairs"]], device="cuda")
             groups = [((bi == b).nonzero().squeeze(1), prot[b]) for b in range(len(chunk)) if prot[b].numel()]
-            for cond in CONDS:
+            arow = [row_of[torch.tensor(sorted(j["fx"] | j["fd"]), device="cuda")] for j in chunk]
+            arow = [r[r >= 0] for r in arow]
+            groups_na = [((bi == b).nonzero().squeeze(1), torch.cat([prot[b], arow[b]]).unique()) for b in range(len(chunk))]
+            kmax = max(1, max(r.numel() for r in arow))
+            aidx = torch.full((len(chunk), kmax), -1, dtype=torch.long, device="cuda")
+            for b, r in enumerate(arow):
+                aidx[b, : r.numel()] = r
+            aidx = aidx[bi]
+            amask = aidx >= 0
+            for cond in a.conds:
 
                 def hook_fn(la, h, cond=cond):
                     hx, hd = h[bi, xi].float(), rec[la][bi, di]
-                    D = unembed if cond == "swap_u" else dic[la]
-                    rx, rd = top_span_removal(D, hx, 10, protected=groups), top_span_removal(D, hd, 10, protected=groups)
-                    new = {"swap": hx - rx + rd, "remove": hx - rx, "swap_rot": hx + (rd - rx) @ rot[la].T, "swap_u": hx - rx + rd,
-                           "swap_comp": rx + hd - rd, "paste": hd}[cond]  # fmt: skip
+                    if cond in ("swap_ans", "swap_ans_u", "swap_ans_rot"):
+                        D = unembed if cond == "swap_ans_u" else dic[la]
+                        px, pd = span_proj(D, hx, aidx, amask), span_proj(D, hd, aidx, amask)
+                        new = hx + (pd - px) @ rot[la].T if cond == "swap_ans_rot" else hx - px + pd
+                    else:
+                        D = unembed if cond == "swap_u" else dic[la]
+                        g = groups_na if cond == "swap_noans" else groups
+                        rx, rd = top_span_removal(D, hx, 10, protected=g), top_span_removal(D, hd, 10, protected=g)
+                        new = {"swap": hx - rx + rd, "remove": hx - rx, "swap_rot": hx + (rd - rx) @ rot[la].T, "swap_u": hx - rx + rd,
+                               "swap_comp": rx + hd - rd, "paste": hd, "swap_noans": hx - rx + rd}[cond]  # fmt: skip
                     h = h.clone()
                     h[bi, xi] = new.to(h.dtype)
                     return h
@@ -217,7 +248,7 @@ def main(a) -> None:
     summ = score(rows)
     (out_dir / "summary.json").write_text(json.dumps(summ, indent=1) + "\n")
     for f in words:
-        for c in ("none",) + CONDS:
+        for c in ("none", *a.conds):
             cell = summ.get(f"{f}/{c}")
             if cell:
                 print(f"{f} {c:9s} n {cell['n']:4d}  kept {cell['kept']:5.1f}  donor {cell['donor']:5.1f}  third {cell['third']:5.1f}"
@@ -257,4 +288,5 @@ if __name__ == "__main__":
     ap.add_argument("--set", default="jsuite_v1_facts_test_chat")
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--limit", type=int, default=0, help="first N jobs per word (a smoke)")
+    ap.add_argument("--conds", nargs="+", default=list(CONDS), choices=list(CONDS + ANS_CONDS), help="conditions (default: the original six)")
     main(ap.parse_args())

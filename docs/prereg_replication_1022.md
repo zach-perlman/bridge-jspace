@@ -976,3 +976,28 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   25 on new passages; moved to the end of each GPU's queue. (3) GPU0's chains are merged into one in the order A (122B
   L24-30), the 9B's v2 position runs (amendment 36 note 1), the 9B's R items and their question-only run, Muse's R
   items (amendment 35 note 1), C, D, B (9B).
+
+## Amendment 38 (Zach, 2026-10-25 ~04:10 UTC, before any run below): what the J-part at the mention carries; renderings
+
+- **Seen when this was written:** everything through amendment 37 note 1, the 122B's L39-45 position runs and its
+  L24-30 all-token run (M - K +4: late-only, so amendment 37 A's 122B side is not read), the 27B's v2 question-only
+  run; a smoke of A on the 9B (n 2 per word; mechanics only, its numbers not used).
+- **A. The answer-only swap (scripts/jswap.py --conds, scripts/queues/h200_ans_1025.sh).** jswap's swap never takes a
+  protected direction (the clean top-10 at the answer position, which usually holds X's own answer), so what it moves
+  is the J-part minus at least X's answer token. New conditions at the same positions and band: swap_ans (only the span
+  of X's and D's answers' unit J-lens vectors, first tokens in both cases, swapped), swap_ans_u (the same with their
+  logit-lens directions), swap_ans_rot (the same-size change in a fixed random direction), swap_noans (the top-10 J-part
+  with both answers' tokens also protected). The 27B at L32-40 and the 9B at L12-16 on jsuite_v2_test_chat, read and
+  tracked starts, the v2 knock-out's eligibility. Measure: transfer (donor - third) on the memory finals pooled (PM PA
+  PN TM TA TN), per condition, beside swap's. Readings, two-sided, fixed now: swap_ans >= 2/3 of swap and swap_noans
+  <= 1/3 = the J-part at the mention is the pre-fetched answer token; swap_noans >= 2/3 of swap = it carries the
+  attribute through directions other than the answer's own (a bundle of related concepts), the answer token not needed;
+  otherwise both. Predictions: swap_ans_u and swap_ans_rot transfer < 5; lookups (PP PK TP TK) kept >= 80% under
+  swap_ans and swap_noans.
+- **B. Two more renderings of v2's facts (scripts/jsuite_v2.py --split-from jsuite_v2; jsuite_v2r2 seed 2602,
+  jsuite_v2r3 seed 2603):** v2's exact facts, dev / test split and test halves, new passages, filler, wordings and
+  orders (0 of 5,370 test passages shared with v2 or with each other; the audit: equal bridge mentions, complete scenes).
+  The 27B (L32-40) and the 9B (L12-16): competence on the 15 facts words, the facts knock-out (paper10 / rot /
+  unembed10 / rot), jsuite2_score (scripts/queues/h200_rend_1025.sh). Predictions per model and rendering: M - K within
+  10 of the model's v2 value (27B +51, 9B +43); rotated and logit-lens < 10; halves within 15.
+- **Order:** GPU1 after its night chain: A 27B, B 27B r2, r3; GPU0 after its chain: A 9B, B 9B r2, r3.

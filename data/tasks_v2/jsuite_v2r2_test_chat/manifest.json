@@ -1,0 +1,78 @@
+{
+  "set": "jsuite_v2r2_test_chat",
+  "seed": 2602,
+  "split_from": "jsuite_v2",
+  "split": "test",
+  "n": 7080,
+  "git_commit": "a4246119e285dec2dfc00ce961748845d7f1c251",
+  "script": "scripts/jsuite_v2.py",
+  "modules": {
+    "facts": 5370,
+    "threehop": 1007,
+    "numbers": 703
+  },
+  "words": {
+    "PP": 358,
+    "PK": 358,
+    "PM": 358,
+    "PA": 358,
+    "PN": 358,
+    "MP": 358,
+    "MK": 358,
+    "MM": 358,
+    "MA": 358,
+    "MN": 358,
+    "TP": 358,
+    "TK": 358,
+    "TM": 358,
+    "TA": 358,
+    "TN": 358,
+    "PPP": 118,
+    "PPM": 131,
+    "PMM": 131,
+    "MMP": 132,
+    "PMP": 126,
+    "MPP": 131,
+    "MPM": 121,
+    "MMM": 117,
+    "nPR": 53,
+    "nPL": 61,
+    "nPM": 61,
+    "nKL": 62,
+    "nKM": 62,
+    "nKR": 52,
+    "nAR": 58,
+    "nAL": 60,
+    "nAM": 60,
+    "nMR": 62,
+    "nML": 56,
+    "nMM": 56
+  },
+  "relations": {
+    "countries": 720,
+    "languages": 600,
+    "people": 930,
+    "cities": 780,
+    "companies": 630,
+    "landmarks": 630,
+    "dishes": 570,
+    "animals": 510
+  },
+  "bridges": 171,
+  "halves": {
+    "A": 2790,
+    "B": 2580
+  },
+  "scenes_per_bridge": 1,
+  "threehop_scenes": 2,
+  "numbers_reps": 8,
+  "threehop_dropped": {
+    "cities": [
+      "Cape Town"
+    ],
+    "people": [
+      "Mandela",
+      "Tutu"
+    ]
+  }
+}
