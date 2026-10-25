@@ -927,3 +927,13 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   two-sided, readings fixed now: question >= 2/3 = the 122B re-retrieves the attribute from the question (unlike the
   27B and 9B); context >= 2/3 = it sits in the passage beyond the mention's tokens; neither >= 2/3 = spread over both.
   Rotated control < 10 in every mode. If the reference's M - K is < 15, the shares are not interpreted.
+- **Note 1 (Zach, 2026-10-25 ~02:30 UTC, before these runs; seen: the 122B's question-only result (M - K share of its
+  all-token v2 run: read 46%, tracked 69%, recalled 69%), nothing on the runs below):** for an even comparison, the same
+  position-restricted knock-outs on v2 for the 27B (L32-40) and the 9B (L12-16): question, context, bridge, paper10 and
+  paper10_rot, jsuite_v2_test_chat, the 15 facts words, each model's v2 test competence, jsuite2_score (M - K share of the
+  model's own all-token v2 run); and the 122B's question-only with the logit-lens control (unembed10 / rot; its
+  all-token logit-lens control was +12). Predictions (27B, 9B; as amendment 30 found on v1): read and tracked starts,
+  bridge >= 2/3 and question < 1/3; recalled start, two-sided (v2 names the bridge once in passing, which the 27B's R
+  result showed it partly uses): question >= 2/3 reads as v1. 122B logit-lens question-only: reported, no prediction.
+  Known confound, not fixed by these runs: the bands sit at different relative depths (27B 50-62%, 9B 38-50%, 122B
+  81-94%); a 122B-vs-smaller-Qwen difference in where the dependence sits may be depth, not model.
