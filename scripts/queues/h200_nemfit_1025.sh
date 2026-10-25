@@ -64,6 +64,17 @@ print("held-out macro pass@10:", {k: round(sum(v) / len(v), 3) for k, v in by.it
 PY
 )
 echo "=== $KEY $gate"
+# amendment 45 note 2: a lens that does not read the model better than the logit lens is not used
+python3 - "$OUT" <<'PY' || { echo "=== $KEY J++ does not beat the logit lens on held-out items; stopped before any run"; exit 1; }
+import collections, csv, sys
+rows = [r for r in csv.DictReader(open(sys.argv[1] + "/eval_ranks_pass_at_k.csv")) if r["k"] == "10" and r["weighting"] == "item"]
+by = collections.defaultdict(list)
+for r in rows:
+    by[r["lens"]].append(float(r["pass_at_k"]))
+jpp = [sum(v) / len(v) for k, v in by.items() if "jpp" in k]
+logit = [sum(v) / len(v) for k, v in by.items() if k == "logit"]
+sys.exit(0 if jpp and logit and jpp[0] > logit[0] else 1)
+PY
 sha=$(sha256sum "$LENS" | cut -d" " -f1)
 .venv/bin/python - "$LENS" "$sha" "$gate" <<'PY' || { echo "=== $KEY pins FAILED"; exit 1; }
 import sys

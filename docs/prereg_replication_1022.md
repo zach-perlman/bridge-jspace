@@ -1285,3 +1285,7 @@ jpp_lens's env lacked; installed at the harness env's version (0.8.2, nothing el
 env) loads NemotronH's kernels through lazy_load_kernel (mamba-ssm and causal-conv1d at "version 1", unpinned).
 jpp_cli_hubmamba.py seeds that table with the harness's pinned build (kernels-community/mamba-ssm @28017f3 and its
 causal-conv1d). Checked on an empty Lightning in that env: fast path on, the scan and conv from that build.
+
+**Amendment 45, note 2 (Zach, 2026-10-25 19:06 UTC, before the fit): a quality gate on Lightning's J++.** If its held-out
+macro pass@10 does not exceed the logit lens's, the chain stops before the gate, profile, knock-out or swap, and
+nothing is claimed with that lens. Ministral's was 0.651 vs 0.461.
