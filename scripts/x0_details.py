@@ -366,6 +366,16 @@ def natural_numbers(num: Numbers) -> None:
         num.add(f"nat_n_{m}", str(v["main"]["n"]), src)
         for w, k in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
             num.add(f"nat_{k}_excess_{m}", ci(v["main"]["excess"][w]), src)
+    for m, run in NATURAL_G75.items():  # the reruns after the data, gate lowered to 0.75 (descriptive; natg75_*)
+        found = sorted((pins.RESULTS_DIR / "x5_natural" / run).glob("verdict-*/verdict.json"))
+        if not found:
+            continue
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        v = json.loads(found[-1].read_text())
+        num.add(f"natg75_gap_{m}", ci(v["main"]["gap"]), src)
+        num.add(f"natg75_n_{m}", str(v["main"]["n"]), src)
+        for w, k in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
+            num.add(f"natg75_{k}_excess_{m}", ci(v["main"]["excess"][w]), src)
 
 
 def natsplit_numbers(num: Numbers) -> None:

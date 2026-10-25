@@ -107,7 +107,7 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | Gap, two people swap picks | {{num|contrast_9b}} | {{num|contrast_27b}} | {{num|contrast_122b}} |
 | Gap, only the asked person's pick changes | {{num|single_contrast_9b}} | {{num|single_contrast_27b}} | {{num|single_contrast_122b}} |
 | Gap, varied scenes | {{num|x0b_c_9b}} | {{num|x0b_c_27b}} | {{num|x0b_c_122b}} |
-| Gap, natural passages | – | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} |
+| Gap, natural passages | {{num|natg75_gap_9b}} (after the data, gate 0.75) | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} |
 | Lookup, translated locker key minus verbatim | {{num|x4_D_animals_9b}} | {{num|x4_D_animals_27b}} | {{num|x4_D_animals_122b}} |
 | Recall, J++ / main directions at J++'s share | {{num|pcaeq_jpp_rc_excess_9b}} / {{num|pcaeq_pca_eq_rc_excess_9b}} | {{num|pcaeq_jpp_rc_excess_27b}} / {{num|pcaeq_pca_eq_rc_excess_27b}} | {{num|pcaeq_jpp_rc_excess_122b}} / {{num|pcaeq_pca_eq_rc_excess_122b}} |
 | Lookup, pointer directions | {{num|mmlf_Alf_lk_excess_9b}} | {{num|mmlf_Alf_lk_excess_27b}} | {{num|mmlf_Alf_lk_excess_122b}} |

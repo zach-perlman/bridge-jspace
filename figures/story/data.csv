@@ -14,6 +14,9 @@ fig1,qwen3.5-9b,"Matched scenes, only the asked person's pick changes: gap",0.17
 fig1,qwen3.5-9b,Varied scenes: lookup extra loss,0.008805031446540879,-0.005807854239256629,0.02803776873014404,,x0b_lk_excess_9b
 fig1,qwen3.5-9b,Varied scenes: recall extra loss,0.2302158273381295,0.14437833246054607,0.3261264744978109,,x0b_rc_excess_9b
 fig1,qwen3.5-9b,Varied scenes: gap,0.22,,,,x0b_c_9b
+fig1,qwen3.5-9b,Natural passages: lookup extra loss,0.033333333333333326,-0.07999999999999996,0.14814814814814814,,nat_lk_excess_9b
+fig1,qwen3.5-9b,Natural passages: recall extra loss,0.5555555555555556,0.45070422535211263,0.6623376623376623,,nat_rc_excess_9b
+fig1,qwen3.5-9b,Natural passages: gap,0.5222,,,,nat_gap_9b
 fig1,qwen3.6-27b,"Simple scenes, two people swap picks: lookup extra loss",0.14,0.08,0.2,,lk_excess_27b
 fig1,qwen3.6-27b,"Simple scenes, two people swap picks: recall extra loss",0.74,0.66,0.8,,rc_excess_27b
 fig1,qwen3.6-27b,"Simple scenes, two people swap picks: gap",0.6,,,,contrast_27b
@@ -934,6 +937,10 @@ numbers,,nat_label_122b,holds,,,,results/x5_natural/qwen35_122b_x5_natural/verdi
 numbers,,nat_n_122b,114,,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
 numbers,,nat_lk_excess_122b,"−0.11 [−0.20, −0.03]",,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
 numbers,,nat_rc_excess_122b,"0.34 [0.24, 0.43]",,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
+numbers,,natg75_gap_9b,"0.52 [0.36, 0.68]",,,,results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json
+numbers,,natg75_n_9b,83,,,,results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json
+numbers,,natg75_lk_excess_9b,"0.03 [−0.08, 0.15]",,,,results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json
+numbers,,natg75_rc_excess_9b,"0.56 [0.45, 0.66]",,,,results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json
 numbers,,rt_C0_whole_identity_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
 numbers,,rt_C0_whole_position_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json
 numbers,,rt_C0_whole_value_9b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json

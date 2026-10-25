@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Each row is one setting: compare the purple (lookup) and dark (recall) dot; the grey band is "not needed".*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at acd20e02 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 4d889f42 from the run files.
 
 ## Setup
 
@@ -107,7 +107,7 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | Gap, two people swap picks | 0.53 [0.42, 0.61] | 0.60 [0.50, 0.69] | 0.32 [0.20, 0.43] |
 | Gap, only the asked person's pick changes | 0.39 [0.30, 0.46] | 0.56 [0.45, 0.65] | 0.28 [0.15, 0.39] |
 | Gap, varied scenes | 0.22 [0.14, 0.31] | 0.47 [0.42, 0.53] | 0.15 [0.12, 0.18] |
-| Gap, natural passages | – | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] |
+| Gap, natural passages | 0.52 [0.36, 0.68] (after the data, gate 0.75) | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] |
 | Lookup, translated locker key minus verbatim | −0.02 [−0.05, −0.00] | 0.01 [−0.01, 0.04] | −0.00 [−0.01, 0.00] |
 | Recall, J++ / main directions at J++'s share | 0.37 [0.29, 0.43] / 0.13 [0.06, 0.19] | 0.61 [0.51, 0.69] / 0.16 [0.08, 0.23] | 0.26 [0.16, 0.36] / 0.21 [0.13, 0.30] |
 | Lookup, pointer directions | 0.49 [0.38, 0.59] | 0.14 [0.07, 0.22] | 0.31 [0.20, 0.43] |

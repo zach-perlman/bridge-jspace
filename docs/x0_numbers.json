@@ -2711,6 +2711,22 @@
   "text": "0.34 [0.24, 0.43]",
   "source": "results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json"
  },
+ "natg75_gap_9b": {
+  "text": "0.52 [0.36, 0.68]",
+  "source": "results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json"
+ },
+ "natg75_n_9b": {
+  "text": "83",
+  "source": "results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json"
+ },
+ "natg75_lk_excess_9b": {
+  "text": "0.03 [−0.08, 0.15]",
+  "source": "results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json"
+ },
+ "natg75_rc_excess_9b": {
+  "text": "0.56 [0.45, 0.66]",
+  "source": "results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json"
+ },
  "rt_C0_whole_identity_9b": {
   "text": "0.00 [0.00, 0.00]",
   "source": "results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z/verdict.json"
