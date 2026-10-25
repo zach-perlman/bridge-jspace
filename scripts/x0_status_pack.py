@@ -47,6 +47,7 @@ CLOSED_RUNS = {
 }  # batch 32, Q32.7 / Q32.8
 SHOW_CLOSED = False
 YL = "extra flips lost vs a random part of the same size\n(share of the change's flips)"
+GAP_WORDS = {"holds": "the gap holds", "mixed": "the gap is in between", "fails": "the gap fails"}
 MODELS = (("qwen3.5-9b", "Qwen3.5-9B", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
           ("qwen3.6-27b", "Qwen3.6-27B", "x0_necessity_27b_chat", "x0_kmatch_27b"),
           ("qwen3.5-122b-a10b", "Qwen3.5-122B", "qwen35_122b_x0_necessity_r2", "qwen35_122b_x0_necessity_r2"))  # fmt: skip
@@ -157,7 +158,7 @@ def f1(plt, F, color, grey) -> None:
         verdict = X.verdict(cells[("chat", la, X.LOOKUP, *X.MAIN)], cells[("chat", la, X.RECALL, *X.MAIN)])
         ax.set_xticks([0, 1], ["lookup", "recall"])
         ax.set_title(f"{label}, layer {la}")
-        ax.text(0.5, -0.13, f"rule fixed in advance: {verdict}", transform=ax.transAxes, ha="center", fontsize=12,
+        ax.text(0.5, -0.13, f"the strict test: {verdict}", transform=ax.transAxes, ha="center", fontsize=12,
                 weight="bold")  # fmt: skip
         ax.grid(axis="y", color="#e8e8e8")
         ax.set_axisbelow(True)
@@ -710,7 +711,7 @@ def f13(plt, F, color, grey) -> None:
         series = [(name, col, [cells[(pred, w, *X.MAIN)]["excess"], *(cross[(f, "before", w)]["excess"] for f in fmts)])
                   for name, col, w in (("lookup", F.LOOKUP, X.LOOKUP), ("recall", F.RECALL, X.RECALL))]  # fmt: skip
         bars(ax, groups, series, target, "f13", run)
-        ax.set_title(f"{label}: rule fixed in advance {v['verdict']}")
+        ax.set_title(f"{label}: {GAP_WORDS[v['verdict']]}")
         ax.set_ylim(-0.2, 1.0)
         ax.axhspan(-0.2, X.AROUND_EXCESS, color="#f6f6f6", lw=0, zorder=0)
     axes[0].set_ylabel(YL)
@@ -1046,7 +1047,7 @@ def f18(plt, F, color, grey) -> None:
         bars(ax, groups, series, target, "f18", run)
         g = v["main"]["gap"]
         record("f18", target, run, X.PREDICTED[target], "recall-lookup", "gap", g[0], g[1], g[2], v["main"]["n"])
-        ax.set_title(f"{label}: rule fixed in advance {v['label']}")
+        ax.set_title(f"{label}: {GAP_WORDS[v['label']]}")
         ax.set_ylim(-0.2, 1.0)
     axes[0].set_ylabel(YL)
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
@@ -1112,31 +1113,36 @@ ROUTE_COLOURS = (("identity", "#4a7fb5"), ("position", "#d9a441"), ("value", "#2
 
 
 def f20(plt, F, color, grey) -> None:
-    """Which route the lookup follows (x6_routes): per model, condition (C1, C2) and arm, the share of lookup answers
-    that follow the item's identity, its locker sentence's position, the new locker value, the original answer, or
-    none; stacked, with each share's 95% CI in data.csv."""
+    """Which route the lookup follows (x6_routes): per model, swap (1: the item stays and its locker sentence moves;
+    2: another item, whose locker sentence moves) and arm, the share of lookup answers that follow the item's identity,
+    its locker sentence's position, the new locker value, the original answer, or none; stacked, each share's 95% CI in
+    data.csv."""
     import json
 
-    arms = (("whole", "whole"), ("no_jpp", "without\nJ++"), ("no_jpp_rand", "without\nrandom"),
-            ("no_alf", "without\npointer dirs"), ("no_alf_rand", "without\nrandom (ptr)"))  # fmt: skip
-    fig, axes = plt.subplots(1, len(ROUTES_RUNS), figsize=(9 * len(ROUTES_RUNS), 6), sharey=True)
+    arms = (("whole", "whole\nchange"), ("no_jpp", "without\nJ++"), ("no_jpp_rand", "without\nrandom"),
+            ("no_alf", "without\npointer"), ("no_alf_rand", "without\nrandom*"))  # fmt: skip
+    swaps = (
+        ("C1", "Swap 1: the same item,\nits locker sentence moved"),
+        ("C2", "Swap 2: another item,\nits locker sentence moved"),
+    )
+    fig, axes = plt.subplots(1, len(ROUTES_RUNS), figsize=(8 * len(ROUTES_RUNS), 7.2), sharey=True)
     for ax, (target, (label, run)) in zip(axes, ROUTES_RUNS.items(), strict=True):
         found = sorted((pins.RESULTS_DIR / "x6_routes" / run).glob("verdict-*/verdict.json"))
         c0 = pins.RESULTS_DIR / "x6_routes" / f"{run}_c0" / "gate.json"
         if not found and c0.exists() and not any(g["pass"] for g in json.loads(c0.read_text())["gate"].values()):
-            placeholder(ax, label, "not tested: the C0 check missed\nthe gate fixed in advance")
+            placeholder(ax, label, "not tested: the sanity swap missed\nthe gate fixed in advance")
             continue
         if (st := state(run, bool(found))) != "open":
             placeholder(ax, label, st)
             continue
         rows = {(r["condition"], r["arm"]): r for r in json.loads(found[-1].read_text())["rows"]}
         xs, ticks = [], []
-        for ci_, cond in enumerate(("C1", "C2")):
-            for ai, (arm, name) in enumerate(arms):
+        for si, (cond, name) in enumerate(swaps):
+            for ai, (arm, tick) in enumerate(arms):
                 r = rows.get((cond, arm))
-                x = ci_ * (len(arms) + 1) + ai
+                x = si * (len(arms) + 1.2) + ai
                 xs.append(x)
-                ticks.append(name)
+                ticks.append(tick)
                 if r is None:
                     continue
                 bottom = 0.0
@@ -1146,22 +1152,28 @@ def f20(plt, F, color, grey) -> None:
                     bottom += v
                     record("f20", target, run, X.PREDICTED[target], X.LOOKUP, f"{cond} {arm} share {route}", v, lo, hi,
                            r["n"])  # fmt: skip
-            ax.text(ci_ * (len(arms) + 1) + (len(arms) - 1) / 2, 1.04, cond, ha="center", fontsize=12, weight="bold")
+            ax.text(si * (len(arms) + 1.2) + (len(arms) - 1) / 2, 1.03, name, ha="center", va="bottom", fontsize=10.5,
+                    weight="bold")  # fmt: skip
         ax.set_xticks(xs, ticks, fontsize=8.5)
-        ax.set_ylim(0, 1.1)
-        ax.set_title(f"{label} (n per bar in data.csv)")
+        ax.set_ylim(0, 1.18)
+        ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+        ax.set_title(f"{label} (300 scenes per swap)", pad=34)
     axes[0].set_ylabel("share of lookup answers")
     h = [plt.Rectangle((0, 0), 1, 1, color=c) for _, c in ROUTE_COLOURS]
     head(fig, "The lookup follows the bridge's identity or its locker sentence's position, never the new value",
-         "C1: the bridge stays, its locker sentence moves to another slot and gets a new digit (identity = original, "
-         "position, value). C2: the bridge changes and moves (identity, position, value, original). The change from the "
-         "swapped prompt is added at the bridge word at the layer fixed in advance; each arm removes a part of it.",
+         "Original prompt: 'The locker of the duck is 4. The locker of the rabbit is 3. The locker of the goose is 2. ... "
+         "Beth picked the goose.' Lookup: 2. The change from a swapped prompt is added at the bridge word (goose) and the "
+         "lookup is read on the original prompt.\n"
+         "Swap 1, the same item with its locker sentence moved: the goose's locker sentence sits in the duck's slot, with "
+         "a new digit 8. Identity -> 2 (the goose's locker; the same as the original answer), position -> 4 (what that "
+         "slot holds in the original), value -> 8.\n"
+         "Swap 2, another item with its locker sentence moved: Beth picks the rabbit, whose locker sentence sits in the "
+         "duck's slot with a new digit 7. Identity -> 3 (the rabbit's locker), position -> 4, value -> 7, original -> 2.",
          h, [r for r, _ in ROUTE_COLOURS])  # fmt: skip
-    foot(
-        fig,
-        [f"{CI}. Rule fixed in advance: a route is used if its share is >= 0.20 with lower CI >= 0.10. Unverified."],
-    )
-    fig.tight_layout(rect=(0, 0.06, 1, 0.80))
+    foot(fig, [f"{CI}. Arms: the whole change; without its J++ part (25 directions); without a random part of J++'s share; "
+               "without the pointer directions; *without a random part of the pointer directions' share. Rule fixed in "
+               "advance: a route is used if its share is >= 0.20 with lower CI >= 0.10. Unverified."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.06, 1, 0.70))
     fig.savefig(OUT / "f20_routes.png", dpi=150, facecolor="white")
     plt.close(fig)
 

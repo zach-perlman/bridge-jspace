@@ -3235,6 +3235,18 @@
   "text": "0.98",
   "source": "results/x6_routes/x6_routes_27b/c0_check.json"
  },
+ "rt_c0gate_lk_122b": {
+  "text": "1.000",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_c0/gate.json"
+ },
+ "rt_c0gate_rc_122b": {
+  "text": "0.797",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_c0/gate.json"
+ },
+ "rt_c0gate_eligible_122b": {
+  "text": "479 of 700",
+  "source": "results/x6_routes/qwen35_122b_x6_routes_c0/gate.json"
+ },
  "x4_probe_animals_same_9b": {
   "text": "0.99 [0.99, 1.00]",
   "source": "results/x4_alias/qwen35_9b_x4_probe/probe-20261024T215016Z/probe.json"

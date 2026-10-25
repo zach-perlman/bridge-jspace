@@ -365,6 +365,13 @@ def routes_numbers(num: Numbers) -> None:
                 num.add(f"rt_{r['condition']}_{r['arm']}_{route}_{m}", ci(r["share"][route]), src)
         c0 = json.loads((root / "c0_check.json").read_text())
         num.add(f"rt_c0_{m}", f2(c0["c0_lookup_switch"]), str((root / "c0_check.json").relative_to(pins.REPO_ROOT)))
+    gate_path = pins.RESULTS_DIR / "x6_routes" / "qwen35_122b_x6_routes_c0" / "gate.json"
+    if gate_path.exists():  # the 122B: its C0 check stopped at the gate (Q32.9 void; descriptive)
+        g = json.loads(gate_path.read_text())["gate"]["C0"]
+        src = str(gate_path.relative_to(pins.REPO_ROOT))
+        num.add("rt_c0gate_lk_122b", f"{g['org_read_accuracy'][X.LOOKUP]:.3f}", src)
+        num.add("rt_c0gate_rc_122b", f"{g['org_read_accuracy'][X.RECALL]:.3f}", src)
+        num.add("rt_c0gate_eligible_122b", f"{g['eligible']} of {g['cases']}", src)
 
 
 def same_scene_numbers(num: Numbers) -> None:
