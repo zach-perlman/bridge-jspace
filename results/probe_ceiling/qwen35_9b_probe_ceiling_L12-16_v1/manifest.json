@@ -1,0 +1,49 @@
+{
+  "run": "qwen35_9b_probe_ceiling_L12-16_v1",
+  "why": "Zach (2026-10-25, prereg amendment 48): qwen3.5-9b, the probe ceiling at the mention, causal part at L12-16",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "band": "12-16",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    13,
+    14,
+    15,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30
+  ],
+  "dev_competence": "qwen35_9b_jsuite_v2_dev_chat_competence_cand2_v1",
+  "test_competence": "qwen35_9b_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "swap_probe",
+    "swap_probe_rot",
+    "remove",
+    "remove_probe",
+    "paste"
+  ],
+  "k_max": 10,
+  "git_commit": "0db6c2aa065eaa32f6b23ec2100dcfd2e33c7904",
+  "seeds": {
+    "probe_rot": "4242+layer",
+    "cv": 0
+  }
+}
