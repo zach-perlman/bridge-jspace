@@ -183,7 +183,7 @@ def main(a) -> None:
         mu, sd = X.mean(0), X.std(0) + 1e-6
         Z = (X - mu) / sd
         best = None
-        for lam in (1e-4, 1e-3, 1e-2, 1e-1):
+        for lam in (1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0):  # the 1025 smoke picked the grid's low edge, so it is widened
             acc, base = [], []
             for f in range(4):
                 m_tr = fidx != f

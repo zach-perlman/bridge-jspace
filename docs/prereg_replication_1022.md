@@ -1417,3 +1417,46 @@ nothing is claimed with that lens. Ministral's was 0.651 vs 0.461.
     - Pooled memory transfer, n 12: swap +50, swap_probe +25, swap_probe_rot 0, paste +42.
   - Smoke 2: 1 item per word, after the CV fix.
   - pca smoke: dev, L12-16, 4 items per word (PK, PM). pca10 lost PK 3/4 and PM 4/4; paper10 lost PK 0/4 and PM 2/4.
+
+**Amendment 48, note 1 (Zach, 2026-10-25 21:00 UTC, before any real run; smokes 2-4 on the 9B ran and were seen): a size-matched variance control replaces the pca dose.**
+- **Why.** removal_size --pca on the 9B (L12, L14, L16; 16 WikiText rows; position 0 excluded) gives the median share
+  of the residual norm removed:
+
+  | Removal | L12 | L14 | L16 |
+  |---|---|---|---|
+  | J++ top-10 | 12.5% | 12.7% | 14.8% |
+  | logit lens top-10 | 8.5% | 8.8% | 10.0% |
+  | pca top-1 | 34% | 50% | 34% |
+  | pca top-3 | 48% | 62% | 51% |
+  | pca top-10 | 65% | 73% | 68% |
+
+  A single principal direction already removes 3-4x what paper10 does. No pca dose is size-matched, and the
+  damage-matched reading of amendment 48 B can't be met.
+- **The primary variance control is now paper10_pcasize.** At each position, paper10's removal (same selection, same
+  protection) is replaced by a removal of the same norm along the residual's top 256 principal directions (amendment
+  48 B's), taken in order of |projection| at that position, the last one in part (ablate.size_matched_removal). The
+  size match is exact on random data, to 1e-6. So paper10, paper10_rot and paper10_pcasize all remove the same amount
+  at every position:
+  - paper10 removes along the lens's directions;
+  - paper10_rot removes a random direction;
+  - paper10_pcasize removes along the residual's highest-variance content.
+- **Readings, fixed now:**
+  - paper10_pcasize M - K <= 1/3 of paper10's means the split is not a variance effect;
+  - >= 2/3 means removing the same amount of the residual's biggest content gives it too;
+  - otherwise, mixed.
+  - Not read if paper10's M - K < 10.
+  - pca1 is kept as a descriptive point (the largest principal direction at each position, 3-4x paper10's size).
+    pca3 and pca10 are dropped.
+- **Probe changes.**
+  - The CV grid for L2 is widened to 1e-5 to 1, because smoke 2 picked the old grid's low edge (1e-4). Smoke 3 picks
+    1e-5 for 5 of 8 relations, the edge again, and test accuracy moves by <= 0.05. Reported as is.
+  - Each prompt is recorded once with all its mentions. In smoke 3 the J++ and logit-lens readouts were identical to
+    smoke 2's.
+- **Seen (9B, mechanics only):**
+  - Smokes 2-3: probe-valid relations are cities, countries and languages. At L12-16, probe vs J++: cities 0.70 vs
+    0.82, countries 0.85 vs 0.84, languages 0.62 vs 0.89. Pooled memory (n 6): swap +100, swap_probe +50,
+    swap_probe_rot 0, paste +83.
+  - Smoke 4: dev, L12-16, 4 items per word. Lost items: paper10 PK 0/4, PM 2/4; paper10_pcasize PK 0/4, PM 1/4;
+    pca1 PK 1/4, PM 1/4.
+- **Runs.** DeepSeek's job (h200dsta) and Monday's job (h200qta) were relaunched with these conditions before
+  starting.

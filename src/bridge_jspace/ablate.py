@@ -150,13 +150,32 @@ class RowSettings:
     banned: torch.Tensor | None = None
 
 
+def size_matched_removal(x: torch.Tensor, r: torch.Tensor, basis: torch.Tensor) -> torch.Tensor:
+    """The removal from each row of x [m, d] along the orthonormal rows of basis [n, d], in order of |projection| there
+    (largest first, the last one in part), with the same norm as r [m, d] (2026-10-25, amendment 48 note 1: paper10's
+    size along the residual's own highest-variance directions). If the basis holds less than ||r||, all of it."""
+    c = x.double() @ basis.double().T  # [m, n]
+    t = (r.double() ** 2).sum(1, keepdim=True)  # [m, 1] target energy
+    order = c.abs().argsort(dim=1, descending=True)
+    cs = c.gather(1, order)
+    e = (cs**2).cumsum(1)
+    prev = torch.cat([torch.zeros_like(e[:, :1]), e[:, :-1]], 1)
+    full = e <= t
+    part = (~full) & (prev < t)
+    alpha = torch.where(full, torch.ones_like(cs), torch.where(part, ((t - prev) / cs.pow(2).clamp_min(1e-30)).clamp(0, 1).sqrt(), torch.zeros_like(cs)))
+    w = torch.zeros_like(c).scatter(1, order, alpha * cs)
+    return (w @ basis.double()).float()
+
+
 def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tensor | None = None,
-                 k: int | None = None, chunk: int = 4096, skip_sinks: bool = False) -> Callable[[torch.Tensor], torch.Tensor]:  # fmt: skip
+                 k: int | None = None, chunk: int = 4096, skip_sinks: bool = False,
+                 size_match: torch.Tensor | None = None) -> Callable[[torch.Tensor], torch.Tensor]:  # fmt: skip
     """An edit h [B, T, d] -> h minus its removal, for method 'omp' (k atoms, rows' banned atoms never chosen) or 'top'
     (span of the k highest-logit atoms, rows' protected atoms never chosen); with rotation, the removal vector is turned
     by it before subtraction (the same-size control). Skipped positions are unchanged. With skip_sinks (2026-10-21,
     docs/prereg_sink_1021.md) position 0 and every position whose residual norm exceeds SINK_RATIO x the row's median
-    are also left unchanged (attention sinks); edit.sinks counts [sink positions, positions] over calls."""
+    are also left unchanged (attention sinks); edit.sinks counts [sink positions, positions] over calls. With size_match
+    (an orthonormal basis [n, d]), the removal is replaced by size_matched_removal's along that basis (same norm)."""
     k = k or (K_OMP if method == "omp" else K_PAPER)
     counts = [0, 0]
 
@@ -192,6 +211,8 @@ def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tens
                 raise ValueError(method)
         if rotation is not None:
             r = r @ rotation.T
+        if size_match is not None:
+            r = size_matched_removal(x, r, size_match)
         return (x - r).reshape(B, T, d)
 
     edit.sinks = counts

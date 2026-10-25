@@ -70,7 +70,7 @@ COMPETENCE = {  # the 27B's competence runs per suite family (eligibility: every
     "TBL": "competence_tool_v1", "TBR": "competence_tool_v1",
 }  # fmt: skip
 CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "paper10_rdict", "keep_own",
-              "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10")  # fmt: skip
+              "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10", "paper10_pcasize")  # fmt: skip
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
 
 
@@ -426,7 +426,7 @@ def main(args) -> None:
     if any(c.startswith("unembed") for c in args.conditions):
         unembed = LensDictionary(wg, torch.eye(wg.shape[1], device="cuda"))
     pca = {}  # 2026-10-25 (TA note, variance control): the residual's top principal directions at each layer, +/- each
-    if any(c.startswith("pca") for c in args.conditions):
+    if any("pca" in c for c in args.conditions):  # paper10_pcasize (amendment 48 note 1): paper10's size, along these
         pca = pca_dictionaries(model, layers)
     gauss = {}
     if "gauss" in args.conditions:
@@ -506,6 +506,7 @@ def main(args) -> None:
                             rotation=rot[la] if cond.endswith("_rot") else None,
                             k=top_k(cond),
                             skip_sinks="_nosink" in cond,
+                            size_match=pca[la].D[:PCA_K] if cond.endswith("_pcasize") else None,
                         )
                     logits = first_token_logits(model, ids, edits, last)
                     if "_nosink" in cond:  # attention-sink positions left unedited: counted per band x condition

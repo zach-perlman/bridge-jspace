@@ -1,7 +1,7 @@
 #!/bin/bash
 # Zach (2026-10-25, prereg amendment 48; the TA's notes): the probe ceiling (scripts/probe_ceiling.py) and the variance
-# control (ablate_v2's pca1/pca3/pca10, the test knock-out's items and band, jsuite2_score + soft_score; removal_size
-# --pca at the band layers) for one model at a band.
+# control (ablate_v2's paper10_pcasize, paper10's size along the residual's top principal directions, and pca1; the test
+# knock-out's items and band; jsuite2_score + soft_score; removal_size --pca at the band layers) for one model at a band.
 # Usage: h200_ta_1025.sh GPUS STEP ...   STEP: waitq:JOB  probe:TARGET:PREFIX:BAND:BATCH  pca:TARGET:PREFIX:BAND:BATCH
 #   (probe uses PREFIXjsuite_v2_dev_chat_competence_cand2_v1 and PREFIXjsuite_v2_test_chat_competence_cand2_v1)
 set -u
@@ -32,11 +32,11 @@ for step in "$@"; do
     pca)
       export BJ_TARGET=$a; r=${b}${SET}_ko_cand2_L${c}_pca_v1
       echo "=== ablate_v2/$r $(date -u +%T)"
-      [ -f results/ablate_v2/$r/summary.json ] || $PY scripts/ablate_v2.py --name $r --why "$W: $a, the variance control (pca1/3/10) at L$c" --plan bands \
-        --bands $c --conditions pca1 pca3 pca10 --tasks $SET --tasks-competence ${b}${SET}_competence_cand2_v1 --tasks-words $FACTS --tasks-level all \
+      [ -f results/ablate_v2/$r/summary.json ] || $PY scripts/ablate_v2.py --name $r --why "$W: $a, the variance control (paper10_pcasize, pca1) at L$c" --plan bands \
+        --bands $c --conditions paper10_pcasize pca1 --tasks $SET --tasks-competence ${b}${SET}_competence_cand2_v1 --tasks-words $FACTS --tasks-level all \
         --n 1000 --kinds clean --batch $d --read cand2 > /workspace/scratch/$r.log 2>&1 < /dev/null \
         || { echo "=== $r FAILED"; tail -3 /workspace/scratch/$r.log; fails=$((fails + 1)); continue; }
-      $PY scripts/jsuite2_score.py $r --set $SET | grep -E "^facts pca[0-9]+ +start=all" | sed "s/^/=== PCA $a: /"
+      $PY scripts/jsuite2_score.py $r --set $SET | grep -E "^facts (pca[0-9]+|paper10_pcasize) +start=all" | sed "s/^/=== PCA $a: /"
       $PY scripts/soft_score.py $r --set $SET | sed "s/^/=== PCASOFT $a: /"
       s=${b}removal_size_pca_L${c}_v1
       [ -f results/removal_size/$s/summary.json ] || $PY scripts/removal_size.py --name $s --why "$W: $a, removal size of pca vs paper10 at L$c" \
