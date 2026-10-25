@@ -1144,3 +1144,33 @@ GPU memory at once: with dim_batch 64, transformers' torch Mamba scan (mamba_ssm
 fit now runs with dim_batch 32, or 16 on out-of-memory, as Bolt's does. dim_batch is how many Jacobian rows one backward
 pass takes, so it changes speed, not the estimate. The chain is relaunched as h200nemL5; Bolt's chain (paused) will
 wait on it.
+
+## Amendment 41 (Zach, 2026-10-25 16:26 UTC, before any run below): follow-ups for Ministral and DeepSeek
+
+- **Why (Zach: "Queue what you think needs it", day 7 of 12):** both new families' dev bands came out late (Ministral
+  L32-37, 80-93% depth; DeepSeek L36-41, 84-95%), and at late depth the bridge's mention no longer feeds the answer (the
+  27B's L52-60 mention-only run: 1-14%; both new swaps, paste included: 0). Ministral's M - K was +23 (weak,
+  J-specific). DeepSeek's band broke lookups as much as recall (K lost 74, M 75), so its +2 says nothing about the split.
+- **Seen when this was written:** everything through amendment 40 note 2 and the runs logged in EXPERIMENTS.md up to
+  5c92ebd: Ministral's and DeepSeek's full amendment-39 results, both dev sweeps, both readouts.
+- **The lookup-sparing band rule (scripts/band_rule2.py, on dev sweeps only):** among windows where the rotation keeps
+  every word >= 90% (choose_band's rule), also require J++ removal to keep both lookups (PP, MP) >= 80%. Pick the most
+  broken memory finals (mean of PM and MM kept). Its picks: DeepSeek L27-32 (lookups >= 83%, memory mean 73%);
+  Ministral L32-37 (unchanged); the 27B's v1 dev sweep L32-40 (its band of record); the 9B's v1 dev sweep L24-28 (not
+  its L12-16). It was written after DeepSeek's band failed, so DeepSeek's L27-32 result is SECONDARY: amendment 39's
+  result (uninformative) stays the primary record.
+- **Ministral (scripts/queues/h200_min41_1025.sh, GPU 0; amendment 39 allows positions and R items at M - K >= 15):**
+  question-only and bridge-mention-only knock-outs at L32-37 (paper10 / rot). v2.1's R items at L32-37, scored with
+  its v2 run, and r_matched. The swap at mid depth L20-25, with jswap_by_relation. The mid depth is the 27B's L32-40
+  relative depth (50-62%), times its 40 blocks.
+- **DeepSeek (scripts/queues/h200_ds41_1025.sh, GPUs 0,1):** the test knock-out at L27-32 (paper10 / rot / unembed10
+  / rot). Only if that M - K >= 15: question-only and bridge-mention-only at L27-32. The mid-depth swap at L22-27
+  (50-62% of 43 blocks). Lightning's J-lens fit is stopped right after its first checkpoint (25 prompts; jlens resumes
+  from it) and relaunched after (h200nemL6). Bolt's chain (h200bolt4) drops DeepSeek's cache only after this chain ends
+  with 0 failures.
+- **Readings, fixed now.** Knock-outs: amendment 39's M - K classes. Positions: the mode's M - K as a share of the
+  same band's all-token M - K, not read if that is < 15. Question >= 2/3 = late-band dependence sits in the question,
+  as in the 27B at L52-60. Bridge >= 2/3 = at the mention. R items: amendment 35's RM - MM within 10. Mid-depth swaps:
+  transfer on PM and TM >= 20 with the rotated and logit-lens swaps < 5 and lookups kept >= 80% = the J-part at the
+  mention carries the attribute in this family too. The paste ceiling is reported beside it, and a ceiling < 20 makes
+  the swap uninformative.

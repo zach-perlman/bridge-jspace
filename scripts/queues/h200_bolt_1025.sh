@@ -16,7 +16,7 @@ R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 KEY=nemotron-3.5-bolt; P=nem35b_
 REPO=nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16; REV=e09a4cedb1787db1760375ee5539f222cae0c672
 LENS=cache/$KEY/lenses/jlens/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jlens.pt
-DS=$R-h200nqDS3-1025-0900.log
+DS=$R-h200ds41-1025-1630.log
 export BJ_TARGET=$KEY
 echo "=== start $(date -u +%FT%TZ)"
 until grep -qs "=== nq deepseek-v4-flash done\|^EXIT" $DS; do sleep 60; done
@@ -36,7 +36,7 @@ from huggingface_hub import snapshot_download
 print('=== BOLTDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-for j in h200nqDS3-1025-0900 h200min3-1025-0920 h200nemL5-1025-1600; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
+for j in h200ds41-1025-1630 h200min41-1025-1630 h200nemL6-1025-1600; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
 for g in 0 1; do until [ "$(nvidia-smi -i $g --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 120000 ]; do sleep 60; done; done
 echo "=== GPUs 0,1 free $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 < /dev/null || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }
