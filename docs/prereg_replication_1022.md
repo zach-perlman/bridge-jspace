@@ -977,7 +977,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   L24-30), the 9B's v2 position runs (amendment 36 note 1), the 9B's R items and their question-only run, Muse's R
   items (amendment 35 note 1), C, D, B (9B).
 
-## Amendment 38 (Zach, 2026-10-25 ~04:10 UTC, before any run below): what the J-part at the mention carries; renderings
+## Amendment 38 (Zach, 2026-10-25 04:06 UTC, commit a2f27cd, before any run below): what the J-part at the mention carries; renderings
 
 - **Seen when this was written:** everything through amendment 37 note 1, the 122B's L39-45 position runs and its
   L24-30 all-token run (M - K +4: late-only, so amendment 37 A's 122B side is not read), the 27B's v2 question-only
