@@ -114,9 +114,14 @@ def body_text() -> str:
     return (B.REPO / "README.md").read_text().split("## Appendix A")[0]
 
 
+def body_words(text: str) -> int:
+    """The prose words of the main body: image links, comments and table rows (data, not prose) left out."""
+    prose = "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("|"))
+    return len(re.sub(r"!\[[^\]]*\]\([^)]*\)|<!--.*?-->", " ", prose, flags=re.S).split())
+
+
 def test_readme_body_fits_the_word_budget():
-    words = re.sub(r"!\[[^\]]*\]\([^)]*\)|<!--.*?-->|\|[-|]+\|", " ", body_text())
-    assert len(words.split()) <= MAX_BODY_WORDS, len(words.split())
+    assert (n := body_words(body_text())) <= MAX_BODY_WORDS, n
 
 
 def test_readme_body_has_no_internal_codes():

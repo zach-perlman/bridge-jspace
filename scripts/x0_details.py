@@ -408,6 +408,15 @@ def composition_numbers(num: Numbers) -> None:
         num.add(f"{key}_n_{m}", str(r["n"]), src)
         for w, wk in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
             num.add(f"{key}_{wk}_{m}", ci(r[w]["excess"]), src)
+        # README v2 table 3c (Dan): a lookup cell whose whole change switches fewer than FEW_SWITCHES lookups is shown
+        # in italics with its switch count (GitHub's Markdown has no grey)
+        sw = round(r[X.LOOKUP]["S_whole"][0] * r["n"])
+        num.add(f"{key}_lk_sw_{m}", str(sw), src)
+        cell = ci(r[X.LOOKUP]["excess"])
+        num.add(f"{key}_lk_cell_{m}", f"*{cell}; {sw} switches*" if sw < FEW_SWITCHES else cell, src)
+
+
+FEW_SWITCHES = 30
 
 
 def routes_numbers(num: Numbers) -> None:

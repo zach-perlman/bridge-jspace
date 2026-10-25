@@ -67,12 +67,14 @@ def fig1(plt) -> None:
     rows = [("Simple scenes,\ntwo people swap picks", "lk_excess_{m}", "rc_excess_{m}", "contrast_{m}", {}),
             ("Simple scenes, only the asked\nperson's pick changes", "single_lk_excess_{m}", "single_rc_excess_{m}",
              "single_contrast_{m}", {"9b": "after", "27b": "after"}),
-            ("Both locker sentences first\n(same scenes for both readers)", "ss_jpp_lk_excess_{m}", "ss_jpp_rc_excess_{m}",
+            ("Matched scenes,\ntwo people swap picks", "comp_two_fmno_lk_{m}", "comp_two_fmno_rc_{m}", None,
+             {"9b": "after", "27b": "after", "122b": "after"}),
+            ("Matched scenes, only the asked\nperson's pick changes", "comp_one_fmno_lk_{m}", "comp_one_fmno_rc_{m}",
              None, {"9b": "after", "27b": "after", "122b": "after"}),
             ("Varied scenes", "x0b_lk_excess_{m}", "x0b_rc_excess_{m}", "x0b_c_{m}", {}),
             ("Natural passages", "nat_lk_excess_{m}", "nat_rc_excess_{m}", "nat_gap_{m}", {})]  # fmt: skip
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 4.9), sharey=True)
-    fig.subplots_adjust(left=0.285, right=0.995, top=0.80, bottom=0.12, wspace=0.10)
+    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 5.9), sharey=True)
+    fig.subplots_adjust(left=0.285, right=0.995, top=0.80, bottom=0.10, wspace=0.10)
     S.title(fig, "Recall needs the J++ part; the lookup mostly doesn't")
     for ax, (target, m, name) in zip(axes, S.MODELS, strict=True):
         S.extra_axis(ax)
@@ -114,14 +116,17 @@ def fig1(plt) -> None:
         ax.grid(axis="x", color="#eeeeee")
     axes[0].set_yticks([-i for i in range(len(rows))], [r[0] for r in rows])
     axes[0].tick_params(axis="y", length=0)
-    marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7),
-             plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=7),
-             plt.Line2D([], [], marker="o", ls="", mfc="#555555", mec="#555555", ms=7),
-             plt.Line2D([], [], marker="o", ls="", mfc="white", mec="#555555", ms=7, mew=1.5),
-             plt.Line2D([], [], marker="o", ls="--", mfc="white", mec="#555555", color="#555555", ms=7, mew=1.5)]  # fmt: skip
-    fig.legend(marks, ["lookup", "recall", "fixed in advance", "after the data", "rerun, gate lowered"], loc="upper left",
-               bbox_to_anchor=(0.0, 0.925), ncol=5, frameon=False, fontsize=9.5, handletextpad=0.3,
-               columnspacing=1.0)  # fmt: skip
+    colour = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7),
+              plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=7)]  # fmt: skip
+    grey = "#8a8a8a"
+    style = [plt.Line2D([], [], marker="o", ls="", mfc=grey, mec=grey, ms=7),
+             plt.Line2D([], [], marker="o", ls="", mfc="white", mec=grey, ms=7, mew=1.5),
+             plt.Line2D([], [], marker="o", ls="--", mfc="white", mec=grey, color=grey, ms=7, mew=1.5)]  # fmt: skip
+    fig.legend(colour, ["lookup", "recall"], loc="upper left", bbox_to_anchor=(0.0, 0.945), ncol=2, frameon=False,
+               fontsize=9.5, handletextpad=0.3, columnspacing=1.2)  # fmt: skip
+    fig.legend(style, ["fixed in advance", "after the data", "rerun with a lowered gate"], loc="upper left",
+               bbox_to_anchor=(0.0, 0.905), ncol=3, frameon=False, fontsize=9.5, handletextpad=0.3,
+               columnspacing=1.2)  # fmt: skip
     S.save(fig, "fig1_readers")
 
 
@@ -304,32 +309,47 @@ def fig4(plt) -> None:
 
 def fig5(plt) -> None:
     """Top: the J++ extra loss by depth (valid X0 cells); bottom: the position share (another item moved, whole change)
-    at each layer the routes test ran; shaded where the lookup's J++ extra loss is at least NEEDS."""
+    at each layer the routes test ran; one shaded band per model, from the first layer measured to the last where the
+    lookup's J++ extra loss is at least NEEDS; the x-axis on the tested depth range."""
     routes = {"9b": (("qwen35_9b_x6_routes_l6", 6, "fixed"), ("qwen35_9b_x6_routes", 12, "fixed")),
               "27b": (("x6_routes_l16_27b", 16, "fixed"), ("x6_routes_27b", 32, "fixed")),
               "122b": (("qwen35_122b_x6_routes_l27_g75", 27, "rerun"), ("qwen35_122b_x6_routes_g75", 33, "rerun"))}  # fmt: skip
-    fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharex=True, gridspec_kw={"height_ratios": [1.25, 1]})
-    fig.subplots_adjust(left=0.105, right=0.995, top=0.84, bottom=0.10, wspace=0.10, hspace=0.18)
-    S.title(fig, "With depth, the bridge adds a pointer the lens can't see")
+    fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharex="col", gridspec_kw={"height_ratios": [1.25, 1]})
+    fig.subplots_adjust(left=0.105, right=0.98, top=0.84, bottom=0.10, wspace=0.14, hspace=0.18)
+    # Dan's wording (~14:30), until the layer sweep lands; 77 characters
+    S.title(fig, "Early layers: no pointer yet; at the fixed layer, a pointer the lens can't see", limit=80)
     for j, (target, m, name) in enumerate(S.MODELS):
         top, bot = axes[0, j], axes[1, j]
         n_layers = pins.TARGETS[target]["n_layers"]
         cells = XF.Run(MAIN_RUNS[m]).cells("chat")
         layers = sorted({k[1] for k in cells})
         top.axhspan(S.XLIM[0], S.NOT_NEEDED, color=S.COL["band"], lw=0, zorder=0)
+        span = []
         for w, col in ((X.LOOKUP, S.COL["lookup"]), (X.RECALL, S.COL["recall"])):
             pts = [(100 * la / n_layers, cells[("chat", la, w, *X.MAIN)], la) for la in layers]
             pts = [(d, c, la) for d, c, la in pts if c["valid"]]
             top.plot([d for d, _, _ in pts], [c["excess"][0] for _, c, _ in pts], "-o", color=col, lw=2, ms=3.5)
             top.fill_between([d for d, _, _ in pts], [c["excess"][1] for _, c, _ in pts], [c["excess"][2] for _, c, _ in pts],
                              color=col, alpha=0.12, lw=0)  # fmt: skip
-            for d, c, la in pts:
+            for _, c, la in pts:
                 S.record("fig5", target, f"layer {la}: {'lookup' if w == X.LOOKUP else 'recall'} J++ extra loss", *c["excess"],
                          n=c["n"], source=MAIN_RUNS[m])  # fmt: skip
-                if w == X.LOOKUP and c["excess"][0] >= NEEDS:
-                    half = 100 / n_layers
+            last_d, last_y = pts[-1][0], pts[-1][1]["excess"][0]
+            if w == X.LOOKUP:
+                # one band per model: from the first layer measured to the last where the lookup needs J++ (>= NEEDS)
+                need = [d for d, c, _ in pts if c["excess"][0] >= NEEDS]
+                half = (pts[1][0] - pts[0][0]) / 2
+                if need:
                     for ax in (top, bot):
-                        ax.axvspan(d - half, d + half, color="#efe9fb", lw=0, zorder=0)
+                        ax.axvspan(pts[0][0] - half, max(need) + half, color="#efe9fb", lw=0, zorder=0)
+                top.text(
+                    last_d - 1, max(last_y - 0.1, -0.17), "lookup", color=col, fontsize=9.5, ha="right", va="center"
+                )
+            else:
+                top.text(
+                    last_d - 1, min(last_y + 0.1, 0.95), "recall", color=col, fontsize=9.5, ha="right", va="center"
+                )
+            span += [pts[0][0], last_d]
         top.set_ylim(*S.XLIM)
         top.set_title(name.replace("Qwen3.5-", "").replace("Qwen3.6-", ""), fontsize=11.5, weight="bold")
         top.grid(axis="y", color="#eeeeee")
@@ -353,7 +373,9 @@ def fig5(plt) -> None:
                 mec=S.COL["position"],
                 mew=1.6,
             )
-            bot.text(d + 2.5, pos[0] + 0.07, f"layer {layer}", fontsize=9, va="bottom", color=S.COL["muted"])
+            right = d > (max(span) + min(span)) / 2
+            bot.text(d + (-2.5 if right else 2.5), pos[0] + 0.07, f"layer {layer}", fontsize=9, va="bottom",
+                     ha="right" if right else "left", color=S.COL["muted"])  # fmt: skip
             S.record(
                 "fig5",
                 target,
@@ -363,14 +385,13 @@ def fig5(plt) -> None:
                 source=run,
             )
         bot.grid(axis="y", color="#eeeeee")
-        bot.set_xlim(0, 100)
+        tested = [*span, *(100 * layer / n_layers for _, layer, _ in routes[m])]
+        bot.set_xlim(min(tested) - 4, max(tested) + 4)
         bot.set_xlabel("depth (% of layers)")
     axes[0, 0].set_ylabel("J++ extra loss")
     axes[1, 0].set_ylabel("position share")
     for ax in axes[:, 1:].flat:
         ax.tick_params(labelleft=False)
-    axes[0, 0].text(0.04, 0.93, "lookup", color=S.COL["lookup"], transform=axes[0, 0].transAxes, fontsize=9.5, va="top")
-    axes[0, 0].text(0.04, 0.80, "recall", color=S.COL["recall"], transform=axes[0, 0].transAxes, fontsize=9.5, va="top")
     S.save(fig, "fig5_depth")
 
 
@@ -392,8 +413,11 @@ def fig6(plt) -> None:
             continue
         for i, (p, _) in enumerate(parts):
             e = ex[("C0", X.LOOKUP, p)]["excess"]
+            rc = ex[("C0", X.RECALL, p)]["excess"]
+            ax.plot([rc[0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
             S.dot(ax, 0, -i, e, S.COL["lookup"], "rerun" if kind == "rerun" else "fixed")
             S.record("fig6", target, f"the sanity swap, lookup extra loss {parts[i][1]}", *e, source=run)
+            S.record("fig6", target, f"the sanity swap, recall extra loss {parts[i][1]}", *rc, source=run)
         bar = ex[("C0", X.LOOKUP, "alf")]["excess"][0] + 0.15
         ax.plot([bar, bar], [-2.35, -1.65], color="#333333", lw=1.6, ls=":")
         if m == "9b":
@@ -402,6 +426,10 @@ def fig6(plt) -> None:
         ax.set_ylim(-len(parts) + 0.4, 0.6)
     axes[0].set_yticks([-i for i in range(len(parts))], [p[1] for p in parts])
     axes[0].tick_params(axis="y", length=0)
+    marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7),
+             plt.Line2D([], [], marker="o", ls="", color="#9a9a9a", ms=4.5)]  # fmt: skip
+    fig.legend(marks, ["lookup (95% CI)", "recall"], loc="upper right", bbox_to_anchor=(0.995, 0.995), ncol=2,
+               frameon=False, fontsize=9.5, handletextpad=0.3)  # fmt: skip
     S.save(fig, "fig6_both_removed")
 
 

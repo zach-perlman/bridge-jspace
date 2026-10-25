@@ -12,13 +12,13 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Each row is one setting: compare the purple (lookup) and dark (recall) dot; the grey band is "not needed".*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 8b5fa5c0 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at acd20e02 from the run files.
 
 ## Setup
 
 ![One prompt, two questions about the same in-between word](figures/story/fig0_setup.png)
 
-The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its locker, written in the prompt; the **recall** asks for a fact from memory. We swap the bridge (frog → tick), take **the change** in the hidden state at the bridge word at one layer, and add it into the original prompt there: whole, without its **J++ part** (the 25 lens directions that best rebuild it), or without a random part of the same size. A reader switches when it gives the swapped bridge's answer. **Extra loss** = the share of switches lost without the J++ part minus the share lost without the random part. **Gap** = the recall's extra loss minus the lookup's. Brackets: 95% intervals from resampling bridge items.
+The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its locker, written in the prompt; the **recall** asks for a fact from memory. We swap the bridge (frog → tick), take **the change** in the hidden state at the bridge word at one layer, and add it into the original prompt there: whole, without its **J++ part** (the 25 lens directions that best rebuild it), or without a random part of the same size. A reader switches when it gives the swapped bridge's answer. **Extra loss** = the share of switches lost without the J++ part minus the share lost without the random part. **Gap** = the recall's extra loss minus the lookup's. **Matched scenes**: the asked pick is not the bridge's first mention. Brackets: 95% intervals from resampling bridge items.
 
 ## 1. Recall needs the lens-readable part of the bridge; the lookup mostly doesn't
 
@@ -29,7 +29,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **What we found.**
   - The gap is 0.53 [0.42, 0.61] (9B), 0.60 [0.50, 0.69] (27B) and 0.32 [0.20, 0.43] (122B). The strict rule held on the 9B and the 122B; on the 27B the lookup lost 0.14 [0.08, 0.20], over its 0.10 bar.
   - It shrinks outside simple scenes: varied scenes 0.22 [0.14, 0.31] (9B), 0.47 [0.42, 0.53] (27B), 0.15 [0.12, 0.18] (122B); natural passages 0.27 [0.13, 0.41] (27B, whose lookup needs J++ there: 0.32 [0.20, 0.45]) and 0.44 [0.32, 0.58] (122B).
-  - It is the scene's own J++ part: J++ fitted to another scene costs the recall −0.01 [−0.02, 0.00] (9B) and 0.02 [−0.01, 0.05] (27B); other parts cost less than J++ (Fig. 2).
+  - Other parts of a similar size cost the recall less than J++ (Fig. 2). J++ fitted to another scene holds only 1%-2% of the change and costs nothing, so it does not test this.
 
 ![No other part costs the recall as much as the scene's own J++](figures/story/fig2_parts.png)
 *Fig. 2. Compare each dark (recall) dot with the J++ row. † two people swap picks; other rows: only the asked person's pick changes.*
@@ -43,7 +43,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **Question.** What does the lookup take from the bridge word instead?
 - **What we did.** (a) Split lookups by sentence order. (b) Probed the bridge word for which sentence holds the item's locker, and removed the 4 **pointer** directions that separate those answers. (c) Took the change from a swapped prompt where identity, position and value predict different lockers (Fig. 3).
 - **What we found.**
-  - (a) Lookups switch in 76%-89% of locker-first scenes and 9%-19% otherwise; lookup claims here are about locker-first scenes.
+  - (a) Lookups switch in 76%-89% of locker-first scenes and 9%-19% otherwise; lookup claims here are about locker-first scenes. On the 27B's natural passages the lookup switches mostly when the fact comes first (55 of 75 vs 5 of 62) and needs J++ where it does (0.31 [0.18, 0.46]): the route around the lens is weaker in natural text.
   - (b) The probe is right in 0.92-0.99 of scenes (layout alone: 0.53), almost none of it in J++. It points at the item's first mention, even another person's earlier pick, where the lookup still switches. Removing the pointer directions costs the lookup 0.47 [0.41, 0.53] (9B, replicated) and 0.31 [0.20, 0.43] (122B), the recall less; the 27B 0.14 [0.07, 0.22].
   - (c) When another item moved, the lookup follows its identity or its locker sentence's position, never the new value: 9B position 0.51 [0.46, 0.56], identity 0.48 [0.43, 0.53]; 27B identity 0.66 [0.60, 0.71], position 0.34 [0.28, 0.39]; value 0.00 [0.00, 0.00]. Without the pointer directions position drops to 0.08 [0.05, 0.12] and 0.06 [0.03, 0.09].
 
@@ -53,7 +53,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 - **Caveat.** When the same item moved, even a random part of the pointer directions' size removed the position route, so that test is fragile (Appendix B, F20).
 
-## 3. Why the readers split: the pointer appears with depth
+## 3. Why the readers split: a pointer the lens can't see appears after the early layers (candidate)
 
 *Candidate, after the data; 3a's layers and 3b's bar fixed in advance.*
 
@@ -64,19 +64,19 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - (b) Removing both costs the lookup 0.12 [0.04, 0.19] (9B) and 0.26 [0.19, 0.32] (27B) more than the pointer alone; the bar fixed in advance (0.15) is met on the 27B only.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table).
 
-![With depth, the bridge adds a pointer the lens can't see](figures/story/fig5_depth.png)
+![Early layers: no pointer yet; at the fixed layer, a pointer the lens can't see](figures/story/fig5_depth.png)
 ![Removing J++ and the pointer directions together](figures/story/fig6_both_removed.png)
-*Fig. 5: compare the shaded layers (the lookup still needs J++) with where position answers appear. Fig. 6: compare "without both" with the dotted bar.*
+*Fig. 5: shaded from the first layer measured to the last where the lookup's J++ extra loss is at least 0.30; compare it with where position answers appear. Fig. 6: compare "without both" with the dotted bar; grey dots: the recall.*
 
-| Swap | Pick is the first mention? | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall |
+| Swap | Pick is the first mention? (no = matched) | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall |
 |---|---|---|---|---|---|---|---|
-| Two people swap picks | yes | −0.21 [−0.43, −0.05] | 0.65 [0.57, 0.73] | 0.11 [0.00, 0.40] | 0.81 [0.71, 0.91] | 0.08 [0.00, 0.23] | 0.41 [0.26, 0.54] |
+| Two people swap picks | yes | *−0.21 [−0.43, −0.05]; 19 switches* | 0.65 [0.57, 0.73] | *0.11 [0.00, 0.40]; 9 switches* | 0.81 [0.71, 0.91] | *0.08 [0.00, 0.23]; 13 switches* | 0.41 [0.26, 0.54] |
 | Two people swap picks | no | 0.01 [−0.04, 0.07] | 0.35 [0.26, 0.43] | 0.14 [0.07, 0.22] | 0.67 [0.58, 0.76] | −0.01 [−0.08, 0.06] | 0.20 [0.10, 0.30] |
-| Only the asked person's pick changes | yes | −0.11 [−0.29, 0.10] | 0.57 [0.47, 0.67] | 0.33 [0.10, 0.60] | 0.73 [0.58, 0.86] | 0.00 [0.00, 0.00] | 0.40 [0.25, 0.54] |
+| Only the asked person's pick changes | yes | *−0.11 [−0.29, 0.10]; 19 switches* | 0.57 [0.47, 0.67] | *0.33 [0.10, 0.60]; 12 switches* | 0.73 [0.58, 0.86] | *0.00 [0.00, 0.00]; 14 switches* | 0.40 [0.25, 0.54] |
 | Only the asked person's pick changes | no | 0.00 [0.00, 0.00] | 0.17 [0.11, 0.23] | 0.01 [0.00, 0.04] | 0.49 [0.39, 0.60] | −0.01 [−0.07, 0.04] | 0.10 [0.03, 0.17] |
 | Same, fresh scenes | no | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] | – | – |
 
-*Extra loss of the J++ part, after the data; n per row in Appendix A.*
+*Extra loss of the J++ part, after the data. Italics: fewer than 30 lookup switches with the whole change (count shown). n per row in Appendix A.*
 
 - **Caveat.** Removing both costs the recall too (0.34 [0.28, 0.40], 0.44 [0.37, 0.52]); the 122B's (a) and (b) are pending.
 
@@ -114,7 +114,7 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | n, table 3c rows (first mention yes / no): two people swap picks | 100 / 100 | 99 / 101 | 115 / 85 |
 | n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | 100 / 100; 200 | 97 / 103; 200 | 115 / 85; – |
 | Pointer probe right; another person's earlier pick read as first mention | 0.97; 0.90 | 0.99; 0.56 | 0.92; 0.96 |
-| Routes, another item moved, position without the pointer / without a random part of its size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | pending |
+| Routes, another item moved, position without the pointer / without a random part of its size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] (after the data) |
 | Early layer, recall still switching without J++ | 0.05 [0.02, 0.08] | 0.01 [0.00, 0.02] | pending |
 | Sanity swap, lookup without both / pointer alone | 0.43 [0.39, 0.47] / 0.31 [0.26, 0.37] | 0.41 [0.35, 0.47] / 0.15 [0.12, 0.19] | pending |
 

@@ -18,7 +18,7 @@
 
 ![One prompt, two questions about the same in-between word](figures/story/fig0_setup.png)
 
-The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its locker, written in the prompt; the **recall** asks for a fact from memory. We swap the bridge (frog → tick), take **the change** in the hidden state at the bridge word at one layer, and add it into the original prompt there: whole, without its **J++ part** (the 25 lens directions that best rebuild it), or without a random part of the same size. A reader switches when it gives the swapped bridge's answer. **Extra loss** = the share of switches lost without the J++ part minus the share lost without the random part. **Gap** = the recall's extra loss minus the lookup's. Brackets: {{q|95%}} intervals from resampling bridge items.
+The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its locker, written in the prompt; the **recall** asks for a fact from memory. We swap the bridge (frog → tick), take **the change** in the hidden state at the bridge word at one layer, and add it into the original prompt there: whole, without its **J++ part** (the 25 lens directions that best rebuild it), or without a random part of the same size. A reader switches when it gives the swapped bridge's answer. **Extra loss** = the share of switches lost without the J++ part minus the share lost without the random part. **Gap** = the recall's extra loss minus the lookup's. **Matched scenes**: the asked pick is not the bridge's first mention. Brackets: {{q|95%}} intervals from resampling bridge items.
 
 ## 1. Recall needs the lens-readable part of the bridge; the lookup mostly doesn't
 
@@ -29,7 +29,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **What we found.**
   - The gap is {{num|contrast_9b}} (9B), {{num|contrast_27b}} (27B) and {{num|contrast_122b}} (122B). The strict rule held on the 9B and the 122B; on the 27B the lookup lost {{num|lk_excess_27b}}, over its 0.10 bar.
   - It shrinks outside simple scenes: varied scenes {{num|x0b_c_9b}} (9B), {{num|x0b_c_27b}} (27B), {{num|x0b_c_122b}} (122B); natural passages {{num|nat_gap_27b}} (27B, whose lookup needs J++ there: {{num|nat_lk_excess_27b}}) and {{num|nat_gap_122b}} (122B).
-  - It is the scene's own J++ part: J++ fitted to another scene costs the recall {{num|jppother_jpp_other_rc_excess_9b}} (9B) and {{num|jppother_jpp_other_rc_excess_27b}} (27B); other parts cost less than J++ (Fig. 2).
+  - Other parts of a similar size cost the recall less than J++ (Fig. 2). J++ fitted to another scene holds only {{num|jppother_jpp_other_share_27b}}-{{num|jppother_jpp_other_share_9b}} of the change and costs nothing, so it does not test this.
 
 ![No other part costs the recall as much as the scene's own J++](figures/story/fig2_parts.png)
 *Fig. 2. Compare each dark (recall) dot with the J++ row. † two people swap picks; other rows: only the asked person's pick changes.*
@@ -43,7 +43,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **Question.** What does the lookup take from the bridge word instead?
 - **What we did.** (a) Split lookups by sentence order. (b) Probed the bridge word for which sentence holds the item's locker, and removed the 4 **pointer** directions that separate those answers. (c) Took the change from a swapped prompt where identity, position and value predict different lockers (Fig. 3).
 - **What we found.**
-  - (a) Lookups switch in {{num|lk_order_before_27b}}-{{num|lk_order_before_122b}} of locker-first scenes and {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} otherwise; lookup claims here are about locker-first scenes.
+  - (a) Lookups switch in {{num|lk_order_before_27b}}-{{num|lk_order_before_122b}} of locker-first scenes and {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} otherwise; lookup claims here are about locker-first scenes. On the 27B's natural passages the lookup switches mostly when the fact comes first ({{num|natsplit_before_lk_sw_27b}} of {{num|natsplit_before_n_27b}} vs {{num|natsplit_after_lk_sw_27b}} of {{num|natsplit_after_n_27b}}) and needs J++ where it does ({{num|natsplit_before_lk_27b}}): the route around the lens is weaker in natural text.
   - (b) The probe is right in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes (layout alone: {{num|v4_b_layout_before_27b}}), almost none of it in J++. It points at the item's first mention, even another person's earlier pick, where the lookup still switches. Removing the pointer directions costs the lookup {{num|rep_alf_lk_excess_9b}} (9B, replicated) and {{num|mmlf_Alf_lk_excess_122b}} (122B), the recall less; the 27B {{num|mmlf_Alf_lk_excess_27b}}.
   - (c) When another item moved, the lookup follows its identity or its locker sentence's position, never the new value: 9B position {{num|rt_C2_whole_position_9b}}, identity {{num|rt_C2_whole_identity_9b}}; 27B identity {{num|rt_C2_whole_identity_27b}}, position {{num|rt_C2_whole_position_27b}}; value {{num|rt_C2_whole_value_9b}}. Without the pointer directions position drops to {{num|rt_C2_no_alf_position_9b}} and {{num|rt_C2_no_alf_position_27b}}.
 
@@ -53,7 +53,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 - **Caveat.** When the same item moved, even a random part of the pointer directions' size removed the position route, so that test is fragile (Appendix B, F20).
 
-## 3. Why the readers split: the pointer appears with depth
+## 3. Why the readers split: a pointer the lens can't see appears after the early layers (candidate)
 
 *Candidate, after the data; 3a's layers and 3b's bar fixed in advance.*
 
@@ -64,19 +64,19 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - (b) Removing both costs the lookup {{num|rtb_ex_C0_both_minus_alf_lk_9b}} (9B) and {{num|rtb_ex_C0_both_minus_alf_lk_27b}} (27B) more than the pointer alone; the bar fixed in advance (0.15) is met on the 27B only.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table).
 
-![With depth, the bridge adds a pointer the lens can't see](figures/story/fig5_depth.png)
+![Early layers: no pointer yet; at the fixed layer, a pointer the lens can't see](figures/story/fig5_depth.png)
 ![Removing J++ and the pointer directions together](figures/story/fig6_both_removed.png)
-*Fig. 5: compare the shaded layers (the lookup still needs J++) with where position answers appear. Fig. 6: compare "without both" with the dotted bar.*
+*Fig. 5: shaded from the first layer measured to the last where the lookup's J++ extra loss is at least 0.30; compare it with where position answers appear. Fig. 6: compare "without both" with the dotted bar; grey dots: the recall.*
 
-| Swap | Pick is the first mention? | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall |
+| Swap | Pick is the first mention? (no = matched) | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall |
 |---|---|---|---|---|---|---|---|
-| Two people swap picks | yes | {{num|comp_two_fmyes_lk_9b}} | {{num|comp_two_fmyes_rc_9b}} | {{num|comp_two_fmyes_lk_27b}} | {{num|comp_two_fmyes_rc_27b}} | {{num|comp_two_fmyes_lk_122b}} | {{num|comp_two_fmyes_rc_122b}} |
-| Two people swap picks | no | {{num|comp_two_fmno_lk_9b}} | {{num|comp_two_fmno_rc_9b}} | {{num|comp_two_fmno_lk_27b}} | {{num|comp_two_fmno_rc_27b}} | {{num|comp_two_fmno_lk_122b}} | {{num|comp_two_fmno_rc_122b}} |
-| Only the asked person's pick changes | yes | {{num|comp_one_fmyes_lk_9b}} | {{num|comp_one_fmyes_rc_9b}} | {{num|comp_one_fmyes_lk_27b}} | {{num|comp_one_fmyes_rc_27b}} | {{num|comp_one_fmyes_lk_122b}} | {{num|comp_one_fmyes_rc_122b}} |
-| Only the asked person's pick changes | no | {{num|comp_one_fmno_lk_9b}} | {{num|comp_one_fmno_rc_9b}} | {{num|comp_one_fmno_lk_27b}} | {{num|comp_one_fmno_rc_27b}} | {{num|comp_one_fmno_lk_122b}} | {{num|comp_one_fmno_rc_122b}} |
-| Same, fresh scenes | no | {{num|comp_rep_fmno_lk_9b}} | {{num|comp_rep_fmno_rc_9b}} | {{num|comp_rep_fmno_lk_27b}} | {{num|comp_rep_fmno_rc_27b}} | – | – |
+| Two people swap picks | yes | {{num|comp_two_fmyes_lk_cell_9b}} | {{num|comp_two_fmyes_rc_9b}} | {{num|comp_two_fmyes_lk_cell_27b}} | {{num|comp_two_fmyes_rc_27b}} | {{num|comp_two_fmyes_lk_cell_122b}} | {{num|comp_two_fmyes_rc_122b}} |
+| Two people swap picks | no | {{num|comp_two_fmno_lk_cell_9b}} | {{num|comp_two_fmno_rc_9b}} | {{num|comp_two_fmno_lk_cell_27b}} | {{num|comp_two_fmno_rc_27b}} | {{num|comp_two_fmno_lk_cell_122b}} | {{num|comp_two_fmno_rc_122b}} |
+| Only the asked person's pick changes | yes | {{num|comp_one_fmyes_lk_cell_9b}} | {{num|comp_one_fmyes_rc_9b}} | {{num|comp_one_fmyes_lk_cell_27b}} | {{num|comp_one_fmyes_rc_27b}} | {{num|comp_one_fmyes_lk_cell_122b}} | {{num|comp_one_fmyes_rc_122b}} |
+| Only the asked person's pick changes | no | {{num|comp_one_fmno_lk_cell_9b}} | {{num|comp_one_fmno_rc_9b}} | {{num|comp_one_fmno_lk_cell_27b}} | {{num|comp_one_fmno_rc_27b}} | {{num|comp_one_fmno_lk_cell_122b}} | {{num|comp_one_fmno_rc_122b}} |
+| Same, fresh scenes | no | {{num|comp_rep_fmno_lk_cell_9b}} | {{num|comp_rep_fmno_rc_9b}} | {{num|comp_rep_fmno_lk_cell_27b}} | {{num|comp_rep_fmno_rc_27b}} | – | – |
 
-*Extra loss of the J++ part, after the data; n per row in Appendix A.*
+*Extra loss of the J++ part, after the data. Italics: fewer than 30 lookup switches with the whole change (count shown). n per row in Appendix A.*
 
 - **Caveat.** Removing both costs the recall too ({{num|rtb_ex_C0_both_rc_9b}}, {{num|rtb_ex_C0_both_rc_27b}}); the 122B's (a) and (b) are pending.
 
@@ -114,7 +114,7 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | n, table 3c rows (first mention yes / no): two people swap picks | {{num|comp_two_fmyes_n_9b}} / {{num|comp_two_fmno_n_9b}} | {{num|comp_two_fmyes_n_27b}} / {{num|comp_two_fmno_n_27b}} | {{num|comp_two_fmyes_n_122b}} / {{num|comp_two_fmno_n_122b}} |
 | n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | {{num|comp_one_fmyes_n_9b}} / {{num|comp_one_fmno_n_9b}}; {{num|comp_rep_fmno_n_9b}} | {{num|comp_one_fmyes_n_27b}} / {{num|comp_one_fmno_n_27b}}; {{num|comp_rep_fmno_n_27b}} | {{num|comp_one_fmyes_n_122b}} / {{num|comp_one_fmno_n_122b}}; – |
 | Pointer probe right; another person's earlier pick read as first mention | {{num|v4_b_before_9b}}; {{num|dup_otherfirst_reads_other_9b}} | {{num|v4_b_before_27b}}; {{num|dup_otherfirst_reads_other_27b}} | {{num|v4_b_before_122b}}; {{num|dup_otherfirst_reads_other_122b}} |
-| Routes, another item moved, position without the pointer / without a random part of its size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | pending |
+| Routes, another item moved, position without the pointer / without a random part of its size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | {{num|rtg_C2_no_alf_position_122b}} / {{num|rtg_C2_no_alf_rand_position_122b}} (after the data) |
 | Early layer, recall still switching without J++ | {{num|rte_C2_no_jpp_recall_follows_s_9b}} | {{num|rte_C2_no_jpp_recall_follows_s_27b}} | pending |
 | Sanity swap, lookup without both / pointer alone | {{num|rtb_ex_C0_both_lk_9b}} / {{num|rtb_ex_C0_alf_lk_9b}} | {{num|rtb_ex_C0_both_lk_27b}} / {{num|rtb_ex_C0_alf_lk_27b}} | pending |
 

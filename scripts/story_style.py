@@ -36,8 +36,8 @@ def setup():
     return plt
 
 
-def title(fig, text: str) -> None:
-    assert len(text) <= 70, f"title over 70 characters: {text!r}"
+def title(fig, text: str, limit: int = 70) -> None:
+    assert len(text) <= limit, f"title over {limit} characters: {text!r}"
     fig.suptitle(text, x=0.01, ha="left", fontsize=13, weight="bold")
 
 
