@@ -1249,3 +1249,8 @@ Data: Amount) sweeps 1 to 1000 prompts and says "J-lens beats the logit lens and
 pass@10 0.651 vs 0.461). 64 keeps a margin for the top-10 directions the knock-out uses, and saves ~2 h on Lightning's
 fit and ~1.5 h on Bolt's, which now run in a row. Chains relaunched (h200nemL8, h200bolt6, h200qrend27b); nothing had
 run in them.
+
+**Amendment 44, note 2 (Zach, 2026-10-25 17:29 UTC, before either fit): 32 prompts.** Zach: "Do 32 prompts." Lightning's
+and Bolt's plain J-lenses are fit on 32 prompts, as our J++ lenses were (the paper: the J-lens beats the logit lens with
+as few as 10). Flagged on both models' results. Chains relaunched (h200nemL9, h200bolt7, h200qrend27c); nothing had run
+in them.

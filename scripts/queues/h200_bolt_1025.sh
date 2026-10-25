@@ -8,7 +8,7 @@
 #   - the hub-kernel check (scripts/kernel_nll.py with and without kernels: |mean NLL diff| <= 0.01 and top-1 agreement
 #     >= 0.95, else stop);
 #   - competence on the first 120 dev items;
-#   - our plain J-lens on 64 prompts (amendment 44 note 1; fit_jlens --harness, --no-bos; dim_batch 64, 32, 16
+#   - our plain J-lens on 32 prompts (amendment 44 note 2; fit_jlens --harness, --no-bos; dim_batch 64, 32, 16
 #     on out-of-memory), its sha256 into pins, commit, lens check;
 #   - the gate, the dev depth profile, the dose curve at its pick, the test knock-out and swap at the pick
 #     (h200_nq40_1025.sh, its band file), and the swap at mid depth L44-55 (50-62% of 88 blocks).
@@ -41,7 +41,7 @@ from huggingface_hub import snapshot_download
 print('=== BOLTDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-for j in h200nemL8-1025-1735 h200qrend9-1025-1720 h200qprof-1025-1700; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
+for j in h200nemL9-1025-1740 h200qrend9-1025-1720 h200qprof-1025-1700; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
 for g in 0 1; do until [ "$(nvidia-smi -i $g --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 120000 ]; do sleep 60; done; done
 echo "=== GPUs 0,1 free $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 < /dev/null || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }
@@ -76,14 +76,14 @@ if [ ! -f $LENS ]; then
   ok=0
   for db in 64 32 16; do
     echo "=== $KEY J-lens fit, dim_batch $db $(date -u +%T)"
-    $PY scripts/lens_fit/fit_jlens.py --harness --repo $REPO --revision $REV --out $LENS --n 64 --no-bos --dim-batch $db > /workspace/scratch/${P}fit.log 2>&1 < /dev/null && { ok=1; break; }
+    $PY scripts/lens_fit/fit_jlens.py --harness --repo $REPO --revision $REV --out $LENS --n 32 --no-bos --dim-batch $db > /workspace/scratch/${P}fit.log 2>&1 < /dev/null && { ok=1; break; }
     echo "=== $KEY fit at dim_batch $db failed ($(grep -m1 -oiE "out of memory|RuntimeError: [^ ]+ [^ ]+ [^ ]+" /workspace/scratch/${P}fit.log))"
     grep -qi "out of memory" /workspace/scratch/${P}fit.log || break
     rm -f $LENS.ckpt
   done
   [ $ok = 1 ] || { echo "=== $KEY fit FAILED"; tail -5 /workspace/scratch/${P}fit.log; exit 1; }
   grep FIT_DONE /workspace/scratch/${P}fit.log | sed "s/^/=== /"
-  grep -a "prompt 64/64" /workspace/scratch/${P}fit.log | sed "s/^/=== FITLAST /"
+  grep -a "prompt 32/32" /workspace/scratch/${P}fit.log | sed "s/^/=== FITLAST /"
   sha=$(sha256sum $LENS | cut -d" " -f1)
   .venv/bin/python - "$LENS" "$sha" <<'PY' || { echo "=== $KEY pins FAILED"; exit 1; }
 import sys
@@ -99,7 +99,7 @@ s = s.replace(o2, f'"frozen_lens_sha256": "{sha}",')
 p.write_text(s)
 print("lens registered", sha[:12])
 PY
-  git -c user.name="Zach Perlman" -c user.email=zachperlman20@gmail.com commit -q -m "pins: $KEY, our plain J-lens (64 prompts, amendments 40 note 1 and 44)
+  git -c user.name="Zach Perlman" -c user.email=zachperlman20@gmail.com commit -q -m "pins: $KEY, our plain J-lens (32 prompts, amendments 40 note 1 and 44)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -- src/bridge_jspace/pins.py || { echo "=== $KEY commit FAILED"; exit 1; }
   $PY scripts/lens_agreement.py --name ${P}lens_agreement_v1 --why "Zach (2026-10-25, amendment 44): $KEY, our plain J-lens, lens check" \

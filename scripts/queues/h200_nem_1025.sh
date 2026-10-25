@@ -47,7 +47,7 @@ if [ ! -f $LENS ]; then
   ok=0
   for db in 64 32 16; do  # hub kernels (amendment 42); 64 ran out of memory on the torch Mamba scan (amendment 40 note 2)
     echo "=== $KEY J-lens fit, dim_batch $db $(date -u +%T)"
-    $PY scripts/lens_fit/fit_jlens.py --repo $REPO --revision $REV --out $LENS --n 64 --no-bos --use-kernels --dim-batch $db > /workspace/scratch/${P}fit.log 2>&1 < /dev/null && { ok=1; break; }
+    $PY scripts/lens_fit/fit_jlens.py --repo $REPO --revision $REV --out $LENS --n 32 --no-bos --use-kernels --dim-batch $db > /workspace/scratch/${P}fit.log 2>&1 < /dev/null && { ok=1; break; }
     echo "=== $KEY fit at dim_batch $db failed ($(grep -m1 -oiE "out of memory|RuntimeError: [^ ]+ [^ ]+ [^ ]+" /workspace/scratch/${P}fit.log))"
     grep -qi "out of memory" /workspace/scratch/${P}fit.log || break
     rm -f $LENS.ckpt
