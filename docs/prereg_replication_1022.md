@@ -938,7 +938,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   Known confound, not fixed by these runs: the bands sit at different relative depths (27B 50-62%, 9B 38-50%, 122B
   81-94%); a 122B-vs-smaller-Qwen difference in where the dependence sits may be depth, not model.
 
-## Amendment 37 (Zach, 2026-10-25 ~02:45 UTC, before any run below): the overnight plan of day 6
+## Amendment 37 (Zach, 2026-10-25 02:35 UTC, commit 1dea5d7, before any run below): the overnight plan of day 6
 
 - **Seen when this was written:** everything through amendment 36 note 1, including the 122B's question-only result at
   L39-45 (read 46%, tracked 69%, recalled 69% of its all-token M - K); not its context or bridge runs (running).
