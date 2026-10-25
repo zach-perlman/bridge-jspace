@@ -42,12 +42,20 @@ PARTS = {"9b": "qwen35_9b_x0_parts", "27b": "x0_parts_27b"}
 MASSMEAN = {"9b": "qwen35_9b_x0_massmean", "27b": "x0_massmean_27b"}
 MASSMEAN_LF = {"9b": "qwen35_9b_x0_massmean_lf", "27b": "x0_massmean_lf_27b", "122b": "qwen35_122b_x0_massmean_grid"}
 PCAEQ = {"9b": "qwen35_9b_x0_pcaeq", "27b": "x0_pcaeq_27b", "122b": "qwen35_122b_x0_parts"}
-X0BPARTS = {"9b": "qwen35_9b_x0b_parts", "27b": "x0b_parts_27b"}
+X0BPARTS = {"9b": "qwen35_9b_x0b_parts", "27b": "x0b_parts_27b", "122b": "qwen35_122b_x0b_parts"}
+JPPOTHER = {"9b": "qwen35_9b_x0_jppother", "27b": "x0_jppother_27b", "122b": "qwen35_122b_x0_jppother"}
 X4 = {"9b": ("qwen35_9b_x4_probe", "qwen35_9b_x4_patch"), "27b": ("x4_probe_27b", "x4_patch_27b"),
       "122b": ("qwen35_122b_x4_probe", "qwen35_122b_x4_patch")}  # fmt: skip
 REPLICATE = {"9b": "qwen35_9b_x0_replicate", "27b": "x0_replicate_27b"}
 NATURAL = {"9b": "qwen35_9b_x5_natural", "27b": "x5_natural_27b", "122b": "qwen35_122b_x5_natural"}
 ROUTES = {"9b": "qwen35_9b_x6_routes", "27b": "x6_routes_27b"}
+# rte: the early layers (9B L6, 27B L16); rtg: the 122B after the data, gate 0.75; rtb: J++ and the pointer
+# directions removed together (x6_routes_bothoff)
+ROUTES_MORE = {"rte": {"9b": "qwen35_9b_x6_routes_l6", "27b": "x6_routes_l16_27b", "122b": "qwen35_122b_x6_routes_l27_g75"},
+               "rtg": {"122b": "qwen35_122b_x6_routes_g75"},
+               "rtb": {"9b": "qwen35_9b_x6_routes_bothoff", "27b": "x6_routes_bothoff_27b",
+                       "122b": "qwen35_122b_x6_routes_bothoff_g75"}}  # fmt: skip
+NATURAL_G75 = {"9b": "qwen35_9b_x5_natural_g75"}
 ORDER = "org locker vs asked pick"
 
 
@@ -273,9 +281,13 @@ def parts_numbers(num: Numbers) -> None:
     word part's energy inside jw (fit on the whole Δ): the median of ((jw · w) / ||w||²)²."""
     import numpy as np
 
-    for runs, prefix, fmt in ((PARTS, "parts", lambda v: f2(v[0])), (PCAEQ, "pcaeq", ci), (X0BPARTS, "x0bparts", ci)):
+    for runs, prefix, fmt in ((PARTS, "parts", lambda v: f2(v[0])), (PCAEQ, "pcaeq", ci), (X0BPARTS, "x0bparts", ci),
+                              (JPPOTHER, "jppother", ci)):  # fmt: skip
         for m, run in runs.items():
-            path = sorted((pins.RESULTS_DIR / "x0_parts" / run).glob("verdict-*/verdict.json"))[-1]
+            found = sorted((pins.RESULTS_DIR / "x0_parts" / run).glob("verdict-*/verdict.json"))
+            if not found:  # queued (the 122B's X0b parts)
+                continue
+            path = found[-1]
             src = str(path.relative_to(pins.REPO_ROOT))
             for r in json.loads(path.read_text())["rows"]:
                 w = "lk" if r["reader"] == X.LOOKUP else "rc"
@@ -355,16 +367,30 @@ def natural_numbers(num: Numbers) -> None:
 
 
 def routes_numbers(num: Numbers) -> None:
-    """x6_routes (fixed in advance): the share of lookup answers per route, condition and arm; C0's switch rate."""
-    for m, run in ROUTES.items():
-        root = pins.RESULTS_DIR / "x6_routes" / run
-        path = sorted(root.glob("verdict-*/verdict.json"))[-1]
-        src = str(path.relative_to(pins.REPO_ROOT))
-        for r in json.loads(path.read_text())["rows"]:
-            for route in ("identity", "position", "value", "original", "recall_follows_s"):
-                num.add(f"rt_{r['condition']}_{r['arm']}_{route}_{m}", ci(r["share"][route]), src)
-        c0 = json.loads((root / "c0_check.json").read_text())
-        num.add(f"rt_c0_{m}", f2(c0["c0_lookup_switch"]), str((root / "c0_check.json").relative_to(pins.REPO_ROOT)))
+    """x6_routes: the share of lookup answers per route, condition and arm; C0's switch rate (rt: the layers fixed in
+    advance; rte, rtg, rtb: ROUTES_MORE); with --bothoff, each part's C0 / C2 extra loss per reader (rtb_ex_*)."""
+    for prefix, runs in (("rt", ROUTES), *ROUTES_MORE.items()):
+        for m, run in runs.items():
+            root = pins.RESULTS_DIR / "x6_routes" / run
+            found = sorted(root.glob("verdict-*/verdict.json"))
+            if not found:  # queued
+                continue
+            v = json.loads(found[-1].read_text())
+            src = str(found[-1].relative_to(pins.REPO_ROOT))
+            for r in v["rows"]:
+                for route in ("identity", "position", "value", "original", "recall_follows_s"):
+                    num.add(f"{prefix}_{r['condition']}_{r['arm']}_{route}_{m}", ci(r["share"][route]), src)
+            for e in v.get("extra", []):
+                part = e["part"].replace(" - ", "_minus_")
+                w = "lk" if e["reader"] == X.LOOKUP else "rc"
+                num.add(f"{prefix}_ex_{e['condition']}_{part}_{w}_{m}", ci(e["excess"]), src)
+            if (root / "c0_check.json").exists():
+                c0 = json.loads((root / "c0_check.json").read_text())
+                num.add(
+                    f"{prefix}_c0_{m}",
+                    f2(c0["c0_lookup_switch"]),
+                    str((root / "c0_check.json").relative_to(pins.REPO_ROOT)),
+                )
     gate_path = pins.RESULTS_DIR / "x6_routes" / "qwen35_122b_x6_routes_c0" / "gate.json"
     if gate_path.exists():  # the 122B: its C0 check stopped at the gate (Q32.9 void; descriptive)
         g = json.loads(gate_path.read_text())["gate"]["C0"]

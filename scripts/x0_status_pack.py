@@ -39,12 +39,7 @@ from scripts import x0_strata as ST
 
 OUT = pins.REPO_ROOT / "figures" / "status_2026-10-25"  # the 24 Oct folder stays as shared (Dan, 25 Oct)
 # batch 31 (Dan, 25 Oct ~00:20): these runs stay closed until his answers are committed
-CLOSED_RUNS = {
-    "x0_jppother_27b",
-    "qwen35_9b_x0_jppother",  # batch 33
-    "x6_routes_l16_27b",
-    "qwen35_9b_x6_routes_l6",
-}  # batch 32, Q32.7 / Q32.8
+CLOSED_RUNS: set[str] = set()  # every run's batch answers are committed (25 Oct ~13:55)  # batch 32, Q32.7 / Q32.8
 SHOW_CLOSED = False
 YL = "extra flips lost vs a random part of the same size\n(share of the change's flips)"
 GAP_WORDS = {"holds": "the gap holds", "mixed": "the gap is in between", "fails": "the gap fails"}
@@ -602,15 +597,18 @@ X0B = {
 }
 
 
-def bars(ax, groups: list[str], series: list[tuple[str, str, list]], target: str, fig_name: str, run: str) -> None:
-    """Grouped bars with 95% CIs: series = (name, colour, [[v, lo, hi] or None per group])."""
+def bars(
+    ax, groups: list[str], series: list[tuple[str, str, list]], target: str, fig_name: str, run: str, hatch=None
+) -> None:
+    """Grouped bars with 95% CIs: series = (name, colour, [[v, lo, hi] or None per group]); hatched for runs after the
+    data."""
     k = len(series)
     for j, (name, col, vals) in enumerate(series):
         for i, v in enumerate(vals):
             if v is None:
                 continue
             x = i + (j - (k - 1) / 2) * (0.8 / k)
-            ax.bar(x, v[0], width=0.8 / k * 0.95, color=col, edgecolor="white")
+            ax.bar(x, v[0], width=0.8 / k * 0.95, color=col, edgecolor="white", hatch=hatch)
             ax.errorbar(x, v[0], yerr=[[v[0] - v[1]], [v[2] - v[0]]], color="#333333", capsize=3, lw=1)
             ax.text(x, max(v[2], v[0]) + 0.03, f"{v[0]:.2f}", ha="center", fontsize=9.5)
             record(fig_name, target, run, "-", name, groups[i].replace("\n", " "), v[0], v[1], v[2])
@@ -1010,9 +1008,12 @@ def f4(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
-NATURAL = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x5_natural"),
-           "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x5_natural_27b"),
-           "qwen3.5-122b-a10b": ("Qwen3.5-122B, layer 33", "qwen35_122b_x5_natural")}  # fmt: skip
+# (target, panel label, run, after the data): the 9B's run fixed in advance stopped at its gate; its rerun with the gate
+# lowered to 0.75 is a separate, hatched panel (Dan, 25 Oct ~13:20)
+NATURAL = (("qwen3.5-9b", "Qwen3.5-9B, layer 12", "qwen35_9b_x5_natural", False),
+           ("qwen3.6-27b", "Qwen3.6-27B, layer 32", "x5_natural_27b", False),
+           ("qwen3.5-122b-a10b", "Qwen3.5-122B, layer 33", "qwen35_122b_x5_natural", False),
+           ("qwen3.5-9b", "Qwen3.5-9B, layer 12: after the data,\ngate lowered to 0.75", "qwen35_9b_x5_natural_g75", True))  # fmt: skip
 REPLICATE = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12 (decides)", "qwen35_9b_x0_replicate"),
              "qwen3.6-27b": ("Qwen3.6-27B, layer 32 (descriptive)", "x0_replicate_27b")}  # fmt: skip
 
@@ -1022,9 +1023,9 @@ def f18(plt, F, color, grey) -> None:
     import json
 
     root = pins.RESULTS_DIR / "x5_natural"
-    fig, axes = plt.subplots(1, len(NATURAL), figsize=(7 * len(NATURAL), 5.6), sharey=True)
+    fig, axes = plt.subplots(2, 2, figsize=(15, 13), sharey=True)
     passed = None
-    for ax, (target, (label, run)) in zip(axes, NATURAL.items(), strict=True):
+    for ax, (target, label, run, hatched) in zip(axes.flat, NATURAL, strict=True):
         if (root / run / "gate.json").exists():
             passed = passed or json.loads((root / run / "gate.json").read_text())["counts"]
         found = sorted((root / run).glob("verdict-*/verdict.json"))
@@ -1032,7 +1033,9 @@ def f18(plt, F, color, grey) -> None:
         st = state(run, bool(found) or gate_only)
         if st == "open" and gate_only:
             g = json.loads((root / run / "gate.json").read_text())
-            placeholder(ax, label, "not tested: the unedited lookups\nmissed the gate fixed in advance (0.80)")
+            acc = g["org_read_accuracy"]
+            placeholder(ax, label, f"not tested: the gate fixed in advance was missed\n(on the original passages the lookup "
+                        f"read {acc[X.LOOKUP]:.2f} right,\nthe recall {acc[X.RECALL]:.2f}; bar {X.GATE:.2f})")  # fmt: skip
             record("f18", target, run, X.PREDICTED[target], X.LOOKUP, "gate: original-prompt read accuracy",
                    g["org_read_accuracy"][X.LOOKUP])  # fmt: skip
             continue
@@ -1044,12 +1047,13 @@ def f18(plt, F, color, grey) -> None:
         groups = [f"pooled\n(n = {v['main']['n']})", *(f"half {h}\n(n = {sub[f'half={h}']['n']})" for h in ("A", "B"))]
         series = [(name, col, [v["main"]["excess"][w], *(sub[f"half={h}"]["excess"][w] for h in ("A", "B"))])
                   for name, col, w in (("lookup", F.LOOKUP, X.LOOKUP), ("recall", F.RECALL, X.RECALL))]  # fmt: skip
-        bars(ax, groups, series, target, "f18", run)
+        bars(ax, groups, series, target, "f18", run, "//" if hatched else None)
         g = v["main"]["gap"]
         record("f18", target, run, X.PREDICTED[target], "recall-lookup", "gap", g[0], g[1], g[2], v["main"]["n"])
         ax.set_title(f"{label}: {GAP_WORDS[v['label']]}")
         ax.set_ylim(-0.2, 1.0)
-    axes[0].set_ylabel(YL)
+    for row in axes:
+        row[0].set_ylabel(YL)
     h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
     n_txt = f"{passed['cases']} of {passed['scenes']} scenes" if passed else "the scenes"
     head(fig, "On natural passages the gap holds on the 122B and is mixed on the 27B, whose lookup needs J++ too",
@@ -1058,8 +1062,10 @@ def f18(plt, F, color, grey) -> None:
          f"{n_txt} passed the rule fixed in advance for the swap (one-token bridge at one position, both answers "
          "different).", h, ["lookup", "recall"])  # fmt: skip
     foot(fig, [f"25 J++ directions at the layer fixed in advance; {CI}. Rule fixed in advance: gap >= 0.30 with lower CI "
-               ">= 0.15 holds, <= 0.10 fails, otherwise mixed; the halves are descriptive. Unverified."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
+               ">= 0.15 holds, <= 0.10 fails, otherwise mixed; the halves are descriptive. Hatched: after the data, the "
+               "read-accuracy gate lowered from 0.80 to 0.75, descriptive, not scored against any prediction. "
+               "Unverified."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.04, 1, 0.88))
     fig.savefig(OUT / "f18_natural.png", dpi=150, facecolor="white")
     plt.close(fig)
 
@@ -1105,79 +1111,191 @@ def f19(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
-ROUTES_RUNS = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x6_routes"),
-               "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x6_routes_27b"),
-               "qwen3.5-122b-a10b": ("Qwen3.5-122B, layer 33", "qwen35_122b_x6_routes")}  # fmt: skip
+# (target, panel label, run, layer, after the data): the 122B's run fixed in advance stopped at its gate; its rerun with
+# the gate lowered to 0.75 is a separate, hatched panel (Dan, 25 Oct ~13:20)
+ROUTES_RUNS = (("qwen3.5-9b", "Qwen3.5-9B, layer 12", "qwen35_9b_x6_routes", 12, False),
+               ("qwen3.6-27b", "Qwen3.6-27B, layer 32", "x6_routes_27b", 32, False),
+               ("qwen3.5-122b-a10b", "Qwen3.5-122B, layer 33", "qwen35_122b_x6_routes", 33, False),
+               ("qwen3.5-122b-a10b", "Qwen3.5-122B, layer 33: after the data,\ngate lowered to 0.75",
+                "qwen35_122b_x6_routes_g75", 33, True))  # fmt: skip
+EARLY_RUNS = (("qwen3.5-9b", "Qwen3.5-9B, layer 6", "qwen35_9b_x6_routes_l6", 6, False),
+              ("qwen3.6-27b", "Qwen3.6-27B, layer 16", "x6_routes_l16_27b", 16, False),
+              ("qwen3.5-122b-a10b", "Qwen3.5-122B, layer 27: after the data,\ngate lowered to 0.75",
+               "qwen35_122b_x6_routes_l27_g75", 27, True))  # fmt: skip
+BOTHOFF_RUNS = (("qwen3.5-9b", "Qwen3.5-9B, layer 12", "qwen35_9b_x6_routes_bothoff", 12, False),
+                ("qwen3.6-27b", "Qwen3.6-27B, layer 32", "x6_routes_bothoff_27b", 32, False),
+                ("qwen3.5-122b-a10b", "Qwen3.5-122B, layer 33 (after the data, gate 0.75)",
+                 "qwen35_122b_x6_routes_bothoff_g75", 33, True))  # fmt: skip
 ROUTE_COLOURS = (("identity", "#4a7fb5"), ("position", "#d9a441"), ("value", "#2a9d8f"), ("original", "#9e9e9e"),
                  ("other", "#e3e3e3"))  # fmt: skip
+ARM_TICKS = {"whole": "whole\nchange", "no_jpp": "without\nJ++", "no_jpp_rand": "without\nrandom",
+             "no_alf": "without\npointer", "no_alf_rand": "without\nrandom*", "no_both": "without\nboth",
+             "no_both_rand": "without\nrandom**"}  # fmt: skip
+SWAPS = (
+    ("C1", "Swap 1: the same item,\nits locker sentence moved"),
+    ("C2", "Swap 2: another item,\nits locker sentence moved"),
+)
+ROUTES_EXAMPLE = (
+    "Original prompt: 'The locker of the duck is 4. The locker of the rabbit is 3. The locker of the goose is 2. ... "
+    "Beth picked the goose.' Lookup: 2. The change from a swapped prompt is added at the bridge word (goose) and the "
+    "lookup is read on the original prompt.\n"
+    "Swap 1, the same item with its locker sentence moved: the goose's locker sentence sits in the duck's slot, with a new "
+    "digit 8. Unchanged (same item) -> 2 (the goose's locker, the original answer; blue here), position -> 4 (what that "
+    "slot holds in the original), value -> 8.\n"
+    "Swap 2, another item with its locker sentence moved: Beth picks the rabbit, whose locker sentence sits in the duck's "
+    "slot with a new digit 7. Identity -> 3 (the rabbit's locker), position -> 4, value -> 7, original -> 2."
+)
+
+
+def routes_verdict(run: str):
+    """The newest x6_routes verdict of a run, or None."""
+    import json
+
+    found = sorted((pins.RESULTS_DIR / "x6_routes" / run).glob("verdict-*/verdict.json"))
+    return json.loads(found[-1].read_text()) if found else None
+
+
+def routes_panel(ax, target, label, run, layer, hatched, conds, arms, fig_name) -> bool:
+    """One model's stacked route shares per condition and arm (F20's style); False (and a placeholder) if not drawn."""
+    import json
+
+    v = routes_verdict(run)
+    c0 = pins.RESULTS_DIR / "x6_routes" / f"{run}_c0" / "gate.json"
+    gate = json.loads(c0.read_text())["gate"] if c0.exists() else {}
+    if v is None and gate and not any(g["pass"] for g in gate.values()):
+        acc = gate["C0"]["org_read_accuracy"]
+        placeholder(ax, label, f"not tested: the gate fixed in advance was missed\n(on the original prompts the recall read "
+                    f"{acc[X.RECALL]:.3f} right,\nthe lookup {acc[X.LOOKUP]:.3f}; bar {X.GATE:.2f})")  # fmt: skip
+        return False
+    if (st := state(run, v is not None)) != "open":
+        placeholder(ax, label, st)
+        return False
+    rows = {(r["condition"], r["arm"]): r for r in v["rows"]}
+    xs, ticks = [], []
+    for si, (cond, name) in enumerate(conds):
+        for ai, arm in enumerate(arms):
+            r = rows.get((cond, arm))
+            x = si * (len(arms) + 1.2) + ai
+            xs.append(x)
+            ticks.append(ARM_TICKS[arm])
+            if r is None:
+                continue
+            bottom = 0.0
+            for route, col in ROUTE_COLOURS:
+                s, lo, hi = r["share"][route]
+                ax.bar(x, s, bottom=bottom, width=0.8, color=col, edgecolor="white", hatch="//" if hatched else None)
+                bottom += s
+                record(fig_name, target, run, layer, X.LOOKUP, f"{cond} {arm} share {route}", s, lo, hi, r["n"])
+        ax.text(si * (len(arms) + 1.2) + (len(arms) - 1) / 2, 1.03, name, ha="center", va="bottom", fontsize=10.5,
+                weight="bold")  # fmt: skip
+    ax.set_xticks(xs, ticks, fontsize=8.5)
+    ax.set_ylim(0, 1.18)
+    ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    n = {r["n"] for r in v["rows"]}
+    ax.set_title(f"{label} ({'/'.join(map(str, sorted(n)))} scenes per swap)", pad=34)
+    return True
+
+
+def routes_figure(plt, panels, arms, fig_name, out, title, sub, note, ncols) -> None:
+    nrows = -(-len(panels) // ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(8.5 * ncols, 5.4 * nrows + 2.7), squeeze=False)
+    for ax, (target, label, run, layer, hatched) in zip(axes.flat, panels):
+        routes_panel(ax, target, label, run, layer, hatched, SWAPS, arms, fig_name)
+    for ax in axes.flat[len(panels) :]:
+        ax.set_visible(False)
+    for row in axes:
+        row[0].set_ylabel("share of lookup answers")
+    h = [plt.Rectangle((0, 0), 1, 1, color=c) for _, c in ROUTE_COLOURS]
+    head(fig, title, sub, h, [r for r, _ in ROUTE_COLOURS])
+    foot(fig, [f"{CI}. {note} Unverified."])
+    top = 1 - 2.7 / fig.get_figheight()  # the title, the three-line worked example and the legend
+    fig.tight_layout(rect=(0, 0.6 / fig.get_figheight(), 1, top))
+    fig.savefig(OUT / out, dpi=150, facecolor="white")
+    plt.close(fig)
 
 
 def f20(plt, F, color, grey) -> None:
     """Which route the lookup follows (x6_routes): per model, swap (1: the item stays and its locker sentence moves;
     2: another item, whose locker sentence moves) and arm, the share of lookup answers that follow the item's identity,
     its locker sentence's position, the new locker value, the original answer, or none; stacked, each share's 95% CI in
-    data.csv."""
-    import json
+    data.csv. The 122B's descriptive rerun after the data (gate 0.75) hatched, in its own panel."""
+    routes_figure(plt, ROUTES_RUNS, ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand"), "f20", "f20_routes.png",
+                  "The lookup follows the bridge's identity or its locker sentence's position, never the new value",
+                  ROUTES_EXAMPLE,
+                  "Arms: the whole change; without its J++ part (25 directions); without a random part of J++'s share; "
+                  "without the pointer directions; *without a random part of the pointer directions' share. Rule fixed in "
+                  "advance: a route is used if its share is >= 0.20 with lower CI >= 0.10. Hatched: after the data, the "
+                  "read-accuracy gate lowered from 0.80 to 0.75, descriptive, not scored against any prediction.", 2)  # fmt: skip
 
-    arms = (("whole", "whole\nchange"), ("no_jpp", "without\nJ++"), ("no_jpp_rand", "without\nrandom"),
-            ("no_alf", "without\npointer"), ("no_alf_rand", "without\nrandom*"))  # fmt: skip
-    swaps = (
-        ("C1", "Swap 1: the same item,\nits locker sentence moved"),
-        ("C2", "Swap 2: another item,\nits locker sentence moved"),
-    )
-    fig, axes = plt.subplots(1, len(ROUTES_RUNS), figsize=(8 * len(ROUTES_RUNS), 7.2), sharey=True)
-    for ax, (target, (label, run)) in zip(axes, ROUTES_RUNS.items(), strict=True):
-        found = sorted((pins.RESULTS_DIR / "x6_routes" / run).glob("verdict-*/verdict.json"))
-        c0 = pins.RESULTS_DIR / "x6_routes" / f"{run}_c0" / "gate.json"
-        gate = json.loads(c0.read_text())["gate"] if c0.exists() else {}
-        if not found and gate and not any(g["pass"] for g in gate.values()):
-            acc = gate["C0"]["org_read_accuracy"]
-            placeholder(ax, label, f"not tested: on the original prompts the recall\nread {acc[X.RECALL]:.3f} right, under the "
-                        f"gate\nfixed in advance ({X.GATE:.2f}); the lookup {acc[X.LOOKUP]:.3f}")  # fmt: skip
+
+def f21(plt, F, color, grey) -> None:
+    """x6_routes at an early layer (the layer where the lookup's J++ extra loss peaks: 9B L6, 27B L16; no pointer arms)."""
+    routes_figure(plt, EARLY_RUNS, ("whole", "no_jpp", "no_jpp_rand"), "f21", "f21_routes_early.png",
+                  "At an early layer the lookup follows the bridge's identity only, and without J++ it gives the original answer",
+                  ROUTES_EXAMPLE,
+                  "Early layers fixed in advance (where the lookup's J++ extra loss peaks: 9B layer 6, 27B layer 16; the "
+                  "122B's layer 27 chosen after the data, its peak among the layers measured, with the read-accuracy gate "
+                  "lowered to 0.75, hatched, descriptive). Arms: "
+                  "the whole change; without its J++ part (25 directions); without a random part of J++'s share (no "
+                  "pointer directions here: they were fit at the later layers). Rule fixed in advance: a route is used if "
+                  "its share is >= 0.20 with lower CI >= 0.10.", 2)  # fmt: skip
+
+
+def f22(plt, F, color, grey) -> None:
+    """x0_jppother: 25 J++ directions fitted to another scene's change (a different bridge pair), refit to this scene's
+    change and removed, against a random part of their share; the scene's own J++ part for reference."""
+    runs = {"qwen3.5-9b": ("Qwen3.5-9B, layer 12", "qwen35_9b_x0_jppother"),
+            "qwen3.6-27b": ("Qwen3.6-27B, layer 32", "x0_jppother_27b"),
+            "qwen3.5-122b-a10b": ("Qwen3.5-122B, layer 33", "qwen35_122b_x0_jppother")}  # fmt: skip
+    parts_figure(plt, F, runs, (("jpp_other", "J++ directions fitted\nto another scene"), ("jpp", "J++ (the scene's own)")),
+                 "f22", "f22_jpp_other.png",
+                 "J++ directions fitted to another scene cost neither reader; the scene's own J++ costs the recall",
+                 "One-pick scenes (200 per model). For each scene, the 25 J++ directions signed OMP picks for a different "
+                 "scene's change (a different bridge pair), refit to this scene's change and removed, against a random "
+                 "part of the same share. Below each group: the median share of the change's energy the part holds.",
+                 "Fixed in advance (Dan, before the run): recall extra loss <= 0.10. The borrowed directions hold far less "
+                 "of the change than the scene's own J++ part, so this control is not matched to J++'s share.")  # fmt: skip
+
+
+def f23(plt, F, color, grey) -> None:
+    """x6_routes_bothoff: C0's extra loss per part and reader (J++, the pointer directions, their union, each against
+    a random part of its own share), and swap 2's route shares per arm."""
+    fig, axes = plt.subplots(len(BOTHOFF_RUNS), 2, figsize=(17, 5.4 * len(BOTHOFF_RUNS) + 3.2), squeeze=False,
+                             gridspec_kw={"width_ratios": [1, 1.4]})  # fmt: skip
+    parts = (("jpp", "without J++"), ("alf", "without the\npointer directions"), ("both", "without both"))
+    for (ax0, ax1), (target, label, run, layer, hatched) in zip(axes, BOTHOFF_RUNS, strict=True):
+        v = routes_verdict(run)
+        if (st := state(run, v is not None)) != "open":
+            placeholder(ax0, f"{label}: the sanity swap", st)
+            placeholder(ax1, f"{label}: swap 2", st)
             continue
-        if (st := state(run, bool(found))) != "open":
-            placeholder(ax, label, st)
-            continue
-        rows = {(r["condition"], r["arm"]): r for r in json.loads(found[-1].read_text())["rows"]}
-        xs, ticks = [], []
-        for si, (cond, name) in enumerate(swaps):
-            for ai, (arm, tick) in enumerate(arms):
-                r = rows.get((cond, arm))
-                x = si * (len(arms) + 1.2) + ai
-                xs.append(x)
-                ticks.append(tick)
-                if r is None:
-                    continue
-                bottom = 0.0
-                for route, col in ROUTE_COLOURS:
-                    v, lo, hi = r["share"][route]
-                    ax.bar(x, v, bottom=bottom, width=0.8, color=col, edgecolor="white")
-                    bottom += v
-                    record("f20", target, run, X.PREDICTED[target], X.LOOKUP, f"{cond} {arm} share {route}", v, lo, hi,
-                           r["n"])  # fmt: skip
-            ax.text(si * (len(arms) + 1.2) + (len(arms) - 1) / 2, 1.03, name, ha="center", va="bottom", fontsize=10.5,
-                    weight="bold")  # fmt: skip
-        ax.set_xticks(xs, ticks, fontsize=8.5)
-        ax.set_ylim(0, 1.18)
-        ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
-        ax.set_title(f"{label} (300 scenes per swap)", pad=34)
-    axes[0].set_ylabel("share of lookup answers")
-    h = [plt.Rectangle((0, 0), 1, 1, color=c) for _, c in ROUTE_COLOURS]
-    head(fig, "The lookup follows the bridge's identity or its locker sentence's position, never the new value",
-         "Original prompt: 'The locker of the duck is 4. The locker of the rabbit is 3. The locker of the goose is 2. ... "
-         "Beth picked the goose.' Lookup: 2. The change from a swapped prompt is added at the bridge word (goose) and the "
-         "lookup is read on the original prompt.\n"
-         "Swap 1, the same item with its locker sentence moved: the goose's locker sentence sits in the duck's slot, with "
-         "a new digit 8. Unchanged (same item) -> 2 (the goose's locker, the original answer; blue here), position -> 4 (what that "
-         "slot holds in the original), value -> 8.\n"
-         "Swap 2, another item with its locker sentence moved: Beth picks the rabbit, whose locker sentence sits in the "
-         "duck's slot with a new digit 7. Identity -> 3 (the rabbit's locker), position -> 4, value -> 7, original -> 2.",
-         h, [r for r, _ in ROUTE_COLOURS])  # fmt: skip
-    foot(fig, [f"{CI}. Arms: the whole change; without its J++ part (25 directions); without a random part of J++'s share; "
-               "without the pointer directions; *without a random part of the pointer directions' share. Rule fixed in "
-               "advance: a route is used if its share is >= 0.20 with lower CI >= 0.10. Unverified."])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.06, 1, 0.70))
-    fig.savefig(OUT / "f20_routes.png", dpi=150, facecolor="white")
+        ex = {(e["condition"], e["reader"], e["part"]): e for e in v["extra"]}
+        groups = [f"{name}\n({100 * ex[('C0', X.LOOKUP, p)]['share']:.0f}% of the change)" for p, name in parts]
+        bars(ax0, groups, [("lookup", F.LOOKUP, [ex[("C0", X.LOOKUP, p)]["excess"] for p, _ in parts]),
+                           ("recall", F.RECALL, [ex[("C0", X.RECALL, p)]["excess"] for p, _ in parts])], target, "f23", run,
+             "//" if hatched else None)  # fmt: skip
+        d = ex[("C0", X.LOOKUP, "both - alf")]["excess"]
+        record("f23", target, run, layer, X.LOOKUP, "C0 extra loss both minus pointer", *d)
+        ax0.set_title(f"{label}: the sanity swap (n = {ex[('C0', X.LOOKUP, 'both')]['n']})\nlookup, both minus pointer: "
+                      f"{d[0]:.2f} [{d[1]:.2f}, {d[2]:.2f}]")  # fmt: skip
+        ax0.set_ylim(-0.2, 1.1)
+        ax0.set_ylabel(YL)
+        routes_panel(ax1, target, label, run, layer, hatched, (SWAPS[1],),
+                     ("whole", "no_jpp", "no_alf", "no_both", "no_both_rand"), "f23")  # fmt: skip
+        ax1.set_ylabel("share of lookup answers")
+    h = [plt.Rectangle((0, 0), 1, 1, color=F.LOOKUP), plt.Rectangle((0, 0), 1, 1, color=F.RECALL)]
+    h += [plt.Rectangle((0, 0), 1, 1, color=c) for _, c in ROUTE_COLOURS]
+    head(fig, "J++ and the pointer directions removed together",
+         "Left: the sanity swap (Beth picks another item, nothing else changes); each part removed against a random part "
+         "of its own share; 'both' = each scene's 25 J++ directions and the pointer directions together (the change "
+         "projected onto their joint span). Right: swap 2's routes per arm (as F20).",
+         h, ["lookup", "recall"] + [r for r, _ in ROUTE_COLOURS])  # fmt: skip
+    foot(fig, [f"{CI}. Fixed in advance (Dan's Q34.1): in the sanity swap, the lookup's extra loss without both is at least "
+               "0.15 more than without the pointer directions alone (point estimate; paired CI), 9B and 27B. Hatched: the "
+               "122B, after the data, the read-accuracy gate lowered to 0.75, descriptive. **without a random part of the "
+               "union's share. Unverified."])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.6 / fig.get_figheight(), 1, 1 - 3.0 / fig.get_figheight()))
+    fig.savefig(OUT / "f23_bothoff.png", dpi=150, facecolor="white")
     plt.close(fig)
 
 
@@ -1215,6 +1333,9 @@ def main() -> None:
     f18(plt, F, color, grey)
     f19(plt, F, color, grey)
     f20(plt, F, color, grey)
+    f21(plt, F, color, grey)
+    f22(plt, F, color, grey)
+    f23(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]

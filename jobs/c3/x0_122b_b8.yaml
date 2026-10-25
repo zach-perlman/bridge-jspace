@@ -1,0 +1,24 @@
+id: x0_122b_b8
+title: "122B grid b8 (Dan, 25 Oct ~14:15: 'runs for all'): today's new tests on the 122B, descriptive: J++ directions fitted to another scene (L33); the routes at its early peak layer (L27); J++ and the pointer directions removed together (L33)"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 2.5
+depends_on: [x0_122b_b1]
+command: >-
+  { BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0_parts.py run --name qwen35_122b_x0_jppother --single qwen35_122b_x0_single --parts jpp_other,jpp; a=$?; BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_c0_l27_g75 --smoke --layer 27 --c0-min 0.5 --no-pointer --gate 0.75 && BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_l27_g75 --layer 27 --c0-min 0.5 --no-pointer --gate 0.75; b=$?; BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_bothoff_g75 --conditions C0,C2 --bothoff --gate 0.75; c=$?; echo "exit jppother=$a early=$b bothoff=$c"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0; }
+question: >-
+  On the 122B, as on the 9B and 27B today: (1) do 25 J++ directions fitted to another scene's change cost either reader (L33, the one-pick scenes of qwen35_122b_x0_single)? (2) Which route does the lookup follow at its early peak layer, and does removing J++ cut it? (3) Does removing J++ and the pointer directions together cost the lookup more than the pointer directions alone (C0), and what do swap 2's routes do?
+why_it_matters: >-
+  Dan (25 Oct ~14:15): every new result gets a 122B run, so each figure has the full model grid.
+hypotheses:
+  H-none: 'none: descriptive; not scored against any prediction (batches 33 and 34 cover the 9B and 27B only)'
+decision_rule: >-
+  Descriptive, after the data. (1) As x0_jppother (each part against a random part of its own share; cluster bootstrap over bridge entities, 10,000 resamples, seed 0). (2) As x6_routes_early_r2: the C0 check descriptive (stop only below 0.50), no pointer arms (the pointer directions exist at L33 only); the early layer is L27, the 122B's peak of the lookup's J++ extra loss among the layers measured (24-36; F2: 0.56 at L27). (3) As x6_routes_bothoff. (2) and (3) use x6_routes' scenes, where the 122B's recall read 0.797 of the original prompts right: the read-accuracy gate is lowered to 0.75 for both, after the data, as Dan set for the 122B routes rerun.
+controls:
+- 'a random part at each part''s own share'
+- 'the recall on the identical patch'
+- 'C0 (the sanity swap)'
+n: '(1) 200 one-pick scenes; (2), (3) 300 eligible scenes per condition'
+seeds: [0, 2510]
+notes: "122B on both GPUs, one job so the model loads three times in one slot (each script loads it once). The three parts run whatever the others do. After x5_natural_9b_g75 (appended to Dan's order)."
