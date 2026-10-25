@@ -1,0 +1,22 @@
+id: x0_122b_b9
+title: "122B grid b9 (Dan, 25 Oct ~20:20: every result cell for the 122B): the bothoff control, keep-only parts, the routes at L24 / L30 / L36, the replication on fresh scenes; descriptive, after the data"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 4.0
+depends_on: [x0_122b_b8]
+command: >-
+  { BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_bothoff_ctrl_g75 --conditions C0 --bothoff --bothoff-ctrl --gate 0.75; a=$?; BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_keeponly_g75 --conditions C1,C2 --keeponly --gate 0.75; b=$?; BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_sweep_l24_g75 --layer 24 --conditions C0,C2 --c0-min 0.5 --no-pointer --gate 0.75; c=$?; BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_sweep_l30_g75 --layer 30 --conditions C0,C2 --c0-min 0.5 --no-pointer --gate 0.75; d=$?; BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_sweep_l36_g75 --layer 36 --conditions C0,C2 --c0-min 0.5 --no-pointer --gate 0.75; e=$?; BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0_replicate.py run --name qwen35_122b_x0_replicate; f=$?; echo "exit ctrl=$a keeponly=$b l24=$c l30=$d l36=$e replicate=$f"; test $a -eq 0 -a $b -eq 0 -a $c -eq 0 -a $d -eq 0 -a $e -eq 0 -a $f -eq 0; }
+question: >-
+  On the 122B, the tests that the 9B and 27B have and it lacks: the bothoff control (pointer + J++ vs pointer + a random part of J++'s share, sanity swap, L33); adding only the pointer or only the J++ part (same item moved, another item moved, L33); the routes at L24, L30 and L36 (with L27 and L33 already run); the replication on fresh scenes (both locker sentences before the pick, L33).
+why_it_matters: >-
+  Dan (25 Oct ~20:20): every cell of the results matrix for the 122B, so each figure and table has the three models.
+hypotheses:
+  H-none: 'none: descriptive; not scored against any prediction (batches 35-37 and 31a cover the 9B and 27B)'
+decision_rule: >-
+  Descriptive, after the data. The routes runs use x6_routes' scenes, where the 122B's recall read 0.797 of the original prompts right: the read-accuracy gate is lowered to 0.75 for them (as every 122B routes run; Dan's rerun terms). Otherwise as x6_routes_bothoff_ctrl, x6_routes_keeponly, x6_routes_sweep (no pointer arms away from L33; the C0 check descriptive, stop below 0.50) and x0_replicate (d1_topics_v5, seed 2510; the pointer directions from the 122B's probe states at L33, not refit; gate 0.80 on its own scenes). The 122B's layers 24, 30 and 36 are the ones F2 measured around L27 and L33.
+controls:
+- 'random parts at each part''s own share; the recall on the identical patch; C0 where the run has it'
+n: '300 eligible scenes per condition (routes); 200 fresh scenes (replication)'
+seeds: [2510]
+notes: "122B on both GPUs; six scripts, each runs whatever the others do. Queued at ~20:25 with the GPU idle."
