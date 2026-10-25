@@ -1,0 +1,52 @@
+{
+  "exp": "x6_routes",
+  "run": "qwen35_9b_x6_routes_c0",
+  "written_utc": "2026-10-25T10:18:17Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "dc9992a7a39f41fdd324c31f71ffbfe7e62bccf0",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 12,
+  "seed": 2510,
+  "smoke": true,
+  "conditions": [
+    "C0"
+  ],
+  "n_per_condition": 20,
+  "gate": 0.8,
+  "alf_from": "qwen35_9b_x0_probe_v4",
+  "c0_min": null,
+  "fixed_layer": 12,
+  "c0_reference": {
+    "run": "qwen35_9b_x0_massmean_lf",
+    "lookup_switch": 0.9863013698630136,
+    "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+    "scenes": 2510,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  },
+  "items": {
+    "C0": 20
+  }
+}
