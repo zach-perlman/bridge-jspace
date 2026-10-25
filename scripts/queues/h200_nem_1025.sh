@@ -44,9 +44,15 @@ sm=${P}jsuite_v2_dev_chat_competence_smoke_1025
   --why "Zach (2026-10-25, prereg amendment 40): $KEY smoke, first 120 dev items" > /workspace/scratch/$sm.log 2>&1 || { echo "=== $KEY smoke competence FAILED"; tail -5 /workspace/scratch/$sm.log; exit 1; }
 python3 -c "import json,sys; s=json.load(open(sys.argv[1]))['by_word_level']; print('=== NEMSMOKECOMP', {k: round(v['whole'], 2) for k, v in s.items()})" results/tasks_v2/$sm/summary.json
 if [ ! -f $LENS ]; then
-  echo "=== $KEY J-lens fit $(date -u +%T)"
-  $PY scripts/lens_fit/fit_jlens.py --repo $REPO --revision $REV --out $LENS --n 500 --no-bos > /workspace/scratch/${P}fit.log 2>&1 \
-    || { echo "=== $KEY fit FAILED"; tail -5 /workspace/scratch/${P}fit.log; exit 1; }
+  ok=0
+  for db in 32 16; do  # 64, the default, ran out of memory in the torch Mamba scan (2026-10-25, amendment 40 note 2)
+    echo "=== $KEY J-lens fit, dim_batch $db $(date -u +%T)"
+    $PY scripts/lens_fit/fit_jlens.py --repo $REPO --revision $REV --out $LENS --n 500 --no-bos --dim-batch $db > /workspace/scratch/${P}fit.log 2>&1 < /dev/null && { ok=1; break; }
+    echo "=== $KEY fit at dim_batch $db failed ($(grep -m1 -oiE "out of memory|RuntimeError: [^ ]+ [^ ]+ [^ ]+" /workspace/scratch/${P}fit.log))"
+    grep -qi "out of memory" /workspace/scratch/${P}fit.log || break
+    rm -f $LENS.ckpt
+  done
+  [ $ok = 1 ] || { echo "=== $KEY fit FAILED"; tail -5 /workspace/scratch/${P}fit.log; exit 1; }
   grep FIT_DONE /workspace/scratch/${P}fit.log | sed "s/^/=== /"
   sha=$(sha256sum $LENS | cut -d" " -f1)
   .venv/bin/python - "$LENS" "$sha" <<'PY' || { echo "=== $KEY pins FAILED"; exit 1; }

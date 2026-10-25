@@ -1136,3 +1136,11 @@ fit's working directory /workspace/ext/ministral-3-14b_fit is a symlink to /dev/
 (64 prompts) is kept; the exported lens goes to the repo cache on disk as before. If the box restarts mid-fit, the fit
 reruns. h200min3 runs h200_minfit_1025.sh 0, then h200_nq_1025.sh 0 gate dev test swap, once h200min2 has exited.
 h200min2's dev competence, run after its failed fit, is reused. Procedure and readings unchanged.
+
+**Amendment 40, note 2 (Zach, 2026-10-25 15:49 UTC; no Lightning lens or knock-out data seen):** Lightning's smoke passed
+(own logits reproduced exactly, "Paris", WikiText NLL 2.74 without BOS vs 2.81 with, greedy "Canberra"), and so did its
+competence smoke (first 120 dev items: K and memory finals 1.00, TP 0.12, MP 0.62). Its J-lens fit then ran out of
+GPU memory at once: with dim_batch 64, transformers' torch Mamba scan (mamba_ssm absent) asks for a 32 GB tensor. The
+fit now runs with dim_batch 32, or 16 on out-of-memory, as Bolt's does. dim_batch is how many Jacobian rows one backward
+pass takes, so it changes speed, not the estimate. The chain is relaunched as h200nemL5; Bolt's chain (paused) will
+wait on it.
