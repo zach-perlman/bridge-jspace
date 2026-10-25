@@ -1,0 +1,23 @@
+id: x0_122b_b10
+title: "122B replication rerun (Dan, 26 Oct ~00:20): fresh scenes at L33 with the readers' gate lowered to 0.75, after the data, descriptive, not scored"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.8
+depends_on: [x0_122b_b9]
+command: >-
+  BJ_GATE=0.75 BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0_replicate.py run --name qwen35_122b_x0_replicate_g75
+question: >-
+  On the 122B's fresh scenes (both locker sentences before the pick, L33), what do the J++ part, the pointer directions and the main directions at J++'s share cost each reader?
+why_it_matters: >-
+  The run in x0_122b_b9 stopped at its gate (the recall read 0.77 of the original prompts right, bar 0.80): its verdict fixed in advance stays "not tested". This rerun fills table 3c's 122B fresh-scene row, descriptively.
+hypotheses:
+  H-none: 'none: descriptive, after the data, not scored, not a confirmation'
+decision_rule: >-
+  Descriptive, after the data (Dan, 26 Oct ~00:20): the readers' gate lowered to 0.75 (BJ_GATE); everything else as x0_replicate (d1_topics_v5, seed 2510; parts J++, the pointer directions from the 122B's probe states at L33, PCA at J++'s share; cluster bootstrap over bridge entities, 10,000 resamples, seed 0).
+controls:
+- 'a random part at each part''s own share'
+- 'both readers on the identical patch'
+n: 'the eligible fresh scenes (up to 200)'
+seeds: [2510]
+notes: "122B on both GPUs. Dan first said last, after the Muse chain; then asked for it now (~00:40, the GPUs idle): queued before the Muse jobs."
