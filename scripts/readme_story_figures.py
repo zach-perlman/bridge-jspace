@@ -261,48 +261,62 @@ ROUTE_COL = {"identity": S.COL["identity"], "position": S.COL["position"], "valu
              "original": S.COL["original"], "other": S.COL["other"]}  # fmt: skip
 
 
+KEEP4 = (("keep_alf", "only the pointer part"), ("keep_alf_rand", "only random (pointer size)"),
+         ("keep_jpp", "only the J++ part"), ("keep_jpp_rand", "only random (J++ size)"))  # fmt: skip
+
+
 def fig4(plt) -> None:
-    runs = (("qwen3.5-9b", "9B", "qwen35_9b_x6_routes", "fixed"), ("qwen3.6-27b", "27B", "x6_routes_27b", "fixed"),
-            ("qwen3.5-122b-a10b", "122B, after the data", "qwen35_122b_x6_routes_g75", "rerun"))  # fmt: skip
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 3.9), sharey=True)
-    fig.subplots_adjust(left=0.255, right=0.975, top=0.74, bottom=0.14, wspace=0.16)
+    """Another item moved, at the layer fixed in advance: route shares per arm, the removals (x6_routes) above and each
+    part added alone (x6_routes_keeponly) below; the 122B's runs after the data (gate 0.75), hatched."""
+    runs = (("qwen3.5-9b", "9B", "qwen35_9b_x6_routes", "qwen35_9b_x6_routes_keeponly", "fixed"),
+            ("qwen3.6-27b", "27B", "x6_routes_27b", "x6_routes_keeponly_27b", "fixed"),
+            ("qwen3.5-122b-a10b", "122B, after the data", "qwen35_122b_x6_routes_g75", "qwen35_122b_x6_routes_keeponly_g75",
+             "rerun"))  # fmt: skip
+    ys = [-i for i in range(len(ARMS4))] + [-len(ARMS4) - 0.6 - i for i in range(len(KEEP4))]
+    labels = [a[1] for a in ARMS4] + [a[1] for a in KEEP4]
+    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 5.4), sharey=True)
+    fig.subplots_adjust(left=0.255, right=0.975, top=0.80, bottom=0.10, wspace=0.16)
     S.title(fig, "The lookup follows identity or position, never the value")
-    for ax, (target, name, run, kind) in zip(axes, runs, strict=True):
+    for ax, (target, name, run, keep_run, kind) in zip(axes, runs, strict=True):
         ax.set_title(name, fontsize=11.5, weight="bold")
-        v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
         ax.set_xlim(0, 1)
         ax.set_xticks([0, 0.5, 1], ["0", "50", "100"])
-        if v is None:
-            S.empty(ax, "not run yet" if kind == "rerun" else "not run")
-            continue
-        rows = {(r["condition"], r["arm"]): r for r in v["rows"]}
-        for i, (arm, _) in enumerate(ARMS4):
-            r = rows.get(("C2", arm))
-            if r is None:
-                continue
-            left = 0.0
-            for route, _ in ROUTES:
-                s = r["share"][route][0]
-                ax.barh(-i, s, left=left, height=0.72, color=ROUTE_COL[route], edgecolor="white", lw=0.8,
-                        hatch="//" if kind == "rerun" else None)  # fmt: skip
-                if s >= 0.15:
-                    ax.text(left + s / 2, -i, f"{100 * s:.0f}", ha="center", va="center", fontsize=9,
-                            color="white" if route in ("identity", "value") else "#222222")  # fmt: skip
-                S.record(
-                    "fig4",
-                    target,
-                    f"another item moved, {arm}: {route} share",
-                    *r["share"][route],
-                    n=r["n"],
-                    source=run,
+        ax.axhline(-len(ARMS4) + 0.2, color="#bbbbbb", lw=0.8)
+        for source, arms, y0 in ((run, ARMS4, ys[: len(ARMS4)]), (keep_run, KEEP4, ys[len(ARMS4) :])):
+            v = latest(pins.RESULTS_DIR / "x6_routes" / source, "verdict-*/verdict.json")
+            if v is None:
+                ax.text(
+                    0.5,
+                    (y0[0] + y0[-1]) / 2,
+                    "not run yet",
+                    ha="center",
+                    va="center",
+                    fontsize=10,
+                    color=S.COL["muted"],
                 )
-                left += s
-        ax.set_ylim(-len(ARMS4) + 0.4, 0.6)
+                continue
+            rows = {(r["condition"], r["arm"]): r for r in v["rows"]}
+            for y, (arm, _) in zip(y0, arms, strict=True):
+                r = rows.get(("C2", arm))
+                if r is None:
+                    continue
+                left = 0.0
+                for route, _ in ROUTES:
+                    sh = r["share"][route][0]
+                    ax.barh(y, sh, left=left, height=0.72, color=ROUTE_COL[route], edgecolor="white", lw=0.8,
+                            hatch="//" if kind == "rerun" else None)  # fmt: skip
+                    if sh >= 0.15:
+                        ax.text(left + sh / 2, y, f"{100 * sh:.0f}", ha="center", va="center", fontsize=9,
+                                color="white" if route in ("identity", "value") else "#222222")  # fmt: skip
+                    S.record("fig4", target, f"another item moved, {arm}: {route} share", *r["share"][route], n=r["n"],
+                             source=source)  # fmt: skip
+                    left += sh
+        ax.set_ylim(ys[-1] - 0.6, 0.6)
     axes[1].set_xlabel("% of lookup answers")
-    axes[0].set_yticks([-i for i in range(len(ARMS4))], [a[1] for a in ARMS4])
+    axes[0].set_yticks(ys, labels)
     axes[0].tick_params(axis="y", length=0)
     hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[r]) for r, _ in ROUTES[:4]]
-    fig.legend(hs, [n for _, n in ROUTES[:4]], loc="upper left", bbox_to_anchor=(0.005, 0.915), ncol=4, frameon=False,
+    fig.legend(hs, [n for _, n in ROUTES[:4]], loc="upper left", bbox_to_anchor=(0.005, 0.935), ncol=4, frameon=False,
                fontsize=10, handlelength=1.2)  # fmt: skip
     S.save(fig, "fig4_routes")
 
