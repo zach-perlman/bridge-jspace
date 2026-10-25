@@ -965,7 +965,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **D. OLMo-3 32B on v2 (raw text, L12-20), the facts knock-out as the others (h200_depth_1025.sh all with framing qa; the run name carries its band):** prediction null as
   on v1 (M - K < 15), testable if the K final loses <= 20.
 - **Order (research priority per GPU):** GPU0 A (122B), B (9B), C, D; GPU1 A (27B), B (27B).
-- **Note 1 (Zach, 2026-10-25 ~02:55 UTC, before any run below; Zach asked whether we re-run data that does not need it):**
+- **Note 1 (Zach, 2026-10-25 02:42 UTC, commit 572e818, before any run below; Zach asked whether we re-run data that does not need it):**
   (1) the 9B's full v2.1 run (amendment 35 note 1) is replaced by its R items only, as on the other models: C re-runs
   the 9B's v2 items from a clean checkout, so the full run's re-run of them was a second copy; its question-only run
   was also a duplicate of the 9B's v2 question-only run (amendment 36 note 1) and is replaced by a question-only run on
