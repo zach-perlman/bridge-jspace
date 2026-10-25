@@ -1,0 +1,174 @@
+{
+  "seconds": 646,
+  "by_word_level": {
+    "RM/L0": {
+      "n": 179,
+      "whole": 0.76,
+      "all_steps": 0.687,
+      "median_margin": 3.38,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "France",
+          3
+        ],
+        [
+          "Japan",
+          3
+        ],
+        [
+          "Spain",
+          3
+        ]
+      ]
+    },
+    "RM/L1": {
+      "n": 179,
+      "whole": 0.76,
+      "all_steps": 0.676,
+      "median_margin": 2.88,
+      "guess": 0,
+      "top_wrong": [
+        [
+          "Sw",
+          4
+        ],
+        [
+          "Spain",
+          4
+        ],
+        [
+          "Germany",
+          3
+        ]
+      ]
+    },
+    "RA/L0": {
+      "n": 179,
+      "whole": 0.827,
+      "all_steps": 0.709,
+      "median_margin": 4.0,
+      "guess": 0.441,
+      "top_wrong": [
+        [
+          "Spain",
+          3
+        ],
+        [
+          "D",
+          2
+        ],
+        [
+          "Japan",
+          2
+        ]
+      ]
+    },
+    "RA/L1": {
+      "n": 179,
+      "whole": 0.816,
+      "all_steps": 0.682,
+      "median_margin": 3.5,
+      "guess": 0.196,
+      "top_wrong": [
+        [
+          "Sw",
+          4
+        ],
+        [
+          "Germany",
+          3
+        ],
+        [
+          "Spain",
+          3
+        ]
+      ]
+    },
+    "RN/L0": {
+      "n": 179,
+      "whole": 0.788,
+      "all_steps": 0.709,
+      "median_margin": 3.62,
+      "guess": 0.017,
+      "top_wrong": [
+        [
+          "United",
+          2
+        ],
+        [
+          "Italy",
+          2
+        ],
+        [
+          "France",
+          2
+        ]
+      ]
+    },
+    "RN/L1": {
+      "n": 179,
+      "whole": 0.782,
+      "all_steps": 0.659,
+      "median_margin": 3.12,
+      "guess": 0.017,
+      "top_wrong": [
+        [
+          "Spain",
+          5
+        ],
+        [
+          "Germany",
+          3
+        ],
+        [
+          "Japan",
+          3
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "animals": {
+      "RM": 0.5,
+      "RA": 0.5,
+      "RN": 0.5
+    },
+    "cities": {
+      "RM": 0.885,
+      "RA": 0.962,
+      "RN": 0.885
+    },
+    "companies": {
+      "RM": 0.524,
+      "RA": 0.571,
+      "RN": 0.595
+    },
+    "countries": {
+      "RM": 0.854,
+      "RA": 0.938,
+      "RN": 0.875
+    },
+    "dishes": {
+      "RM": 0.711,
+      "RA": 0.921,
+      "RN": 0.763
+    },
+    "landmarks": {
+      "RM": 0.762,
+      "RA": 0.738,
+      "RN": 0.714
+    },
+    "languages": {
+      "RM": 0.825,
+      "RA": 0.85,
+      "RN": 0.875
+    },
+    "people": {
+      "RM": 0.871,
+      "RA": 0.935,
+      "RN": 0.919
+    }
+  },
+  "pick": {}
+}

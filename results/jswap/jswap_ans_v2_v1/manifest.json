@@ -1,0 +1,18 @@
+{
+  "run": "jswap_ans_v2_v1",
+  "why": "Zach (2026-10-25, prereg amendment 38 A): qwen3.6-27b at L32-40",
+  "target": "qwen3.6-27b",
+  "band": "32-40",
+  "set": "jsuite_v2_test_chat",
+  "competence": "jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "swap_ans",
+    "swap_ans_u",
+    "swap_ans_rot",
+    "swap_noans"
+  ],
+  "k": 10,
+  "git_commit": "a96a81f193e8442692d6287599eca919aac8b8f3",
+  "limit": 0
+}
