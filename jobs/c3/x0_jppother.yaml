@@ -1,0 +1,24 @@
+id: x0_jppother
+title: "Control (Dan, 25 Oct ~12:00): remove 25 J++ directions fitted to a different scene's change (a different bridge pair), against a random part of the same share; one-pick scenes; 27B L32 on GPU0, 9B L12 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 0.4
+depends_on: [x0_replicate]
+command: >-
+  uv run python -c "import torch" && { { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x0_parts.py run --name x0_jppother_27b --single x0_single_27b_r2 --parts jpp_other,jpp; } & p27=$!; { CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0_parts.py run --name qwen35_9b_x0_jppother --single qwen35_9b_x0_single_r2 --parts jpp_other,jpp; } & p9=$!; wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  Does removing 25 J++ directions that were fitted to another scene's change (a different bridge pair), refit to this scene's change, cost the recall more than a random part of the same share? If the J++ part's effect is about the change's own words, it should not.
+why_it_matters: >-
+  The recall's loss without the J++ part could come from any 25 letter-token directions near the residual stream's word space, not from the ones that describe this change; this control separates the two.
+hypotheses:
+  H-specific: 'the recall extra loss <= 0.10 with borrowed directions (Dan''s note before the run; Q33.1, committed before results are shown)'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct ~12:00): report the share of the change the borrowed part removes and both readers' extra loss with 95% CIs (cluster bootstrap over bridge entities, 10,000 resamples, seed 0); Dan's prediction: recall extra loss <= 0.10. The partner of each scene: the first scene, in a seeded order (seed 0), whose bridge pair shares no bridge with it. J++ (k = 25) on the same scenes as the reference. Results stay closed until Dan's batch-33 answer is committed.
+controls:
+- 'a random-subspace part at the borrowed part''s own share'
+- 'J++ fitted to the scene itself, on the same scenes'
+- 'both readers on the identical patch'
+n: 'the 200 one-pick scenes per model'
+seeds: [0]
+notes: "One 2-GPU job, two processes, each command on one line."

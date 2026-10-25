@@ -13,6 +13,8 @@ share (X0's rand_sub), both readers on the identical patch, X0's top-token read:
   pca_eq  (Dan, 24 Oct ~21:50, opt-in with --parts) the pca dictionary at J++'s share: k chosen per item so that the
        part's share of ||Δ||² is closest to that item's jpp share (signed OMP on orthonormal atoms takes them in order
        of |coefficient|, so this is exact; checked against signed OMP at k = 25 on every run);
+  jpp_other  (Dan, 25 Oct ~12:00, opt-in with --parts) the control: the K atoms signed OMP picks for another scene's
+       change (a different bridge pair, the partner fixed by OTHER_SEED), refit to this scene's change by least squares;
   jwo  (Dan, ~22:05, opt-in with --parts) word-orthogonal jw: signed OMP, k = 25, fit on Δ - w over the J++ letter atoms
        (variants banned) projected off the word's span and renormalised, so it holds none of the word's energy (checked
        per item); removing it leaves the word part intact.
@@ -53,6 +55,7 @@ RESULTS = pins.RESULTS_DIR / EXP
 PARTS = ("w", "jw", "pca", "jpp")
 K = 25
 N_PCA, N_HELD, HELD_SET, HELD_SEED = 2000, 200, "d1_topics_v4", 0
+OTHER_SEED = 0  # jpp_other: the partner scenes
 NOTE = "Descriptive, added after data (Dan's audit, 24 Oct ~19:30, item 2); not part of X0's rule."
 
 
@@ -154,6 +157,53 @@ def word_parts(lens, tok, layer: int, letters, jdic, cases: list[dict], x, want:
     return out, n_var
 
 
+def omp_atoms(dictionary, x, k: int):
+    """The atom indices signed OMP (exp04_brew_parts.signed_omp) picks for each row of x, in order: [m, k]."""
+    import torch
+
+    x = x.float()
+    chosen = torch.empty(x.shape[0], 0, dtype=torch.long, device=x.device)
+    approx = torch.zeros_like(x)
+    rows = torch.arange(x.shape[0], device=x.device)
+    for _ in range(k):
+        scores = ((x - approx) @ dictionary.T).abs()
+        scores[rows[:, None], chosen] = -1.0
+        chosen = torch.cat([chosen, scores.argmax(dim=1, keepdim=True)], dim=1)
+        atoms = dictionary[chosen].double()
+        gram = atoms @ atoms.transpose(1, 2)
+        rhs = (atoms @ x.double().unsqueeze(2)).squeeze(2)
+        coefs = torch.linalg.solve(gram + 1e-8 * torch.eye(gram.shape[1], dtype=gram.dtype, device=gram.device), rhs)
+        approx = (coefs.unsqueeze(1) @ atoms).squeeze(1).float()
+    return chosen
+
+
+def partners(cases: list[dict], seed: int = OTHER_SEED) -> list[int]:
+    """For each case, another case whose bridge pair shares no bridge with it (seeded order, first that fits)."""
+    import random
+
+    order = list(range(len(cases)))
+    random.Random(seed).shuffle(order)
+    out = []
+    for i, c in enumerate(cases):
+        mine = {c["bridge"], c["cf_bridge"]}
+        out.append(next(j for j in order if j != i and not ({cases[j]["bridge"], cases[j]["cf_bridge"]} & mine)))
+    return out
+
+
+def other_part(jdic, x, cases: list[dict]):
+    """jpp_other: each row of x projected (least squares) on the K atoms signed OMP picked for its partner's row.
+    Returns (parts [n, d], partner index per row)."""
+    import torch
+
+    atoms = omp_atoms(jdic, x, K)
+    pj = partners(cases)
+    out = torch.zeros_like(x)
+    for i, j in enumerate(pj):
+        v = jdic[atoms[j]].float()  # [K, d]
+        out[i] = torch.linalg.lstsq(v.T, x[i][:, None]).solution[:, 0] @ v
+    return out, pj
+
+
 def keep_cells(rows: list[dict], n_boot: int) -> list[dict]:
     """The keep-only arms (arm keep_part / keep_rand per dict): per dict and reader, the part alone's switches as a
     share of the whole change's, the random part alone's, and their paired difference (cluster bootstrap)."""
@@ -233,6 +283,10 @@ def stage_run(
             deltas.append((h["alt"] - h["org"]).float())
         x = torch.stack(deltas)
         parts = {"jpp": X.fit(jdic, x, K, "signed")}
+        if "jpp_other" in used:
+            parts["jpp_other"], partner = other_part(jdic, x, cases)
+            m["jpp_other_partners"] = {c["scene"]: cases[j]["scene"] for c, j in zip(cases, partner, strict=True)}
+            (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
         if pca is not None:
             parts["pca"] = X.fit(pca, x, K, "signed")
         if "pca_eq" in used:
@@ -250,7 +304,7 @@ def stage_run(
         for d in used:
             share = parts[d].norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
             rand = SP.random_subspace_part(x, share, basis)
-            fit = {"w": "lsq", "pca_eq": "eq"}.get(d, "signed")
+            fit = {"w": "lsq", "pca_eq": "eq", "jpp_other": "other"}.get(d, "signed")
             k = 0 if d in ("w", "pca_eq") else K
             arms[(d, k, fit, "no_part")] = x - parts[d]
             arms[(d, k, fit, "no_rand")] = x - rand
@@ -293,7 +347,8 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     k_eq = [s["k_eq"] for s in shares if s["dict"] == "pca_eq"]
     label = {"w": "word only (least squares)", "jw": "J++ without the word (k = 25)", "pca": f"PCA top {N_PCA} (k = 25)",
              "jpp": "J++ (k = 25, reference)", "pca_eq": f"PCA top {N_PCA} at J++'s share (k per item)",
-             "jwo": "J++ without the word, orthogonal to the word (k = 25)"}  # fmt: skip
+             "jwo": "J++ without the word, orthogonal to the word (k = 25)",
+             "jpp_other": "J++ atoms fitted to another scene's change (k = 25)"}  # fmt: skip
     lines = [f"# Word, J++ without the word, PCA: {name}", "",
              f"{NOTE} Model {m['model']['target']}, layer {m['layer']}, the single-change items of {m['single']} (n = "
              f"{m['items']}); each part removed against a random subspace of its own share; bootstrap over bridge entities "
@@ -364,7 +419,7 @@ def main() -> None:
     a = ap.parse_args()
     if a.stage == "run":
         used = tuple(a.parts.split(",")) if a.parts else None
-        assert used is None or set(used) <= {*PARTS, "pca_eq", "jwo"}, used
+        assert used is None or set(used) <= {*PARTS, "pca_eq", "jwo", "jpp_other"}, used
         stage_run(a.name, a.single, a.x0b, used, tuple(k for k in a.keep.split(",") if k))
     stage_verdict(a.name, a.n_boot)
 
