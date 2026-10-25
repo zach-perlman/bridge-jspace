@@ -1,0 +1,29 @@
+{
+ "model": {
+  "target": "deepseek-v4-flash",
+  "repo": "deepseek-ai/DeepSeek-V4-Flash",
+  "revision": "60d8d70770c6776ff598c94bb586a859a38244f1",
+  "dtype": "bfloat16",
+  "attn": "eager"
+ },
+ "n_layers": 43,
+ "final_norm": "DeepseekV4RMSNorm",
+ "bos": true,
+ "load_s": 40,
+ "streams": 4,
+ "stream_mean_top1": " Paris",
+ "noop_edit_max_abs_diff": 0.0,
+ "unembed": {
+  "max_abs_diff": 0.0,
+  "top1_same": true,
+  "top1": " Paris"
+ },
+ "wikitext_nll": {
+  "as_harness": 1.793,
+  "n": 32
+ },
+ "chat": {
+  "rendered": "<\uff5cbegin\u2581of\u2581sentence\uff5c><\uff5cUser\uff5c>What is the capital of Australia? Answer with a single word and nothing else.<\uff5cAssistant\uff5c></think>Answer:",
+  "greedy": " Canberra<\uff5cend\u2581of\u2581sentence\uff5c><\uff5cbegin\u2581of\u2581sentence\uff5c># 8a3"
+ }
+}

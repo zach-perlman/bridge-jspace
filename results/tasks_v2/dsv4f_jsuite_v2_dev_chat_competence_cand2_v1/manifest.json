@@ -1,0 +1,35 @@
+{
+  "run": "dsv4f_jsuite_v2_dev_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-25, prereg amendment 39): deepseek-v4-flash on jsuite_v2_dev_chat",
+  "set": "jsuite_v2_dev_chat",
+  "model": {
+    "target": "deepseek-v4-flash",
+    "repo": "deepseek-ai/DeepSeek-V4-Flash",
+    "revision": "60d8d70770c6776ff598c94bb586a859a38244f1",
+    "dtype": "bfloat16",
+    "attn": "eager"
+  },
+  "git_commit": "5ecaa107c9e811ee5d67551a8d5771797868a5c0",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "PP",
+    "PK",
+    "PM",
+    "PA",
+    "PN",
+    "MP",
+    "MK",
+    "MM",
+    "MA",
+    "MN",
+    "TP",
+    "TK",
+    "TM",
+    "TA",
+    "TN"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-25T08:50:37Z"
+}

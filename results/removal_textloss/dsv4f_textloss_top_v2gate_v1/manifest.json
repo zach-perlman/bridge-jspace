@@ -1,0 +1,40 @@
+{
+  "run": "dsv4f_textloss_top_v2gate_v1",
+  "why": "Zach (2026-10-25, prereg amendment 39): deepseek-v4-flash plain-text gate",
+  "written_utc": "2026-10-25T08:48:47Z",
+  "model": {
+    "target": "deepseek-v4-flash",
+    "repo": "deepseek-ai/DeepSeek-V4-Flash",
+    "revision": "60d8d70770c6776ff598c94bb586a859a38244f1",
+    "dtype": "bfloat16",
+    "attn": "eager"
+  },
+  "lens": [
+    "jpp",
+    "e7dc42a68afb8411c4cba01605ce51eec17d7ad0f3150009173224e96864633e"
+  ],
+  "layers": [
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "conditions": [
+    "none",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

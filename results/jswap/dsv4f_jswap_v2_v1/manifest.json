@@ -1,0 +1,19 @@
+{
+  "run": "dsv4f_jswap_v2_v1",
+  "why": "Zach (2026-10-25, prereg amendment 39): deepseek-v4-flash on v2 at L36-41 (dev-chosen)",
+  "target": "deepseek-v4-flash",
+  "band": "36-41",
+  "set": "jsuite_v2_test_chat",
+  "competence": "dsv4f_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "c23d28bd3fd8511adbc2a9a1417de6c7a0e3b439",
+  "limit": 0
+}
