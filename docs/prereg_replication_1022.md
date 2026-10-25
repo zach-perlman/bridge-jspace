@@ -1002,7 +1002,7 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   10 of the model's v2 value (27B +51, 9B +43); rotated and logit-lens < 10; halves within 15.
 - **Order:** GPU1 after its night chain: A 27B, B 27B r2, r3; GPU0 after its chain: A 9B, B 9B r2, r3.
 
-## Amendment 39 (Zach, 2026-10-25 ~05:15 UTC, before any non-Qwen test run): DeepSeek-V4-Flash and Ministral 3 14B on v2
+## Amendment 39 (Zach, 2026-10-25 05:02 UTC, commit 4d21b30, before any non-Qwen test run): DeepSeek-V4-Flash and Ministral 3 14B on v2
 
 - **Why (Zach):** every dependence claim so far is Qwen-only (OLMo-3 32B null; Muse mostly shared with the logit lens;
   Gemma 4, gpt-oss, Kolibri untestable). Two more families: Zach chose DeepSeek-V4-Flash (recent, Qwen3.6-27B-class
