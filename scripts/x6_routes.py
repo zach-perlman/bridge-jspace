@@ -70,10 +70,13 @@ CTRL = (("alf", "no_alf"), ("alf + J++", "no_both"), ("alf + random (J++ share)"
 PARTS = (("jpp", "no_jpp", "no_jpp_rand"), ("alf", "no_alf", "no_alf_rand"), ("both", "no_both", "no_both_rand"))
 # the one-pick lookup switch rate in scenes with both locker sentences before the pick (x0_massmean_lf's items, the
 # whole change), the reference C0 must reproduce (Dan: within 0.10)
-C0_REF = {"qwen3.5-9b": ("qwen35_9b_x0_massmean_lf", "whole"), "qwen3.6-27b": ("x0_massmean_lf_27b", "whole"),
-          "qwen3.5-122b-a10b": ("qwen35_122b_x0_massmean_grid", "whole")}  # fmt: skip
+C0_REF = {
+    "qwen3.5-9b": ("qwen35_9b_x0_massmean_lf", "whole"),
+    "qwen3.6-27b": ("x0_massmean_lf_27b", "whole"),
+    "qwen3.5-122b-a10b": ("qwen35_122b_x0_massmean_grid", "whole"),
+}  # fmt: skip (Muse: none; its C0 gate is --c0-min)
 STATES = {"qwen3.5-9b": "qwen35_9b_x0_probe_v4", "qwen3.6-27b": "x0_probe_v4_27b",
-          "qwen3.5-122b-a10b": "qwen35_122b_x0_probe_v4"}  # fmt: skip
+          "qwen3.5-122b-a10b": "qwen35_122b_x0_probe_v4", "muse-glimmer-30b": "muse30b_x0_probe_v4"}  # fmt: skip
 NOTE = "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32)."
 LOOKUP_Q, RECALL_Q = "Which locker belongs to {p}'s pick?", "How many legs does {p}'s pick have?"
 
@@ -191,7 +194,11 @@ def stage_plan() -> None:
         print(cond, "O:", c["context"], "\n   S:", c["cf_context"], "\n   expect", c["expect"])
 
 
-def c0_reference(target: str) -> float:
+def c0_reference(target: str) -> float | None:
+    """The one-pick, locker-first lookup switch rate C0 must reproduce; None for a target without one (Muse: its C0 gate
+    is --c0-min, Dan's G2)."""
+    if target not in C0_REF:
+        return None
     run, arm = C0_REF[target]
     rows = X.read_jsonl(pins.RESULTS_DIR / "x0_massmean" / run / "outcomes.jsonl")
     return float(np.mean([r["switched"] for r in rows if r["reader"] == X.LOOKUP and r["arm"] == arm]))
@@ -275,7 +282,7 @@ def stage_run(
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
          "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff, "bothoff_ctrl": ctrl, "keeponly": keeponly,
          "alf_from": STATES[target] if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
-         "c0_reference": {"run": C0_REF[target][0], "lookup_switch": ref, "tolerance": C0_TOL},
+         "c0_reference": {"run": C0_REF.get(target, (None,))[0], "lookup_switch": ref, "tolerance": C0_TOL},
          "rule": f"a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}",
          "seeds": {"scenes": SEED, "random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
@@ -349,6 +356,7 @@ def stage_run(
     if "C0" in conds:
         c0 = [r["switched"] for r in rows if r["condition"] == "C0" and r["reader"] == X.LOOKUP and r["arm"] == "whole"]
         rate = float(np.mean(c0)) if c0 else float("nan")
+        assert c0_min is not None or ref is not None, "no C0 reference for this target: pass --c0-min"
         ok = rate >= c0_min if c0_min is not None else abs(rate - ref) <= C0_TOL
         (out / "c0_check.json").write_text(json.dumps({"c0_lookup_switch": rate, "reference": ref, "c0_min": c0_min,
                                                        "ok": ok}) + "\n")  # fmt: skip

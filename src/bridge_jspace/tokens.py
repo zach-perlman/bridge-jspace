@@ -8,9 +8,13 @@ from . import pins
 def load_tokenizer():
     from transformers import AutoTokenizer
 
-    return AutoTokenizer.from_pretrained(
+    tokenizer = AutoTokenizer.from_pretrained(
         snapshot_download(pins.MODEL_REPO, revision=pins.MODEL_REVISION, local_files_only=True)
     )
+    for before, after in pins.TARGETS[pins.TARGET].get("chat_template_edits", []):  # Muse (pins.MUSE_TEMPLATE_EDITS)
+        assert tokenizer.chat_template.count(before) == 1, f"chat template edit does not apply once: {before[:60]!r}"
+        tokenizer.chat_template = tokenizer.chat_template.replace(before, after)
+    return tokenizer
 
 
 def raw_encoding(tokenizer, text: str, offsets: bool = False) -> dict:

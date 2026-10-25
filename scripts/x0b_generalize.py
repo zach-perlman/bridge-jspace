@@ -43,7 +43,12 @@ from scripts import x0_necessity as X
 EXP = "x0b_generalize"
 RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "X0b.md"
-LAYERS = {"qwen3.6-27b": (28, 30, 32, 34), "qwen3.5-9b": (10, 12, 14), "qwen3.5-122b-a10b": (33,)}  # 122B: b6, L33 only
+LAYERS = {
+    "qwen3.6-27b": (28, 30, 32, 34),
+    "qwen3.5-9b": (10, 12, 14),
+    "qwen3.5-122b-a10b": (33,),
+    "muse-glimmer-30b": (26,),
+}  # 122B: b6, L33 only; Muse: L26 only (fmt: skip)
 CAP = 40  # eligible scenes per cell
 CHUNK = 500  # cases per run_rendering call (the batched OMP's memory)
 CELL = ("domain", "format", "level")

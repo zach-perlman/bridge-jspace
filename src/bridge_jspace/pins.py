@@ -57,6 +57,27 @@ LENS_SOURCES = {  # every J-format lens part B can load: name -> (repo, file, re
     ),
 }
 
+# Muse Glimmer 30B's chat template, edited (applied to the tokenizer's own template, each edit checked to apply once): no
+# "Current date" line (prompts would change daily); reasoning strength "low" instead of the default "high"; the generation
+# prompt opens the answer channel to the user directly ("<|start|>assistant to=user<|message|>"), so the prefill
+# "Answer:" follows as for every target. Its default system line is kept. Copied from Zach's branch
+# (origin/zach/v8-breadth-1021, src/bridge_jspace/pins.py) for the overnight Muse grid (Dan, 25 Oct ~23:00), not merged.
+MUSE_TEMPLATE_EDITS = [
+    (
+        "    {%- if current_date is defined and current_date -%}\n"
+        "        {{- '\\nCurrent date: ' + current_date + '.' -}}\n"
+        "    {%- elif strftime_now is defined -%}\n"
+        "        {{- '\\nCurrent date: ' + strftime_now('%Y-%m-%d') + '.' -}}\n"
+        "    {%- endif -%}\n",
+        "",
+    ),
+    ("reasoning_strength else 'high' -%}", "reasoning_strength else 'low' -%}"),
+    (
+        "{%- if add_generation_prompt -%}\n    {{- '<|start|>assistant' -}}",
+        "{%- if add_generation_prompt -%}\n    {{- '<|start|>assistant to=user<|message|>' -}}",
+    ),
+]
+
 # Part B's target model. BJ_TARGET picks it; the default is Qwen3.6-27B, the model of every run before the Gemma port,
 # whose pins, paths and lenses above stay as they are. Another target loads its own model and lenses, keeps its caches
 # under cache/<target>/ and names its runs with its own prefix. A "local" lens is (path under the repo, sha256): a lens
@@ -227,9 +248,10 @@ TARGETS: dict[str, dict[str, Any]] = {
         "repo": "meta-models/Muse-Glimmer-30B",
         "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
         "n_layers": 52,
-        "norm_gain": "one_plus_weight",
+        "norm_gain": "weight",  # Zach's entry: the final norm scales by weight (the blocks' by 1 + weight)
         "bos": True,
         "run_prefix": "muse30b_",
+        "chat_template_edits": MUSE_TEMPLATE_EDITS,  # Zach's chat framing (low reasoning, the answer channel opened)
         "lenses": {
             "jpp": (
                 "zachperlman20/Muse-Glimmer-30B-jpp-lens",

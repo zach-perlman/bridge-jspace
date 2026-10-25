@@ -109,9 +109,13 @@ class Model:
         return torch.tensor([tokens.raw_encoding(self.tokenizer, text)["input_ids"]], device="cuda")
 
     def unembed(self, h: torch.Tensor) -> torch.Tensor:
-        """Final norm then lm_head, fp32 logits on the home device, softcapped as the model's own (Gemma:
-        30 tanh(x / 30); ranks unchanged)."""
+        """Final norm then lm_head, fp32 logits on the home device, scaled and softcapped as the model's own (Gemma:
+        30 tanh(x / 30); Muse Glimmer: T tanh(m x / T); ranks unchanged)."""
         logits = self.hf.lm_head(self.text.norm(h.to(torch.bfloat16))).float()
+        mult = getattr(
+            self.hf.config.get_text_config(), "output_multiplier", None
+        )  # Muse Glimmer: scaled before the cap
+        logits = logits * mult if mult else logits
         cap = getattr(self.hf.config.get_text_config(), "final_logit_softcapping", None)
         return to_device(cap * torch.tanh(logits / cap) if cap else logits, self.device)
 

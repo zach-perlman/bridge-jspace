@@ -47,7 +47,7 @@ EXP = "x0_replicate"
 RESULTS = pins.RESULTS_DIR / EXP
 SET = "d1_topics_v5"
 STATES = {"qwen3.5-9b": "qwen35_9b_x0_probe_v4", "qwen3.6-27b": "x0_probe_v4_27b",
-          "qwen3.5-122b-a10b": "qwen35_122b_x0_probe_v4"}  # fmt: skip
+          "qwen3.5-122b-a10b": "qwen35_122b_x0_probe_v4", "muse-glimmer-30b": "muse30b_x0_probe_v4"}  # fmt: skip
 PARTS = (("jpp", X.K_MAIN, "signed"), ("alf", 0, "proj"), ("pca_eq", 0, "eq"))
 KEEP = (("w", 0, "lsq"), ("jwo", X.K_MAIN, "signed"))  # pasted alone (keep-only arms)
 DECISIVE = "qwen3.5-9b"

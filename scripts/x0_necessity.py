@@ -56,7 +56,7 @@ THROUGH_JDEP, THROUGH_EXCESS, THROUGH_LO = 0.30, 0.20, 0.10
 CONFIRM_LOOKUP_EXCESS, CONFIRM_RECALL_JDEP = 0.10, 0.30
 KILL_LOOKUP_EXCESS, KILL_RECALL_JDEP = 0.20, 0.20
 H_TOKEN_EXCESS = 0.20
-PREDICTED = {"qwen3.6-27b": 32, "qwen3.5-9b": 12, "qwen3.5-122b-a10b": 33}
+PREDICTED = {"qwen3.6-27b": 32, "qwen3.5-9b": 12, "qwen3.5-122b-a10b": 33, "muse-glimmer-30b": 26}  # Muse: 50% depth
 
 
 # ---- cells (CPU) --------------------------------------------------------------------------------------------------
@@ -171,6 +171,7 @@ LAYERS = {
     "qwen3.6-27b": tuple(range(16, 41, 2)),
     "qwen3.5-9b": tuple(range(6, 21, 2)),
     "qwen3.5-122b-a10b": (24, 27, 30, 33, 36),
+    "muse-glimmer-30b": (13, 26, 34),  # 25 / 50 / 65% depth, fixed before any Muse result (Dan, 25 Oct ~23:00)
 }  # 122B: 30 / 33 / 36 by X0.md, 24 and 27 descriptive (Dan)
 N_ITEMS, N_MIN, GATE = 200, 150, 0.80
 K_EXAMPLES, EXAMPLES_SEED, GEN_TOKENS = 10, 0, 8
