@@ -78,7 +78,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 *Extra loss of the J++ part, after the data. Italics: fewer than 30 lookup switches with the whole change (count shown). n per row in Appendix A.*
 
-- **Caveat.** Removing both costs the recall too ({{num|rtb_ex_C0_both_rc_9b}}, {{num|rtb_ex_C0_both_rc_27b}}); the 122B's (a) and (b) are pending.
+- **Caveat.** Removing both costs the recall too ({{num|rtb_ex_C0_both_rc_9b}}, {{num|rtb_ex_C0_both_rc_27b}}); on the 122B (after the data, gate 0.75), early identity only ({{num|rte_C2_whole_identity_122b}}) and both minus the pointer {{num|rtb_ex_C0_both_minus_alf_lk_122b}}.
 
 ## 4. What did not hold, and limits
 
@@ -115,8 +115,8 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | {{num|comp_one_fmyes_n_9b}} / {{num|comp_one_fmno_n_9b}}; {{num|comp_rep_fmno_n_9b}} | {{num|comp_one_fmyes_n_27b}} / {{num|comp_one_fmno_n_27b}}; {{num|comp_rep_fmno_n_27b}} | {{num|comp_one_fmyes_n_122b}} / {{num|comp_one_fmno_n_122b}}; – |
 | Pointer probe right; another person's earlier pick read as first mention | {{num|v4_b_before_9b}}; {{num|dup_otherfirst_reads_other_9b}} | {{num|v4_b_before_27b}}; {{num|dup_otherfirst_reads_other_27b}} | {{num|v4_b_before_122b}}; {{num|dup_otherfirst_reads_other_122b}} |
 | Routes, another item moved, position without the pointer / without a random part of its size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | {{num|rtg_C2_no_alf_position_122b}} / {{num|rtg_C2_no_alf_rand_position_122b}} (after the data) |
-| Early layer, recall still switching without J++ | {{num|rte_C2_no_jpp_recall_follows_s_9b}} | {{num|rte_C2_no_jpp_recall_follows_s_27b}} | pending |
-| Sanity swap, lookup without both / pointer alone | {{num|rtb_ex_C0_both_lk_9b}} / {{num|rtb_ex_C0_alf_lk_9b}} | {{num|rtb_ex_C0_both_lk_27b}} / {{num|rtb_ex_C0_alf_lk_27b}} | pending |
+| Early layer, recall still switching without J++ | {{num|rte_C2_no_jpp_recall_follows_s_9b}} | {{num|rte_C2_no_jpp_recall_follows_s_27b}} | {{num|rte_C2_no_jpp_recall_follows_s_122b}} (after the data) |
+| Sanity swap, lookup without both / pointer alone | {{num|rtb_ex_C0_both_lk_9b}} / {{num|rtb_ex_C0_alf_lk_9b}} | {{num|rtb_ex_C0_both_lk_27b}} / {{num|rtb_ex_C0_alf_lk_27b}} | {{num|rtb_ex_C0_both_lk_122b}} / {{num|rtb_ex_C0_alf_lk_122b}} (after the data) |
 
 ## Appendix B. Supplementary figures
 

@@ -311,11 +311,14 @@ def fig5(plt) -> None:
     """Top: the J++ extra loss by depth (valid X0 cells); bottom: the position share (another item moved, whole change)
     at each layer the routes test ran; one shaded band per model, from the first layer measured to the last where the
     lookup's J++ extra loss is at least NEEDS; the x-axis on the tested depth range."""
-    routes = {"9b": (("qwen35_9b_x6_routes_l6", 6, "fixed"), ("qwen35_9b_x6_routes", 12, "fixed")),
-              "27b": (("x6_routes_l16_27b", 16, "fixed"), ("x6_routes_27b", 32, "fixed")),
+    routes = {"9b": (("qwen35_9b_x6_routes_l6", 6, "fixed"), ("qwen35_9b_x6_routes_sweep_l8", 8, "fixed"),
+                     ("qwen35_9b_x6_routes_sweep_l10", 10, "fixed"), ("qwen35_9b_x6_routes", 12, "fixed")),
+              "27b": (("x6_routes_l16_27b", 16, "fixed"), ("x6_routes_sweep_l20_27b", 20, "fixed"),
+                      ("x6_routes_sweep_l24_27b", 24, "fixed"), ("x6_routes_sweep_l28_27b", 28, "fixed"),
+                      ("x6_routes_27b", 32, "fixed")),
               "122b": (("qwen35_122b_x6_routes_l27_g75", 27, "rerun"), ("qwen35_122b_x6_routes_g75", 33, "rerun"))}  # fmt: skip
     fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharex="col", gridspec_kw={"height_ratios": [1.25, 1]})
-    fig.subplots_adjust(left=0.105, right=0.98, top=0.84, bottom=0.10, wspace=0.14, hspace=0.18)
+    fig.subplots_adjust(left=0.105, right=0.98, top=0.84, bottom=0.10, wspace=0.14, hspace=0.26)
     # Dan's wording (~14:30), until the layer sweep lands; 77 characters
     S.title(fig, "Early layers: no pointer yet; at the fixed layer, a pointer the lens can't see", limit=80)
     for j, (target, m, name) in enumerate(S.MODELS):
@@ -373,9 +376,6 @@ def fig5(plt) -> None:
                 mec=S.COL["position"],
                 mew=1.6,
             )
-            right = d > (max(span) + min(span)) / 2
-            bot.text(d + (-2.5 if right else 2.5), pos[0] + 0.07, f"layer {layer}", fontsize=9, va="bottom",
-                     ha="right" if right else "left", color=S.COL["muted"])  # fmt: skip
             S.record(
                 "fig5",
                 target,
@@ -388,6 +388,12 @@ def fig5(plt) -> None:
         tested = [*span, *(100 * layer / n_layers for _, layer, _ in routes[m])]
         bot.set_xlim(min(tested) - 4, max(tested) + 4)
         bot.set_xlabel("depth (% of layers)")
+        # the routes test's layers as a top axis of the bottom panel (labels beside the points overlapped)
+        layer_axis = bot.secondary_xaxis("top")
+        layer_axis.set_xticks(
+            [100 * layer / n_layers for _, layer, _ in routes[m]], [str(layer) for _, layer, _ in routes[m]]
+        )
+        layer_axis.tick_params(labelsize=9, colors=S.COL["muted"], length=2)
     axes[0, 0].set_ylabel("J++ extra loss")
     axes[1, 0].set_ylabel("position share")
     for ax in axes[:, 1:].flat:

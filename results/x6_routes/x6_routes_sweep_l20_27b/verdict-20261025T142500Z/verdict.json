@@ -1,0 +1,305 @@
+{
+ "run": "x6_routes_sweep_l20_27b",
+ "manifest": {
+  "exp": "x6_routes",
+  "run": "x6_routes_sweep_l20_27b",
+  "written_utc": "2026-10-25T14:03:50Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+   "target": "qwen3.6-27b",
+   "repo": "Qwen/Qwen3.6-27B",
+   "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "3751c4f65062846bb84d8cd75e53e9311bc3b210",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "layer": 20,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+   "C0",
+   "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "alf_from": null,
+  "c0_min": 0.5,
+  "fixed_layer": 32,
+  "c0_reference": {
+   "run": "x0_massmean_lf_27b",
+   "lookup_switch": 1.0,
+   "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+   "scenes": 2510,
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "items": {
+   "C0": 300,
+   "C2": 300
+  }
+ },
+ "rows": [
+  {
+   "condition": "C0",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "recall_follows_s": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "used": [],
+   "median_norm": 29.971899999999998
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.03333333333333333,
+     0.009771986970684038,
+     0.0625
+    ],
+    "other": [
+     0.9666666666666667,
+     0.9375,
+     0.990228013029316
+    ],
+    "recall_follows_s": [
+     0.9433333333333334,
+     0.9088145896656535,
+     0.9746835443037974
+    ]
+   },
+   "used": [],
+   "median_norm": 29.971899999999998
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "recall_follows_s": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "used": [],
+   "median_norm": 29.971899999999998
+  },
+  {
+   "condition": "C2",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9966666666666667,
+     0.9894366197183099,
+     1.0
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 30.0945
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.7566666666666667,
+     0.7111801242236024,
+     0.8024325490637547
+    ],
+    "position": [
+     0.01,
+     0.0,
+     0.02280130293159609
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.23333333333333334,
+     0.18670780590717298,
+     0.2792207792207792
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.7433333333333333,
+     0.6911312032871666,
+     0.7972508591065293
+    ]
+   },
+   "used": [
+    "identity",
+    "original"
+   ],
+   "median_norm": 30.0945
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9933333333333333,
+     0.9835526315789473,
+     1.0
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 30.0945
+  }
+ ],
+ "extra": [],
+ "ctrl": []
+}

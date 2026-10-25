@@ -28,15 +28,15 @@ Calibration, by confidence bucket, across batches from 25 on (filled as results 
 | Confidence | Answers | Happened | Share happened | Mean Brier |
 |---|---|---|---|---|
 | 40% | 2 | 0 | 0.00 | 0.16 |
-| 50% | 3 | 0 | 0.00 | 0.25 |
-| 60% | 3 | 2 | 0.67 | 0.23 |
+| 50% | 4 | 1 | 0.25 | 0.25 |
+| 60% | 4 | 2 | 0.50 | 0.26 |
 | 70% | 27 | 10 | 0.37 | 0.34 |
-| 80% | 20 | 7 | 0.35 | 0.43 |
+| 80% | 21 | 7 | 0.33 | 0.44 |
 | 85% | 3 | 3 | 1.00 | 0.02 |
 | 90% | 17 | 8 | 0.47 | 0.43 |
 | 95% | 2 | 1 | 0.50 | 0.45 |
 | 100% | 1 | 1 | 1.00 | 0.00 |
 
-Batches 25-36 so far (78 scored answers with a confidence): mean Brier 0.36 ("50%, no prior" everywhere would score 0.25); 32 of 78 top options happened. Not in the Brier totals: Q25.5 and Q25.10 (no confidence given; both wrong) and Q25.12 (X-fig, descriptive). Rows at 85% and 95% hold answers given off the 50-90% scale. Multi-option answers are scored on their top option. Q28.6 scored by Dan (25 Oct). Q32.4 unanswered, Q32.9 void; Q35.1 pending (x6_routes_sweep).
+Batches 25-37 so far (81 scored answers with a confidence): mean Brier 0.36 ("50%, no prior" everywhere would score 0.25); 33 of 81 top options happened. Not in the Brier totals: Q25.5 and Q25.10 (no confidence given; both wrong) and Q25.12 (X-fig, descriptive). Rows at 85% and 95% hold answers given off the 50-90% scale. Multi-option answers are scored on their top option. Q28.6 scored by Dan (25 Oct). Q32.4 unanswered, Q32.9 void.
 
 **Open:** batch 12 (opened early at Dan's request; answers count as written after the results). Batches 13-15 are scored (23 Oct); the runs still pending then are named in each verdict.

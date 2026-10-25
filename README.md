@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Each row is one setting: compare the purple (lookup) and dark (recall) dot; the grey band is "not needed".*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 3d42857c from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 719d9f23 from the run files.
 
 ## Setup
 
@@ -78,7 +78,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 *Extra loss of the J++ part, after the data. Italics: fewer than 30 lookup switches with the whole change (count shown). n per row in Appendix A.*
 
-- **Caveat.** Removing both costs the recall too (0.34 [0.28, 0.40], 0.44 [0.37, 0.52]); the 122B's (a) and (b) are pending.
+- **Caveat.** Removing both costs the recall too (0.34 [0.28, 0.40], 0.44 [0.37, 0.52]); on the 122B (after the data, gate 0.75), early identity only (1.00 [1.00, 1.00]) and both minus the pointer 0.09 [0.03, 0.16].
 
 ## 4. What did not hold, and limits
 
@@ -115,8 +115,8 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | 100 / 100; 200 | 97 / 103; 200 | 115 / 85; – |
 | Pointer probe right; another person's earlier pick read as first mention | 0.97; 0.90 | 0.99; 0.56 | 0.92; 0.96 |
 | Routes, another item moved, position without the pointer / without a random part of its size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] (after the data) |
-| Early layer, recall still switching without J++ | 0.05 [0.02, 0.08] | 0.01 [0.00, 0.02] | pending |
-| Sanity swap, lookup without both / pointer alone | 0.43 [0.39, 0.47] / 0.31 [0.26, 0.37] | 0.41 [0.35, 0.47] / 0.15 [0.12, 0.19] | pending |
+| Early layer, recall still switching without J++ | 0.05 [0.02, 0.08] | 0.01 [0.00, 0.02] | 0.20 [0.13, 0.28] (after the data) |
+| Sanity swap, lookup without both / pointer alone | 0.43 [0.39, 0.47] / 0.31 [0.26, 0.37] | 0.41 [0.35, 0.47] / 0.15 [0.12, 0.19] | 0.35 [0.29, 0.41] / 0.26 [0.22, 0.30] (after the data) |
 
 ## Appendix B. Supplementary figures
 
