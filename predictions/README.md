@@ -29,14 +29,14 @@ Calibration, by confidence bucket, across batches from 25 on (filled as results 
 |---|---|---|---|---|
 | 40% | 2 | 0 | 0.00 | 0.16 |
 | 50% | 3 | 0 | 0.00 | 0.25 |
-| 60% | 2 | 1 | 0.50 | 0.26 |
-| 70% | 24 | 9 | 0.38 | 0.34 |
+| 60% | 3 | 2 | 0.67 | 0.23 |
+| 70% | 26 | 10 | 0.38 | 0.34 |
 | 80% | 19 | 7 | 0.37 | 0.42 |
 | 85% | 3 | 3 | 1.00 | 0.02 |
 | 90% | 17 | 8 | 0.47 | 0.43 |
 | 95% | 2 | 1 | 0.50 | 0.45 |
 | 100% | 1 | 1 | 1.00 | 0.00 |
 
-Batches 25-32 so far (73 scored answers with a confidence): mean Brier 0.36 ("50%, no prior" everywhere would score 0.25); 30 of 73 top options happened. Not in the Brier totals: Q25.5 and Q25.10 (no confidence given; both wrong) and Q25.12 (X-fig, descriptive). Rows at 85% and 95% hold answers given off the 50-90% scale. Multi-option answers are scored on their top option. Q28.6 scored by Dan (25 Oct). Q32.4 unanswered, Q32.9 void, Q32.7 / Q32.8 pending (x6_routes_early_r2).
+Batches 25-33 so far (76 scored answers with a confidence): mean Brier 0.35 ("50%, no prior" everywhere would score 0.25); 32 of 76 top options happened. Not in the Brier totals: Q25.5 and Q25.10 (no confidence given; both wrong) and Q25.12 (X-fig, descriptive). Rows at 85% and 95% hold answers given off the 50-90% scale. Multi-option answers are scored on their top option. Q28.6 scored by Dan (25 Oct). Q32.4 unanswered, Q32.9 void; Q34.1 pending (x6_routes_bothoff).
 
 **Open:** batch 12 (opened early at Dan's request; answers count as written after the results). Batches 13-15 are scored (23 Oct); the runs still pending then are named in each verdict.

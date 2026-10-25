@@ -1,0 +1,427 @@
+{
+ "run": "qwen35_9b_x6_routes_l6",
+ "manifest": {
+  "exp": "x6_routes",
+  "run": "qwen35_9b_x6_routes_l6",
+  "written_utc": "2026-10-25T11:05:53Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+   "target": "qwen3.5-9b",
+   "repo": "Qwen/Qwen3.5-9B",
+   "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "dc9992a7a39f41fdd324c31f71ffbfe7e62bccf0",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 6,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+   "C0",
+   "C1",
+   "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "alf_from": null,
+  "c0_min": 0.5,
+  "fixed_layer": 12,
+  "c0_reference": {
+   "run": "qwen35_9b_x0_massmean_lf",
+   "lookup_switch": 0.9863013698630136,
+   "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+   "scenes": 2510,
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "items": {
+   "C0": 300,
+   "C1": 300,
+   "C2": 300
+  }
+ },
+ "rows": [
+  {
+   "condition": "C0",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "recall_follows_s": [
+     0.9966666666666667,
+     0.9892847542242704,
+     1.0
+    ]
+   },
+   "used": [],
+   "median_norm": 9.4574
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.9766666666666667,
+     0.9581745072147891,
+     0.9929824561403509
+    ],
+    "other": [
+     0.023333333333333334,
+     0.007017543859649123,
+     0.04182549278521087
+    ],
+    "recall_follows_s": [
+     0.043333333333333335,
+     0.02054744305628088,
+     0.07250784114757501
+    ]
+   },
+   "used": [
+    "original"
+   ],
+   "median_norm": 9.4574
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.11666666666666667,
+     0.0749185667752443,
+     0.15789473684210525
+    ],
+    "other": [
+     0.8833333333333333,
+     0.8421052631578947,
+     0.9250814332247557
+    ],
+    "recall_follows_s": [
+     0.85,
+     0.7922535211267606,
+     0.9077503860144984
+    ]
+   },
+   "used": [],
+   "median_norm": 9.4574
+  },
+  {
+   "condition": "C1",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9966666666666667,
+     0.988592067454213,
+     1.0
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 3.55485
+  },
+  {
+   "condition": "C1",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 3.55485
+  },
+  {
+   "condition": "C1",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9966666666666667,
+     0.988592067454213,
+     1.0
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 3.55485
+  },
+  {
+   "condition": "C2",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9666666666666667,
+     0.9449509648845302,
+     0.9871794871794872
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 9.5368
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.01,
+     0.0,
+     0.02616445863515057
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.99,
+     0.9738355413648494,
+     1.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.04666666666666667,
+     0.01928374655647383,
+     0.08154544486043891
+    ]
+   },
+   "used": [
+    "original"
+   ],
+   "median_norm": 9.5368
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.7766666666666666,
+     0.7263843648208469,
+     0.8282459992642325
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.22,
+     0.16666666666666666,
+     0.2721523826113885
+    ],
+    "other": [
+     0.0033333333333333335,
+     0.0,
+     0.010309278350515464
+    ],
+    "recall_follows_s": [
+     0.7833333333333333,
+     0.7175780811407613,
+     0.8505747126436781
+    ]
+   },
+   "used": [
+    "identity",
+    "original"
+   ],
+   "median_norm": 9.5368
+  }
+ ]
+}
