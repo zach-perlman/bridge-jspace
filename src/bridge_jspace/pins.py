@@ -563,6 +563,23 @@ TARGETS["ministral-3-14b"] = {
     "frozen_lens_sha256": None,  # set when the fit is done
 }
 
+# 2026-10-25 (amendment 40): NVIDIA Nemotron 3.5 Lightning 30B-A3B (hybrid: 52 blocks, each one Mamba-2, attention or MoE
+# mixer; final norm norm_f, a plain weight). Its tokenizer adds no BOS (add_bos_token false) and its chat template writes
+# none, so bos False. Thinking off via the template's enable_thinking (chat.chat_text). No published lens, and the J++
+# fitter has no Mamba rules: our plain J-lens (scripts/lens_fit/fit_jlens.py, Anthropic's jlens, 500 WikiText prompts,
+# --no-bos); its sha256 replaces the None placeholders when the fit ends (scripts/queues/h200_nem_1025.sh).
+TARGETS["nemotron-3.5-lightning"] = {
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "n_layers": 52,
+    "norm_gain": "weight",
+    "bos": False,
+    "run_prefix": "nem35l_",
+    "frozen_lens": "jlens",
+    "lenses": {"jlens": ("local", "cache/nemotron-3.5-lightning/lenses/jlens/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jlens.pt", None)},
+    "frozen_lens_sha256": None,  # set when the fit is done
+}
+
 # 2026-10-25: the 9B split over two GPUs (blocks 0-15 on cuda:0, 16-31 on cuda:1), to check model.split_gpus against the
 # one-GPU runs before DeepSeek-V4-Flash (which needs two GPUs) relies on it.
 TARGETS["qwen3.5-9b-split"] = {**TARGETS["qwen3.5-9b"], "split_gpus": 16, "run_prefix": "qwen35_9bsplit_"}

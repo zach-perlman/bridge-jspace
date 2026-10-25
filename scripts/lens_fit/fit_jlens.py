@@ -7,7 +7,9 @@ WikiText-103 train texts with early stopping). Resumable checkpoints every 25 pr
 the format bridge_jspace.lens reads: J, n_prompts, source_layers, d_model) and prints the lens's sha256.
 
 Run in the model's env (Kolibri-1 needs transformers >= 5.20: /workspace/ext/kolibri_env):
-python scripts/lens_fit/fit_jlens.py --repo R --revision V --out PATH [--n 500]
+python scripts/lens_fit/fit_jlens.py --repo R --revision V --out PATH [--n 500] [--no-bos]
+(2026-10-25, amendment 40: --no-bos for a model whose tokenizer adds no BOS (Nemotron 3.5: add_bos_token false), so the
+lens sees text as the harness feeds it; NemotronH's layout (embeddings, layers, norm_f) is passed to jlens explicitly.)
 """
 
 from __future__ import annotations
@@ -36,8 +38,10 @@ def main(a) -> None:
     rows = rows[: a.n]
     tok = AutoTokenizer.from_pretrained(a.repo, revision=a.revision)
     hf = AutoModelForCausalLM.from_pretrained(a.repo, revision=a.revision, dtype=torch.bfloat16, device_map="cuda").eval()
-    model = jlens.from_hf(hf, tok, force_bos=tok.bos_token_id is not None)
-    print(f"{a.repo}@{a.revision}: {len(rows)} prompts, bos {tok.bos_token_id is not None}", flush=True)
+    bos = tok.bos_token_id is not None and not a.no_bos
+    layout = jlens.hf.Layout("model", norm="norm_f", embed="embeddings") if hasattr(hf.model, "norm_f") else None
+    model = jlens.from_hf(hf, tok, layout=layout, force_bos=bos)
+    print(f"{a.repo}@{a.revision}: {len(rows)} prompts, bos {bos}, layout {layout}", flush=True)
     t0 = time.time()
     lens = jlens.fit(model, rows, dim_batch=a.dim_batch, max_seq_len=128, skip_first=16,
                      checkpoint_path=str(out) + ".ckpt", checkpoint_every=25)  # fmt: skip
@@ -53,4 +57,5 @@ if __name__ == "__main__":
     ap.add_argument("--out", required=True)
     ap.add_argument("--n", type=int, default=500)
     ap.add_argument("--dim-batch", type=int, default=64)
+    ap.add_argument("--no-bos", action="store_true", help="no BOS first, for a tokenizer that adds none")
     main(ap.parse_args())

@@ -1036,3 +1036,33 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
 - **Order:** GPU1 after its rerun chain: Ministral's fit, gate, dev; then both GPUs: DeepSeek gate, dev, test, swap;
   then Ministral test, swap. Disk (Zach's approval): Muse's cache is deleted after its R rerun to fit DeepSeek's
   download, OLMo's after its v2 knock-out.
+
+## Amendment 40 (Zach, 2026-10-25 05:22 UTC, before any Nemotron run): NVIDIA Nemotron 3.5 Lightning on v2, end of the queue
+
+- **Why (Zach):** "Queue nemotron 3.5 bolt and lightning at the end of our queue." A third non-Qwen family, and the
+  first hybrid with Mamba-2 state-space layers: Lightning 30B-A3B (2026-08; MoE, 52 blocks, each one Mamba-2,
+  attention or MoE mixer; NVIDIA reports it at or above Qwen3.6-27B on several reasoning benchmarks, unverified here).
+- **Seen when this was written:** everything through amendment 39; no Nemotron output of any kind (no smoke yet).
+- **Model.** nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16 @a9904d2, transformers' native NemotronH (no remote
+  code; the Mamba scan on transformers' torch path, mamba_ssm not installed); one GPU. Its tokenizer adds no BOS
+  (add_bos_token false) and its chat template writes none: bos False. Thinking off by the template's enable_thinking
+  (chat.chat_text). Final norm norm_f (a plain weight; model.final_norm).
+- **Lens.** None is published, and the J++ fitter has no Mamba rules, so our plain J-lens: scripts/lens_fit/fit_jlens.py
+  (Anthropic's jlens, amendment 28's recipe: 500 WikiText prompts, 128 tokens, first 16 positions skipped, every block
+  below the last a source, the final block the target), --no-bos as the model reads text; its sha256 goes into pins when
+  the fit ends. **Lens-kind caveat, fixed now:** the Qwen and DeepSeek numbers use J++, Ministral our J++, Lightning a
+  plain J-lens; a gap between them is not read as a model difference unless a same-lens-kind comparison backs it.
+- **Smoke, stop rule fixed now:** scripts/new_model_smoke.py (block count, unembed of the last block vs the model's
+  logits, WikiText NLL, a chat rendering and its greedy answer) and competence on the first 120 dev items. The chain
+  stops if the unembed's top-1 differs or plain-text NLL is >= 4 nats.
+- **Procedure and predictions:** amendment 39's, unchanged (scripts/queues/h200_nq40_1025.sh is h200_nq_1025.sh with
+  its --why strings marked amendment 40): gate, dev band by choose_band, test (paper10 / rot / unembed10 / rot, the 15
+  facts words, jsuite2_score), swap (jswap, bridge_readout, jswap_by_relation). Readings: M - K >= 30 with rotated and
+  logit-lens < 10 = Qwen-like; >= 30 with logit-lens >= 10 = Muse-like; < 15 = OLMo-like; 15-30 = weak. A gate failure
+  is reported and no knock-out claim is made.
+- **Order and disk:** scripts/queues/h200_nem_1025.sh on GPU 1: download once DeepSeek's download and OLMo's cache
+  drop are done (66 GB; stop if under 80 GB free); smoke, fit and runs once DeepSeek's chain has finished (Ministral's
+  test and swap then hold GPU 0).
+- **Bolt (74B-A9B, 2026-10):** not queued by this amendment. Its checkpoint is a multimodal wrapper whose language
+  model has heterogeneous MoE blocks and ships NVIDIA's own model code, and its 150 GB do not fit the disk next to
+  DeepSeek's cache. It gets its own note here, with the loading path and the disk plan, before any Bolt run.

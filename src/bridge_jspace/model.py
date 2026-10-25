@@ -44,13 +44,18 @@ class Model:
     def layers(self):
         return self.text.layers
 
+    @property
+    def final_norm(self):
+        """The norm before the lm_head: text.norm, or NemotronH's text.norm_f (2026-10-25)."""
+        return self.text.norm if hasattr(self.text, "norm") else self.text.norm_f
+
     def encode(self, text: str) -> torch.Tensor:
         return torch.tensor([tokens.raw_encoding(self.tokenizer, text)["input_ids"]], device="cuda")
 
     def unembed(self, h: torch.Tensor) -> torch.Tensor:
         """Final norm then lm_head, fp32 logits, scaled and softcapped as the model's own (Gemma: 30 tanh(x / 30); Muse
         Glimmer: T tanh(m x / T); ranks unchanged)."""
-        logits = self.hf.lm_head(self.text.norm(h.to(torch.bfloat16))).float()
+        logits = self.hf.lm_head(self.final_norm(h.to(torch.bfloat16))).float()
         mult = getattr(self.hf.config.get_text_config(), "output_multiplier", None)  # Muse Glimmer: scaled before the cap
         logits = logits * mult if mult else logits
         cap = getattr(self.hf.config.get_text_config(), "final_logit_softcapping", None)
@@ -58,7 +63,7 @@ class Model:
 
     def norm_gain(self) -> torch.Tensor:
         """The final RMSNorm's per-dimension gain, fp32: 1 + weight for Qwen3.5-family norms, weight for Gemma 4's."""
-        weight = self.text.norm.weight.float()
+        weight = self.final_norm.weight.float()
         return 1.0 + weight if pins.TARGETS[pins.TARGET]["norm_gain"] == "one_plus_weight" else weight
 
     @torch.no_grad()
