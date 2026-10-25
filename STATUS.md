@@ -1,3 +1,59 @@
+# Results opened, 25 Oct ~12:45 (agent; after Dan's batch-31 / 32 commit). All numbers UNVERIFIED
+
+Every number below is read from docs/x0_numbers.json or figures/status_2026-10-25/data.csv. Queue: x6_routes_early_r2 (running; batch 32's Q32.7 / Q32.8, closed), x0_jppother (queued; batch 33, closed until Dan answers), x0_122b_b7 (queued; F17's 122B panel).
+
+## (i) The grid
+
+| Hypothesis | 9B (L12) | 27B (L32) | 122B (L33) |
+|---|---|---|---|
+| The split (main test; strict rule and graded gap) | held: strict confirmed; gap 0.53 [0.42, 0.61] | partial: strict not confirmed (lookup 0.14 [0.08, 0.20]); gap 0.60 [0.50, 0.69] | held: strict confirmed; gap 0.32 [0.20, 0.43] |
+| Not a post hoc artefact (fresh scenes fixed in advance; the held-out 122B) | partial: the replication does not hold (pointer clause met, J++ clause not met) | partial (descriptive): J++ clause met, pointer clause not met | held: one-pick cell gap 0.28 [0.15, 0.39], lookup −0.01 [−0.06, 0.04] |
+| The input-token identity (W_E does what J++ does) | did not hold: W_E recall 0.01 [0.00, 0.02] | did not hold: W_E recall 0.00 [−0.03, 0.03] | did not hold: W_E recall 0.01 [−0.02, 0.03] |
+| J++ vs the other dictionaries (only J++ separates the readers) | held | held | held |
+| Natural passages (gap >= 0.30, lower CI >= 0.15) | not tested: the lookup's gate 0.78 (bar 0.80) | partial (mixed): gap 0.27 [0.13, 0.41]; lookup 0.32 [0.20, 0.45] | held: gap 0.44 [0.32, 0.58] |
+| A verbatim key needed (translated key, D >= 0.20) | did not hold: D −0.02 [−0.05, −0.00] | did not hold: D 0.01 [−0.01, 0.04] | did not hold: D −0.00 [−0.01, 0.00] |
+| The symbol control (D >= 0.20) | did not hold: −0.05 [−0.08, −0.02] | partial: 0.15 [0.10, 0.19], 6 of 6 positive | did not hold: 0.02 [−0.01, 0.07] |
+| The digit route | did not hold: digit directions 0.00 | did not hold: 0.00 | did not hold: 0.00 |
+| The two-pick swap as the cause of the 27B miss | not applicable (one-pick lookup −0.02 [−0.05, 0.02]) | partial: one-pick 0.05 [0.01, 0.09] vs two-pick 0.14 [0.08, 0.20]; paired −0.08 [−0.16, 0.00] | not applicable (one-pick lookup −0.01 [−0.06, 0.04]) |
+| Sentence order (lookups move mostly when the locker comes first) | held: 86% vs 19% | held: 76% vs 9% | held: 89% vs 11% |
+| Varied scenes (X0b's pooled rule) | held: gap 0.22 [0.14, 0.31] | held: gap 0.47 [0.42, 0.53] | partial (mixed): gap 0.15 [0.12, 0.18]; lookup −0.02 [−0.03, −0.00] |
+| At 100 atoms (the lookup still does not need J++) | held: −0.08 | did not hold: 0.60 | held: −0.12; one-pick −0.09 |
+| The J++ part is the word | did not hold: word 0.02 vs J++ 0.36 | did not hold: 0.16 vs 0.63 | did not hold: 0.14 [0.08, 0.20] vs 0.26 [0.16, 0.36] |
+| J++ is only the layer's main directions (PCA at J++'s share) | did not hold: 0.13 [0.06, 0.19] vs 0.37 [0.29, 0.43] | did not hold: 0.16 [0.08, 0.23] vs 0.61 [0.51, 0.69] | held: 0.21 [0.13, 0.30] vs 0.26 [0.16, 0.36] |
+| The recall reads the bridge redundantly (word or rest) | held: word 0.02 + rest 0.12 [0.06, 0.18] < J++ | held: 0.16 + 0.20 [0.10, 0.29] < J++ | held: 0.14 [0.08, 0.20] + 0.04 [0.00, 0.08] < J++ |
+| The address at the word, outside J++ | held: probe 0.97; J++ holds 0.5% | held: 0.99; 0.5% | held: 0.92 (layout 0.53); 0.5% |
+| The address is a first-mention pointer | held: 0.90 | partial: 0.56 | held: 0.96 |
+| The pointer is lexical | did not hold: transfer 0.84 [0.79, 0.90] | did not hold: 0.94 [0.90, 0.97] | did not hold: 0.85 [0.80, 0.91] |
+| The lookup needs the probe's pointer | did not hold: 0.05 [0.00, 0.10] | did not hold: 0.00 [0.00, 0.00] | did not hold: 0.00 [0.00, 0.00] |
+| The lookup uses the pointer directions, lookup-specifically | held, replicated: lookup 0.47 [0.41, 0.53], recall 0.15 [0.10, 0.21] | did not hold: lookup 0.14 [0.07, 0.22], recall 0.16 [0.02, 0.31] | held: lookup 0.31 [0.20, 0.43], recall 0.13 [0.02, 0.26] |
+| The lookup uses the value | did not hold: V 0.00 [0.00, 0.00]; new digit 0.00 [0.00, 0.00] | did not hold: V −0.01 [−0.05, 0.00]; new digit 0.00 [0.00, 0.00] | did not hold: V removal costs nothing |
+| The lookup follows identity or position (routes) | held: swap 2 position 0.51 [0.46, 0.56], identity 0.48 [0.43, 0.53] | held: identity 0.66 [0.60, 0.71], position 0.34 [0.28, 0.39] | not tested: on the original prompts the recall read 0.797 right, under the 0.80 gate fixed in advance |
+
+## (ii) Tonight's tests
+
+| Test | Rule (fixed in advance) | Branch | Numbers [95% CI] | n |
+|---|---|---|---|---|
+| a. Replication of the 9B's double dissociation | both clauses | does not hold (pointer clause met, J++ clause not met) | pointer lookup 0.47 [0.41, 0.53], recall 0.15 [0.10, 0.21]; J++ recall 0.12 [0.06, 0.19] | 200 |
+| b1. 122B one-pick main cell | lookup <= 0.10, gap >= 0.20 | holds | lookup −0.01 [−0.06, 0.04], gap 0.28 [0.15, 0.39] | 200 |
+| b2. 122B parts | PCA: Q30.1's branches; word-orthogonal J++ >= 0.20 / <= 0.10 | PCA: recall-specific like J++; word-orthogonal: redundant | PCA 0.21 [0.13, 0.30]; J++ 0.26 [0.16, 0.36]; word-orthogonal 0.04 [0.00, 0.08] | 200 |
+| b3. 122B probes | address >= 0.90 and >= 0.20 above layout | holds | 0.92 vs 0.53 | 758 |
+| b4. 122B pointer directions | lookup-specific / both / neither | lookup-specific | lookup 0.31 [0.20, 0.43], recall 0.13 [0.02, 0.26] | 54 |
+| b5. 122B translated / symbol keys | D_translated <= 0.10; D_symbol >= 0.20 | no verbatim match needed; the control fails | D_translated −0.00 [−0.01, 0.00]; D_symbol 0.02 [−0.01, 0.07] | about 400 per form |
+| b6. 122B varied scenes | X0b's pooled rule | mixed | lookup −0.02 [−0.03, −0.00], gap 0.15 [0.12, 0.18] | 852 |
+| c. Natural passages, 27B / 9B | gap >= 0.30 (lower >= 0.15) holds; <= 0.10 fails | 27B mixed; 9B not tested (gate) | 27B gap 0.27 [0.13, 0.41] | 137 |
+| Natural passages, 122B | as c | holds | gap 0.44 [0.32, 0.58] | 114 |
+| Routes, 9B and 27B | a route is used if share >= 0.20 (lower >= 0.10) | identity and position used; value never | 9B swap 2 position 0.51 [0.46, 0.56]; 27B identity 0.66 [0.60, 0.71] | 300 per swap |
+| Routes, 122B (Q32.9 void) | each reader reads >= 0.80 of the original prompts right; then C0 within 0.10 of the reference | stopped at the readers' gate, before C0 was read | sanity-swap scenes, original prompts read right: lookup 1.000, recall 0.797; both readers right on both prompts: 479 of 700 | 700 generated |
+
+## (iii) Failed, odd, or didn't fit
+
+- x6_routes and x6_routes_early failed before any run (a bash syntax error from the folded YAML command); rerun as _r2 (Dan's go). x6_routes_122b stopped at the readers' gate on the sanity-swap scenes (the recall read 0.797 of the original prompts right, bar 0.80; Q32.9 void); the script now stops cleanly there. Not a technical failure, so not rerun.
+- F17's 122B panel (the word only / J++ with the word banned / J++ on the varied scenes) was never queued: b1-b6 left it out. Queued now as x0_122b_b7 (descriptive, after the data, as on the 9B and 27B), after x0_jppother.
+- Swap 1 (the same item, its locker sentence moved): a random part at the pointer directions' share also removes the position route (9B 0.03 [0.01, 0.05], 27B 0.03 [0.01, 0.05]), so that swap's pointer effect is not specific.
+- On the same locker-first scenes J++ barely costs the recall on the 9B (0.06 [0.00, 0.12]) and the 122B (0.10 [0.02, 0.18]); the readers' split holds across scene sets, not within them.
+- Natural passages on the 27B: the lookup needs J++ too (0.32 [0.20, 0.45]).
+- The ~04:15 sync was missed (the session was idle); synced at ~11:10.
+
 # Queue overnight, 25 Oct (monitor only; agent). No numbers from batches 31 / 32
 
 Updated 11:15. Results of batches 31 and 32 are pulled and committed unopened; they open after Dan commits his answers (Dan, ~11:10).

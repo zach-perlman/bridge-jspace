@@ -1,0 +1,24 @@
+id: x0_122b_b7
+title: "122B grid b7 (Dan, 25 Oct ~13:00: 'the whole grid'): the varied-scene parts at L33, the word only, J++ with the word's own tokens banned, J++, on X0b's eligible items"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.0
+depends_on: [x0_122b_b6]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0_parts.py run --name qwen35_122b_x0b_parts --x0b qwen35_122b_x0b_v2
+question: >-
+  On the 122B's X0b eligible items (7 topics, prose and tables, levels 0-1, the one-change edit) at L33, both readers: the flips lost when the change loses (w) its least-squares fit on the J++ directions of the original and swapped bridge tokens and their one-token variants, (jw) its 25-atom J++ part with those variants banned, and (jpp) X0's J++ part, each against a random part of its own share.
+why_it_matters: >-
+  The 122B panel of F17 was never queued (b1-b6 did not include it); this fills the grid as on the 9B and 27B (x0b_parts_r2).
+hypotheses:
+  H-word: 'none new; descriptive, as x0b_parts_r2 on the 9B and 27B'
+decision_rule: >-
+  Descriptive, after the data, as x0b_parts_r2: per reader and part, median share of the change's energy, S_whole, S_no, S_noRand, Jdep, Rdep, excess; cluster bootstrap over bridge entities (10,000 resamples, seed 0).
+controls:
+- 'a random-subspace part at each part''s own share, per item'
+- 'X0''s J++ part on the same items (reference)'
+- 'both readers on the identical patch'
+n: 'the 122B X0b run''s eligible items (at most 40 per passing cell)'
+seeds: [0]
+notes: "122B on both GPUs; queued after x0_jppother. Reads qwen35_122b_x0b_v2's eligible items and cases."

@@ -3,7 +3,7 @@
 
 **Answer.** Recalling a fact about the in-between entity from memory needs the lens-readable (J++) part of its representation far more than looking its answer up in the prompt does, on three Qwen models (at the default 25 J++ directions); in varied and natural scenes the gap shrinks on some models. The lookup instead uses information at that word the lens does not read, the item's identity or where its locker sentence is, never the locker value itself; a few directions that encode where the item was first mentioned matter to it on the 9B and the 122B, though their 'where' can point to the wrong sentence without hurting the lookup.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B. All numbers are unverified until hand-checked. 25 Oct 2026. Built at 82f1da0a from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B. All numbers are unverified until hand-checked. 25 Oct 2026. Built at 3ea1cb26 from the run files.
 
 ## How to read this page
 
@@ -93,7 +93,7 @@
 ![The lookup follows the bridge's identity or its locker sentence's position, never the new value](figures/status_2026-10-25/f20_routes.png)
 *Compare the blue (identity) and orange (position) parts of each bar across the arms; there is no green (value) anywhere.*
 
-- **How to read it.** The lookup reads at the bridge word which item it is and where that item's locker sentence is, then fetches the value from the prompt; it never takes the value from the patched state. The pointer directions carry the position route; on the 27B, J++ carries part of the identity route. Caveats: in swap 1 even a random part of the pointer directions' share removes the position route, so that swap's position effect is fragile; the 122B was not tested (its sanity swap missed the gate fixed in advance); the early-layer runs are pending.
+- **How to read it.** The lookup reads at the bridge word which item it is and where that item's locker sentence is, then fetches the value from the prompt; it never takes the value from the patched state. The pointer directions carry the position route; on the 27B, J++ carries part of the identity route. Caveats: in swap 1 even a random part of the pointer directions' share removes the position route, so that swap's position effect is fragile; the 122B was not tested (on the original prompts its recall read 0.797 right, under the gate fixed in advance); the early-layer runs are pending.
 
 ## What did not hold
 

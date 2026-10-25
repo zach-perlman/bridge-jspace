@@ -1129,8 +1129,11 @@ def f20(plt, F, color, grey) -> None:
     for ax, (target, (label, run)) in zip(axes, ROUTES_RUNS.items(), strict=True):
         found = sorted((pins.RESULTS_DIR / "x6_routes" / run).glob("verdict-*/verdict.json"))
         c0 = pins.RESULTS_DIR / "x6_routes" / f"{run}_c0" / "gate.json"
-        if not found and c0.exists() and not any(g["pass"] for g in json.loads(c0.read_text())["gate"].values()):
-            placeholder(ax, label, "not tested: the sanity swap missed\nthe gate fixed in advance")
+        gate = json.loads(c0.read_text())["gate"] if c0.exists() else {}
+        if not found and gate and not any(g["pass"] for g in gate.values()):
+            acc = gate["C0"]["org_read_accuracy"]
+            placeholder(ax, label, f"not tested: on the original prompts the recall\nread {acc[X.RECALL]:.3f} right, under the "
+                        f"gate\nfixed in advance ({X.GATE:.2f}); the lookup {acc[X.LOOKUP]:.3f}")  # fmt: skip
             continue
         if (st := state(run, bool(found))) != "open":
             placeholder(ax, label, st)

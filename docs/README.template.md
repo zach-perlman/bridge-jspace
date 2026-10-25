@@ -93,7 +93,7 @@
 ![The lookup follows the bridge's identity or its locker sentence's position, never the new value](figures/status_2026-10-25/f20_routes.png)
 *Compare the blue (identity) and orange (position) parts of each bar across the arms; there is no green (value) anywhere.*
 
-- **How to read it.** The lookup reads at the bridge word which item it is and where that item's locker sentence is, then fetches the value from the prompt; it never takes the value from the patched state. The pointer directions carry the position route; on the 27B, J++ carries part of the identity route. Caveats: in swap 1 even a random part of the pointer directions' share removes the position route, so that swap's position effect is fragile; the 122B was not tested (its sanity swap missed the gate fixed in advance); the early-layer runs are pending.
+- **How to read it.** The lookup reads at the bridge word which item it is and where that item's locker sentence is, then fetches the value from the prompt; it never takes the value from the patched state. The pointer directions carry the position route; on the 27B, J++ carries part of the identity route. Caveats: in swap 1 even a random part of the pointer directions' share removes the position route, so that swap's position effect is fragile; the 122B was not tested (on the original prompts its recall read {{num|rt_c0gate_rc_122b}} right, under the gate fixed in advance); the early-layer runs are pending.
 
 ## What did not hold
 
