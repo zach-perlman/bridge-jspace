@@ -54,7 +54,8 @@ ROUTES = {"9b": "qwen35_9b_x6_routes", "27b": "x6_routes_27b"}
 ROUTES_MORE = {"rte": {"9b": "qwen35_9b_x6_routes_l6", "27b": "x6_routes_l16_27b", "122b": "qwen35_122b_x6_routes_l27_g75"},
                "rtg": {"122b": "qwen35_122b_x6_routes_g75"},
                "rtb": {"9b": "qwen35_9b_x6_routes_bothoff", "27b": "x6_routes_bothoff_27b",
-                       "122b": "qwen35_122b_x6_routes_bothoff_g75"}}  # fmt: skip
+                       "122b": "qwen35_122b_x6_routes_bothoff_g75"},
+               "rtc": {"9b": "qwen35_9b_x6_routes_bothoff_ctrl", "27b": "x6_routes_bothoff_ctrl_27b"}}  # fmt: skip
 NATURAL_G75 = {"9b": "qwen35_9b_x5_natural_g75"}
 ORDER = "org locker vs asked pick"
 
@@ -447,6 +448,11 @@ def routes_numbers(num: Numbers) -> None:
                 part = e["part"].replace(" - ", "_minus_")
                 w = "lk" if e["reader"] == X.LOOKUP else "rc"
                 num.add(f"{prefix}_ex_{e['condition']}_{part}_{w}_{m}", ci(e["excess"]), src)
+            slug = {"alf": "alf", "alf + J++": "alf_jpp", "alf + random (J++ share)": "alf_rand",
+                    "alf + J++ - alf + random": "jpp_minus_rand"}  # fmt: skip
+            for e in v.get("ctrl", []):  # --bothoff-ctrl: switches lost per removal (rtc_lost_*)
+                w = "lk" if e["reader"] == X.LOOKUP else "rc"
+                num.add(f"{prefix}_lost_{e['condition']}_{slug[e['arm']]}_{w}_{m}", ci(e["lost"]), src)
             if (root / "c0_check.json").exists():
                 c0 = json.loads((root / "c0_check.json").read_text())
                 num.add(

@@ -7,12 +7,12 @@
 
 - Recall needs the lens-readable (J++) part of the bridge; the lookup mostly doesn't (three Qwen models; rule fixed in advance), clearest in simple scenes.
 - The lookup reads which item the bridge is and where it was first mentioned (a pointer the lens does not see), never the locker value.
-- Early, the bridge carries only the item's identity, inside J++, which both readers need; later it adds a pointer outside J++ only the lookup uses (candidate; Section 3).
+- Early, the bridge carries only the item's identity, inside J++, which both readers need; later it adds a pointer outside J++ only the lookup uses (candidate; Section 3); on the 27B, removing both breaks the lookup beyond the pointer alone.
 
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Each row is one setting: compare the purple (lookup) and dark (recall) dot; the grey band is "not needed".*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 4d889f42 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 4fd53195 from the run files.
 
 ## Setup
 
@@ -61,12 +61,12 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **What we did.** (a) The routes test at an early layer where the lookup still needs J++. (b) J++ and the pointer directions removed together in the sanity swap (only the pick changes). (c) Scenes split by whether the asked pick is the bridge's first mention.
 - **What we found.**
   - (a) Early, the lookup follows identity only (1.00 [1.00, 1.00], 1.00 [1.00, 1.00]); without J++ it gives the original answer (0.99 [0.97, 1.00], 0.99 [0.98, 1.00]), and the recall stops switching too.
-  - (b) Removing both costs the lookup 0.12 [0.04, 0.19] (9B) and 0.26 [0.19, 0.32] (27B) more than the pointer alone; the bar fixed in advance (0.15) is met on the 27B only.
+  - (b) Removing both costs the lookup 0.12 [0.04, 0.19] (9B) and 0.26 [0.19, 0.32] (27B) more than the pointer alone; the bar fixed in advance (0.15) is met on the 27B only. Against a random part of J++'s size instead of J++, the 27B's lookup still loses 0.23 [0.18, 0.27] more of its switches with J++, the 9B's −0.08 [−0.11, −0.04] (fixed in advance; the bar is met on the 27B only).
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table).
 
 ![Early layers: no pointer yet; at the fixed layer, a pointer the lens can't see](figures/story/fig5_depth.png)
 ![Removing J++ and the pointer directions together](figures/story/fig6_both_removed.png)
-*Fig. 5: shaded from the first layer measured to the last where the lookup's J++ extra loss is at least 0.30; compare it with where position answers appear. Fig. 6: compare "without both" with the dotted bar; grey dots: the recall.*
+*Fig. 5: shaded from the first layer measured to the last where the lookup's J++ extra loss is at least 0.30; compare it with where position answers appear. Fig. 6: top, extra loss, compare "without both" with the dotted bar; bottom, switches lost, compare "pointer + J++" with "pointer + random" and its bar; grey dots: the recall.*
 
 | Swap | Pick is the first mention? (no = matched) | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall |
 |---|---|---|---|---|---|---|---|

@@ -396,40 +396,82 @@ def fig5(plt) -> None:
 
 
 def fig6(plt) -> None:
-    runs = (("qwen3.5-9b", "9b", "9B", "qwen35_9b_x6_routes_bothoff", "fixed"),
-            ("qwen3.6-27b", "27b", "27B", "x6_routes_bothoff_27b", "fixed"),
-            ("qwen3.5-122b-a10b", "122b", "122B, after the data", "qwen35_122b_x6_routes_bothoff_g75", "rerun"))  # fmt: skip
+    """Top: the sanity swap's lookup extra loss without J++, without the pointer directions, without both (batch 34's
+    bar dotted); bottom: the switches lost without the pointer directions, with J++, with a random part of J++'s share
+    (batch 36's bar: the random union + 0.15, dotted). The recall as small grey dots."""
+    runs = (("qwen3.5-9b", "9b", "9B", "qwen35_9b_x6_routes_bothoff", "qwen35_9b_x6_routes_bothoff_ctrl", "fixed"),
+            ("qwen3.6-27b", "27b", "27B", "x6_routes_bothoff_27b", "x6_routes_bothoff_ctrl_27b", "fixed"),
+            ("qwen3.5-122b-a10b", "122b", "122B, after the data", "qwen35_122b_x6_routes_bothoff_g75", None, "rerun"))  # fmt: skip
     parts = (("jpp", "without J++"), ("alf", "without the pointer"), ("both", "without both"))
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 3.0), sharey=True)
-    fig.subplots_adjust(left=0.20, right=0.995, top=0.76, bottom=0.18, wspace=0.10)
+    ctrl = (
+        ("alf", "pointer"),
+        ("alf + J++", "pointer + J++"),
+        ("alf + random (J++ share)", "pointer + random\n(J++'s share)"),
+    )
+    fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharey="row")
+    fig.subplots_adjust(left=0.20, right=0.995, top=0.86, bottom=0.09, wspace=0.10, hspace=0.62)
     S.title(fig, "Removing J++ and the pointer directions together")
-    for ax, (target, m, name, run, kind) in zip(axes, runs, strict=True):
-        S.extra_axis(ax)
-        ax.set_title(name, fontsize=11.5, weight="bold")
+    for j, (target, _, name, run, ctrl_run, kind) in enumerate(runs):
+        top, bot = axes[0, j], axes[1, j]
+        S.extra_axis(top)
+        top.set_title(name, fontsize=11.5, weight="bold")
         v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
-        ex = {(e["condition"], e["reader"], e["part"]): e for e in (v or {}).get("extra", [])}
+        ex = {(x["condition"], x["reader"], x["part"]): x for x in (v or {}).get("extra", [])}
         if not ex:
-            S.empty(ax, "pending")
-            continue
-        for i, (p, _) in enumerate(parts):
-            e = ex[("C0", X.LOOKUP, p)]["excess"]
-            rc = ex[("C0", X.RECALL, p)]["excess"]
-            ax.plot([rc[0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
-            S.dot(ax, 0, -i, e, S.COL["lookup"], "rerun" if kind == "rerun" else "fixed")
-            S.record("fig6", target, f"the sanity swap, lookup extra loss {parts[i][1]}", *e, source=run)
-            S.record("fig6", target, f"the sanity swap, recall extra loss {parts[i][1]}", *rc, source=run)
-        bar = ex[("C0", X.LOOKUP, "alf")]["excess"][0] + 0.15
-        ax.plot([bar, bar], [-2.35, -1.65], color="#333333", lw=1.6, ls=":")
-        if m == "9b":
-            ax.text(bar + 0.03, -1.62, "bar", ha="left", va="bottom", fontsize=9, color="#333333")
-        S.record("fig6", target, "the bar fixed in advance (pointer alone + 0.15)", round(bar, 4), source=run)
-        ax.set_ylim(-len(parts) + 0.4, 0.6)
-    axes[0].set_yticks([-i for i in range(len(parts))], [p[1] for p in parts])
-    axes[0].tick_params(axis="y", length=0)
+            S.empty(top, "pending")
+        else:
+            for i, (p, label) in enumerate(parts):
+                lk, rc = ex[("C0", X.LOOKUP, p)]["excess"], ex[("C0", X.RECALL, p)]["excess"]
+                top.plot([rc[0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
+                S.dot(top, 0, -i, lk, S.COL["lookup"], "rerun" if kind == "rerun" else "fixed")
+                S.record("fig6", target, f"the sanity swap, lookup extra loss {label}", *lk, source=run)
+                S.record("fig6", target, f"the sanity swap, recall extra loss {label}", *rc, source=run)
+            bar = ex[("C0", X.LOOKUP, "alf")]["excess"][0] + 0.15
+            top.plot([bar, bar], [-2.35, -1.65], color="#333333", lw=1.6, ls=":")
+            S.record("fig6", target, "batch 34's bar (pointer alone + 0.15)", round(bar, 4), source=run)
+        top.set_ylim(-len(parts) + 0.4, 0.6)
+        bot.set_xlim(0, 1)
+        bot.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
+        bot.set_xlabel("switches lost")
+        bot.grid(axis="x", color="#eeeeee")
+        cv = latest(pins.RESULTS_DIR / "x6_routes" / ctrl_run, "verdict-*/verdict.json") if ctrl_run else None
+        cc = {(x["condition"], x["reader"], x["arm"]): x for x in (cv or {}).get("ctrl", [])}
+        if not cc:
+            S.empty(bot, "not run")
+        else:
+            for i, (arm, label) in enumerate(ctrl):
+                lk, rc = cc[("C0", X.LOOKUP, arm)]["lost"], cc[("C0", X.RECALL, arm)]["lost"]
+                bot.plot([rc[0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
+                S.dot(bot, 0, -i, lk, S.COL["lookup"], "fixed")
+                S.record(
+                    "fig6",
+                    target,
+                    f"the sanity swap, lookup switches lost: {label.replace(chr(10), ' ')}",
+                    *lk,
+                    source=ctrl_run,
+                )
+                S.record(
+                    "fig6",
+                    target,
+                    f"the sanity swap, recall switches lost: {label.replace(chr(10), ' ')}",
+                    *rc,
+                    source=ctrl_run,
+                )
+            bar = cc[("C0", X.LOOKUP, "alf + random (J++ share)")]["lost"][0] + 0.15
+            bot.plot([bar, bar], [-1.35, -0.65], color="#333333", lw=1.6, ls=":")
+            S.record("fig6", target, "batch 36's bar (pointer + random + 0.15)", round(bar, 4), source=ctrl_run)
+        bot.set_ylim(-len(ctrl) + 0.4, 0.6)
+    axes[0, 0].set_yticks([-i for i in range(len(parts))], [p[1] for p in parts])
+    axes[1, 0].set_yticks([-i for i in range(len(ctrl))], [c[1] for c in ctrl])
+    for ax in axes[:, 0]:
+        ax.tick_params(axis="y", length=0)
+    axes[0, 0].set_ylabel("extra loss", fontsize=9.5, color=S.COL["muted"])
+    axes[1, 0].set_ylabel("switches lost", fontsize=9.5, color=S.COL["muted"])
     marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7),
-             plt.Line2D([], [], marker="o", ls="", color="#9a9a9a", ms=4.5)]  # fmt: skip
-    fig.legend(marks, ["lookup (95% CI)", "recall"], loc="upper right", bbox_to_anchor=(0.995, 0.995), ncol=2,
-               frameon=False, fontsize=9.5, handletextpad=0.3)  # fmt: skip
+             plt.Line2D([], [], marker="o", ls="", color="#9a9a9a", ms=4.5),
+             plt.Line2D([], [], ls=":", color="#333333", lw=1.6)]  # fmt: skip
+    fig.legend(marks, ["lookup (95% CI)", "recall", "bar fixed in advance"], loc="upper left",
+               bbox_to_anchor=(0.0, 0.945), ncol=3, frameon=False, fontsize=9.5, handletextpad=0.3)  # fmt: skip
     S.save(fig, "fig6_both_removed")
 
 
