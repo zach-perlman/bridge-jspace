@@ -15,6 +15,13 @@ sys.modules["mamba_ssm"] = k
 for sub in ("ops", "ops.triton", "ops.triton.ssd_combined", "ops.triton.selective_state_update", "ops.triton.layernorm_gated"):
     sys.modules[f"mamba_ssm.{sub}"] = importlib.import_module(f"{k.__name__}.{sub}")
 sys.modules["causal_conv1d"] = importlib.import_module(f"{k.__name__}._causal_conv1d")
+try:  # transformers <= 5.14 (jpp_lens's env): NemotronH loads its kernels through lazy_load_kernel; seed its table with the same build
+    import transformers.integrations.hub_kernels as _hk
+
+    _hk._KERNEL_MODULE_MAPPING["mamba-ssm"] = k
+    _hk._KERNEL_MODULE_MAPPING["causal-conv1d"] = sys.modules["causal_conv1d"]
+except (ImportError, AttributeError):
+    pass
 script = sys.argv[1]
 sys.argv = [script, *sys.argv[2:]]
 sys.path.insert(0, str(Path(script).resolve().parent))

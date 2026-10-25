@@ -1279,3 +1279,9 @@ in them.
   design runs unchanged (gate, profile, dose, test and swap at the pick, mid-depth swap L26-32).
 - **Bolt's J++:** pins switched to J++; its fit needs jpp_cli to load Bolt's own code over two GPUs. It gets its own
   note before it runs.
+
+**Amendment 45, note 1 (Zach, 2026-10-25 18:59 UTC, before the fit):** the hub mamba-ssm kernel needs `einops`, which
+jpp_lens's env lacked; installed at the harness env's version (0.8.2, nothing else changed). transformers 5.14.1 (that
+env) loads NemotronH's kernels through lazy_load_kernel (mamba-ssm and causal-conv1d at "version 1", unpinned).
+jpp_cli_hubmamba.py seeds that table with the harness's pinned build (kernels-community/mamba-ssm @28017f3 and its
+causal-conv1d). Checked on an empty Lightning in that env: fast path on, the scan and conv from that build.
