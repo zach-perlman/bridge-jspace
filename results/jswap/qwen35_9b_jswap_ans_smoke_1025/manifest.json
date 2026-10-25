@@ -1,0 +1,18 @@
+{
+  "run": "qwen35_9b_jswap_ans_smoke_1025",
+  "why": "Zach (2026-10-25): smoke of the answer-only swap conditions (amendment 38, before its runs)",
+  "target": "qwen3.5-9b",
+  "band": "12-16",
+  "set": "jsuite_v2_test_chat",
+  "competence": "qwen35_9b_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "swap_ans",
+    "swap_ans_u",
+    "swap_ans_rot",
+    "swap_noans"
+  ],
+  "k": 10,
+  "git_commit": "a4246119e285dec2dfc00ce961748845d7f1c251",
+  "limit": 2
+}

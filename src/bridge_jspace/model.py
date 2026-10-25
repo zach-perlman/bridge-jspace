@@ -261,7 +261,10 @@ def load_model() -> Model:
 
         extra["quantization_config"] = Mxfp4Config(dequantize=True)
     attn = pins.TARGETS[pins.TARGET].get("attn", "sdpa")  # gpt-oss: eager (learned attention sinks)
-    hf = auto.from_pretrained(path, dtype=torch.bfloat16, device_map="cuda", attn_implementation=attn, **extra).eval()
+    device_map: Any = "cuda"
+    if pins.TARGETS[pins.TARGET].get("split_gpus"):  # 2026-10-25 (DeepSeek-V4-Flash, 160 GB): two GPUs, see _split_map
+        device_map = _split_map(auto, path, pins.TARGETS[pins.TARGET]["split_gpus"])
+    hf = auto.from_pretrained(path, dtype=torch.bfloat16, device_map=device_map, attn_implementation=attn, **extra).eval()
     n = hf.config.get_text_config().num_hidden_layers
     assert n == pins.N_LAYERS, f"{pins.MODEL_REPO} has {n} blocks; pins.TARGETS says {pins.N_LAYERS}"
     vocab = hf.lm_head.weight.shape[0]
@@ -273,9 +276,56 @@ def load_model() -> Model:
     return Model(hf, tokenizer, decoded, special, mask)
 
 
+def _split_map(auto, path: str, cut: int) -> dict[str, int]:
+    """A device map over two GPUs: decoder blocks below `cut` on cuda:0, the rest on cuda:1, everything else (embeddings,
+    final norm, lm_head, rotary tables) on cuda:0, so inputs, logits and the lens's tensors stay on cuda:0 as on one
+    GPU. Blocks on cuda:1 are bridged by _forward_hooks."""
+    from accelerate import init_empty_weights
+    from transformers import AutoConfig
+
+    cfg = AutoConfig.from_pretrained(path)
+    with init_empty_weights():
+        skel = auto.from_config(cfg)
+    n = cfg.get_text_config().num_hidden_layers
+    layers_path = next(name for name, mod in skel.named_modules()
+                       if isinstance(mod, torch.nn.ModuleList) and name.endswith("layers") and len(mod) >= n)  # fmt: skip
+    dm: dict[str, int] = {}
+    mod, prefix = skel, ""
+    for part in layers_path.split("."):
+        for cname, _ in mod.named_children():
+            if cname != part:
+                dm[f"{prefix}{cname}"] = 0
+        mod, prefix = getattr(mod, part), f"{prefix}{part}."
+    for i in range(len(mod)):
+        dm[f"{layers_path}.{i}"] = 0 if i < cut else 1
+    return dm
+
+
+def _moved(x, device):
+    if isinstance(x, torch.Tensor):
+        return x.to(device)
+    if isinstance(x, tuple):
+        return tuple(_moved(v, device) for v in x)
+    return x
+
+
+def _bridged(module, hook):
+    """A forward hook for a block that may sit on another GPU than cuda:0 (split_gpus): the hook sees the block's output
+    on cuda:0, as on one GPU, and what it returns goes back to the block's device."""
+    dev = next(module.parameters()).device
+    if dev.type != "cuda" or dev.index in (None, 0):
+        return hook
+
+    def wrapped(m, args, out):
+        r = hook(m, args, _moved(out, "cuda:0"))
+        return None if r is None else _moved(r, dev)
+
+    return wrapped
+
+
 @contextlib.contextmanager
 def _forward_hooks(pairs):
-    handles = [module.register_forward_hook(hook) for module, hook in pairs]
+    handles = [module.register_forward_hook(_bridged(module, hook)) for module, hook in pairs]
     try:
         yield
     finally:

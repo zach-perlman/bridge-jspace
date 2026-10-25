@@ -1,0 +1,31 @@
+--- a/src/workspace_lens/lrp/lrp.py	2026-10-25 04:52:55.144746565 +0000
++++ src/workspace_lens/lrp/lrp.py	2026-10-25 04:52:55.162746490 +0000
+@@ -91,6 +91,8 @@
+     "MuseGlimmerTextMLP",  # SiLU; down(act(gate(x)) * up(x)), as Qwen3_5MLP (bridge-jspace, 2026-10-22)
+     "Qwen3_5MLP",
+     "Qwen2MLP",
++    "MistralMLP",  # down(act(gate(x)) * up(x)), as Qwen2MLP (bridge-jspace patch, 2026-10-25)
++    "Ministral3MLP",  # byte-identical to MistralMLP (transformers 5.17; bridge-jspace patch, 2026-10-25)
+     "Qwen3MLP",
+     "Qwen3_5MoeMLP",
+     "Qwen3MoeMLP",
+@@ -331,6 +333,8 @@
+     # Value-identical family: zero-init (1+w), same eps attr, same cast order.
+     "Qwen3_5MoeRMSNorm": _qwen3_5_rmsnorm_lrp_forward,
+     "Qwen2RMSNorm": _qwen2_rmsnorm_lrp_forward,
++    "MistralRMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2RMSNorm (bridge-jspace patch, 2026-10-25)
++    "Ministral3RMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to MistralRMSNorm (bridge-jspace patch, 2026-10-25)
+     "Qwen3RMSNorm": _qwen2_rmsnorm_lrp_forward,  # same forward as Qwen2's
+     "Qwen3MoeRMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2's
+     "DeepseekV4RMSNorm": _qwen2_rmsnorm_lrp_forward,  # byte-identical to Qwen2's
+--- a/src/workspace_lens/__init__.py	2026-10-25 04:52:55.145746561 +0000
++++ src/workspace_lens/__init__.py	2026-10-25 04:52:55.162746490 +0000
+@@ -52,6 +52,7 @@
+     )
+     if device_map is None:
+         hf_model = hf_model.cuda()
+-    tokenizer = AutoTokenizer.from_pretrained(model_name)
++    # bridge-jspace patch (2026-10-25): Mistral tokenizers need fix_mistral_regex=True or they mis-tokenize (transformers warns)
++    tokenizer = AutoTokenizer.from_pretrained(model_name, **({"fix_mistral_regex": True} if "mistral" in model_name.lower() else {}))
+     model = jlens.from_hf(hf_model, tokenizer)
+     return model  # type: ignore[return-value]

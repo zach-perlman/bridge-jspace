@@ -519,6 +519,54 @@ TARGETS: dict[str, dict[str, Any]] = {
         "frozen_lens_sha256": "1718c8c52dd8a9dad03738d4d625937c1fbba10be325b872ed446c7290fc11e1",
     },
 }
+# DeepSeek-V4-Flash's chat format, thinking off, as deepseek-ai's encoding/encoding_dsv4.py encode_messages(...,
+# thinking_mode="chat") renders system / user / assistant turns (read from its source and its chat-mode test, not run):
+# BOS, a system turn raw, each user turn "<｜User｜>" + content then "<｜Assistant｜></think>" when an assistant turn or the
+# generation follows, each assistant turn its content + EOS. The tokenizer ships no chat template (2026-10-25).
+DEEPSEEK_V4_CHAT_TEMPLATE = (
+    "{{- bos_token }}"
+    "{%- for m in messages %}"
+    "{%- if m['role'] == 'system' %}{{- m['content'] }}"
+    "{%- elif m['role'] == 'user' %}{{- '<｜User｜>' + m['content'] }}"
+    "{%- if loop.last or messages[loop.index0 + 1]['role'] == 'assistant' %}{{- '<｜Assistant｜></think>' }}{%- endif %}"
+    "{%- elif m['role'] == 'assistant' %}{{- m['content'] + '<｜end▁of▁sentence｜>' }}"
+    "{%- else %}{{- raise_exception('Only system, user and assistant roles are supported!') }}{%- endif %}"
+    "{%- endfor %}"
+)
+
+# 2026-10-25 (non-Qwen families, Zach): DeepSeek-V4-Flash (MoE, 284B total / 13B active, FP8, 160 GB; two GPUs) with
+# its published J++ (Ayonrinde & Lindsey, via neuronpedia), and Ministral 3 14B Instruct (dense, BF16 repo; its
+# tokenizer needs fix_mistral_regex; its template without the default system prompt) with our own J++ (fit pending).
+TARGETS["deepseek-v4-flash"] = {
+    "repo": "deepseek-ai/DeepSeek-V4-Flash",
+    "revision": "60d8d70770c6776ff598c94bb586a859a38244f1",
+    "n_layers": 43,
+    "norm_gain": "weight",
+    "bos": True,
+    "run_prefix": "dsv4f_",
+    "split_gpus": 22,
+    "chat_template": DEEPSEEK_V4_CHAT_TEMPLATE,
+    "lenses": {"jpp": (LENS_REPO, "deepseek-v4-flash/jpp/Salesforce-wikitext/DeepSeek-V4-Flash_jpp_lens.pt", "e166deb5ad540932100ef803c8c9bcc2a5453694")},
+    "frozen_lens_sha256": "e7dc42a68afb8411c4cba01605ce51eec17d7ad0f3150009173224e96864633e",
+}
+TARGETS["ministral-3-14b"] = {
+    "repo": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+    "revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+    "n_layers": 40,
+    "norm_gain": "weight",
+    "bos": True,
+    "run_prefix": "min14_",
+    "snapshot_ignore": ["consolidated.safetensors"],
+    "tokenizer_kwargs": {"fix_mistral_regex": True},
+    "chat_template": MISTRAL_CHAT_TEMPLATE,
+    "lenses": {"jpp": ("local", "cache/ministral-3-14b/lenses/jpp/Ministral-3-14B-Instruct-2512-BF16_jpp_lens.pt", None)},
+    "frozen_lens_sha256": None,  # set when the fit is done
+}
+
+# 2026-10-25: the 9B split over two GPUs (blocks 0-15 on cuda:0, 16-31 on cuda:1), to check model.split_gpus against the
+# one-GPU runs before DeepSeek-V4-Flash (which needs two GPUs) relies on it.
+TARGETS["qwen3.5-9b-split"] = {**TARGETS["qwen3.5-9b"], "split_gpus": 16, "run_prefix": "qwen35_9bsplit_"}
+
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")
 assert TARGET in TARGETS, f"BJ_TARGET={TARGET!r}: not one of {sorted(TARGETS)}"
 MODEL_REPO: str = TARGETS[TARGET]["repo"]

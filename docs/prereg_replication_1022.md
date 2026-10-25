@@ -1001,3 +1001,38 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   unembed10 / rot), jsuite2_score (scripts/queues/h200_rend_1025.sh). Predictions per model and rendering: M - K within
   10 of the model's v2 value (27B +51, 9B +43); rotated and logit-lens < 10; halves within 15.
 - **Order:** GPU1 after its night chain: A 27B, B 27B r2, r3; GPU0 after its chain: A 9B, B 9B r2, r3.
+
+## Amendment 39 (Zach, 2026-10-25 ~05:15 UTC, before any non-Qwen test run): DeepSeek-V4-Flash and Ministral 3 14B on v2
+
+- **Why (Zach):** every dependence claim so far is Qwen-only (OLMo-3 32B null; Muse mostly shared with the logit lens;
+  Gemma 4, gpt-oss, Kolibri untestable). Two more families: Zach chose DeepSeek-V4-Flash (recent, Qwen3.6-27B-class
+  on MMLU-Pro / GPQA; MoE) and Ministral 3 14B (dense; weaker, ~Qwen 9B or below); Instruct first, Base later only if
+  Instruct shows the split; DeepSeek with J++ only.
+- **Seen when this was written:** everything through amendment 38; the 122B's L24-30 runs; a Ministral smoke
+  (competence, first 120 items, countries: memory and K finals 8/8, PP 4/8, TP 2/8); DeepSeek's chat format (below);
+  the two-GPU split check (9B split over two GPUs vs one GPU, same settings: 270 of 270 rows identical, logp diff 0).
+- **Models.** DeepSeek-V4-Flash @60d8d70 (MoE, 43 blocks, FP8, 160 GB): two GPUs (model.split_gpus, blocks 0-21 on
+  cuda:0 with embeddings, final norm and lm_head, 22-42 on cuda:1, hooks bridged to cuda:0); chat with thinking off by
+  pins.DEEPSEEK_V4_CHAT_TEMPLATE, equal to deepseek-ai's encoding_dsv4.encode_messages(thinking_mode="chat") on system /
+  user / assistant turns (read from its source and its chat-mode test); published J++ (koayon/jpp-lenses@6c96867 via
+  neuronpedia/jacobian-lens@e166deb; 64 prompts, source layers 0-41; sha256 e7dc42a6...). Ministral 3 14B Instruct
+  (BF16 repo @3cea74c; dense, 40 blocks): tokenizer with fix_mistral_regex; pins.MISTRAL_CHAT_TEMPLATE (renders exactly
+  as the official template given a system prompt; ours passes none, the official default names Paris and the date);
+  our J++: scripts/lens_fit/fit_jpp.sh (safety-research/jpp_lens@93f02cd recipe, patched: Ministral3MLP and
+  Ministral3RMSNorm registered, byte-identical to Mistral's, and Mistral tokenizers loaded with fix_mistral_regex), 32
+  WikiText prompts, router 64, source layers 0-38, target the final block; its sha256 goes into pins when the fit ends.
+- **Procedure (scripts/queues/h200_nq_1025.sh, OLMo's amendment 31 procedure on v2):** gate (removal_textloss, top10 vs
+  rotated, the lens's layers at 31-69% depth; untestable if top10 adds >= 2 nats with the rotation <= 0.3); dev
+  (competence on jsuite_v2_dev_chat's facts words; band sweep, windows round(9/64 n) wide sliding by round(4/64 n) inside
+  the lens's layers, PP PM MP MM, paper10 and rot, n 100 per word; choose_band, as every model's band); test
+  (competence on jsuite_v2_test_chat's facts words; the knock-out at the dev band, paper10 / rot / unembed10 / rot, the
+  15 facts words; jsuite2_score); swap (jswap's six conditions, bridge_readout and jswap_by_relation at the dev band).
+- **Predictions, per model.** Representation (as in all five families so far): at the dev band the J-lens reads the
+  attribute at the mention above the logit lens, and the J-swap moves PM and TM (transfer >= 20, intervals above 0;
+  rotated and logit-lens swaps < 5; lookups PP PK TP TK kept >= 80%). Dependence, two-sided, readings fixed now: M - K
+  >= 30 with rotated and logit-lens < 10 = Qwen-like; M - K >= 30 with logit-lens >= 10 = Muse-like (partly shared);
+  M - K < 15 = OLMo-like (no dependence); between 15 and 30 = weak, reported as such. A gate failure is reported and no
+  knock-out claim is made for that model. Positions and R items follow only if M - K >= 15.
+- **Order:** GPU1 after its rerun chain: Ministral's fit, gate, dev; then both GPUs: DeepSeek gate, dev, test, swap;
+  then Ministral test, swap. Disk (Zach's approval): Muse's cache is deleted after its R rerun to fit DeepSeek's
+  download, OLMo's after its v2 knock-out.

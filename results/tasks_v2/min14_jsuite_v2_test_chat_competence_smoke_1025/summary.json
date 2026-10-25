@@ -1,0 +1,176 @@
+{
+  "seconds": 140,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 8,
+      "whole": 0.5,
+      "all_steps": 0.875,
+      "median_margin": 3.12,
+      "guess": 0.25,
+      "top_wrong": [
+        [
+          "North",
+          2
+        ],
+        [
+          "A",
+          1
+        ],
+        [
+          "Europe",
+          1
+        ]
+      ]
+    },
+    "PK/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 6.38,
+      "guess": 0.375,
+      "top_wrong": []
+    },
+    "PM/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 6.06,
+      "guess": 0.125,
+      "top_wrong": []
+    },
+    "PA/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 6.06,
+      "guess": 0.125,
+      "top_wrong": []
+    },
+    "PN/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 6.53,
+      "guess": 0.125,
+      "top_wrong": []
+    },
+    "MP/L0": {
+      "n": 8,
+      "whole": 0.875,
+      "all_steps": 1,
+      "median_margin": 2.94,
+      "guess": 0.375,
+      "top_wrong": [
+        [
+          "South",
+          1
+        ]
+      ]
+    },
+    "MK/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 6.19,
+      "guess": 0.125,
+      "top_wrong": []
+    },
+    "MM/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 6.34,
+      "guess": 0.125,
+      "top_wrong": []
+    },
+    "MA/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 6.16,
+      "guess": 0.375,
+      "top_wrong": []
+    },
+    "MN/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 6.25,
+      "guess": 0.5,
+      "top_wrong": []
+    },
+    "TP/L0": {
+      "n": 8,
+      "whole": 0.25,
+      "all_steps": 0.75,
+      "median_margin": -0.81,
+      "guess": 0.25,
+      "top_wrong": [
+        [
+          "North",
+          2
+        ],
+        [
+          "Asia",
+          1
+        ],
+        [
+          "Europe",
+          1
+        ]
+      ]
+    },
+    "TK/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 5.69,
+      "guess": 0.25,
+      "top_wrong": []
+    },
+    "TM/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 3.72,
+      "guess": 0.375,
+      "top_wrong": []
+    },
+    "TA/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 4.56,
+      "guess": 0.25,
+      "top_wrong": []
+    },
+    "TN/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 0.875,
+      "median_margin": 4.75,
+      "guess": 0.125,
+      "top_wrong": []
+    }
+  },
+  "by_domain": {
+    "countries": {
+      "PP": 0.5,
+      "PK": 1,
+      "PM": 1,
+      "PA": 1,
+      "PN": 1,
+      "MP": 0.875,
+      "MK": 1,
+      "MM": 1,
+      "MA": 1,
+      "MN": 1,
+      "TP": 0.25,
+      "TK": 1,
+      "TM": 1,
+      "TA": 1,
+      "TN": 1
+    }
+  },
+  "pick": {}
+}
