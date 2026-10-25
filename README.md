@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Each row is one setting: compare the purple (lookup) and dark (recall) dot; the grey band is "not needed".*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 4fd53195 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 3d42857c from the run files.
 
 ## Setup
 
@@ -61,7 +61,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **What we did.** (a) The routes test at an early layer where the lookup still needs J++. (b) J++ and the pointer directions removed together in the sanity swap (only the pick changes). (c) Scenes split by whether the asked pick is the bridge's first mention.
 - **What we found.**
   - (a) Early, the lookup follows identity only (1.00 [1.00, 1.00], 1.00 [1.00, 1.00]); without J++ it gives the original answer (0.99 [0.97, 1.00], 0.99 [0.98, 1.00]), and the recall stops switching too.
-  - (b) Removing both costs the lookup 0.12 [0.04, 0.19] (9B) and 0.26 [0.19, 0.32] (27B) more than the pointer alone; the bar fixed in advance (0.15) is met on the 27B only. Against a random part of J++'s size instead of J++, the 27B's lookup still loses 0.23 [0.18, 0.27] more of its switches with J++, the 9B's −0.08 [−0.11, −0.04] (fixed in advance; the bar is met on the 27B only).
+  - (b) Removing both costs the lookup 0.12 [0.04, 0.19] (9B) and 0.26 [0.19, 0.32] (27B) more than the pointer alone; the bar fixed in advance (0.15) is met on the 27B only. Against a random part of J++'s size instead of J++, the 27B's lookup still loses 0.23 [0.18, 0.27] more of its switches with J++, the 9B's −0.08 [−0.11, −0.04] (fixed in advance; the bar is met on the 27B only). On the 9B a random part of J++'s size costs the lookup more than J++, so its second route is not in J++; in these scenes (the item already mentioned) the 9B's recall does not need J++ either (0.01 [−0.01, 0.04]), as table 3c predicts. The 27B is the case where the same scenes show the split and its mechanism.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table).
 
 ![Early layers: no pointer yet; at the fixed layer, a pointer the lens can't see](figures/story/fig5_depth.png)
