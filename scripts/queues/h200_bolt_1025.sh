@@ -36,7 +36,7 @@ from huggingface_hub import snapshot_download
 print('=== BOLTDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-for j in h200nqDS-1025-0505 h200nemL-1025-0522; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
+for j in h200nqDS-1025-0505 h200nemL2-1025-0558; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
 for g in 0 1; do until [ "$(nvidia-smi -i $g --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 120000 ]; do sleep 60; done; done
 echo "=== GPUs 0,1 free $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 < /dev/null || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }
