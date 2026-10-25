@@ -1,8 +1,13 @@
 diff --git a/src/workspace_lens/__init__.py b/src/workspace_lens/__init__.py
-index 2bb8d8b..2f83560 100644
+index 2bb8d8b..bbe8f28 100644
 --- a/src/workspace_lens/__init__.py
 +++ b/src/workspace_lens/__init__.py
-@@ -37,7 +37,13 @@ def get_hf_model(
+@@ -1,3 +1,4 @@
++from pathlib import Path
+ """Workspace lens: lenses as readouts of decoder-transformer residuals."""
+ 
+ import torch as t
+@@ -37,7 +38,21 @@ def get_hf_model(
          # loading attributes from this one: dequantize=True unpacks the FP8 blocks and the FP4
          # experts to bf16 on load.
          from_pretrained_kwargs["quantization_config"] = FineGrainedFP8Config(dequantize=True)
@@ -10,6 +15,14 @@ index 2bb8d8b..2f83560 100644
 +    from transformers import AutoConfig, AutoModelForImageTextToText
 +    from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING_NAMES
 +
++    import json as _json
++    from pathlib import Path as _Path
++
++    _cfg = _Path(model_name) / "config.json"
++    if _cfg.is_file() and _json.loads(_cfg.read_text()).get("model_type") == "nemotron_h_omni":
++        hf_model = _bolt_language_model(model_name, device_map or "auto", attn_implementation)
++        tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=False)
++        return jlens.from_hf(hf_model, tokenizer, layout=jlens.hf.Layout("model", norm="norm_f", embed="embeddings"), force_bos=False)  # type: ignore[return-value]
 +    auto_class = AutoModelForCausalLM
 +    if AutoConfig.from_pretrained(model_name).model_type not in MODEL_FOR_CAUSAL_LM_MAPPING_NAMES:
 +        auto_class = AutoModelForImageTextToText  # bridge-jspace 2026-10-22: Muse Glimmer has no causal-LM class
@@ -17,7 +30,7 @@ index 2bb8d8b..2f83560 100644
          model_name,
          dtype=t.bfloat16,
          attn_implementation=attn_implementation,
-@@ -46,6 +52,12 @@ def get_hf_model(
+@@ -46,6 +61,35 @@ def get_hf_model(
      )
      if device_map is None:
          hf_model = hf_model.cuda()
@@ -32,6 +45,29 @@ index 2bb8d8b..2f83560 100644
 +    else:
 +        model = jlens.from_hf(hf_model, tokenizer)
      return model  # type: ignore[return-value]
++
++
++def _bolt_language_model(path: str, device_map: str, attn_implementation: str | None):
++    """bridge-jspace patch (2026-10-25, amendment 46): Nemotron 3.5 Bolt's language model alone (NemotronHPuzzleForCausalLM),
++    built by NVIDIA's own code from the pinned local snapshot (read before use; Zach approved running it), its checkpoint
++    keys mapped onto it, the vision tower left unloaded, sharded by device_map. Bolt's RMSNorm applies its weight in fp32
++    before the downcast (Olmo3RMSNorm's order, not Qwen2's), so its LN rule is Olmo3's; the class shares its name with
++    transformers' NemotronHRMSNorm, so the rule is set here, for this process only."""
++    from transformers.dynamic_module_utils import get_class_from_dynamic_module
++
++    from .lrp import lrp as _lrp
++
++    def special(o):
++        return float(o["__float__"]) if set(o) == {"__float__"} else o
++
++    import json
++
++    raw = json.loads((Path(path) / "config.json").read_text(), object_hook=special)["llm_config"]
++    cfg = get_class_from_dynamic_module("configuration_nemotron_h_puzzle.NemotronHPuzzleConfig", path).from_dict(raw)
++    cls = get_class_from_dynamic_module("modeling_nemotron_h_puzzle.NemotronHPuzzleForCausalLM", path)
++    _lrp._RMSNORM_LRP_FORWARDS["NemotronHRMSNorm"] = _lrp._olmo3_rmsnorm_lrp_forward
++    return cls.from_pretrained(path, config=cfg, key_mapping={r"^language_model\.backbone\.": "model.", r"^language_model\.": ""},
++                               dtype=t.bfloat16, device_map=device_map, attn_implementation=attn_implementation).eval()
 diff --git a/src/workspace_lens/lrp/lrp.py b/src/workspace_lens/lrp/lrp.py
 index d310df3..dfb171a 100644
 --- a/src/workspace_lens/lrp/lrp.py

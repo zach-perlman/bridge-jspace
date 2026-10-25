@@ -1289,3 +1289,19 @@ causal-conv1d). Checked on an empty Lightning in that env: fast path on, the sca
 **Amendment 45, note 2 (Zach, 2026-10-25 19:06 UTC, before the fit): a quality gate on Lightning's J++.** If its held-out
 macro pass@10 does not exceed the logit lens's, the chain stops before the gate, profile, knock-out or swap, and
 nothing is claimed with that lens. Ministral's was 0.651 vs 0.461.
+
+## Amendment 46 (Zach, 2026-10-25 19:17 UTC, before any Bolt run): Bolt's J++ and chain
+
+- **Why:** Zach chose option A: J++ for both Nemotrons, no plain J-lens.
+- **Bolt's J++ (scripts/queues/h200_boltfit_1025.sh):** Lightning's recipe (amendment 45 and its notes: LN rule alone,
+  router 64, 32 prompts, the quality gate), source layers 0-86, two GPUs (jpp_cli --device-map auto). jpp_lens's
+  get_hf_model (patch, scripts/lens_fit/jpp_lens_bridge.patch) builds Bolt's language model alone by its own code from
+  the pinned snapshot (e09a4ce), as the harness does. Bolt's RMSNorm applies its weight in fp32 before the downcast, so
+  its LN rule is Olmo3RMSNorm's. The class shares transformers' NemotronHRMSNorm name, so the rule is set in that
+  process only. jpp_cli_hubmamba.py also reports mamba_ssm and causal_conv1d available, which Bolt's code checks before
+  importing them. Checked on an empty Bolt in jpp_lens's env: fast path on; 89 norms patched (88 blocks + norm_f) with
+  Olmo3's rule; patcher OK.
+- **Chain (scripts/queues/h200_bolt_1025.sh, h200bolt8):** as amendment 44, with this fit in place of the plain
+  J-lens: DeepSeek's cache dropped only after both DeepSeek chains end with 0 failures; download; after Lightning
+  (h200nemL10); smoke and the kernel-vs-torch check; J++ fit and its quality gate; gate, profile, dose, test and swap at
+  the pick, mid-depth swap L44-55. The 27B renderings run after Bolt (h200qrend27e).
