@@ -1127,3 +1127,12 @@ moves to blocks 0-13 on cuda:0 (was 0-21) so it fits beside Ministral's fit on G
 (270 of 270 rows identical) is what makes the split point immaterial. Chain: scripts/queues/h200_ds3_1025.sh (waits
 for 60 GB free on GPU 0 and 120 GB on GPU 1), then amendment 39's procedure unchanged. Lightning (relaunched as
 h200nemL4) and Bolt (h200bolt3) wait on it. The second smoke's check file is kept in scratch (killed_1025).
+
+**Amendment 39, note 3 (Zach, 2026-10-25 09:19 UTC; no Ministral lens or knock-out data seen): Ministral's fit ran out of
+disk.** The relaunched fit (h200min2) fitted all 32 prompts (about 65 s each), then failed writing its final 14 GB
+checkpoint: the disk was full (44 GB free beside DeepSeek's and Lightning's caches, and the fit's artifacts need more).
+The chain's "No LN-rule patcher" line was the first attempt's, left in the same log. Fix without deleting anything: the
+fit's working directory /workspace/ext/ministral-3-14b_fit is a symlink to /dev/shm (RAM, 125 GB free). Its router
+(64 prompts) is kept; the exported lens goes to the repo cache on disk as before. If the box restarts mid-fit, the fit
+reruns. h200min3 runs h200_minfit_1025.sh 0, then h200_nq_1025.sh 0 gate dev test swap, once h200min2 has exited.
+h200min2's dev competence, run after its failed fit, is reused. Procedure and readings unchanged.
