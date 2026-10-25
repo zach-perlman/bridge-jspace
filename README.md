@@ -10,9 +10,9 @@
 - Early, the bridge carries only the item's identity, inside J++, which both readers need; later it adds a pointer outside J++ only the lookup uses (candidate; Section 3); on the 27B, removing both breaks the lookup beyond the pointer alone.
 
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
-*Fig. 1. Compare the lookup and recall dot in each row; grey band: not needed.*
+*Fig. 1. Lookup against recall in each row; grey band: not needed.*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at c1b122ea from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 82d47e49 from the run files.
 
 ## Setup
 
@@ -51,7 +51,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 ![The lookup follows identity or position, never the value](figures/story/fig4_routes.png)
 *Fig. 3, Fig. 4. Compare blue (identity) and orange (position) across rows; no green (value) appears. Hatched: 122B, after the data, gate 0.75.*
 
-- **Caveat.** When the same item moved, a random part of the pointer's size also removed position (Appendix B, F20).
+- **Caveat.** Same item moved: a random part of the pointer's size also removed position (F20).
 
 ## 3. Why the readers split: with depth the bridge adds a pointer the lens can't see
 
@@ -74,7 +74,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 | Two people swap picks | no | 0.01 [−0.04, 0.07] | 0.35 [0.26, 0.43] | 0.14 [0.07, 0.22] | 0.67 [0.58, 0.76] | −0.01 [−0.08, 0.06] | 0.20 [0.10, 0.30] |
 | Only the asked person's pick changes | yes | *−0.11 [−0.29, 0.10]; 19 switches* | 0.57 [0.47, 0.67] | *0.33 [0.10, 0.60]; 12 switches* | 0.73 [0.58, 0.86] | *0.00 [0.00, 0.00]; 14 switches* | 0.40 [0.25, 0.54] |
 | Only the asked person's pick changes | no | 0.00 [0.00, 0.00] | 0.17 [0.11, 0.23] | 0.01 [0.00, 0.04] | 0.49 [0.39, 0.60] | −0.01 [−0.07, 0.04] | 0.10 [0.03, 0.17] |
-| Same, fresh scenes | no | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] | pending | pending |
+| Same, fresh scenes | no | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] | not tested (gate) | not tested (gate) |
 
 *J++ extra loss, after the data; italics: under 30 lookup switches (count shown); n in Appendix A.*
 
@@ -87,7 +87,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - The gap everywhere: the 122B's varied scenes (0.15 [0.12, 0.18]) and the 27B's natural passages (0.27 [0.13, 0.41]) are in between.
 - On the 122B the layer's main directions at J++'s share cost the recall 0.21 [0.13, 0.30], near J++'s 0.26 [0.16, 0.36].
 - The locker number at the bridge word: never the answer; digit directions cost 0.00. The positive control (chemical symbols) stayed below its 0.20 bar: 27B 0.15 [0.10, 0.19].
-- Gates missed (bar 0.80): the 9B's natural passages (lookup 0.78), the 122B's routes (recall 0.797); reruns at 0.75 are after the data. One model family; the 122B in FP8; natural passages: one-token bridges only.
+- Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup 0.78), the 122B's routes (recall 0.797) and replication (recall 0.77); their reruns at 0.75 are after the data, descriptive, none a confirmation. One model family; the 122B in FP8; natural passages: one-token bridges.
 
 ## 5. How we checked
 
@@ -110,11 +110,11 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | Recall, J++ / main directions at J++'s share | 0.37 [0.29, 0.43] / 0.13 [0.06, 0.19] | 0.61 [0.51, 0.69] / 0.16 [0.08, 0.23] | 0.26 [0.16, 0.36] / 0.21 [0.13, 0.30] |
 | Lookup, pointer directions | 0.49 [0.38, 0.59] | 0.14 [0.07, 0.22] | 0.31 [0.20, 0.43] |
 | n, table 3c rows (first mention yes / no): two people swap picks | 100 / 100 | 99 / 101 | 115 / 85 |
-| n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | 100 / 100; 200 | 97 / 103; 200 | 115 / 85; pending |
+| n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | 100 / 100; 200 | 97 / 103; 200 | 115 / 85; not tested (gate) |
 | Pointer probe right; another person's earlier pick read as first mention | 0.97; 0.90 | 0.99; 0.56 | 0.92; 0.96 |
 | Routes, another item moved, position without the pointer / without a random part of its size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] (after the data) |
 | Early layer, recall still switching without J++ | 0.05 [0.02, 0.08] | 0.01 [0.00, 0.02] | 0.20 [0.13, 0.28] (after the data) |
-| Routes, position share at each tested layer (another item moved) | L6 0.00 [0.00, 0.00]; L8 0.03 [0.01, 0.05]; L10 0.02 [0.01, 0.04]; L12 0.51 [0.46, 0.56] | L16 0.00 [0.00, 0.00]; L20 0.00 [0.00, 0.00]; L24 0.00 [0.00, 0.00]; L28 0.34 [0.29, 0.40]; L32 0.34 [0.28, 0.39] | L24 0.00 [0.00, 0.00]; L27 0.00 [0.00, 0.00]; L30 0.00 [0.00, 0.00]; L33 0.38 [0.33, 0.44]; L36 pending (after the data) |
+| Routes, position share at each tested layer (another item moved) | L6 0.00 [0.00, 0.00]; L8 0.03 [0.01, 0.05]; L10 0.02 [0.01, 0.04]; L12 0.51 [0.46, 0.56] | L16 0.00 [0.00, 0.00]; L20 0.00 [0.00, 0.00]; L24 0.00 [0.00, 0.00]; L28 0.34 [0.29, 0.40]; L32 0.34 [0.28, 0.39] | L24 0.00 [0.00, 0.00]; L27 0.00 [0.00, 0.00]; L30 0.00 [0.00, 0.00]; L33 0.38 [0.33, 0.44]; L36 0.58 [0.52, 0.63] (after the data) |
 | Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01]; 0.00 [0.00, 0.00] | 0.21 [0.16, 0.26] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00] (after the data) |
 | Sanity swap, switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03] (after the data) |
 | Sanity swap, lookup without both / pointer alone | 0.43 [0.39, 0.47] / 0.31 [0.26, 0.37] | 0.41 [0.35, 0.47] / 0.15 [0.12, 0.19] | 0.35 [0.29, 0.41] / 0.26 [0.22, 0.30] (after the data) |

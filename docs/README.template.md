@@ -10,7 +10,7 @@
 - Early, the bridge carries only the item's identity, inside J++, which both readers need; later it adds a pointer outside J++ only the lookup uses (candidate; Section 3); on the 27B, removing both breaks the lookup beyond the pointer alone.
 
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
-*Fig. 1. Compare the lookup and recall dot in each row; grey band: not needed.*
+*Fig. 1. Lookup against recall in each row; grey band: not needed.*
 
 **Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B; 25 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at {{head}} from the run files.
 
@@ -51,7 +51,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 ![The lookup follows identity or position, never the value](figures/story/fig4_routes.png)
 *Fig. 3, Fig. 4. Compare blue (identity) and orange (position) across rows; no green (value) appears. Hatched: 122B, after the data, gate 0.75.*
 
-- **Caveat.** When the same item moved, a random part of the pointer's size also removed position (Appendix B, F20).
+- **Caveat.** Same item moved: a random part of the pointer's size also removed position (F20).
 
 ## 3. Why the readers split: with depth the bridge adds a pointer the lens can't see
 
@@ -74,7 +74,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 | Two people swap picks | no | {{num|comp_two_fmno_lk_cell_9b}} | {{num|comp_two_fmno_rc_9b}} | {{num|comp_two_fmno_lk_cell_27b}} | {{num|comp_two_fmno_rc_27b}} | {{num|comp_two_fmno_lk_cell_122b}} | {{num|comp_two_fmno_rc_122b}} |
 | Only the asked person's pick changes | yes | {{num|comp_one_fmyes_lk_cell_9b}} | {{num|comp_one_fmyes_rc_9b}} | {{num|comp_one_fmyes_lk_cell_27b}} | {{num|comp_one_fmyes_rc_27b}} | {{num|comp_one_fmyes_lk_cell_122b}} | {{num|comp_one_fmyes_rc_122b}} |
 | Only the asked person's pick changes | no | {{num|comp_one_fmno_lk_cell_9b}} | {{num|comp_one_fmno_rc_9b}} | {{num|comp_one_fmno_lk_cell_27b}} | {{num|comp_one_fmno_rc_27b}} | {{num|comp_one_fmno_lk_cell_122b}} | {{num|comp_one_fmno_rc_122b}} |
-| Same, fresh scenes | no | {{num|comp_rep_fmno_lk_cell_9b}} | {{num|comp_rep_fmno_rc_9b}} | {{num|comp_rep_fmno_lk_cell_27b}} | {{num|comp_rep_fmno_rc_27b}} | pending | pending |
+| Same, fresh scenes | no | {{num|comp_rep_fmno_lk_cell_9b}} | {{num|comp_rep_fmno_rc_9b}} | {{num|comp_rep_fmno_lk_cell_27b}} | {{num|comp_rep_fmno_rc_27b}} | not tested (gate) | not tested (gate) |
 
 *J++ extra loss, after the data; italics: under 30 lookup switches (count shown); n in Appendix A.*
 
@@ -87,7 +87,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - The gap everywhere: the 122B's varied scenes ({{num|x0b_c_122b}}) and the 27B's natural passages ({{num|nat_gap_27b}}) are in between.
 - On the 122B the layer's main directions at J++'s share cost the recall {{num|pcaeq_pca_eq_rc_excess_122b}}, near J++'s {{num|pcaeq_jpp_rc_excess_122b}}.
 - The locker number at the bridge word: never the answer; digit directions cost {{num|dig_lk_jppdig_k10_before_27b}}. The positive control (chemical symbols) stayed below its 0.20 bar: 27B {{num|x4_D_elements_27b}}.
-- Gates missed (bar 0.80): the 9B's natural passages (lookup {{num|nat_gate_lk_9b}}), the 122B's routes (recall {{num|rt_c0gate_rc_122b}}); reruns at 0.75 are after the data. One model family; the 122B in FP8; natural passages: one-token bridges only.
+- Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup {{num|nat_gate_lk_9b}}), the 122B's routes (recall {{num|rt_c0gate_rc_122b}}) and replication (recall {{num|rep_gate_rc_122b}}); their reruns at 0.75 are after the data, descriptive, none a confirmation. One model family; the 122B in FP8; natural passages: one-token bridges.
 
 ## 5. How we checked
 
@@ -110,11 +110,11 @@ Every number on this page comes from [figures/story/data.csv](figures/story/data
 | Recall, J++ / main directions at J++'s share | {{num|pcaeq_jpp_rc_excess_9b}} / {{num|pcaeq_pca_eq_rc_excess_9b}} | {{num|pcaeq_jpp_rc_excess_27b}} / {{num|pcaeq_pca_eq_rc_excess_27b}} | {{num|pcaeq_jpp_rc_excess_122b}} / {{num|pcaeq_pca_eq_rc_excess_122b}} |
 | Lookup, pointer directions | {{num|mmlf_Alf_lk_excess_9b}} | {{num|mmlf_Alf_lk_excess_27b}} | {{num|mmlf_Alf_lk_excess_122b}} |
 | n, table 3c rows (first mention yes / no): two people swap picks | {{num|comp_two_fmyes_n_9b}} / {{num|comp_two_fmno_n_9b}} | {{num|comp_two_fmyes_n_27b}} / {{num|comp_two_fmno_n_27b}} | {{num|comp_two_fmyes_n_122b}} / {{num|comp_two_fmno_n_122b}} |
-| n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | {{num|comp_one_fmyes_n_9b}} / {{num|comp_one_fmno_n_9b}}; {{num|comp_rep_fmno_n_9b}} | {{num|comp_one_fmyes_n_27b}} / {{num|comp_one_fmno_n_27b}}; {{num|comp_rep_fmno_n_27b}} | {{num|comp_one_fmyes_n_122b}} / {{num|comp_one_fmno_n_122b}}; pending |
+| n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | {{num|comp_one_fmyes_n_9b}} / {{num|comp_one_fmno_n_9b}}; {{num|comp_rep_fmno_n_9b}} | {{num|comp_one_fmyes_n_27b}} / {{num|comp_one_fmno_n_27b}}; {{num|comp_rep_fmno_n_27b}} | {{num|comp_one_fmyes_n_122b}} / {{num|comp_one_fmno_n_122b}}; not tested (gate) |
 | Pointer probe right; another person's earlier pick read as first mention | {{num|v4_b_before_9b}}; {{num|dup_otherfirst_reads_other_9b}} | {{num|v4_b_before_27b}}; {{num|dup_otherfirst_reads_other_27b}} | {{num|v4_b_before_122b}}; {{num|dup_otherfirst_reads_other_122b}} |
 | Routes, another item moved, position without the pointer / without a random part of its size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | {{num|rtg_C2_no_alf_position_122b}} / {{num|rtg_C2_no_alf_rand_position_122b}} (after the data) |
 | Early layer, recall still switching without J++ | {{num|rte_C2_no_jpp_recall_follows_s_9b}} | {{num|rte_C2_no_jpp_recall_follows_s_27b}} | {{num|rte_C2_no_jpp_recall_follows_s_122b}} (after the data) |
-| Routes, position share at each tested layer (another item moved) | L6 {{num|rte_C2_whole_position_9b}}; L8 {{num|rts8_C2_whole_position_9b}}; L10 {{num|rts10_C2_whole_position_9b}}; L12 {{num|rt_C2_whole_position_9b}} | L16 {{num|rte_C2_whole_position_27b}}; L20 {{num|rts20_C2_whole_position_27b}}; L24 {{num|rts24_C2_whole_position_27b}}; L28 {{num|rts28_C2_whole_position_27b}}; L32 {{num|rt_C2_whole_position_27b}} | L24 {{num|rts24_C2_whole_position_122b}}; L27 {{num|rte_C2_whole_position_122b}}; L30 {{num|rts30_C2_whole_position_122b}}; L33 {{num|rtg_C2_whole_position_122b}}; L36 pending (after the data) |
+| Routes, position share at each tested layer (another item moved) | L6 {{num|rte_C2_whole_position_9b}}; L8 {{num|rts8_C2_whole_position_9b}}; L10 {{num|rts10_C2_whole_position_9b}}; L12 {{num|rt_C2_whole_position_9b}} | L16 {{num|rte_C2_whole_position_27b}}; L20 {{num|rts20_C2_whole_position_27b}}; L24 {{num|rts24_C2_whole_position_27b}}; L28 {{num|rts28_C2_whole_position_27b}}; L32 {{num|rt_C2_whole_position_27b}} | L24 {{num|rts24_C2_whole_position_122b}}; L27 {{num|rte_C2_whole_position_122b}}; L30 {{num|rts30_C2_whole_position_122b}}; L33 {{num|rtg_C2_whole_position_122b}}; L36 {{num|rts36_C2_whole_position_122b}} (after the data) |
 | Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | {{num|rtk_C2_keep_alf_position_9b}} / {{num|rtk_C2_keep_alf_rand_position_9b}}; {{num|rtk_C2_keep_jpp_identity_9b}} | {{num|rtk_C2_keep_alf_position_27b}} / {{num|rtk_C2_keep_alf_rand_position_27b}}; {{num|rtk_C2_keep_jpp_identity_27b}} | {{num|rtk_C2_keep_alf_position_122b}} / {{num|rtk_C2_keep_alf_rand_position_122b}}; {{num|rtk_C2_keep_jpp_identity_122b}} (after the data) |
 | Sanity swap, switches lost: pointer + J++ minus pointer + random | {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}} (after the data) |
 | Sanity swap, lookup without both / pointer alone | {{num|rtb_ex_C0_both_lk_9b}} / {{num|rtb_ex_C0_alf_lk_9b}} | {{num|rtb_ex_C0_both_lk_27b}} / {{num|rtb_ex_C0_alf_lk_27b}} | {{num|rtb_ex_C0_both_lk_122b}} / {{num|rtb_ex_C0_alf_lk_122b}} (after the data) |

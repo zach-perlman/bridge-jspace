@@ -350,6 +350,10 @@ def replicate_numbers(num: Numbers) -> None:
         num.add(f"rep_jpp_clause_{m}", "met" if v["rule"]["jpp_clause"] else "not met", src)
         num.add(f"rep_ptr_clause_{m}", "met" if v["rule"]["pointer_clause"] else "not met", src)
         num.add(f"rep_n_{m}", str(v["manifest"]["items"]), src)
+    gate = pins.RESULTS_DIR / "x0_replicate" / "qwen35_122b_x0_replicate" / "gate.json"
+    if gate.exists():  # the 122B's run fixed in advance stopped at its gate (x0_122b_b9): not tested
+        acc = json.loads(gate.read_text())["gate"]["chat"]["org_accuracy"]
+        num.add("rep_gate_rc_122b", f2(acc[X.RECALL]), str(gate.relative_to(pins.REPO_ROOT)))
 
 
 def natural_numbers(num: Numbers) -> None:
