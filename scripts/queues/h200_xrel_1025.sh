@@ -8,7 +8,7 @@ export UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segme
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 W="Zach (2026-10-25, prereg amendment 47)"
-until grep -qs "^EXIT" $R-h200qrend9-1025-1720.log; do sleep 60; done
+# 2026-10-25 23:55 UTC (Zach: GPUs underused): no longer waits for the 9B renderings; it runs beside them on GPU 0
 fails=0
 for spec in "qwen3.5-9b:qwen35_9b_:12-16:16" "qwen3.6-27b::32-40:8"; do
   IFS=: read -r key p band batch <<< "$spec"
