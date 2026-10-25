@@ -576,6 +576,7 @@ TARGETS["nemotron-3.5-lightning"] = {
     "norm_gain": "weight",
     "bos": False,
     "run_prefix": "nem35l_",
+    "use_kernels": True,  # HF-hub kernels (kernels-community/mamba-ssm & co.): 9-12x the torch Mamba path; WikiText NLL 2.4642 vs 2.4634 (amendment 42)
     "frozen_lens": "jlens",
     "lenses": {"jlens": ("local", "cache/nemotron-3.5-lightning/lenses/jlens/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jlens.pt", None)},
     "frozen_lens_sha256": None,  # set when the Lightning fit is done
@@ -623,7 +624,10 @@ if TARGET != "qwen3.6-27b":
 
 def model_pin() -> dict[str, str]:
     """The target model as manifests record it."""
-    return {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": TARGETS[TARGET].get("attn", "sdpa")}
+    pin = {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": TARGETS[TARGET].get("attn", "sdpa")}
+    if TARGETS[TARGET].get("use_kernels"):
+        pin["kernels"] = "hub"
+    return pin
 
 
 def check_run_name(name: str) -> None:

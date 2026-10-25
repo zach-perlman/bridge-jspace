@@ -17,6 +17,7 @@ multimodal checkpoint, split over two GPUs by pins' split_gpus); --repo / --revi
 from __future__ import annotations
 
 import argparse
+import logging
 import sys
 import time
 from pathlib import Path
@@ -47,6 +48,8 @@ def main(a) -> None:
     else:
         tok = AutoTokenizer.from_pretrained(a.repo, revision=a.revision)
         hf = AutoModelForCausalLM.from_pretrained(a.repo, revision=a.revision, dtype=torch.bfloat16, device_map="cuda").eval()
+        if a.use_kernels:  # 2026-10-25 (amendment 42): HF-hub kernels, as the harness loads Nemotron
+            hf.set_use_kernels(True)
     bos = tok.bos_token_id is not None and not a.no_bos
     layout = jlens.hf.Layout("model", norm="norm_f", embed="embeddings") if hasattr(hf.model, "norm_f") else None
     model = jlens.from_hf(hf, tok, layout=layout, force_bos=bos)
@@ -60,6 +63,7 @@ def main(a) -> None:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")  # jlens logs time and convergence per prompt
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--repo", required=True)
     ap.add_argument("--revision", required=True)
@@ -68,4 +72,5 @@ if __name__ == "__main__":
     ap.add_argument("--dim-batch", type=int, default=64)
     ap.add_argument("--no-bos", action="store_true", help="no BOS first, for a tokenizer that adds none")
     ap.add_argument("--harness", action="store_true", help="load BJ_TARGET's model as bridge_jspace does (see above)")
+    ap.add_argument("--use-kernels", action="store_true", help="HF-hub kernels (Nemotron's mamba-ssm), as pins' use_kernels")
     main(ap.parse_args())

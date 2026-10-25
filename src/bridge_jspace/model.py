@@ -275,6 +275,8 @@ def load_model() -> Model:
     if pins.TARGETS[pins.TARGET].get("split_gpus"):  # 2026-10-25 (DeepSeek-V4-Flash, 160 GB): two GPUs, see _split_map
         device_map = _split_map(auto, path, pins.TARGETS[pins.TARGET]["split_gpus"], cfg)
     hf = auto.from_pretrained(path, dtype=torch.bfloat16, device_map=device_map, attn_implementation=attn, **extra).eval()
+    if pins.TARGETS[pins.TARGET].get("use_kernels"):  # Nemotron 3.5 (2026-10-25, amendment 42): HF-hub kernels (mamba-ssm & co.)
+        hf.set_use_kernels(True)
     n = hf.config.get_text_config().num_hidden_layers
     assert n == pins.N_LAYERS, f"{pins.MODEL_REPO} has {n} blocks; pins.TARGETS says {pins.N_LAYERS}"
     vocab = hf.lm_head.weight.shape[0]

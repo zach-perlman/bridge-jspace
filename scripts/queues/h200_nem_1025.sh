@@ -26,7 +26,7 @@ from huggingface_hub import snapshot_download
 print('=== NEMDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-until grep -qs "=== nq deepseek-v4-flash done" $R-h200nqDS3-1025-0900.log; do sleep 60; done  # 2026-10-25: DeepSeek's third chain; its gate-to-swap part only
+until grep -qs "=== nq deepseek-v4-flash done" $R-h200ds42-1025-1700.log; do sleep 60; done  # 2026-10-25 (amendment 42): DeepSeek's profile chain
 until [ "$(nvidia-smi -i $G --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 100000 ]; do sleep 60; done
 echo "=== GPU $G free after DeepSeek $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }
@@ -45,9 +45,9 @@ sm=${P}jsuite_v2_dev_chat_competence_smoke_1025
 python3 -c "import json,sys; s=json.load(open(sys.argv[1]))['by_word_level']; print('=== NEMSMOKECOMP', {k: round(v['whole'], 2) for k, v in s.items()})" results/tasks_v2/$sm/summary.json
 if [ ! -f $LENS ]; then
   ok=0
-  for db in 32 16; do  # 64, the default, ran out of memory in the torch Mamba scan (2026-10-25, amendment 40 note 2)
+  for db in 64 32 16; do  # hub kernels (amendment 42); 64 ran out of memory on the torch Mamba scan (amendment 40 note 2)
     echo "=== $KEY J-lens fit, dim_batch $db $(date -u +%T)"
-    $PY scripts/lens_fit/fit_jlens.py --repo $REPO --revision $REV --out $LENS --n 500 --no-bos --dim-batch $db > /workspace/scratch/${P}fit.log 2>&1 < /dev/null && { ok=1; break; }
+    $PY scripts/lens_fit/fit_jlens.py --repo $REPO --revision $REV --out $LENS --n 200 --no-bos --use-kernels --dim-batch $db > /workspace/scratch/${P}fit.log 2>&1 < /dev/null && { ok=1; break; }
     echo "=== $KEY fit at dim_batch $db failed ($(grep -m1 -oiE "out of memory|RuntimeError: [^ ]+ [^ ]+ [^ ]+" /workspace/scratch/${P}fit.log))"
     grep -qi "out of memory" /workspace/scratch/${P}fit.log || break
     rm -f $LENS.ckpt
@@ -76,4 +76,17 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" -- src/bridge_jspace/pi
     > /workspace/scratch/${P}agree.log 2>&1 || echo "=== $KEY lens check FAILED"
   echo "=== $KEY fit done $(date -u +%T)"
 fi
-bash scripts/queues/h200_nq40_1025.sh $G $KEY $P gate dev test swap
+# amendment 42: the gate, then the dev depth profile instead of amendment 39's sweep; the test knock-out and swap at the
+# profile's pick (written where h200_nq40_1025.sh reads its band), then the swap at mid depth L26-32 (50-62% of 52)
+bash scripts/queues/h200_nq40_1025.sh $G $KEY $P gate
+bash scripts/queues/h200_profile_1025.sh $G prof:$KEY:$P:16:40
+band=$($PY scripts/profile_pick.py ${P}jsuite_v2_dev_chat_profile_cand2_v1 2>/dev/null)
+echo "=== NEMPICK $KEY: '$band'"
+[[ "$band" =~ ^[0-9]+-[0-9]+$ ]] && echo "$band" > /workspace/scratch/${P}v2band.txt && bash scripts/queues/h200_nq40_1025.sh $G $KEY $P test swap
+r=${P}jswap_v2_L26-32_v1
+echo "=== jswap/$r $(date -u +%T)"
+[ -f results/jswap/$r/summary.json ] || $PY scripts/jswap.py --name $r --why "Zach (2026-10-25, prereg amendment 42): $KEY, the swap at mid depth L26-32" \
+  --set jsuite_v2_test_chat --band 26-32 --competence ${P}jsuite_v2_test_chat_competence_cand2_v1 --batch 8 > /workspace/scratch/$r.log 2>&1 < /dev/null \
+  || { echo "=== $r FAILED"; tail -3 /workspace/scratch/$r.log; }
+grep -E "^(PM|TM|PN|TN|PK|TK|PP|TP) (swap|remove|swap_rot|swap_u|swap_comp|paste) " /workspace/scratch/$r.log | sed "s/^/=== MIDSWAP $KEY /"
+echo "=== nem done $(date -u +%FT%TZ)"

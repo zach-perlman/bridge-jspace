@@ -1174,3 +1174,34 @@ wait on it.
   transfer on PM and TM >= 20 with the rotated and logit-lens swaps < 5 and lookups kept >= 80% = the J-part at the
   mention carries the attribute in this family too. The paste ceiling is reported beside it, and a ceiling < 20 makes
   the swap uninformative.
+
+## Amendment 42 (Zach, 2026-10-25 16:42 UTC, before any run below): depth profiles replace single-band choice; hub kernels for Nemotron
+
+- **Why (Zach, day 7: "Are we not being careful or precise enough with our layer selection? ... I just want to do the
+  best research sprint"):** one argmax band per model, chosen on memory finals and the rotation only, gave two
+  uninformative non-Qwen tests. Both new families' picks were late, and DeepSeek's broke lookups too. Dev sweeps already
+  show the effect is a function of depth. 27B: lookup-minus-memory gap +40-48 at 44-69% depth. 9B: +32-42 there, +56 at
+  75-88%. Ministral: ~0 to 68%, then +12-20. DeepSeek: +2-13 to 81%, +30 at 77-88%, everything breaking at 84-95%.
+  The old sweeps lack K finals, so they give M - P, not the primary M - K, and they have no logit-lens control per band.
+- **Seen when this was written:** everything through amendment 41, Ministral's L32-37 question-only (M - K +24 of +23)
+  and bridge-only (0) runs, the four dev sweeps' gaps above, the Mamba benchmark and validation below.
+- **Depth profile (scripts/queues/h200_profile_1025.sh; scripts/profile_score.py):** on jsuite_v2_dev_chat, every
+  window (amendment 39's widths and strides), words PP PK PM MP MK MM, n 40 per word, paper10 / paper10_rot /
+  unembed10, cand2. Per band: M - K (memory finals PM MM vs stated true finals PK MK), M - P, bootstrap over bridges.
+  Test band = scripts/profile_pick.py: among bands where the rotation costs <= 10 points on every final, the largest
+  J-specific M - K (J++ M - K minus logit-lens M - K). Profiles are descriptive (dev, no prediction). The test runs at
+  the pick are read by amendment 39's classes, and are SECONDARY to amendment 39's pre-registered results, which stand.
+- **Runs.** DeepSeek (h200ds42, GPUs 0,1): profile; test knock-out at the pick unless it is L36-41; the mid-depth swap
+  at L22-27 (replaces amendment 41's DeepSeek runs, which were stopped before starting). GPU 0 (h200qprof, after
+  amendment 41's Ministral runs): Ministral's, the 9B's and the 27B's profiles, so all models get the same curve.
+  Lightning (h200nemL6, after DeepSeek): smoke, fit, gate, profile, test and swap at the pick, mid-depth swap L26-32.
+- **Nemotron's Mamba kernels:** transformers' torch Mamba path made Lightning's J-lens fit about 7.5 min per prompt
+  (forward+backward, batch 8 x 128: 1.37 s); 500 prompts would take ~60 h. The HF-hub kernels (set_use_kernels:
+  kernels-community/mamba-ssm and the hub's activation / norm / rotary kernels, prebuilt, nothing compiled) are 12.4x
+  (forward) and 9.2x (forward+backward) faster. On 47 WikiText rows (128 tokens): NLL 2.4642 vs 2.4634, per-token
+  |diff| mean 0.05, top-1 agreement 97.6%. pins sets use_kernels for Lightning; model_pin records it; fit_jlens
+  --use-kernels; its jlens log now shows each prompt's time and the running mean's relative change.
+- **Lightning's lens: 200 prompts, not 500 (a deviation from amendment 28's recipe, stated).** About 3 h with the
+  kernels. Convergence is read from jlens's per-prompt relative change of the running mean; we report its value at the
+  last prompts and the lens's readout check. Bolt stays paused: its code calls mamba_ssm directly and would need the
+  hub kernels wired in; decided after Lightning's profile.
