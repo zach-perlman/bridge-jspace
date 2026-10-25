@@ -1,0 +1,24 @@
+id: x0_122b_b12
+title: "122B b12 (Dan, 26 Oct ~01:00): varied scenes at L33, every format and level as on the 9B / 27B (prose / json / table, levels 0-2, the k = 50 / 100 curve), one-change edit, after the data, descriptive"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 2.5
+depends_on: [x6_routes_r2]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0b_generalize.py run --name qwen35_122b_x0b_v2_all --set x0b_v2 --why "X0b on the 122B as on the 9B / 27B (b12, Dan 26 Oct ~01:00): every format and level, the curve, L33"
+question: >-
+  On the 122B at L33, what does X0b's pooled rule read on the full varied-scene set (7 topics; prose / json / table; levels 0-2; the one-change edit), as run on the 9B / 27B?
+why_it_matters: >-
+  b6 cut the set to prose and tables, levels 0-1, no curve, to fit a night (Dan 25 Oct ~00:20); the 9B / 27B / Muse rows have every format and level. This fills the 122B's json and level-2 cells and its curve.
+hypotheses:
+  H-none: 'none: descriptive. The verdict fixed in advance for the 122B stays b6''s (prose and tables, levels 0-1); b12 overlaps those cells, which were seen, so it is after the data, not scored, not a confirmation'
+decision_rule: >-
+  Descriptive, after the data: X0b.md's pooled rule as on the 9B / 27B (lookup excess <= 0.10 with upper CI <= 0.20 and C >= 0.20 with lower CI >= 0.10: holds; lookup excess >= 0.20 or C's upper CI < 0.10: fails; otherwise mixed), over the cells (domain x format x level) that pass the gate (>= 0.80 unedited org accuracy, both readers), at most 40 eligible scenes per cell; reported pooled and split into b6's cells vs the new cells (json; level 2).
+controls:
+- 'a random-subspace part at the J++ part''s share'
+- 'both readers on the identical patch'
+- 'the gate per cell'
+n: 'at most 40 eligible scenes in each of the 63 cells (7 domains x 3 formats x 3 levels)'
+seeds: [0]
+notes: "122B on both GPUs. Queued after the Muse grid (muse_g6), so no Muse job waits on it. The b6 run (qwen35_122b_x0b_v2) stays as it is; b7's parts (x0_parts on b6's eligible items) are not rerun on the new cells."
