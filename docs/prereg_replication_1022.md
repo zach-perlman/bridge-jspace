@@ -1305,3 +1305,24 @@ nothing is claimed with that lens. Ministral's was 0.651 vs 0.461.
   J-lens: DeepSeek's cache dropped only after both DeepSeek chains end with 0 failures; download; after Lightning
   (h200nemL10); smoke and the kernel-vs-torch check; J++ fit and its quality gate; gate, profile, dose, test and swap at
   the pick, mid-depth swap L44-55. The 27B renderings run after Bolt (h200qrend27e).
+
+## Amendment 47 (Zach, 2026-10-25 19:34 UTC, before any run below; a smoke of 2 items per word ran first for the mechanics, and its pooled numbers (n 12 memory items, 9B) were seen; they are not used): the cross-relation swap
+
+- **Why (Zach: "Go ahead"):** Neel's replication found two-hop swaps dominated by answer swaps (linear relations). Our
+  swap moves memory-final answers through the J-part at the bridge's mention, computed before the question is asked,
+  and does so with both answers' token directions protected (amendment 38 A: swap_noans 100% of swap, 27B and 9B). But
+  the donor's J-part comes from the same passage, which is themed on the asked relation (lures in its answer
+  vocabulary). So it may carry only a theme-primed value, not the entity.
+- **Design (scripts/jswap_xrel.py):** the two v2 relations with country bridges, countries (continent) and languages.
+  The donor country D's J-part is taken from another test prompt where D is named: of the same relation (swap_srel) or
+  of the other relation (swap_xrel, e.g. a continent-themed passage for a language question). Controls: jswap's swap
+  (same prompt, reference), swap_xrel_rot, swap_xrel_u, paste_xrel (ceiling). The read and tracked starts; eligibility
+  as the knock-out; the 27B at L32-40 and the 9B at L12-16.
+- **Measure:** transfer (donor - third) on the memory finals pooled (PM PA PN TM TA TN), 95% bootstrap over bridges.
+- **Readings, two-sided, fixed now:**
+  - swap_xrel >= 2/3 of swap_srel = the mention's J-part carries the entity, not a theme-primed answer;
+  - swap_xrel <= 1/3 of swap_srel = relation-primed;
+  - otherwise mixed.
+  - Not read if swap_srel < 10: the J-part does not transfer across prompts at all.
+  - Predictions: swap_xrel_rot and swap_xrel_u < 5; lookups (PP PK TP TK) kept >= 80% under swap_xrel.
+- **Run (scripts/queues/h200_xrel_1025.sh, GPU 0):** after the 9B renderings, the 9B then the 27B.
