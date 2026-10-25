@@ -38,7 +38,8 @@ def setup():
 
 def title(fig, text: str, limit: int = 70) -> None:
     assert len(text) <= limit, f"title over {limit} characters: {text!r}"
-    fig.suptitle(text, x=0.01, ha="left", fontsize=13, weight="bold")
+    # a title past 70 characters shrinks to fit the 880 px column (86 characters: 10.6 pt, about 15 px)
+    fig.suptitle(text, x=0.01, ha="left", fontsize=13 * min(1.0, 70 / len(text)), weight="bold")
 
 
 def numbers() -> dict[str, str]:

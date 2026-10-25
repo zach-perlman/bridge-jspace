@@ -6,7 +6,7 @@
 ## In one minute
 
 - Recall needs the lens-readable (J++) part of the bridge; the lookup mostly doesn't (three Qwen models; rule fixed in advance), clearest in simple scenes.
-- The lookup reads which item the bridge is and where it was first mentioned (a pointer the lens does not see), never the locker value.
+- The lookup reads which item the bridge is and where it was first mentioned (a pointer the lens does not see), never the locker value. Adding only the pointer part moves the lookup to the other sentence on the 9B and the 122B; adding only the J++ part moves it on none.
 - Early, the bridge carries only the item's identity, inside J++, which both readers need; later it adds a pointer outside J++ only the lookup uses (candidate; Section 3); on the 27B, removing both breaks the lookup beyond the pointer alone.
 
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
@@ -25,14 +25,14 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 *Fixed in advance (main test); other settings: pass bars set before each run.*
 
 - **Question.** Does removing the J++ part of the change cost the recall more than the lookup?
-- **What we did.** One layer per model fixed in advance; 200 scenes where two people swap picks, then other scene sets, and other parts of the same size.
+- **What we did.** One layer per model fixed in advance; 200 scenes (two people swap picks), then other scene sets and parts of the same size.
 - **What we found.**
   - The gap is {{num|contrast_9b}} (9B), {{num|contrast_27b}} (27B) and {{num|contrast_122b}} (122B). The strict rule held on the 9B and the 122B; on the 27B the lookup lost {{num|lk_excess_27b}}, over its 0.10 bar.
   - It shrinks outside simple scenes: varied scenes {{num|x0b_c_9b}} (9B), {{num|x0b_c_27b}} (27B), {{num|x0b_c_122b}} (122B); natural passages {{num|nat_gap_27b}} (27B, whose lookup needs J++ there: {{num|nat_lk_excess_27b}}) and {{num|nat_gap_122b}} (122B).
-  - Other parts of a similar size cost the recall less than J++ (Fig. 2). J++ fitted to another scene holds only {{num|jppother_jpp_other_share_27b}}-{{num|jppother_jpp_other_share_9b}} of the change and costs nothing (122B too: {{num|jppother_jpp_other_rc_excess_122b}}), so it does not test this.
+  - Other parts of a similar size cost the recall less than J++ (Fig. 2). J++ fitted to another scene holds only {{num|jppother_jpp_other_share_27b}}-{{num|jppother_jpp_other_share_9b}} of the change and costs nothing, so it does not test this.
 
 ![No other part costs the recall as much as the scene's own J++](figures/story/fig2_parts.png)
-*Fig. 2. Compare each recall dot with the J++ row. †: two people swap picks; other rows: only the asked pick changes.*
+*Fig. 2. †: two people swap picks; others: only the asked pick changes.*
 
 - **Caveat.** On the 122B the main directions at J++'s share cost the recall almost as much as J++ ({{num|pcaeq_pca_eq_rc_excess_122b}} vs {{num|pcaeq_jpp_rc_excess_122b}}).
 
@@ -53,20 +53,20 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 - **Caveat.** When the same item moved, a random part of the pointer's size also removed position (Appendix B, F20).
 
-## 3. Why the readers split: a pointer the lens can't see appears after the early layers (candidate)
+## 3. Why the readers split: with depth the bridge adds a pointer the lens can't see
 
 *Candidate, after the data; 3a's layers and 3b's bar fixed in advance.*
 
-- **Question.** Does the lookup's independence from J++ come with depth?
-- **What we did.** (a) The routes test at more layers (9B 6-12, 27B 16-32, 122B 27 and 33). (b) J++ and the pointer directions removed together in the sanity swap (only the pick changes). (c) Matched scenes against the rest.
+- **Question.** Does the split come with depth?
+- **What we did.** (a) The routes test at more layers (9B 6-12, 27B 16-32, 122B 24-36). (b) J++ and the pointer directions removed together in the sanity swap (only the pick changes). (c) Matched scenes against the rest.
 - **What we found.**
-  - (a) Early, the lookup follows identity only ({{num|rte_C2_whole_identity_9b}}, {{num|rte_C2_whole_identity_27b}}, {{num|rte_C2_whole_identity_122b}}); without J++ it gives the original answer ({{num|rte_C2_no_jpp_original_9b}}, {{num|rte_C2_no_jpp_original_27b}}, {{num|rte_C2_no_jpp_original_122b}}). Position appears by layer 12 (9B) and 28 (27B); the 27B's lookup stops needing J++ at layer 24, before it ({{num|rts24_C2_whole_position_27b}}): the rule fixed in advance holds on the 9B only.
-  - (b) Removing both costs the lookup {{num|rtb_ex_C0_both_minus_alf_lk_9b}} (9B) and {{num|rtb_ex_C0_both_minus_alf_lk_27b}} (27B) more than the pointer alone; the bar fixed in advance (0.15) is met on the 27B only. With a random part of J++'s size in place of J++, the difference is {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} (27B) and {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} (9B; fixed in advance, met on the 27B only). On the 9B a random part of J++'s size costs the lookup more than J++, so its second route is not in J++; in these scenes (the item already mentioned) the 9B's recall does not need J++ either ({{num|rtc_ex_C0_jpp_rc_9b}}), as table 3c predicts. The 27B is the case where the same scenes show the split and its mechanism.
+  - (a) Early, the lookup follows identity only ({{num|rte_C2_whole_identity_9b}}, {{num|rte_C2_whole_identity_27b}}, {{num|rte_C2_whole_identity_122b}}); without J++ it gives the original answer ({{num|rte_C2_no_jpp_original_9b}}, {{num|rte_C2_no_jpp_original_27b}}, {{num|rte_C2_no_jpp_original_122b}}). Position appears by layer 12 (9B), 28 (27B) and 33 (122B); the rule fixed in advance (9B and 27B; the 122B's layers after the data) holds on the 9B only.
+  - (b) Removing both costs the lookup {{num|rtb_ex_C0_both_minus_alf_lk_9b}} (9B) and {{num|rtb_ex_C0_both_minus_alf_lk_27b}} (27B) more than the pointer alone; the bar fixed in advance (0.15) is met on the 27B only. Against a random part of J++'s size: {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} (27B), {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} (9B); the bar is met on the 27B only. On the 9B a random part of J++'s size costs the lookup more than J++, so its second route is not in J++; in these scenes (the item already mentioned) the 9B's recall does not need J++ either ({{num|rtc_ex_C0_jpp_rc_9b}}), as table 3c predicts. The 27B is the case where the same scenes show the split and its mechanism.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table).
 
-![Early layers: no pointer yet; at the fixed layer, a pointer the lens can't see](figures/story/fig5_depth.png)
+![Position answers appear with depth; on the 9B and 122B where the lookup stops needing J++](figures/story/fig5_depth.png)
 ![Removing J++ and the pointer directions together](figures/story/fig6_both_removed.png)
-*Fig. 5: shaded up to the last layer where the lookup's J++ extra loss is at least 0.30; compare with where position appears. Fig. 6: compare each dot with its dotted bar; grey: the recall.*
+*Fig. 5: shaded where the lookup still needs J++ (at least 0.30). Fig. 6: dots against dotted bars; grey: recall.*
 
 | Swap | Pick is the first mention? (no = matched) | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall |
 |---|---|---|---|---|---|---|---|
@@ -78,12 +78,12 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 *J++ extra loss, after the data; italics: under 30 lookup switches (count shown); n in Appendix A.*
 
-- **Caveat.** Removing both costs the recall too ({{num|rtb_ex_C0_both_rc_9b}}, {{num|rtb_ex_C0_both_rc_27b}}); the 122B's runs are after the data (both minus the pointer: {{num|rtb_ex_C0_both_minus_alf_lk_122b}}; J++ against random: {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}}).
+- **Caveat.** On the 27B the lookup stops needing J++ at layer 24, four layers before position answers appear (28): there the pointer is not the whole reason. Removing both costs the recall too ({{num|rtb_ex_C0_both_rc_9b}}, {{num|rtb_ex_C0_both_rc_27b}}); the 122B's runs are after the data (both minus the pointer: {{num|rtb_ex_C0_both_minus_alf_lk_122b}}; J++ against random: {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}}).
 
 ## 4. What did not hold, and limits
 
 - The 27B's strict rule: lookup lost {{num|lk_excess_27b}} (bar 0.10).
-- The 9B's double dissociation on fresh scenes, fixed in advance: its J++ clause failed (recall {{num|rep_jpp_rc_excess_9b}}).
+- The 9B's fixed-in-advance replication: its J++ clause failed (recall {{num|rep_jpp_rc_excess_9b}}).
 - The gap everywhere: the 122B's varied scenes ({{num|x0b_c_122b}}) and the 27B's natural passages ({{num|nat_gap_27b}}) are in between.
 - On the 122B the layer's main directions at J++'s share cost the recall {{num|pcaeq_pca_eq_rc_excess_122b}}, near J++'s {{num|pcaeq_jpp_rc_excess_122b}}.
 - The locker number at the bridge word: never the answer; digit directions cost {{num|dig_lk_jppdig_k10_before_27b}}. The positive control (chemical symbols) stayed below its 0.20 bar: 27B {{num|x4_D_elements_27b}}.

@@ -335,8 +335,8 @@ def fig5(plt) -> None:
                        ("qwen35_122b_x6_routes_sweep_l36_g75", 36, "rerun"))}  # fmt: skip
     fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharex="col", gridspec_kw={"height_ratios": [1.25, 1]})
     fig.subplots_adjust(left=0.105, right=0.98, top=0.84, bottom=0.10, wspace=0.14, hspace=0.26)
-    # Dan's wording (~14:30), until the layer sweep lands; 77 characters
-    S.title(fig, "Early layers: no pointer yet; at the fixed layer, a pointer the lens can't see", limit=80)
+    # Dan's wording (25 Oct ~23:00), 86 characters
+    S.title(fig, "Position answers appear with depth; on the 9B and 122B where the lookup stops needing J++", limit=90)
     for j, (target, m, name) in enumerate(S.MODELS):
         top, bot = axes[0, j], axes[1, j]
         n_layers = pins.TARGETS[target]["n_layers"]
