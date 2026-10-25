@@ -937,3 +937,31 @@ rotated) at L12-16 on full_v8's 2x2 words. The 27B: the same dose at L32-40.
   result showed it partly uses): question >= 2/3 reads as v1. 122B logit-lens question-only: reported, no prediction.
   Known confound, not fixed by these runs: the bands sit at different relative depths (27B 50-62%, 9B 38-50%, 122B
   81-94%); a 122B-vs-smaller-Qwen difference in where the dependence sits may be depth, not model.
+
+## Amendment 37 (Zach, 2026-10-25 ~02:45 UTC, before any run below): the overnight plan of day 6
+
+- **Seen when this was written:** everything through amendment 36 note 1, including the 122B's question-only result at
+  L39-45 (read 46%, tracked 69%, recalled 69% of its all-token M - K); not its context or bridge runs (running).
+- **A. Depth-matched bands (the confound named in amendment 36 note 1).** Each model at the other's relative depth,
+  with its own band's layer count, by rule: the 122B at L24-30 (the 27B's L32-40 = 50-62% of 64 layers, times 48), the
+  27B at L52-60 (the 122B's L39-45 = 81-94% of 48, times 64). jsuite_v2_test_chat, the 15 facts words, each model's v2
+  test competence: the all-token knock-out (paper10 / rot / unembed10 / rot) and the question-only and bridge-only
+  knock-outs (paper10 / rot); scripts/queues/h200_depth_1025.sh (run names carry the band). Measure: per start, the
+  mode's M - K as a share of the same band's all-token M - K; not interpreted if that is < 15. Readings, two-sided and
+  fixed now. 122B at L24-30, read and tracked starts: bridge >= 2/3 and question < 1/3 = at the 27B's depth the 122B
+  localizes like the 27B (the L39-45 difference is depth); question >= 2/3 = the 122B differs at matched depth. 27B
+  at L52-60, read and tracked: question >= 2/3 = late layers put the dependence in the question in the 27B too (depth);
+  bridge >= 2/3 and question < 1/3 = the 27B localizes at the mention even late (a model difference). If the 122B's
+  all-token M - K at L24-30 is < 15, its dependence is late-only and only the 27B side is read.
+- **B. v2 modules 2 and 3 (amendment 33's procedure, not yet run).** The 27B (L32-40) and the 9B (L12-16) on
+  jsuite_v2_test_chat with their v2 test competence: three-hop (8 words, per-item eligibility) and numbers (12 words,
+  per-item eligibility, --dict-digits), paper10 / rot / unembed10 / rot, cand2, jsuite2_score; a one-item-per-word smoke
+  first (scripts/queues/h200_v2mod_1025.sh). Predictions as amendments 24 and 25. Numbers: KR and AR within 10 of PR,
+  MR >= PR + 15; SM - SL >= 20 for each start; KL and AL within 10 of PL. Three-hop, read as knock-out minus rotation:
+  PPM, MPM, MMP, PMM and MMM each lose >= 15 more than PPP; MPP and PMP within 10 of PPP.
+- **C. Clean-checkout rerun of the v2 headline (CLAUDE.md), the 9B:** competence and the facts knock-out at L12-16 from
+  a fresh checkout of HEAD (/workspace/clean_bridge moved to HEAD; scripts/queues/h200_clean_v2_1025.sh), compared row by
+  row with the runs of record. Prediction: >= 99% of rows agree and M - K within 1 point.
+- **D. OLMo-3 32B on v2 (raw text, L12-20), the facts knock-out as the others (h200_depth_1025.sh all with framing qa; the run name carries its band):** prediction null as
+  on v1 (M - K < 15), testable if the K final loses <= 20.
+- **Order (research priority per GPU):** GPU0 A (122B), B (9B), C, D; GPU1 A (27B), B (27B).
