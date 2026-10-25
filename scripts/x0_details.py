@@ -156,6 +156,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     natural_numbers(num)
     routes_numbers(num)
     composition_numbers(num)
+    natsplit_numbers(num)
     x4_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
@@ -365,6 +366,27 @@ def natural_numbers(num: Numbers) -> None:
         num.add(f"nat_n_{m}", str(v["main"]["n"]), src)
         for w, k in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
             num.add(f"nat_{k}_excess_{m}", ci(v["main"]["excess"][w]), src)
+
+
+def natsplit_numbers(num: Numbers) -> None:
+    """x5_natural_split (B2, after the data): the 27B's natural passages by where the answer's fact sentence sits."""
+    found = sorted((pins.RESULTS_DIR / "x5_natural" / NATURAL["27b"]).glob("split-*/split.json"))
+    if not found:
+        return
+    src = str(found[-1].relative_to(pins.REPO_ROOT))
+    names = {"all": "all", "after": "after", "before": "before", "both fact sentences before": "both",
+             "only the original's before": "org"}  # fmt: skip
+    for r in json.loads(found[-1].read_text())["rows"]:
+        if r["group"] not in names or (
+            r["split"] == "both fact sentences"
+            and r["group"] not in ("both fact sentences before", "only the original's before")
+        ):
+            continue
+        key = f"natsplit_{names[r['group']]}"
+        num.add(f"{key}_n_27b", str(r["n"]), src)
+        for w, wk in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
+            num.add(f"{key}_{wk}_27b", ci(r[w]["excess"]), src)
+            num.add(f"{key}_{wk}_sw_27b", str(r[w]["switched_whole"]), src)
 
 
 def composition_numbers(num: Numbers) -> None:

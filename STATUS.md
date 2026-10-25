@@ -84,6 +84,20 @@ From the per-item outcome files at the layer fixed in advance (9B L12, 27B L32; 
 
 Reading (agent, after the data): the 9B recall's J++ loss sits in the scenes where a locker sentence comes after the pick (only the original's before: 0.50 [0.33, 0.69]; the original's after: 0.57 [0.47, 0.67], one-pick); with both locker sentences first it is 0.06 [0.00, 0.12] (one-pick) and 0.12 [0.06, 0.19] (fresh scenes). The one-pick set's 0.37 [0.29, 0.43] on all 200 scenes is that mixture (73 both-before scenes). The two-person swap keeps more of it in both-before scenes (0.23 [0.14, 0.31]). The 27B's recall needs J++ in every cell (both-before, one-pick: 0.46 [0.34, 0.57]). One untested guess: in both-before scenes the pick is the item's second mention, and the recall can read it from what the first mention left; in locker-after scenes the pick is its first mention.
 
+## (v) B2. The 27B's natural passages by where the answer's fact sentence sits (descriptive, after the data)
+
+The fact sentence names the bridge and its passage value (the lookup's answer); the bridge's mention is the binding sentence the swap changes. Script: scripts/x5_natural_split.py; output: results/x5_natural/x5_natural_27b/split-*/split.md. 10 random passages (seed 0) with each reader's answer per arm: docs/natural_examples.md.
+
+| group | n | lookup switches (whole change) | lookup extra loss | recall switches | recall extra loss |
+|---|---|---|---|---|---|
+| all | 137 | 60 | 0.32 [0.20, 0.45] | 126 | 0.59 [0.50, 0.67] |
+| the original's fact sentence before the bridge's mention | 75 | 55 | 0.31 [0.18, 0.46] | 70 | 0.53 [0.41, 0.65] |
+| the original's fact sentence after the bridge's mention | 62 | 5 | 0.40 [0.00, 1.50] | 56 | 0.66 [0.54, 0.77] |
+| both fact sentences before | 46 | 36 | 0.28 [0.12, 0.45] | 43 | 0.44 [0.30, 0.59] |
+| only the original's before | 29 | 19 | 0.37 [0.15, 0.64] | 27 | 0.67 [0.46, 0.84] |
+
+Reading (agent, after the data): as in the locker scenes, the lookup switches almost only when the fact sentence comes first (55 of 75 scenes, against 5 of 62), so its extra loss after the mention rests on 5 switches. Where it does switch, it needs J++ (0.31 [0.18, 0.46]); with both fact sentences first, 0.28 [0.12, 0.45] against the recall's 0.44 [0.30, 0.59]. So the 27B's mixed result on natural passages is not a sentence-order artefact.
+
 # Queue overnight, 25 Oct (monitor only; agent). No numbers from batches 31 / 32
 
 Updated 11:15. Results of batches 31 and 32 are pulled and committed unopened; they open after Dan commits his answers (Dan, ~11:10).
