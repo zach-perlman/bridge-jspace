@@ -76,3 +76,31 @@ def test_ctrl_losses_read_planted_effects():
     c = {(r["reader"], r["arm"]): r["lost"][0] for r in R.ctrl_losses(rows, ["C0"], 100)}
     assert c[("PP", "alf + J++")] == 1.0 and c[("PP", "alf + random (J++ share)")] == 0.25
     assert abs(c[("PP", "alf + J++ - alf + random")] - 0.75) < 1e-9 and c[("PM", "alf + J++ - alf + random")] == 0.0
+
+
+def test_verdict_reports_keep_only_arms(tmp_path, monkeypatch):
+    """--keeponly runs: the verdict gives route shares for the arms that add only one part of the change."""
+    import json
+
+    monkeypatch.setattr(R, "RESULTS", tmp_path)
+    src = tmp_path / "fake"
+    src.mkdir()
+    (src / "manifest.json").write_text(json.dumps({"model": {"target": "fake"}, "layer": 12, "conditions": ["C2"]}))
+    arms = ("whole", "keep_alf", "keep_alf_rand", "keep_jpp", "keep_jpp_rand")
+    rows, norms = [], []
+    for i in range(40):
+        for a in arms:
+            route = {"keep_alf": "position", "keep_jpp": "identity"}.get(a, "original")
+            rows.append(
+                {"scene": f"s{i}", "condition": "C2", "entity": f"e{i % 10}", "reader": "PP", "arm": a, "route": route}
+            )
+            rows.append(
+                {"scene": f"s{i}", "condition": "C2", "entity": f"e{i % 10}", "reader": "PM", "arm": a, "switched": 0}
+            )
+        norms.append({"condition": "C2", "norm": 1.0})
+    (src / "outcomes.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    (src / "norms.jsonl").write_text("".join(json.dumps(r) + "\n" for r in norms))
+    blob = json.loads((R.stage_verdict("fake", 100) / "verdict.json").read_text())
+    share = {r["arm"]: r["share"] for r in blob["rows"]}
+    assert share["keep_alf"]["position"][0] == 1.0 and share["keep_alf_rand"]["original"][0] == 1.0
+    assert share["keep_jpp"]["identity"][0] == 1.0 and not blob["extra"] and not blob["ctrl"]

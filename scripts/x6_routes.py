@@ -27,6 +27,8 @@ directions' (paired bootstrap).
 --bothoff-ctrl (x6_routes_bothoff_ctrl, Dan 25 Oct ~14:30): one more arm, without the union of the pointer directions
 and a random part of the J++ part's share (orthonormalized); per condition and reader, the switches lost without the
 pointer directions, without them and J++, without them and the random part, and the second minus the third.
+--keeponly (x6_routes_keeponly, Dan 25 Oct ~15:50): four more arms that add ONLY a part of the change at the bridge
+word: the pointer-direction part, a random part of its share, the J++ part, a random part of J++'s share.
 Rule (Dan, fixed in advance): a route counts as used if its share is >= 0.20 with lower CI >= 0.10 (cluster bootstrap
 over the bridge item, 10,000 resamples, seed 0). C0 must reproduce the one-pick lookup switch rate within 0.10, or the
 run stops.
@@ -60,7 +62,8 @@ CONDITIONS = ("C0", "C1", "C2")
 ROUTES = ("identity", "position", "value", "original", "other")
 USED_SHARE, USED_LO = 0.20, 0.10
 C0_TOL = 0.10
-ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "no_both_rand", "no_alf_jrand")
+ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "no_both_rand", "no_alf_jrand",
+        "keep_alf", "keep_alf_rand", "keep_jpp", "keep_jpp_rand")  # fmt: skip
 # --bothoff-ctrl: switches lost (Jdep) without the pointer directions, without them and J++, without them and a random
 # part of J++'s share; the question is the second minus the third (Dan's Q36.1)
 CTRL = (("alf", "no_alf"), ("alf + J++", "no_both"), ("alf + random (J++ share)", "no_alf_jrand"))
@@ -246,6 +249,7 @@ def stage_run(
     bothoff: bool = False,
     gate_min: float = X.GATE,
     ctrl: bool = False,
+    keeponly: bool = False,
 ) -> Path:
     import torch
 
@@ -263,12 +267,13 @@ def stage_run(
     out.mkdir(parents=True, exist_ok=False)
     assert pointer or not bothoff, "--bothoff needs the pointer directions"
     assert bothoff or not ctrl, "--bothoff-ctrl needs --bothoff"
+    assert pointer or not keeponly, "--keeponly needs the pointer directions"
     conds = ("C0",) if smoke else conds
     n = N_SMOKE if smoke else N_ITEMS
     ref = c0_reference(target)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
-         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff, "bothoff_ctrl": ctrl,
+         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff, "bothoff_ctrl": ctrl, "keeponly": keeponly,
          "alf_from": STATES[target] if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
          "c0_reference": {"run": C0_REF[target][0], "lookup_switch": ref, "tolerance": C0_TOL},
          "rule": f"a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}",
@@ -322,6 +327,9 @@ def stage_run(
             arms.update({"no_both": x - both, "no_both_rand": x - SP.random_subspace_part(x, sh["both"], basis)})
         if ctrl:
             arms["no_alf_jrand"] = x - union_rand_part(alf, x, sh["jpp"], basis)
+        if keeponly:
+            arms.update({"keep_alf": ptr, "keep_alf_rand": SP.random_subspace_part(x, sh["alf"], basis),
+                         "keep_jpp": jpp, "keep_jpp_rand": SP.random_subspace_part(x, sh["jpp"], basis)})  # fmt: skip
         for i, c in enumerate(progress(chosen, f"reads at layer {layer} (case)")):
             norms.append({"scene": c["scene"], "condition": c["condition"], "norm": round(float(x[i].norm()), 4),
                           "share_jpp": round(float(sh["jpp"][i]), 5), "share_alf": round(float(sh["alf"][i]), 5),
@@ -482,6 +490,7 @@ def main() -> None:
     ap.add_argument(
         "--bothoff-ctrl", action="store_true", help="run: also without the pointer and a random J++-size part"
     )
+    ap.add_argument("--keeponly", action="store_true", help="run: also arms that add only one part of the change")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
@@ -490,7 +499,9 @@ def main() -> None:
     if a.stage == "run":
         conds = tuple(c for c in a.conditions.split(",") if c)
         assert set(conds) <= set(CONDITIONS), f"conditions {conds}"
-        stage_run(a.name, a.smoke, a.layer, a.c0_min, not a.no_pointer, conds, a.bothoff, a.gate, a.bothoff_ctrl)
+        stage_run(
+            a.name, a.smoke, a.layer, a.c0_min, not a.no_pointer, conds, a.bothoff, a.gate, a.bothoff_ctrl, a.keeponly
+        )
     if not a.smoke:
         stage_verdict(a.name, a.n_boot)
 
