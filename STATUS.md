@@ -65,6 +65,25 @@ Every number below is read from docs/x0_numbers.json or figures/status_2026-10-2
 - Natural passages on the 27B: the lookup needs J++ too (0.32 [0.20, 0.45]).
 - The ~04:15 sync was missed (the session was idle); synced at ~11:10.
 
+## (iv) B1. Scene composition: J++ extra loss by swap and sentence order (descriptive, after the data)
+
+From the per-item outcome files at the layer fixed in advance (9B L12, 27B L32; 25 J++ directions against a random part of the same share; cluster bootstrap over bridge entities, 10,000 resamples, seed 0). Script: scripts/x0_composition.py; output: results/x0_composition/x0_composition_20261025/composition.md. The pointer directions' scenes are exactly the one-pick run's both-before scenes (checked: 73 of 73 on the 9B, 70 of 70 on the 27B).
+
+| swap | sentence order | 9B n | 9B lookup | 9B recall | 27B n | 27B lookup | 27B recall |
+|---|---|---|---|---|---|---|---|
+| two people swap | all | 200 | −0.03 [−0.08, 0.03] | 0.50 [0.41, 0.57] | 200 | 0.14 [0.08, 0.20] | 0.74 [0.66, 0.80] |
+| two people swap | both locker sentences before the pick | 75 | −0.04 [−0.10, 0.02] | 0.23 [0.14, 0.31] | 69 | 0.14 [0.06, 0.21] | 0.73 [0.61, 0.83] |
+| two people swap | only the original's before | 25 | 0.29 [0.07, 0.57] | 0.72 [0.57, 0.88] | 32 | 0.18 [0.00, 0.45] | 0.54 [0.32, 0.79] |
+| two people swap | the original's after | 100 | −0.21 [−0.43, −0.05] | 0.65 [0.57, 0.73] | 99 | 0.11 [0.00, 0.40] | 0.81 [0.71, 0.91] |
+| only the asked pick | all | 200 | −0.02 [−0.05, 0.02] | 0.37 [0.29, 0.43] | 200 | 0.05 [0.01, 0.09] | 0.61 [0.51, 0.69] |
+| only the asked pick | both locker sentences before the pick | 73 | 0.00 [0.00, 0.00] | 0.06 [0.00, 0.12] | 70 | 0.00 [0.00, 0.00] | 0.46 [0.34, 0.57] |
+| only the asked pick | only the original's before | 27 | 0.00 [0.00, 0.00] | 0.50 [0.33, 0.69] | 33 | 0.08 [0.00, 0.27] | 0.56 [0.32, 0.80] |
+| only the asked pick | the original's after | 100 | −0.11 [−0.29, 0.10] | 0.57 [0.47, 0.67] | 97 | 0.33 [0.10, 0.60] | 0.73 [0.58, 0.86] |
+| only the asked pick, replication (fresh scenes) | all | 200 | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 200 | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] |
+| only the asked pick, replication (fresh scenes) | both locker sentences before the pick | 200 | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 200 | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] |
+
+Reading (agent, after the data): the 9B recall's J++ loss sits in the scenes where a locker sentence comes after the pick (only the original's before: 0.50 [0.33, 0.69]; the original's after: 0.57 [0.47, 0.67], one-pick); with both locker sentences first it is 0.06 [0.00, 0.12] (one-pick) and 0.12 [0.06, 0.19] (fresh scenes). The one-pick set's 0.37 [0.29, 0.43] on all 200 scenes is that mixture (73 both-before scenes). The two-person swap keeps more of it in both-before scenes (0.23 [0.14, 0.31]). The 27B's recall needs J++ in every cell (both-before, one-pick: 0.46 [0.34, 0.57]). One untested guess: in both-before scenes the pick is the item's second mention, and the recall can read it from what the first mention left; in locker-after scenes the pick is its first mention.
+
 # Queue overnight, 25 Oct (monitor only; agent). No numbers from batches 31 / 32
 
 Updated 11:15. Results of batches 31 and 32 are pulled and committed unopened; they open after Dan commits his answers (Dan, ~11:10).

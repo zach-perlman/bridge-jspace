@@ -155,6 +155,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     replicate_numbers(num)
     natural_numbers(num)
     routes_numbers(num)
+    composition_numbers(num)
     x4_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
@@ -364,6 +365,27 @@ def natural_numbers(num: Numbers) -> None:
         num.add(f"nat_n_{m}", str(v["main"]["n"]), src)
         for w, k in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
             num.add(f"nat_{k}_excess_{m}", ci(v["main"]["excess"][w]), src)
+
+
+def composition_numbers(num: Numbers) -> None:
+    """x0_composition (B1, after the data): the J++ extra loss per reader by swap and sentence order, with n."""
+    found = sorted((pins.RESULTS_DIR / "x0_composition").glob("*/composition.json"))
+    if not found:
+        return
+    src = str(found[-1].relative_to(pins.REPO_ROOT))
+    swaps = {
+        "two people swap": "two",
+        "only the asked pick": "one",
+        "only the asked pick (replication, fresh scenes)": "rep",
+    }
+    orders = {"all": "all", "both locker sentences before the pick": "both", "only the original's before": "org",
+              "the original's after": "after"}  # fmt: skip
+    for r in json.loads(found[-1].read_text())["rows"]:
+        m = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b"}[r["model"]]
+        key = f"comp_{swaps[r['swap']]}_{orders[r['order']]}"
+        num.add(f"{key}_n_{m}", str(r["n"]), src)
+        for w, wk in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
+            num.add(f"{key}_{wk}_{m}", ci(r[w]["excess"]), src)
 
 
 def routes_numbers(num: Numbers) -> None:
