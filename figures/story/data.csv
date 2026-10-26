@@ -4984,6 +4984,18 @@ numbers,,pred_brier,0.33,,,,predictions/README.md
 numbers,,x8_sreal_min_9b,1.36,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_sreal_max_9b,2.70,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_same_legs_9b,93 of 600,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
+numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_natural_9b,not tested (gate),,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_pooled_27b,not landed,,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_split_27b,not landed,,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_natural_27b,not landed,,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_pooled_122b,"0.06 [0.04, 0.07]",,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_split_122b,0.07 / 0.06 / 0.04,,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_natural_122b,"0.07 [−0.02, 0.16]",,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_pooled_muse,not landed,,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_split_muse,not landed,,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
+numbers,,tptr_natural_muse,not landed,,,,results/t_pointer/verdict-20261026T123717Z/verdict.json
 numbers,,share_rho_27b,0.79,,,,results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json
 numbers,,ctx_lookup_full,84%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
 numbers,,ctx_lookup_noj,87%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json

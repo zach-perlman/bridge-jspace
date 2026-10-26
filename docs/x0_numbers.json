@@ -17835,6 +17835,54 @@
   "text": "93 of 600",
   "source": "results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json"
  },
+ "tptr_pooled_9b": {
+  "text": "0.11 [0.08, 0.13]",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_split_9b": {
+  "text": "0.16 / 0.02 / 0.07",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_natural_9b": {
+  "text": "not tested (gate)",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_pooled_27b": {
+  "text": "not landed",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_split_27b": {
+  "text": "not landed",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_natural_27b": {
+  "text": "not landed",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_pooled_122b": {
+  "text": "0.06 [0.04, 0.07]",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_split_122b": {
+  "text": "0.07 / 0.06 / 0.04",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_natural_122b": {
+  "text": "0.07 [−0.02, 0.16]",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_pooled_muse": {
+  "text": "not landed",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_split_muse": {
+  "text": "not landed",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
+ "tptr_natural_muse": {
+  "text": "not landed",
+  "source": "results/t_pointer/verdict-20261026T123717Z/verdict.json"
+ },
  "share_rho_27b": {
   "text": "0.79",
   "source": "results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json"

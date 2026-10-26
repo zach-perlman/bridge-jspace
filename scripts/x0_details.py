@@ -188,6 +188,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     x4_numbers(num)
     predictions_numbers(num)
     x8_numbers(num)
+    t_pointer_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -562,6 +563,23 @@ def x8_numbers(num: Numbers) -> None:
         num.add(f"x8_sreal_min_{m}", f2(min(b["s_real"].values())), src)
         num.add(f"x8_sreal_max_{m}", f2(max(b["s_real"].values())), src)
         num.add(f"x8_same_legs_{m}", f"{b['same_legs'][0]} of {b['same_legs'][1]}", src)
+
+
+def t_pointer_numbers(num: Numbers) -> None:
+    """Batch 42 (T, scripts/t_pointer.py): the lookup's extra loss without the pointer directions (fit on the simple
+    scenes) in varied scenes, pooled and per format (prose / json / table), and in natural passages; every model has a
+    key, "not landed" until its runs are in."""
+    found = sorted((pins.RESULTS_DIR / "t_pointer").glob("verdict-*/verdict.json"))
+    blob = json.loads(found[-1].read_text())["models"] if found else {}
+    src = str(found[-1].relative_to(pins.REPO_ROOT)) if found else "results/t_pointer"
+    for m, (target, *_) in MODELS.items():
+        r = blob.get(target, {})
+        varied, nat = r.get("varied"), r.get("natural")
+        lk = lambda cell: cell["PP"]["excess"]  # noqa: E731
+        num.add(f"tptr_pooled_{m}", ci(lk(varied["pooled"])) if varied else "not landed", src)
+        num.add(f"tptr_split_{m}", " / ".join(f2(lk(varied[f])[0]) for f in ("prose", "json", "table")) if varied
+                else "not landed", src)  # fmt: skip
+        num.add(f"tptr_natural_{m}", "not landed" if nat is None else "not tested (gate)" if "gate" in nat else ci(lk(nat)), src)
 
 
 def predictions_numbers(num: Numbers) -> None:
