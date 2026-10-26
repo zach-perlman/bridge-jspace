@@ -1,5 +1,5 @@
 """fig_neel (Zach, 2026-10-26): the breadth half of bridge-jspace as one figure set for Neel, read from result files only
-(through scripts/results_digest.py's readers where they exist). Writes figures/neel/F01..F12 and figures/neel/all.pdf.
+(through scripts/results_digest.py's readers where they exist). Writes /workspace/scratch/neel_figures/F01..F12 and all.pdf.
 
   F01 dataset        the question, the test (jsuite_v2), one scene across its finals and starts, counts, eligibility
   F02 readable       what the J++ lens and the logit lens read at the bridge mention, by depth (6 models)
@@ -36,7 +36,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 from scripts import results_digest as D  # noqa: E402
 
-RES, DATA, OUT = ROOT / "results", ROOT / "data" / "tasks_v2", ROOT / "figures" / "neel"
+RES, DATA = ROOT / "results", ROOT / "data" / "tasks_v2"
+OUT = Path("/workspace/scratch/neel_figures")  # Zach (2026-10-26): kept out of the repo, in scratch
 # categorical slots in fixed order (validated on the light surface; light hues always carry a label and a shape)
 J, LOGIT, ROT, SIZE, COMP, PROBE = "#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#008300", "#6250d6"
 PASTE = "#898781"
@@ -1052,7 +1053,7 @@ FIGS = {"F01": f01, "F02": f02, "F03": f03, "F04": f04, "F05": f05, "F06": f06, 
         "F11": f11, "F12": f12}
 
 def pdf() -> None:
-    """Every PNG in order, one per page, into figures/neel/all.pdf."""
+    """Every PNG in order, one per page, into all.pdf."""
     with PdfPages(OUT / "all.pdf") as pp:
         for png in sorted(OUT.glob("F*.png")):
             img = plt.imread(png)

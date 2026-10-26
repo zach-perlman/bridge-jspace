@@ -1,6 +1,6 @@
 # The breadth half in 12 figures (draft, 2026-10-26 night)
 
-Figures: `figures/neel/F01-F12.png` and `figures/neel/all.pdf`, made by `scripts/fig_neel.py`. Every number is read
+Figures: `F01-F12.png` and `all.pdf` in `/workspace/scratch/neel_figures/` on the box (copy on the VPS: `/home/zach/scratch/neel_figures/`), made by `scripts/fig_neel.py`; kept out of the repo. Every number is read
 from result files; none is copied by hand. F10, and parts of F06 and F12, fill in when amendment 54 (running tonight)
 lands.
 
