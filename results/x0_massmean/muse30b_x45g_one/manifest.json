@@ -1,0 +1,59 @@
+{
+  "exp": "x0_massmean",
+  "run": "muse30b_x45g_one",
+  "written_utc": "2026-10-26T17:50:08Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct ~20:05; layout-free arm ~21:50); not part of X0's rule.",
+  "single": "muse30b_x0_single",
+  "single_code": {
+    "sha": "bb7ecdf4b3062b01647ad7cd7b0786a90e4cb21f",
+    "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 26,
+  "items": 200,
+  "subspaces": {
+    "states_run": "muse30b_x0_probe_v4",
+    "n": 657,
+    "rank": {
+      "A": 4,
+      "V": 8,
+      "AV": 12,
+      "Alf": 4,
+      "Id": 43
+    },
+    "layout_groups": {
+      "groups": 31,
+      "items_kept": 657,
+      "singletons_dropped": 0
+    },
+    "A_Alf_overlap": 0.6578274536820093
+  },
+  "mode": "two_routes",
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_Alf",
+    "no_jppAlf",
+    "no_jpp_rand",
+    "no_Alf_rand",
+    "no_jppAlf_rand"
+  ],
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "dcd8102984f314cb5545a1bd9944119a3d234baa",
+    "dirty": true
+  },
+  "items_rule": "every item of the run, both sentence orders (the order recorded per row)",
+  "alt": "single",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  }
+}
