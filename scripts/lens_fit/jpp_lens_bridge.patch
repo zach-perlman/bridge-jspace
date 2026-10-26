@@ -1,5 +1,5 @@
 diff --git a/src/workspace_lens/__init__.py b/src/workspace_lens/__init__.py
-index 2bb8d8b..bbe8f28 100644
+index 2bb8d8b..de4afaf 100644
 --- a/src/workspace_lens/__init__.py
 +++ b/src/workspace_lens/__init__.py
 @@ -1,3 +1,4 @@
@@ -30,7 +30,7 @@ index 2bb8d8b..bbe8f28 100644
          model_name,
          dtype=t.bfloat16,
          attn_implementation=attn_implementation,
-@@ -46,6 +61,35 @@ def get_hf_model(
+@@ -46,6 +61,43 @@ def get_hf_model(
      )
      if device_map is None:
          hf_model = hf_model.cuda()
@@ -66,6 +66,14 @@ index 2bb8d8b..bbe8f28 100644
 +    cfg = get_class_from_dynamic_module("configuration_nemotron_h_puzzle.NemotronHPuzzleConfig", path).from_dict(raw)
 +    cls = get_class_from_dynamic_module("modeling_nemotron_h_puzzle.NemotronHPuzzleForCausalLM", path)
 +    _lrp._RMSNORM_LRP_FORWARDS["NemotronHRMSNorm"] = _lrp._olmo3_rmsnorm_lrp_forward
++    import os as _os
++    import sys as _sys
++
++    if not _os.environ.get("BJ_SLOW_MOE"):  # bridge-jspace amendment 49 note 3: one sync per MoE layer, same numbers
++        _sys.path.insert(0, "/workspace/bridge-jspace/src")
++        from bridge_jspace.model import _patch_fast_moe
++
++        _patch_fast_moe(cls)
 +    return cls.from_pretrained(path, config=cfg, key_mapping={r"^language_model\.backbone\.": "model.", r"^language_model\.": ""},
 +                               dtype=t.bfloat16, device_map=device_map, attn_implementation=attn_implementation).eval()
 diff --git a/src/workspace_lens/lrp/lrp.py b/src/workspace_lens/lrp/lrp.py

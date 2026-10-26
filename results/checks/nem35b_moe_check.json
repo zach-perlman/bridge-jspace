@@ -1,0 +1,17 @@
+{
+ "nll_grouped": 2.2294845581054688,
+ "nll_exact": 2.2281055450439453,
+ "nll_diff": 0.0013790130615234375,
+ "top1_agreement": 0.9591836929321289,
+ "last_top1_agreement": 0.9375,
+ "last_max_abs_logit_diff": 1.75,
+ "sec_per_forward": {
+  "grouped": 0.5357308387756348,
+  "exact": 2.134459892908732
+ },
+ "batch": [
+  2,
+  183
+ ],
+ "pass": false
+}

@@ -308,7 +308,68 @@ def _remote_lm(path: str, spec: dict[str, Any]):
     _gated_rmsnorm_shim()
     raw = json.loads((Path(path) / "config.json").read_text(), object_hook=special)[spec["config_key"]]
     cfg = get_class_from_dynamic_module(spec["config"], path).from_dict(raw)
-    return get_class_from_dynamic_module(spec["model"], path), cfg
+    cls = get_class_from_dynamic_module(spec["model"], path)
+    if not os.environ.get("BJ_SLOW_MOE"):  # amendment 49 note 3: grouped GEMMs instead of NVIDIA's per-expert loop
+        _patch_fast_moe(cls)
+    return cls, cfg
+
+
+def _fast_moe(self, hidden_states, topk_indices, topk_weights):
+    """Nemotron 3.5 Bolt's NemotronHMoE.moe (2026-10-26, amendment 49 note 3) with one host sync per layer instead of one per
+    expert: NVIDIA's loop calls every expert with torch.where (a sync each) and runs a no-op for each unused expert (zeros:
+    no MLP bias). Here the same expert calls on the same token rows in the same order (row-major (token, slot), as
+    torch.where gives), accumulated in the same expert order, unused experts skipped: the same numbers, differentiable."""
+    import torch
+
+    k = topk_indices.shape[1]
+    flat = topk_indices.reshape(-1)
+    order = torch.argsort(flat, stable=True)
+    tok, slot = torch.div(order, k, rounding_mode="floor"), order % k
+    counts = torch.bincount(flat, minlength=len(self.experts)).tolist()
+    final = torch.zeros_like(hidden_states, dtype=topk_weights.dtype)
+    start = 0
+    for e, c in enumerate(counts):
+        if c:
+            ti, wi = tok[start : start + c], slot[start : start + c]
+            final.index_add_(0, ti, self.experts[e](hidden_states[ti]) * topk_weights[ti, wi].unsqueeze(-1))
+            start += c
+    return final.type(hidden_states.dtype)
+
+
+def _grouped_moe(self, hidden_states, topk_indices, topk_weights):
+    """Bolt's NemotronHMoE.moe as two grouped GEMMs per layer (2026-10-26, amendment 49 note 3; ~50x faster than NVIDIA's
+    per-expert loop on one Bolt layer). On first use the experts' weights are stacked into [E, out, in] tensors and each
+    expert's Linear is pointed at its slice (no copy kept). Tokens are sorted by expert (row-major (token, slot) within an
+    expert, as the loop), multiplied by torch._grouped_mm, put back in (token, slot) order and summed over the k slots
+    with their routing weights (a fixed order: deterministic). The same computation up to bf16 rounding (one Bolt layer:
+    relative difference 2e-5; gradients flow); checked against the exact loop on Bolt itself before use."""
+    import torch
+
+    if not hasattr(self, "_bj_up_proj"):
+        for name in ("up_proj", "down_proj"):
+            W = torch.stack([getattr(e, name).weight.data for e in self.experts])
+            for i, e in enumerate(self.experts):
+                getattr(e, name).weight = torch.nn.Parameter(W[i], requires_grad=getattr(e, name).weight.requires_grad)
+            setattr(self, f"_bj_{name}", W)
+    T, k = topk_indices.shape
+    flat = topk_indices.reshape(-1)
+    order = torch.argsort(flat, stable=True)
+    offs = torch.cumsum(torch.bincount(flat, minlength=len(self.experts)), 0).to(torch.int32)
+    y = torch._grouped_mm(hidden_states[torch.div(order, k, rounding_mode="floor")], self._bj_up_proj.transpose(1, 2), offs=offs)
+    y = torch._grouped_mm(self.experts[0].act_fn(y), self._bj_down_proj.transpose(1, 2), offs=offs)
+    back = torch.empty_like(y)
+    back[order] = y
+    return (back.view(T, k, -1) * topk_weights.unsqueeze(-1)).sum(1).type(hidden_states.dtype)
+
+
+def _patch_fast_moe(cls) -> None:
+    """Point the class's sibling module's NemotronHMoE.moe at _grouped_moe, or with BJ_EXACT_MOE at _fast_moe (the exact
+    loop with one sync per layer); this process only."""
+    import sys
+
+    mod = sys.modules[cls.__module__]
+    nh = getattr(mod, "modeling_nemotron_h", mod)
+    nh.NemotronHMoE.moe = _fast_moe if os.environ.get("BJ_EXACT_MOE") else _grouped_moe
 
 
 def _hub_mamba_ssm(repo: str, revision: str) -> None:

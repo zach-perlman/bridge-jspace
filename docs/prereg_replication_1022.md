@@ -1586,3 +1586,33 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
      than half the items.
 - **Runs (scripts/queues/h200_ptr_1026.sh):** the 9B at L12-16 first (beside the 27B renderings, before Bolt). Then
   the 27B at L32-40 and Lightning at L27-33, after Monday's queue.
+
+**Amendment 49, note 3 (Zach, 2026-10-26 05:15 UTC, before Bolt's relaunched chain): Bolt's MoE runs as grouped GEMMs; the equivalence check missed my bar and Zach chose to proceed.**
+- **Found:** Bolt's own code (modeling_nemotron_h.py, NemotronHMoE.moe) loops over every routed expert of each of its
+  40 MoE layers (240-496 experts). Each step has a torch.where sync and a no-op call for unused experts. Its 120-item
+  competence smoke ran ~40x slower than Lightning's (17+ min vs 3.4 min); the chain would have taken days. That run was
+  stopped at its competence smoke; the gates had passed.
+- **Two replacements, set at load (model._patch_fast_moe; jpp_lens's Bolt loader as well):**
+  - _fast_moe: the same expert calls on the same token rows in the same order, one sync per layer, unused experts
+    skipped (their call adds zeros: no MLP bias). Bit-identical to NVIDIA's outputs and gradients on a real-size Bolt
+    layer, but only 1.6x faster.
+  - _grouped_moe: the experts' weights are stacked in place (+41 MB) and the layer runs as two torch._grouped_mm calls,
+    summed over the k slots in a fixed order. About 49x faster on one layer, relative difference 2e-5 there, gradients
+    flow. On the full model: 0.54 s vs 2.13 s for a 2 x 183-token forward.
+- **The check (scripts/bolt_moe_check.py, results/checks/nem35b_moe_check.json, grouped vs the exact loop on the loaded
+  Bolt):**
+  - mean NLL on 16 WikiText rows: 2.2295 vs 2.2281 (diff +0.0014);
+  - top-1 agreement: 0.959;
+  - last-position top-1 on 16 dev chat prompts: 15 of 16;
+  - max logit diff 1.75.
+
+  The bar I wrote into the script before running it (|NLL diff| <= 0.01 and top-1 agreement >= 0.99) is **not met** on
+  top-1 agreement. This is disclosed here, not redefined. For context, Bolt's own Mamba-kernel check (hub kernels vs
+  the torch path, amendment 44) shows the same size of difference (NLL +0.0017, top-1 0.957, accepted at >= 0.95).
+  Bolt's argmax is that sensitive to bf16 rounding in general.
+- **Decision (Zach, option 1 of 3):** proceed with the grouped MoE for every Bolt run (harness and J++ fit). Bolt's
+  numbers are reported as "Bolt with grouped-GEMM experts". Every Bolt condition uses the same implementation, so
+  within-model contrasts compare like with like. The exact loop (4x slower, ~20 h for the chain) and dropping Bolt were
+  the other options.
+- **Order:** Bolt's chain is relaunched now (gates repeated). Monday's queue (amendment 50) and the pointer tests
+  (amendment 51) wait for it, as before.
