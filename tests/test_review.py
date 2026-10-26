@@ -131,14 +131,22 @@ def test_export_writes_a_page_per_view(tmp_path):
 
     out = R.export(0, 2, tmp_path)
     pages = sorted(p.name for p in out.glob("*.html"))
-    assert pages == sorted(["index.html", *(f"{v['id']}.html" for v in I.phase1())])
+    assert pages == sorted(["index.html", *(f"{v['id']}.html" for v in I.shown())])
     assert "C2-" in (out / "routes.html").read_text()  # the export's routes sample is C2 (views file)
 
 
-@pytest.mark.parametrize("view_id", ["main_swap", "single_change", "routes", "routes_early", "pointer_main"])
+@pytest.mark.parametrize(
+    "view_id",
+    ["main_swap", "single_change", "routes", "routes_early", "pointer_main", "routes_sweep", "both_removed",
+     "both_removed_ctrl", "d1_identity"],
+)  # fmt: skip
 def test_recount_equals_data_csv(view_id):
     from bridge_jspace.review import recount as RC
 
     rows = RC.recount(view_id)
     assert not [r for r in rows if r["status"] == "mismatch"]
-    assert {r["model"] for r in rows if r["status"] == "match"} == set(MODELS)
+    matched = {r["model"] for r in rows if r["status"] == "match"}
+    if view_id in ("main_swap", "single_change", "routes", "routes_early", "pointer_main"):  # views 1-4: every model
+        assert matched == set(MODELS)
+    else:  # e.g. Muse's L34 sweep run has no data.csv number ("not tested")
+        assert matched

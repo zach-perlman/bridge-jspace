@@ -104,7 +104,7 @@ def render_view(q: dict[str, str], server: bool, sha: str) -> str:
 
 
 def render_index(server: bool, sha: str, seed: int, n: int) -> str:
-    return P.index_page([(v, stats(v["id"]), recount(v["id"])) for v in I.phase1()], server, sha, seed, n)
+    return P.index_page([(v, stats(v["id"]), recount(v["id"])) for v in I.shown()], server, sha, seed, n)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -168,11 +168,11 @@ def export(seed: int, n: int, out: Path | None = None) -> Path:
     out.mkdir(parents=True, exist_ok=True)
     sha = commit()
     (out / "index.html").write_text(render_index(False, sha, seed, n))
-    for v in I.phase1():
+    for v in I.shown():
         q = {"view": v["id"], "seed": str(seed), "n": str(n), **{k: str(x) for k, x in v.get("export", {}).items()}}
         (out / f"{v['id']}.html").write_text(render_view(q, False, sha))
     size = sum(f.stat().st_size for f in out.glob("*.html"))
-    print(f"wrote {out}: {len(I.phase1()) + 1} pages, {size / 1e6:.1f} MB (seed {seed}, N = {n} per model)")
+    print(f"wrote {out}: {len(I.shown()) + 1} pages, {size / 1e6:.1f} MB (seed {seed}, N = {n} per model)")
     return out
 
 
@@ -188,7 +188,7 @@ def pack(out: Path | None = None) -> Path:
              "the whole change; route share = the share of the lookup's items in a route (routes C0: switch / original / "
              "other). Read the items by hand: `make review-serve`, then the view's page (or `make review-export SEED=0`). "
              "The pack of 25 Oct is kept as docs/verify_pack_25oct.md.", ""]  # fmt: skip
-    for v in I.phase1():
+    for v in I.shown():
         rows = recount(v["id"])
         st = stats(v["id"])
         lines += [f"## {v['title']} (`{v['id']}`)", "", f"**Claim.** {v['claim'].strip()}", "", f"README: {v.get('readme', '')}.", "",
@@ -228,7 +228,7 @@ def summary(out: Path | None = None) -> Path:
              "| view | items read | consistent | wrong | unclear | seeds | automatic-check failures | recount mismatches |",
              "|---|---|---|---|---|---|---|---|"]  # fmt: skip
     flagged = []
-    for v in I.phase1():
+    for v in I.shown():
         last = {r["item"]: r for r in marks.get(v["id"], [])}
         c = collections.Counter(r["verdict"] for r in last.values())
         seeds = sorted({r["seed"] for r in last.values()})

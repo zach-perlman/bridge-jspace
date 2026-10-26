@@ -66,15 +66,74 @@ def route_keys(cond: str, arm: str, route: str, mkey: str, run: str) -> str | No
     return min(hits, key=len) if hits else None  # several prefixes may read one verdict (Muse): the same number
 
 
+def lost(items: list[dict], reader: str, part: str) -> float:
+    """Jdep: the share of the whole change's switches lost without the part."""
+    mine = [it["rows"][reader] for it in items if it["reader"] == reader]
+    whole = switched([r.get("whole") for r in mine])
+    return 1 - switched([r.get(part) for r in mine]) / whole if whole else float("nan")
+
+
+def one_part(got: list[dict], e: dict, m: str, mk: str) -> dict:
+    """A headline entry on one condition and reader: extra_loss / lost, or the difference of two (…_minus)."""
+    pool = [it for it in got if e.get("condition") in (None, it["condition"])]
+    w = e["reader"]
+    n = sum(it["reader"] == w for it in pool)
+    h = {"whole": "whole", "part": e["part"], "random": e.get("random")}
+    if e["stat"].startswith("extra_loss"):
+        val = extra_loss(pool, w, h)[0]
+        if e["stat"] == "extra_loss_minus":
+            val -= extra_loss(pool, w, {"whole": "whole", "part": e["minus_part"], "random": e["minus_random"]})[0]
+    else:
+        val = lost(pool, w, e["part"]) - (lost(pool, w, e["minus_part"]) if e["stat"] == "lost_minus" else 0)
+    what = {"extra_loss": "extra loss", "extra_loss_minus": "extra loss minus", "lost": "switches lost",
+            "lost_minus": "switches lost minus"}[e["stat"]]  # fmt: skip
+    name = f"{e.get('condition', '')} {I.READER_NAME[w]} {what}: {e['part']}" + (
+        f" − {e['minus_part']}" if "minus_part" in e else ""
+    )
+    return {"model": m, "quantity": name.strip(), "n": n, "value": val, **compare(val, e["key"].replace("<m>", mk))}
+
+
+def route_shares(v: dict, got: list[dict], e: dict, m: str, mk: str) -> list[dict]:
+    """Per run of the view (join: false gives one per layer) and arm: the lookup's route shares, the recall's switches."""
+    out = []
+    cond = e["condition"]
+    for run in sorted({it["run"] for it in got}):
+        mine = [it for it in got if it["run"] == run and it["condition"] == cond]
+        tag = f" ({run.split('/')[-1]})" if v.get("join", True) is False else ""
+        for label in e["arms"]:
+            arm = v["filters"]["arms"][label]
+            lk = [it for it in mine if it["reader"] == "PP" and it["rows"]["PP"].get(label)]
+            rc = [it for it in mine if it["reader"] == "PM" and it["rows"]["PM"].get(label)]
+            if not lk:
+                continue
+            first = lk[0]["rows"]["PP"][label]
+            src = f"{run.rsplit('/', 1)[0]}/{first['_run']}" if "_run" in first else run
+            for route in ROUTES:
+                share = sum(I.route_class(it["rows"]["PP"][label], cond) == route for it in lk) / len(lk)
+                out.append({"model": m, "quantity": f"{cond} {label}: {route}{tag}", "n": len(lk), "value": share,
+                            **compare(share, route_keys(cond, arm, route, mk, src))})  # fmt: skip
+            if rc:
+                share = switched([it["rows"]["PM"][label] for it in rc]) / len(rc)
+                out.append({"model": m, "quantity": f"{cond} {label}: recall follows S{tag}", "n": len(rc), "value": share,
+                            **compare(share, route_keys(cond, arm, "recall_follows_s", mk, src))})  # fmt: skip
+    return out
+
+
 def recount(view_id: str) -> list[dict]:
     v = I.view(view_id)
-    h = v.get("headline", {})
     out = []
     for m, meta in I.spec()["models"].items():
         got = I.items(view_id, m)
         if not got:
             continue
         mk = meta["key"]
+        entries = v.get("headline")
+        for e in entries if isinstance(entries, list) else []:
+            if e["stat"] == "route_share":
+                out += route_shares(v, got, e, m, mk)
+            else:
+                out.append(one_part(got, e, m, mk))
+        h = v.get("headline", {}) if isinstance(v.get("headline"), dict) else {}
         if h.get("stat") == "extra_loss":
             ex = {}
             for w in I.READERS:
@@ -96,27 +155,7 @@ def recount(view_id: str) -> list[dict]:
                 out.append({"model": m, "quantity": "gap (recall - lookup)", "n": out[-1]["n"], "value": gap,
                             **compare(gap, h["keys"]["gap"].replace("<m>", mk))})  # fmt: skip
         elif h.get("stat") == "route_share":
-            cond = h["condition"]
-            for label in h["arms"]:
-                arm = v["filters"]["arms"][label]
-                lk = [
-                    it for it in got if it["condition"] == cond and it["reader"] == "PP" and it["rows"]["PP"].get(label)
-                ]
-                rc = [
-                    it for it in got if it["condition"] == cond and it["reader"] == "PM" and it["rows"]["PM"].get(label)
-                ]
-                if not lk:
-                    continue
-                first = lk[0]["rows"]["PP"][label]
-                run = f"{lk[0]['run'].rsplit('/', 1)[0]}/{first['_run']}" if "_run" in first else lk[0]["run"]
-                for route in ROUTES:
-                    share = sum(I.route_class(it["rows"]["PP"][label], cond) == route for it in lk) / len(lk)
-                    out.append({"model": m, "quantity": f"{cond} {label}: {route}", "n": len(lk), "value": share,
-                                **compare(share, route_keys(cond, arm, route, mk, run))})  # fmt: skip
-                if rc:
-                    share = switched([it["rows"]["PM"][label] for it in rc]) / len(rc)
-                    out.append({"model": m, "quantity": f"{cond} {label}: recall follows S", "n": len(rc), "value": share,
-                                **compare(share, route_keys(cond, arm, "recall_follows_s", mk, run))})  # fmt: skip
+            out += route_shares(v, got, h, m, mk)
         elif h.get("stat") == "x8_target_minus_random":
             s = h["s"]
             lk = [it for it in got if it["reader"] == "PP" and it["x8"]["s"] == s]

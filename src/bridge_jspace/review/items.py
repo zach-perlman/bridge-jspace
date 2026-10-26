@@ -34,8 +34,9 @@ def view(view_id: str) -> dict:
     return next(v for v in spec()["views"] if v["id"] == view_id)
 
 
-def phase1() -> list[dict]:
-    return [v for v in spec()["views"] if v.get("status") == "phase1"]
+def shown() -> list[dict]:
+    """The views in the dashboard (status phase1 or phase2); "later" ones are listed in the views file only."""
+    return [v for v in spec()["views"] if v.get("status") in ("phase1", "phase2")]
 
 
 @lru_cache(maxsize=64)
@@ -119,7 +120,7 @@ def routes_items(v: dict, model: str, runs: list[str], in_set: bool = True) -> l
         run: {(c["scene"], c["condition"]): c for c in read_jsonl(f"{run}/cases.jsonl")} for run in runs[1:]
     }
     norms = {(r["scene"], r["condition"]): r for r in read_jsonl(f"{first}/norms.jsonl")}
-    done = sorted({(k[0], k[1]) for k in by_run[first] if k[3] == "whole"})
+    done = sorted({(k[0], k[1]) for k in by_run[first] if k[3] == "whole" and k[1] in conds})
     out = []
     for key in done if in_set else sorted(set(cases) - set(done)):
         scene, cond = key
@@ -222,7 +223,8 @@ def _items(view_id: str, model: str, which: str) -> tuple[Item, ...]:
     in_set = which == "set"
     if v["kind"] == "routes":
         got = []
-        for chain in [runs] if which != "superseded" else [[r] for r in runs]:
+        joined = which != "superseded" and v.get("join", True)  # join: false -> every run its own item set
+        for chain in [runs] if joined else [[r] for r in runs]:
             got += routes_items(v, model, chain, in_set or which == "superseded")
     else:
         got = [it for run in (runs[:1] if which != "superseded" else runs)

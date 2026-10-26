@@ -415,31 +415,92 @@ views:
 
   - id: routes_sweep
     title: Routes at more layers (position appears with depth)
-    status: later
+    status: phase2
     kind: routes
+    join: false  # each run is its own layer and item set
     readme: "Section 3 (a); Fig. 5; Appendix A 'Routes, position share at each tested layer'; scorecard row 'Position appears where the lookup stops needing J++'"
     claim: "Position appears by layer 12 (9B), 28 (27B), 33 (122B) and 26 (Muse)."
     sources: [rts8_C2_whole_position_9b, rts10_C2_whole_position_9b, rts20_C2_whole_position_27b, rts24_C2_whole_position_27b, rts24_C2_whole_position_122b,
               rts28_C2_whole_position_27b, rts30_C2_whole_position_122b, rts36_C2_whole_position_122b]
+    filters:
+      layer: run
+      conditions: [C0, C2]
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without J++'s random part: no_jpp_rand
+    headline: [{stat: route_share, condition: C2, arms: [whole]}]
+    export: {condition: C2}
     runs:
       qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_sweep_l8, results/x6_routes/qwen35_9b_x6_routes_sweep_l10]
       qwen3.6-27b: [results/x6_routes/x6_routes_sweep_l20_27b, results/x6_routes/x6_routes_sweep_l24_27b, results/x6_routes/x6_routes_sweep_l28_27b]
       qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_sweep_l24_g75, results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75, results/x6_routes/qwen35_122b_x6_routes_sweep_l36_g75]
       muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_l34]
-    notes: "Muse L34 stopped at its sanity gate (C0 moved no lookup): 'not tested', stays current."
+    notes: "Muse L34 stopped at its sanity gate (C0 moved no lookup): 'not tested', stays current. The layers fixed in advance and the early layers are the views routes and routes_early."
 
   - id: both_removed
     title: J++ and the pointer directions removed together
-    status: later
+    status: phase2
     kind: routes
-    readme: "Section 3 (b) and its table rows; Fig. 6; Appendix A sanity-swap rows; scorecard row 10"
-    claim: "Removing both costs the lookup more than the pointer alone, and more than the pointer with a random part of J++'s size, only on the 27B."
-    sources: [rtb_ex_C0_both_minus_alf_lk_<m>, rtb_ex_C0_both_lk_<m>, rtb_ex_C0_alf_lk_<m>, rtb_ex_C0_both_rc_<m>,
-              rtc_lost_C0_jpp_minus_rand_lk_<m>, rtc_left_C0_alf_jpp_lk_<m>, rtc_ex_C0_jpp_rc_9b]
+    readme: "Section 3 (b) and its table rows; Fig. 6; Appendix A 'Sanity swap, lookup without both / pointer alone'; scorecard row 10"
+    claim: "Removing both costs the lookup more than the pointer alone only on the 27B; J++ and the pointer directions removed together still leave about half of the lookups switching."
+    sources: [rtb_ex_C0_both_minus_alf_lk_<m>, rtb_ex_C0_both_lk_<m>, rtb_ex_C0_alf_lk_<m>, rtb_ex_C0_both_rc_9b, rtb_ex_C0_both_rc_27b]
+    filters:
+      layer: fixed
+      conditions: [C0, C2]
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without J++'s random part: no_jpp_rand
+        without the pointer directions: no_alf
+        without the pointer's random part: no_alf_rand
+        without both: no_both
+        without both's random part: no_both_rand
+    headline:
+      - {stat: extra_loss, condition: C0, reader: PP, part: without both, random: "without both's random part", key: rtb_ex_C0_both_lk_<m>}
+      - {stat: extra_loss, condition: C0, reader: PP, part: without the pointer directions, random: "without the pointer's random part", key: rtb_ex_C0_alf_lk_<m>}
+      - {stat: extra_loss_minus, condition: C0, reader: PP, part: without both, random: "without both's random part",
+         minus_part: without the pointer directions, minus_random: "without the pointer's random part", key: rtb_ex_C0_both_minus_alf_lk_<m>}
+      - {stat: extra_loss, condition: C0, reader: PM, part: without both, random: "without both's random part", key: rtb_ex_C0_both_rc_<m>}
     runs:
-      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_bothoff, results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl]
-      qwen3.6-27b: [results/x6_routes/x6_routes_bothoff_27b, results/x6_routes/x6_routes_bothoff_ctrl_27b]
-      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_bothoff_g75, results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75]
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_bothoff]
+      qwen3.6-27b: [results/x6_routes/x6_routes_bothoff_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_bothoff_g75]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes]
+
+  - id: both_removed_ctrl
+    title: The pointer with J++ against the pointer with a random part of J++'s size
+    status: phase2
+    kind: routes
+    readme: "Section 3 (b) and its table rows 'Switches lost: pointer + J++ minus pointer + random', 'Lookups still switching with both removed'; Fig. 6"
+    claim: "Removing the pointer with J++ costs the lookup more than the pointer with a random part of J++'s size only on the 27B."
+    sources: [rtc_lost_C0_jpp_minus_rand_lk_<m>, rtc_left_C0_alf_jpp_lk_<m>]
+    filters:
+      layer: fixed
+      conditions: [C0]
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without J++'s random part: no_jpp_rand
+        without the pointer directions: no_alf
+        without the pointer and J++: no_both
+        without the pointer and a random part of J++'s size: no_alf_jrand
+    headline:
+      - {stat: lost, condition: C0, reader: PP, part: without the pointer directions, key: rtc_lost_C0_alf_lk_<m>}
+      - {stat: lost, condition: C0, reader: PP, part: without the pointer and J++, key: rtc_lost_C0_alf_jpp_lk_<m>}
+      - {stat: lost, condition: C0, reader: PP, part: "without the pointer and a random part of J++'s size", key: rtc_lost_C0_alf_rand_lk_<m>}
+      - {stat: lost_minus, condition: C0, reader: PP, part: without the pointer and J++, minus_part: "without the pointer and a random part of J++'s size",
+         key: rtc_lost_C0_jpp_minus_rand_lk_<m>}
+    runs:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl]
+      qwen3.6-27b: [results/x6_routes/x6_routes_bothoff_ctrl_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75]
       muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes]
 
   - id: muse_depth
@@ -475,18 +536,45 @@ views:
     per_item: "the main runs' outcomes.jsonl (ld per arm), the same item sets as main_swap"
 
   - id: d1_identity
-    title: "D1: the identity direction (batch 40)"
-    status: later
+    title: "The identity direction, with the pointer and J++ (batch 40)"
+    status: phase2
     kind: routes
-    readme: "Section 6 'Running now'"
-    claim: "The item's identity as one direction, removed with the pointer and J++, accounts for the rest of the lookup's route."
-    sources: []
+    readme: "Section 3 (d)"
+    claim: >-
+      With identity added, the sanity swap's lookups still switching drop, against a random part of the same share; the
+      extra loss stays below the 0.80 bar fixed in advance. The recall needs identity on the 27B and Muse, not on the 9B.
+    sources: [rtd_ex_C0_jpp+alf+idout_lk_<m>, rtd_left_C0_jpp+alf+idout_lk_<m>, rtd_randleft_C0_jpp+alf+idout_lk_<m>, rtd_ex_C0_id_rc_<m>]
+    filters:
+      layer: fixed
+      conditions: [C0, C2]
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without J++'s random part: no_jpp_rand
+        without the pointer directions: no_alf
+        without the pointer's random part: no_alf_rand
+        without identity: no_id
+        without identity's random part: no_id_rand
+        without identity outside J++: no_idout
+        its random part (identity outside J++): no_idout_rand
+        without J++, the pointer and identity outside J++: no_jppalfidout
+        their random part: no_jppalfidout_rand
+        only identity: keep_id
+        only a random part of identity's size: keep_id_rand
+    headline:
+      - {stat: extra_loss, condition: C0, reader: PP, part: "without J++, the pointer and identity outside J++", random: their random part,
+         key: "rtd_ex_C0_jpp+alf+idout_lk_<m>"}
+      - {stat: extra_loss, condition: C0, reader: PM, part: without identity, random: "without identity's random part", key: rtd_ex_C0_id_rc_<m>}
+      - {stat: route_share, condition: C2, arms: [whole, without identity, "without identity's random part"]}
     runs:
       qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_d1]
       qwen3.6-27b: [results/x6_routes/x6_routes_d1_27b]
       muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_d1_r2]
     superseded:
       muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_d1]
+    notes: "Muse: 290 scenes (10 whose entities have no class mean dropped before the run's deltas)."
 
   - id: t_pointer
     title: "T: the pointer directions beyond simple scenes (batch 42)"
