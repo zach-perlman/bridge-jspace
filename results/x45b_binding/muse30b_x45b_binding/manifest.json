@@ -1,0 +1,55 @@
+{
+  "exp": "x45b_binding",
+  "run": "muse30b_x45b_binding",
+  "why": "batch 45, test 45b (jobs/c3/batch45.yaml): Muse at L26; (a) the bridge-word change at L, (b) at L/2 and L/4, (c) S patched into O at every locker-sentence token at L, (d) at L/2; S read on S",
+  "written_utc": "2026-10-26T22:41:51Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "7ed03aaab90a921c94f4fcc10d3846f3528106a8",
+    "dirty": true
+  },
+  "spec": "jobs/c3/batch45.yaml (45b)",
+  "inputs": {
+    "jobs/c3/batch45.yaml": "1040fe0dfb4139484016ab39516f230fd62b3faa0f7eab321d4cd06626c68825",
+    "results/x0_necessity/muse30b_x0_necessity/manifest.json": "79717f28d048118abb3140e643e59d95bc4a3c893532c42efd4faee5ce08f0d0",
+    "results/x0_necessity/muse30b_x0_necessity/cases.jsonl": "6438c92866d69cc4b18966a86d6187690a5e614d1ae93ec3a90c49d7ab893e33",
+    "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl": "043d4c017bceb4db04c2b729d5e10b406ec6a34572ff7939bd27a21d2bdb4703",
+    "results/x0_necessity/muse30b_x0_necessity/competence.jsonl": "13288152cbeb19adbfc26f0ac2729cb5e2b70ffc1a2e5052616cf5475182459c"
+  },
+  "main_run": "muse30b_x0_necessity",
+  "layer": 26,
+  "arm_layers": {
+    "a": 26,
+    "b_half": 13,
+    "b_quarter": 6,
+    "c": 26,
+    "d": 13
+  },
+  "arms": {
+    "none": "O unedited",
+    "a": "the bridge-word change at L",
+    "b_half": "the bridge-word change at L/2",
+    "b_quarter": "the bridge-word change at L/4",
+    "c": "S patched into O at every locker-sentence token, at L",
+    "d": "S patched into O at every locker-sentence token, at L/2",
+    "S": "S read on S (unedited)"
+  },
+  "items_rule": "the main run's items at L (chat) whose org bridge's locker sentence comes after the asked pick (x0_strata); locker sentences aligned token for token, else by sentence; else dropped",
+  "locker_sentences": "every 'The locker of <thing> is <n>.' sentence of the context",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer",
+  "rule": "the reading-order explanation holds if (c) or (d) switches at least half of the lookups that S itself switches, while (a) stays at or below 0.25.",
+  "decisive_reader": "PP",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "note": "batch 45 (Dan 26 Oct ~18:30); results closed until docs/predictions_batch45.md holds Dan's Q45.5"
+}
