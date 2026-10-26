@@ -8,6 +8,35 @@ ORG = ("The locker of the duck is 4. The locker of the frog is 3. The locker of 
      "Beth picked the frog. Ann picked the duck. Tom picked the goose.")  # fmt: skip
 
 
+def _case_45c(i: int, j: int, k: int) -> dict:
+    """A routes C2 case whose pointer moves from slot j (the O bridge's) to slot k (the S bridge's)."""
+    items = ["duck", "frog", "goose"]
+    o = " ".join(f"The locker of the {x} is {d}." for x, d in zip(items, (4, 3, 2), strict=True))
+    s_items = list(items)
+    s_items[k] = "rabbit"
+    s = " ".join(f"The locker of the {x} is {d}." for x, d in zip(s_items, (4, 3, 2), strict=True))
+    return {"scene": f"C2-{i}", "context": o, "cf_context": s, "bridge": items[j], "cf_bridge": "rabbit"}
+
+
+def test_cells_45c_reads_only_the_second_third_moves():
+    """45c's rule on planted rows: only the 1 -> 2 / 2 -> 1 moves count; removal leaves 0.25 of 1.0 (halves, CI > 0),
+    keep-only gives 0.5 (>= 0.15)."""
+    cases, rows = {}, []
+    for i in range(80):
+        j, k = ((1, 2), (2, 1), (0, 1), (1, 0))[i % 4]
+        c = _case_45c(i, j, k)
+        cases[c["scene"]] = c
+        second_third = (j, k) in W.MOVES_12
+        pos = {"whole": 1, "no_alf": int(i % 8 == 0), "no_alf_rand": 1, "keep_alf": int(i % 4 < 2), "keep_alf_rand": 0}
+        for arm, p in pos.items():
+            rows.append({"scene": c["scene"], "condition": "C2", "reader": "PP", "arm": arm, "entity": f"e{i % 10}",
+                         "route": "position" if (p if second_third else 1) else "identity"})  # fmt: skip
+    got = W.cells_45c(rows, cases, 300)
+    assert got["n"] == 40
+    assert got["position"]["whole"] == 1.0 and got["position"]["no_alf"] == 0.25
+    assert got["halves"] and got["keep_015"] and got["found"]
+
+
 def test_slots_and_classes():
     assert W.slots_of(ORG) == [("duck", 4), ("frog", 3), ("goose", 2)]
     tokens = {0: 40, 1: 30, 2: 20}

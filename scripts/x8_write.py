@@ -538,6 +538,72 @@ def pointer_move(case: dict) -> tuple[int, int]:
     return o.index(case["bridge"]), s.index(case["cf_bridge"])
 
 
+MOVES_12 = ((1, 2), (2, 1))  # batch 45c: moves between the second and third locker
+
+
+def cells_45c(rows: list[dict], cases: dict[str, dict], n_boot: int = X.N_BOOT) -> dict:
+    """Batch 45c on one routes run (the restricted basis as the pointer part): over the C2 lookups whose pointer moves
+    between the second and third locker, the position share per arm, the removal's cut (whole minus without the basis)
+    with its cluster-bootstrap interval, and the rule's two clauses (fixed in advance, jobs/c3/batch45.yaml): removal
+    halves position (without <= whole / 2, the cut's CI excluding 0) and keep-only gives at least 0.15 position."""
+    arms = ("whole", "no_alf", "no_alf_rand", "keep_alf", "keep_alf_rand")
+    lk = [r for r in rows if r["condition"] == "C2" and r["reader"] == X.LOOKUP and r["arm"] in arms]
+    mine = sorted({r["scene"] for r in lk if pointer_move(cases[r["scene"]]) in MOVES_12})
+    pos = {(r["scene"], r["arm"]): int(r["route"] == "position") for r in lk}
+    ent = {r["scene"]: r["entity"] for r in lk}
+    if not mine:
+        return {"n": 0}
+    sw = {a: [pos[(s, a)] for s in mine] for a in arms}
+    r_ = X.resampled_rates(sw, [ent[s] for s in mine], n_boot)
+    share = {a: float(np.mean(v)) for a, v in sw.items()}
+    cut = [share["whole"] - share["no_alf"], *X.interval(r_["whole"] - r_["no_alf"])]
+    halves = share["no_alf"] <= share["whole"] / 2 and cut[1] > 0
+    keep = share["keep_alf"] >= 0.15
+    return {"n": len(mine), "position": share, "cut": cut, "halves": bool(halves), "keep_015": bool(keep),
+            "found": bool(halves and keep)}  # fmt: skip
+
+
+def stage_score45c(routes: list[str], writes: list[str], n_boot: int = X.N_BOOT) -> Path:
+    """Batch 45c over its models: the rule per routes run (cells_45c), the count of models where it holds, and,
+    descriptive, the writes mu_k - mu_j between the second and third slot at doses 1-4 x a real change (target share).
+    Unsealed only after Dan's predictions are committed."""
+    out = RESULTS / f"score45c-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    f = lambda v: f"{v:.2f}"  # noqa: E731
+    lines = ["# Batch 45c: second vs third (scored against the rule fixed in advance)", "",
+             "| routes run | n | position: whole / without / random part / only it / only a random part | cut [CI] | halves | keep >= 0.15 | found |",
+             "|---|---|---|---|---|---|---|"]  # fmt: skip
+    blob, found = {}, 0
+    for run in routes:
+        src = R.RESULTS / run
+        cases = {c["scene"]: c for c in X.read_jsonl(src / "cases.jsonl")}
+        c = cells_45c(X.read_jsonl(src / "outcomes.jsonl"), cases, n_boot)
+        blob[run] = c
+        if not c["n"]:
+            lines.append(f"| {run} | 0 | – | – | – | – | – |")
+            continue
+        found += c["found"]
+        p = c["position"]
+        lines.append(f"| {run} | {c['n']} | {f(p['whole'])} / {f(p['no_alf'])} / {f(p['no_alf_rand'])} / {f(p['keep_alf'])} / "
+                     f"{f(p['keep_alf_rand'])} | {f(c['cut'][0])} [{f(c['cut'][1])}, {f(c['cut'][2])}] | {c['halves']} | "
+                     f"{c['keep_015']} | {c['found']} |")  # fmt: skip
+    lines += ["", f"Found on {found} of {len(routes)} models (Q45.6: all three / one or two / none).", "",
+              "## The writes between the second and third slot (descriptive)", "",
+              "| write run | move | kind | dose | n | target share |", "|---|---|---|---|---|---|"]  # fmt: skip
+    for run in writes:
+        rows = [
+            r for r in X.read_jsonl(RESULTS / run / "outcomes.jsonl") if r["reader"] == X.LOOKUP and r["kind"] != "none"
+        ]
+        for (j, k), kind, s in sorted({((r["j"], r["k"]), r["kind"], r["s"]) for r in rows}):
+            got = [r["class"] == "target" for r in rows if (r["j"], r["k"], r["kind"], r["s"]) == (j, k, kind, s)]
+            blob.setdefault(run, {})[f"{j}-{k}|{kind}|{s:g}"] = {"n": len(got), "target": float(np.mean(got))}
+            lines.append(f"| {run} | {j} → {k} | {kind} | {s:g} | {len(got)} | {np.mean(got):.2f} |")
+    (out / "score.json").write_text(json.dumps(blob, indent=1) + "\n")
+    (out / "score.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def stage_pairs() -> Path:
     """After the data, descriptive (Dan 26 Oct ~15:30, regrouped ~16:00; CPU): the slot pairs. (a) The address vectors'
     stability per pair: the class means refit on two halves of the probe states split by bridge entity (seed 0), cos(mu_k
@@ -633,7 +699,9 @@ def stage_pairs() -> Path:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["run", "verdict", "order", "order-verdict", "geometry", "recall", "pairs"])
+    ap.add_argument(
+        "stage", choices=["run", "verdict", "order", "order-verdict", "geometry", "recall", "pairs", "score45c"]
+    )
     ap.add_argument("--name")
     ap.add_argument("--s", nargs="+", type=float, default=[1, 2, 4])
     ap.add_argument("--rand-s", nargs="+", type=float, default=[1, 4])
@@ -644,6 +712,8 @@ def main() -> None:
                     help="order: the fillers' length window (Muse: 8 16, Dan ~16:40; no filler of 10-12 tokens)")  # fmt: skip
     ap.add_argument("--pairs", nargs="+", default=None, metavar="J-K", help="run: only these slot moves (45c: 1-2 2-1)")
     ap.add_argument("--dose-from", default=None, help="run: --s / --rand-s are doses x each pair's s* from this x8 run")
+    ap.add_argument("--routes", nargs="+", default=[], help="score45c: the batch-45c routes runs")
+    ap.add_argument("--writes", nargs="+", default=[], help="score45c: the batch-45c write runs")
     a = ap.parse_args()
     if a.stage == "run":
         pairs = tuple(tuple(int(v) for v in p.split("-")) for p in a.pairs) if a.pairs else None
@@ -659,6 +729,8 @@ def main() -> None:
         stage_order_verdict(a.name, a.n_boot)
     elif a.stage == "recall":
         stage_recall(a.name)
+    elif a.stage == "score45c":
+        stage_score45c(a.routes, a.writes, a.n_boot)
     elif a.stage == "pairs":
         stage_pairs()
     else:
