@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width'><title>Review</title><style>
+:root{--bg:#fbfbfa;--fg:#1d1d1f;--mut:#6b6b70;--card:#fff;--line:#e3e3e6;--hl:#fff1a8;--pos:#ffd0d0;
+--ok:#2f7d4f;--org:#5b6b7f;--oth:#c98a12;--id:#2c6db5;--posc:#d4691b;--val:#7b4bb7;--third:#b8437a;--bad:#b8433a}
+@media (prefers-color-scheme:dark){:root{--bg:#161618;--fg:#e8e8ea;--mut:#9a9aa2;--card:#202024;--line:#36363c;
+--hl:#5a4b10;--pos:#5c2626}}
+body{background:var(--bg);color:var(--fg);font:14px/1.45 -apple-system,system-ui,sans-serif;margin:0;padding:16px}
+main{max-width:1180px;margin:auto}a{color:var(--id)}h1{font-size:20px}h2{font-size:17px;margin-top:28px}
+.mut{color:var(--mut)}.box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;margin:10px 0}
+form.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:end}form.ctl label{display:flex;flex-direction:column;font-size:12px}
+input,select,textarea,button{font:inherit}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid var(--line);
+padding:3px 6px;text-align:left;vertical-align:top;font-size:13px}th{color:var(--mut);font-weight:500}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;margin:12px 0}
+.card.outside{border-style:dashed;opacity:.92}.hdr{font-weight:600}.tag{display:inline-block;border-radius:4px;padding:0 6px;
+font-size:12px;color:#fff}.st{background:var(--mut)}.ok{background:var(--ok)}.org{background:var(--org)}.oth{background:var(--oth)}
+.id{background:var(--id)}.pos{background:var(--posc)}.val{background:var(--val)}.third{background:var(--third)}
+.fail{background:var(--bad)}.na{background:#999}.pass{background:var(--ok)}mark{background:var(--hl);color:inherit}
+.prompt{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12.5px}.toks span{border:1px solid var(--line);
+border-radius:3px;margin:1px;padding:0 2px;display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.toks span.at{background:var(--pos);font-weight:700}.toks span.df{background:var(--hl)}.me{font-weight:600}
+.marks{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}.marks input[type=text]{flex:1;min-width:200px}
+</style><script>const SERVER=false;const COMMIT="9d683772";
+const MARKS=[];function key(){return 'review-marks'}
+try{const s=localStorage.getItem(key());if(s)MARKS.push(...JSON.parse(s))}catch(e){}
+async function mark(f){const d=Object.fromEntries(new FormData(f));if(!d.verdict){alert('pick consistent / wrong / unclear');return false}
+d.utc=new Date().toISOString();d.commit=COMMIT;let ok=false;
+if(SERVER){try{const r=await fetch('/mark',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});ok=r.ok}catch(e){}}
+MARKS.push(d);try{localStorage.setItem(key(),JSON.stringify(MARKS))}catch(e){}
+f.querySelector('.saved').textContent=(SERVER?(ok?'saved to review/marks.jsonl':'server failed, kept locally'):'kept locally')+' · '+d.verdict;return false}
+function download(){const b=new Blob([MARKS.map(m=>JSON.stringify(m)).join('\n')+'\n'],{type:'application/json'});
+const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='marks.jsonl';a.click()}
+</script></head><body><main><h1>Review: read the claims' items by hand</h1><p class='mut'>Each view is one README claim (docs/review_views.yaml); items come from the runs' per-item files, decoded with the pinned tokenizers. Commit 9d683772.</p><table><tr><th>view</th><th>items per model (lookup + recall)</th><th>automatic-check failures</th><th>recount vs data.csv</th></tr><tr><td><a href='main_swap.html'>Main test, two people swap picks</a></td><td>9b 400, 27b 400, 122b 400, muse 400</td><td><span class='tag pass'>0</span></td><td>12 match, <span class='tag pass'>0</span> mismatch</td></tr><tr><td><a href='single_change.html'>Only the asked person&#x27;s pick changes</a></td><td>9b 400, 27b 400, 122b 400, muse 400</td><td><span class='tag pass'>0</span></td><td>12 match, <span class='tag pass'>0</span> mismatch</td></tr><tr><td><a href='routes.html'>Routes test: what the lookup follows (C0 sanity, C1 same item moved, C2 another item moved)</a></td><td>9b 1800, 27b 1800, 122b 1800, muse 1800</td><td><span class='tag pass'>0</span></td><td>120 match, <span class='tag pass'>0</span> mismatch</td></tr><tr><td><a href='routes_early.html'>Routes test at the early layer</a></td><td>9b 1800, 27b 1800, 122b 1800, muse 1200</td><td><span class='tag pass'>0</span></td><td>60 match, <span class='tag pass'>0</span> mismatch</td></tr><tr><td><a href='pointer_main.html'>Pointer directions on the main items</a></td><td>9b 146, 27b 140, 122b 108, muse 136</td><td><span class='tag pass'>0</span></td><td>4 match, <span class='tag pass'>0</span> mismatch</td></tr><tr><td><a href='x8_writes.html'>Writing the pointer (batch 44 A): h + s (mu_k - mu_j) at the bridge word</a></td><td>9b 6000, 27b 0, 122b 0, muse 0</td><td><span class='tag pass'>0</span></td><td>0 match, <span class='tag pass'>0</span> mismatch</td></tr></table></main></body></html>
