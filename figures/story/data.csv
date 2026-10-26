@@ -1,110 +1,110 @@
 figure,model,quantity,value,lo,hi,n,source
-fig01,qwen3.5-9b,Main test: lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
-fig01,qwen3.5-9b,Main test: recall extra loss,0.5,0.41,0.57,,rc_excess_9b
-fig01,qwen3.5-9b,Main test: gap,0.53,0.42,0.61,,contrast_9b
-fig01,qwen3.6-27b,Main test: lookup extra loss,0.14,0.08,0.2,,lk_excess_27b
-fig01,qwen3.6-27b,Main test: recall extra loss,0.74,0.66,0.8,,rc_excess_27b
-fig01,qwen3.6-27b,Main test: gap,0.6,0.5,0.69,,contrast_27b
-fig01,qwen3.5-122b-a10b,Main test: lookup extra loss,0.0,-0.06,0.06,,lk_excess_122b
-fig01,qwen3.5-122b-a10b,Main test: recall extra loss,0.32,0.22,0.41,,rc_excess_122b
-fig01,qwen3.5-122b-a10b,Main test: gap,0.32,0.2,0.43,,contrast_122b
-fig01,muse-glimmer-30b,Main test: lookup extra loss,-0.1,-0.15,-0.04,,lk_excess_muse
-fig01,muse-glimmer-30b,Main test: recall extra loss,0.75,0.61,0.87,,rc_excess_muse
-fig01,muse-glimmer-30b,Main test: gap,0.85,0.68,0.98,,contrast_muse
-fig01b,qwen3.5-9b,"Same test, scored on the logit difference: lookup extra loss",-0.05,-0.07,-0.03,,ld_lk_9b
-fig01b,qwen3.5-9b,"Same test, scored on the logit difference: recall extra loss",0.43,0.37,0.48,,ld_rc_9b
-fig01b,qwen3.5-9b,"Same test, scored on the logit difference: gap",0.48,0.42,0.53,,ld_gap_9b
-fig01b,qwen3.6-27b,"Same test, scored on the logit difference: lookup extra loss",0.13,0.11,0.16,,ld_lk_27b
-fig01b,qwen3.6-27b,"Same test, scored on the logit difference: recall extra loss",0.6,0.54,0.65,,ld_rc_27b
-fig01b,qwen3.6-27b,"Same test, scored on the logit difference: gap",0.47,0.42,0.51,,ld_gap_27b
-fig01b,qwen3.5-122b-a10b,"Same test, scored on the logit difference: lookup extra loss",-0.02,-0.05,-0.0,,ld_lk_122b
-fig01b,qwen3.5-122b-a10b,"Same test, scored on the logit difference: recall extra loss",0.31,0.26,0.34,,ld_rc_122b
-fig01b,qwen3.5-122b-a10b,"Same test, scored on the logit difference: gap",0.33,0.29,0.38,,ld_gap_122b
-fig01b,muse-glimmer-30b,"Same test, scored on the logit difference: lookup extra loss",-0.03,-0.05,-0.02,,ld_lk_muse
-fig01b,muse-glimmer-30b,"Same test, scored on the logit difference: recall extra loss",0.58,0.49,0.65,,ld_rc_muse
-fig01b,muse-glimmer-30b,"Same test, scored on the logit difference: gap",0.61,0.52,0.68,,ld_gap_muse
-fig01b,qwen3.5-9b,Only the asked person's pick changes: lookup extra loss,-0.02,-0.05,0.02,,single_lk_excess_9b
-fig01b,qwen3.5-9b,Only the asked person's pick changes: recall extra loss,0.37,0.29,0.43,,single_rc_excess_9b
-fig01b,qwen3.5-9b,Only the asked person's pick changes: gap,0.39,0.3,0.46,,single_contrast_9b
-fig01b,qwen3.6-27b,Only the asked person's pick changes: lookup extra loss,0.05,0.01,0.09,,single_lk_excess_27b
-fig01b,qwen3.6-27b,Only the asked person's pick changes: recall extra loss,0.61,0.51,0.69,,single_rc_excess_27b
-fig01b,qwen3.6-27b,Only the asked person's pick changes: gap,0.56,0.45,0.65,,single_contrast_27b
-fig01b,qwen3.5-122b-a10b,Only the asked person's pick changes: lookup extra loss,-0.01,-0.06,0.04,,single_lk_excess_122b
-fig01b,qwen3.5-122b-a10b,Only the asked person's pick changes: recall extra loss,0.27,0.16,0.36,,single_rc_excess_122b
-fig01b,qwen3.5-122b-a10b,Only the asked person's pick changes: gap,0.28,0.15,0.39,,single_contrast_122b
-fig01b,muse-glimmer-30b,Only the asked person's pick changes: lookup extra loss,-0.01,-0.04,0.0,,single_lk_excess_muse
-fig01b,muse-glimmer-30b,Only the asked person's pick changes: recall extra loss,0.66,0.53,0.78,,single_rc_excess_muse
-fig01b,muse-glimmer-30b,Only the asked person's pick changes: gap,0.67,0.53,0.8,,single_contrast_muse
-fig01b,qwen3.5-9b,"Varied scenes: prose, JSON, tables: lookup extra loss",0.008805031446540879,-0.005807854239256629,0.02803776873014404,,x0b_lk_excess_9b
-fig01b,qwen3.5-9b,"Varied scenes: prose, JSON, tables: recall extra loss",0.2302158273381295,0.14437833246054607,0.3261264744978109,,x0b_rc_excess_9b
-fig01b,qwen3.5-9b,"Varied scenes: prose, JSON, tables: gap",0.22,0.14,0.31,,x0b_c_9b
-fig01b,qwen3.6-27b,"Varied scenes: prose, JSON, tables: lookup extra loss",0.083102493074792,0.0630855279832261,0.10440167252936892,,x0b_lk_excess_27b
-fig01b,qwen3.6-27b,"Varied scenes: prose, JSON, tables: recall extra loss",0.5553555355535553,0.5,0.610909443068581,,x0b_rc_excess_27b
-fig01b,qwen3.6-27b,"Varied scenes: prose, JSON, tables: gap",0.47,0.42,0.53,,x0b_c_27b
-fig01b,qwen3.5-122b-a10b,"Varied scenes: prose, JSON, tables: lookup extra loss",-0.015898251192368873,-0.030418376687388133,-0.0033275110857251167,,x0b_lk_excess_122b
-fig01b,qwen3.5-122b-a10b,"Varied scenes: prose, JSON, tables: recall extra loss",0.1328320802005012,0.10872043368103582,0.16216216216216217,,x0b_rc_excess_122b
-fig01b,qwen3.5-122b-a10b,"Varied scenes: prose, JSON, tables: gap",0.15,0.12,0.18,,x0b_c_122b
-fig01b,muse-glimmer-30b,"Varied scenes: prose, JSON, tables: lookup extra loss",0.06374501992031867,0.031889854254439874,0.10096213054187199,,x0b_lk_excess_muse
-fig01b,muse-glimmer-30b,"Varied scenes: prose, JSON, tables: recall extra loss",0.5618181818181818,0.4774324693094728,0.6591940735266213,,x0b_rc_excess_muse
-fig01b,muse-glimmer-30b,"Varied scenes: prose, JSON, tables: gap",0.5,0.4,0.61,,x0b_c_muse
-fig01b,qwen3.5-9b,Natural passages: lookup extra loss,0.03,-0.08,0.15,,natg75_lk_excess_9b
-fig01b,qwen3.5-9b,Natural passages: recall extra loss,0.56,0.45,0.66,,natg75_rc_excess_9b
-fig01b,qwen3.5-9b,Natural passages: gap,0.52,0.36,0.68,,nat_gap_9b
-fig01b,qwen3.6-27b,Natural passages: lookup extra loss,0.32,0.2,0.45,,nat_lk_excess_27b
-fig01b,qwen3.6-27b,Natural passages: recall extra loss,0.59,0.5,0.67,,nat_rc_excess_27b
-fig01b,qwen3.6-27b,Natural passages: gap,0.27,0.13,0.41,,nat_gap_27b
-fig01b,qwen3.5-122b-a10b,Natural passages: lookup extra loss,-0.11,-0.2,-0.03,,nat_lk_excess_122b
-fig01b,qwen3.5-122b-a10b,Natural passages: recall extra loss,0.34,0.24,0.43,,nat_rc_excess_122b
-fig01b,qwen3.5-122b-a10b,Natural passages: gap,0.44,0.32,0.58,,nat_gap_122b
-fig01b,muse-glimmer-30b,Natural passages: recall extra loss,0.75,0.62,0.86,,nat_lk_excess_muse
-fig02,qwen3.5-9b,J++: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,,qwen35_9b_x0_pcaeq
-fig02,qwen3.5-9b,J++: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,,qwen35_9b_x0_pcaeq
-fig02,qwen3.5-9b,J++: share of the change,0.18579,,,,qwen35_9b_x0_pcaeq
-fig02,qwen3.6-27b,J++: recall extra loss,0.6095890410958904,0.5114460770246227,0.6932535787321064,,x0_pcaeq_27b
-fig02,qwen3.6-27b,J++: lookup extra loss,0.05208333333333326,0.012816455696202496,0.09195780399274041,,x0_pcaeq_27b
-fig02,qwen3.6-27b,J++: share of the change,0.135005,,,,x0_pcaeq_27b
-fig02,qwen3.5-122b-a10b,J++: recall extra loss,0.2637362637362637,0.15517241379310354,0.36158492607284526,,qwen35_122b_x0_parts
-fig02,qwen3.5-122b-a10b,J++: lookup extra loss,-0.01098901098901095,-0.05952380952380942,0.039473684210526216,,qwen35_122b_x0_parts
-fig02,qwen3.5-122b-a10b,J++: share of the change,0.21142499999999997,,,,qwen35_122b_x0_parts
-fig02,muse-glimmer-30b,J++: recall extra loss,0.6607142857142856,0.525635593220339,0.7809523809523808,,muse30b_x0_parts
-fig02,muse-glimmer-30b,J++: lookup extra loss,-0.011627906976744207,-0.0357142857142857,0.0,,muse30b_x0_parts
-fig02,muse-glimmer-30b,J++: share of the change,0.11665,,,,muse30b_x0_parts
-fig02,qwen3.5-9b,"Main directions, J++'s size: recall extra loss",0.13089005235602091,0.06321560093739526,0.19209582790091256,,qwen35_9b_x0_pcaeq
-fig02,qwen3.5-9b,"Main directions, J++'s size: lookup extra loss",0.08490566037735847,0.01869158878504673,0.15116279069767435,,qwen35_9b_x0_pcaeq
-fig02,qwen3.5-9b,"Main directions, J++'s size: share of the change",0.188635,,,,qwen35_9b_x0_pcaeq
-fig02,qwen3.6-27b,"Main directions, J++'s size: recall extra loss",0.15753424657534243,0.07975348981950751,0.2267441860465116,,x0_pcaeq_27b
-fig02,qwen3.6-27b,"Main directions, J++'s size: lookup extra loss",0.02083333333333326,0.0,0.045454545454545414,,x0_pcaeq_27b
-fig02,qwen3.6-27b,"Main directions, J++'s size: share of the change",0.138185,,,,x0_pcaeq_27b
-fig02,qwen3.5-122b-a10b,"Main directions, J++'s size: recall extra loss",0.2142857142857143,0.1306532663316583,0.2954545454545454,,qwen35_122b_x0_parts
-fig02,qwen3.5-122b-a10b,"Main directions, J++'s size: lookup extra loss",0.08791208791208793,0.02325581395348841,0.15306352270637988,,qwen35_122b_x0_parts
-fig02,qwen3.5-122b-a10b,"Main directions, J++'s size: share of the change",0.21511,,,,qwen35_122b_x0_parts
-fig02,muse-glimmer-30b,"Main directions, J++'s size: recall extra loss",0.1785714285714285,0.08000000000000007,0.26016260162601634,,muse30b_x0_parts
-fig02,muse-glimmer-30b,"Main directions, J++'s size: lookup extra loss",0.06976744186046502,0.019995049504950405,0.12162162162162149,,muse30b_x0_parts
-fig02,muse-glimmer-30b,"Main directions, J++'s size: share of the change",0.11774499999999999,,,,muse30b_x0_parts
-fig02,qwen3.5-9b,Logit-lens directions: recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
-fig02,qwen3.5-9b,Logit-lens directions: lookup extra loss,-0.01904761904761898,-0.07377049180327866,0.030612244897959107,,qwen35_9b_x0_necessity
-fig02,qwen3.5-9b,Logit-lens directions: share of the change,0.09013499999999999,,,,qwen35_9b_x0_necessity
-fig02,qwen3.6-27b,Logit-lens directions: recall extra loss,0.013333333333333308,-0.011428571428571458,0.03797468354430378,,x0_necessity_27b_chat
-fig02,qwen3.6-27b,Logit-lens directions: lookup extra loss,-0.023255813953488413,-0.061224489795918324,0.0,,x0_necessity_27b_chat
-fig02,qwen3.6-27b,Logit-lens directions: share of the change,0.073435,,,,x0_necessity_27b_chat
-fig02,qwen3.5-122b-a10b,Logit-lens directions: recall extra loss,-0.010869565217391353,-0.02450980392156854,0.0,,qwen35_122b_x0_necessity_r2
-fig02,qwen3.5-122b-a10b,Logit-lens directions: lookup extra loss,-0.011235955056179692,-0.04999999999999982,0.027027027027026976,,qwen35_122b_x0_necessity_r2
-fig02,qwen3.5-122b-a10b,Logit-lens directions: share of the change,0.125025,,,,qwen35_122b_x0_necessity_r2
-fig02,muse-glimmer-30b,Logit-lens directions: recall extra loss,0.008547008547008739,-0.03614457831325302,0.040820508531281344,,muse30b_x0_necessity
-fig02,muse-glimmer-30b,Logit-lens directions: lookup extra loss,0.02857142857142858,-0.02631578947368407,0.08333333333333337,,muse30b_x0_necessity
-fig02,muse-glimmer-30b,Logit-lens directions: share of the change,0.04925,,,,muse30b_x0_necessity
-fig02,qwen3.5-9b,Random directions: recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
-fig02,qwen3.5-9b,Random directions: lookup extra loss,0.0,-0.03571428571428581,0.0387615714608263,,qwen35_9b_x0_necessity
-fig02,qwen3.5-9b,Random directions: share of the change,0.10142999999999999,,,,qwen35_9b_x0_necessity
-fig02,qwen3.6-27b,Random directions: recall extra loss,0.0,-0.02654867256637161,0.024844720496894457,,x0_necessity_27b_chat
-fig02,qwen3.6-27b,Random directions: lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,,x0_necessity_27b_chat
-fig02,qwen3.6-27b,Random directions: share of the change,0.08176,,,,x0_necessity_27b_chat
-fig02,qwen3.5-122b-a10b,Random directions: recall extra loss,0.0,-0.015873015873015928,0.015151515151515138,,qwen35_122b_x0_necessity_r2
-fig02,qwen3.5-122b-a10b,Random directions: lookup extra loss,0.011235955056179692,-0.041095890410958846,0.05617977528089879,,qwen35_122b_x0_necessity_r2
-fig02,qwen3.5-122b-a10b,Random directions: share of the change,0.13390000000000002,,,,qwen35_122b_x0_necessity_r2
-fig02,muse-glimmer-30b,Random directions: recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,,muse30b_x0_necessity
-fig02,muse-glimmer-30b,Random directions: lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,,muse30b_x0_necessity
-fig02,muse-glimmer-30b,Random directions: share of the change,0.061265,,,,muse30b_x0_necessity
+fig01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
+fig01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
+fig01,qwen3.5-9b,main test (two people swap picks): gap,0.53,0.42,0.61,,contrast_9b
+fig01,qwen3.6-27b,main test (two people swap picks): lookup extra loss,0.14,0.08,0.2,,lk_excess_27b
+fig01,qwen3.6-27b,main test (two people swap picks): recall extra loss,0.74,0.66,0.8,,rc_excess_27b
+fig01,qwen3.6-27b,main test (two people swap picks): gap,0.6,0.5,0.69,,contrast_27b
+fig01,qwen3.5-122b-a10b,main test (two people swap picks): lookup extra loss,0.0,-0.06,0.06,,lk_excess_122b
+fig01,qwen3.5-122b-a10b,main test (two people swap picks): recall extra loss,0.32,0.22,0.41,,rc_excess_122b
+fig01,qwen3.5-122b-a10b,main test (two people swap picks): gap,0.32,0.2,0.43,,contrast_122b
+fig01,muse-glimmer-30b,main test (two people swap picks): lookup extra loss,-0.1,-0.15,-0.04,,lk_excess_muse
+fig01,muse-glimmer-30b,main test (two people swap picks): recall extra loss,0.75,0.61,0.87,,rc_excess_muse
+fig01,muse-glimmer-30b,main test (two people swap picks): gap,0.85,0.68,0.98,,contrast_muse
+fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: lookup extra loss",-0.05,-0.07,-0.03,,ld_lk_9b
+fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: recall extra loss",0.43,0.37,0.48,,ld_rc_9b
+fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: gap",0.48,0.42,0.53,,ld_gap_9b
+fig01b,qwen3.6-27b,"main test (two people swap picks), scored on the logit difference: lookup extra loss",0.13,0.11,0.16,,ld_lk_27b
+fig01b,qwen3.6-27b,"main test (two people swap picks), scored on the logit difference: recall extra loss",0.6,0.54,0.65,,ld_rc_27b
+fig01b,qwen3.6-27b,"main test (two people swap picks), scored on the logit difference: gap",0.47,0.42,0.51,,ld_gap_27b
+fig01b,qwen3.5-122b-a10b,"main test (two people swap picks), scored on the logit difference: lookup extra loss",-0.02,-0.05,-0.0,,ld_lk_122b
+fig01b,qwen3.5-122b-a10b,"main test (two people swap picks), scored on the logit difference: recall extra loss",0.31,0.26,0.34,,ld_rc_122b
+fig01b,qwen3.5-122b-a10b,"main test (two people swap picks), scored on the logit difference: gap",0.33,0.29,0.38,,ld_gap_122b
+fig01b,muse-glimmer-30b,"main test (two people swap picks), scored on the logit difference: lookup extra loss",-0.03,-0.05,-0.02,,ld_lk_muse
+fig01b,muse-glimmer-30b,"main test (two people swap picks), scored on the logit difference: recall extra loss",0.58,0.49,0.65,,ld_rc_muse
+fig01b,muse-glimmer-30b,"main test (two people swap picks), scored on the logit difference: gap",0.61,0.52,0.68,,ld_gap_muse
+fig01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.02,-0.05,0.02,,single_lk_excess_9b
+fig01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): recall extra loss,0.37,0.29,0.43,,single_rc_excess_9b
+fig01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): gap,0.39,0.3,0.46,,single_contrast_9b
+fig01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): lookup extra loss,0.05,0.01,0.09,,single_lk_excess_27b
+fig01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): recall extra loss,0.61,0.51,0.69,,single_rc_excess_27b
+fig01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): gap,0.56,0.45,0.65,,single_contrast_27b
+fig01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.01,-0.06,0.04,,single_lk_excess_122b
+fig01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): recall extra loss,0.27,0.16,0.36,,single_rc_excess_122b
+fig01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): gap,0.28,0.15,0.39,,single_contrast_122b
+fig01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.01,-0.04,0.0,,single_lk_excess_muse
+fig01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): recall extra loss,0.66,0.53,0.78,,single_rc_excess_muse
+fig01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): gap,0.67,0.53,0.8,,single_contrast_muse
+fig01b,qwen3.5-9b,varied scenes: prose / JSON / table: lookup extra loss,0.008805031446540879,-0.005807854239256629,0.02803776873014404,,x0b_lk_excess_9b
+fig01b,qwen3.5-9b,varied scenes: prose / JSON / table: recall extra loss,0.2302158273381295,0.14437833246054607,0.3261264744978109,,x0b_rc_excess_9b
+fig01b,qwen3.5-9b,varied scenes: prose / JSON / table: gap,0.22,0.14,0.31,,x0b_c_9b
+fig01b,qwen3.6-27b,varied scenes: prose / JSON / table: lookup extra loss,0.083102493074792,0.0630855279832261,0.10440167252936892,,x0b_lk_excess_27b
+fig01b,qwen3.6-27b,varied scenes: prose / JSON / table: recall extra loss,0.5553555355535553,0.5,0.610909443068581,,x0b_rc_excess_27b
+fig01b,qwen3.6-27b,varied scenes: prose / JSON / table: gap,0.47,0.42,0.53,,x0b_c_27b
+fig01b,qwen3.5-122b-a10b,varied scenes: prose / JSON / table: lookup extra loss,-0.015898251192368873,-0.030418376687388133,-0.0033275110857251167,,x0b_lk_excess_122b
+fig01b,qwen3.5-122b-a10b,varied scenes: prose / JSON / table: recall extra loss,0.1328320802005012,0.10872043368103582,0.16216216216216217,,x0b_rc_excess_122b
+fig01b,qwen3.5-122b-a10b,varied scenes: prose / JSON / table: gap,0.15,0.12,0.18,,x0b_c_122b
+fig01b,muse-glimmer-30b,varied scenes: prose / JSON / table: lookup extra loss,0.06374501992031867,0.031889854254439874,0.10096213054187199,,x0b_lk_excess_muse
+fig01b,muse-glimmer-30b,varied scenes: prose / JSON / table: recall extra loss,0.5618181818181818,0.4774324693094728,0.6591940735266213,,x0b_rc_excess_muse
+fig01b,muse-glimmer-30b,varied scenes: prose / JSON / table: gap,0.5,0.4,0.61,,x0b_c_muse
+fig01b,qwen3.5-9b,natural passages: lookup extra loss,0.03,-0.08,0.15,,natg75_lk_excess_9b
+fig01b,qwen3.5-9b,natural passages: recall extra loss,0.56,0.45,0.66,,natg75_rc_excess_9b
+fig01b,qwen3.5-9b,natural passages: gap,0.52,0.36,0.68,,nat_gap_9b
+fig01b,qwen3.6-27b,natural passages: lookup extra loss,0.32,0.2,0.45,,nat_lk_excess_27b
+fig01b,qwen3.6-27b,natural passages: recall extra loss,0.59,0.5,0.67,,nat_rc_excess_27b
+fig01b,qwen3.6-27b,natural passages: gap,0.27,0.13,0.41,,nat_gap_27b
+fig01b,qwen3.5-122b-a10b,natural passages: lookup extra loss,-0.11,-0.2,-0.03,,nat_lk_excess_122b
+fig01b,qwen3.5-122b-a10b,natural passages: recall extra loss,0.34,0.24,0.43,,nat_rc_excess_122b
+fig01b,qwen3.5-122b-a10b,natural passages: gap,0.44,0.32,0.58,,nat_gap_122b
+fig01b,muse-glimmer-30b,natural passages: recall extra loss,0.75,0.62,0.86,,nat_lk_excess_muse
+fig02,qwen3.5-9b,J++ part: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,,qwen35_9b_x0_pcaeq
+fig02,qwen3.5-9b,J++ part: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,,qwen35_9b_x0_pcaeq
+fig02,qwen3.5-9b,J++ part: share of the change,0.18579,,,,qwen35_9b_x0_pcaeq
+fig02,qwen3.6-27b,J++ part: recall extra loss,0.6095890410958904,0.5114460770246227,0.6932535787321064,,x0_pcaeq_27b
+fig02,qwen3.6-27b,J++ part: lookup extra loss,0.05208333333333326,0.012816455696202496,0.09195780399274041,,x0_pcaeq_27b
+fig02,qwen3.6-27b,J++ part: share of the change,0.135005,,,,x0_pcaeq_27b
+fig02,qwen3.5-122b-a10b,J++ part: recall extra loss,0.2637362637362637,0.15517241379310354,0.36158492607284526,,qwen35_122b_x0_parts
+fig02,qwen3.5-122b-a10b,J++ part: lookup extra loss,-0.01098901098901095,-0.05952380952380942,0.039473684210526216,,qwen35_122b_x0_parts
+fig02,qwen3.5-122b-a10b,J++ part: share of the change,0.21142499999999997,,,,qwen35_122b_x0_parts
+fig02,muse-glimmer-30b,J++ part: recall extra loss,0.6607142857142856,0.525635593220339,0.7809523809523808,,muse30b_x0_parts
+fig02,muse-glimmer-30b,J++ part: lookup extra loss,-0.011627906976744207,-0.0357142857142857,0.0,,muse30b_x0_parts
+fig02,muse-glimmer-30b,J++ part: share of the change,0.11665,,,,muse30b_x0_parts
+fig02,qwen3.5-9b,PCA directions (same size): recall extra loss,0.13089005235602091,0.06321560093739526,0.19209582790091256,,qwen35_9b_x0_pcaeq
+fig02,qwen3.5-9b,PCA directions (same size): lookup extra loss,0.08490566037735847,0.01869158878504673,0.15116279069767435,,qwen35_9b_x0_pcaeq
+fig02,qwen3.5-9b,PCA directions (same size): share of the change,0.188635,,,,qwen35_9b_x0_pcaeq
+fig02,qwen3.6-27b,PCA directions (same size): recall extra loss,0.15753424657534243,0.07975348981950751,0.2267441860465116,,x0_pcaeq_27b
+fig02,qwen3.6-27b,PCA directions (same size): lookup extra loss,0.02083333333333326,0.0,0.045454545454545414,,x0_pcaeq_27b
+fig02,qwen3.6-27b,PCA directions (same size): share of the change,0.138185,,,,x0_pcaeq_27b
+fig02,qwen3.5-122b-a10b,PCA directions (same size): recall extra loss,0.2142857142857143,0.1306532663316583,0.2954545454545454,,qwen35_122b_x0_parts
+fig02,qwen3.5-122b-a10b,PCA directions (same size): lookup extra loss,0.08791208791208793,0.02325581395348841,0.15306352270637988,,qwen35_122b_x0_parts
+fig02,qwen3.5-122b-a10b,PCA directions (same size): share of the change,0.21511,,,,qwen35_122b_x0_parts
+fig02,muse-glimmer-30b,PCA directions (same size): recall extra loss,0.1785714285714285,0.08000000000000007,0.26016260162601634,,muse30b_x0_parts
+fig02,muse-glimmer-30b,PCA directions (same size): lookup extra loss,0.06976744186046502,0.019995049504950405,0.12162162162162149,,muse30b_x0_parts
+fig02,muse-glimmer-30b,PCA directions (same size): share of the change,0.11774499999999999,,,,muse30b_x0_parts
+fig02,qwen3.5-9b,logit-lens directions: recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
+fig02,qwen3.5-9b,logit-lens directions: lookup extra loss,-0.01904761904761898,-0.07377049180327866,0.030612244897959107,,qwen35_9b_x0_necessity
+fig02,qwen3.5-9b,logit-lens directions: share of the change,0.09013499999999999,,,,qwen35_9b_x0_necessity
+fig02,qwen3.6-27b,logit-lens directions: recall extra loss,0.013333333333333308,-0.011428571428571458,0.03797468354430378,,x0_necessity_27b_chat
+fig02,qwen3.6-27b,logit-lens directions: lookup extra loss,-0.023255813953488413,-0.061224489795918324,0.0,,x0_necessity_27b_chat
+fig02,qwen3.6-27b,logit-lens directions: share of the change,0.073435,,,,x0_necessity_27b_chat
+fig02,qwen3.5-122b-a10b,logit-lens directions: recall extra loss,-0.010869565217391353,-0.02450980392156854,0.0,,qwen35_122b_x0_necessity_r2
+fig02,qwen3.5-122b-a10b,logit-lens directions: lookup extra loss,-0.011235955056179692,-0.04999999999999982,0.027027027027026976,,qwen35_122b_x0_necessity_r2
+fig02,qwen3.5-122b-a10b,logit-lens directions: share of the change,0.125025,,,,qwen35_122b_x0_necessity_r2
+fig02,muse-glimmer-30b,logit-lens directions: recall extra loss,0.008547008547008739,-0.03614457831325302,0.040820508531281344,,muse30b_x0_necessity
+fig02,muse-glimmer-30b,logit-lens directions: lookup extra loss,0.02857142857142858,-0.02631578947368407,0.08333333333333337,,muse30b_x0_necessity
+fig02,muse-glimmer-30b,logit-lens directions: share of the change,0.04925,,,,muse30b_x0_necessity
+fig02,qwen3.5-9b,random atoms: recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
+fig02,qwen3.5-9b,random atoms: lookup extra loss,0.0,-0.03571428571428581,0.0387615714608263,,qwen35_9b_x0_necessity
+fig02,qwen3.5-9b,random atoms: share of the change,0.10142999999999999,,,,qwen35_9b_x0_necessity
+fig02,qwen3.6-27b,random atoms: recall extra loss,0.0,-0.02654867256637161,0.024844720496894457,,x0_necessity_27b_chat
+fig02,qwen3.6-27b,random atoms: lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,,x0_necessity_27b_chat
+fig02,qwen3.6-27b,random atoms: share of the change,0.08176,,,,x0_necessity_27b_chat
+fig02,qwen3.5-122b-a10b,random atoms: recall extra loss,0.0,-0.015873015873015928,0.015151515151515138,,qwen35_122b_x0_necessity_r2
+fig02,qwen3.5-122b-a10b,random atoms: lookup extra loss,0.011235955056179692,-0.041095890410958846,0.05617977528089879,,qwen35_122b_x0_necessity_r2
+fig02,qwen3.5-122b-a10b,random atoms: share of the change,0.13390000000000002,,,,qwen35_122b_x0_necessity_r2
+fig02,muse-glimmer-30b,random atoms: recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,,muse30b_x0_necessity
+fig02,muse-glimmer-30b,random atoms: lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,,muse30b_x0_necessity
+fig02,muse-glimmer-30b,random atoms: share of the change,0.061265,,,,muse30b_x0_necessity
 fig03,qwen3.5-9b,"lookups switched by the whole change, locker sentence before the pick",0.86,0.7786,0.9147,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 fig03,qwen3.5-9b,"recalls switched by the whole change, locker sentence before the pick",1.0,0.963,1.0,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 fig03,qwen3.5-9b,"lookups switched by the whole change, locker sentence after the pick",0.19,0.1251,0.2778,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -379,6 +379,10 @@ fig08,qwen3.5-122b-a10b,(d) label-free pointer: mean cos^2 with ours,0.3967,,,,q
 fig08,muse-glimmer-30b,(c) neutral sentence B1: the code's shift in positions,0.1844956466043368,0.16672959633817938,0.20164912621349554,300,muse30b_x8_order_r2
 fig08,muse-glimmer-30b,(c) neutral sentence B2: the code's shift in positions,0.1673059363766059,0.14916097121872054,0.183447168150923,201,muse30b_x8_order_r2
 fig08,muse-glimmer-30b,(d) label-free pointer: mean cos^2 with ours,0.3248,,,,muse30b_x7_pcf
+fig08,qwen3.5-9b,(d) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0009765625,,,,qwen35_9b_x7_pcf
+fig08,qwen3.6-27b,(d) chance: a random 4-d subspace's mean cos^2 (4 / d),0.00078125,,,,x7_pcf_27b
+fig08,qwen3.5-122b-a10b,(d) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0013020833333333333,,,,qwen35_122b_x7_pcf
+fig08,muse-glimmer-30b,(d) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0006009615384615385,,,,muse30b_x7_pcf
 fig09,qwen3.5-9b,lookup extra loss without J++: simple,0.0,0.0,0.0,,readme_story_figures.transfer_cells
 fig09,qwen3.5-9b,lookup extra loss without the pointer: simple,0.49,0.38,0.59,,readme_story_figures.transfer_cells
 fig09,qwen3.5-9b,lookup extra loss without J++: prose,0.011494252873563204,-0.003637029637029659,0.031914893617021156,,readme_story_figures.transfer_cells
@@ -417,24 +421,24 @@ fig09,muse-glimmer-30b,lookup extra loss without the pointer: json,0.05357142857
 fig09,muse-glimmer-30b,lookup extra loss without J++: table,0.05660377358490565,0.01844975938238642,0.0945273631840795,,readme_story_figures.transfer_cells
 fig09,muse-glimmer-30b,lookup extra loss without the pointer: table,0.12264150943396246,0.07233747044917246,0.17972479676901568,,readme_story_figures.transfer_cells
 fig09,muse-glimmer-30b,lookup extra loss without the pointer: natural,0.25,0.0,0.5,,readme_story_figures.transfer_cells
-fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ + pointer: the part",0.44966442953020136,0.40549595987740317,0.4895123106060607,,qwen35_9b_x6_routes_bothoff
-fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ + pointer: a random part of the same size",0.8791946308724832,0.8363636363636363,0.9177236864921103,,qwen35_9b_x6_routes_bothoff
-fig10,qwen3.5-9b,share of the change: J++ + pointer,0.3314,,,,qwen35_9b_x6_routes_bothoff
+fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.44966442953020136,0.40549595987740317,0.4895123106060607,,qwen35_9b_x6_routes_bothoff
+fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.8791946308724832,0.8363636363636363,0.9177236864921103,,qwen35_9b_x6_routes_bothoff
+fig10,qwen3.5-9b,share of the change: J++ part + pointer,0.3314,,,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: the part",0.0738255033557047,0.044378698224852076,0.10839160839160844,,qwen35_9b_x6_routes_d1
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.3825503355704698,0.33333333333333337,0.4341637010676156,,qwen35_9b_x6_routes_d1
 fig10,qwen3.5-9b,share of the change: + identity outside J++,0.5565,,,,qwen35_9b_x6_routes_d1
-fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ + pointer: the part",0.5272108843537415,0.4784133562715045,0.5746031746031747,,x6_routes_bothoff_27b
-fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ + pointer: a random part of the same size",0.9353741496598639,0.8973369671349638,0.970150489275477,,x6_routes_bothoff_27b
-fig10,qwen3.6-27b,share of the change: J++ + pointer,0.2606,,,,x6_routes_bothoff_27b
+fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5272108843537415,0.4784133562715045,0.5746031746031747,,x6_routes_bothoff_27b
+fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.9353741496598639,0.8973369671349638,0.970150489275477,,x6_routes_bothoff_27b
+fig10,qwen3.6-27b,share of the change: J++ part + pointer,0.2606,,,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: the part",0.1774744027303754,0.1333333333333333,0.22311023762094484,,x6_routes_d1_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.6689419795221843,0.625,0.7173144876325088,,x6_routes_d1_27b
 fig10,qwen3.6-27b,share of the change: + identity outside J++,0.3504,,,,x6_routes_d1_27b
-fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ + pointer: the part",0.5,0.4486682249075473,0.5476206695212145,,qwen35_122b_x6_routes_bothoff_g75
-fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ + pointer: a random part of the same size",0.85,0.8096774193548387,0.8888888888888888,,qwen35_122b_x6_routes_bothoff_g75
-fig10,qwen3.5-122b-a10b,share of the change: J++ + pointer,0.369,,,,qwen35_122b_x6_routes_bothoff_g75
-fig10,muse-glimmer-30b,"sanity swap, lookups still switching without J++ + pointer: the part",0.7391304347826086,0.6816475578995644,0.7947761194029851,,muse30b_x6_routes
-fig10,muse-glimmer-30b,"sanity swap, lookups still switching without J++ + pointer: a random part of the same size",1.0474308300395256,1.0039058700145915,1.0909090909090908,,muse30b_x6_routes
-fig10,muse-glimmer-30b,share of the change: J++ + pointer,0.2503,,,,muse30b_x6_routes
+fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5,0.4486682249075473,0.5476206695212145,,qwen35_122b_x6_routes_bothoff_g75
+fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.85,0.8096774193548387,0.8888888888888888,,qwen35_122b_x6_routes_bothoff_g75
+fig10,qwen3.5-122b-a10b,share of the change: J++ part + pointer,0.369,,,,qwen35_122b_x6_routes_bothoff_g75
+fig10,muse-glimmer-30b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.7391304347826086,0.6816475578995644,0.7947761194029851,,muse30b_x6_routes
+fig10,muse-glimmer-30b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",1.0474308300395256,1.0039058700145915,1.0909090909090908,,muse30b_x6_routes
+fig10,muse-glimmer-30b,share of the change: J++ part + pointer,0.2503,,,,muse30b_x6_routes
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: the part",0.5224489795918367,0.4672123235647826,0.5833333333333333,,muse30b_x6_routes_d1_r2
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.8163265306122449,0.7566535717890912,0.8787878787878788,,muse30b_x6_routes_d1_r2
 fig10,muse-glimmer-30b,share of the change: + identity outside J++,0.3802,,,,muse30b_x6_routes_d1_r2
@@ -444,7 +448,7 @@ fig11,qwen3.5-9b,The split in varied scenes,held,,,,fixed
 fig11,qwen3.5-9b,The split in natural passages,held,,,,after the data
 fig11,qwen3.5-9b,Never the value,held,,,,fixed
 fig11,qwen3.5-9b,The lookup needs the pointer,held,,,,fixed
-fig11,qwen3.5-9b,The pointer alone gives position,held,,,,fixed
+fig11,qwen3.5-9b,Only the pointer gives position answers,held,,,,fixed
 fig11,qwen3.5-9b,A write moves the lookup,held,,,,after the data
 fig11,qwen3.5-9b,The recall follows the write,held,,,,after the data
 fig11,qwen3.5-9b,"First-mentioned item, not position in the text",held,,,,fixed
@@ -455,7 +459,7 @@ fig11,qwen3.6-27b,The split in varied scenes,held,,,,fixed
 fig11,qwen3.6-27b,The split in natural passages,partial,,,,fixed
 fig11,qwen3.6-27b,Never the value,held,,,,fixed
 fig11,qwen3.6-27b,The lookup needs the pointer,partial,,,,after the data
-fig11,qwen3.6-27b,The pointer alone gives position,no,,,,fixed
+fig11,qwen3.6-27b,Only the pointer gives position answers,no,,,,fixed
 fig11,qwen3.6-27b,A write moves the lookup,partial,,,,after the data
 fig11,qwen3.6-27b,The recall follows the write,partial,,,,after the data
 fig11,qwen3.6-27b,"First-mentioned item, not position in the text",held,,,,after the data
@@ -466,7 +470,7 @@ fig11,qwen3.5-122b-a10b,The split in varied scenes,partial,,,,fixed
 fig11,qwen3.5-122b-a10b,The split in natural passages,held,,,,fixed
 fig11,qwen3.5-122b-a10b,Never the value,held,,,,after the data
 fig11,qwen3.5-122b-a10b,The lookup needs the pointer,held,,,,after the data
-fig11,qwen3.5-122b-a10b,The pointer alone gives position,held,,,,after the data
+fig11,qwen3.5-122b-a10b,Only the pointer gives position answers,held,,,,after the data
 fig11,qwen3.5-122b-a10b,A write moves the lookup,held,,,,after the data
 fig11,qwen3.5-122b-a10b,The recall follows the write,held,,,,after the data
 fig11,qwen3.5-122b-a10b,"First-mentioned item, not position in the text",held,,,,after the data
@@ -477,179 +481,179 @@ fig11,muse-glimmer-30b,The split in varied scenes,held,,,,fixed
 fig11,muse-glimmer-30b,The split in natural passages,not tested,,,,fixed
 fig11,muse-glimmer-30b,Never the value,held,,,,fixed
 fig11,muse-glimmer-30b,The lookup needs the pointer,held,,,,fixed
-fig11,muse-glimmer-30b,The pointer alone gives position,held,,,,fixed
+fig11,muse-glimmer-30b,Only the pointer gives position answers,held,,,,fixed
 fig11,muse-glimmer-30b,A write moves the lookup,held,,,,after the data
 fig11,muse-glimmer-30b,The recall follows the write,partial,,,,after the data
 fig11,muse-glimmer-30b,"First-mentioned item, not position in the text",held,,,,after the data
 fig11,muse-glimmer-30b,The pointer transfers,no,,,,fixed
-s01,qwen3.5-9b,"Simple scenes, two people swap picks: lookup extra loss",-0.03,-0.08,0.03,,lk_excess_9b
-s01,qwen3.5-9b,"Simple scenes, two people swap picks: recall extra loss",0.5,0.41,0.57,,rc_excess_9b
-s01,qwen3.5-9b,"Simple scenes, two people swap picks: gap",0.53,,,,contrast_9b
-s01,qwen3.5-9b,"Simple scenes, only the asked person's pick changes: lookup extra loss",-0.02,-0.05,0.02,,single_lk_excess_9b
-s01,qwen3.5-9b,"Simple scenes, only the asked person's pick changes: recall extra loss",0.37,0.29,0.43,,single_rc_excess_9b
-s01,qwen3.5-9b,"Simple scenes, only the asked person's pick changes: gap",0.39,,,,single_contrast_9b
-s01,qwen3.5-9b,"Matched scenes, two people swap picks: lookup extra loss",0.01,-0.04,0.07,,comp_two_fmno_lk_9b
-s01,qwen3.5-9b,"Matched scenes, two people swap picks: recall extra loss",0.35,0.26,0.43,,comp_two_fmno_rc_9b
-s01,qwen3.5-9b,"Matched scenes, two people swap picks: gap",0.34,,,,recall minus lookup
-s01,qwen3.5-9b,"Matched scenes, only the asked person's pick changes: lookup extra loss",0.0,0.0,0.0,,comp_one_fmno_lk_9b
-s01,qwen3.5-9b,"Matched scenes, only the asked person's pick changes: recall extra loss",0.17,0.11,0.23,,comp_one_fmno_rc_9b
-s01,qwen3.5-9b,"Matched scenes, only the asked person's pick changes: gap",0.17,,,,recall minus lookup
-s01,qwen3.5-9b,Varied scenes: lookup extra loss,0.008805031446540879,-0.005807854239256629,0.02803776873014404,,x0b_lk_excess_9b
-s01,qwen3.5-9b,Varied scenes: recall extra loss,0.2302158273381295,0.14437833246054607,0.3261264744978109,,x0b_rc_excess_9b
-s01,qwen3.5-9b,Varied scenes: gap,0.22,,,,x0b_c_9b
-s01,qwen3.5-9b,Natural passages: lookup extra loss,0.033333333333333326,-0.07999999999999996,0.14814814814814814,,nat_lk_excess_9b
-s01,qwen3.5-9b,Natural passages: recall extra loss,0.5555555555555556,0.45070422535211263,0.6623376623376623,,nat_rc_excess_9b
-s01,qwen3.5-9b,Natural passages: gap,0.5222,,,,nat_gap_9b
-s01,qwen3.6-27b,"Simple scenes, two people swap picks: lookup extra loss",0.14,0.08,0.2,,lk_excess_27b
-s01,qwen3.6-27b,"Simple scenes, two people swap picks: recall extra loss",0.74,0.66,0.8,,rc_excess_27b
-s01,qwen3.6-27b,"Simple scenes, two people swap picks: gap",0.6,,,,contrast_27b
-s01,qwen3.6-27b,"Simple scenes, only the asked person's pick changes: lookup extra loss",0.05,0.01,0.09,,single_lk_excess_27b
-s01,qwen3.6-27b,"Simple scenes, only the asked person's pick changes: recall extra loss",0.61,0.51,0.69,,single_rc_excess_27b
-s01,qwen3.6-27b,"Simple scenes, only the asked person's pick changes: gap",0.56,,,,single_contrast_27b
-s01,qwen3.6-27b,"Matched scenes, two people swap picks: lookup extra loss",0.14,0.07,0.22,,comp_two_fmno_lk_27b
-s01,qwen3.6-27b,"Matched scenes, two people swap picks: recall extra loss",0.67,0.58,0.76,,comp_two_fmno_rc_27b
-s01,qwen3.6-27b,"Matched scenes, two people swap picks: gap",0.53,,,,recall minus lookup
-s01,qwen3.6-27b,"Matched scenes, only the asked person's pick changes: lookup extra loss",0.01,0.0,0.04,,comp_one_fmno_lk_27b
-s01,qwen3.6-27b,"Matched scenes, only the asked person's pick changes: recall extra loss",0.49,0.39,0.6,,comp_one_fmno_rc_27b
-s01,qwen3.6-27b,"Matched scenes, only the asked person's pick changes: gap",0.48,,,,recall minus lookup
-s01,qwen3.6-27b,Varied scenes: lookup extra loss,0.083102493074792,0.0630855279832261,0.10440167252936892,,x0b_lk_excess_27b
-s01,qwen3.6-27b,Varied scenes: recall extra loss,0.5553555355535553,0.5,0.610909443068581,,x0b_rc_excess_27b
-s01,qwen3.6-27b,Varied scenes: gap,0.47,,,,x0b_c_27b
-s01,qwen3.6-27b,Natural passages: lookup extra loss,0.32,0.2,0.45,,nat_lk_excess_27b
-s01,qwen3.6-27b,Natural passages: recall extra loss,0.59,0.5,0.67,,nat_rc_excess_27b
-s01,qwen3.6-27b,Natural passages: gap,0.27,,,,nat_gap_27b
-s01,qwen3.5-122b-a10b,"Simple scenes, two people swap picks: lookup extra loss",0.0,-0.06,0.06,,lk_excess_122b
-s01,qwen3.5-122b-a10b,"Simple scenes, two people swap picks: recall extra loss",0.32,0.22,0.41,,rc_excess_122b
-s01,qwen3.5-122b-a10b,"Simple scenes, two people swap picks: gap",0.32,,,,contrast_122b
-s01,qwen3.5-122b-a10b,"Simple scenes, only the asked person's pick changes: lookup extra loss",-0.01,-0.06,0.04,,single_lk_excess_122b
-s01,qwen3.5-122b-a10b,"Simple scenes, only the asked person's pick changes: recall extra loss",0.27,0.16,0.36,,single_rc_excess_122b
-s01,qwen3.5-122b-a10b,"Simple scenes, only the asked person's pick changes: gap",0.28,,,,single_contrast_122b
-s01,qwen3.5-122b-a10b,"Matched scenes, two people swap picks: lookup extra loss",-0.01,-0.08,0.06,,comp_two_fmno_lk_122b
-s01,qwen3.5-122b-a10b,"Matched scenes, two people swap picks: recall extra loss",0.2,0.1,0.3,,comp_two_fmno_rc_122b
-s01,qwen3.5-122b-a10b,"Matched scenes, two people swap picks: gap",0.21,,,,recall minus lookup
-s01,qwen3.5-122b-a10b,"Matched scenes, only the asked person's pick changes: lookup extra loss",-0.01,-0.07,0.04,,comp_one_fmno_lk_122b
-s01,qwen3.5-122b-a10b,"Matched scenes, only the asked person's pick changes: recall extra loss",0.1,0.03,0.17,,comp_one_fmno_rc_122b
-s01,qwen3.5-122b-a10b,"Matched scenes, only the asked person's pick changes: gap",0.11,,,,recall minus lookup
-s01,qwen3.5-122b-a10b,Varied scenes: lookup extra loss,-0.015898251192368873,-0.030418376687388133,-0.0033275110857251167,,x0b_lk_excess_122b
-s01,qwen3.5-122b-a10b,Varied scenes: recall extra loss,0.1328320802005012,0.10872043368103582,0.16216216216216217,,x0b_rc_excess_122b
-s01,qwen3.5-122b-a10b,Varied scenes: gap,0.15,,,,x0b_c_122b
-s01,qwen3.5-122b-a10b,Natural passages: lookup extra loss,-0.11,-0.2,-0.03,,nat_lk_excess_122b
-s01,qwen3.5-122b-a10b,Natural passages: recall extra loss,0.34,0.24,0.43,,nat_rc_excess_122b
-s01,qwen3.5-122b-a10b,Natural passages: gap,0.44,,,,nat_gap_122b
-s01,muse-glimmer-30b,"Simple scenes, two people swap picks: lookup extra loss",-0.1,-0.15,-0.04,,lk_excess_muse
-s01,muse-glimmer-30b,"Simple scenes, two people swap picks: recall extra loss",0.75,0.61,0.87,,rc_excess_muse
-s01,muse-glimmer-30b,"Simple scenes, two people swap picks: gap",0.85,,,,contrast_muse
-s01,muse-glimmer-30b,"Simple scenes, only the asked person's pick changes: lookup extra loss",-0.01,-0.04,0.0,,single_lk_excess_muse
-s01,muse-glimmer-30b,"Simple scenes, only the asked person's pick changes: recall extra loss",0.66,0.53,0.78,,single_rc_excess_muse
-s01,muse-glimmer-30b,"Simple scenes, only the asked person's pick changes: gap",0.67,,,,single_contrast_muse
-s01,muse-glimmer-30b,"Matched scenes, two people swap picks: lookup extra loss",-0.07,-0.12,-0.02,,comp_two_fmno_lk_muse
-s01,muse-glimmer-30b,"Matched scenes, two people swap picks: recall extra loss",0.68,0.46,0.88,,comp_two_fmno_rc_muse
-s01,muse-glimmer-30b,"Matched scenes, two people swap picks: gap",0.75,,,,recall minus lookup
-s01,muse-glimmer-30b,"Matched scenes, only the asked person's pick changes: lookup extra loss",0.0,0.0,0.0,,comp_one_fmno_lk_muse
-s01,muse-glimmer-30b,"Matched scenes, only the asked person's pick changes: recall extra loss",0.54,0.32,0.75,,comp_one_fmno_rc_muse
-s01,muse-glimmer-30b,"Matched scenes, only the asked person's pick changes: gap",0.54,,,,recall minus lookup
-s01,muse-glimmer-30b,Varied scenes: lookup extra loss,0.06374501992031867,0.031889854254439874,0.10096213054187199,,x0b_lk_excess_muse
-s01,muse-glimmer-30b,Varied scenes: recall extra loss,0.5618181818181818,0.4774324693094728,0.6591940735266213,,x0b_rc_excess_muse
-s01,muse-glimmer-30b,Varied scenes: gap,0.5,,,,x0b_c_muse
-s01,muse-glimmer-30b,Natural passages: lookup extra loss,-0.2,-0.55,0.0,,nat_lk_excess_muse
-s01,muse-glimmer-30b,Natural passages: recall extra loss,0.75,0.62,0.86,,nat_rc_excess_muse
-s01,muse-glimmer-30b,Natural passages: gap,0.95,,,,nat_gap_muse
-s02,qwen3.5-9b,J++: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,J++: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,J++: share of the change,0.18579,,,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,J++ without the word's directions: recall extra loss,0.11518324607329844,0.06040268456375841,0.17727272727272736,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,J++ without the word's directions: lookup extra loss,0.0,-0.027027027027027084,0.024590163934426146,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,J++ without the word's directions: share of the change,0.15773500000000001,,,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,The word alone: recall extra loss,0.020942408376963262,-0.004926108374384122,0.05696284514986561,,qwen35_9b_x0_parts
-s02,qwen3.5-9b,The word alone: lookup extra loss,0.0,-0.027027027027027084,0.02941176470588225,,qwen35_9b_x0_parts
-s02,qwen3.5-9b,The word alone: share of the change,0.041335,,,,qwen35_9b_x0_parts
-s02,qwen3.5-9b,Main directions at J++'s share: recall extra loss,0.13089005235602091,0.06321560093739526,0.19209582790091256,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,Main directions at J++'s share: lookup extra loss,0.08490566037735847,0.01869158878504673,0.15116279069767435,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,Main directions at J++'s share: share of the change,0.188635,,,,qwen35_9b_x0_pcaeq
-s02,qwen3.5-9b,J++ fitted to another scene: recall extra loss,-0.005235602094240788,-0.017751479289940808,0.0,,qwen35_9b_x0_jppother
-s02,qwen3.5-9b,J++ fitted to another scene: lookup extra loss,-0.009433962264150941,-0.028301886792452935,0.0,,qwen35_9b_x0_jppother
-s02,qwen3.5-9b,J++ fitted to another scene: share of the change,0.01771,,,,qwen35_9b_x0_jppother
-s02,qwen3.5-9b,Logit lens (main test): recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
-s02,qwen3.5-9b,Logit lens (main test): lookup extra loss,-0.01904761904761898,-0.07377049180327866,0.030612244897959107,,qwen35_9b_x0_necessity
-s02,qwen3.5-9b,Logit lens (main test): share of the change,0.09013499999999999,,,,qwen35_9b_x0_necessity
-s02,qwen3.5-9b,Input embeddings (main test): recall extra loss,0.005076142131979711,0.0,0.017545791792255995,,qwen35_9b_x0_necessity
-s02,qwen3.5-9b,Input embeddings (main test): lookup extra loss,0.03809523809523807,-0.011494252873563315,0.08849557522123896,,qwen35_9b_x0_necessity
-s02,qwen3.5-9b,Input embeddings (main test): share of the change,0.10935500000000001,,,,qwen35_9b_x0_necessity
-s02,qwen3.5-9b,Random directions (main test): recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
-s02,qwen3.5-9b,Random directions (main test): lookup extra loss,0.0,-0.03571428571428581,0.0387615714608263,,qwen35_9b_x0_necessity
-s02,qwen3.5-9b,Random directions (main test): share of the change,0.10142999999999999,,,,qwen35_9b_x0_necessity
-s02,qwen3.6-27b,J++: recall extra loss,0.6095890410958904,0.5114460770246227,0.6932535787321064,,x0_pcaeq_27b
-s02,qwen3.6-27b,J++: lookup extra loss,0.05208333333333326,0.012816455696202496,0.09195780399274041,,x0_pcaeq_27b
-s02,qwen3.6-27b,J++: share of the change,0.135005,,,,x0_pcaeq_27b
-s02,qwen3.6-27b,J++ without the word's directions: recall extra loss,0.1986301369863014,0.09836065573770492,0.29487179487179493,,x0_pcaeq_27b
-s02,qwen3.6-27b,J++ without the word's directions: lookup extra loss,0.03125,0.0,0.07317632579995534,,x0_pcaeq_27b
-s02,qwen3.6-27b,J++ without the word's directions: share of the change,0.11108499999999999,,,,x0_pcaeq_27b
-s02,qwen3.6-27b,The word alone: recall extra loss,0.1586206896551724,0.0821917808219178,0.23376885211562623,,x0_parts_27b
-s02,qwen3.6-27b,The word alone: lookup extra loss,0.0,0.0,0.0,,x0_parts_27b
-s02,qwen3.6-27b,The word alone: share of the change,0.02908,,,,x0_parts_27b
-s02,qwen3.6-27b,Main directions at J++'s share: recall extra loss,0.15753424657534243,0.07975348981950751,0.2267441860465116,,x0_pcaeq_27b
-s02,qwen3.6-27b,Main directions at J++'s share: lookup extra loss,0.02083333333333326,0.0,0.045454545454545414,,x0_pcaeq_27b
-s02,qwen3.6-27b,Main directions at J++'s share: share of the change,0.138185,,,,x0_pcaeq_27b
-s02,qwen3.6-27b,J++ fitted to another scene: recall extra loss,0.020547945205479534,-0.010114442295293407,0.054216867469879415,,x0_jppother_27b
-s02,qwen3.6-27b,J++ fitted to another scene: lookup extra loss,0.0,0.0,0.0,,x0_jppother_27b
-s02,qwen3.6-27b,J++ fitted to another scene: share of the change,0.01051,,,,x0_jppother_27b
-s02,qwen3.6-27b,Logit lens (main test): recall extra loss,0.013333333333333308,-0.011428571428571458,0.03797468354430378,,x0_necessity_27b_chat
-s02,qwen3.6-27b,Logit lens (main test): lookup extra loss,-0.023255813953488413,-0.061224489795918324,0.0,,x0_necessity_27b_chat
-s02,qwen3.6-27b,Logit lens (main test): share of the change,0.073435,,,,x0_necessity_27b_chat
-s02,qwen3.6-27b,Input embeddings (main test): recall extra loss,0.0,-0.03267973856209161,0.02958579881656798,,x0_necessity_27b_chat
-s02,qwen3.6-27b,Input embeddings (main test): lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,,x0_necessity_27b_chat
-s02,qwen3.6-27b,Input embeddings (main test): share of the change,0.08374999999999999,,,,x0_necessity_27b_chat
-s02,qwen3.6-27b,Random directions (main test): recall extra loss,0.0,-0.02654867256637161,0.024844720496894457,,x0_necessity_27b_chat
-s02,qwen3.6-27b,Random directions (main test): lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,,x0_necessity_27b_chat
-s02,qwen3.6-27b,Random directions (main test): share of the change,0.08176,,,,x0_necessity_27b_chat
-s02,qwen3.5-122b-a10b,J++: recall extra loss,0.2637362637362637,0.15517241379310354,0.36158492607284526,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,J++: lookup extra loss,-0.01098901098901095,-0.05952380952380942,0.039473684210526216,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,J++: share of the change,0.21142499999999997,,,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,J++ without the word's directions: recall extra loss,0.038461538461538436,0.004328537841468841,0.07777777777777772,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,J++ without the word's directions: lookup extra loss,-0.03296703296703296,-0.07407407407407407,0.0,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,J++ without the word's directions: share of the change,0.139135,,,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,The word alone: recall extra loss,0.13736263736263743,0.08000000000000007,0.19999999999999996,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,The word alone: lookup extra loss,-0.010989010989011061,-0.05434782608695654,0.02409638554216864,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,The word alone: share of the change,0.09171,,,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,Main directions at J++'s share: recall extra loss,0.2142857142857143,0.1306532663316583,0.2954545454545454,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,Main directions at J++'s share: lookup extra loss,0.08791208791208793,0.02325581395348841,0.15306352270637988,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,Main directions at J++'s share: share of the change,0.21511,,,,qwen35_122b_x0_parts
-s02,qwen3.5-122b-a10b,J++ fitted to another scene: recall extra loss,-0.011173184357541777,-0.03125,0.0,,qwen35_122b_x0_jppother
-s02,qwen3.5-122b-a10b,J++ fitted to another scene: lookup extra loss,0.010638297872340496,-0.024390243902438935,0.05128205128205121,,qwen35_122b_x0_jppother
-s02,qwen3.5-122b-a10b,J++ fitted to another scene: share of the change,0.02221,,,,qwen35_122b_x0_jppother
-s02,qwen3.5-122b-a10b,Logit lens (main test): recall extra loss,-0.010869565217391353,-0.02450980392156854,0.0,,qwen35_122b_x0_necessity_r2
-s02,qwen3.5-122b-a10b,Logit lens (main test): lookup extra loss,-0.011235955056179692,-0.04999999999999982,0.027027027027026976,,qwen35_122b_x0_necessity_r2
-s02,qwen3.5-122b-a10b,Logit lens (main test): share of the change,0.125025,,,,qwen35_122b_x0_necessity_r2
-s02,qwen3.5-122b-a10b,Input embeddings (main test): recall extra loss,0.005434782608695676,-0.023121387283237094,0.03191489361702127,,qwen35_122b_x0_necessity_r2
-s02,qwen3.5-122b-a10b,Input embeddings (main test): lookup extra loss,0.0,-0.0641025641025641,0.061543209876543145,,qwen35_122b_x0_necessity_r2
-s02,qwen3.5-122b-a10b,Input embeddings (main test): share of the change,0.178205,,,,qwen35_122b_x0_necessity_r2
-s02,qwen3.5-122b-a10b,Random directions (main test): recall extra loss,0.0,-0.015873015873015928,0.015151515151515138,,qwen35_122b_x0_necessity_r2
-s02,qwen3.5-122b-a10b,Random directions (main test): lookup extra loss,0.011235955056179692,-0.041095890410958846,0.05617977528089879,,qwen35_122b_x0_necessity_r2
-s02,qwen3.5-122b-a10b,Random directions (main test): share of the change,0.13390000000000002,,,,qwen35_122b_x0_necessity_r2
-s02,muse-glimmer-30b,J++: recall extra loss,0.6607142857142856,0.525635593220339,0.7809523809523808,,muse30b_x0_parts
-s02,muse-glimmer-30b,J++: lookup extra loss,-0.011627906976744207,-0.0357142857142857,0.0,,muse30b_x0_parts
-s02,muse-glimmer-30b,J++: share of the change,0.11665,,,,muse30b_x0_parts
-s02,muse-glimmer-30b,J++ without the word's directions: recall extra loss,0.0714285714285714,0.0,0.1278217345689805,,muse30b_x0_parts
-s02,muse-glimmer-30b,J++ without the word's directions: lookup extra loss,0.0,-0.03191489361702138,0.03174603174603163,,muse30b_x0_parts
-s02,muse-glimmer-30b,J++ without the word's directions: share of the change,0.08548,,,,muse30b_x0_parts
-s02,muse-glimmer-30b,The word alone: recall extra loss,0.2053571428571428,0.11649920975389474,0.2919749036332321,,muse30b_x0_parts
-s02,muse-glimmer-30b,The word alone: lookup extra loss,0.03488372093023262,0.0,0.07272727272727275,,muse30b_x0_parts
-s02,muse-glimmer-30b,The word alone: share of the change,0.04347,,,,muse30b_x0_parts
-s02,muse-glimmer-30b,Main directions at J++'s share: recall extra loss,0.1785714285714285,0.08000000000000007,0.26016260162601634,,muse30b_x0_parts
-s02,muse-glimmer-30b,Main directions at J++'s share: lookup extra loss,0.06976744186046502,0.019995049504950405,0.12162162162162149,,muse30b_x0_parts
-s02,muse-glimmer-30b,Main directions at J++'s share: share of the change,0.11774499999999999,,,,muse30b_x0_parts
-s02,muse-glimmer-30b,J++ fitted to another scene: recall extra loss,0.04385964912280693,0.011494252873563204,0.08695652173913038,,muse30b_x0_jppother
-s02,muse-glimmer-30b,J++ fitted to another scene: lookup extra loss,0.0,0.0,0.0,,muse30b_x0_jppother
-s02,muse-glimmer-30b,J++ fitted to another scene: share of the change,0.012539999999999999,,,,muse30b_x0_jppother
-s02,muse-glimmer-30b,Logit lens (main test): recall extra loss,0.008547008547008739,-0.03614457831325302,0.040820508531281344,,muse30b_x0_necessity
-s02,muse-glimmer-30b,Logit lens (main test): lookup extra loss,0.02857142857142858,-0.02631578947368407,0.08333333333333337,,muse30b_x0_necessity
-s02,muse-glimmer-30b,Logit lens (main test): share of the change,0.04925,,,,muse30b_x0_necessity
-s02,muse-glimmer-30b,Input embeddings (main test): recall extra loss,0.042735042735042805,0.0078125,0.0990099009900991,,muse30b_x0_necessity
-s02,muse-glimmer-30b,Input embeddings (main test): lookup extra loss,0.042857142857142816,-0.05128205128205121,0.1333333333333332,,muse30b_x0_necessity
-s02,muse-glimmer-30b,Input embeddings (main test): share of the change,0.072215,,,,muse30b_x0_necessity
-s02,muse-glimmer-30b,Random directions (main test): recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,,muse30b_x0_necessity
-s02,muse-glimmer-30b,Random directions (main test): lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,,muse30b_x0_necessity
-s02,muse-glimmer-30b,Random directions (main test): share of the change,0.061265,,,,muse30b_x0_necessity
+s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
+s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
+s01,qwen3.5-9b,main test (two people swap picks): gap,0.53,,,,contrast_9b
+s01,qwen3.5-9b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.02,-0.05,0.02,,single_lk_excess_9b
+s01,qwen3.5-9b,one-pick scenes (only the asked pick changes): recall extra loss,0.37,0.29,0.43,,single_rc_excess_9b
+s01,qwen3.5-9b,one-pick scenes (only the asked pick changes): gap,0.39,,,,single_contrast_9b
+s01,qwen3.5-9b,matched scenes (two people swap picks): lookup extra loss,0.01,-0.04,0.07,,comp_two_fmno_lk_9b
+s01,qwen3.5-9b,matched scenes (two people swap picks): recall extra loss,0.35,0.26,0.43,,comp_two_fmno_rc_9b
+s01,qwen3.5-9b,matched scenes (two people swap picks): gap,0.34,,,,recall minus lookup
+s01,qwen3.5-9b,matched scenes (only the asked pick changes): lookup extra loss,0.0,0.0,0.0,,comp_one_fmno_lk_9b
+s01,qwen3.5-9b,matched scenes (only the asked pick changes): recall extra loss,0.17,0.11,0.23,,comp_one_fmno_rc_9b
+s01,qwen3.5-9b,matched scenes (only the asked pick changes): gap,0.17,,,,recall minus lookup
+s01,qwen3.5-9b,varied scenes: prose / JSON / table: lookup extra loss,0.008805031446540879,-0.005807854239256629,0.02803776873014404,,x0b_lk_excess_9b
+s01,qwen3.5-9b,varied scenes: prose / JSON / table: recall extra loss,0.2302158273381295,0.14437833246054607,0.3261264744978109,,x0b_rc_excess_9b
+s01,qwen3.5-9b,varied scenes: prose / JSON / table: gap,0.22,,,,x0b_c_9b
+s01,qwen3.5-9b,natural passages: lookup extra loss,0.033333333333333326,-0.07999999999999996,0.14814814814814814,,nat_lk_excess_9b
+s01,qwen3.5-9b,natural passages: recall extra loss,0.5555555555555556,0.45070422535211263,0.6623376623376623,,nat_rc_excess_9b
+s01,qwen3.5-9b,natural passages: gap,0.5222,,,,nat_gap_9b
+s01,qwen3.6-27b,main test (two people swap picks): lookup extra loss,0.14,0.08,0.2,,lk_excess_27b
+s01,qwen3.6-27b,main test (two people swap picks): recall extra loss,0.74,0.66,0.8,,rc_excess_27b
+s01,qwen3.6-27b,main test (two people swap picks): gap,0.6,,,,contrast_27b
+s01,qwen3.6-27b,one-pick scenes (only the asked pick changes): lookup extra loss,0.05,0.01,0.09,,single_lk_excess_27b
+s01,qwen3.6-27b,one-pick scenes (only the asked pick changes): recall extra loss,0.61,0.51,0.69,,single_rc_excess_27b
+s01,qwen3.6-27b,one-pick scenes (only the asked pick changes): gap,0.56,,,,single_contrast_27b
+s01,qwen3.6-27b,matched scenes (two people swap picks): lookup extra loss,0.14,0.07,0.22,,comp_two_fmno_lk_27b
+s01,qwen3.6-27b,matched scenes (two people swap picks): recall extra loss,0.67,0.58,0.76,,comp_two_fmno_rc_27b
+s01,qwen3.6-27b,matched scenes (two people swap picks): gap,0.53,,,,recall minus lookup
+s01,qwen3.6-27b,matched scenes (only the asked pick changes): lookup extra loss,0.01,0.0,0.04,,comp_one_fmno_lk_27b
+s01,qwen3.6-27b,matched scenes (only the asked pick changes): recall extra loss,0.49,0.39,0.6,,comp_one_fmno_rc_27b
+s01,qwen3.6-27b,matched scenes (only the asked pick changes): gap,0.48,,,,recall minus lookup
+s01,qwen3.6-27b,varied scenes: prose / JSON / table: lookup extra loss,0.083102493074792,0.0630855279832261,0.10440167252936892,,x0b_lk_excess_27b
+s01,qwen3.6-27b,varied scenes: prose / JSON / table: recall extra loss,0.5553555355535553,0.5,0.610909443068581,,x0b_rc_excess_27b
+s01,qwen3.6-27b,varied scenes: prose / JSON / table: gap,0.47,,,,x0b_c_27b
+s01,qwen3.6-27b,natural passages: lookup extra loss,0.32,0.2,0.45,,nat_lk_excess_27b
+s01,qwen3.6-27b,natural passages: recall extra loss,0.59,0.5,0.67,,nat_rc_excess_27b
+s01,qwen3.6-27b,natural passages: gap,0.27,,,,nat_gap_27b
+s01,qwen3.5-122b-a10b,main test (two people swap picks): lookup extra loss,0.0,-0.06,0.06,,lk_excess_122b
+s01,qwen3.5-122b-a10b,main test (two people swap picks): recall extra loss,0.32,0.22,0.41,,rc_excess_122b
+s01,qwen3.5-122b-a10b,main test (two people swap picks): gap,0.32,,,,contrast_122b
+s01,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.01,-0.06,0.04,,single_lk_excess_122b
+s01,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): recall extra loss,0.27,0.16,0.36,,single_rc_excess_122b
+s01,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): gap,0.28,,,,single_contrast_122b
+s01,qwen3.5-122b-a10b,matched scenes (two people swap picks): lookup extra loss,-0.01,-0.08,0.06,,comp_two_fmno_lk_122b
+s01,qwen3.5-122b-a10b,matched scenes (two people swap picks): recall extra loss,0.2,0.1,0.3,,comp_two_fmno_rc_122b
+s01,qwen3.5-122b-a10b,matched scenes (two people swap picks): gap,0.21,,,,recall minus lookup
+s01,qwen3.5-122b-a10b,matched scenes (only the asked pick changes): lookup extra loss,-0.01,-0.07,0.04,,comp_one_fmno_lk_122b
+s01,qwen3.5-122b-a10b,matched scenes (only the asked pick changes): recall extra loss,0.1,0.03,0.17,,comp_one_fmno_rc_122b
+s01,qwen3.5-122b-a10b,matched scenes (only the asked pick changes): gap,0.11,,,,recall minus lookup
+s01,qwen3.5-122b-a10b,varied scenes: prose / JSON / table: lookup extra loss,-0.015898251192368873,-0.030418376687388133,-0.0033275110857251167,,x0b_lk_excess_122b
+s01,qwen3.5-122b-a10b,varied scenes: prose / JSON / table: recall extra loss,0.1328320802005012,0.10872043368103582,0.16216216216216217,,x0b_rc_excess_122b
+s01,qwen3.5-122b-a10b,varied scenes: prose / JSON / table: gap,0.15,,,,x0b_c_122b
+s01,qwen3.5-122b-a10b,natural passages: lookup extra loss,-0.11,-0.2,-0.03,,nat_lk_excess_122b
+s01,qwen3.5-122b-a10b,natural passages: recall extra loss,0.34,0.24,0.43,,nat_rc_excess_122b
+s01,qwen3.5-122b-a10b,natural passages: gap,0.44,,,,nat_gap_122b
+s01,muse-glimmer-30b,main test (two people swap picks): lookup extra loss,-0.1,-0.15,-0.04,,lk_excess_muse
+s01,muse-glimmer-30b,main test (two people swap picks): recall extra loss,0.75,0.61,0.87,,rc_excess_muse
+s01,muse-glimmer-30b,main test (two people swap picks): gap,0.85,,,,contrast_muse
+s01,muse-glimmer-30b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.01,-0.04,0.0,,single_lk_excess_muse
+s01,muse-glimmer-30b,one-pick scenes (only the asked pick changes): recall extra loss,0.66,0.53,0.78,,single_rc_excess_muse
+s01,muse-glimmer-30b,one-pick scenes (only the asked pick changes): gap,0.67,,,,single_contrast_muse
+s01,muse-glimmer-30b,matched scenes (two people swap picks): lookup extra loss,-0.07,-0.12,-0.02,,comp_two_fmno_lk_muse
+s01,muse-glimmer-30b,matched scenes (two people swap picks): recall extra loss,0.68,0.46,0.88,,comp_two_fmno_rc_muse
+s01,muse-glimmer-30b,matched scenes (two people swap picks): gap,0.75,,,,recall minus lookup
+s01,muse-glimmer-30b,matched scenes (only the asked pick changes): lookup extra loss,0.0,0.0,0.0,,comp_one_fmno_lk_muse
+s01,muse-glimmer-30b,matched scenes (only the asked pick changes): recall extra loss,0.54,0.32,0.75,,comp_one_fmno_rc_muse
+s01,muse-glimmer-30b,matched scenes (only the asked pick changes): gap,0.54,,,,recall minus lookup
+s01,muse-glimmer-30b,varied scenes: prose / JSON / table: lookup extra loss,0.06374501992031867,0.031889854254439874,0.10096213054187199,,x0b_lk_excess_muse
+s01,muse-glimmer-30b,varied scenes: prose / JSON / table: recall extra loss,0.5618181818181818,0.4774324693094728,0.6591940735266213,,x0b_rc_excess_muse
+s01,muse-glimmer-30b,varied scenes: prose / JSON / table: gap,0.5,,,,x0b_c_muse
+s01,muse-glimmer-30b,natural passages: lookup extra loss,-0.2,-0.55,0.0,,nat_lk_excess_muse
+s01,muse-glimmer-30b,natural passages: recall extra loss,0.75,0.62,0.86,,nat_rc_excess_muse
+s01,muse-glimmer-30b,natural passages: gap,0.95,,,,nat_gap_muse
+s02,qwen3.5-9b,J++ part: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,J++ part: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,J++ part: share of the change,0.18579,,,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,J++ part without the word's directions: recall extra loss,0.11518324607329844,0.06040268456375841,0.17727272727272736,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,J++ part without the word's directions: lookup extra loss,0.0,-0.027027027027027084,0.024590163934426146,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,J++ part without the word's directions: share of the change,0.15773500000000001,,,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,the word's directions: recall extra loss,0.020942408376963262,-0.004926108374384122,0.05696284514986561,,qwen35_9b_x0_parts
+s02,qwen3.5-9b,the word's directions: lookup extra loss,0.0,-0.027027027027027084,0.02941176470588225,,qwen35_9b_x0_parts
+s02,qwen3.5-9b,the word's directions: share of the change,0.041335,,,,qwen35_9b_x0_parts
+s02,qwen3.5-9b,PCA directions (same size): recall extra loss,0.13089005235602091,0.06321560093739526,0.19209582790091256,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,PCA directions (same size): lookup extra loss,0.08490566037735847,0.01869158878504673,0.15116279069767435,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,PCA directions (same size): share of the change,0.188635,,,,qwen35_9b_x0_pcaeq
+s02,qwen3.5-9b,J++ part fitted to another scene: recall extra loss,-0.005235602094240788,-0.017751479289940808,0.0,,qwen35_9b_x0_jppother
+s02,qwen3.5-9b,J++ part fitted to another scene: lookup extra loss,-0.009433962264150941,-0.028301886792452935,0.0,,qwen35_9b_x0_jppother
+s02,qwen3.5-9b,J++ part fitted to another scene: share of the change,0.01771,,,,qwen35_9b_x0_jppother
+s02,qwen3.5-9b,logit-lens directions: recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
+s02,qwen3.5-9b,logit-lens directions: lookup extra loss,-0.01904761904761898,-0.07377049180327866,0.030612244897959107,,qwen35_9b_x0_necessity
+s02,qwen3.5-9b,logit-lens directions: share of the change,0.09013499999999999,,,,qwen35_9b_x0_necessity
+s02,qwen3.5-9b,input-embedding directions: recall extra loss,0.005076142131979711,0.0,0.017545791792255995,,qwen35_9b_x0_necessity
+s02,qwen3.5-9b,input-embedding directions: lookup extra loss,0.03809523809523807,-0.011494252873563315,0.08849557522123896,,qwen35_9b_x0_necessity
+s02,qwen3.5-9b,input-embedding directions: share of the change,0.10935500000000001,,,,qwen35_9b_x0_necessity
+s02,qwen3.5-9b,random atoms: recall extra loss,0.0,0.0,0.0,,qwen35_9b_x0_necessity
+s02,qwen3.5-9b,random atoms: lookup extra loss,0.0,-0.03571428571428581,0.0387615714608263,,qwen35_9b_x0_necessity
+s02,qwen3.5-9b,random atoms: share of the change,0.10142999999999999,,,,qwen35_9b_x0_necessity
+s02,qwen3.6-27b,J++ part: recall extra loss,0.6095890410958904,0.5114460770246227,0.6932535787321064,,x0_pcaeq_27b
+s02,qwen3.6-27b,J++ part: lookup extra loss,0.05208333333333326,0.012816455696202496,0.09195780399274041,,x0_pcaeq_27b
+s02,qwen3.6-27b,J++ part: share of the change,0.135005,,,,x0_pcaeq_27b
+s02,qwen3.6-27b,J++ part without the word's directions: recall extra loss,0.1986301369863014,0.09836065573770492,0.29487179487179493,,x0_pcaeq_27b
+s02,qwen3.6-27b,J++ part without the word's directions: lookup extra loss,0.03125,0.0,0.07317632579995534,,x0_pcaeq_27b
+s02,qwen3.6-27b,J++ part without the word's directions: share of the change,0.11108499999999999,,,,x0_pcaeq_27b
+s02,qwen3.6-27b,the word's directions: recall extra loss,0.1586206896551724,0.0821917808219178,0.23376885211562623,,x0_parts_27b
+s02,qwen3.6-27b,the word's directions: lookup extra loss,0.0,0.0,0.0,,x0_parts_27b
+s02,qwen3.6-27b,the word's directions: share of the change,0.02908,,,,x0_parts_27b
+s02,qwen3.6-27b,PCA directions (same size): recall extra loss,0.15753424657534243,0.07975348981950751,0.2267441860465116,,x0_pcaeq_27b
+s02,qwen3.6-27b,PCA directions (same size): lookup extra loss,0.02083333333333326,0.0,0.045454545454545414,,x0_pcaeq_27b
+s02,qwen3.6-27b,PCA directions (same size): share of the change,0.138185,,,,x0_pcaeq_27b
+s02,qwen3.6-27b,J++ part fitted to another scene: recall extra loss,0.020547945205479534,-0.010114442295293407,0.054216867469879415,,x0_jppother_27b
+s02,qwen3.6-27b,J++ part fitted to another scene: lookup extra loss,0.0,0.0,0.0,,x0_jppother_27b
+s02,qwen3.6-27b,J++ part fitted to another scene: share of the change,0.01051,,,,x0_jppother_27b
+s02,qwen3.6-27b,logit-lens directions: recall extra loss,0.013333333333333308,-0.011428571428571458,0.03797468354430378,,x0_necessity_27b_chat
+s02,qwen3.6-27b,logit-lens directions: lookup extra loss,-0.023255813953488413,-0.061224489795918324,0.0,,x0_necessity_27b_chat
+s02,qwen3.6-27b,logit-lens directions: share of the change,0.073435,,,,x0_necessity_27b_chat
+s02,qwen3.6-27b,input-embedding directions: recall extra loss,0.0,-0.03267973856209161,0.02958579881656798,,x0_necessity_27b_chat
+s02,qwen3.6-27b,input-embedding directions: lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,,x0_necessity_27b_chat
+s02,qwen3.6-27b,input-embedding directions: share of the change,0.08374999999999999,,,,x0_necessity_27b_chat
+s02,qwen3.6-27b,random atoms: recall extra loss,0.0,-0.02654867256637161,0.024844720496894457,,x0_necessity_27b_chat
+s02,qwen3.6-27b,random atoms: lookup extra loss,-0.011627906976744207,-0.038961038961039085,0.0,,x0_necessity_27b_chat
+s02,qwen3.6-27b,random atoms: share of the change,0.08176,,,,x0_necessity_27b_chat
+s02,qwen3.5-122b-a10b,J++ part: recall extra loss,0.2637362637362637,0.15517241379310354,0.36158492607284526,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,J++ part: lookup extra loss,-0.01098901098901095,-0.05952380952380942,0.039473684210526216,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,J++ part: share of the change,0.21142499999999997,,,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,J++ part without the word's directions: recall extra loss,0.038461538461538436,0.004328537841468841,0.07777777777777772,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,J++ part without the word's directions: lookup extra loss,-0.03296703296703296,-0.07407407407407407,0.0,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,J++ part without the word's directions: share of the change,0.139135,,,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,the word's directions: recall extra loss,0.13736263736263743,0.08000000000000007,0.19999999999999996,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,the word's directions: lookup extra loss,-0.010989010989011061,-0.05434782608695654,0.02409638554216864,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,the word's directions: share of the change,0.09171,,,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,PCA directions (same size): recall extra loss,0.2142857142857143,0.1306532663316583,0.2954545454545454,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,PCA directions (same size): lookup extra loss,0.08791208791208793,0.02325581395348841,0.15306352270637988,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,PCA directions (same size): share of the change,0.21511,,,,qwen35_122b_x0_parts
+s02,qwen3.5-122b-a10b,J++ part fitted to another scene: recall extra loss,-0.011173184357541777,-0.03125,0.0,,qwen35_122b_x0_jppother
+s02,qwen3.5-122b-a10b,J++ part fitted to another scene: lookup extra loss,0.010638297872340496,-0.024390243902438935,0.05128205128205121,,qwen35_122b_x0_jppother
+s02,qwen3.5-122b-a10b,J++ part fitted to another scene: share of the change,0.02221,,,,qwen35_122b_x0_jppother
+s02,qwen3.5-122b-a10b,logit-lens directions: recall extra loss,-0.010869565217391353,-0.02450980392156854,0.0,,qwen35_122b_x0_necessity_r2
+s02,qwen3.5-122b-a10b,logit-lens directions: lookup extra loss,-0.011235955056179692,-0.04999999999999982,0.027027027027026976,,qwen35_122b_x0_necessity_r2
+s02,qwen3.5-122b-a10b,logit-lens directions: share of the change,0.125025,,,,qwen35_122b_x0_necessity_r2
+s02,qwen3.5-122b-a10b,input-embedding directions: recall extra loss,0.005434782608695676,-0.023121387283237094,0.03191489361702127,,qwen35_122b_x0_necessity_r2
+s02,qwen3.5-122b-a10b,input-embedding directions: lookup extra loss,0.0,-0.0641025641025641,0.061543209876543145,,qwen35_122b_x0_necessity_r2
+s02,qwen3.5-122b-a10b,input-embedding directions: share of the change,0.178205,,,,qwen35_122b_x0_necessity_r2
+s02,qwen3.5-122b-a10b,random atoms: recall extra loss,0.0,-0.015873015873015928,0.015151515151515138,,qwen35_122b_x0_necessity_r2
+s02,qwen3.5-122b-a10b,random atoms: lookup extra loss,0.011235955056179692,-0.041095890410958846,0.05617977528089879,,qwen35_122b_x0_necessity_r2
+s02,qwen3.5-122b-a10b,random atoms: share of the change,0.13390000000000002,,,,qwen35_122b_x0_necessity_r2
+s02,muse-glimmer-30b,J++ part: recall extra loss,0.6607142857142856,0.525635593220339,0.7809523809523808,,muse30b_x0_parts
+s02,muse-glimmer-30b,J++ part: lookup extra loss,-0.011627906976744207,-0.0357142857142857,0.0,,muse30b_x0_parts
+s02,muse-glimmer-30b,J++ part: share of the change,0.11665,,,,muse30b_x0_parts
+s02,muse-glimmer-30b,J++ part without the word's directions: recall extra loss,0.0714285714285714,0.0,0.1278217345689805,,muse30b_x0_parts
+s02,muse-glimmer-30b,J++ part without the word's directions: lookup extra loss,0.0,-0.03191489361702138,0.03174603174603163,,muse30b_x0_parts
+s02,muse-glimmer-30b,J++ part without the word's directions: share of the change,0.08548,,,,muse30b_x0_parts
+s02,muse-glimmer-30b,the word's directions: recall extra loss,0.2053571428571428,0.11649920975389474,0.2919749036332321,,muse30b_x0_parts
+s02,muse-glimmer-30b,the word's directions: lookup extra loss,0.03488372093023262,0.0,0.07272727272727275,,muse30b_x0_parts
+s02,muse-glimmer-30b,the word's directions: share of the change,0.04347,,,,muse30b_x0_parts
+s02,muse-glimmer-30b,PCA directions (same size): recall extra loss,0.1785714285714285,0.08000000000000007,0.26016260162601634,,muse30b_x0_parts
+s02,muse-glimmer-30b,PCA directions (same size): lookup extra loss,0.06976744186046502,0.019995049504950405,0.12162162162162149,,muse30b_x0_parts
+s02,muse-glimmer-30b,PCA directions (same size): share of the change,0.11774499999999999,,,,muse30b_x0_parts
+s02,muse-glimmer-30b,J++ part fitted to another scene: recall extra loss,0.04385964912280693,0.011494252873563204,0.08695652173913038,,muse30b_x0_jppother
+s02,muse-glimmer-30b,J++ part fitted to another scene: lookup extra loss,0.0,0.0,0.0,,muse30b_x0_jppother
+s02,muse-glimmer-30b,J++ part fitted to another scene: share of the change,0.012539999999999999,,,,muse30b_x0_jppother
+s02,muse-glimmer-30b,logit-lens directions: recall extra loss,0.008547008547008739,-0.03614457831325302,0.040820508531281344,,muse30b_x0_necessity
+s02,muse-glimmer-30b,logit-lens directions: lookup extra loss,0.02857142857142858,-0.02631578947368407,0.08333333333333337,,muse30b_x0_necessity
+s02,muse-glimmer-30b,logit-lens directions: share of the change,0.04925,,,,muse30b_x0_necessity
+s02,muse-glimmer-30b,input-embedding directions: recall extra loss,0.042735042735042805,0.0078125,0.0990099009900991,,muse30b_x0_necessity
+s02,muse-glimmer-30b,input-embedding directions: lookup extra loss,0.042857142857142816,-0.05128205128205121,0.1333333333333332,,muse30b_x0_necessity
+s02,muse-glimmer-30b,input-embedding directions: share of the change,0.072215,,,,muse30b_x0_necessity
+s02,muse-glimmer-30b,random atoms: recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,,muse30b_x0_necessity
+s02,muse-glimmer-30b,random atoms: lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,,muse30b_x0_necessity
+s02,muse-glimmer-30b,random atoms: share of the change,0.061265,,,,muse30b_x0_necessity
 s05,qwen3.5-9b,"another item moved, whole: identity share",0.48,0.4259790139811488,0.5333333333333333,300,qwen35_9b_x6_routes
 s05,qwen3.5-9b,"another item moved, whole: position share",0.51,0.4595447389136709,0.5611529144031713,300,qwen35_9b_x6_routes
 s05,qwen3.5-9b,"another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
@@ -830,86 +834,80 @@ s05,muse-glimmer-30b,"another item moved, keep_jpp_rand: position share",0.00333
 s05,muse-glimmer-30b,"another item moved, keep_jpp_rand: value share",0.0,0.0,0.0,300,muse30b_x6_routes
 s05,muse-glimmer-30b,"another item moved, keep_jpp_rand: original share",0.9966666666666667,0.9896551724137931,1.0,300,muse30b_x6_routes
 s05,muse-glimmer-30b,"another item moved, keep_jpp_rand: other share",0.0,0.0,0.0,300,muse30b_x6_routes
-s10,qwen3.5-9b,"the sanity swap, lookup extra loss without J++",-0.003355704697986628,-0.011029411764705843,0.0,,qwen35_9b_x6_routes_bothoff
-s10,qwen3.5-9b,"the sanity swap, recall extra loss without J++",0.013793103448275779,-0.0035211267605633756,0.03214285714285725,,qwen35_9b_x6_routes_bothoff
+s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the J++ part",-0.003355704697986628,-0.011029411764705843,0.0,,qwen35_9b_x6_routes_bothoff
+s10,qwen3.5-9b,"the sanity swap, recall extra loss without the J++ part",0.013793103448275779,-0.0035211267605633756,0.03214285714285725,,qwen35_9b_x6_routes_bothoff
 s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer",0.3120805369127516,0.2556378966585792,0.37353183581124755,,qwen35_9b_x6_routes_bothoff
 s10,qwen3.5-9b,"the sanity swap, recall extra loss without the pointer",0.1206896551724137,0.07721972234839877,0.16778523489932884,,qwen35_9b_x6_routes_bothoff
-s10,qwen3.5-9b,"the sanity swap, lookup extra loss without both",0.4295302013422818,0.3885350318471339,0.47039957430340545,,qwen35_9b_x6_routes_bothoff
-s10,qwen3.5-9b,"the sanity swap, recall extra loss without both",0.3413793103448276,0.28195488721804507,0.4031636491138596,,qwen35_9b_x6_routes_bothoff
+s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the J++ part and the pointer",0.4295302013422818,0.3885350318471339,0.47039957430340545,,qwen35_9b_x6_routes_bothoff
+s10,qwen3.5-9b,"the sanity swap, recall extra loss without the J++ part and the pointer",0.3413793103448276,0.28195488721804507,0.4031636491138596,,qwen35_9b_x6_routes_bothoff
 s10,qwen3.5-9b,batch 34's bar (pointer alone + 0.15),0.4621,,,,qwen35_9b_x6_routes_bothoff
-s10,qwen3.5-9b,"the sanity swap, lookup switches lost: pointer",0.31879194630872487,0.2626253542620449,0.3805675569520817,,qwen35_9b_x6_routes_bothoff_ctrl
-s10,qwen3.5-9b,"the sanity swap, recall switches lost: pointer",0.13103448275862073,0.08812024445523714,0.17712286079553713,,qwen35_9b_x6_routes_bothoff_ctrl
-s10,qwen3.5-9b,"the sanity swap, lookup switches lost: pointer + J++",0.5436241610738255,0.501628664495114,0.5917605959322998,,qwen35_9b_x6_routes_bothoff_ctrl
-s10,qwen3.5-9b,"the sanity swap, recall switches lost: pointer + J++",0.5206896551724138,0.43934391933603123,0.5984101353307278,,qwen35_9b_x6_routes_bothoff_ctrl
-s10,qwen3.5-9b,"the sanity swap, lookup switches lost: pointer + random (J++'s share)",0.6208053691275168,0.5714285714285714,0.6688747259075506,,qwen35_9b_x6_routes_bothoff_ctrl
-s10,qwen3.5-9b,"the sanity swap, recall switches lost: pointer + random (J++'s share)",0.38620689655172413,0.30597014925373145,0.46326064962726293,,qwen35_9b_x6_routes_bothoff_ctrl
+s10,qwen3.5-9b,"the sanity swap, lookup switches lost: without the pointer",0.31879194630872487,0.2626253542620449,0.3805675569520817,,qwen35_9b_x6_routes_bothoff_ctrl
+s10,qwen3.5-9b,"the sanity swap, recall switches lost: without the pointer",0.13103448275862073,0.08812024445523714,0.17712286079553713,,qwen35_9b_x6_routes_bothoff_ctrl
+s10,qwen3.5-9b,"the sanity swap, lookup switches lost: without the pointer and the J++ part",0.5436241610738255,0.501628664495114,0.5917605959322998,,qwen35_9b_x6_routes_bothoff_ctrl
+s10,qwen3.5-9b,"the sanity swap, recall switches lost: without the pointer and the J++ part",0.5206896551724138,0.43934391933603123,0.5984101353307278,,qwen35_9b_x6_routes_bothoff_ctrl
+s10,qwen3.5-9b,"the sanity swap, lookup switches lost: without the pointer and a random part (same size)",0.6208053691275168,0.5714285714285714,0.6688747259075506,,qwen35_9b_x6_routes_bothoff_ctrl
+s10,qwen3.5-9b,"the sanity swap, recall switches lost: without the pointer and a random part (same size)",0.38620689655172413,0.30597014925373145,0.46326064962726293,,qwen35_9b_x6_routes_bothoff_ctrl
 s10,qwen3.5-9b,batch 36's bar (pointer + random + 0.15),0.7708,,,,qwen35_9b_x6_routes_bothoff_ctrl
 s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer",0.3120805369127516,0.2556378966585792,0.37353183581124755,,qwen35_9b_x6_routes_d1
 s10,qwen3.5-9b,share of the change: the pointer,0.1449,,,,qwen35_9b_x6_routes_d1
-s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer + J++",0.4295302013422818,0.3885350318471339,0.47039957430340545,,qwen35_9b_x6_routes_bothoff
-s10,qwen3.5-9b,share of the change: the pointer + J++,0.3314,,,,qwen35_9b_x6_routes_bothoff
-s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer + J++
-+ identity outside J++",0.3087248322147651,0.2549668874172185,0.36781711822660096,,qwen35_9b_x6_routes_d1
-s10,qwen3.5-9b,"share of the change: the pointer + J++
-+ identity outside J++",0.5565,,,,qwen35_9b_x6_routes_d1
-s10,qwen3.6-27b,"the sanity swap, lookup extra loss without J++",-0.003401360544217802,-0.01479344729344747,0.007407407407407529,,x6_routes_bothoff_27b
-s10,qwen3.6-27b,"the sanity swap, recall extra loss without J++",0.26543209876543195,0.19997512437810933,0.33974673202614375,,x6_routes_bothoff_27b
+s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer and the J++ part",0.4295302013422818,0.3885350318471339,0.47039957430340545,,qwen35_9b_x6_routes_bothoff
+s10,qwen3.5-9b,share of the change: the pointer and the J++ part,0.3314,,,,qwen35_9b_x6_routes_bothoff
+s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer, the J++ part and identity outside J++",0.3087248322147651,0.2549668874172185,0.36781711822660096,,qwen35_9b_x6_routes_d1
+s10,qwen3.5-9b,"share of the change: the pointer, the J++ part and identity outside J++",0.5565,,,,qwen35_9b_x6_routes_d1
+s10,qwen3.6-27b,"the sanity swap, lookup extra loss without the J++ part",-0.003401360544217802,-0.01479344729344747,0.007407407407407529,,x6_routes_bothoff_27b
+s10,qwen3.6-27b,"the sanity swap, recall extra loss without the J++ part",0.26543209876543195,0.19997512437810933,0.33974673202614375,,x6_routes_bothoff_27b
 s10,qwen3.6-27b,"the sanity swap, lookup extra loss without the pointer",0.15306122448979587,0.11742424242424243,0.19133750282039702,,x6_routes_bothoff_27b
 s10,qwen3.6-27b,"the sanity swap, recall extra loss without the pointer",0.154320987654321,0.09146341463414642,0.21805375507734845,,x6_routes_bothoff_27b
-s10,qwen3.6-27b,"the sanity swap, lookup extra loss without both",0.40816326530612235,0.35215829862898307,0.467680608365019,,x6_routes_bothoff_27b
-s10,qwen3.6-27b,"the sanity swap, recall extra loss without both",0.4444444444444444,0.36538173652694605,0.5238166953528399,,x6_routes_bothoff_27b
+s10,qwen3.6-27b,"the sanity swap, lookup extra loss without the J++ part and the pointer",0.40816326530612235,0.35215829862898307,0.467680608365019,,x6_routes_bothoff_27b
+s10,qwen3.6-27b,"the sanity swap, recall extra loss without the J++ part and the pointer",0.4444444444444444,0.36538173652694605,0.5238166953528399,,x6_routes_bothoff_27b
 s10,qwen3.6-27b,batch 34's bar (pointer alone + 0.15),0.3031,,,,x6_routes_bothoff_27b
-s10,qwen3.6-27b,"the sanity swap, lookup switches lost: pointer",0.14625850340136048,0.11040903959570807,0.184875388511569,,x6_routes_bothoff_ctrl_27b
-s10,qwen3.6-27b,"the sanity swap, recall switches lost: pointer",0.32098765432098775,0.24675324675324672,0.4,,x6_routes_bothoff_ctrl_27b
-s10,qwen3.6-27b,"the sanity swap, lookup switches lost: pointer + J++",0.4727891156462585,0.42539682539682533,0.5215866437284955,,x6_routes_bothoff_ctrl_27b
-s10,qwen3.6-27b,"the sanity swap, recall switches lost: pointer + J++",0.8209876543209876,0.7637337662337662,0.88,,x6_routes_bothoff_ctrl_27b
-s10,qwen3.6-27b,"the sanity swap, lookup switches lost: pointer + random (J++'s share)",0.24489795918367352,0.2007299270072993,0.2904411764705882,,x6_routes_bothoff_ctrl_27b
-s10,qwen3.6-27b,"the sanity swap, recall switches lost: pointer + random (J++'s share)",0.4876543209876544,0.39743589743589747,0.5827814569536424,,x6_routes_bothoff_ctrl_27b
+s10,qwen3.6-27b,"the sanity swap, lookup switches lost: without the pointer",0.14625850340136048,0.11040903959570807,0.184875388511569,,x6_routes_bothoff_ctrl_27b
+s10,qwen3.6-27b,"the sanity swap, recall switches lost: without the pointer",0.32098765432098775,0.24675324675324672,0.4,,x6_routes_bothoff_ctrl_27b
+s10,qwen3.6-27b,"the sanity swap, lookup switches lost: without the pointer and the J++ part",0.4727891156462585,0.42539682539682533,0.5215866437284955,,x6_routes_bothoff_ctrl_27b
+s10,qwen3.6-27b,"the sanity swap, recall switches lost: without the pointer and the J++ part",0.8209876543209876,0.7637337662337662,0.88,,x6_routes_bothoff_ctrl_27b
+s10,qwen3.6-27b,"the sanity swap, lookup switches lost: without the pointer and a random part (same size)",0.24489795918367352,0.2007299270072993,0.2904411764705882,,x6_routes_bothoff_ctrl_27b
+s10,qwen3.6-27b,"the sanity swap, recall switches lost: without the pointer and a random part (same size)",0.4876543209876544,0.39743589743589747,0.5827814569536424,,x6_routes_bothoff_ctrl_27b
 s10,qwen3.6-27b,batch 36's bar (pointer + random + 0.15),0.3949,,,,x6_routes_bothoff_ctrl_27b
 s10,qwen3.6-27b,"the sanity swap, lookup extra loss without the pointer",0.15699658703071662,0.11956521739130443,0.19565217391304335,,x6_routes_d1_27b
 s10,qwen3.6-27b,share of the change: the pointer,0.1404,,,,x6_routes_d1_27b
-s10,qwen3.6-27b,"the sanity swap, lookup extra loss without the pointer + J++",0.40816326530612235,0.35215829862898307,0.467680608365019,,x6_routes_bothoff_27b
-s10,qwen3.6-27b,share of the change: the pointer + J++,0.2606,,,,x6_routes_bothoff_27b
-s10,qwen3.6-27b,"the sanity swap, lookup extra loss without the pointer + J++
-+ identity outside J++",0.49146757679180886,0.43243243243243246,0.5538489208633095,,x6_routes_d1_27b
-s10,qwen3.6-27b,"share of the change: the pointer + J++
-+ identity outside J++",0.3504,,,,x6_routes_d1_27b
-s10,qwen3.5-122b-a10b,"the sanity swap, lookup extra loss without J++",-0.0033333333333332993,-0.010909090909090868,0.0,,qwen35_122b_x6_routes_bothoff_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, recall extra loss without J++",0.033210332103320916,0.0038022813688213227,0.06405693950177926,,qwen35_122b_x6_routes_bothoff_g75
+s10,qwen3.6-27b,"the sanity swap, lookup extra loss without the pointer and the J++ part",0.40816326530612235,0.35215829862898307,0.467680608365019,,x6_routes_bothoff_27b
+s10,qwen3.6-27b,share of the change: the pointer and the J++ part,0.2606,,,,x6_routes_bothoff_27b
+s10,qwen3.6-27b,"the sanity swap, lookup extra loss without the pointer, the J++ part and identity outside J++",0.49146757679180886,0.43243243243243246,0.5538489208633095,,x6_routes_d1_27b
+s10,qwen3.6-27b,"share of the change: the pointer, the J++ part and identity outside J++",0.3504,,,,x6_routes_d1_27b
+s10,qwen3.5-122b-a10b,"the sanity swap, lookup extra loss without the J++ part",-0.0033333333333332993,-0.010909090909090868,0.0,,qwen35_122b_x6_routes_bothoff_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, recall extra loss without the J++ part",0.033210332103320916,0.0038022813688213227,0.06405693950177926,,qwen35_122b_x6_routes_bothoff_g75
 s10,qwen3.5-122b-a10b,"the sanity swap, lookup extra loss without the pointer",0.2566666666666667,0.2172109214418208,0.2975220909948812,,qwen35_122b_x6_routes_bothoff_g75
 s10,qwen3.5-122b-a10b,"the sanity swap, recall extra loss without the pointer",0.14391143911439108,0.09210526315789469,0.19727891156462585,,qwen35_122b_x6_routes_bothoff_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, lookup extra loss without both",0.35,0.292358803986711,0.41422743574417215,,qwen35_122b_x6_routes_bothoff_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, recall extra loss without both",0.23616236162361637,0.19230427046263343,0.28467218224796736,,qwen35_122b_x6_routes_bothoff_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, lookup extra loss without the J++ part and the pointer",0.35,0.292358803986711,0.41422743574417215,,qwen35_122b_x6_routes_bothoff_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, recall extra loss without the J++ part and the pointer",0.23616236162361637,0.19230427046263343,0.28467218224796736,,qwen35_122b_x6_routes_bothoff_g75
 s10,qwen3.5-122b-a10b,batch 34's bar (pointer alone + 0.15),0.4067,,,,qwen35_122b_x6_routes_bothoff_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, lookup switches lost: pointer",0.2633333333333333,0.21854243316163846,0.31058085117385453,,qwen35_122b_x6_routes_bothoff_ctrl_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, recall switches lost: pointer",0.18681318681318682,0.1282051282051282,0.24104234527687296,,qwen35_122b_x6_routes_bothoff_ctrl_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, lookup switches lost: pointer + J++",0.5,0.45182674218468555,0.5505300736848115,,qwen35_122b_x6_routes_bothoff_ctrl_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, recall switches lost: pointer + J++",0.5018315018315018,0.41064445577915853,0.5830122651677422,,qwen35_122b_x6_routes_bothoff_ctrl_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, lookup switches lost: pointer + random (J++'s share)",0.4966666666666667,0.44522850803564096,0.5490937950937951,,qwen35_122b_x6_routes_bothoff_ctrl_g75
-s10,qwen3.5-122b-a10b,"the sanity swap, recall switches lost: pointer + random (J++'s share)",0.4285714285714286,0.3397646973118671,0.5073570875718708,,qwen35_122b_x6_routes_bothoff_ctrl_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, lookup switches lost: without the pointer",0.2633333333333333,0.21854243316163846,0.31058085117385453,,qwen35_122b_x6_routes_bothoff_ctrl_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, recall switches lost: without the pointer",0.18681318681318682,0.1282051282051282,0.24104234527687296,,qwen35_122b_x6_routes_bothoff_ctrl_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, lookup switches lost: without the pointer and the J++ part",0.5,0.45182674218468555,0.5505300736848115,,qwen35_122b_x6_routes_bothoff_ctrl_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, recall switches lost: without the pointer and the J++ part",0.5018315018315018,0.41064445577915853,0.5830122651677422,,qwen35_122b_x6_routes_bothoff_ctrl_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, lookup switches lost: without the pointer and a random part (same size)",0.4966666666666667,0.44522850803564096,0.5490937950937951,,qwen35_122b_x6_routes_bothoff_ctrl_g75
+s10,qwen3.5-122b-a10b,"the sanity swap, recall switches lost: without the pointer and a random part (same size)",0.4285714285714286,0.3397646973118671,0.5073570875718708,,qwen35_122b_x6_routes_bothoff_ctrl_g75
 s10,qwen3.5-122b-a10b,batch 36's bar (pointer + random + 0.15),0.6467,,,,qwen35_122b_x6_routes_bothoff_ctrl_g75
-s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without J++",0.011857707509881577,-0.009396087133735015,0.03571428571428559,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, recall extra loss without J++",0.21590909090909083,0.12345679012345678,0.32836353944562896,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the J++ part",0.011857707509881577,-0.009396087133735015,0.03571428571428559,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, recall extra loss without the J++ part",0.21590909090909083,0.12345679012345678,0.32836353944562896,,muse30b_x6_routes
 s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer",0.2806324110671937,0.22793884959046906,0.3296306471306471,,muse30b_x6_routes
 s10,muse-glimmer-30b,"the sanity swap, recall extra loss without the pointer",0.03409090909090917,-0.0612323390894819,0.12162986156888593,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without both",0.308300395256917,0.24894514767932507,0.36576333671685557,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, recall extra loss without both",0.4545454545454547,0.3428505291005291,0.5757575757575757,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the J++ part and the pointer",0.308300395256917,0.24894514767932507,0.36576333671685557,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, recall extra loss without the J++ part and the pointer",0.4545454545454547,0.3428505291005291,0.5757575757575757,,muse30b_x6_routes
 s10,muse-glimmer-30b,batch 34's bar (pointer alone + 0.15),0.4306,,,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, lookup switches lost: pointer",0.20158102766798425,0.1561151898734176,0.24513805030040112,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, recall switches lost: pointer",0.09090909090909094,0.011627906976744207,0.1717171717171717,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, lookup switches lost: pointer + J++",0.26086956521739135,0.2052238805970149,0.31835244210043556,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, recall switches lost: pointer + J++",0.5909090909090909,0.48051948051948046,0.7142857142857143,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, lookup switches lost: pointer + random (J++'s share)",0.25296442687747034,0.19831132693147088,0.3094362084456424,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, recall switches lost: pointer + random (J++'s share)",0.3295454545454546,0.2222222222222222,0.4555555555555556,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, lookup switches lost: without the pointer",0.20158102766798425,0.1561151898734176,0.24513805030040112,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, recall switches lost: without the pointer",0.09090909090909094,0.011627906976744207,0.1717171717171717,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, lookup switches lost: without the pointer and the J++ part",0.26086956521739135,0.2052238805970149,0.31835244210043556,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, recall switches lost: without the pointer and the J++ part",0.5909090909090909,0.48051948051948046,0.7142857142857143,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, lookup switches lost: without the pointer and a random part (same size)",0.25296442687747034,0.19831132693147088,0.3094362084456424,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, recall switches lost: without the pointer and a random part (same size)",0.3295454545454546,0.2222222222222222,0.4555555555555556,,muse30b_x6_routes
 s10,muse-glimmer-30b,batch 36's bar (pointer + random + 0.15),0.403,,,,muse30b_x6_routes
 s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer",0.27755102040816326,0.22760833707001457,0.32510288065843607,,muse30b_x6_routes_d1_r2
 s10,muse-glimmer-30b,share of the change: the pointer,0.1073,,,,muse30b_x6_routes_d1_r2
-s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer + J++",0.308300395256917,0.24894514767932507,0.36576333671685557,,muse30b_x6_routes
-s10,muse-glimmer-30b,share of the change: the pointer + J++,0.2503,,,,muse30b_x6_routes
-s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer + J++
-+ identity outside J++",0.29387755102040825,0.2416666666666668,0.3429774687820474,,muse30b_x6_routes_d1_r2
-s10,muse-glimmer-30b,"share of the change: the pointer + J++
-+ identity outside J++",0.3802,,,,muse30b_x6_routes_d1_r2
+s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer and the J++ part",0.308300395256917,0.24894514767932507,0.36576333671685557,,muse30b_x6_routes
+s10,muse-glimmer-30b,share of the change: the pointer and the J++ part,0.2503,,,,muse30b_x6_routes
+s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer, the J++ part and identity outside J++",0.29387755102040825,0.2416666666666668,0.3429774687820474,,muse30b_x6_routes_d1_r2
+s10,muse-glimmer-30b,"share of the change: the pointer, the J++ part and identity outside J++",0.3802,,,,muse30b_x6_routes_d1_r2
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -5628,6 +5626,48 @@ numbers,,share_median_jpp_122b,25%,,,,results/x0_composition/prob-shares-2026102
 numbers,,share_mean_jpp_122b,26%,,,,results/x0_composition/prob-shares-20261026T173408Z/prob_shares.json
 numbers,,share_median_jpp_muse,14%,,,,results/x0_composition/prob-shares-20261026T173408Z/prob_shares.json
 numbers,,share_mean_jpp_muse,16%,,,,results/x0_composition/prob-shares-20261026T173408Z/prob_shares.json
+numbers,,x45c_random_12_1_9b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_12_4_9b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_1_9b,0.06,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_n_12_9b,108,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_2_9b,0.70,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_3_9b,0.69,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_4_9b,0.66,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_21_1_9b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_21_4_9b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_1_9b,0.07,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_n_21_9b,99,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_2_9b,0.78,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_3_9b,0.91,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_4_9b,0.92,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_12_1_27b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_12_4_27b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_1_27b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_n_12_27b,111,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_2_27b,0.03,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_3_27b,0.22,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_4_27b,0.41,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_21_1_27b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_21_4_27b,0.01,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_1_27b,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_n_21_27b,100,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_2_27b,0.06,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_3_27b,0.55,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_4_27b,0.73,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_12_1_muse,0.00,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_12_4_muse,0.04,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_1_muse,0.09,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_n_12_muse,101,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_2_muse,0.39,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_3_muse,0.52,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_12_4_muse,0.50,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_21_1_muse,0.01,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_random_21_4_muse,0.14,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_1_muse,0.13,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_n_21_muse,100,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_2_muse,0.55,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_3_muse,0.80,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45c_write_21_4_muse,0.80,,,,results/x8_write/score45c-20261026T211201Z/score.json
 numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_natural_9b,not tested (gate),,,,results/t_pointer/verdict-20261026T140221Z/verdict.json

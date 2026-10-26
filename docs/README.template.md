@@ -37,12 +37,12 @@ Does removing the part of the bridge the lens can read cost the recall more than
 - **It is not a margin effect:** scored on the logit difference instead of switches, the gap is about the same ({{pt|ld_gap_122b}} to {{pt|ld_gap_muse}}).
 - **It holds in every setting, weaker outside simple scenes**; in natural passages Muse's lookup switches too rarely to measure.
 
-![In every setting, recall needs J++ more than the lookup does](figures/story/fig01b_settings.png)
+![In every setting, recall needs the J++ part more than the lookup does](figures/story/fig01b_settings.png)
 *Fig. 1b.*
 
 - **It is specific to the lens's part:** other parts of the same size cost the recall much less. The 122B is the exception: its main directions come close ({{num|pcaeq_pca_eq_rc_excess_122b}} vs {{num|pcaeq_jpp_rc_excess_122b}}).
 
-![No other part of the same size costs the recall as much as J++](figures/story/fig02_specificity.png)
+![No other part of the same size costs the recall as much as the J++ part](figures/story/fig02_specificity.png)
 *Fig. 2.*
 
 - **One model misses the strict rule:** on the 27B the lookup loses {{num|lk_excess_27b}} (bar 0.10) and needs J++ once 100 directions are removed ({{num|lk_excess_k100_27b}}).
@@ -77,15 +77,15 @@ Which route does the lookup take: the item's identity, its position, or the numb
 ![The lookup follows identity or position, never the value](figures/story/fig05_routes.png)
 *Fig. 5.*
 
-| Another item moved, the whole change | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
+| Another item moved, whole change | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Identity / position | {{num|rt_C2_whole_identity_9b}} / {{num|rt_C2_whole_position_9b}} | {{num|rt_C2_whole_identity_27b}} / {{num|rt_C2_whole_position_27b}} | {{num|rtg_C2_whole_identity_122b}} / {{num|rtg_C2_whole_position_122b}} | {{num|rt_C2_whole_identity_muse}} / {{num|rt_C2_whole_position_muse}} |
 
-*°: after the data, the gate lowered to 0.75.*
+*° gate lowered to 0.75 after the data.*
 
 - **Position appears with depth (candidate):** at an early layer the change moves the lookup by identity only, and on the Qwens that identity sits inside J++; position answers appear a few layers later. On the 27B the lookup stops needing J++ at layer 24, four layers before position appears.
 
-![Position answers appear with depth, once the lookup stops needing J++](figures/story/fig06_depth.png)
+![Position answers appear with depth, once the lookup stops needing the J++ part](figures/story/fig06_depth.png)
 *Fig. 6.*
 
 ## 4. The pointer can be removed and written
@@ -117,19 +117,19 @@ How far does the pointer we found reach?
 
 - **It carries over poorly to other texts:** fit on simple scenes and not refit, the pointer costs the lookup {{num|tptr_varied_range}} in varied scenes and {{num|tptr_natural_range}} in natural passages, while the lookup still does not need J++ there.
 
-![The split carries over to other texts; our pointer does not](figures/story/fig09_transfer.png)
+![The split carries over to other texts; the pointer does not](figures/story/fig09_transfer.png)
 *Fig. 9.*
 
 - **About half of the route is unexplained:** with J++ and the pointer removed together, about half of the lookups still switch. Removing identity outside J++ as well removes most of what is left on the 9B and 27B, far more than a random part of the same share; on Muse half still switch (table). These parts are {{num|rtd_share_C0_jpp+alf+idout_27b}}-{{num|rtd_share_C0_jpp+alf+idout_9b}} of the change, so a random part also removes most on the 9B.
 
-![J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's](figures/story/fig10_what_is_left.png)
+![J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's](figures/story/fig10_what_is_left.png)
 *Fig. 10.*
 
-| Sanity swap, J++ + pointer + identity outside J++ removed | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
+| Sanity swap, without the J++ part + pointer + identity outside J++ | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
-| Lookups still switching: the part removed / a random part of its share | {{pt|rtd_left_C0_jpp+alf+idout_lk_9b}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_9b}} | {{pt|rtd_left_C0_jpp+alf+idout_lk_27b}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_27b}} | not in this test | {{pt|rtd_left_C0_jpp+alf+idout_lk_muse}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_muse}} |
+| Lookups still switching: without the part / without a random part (same size) | {{pt|rtd_left_C0_jpp+alf+idout_lk_9b}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_9b}} | {{pt|rtd_left_C0_jpp+alf+idout_lk_27b}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_27b}} | not run | {{pt|rtd_left_C0_jpp+alf+idout_lk_muse}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_muse}} |
 | The part's share of the change | {{num|rtd_share_C0_jpp+alf+idout_9b}} | {{num|rtd_share_C0_jpp+alf+idout_27b}} | – | {{num|rtd_share_C0_jpp+alf+idout_muse}} |
-| Recall's extra loss without identity alone | {{num|rtd_ex_C0_id_rc_9b}} | {{num|rtd_ex_C0_id_rc_27b}} | – | {{num|rtd_ex_C0_id_rc_muse}} |
+| Recall's extra loss without identity (nothing else removed) | {{num|rtd_ex_C0_id_rc_9b}} | {{num|rtd_ex_C0_id_rc_27b}} | – | {{num|rtd_ex_C0_id_rc_muse}} |
 
 ## 6. What did not hold
 

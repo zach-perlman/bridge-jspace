@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-26T17:08:16.153959</dc:date>
+    <dc:date>2026-10-26T23:07:57.329454</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -35,7 +35,7 @@ L 265.35168 97.641818
 L 265.35168 61.010182 
 L 82.368 61.010182 
 z
-" clip-path="url(#p9194a04512)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
+" clip-path="url(#pceac54e145)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 274.85568 97.641818 
@@ -43,7 +43,7 @@ L 457.83936 97.641818
 L 457.83936 61.010182 
 L 274.85568 61.010182 
 z
-" clip-path="url(#p9194a04512)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
+" clip-path="url(#pceac54e145)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 467.34336 97.641818 
@@ -51,7 +51,7 @@ L 607.74912 97.641818
 L 607.74912 61.010182 
 L 467.34336 61.010182 
 z
-" clip-path="url(#p9194a04512)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
+" clip-path="url(#pceac54e145)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 82.368 170.905091 
@@ -59,7 +59,7 @@ L 265.35168 170.905091
 L 265.35168 134.273455 
 L 82.368 134.273455 
 z
-" clip-path="url(#p9194a04512)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
+" clip-path="url(#pceac54e145)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 274.85568 170.905091 
@@ -67,7 +67,7 @@ L 457.83936 170.905091
 L 457.83936 134.273455 
 L 274.85568 134.273455 
 z
-" clip-path="url(#p9194a04512)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
+" clip-path="url(#pceac54e145)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 467.34336 170.905091 
@@ -75,10 +75,11 @@ L 607.74912 170.905091
 L 607.74912 134.273455 
 L 467.34336 134.273455 
 z
-" clip-path="url(#p9194a04512)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
+" clip-path="url(#pceac54e145)" style="fill: #f5f5f5; stroke: #bbbbbb; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start" x="6.336" y="82.707161" transform="rotate(-0 6.336 82.707161)">Original</text>
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'" transform="translate(6.336 75.582777)">original</text>
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'" transform="translate(6.336 88.784926)">prompt</text>
    </g>
    <g id="text_2">
     <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start" x="88.704" y="82.183852" transform="rotate(-0 88.704 82.183852)">The locker of the frog is 5.</text>
@@ -109,7 +110,8 @@ z
     <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start" x="595.33056" y="82.183422" transform="rotate(-0 595.33056 82.183422)">.</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start" x="6.336" y="155.970433" transform="rotate(-0 6.336 155.970433)">Changed</text>
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'" transform="translate(6.336 148.84605)">changed</text>
+    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'" transform="translate(6.336 162.048199)">prompt</text>
    </g>
    <g id="text_8">
     <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start" x="88.704" y="155.447124" transform="rotate(-0 88.704 155.447124)">The locker of the frog is 5.</text>
@@ -150,7 +152,7 @@ L 585.36544 107.92302
    </g>
    <g id="text_13">
     <text style="font-size: 11px; font-family: 'DejaVu Sans'; fill: #b23b3b" transform="translate(400.015096 111.690675)">difference at the bridge word,</text>
-    <text style="font-size: 11px; font-family: 'DejaVu Sans'; fill: #b23b3b" transform="translate(438.972284 124.893683)">added into the original</text>
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; fill: #b23b3b" transform="translate(395.47244 124.893683)">added into the original prompt</text>
    </g>
    <g id="text_14">
     <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6a4bd6" x="6.336" y="220.860761" transform="rotate(-0 6.336 220.860761)">Lookup:</text>
@@ -179,7 +181,7 @@ L 585.36544 107.92302
   </g>
  </g>
  <defs>
-  <clipPath id="p9194a04512">
+  <clipPath id="pceac54e145">
    <rect x="0" y="50.544" width="633.6" height="230.256"/>
   </clipPath>
  </defs>

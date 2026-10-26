@@ -144,7 +144,7 @@ def test_readme_body_has_no_internal_codes():
 
 # Tuesday's merge: check README.md. Set True once the v5 figures and captions are in README.md; until then the
 # canonical lines of docs/drafts/readme_v5_captions.md are checked instead.
-CHECK_README = False
+CHECK_README = True
 CAPTIONS_DRAFT = B.REPO / "docs" / "drafts" / "readme_v5_captions.md"
 
 # docs/glossary.md's banned variants, one regex each. Case-sensitive unless marked (?i:...); \b = whole words only.

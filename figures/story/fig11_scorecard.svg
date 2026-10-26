@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-26T17:33:41.553099</dc:date>
+    <dc:date>2026-10-26T23:08:04.596064</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -43,7 +43,7 @@ L 627.264 134.692581
 L 627.264 102.12229 
 L 228.096 102.12229 
 z
-" clip-path="url(#p5b14043358)" style="fill: #f6f6f6"/>
+" clip-path="url(#pbee0bc505c)" style="fill: #f6f6f6"/>
    </g>
    <g id="patch_4">
     <path d="M 228.096 199.833162 
@@ -51,7 +51,7 @@ L 627.264 199.833162
 L 627.264 167.262871 
 L 228.096 167.262871 
 z
-" clip-path="url(#p5b14043358)" style="fill: #f6f6f6"/>
+" clip-path="url(#pbee0bc505c)" style="fill: #f6f6f6"/>
    </g>
    <g id="patch_5">
     <path d="M 228.096 264.973743 
@@ -59,7 +59,7 @@ L 627.264 264.973743
 L 627.264 232.403452 
 L 228.096 232.403452 
 z
-" clip-path="url(#p5b14043358)" style="fill: #f6f6f6"/>
+" clip-path="url(#pbee0bc505c)" style="fill: #f6f6f6"/>
    </g>
    <g id="patch_6">
     <path d="M 228.096 330.114324 
@@ -67,7 +67,7 @@ L 627.264 330.114324
 L 627.264 297.544033 
 L 228.096 297.544033 
 z
-" clip-path="url(#p5b14043358)" style="fill: #f6f6f6"/>
+" clip-path="url(#pbee0bc505c)" style="fill: #f6f6f6"/>
    </g>
    <g id="patch_7">
     <path d="M 228.096 395.254905 
@@ -75,7 +75,7 @@ L 627.264 395.254905
 L 627.264 362.684614 
 L 228.096 362.684614 
 z
-" clip-path="url(#p5b14043358)" style="fill: #f6f6f6"/>
+" clip-path="url(#pbee0bc505c)" style="fill: #f6f6f6"/>
    </g>
    <g id="patch_8">
     <path d="M 228.096 460.395485 
@@ -83,7 +83,7 @@ L 627.264 460.395485
 L 627.264 427.825195 
 L 228.096 427.825195 
 z
-" clip-path="url(#p5b14043358)" style="fill: #f6f6f6"/>
+" clip-path="url(#pbee0bc505c)" style="fill: #f6f6f6"/>
    </g>
    <g id="matplotlib.axis_1"/>
    <g id="matplotlib.axis_2">
@@ -126,7 +126,8 @@ z
     <g id="ytick_7">
      <g id="line2d_7"/>
      <g id="text_7">
-      <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end" x="224.596" y="318.008319" transform="rotate(-0 224.596 318.008319)">The pointer alone gives position</text>
+      <text style="font-size: 11px; font-family: 'DejaVu Sans'" transform="translate(102.466781 311.957352)">Only the pointer gives</text>
+      <text style="font-size: 11px; font-family: 'DejaVu Sans'" transform="translate(132.070531 325.16036)">position answers</text>
      </g>
     </g>
     <g id="ytick_8">
@@ -356,14 +357,14 @@ z
    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start" x="6.336" y="13.121812" transform="rotate(-0 6.336 13.121812)">What held where</text>
   </g>
   <g id="text_78">
-   <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #666666" x="6.336" y="38.598281" transform="rotate(-0 6.336 38.598281)">✓ held   ~ partial   ✗ no   – not tested;   a: after the data</text>
+   <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #666666" x="6.336" y="38.598281" transform="rotate(-0 6.336 38.598281)">✓ held   ~ partial   ✗ no   – too few switches*;   a: after the data</text>
   </g>
   <g id="text_79">
-   <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #666666" x="6.336" y="489.348" transform="rotate(-0 6.336 489.348)">*Muse, natural passages: not measurable; the lookup switches in 10 of 60.</text>
+   <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #666666" x="6.336" y="489.348" transform="rotate(-0 6.336 489.348)">*Muse, natural passages: the lookup has too few switches (10 of 60).</text>
   </g>
  </g>
  <defs>
-  <clipPath id="p5b14043358">
+  <clipPath id="pbee0bc505c">
    <rect x="228.096" y="69.552" width="399.168" height="392.472"/>
   </clipPath>
  </defs>
