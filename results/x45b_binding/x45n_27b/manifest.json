@@ -1,0 +1,36 @@
+{
+  "exp": "x45b_binding",
+  "run": "x45n_27b",
+  "why": "batch 45, test 45n (jobs/c3/batch45.yaml; Q45.11): 45b's locker-sentence copy at L without each token's J++ part vs without a random part",
+  "written_utc": "2026-10-26T22:39:24Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "7ed03aaab90a921c94f4fcc10d3846f3528106a8",
+    "dirty": true
+  },
+  "main_run": "x0_necessity_27b_chat",
+  "layer": 32,
+  "test": "45n",
+  "arms": {
+    "c": "S patched into O at every locker-sentence token, at L (45b's c)",
+    "c_nojpp": "the same copy without each token's J++ part (signed OMP, k = 25)",
+    "c_norand": "the same copy without a random part of each token's J++ share",
+    "none": "O unedited",
+    "S": "S read on S (unedited)"
+  },
+  "k": 25,
+  "omp": "signed",
+  "random_part": "X0's random subspace, seed 888 + layer, at each token's J++ share",
+  "items_rule": "as the 45b run (x45b_binding.select); the verdict keeps the items passing same_after_bridge",
+  "spec": "jobs/c3/batch45.yaml (45n)",
+  "seeds": {
+    "bootstrap": 0
+  }
+}
