@@ -194,6 +194,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     x8_order_numbers(num)
     tier0_numbers(num)
     x45c_numbers(num)
+    batch45_numbers(num)
     t_pointer_numbers(num)
     first_sentence_numbers(num)
     ld_numbers(num)
@@ -621,6 +622,73 @@ def x8_order_numbers(num: Numbers) -> None:
 
 
 SBO_DESIGNS = {"swap": "two people swap", "one": "only the asked pick", "fresh": "fresh scenes"}
+
+
+X45B_SWEEP = {"9b": "qwen35_9b_x45b_sweep_v2", "27b": "x45b_sweep_v2_27b"}
+X45B_RUNS = {"9b": "qwen35_9b_x45b_binding", "27b": "x45b_binding_27b", "muse": "muse30b_x45b_binding"}
+
+
+def batch45_numbers(num: Numbers) -> None:
+    """Batch 45's numbers for the README v5 draft (Dan 27 Oct ~00:20; all UNVERIFIED):
+    45m, the clean one-pick design: x45m_<before|after|all>_<lk|rc|gap|n>_<m> (results/x0_necessity/x45m-*);
+    the 45b sweep on the items identical after the bridge word: x45bsw_<bw|ls|li|lv|lf>_L<layer>_<m> (the lookup's
+    switch rate) and x45bsw_pass_<m>; 45b's rule on those items: x45b_sane_<pass|c|a>_<m>;
+    45e: x45e_left_<idout|wrong>_<m> (the sanity swap's lookups still switching), x45e_cut_<m> (identity answers cut
+    beyond the wrong pair, CI)."""
+    root = pins.RESULTS_DIR
+    found = sorted((root / "x0_necessity").glob("x45m-*/x45m.json"))
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        for mod in json.loads(found[-1].read_text())["models"]:
+            m = next((k for k, (t, *_) in MODELS.items() if t == mod["target"]), None)
+            for grp, c in (mod.get("cells") or {}).items():
+                g = grp.split("-")[-1]  # locker-before -> before
+                num.add(f"x45m_{g}_n_{m}", str(c["n"]), src)
+                for k, cell in (("lk", c.get("lookup")), ("rc", c.get("recall"))):
+                    if cell and cell.get("valid"):
+                        num.add(f"x45m_{g}_{k}_{m}", ci(cell["excess"]), src)
+                if c.get("gap") and c.get("lookup", {}).get("valid"):
+                    num.add(f"x45m_{g}_gap_{m}", ci(c["gap"]), src)
+    for m, run in X45B_SWEEP.items():
+        found = [p for p in sorted((root / "x45b_binding" / run).glob("sweep-*/sweep.json"))
+                 if "sanity" in json.loads(p.read_text())]  # fmt: skip
+        if found:
+            src = str(found[-1].relative_to(pins.REPO_ROOT))
+            blob = json.loads(found[-1].read_text())
+            num.add(f"x45bsw_pass_{m}", f"{blob['sanity']['pass']} of {blob['sanity']['items']}", src)
+            for cell in blob["cells"][X.LOOKUP]:
+                for arm in ("bw", "ls", "li", "lv", "lf"):
+                    if arm in cell:
+                        num.add(f"x45bsw_{arm}_L{cell['layer']}_{m}", f2(cell[arm][0]), src)
+    for m, run in X45B_RUNS.items():
+        found = [p for p in sorted((root / "x45b_binding" / run).glob("verdict-*/verdict.json"))
+                 if json.loads(p.read_text()).get("sanity_lookup")]  # fmt: skip
+        if found:
+            src = str(found[-1].relative_to(pins.REPO_ROOT))
+            blob = json.loads(found[-1].read_text())
+            lk = blob["sanity_lookup"]
+            num.add(f"x45b_sane_pass_{m}", f"{blob['sanity']['pass']} of {blob['sanity']['items']}", src)
+            num.add(f"x45b_sane_c_{m}", ci(lk["of_S"]["c"]), src)
+            num.add(f"x45b_sane_a_{m}", ci(lk["rate"]["a"]), src)
+    found = sorted((root / "x6_routes").glob("x45a-descriptive-*/table.json"))  # 45a, after the data
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        for b in json.loads(found[-1].read_text()).values():
+            m = next((k for k, (t, *_) in MODELS.items() if t == b["model"]), None)
+            for v in b["routes"]["variants"]:
+                num.add(f"x45a_id_{v}_{m}", f2(b["routes"]["share"][f"whole|{v}"]["identity"]), src)
+            for v, bt in b["beta"].items():
+                num.add(f"x45a_beta_{v}_{m}", f2(bt["beta"][0]), src)
+    found = sorted((root / "x6_routes").glob("x45e-*/x45e.json"))
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        for run, f in json.loads(found[-1].read_text())["flags"].items():
+            m = "9b" if run.startswith("qwen35_9b") else "muse" if run.startswith("muse") else "27b"
+            if f.get("c0"):
+                num.add(f"x45e_left_idout_{m}", f2(f["c0"]["left"]["no_jppalfidout"][0]), src)
+                num.add(f"x45e_left_wrong_{m}", f2(f["c0"]["left"]["no_jppalfwrong"][0]), src)
+            if f.get("c2"):
+                num.add(f"x45e_cut_{m}", ci(f["c2"]["idout_vs_wrong"]), src)
 
 
 X45C_WRITES = {"9b": "qwen35_9b_x8_write12", "27b": "x8_write12_27b", "muse": "muse30b_x8_write12"}
