@@ -187,6 +187,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     natsplit_numbers(num)
     x4_numbers(num)
     predictions_numbers(num)
+    x8_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -488,7 +489,9 @@ def routes_numbers(num: Numbers) -> None:
                 num.add(f"{prefix}_ex_{e['condition']}_{part}_{w}_{m}", ci(e["excess"]), src)
                 if prefix == "rtd":  # D1: the switches left without the part and without its random part; its share
                     for k, lost in (("left", e["Jdep"]), ("randleft", e["Rdep"])):
-                        num.add(f"rtd_{k}_{e['condition']}_{part}_{w}_{m}", ci([1 - lost[0], 1 - lost[2], 1 - lost[1]]), src)
+                        num.add(
+                            f"rtd_{k}_{e['condition']}_{part}_{w}_{m}", ci([1 - lost[0], 1 - lost[2], 1 - lost[1]]), src
+                        )
                     if w == "lk":
                         num.add(f"rtd_share_{e['condition']}_{part}_{m}", pct(e["share"]), src)
             slug = {"alf": "alf", "alf + J++": "alf_jpp", "alf + random (J++ share)": "alf_rand",
@@ -542,6 +545,23 @@ def dup_nearest_numbers(num: Numbers) -> None:
                 num.add(f"dupnn_{sp}_{key}_alt_{m}", ci(r[f"{key}: alt's locker sentence"]["share"]), src)
                 num.add(f"dupnn_{sp}_{key}_other_{m}", ci(r[f"{key}: other pick sentence"]["share"]), src)
                 num.add(f"dupnn_{sp}_{key}_n_{m}", str(r[f"{key}: other pick sentence"]["n"]), src)
+
+
+X8 = {"9b": "qwen35_9b_x8_write", "27b": "x8_write_27b", "122b": "qwen35_122b_x8_write_g75", "muse": "muse30b_x8_write"}
+
+
+def x8_numbers(num: Numbers) -> None:
+    """Batch 44 (x8_write recall stage, after the data): the dose s* at which a write reaches the median norm of a real
+    pointer change (min / max over the slot pairs), and the writes whose target item has the original's legs."""
+    for m, run in X8.items():
+        found = sorted((pins.RESULTS_DIR / "x8_write" / run).glob("recall-*/recall.json"))
+        if not found:  # not landed
+            continue
+        b = json.loads(found[-1].read_text())
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        num.add(f"x8_sreal_min_{m}", f2(min(b["s_real"].values())), src)
+        num.add(f"x8_sreal_max_{m}", f2(max(b["s_real"].values())), src)
+        num.add(f"x8_same_legs_{m}", f"{b['same_legs'][0]} of {b['same_legs'][1]}", src)
 
 
 def predictions_numbers(num: Numbers) -> None:

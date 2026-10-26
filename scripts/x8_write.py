@@ -22,6 +22,7 @@ uv run python scripts/x8_write.py order --name x8_order_27b
 from __future__ import annotations
 
 import argparse
+import collections
 import json
 import re
 import sys
@@ -370,7 +371,8 @@ def geometry(n_boot: int = 0) -> Path:
     out = RESULTS / f"geometry-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     blob, lines = {}, ["# Pointer geometry: the 5 class means behind the pointer directions (descriptive)", "",
-                       "| model | states | PC1 share | Spearman(PC1, slot) | midpoint deviation |", "|---|---|---|---|---|"]  # fmt: skip
+                       "| model | states | PC1 share | Spearman(PC1, slot) | midpoint deviation | ‖μ0 − μ1‖ | ‖μ0 − μ2‖ | ‖μ1 − μ2‖ |",
+                       "|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for target, run in R.STATES.items():
         mu = MM.pointer_means(run)
         ks = sorted(mu)
@@ -380,18 +382,93 @@ def geometry(n_boot: int = 0) -> Path:
         share = float(s[0] ** 2 / (s**2).sum())
         rho = float(np.corrcoef(np.argsort(np.argsort(u[:, 0])), ks)[0, 1])  # Spearman: Pearson on the ranks (no ties)
         mid = float(np.linalg.norm(mu[1] - (mu[0] + mu[2]) / 2) / np.linalg.norm(mu[2] - mu[0]))
+        dist = {f"{a}-{b}": float(np.linalg.norm(mu[a] - mu[b])) for a, b in ((0, 1), (0, 2), (1, 2))}
         blob[target] = {"states": run, "pc1_share": share, "spearman_pc1_slot": rho, "midpoint_deviation": mid,
-                        "variance_shares": (s**2 / (s**2).sum()).tolist()}  # fmt: skip
-        lines.append(f"| {target} | {run} | {share:.2f} | {rho:.2f} | {mid:.2f} |")
+                        "distances": dist, "variance_shares": (s**2 / (s**2).sum()).tolist()}  # fmt: skip
+        lines.append(f"| {target} | {run} | {share:.2f} | {rho:.2f} | {mid:.2f} | "
+                     + " | ".join(f"{d:.2f}" for d in dist.values()) + " |")  # fmt: skip
     (out / "geometry.json").write_text(json.dumps(blob, indent=1) + "\n")
     (out / "geometry.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     return out
 
 
+ROUTES_OF = {"qwen3.5-9b": "qwen35_9b_x6_routes", "qwen3.6-27b": "x6_routes_27b",
+             "qwen3.5-122b-a10b": "qwen35_122b_x6_routes_g75", "muse-glimmer-30b": "muse30b_x6_routes"}  # fmt: skip
+RECALL_CLASSES = ("target", "third", "original", "other")
+
+
+def recall_item(digit: str, slots: list[tuple[str, int]], legs: dict[str, int], j: int, k: int) -> str:
+    """Whose legs a changed recall gives: the item at the target slot k, the third slot, the original slot j, or none
+    (the first that matches, in that order)."""
+    third = ({0, 1, 2} - {j, k}).pop()
+    return next(
+        (n for n, s in (("target", k), ("third", third), ("original", j)) if digit == str(legs[slots[s][0]])), "other"
+    )
+
+
+def stage_recall(name: str) -> Path:
+    """After the data, descriptive (Dan 26 Oct ~14:50; CPU): the recall's changed answers by item: the legs of the item at
+    the target slot, the third slot, the original slot, or other; the writes where the target item's legs equal the
+    original's (there a followed pointer cannot show as a change); and per pair the dose s* = median ||U U^T Delta|| /
+    ||mu_k - mu_j|| at which a write first reaches the norm of a real pointer change. x8 stores no prompts: the scenes
+    are the C2 cases of the model's routes run (same generator, seed and gate), checked per scene by entity and slot."""
+    from bridge_jspace.review import checks as RC
+    from scripts import tasks_v2 as T
+
+    src = RESULTS / name
+    m = json.loads((src / "manifest.json").read_text())
+    target = m["model"]["target"]
+    rows = X.read_jsonl(src / "outcomes.jsonl")
+    cases = {
+        c["scene"]: c for c in X.read_jsonl(R.RESULTS / ROUTES_OF[target] / "cases.jsonl") if c["condition"] == "C2"
+    }
+    legs = T.DOMAINS["animals"].values
+    bad = sum(1 for r in rows if r["kind"] == "none" and r["reader"] == X.LOOKUP and (
+        r["scene"] not in cases or cases[r["scene"]]["bridge"] != r["entity"]
+        or [x for x, _ in slots_of(cases[r["scene"]]["context"])].index(r["entity"]) != r["j"]))  # fmt: skip
+    assert bad == 0, f"{bad} scenes do not match the routes run's C2 cases"
+    tally: dict = collections.defaultdict(collections.Counter)
+    same, pairs = 0, set()
+    for r in rows:
+        if r["reader"] != X.RECALL or r["kind"] not in ("write", "random"):
+            continue
+        slots = slots_of(cases[r["scene"]]["context"])
+        if (r["scene"], r["k"]) not in pairs:
+            pairs.add((r["scene"], r["k"]))
+            same += legs[slots[r["k"]][0]] == legs[slots[r["j"]][0]]
+        if r["changed"]:
+            d = RC.piece(target, r["top"]).strip()
+            tally[(r["kind"], r["s"])][recall_item(d, slots, legs, r["j"], r["k"])] += 1
+    norms = m["norms"]
+    s_real = {pair: norms["median_U_UT_delta_C2"] / step for pair, step in norms["step"].items()}
+    out = src / f"recall-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    lines = [f"# The recall under the writes, by item: {name}", "",
+             "After the data, descriptive (Dan 26 Oct ~14:50). Changed recalls (top token not O's answer) by whose legs they "
+             "give: the item at the target slot, the third slot, the original slot (first match in that order), other. "
+             f"Scenes: the C2 cases of {ROUTES_OF[target]} (entity and slot checked on every scene). UNVERIFIED.", "",
+             "| arm | s | changed recalls | target item | third item | original item | other |", "|---|---|---|---|---|---|---|"]  # fmt: skip
+    for (kind, s), c in sorted(tally.items()):
+        lines.append(f"| {kind} | {s:g} | {sum(c.values())} | " + " | ".join(str(c[x]) for x in RECALL_CLASSES) + " |")
+    lines += ["", f"Writes whose target item has as many legs as the original: {same} of {len(pairs)} (a followed pointer "
+              "cannot show as a changed recall there).", "",
+              f"Dose at the norm of a real pointer change (median ||U U^T Delta|| = {norms['median_U_UT_delta_C2']}): s* = "
+              + ", ".join(f"{p} {v:.2f}" for p, v in s_real.items())
+              + f". The primary dose s = 1 was below it on {'every' if min(s_real.values()) > 1 else 'not every'} pair: a "
+              "design error in batch 44, not a finding."]  # fmt: skip
+    blob = {"run": name, "after_the_data": True, "cases_from": ROUTES_OF[target],
+            "changed_by_item": {f"{k}|{s:g}": dict(c) for (k, s), c in sorted(tally.items())},
+            "same_legs": [same, len(pairs)], "s_real": s_real, "median_real": norms["median_U_UT_delta_C2"]}  # fmt: skip
+    (out / "recall.json").write_text(json.dumps(blob, indent=1) + "\n")
+    (out / "recall.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["run", "verdict", "order", "order-verdict", "geometry"])
+    ap.add_argument("stage", choices=["run", "verdict", "order", "order-verdict", "geometry", "recall"])
     ap.add_argument("--name")
     ap.add_argument("--s", nargs="+", type=float, default=[1, 2, 4])
     ap.add_argument("--rand-s", nargs="+", type=float, default=[1, 4])
@@ -409,6 +486,8 @@ def main() -> None:
         stage_order_verdict(a.name, a.n_boot)
     elif a.stage == "order-verdict":
         stage_order_verdict(a.name, a.n_boot)
+    elif a.stage == "recall":
+        stage_recall(a.name)
     else:
         geometry()
 

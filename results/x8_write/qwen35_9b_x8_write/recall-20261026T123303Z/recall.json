@@ -1,0 +1,43 @@
+{
+ "run": "qwen35_9b_x8_write",
+ "after_the_data": true,
+ "cases_from": "qwen35_9b_x6_routes",
+ "changed_by_item": {
+  "random|1": {
+   "other": 2,
+   "third": 1
+  },
+  "random|4": {
+   "third": 8,
+   "other": 5,
+   "target": 5
+  },
+  "write|1": {
+   "target": 21,
+   "third": 3
+  },
+  "write|2": {
+   "target": 109,
+   "third": 12,
+   "other": 8
+  },
+  "write|4": {
+   "third": 38,
+   "target": 205,
+   "other": 13
+  }
+ },
+ "same_legs": [
+  93,
+  600
+ ],
+ "s_real": {
+  "0-1": 1.6002000097565734,
+  "0-2": 1.3614667856475815,
+  "1-0": 1.6002000097565734,
+  "1-2": 2.6997942386831273,
+  "2-0": 1.3614667856475815,
+  "2-1": 2.6997942386831273
+ },
+ "median_real": 6.5605
+}

@@ -122,9 +122,12 @@ def expected_html(it: dict) -> str:
         digits = [d for _, d in C.LOCKER.findall(c["context"])]
         j, k = it["x8"]["j"], it["x8"]["k"]
         third = ({0, 1, 2} - {j, k}).pop()
-        return (f"Locker sentences in order: {E(', '.join(f'slot {n} → {d}' for n, d in enumerate(digits)))}. The write "
-                f"moves the pointer from slot {j} (the bridge's) to slot {k}: target {E(digits[k])}, original {E(digits[j])}, "
-                f"third {E(digits[third])}. Recall's answer: {E(str(rd['PM']['answer']))}.")  # fmt: skip
+        items = [x for x, _ in C.LOCKER.findall(c["context"])]
+        lg = I.legs()
+        return (f"Locker sentences in order: {E(', '.join(f'slot {n}: {x} → locker {d}, {lg[x]} legs' for n, (x, d) in enumerate(zip(items, digits, strict=True))))}. "
+                f"The write moves the pointer from slot {j} (the bridge's) to slot {k}. Lookup: target {E(digits[k])}, "
+                f"original {E(digits[j])}, third {E(digits[third])}. Recall: target item {lg[items[k]]} legs, original "
+                f"{lg[items[j]]} ({E(str(rd['PM']['answer']))} is O's answer), third {lg[items[third]]}.")  # fmt: skip
     return " ".join(f"{I.READER_NAME[w].capitalize()}: original answer {E(str(rd[w]['answer']))}, changed answer "
                     f"{E(str(rd[w]['cf_answer']))}." for w in I.READERS)  # fmt: skip
 
@@ -175,6 +178,16 @@ def answer_of(it: dict, w: str, r: dict) -> tuple[str, str]:
     if it["kind"] == "x8" and w == "PP":
         cls = r["class"]
         return d, f"slot {cls[4:]}'s digit" if cls.startswith("slot") else cls
+    if it["kind"] == "x8":  # the recall: whose legs (target, third, original slot's item; first match), as stage_recall
+        if d == str(rd["answer"]):
+            return d, f"original answer ({c['bridge']}'s legs)"
+        items, x8 = [x for x, _ in C.LOCKER.findall(c["context"])], it["x8"]
+        third = ({0, 1, 2} - {x8["j"], x8["k"]}).pop()
+        lg = I.legs()
+        for name, s in (("target", x8["k"]), ("third", third), ("original", x8["j"])):
+            if d == str(lg[items[s]]):
+                return d, f"{name} slot's item ({items[s]}'s legs)"
+        return d, "another answer"
     who = (f"changed answer ({c['cf_bridge']}'s)" if d == str(rd["cf_answer"]) else
            f"original answer ({c['bridge']}'s)" if d == str(rd["answer"]) else "another answer")  # fmt: skip
     return d, who

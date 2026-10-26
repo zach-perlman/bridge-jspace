@@ -50,6 +50,17 @@ def read_json(path: str) -> dict:
     return json.loads(p.read_text()) if p.exists() else {}
 
 
+@lru_cache(maxsize=1)
+def legs() -> dict[str, int]:
+    """The animals' legs, the recall's answers in the routes and x8 scenes (scripts/tasks_v2.py)."""
+    import sys
+
+    sys.path.insert(0, str(REPO))
+    from scripts import tasks_v2 as T
+
+    return dict(T.DOMAINS["animals"].values)
+
+
 def layer_of(v: dict, model: str, run: str) -> int:
     if v["filters"].get("layer") == "run":
         return int(read_json(f"{run}/manifest.json")["layer"])

@@ -17823,6 +17823,18 @@
   "text": "0.33",
   "source": "predictions/README.md"
  },
+ "x8_sreal_min_9b": {
+  "text": "1.36",
+  "source": "results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json"
+ },
+ "x8_sreal_max_9b": {
+  "text": "2.70",
+  "source": "results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json"
+ },
+ "x8_same_legs_9b": {
+  "text": "93 of 600",
+  "source": "results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json"
+ },
  "share_rho_27b": {
   "text": "0.79",
   "source": "results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json"

@@ -4981,6 +4981,9 @@ numbers,,x4_C_elements_same_muse,"0.57 [0.38, 0.72]",,,,results/x4_alias/muse30b
 numbers,,x4_C_elements_syn_muse,"0.76 [0.54, 0.96]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,pred_n,97,,,,predictions/README.md
 numbers,,pred_brier,0.33,,,,predictions/README.md
+numbers,,x8_sreal_min_9b,1.36,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
+numbers,,x8_sreal_max_9b,2.70,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
+numbers,,x8_same_legs_9b,93 of 600,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,share_rho_27b,0.79,,,,results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json
 numbers,,ctx_lookup_full,84%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
 numbers,,ctx_lookup_noj,87%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json

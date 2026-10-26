@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 5fa90fac from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at c87f5962 from the run files.
 
 ## Setup
 
@@ -82,7 +82,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - (a) Early, the lookup follows identity only; without J++ the Qwens give the original answer (table). Position appears by layer 12 (9B), 28 (27B), 33 (122B) and 26 (Muse); the rule fixed in advance (9B and 27B; the 122B's layers after the data) holds on the 9B only.
   - (b) Removing both costs the lookup more than the pointer alone, and more than the pointer with a random part of J++'s size, only on the 27B (bars fixed in advance, 0.15; table). J++ and the pointer directions removed together still leave about half of the lookups switching (0.46 [0.41, 0.50] on the 9B, 0.53 [0.48, 0.57] on the 27B): these two parts explain about half of the route around the lens. On the 9B a random part of J++'s size costs the lookup more than J++, so its second route is not in J++; in these scenes (the item already mentioned) the 9B's recall does not need J++ either (0.01 [−0.01, 0.04]), as table 3c predicts. The 27B is the case where the same scenes show the split and its mechanism.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table 3c).
-  - (d) With identity added, 0.07 [0.04, 0.11] (9B), 0.18 [0.13, 0.22] (27B) and 0.52 [0.47, 0.58] (Muse) of the sanity swap's lookups still switch, against 0.38 [0.33, 0.43], 0.67 [0.62, 0.72] and 0.82 [0.76, 0.88] without a random part of the same share (56%, 35%, 38% of the change). The extra loss, 0.31 [0.25, 0.37], 0.49 [0.43, 0.55] and 0.29 [0.24, 0.34], stays below the 0.80 bar fixed in advance; on the Qwens the random part alone put that bar out of reach. The recall needs identity on the 27B and Muse (0.44 [0.34, 0.55], 0.39 [0.28, 0.49]), not on the 9B (0.09 [0.04, 0.15]).
+  - (d) With identity added, 0.07 [0.04, 0.11] (9B), 0.18 [0.13, 0.22] (27B) and 0.52 [0.47, 0.58] (Muse) of the sanity swap's lookups still switch, against 0.38 [0.33, 0.43], 0.67 [0.62, 0.72] and 0.82 [0.76, 0.88] without a random part of the same share: below the 0.80 bar fixed in advance, which the random part alone put out of reach on the Qwens. The recall needs identity on the 27B and Muse (0.44 [0.34, 0.55], 0.39 [0.28, 0.49]), not the 9B (0.09 [0.04, 0.15]).
 
 | Early layer, another item moved, and the sanity swap | Qwen3.5-9B (L6) | Qwen3.6-27B (L16) | Qwen3.5-122B (L27)° | Muse Glimmer 30B (L13) |
 |---|---|---|---|---|
@@ -110,7 +110,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 *J++ extra loss, after the data; °: gate 0.75; italics: under 30 lookup switches (count shown); n in Appendix A.*
 
 - **Caveat.** On the 27B the lookup stops needing J++ at layer 24, four layers before position answers appear (28): there the pointer is not the whole reason. Removing both costs the recall too (0.34 [0.28, 0.40], 0.44 [0.37, 0.52]).
-- **Muse.** At L26 the whole change moves only 35%-43% of lookups and about 58% of recalls; without the pointer directions position falls to 0.27 [0.23, 0.32] (random part 0.55 [0.50, 0.60]), not near zero; at L13 removing J++ restores the original answer in only 0.26 [0.20, 0.31] (Qwens 0.84 [0.78, 0.89] to 0.99 [0.97, 1.00]); L34 not tested (no lookup switched).
+- **Muse.** At L26 the whole change moves only 35%-43% of lookups and about 58% of recalls; without the pointer directions position falls to 0.27 [0.23, 0.32] (random part 0.55 [0.50, 0.60]), not near zero (the early layer: table above); L34 not tested (no lookup switched).
 
 ## 4. What did not hold, and limits
 
@@ -120,6 +120,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - The 27B's strict rule: lookup lost 0.14 [0.08, 0.20] (bar 0.10).
 - The 9B's fixed-in-advance replication: its J++ clause failed (recall 0.12 [0.06, 0.19]).
 - The gap everywhere: the 122B's varied scenes (0.15 [0.12, 0.18], every format alike) and the 27B's natural passages (0.27 [0.13, 0.41]) are in between.
+- Writing the pointer: the dose fixed in advance (s = 1) was below a real pointer change's size on every slot pair (9B: s = 1.36 to 2.70 needed); a design error, not a finding.
 - The locker number at the bridge word: never the answer; digit directions cost 0.00. The positive control (chemical symbols) stayed below its 0.20 bar: 27B 0.15 [0.10, 0.19].
 - Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup 0.78), the 122B's routes (recall 0.797) and replication (recall 0.77); their reruns at 0.75 are after the data, descriptive, none a confirmation. The 122B in FP8.
 - One-token answers (and one-token bridges in natural passages). The reader is confounded with the answer's source (prompt vs memory); Zach's M − K addresses it for the knock-out, not for these swaps.

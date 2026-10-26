@@ -18,6 +18,15 @@ def test_slots_and_classes():
     assert W.classify(30, tokens, j=0, k=None) == "slot1"
 
 
+def test_recall_item_by_legs():
+    slots = [("duck", 4), ("rabbit", 3), ("goose", 2)]
+    legs = {"duck": 2, "rabbit": 4, "goose": 2}
+    assert W.recall_item("4", slots, legs, j=2, k=1) == "target"
+    # the third slot's duck matches before the original goose (both 2 legs)
+    assert W.recall_item("2", slots, legs, j=2, k=1) == "third"
+    assert W.recall_item("6", slots, legs, j=2, k=1) == "other"
+
+
 def test_filler_variants_move_index_or_distance():
     f = "The weather stayed mild and quiet for most of the afternoon."
     b1, b2 = W.with_filler(ORG, f, "before"), W.with_filler(ORG, f, "between")
