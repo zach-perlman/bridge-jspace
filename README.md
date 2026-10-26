@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at d4d12f60 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at a31c2460 from the run files.
 
 ## Setup
 
@@ -107,6 +107,9 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ## 4. What did not hold, and limits
 
+![What held where: ten claims on four models](figures/story/fig7_scorecard.png)
+*Fig. 7. Filled: fixed in advance; open: after the data or a lowered gate. Only the asked pick changing: confirmed on all four (Appendix A).*
+
 - The 27B's strict rule: lookup lost 0.14 [0.08, 0.20] (bar 0.10).
 - The 9B's fixed-in-advance replication: its J++ clause failed (recall 0.12 [0.06, 0.19]).
 - The gap everywhere: the 122B's varied scenes (0.15 [0.12, 0.18], every format alike) and the 27B's natural passages (0.27 [0.13, 0.41]) are in between.
@@ -122,6 +125,11 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **Raw examples.** Ten natural passages ([docs/natural_examples.md](docs/natural_examples.md)) and routes cases (the pack).
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.32 over 93 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.
+
+## 6. Next
+
+- **Running now.** The item's identity as one direction, removed with the pointer and J++, to account for the rest of the lookup's route; the pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; where the route is read, by blocking attention from the question to the bridge word or the locker sentences.
+- **Later.** The same tests without the chat template; answers by sampling, not the top token; new datasets; OLMo checkpoints across training; intermediates in reasoning traces; DeepSeek-V4-Flash, which needs about four H200-class GPUs or native FP4, and its lens's residual stream named.
 
 ## Appendix A. Key numbers
 

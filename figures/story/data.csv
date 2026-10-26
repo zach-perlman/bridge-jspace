@@ -485,6 +485,46 @@ fig6,muse-glimmer-30b,"the sanity swap, recall switches lost: pointer + J++",0.5
 fig6,muse-glimmer-30b,"the sanity swap, lookup switches lost: pointer + random (J++'s share)",0.25296442687747034,0.19831132693147088,0.3094362084456424,,muse30b_x6_routes
 fig6,muse-glimmer-30b,"the sanity swap, recall switches lost: pointer + random (J++'s share)",0.3295454545454546,0.2222222222222222,0.4555555555555556,,muse30b_x6_routes
 fig6,muse-glimmer-30b,batch 36's bar (pointer + random + 0.15),0.403,,,,muse30b_x6_routes
+fig7,qwen3.5-9b,"Recall needs J++, the lookup doesn't (main test)",held,,,,verdicts; fixed
+fig7,qwen3.5-9b,... in varied scenes,held,,,,verdicts; fixed
+fig7,qwen3.5-9b,... in natural passages,not tested,,,,verdicts; fixed
+fig7,qwen3.5-9b,J++ costs the recall more than the layer's main directions at its share,held,,,,verdicts; after
+fig7,qwen3.5-9b,A verbatim locker key is needed (translated key),no,,,,verdicts; fixed
+fig7,qwen3.5-9b,The lookup needs the pointer directions,held,,,,verdicts; fixed
+fig7,qwen3.5-9b,"The lookup follows identity or position, never the value",held,,,,verdicts; fixed
+fig7,qwen3.5-9b,The pointer part alone gives position answers,held,,,,verdicts; fixed
+fig7,qwen3.5-9b,Position appears where the lookup stops needing J++,held,,,,verdicts; fixed
+fig7,qwen3.5-9b,J++ and the pointer together cost the lookup more than the pointer alone,no,,,,verdicts; fixed
+fig7,qwen3.6-27b,"Recall needs J++, the lookup doesn't (main test)",partial,,,,verdicts; fixed
+fig7,qwen3.6-27b,... in varied scenes,held,,,,verdicts; fixed
+fig7,qwen3.6-27b,... in natural passages,partial,,,,verdicts; fixed
+fig7,qwen3.6-27b,J++ costs the recall more than the layer's main directions at its share,held,,,,verdicts; after
+fig7,qwen3.6-27b,A verbatim locker key is needed (translated key),no,,,,verdicts; fixed
+fig7,qwen3.6-27b,The lookup needs the pointer directions,partial,,,,verdicts; after
+fig7,qwen3.6-27b,"The lookup follows identity or position, never the value",held,,,,verdicts; fixed
+fig7,qwen3.6-27b,The pointer part alone gives position answers,no,,,,verdicts; fixed
+fig7,qwen3.6-27b,Position appears where the lookup stops needing J++,no,,,,verdicts; fixed
+fig7,qwen3.6-27b,J++ and the pointer together cost the lookup more than the pointer alone,held,,,,verdicts; fixed
+fig7,qwen3.5-122b-a10b,"Recall needs J++, the lookup doesn't (main test)",held,,,,verdicts; fixed
+fig7,qwen3.5-122b-a10b,... in varied scenes,partial,,,,verdicts; fixed
+fig7,qwen3.5-122b-a10b,... in natural passages,held,,,,verdicts; fixed
+fig7,qwen3.5-122b-a10b,J++ costs the recall more than the layer's main directions at its share,no,,,,verdicts; after
+fig7,qwen3.5-122b-a10b,A verbatim locker key is needed (translated key),no,,,,verdicts; fixed
+fig7,qwen3.5-122b-a10b,The lookup needs the pointer directions,held,,,,verdicts; after
+fig7,qwen3.5-122b-a10b,"The lookup follows identity or position, never the value",held,,,,verdicts; after
+fig7,qwen3.5-122b-a10b,The pointer part alone gives position answers,held,,,,verdicts; after
+fig7,qwen3.5-122b-a10b,Position appears where the lookup stops needing J++,held,,,,verdicts; after
+fig7,qwen3.5-122b-a10b,J++ and the pointer together cost the lookup more than the pointer alone,no,,,,verdicts; after
+fig7,muse-glimmer-30b,"Recall needs J++, the lookup doesn't (main test)",held,,,,verdicts; fixed
+fig7,muse-glimmer-30b,... in varied scenes,held,,,,verdicts; fixed
+fig7,muse-glimmer-30b,... in natural passages,held,,,,verdicts; fixed
+fig7,muse-glimmer-30b,J++ costs the recall more than the layer's main directions at its share,held,,,,verdicts; fixed
+fig7,muse-glimmer-30b,A verbatim locker key is needed (translated key),no,,,,verdicts; fixed
+fig7,muse-glimmer-30b,The lookup needs the pointer directions,held,,,,verdicts; fixed
+fig7,muse-glimmer-30b,"The lookup follows identity or position, never the value",held,,,,verdicts; fixed
+fig7,muse-glimmer-30b,The pointer part alone gives position answers,held,,,,verdicts; fixed
+fig7,muse-glimmer-30b,Position appears where the lookup stops needing J++,held,,,,verdicts; after
+fig7,muse-glimmer-30b,J++ and the pointer together cost the lookup more than the pointer alone,no,,,,verdicts; fixed
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl

@@ -107,6 +107,9 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ## 4. What did not hold, and limits
 
+![What held where: ten claims on four models](figures/story/fig7_scorecard.png)
+*Fig. 7. Filled: fixed in advance; open: after the data or a lowered gate. Only the asked pick changing: confirmed on all four (Appendix A).*
+
 - The 27B's strict rule: lookup lost {{num|lk_excess_27b}} (bar 0.10).
 - The 9B's fixed-in-advance replication: its J++ clause failed (recall {{num|rep_jpp_rc_excess_9b}}).
 - The gap everywhere: the 122B's varied scenes ({{num|x0b_c_122b}}, every format alike) and the 27B's natural passages ({{num|nat_gap_27b}}) are in between.
@@ -122,6 +125,11 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **Raw examples.** Ten natural passages ([docs/natural_examples.md](docs/natural_examples.md)) and routes cases (the pack).
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier {{num|pred_brier}} over {{num|pred_n}} answers, worse than always answering {{q|50%}}; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.
+
+## 6. Next
+
+- **Running now.** The item's identity as one direction, removed with the pointer and J++, to account for the rest of the lookup's route; the pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; where the route is read, by blocking attention from the question to the bridge word or the locker sentences.
+- **Later.** The same tests without the chat template; answers by sampling, not the top token; new datasets; OLMo checkpoints across training; intermediates in reasoning traces; DeepSeek-V4-Flash, which needs about four H200-class GPUs or native FP4, and its lens's residual stream named.
 
 ## Appendix A. Key numbers
 

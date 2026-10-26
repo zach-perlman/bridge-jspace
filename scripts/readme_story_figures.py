@@ -527,9 +527,67 @@ def fig6(plt) -> None:
     S.save(fig, "fig6_both_removed")
 
 
+# Fig. 7 (Dan's plan step 4, 25 Oct ~23:00): each claim's status per model, read off the verdicts and the numbers the
+# README quotes (agent's reading, UNVERIFIED); "fixed" = the test fixed in advance, "after" = after the data or a gate
+# lowered after the data. Status: held / partial / no (did not hold) / not tested.
+SCORECARD = (
+    ("Recall needs J++, the lookup doesn't\n(main test)",
+     {"9b": ("held", "fixed"), "27b": ("partial", "fixed"), "122b": ("held", "fixed"), "muse": ("held", "fixed")}),
+    ("... in varied scenes",
+     {"9b": ("held", "fixed"), "27b": ("held", "fixed"), "122b": ("partial", "fixed"), "muse": ("held", "fixed")}),
+    ("... in natural passages",
+     {"9b": ("not tested", "fixed"), "27b": ("partial", "fixed"), "122b": ("held", "fixed"), "muse": ("held", "fixed")}),
+    ("J++ costs the recall more than the\nlayer's main directions at its share",
+     {"9b": ("held", "after"), "27b": ("held", "after"), "122b": ("no", "after"), "muse": ("held", "fixed")}),
+    ("A verbatim locker key is needed\n(translated key)",
+     {"9b": ("no", "fixed"), "27b": ("no", "fixed"), "122b": ("no", "fixed"), "muse": ("no", "fixed")}),
+    ("The lookup needs the pointer directions",
+     {"9b": ("held", "fixed"), "27b": ("partial", "after"), "122b": ("held", "after"), "muse": ("held", "fixed")}),
+    ("The lookup follows identity or position,\nnever the value",
+     {"9b": ("held", "fixed"), "27b": ("held", "fixed"), "122b": ("held", "after"), "muse": ("held", "fixed")}),
+    ("The pointer part alone gives\nposition answers",
+     {"9b": ("held", "fixed"), "27b": ("no", "fixed"), "122b": ("held", "after"), "muse": ("held", "fixed")}),
+    ("Position appears where the lookup\nstops needing J++",
+     {"9b": ("held", "fixed"), "27b": ("no", "fixed"), "122b": ("held", "after"), "muse": ("held", "after")}),
+    ("J++ and the pointer together cost the\nlookup more than the pointer alone",
+     {"9b": ("no", "fixed"), "27b": ("held", "fixed"), "122b": ("no", "after"), "muse": ("no", "fixed")}),
+)  # fmt: skip
+STATUS_COL = {"held": "#2f7d4f", "partial": "#c98a12", "no": "#b8433a", "not tested": "#9a9a9a"}
+
+
+def fig7(plt) -> None:
+    """The scorecard: rows = claims, columns = models; colour and word = status; filled = fixed in advance, open =
+    after the data."""
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 6.2))
+    fig.subplots_adjust(left=0.36, right=0.995, top=0.83, bottom=0.02)
+    S.title(fig, "What held where: ten claims on four models")
+    for j, (target, m, name) in enumerate(S.MODELS):
+        ax.text(j, 0.75, name, ha="center", va="bottom", fontsize=9.5, weight="bold")
+        for i, (claim, cells) in enumerate(SCORECARD):
+            status, kind = cells[m]
+            col = STATUS_COL[status]
+            ax.add_patch(plt.Rectangle((j - 0.44, -i - 0.36), 0.88, 0.72, fc=col if kind == "fixed" else "white", ec=col,
+                                       lw=1.8, joinstyle="round"))  # fmt: skip
+            ax.text(j, -i, status, ha="center", va="center", fontsize=10,
+                    color="white" if kind == "fixed" else col, weight="bold")  # fmt: skip
+            S.record("fig7", target, claim.replace("\n", " "), status, source=f"verdicts; {kind}")
+    ax.set_xlim(-0.5, len(S.MODELS) - 0.5)
+    ax.set_ylim(-len(SCORECARD) + 0.45, 1.2)
+    ax.set_yticks([-i for i in range(len(SCORECARD))], [c for c, _ in SCORECARD], fontsize=10)
+    ax.set_xticks([])
+    ax.tick_params(axis="y", length=0)
+    for side in ("top", "right", "bottom", "left"):
+        ax.spines[side].set_visible(False)
+    marks = [plt.Rectangle((0, 0), 1, 1, fc="#777777", ec="#777777"),
+             plt.Rectangle((0, 0), 1, 1, fc="white", ec="#777777", lw=1.5)]  # fmt: skip
+    fig.legend(marks, ["fixed in advance", "after the data (or a lowered gate)"], loc="upper left",
+               bbox_to_anchor=(0.0, 0.945), ncol=2, frameon=False, fontsize=9.5, handlelength=1.2)  # fmt: skip
+    S.save(fig, "fig7_scorecard")
+
+
 def main() -> None:
     plt = S.setup()
-    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6):
+    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6, fig7):
         f(plt)
     S.write_data()
     print(S.OUT)
