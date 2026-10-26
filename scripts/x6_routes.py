@@ -304,6 +304,7 @@ def stage_run(
     ctrl: bool = False,
     keeponly: bool = False,
     identity: bool = False,
+    alf_from: str | None = None,
 ) -> Path:
     import torch
 
@@ -329,7 +330,7 @@ def stage_run(
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
          "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff, "bothoff_ctrl": ctrl, "keeponly": keeponly, "identity": identity,
-         "alf_from": STATES[target] if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
+         "alf_from": (alf_from or STATES[target]) if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
          "c0_reference": {"run": C0_REF.get(target, (None,))[0], "lookup_switch": ref, "tolerance": C0_TOL},
          "rule": f"a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}",
          "seeds": {"scenes": SEED, "random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED}}  # fmt: skip
@@ -359,6 +360,8 @@ def stage_run(
     if not chosen:
         raise SystemExit("no condition passed the gate fixed in advance (or none had eligible items); see gate.json")
     sub = MM.subspaces(STATES[target])[0] if pointer else {}
+    if alf_from:  # P_cf (x7_pcf, batch 43) in place of the mass-mean pointer directions
+        sub["Alf"] = np.load(pins.RESULTS_DIR / alf_from / "pcf.npz")["P"]
     alf = torch.tensor(sub["Alf"], dtype=torch.float32, device="cuda") if pointer else None
     jdic = JLens(model, "jpp").vectors(layer, model.letter_token_ids())
     rows, norms = [], []
@@ -575,6 +578,7 @@ def main() -> None:
     )
     ap.add_argument("--keeponly", action="store_true", help="run: also arms that add only one part of the change")
     ap.add_argument("--identity", action="store_true", help="run: also the identity-direction arms (D1)")
+    ap.add_argument("--alf-from", default=None, help="run: the pointer basis from results/<path>/pcf.npz (P_cf)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
@@ -595,6 +599,7 @@ def main() -> None:
             a.bothoff_ctrl,
             a.keeponly,
             a.identity,
+            a.alf_from,
         )
     if not a.smoke:
         stage_verdict(a.name, a.n_boot)
