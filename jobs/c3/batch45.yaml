@@ -203,3 +203,25 @@ tests:
       reported per cell, not in the rule.
     queue: after the 45b sweep, before 45k; 45a on the 122B dropped to make room (Dan ~22:10).
     gpu_hours: 1.5
+
+  # added 26 Oct ~22:35 (Dan, after 45b held); fixed before any 45n code or run
+  - id: 45n
+    title: Is the link the locker sentences carry outside the lens?
+    design: >-
+      locker-after scenes at L (45b's items), 9B and 27B (Muse if 45b on Muse lands): copy S's states into the
+      locker-sentence tokens WITHOUT their J++ part (per token: signed OMP, k = 25, on that token's S - O difference,
+      removed), against the same copy without a random part of the same share; the full copy (45b's arm c) beside them.
+    rule: >-
+      "The copied link is outside the lens" if the copy without J++ still switches at least 0.8 of what the full copy
+      switches, and at least as much as the copy without the random part minus 0.1, on both 9B and 27B.
+    as_computed: >-
+      Fixed by the agent before any code (Dan may override before the run): the items are 45b's (locker after the asked
+      pick, locker sentences aligned) that also pass Dan's sanity check (~22:35: O and S have the same token count and
+      every position after the bridge word holds the same token id, for both readers), the rest dropped and counted.
+      "Switches" = the lookup's switch rate over those items (top token = S's answer). Holds on a model if rate(without
+      J++) >= 0.8 x rate(full copy) and rate(without J++) >= rate(without the random part) - 0.1, point estimates
+      (cluster-bootstrap CIs over bridge items beside them, 10,000, seed 0; EPS 1e-9). J++ = the lens's atoms at L as
+      X0 uses them; the random part = X0's random subspace (seed 888 + layer) at each token's own share. The rule reads
+      the 9B and the 27B; Muse is reported, not counted.
+    queue: after the 45b sweep, before 45b on Muse, 45m, 45k and the 122B block (Dan ~22:35).
+    gpu_hours: 0.4
