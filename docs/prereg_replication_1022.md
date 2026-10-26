@@ -1700,3 +1700,14 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     - Otherwise, partial.
     - Paste at L20-25 (+14.9) is below the old 20 bar. Amendment 49's lesson stands: paste is not a ceiling. The K-part
       swap is read against paste and beside swap_comp.
+
+### Amendment 53 note 1 (Zach, 2026-10-26 22:27 UTC, after the K = 30 swap, before the K = 100 swap finished)
+
+- The +14.9 / +14.2 / +1.8 quoted above are the PM cell alone (n 284, amendment 41), but the reading says "memory
+  finals pooled". Pooled over PM PA PN TM TA TN (scripts/jswap_pool.py, n 1212), the K = 10 run gives paste +9.5
+  [6.7, 12.6], swap_comp +8.4, J-part swap +2.6 [1.6, 3.7].
+- The rule is a ratio to paste in the same table, so it stands as written on the pooled numbers: K = 100 swap >= 6.3
+  (2/3 of 9.5) means distributed, <= 3.2 means it stays "readable, not carried", between is partial. The PM cell is
+  reported beside it (bars 9.9 / 5.0).
+- Seen before writing this: K = 30 pooled swap +3.5 [2.3, 4.9] (paste +9.5, swap_comp +8.4, rot +0.1, u +0.1); PM
+  cell swap +2.9 [1.1, 4.9]. The K = 100 swap and the knock-out had not finished.
