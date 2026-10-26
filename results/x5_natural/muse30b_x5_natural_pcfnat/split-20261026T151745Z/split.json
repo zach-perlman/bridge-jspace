@@ -1,0 +1,554 @@
+{
+ "run": "muse30b_x5_natural_pcfnat",
+ "n_boot": 10000,
+ "rows": [
+  {
+   "split": "all",
+   "group": "all",
+   "n": 60,
+   "PP": {
+    "excess": [
+     0.19999999999999996,
+     0.0,
+     0.5
+    ],
+    "Jdep": [
+     0.3999999999999999,
+     0.0,
+     0.75
+    ],
+    "Rdep": [
+     0.19999999999999996,
+     0.0,
+     0.5454545454545454
+    ],
+    "S_whole": [
+     0.1667,
+     0.0931,
+     0.2803
+    ],
+    "switched_whole": 10
+   },
+   "PM": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Rdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "S_whole": [
+     0.8833,
+     0.7782,
+     0.9423
+    ],
+    "switched_whole": 53
+   }
+  },
+  {
+   "split": "original's fact sentence vs the bridge's mention",
+   "group": "after",
+   "n": 32,
+   "PP": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Rdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "S_whole": [
+     0.0625,
+     0.0173,
+     0.2015
+    ],
+    "switched_whole": 2
+   },
+   "PM": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Rdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "S_whole": [
+     0.875,
+     0.7193,
+     0.9503
+    ],
+    "switched_whole": 28
+   }
+  },
+  {
+   "split": "original's fact sentence vs the bridge's mention",
+   "group": "before",
+   "n": 28,
+   "PP": {
+    "excess": [
+     0.25,
+     0.0,
+     0.6666666666666666
+    ],
+    "Jdep": [
+     0.5,
+     0.0,
+     0.8571428571428572
+    ],
+    "Rdep": [
+     0.25,
+     0.0,
+     0.6666666666666666
+    ],
+    "S_whole": [
+     0.2857,
+     0.1525,
+     0.4706
+    ],
+    "switched_whole": 8
+   },
+   "PM": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Rdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "S_whole": [
+     0.8929,
+     0.728,
+     0.9629
+    ],
+    "switched_whole": 25
+   }
+  },
+  {
+   "split": "both fact sentences",
+   "group": "both fact sentences before",
+   "n": 16,
+   "PP": {
+    "excess": [
+     0.33333333333333337,
+     0.0,
+     0.75
+    ],
+    "Jdep": [
+     0.5,
+     0.0,
+     1.0
+    ],
+    "Rdep": [
+     0.16666666666666663,
+     0.0,
+     0.5
+    ],
+    "S_whole": [
+     0.375,
+     0.1848,
+     0.6136
+    ],
+    "switched_whole": 6
+   },
+   "PM": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Rdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "S_whole": [
+     0.8125,
+     0.5699,
+     0.9341
+    ],
+    "switched_whole": 13
+   }
+  },
+  {
+   "split": "both fact sentences",
+   "group": "only the original's before",
+   "n": 12,
+   "PP": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.5,
+     0.0,
+     1.0
+    ],
+    "Rdep": [
+     0.5,
+     0.0,
+     1.0
+    ],
+    "S_whole": [
+     0.1667,
+     0.047,
+     0.448
+    ],
+    "switched_whole": 2
+   },
+   "PM": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Rdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "S_whole": [
+     1.0,
+     0.7575,
+     1.0
+    ],
+    "switched_whole": 12
+   }
+  },
+  {
+   "split": "both fact sentences",
+   "group": "the original's fact sentence after the bridge's mention",
+   "n": 32,
+   "PP": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Rdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "S_whole": [
+     0.0625,
+     0.0173,
+     0.2015
+    ],
+    "switched_whole": 2
+   },
+   "PM": {
+    "excess": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Jdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "Rdep": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "S_whole": [
+     0.875,
+     0.7193,
+     0.9503
+    ],
+    "switched_whole": 28
+   }
+  }
+ ],
+ "placement": {
+  "j2:languages:P-L0-Greece-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Uruguay-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L0-France-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:languages:P-L1-France-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:countries:P-L1-Portugal-0": {
+   "original": "after",
+   "new": "before"
+  },
+  "j2:countries:P-L0-Spain-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Sweden-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:countries:P-L0-Bolivia-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:countries:P-L1-Laos-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:countries:P-L1-Iceland-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:languages:P-L1-Austria-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Hungary-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Argentina-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:languages:P-L1-Hungary-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:countries:P-L1-Sweden-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:animals:P-L0-salmon-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:people:P-L0-Bach-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L1-Chile-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:countries:P-L0-Finland-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:people:P-L0-Nobel-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:countries:P-L1-Nigeria-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:countries:P-L0-Cuba-0": {
+   "original": "after",
+   "new": "before"
+  },
+  "j2:languages:P-L0-Angola-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:countries:P-L1-Bolivia-0": {
+   "original": "after",
+   "new": "before"
+  },
+  "j2:countries:P-L0-Portugal-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:countries:P-L0-Brazil-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:languages:P-L0-Tunisia-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:languages:P-L1-Portugal-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:countries:P-L1-Greece-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Israel-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Austria-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:languages:P-L1-Israel-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:languages:P-L1-Angola-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:countries:P-L0-Sweden-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:countries:P-L1-France-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Mexico-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L1-Italy-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:animals:P-L0-ant-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:people:P-L0-Edison-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L1-Tunisia-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:people:P-L1-Picasso-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:people:P-L0-Beethoven-0": {
+   "original": "after",
+   "new": "before"
+  },
+  "j2:languages:P-L1-Senegal-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Cuba-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:languages:P-L0-Turkey-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:countries:P-L1-Paraguay-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:countries:P-L1-Finland-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:languages:P-L0-Ghana-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:countries:P-L0-Paraguay-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:people:P-L1-Dante-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L1-Ghana-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:countries:P-L1-Brazil-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:languages:P-L1-Uruguay-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Chile-0": {
+   "original": "after",
+   "new": "before"
+  },
+  "j2:countries:P-L0-Greece-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:languages:P-L0-Italy-0": {
+   "original": "before",
+   "new": "before"
+  },
+  "j2:people:P-L1-Gandhi-0": {
+   "original": "before",
+   "new": "after"
+  },
+  "j2:countries:P-L1-Canada-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:people:P-L1-Bach-0": {
+   "original": "after",
+   "new": "after"
+  },
+  "j2:countries:P-L0-Kenya-0": {
+   "original": "after",
+   "new": "after"
+  }
+ }
+}
