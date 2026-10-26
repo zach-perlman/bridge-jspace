@@ -1,0 +1,136 @@
+# Batch 45 (Dan, 26 Oct ~18:30): the night of 26 to 27 Oct. Every rule below is fixed in advance as written, before any
+# run. Claims freeze Tue 27 Oct 21:00; results landing after it are labelled "after the freeze". No result of a test is
+# opened or reported until docs/predictions_batch45.md holds Dan's commit for that test (45.0 is a check, not a
+# question). One job spec per GPU job (jobs/c3/x45_*.yaml) is written when its code is committed; each names this file.
+#
+# Common settings, as before: layers 9B L12, 27B L32, 122B L33 (gate 0.75, after the data, as its routes runs), Muse
+# L26; cluster bootstrap over bridge items, 10,000 resamples, seed 0; every part removed or kept is paired with a random
+# part of the same share of the change; the pointer basis U is the one fit on fresh scenes (x0_massmean's Alf, from the
+# x0_probe_v4 states), never refit unless the test says so; every test gets a verify-pack view (docs/review_views.yaml):
+# 10 random items (seed 0), the prompt as the model sees it, the patch position marked, each arm's answer.
+#
+# GPU-hours: estimates on one H100 PCIe (the 122B: both GPUs), from the timing ledger of comparable runs.
+
+batch: 45
+by: Dan, 26 Oct ~18:30
+freeze: "Tue 27 Oct 21:00 CET"
+predictions: docs/predictions_batch45.md
+queue_order: [45.0, 45g, 45a, 45d, 45b, 45c, 45e, 45i]
+do_not_queue: ["45h (a computed bridge): wait for Dan", "OLMo checkpoints", "DeepSeek-V4-Flash", "new datasets"]
+
+tests:
+  - id: "45.0"
+    title: Independent check of the main test
+    question: Does an implementation written from scratch reproduce the main test's item-level answers?
+    design: >-
+      scripts/indep_check.py, written from scratch: plain transformers + torch forward hooks, its own signed OMP over the
+      lens atoms, the published J++ file loaded directly, no import from the project's package. The 9B at L12, 20
+      random main-test items (seed 0) of results/x0_necessity/qwen35_9b_x0_necessity, arms whole / no J++ / no random
+      part, both readers.
+    report: >-
+      item-level agreement of the top token with outcomes.jsonl; the largest |ld| difference; 10 raw prompts with the
+      patch position marked.
+    rule: "pass if at least 19 of 20 items agree on every arm; if it fails, stop and tell Dan before anything else runs"
+    gpu_hours: 0.1
+    first: true
+
+  - id: 45g
+    title: Two routes for the recall?
+    question: >-
+      When the item was named before the pick, can the recall find it either through the J++ part or through the pointer
+      back to that earlier mention?
+    motivating_data: >-
+      sanity swap, recall still switching without J++ / without the pointer / without both: 9B 0.98 / 0.87 / 0.48; 27B
+      0.66 / 0.68 / 0.18; Muse 0.78 / 0.90 / 0.41. The 9B recall needs J++ only 0.06 in one-pick scenes with both
+      lockers first, but 0.57 where the locker comes after.
+    design: >-
+      scenes: the main test (two people swap) and the one-pick set (only the asked pick changes), all four models, at
+      the layers above; arms: whole; without J++ (25 signed OMP atoms); without the pointer (U); without J++ and the
+      pointer (the union of each item's J++ atoms and U, least-squares projection); each against its random part of the
+      same share; both readers; every arm split by sentence order (the original bridge's locker sentence before / after
+      the asked pick; x0_strata), extra loss per cell.
+    implementation: x0_massmean.py, a new mode over all items (no order filter), the main or the single-change run
+    rules:
+      a: >-
+        "Two routes for the recall" if, on at least 3 of 4 models, in locker-before scenes the recall's extra loss with
+        both removed is at least 0.3 and at least 0.2 above the larger single removal (paired CI excluding 0).
+      b: >-
+        "J++ is the recall's only route when the pick is the first mention" if, in locker-after scenes, J++ alone gives
+        at least 0.3 and adding the pointer adds less than 0.1.
+    gpu_hours: 3.0
+
+  - id: 45a
+    title: First mention or first locker?
+    design: >-
+      routes scenes where another item moved (C2), one sentence prepended to both prompts: V0 none (control, rerun);
+      V1 a pick sentence naming the item whose locker is first in the original; V2 a pick sentence naming another locker
+      item; V3 a pick sentence naming an item that has no locker; V4 a neutral sentence (as in B1). Models 9B, 27B,
+      Muse; the 122B if time. Read, for moves to or from the first locker: the position share with only the pointer
+      part; the position share without the pointer, against its random part; the code's shift beta (as batch 44 B).
+    implementation: x6_routes.py, a --prepend variant (V0-V4) on C2, keep-only and removal arms; beta as x8_write order
+    rules:
+      first_locker: >-
+        "First locker stated before any item" if V1, V2 and V3 each cut only-pointer position on first-locker moves to at
+        most half of V0 (paired CI excluding 0) while V4 does not.
+      order_of_lockers: '"Order of lockers, picks ignored" if V1, V2 and V3 stay within 0.10 of V0.'
+      otherwise: mixed
+    gpu_hours: 2.5
+
+  - id: 45d
+    title: A pointer outside templates?
+    design: >-
+      per format (prose, JSON, table), fit a label-free basis (the P_cf method, rank 4) on half of the varied scenes;
+      on the other half (the main test), remove it and measure the lookup's extra loss against its random part; repeat
+      with the simple-scene U as the comparison. Models 9B, 27B, Muse.
+    implementation: x7_pcf.py on the varied-scene generator (x0b_v2) split in halves by bridge item; x0b_generalize.py with --alf-from per format
+    rules:
+      elsewhere: '"Pointer elsewhere" if the refit basis gives at least 0.2, with lower CI above 0.1, in 2 of 3 formats.'
+      none: '"No linear pointer found" if all three formats are below 0.1.'
+    gpu_hours: 3.0
+
+  - id: 45b
+    title: Where is the binding made when the locker comes after the pick?
+    design: >-
+      main-test scenes with the locker sentence after the pick; 9B and 27B. Arms: (a) the bridge-word change at L
+      (rerun, about 19%); (b) the same at L/2 and L/4; (c) patch S into O at every token of the locker sentences, at L;
+      (d) the same as (c) at L/2.
+    implementation: x0_necessity-style reads; a multi-position patch of S's states into O
+    rule: >-
+      the reading-order explanation holds if (c) or (d) switches at least half of the lookups that S itself switches,
+      while (a) stays at or below 0.25.
+    gpu_hours: 1.0
+
+  - id: 45c
+    title: Second vs third
+    design: >-
+      basis: a label-free basis from pairs whose bridge locker moves between the second and third slot (P_cf restricted,
+      rank 2, orthogonalised against U). Models 9B, 27B, Muse. On the routes moves between the second and third locker:
+      remove it, and keep only it, each against a random part of the same share; write mu_3 - mu_2 at doses 1 to 4 x a
+      real change.
+    implementation: x7_pcf.py restricted fit; x6_routes.py --alf-from on C2; x8_write.py with the restricted direction
+    rule: found if removal halves position on those moves (CI excluding 0) and keep-only gives at least 0.15 position.
+    gpu_hours: 2.5
+
+  - id: 45e
+    title: Identity controls and the 122B
+    design: >-
+      (a) on 9B, 27B, Muse: a wrong-pair control (class-mean differences of other entity pairs, not the swapped pair,
+      added until they hold the same share of the change as identity outside J++) and the layer's top PCA directions at
+      that share; each removed in the sanity swap (C0) and in C2, alone and together with J++ + pointer. (b) The identity
+      test on the 122B: C0 and C2, gate 0.75.
+    implementation: x6_routes.py --identity plus control arms; (b) the existing --identity arms on the 122B
+    rule: >-
+      identity outside J++ is specific if both hold on at least 2 of 3 models: removing it together with J++ + pointer
+      leaves at most half of the lookups that the wrong-pair control leaves; in C2 it cuts identity answers at least
+      0.15 more than the wrong-pair control.
+    gpu_hours: 3.5
+
+  - id: 45i
+    title: Without the chat template
+    design: main test and routes C2 on the 9B and 27B, plain rendering (no chat template).
+    implementation: x0_necessity.py --renderings raw / nochat; x6_routes.py with a rendering option
+    risk: >-
+      on 24 Oct the no-template main test missed its read gate on the 27B (a markdown first token) and the 9B passed only
+      with the digit read; a missed gate means "not tested (gate)".
+    rule: the split and "never the value" hold if the gap stays at least 0.2 and the value share stays at 0.
+    gpu_hours: 1.5
