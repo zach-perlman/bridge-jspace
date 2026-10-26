@@ -859,6 +859,8 @@ def main() -> None:
     ap.add_argument("--readout", action="store_true", help="run: the J++ readout's answer-digit ranks (digit check)")
     ap.add_argument("--descriptive", action="store_true",
                     help="run: amendment 3, run on the items right even if the gate fails (labeled descriptive)")  # fmt: skip
+    ap.add_argument("--sealed", action="store_true",
+                    help="run: no verdict or figures after the run (batch 45: sealed until Dan's predictions)")  # fmt: skip
     a = ap.parse_args()
     CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
     READ, DESCRIPTIVE, ALT, CURVE_ALL = a.read, a.descriptive, a.alt, a.curve_all_layers
@@ -871,7 +873,8 @@ def main() -> None:
     elif a.stage == "run":
         layers = tuple(a.layers) if a.layers else LAYERS[pins.TARGET]
         stage_run(a.name, a.why, a.set, layers, PREDICTED[pins.TARGET], a.renderings)
-        figures(write_verdict(a.name, a.n_boot))
+        if not a.sealed:
+            figures(write_verdict(a.name, a.n_boot))
     elif a.stage == "verdict":
         write_verdict(a.name, a.n_boot)
     else:

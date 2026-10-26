@@ -38,8 +38,9 @@ RESULTS = pins.RESULTS_DIR / EXP
 SEED, N_PAIRS, RANK, SHOW = 4301, 1000, 4, 8
 
 
-def pairs(tok, n: int, seed: int = SEED) -> tuple[list[dict], collections.Counter]:
-    """n pairs O / S: the same scene, the bridge's locker sentence trading places with another item's, digits kept."""
+def pairs(tok, n: int, seed: int = SEED, moves: frozenset[int] | None = None) -> tuple[list[dict], collections.Counter]:
+    """n pairs O / S: the same scene, the bridge's locker sentence trading places with another item's, digits kept;
+    `moves` (batch 45c): only pairs whose two slots are exactly these (e.g. {1, 2}: the second and third)."""
     from scripts import suite_v1 as S
     from scripts import tasks_v2 as T
 
@@ -59,6 +60,9 @@ def pairs(tok, n: int, seed: int = SEED) -> tuple[list[dict], collections.Counte
         val = {A: a, B: b, C: c}
         picks = rng.sample([(asked, A), (p1, B), (p2, C)], 3)
         other = rng.choice([B, C])
+        if moves is not None and {order.index(A), order.index(other)} != moves:
+            dropped["outside the slots asked for"] += 1
+            continue
         sw = {A: other, other: A}
         o = R.context([(x, val[x]) for x in order], picks)
         s = R.context([(sw.get(x, x), val[sw.get(x, x)]) for x in order], picks)
@@ -149,7 +153,10 @@ def split_half(x: np.ndarray, groups: list[str], seed: int = 0) -> dict:
             "mean_cos2": float(np.mean(cos2)), "seed": seed}  # fmt: skip
 
 
-def stage_run(name: str, n: int = N_PAIRS) -> Path:
+def stage_run(name: str, n: int = N_PAIRS, moves: frozenset[int] | None = None) -> Path:
+    """--moves (batch 45c, Dan 26 Oct ~18:30): pairs whose bridge locker moves between these slots only (1-2: the
+    second and third); the differences are projected off the mass-mean pointer directions U before the PCA (the basis
+    is orthogonal to U by construction) and the rank is 2."""
     import torch
 
     from bridge_jspace.lens import JLens
@@ -163,13 +170,16 @@ def stage_run(name: str, n: int = N_PAIRS) -> Path:
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
+    rank = RANK if moves is None else 2
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "pairs": n,
-         "rank": RANK, "pca": "centered, over the pairs' bridge-word differences S - O", "alf_from": R.STATES[target],
-         "seeds": {"pairs": SEED}, "note": "Dan 26 Oct ~10:45 / ~11:55; batch 43; descriptive until its answers"}  # fmt: skip
+         "rank": rank, "pca": "centered, over the pairs' bridge-word differences S - O", "alf_from": R.STATES[target],
+         "moves": sorted(moves) if moves else None,
+         "orthogonal_to_U": "the differences projected off U (Alf) before the PCA" if moves else None,
+         "seeds": {"pairs": SEED}, "note": "Dan 26 Oct ~10:45 / ~11:55; batch 43 (--moves: batch 45c)"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
-    cases, dropped = pairs(model.tokenizer, n)
+    cases, dropped = pairs(model.tokenizer, n, moves=moves)
     X.write_jsonl(out / "cases.jsonl", [{k: v for k, v in c.items() if k not in ("space", "readers")} for c in cases])
     with torch.no_grad():
         diffs = []
@@ -182,20 +192,22 @@ def stage_run(name: str, n: int = N_PAIRS) -> Path:
         jdic = JLens(model, "jpp").vectors(layer, model.letter_token_ids())
         atoms = omp_atoms(jdic, x, X.K_MAIN)
     xd = x.double().cpu().numpy()
+    alf = MM.subspaces(R.STATES[target])[0]["Alf"]
+    if moves is not None:  # 45c: the basis outside U
+        xd = xd - (xd @ alf) @ alf.T
     centered = xd - xd.mean(0)
     _, s, vt = np.linalg.svd(centered, full_matrices=False)
     var = (s**2 / (s**2).sum()).tolist()
-    p = vt[:RANK].T  # [d, RANK]
-    alf = MM.subspaces(R.STATES[target])[0]["Alf"]
+    p = vt[:rank].T  # [d, rank]
     cos2 = principal_cos2(p, alf)
     pt = torch.tensor(p, dtype=torch.float64, device="cuda")
     in_jpp = []
     for i in range(len(cases)):
         q, _ = torch.linalg.qr(jdic[atoms[i]].T.double())
-        in_jpp.append(float(((q.T @ pt) ** 2).sum()) / RANK)
+        in_jpp.append(float(((q.T @ pt) ** 2).sum()) / rank)
     report = {"run": name, "model": target, "layer": layer, "pairs": len(cases), "dropped": dict(dropped),
               "variance_explained": var[:SHOW], "variance_explained_cum": np.cumsum(var[:SHOW]).tolist(),
-              "cos2_with_alf": cos2, "mean_cos2_with_alf": float(np.mean(cos2)), "random_mean_cos2": RANK / p.shape[0],
+              "cos2_with_alf": cos2, "mean_cos2_with_alf": float(np.mean(cos2)), "random_mean_cos2": rank / p.shape[0],
               "split_half": split_half(xd, [c["scene"] for c in cases]),
               "alf_rank": int(alf.shape[1]), "share_in_jpp_span": {"mean": float(np.mean(in_jpp)),
                                                                   "median": float(np.median(in_jpp))}}  # fmt: skip
@@ -210,7 +222,7 @@ def stage_run(name: str, n: int = N_PAIRS) -> Path:
              f"mean cos² {report['split_half']['mean_cos2']:.3f} ({report['split_half']['rows'][0]} / "
              f"{report['split_half']['rows'][1]} rows).",
              f"- Principal angles with the mass-mean pointer directions (rank {alf.shape[1]}): cos² "
-             + ", ".join(f"{v:.3f}" for v in cos2) + f"; mean {np.mean(cos2):.3f} (a random subspace: {RANK / p.shape[0]:.4f}).",
+             + ", ".join(f"{v:.3f}" for v in cos2) + f"; mean {np.mean(cos2):.3f} (a random subspace: {rank / p.shape[0]:.4f}).",
              f"- P_cf's share inside each pair's 25-atom J++ span: mean {np.mean(in_jpp):.3f}, median "
              f"{np.median(in_jpp):.3f} (descriptive)."]  # fmt: skip
     (out / "report.md").write_text("\n".join(lines) + "\n")
@@ -296,17 +308,20 @@ def main() -> None:
     ap.add_argument("--name")
     ap.add_argument("--n", type=int, default=N_PAIRS)
     ap.add_argument("--pcf", help="natural: the simple-scene P_cf run (results/x7_pcf/<run>) to compare with")
+    ap.add_argument("--moves", default=None, metavar="J-K",
+                    help="plan / run: only pairs whose bridge locker moves between these slots (45c: 1-2), rank 2, off U")  # fmt: skip
     a = ap.parse_args()
+    moves = frozenset(int(v) for v in a.moves.split("-")) if a.moves else None
     if a.stage == "natural":
         stage_natural(a.name, a.pcf)
         return
     if a.stage == "plan":
         from scripts import statement_positions as SP
 
-        cases, dropped = pairs(SP.load_tokenizer(), a.n)
+        cases, dropped = pairs(SP.load_tokenizer(), a.n, moves=moves)
         print(len(cases), "pairs;", dict(dropped), cases[0]["context"], "|", cases[0]["cf_context"], sep="\n")
     else:
-        stage_run(a.name, a.n)
+        stage_run(a.name, a.n, moves)
 
 
 if __name__ == "__main__":

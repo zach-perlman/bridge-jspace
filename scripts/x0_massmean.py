@@ -61,7 +61,12 @@ MODES = {
         "remove": ("A", "V", "Alf", "pca"),
         "keep": {"A": "keep_A_rand", "V": "keep_V_rand", "Alf": "keep_Alf_rand"},
     },
+    # batch 45g (Dan, 26 Oct ~18:30; jobs/c3/batch45.yaml): two routes for the recall? On every item (both sentence
+    # orders) of the main test or the one-pick set: without J++ (25 signed-OMP atoms), without the pointer (Alf), without
+    # their union (least-squares projection), each against a random part of its own share
+    "two_routes": {"remove": ("jpp", "Alf", "jppAlf"), "keep": {}},
 }
+ALL_ITEMS = {"two_routes"}  # modes run on every item, the sentence order recorded per row (others: locker-before only)
 NOTE = "Descriptive, added after data (Dan, 24 Oct ~20:05; layout-free arm ~21:50); not part of X0's rule."
 
 
@@ -147,10 +152,11 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     sm = json.loads((X.RESULTS / single / "manifest.json").read_text())
-    assert sm["alt"] == "single", f"{single} is not a single-change run"
+    # two_routes also runs on the main test (two people swap: the generator's cf alt); the others need a one-pick run
+    assert sm["alt"] == "single" or mode in ALL_ITEMS, f"{single} is not a single-change run"
     layer = sm["predicted"]
     basis_np, info = subspaces(states_run)
-    X.ALT = "single"
+    X.ALT = sm["alt"] or "cf"
     model = load_model()
     tok = model.tokenizer
     cases, _ = X.build_cases(tok, sm["set"])
@@ -159,16 +165,19 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
         {r["scene"] for r in X.read_jsonl(X.RESULTS / single / "outcomes.jsonl") if r["rendering"] == "chat"}
     )
     feats = {s: ST.features(by_scene[s]) for s in scenes}
-    scenes = [
-        s
-        for s in scenes
-        if feats[s]["org locker vs asked pick"] == "before" and feats[s]["alt locker vs asked pick"] == "before"
-    ]
+    if mode not in ALL_ITEMS:
+        scenes = [
+            s
+            for s in scenes
+            if feats[s]["org locker vs asked pick"] == "before" and feats[s]["alt locker vs asked pick"] == "before"
+        ]
     cases = [by_scene[s] for s in scenes]
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "single": single, "single_code": sm["code"], "set": sm["set"], "layer": layer, "items": len(scenes),
          "subspaces": info, "mode": mode, "arms": list(arms_of(mode)), "model": pins.model_pin(), "code": git_state(),
-         "items_rule": "single-change items whose org and alt locker sentences both come before the asked pick",
+         "items_rule": "every item of the run, both sentence orders (the order recorded per row)" if mode in ALL_ITEMS
+         else "single-change items whose org and alt locker sentences both come before the asked pick",
+         "alt": X.ALT,
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     print(json.dumps(info), len(scenes), "items", flush=True)
@@ -187,12 +196,22 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
         basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to("cuda")
         md, names = MODES[mode], arms_of(mode)
         arms, shares = {"whole": x}, {}
+        if mode == "two_routes":  # the J++ lens' atoms at this layer (as X0 and x6_routes)
+            from bridge_jspace.lens import JLens
+            from scripts import x6_routes as R
+
+            jdic = JLens(model, "jpp").vectors(layer, model.letter_token_ids())
+            alf_t = torch.tensor(basis_np["Alf"], dtype=torch.float32, device="cuda")
         for s in md["remove"]:
             if s == "pca":  # at Alf's share, item by item (Alf comes first in the grid's remove list)
                 from scripts import x0_parts as XP
 
                 pca, info["pca"] = XP.pca_dictionary(model, layer)
                 part, _ = XP.equal_share(pca, x, torch.tensor(shares["Alf"], device="cuda"))
+            elif s == "jpp":
+                part = X.fit(jdic, x, X.K_MAIN, "signed")
+            elif s == "jppAlf":
+                part = R.union_part(jdic, alf_t, x, X.K_MAIN)
             else:
                 q = torch.tensor(basis_np[s], dtype=torch.float32, device="cuda")
                 part = (x @ q) @ q.T
@@ -207,8 +226,10 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
             for w, rd in c["readers"].items():
                 edits = [{}] + [{layer: AddRows(arms[a][i : i + 1], [c["pos"]])} for a in names]
                 logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", c["space"], ws)
+                order = {"org_order": feats[c["scene"]]["org locker vs asked pick"],
+                         "alt_order": feats[c["scene"]]["alt locker vs asked pick"]}  # fmt: skip
                 for a, lg in zip(("none", *names), logits, strict=True):
-                    rows.append({"scene": c["scene"], "entity": c["bridge"], "reader": w, "arm": a,
+                    rows.append({"scene": c["scene"], "entity": c["bridge"], "reader": w, "arm": a, **order,
                                  **{f"share_{s}": round(shares[s][i], 5) for s in md["remove"]}, **X.read_row(lg, rd, digits)})  # fmt: skip
     X.write_jsonl(out / "outcomes.jsonl", rows)
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")  # with the PCA dictionary's record (grid)
@@ -291,17 +312,101 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     return out
 
 
+TWO_ROUTES_PARTS = ("jpp", "Alf", "jppAlf")
+ORDER_GROUPS = ("all", "before", "after")  # the original bridge's locker sentence vs the asked pick
+
+
+def two_routes_cells(rows: list[dict], n_boot: int = X.N_BOOT) -> dict[str, dict]:
+    """Batch 45g: per reader and sentence-order group, each part's extra loss (switches lost without it minus without its
+    random part, over the whole change's switches) with its cluster-bootstrap interval; the union's minus the larger
+    single removal and the union's minus J++, on the same resamples. Key 'reader|group'."""
+    out = {}
+    arms = ("whole", *(f"no_{p}" for p in TWO_ROUTES_PARTS), *(f"no_{p}_rand" for p in TWO_ROUTES_PARTS))
+    for w in X.READERS:
+        for grp in ORDER_GROUPS:
+            mine = [r for r in rows if r["reader"] == w and (grp == "all" or r["org_order"] == grp)]
+            scenes = sorted({r["scene"] for r in mine})
+            if not scenes:
+                continue
+            got = {(r["scene"], r["arm"]): r["switched"] for r in mine}
+            ent = {r["scene"]: r["entity"] for r in mine}
+            sw = {a: [got[(s, a)] for s in scenes] for a in arms}
+            r_ = X.resampled_rates(sw, [ent[s] for s in scenes], n_boot)
+            s = {a: float(np.mean(sw[a])) for a in arms}
+            ex = {p: (float(X.dependence(s["whole"], s[f"no_{p}"]) - X.dependence(s["whole"], s[f"no_{p}_rand"])),
+                      X.dependence(r_["whole"], r_[f"no_{p}"]) - X.dependence(r_["whole"], r_[f"no_{p}_rand"]))
+                  for p in TWO_ROUTES_PARTS}  # fmt: skip
+            larger = max(("jpp", "Alf"), key=lambda p: ex[p][0])
+            cell = {"n": len(scenes), "switched_whole": int(sum(sw["whole"])), "S_whole": s["whole"],
+                    **{p: [ex[p][0], *X.interval(ex[p][1])] for p in TWO_ROUTES_PARTS}, "larger_single": larger,
+                    "both_minus_larger": [ex["jppAlf"][0] - ex[larger][0], *X.interval(ex["jppAlf"][1] - ex[larger][1])],
+                    "both_minus_jpp": [ex["jppAlf"][0] - ex["jpp"][0], *X.interval(ex["jppAlf"][1] - ex["jpp"][1])]}  # fmt: skip
+            out[f"{w}|{grp}"] = cell
+    return out
+
+
+def rule_45g(cells: dict[str, dict]) -> dict[str, bool]:
+    """One run's (model x scene set) clauses of batch 45g's rules, fixed in advance (jobs/c3/batch45.yaml):
+    (a) in locker-before scenes the recall's extra loss with both removed >= 0.3 and >= 0.2 above the larger single
+    removal, that difference's paired CI excluding 0; (b) in locker-after scenes J++ alone >= 0.3 and adding the pointer
+    adds < 0.1. Rule (a) holds for the batch on at least 3 of 4 models (score45g counts)."""
+    b, a = cells.get(f"{X.RECALL}|before"), cells.get(f"{X.RECALL}|after")
+    rule_a = bool(b) and b["jppAlf"][0] >= 0.3 and b["both_minus_larger"][0] >= 0.2 and b["both_minus_larger"][1] > 0
+    rule_b = bool(a) and a["jpp"][0] >= 0.3 and a["both_minus_jpp"][0] < 0.1
+    return {"a": bool(rule_a), "b": bool(rule_b)}
+
+
+def stage_score45g(names: list[str], n_boot: int = X.N_BOOT) -> Path:
+    """Batch 45g over its runs (one per model and scene set): the cells per run, each run's clauses, and per scene set
+    the count of models where (a) and (b) hold. Unsealed only after Dan's predictions are committed."""
+    out = RESULTS / f"score45g-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
+    lines = ["# Batch 45g: two routes for the recall? (scored against the rules fixed in advance)", "",
+             "| run | model | scene set | reader | order | n | without J++ | without the pointer | without both | both − larger single | both − J++ |",
+             "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    blob, count = {}, collections.defaultdict(lambda: {"a": 0, "b": 0, "models": 0})
+    for name in names:
+        m = json.loads((RESULTS / name / "manifest.json").read_text())
+        cells = two_routes_cells(X.read_jsonl(RESULTS / name / "outcomes.jsonl"), n_boot)
+        clauses, scene_set = rule_45g(cells), ("two people swap" if m["alt"] == "cf" else "only the asked pick")
+        blob[name] = {"model": m["model"]["target"], "scene_set": scene_set, "cells": cells, "clauses": clauses}
+        count[scene_set]["models"] += 1
+        for k in ("a", "b"):
+            count[scene_set][k] += clauses[k]
+        for key, c in cells.items():
+            w, grp = key.split("|")
+            lines.append(f"| {name} | {m['model']['target']} | {scene_set} | {'lookup' if w == X.LOOKUP else 'recall'} | "
+                         f"{grp} | {c['n']} | {ci(c['jpp'])} | {ci(c['Alf'])} | {ci(c['jppAlf'])} | "
+                         f"{ci(c['both_minus_larger'])} ({c['larger_single']}) | {ci(c['both_minus_jpp'])} |")  # fmt: skip
+    lines += ["", "Rule (a) holds on a scene set if at least 3 of 4 models meet its clause; rule (b)'s count of models is "
+              "reported (the brief does not say how many models it needs).", ""]  # fmt: skip
+    for scene_set, c in count.items():
+        lines.append(f"- {scene_set}: (a) {c['a']} of {c['models']} models -> {'HOLDS' if c['a'] >= 3 else 'does not hold'};"
+                     f" (b) {c['b']} of {c['models']} models.")  # fmt: skip
+    (out / "score.json").write_text(json.dumps({"runs": blob, "count": count}, indent=1) + "\n")
+    (out / "score.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["run", "verdict"])
-    ap.add_argument("--name", required=True)
+    ap.add_argument("stage", choices=["run", "verdict", "score45g"])
+    ap.add_argument("--name", help="run / verdict: the run name")
+    ap.add_argument("--names", nargs="+", default=[], help="score45g: the batch-45g runs")
     ap.add_argument("--single", default="x0_single_27b_r2")
     ap.add_argument("--states", default="x0_probe_v4_27b")
     ap.add_argument("--mode", choices=list(MODES), default="main")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
+    if a.stage == "score45g":
+        stage_score45g(a.names, a.n_boot)
+        return
     if a.stage == "run":
         stage_run(a.name, a.single, a.states, a.mode)
+        if a.mode in ALL_ITEMS:  # batch 45: sealed until Dan's predictions are committed; scored by score45g
+            return
     stage_verdict(a.name, a.n_boot)
 
 

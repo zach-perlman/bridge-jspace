@@ -45,6 +45,17 @@ def test_filler_lengths_leave_out_a_bos():
     assert all(n[f] == len(f.split()) for f in W.FILLERS)
 
 
+def test_real_doses_read_the_latest_recall_stage(tmp_path, monkeypatch):
+    """45c: a dose d writes s = d x the pair's s*; s* comes from the newest recall stage of the named x8 run."""
+    monkeypatch.setattr(W, "RESULTS", tmp_path)
+    for stamp, s12 in (("20261026T100000Z", 9.0), ("20261026T120000Z", 2.43)):
+        (tmp_path / "run" / f"recall-{stamp}").mkdir(parents=True)
+        (tmp_path / "run" / f"recall-{stamp}" / "recall.json").write_text(
+            json.dumps({"s_real": {"0-1": 1.5, "1-2": s12}})
+        )
+    assert W.real_doses("run") == {"0-1": 1.5, "1-2": 2.43}
+
+
 def _write(tmp_path, monkeypatch, rows, manifest):
     monkeypatch.setattr(W, "RESULTS", tmp_path)
     src = tmp_path / "fake"

@@ -92,7 +92,25 @@ def eligible(model, gate_min: float, n: int):
     return (ok[:n] if gate["pass"] else []), gate, ws, digits
 
 
-def stage_run(name: str, s_list: tuple[float, ...], rand_s: tuple[float, ...], halfway: bool, gate_min: float) -> Path:
+def real_doses(dose_from: str) -> dict[str, float]:
+    """Batch 45c: each slot pair's s* ('j-k', j < k) from an x8 run's recall stage: the s at which a write reaches the
+    median norm of a real pointer change; a dose d then writes s = d s*."""
+    found = sorted((RESULTS / dose_from).glob("recall-*/recall.json"))
+    assert found, f"{dose_from}: no recall stage (s*) to scale the doses by"
+    return {k: float(v) for k, v in json.loads(found[-1].read_text())["s_real"].items()}
+
+
+def stage_run(
+    name: str,
+    s_list: tuple[float, ...],
+    rand_s: tuple[float, ...],
+    halfway: bool,
+    gate_min: float,
+    pairs: tuple[tuple[int, int], ...] | None = None,
+    dose_from: str | None = None,
+) -> Path:
+    """--pairs: write only these (j, k) moves (batch 45c: the second and third slots); --dose-from: s and rand_s are
+    doses, multiples of each pair's s* from that x8 run (the row keeps the dose and the s written)."""
     import torch
 
     from bridge_jspace.model import load_model
@@ -110,6 +128,8 @@ def stage_run(name: str, s_list: tuple[float, ...], rand_s: tuple[float, ...], h
          "model": pins.model_pin(), "code": git_state(), "layer": layer, "stage": "halfway" if halfway else "write",
          "s": list(s_list), "rand_s": [] if halfway else list(rand_s), "gate": gate_min, "gate_fixed_in_advance": X.GATE,
          "mu_from": R.STATES[target], "seeds": {"scenes": R.SEED, "random_directions": RAND_SEED},
+         "pairs": [list(p) for p in pairs] if pairs else None, "dose_from": dose_from,
+         "s_star": real_doses(dose_from) if dose_from else None,
          "note": "batch 44 (Dan 26 Oct ~13:00); results closed until its answers"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
@@ -137,12 +157,13 @@ def stage_run(name: str, s_list: tuple[float, ...], rand_s: tuple[float, ...], h
                     far = 2 - j
                     arms += [("halfway", None, s, s * (mu[far] - mu[j]) / 2) for s in s_list]
             else:
-                for k in (x for x in SLOTS if x != j):
+                for k in (x for x in SLOTS if x != j and (pairs is None or (j, x) in pairs)):
                     step = mu[k] - mu[j]
-                    arms += [("write", k, s, s * step) for s in s_list]
+                    star = m["s_star"][f"{min(j, k)}-{max(j, k)}"] if dose_from else 1.0
+                    arms += [("write", k, s, s * star * step) for s in s_list]
                     for s in rand_s:
                         r = torch.randn(step.shape[0], generator=gen).to("cuda")
-                        arms.append(("random", k, s, r / r.norm() * (s * step).norm()))
+                        arms.append(("random", k, s, r / r.norm() * (s * star * step).norm()))
             for w, rd in c["readers"].items():
                 edits = [{}] + [{layer: AddRows(vec[None], [c["pos"]])} for *_, vec in arms]
                 logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", c["space"], ws)
@@ -150,6 +171,8 @@ def stage_run(name: str, s_list: tuple[float, ...], rand_s: tuple[float, ...], h
                     top = int(lg.argmax())
                     row = {"scene": c["scene"], "entity": c["bridge"], "reader": w, "kind": kind, "j": j, "k": k, "s": s,
                            "top": top, "norm": None if vec is None else round(float(vec.norm()), 4)}  # fmt: skip
+                    if dose_from and k is not None:  # s is the dose; the s written is dose x s*
+                        row["s_written"] = round(s * m["s_star"][f"{min(j, k)}-{max(j, k)}"], 4)
                     if w == X.LOOKUP:
                         row["class"] = classify(top, tokens, j, None if kind == "halfway" else k)
                     else:
@@ -619,10 +642,14 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--filler-tokens", nargs=2, type=int, default=[10, 12], metavar=("LO", "HI"),
                     help="order: the fillers' length window (Muse: 8 16, Dan ~16:40; no filler of 10-12 tokens)")  # fmt: skip
+    ap.add_argument("--pairs", nargs="+", default=None, metavar="J-K", help="run: only these slot moves (45c: 1-2 2-1)")
+    ap.add_argument("--dose-from", default=None, help="run: --s / --rand-s are doses x each pair's s* from this x8 run")
     a = ap.parse_args()
     if a.stage == "run":
-        stage_run(a.name, tuple(a.s), tuple(a.rand_s), a.halfway, a.gate)
-        stage_verdict(a.name, a.n_boot)
+        pairs = tuple(tuple(int(v) for v in p.split("-")) for p in a.pairs) if a.pairs else None
+        stage_run(a.name, tuple(a.s), tuple(a.rand_s), a.halfway, a.gate, pairs, a.dose_from)  # type: ignore[arg-type]
+        if pairs is None and a.dose_from is None:  # batch 45c's writes stay sealed until Dan's predictions
+            stage_verdict(a.name, a.n_boot)
     elif a.stage == "verdict":
         stage_verdict(a.name, a.n_boot)
     elif a.stage == "order":
