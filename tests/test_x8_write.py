@@ -35,6 +35,7 @@ def test_cells_45c_reads_only_the_second_third_moves():
     assert got["n"] == 40
     assert got["position"]["whole"] == 1.0 and got["position"]["no_alf"] == 0.25
     assert got["halves"] and got["keep_015"] and got["found"]
+    assert got["rand_cut"][0] == 0.0 and not got["rand_halves"]  # the random part keeps every position answer
 
 
 def test_slots_and_classes():

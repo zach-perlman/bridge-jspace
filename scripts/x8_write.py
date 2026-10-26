@@ -559,8 +559,11 @@ def cells_45c(rows: list[dict], cases: dict[str, dict], n_boot: int = X.N_BOOT) 
     cut = [share["whole"] - share["no_alf"], *X.interval(r_["whole"] - r_["no_alf"])]
     halves = share["no_alf"] <= share["whole"] / 2 and cut[1] > 0
     keep = share["keep_alf"] >= 0.15
+    # beside the rule (Dan 26 Oct ~21:20, not in it): the same clause for the random part of the basis' share
+    rand_cut = [share["whole"] - share["no_alf_rand"], *X.interval(r_["whole"] - r_["no_alf_rand"])]
+    rand_halves = share["no_alf_rand"] <= share["whole"] / 2 and rand_cut[1] > 0
     return {"n": len(mine), "position": share, "cut": cut, "halves": bool(halves), "keep_015": bool(keep),
-            "found": bool(halves and keep)}  # fmt: skip
+            "found": bool(halves and keep), "rand_cut": rand_cut, "rand_halves": bool(rand_halves)}  # fmt: skip
 
 
 def stage_score45c(routes: list[str], writes: list[str], n_boot: int = X.N_BOOT) -> Path:
@@ -571,8 +574,8 @@ def stage_score45c(routes: list[str], writes: list[str], n_boot: int = X.N_BOOT)
     out.mkdir()
     f = lambda v: f"{v:.2f}"  # noqa: E731
     lines = ["# Batch 45c: second vs third (scored against the rule fixed in advance)", "",
-             "| routes run | n | position: whole / without / random part / only it / only a random part | cut [CI] | halves | keep >= 0.15 | found |",
-             "|---|---|---|---|---|---|---|"]  # fmt: skip
+             "| routes run | n | position: whole / without / random part / only it / only a random part | cut [CI] | halves | random part's cut [CI] | random part halves | keep >= 0.15 | found |",
+             "|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     blob, found = {}, 0
     for run in routes:
         src = R.RESULTS / run
@@ -580,14 +583,15 @@ def stage_score45c(routes: list[str], writes: list[str], n_boot: int = X.N_BOOT)
         c = cells_45c(X.read_jsonl(src / "outcomes.jsonl"), cases, n_boot)
         blob[run] = c
         if not c["n"]:
-            lines.append(f"| {run} | 0 | – | – | – | – | – |")
+            lines.append(f"| {run} | 0 | – | – | – | – | – | – | – |")
             continue
         found += c["found"]
-        p = c["position"]
+        p, rc = c["position"], c["rand_cut"]
         lines.append(f"| {run} | {c['n']} | {f(p['whole'])} / {f(p['no_alf'])} / {f(p['no_alf_rand'])} / {f(p['keep_alf'])} / "
                      f"{f(p['keep_alf_rand'])} | {f(c['cut'][0])} [{f(c['cut'][1])}, {f(c['cut'][2])}] | {c['halves']} | "
-                     f"{c['keep_015']} | {c['found']} |")  # fmt: skip
-    lines += ["", f"Found on {found} of {len(routes)} models (Q45.6: all three / one or two / none).", "",
+                     f"{f(rc[0])} [{f(rc[1])}, {f(rc[2])}] | {c['rand_halves']} | {c['keep_015']} | {c['found']} |")  # fmt: skip
+    lines += ["", f"Found on {found} of {len(routes)} models (Q45.6: all three / one or two / none). The random part's "
+              "cut and halves are beside the rule, not in it (Dan 26 Oct ~21:20).", "",
               "## The writes between the second and third slot (descriptive)", "",
               "| write run | move | kind | dose | n | target share |", "|---|---|---|---|---|---|"]  # fmt: skip
     for run in writes:
