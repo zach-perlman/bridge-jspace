@@ -1,0 +1,25 @@
+id: x45i_main_27b_g75
+title: "Batch 45i (27b): the main test without the chat template (nochat, digit read), at L32"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.4
+depends_on: [x45_0_indep_9b]
+command: >-
+  BJ_GATE=0.75 uv run python scripts/x0_necessity.py run --name x45i_main_nochat_27b_g75 --set d1_topics_v3 --renderings nochat --read digit --layers 32 --descriptive --why "45i main test without the chat template at gate 0.75 (Dan 27 Oct ~00:20): descriptive, after the data; both models missed 0.80 by 0.03-0.04"
+question: >-
+  Without the chat template (no template, thinking off; read at the first digit token of 8 greedy tokens), does the split
+  hold: recall needs J++, the lookup does not?
+why_it_matters: The TA's question; every result so far is under the chat template.
+hypotheses:
+  H-batch45: 'Q45.8 in docs/predictions_batch45.md (committed before any result is opened)'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45i): the split and "never the value" hold if the gap stays at least 0.2 and
+  the value share stays at 0 (the value share from the routes C2 jobs x45i_routes_*). X0's read gate (0.80 per reader)
+  applies; a missed gate is recorded as "gate failed (x.xx)", with no lowered rerun. On 24 Oct the same rendering missed
+  it (9B recall 0.76, 27B lookup 0.77).
+controls:
+- 'a random part of the J++ part share'
+n: '200 items at the layer fixed in advance'
+seeds: [0]
+notes: "Descriptive, after the data (Dan 27 Oct ~00:20): the same run with the read gate lowered to 0.75 (BJ_GATE), queued after the 122B block so it runs only if the box idles; Q45.8 stays scored as not tested (gate)."
