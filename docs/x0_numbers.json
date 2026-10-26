@@ -17823,6 +17823,10 @@
   "text": "0.33",
   "source": "predictions/README.md"
  },
+ "x8_sreal_9b": {
+  "text": "9B 1.36 to 2.70",
+  "source": "results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json"
+ },
  "x8_sreal_min_9b": {
   "text": "1.36",
   "source": "results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json"
@@ -17834,6 +17838,30 @@
  "x8_same_legs_9b": {
   "text": "93 of 600",
   "source": "results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json"
+ },
+ "x8_sreal_27b": {
+  "text": "27B 1.04 to 2.08",
+  "source": "results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json"
+ },
+ "x8_sreal_min_27b": {
+  "text": "1.04",
+  "source": "results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json"
+ },
+ "x8_sreal_max_27b": {
+  "text": "2.08",
+  "source": "results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json"
+ },
+ "x8_same_legs_27b": {
+  "text": "95 of 600",
+  "source": "results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json"
+ },
+ "x8_sreal_122b": {
+  "text": "122B not landed",
+  "source": "results/x8_write/qwen35_122b_x8_write_g75"
+ },
+ "x8_sreal_muse": {
+  "text": "Muse not landed",
+  "source": "results/x8_write/muse30b_x8_write"
  },
  "tptr_pooled_9b": {
   "text": "0.11 [0.08, 0.13]",

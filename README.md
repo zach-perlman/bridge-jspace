@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 1492af3f from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 4443aaa2 from the run files.
 
 ## Setup
 
@@ -123,7 +123,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - The 27B's strict rule: lookup lost 0.14 [0.08, 0.20] (bar 0.10).
 - The 9B's fixed-in-advance replication: its J++ clause failed (recall 0.12 [0.06, 0.19]).
 - The gap everywhere: the 122B's varied scenes (0.15 [0.12, 0.18], every format alike) and the 27B's natural passages (0.27 [0.13, 0.41]) are in between.
-- Writing the pointer: the dose fixed in advance (s = 1) was below a real pointer change's size on every slot pair (9B: s = 1.36 to 2.70 needed); a design error, not a finding.
+- Writing the pointer: the dose fixed in advance, s = 1, was below a real pointer change's size on every slot pair (s needed: 9B 1.36 to 2.70; 27B 1.04 to 2.08; 122B not landed; Muse not landed); a design error, not a finding.
 - The locker number at the bridge word: never the answer; digit directions cost 0.00. The positive control (chemical symbols) stayed below its 0.20 bar: 27B 0.15 [0.10, 0.19].
 - Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup 0.78), the 122B's routes (recall 0.797) and replication (recall 0.77); their reruns at 0.75 are after the data, descriptive, none a confirmation. The 122B in FP8.
 - One-token answers (and one-token bridges in natural passages). The reader is confounded with the answer's source (prompt vs memory); Zach's M − K addresses it for the knock-out, not for these swaps.
@@ -144,9 +144,9 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ![Writing the pointer: one fixed vector per slot pair, against a random direction; batch 44, the 9B so far](figures/story/fig8_writes.png)
 
-- **Follow-up: answers by sampling.** Read the answer by sampling, not the top token, to see whether the split holds over the answer distribution.
-- **Follow-up: routes and pointer tests without the chat template.** The main test without the template exists for the 9B and the 27B only; the routes test and the pointer directions have not been run without it.
-- **Follow-up: OLMo checkpoints.** The same tests across OLMo's training checkpoints, to see when the pointer appears.
+- **Follow-up: answers by sampling**, not the top token.
+- **Follow-up: the routes and pointer tests without the chat template** (the main test has it on the 9B and 27B).
+- **Follow-up: OLMo checkpoints**, to see when in training the pointer appears.
 - **Later.** New datasets; intermediates in reasoning traces; DeepSeek-V4-Flash, which needs about four H200-class GPUs or native FP4, and its lens's residual stream named.
 
 ## Appendix A. Key numbers

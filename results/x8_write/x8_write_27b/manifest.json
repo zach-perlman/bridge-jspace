@@ -1,0 +1,48 @@
+{
+  "exp": "x8_write",
+  "run": "x8_write_27b",
+  "written_utc": "2026-10-26T12:44:29Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "2a9a586dca043335c7bdecc21bc850305d3ef8a8",
+    "dirty": true
+  },
+  "layer": 32,
+  "stage": "write",
+  "s": [
+    1,
+    2,
+    4
+  ],
+  "rand_s": [
+    1,
+    4
+  ],
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "mu_from": "x0_probe_v4_27b",
+  "seeds": {
+    "scenes": 2510,
+    "random_directions": 4401
+  },
+  "note": "batch 44 (Dan 26 Oct ~13:00); results closed until its answers",
+  "items": 300,
+  "norms": {
+    "step": {
+      "0-1": 13.5685,
+      "0-2": 16.787,
+      "1-0": 13.5685,
+      "1-2": 8.394,
+      "2-0": 16.787,
+      "2-1": 8.394
+    },
+    "median_U_UT_delta_C2": 17.4325
+  }
+}

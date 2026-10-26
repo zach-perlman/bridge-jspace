@@ -123,7 +123,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - The 27B's strict rule: lookup lost {{num|lk_excess_27b}} (bar 0.10).
 - The 9B's fixed-in-advance replication: its J++ clause failed (recall {{num|rep_jpp_rc_excess_9b}}).
 - The gap everywhere: the 122B's varied scenes ({{num|x0b_c_122b}}, every format alike) and the 27B's natural passages ({{num|nat_gap_27b}}) are in between.
-- Writing the pointer: the dose fixed in advance (s = 1) was below a real pointer change's size on every slot pair (9B: s = {{num|x8_sreal_min_9b}} to {{num|x8_sreal_max_9b}} needed); a design error, not a finding.
+- Writing the pointer: the dose fixed in advance, s = 1, was below a real pointer change's size on every slot pair (s needed: {{num|x8_sreal_9b}}; {{num|x8_sreal_27b}}; {{num|x8_sreal_122b}}; {{num|x8_sreal_muse}}); a design error, not a finding.
 - The locker number at the bridge word: never the answer; digit directions cost {{num|dig_lk_jppdig_k10_before_27b}}. The positive control (chemical symbols) stayed below its 0.20 bar: 27B {{num|x4_D_elements_27b}}.
 - Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup {{num|nat_gate_lk_9b}}), the 122B's routes (recall {{num|rt_c0gate_rc_122b}}) and replication (recall {{num|rep_gate_rc_122b}}); their reruns at 0.75 are after the data, descriptive, none a confirmation. The 122B in FP8.
 - One-token answers (and one-token bridges in natural passages). The reader is confounded with the answer's source (prompt vs memory); Zach's M − K addresses it for the knock-out, not for these swaps.
@@ -144,9 +144,9 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ![Writing the pointer: one fixed vector per slot pair, against a random direction; batch 44, the 9B so far](figures/story/fig8_writes.png)
 
-- **Follow-up: answers by sampling.** Read the answer by sampling, not the top token, to see whether the split holds over the answer distribution.
-- **Follow-up: routes and pointer tests without the chat template.** The main test without the template exists for the 9B and the 27B only; the routes test and the pointer directions have not been run without it.
-- **Follow-up: OLMo checkpoints.** The same tests across OLMo's training checkpoints, to see when the pointer appears.
+- **Follow-up: answers by sampling**, not the top token.
+- **Follow-up: the routes and pointer tests without the chat template** (the main test has it on the 9B and 27B).
+- **Follow-up: OLMo checkpoints**, to see when in training the pointer appears.
 - **Later.** New datasets; intermediates in reasoning traces; DeepSeek-V4-Flash, which needs about four H200-class GPUs or native FP4, and its lens's residual stream named.
 
 ## Appendix A. Key numbers

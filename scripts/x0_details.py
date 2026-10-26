@@ -554,10 +554,15 @@ X8 = {"9b": "qwen35_9b_x8_write", "27b": "x8_write_27b", "122b": "qwen35_122b_x8
 def x8_numbers(num: Numbers) -> None:
     """Batch 44 (x8_write recall stage, after the data): the dose s* at which a write reaches the median norm of a real
     pointer change (min / max over the slot pairs), and the writes whose target item has the original's legs."""
+    label = {"9b": "9B", "27b": "27B", "122b": "122B", "muse": "Muse"}
     for m, run in X8.items():
         found = sorted((pins.RESULTS_DIR / "x8_write" / run).glob("recall-*/recall.json"))
-        if not found:  # not landed
+        if not found:  # not landed: the README's per-model list says so
+            num.add(f"x8_sreal_{m}", f"{label[m]} not landed", f"results/x8_write/{run}")
             continue
+        b = json.loads(found[-1].read_text())
+        num.add(f"x8_sreal_{m}", f"{label[m]} {f2(min(b['s_real'].values()))} to {f2(max(b['s_real'].values()))}",
+                str(found[-1].relative_to(pins.REPO_ROOT)))  # fmt: skip
         b = json.loads(found[-1].read_text())
         src = str(found[-1].relative_to(pins.REPO_ROOT))
         num.add(f"x8_sreal_min_{m}", f2(min(b["s_real"].values())), src)

@@ -1,0 +1,38 @@
+{
+ "run": "x8_write_27b",
+ "after_the_data": true,
+ "cases_from": "x6_routes_27b",
+ "changed_by_item": {
+  "random|4": {
+   "other": 1,
+   "target": 2
+  },
+  "write|1": {
+   "other": 3,
+   "target": 1
+  },
+  "write|2": {
+   "target": 16,
+   "other": 7,
+   "third": 3
+  },
+  "write|4": {
+   "target": 55,
+   "other": 7,
+   "third": 6
+  }
+ },
+ "same_legs": [
+  95,
+  600
+ ],
+ "s_real": {
+  "0-1": 1.2847772414047243,
+  "0-2": 1.0384523738607256,
+  "1-0": 1.2847772414047243,
+  "1-2": 2.0767810340719564,
+  "2-0": 1.0384523738607256,
+  "2-1": 2.0767810340719564
+ },
+ "median_real": 17.4325
+}
