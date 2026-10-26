@@ -223,8 +223,9 @@ def test_the_matcher_passes_the_canonical_strings(text):
 @pytest.fixture(scope="module")
 def figure_texts(tmp_path_factory) -> dict[str, list[str]]:
     """Every text drawn on every figure the README or docs/x0_details.md shows, by figure: the README figures (Figs.
-    0-11, 1b and 8b), the supplementary ones, x0_figures' and x0_status_pack's f6. Rendered from the run files with
-    savefig caught, so nothing is written (the scripts' data.csv go to a temporary folder)."""
+    0-11, 1b and 3b), the supplementary ones, x0_figures' and x0_status_pack's f6. Rendered from the run files with
+    savefig caught, so nothing is written (the scripts' data.csv and Fig. 11's scorecard.csv go to a temporary
+    folder)."""
     import matplotlib
     from matplotlib.figure import Figure
     from matplotlib.text import Text
@@ -250,9 +251,8 @@ def figure_texts(tmp_path_factory) -> dict[str, list[str]]:
                                  (FC, "RECALL", FC.RECALL)):  # fmt: skip
             mp.setattr(mod, name, value)  # restored on exit: the renders below set them
         p = S.setup()
-        for f in (*F.README_FIGS, F.s01_split, F.s02_parts, F.s05_routes, F.s10_removed_together):
+        for f in (*F.README_FIGS, *F.SUPP_FIGS):
             f(p)
-        F.f08b_layout(p, draft=False)
         XF.render(tmp / "x0_necessity")
         SP.render(tmp / "status", ["f6"])
     return texts
@@ -261,8 +261,9 @@ def figure_texts(tmp_path_factory) -> dict[str, list[str]]:
 def test_every_shown_figure_uses_the_glossary(figure_texts):
     from scripts import readme_story_figures as F
 
-    # the README's figures, Fig. 8b, and the second contact sheet's (supplementary + docs/x0_details.md's)
-    shown = {*F.README_NAMES, "fig08b_layout", *(Path(n).name for n in F.SHEET_MORE)}
+    # the README's figures (Fig. 8b is Fig. 8 (a) since batch 45) and the second contact sheet's (supplementary +
+    # docs/x0_details.md's)
+    shown = {*F.README_NAMES, *(Path(n).name for n in F.SHEET_MORE)}
     assert shown <= set(figure_texts), shown - set(figure_texts)
     flat = [(name, t) for name, ts in figure_texts.items() for t in ts]
     assert not banned(flat), banned(flat)

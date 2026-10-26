@@ -1,0 +1,77 @@
+claim,model,cell,flag,data.csv key
+main test,Qwen3.5-9B,ok,,numbers:contrast_9b
+main test,Qwen3.6-27B,~,,numbers:contrast_27b
+main test,Qwen3.5-122B,ok,,numbers:contrast_122b
+main test,Muse Glimmer 30B,ok,,numbers:contrast_muse
+locker before the pick,Qwen3.5-9B,ok,a,numbers:sbo_swap_before_gap_9b
+locker before the pick,Qwen3.6-27B,~,a,numbers:sbo_swap_before_gap_27b
+locker before the pick,Qwen3.5-122B,x,a,numbers:sbo_swap_before_gap_122b
+locker before the pick,Muse Glimmer 30B,ok,a,numbers:sbo_swap_before_gap_muse
+clean one-pick scenes,Qwen3.5-9B,x,,numbers:x45m_before_gap_9b
+clean one-pick scenes,Qwen3.6-27B,ok,,numbers:x45m_before_gap_27b
+clean one-pick scenes,Qwen3.5-122B,-,,
+clean one-pick scenes,Muse Glimmer 30B,ok,,numbers:x45m_before_gap_muse
+logit difference,Qwen3.5-9B,ok,,numbers:ld_gap_9b
+logit difference,Qwen3.6-27B,ok,,numbers:ld_gap_27b
+logit difference,Qwen3.5-122B,ok,,numbers:ld_gap_122b
+logit difference,Muse Glimmer 30B,ok,,numbers:ld_gap_muse
+varied scenes,Qwen3.5-9B,ok,,numbers:x0b_c_9b
+varied scenes,Qwen3.6-27B,ok,,numbers:x0b_c_27b
+varied scenes,Qwen3.5-122B,~,,numbers:x0b_c_122b
+varied scenes,Muse Glimmer 30B,ok,,numbers:x0b_c_muse
+natural passages,Qwen3.5-9B,ok,a,numbers:natg75_gap_9b
+natural passages,Qwen3.6-27B,~,,numbers:nat_gap_27b
+natural passages,Qwen3.5-122B,ok,,numbers:nat_gap_122b
+natural passages,Muse Glimmer 30B,-,*,numbers:nat_lk_whole_sw_muse
+never the value,Qwen3.5-9B,ok,,"fig05:another item moved, whole: value share"
+never the value,Qwen3.6-27B,ok,,"fig05:another item moved, whole: value share"
+never the value,Qwen3.5-122B,ok,a,"fig05:another item moved, whole: value share"
+never the value,Muse Glimmer 30B,ok,,"fig05:another item moved, whole: value share"
+never the value without the chat template,Qwen3.5-9B,ok,a,"fig11:routes test without the chat template, another item moved, whole: value share"
+never the value without the chat template,Qwen3.6-27B,ok,a,"fig11:routes test without the chat template, another item moved, whole: value share"
+never the value without the chat template,Qwen3.5-122B,-,,
+never the value without the chat template,Muse Glimmer 30B,-,,
+the lookup needs it,Qwen3.5-9B,ok,,"fig05:another item moved, no_alf: position share"
+the lookup needs it,Qwen3.6-27B,~,a,"fig05:another item moved, no_alf: position share"
+the lookup needs it,Qwen3.5-122B,ok,a,"fig05:another item moved, no_alf: position share"
+the lookup needs it,Muse Glimmer 30B,ok,,"fig05:another item moved, no_alf: position share"
+only it gives position answers,Qwen3.5-9B,ok,,"fig05:another item moved, keep_alf: position share"
+only it gives position answers,Qwen3.6-27B,x,,"fig05:another item moved, keep_alf: position share"
+only it gives position answers,Qwen3.5-122B,ok,a,"fig05:another item moved, keep_alf: position share"
+only it gives position answers,Muse Glimmer 30B,ok,,"fig05:another item moved, keep_alf: position share"
+a write moves the lookup,Qwen3.5-9B,ok,a,"fig07:lookup target share, mean over locker pairs, s = 4"
+a write moves the lookup,Qwen3.6-27B,~,a,"fig07:lookup target share, mean over locker pairs, s = 4"
+a write moves the lookup,Qwen3.5-122B,ok,a,"fig07:lookup target share, mean over locker pairs, s = 4"
+a write moves the lookup,Muse Glimmer 30B,ok,a,"fig07:lookup target share, mean over locker pairs, s = 4"
+the recall follows the write,Qwen3.5-9B,ok,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
+the recall follows the write,Qwen3.6-27B,~,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
+the recall follows the write,Qwen3.5-122B,ok,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
+the recall follows the write,Muse Glimmer 30B,~,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
+"counts mentions, not text position",Qwen3.5-9B,ok,,fig08:(c) neutral sentence B1: the code's shift in positions
+"counts mentions, not text position",Qwen3.6-27B,ok,a,fig08:(c) neutral sentence B1: the code's shift in positions
+"counts mentions, not text position",Qwen3.5-122B,ok,a,fig08:(c) neutral sentence B1: the code's shift in positions
+"counts mentions, not text position",Muse Glimmer 30B,ok,a,fig08:(c) neutral sentence B1: the code's shift in positions
+a pick sentence first moves the lookup to identity,Qwen3.5-9B,ok,a,"fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
+a pick sentence first moves the lookup to identity,Qwen3.6-27B,ok,a,"fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
+a pick sentence first moves the lookup to identity,Qwen3.5-122B,-,,
+a pick sentence first moves the lookup to identity,Muse Glimmer 30B,~,a,"fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
+refit per format,Qwen3.5-9B,ok,,fig09:(b) prose: lookup extra loss without the refit pointer
+refit per format,Qwen3.6-27B,x,,fig09:(b) prose: lookup extra loss without the refit pointer
+refit per format,Qwen3.5-122B,-,,
+refit per format,Muse Glimmer 30B,ok,,fig09:(b) prose: lookup extra loss without the refit pointer
+the pointer fit on simple scenes transfers,Qwen3.5-9B,x,,numbers:tptr_pooled_9b
+the pointer fit on simple scenes transfers,Qwen3.6-27B,x,,numbers:tptr_pooled_27b
+the pointer fit on simple scenes transfers,Qwen3.5-122B,x,,numbers:tptr_pooled_122b
+the pointer fit on simple scenes transfers,Muse Glimmer 30B,x,,numbers:tptr_pooled_muse
+identity outside J++ is specific,Qwen3.5-9B,~,,numbers:x45e_cut_9b
+identity outside J++ is specific,Qwen3.6-27B,~,,numbers:x45e_cut_27b
+identity outside J++ is specific,Qwen3.5-122B,pending,,
+identity outside J++ is specific,Muse Glimmer 30B,x,,numbers:x45e_cut_muse
+"the recall needs only the J++ part, locker after the pick",Qwen3.5-9B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+"the recall needs only the J++ part, locker after the pick",Qwen3.6-27B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+"the recall needs only the J++ part, locker after the pick",Qwen3.5-122B,pending,,
+"the recall needs only the J++ part, locker after the pick",Muse Glimmer 30B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+the link sits in the locker sentences,Qwen3.5-9B,x,,numbers:x45b_sane_c_9b
+the link sits in the locker sentences,Qwen3.6-27B,x,,numbers:x45b_sane_c_27b
+the link sits in the locker sentences,Qwen3.5-122B,-,,
+the link sits in the locker sentences,Muse Glimmer 30B,x,,numbers:x45b_sane_c_muse

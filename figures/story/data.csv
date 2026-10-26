@@ -11,6 +11,10 @@ fig01,qwen3.5-122b-a10b,main test (two people swap picks): gap,0.32,0.2,0.43,,co
 fig01,muse-glimmer-30b,main test (two people swap picks): lookup extra loss,-0.1,-0.15,-0.04,,lk_excess_muse
 fig01,muse-glimmer-30b,main test (two people swap picks): recall extra loss,0.75,0.61,0.87,,rc_excess_muse
 fig01,muse-glimmer-30b,main test (two people swap picks): gap,0.85,0.68,0.98,,contrast_muse
+fig01,qwen3.5-9b,"main test (two people swap picks), locker before the pick: gap",0.34,0.23,0.43,100,sbo_swap_before_gap_9b
+fig01,qwen3.6-27b,"main test (two people swap picks), locker before the pick: gap",0.52,0.4,0.65,101,sbo_swap_before_gap_27b
+fig01,qwen3.5-122b-a10b,"main test (two people swap picks), locker before the pick: gap",0.21,0.1,0.33,85,sbo_swap_before_gap_122b
+fig01,muse-glimmer-30b,"main test (two people swap picks), locker before the pick: gap",0.75,0.51,0.95,92,sbo_swap_before_gap_muse
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: lookup extra loss",-0.05,-0.07,-0.03,,ld_lk_9b
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: recall extra loss",0.43,0.37,0.48,,ld_rc_9b
 fig01b,qwen3.5-9b,"main test (two people swap picks), scored on the logit difference: gap",0.48,0.42,0.53,,ld_gap_9b
@@ -23,18 +27,15 @@ fig01b,qwen3.5-122b-a10b,"main test (two people swap picks), scored on the logit
 fig01b,muse-glimmer-30b,"main test (two people swap picks), scored on the logit difference: lookup extra loss",-0.03,-0.05,-0.02,,ld_lk_muse
 fig01b,muse-glimmer-30b,"main test (two people swap picks), scored on the logit difference: recall extra loss",0.58,0.49,0.65,,ld_rc_muse
 fig01b,muse-glimmer-30b,"main test (two people swap picks), scored on the logit difference: gap",0.61,0.52,0.68,,ld_gap_muse
-fig01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.02,-0.05,0.02,,single_lk_excess_9b
-fig01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): recall extra loss,0.37,0.29,0.43,,single_rc_excess_9b
-fig01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): gap,0.39,0.3,0.46,,single_contrast_9b
-fig01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): lookup extra loss,0.05,0.01,0.09,,single_lk_excess_27b
-fig01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): recall extra loss,0.61,0.51,0.69,,single_rc_excess_27b
-fig01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): gap,0.56,0.45,0.65,,single_contrast_27b
-fig01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.01,-0.06,0.04,,single_lk_excess_122b
-fig01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): recall extra loss,0.27,0.16,0.36,,single_rc_excess_122b
-fig01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): gap,0.28,0.15,0.39,,single_contrast_122b
-fig01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.01,-0.04,0.0,,single_lk_excess_muse
-fig01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): recall extra loss,0.66,0.53,0.78,,single_rc_excess_muse
-fig01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): gap,0.67,0.53,0.8,,single_contrast_muse
+fig01b,qwen3.5-9b,"clean one-pick scenes, locker before the pick: lookup extra loss",-0.01,-0.03,0.0,,x45m_before_lk_9b
+fig01b,qwen3.5-9b,"clean one-pick scenes, locker before the pick: recall extra loss",0.21,0.13,0.29,,x45m_before_rc_9b
+fig01b,qwen3.5-9b,"clean one-pick scenes, locker before the pick: gap",0.23,0.14,0.31,,x45m_before_gap_9b
+fig01b,qwen3.6-27b,"clean one-pick scenes, locker before the pick: lookup extra loss",0.01,0.0,0.02,,x45m_before_lk_27b
+fig01b,qwen3.6-27b,"clean one-pick scenes, locker before the pick: recall extra loss",0.54,0.43,0.63,,x45m_before_rc_27b
+fig01b,qwen3.6-27b,"clean one-pick scenes, locker before the pick: gap",0.53,0.42,0.62,,x45m_before_gap_27b
+fig01b,muse-glimmer-30b,"clean one-pick scenes, locker before the pick: lookup extra loss",0.05,0.01,0.1,,x45m_before_lk_muse
+fig01b,muse-glimmer-30b,"clean one-pick scenes, locker before the pick: recall extra loss",0.43,0.28,0.6,,x45m_before_rc_muse
+fig01b,muse-glimmer-30b,"clean one-pick scenes, locker before the pick: gap",0.38,0.23,0.54,,x45m_before_gap_muse
 fig01b,qwen3.5-9b,varied scenes: prose / JSON / table: lookup extra loss,0.008805031446540879,-0.005807854239256629,0.02803776873014404,,x0b_lk_excess_9b
 fig01b,qwen3.5-9b,varied scenes: prose / JSON / table: recall extra loss,0.2302158273381295,0.14437833246054607,0.3261264744978109,,x0b_rc_excess_9b
 fig01b,qwen3.5-9b,varied scenes: prose / JSON / table: gap,0.22,0.14,0.31,,x0b_c_9b
@@ -121,6 +122,106 @@ fig03,muse-glimmer-30b,"lookups switched by the whole change, locker sentence be
 fig03,muse-glimmer-30b,"recalls switched by the whole change, locker sentence before the pick",0.5109,0.4104,0.6105,92,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig03,muse-glimmer-30b,"lookups switched by the whole change, locker sentence after the pick",0.0926,0.0511,0.1621,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig03,muse-glimmer-30b,"recalls switched by the whole change, locker sentence after the pick",0.6481,0.5544,0.7317,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.35,0.2584269662921348,0.4320987654320988,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: lookup switches",86,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",0.011627906976744207,-0.035406131479140374,0.07058823529411762,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.6666666666666666,0.576923076923077,0.7580645161290321,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: lookup switches",77,,,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",0.1428571428571429,0.07352941176470595,0.21951219512195108,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.19753086419753085,0.10144468904788113,0.2967075892857143,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: lookup switches",76,,,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",-0.013157894736842257,-0.08333333333333337,0.05882352941176461,85,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: recall extra loss",0.6808510638297873,0.4583333333333336,0.8823529411764707,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: lookup switches",60,,,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker before the pick: lookup extra loss",-0.06666666666666665,-0.12244897959183676,-0.01724137931034497,92,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.21476510067114107,0.13281077157079646,0.2941176470588235,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: lookup switches",150,,,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",-0.013333333333333308,-0.03311349749368854,0.0,151,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.537037037037037,0.4252801724137931,0.6250137665198237,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: lookup switches",197,,,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",0.005076142131979711,0.0,0.017316642894677537,202,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: recall extra loss",0.4285714285714286,0.2820422535211269,0.5999999999999999,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: lookup switches",124,,,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker before the pick: lookup extra loss",0.048387096774193505,0.014814814814814836,0.09615384615384626,143,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.6494845360824743,0.5652173913043479,0.7254901960784313,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-9b,"(b) main test (two people swap picks), locker after the pick: lookup switches",19,,,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.8133333333333334,0.7058823529411766,0.909090909090909,99,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.6-27b,"(b) main test (two people swap picks), locker after the pick: lookup switches",9,,,99,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.40776699029126207,0.25999038461538465,0.5447154471544715,115,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-122b-a10b,"(b) main test (two people swap picks), locker after the pick: lookup switches",13,,,115,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker after the pick: recall extra loss",0.7999999999999999,0.6491228070175438,0.9193548387096773,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,muse-glimmer-30b,"(b) main test (two people swap picks), locker after the pick: lookup switches",10,,,108,results/x0_composition/split-by-order-20261026T173323Z/split.json
+fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.7901234567901234,0.6985627900266883,0.87501495215311,166,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.5-9b,"(b) clean one-pick scenes, locker after the pick: lookup switches",9,,,166,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.8736842105263158,0.8137914131169709,0.9285714285714286,236,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,236,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.8478260869565217,0.7339449541284403,0.933884297520661,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+fig03b,qwen3.5-9b,layer 6: the bridge-word change (lookups switched),0.9166666666666666,0.8,1.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 8: the bridge-word change (lookups switched),0.5277777777777778,0.3333333333333333,0.7241379310344828,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 10: the bridge-word change (lookups switched),0.3611111111111111,0.20454545454545456,0.5365853658536586,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 12: the bridge-word change (lookups switched),0.2777777777777778,0.16279069767441862,0.4,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 6: copy at the locker sentences: every token (lookups switched),0.027777777777777776,0.0,0.09090909090909091,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 8: copy at the locker sentences: every token (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 10: copy at the locker sentences: every token (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 12: copy at the locker sentences: every token (lookups switched),0.3888888888888889,0.25806451612903225,0.5263157894736842,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 6: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 8: copy at the locker sentences: the item's tokens only (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 10: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 12: copy at the locker sentences: the item's tokens only (lookups switched),0.2777777777777778,0.15785361842105267,0.40625,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 6: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 6: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 8: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 8: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 10: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 10: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 12: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.5-9b,layer 12: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+fig03b,qwen3.6-27b,layer 16: the bridge-word change (lookups switched),0.9411764705882353,0.8611111111111112,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 18: the bridge-word change (lookups switched),0.9411764705882353,0.8611111111111112,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 20: the bridge-word change (lookups switched),0.9117647058823529,0.8108108108108109,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 22: the bridge-word change (lookups switched),0.8823529411764706,0.7837837837837838,0.9696969696969697,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 24: the bridge-word change (lookups switched),0.8235294117647058,0.6944444444444444,0.9354838709677419,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 26: the bridge-word change (lookups switched),0.7352941176470589,0.5813953488372093,0.875,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 28: the bridge-word change (lookups switched),0.5,0.36585365853658536,0.6428571428571429,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 30: the bridge-word change (lookups switched),0.4411764705882353,0.3,0.5882352941176471,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 32: the bridge-word change (lookups switched),0.08823529411764706,0.0,0.19444444444444445,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 16: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 18: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 20: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 22: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 24: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 26: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 28: copy at the locker sentences: every token (lookups switched),0.29411764705882354,0.15625,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 30: copy at the locker sentences: every token (lookups switched),0.3235294117647059,0.18518518518518517,0.4418604651162791,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 32: copy at the locker sentences: every token (lookups switched),0.35294117647058826,0.21212121212121213,0.475,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 16: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 18: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 20: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 22: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 24: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 26: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 28: copy at the locker sentences: the item's tokens only (lookups switched),0.29411764705882354,0.15625,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 30: copy at the locker sentences: the item's tokens only (lookups switched),0.29411764705882354,0.15384615384615385,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 32: copy at the locker sentences: the item's tokens only (lookups switched),0.2647058823529412,0.13793103448275862,0.38235294117647056,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 16: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 16: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 18: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 18: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 20: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 20: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 22: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 22: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 24: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 24: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 26: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 26: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 28: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 28: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 30: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 30: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 32: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.6-27b,layer 32: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
 fig05,qwen3.5-9b,"another item moved, whole: identity share",0.48,0.4259790139811488,0.5333333333333333,300,qwen35_9b_x6_routes
 fig05,qwen3.5-9b,"another item moved, whole: position share",0.51,0.4595447389136709,0.5611529144031713,300,qwen35_9b_x6_routes
 fig05,qwen3.5-9b,"another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
@@ -339,50 +440,82 @@ fig07,muse-glimmer-30b,"lookup target share, random direction, s = 4",0.00666666
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the written locker's item,0.4375,,,64,muse30b_x8_write
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the third item,0.25,,,64,muse30b_x8_write
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): other,0.3125,,,64,muse30b_x8_write
-fig08,qwen3.5-9b,"(a) lookup extra loss without the pointer: bridge named first, in its locker sentence",0.6585365853658536,0.5263157894736843,0.7906976744186046,41,x0_first_sentence
-fig08,qwen3.5-9b,"(a) lookup extra loss without the pointer: bridge named first, in a pick sentence",0.23529411764705888,0.05882352941176472,0.4375,17,x0_first_sentence
-fig08,qwen3.5-9b,(a) lookup extra loss without the pointer: another item named first,0.2857142857142857,0.0625,0.5833333333333333,14,x0_first_sentence
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, no sentence: identity share",0.5393,0.4672897196261682,0.6149535809018566,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, no sentence: position share",0.4607,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a neutral sentence: identity share",0.5759,0.515622573757764,0.6407766990291263,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a neutral sentence: position share",0.4241,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, beta vs no sentence: a neutral sentence",0.1543,0.1373361116381282,0.17049010054571048,300,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a pick naming the first-locker item: identity share",0.8901,0.8470588235294118,0.9310344827586207,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a pick naming the first-locker item: position share",0.0628,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a pick naming the first-locker item: original share",0.0471,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, beta vs no sentence: a pick naming the first-locker item",0.3238,0.28921008107117113,0.35397132000406345,300,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a pick naming another locker item: identity share",0.9581,0.9299984076433121,0.9831484213169291,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a pick naming another locker item: position share",0.0419,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, beta vs no sentence: a pick naming another locker item",0.3515,0.25246518872989976,0.44907633866640684,300,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a pick naming an item with no locker: identity share",0.8534,0.8062798394722882,0.8941192032368503,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a pick naming an item with no locker: position share",0.1152,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a pick naming an item with no locker: original share",0.0314,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.5-9b,"45a, beta vs no sentence: a pick naming an item with no locker",0.6915,0.637789643731962,0.7432233799147882,300,x6_routes/qwen35_9b_x6_routes_x45a
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, no sentence: identity share",0.645,0.5889553510565781,0.6995305164319249,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, no sentence: position share",0.355,,,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a neutral sentence: identity share",0.73,0.6700494923857868,0.7845303867403315,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a neutral sentence: position share",0.27,,,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, beta vs no sentence: a neutral sentence",0.1717,0.14921132191004013,0.19564922852794417,300,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming the first-locker item: identity share",0.905,0.8636363636363636,0.9441860465116279,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming the first-locker item: position share",0.035,,,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming the first-locker item: original share",0.06,,,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, beta vs no sentence: a pick naming the first-locker item",0.3743,0.3368836619421569,0.4090360974068972,300,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming another locker item: identity share",0.895,0.845,0.9393939393939394,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming another locker item: position share",0.03,,,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming another locker item: original share",0.075,,,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, beta vs no sentence: a pick naming another locker item",0.2963,0.21931914823381762,0.3742357240109108,300,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming an item with no locker: identity share",0.975,0.9556650246305419,0.994286525974026,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming an item with no locker: position share",0.005,,,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, first-locker moves, whole change, a pick naming an item with no locker: original share",0.02,,,200,x6_routes/x6_routes_x45a_27b
+fig08,qwen3.6-27b,"45a, beta vs no sentence: a pick naming an item with no locker",0.6091,0.5582851312723156,0.6564896653932168,300,x6_routes/x6_routes_x45a_27b
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, no sentence: identity share",0.4724,0.40217247527030137,0.5418507627872658,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, no sentence: position share",0.5226,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, no sentence: original share",0.005,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a neutral sentence: identity share",0.4573,0.39,0.5210566188197766,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a neutral sentence: position share",0.5377,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a neutral sentence: original share",0.005,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, beta vs no sentence: a neutral sentence",0.1839,0.1666672861203952,0.20105486112092805,300,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming the first-locker item: identity share",0.5025,0.43005181347150256,0.5736863675582399,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming the first-locker item: position share",0.3367,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming the first-locker item: original share",0.1608,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, beta vs no sentence: a pick naming the first-locker item",0.6002,0.5508557193409183,0.6489412436980568,300,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming another locker item: identity share",0.593,0.5224719101123596,0.6635975286489132,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming another locker item: position share",0.1357,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming another locker item: original share",0.2714,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, beta vs no sentence: a pick naming another locker item",0.5384,0.48597844154762593,0.588581089140626,300,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming an item with no locker: identity share",0.603,0.5329949238578681,0.6791469074765413,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming an item with no locker: position share",0.2714,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick naming an item with no locker: original share",0.1256,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08,muse-glimmer-30b,"45a, beta vs no sentence: a pick naming an item with no locker",0.8262,0.7795444617299164,0.8738533975801369,300,x6_routes/muse30b_x6_routes_x45a
 fig08,qwen3.5-9b,"(b) routes, position share, whole, moves with the first",0.4412,,,204,x8_write pairs
 fig08,qwen3.5-9b,"(b) routes, position share, keep_alf, moves with the first",0.3824,,,204,x8_write pairs
 fig08,qwen3.5-9b,"(b) routes, position share, whole, moves second ↔ third",0.6562,,,96,x8_write pairs
 fig08,qwen3.5-9b,"(b) routes, position share, keep_alf, moves second ↔ third",0.0,,,96,x8_write pairs
-fig08,qwen3.6-27b,"(a) lookup extra loss without the pointer: bridge named first, in its locker sentence",0.2432432432432433,0.11764705882352944,0.36363636363636365,37,x0_first_sentence
-fig08,qwen3.6-27b,"(a) lookup extra loss without the pointer: bridge named first, in a pick sentence",0.0714285714285714,0.0,0.25,14,x0_first_sentence
-fig08,qwen3.6-27b,(a) lookup extra loss without the pointer: another item named first,0.0,0.0,0.0,19,x0_first_sentence
 fig08,qwen3.6-27b,"(b) routes, position share, whole, moves with the first",0.352,,,196,x8_write pairs
 fig08,qwen3.6-27b,"(b) routes, position share, keep_alf, moves with the first",0.1378,,,196,x8_write pairs
 fig08,qwen3.6-27b,"(b) routes, position share, whole, moves second ↔ third",0.3077,,,104,x8_write pairs
 fig08,qwen3.6-27b,"(b) routes, position share, keep_alf, moves second ↔ third",0.0,,,104,x8_write pairs
-fig08,qwen3.5-122b-a10b,"(a) lookup extra loss without the pointer: bridge named first, in its locker sentence",0.52,0.36,0.6818181818181819,25,x0_first_sentence
-fig08,qwen3.5-122b-a10b,"(a) lookup extra loss without the pointer: bridge named first, in a pick sentence",0.17647058823529416,0.0,0.38888888888888884,17,x0_first_sentence
-fig08,qwen3.5-122b-a10b,(a) lookup extra loss without the pointer: another item named first,0.08333333333333337,0.0,0.30000000000000004,12,x0_first_sentence
 fig08,qwen3.5-122b-a10b,"(b) routes, position share, whole, moves with the first",0.3876,,,209,x8_write pairs
 fig08,qwen3.5-122b-a10b,"(b) routes, position share, keep_alf, moves with the first",0.2967,,,209,x8_write pairs
 fig08,qwen3.5-122b-a10b,"(b) routes, position share, whole, moves second ↔ third",0.3736,,,91,x8_write pairs
 fig08,qwen3.5-122b-a10b,"(b) routes, position share, keep_alf, moves second ↔ third",0.0,,,91,x8_write pairs
-fig08,muse-glimmer-30b,"(a) lookup extra loss without the pointer: bridge named first, in its locker sentence",0.5128205128205128,0.37254901960784315,0.6666666666666667,39,x0_first_sentence
-fig08,muse-glimmer-30b,"(a) lookup extra loss without the pointer: bridge named first, in a pick sentence",0.2142857142857143,0.0,0.4285714285714286,14,x0_first_sentence
-fig08,muse-glimmer-30b,(a) lookup extra loss without the pointer: another item named first,0.0,0.0,0.0,14,x0_first_sentence
 fig08,muse-glimmer-30b,"(b) routes, position share, whole, moves with the first",0.5147,,,204,x8_write pairs
 fig08,muse-glimmer-30b,"(b) routes, position share, keep_alf, moves with the first",0.3824,,,204,x8_write pairs
 fig08,muse-glimmer-30b,"(b) routes, position share, whole, moves second ↔ third",0.6042,,,96,x8_write pairs
 fig08,muse-glimmer-30b,"(b) routes, position share, keep_alf, moves second ↔ third",0.1042,,,96,x8_write pairs
 fig08,qwen3.5-9b,(c) neutral sentence B1: the code's shift in positions,0.14533073818543926,0.1291676157702444,0.1616803155774622,300,qwen35_9b_x8_order
 fig08,qwen3.5-9b,(c) neutral sentence B2: the code's shift in positions,0.15494360286710954,0.13981721307721873,0.16864981959408848,207,qwen35_9b_x8_order
-fig08,qwen3.5-9b,(d) label-free pointer: mean cos^2 with ours,0.3697,,,,qwen35_9b_x7_pcf
 fig08,qwen3.6-27b,(c) neutral sentence B1: the code's shift in positions,0.1701044348423602,0.14990015107303487,0.18949696416329478,300,x8_order_27b
 fig08,qwen3.6-27b,(c) neutral sentence B2: the code's shift in positions,0.1703885354242901,0.15966218220783193,0.1803471149541721,211,x8_order_27b
-fig08,qwen3.6-27b,(d) label-free pointer: mean cos^2 with ours,0.3342,,,,x7_pcf_27b
 fig08,qwen3.5-122b-a10b,(c) neutral sentence B1: the code's shift in positions,0.11068032645523393,0.08998677792717903,0.13200646514768558,300,qwen35_122b_x8_order_g75
 fig08,qwen3.5-122b-a10b,(c) neutral sentence B2: the code's shift in positions,0.2760091235852052,0.25599741406842946,0.29633330097393007,204,qwen35_122b_x8_order_g75
-fig08,qwen3.5-122b-a10b,(d) label-free pointer: mean cos^2 with ours,0.3967,,,,qwen35_122b_x7_pcf
 fig08,muse-glimmer-30b,(c) neutral sentence B1: the code's shift in positions,0.1844956466043368,0.16672959633817938,0.20164912621349554,300,muse30b_x8_order_r2
 fig08,muse-glimmer-30b,(c) neutral sentence B2: the code's shift in positions,0.1673059363766059,0.14916097121872054,0.183447168150923,201,muse30b_x8_order_r2
-fig08,muse-glimmer-30b,(d) label-free pointer: mean cos^2 with ours,0.3248,,,,muse30b_x7_pcf
-fig08,qwen3.5-9b,(d) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0009765625,,,,qwen35_9b_x7_pcf
-fig08,qwen3.6-27b,(d) chance: a random 4-d subspace's mean cos^2 (4 / d),0.00078125,,,,x7_pcf_27b
-fig08,qwen3.5-122b-a10b,(d) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0013020833333333333,,,,qwen35_122b_x7_pcf
-fig08,muse-glimmer-30b,(d) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0006009615384615385,,,,muse30b_x7_pcf
 fig09,qwen3.5-9b,lookup extra loss without J++: simple,0.0,0.0,0.0,,readme_story_figures.transfer_cells
 fig09,qwen3.5-9b,lookup extra loss without the pointer: simple,0.49,0.38,0.59,,readme_story_figures.transfer_cells
 fig09,qwen3.5-9b,lookup extra loss without J++: prose,0.011494252873563204,-0.003637029637029659,0.031914893617021156,,readme_story_figures.transfer_cells
@@ -421,18 +554,52 @@ fig09,muse-glimmer-30b,lookup extra loss without the pointer: json,0.05357142857
 fig09,muse-glimmer-30b,lookup extra loss without J++: table,0.05660377358490565,0.01844975938238642,0.0945273631840795,,readme_story_figures.transfer_cells
 fig09,muse-glimmer-30b,lookup extra loss without the pointer: table,0.12264150943396246,0.07233747044917246,0.17972479676901568,,readme_story_figures.transfer_cells
 fig09,muse-glimmer-30b,lookup extra loss without the pointer: natural,0.25,0.0,0.5,,readme_story_figures.transfer_cells
+fig09,qwen3.5-9b,(b) prose: lookup switches with the whole change,167,,,223,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.5-9b,(b) prose: lookup extra loss without the refit pointer,0.23952095808383245,0.16042654626172936,0.31818181818181823,223,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.5-9b,(b) prose: lookup extra loss without the pointer fit on simple scenes,0.17365269461077848,0.11728395061728392,0.23529411764705888,223,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.5-9b,(b) json: lookup switches with the whole change,51,,,70,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.5-9b,(b) json: lookup extra loss without the refit pointer,0.23529411764705888,0.16216216216216206,0.29999999999999993,70,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.5-9b,(b) json: lookup extra loss without the pointer fit on simple scenes,0.07843137254901966,-0.02941176470588247,0.1694915254237287,70,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.5-9b,(b) table: lookup switches with the whole change,114,,,138,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.5-9b,(b) table: lookup extra loss without the refit pointer,0.1842105263157895,0.1250000000000001,0.2441860465116279,138,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.5-9b,(b) table: lookup extra loss without the pointer fit on simple scenes,0.08771929824561397,0.04166666666666674,0.13953488372093015,138,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+fig09,qwen3.6-27b,(b) prose: lookup switches with the whole change,244,,,383,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,qwen3.6-27b,(b) prose: lookup extra loss without the refit pointer,0.08196721311475397,0.037877764127764314,0.1301393755973238,383,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,qwen3.6-27b,(b) prose: lookup extra loss without the pointer fit on simple scenes,0.07377049180327866,0.04975124378109452,0.09655270376175566,383,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,qwen3.6-27b,(b) json: lookup switches with the whole change,97,,,143,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,qwen3.6-27b,(b) json: lookup extra loss without the refit pointer,0.09278350515463907,0.05263157894736825,0.125,143,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,qwen3.6-27b,(b) json: lookup extra loss without the pointer fit on simple scenes,0.020618556701030855,0.0,0.04347826086956519,143,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,qwen3.6-27b,(b) table: lookup switches with the whole change,229,,,322,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,qwen3.6-27b,(b) table: lookup extra loss without the refit pointer,0.1266375545851529,0.08947147897677159,0.16826923076923073,322,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,qwen3.6-27b,(b) table: lookup extra loss without the pointer fit on simple scenes,0.013100436681222738,0.0,0.027649769585253337,322,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+fig09,muse-glimmer-30b,(b) prose: lookup switches with the whole change,132,,,270,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+fig09,muse-glimmer-30b,(b) prose: lookup extra loss without the refit pointer,0.2272727272727273,0.15555555555555567,0.30827067669172936,270,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+fig09,muse-glimmer-30b,(b) prose: lookup extra loss without the pointer fit on simple scenes,0.18181818181818188,0.11029267021769343,0.2526344707923654,270,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+fig09,muse-glimmer-30b,(b) json: lookup switches with the whole change,29,,,89,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+fig09,muse-glimmer-30b,(b) table: lookup switches with the whole change,79,,,238,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+fig09,muse-glimmer-30b,(b) table: lookup extra loss without the refit pointer,0.4683544303797469,0.3396066517428845,0.6000000000000001,238,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+fig09,muse-glimmer-30b,(b) table: lookup extra loss without the pointer fit on simple scenes,0.10126582278481,0.025316455696202552,0.19718309859154926,238,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+fig10,qwen3.5-9b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.06,0.02,0.1,,x45e_cut_9b
+fig10,qwen3.6-27b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.12,0.08,0.16,,x45e_cut_27b
+fig10,muse-glimmer-30b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.04,0.01,0.07,,x45e_cut_muse
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.44966442953020136,0.40549595987740317,0.4895123106060607,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.8791946308724832,0.8363636363636363,0.9177236864921103,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,share of the change: J++ part + pointer,0.3314,,,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: the part",0.0738255033557047,0.044378698224852076,0.10839160839160844,,qwen35_9b_x6_routes_d1
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.3825503355704698,0.33333333333333337,0.4341637010676156,,qwen35_9b_x6_routes_d1
 fig10,qwen3.5-9b,share of the change: + identity outside J++,0.5565,,,,qwen35_9b_x6_routes_d1
+fig10,qwen3.5-9b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.15436241610738255,0.10801200154858692,0.2019875911432203,,qwen35_9b_x6_routes_x45e_dom
+fig10,qwen3.5-9b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.6845637583892619,0.6405682320377737,0.7303762290434057,,qwen35_9b_x6_routes_x45e_dom
+fig10,qwen3.5-9b,share of the change: + wrong pair instead,0.42,,,,qwen35_9b_x6_routes_x45e_dom
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5272108843537415,0.4784133562715045,0.5746031746031747,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.9353741496598639,0.8973369671349638,0.970150489275477,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,share of the change: J++ part + pointer,0.2606,,,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: the part",0.1774744027303754,0.1333333333333333,0.22311023762094484,,x6_routes_d1_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.6689419795221843,0.625,0.7173144876325088,,x6_routes_d1_27b
 fig10,qwen3.6-27b,share of the change: + identity outside J++,0.3504,,,,x6_routes_d1_27b
+fig10,qwen3.6-27b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.3911564625850341,0.3396226415094339,0.4432234432234432,,x6_routes_x45e_27b_dom
+fig10,qwen3.6-27b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.8741496598639457,0.8249154973863145,0.9217398698609879,,x6_routes_x45e_27b_dom
+fig10,qwen3.6-27b,share of the change: + wrong pair instead,0.306,,,,x6_routes_x45e_27b_dom
 fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5,0.4486682249075473,0.5476206695212145,,qwen35_122b_x6_routes_bothoff_g75
 fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.85,0.8096774193548387,0.8888888888888888,,qwen35_122b_x6_routes_bothoff_g75
 fig10,qwen3.5-122b-a10b,share of the change: J++ part + pointer,0.369,,,,qwen35_122b_x6_routes_bothoff_g75
@@ -442,50 +609,87 @@ fig10,muse-glimmer-30b,share of the change: J++ part + pointer,0.2503,,,,muse30b
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: the part",0.5224489795918367,0.4672123235647826,0.5833333333333333,,muse30b_x6_routes_d1_r2
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.8163265306122449,0.7566535717890912,0.8787878787878788,,muse30b_x6_routes_d1_r2
 fig10,muse-glimmer-30b,share of the change: + identity outside J++,0.3802,,,,muse30b_x6_routes_d1_r2
-fig11,qwen3.5-9b,The split (main test),held,,,,fixed
-fig11,qwen3.5-9b,The split on the logit difference,held,,,,fixed
-fig11,qwen3.5-9b,The split in varied scenes,held,,,,fixed
-fig11,qwen3.5-9b,The split in natural passages,held,,,,after the data
-fig11,qwen3.5-9b,Never the value,held,,,,fixed
-fig11,qwen3.5-9b,The lookup needs the pointer,held,,,,fixed
-fig11,qwen3.5-9b,Only the pointer gives position answers,held,,,,fixed
-fig11,qwen3.5-9b,A write moves the lookup,held,,,,after the data
-fig11,qwen3.5-9b,The recall follows the write,held,,,,after the data
-fig11,qwen3.5-9b,"First-mentioned item, not position in the text",held,,,,fixed
-fig11,qwen3.5-9b,The pointer transfers,no,,,,fixed
-fig11,qwen3.6-27b,The split (main test),partial,,,,fixed
-fig11,qwen3.6-27b,The split on the logit difference,held,,,,fixed
-fig11,qwen3.6-27b,The split in varied scenes,held,,,,fixed
-fig11,qwen3.6-27b,The split in natural passages,partial,,,,fixed
-fig11,qwen3.6-27b,Never the value,held,,,,fixed
-fig11,qwen3.6-27b,The lookup needs the pointer,partial,,,,after the data
-fig11,qwen3.6-27b,Only the pointer gives position answers,no,,,,fixed
-fig11,qwen3.6-27b,A write moves the lookup,partial,,,,after the data
-fig11,qwen3.6-27b,The recall follows the write,partial,,,,after the data
-fig11,qwen3.6-27b,"First-mentioned item, not position in the text",held,,,,after the data
-fig11,qwen3.6-27b,The pointer transfers,no,,,,fixed
-fig11,qwen3.5-122b-a10b,The split (main test),held,,,,fixed
-fig11,qwen3.5-122b-a10b,The split on the logit difference,held,,,,fixed
-fig11,qwen3.5-122b-a10b,The split in varied scenes,partial,,,,fixed
-fig11,qwen3.5-122b-a10b,The split in natural passages,held,,,,fixed
-fig11,qwen3.5-122b-a10b,Never the value,held,,,,after the data
-fig11,qwen3.5-122b-a10b,The lookup needs the pointer,held,,,,after the data
-fig11,qwen3.5-122b-a10b,Only the pointer gives position answers,held,,,,after the data
-fig11,qwen3.5-122b-a10b,A write moves the lookup,held,,,,after the data
-fig11,qwen3.5-122b-a10b,The recall follows the write,held,,,,after the data
-fig11,qwen3.5-122b-a10b,"First-mentioned item, not position in the text",held,,,,after the data
-fig11,qwen3.5-122b-a10b,The pointer transfers,no,,,,fixed
-fig11,muse-glimmer-30b,The split (main test),held,,,,fixed
-fig11,muse-glimmer-30b,The split on the logit difference,held,,,,fixed
-fig11,muse-glimmer-30b,The split in varied scenes,held,,,,fixed
-fig11,muse-glimmer-30b,The split in natural passages,not tested,,,,fixed
-fig11,muse-glimmer-30b,Never the value,held,,,,fixed
-fig11,muse-glimmer-30b,The lookup needs the pointer,held,,,,fixed
-fig11,muse-glimmer-30b,Only the pointer gives position answers,held,,,,fixed
-fig11,muse-glimmer-30b,A write moves the lookup,held,,,,after the data
-fig11,muse-glimmer-30b,The recall follows the write,partial,,,,after the data
-fig11,muse-glimmer-30b,"First-mentioned item, not position in the text",held,,,,after the data
-fig11,muse-glimmer-30b,The pointer transfers,no,,,,fixed
+fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.5714285714285714,0.5063277898416398,0.636752615844544,,muse30b_x6_routes_x45e_dom
+fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.9959183673469387,0.9537037037037037,1.039372668876917,,muse30b_x6_routes_x45e_dom
+fig10,muse-glimmer-30b,share of the change: + wrong pair instead,0.3231,,,,muse30b_x6_routes_x45e_dom
+fig11,qwen3.5-9b,"routes test without the chat template, another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45i_nochat
+fig11,qwen3.6-27b,"routes test without the chat template, another item moved, whole: value share",0.0,0.0,0.0,300,x6_routes_x45i_nochat_27b
+fig11,qwen3.5-9b,main test,ok,,,,fixed; numbers:contrast_9b
+fig11,qwen3.5-9b,locker before the pick,ok,,,,after the data; numbers:sbo_swap_before_gap_9b
+fig11,qwen3.5-9b,clean one-pick scenes,x,,,,fixed; numbers:x45m_before_gap_9b
+fig11,qwen3.5-9b,logit difference,ok,,,,fixed; numbers:ld_gap_9b
+fig11,qwen3.5-9b,varied scenes,ok,,,,fixed; numbers:x0b_c_9b
+fig11,qwen3.5-9b,natural passages,ok,,,,after the data; numbers:natg75_gap_9b
+fig11,qwen3.5-9b,never the value,ok,,,,"fixed; fig05:another item moved, whole: value share"
+fig11,qwen3.5-9b,never the value without the chat template,ok,,,,"after the data; fig11:routes test without the chat template, another item moved, whole: value share"
+fig11,qwen3.5-9b,the lookup needs it,ok,,,,"fixed; fig05:another item moved, no_alf: position share"
+fig11,qwen3.5-9b,only it gives position answers,ok,,,,"fixed; fig05:another item moved, keep_alf: position share"
+fig11,qwen3.5-9b,a write moves the lookup,ok,,,,"after the data; fig07:lookup target share, mean over locker pairs, s = 4"
+fig11,qwen3.5-9b,the recall follows the write,ok,,,,after the data; fig07:recall changed under the strongest write (s = 4): the written locker's item
+fig11,qwen3.5-9b,"counts mentions, not text position",ok,,,,fixed; fig08:(c) neutral sentence B1: the code's shift in positions
+fig11,qwen3.5-9b,a pick sentence first moves the lookup to identity,ok,,,,"after the data; fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
+fig11,qwen3.5-9b,refit per format,ok,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
+fig11,qwen3.5-9b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_9b
+fig11,qwen3.5-9b,identity outside J++ is specific,~,,,,fixed; numbers:x45e_cut_9b
+fig11,qwen3.5-9b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+fig11,qwen3.5-9b,the link sits in the locker sentences,x,,,,fixed; numbers:x45b_sane_c_9b
+fig11,qwen3.6-27b,main test,~,,,,fixed; numbers:contrast_27b
+fig11,qwen3.6-27b,locker before the pick,~,,,,after the data; numbers:sbo_swap_before_gap_27b
+fig11,qwen3.6-27b,clean one-pick scenes,ok,,,,fixed; numbers:x45m_before_gap_27b
+fig11,qwen3.6-27b,logit difference,ok,,,,fixed; numbers:ld_gap_27b
+fig11,qwen3.6-27b,varied scenes,ok,,,,fixed; numbers:x0b_c_27b
+fig11,qwen3.6-27b,natural passages,~,,,,fixed; numbers:nat_gap_27b
+fig11,qwen3.6-27b,never the value,ok,,,,"fixed; fig05:another item moved, whole: value share"
+fig11,qwen3.6-27b,never the value without the chat template,ok,,,,"after the data; fig11:routes test without the chat template, another item moved, whole: value share"
+fig11,qwen3.6-27b,the lookup needs it,~,,,,"after the data; fig05:another item moved, no_alf: position share"
+fig11,qwen3.6-27b,only it gives position answers,x,,,,"fixed; fig05:another item moved, keep_alf: position share"
+fig11,qwen3.6-27b,a write moves the lookup,~,,,,"after the data; fig07:lookup target share, mean over locker pairs, s = 4"
+fig11,qwen3.6-27b,the recall follows the write,~,,,,after the data; fig07:recall changed under the strongest write (s = 4): the written locker's item
+fig11,qwen3.6-27b,"counts mentions, not text position",ok,,,,after the data; fig08:(c) neutral sentence B1: the code's shift in positions
+fig11,qwen3.6-27b,a pick sentence first moves the lookup to identity,ok,,,,"after the data; fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
+fig11,qwen3.6-27b,refit per format,x,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
+fig11,qwen3.6-27b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_27b
+fig11,qwen3.6-27b,identity outside J++ is specific,~,,,,fixed; numbers:x45e_cut_27b
+fig11,qwen3.6-27b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+fig11,qwen3.6-27b,the link sits in the locker sentences,x,,,,fixed; numbers:x45b_sane_c_27b
+fig11,qwen3.5-122b-a10b,main test,ok,,,,fixed; numbers:contrast_122b
+fig11,qwen3.5-122b-a10b,locker before the pick,x,,,,after the data; numbers:sbo_swap_before_gap_122b
+fig11,qwen3.5-122b-a10b,clean one-pick scenes,-,,,,fixed
+fig11,qwen3.5-122b-a10b,logit difference,ok,,,,fixed; numbers:ld_gap_122b
+fig11,qwen3.5-122b-a10b,varied scenes,~,,,,fixed; numbers:x0b_c_122b
+fig11,qwen3.5-122b-a10b,natural passages,ok,,,,fixed; numbers:nat_gap_122b
+fig11,qwen3.5-122b-a10b,never the value,ok,,,,"after the data; fig05:another item moved, whole: value share"
+fig11,qwen3.5-122b-a10b,never the value without the chat template,-,,,,fixed
+fig11,qwen3.5-122b-a10b,the lookup needs it,ok,,,,"after the data; fig05:another item moved, no_alf: position share"
+fig11,qwen3.5-122b-a10b,only it gives position answers,ok,,,,"after the data; fig05:another item moved, keep_alf: position share"
+fig11,qwen3.5-122b-a10b,a write moves the lookup,ok,,,,"after the data; fig07:lookup target share, mean over locker pairs, s = 4"
+fig11,qwen3.5-122b-a10b,the recall follows the write,ok,,,,after the data; fig07:recall changed under the strongest write (s = 4): the written locker's item
+fig11,qwen3.5-122b-a10b,"counts mentions, not text position",ok,,,,after the data; fig08:(c) neutral sentence B1: the code's shift in positions
+fig11,qwen3.5-122b-a10b,a pick sentence first moves the lookup to identity,-,,,,fixed
+fig11,qwen3.5-122b-a10b,refit per format,-,,,,fixed
+fig11,qwen3.5-122b-a10b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_122b
+fig11,qwen3.5-122b-a10b,identity outside J++ is specific,pending,,,,fixed
+fig11,qwen3.5-122b-a10b,"the recall needs only the J++ part, locker after the pick",pending,,,,fixed
+fig11,qwen3.5-122b-a10b,the link sits in the locker sentences,-,,,,fixed
+fig11,muse-glimmer-30b,main test,ok,,,,fixed; numbers:contrast_muse
+fig11,muse-glimmer-30b,locker before the pick,ok,,,,after the data; numbers:sbo_swap_before_gap_muse
+fig11,muse-glimmer-30b,clean one-pick scenes,ok,,,,fixed; numbers:x45m_before_gap_muse
+fig11,muse-glimmer-30b,logit difference,ok,,,,fixed; numbers:ld_gap_muse
+fig11,muse-glimmer-30b,varied scenes,ok,,,,fixed; numbers:x0b_c_muse
+fig11,muse-glimmer-30b,natural passages,-,,,,fixed; numbers:nat_lk_whole_sw_muse
+fig11,muse-glimmer-30b,never the value,ok,,,,"fixed; fig05:another item moved, whole: value share"
+fig11,muse-glimmer-30b,never the value without the chat template,-,,,,fixed
+fig11,muse-glimmer-30b,the lookup needs it,ok,,,,"fixed; fig05:another item moved, no_alf: position share"
+fig11,muse-glimmer-30b,only it gives position answers,ok,,,,"fixed; fig05:another item moved, keep_alf: position share"
+fig11,muse-glimmer-30b,a write moves the lookup,ok,,,,"after the data; fig07:lookup target share, mean over locker pairs, s = 4"
+fig11,muse-glimmer-30b,the recall follows the write,~,,,,after the data; fig07:recall changed under the strongest write (s = 4): the written locker's item
+fig11,muse-glimmer-30b,"counts mentions, not text position",ok,,,,after the data; fig08:(c) neutral sentence B1: the code's shift in positions
+fig11,muse-glimmer-30b,a pick sentence first moves the lookup to identity,~,,,,"after the data; fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
+fig11,muse-glimmer-30b,refit per format,ok,,,,fixed; fig09:(b) prose: lookup extra loss without the refit pointer
+fig11,muse-glimmer-30b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_muse
+fig11,muse-glimmer-30b,identity outside J++ is specific,x,,,,fixed; numbers:x45e_cut_muse
+fig11,muse-glimmer-30b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
+fig11,muse-glimmer-30b,the link sits in the locker sentences,x,,,,fixed; numbers:x45b_sane_c_muse
 s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): gap,0.53,,,,contrast_9b
@@ -558,6 +762,20 @@ s01,muse-glimmer-30b,varied scenes: prose / JSON / table: gap,0.5,,,,x0b_c_muse
 s01,muse-glimmer-30b,natural passages: lookup extra loss,-0.2,-0.55,0.0,,nat_lk_excess_muse
 s01,muse-glimmer-30b,natural passages: recall extra loss,0.75,0.62,0.86,,nat_rc_excess_muse
 s01,muse-glimmer-30b,natural passages: gap,0.95,,,,nat_gap_muse
+s01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.02,-0.05,0.02,,single_lk_excess_9b
+s01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): recall extra loss,0.37,0.29,0.43,,single_rc_excess_9b
+s01b,qwen3.5-9b,one-pick scenes (only the asked pick changes): gap,0.39,0.3,0.46,,single_contrast_9b
+s01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): lookup extra loss,0.05,0.01,0.09,,single_lk_excess_27b
+s01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): recall extra loss,0.61,0.51,0.69,,single_rc_excess_27b
+s01b,qwen3.6-27b,one-pick scenes (only the asked pick changes): gap,0.56,0.45,0.65,,single_contrast_27b
+s01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.01,-0.06,0.04,,single_lk_excess_122b
+s01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): recall extra loss,0.27,0.16,0.36,,single_rc_excess_122b
+s01b,qwen3.5-122b-a10b,one-pick scenes (only the asked pick changes): gap,0.28,0.15,0.39,,single_contrast_122b
+s01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): lookup extra loss,-0.01,-0.04,0.0,,single_lk_excess_muse
+s01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): recall extra loss,0.66,0.53,0.78,,single_rc_excess_muse
+s01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): gap,0.67,0.53,0.8,,single_contrast_muse
+s01b,qwen3.5-9b,"one-pick scenes, the other person's pick of the new bridge before the asked pick: gap",0.15474747474747474,0.07159126652240853,0.24205808080808078,105,results/x0_necessity/duplicate-20261026T204558Z/duplicate.json
+s01b,qwen3.5-9b,"one-pick scenes, the other person's pick of the new bridge after the asked pick: gap",0.6409537166900421,0.5230681818181818,0.7442511620631088,95,results/x0_necessity/duplicate-20261026T204558Z/duplicate.json
 s02,qwen3.5-9b,J++ part: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,,qwen35_9b_x0_pcaeq
 s02,qwen3.5-9b,J++ part: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,,qwen35_9b_x0_pcaeq
 s02,qwen3.5-9b,J++ part: share of the change,0.18579,,,,qwen35_9b_x0_pcaeq
@@ -834,6 +1052,26 @@ s05,muse-glimmer-30b,"another item moved, keep_jpp_rand: position share",0.00333
 s05,muse-glimmer-30b,"another item moved, keep_jpp_rand: value share",0.0,0.0,0.0,300,muse30b_x6_routes
 s05,muse-glimmer-30b,"another item moved, keep_jpp_rand: original share",0.9966666666666667,0.9896551724137931,1.0,300,muse30b_x6_routes
 s05,muse-glimmer-30b,"another item moved, keep_jpp_rand: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+s08,qwen3.5-9b,"(a) lookup extra loss without the pointer: bridge named first, in its locker sentence",0.6585365853658536,0.5263157894736843,0.7906976744186046,41,x0_first_sentence
+s08,qwen3.5-9b,"(a) lookup extra loss without the pointer: bridge named first, in a pick sentence",0.23529411764705888,0.05882352941176472,0.4375,17,x0_first_sentence
+s08,qwen3.5-9b,(a) lookup extra loss without the pointer: another item named first,0.2857142857142857,0.0625,0.5833333333333333,14,x0_first_sentence
+s08,qwen3.6-27b,"(a) lookup extra loss without the pointer: bridge named first, in its locker sentence",0.2432432432432433,0.11764705882352944,0.36363636363636365,37,x0_first_sentence
+s08,qwen3.6-27b,"(a) lookup extra loss without the pointer: bridge named first, in a pick sentence",0.0714285714285714,0.0,0.25,14,x0_first_sentence
+s08,qwen3.6-27b,(a) lookup extra loss without the pointer: another item named first,0.0,0.0,0.0,19,x0_first_sentence
+s08,qwen3.5-122b-a10b,"(a) lookup extra loss without the pointer: bridge named first, in its locker sentence",0.52,0.36,0.6818181818181819,25,x0_first_sentence
+s08,qwen3.5-122b-a10b,"(a) lookup extra loss without the pointer: bridge named first, in a pick sentence",0.17647058823529416,0.0,0.38888888888888884,17,x0_first_sentence
+s08,qwen3.5-122b-a10b,(a) lookup extra loss without the pointer: another item named first,0.08333333333333337,0.0,0.30000000000000004,12,x0_first_sentence
+s08,muse-glimmer-30b,"(a) lookup extra loss without the pointer: bridge named first, in its locker sentence",0.5128205128205128,0.37254901960784315,0.6666666666666667,39,x0_first_sentence
+s08,muse-glimmer-30b,"(a) lookup extra loss without the pointer: bridge named first, in a pick sentence",0.2142857142857143,0.0,0.4285714285714286,14,x0_first_sentence
+s08,muse-glimmer-30b,(a) lookup extra loss without the pointer: another item named first,0.0,0.0,0.0,14,x0_first_sentence
+s08,qwen3.5-9b,(b) label-free pointer: mean cos^2 with ours,0.3697,,,,qwen35_9b_x7_pcf
+s08,qwen3.6-27b,(b) label-free pointer: mean cos^2 with ours,0.3342,,,,x7_pcf_27b
+s08,qwen3.5-122b-a10b,(b) label-free pointer: mean cos^2 with ours,0.3967,,,,qwen35_122b_x7_pcf
+s08,muse-glimmer-30b,(b) label-free pointer: mean cos^2 with ours,0.3248,,,,muse30b_x7_pcf
+s08,qwen3.5-9b,(b) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0009765625,,,,qwen35_9b_x7_pcf
+s08,qwen3.6-27b,(b) chance: a random 4-d subspace's mean cos^2 (4 / d),0.00078125,,,,x7_pcf_27b
+s08,qwen3.5-122b-a10b,(b) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0013020833333333333,,,,qwen35_122b_x7_pcf
+s08,muse-glimmer-30b,(b) chance: a random 4-d subspace's mean cos^2 (4 / d),0.0006009615384615385,,,,muse30b_x7_pcf
 s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the J++ part",-0.003355704697986628,-0.011029411764705843,0.0,,qwen35_9b_x6_routes_bothoff
 s10,qwen3.5-9b,"the sanity swap, recall extra loss without the J++ part",0.013793103448275779,-0.0035211267605633756,0.03214285714285725,,qwen35_9b_x6_routes_bothoff
 s10,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer",0.3120805369127516,0.2556378966585792,0.37353183581124755,,qwen35_9b_x6_routes_bothoff
@@ -5668,6 +5906,148 @@ numbers,,x45c_n_21_muse,100,,,,results/x8_write/score45c-20261026T211201Z/score.
 numbers,,x45c_write_21_2_muse,0.55,,,,results/x8_write/score45c-20261026T211201Z/score.json
 numbers,,x45c_write_21_3_muse,0.80,,,,results/x8_write/score45c-20261026T211201Z/score.json
 numbers,,x45c_write_21_4_muse,0.80,,,,results/x8_write/score45c-20261026T211201Z/score.json
+numbers,,x45m_before_n_9b,151,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_lk_9b,"−0.01 [−0.03, 0.00]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_rc_9b,"0.21 [0.13, 0.29]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_gap_9b,"0.23 [0.14, 0.31]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_n_9b,166,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_rc_9b,"0.79 [0.70, 0.88]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_n_9b,417,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_lk_9b,"0.00 [−0.02, 0.03]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_rc_9b,"0.48 [0.42, 0.55]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_gap_9b,"0.48 [0.40, 0.55]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_n_27b,202,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_lk_27b,"0.01 [0.00, 0.02]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_rc_27b,"0.54 [0.43, 0.63]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_gap_27b,"0.53 [0.42, 0.62]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_n_27b,236,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_rc_27b,"0.87 [0.81, 0.93]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_n_27b,574,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_lk_27b,"0.05 [0.01, 0.08]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_rc_27b,"0.74 [0.67, 0.79]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_gap_27b,"0.69 [0.63, 0.75]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_n_muse,143,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_lk_muse,"0.05 [0.01, 0.10]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_rc_muse,"0.43 [0.28, 0.60]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_gap_muse,"0.38 [0.23, 0.54]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_n_muse,170,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_rc_muse,"0.85 [0.73, 0.93]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_n_muse,409,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_lk_muse,"0.06 [0.02, 0.11]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_rc_muse,"0.70 [0.60, 0.79]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_gap_muse,"0.64 [0.52, 0.73]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45bsw_pass_9b,36 of 100,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_bw_L6_9b,0.92,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_ls_L6_9b,0.03,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_li_L6_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_lv_L6_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_lf_L6_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_bw_L8_9b,0.53,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_ls_L8_9b,0.06,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_li_L8_9b,0.06,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_lv_L8_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_lf_L8_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_bw_L10_9b,0.36,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_ls_L10_9b,0.06,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_li_L10_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_lv_L10_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_lf_L10_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_bw_L12_9b,0.28,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_ls_L12_9b,0.39,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_li_L12_9b,0.28,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_lv_L12_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_lf_L12_9b,0.00,,,,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+numbers,,x45bsw_pass_27b,34 of 99,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L16_27b,0.94,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L16_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L16_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L16_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L16_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L18_27b,0.94,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L18_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L18_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L18_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L18_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L20_27b,0.91,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L20_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L20_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L20_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L20_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L22_27b,0.88,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L22_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L22_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L22_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L22_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L24_27b,0.82,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L24_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L24_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L24_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L24_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L26_27b,0.74,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L26_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L26_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L26_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L26_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L28_27b,0.50,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L28_27b,0.29,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L28_27b,0.29,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L28_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L28_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L30_27b,0.44,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L30_27b,0.32,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L30_27b,0.29,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L30_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L30_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_bw_L32_27b,0.09,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_ls_L32_27b,0.35,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_li_L32_27b,0.26,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lv_L32_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45bsw_lf_L32_27b,0.00,,,,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+numbers,,x45b_sane_pass_9b,36 of 100,,,,results/x45b_binding/qwen35_9b_x45b_binding/verdict-20261026T214250Z/verdict.json
+numbers,,x45b_sane_c_9b,"0.39 [0.26, 0.53]",,,,results/x45b_binding/qwen35_9b_x45b_binding/verdict-20261026T214250Z/verdict.json
+numbers,,x45b_sane_a_9b,"0.28 [0.16, 0.40]",,,,results/x45b_binding/qwen35_9b_x45b_binding/verdict-20261026T214250Z/verdict.json
+numbers,,x45b_sane_pass_27b,34 of 99,,,,results/x45b_binding/x45b_binding_27b/verdict-20261026T214250Z/verdict.json
+numbers,,x45b_sane_c_27b,"0.35 [0.21, 0.47]",,,,results/x45b_binding/x45b_binding_27b/verdict-20261026T214250Z/verdict.json
+numbers,,x45b_sane_a_27b,"0.09 [0.00, 0.19]",,,,results/x45b_binding/x45b_binding_27b/verdict-20261026T214250Z/verdict.json
+numbers,,x45b_sane_pass_muse,34 of 108,,,,results/x45b_binding/muse30b_x45b_binding/verdict-20261026T224442Z/verdict.json
+numbers,,x45b_sane_c_muse,"0.41 [0.26, 0.58]",,,,results/x45b_binding/muse30b_x45b_binding/verdict-20261026T224442Z/verdict.json
+numbers,,x45b_sane_a_muse,"0.18 [0.06, 0.31]",,,,results/x45b_binding/muse30b_x45b_binding/verdict-20261026T224442Z/verdict.json
+numbers,,x45a_id_V0_9b,0.54,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V1_9b,0.89,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V2_9b,0.96,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V3_9b,0.85,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V4_9b,0.58,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V1_9b,0.32,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V2_9b,0.35,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V3_9b,0.69,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V4_9b,0.15,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V0_27b,0.65,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V1_27b,0.91,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V2_27b,0.90,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V3_27b,0.97,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V4_27b,0.73,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V1_27b,0.37,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V2_27b,0.30,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V3_27b,0.61,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V4_27b,0.17,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V0_muse,0.47,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V1_muse,0.50,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V2_muse,0.59,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V3_muse,0.60,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_id_V4_muse,0.46,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V1_muse,0.60,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V2_muse,0.54,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V3_muse,0.83,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45a_beta_V4_muse,0.18,,,,results/x6_routes/x45a-descriptive-20261026T202952Z/table.json
+numbers,,x45e_left_idout_9b,0.07,,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45e_left_wrong_9b,0.15,,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45e_cut_9b,"0.06 [0.02, 0.10]",,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45e_left_idout_27b,0.18,,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45e_left_wrong_27b,0.39,,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45e_cut_27b,"0.12 [0.08, 0.16]",,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45e_left_idout_muse,0.52,,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45e_left_wrong_muse,0.57,,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45e_cut_muse,"0.04 [0.01, 0.07]",,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
 numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_natural_9b,not tested (gate),,,,results/t_pointer/verdict-20261026T140221Z/verdict.json

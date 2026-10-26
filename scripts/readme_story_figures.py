@@ -12,6 +12,7 @@ from __future__ import annotations
 import csv
 import json
 import sys
+import textwrap
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -23,6 +24,15 @@ from scripts import x0_figures as XF
 from scripts import x0_necessity as X
 
 N = S.numbers()
+
+
+def interval(key: str) -> tuple[float, float, float]:
+    """docs/x0_numbers.json's 'v [lo, hi]' for key; fails loudly where a figure would draw a missing number."""
+    v = S.parse(N.get(key))
+    assert v is not None, f"docs/x0_numbers.json: no interval for {key}"
+    return v
+
+
 MAIN_RUNS = {
     "9b": "qwen35_9b_x0_necessity",
     "27b": "x0_necessity_27b_chat",
@@ -477,7 +487,7 @@ def transfer_cells(target: str) -> dict[tuple[str, str], tuple | None]:
 
 # ---------------------------------------------------------------------------------------------------------------------
 # README v4 (Dan, 26 Oct ~16:45; docs/figure_plan.md): one claim per figure, in story order, figures/story/figNN_*.png.
-# The 26 Oct files (fig0_setup.png ... fig11_order.png) stay as they are; the detail panels go to figures/supp/.
+# The 26 Oct files (fig0_setup.png ... fig11_order.png) are in figures/archive/; the detail panels go to figures/supp/.
 
 NAMES = {m: name for _, m, name in S.MODELS}
 LOWERED_M = {"122b"}  # the 122B's routes, writes and pointer runs: gate lowered to 0.75 after the data
@@ -547,10 +557,21 @@ SETTINGS = {  # the scene sets' names as docs/glossary.md words them (a newline:
     "main": ("main test (two people swap picks)", "lk_excess_{m}", "rc_excess_{m}", "contrast_{m}"),
     "ld": ("main test (two people swap picks),\nscored on the logit difference", "ld_lk_{m}", "ld_rc_{m}", "ld_gap_{m}"),
     "single": ("one-pick scenes\n(only the asked pick changes)", "single_lk_excess_{m}", "single_rc_excess_{m}", "single_contrast_{m}"),
+    # 45m (batch 45, fixed in advance): the asked pick changes to an added locker item nobody picks; locker-before cells
+    "clean": ("clean one-pick scenes,\nlocker before the pick", "x45m_before_lk_{m}", "x45m_before_rc_{m}", "x45m_before_gap_{m}"),
     "varied": ("varied scenes: prose / JSON / table", "x0b_lk_excess_{m}", "x0b_rc_excess_{m}", "x0b_c_{m}"),
     "natural": ("natural passages", "nat_lk_excess_{m}", "nat_rc_excess_{m}", "nat_gap_{m}"),
 }  # fmt: skip
 AFTER_SETTING = {("single", "9b"), ("single", "27b")}  # one-change scenes on the 9B and 27B: after the data
+GAP_BAR, LOOKUP_BAR = 0.30, 0.10  # 45m's rule (batch45.yaml): the split holds if gap >= 0.3 and lookup <= 0.10
+VALID_SWITCHES = 30  # X0's validity bar: a lookup extra loss is drawn only on at least 30 switches
+
+
+def blend(fig, ax):
+    """x in figure fraction, y in the axes' data: text columns beside a panel's rows."""
+    from matplotlib.transforms import blended_transform_factory
+
+    return blended_transform_factory(fig.transFigure, ax.transData)
 
 
 def split_cell(setting: str, target: str, m: str) -> dict:
@@ -576,12 +597,14 @@ def split_cell(setting: str, target: str, m: str) -> dict:
     return out
 
 
-def split_rows(ax, setting: str, fig_id: str, ci: bool) -> None:
+def split_rows(ax, setting: str, fig_id: str, ci: bool, gap_col: bool = True) -> None:
     """One row per model: the lookup's and the recall's dots joined, the gap at the right end (bold; its interval if
-    ci)."""
+    ci). gap_col False: the gap is recorded but not written (Fig. 1 writes its own columns)."""
     S.extra_axis(ax, label=False)
     ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "0.25", "0.5", "0.75", "1"])
-    ax.text(1.04, 0.45, "gap", transform=ax.get_yaxis_transform(), fontsize=S.FONT, color=S.COL["muted"], clip_on=False)
+    if gap_col:  # inside the panel's top band, clear of a two-line panel title
+        ax.text(1.04, 0.40, "gap", transform=ax.get_yaxis_transform(), va="bottom", fontsize=S.FONT,
+                color=S.COL["muted"], clip_on=False)  # fmt: skip
     what = SETTINGS[setting][0].replace("\n", " ")  # data.csv's quantity text
     labels = []
     for i, (target, m, name) in enumerate(S.MODELS):
@@ -596,62 +619,122 @@ def split_rows(ax, setting: str, fig_id: str, ci: bool) -> None:
             n_sw, n = N.get("nat_lk_whole_sw_muse"), N.get("nat_n_muse")
             ax.text(-0.18, y, f"lookup: too few\nswitches ({n_sw} of {n})", va="center", color=S.COL["lookup"],
                     style="italic")  # fmt: skip
-            ax.text(1.04, y, "–", transform=ax.get_yaxis_transform(), va="center", weight="bold", clip_on=False)
+            if gap_col:
+                ax.text(1.04, y, "–", transform=ax.get_yaxis_transform(), va="center", weight="bold", clip_on=False)
             S.record(fig_id, target, f"{what}: recall extra loss", *rc, source=c["src"])
             continue
         ax.plot([lk[0], rc[0]], [y, y], color="#d6d6d6", lw=4, zorder=1, solid_capstyle="butt")
         S.dot(ax, 0, y, lk, S.COL["lookup"], c["kind"], size=11 if ci else 9.5)
         S.dot(ax, 0, y, rc, S.COL["recall"], c["kind"], size=11 if ci else 9.5)
         gap = c["gap"] or (rc[0] - lk[0], rc[0] - lk[0], rc[0] - lk[0])
-        ax.text(1.04, y, f"{gap[0]:.2f}", transform=ax.get_yaxis_transform(), va="center", fontsize=S.FONT + 2,
-                weight="bold", clip_on=False)  # fmt: skip
-        if ci:
+        if gap_col:
+            ax.text(1.04, y, f"{gap[0]:.2f}", transform=ax.get_yaxis_transform(), va="center", fontsize=S.FONT + 2,
+                    weight="bold", clip_on=False)  # fmt: skip
+        if gap_col and ci:
             ax.text(1.155, y, f"[{gap[1]:.2f}, {gap[2]:.2f}]", transform=ax.get_yaxis_transform(), va="center",
                     color=S.COL["muted"], clip_on=False)  # fmt: skip
         S.record(fig_id, target, f"{what}: lookup extra loss", *lk, source=c["src"])
         S.record(fig_id, target, f"{what}: recall extra loss", *rc, source=c["src"].replace("lk", "rc"))
         S.record(fig_id, target, f"{what}: gap", *gap, source=SETTINGS[setting][3].format(m=m))
-    ax.set_ylim(-len(S.MODELS) + 0.45, 0.55)
+    ax.set_ylim(-len(S.MODELS) + 0.45, 0.92 if gap_col else 0.55)
     ax.set_yticks([-i for i in range(len(S.MODELS))], labels)
     ax.tick_params(axis="y", length=0)
     ax.grid(axis="x", color="#eeeeee")
 
 
 def f01_split(plt) -> None:
-    """The main test, fixed in advance on all four models: per model the lookup's and the recall's J++ extra loss, the
-    gap with its interval at the right."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 4.6))
-    fig.subplots_adjust(left=0.215, right=0.70, top=0.72, bottom=0.20)
+    """The main test, fixed in advance on all four models: per model the lookup's and the recall's J++ extra loss; at
+    the right the gap with its interval, and beside it (after the data, docs/split_by_order.md) the gap in the scenes
+    whose locker sentence comes before the asked pick."""
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 5.0))
+    fig.subplots_adjust(left=0.215, right=0.585, top=0.645, bottom=0.185)
     S.title(fig, "Recall needs the J++ part of the bridge; the lookup mostly does not",
             "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
             "(same size). 0 = the reader does not need the J++ part; 1 = every switch needs it.\n"
-            "Main test (two people swap picks), fixed in advance.")  # fmt: skip
-    split_rows(ax, "main", "fig01", ci=True)
+            "Main test (two people swap picks).")  # fmt: skip
+    split_rows(ax, "main", "fig01", ci=True, gap_col=False)
     first = split_cell("main", *S.MODELS[0][:2])
     for v, name, col in ((first["lk"], "lookup", S.COL["lookup"]), (first["rc"], "recall", S.COL["recall"])):
         ax.text(v[0], 0.38, name, ha="center", va="bottom", weight="bold", color=col)
     ax.set_ylim(-4.05, 0.55)  # room for the band's label under the last row
     ax.text(-0.05, -3.68, "not needed\n(below 0.1)", ha="center", va="center", color=S.COL["muted"])
     ax.set_xlabel("extra loss without the J++ part")
+    # the two gap columns: the main test's (fixed in advance) and the locker-before scenes' (after the data, open mark)
+    tr, grey = blend(fig, ax), "#7a7a7a"
+    x_gap, x_ci, x_mark, x_bgap, x_bci = 0.600, 0.663, 0.790, 0.803, 0.858
+    ax.text(x_gap, 0.38, "gap", transform=tr, va="bottom", color=S.COL["muted"])
+    ax.text(x_mark - 0.008, 0.38, "gap, locker before\nthe pick", transform=tr, va="bottom", color=S.COL["muted"])
+    for i, (target, m, _) in enumerate(S.MODELS):
+        g, b = interval(f"contrast_{m}"), S.parse(N.get(f"sbo_swap_before_gap_{m}"))
+        ax.text(x_gap, -i, f"{g[0]:.2f}", transform=tr, va="center", fontsize=S.FONT + 2, weight="bold")
+        ax.text(x_ci, -i, f"[{g[1]:.2f}, {g[2]:.2f}]", transform=tr, va="center", color=S.COL["muted"])
+        if b is None:
+            ax.text(x_bgap, -i, "not run", transform=tr, va="center", color=S.COL["muted"])
+            continue
+        ax.plot([x_mark], [-i], "o", ms=7, mfc="white", mec=grey, mew=1.6, transform=tr, clip_on=False)
+        ax.text(x_bgap, -i, f"{b[0]:.2f}", transform=tr, va="center", fontsize=S.FONT + 2)
+        ax.text(x_bci, -i, f"[{b[1]:.2f}, {b[2]:.2f}]", transform=tr, va="center", color=S.COL["muted"])
+        S.record("fig01", target, "main test (two people swap picks), locker before the pick: gap", *b,
+                 n=int(N[f"sbo_swap_before_n_{m}"]), source=f"sbo_swap_before_gap_{m}")  # fmt: skip
+    sh, sl = S.status_handles(("fixed", "after"))
+    legend(fig, sh, sl, 0.80)
     fig.text(0.01, 0.02, "Lines: 95% intervals, bootstrap over bridge items.", color=S.COL["muted"])
     S.save(fig, "fig01_split")
 
 
 def f01b_settings(plt) -> None:
-    """The same per model in the other settings: the logit difference, one change only, varied scenes, natural passages."""
-    fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, 7.6))
-    fig.subplots_adjust(left=0.07, right=0.91, top=0.70, bottom=0.08, wspace=0.42, hspace=0.62)
+    """The same per model in the other settings: the logit difference, the clean one-pick scenes with the locker before
+    the pick (45m, fixed in advance; the 9B misses the 0.3 bar), varied scenes, natural passages. The one-pick scenes
+    with the duplicate pick moved to figures/supp/s01b_one_pick_duplicate."""
+    fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, 7.9))
+    fig.subplots_adjust(left=0.07, right=0.91, top=0.665, bottom=0.075, wspace=0.42, hspace=0.62)
     S.title(fig, "In every setting, recall needs the J++ part more than the lookup does",
             "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
-            "(same size). Logit difference: the share of the logit shift lost instead of switches lost.")  # fmt: skip
-    for ax, setting in zip(axes.flat, ("ld", "single", "varied", "natural"), strict=True):
+            "(same size). Logit difference: the share of the logit shift lost instead of switches lost.\n"
+            "Clean one-pick scenes: the asked pick changes to a locker item nobody picks; the split holds\n"
+            "where the gap is at least 0.3 and the lookup at most 0.1.")  # fmt: skip
+    for ax, setting in zip(axes.flat, ("ld", "clean", "varied", "natural"), strict=True):
         split_rows(ax, setting, "fig01b", ci=False)
         ax.set_title(SETTINGS[setting][0], loc="left", weight="bold", fontsize=S.FONT + 0.5)
         ax.set_xlabel("extra loss (logit difference)" if setting == "ld" else "extra loss without the J++ part")
+        if setting != "clean":
+            continue
+        for i, (_, m, _) in enumerate(S.MODELS):
+            gap = S.parse(N.get(SETTINGS["clean"][3].format(m=m)))
+            if gap is not None and gap[0] < GAP_BAR:
+                ax.text(0.98, -i, f"gap below the\n{GAP_BAR:.1f} bar", ha="right", va="center", style="italic",
+                        color=S.COL["muted"], linespacing=1.0)  # fmt: skip
     hs, ls = reader_handles(plt)
     sh, sl = S.status_handles()
-    legend(fig, hs + sh, ls + sl, 0.875)
+    legend(fig, hs + sh, ls + sl, 0.855)
     S.save(fig, "fig01b_settings")
+
+
+def s01b_one_pick(plt) -> None:
+    """Supplementary to Fig. 1b: the one-pick scenes (Fig. 1b's panel until batch 45), with the duplicate check (Dan,
+    26 Oct ~22:10; results/x0_necessity/duplicate-*): the new bridge is an item another person already picks."""
+    dup = latest(pins.RESULTS_DIR / "x0_necessity", "duplicate-*/duplicate.json")
+    assert dup is not None, "no duplicate check in results/x0_necessity"
+    src = sorted((pins.RESULTS_DIR / "x0_necessity").glob("duplicate-*/duplicate.json"))[-1].relative_to(pins.REPO_ROOT)
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 4.9))
+    fig.subplots_adjust(left=0.10, right=0.86, top=0.60, bottom=0.27)
+    S.title(fig, "One-pick scenes: the new bridge is already another person's pick",
+            "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
+            "(same size). One-pick scenes (only the asked pick changes).")  # fmt: skip
+    split_rows(ax, "single", "s01b", ci=False)
+    ax.set_xlabel("extra loss without the J++ part")
+    hs, ls = reader_handles(plt)
+    sh, sl = S.status_handles(("fixed", "after"))
+    legend(fig, hs + sh, ls + sl, 0.74, ncol=4)
+    cell = next(e for e in dup["qwen3.5-9b"] if e["run"].startswith("x0_necessity/"))
+    before, after = cell["cells"]["gap"]["before"], cell["cells"]["gap"]["after"]
+    fig.text(0.01, 0.025, "In this design the new bridge is an item another person already picks; when that pick\n"
+             "comes first, the recall needs the J++ part much less "
+             f"(9B gap {before[0]:.2f} vs {after[0]:.2f}).", color=S.COL["muted"])  # fmt: skip
+    for when, v in (("before", before), ("after", after)):
+        S.record("s01b", "qwen3.5-9b", f"one-pick scenes, the other person's pick of the new bridge {when} the asked "
+                 "pick: gap", *v, n=cell["n"][when], source=str(src))  # fmt: skip
+    S.save(fig, "s01b_one_pick_duplicate", supp=True)
 
 
 # Fig. 2: one panel per part, rows = models with the part's share of the change in the label; J++ and the main
@@ -704,17 +787,59 @@ def f02_specificity(plt) -> None:
     S.save(fig, "fig02_specificity")
 
 
+ORDER_TESTS = (("main test (two people swap picks)", "main", "after"), ("clean one-pick scenes", "clean", "fixed"))
+
+
+def order_cells() -> dict[tuple[str, str, str], dict]:
+    """Fig. 3b's cells: (test, model key, before / after) -> {lookup, recall: (v, lo, hi), switches, n, src}; the main
+    test from the split by sentence order (results/x0_composition/split-by-order-*, after the data), the clean one-pick
+    scenes from 45m (results/x0_necessity/x45m-*, fixed in advance); the lookup's switch count from the same file."""
+    root = pins.RESULTS_DIR
+    split_path = sorted((root / "x0_composition").glob("split-by-order-*/split.json"))[-1]
+    clean_path = sorted((root / "x0_necessity").glob("x45m-*/x45m.json"))[-1]
+    out: dict[tuple[str, str, str], dict] = {}
+    for key, v in json.loads(split_path.read_text())["cells"].items():
+        target, design = key.split("|")
+        if design != "swap":
+            continue
+        m = next(k for t, k, _ in S.MODELS if t == target)
+        for order in ("before", "after"):
+            c = v["cells"][order]
+            k = c["lookup_switch"] * c["n"]
+            assert abs(k - round(k)) < 1e-6, (key, order, k)  # a share of n items: an integer count
+            out[("main", m, order)] = {"lookup": tuple(c["lookup"]), "recall": tuple(c["recall"]), "switches": round(k),
+                                       "n": c["n"], "src": str(split_path.relative_to(pins.REPO_ROOT))}  # fmt: skip
+    for mod in json.loads(clean_path.read_text())["models"]:
+        m = next(k for t, k, _ in S.MODELS if t == mod["target"])
+        for order in ("before", "after"):
+            c = mod["cells"][f"locker-{order}"]
+            out[("clean", m, order)] = {"lookup": tuple(c["lookup"]["excess"]), "recall": tuple(c["recall"]["excess"]),
+                                        "switches": c["lookup"]["switched_whole"], "n": c["n"],
+                                        "src": str(clean_path.relative_to(pins.REPO_ROOT))}  # fmt: skip
+    return out
+
+
 def f03_order(plt) -> None:
-    """After the data: the lookups (open purple bars, 95% Wilson) and the recalls (grey dots) the whole change switches
-    in the main test, the original bridge's locker sentence before vs after the asked person's pick sentence."""
+    """(a) After the data: the lookups (open purple bars, 95% Wilson) and the recalls (grey dots) the whole change
+    switches in the main test, the original bridge's locker sentence before vs after the asked person's pick sentence.
+    (b) The recall's (and the lookup's, where it has at least 30 switches) extra loss without the J++ part, locker before
+    vs after the pick: the main test (after the data) and the clean one-pick scenes (45m, fixed in advance)."""
     from bridge_jspace.stats import wilson
     from scripts import x0_strata as ST
 
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 5.0))
-    fig.subplots_adjust(left=0.09, right=0.995, top=0.72, bottom=0.25)
+    h = 10.25
+    fig = plt.figure(figsize=(S.WIDTH, h))
+
+    def at(inch: float) -> float:  # inches from the top -> figure fraction
+        return 1 - inch / h
+
+    a_top, a_bot = 1.95, 4.15
+    ax = fig.add_axes((0.09, at(a_bot), 0.895, at(a_top) - at(a_bot)))
     S.title(fig, "Lookups follow the change mostly when the locker sentence comes first",
-            "Lookups the whole change switches (%), with 95% intervals. Main test (two people swap picks);\n"
-            "after the data.")  # fmt: skip
+            "Main test (two people swap picks) unless marked. Extra loss (0-1): switches lost without the\n"
+            "J++ part, minus those lost without a random part (same size).")  # fmt: skip
+    head = dict(fontsize=S.FONT, weight="bold", va="top")
+    fig.text(0.01, at(1.05), "(a) Lookups the whole change switches (%), with 95% intervals; after the data", **head)
     xs, labels = [], []
     for i, (target, m, name) in enumerate(S.MODELS):
         run, la = MAIN_RUNS[m], X.PREDICTED[target]
@@ -739,18 +864,145 @@ def f03_order(plt) -> None:
                          round(p / 100, 4), round(lo / 100, 4), round(hi / 100, 4), n, source=src)  # fmt: skip
             xs.append(x)
             labels.append(f"locker\n{order}\nthe pick")
-        ax.text(i * 3.6 + 0.65, -0.30, name, transform=ax.get_xaxis_transform(), ha="center", va="top",
-                fontsize=S.FONT, weight="bold")  # fmt: skip
+        # the model's name under the three-line tick labels, 0.7 in below the axis
+        ax.text(i * 3.6 + 0.65, -0.70 / (a_bot - a_top), name, transform=ax.get_xaxis_transform(), ha="center",
+                va="top", fontsize=S.FONT, weight="bold")  # fmt: skip
     ax.set_xticks(xs, labels)
     ax.tick_params(axis="x", length=0)
     ax.set_ylim(0, 112)
+    ax.set_yticks(range(0, 101, 20))
     ax.set_ylabel("lookups switched (%)")
     ax.grid(axis="y", color="#eeeeee")
     ax.set_axisbelow(True)
     legend(fig, [plt.Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["lookup"], lw=2),
                  plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=6)],
-           ["lookup", "recall"], 0.83)  # fmt: skip
+           ["lookup", "recall"], at(1.3))  # fmt: skip
+
+    # (b) rows: a heading per test, then its models; two panels, locker before / after the pick
+    fig.text(0.01, at(5.55), "(b) Extra loss without the J++ part, locker before vs after the pick", **head)
+    sh, sl = S.status_handles(("fixed", "after"))
+    hs, ls = reader_handles(plt)
+    legend(fig, hs + sh, ls + sl, at(5.85), ncol=4)
+    cells = order_cells()
+    ys: list[tuple[str, str, str, float]] = []  # (test, model key, label, y)
+    y = 0.0
+    for name, test, _ in ORDER_TESTS:
+        ys.append((test, "", name, y))
+        y -= 0.95
+        for _, m, _ in S.MODELS:
+            ys.append((test, m, SHORT[m], y))
+            y -= 0.9
+        y -= 0.25
+    b_top, b_bot = 6.55, 9.7
+    panels = ((0.205, "before"), (0.530, "after"))
+    for x0, order in panels:
+        bx = fig.add_axes((x0, at(b_bot), 0.27, at(b_top) - at(b_bot)))
+        S.extra_axis(bx, label=False)
+        bx.set_title(f"locker {order} the pick", fontsize=S.FONT, weight="bold")
+        bx.set_xlabel("extra loss without the J++ part")
+        bx.grid(axis="x", color="#eeeeee")
+        too_few = []
+        for test, m, _label, yy in ys:
+            if not m:
+                continue
+            target = next(t for t, k, _ in S.MODELS if k == m)
+            kind = next(k for _, t, k in ORDER_TESTS if t == test)
+            c = cells.get((test, m, order))
+            what = f"(b) {next(n for n, t, _ in ORDER_TESTS if t == test)}, locker {order} the pick"
+            if c is None:
+                bx.text(0.4, yy, "not run", ha="center", va="center", color=S.COL["muted"])
+                continue
+            S.record("fig03", target, f"{what}: recall extra loss", *c["recall"], n=c["n"], source=c["src"])
+            S.record("fig03", target, f"{what}: lookup switches", c["switches"], n=c["n"], source=c["src"])
+            S.dot(bx, 0, yy, c["recall"], S.COL["recall"], kind, size=9)
+            if c["switches"] >= VALID_SWITCHES:
+                bx.plot([c["lookup"][0], c["recall"][0]], [yy, yy], color="#d6d6d6", lw=3.5, zorder=1,
+                        solid_capstyle="butt")  # fmt: skip
+                S.dot(bx, 0, yy, c["lookup"], S.COL["lookup"], kind, size=9)
+                S.record("fig03", target, f"{what}: lookup extra loss", *c["lookup"], n=c["n"], source=c["src"])
+            else:
+                too_few.append((yy, c))
+        if too_few:  # the lookup's counts at the panel's right: too few switches (k of n)
+            tr = blend(fig, bx)
+            bx.text(0.82, ys[0][3] + 0.1, "lookup: too few\nswitches (k of n)", transform=tr, va="center",
+                    color=S.COL["lookup"], linespacing=1.0)  # fmt: skip
+            for yy, c in too_few:
+                bx.text(0.82, yy, f"{c['switches']} of {c['n']}", transform=tr, va="center", color=S.COL["lookup"],
+                        style="italic")  # fmt: skip
+        bx.set_ylim(ys[-1][3] - 0.55, ys[0][3] + 0.55)
+        rows = [(yy, label) for _, m, label, yy in ys if m]
+        bx.set_yticks([yy for yy, _ in rows], [label for _, label in rows] if order == "before" else [])
+        bx.tick_params(axis="y", length=0)
+        if order == "before":
+            for _, m, label, yy in ys:  # the tests' headings in the left margin, wrapped to fit it
+                if not m:
+                    bx.text(0.01, yy, textwrap.fill(label, 18), transform=blend(fig, bx), fontsize=S.FONT,
+                            weight="bold", va="center", linespacing=1.0)  # fmt: skip
     S.save(fig, "fig03_order")
+
+
+SWEEP_RUNS = {"9b": "qwen35_9b_x45b_sweep_v2", "27b": "x45b_sweep_v2_27b"}  # 45b's layer sweep (after the data)
+# the sweep's arms: the bridge-word change; the changed prompt's states copied into the original prompt at every token of
+# the locker sentences (ls) or only at the item's tokens in them (li); number (lv) and period (lf) only, drawn as one line
+SWEEP_ARMS = (("bw", "the bridge-word change", "#222222", "-", "o"),
+              ("ls", "copy at the locker sentences: every token", S.COL["lookup"], "-", "o"),
+              ("li", "copy at the locker sentences: the item's tokens only", S.COL["lookup"], "--", "s"))  # fmt: skip
+
+
+def sweep_of(m: str) -> tuple[dict, Path]:
+    """The newest 45b sweep of a model that has the sanity filter (the items identical after the bridge word)."""
+    root = pins.RESULTS_DIR / "x45b_binding" / SWEEP_RUNS[m]
+    found = [p for p in sorted(root.glob("sweep-*/sweep.json")) if "sanity" in json.loads(p.read_text())]
+    return json.loads(found[-1].read_text()), found[-1]
+
+
+def f03b_layers(plt) -> None:
+    """After the data (45b's sweep, results/x45b_binding/*sweep_v2*): locker-after scenes on the items identical after the
+    bridge word, 9B and 27B: the lookup's switch rate by layer for the bridge-word change and for the changed prompt's
+    states copied into the original prompt at the locker sentences (every token / the item's tokens only); the number and
+    the period alone (0 at every layer) as one flat line; a vertical line at the layer fixed in advance."""
+    blobs = {m: sweep_of(m) for m in SWEEP_RUNS}
+    ns = {m: b["sanity"]["pass"] for m, (b, _) in blobs.items()}
+    fig, axes = plt.subplots(1, len(SWEEP_RUNS), figsize=(S.WIDTH, 5.3), sharey=True)
+    fig.subplots_adjust(left=0.10, right=0.98, top=0.60, bottom=0.12, wspace=0.10)
+    S.title(fig, "Locker after the pick: what moves the lookup at each layer",
+            "Locker after the pick; only the items identical after the bridge word (n = "
+            f"{ns['9b']} on the 9B, {ns['27b']} on\nthe 27B). Lookups switched (%), 95% intervals; after the data. "
+            "Copy: the changed prompt's\nstates put into the original prompt at the locker sentences, at that layer.")  # fmt: skip
+    flat = "#9a9a9a"
+    for ax, (m, (blob, path)) in zip(axes, blobs.items(), strict=True):
+        target = next(t for t, k, _ in S.MODELS if k == m)
+        src = str(path.relative_to(pins.REPO_ROOT))
+        cells = sorted(blob["cells"][X.LOOKUP], key=lambda c: c["layer"])
+        layers = [c["layer"] for c in cells]
+        for arm, label, col, ls, mk in SWEEP_ARMS:
+            ax.plot(layers, [100 * c[arm][0] for c in cells], color=col, ls=ls, lw=1.8, zorder=2)
+            for c in cells:
+                v = c[arm]
+                ax.plot([c["layer"]] * 2, [100 * v[1], 100 * v[2]], color=col, lw=1.2, alpha=0.8, zorder=2)
+                ax.plot([c["layer"]], [100 * v[0]], mk, ms=7, mfc="white", mec=col, mew=1.6, zorder=3)
+                S.record("fig03b", target, f"layer {c['layer']}: {label} (lookups switched)", *v, n=c["n"], source=src)
+        for c in cells:  # the number and the period alone: one line, drawn only while both are flat at 0
+            assert c["lv"] == c["lf"] == [0.0, 0.0, 0.0], (m, c["layer"], c["lv"], c["lf"])
+            for arm in ("lv", "lf"):
+                S.record("fig03b", target, f"layer {c['layer']}: copy at the {'number' if arm == 'lv' else 'period'} "
+                         "only (lookups switched)", *c[arm], n=c["n"], source=src)  # fmt: skip
+        ax.plot(layers, [0] * len(layers), color=flat, lw=2.2, zorder=1)
+        la = X.PREDICTED[target]
+        ax.axvline(la, color="#555555", ls=":", lw=1.2, zorder=0)
+        ax.text(la - 0.25, 103, "layer fixed\nin advance", ha="right", va="top", color="#555555", linespacing=1.0)
+        ax.set_title(name_of(m), fontsize=S.FONT, weight="bold")
+        ax.set_xticks(layers)
+        ax.set_xlim(layers[0] - 0.8, layers[-1] + 0.8)
+        ax.set_ylim(-4, 106)
+        ax.set_yticks(*PCT)
+        ax.set_xlabel("layer")
+        ax.grid(axis="y", color="#eeeeee")
+    axes[0].set_ylabel("lookups switched (%)")
+    hs = [plt.Line2D([], [], color=col, ls=ls, marker=mk, mfc="white", mec=col, mew=1.6, ms=7, lw=1.8)
+          for _, _, col, ls, mk in SWEEP_ARMS] + [plt.Line2D([], [], color=flat, lw=2.2)]  # fmt: skip
+    legend(fig, hs, [a[1] for a in SWEEP_ARMS] + ["copy at the number or period only"], 0.775, ncol=2)
+    S.save(fig, "fig03b_layers")
 
 
 def f04_routes_design(plt) -> None:
@@ -1013,69 +1265,97 @@ def f07_writes(plt) -> None:
     S.save(fig, "fig07_writes")
 
 
-NAMED_LABEL = (
-    "bridge named first,\nits locker sentence",
-    "bridge named first,\na pick sentence",
-    "another item\nnamed first",
-)
-X8_ORDER = {"9b": "qwen35_9b_x8_order", "27b": "x8_order_27b", "122b": "qwen35_122b_x8_order_g75",
-            "muse": "muse30b_x8_order_r2"}  # fmt: skip
-PCF = {"9b": "qwen35_9b_x7_pcf", "27b": "x7_pcf_27b", "122b": "qwen35_122b_x7_pcf", "muse": "muse30b_x7_pcf"}
+# Fig. 8 (a) (Dan, 27 Oct ~00:30; the layout of the 26 Oct Fig. 8b draft): 45a's sentence before the lockers, rows top
+# to bottom with a divider after the second; the variants' labels in Dan's words
+LAYOUT_ROWS = (("V0", "no sentence"), ("V4", "a neutral sentence"), ("V1", "a pick naming the\nfirst-locker item"),
+               ("V2", "a pick naming\nanother locker item"), ("V3", "a pick naming an\nitem with no locker"))  # fmt: skip
+LAYOUT_YS = (0, -1, -2.4, -3.4, -4.4)  # the gap after the second row holds the divider
 
 
-def f08_first(plt) -> None:
-    """After the data: (a) the main test's pointer removal, the lookup's extra loss by which item the first sentence
-    names (x0_first_sentence, NAMED); (b) the routes test, the position answers with only the pointer for moves to or
-    from the first locker vs between the second and third (grey: the whole change); (c) the neutral-sentence test (batch
-    44 B): the code's shift in positions with a sentence before the first locker (B1) or between the lockers and the
-    picks (B2); (d) the label-free pointer's overlap with the pointer (mean cos^2), chance = a random 4-d subspace's
-    (4 / d, the P_cf reports' random_mean_cos2). Layout in inches from the top (Dan ~21:55: legends, not colour words)."""
-    from scripts import x0_first_sentence as FS
+def layout_table() -> dict[str, tuple[str, dict]]:
+    """45a's descriptive table (results/x6_routes/x45a-descriptive-*, after the data): target -> (run, block)."""
+    table = latest(pins.RESULTS_DIR / "x6_routes", "x45a-descriptive-*/table.json") or {}
+    return {b["model"]: (run, b) for run, b in table.items()}
 
-    first = latest(pins.RESULTS_DIR / "x0_massmean", "first-sentence-*/first.json") or {}
+
+def layout_panel(ax, target: str, m: str, run: str, b: dict, fig_id: str) -> None:
+    """One model's 45a panel: per variant the lookup's answers on first-locker moves under the whole change (stacked:
+    identity, position, original; other only if >= 0.02; value is 0 everywhere), and beta (the shift of the pointer's
+    code vs no sentence) at the right."""
+    ax.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
+    r, beta = b["routes"], b["beta"]
+    for (v, label), y in zip(LAYOUT_ROWS, LAYOUT_YS, strict=True):
+        what = label.replace("\n", " ")
+        share, left = r["share"][f"whole|{v}"], 0.0
+        for route in ("identity", "position", "value", "original", "other"):
+            sh = share.get(route, 0.0)
+            if sh <= 0 or (route == "other" and sh < 0.02):
+                continue
+            ax.barh(y, sh, left=left, height=0.68, color=ROUTE_COL[route], edgecolor="white", lw=0.8)
+            if route in ("identity", "position") and sh >= 0.13:  # narrower: the label overflows (Dan ~22:05)
+                pct = round(100 * float(f"{sh:.2f}"))  # the percent of the README's two-decimal number
+                ax.text(left + sh / 2, y, f"{pct}", ha="center", va="center", fontsize=S.FONT,
+                        color="white" if route == "identity" else "#222222")  # fmt: skip
+            ci = r["identity_ci"][f"whole|{v}"] if route == "identity" else (None, None)
+            S.record(fig_id, target, f"45a, first-locker moves, whole change, {what}: {route} share", round(sh, 4), *ci,
+                     n=r["n"], source=f"x6_routes/{run}")  # fmt: skip
+            left += sh
+        if v in beta:
+            bv = beta[v]["beta"]
+            ax.text(1.03, y, f"β {bv[0]:.2f}", va="center", ha="left", fontsize=S.FONT, color=S.COL["muted"],
+                    transform=ax.get_yaxis_transform())  # fmt: skip
+            S.record(fig_id, target, f"45a, beta vs no sentence: {what}", round(bv[0], 4), bv[1], bv[2],
+                     n=beta[v]["n"], source=f"x6_routes/{run}")  # fmt: skip
+    ax.plot([0, 1], [-1.7, -1.7], color="#999999", ls="--", lw=1, clip_on=False)
+    ax.set_xlim(0, 1)
+    ax.set_xticks([0, 0.5, 1], ["0", "50", "100"])
+    ax.set_ylim(-4.85, 0.5)
+    ax.tick_params(axis="y", length=0)
+    for side in ("left", "right", "top"):
+        ax.spines[side].set_visible(False)
+
+
+def f08_first_locker(plt) -> None:
+    """All after the data. (a) 45a: per model (9B, 27B, Muse) the lookup's answers on first-locker moves under the whole
+    change, by the sentence added before the lockers, and beta at the right; (b) the routes test, the position answers
+    with only the pointer for moves to or from the first locker vs between the second and third (grey: the whole
+    change); (c) the neutral-sentence test (batch 44 B): the code's shift in positions with a sentence before the first
+    locker (B1) or between the lockers and the picks (B2). Layout in inches from the top. The 26 Oct panels on what the
+    prompt names first and the label-free pointer: figures/supp/s08_first_sentence_and_label_free."""
     pairs = latest(pins.RESULTS_DIR / "x8_write", "pairs-*/pairs.json") or {}
-    h = 12.5
+    by = layout_table()
+    h = 12.05
     fig = plt.figure(figsize=(S.WIDTH, h))
 
     def at(inch: float) -> float:  # inches from the top -> figure fraction
         return 1 - inch / h
 
-    grid_a = fig.add_gridspec(1, 4, left=0.24, right=0.99, top=at(2.0), bottom=at(3.85), wspace=0.14)
-    grid_b = fig.add_gridspec(1, 4, left=0.24, right=0.99, top=at(5.3), bottom=at(6.7), wspace=0.14)
-    S.title(fig, "Our pointer directions separate the first-mentioned item from the rest",
-            f"All after the data; {S.LOWERED} gate lowered to 0.75 after the data. Extra loss (0-1): switches lost\n"
-            "without the pointer, minus those lost without a random part (same size).")  # fmt: skip
+    S.title(fig, "The pointer marks the first locker in a clean layout",
+            f"All after the data; {S.LOWERED} gate lowered to 0.75 after the data.")  # fmt: skip
     head = dict(fontsize=S.FONT, weight="bold", va="top")
-    fig.text(0.01, at(1.05), "(a) Without the pointer, by what the prompt names first", **head)
-    fig.text(0.01, at(4.55), "(b) Only the pointer: position answers by the move", **head)
-    fig.text(0.01, at(7.85), "(c) A neutral sentence barely moves\nthe pointer's code", **head)
-    fig.text(0.58, at(7.85), "(d) label-free pointer: overlap with\nthe pointer (mean cos²)", **head)
-    open_dot = dict(marker="o", ls="", mfc="white", mew=1.6, ms=7)
-    legend(fig, [plt.Line2D([], [], mec=S.COL["lookup"], **open_dot),
-                 plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=5)], ["lookup", "recall"], at(1.3))  # fmt: skip
+    sub = dict(fontsize=S.FONT, color=S.COL["muted"], va="top")
+    fig.text(0.01, at(0.85), "(a) A sentence before the lockers: lookup answers on first-locker moves", **head)
+    fig.text(0.01, at(1.12), "Routes test (another item moved); the sentence is added to both prompts. Code shift\n"
+             "(positions), β: how far the pointer's code moves against no sentence.", **sub)  # fmt: skip
+    names = {"identity": "identity", "position": "position", "original": "original answer"}
+    legend(fig, [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[k]) for k in names], list(names.values()), at(1.68))
+    models = [(t, m) for t, m, _ in S.MODELS if t in by]
+    grid_a = fig.add_gridspec(1, len(models), left=0.255, right=0.905, top=at(2.55), bottom=at(4.75), wspace=0.40)
+    axes_a = [fig.add_subplot(grid_a[0, j]) for j in range(len(models))]
+    for ax, (target, m) in zip(axes_a, models, strict=True):
+        layout_panel(ax, target, m, *by[target], "fig08")
+    axes_a[0].set_yticks(LAYOUT_YS, [label for _, label in LAYOUT_ROWS])
+    for ax in axes_a[1:]:
+        ax.set_yticks(LAYOUT_YS, [])
+    fig.text(0.58, at(5.12), "lookup answers (%), first-locker moves, whole change", ha="center", va="center")
+
+    fig.text(0.01, at(5.55), "(b) Only the pointer: position answers by the move", **head)
     legend(fig, [plt.Rectangle((0, 0), 1, 1, color=S.COL["position"]), plt.Rectangle((0, 0), 1, 1, color="#c8c8c8")],
-           ["only the pointer", "whole change"], at(4.8))  # fmt: skip
-    fig.legend([plt.Line2D([], [], mec=S.COL["lookup"], **open_dot), plt.Line2D([], [], mec="#9a9a9a", **open_dot)],
-               ["a sentence before the first locker\n(would shift the code if it counted sentences)",
-                "a sentence between the lockers and the picks\n(would shift it if it counted distance back)"],
-               loc="upper left", bbox_to_anchor=(0.0, at(8.35)), frameon=False, handletextpad=0.4, labelspacing=0.6,
-               handlelength=1.4)  # fmt: skip
+           ["only the pointer", "whole change"], at(5.8))  # fmt: skip
+    grid_b = fig.add_gridspec(1, 4, left=0.24, right=0.98, top=at(6.5), bottom=at(7.9), wspace=0.14)
     for j, (target, m, _) in enumerate(S.MODELS):
-        a, b = fig.add_subplot(grid_a[0, j]), fig.add_subplot(grid_b[0, j])
-        S.extra_axis(a)
-        a.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
-        f = first.get(target, {})
-        for i, g in enumerate(FS.NAMED):
-            lk, rc = f.get(f"{X.LOOKUP}|named|{g}", {}), f.get(f"{X.RECALL}|named|{g}", {})
-            if "extra_loss" in rc:
-                a.plot([rc["extra_loss"][0]], [-i - 0.25], "o", ms=5, color=S.COL["recall"], zorder=3)
-            if "extra_loss" in lk:
-                S.dot(a, 0, -i, lk["extra_loss"], S.COL["lookup"], "after")
-                S.record("fig08", target, f"(a) lookup extra loss without the pointer: {g}", *lk["extra_loss"], n=lk["n"],
-                         source="x0_first_sentence")  # fmt: skip
-        a.set_ylim(-len(FS.NAMED) + 0.4, 0.6)
-        a.set_yticks([-i for i in range(len(FS.NAMED))], NAMED_LABEL if j == 0 else [])
-        a.tick_params(axis="y", length=0)
+        b = fig.add_subplot(grid_b[0, j])
+        b.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
         moves = pairs.get(target, {}).get("moves", {})
         groups = (  # data.csv's name for the group (as before), its tick label (narrow lines: the panels are 1.5 in)
             ("with the first", "moves\nwith the\nfirst\nlocker", [k for k in moves if "0" in k.split("-")]),
@@ -1102,27 +1382,26 @@ def f08_first(plt) -> None:
             b.tick_params(labelleft=False)
         else:
             b.set_ylabel("position\nanswers (%)")
-    c = fig.add_axes((0.10, at(11.45), 0.40, at(9.5) - at(11.45)))
-    d = fig.add_axes((0.67, at(11.45), 0.24, at(9.5) - at(11.45)))
-    chance = {}
+
+    fig.text(0.01, at(9.1), "(c) A neutral sentence barely moves the pointer's code", **head)
+    c = fig.add_axes((0.10, at(11.2), 0.40, at(9.6) - at(11.2)))
+    open_dot = dict(marker="o", ls="", mfc="white", mew=1.6, ms=7)
+    fig.legend([plt.Line2D([], [], mec=S.COL["lookup"], **open_dot), plt.Line2D([], [], mec="#9a9a9a", **open_dot)],
+               ["a sentence before the first locker\n(would shift the code if it\ncounted sentences)",
+                "a sentence between the lockers\nand the picks (would shift it if\nit counted distance back)"],
+               loc="center left", bbox_to_anchor=(0.55, at(10.4)), frameon=False, handletextpad=0.4,
+               labelspacing=1.0, handlelength=1.4)  # fmt: skip
     for i, (target, m, _) in enumerate(S.MODELS):
         v = latest(pins.RESULTS_DIR / "x8_write" / X8_ORDER[m], "verdict-*/verdict.json")
         if v is None:
             c.text(i, 0.5, "not run", ha="center", va="center", fontsize=S.FONT, color=S.COL["muted"], rotation=90)
-        else:
-            for k, (b_, col) in enumerate((("B1", S.COL["lookup"]), ("B2", "#9a9a9a"))):
-                beta = v["variants"][b_]["beta"]
-                c.plot([i + (k - 0.5) * 0.3] * 2, [beta[1], beta[2]], color=col, lw=1.6)
-                c.plot([i + (k - 0.5) * 0.3], [beta[0]], "o", ms=7, mfc="white", mec=col, mew=1.6)
-                S.record("fig08", target, f"(c) neutral sentence {b_}: the code's shift in positions", *beta,
-                         n=v["variants"][b_]["n"], source=X8_ORDER[m])  # fmt: skip
-        r = json.loads(p.read_text()) if (p := pins.RESULTS_DIR / "x7_pcf" / PCF[m] / "report.json").exists() else None
-        if r is not None:
-            d.bar(i, r["mean_cos2_with_alf"], width=0.6, color=S.COL["position"])
-            d.text(i, r["mean_cos2_with_alf"] + 0.03, f"{r['mean_cos2_with_alf']:.2f}", ha="center", fontsize=S.FONT)
-            S.record("fig08", target, "(d) label-free pointer: mean cos^2 with ours", round(r["mean_cos2_with_alf"], 4),
-                     source=PCF[m])  # fmt: skip
-            chance[target] = (i, r["random_mean_cos2"], PCF[m])
+            continue
+        for k, (b_, col) in enumerate((("B1", S.COL["lookup"]), ("B2", "#9a9a9a"))):
+            beta = v["variants"][b_]["beta"]
+            c.plot([i + (k - 0.5) * 0.3] * 2, [beta[1], beta[2]], color=col, lw=1.6)
+            c.plot([i + (k - 0.5) * 0.3], [beta[0]], "o", ms=7, mfc="white", mec=col, mew=1.6)
+            S.record("fig08", target, f"(c) neutral sentence {b_}: the code's shift in positions", *beta,
+                     n=v["variants"][b_]["n"], source=X8_ORDER[m])  # fmt: skip
     for line_y, ls, text in ((0.5, "--", "counts as shifted"), (1.0, ":", "one full position")):
         c.axhline(line_y, color="#555555", ls=ls, lw=1)
         c.text(-0.45, line_y + 0.02, text, ha="left", va="bottom", fontsize=S.FONT, color="#555555")
@@ -1132,12 +1411,75 @@ def f08_first(plt) -> None:
     c.set_xticks(range(4), ["9B", "27B", f"122B{S.LOWERED}", "Muse"])
     c.set_ylabel("code shift (positions)")
     c.grid(axis="y", color="#eeeeee")
-    fig.text(0.01, at(12.15), "Same neutral sentence in both prompts (no item, no digit, 10-12 tokens).",
+    fig.text(0.01, at(11.85), "Same neutral sentence in both prompts (no item, no digit, 10-12 tokens).",
              color=S.COL["muted"], va="center")  # fmt: skip
+    S.save(fig, "fig08_first_locker")
+
+
+NAMED_LABEL = (
+    "bridge named first,\nits locker sentence",
+    "bridge named first,\na pick sentence",
+    "another item\nnamed first",
+)
+X8_ORDER = {"9b": "qwen35_9b_x8_order", "27b": "x8_order_27b", "122b": "qwen35_122b_x8_order_g75",
+            "muse": "muse30b_x8_order_r2"}  # fmt: skip
+PCF = {"9b": "qwen35_9b_x7_pcf", "27b": "x7_pcf_27b", "122b": "qwen35_122b_x7_pcf", "muse": "muse30b_x7_pcf"}
+
+
+def s08_first_sentence(plt) -> None:
+    """Supplementary to Fig. 8 (its 26 Oct panels (a) and (d), after the data): (a) the main test's pointer removal, the
+    lookup's extra loss by which item the first sentence names (x0_first_sentence, NAMED); (b) the label-free pointer's
+    overlap with the pointer (mean cos^2), chance = a random 4-d subspace's (4 / d, the P_cf reports'
+    random_mean_cos2)."""
+    from scripts import x0_first_sentence as FS
+
+    first = latest(pins.RESULTS_DIR / "x0_massmean", "first-sentence-*/first.json") or {}
+    h = 7.6
+    fig = plt.figure(figsize=(S.WIDTH, h))
+
+    def at(inch: float) -> float:  # inches from the top -> figure fraction
+        return 1 - inch / h
+
+    grid_a = fig.add_gridspec(1, 4, left=0.24, right=0.98, top=at(2.0), bottom=at(3.85), wspace=0.14)
+    S.title(fig, "Supplement to Fig. 8: the first sentence and the label-free pointer",
+            f"All after the data; {S.LOWERED} gate lowered to 0.75 after the data. Extra loss (0-1): switches lost\n"
+            "without the pointer, minus those lost without a random part (same size).")  # fmt: skip
+    head = dict(fontsize=S.FONT, weight="bold", va="top")
+    fig.text(0.01, at(1.05), "(a) Without the pointer, by what the prompt names first", **head)
+    fig.text(0.01, at(4.55), "(b) label-free pointer: overlap with the pointer (mean cos²)", **head)
+    open_dot = dict(marker="o", ls="", mfc="white", mew=1.6, ms=7)
+    legend(fig, [plt.Line2D([], [], mec=S.COL["lookup"], **open_dot),
+                 plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=5)], ["lookup", "recall"], at(1.3))  # fmt: skip
+    for j, (target, m, _) in enumerate(S.MODELS):
+        a = fig.add_subplot(grid_a[0, j])
+        S.extra_axis(a)
+        a.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
+        f = first.get(target, {})
+        for i, g in enumerate(FS.NAMED):
+            lk, rc = f.get(f"{X.LOOKUP}|named|{g}", {}), f.get(f"{X.RECALL}|named|{g}", {})
+            if "extra_loss" in rc:
+                a.plot([rc["extra_loss"][0]], [-i - 0.25], "o", ms=5, color=S.COL["recall"], zorder=3)
+            if "extra_loss" in lk:
+                S.dot(a, 0, -i, lk["extra_loss"], S.COL["lookup"], "after")
+                S.record("s08", target, f"(a) lookup extra loss without the pointer: {g}", *lk["extra_loss"], n=lk["n"],
+                         source="x0_first_sentence")  # fmt: skip
+        a.set_ylim(-len(FS.NAMED) + 0.4, 0.6)
+        a.set_yticks([-i for i in range(len(FS.NAMED))], NAMED_LABEL if j == 0 else [])
+        a.tick_params(axis="y", length=0)
+    d = fig.add_axes((0.10, at(7.1), 0.40, at(5.15) - at(7.1)))
+    chance = {}
+    for i, (target, m, _) in enumerate(S.MODELS):
+        r = json.loads(p.read_text()) if (p := pins.RESULTS_DIR / "x7_pcf" / PCF[m] / "report.json").exists() else None
+        if r is not None:
+            d.bar(i, r["mean_cos2_with_alf"], width=0.6, color=S.COL["position"])
+            d.text(i, r["mean_cos2_with_alf"] + 0.03, f"{r['mean_cos2_with_alf']:.2f}", ha="center", fontsize=S.FONT)
+            S.record("s08", target, "(b) label-free pointer: mean cos^2 with ours", round(r["mean_cos2_with_alf"], 4),
+                     source=PCF[m])  # fmt: skip
+            chance[target] = (i, r["random_mean_cos2"], PCF[m])
     # chance: a random 4-d subspace against the pointer's, 4 / d per model (d: the hidden size); one line where the four
     # agree to two decimals (they do: 0.0006-0.0013), else one per bar
     for target, (_, ch, src) in chance.items():
-        S.record("fig08", target, "(d) chance: a random 4-d subspace's mean cos^2 (4 / d)", ch, source=src)
+        S.record("s08", target, "(b) chance: a random 4-d subspace's mean cos^2 (4 / d)", ch, source=src)
     vals = [ch for _, ch, _ in chance.values()]
     if vals and len({round(ch, 2) for ch in vals}) == 1:
         level = sum(vals) / len(vals)
@@ -1155,90 +1497,43 @@ def f08_first(plt) -> None:
     d.set_xticks(range(4), ["9B", "27B", "122B", "Muse"])
     d.set_ylabel("mean cos²")
     d.grid(axis="y", color="#eeeeee")
-    S.save(fig, "fig08_first_mentioned")
+    S.save(fig, "s08_first_sentence_and_label_free", supp=True)
 
 
-# Fig. 8b (Dan ~21:40, draft until Tuesday's merge): 45a's sentence before the lockers, rows top to bottom with a divider
-# after the second; the variants' labels as the README words them
-LAYOUT_ROWS = (("V0", "no sentence"), ("V4", "a neutral sentence"), ("V1", "a pick: the first-locker item"),
-               ("V2", "a pick: another locker item"), ("V3", "a pick: an item with no locker"))  # fmt: skip
-DRAFTS = S.REPO / "figures" / "drafts"
+X45D_RUNS = {"9b": "qwen35_9b_x45d", "27b": "x45d_27b", "muse": "muse30b_x45d"}  # 45d (fixed in advance); no 122B run
+FORMATS = (("prose", "prose"), ("json", "JSON"), ("table", "table"))
 
 
-def f08b_layout(plt, draft: bool = True) -> None:
-    """After the data (45a, results/x6_routes/x45a-descriptive-*): per model, the lookup's answers on first-locker moves
-    under the whole change, by the sentence added before the lockers (stacked: identity, position, original; other only
-    if >= 0.02; value is 0 everywhere), and beta, the shift of the pointer's code vs no sentence. The 122B's panel only
-    once its run is in the table. draft: saved to figures/drafts/ with its data.csv rows beside it (fig08b_layout.csv)."""
-    table = latest(pins.RESULTS_DIR / "x6_routes", "x45a-descriptive-*/table.json") or {}
-    by = {b["model"]: (run, b) for run, b in table.items()}
-    models = [(t, m) for t, m, _ in S.MODELS if t in by]
-    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 4.9), sharey=True, squeeze=False)
-    fig.subplots_adjust(left=0.27, right=0.905, top=0.62, bottom=0.12, wspace=0.40)
-    S.title(fig, "Naming an item before the lockers switches the lookup from position to identity",
-            "Routes test (another item moved), one sentence added before the lockers in both prompts.\n"
-            "After the data; the rule fixed in advance read the answers with only the pointer (mixed).\n"
-            "Code shift (positions), β: how far the pointer's code moves against no sentence.", limit=86)  # fmt: skip
-    ys = [0, -1, -2.4, -3.4, -4.4]  # the gap after the second row holds the divider
-    for ax, (target, m) in zip(axes[0], models, strict=True):
-        run, b = by[target]
-        ax.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
-        r, beta = b["routes"], b["beta"]
-        for (v, label), y in zip(LAYOUT_ROWS, ys, strict=True):
-            share, left = r["share"][f"whole|{v}"], 0.0
-            for route in ("identity", "position", "value", "original", "other"):
-                sh = share.get(route, 0.0)
-                if sh <= 0 or (route == "other" and sh < 0.02):
-                    continue
-                ax.barh(y, sh, left=left, height=0.68, color=ROUTE_COL[route], edgecolor="white", lw=0.8)
-                if route in ("identity", "position") and sh >= 0.13:  # narrower: the label overflows (Dan ~22:05)
-                    pct = round(100 * float(f"{sh:.2f}"))  # the percent of the README's two-decimal number
-                    ax.text(left + sh / 2, y, f"{pct}", ha="center", va="center", fontsize=S.FONT,
-                            color="white" if route == "identity" else "#222222")  # fmt: skip
-                ci = r["identity_ci"][f"whole|{v}"] if route == "identity" else (None, None)
-                S.record("fig08b", target, f"45a, first-locker moves, whole change, {label}: {route} share", round(sh, 4),
-                         *ci, n=r["n"], source=f"x6_routes/{run}")  # fmt: skip
-                left += sh
-            if v in beta:
-                bv = beta[v]["beta"]
-                ax.text(1.03, y, f"β {bv[0]:.2f}", va="center", ha="left", fontsize=S.FONT, color=S.COL["muted"],
-                        transform=ax.get_yaxis_transform())  # fmt: skip
-                S.record("fig08b", target, f"45a, beta vs no sentence: {label}", round(bv[0], 4), bv[1], bv[2],
-                         n=beta[v]["n"], source=f"x6_routes/{run}")  # fmt: skip
-        ax.plot([0, 1], [-1.7, -1.7], color="#999999", ls="--", lw=1, clip_on=False)
-        ax.set_xlim(0, 1)
-        ax.set_xticks([0, 0.5, 1], ["0", "50", "100"])
-        ax.set_ylim(-4.85, 0.5)
-        ax.tick_params(axis="y", length=0)
-        for side in ("left", "right", "top"):
-            ax.spines[side].set_visible(False)
-    axes[0][0].set_yticks(ys, [label for _, label in LAYOUT_ROWS])
-    fig.supxlabel("lookup answers (%), first-locker moves, whole change", x=0.6, y=0.01, fontsize=S.FONT)
-    names = {"identity": "identity", "position": "position", "original": "original answer"}
-    legend(fig, [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[k]) for k in names], list(names.values()), 0.745)
-    if not draft:
-        S.save(fig, "fig08b_layout")
-        return
-    DRAFTS.mkdir(parents=True, exist_ok=True)
-    fig.savefig(DRAFTS / "fig08b_layout.svg", facecolor="white")
-    fig.savefig(DRAFTS / "fig08b_layout.png", dpi=200, facecolor="white")
-    plt.close(fig)
-    rows = [r for r in S.ROWS if r["figure"] == "fig08b"]
-    with (DRAFTS / "fig08b_layout.csv").open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0]))
-        w.writeheader()
-        w.writerows(rows)
+def x45d_verdict(m: str) -> tuple[dict | None, str]:
+    """45d's newest verdict for a model (results/x0b_generalize/<run>/x45d-*/verdict.json) and its path, or (None, "")."""
+    run = X45D_RUNS.get(m)
+    found = sorted((pins.RESULTS_DIR / "x0b_generalize" / run).glob("x45d-*/verdict.json")) if run else []
+    return (json.loads(found[-1].read_text()), str(found[-1].relative_to(pins.REPO_ROOT))) if found else (None, "")
 
 
 def f09_transfer(plt) -> None:
-    """Per model, the lookup's extra loss without J++ (black) and without the pointer directions (orange, fit on simple
-    scenes, not refit) in simple scenes, varied scenes by format and natural passages (fact first)."""
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 5.3), sharey=True)
-    fig.subplots_adjust(left=0.17, right=0.995, top=0.62, bottom=0.11, wspace=0.12)
+    """(a) Per model, the lookup's extra loss without J++ (black) and without the pointer (orange, fit on simple scenes,
+    not refit) in simple scenes, varied scenes by format and natural passages (fact first). (b) 45d (fixed in advance):
+    per model and format, the lookup's extra loss without the pointer fit on simple scenes (open) and without a pointer
+    refit on that format (filled; fit on half of the varied scenes, measured on the other half), each minus its random
+    part; a cell under X0's 30-switch bar is not counted."""
+    h = 9.35
+    fig = plt.figure(figsize=(S.WIDTH, h))
+
+    def at(inch: float) -> float:  # inches from the top -> figure fraction
+        return 1 - inch / h
+
     S.title(fig, "The split carries over to other texts; the pointer does not",
             "The lookup's extra loss (0-1): switches lost without the part, minus those lost without a random\n"
-            "part (same size). The pointer is fit on simple scenes and not refit.")  # fmt: skip
+            "part (same size).")  # fmt: skip
+    head = dict(fontsize=S.FONT, weight="bold", va="top")
+    fig.text(0.01, at(0.95), "(a) The pointer fit on simple scenes, not refit", **head)
     black = "#222222"
+    sh, sl = S.status_handles()
+    legend(fig, [plt.Line2D([], [], marker="o", ls="", color=black, ms=7), plt.Line2D([], [], marker="o", ls="", color=S.COL["position"], ms=7), *sh],
+           ["without the J++ part", "without the pointer (fit on simple scenes)", *sl], at(1.2))  # fmt: skip
+    grid_a = fig.add_gridspec(1, 4, left=0.17, right=0.985, top=at(2.3), bottom=at(4.85), wspace=0.12)
+    axes = [fig.add_subplot(grid_a[0, j]) for j in range(4)]
     n_sw, n_nat = N.get("nat_lk_whole_sw_muse"), N.get("nat_n_muse")
     for ax, (target, m, _) in zip(axes, S.MODELS, strict=True):
         S.extra_axis(ax)
@@ -1255,7 +1550,7 @@ def f09_transfer(plt) -> None:
                 if v is None:
                     if part == "alf" and sc != "simple":
                         why = "not tested\n(gate)" if cells.get((kind, "gate")) else "not run"
-                        ax.text(0.2, -i + dy, why, fontsize=S.FONT, color=S.COL["muted"], va="center", linespacing=1.0)
+                        ax.text(0.3, -i + dy, why, fontsize=S.FONT, color=S.COL["muted"], va="center", linespacing=1.0)
                     continue
                 after = part == "jpp" and cells.get((kind, "after"))
                 S.dot(ax, 0, -i + dy, v, col, "after" if after else "fixed", size=6.5)
@@ -1265,34 +1560,75 @@ def f09_transfer(plt) -> None:
                          source="readme_story_figures.transfer_cells")  # fmt: skip
         ax.set_ylim(-len(SCENES) + 0.4, 0.6)
         ax.tick_params(axis="y", length=0)
-    axes[0].set_yticks(
-        [-i for i in range(len(SCENES))], ["simple scenes", "prose", "JSON", "table", "natural\npassages"]
-    )
-    sh, sl = S.status_handles()
-    legend(fig, [plt.Line2D([], [], marker="o", ls="", color=black, ms=7), plt.Line2D([], [], marker="o", ls="", color=S.COL["position"], ms=7), *sh],
-           ["without the J++ part", "without the pointer (fit on simple scenes)", *sl], 0.82)  # fmt: skip
+        ax.set_yticks([-i for i in range(len(SCENES))],
+                      ["simple scenes", "prose", "JSON", "table", "natural\npassages"] if ax is axes[0] else [])  # fmt: skip
+
+    fig.text(0.01, at(5.65), "(b) The pointer refit per format, fixed in advance", **head)
+    fig.text(0.01, at(5.92), "Varied scenes: fit on half of them, measured on the other half.", fontsize=S.FONT,
+             color=S.COL["muted"], va="top")  # fmt: skip
+    orange = S.COL["position"]
+    legend(fig, [plt.Line2D([], [], marker="o", ls="", mfc="white", mec=orange, mew=1.6, ms=7),
+                 plt.Line2D([], [], marker="o", ls="", color=orange, ms=7)],
+           ["without the pointer (fit on simple scenes)", "without the refit pointer"], at(6.25))  # fmt: skip
+    grid_b = fig.add_gridspec(1, 4, left=0.17, right=0.985, top=at(7.05), bottom=at(8.75), wspace=0.12)
+    for j, (target, m, _) in enumerate(S.MODELS):
+        ax = fig.add_subplot(grid_b[0, j])
+        S.extra_axis(ax)
+        ax.set_title(name_of(m), fontsize=S.FONT, weight="bold")
+        v, src = x45d_verdict(m)
+        ax.set_ylim(-len(FORMATS) + 0.4, 0.6)
+        ax.tick_params(axis="y", length=0)
+        ax.set_yticks([-i for i in range(len(FORMATS))], [f[1] for f in FORMATS] if j == 0 else [])
+        if v is None:
+            S.empty(ax, "not run")
+            continue
+        cells = {(c["format"], c["part"]): c for c in v["cells"] if c["reader"] == X.LOOKUP}
+        for i, (fmt, _) in enumerate(FORMATS):
+            refit, simple = cells[(fmt, "pcf")], cells[(fmt, "alf")]
+            assert refit["switched_whole"] == simple["switched_whole"], (m, fmt)
+            S.record("fig09", target, f"(b) {fmt}: lookup switches with the whole change", refit["switched_whole"],
+                     n=refit["n"], source=src)  # fmt: skip
+            if not refit["valid"]:  # under X0's bar (S_whole >= 0.3, >= 30 switches): the rule does not count it
+                ax.text(0.4, -i, f"not counted\n({refit['switched_whole']} switches)", ha="center", va="center",
+                        color=S.COL["muted"], linespacing=1.0)  # fmt: skip
+                continue
+            for c, kind, dy, what in ((refit, "fixed", 0.17, "the refit pointer"),
+                                      (simple, "after", -0.17, "the pointer fit on simple scenes")):  # fmt: skip
+                S.dot(ax, 0, -i + dy, tuple(c["excess"]), orange, kind, size=6.5)
+                S.record("fig09", target, f"(b) {fmt}: lookup extra loss without {what}", *c["excess"], n=c["n"],
+                         source=src)  # fmt: skip
     S.save(fig, "fig09_transfer")
 
 
-LEFT_RUNS = {"9b": ("qwen35_9b_x6_routes_bothoff", "qwen35_9b_x6_routes_d1"),
-             "27b": ("x6_routes_bothoff_27b", "x6_routes_d1_27b"),
-             "122b": ("qwen35_122b_x6_routes_bothoff_g75", None),
-             "muse": ("muse30b_x6_routes", "muse30b_x6_routes_d1_r2")}  # fmt: skip
-LEFT_PARTS = (("both", "J++ part\n+ pointer"), ("jpp+alf+idout", "+ identity\noutside J++"))
+LEFT_RUNS = {"9b": ("qwen35_9b_x6_routes_bothoff", "qwen35_9b_x6_routes_d1", "qwen35_9b_x6_routes_x45e_dom"),
+             "27b": ("x6_routes_bothoff_27b", "x6_routes_d1_27b", "x6_routes_x45e_27b_dom"),
+             "122b": ("qwen35_122b_x6_routes_bothoff_g75", None, None),
+             "muse": ("muse30b_x6_routes", "muse30b_x6_routes_d1_r2", "muse30b_x6_routes_x45e_dom")}  # fmt: skip
+# the third row (45e, fixed in advance): the wrong pair in place of identity outside J++, at its share of the change
+LEFT_PARTS = (("both", "J++ part\n+ pointer"), ("jpp+alf+idout", "+ identity\noutside J++"),
+              ("jpp+alf+wrong", "+ wrong pair\ninstead"))  # fmt: skip
 
 
 def f10_left(plt) -> None:
     """The sanity swap, one panel per model (as Figs. 8 and 9), one row per removal: J++ and the pointer (the both-removed
-    runs), and identity outside J++ removed too (batch 40). Per row, the share of the whole change's lookup switches
-    still switching with the part removed (purple) and with a random part of the same size removed (grey), joined by a
-    line: its length is the part's extra loss. The part's median share of the change under the row (Dan ~22:00: the
-    one-axis version was hard to read)."""
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 4.5), sharey=True)
-    fig.subplots_adjust(left=0.17, right=0.985, top=0.60, bottom=0.15, wspace=0.12)
+    runs), identity outside J++ removed too (batch 40), and a wrong pair in its place (45e). Per row, the share of the
+    whole change's lookup switches still switching with the part removed (purple) and with a random part of the same
+    size removed (grey), joined by a line: its length is the part's extra loss. The part's median share of the change
+    under the row (Dan ~22:00: the one-axis version was hard to read). The subtitle: 45e's condition (ii)."""
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 6.1), sharey=True)
+    fig.subplots_adjust(left=0.17, right=0.985, top=0.60, bottom=0.11, wspace=0.12)
+    cut = {m: interval(f"x45e_cut_{m}") for m in ("9b", "27b", "muse")}
     # Dan's title (~22:40): 84 characters, 11.0 pt
     S.title(fig, "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",
             "Sanity swap. Lookups still switching (%), out of the whole change's switches. The line from\n"
-            "grey to purple is what the part removes beyond a random part (same size): its extra loss.", limit=90)  # fmt: skip
+            "grey to purple is what the part removes beyond a random part (same size): its extra loss.\n"
+            "Wrong pair: mean differences of other item pairs, at the share of identity outside J++.\n"
+            "In the routes test, identity outside J++ cuts identity answers only "
+            f"{cut['9b'][0]:.2f} / {cut['27b'][0]:.2f} / {cut['muse'][0]:.2f}\n"
+            "more than the wrong pair (9B / 27B / Muse; the bar fixed in advance: 0.15).", limit=90)  # fmt: skip
+    for m, v in cut.items():
+        S.record("fig10", next(t for t, k, _ in S.MODELS if k == m), "routes test: identity answers cut by identity "
+                 "outside J++ beyond the wrong pair", *v, source=f"x45e_cut_{m}")  # fmt: skip
     grey = "#a8a8a8"
     for ax, (target, m, _name) in zip(axes, S.MODELS, strict=True):
         ax.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
@@ -1304,7 +1640,7 @@ def f10_left(plt) -> None:
         kind = "after" if m in LOWERED_M else "fixed"
         for k, (part, label) in enumerate(LEFT_PARTS):
             y = -k
-            run = LEFT_RUNS[m][0 if part == "both" else 1]
+            run = LEFT_RUNS[m][k]
             v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json") if run else None
             e = next((e for e in (v or {}).get("extra", []) if e["condition"] == "C0" and e["reader"] == X.LOOKUP
                       and e["part"] == part), None)  # fmt: skip
@@ -1334,12 +1670,13 @@ def f10_left(plt) -> None:
     fig.supxlabel("lookups still switching (%)", x=0.58, y=0.01, fontsize=S.FONT)
     sh, sl = S.status_handles()
     legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8), plt.Line2D([], [], marker="o", ls="", color=grey, ms=8), *sh],
-           ["without the part", "without a random part (same size)", *sl], 0.80)  # fmt: skip
+           ["without the part", "without a random part (same size)", *sl], 0.765)  # fmt: skip
     S.save(fig, "fig10_what_is_left")
 
 
-# Fig. 11 (Dan ~16:45): the claims in story order; status per model, read off the verdicts and the README's numbers
-# (agent's reading, UNVERIFIED); "a" = after the data (or a gate lowered after the data)
+# Fig. 11 v4 (Dan ~16:45): the claims in story order; status per model, read off the verdicts and the README's numbers
+# (agent's reading, UNVERIFIED); "a" = after the data (or a gate lowered after the data). Fig. 11 v5 carries these cells
+# over where Dan (27 Oct ~00:30) does not restate them.
 SCORECARD_V4 = (
     ("The split (main test)", {"9b": ("held", 0), "27b": ("partial", 0), "122b": ("held", 0), "muse": ("held", 0)}),
     ("The split on the logit difference", {"9b": ("held", 0), "27b": ("held", 0), "122b": ("held", 0), "muse": ("held", 0)}),
@@ -1355,36 +1692,216 @@ SCORECARD_V4 = (
                                                           "muse": ("held", 1)}),
     ("The pointer transfers", {"9b": ("no", 0), "27b": ("no", 0), "122b": ("no", 0), "muse": ("no", 0)}),
 )  # fmt: skip
-SYMBOL = {"held": ("✓", "#2f7d4f"), "partial": ("~", "#b07a0a"), "no": ("✗", "#b8433a"), "not tested": ("–", "#8a8a8a")}
+V4_CELL = {"held": "ok", "partial": "~", "no": "x", "not tested": "-"}
+# figures/story/scorecard.csv's cells: ok / ~ / x / - (not run, or too few switches: flag *) / pending; flag a = after
+# the data. Its columns (Dan ~00:30): claim, model, cell, flag, data.csv key ("numbers:<x0_numbers key>" or
+# "<figure>:<quantity>", the row of figures/story/data.csv that carries the cell's number for that model)
+CELL_SYMBOL = {"ok": ("✓", "#2f7d4f"), "~": ("~", "#b07a0a"), "x": ("✗", "#b8433a"), "-": ("–", "#8a8a8a"),
+               "pending": ("○", "#8a8a8a")}  # fmt: skip
+SC_FIELDS: tuple[str, ...] = ("claim", "model", "cell", "flag", "data.csv key")
+
+
+def split_verdict(lk: float, gap: float) -> str:
+    """The split on one model by 45m's two bars (point estimates), in three levels as Fig. 11 v4 read the main test: ok
+    if the gap is at least 0.3 and the lookup at most 0.10; ~ if only the lookup misses its bar; x if the gap misses."""
+    if gap < GAP_BAR:
+        return "x"
+    return "ok" if lk <= LOOKUP_BAR else "~"
+
+
+def scorecard_rows() -> list[dict]:
+    """Fig. 11 v5's rows (Dan, 27 Oct ~00:30), grouped. Cells carried over from SCORECARD_V4 where Dan does not restate
+    them; Dan's restated cells checked against their rule wherever the rule is in the result files (an assert); two rows
+    computed by a stated reading (agent's, UNVERIFIED): 'locker before the pick' by split_verdict on the main test's
+    locker-before cells (the same reading gives v4's main-test row and Dan's 45m row), 'never the value without the chat
+    template' as the value share of the routes runs without the template (45i, descriptive) being 0."""
+    v4 = {claim: {m: (V4_CELL[s], "a" if a else "") for m, (s, a) in cells.items()} for claim, cells in SCORECARD_V4}
+    num = interval
+    keys = [m for _, m, _ in S.MODELS]
+
+    # Split
+    main = {m: (split_verdict(num(f"lk_excess_{m}")[0], num(f"contrast_{m}")[0]), "") for m in keys}
+    assert main == v4["The split (main test)"], (main, v4["The split (main test)"])
+    before = {
+        m: (split_verdict(num(f"sbo_swap_before_lk_{m}")[0], num(f"sbo_swap_before_gap_{m}")[0]), "a") for m in keys
+    }
+    clean_dan = {"9b": "x", "27b": "ok", "122b": "-", "muse": "ok"}
+    clean = {m: ((split_verdict(num(f"x45m_before_lk_{m}")[0], num(f"x45m_before_gap_{m}")[0]), "")
+                 if N.get(f"x45m_before_gap_{m}") else ("-", "")) for m in keys}  # fmt: skip
+    assert {m: c for m, (c, _) in clean.items()} == clean_dan, clean
+    natural = dict(v4["The split in natural passages"])
+    natural["muse"] = ("-", "*")  # too few switches (the footnote)
+
+    # Routes: without the chat template (45i's routes runs, descriptive)
+    nochat = {}
+    for target, m, _ in S.MODELS:
+        run = {"9b": "qwen35_9b_x6_routes_x45i_nochat", "27b": "x6_routes_x45i_nochat_27b"}.get(m)
+        v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json") if run else None
+        r = next((r for r in (v or {}).get("rows", []) if r["condition"] == "C2" and r["arm"] == "whole"), None)
+        if r is None or run is None:
+            nochat[m] = ("-", "")
+            continue
+        S.record("fig11", target, "routes test without the chat template, another item moved, whole: value share",
+                 *r["share"]["value"], n=r["n"], source=run)  # fmt: skip
+        nochat[m] = ("ok" if r["share"]["value"][0] == 0 else "x", "a")
+
+    # Pointer: 45a (Dan's reading, after the data), 45d's verdicts, the transfer row (Dan: x on all, as v4)
+    pick_first = {"9b": ("ok", "a"), "27b": ("ok", "a"), "122b": ("-", ""), "muse": ("~", "a")}
+    refit = {}
+    for m in keys:
+        v, _ = x45d_verdict(m)
+        refit[m] = ("-" if v is None else "ok" if v["verdict"]["outcome"] == "pointer elsewhere" else "x", "")
+    assert {m: c for m, (c, _) in refit.items()} == {"9b": "ok", "27b": "x", "122b": "-", "muse": "ok"}, refit
+    transfer = {m: ("x", "") for m in keys}
+    assert transfer == v4["The pointer transfers"], v4["The pointer transfers"]
+
+    # Limits: 45e (both conditions -> ok, one -> ~, none -> x), 45g rule b (main test), 45b on the clean items
+    x45e = latest(pins.RESULTS_DIR / "x6_routes", "x45e-*/x45e.json") or {"flags": {}}
+    by_target = {x45e["runs"][run]: f for run, f in x45e["flags"].items()}
+    specific = {}
+    for target, m, _ in S.MODELS:
+        f = by_target.get(target)
+        held = (f["holds_i"], f["holds_ii"]) if f else None
+        specific[m] = ("pending" if held is None else "ok" if all(held) else "~" if any(held) else "x", "")
+    assert {m: c for m, (c, _) in specific.items()} == {"9b": "~", "27b": "~", "122b": "pending", "muse": "x"}, specific
+    g45 = latest(pins.RESULTS_DIR / "x0_massmean", "score45g-*/score.json") or {"runs": {}}
+    swap = {r["model"]: r["clauses"]["b"] for r in g45["runs"].values() if r["scene_set"] == "two people swap"}
+    only_jpp = {m: ("pending" if t not in swap else "ok" if swap[t] else "x", "") for t, m, _ in S.MODELS}
+    assert {m: c for m, (c, _) in only_jpp.items()} == {"9b": "ok", "27b": "ok", "122b": "pending", "muse": "ok"}
+    link = {}
+    for m in keys:
+        run = {"9b": "qwen35_9b_x45b_binding", "27b": "x45b_binding_27b", "muse": "muse30b_x45b_binding"}.get(m)
+        found = [p for p in sorted((pins.RESULTS_DIR / "x45b_binding" / run).glob("verdict-*/verdict.json"))
+                 if json.loads(p.read_text()).get("sanity")] if run else []  # fmt: skip
+        link[m] = (
+            "-" if not found else "ok" if json.loads(found[-1].read_text())["sanity"]["rule"]["holds"] else "x",
+            "",
+        )
+    assert {m: c for m, (c, _) in link.items()} == {"9b": "x", "27b": "x", "122b": "-", "muse": "x"}, link
+
+    nat_key = {"9b": "numbers:natg75_gap_9b", "muse": "numbers:nat_lk_whole_sw_muse"}
+    spec = (  # group, claim (the figure's row label), cells (model key -> (cell, flag)), data.csv key per model
+        ("Split", "main test", main, lambda m: f"numbers:contrast_{m}"),
+        ("Split", "locker before the pick", before, lambda m: f"numbers:sbo_swap_before_gap_{m}"),
+        ("Split", "clean one-pick scenes", clean, lambda m: f"numbers:x45m_before_gap_{m}"),
+        ("Split", "logit difference", v4["The split on the logit difference"], lambda m: f"numbers:ld_gap_{m}"),
+        ("Split", "varied scenes", v4["The split in varied scenes"], lambda m: f"numbers:x0b_c_{m}"),
+        ("Split", "natural passages", natural, lambda m: nat_key.get(m, f"numbers:nat_gap_{m}")),
+        ("Routes", "never the value", v4["Never the value"],
+         lambda m: "fig05:another item moved, whole: value share"),
+        ("Routes", "never the value without the chat template", nochat,
+         lambda m: "fig11:routes test without the chat template, another item moved, whole: value share"),
+        ("Pointer", "the lookup needs it", v4["The lookup needs the pointer"],
+         lambda m: "fig05:another item moved, no_alf: position share"),
+        ("Pointer", "only it gives position answers", v4["Only the pointer gives\nposition answers"],
+         lambda m: "fig05:another item moved, keep_alf: position share"),
+        ("Pointer", "a write moves the lookup", v4["A write moves the lookup"],
+         lambda m: "fig07:lookup target share, mean over locker pairs, s = 4"),
+        ("Pointer", "the recall follows the write", v4["The recall follows the write"],
+         lambda m: "fig07:recall changed under the strongest write (s = 4): the written locker's item"),
+        ("Pointer", "counts mentions, not text position", v4["First-mentioned item,\nnot position in the text"],
+         lambda m: "fig08:(c) neutral sentence B1: the code's shift in positions"),
+        ("Pointer", "a pick sentence first moves the lookup to identity", pick_first,
+         lambda m: "fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"),
+        ("Pointer", "refit per format", refit, lambda m: "fig09:(b) prose: lookup extra loss without the refit pointer"),
+        ("Pointer", "the pointer fit on simple scenes transfers", transfer, lambda m: f"numbers:tptr_pooled_{m}"),
+        ("Limits", "identity outside J++ is specific", specific, lambda m: f"numbers:x45e_cut_{m}"),
+        ("Limits", "the recall needs only the J++ part, locker after the pick", only_jpp,
+         lambda m: "fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"),
+        ("Limits", "the link sits in the locker sentences", link, lambda m: f"numbers:x45b_sane_c_{m}"),
+    )  # fmt: skip
+    rows = []
+    for group, claim, cells, key in spec:
+        for target, m, name in S.MODELS:
+            cell, flag = cells[m]
+            has_number = cell not in ("-", "pending") or flag == "*"
+            rows.append({"group": group, "claim": claim, "model": name, "target": target, "cell": cell, "flag": flag,
+                         "data.csv key": key(m) if has_number else ""})  # fmt: skip
+    return rows
+
+
+def check_scorecard_keys(path: Path) -> None:
+    """Every data.csv key in scorecard.csv names a row that exists: an x0_numbers key, or a recorded (figure, quantity)
+    for that model."""
+    names = {name: target for target, _, name in S.MODELS}
+    recorded = {(r["figure"], r["model"], r["quantity"]) for r in S.ROWS}
+    with path.open() as f:
+        for r in csv.DictReader(f):
+            key = r["data.csv key"]
+            if not key or r["model"] not in names:
+                continue
+            fig_id, quantity = key.split(":", 1)
+            ok = quantity in N if fig_id == "numbers" else (fig_id, names[r["model"]], quantity) in recorded
+            assert ok, f"scorecard.csv: no data.csv row for {r['claim']!r} / {r['model']}: {key!r}"
 
 
 def f11_scorecard(plt) -> None:
-    """Rows = claims in story order, columns = models; a symbol per cell (held / partial / no / not tested) and a small
-    'a' for after the data."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 6.9))
-    fig.subplots_adjust(left=0.36, right=0.99, top=0.86, bottom=0.07)
-    S.title(fig, "What held where", "✓ held   ~ partial   ✗ no   – too few switches*;   a: after the data")
+    """figures/story/scorecard.csv (written here from scorecard_rows; rows of other models already in the file are kept,
+    so more models can be added as columns) drawn as the scorecard: rows = claims in story order, grouped; columns = the
+    file's models (ours first); a symbol per cell and a small 'a' for after the data."""
+    rows = scorecard_rows()
+    path = S.OUT / "scorecard.csv"
+    ours = {name for _, _, name in S.MODELS}
+    kept = []
+    if path.exists():
+        with path.open() as f:
+            kept = [r for r in csv.DictReader(f) if r["model"] not in ours]
+    S.OUT.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(SC_FIELDS))
+        w.writeheader()
+        w.writerows([{k: r[k] for k in SC_FIELDS} for r in rows] + kept)
+    with path.open() as f:
+        table = list(csv.DictReader(f))
+    claims = list(dict.fromkeys(r["claim"] for r in rows))  # story order
+    groups = {r["claim"]: r["group"] for r in rows}
+    unknown = {r["claim"] for r in table} - set(claims)
+    assert not unknown, f"scorecard.csv claims without a group in readme_story_figures.scorecard_rows: {unknown}"
+    models = list(dict.fromkeys([name for _, _, name in S.MODELS] + [r["model"] for r in table]))
+    cells = {(r["claim"], r["model"]): (r["cell"], r["flag"], r["data.csv key"]) for r in table}
+    target_of = {name: target for target, _, name in S.MODELS}
+
+    ys, y, last = {}, 0.0, None  # a heading row before each group
+    heads = []
+    for claim in claims:
+        if groups[claim] != last:
+            heads.append((groups[claim], y))
+            y -= 1.0
+            last = groups[claim]
+        ys[claim] = y
+        y -= 1.0
+    h = 1.35 + 0.38 * (-y) + 0.45
+    fig, ax = plt.subplots(figsize=(S.WIDTH, h))
+    fig.subplots_adjust(left=0.40, right=0.99, top=1 - 1.3 / h, bottom=0.42 / h)
+    S.title(fig, "What held where",
+            "✓ held   ~ partial   ✗ no   – not run, or too few switches*   ○ pending;   a: after the data")  # fmt: skip
     n_sw, n = N.get("nat_lk_whole_sw_muse"), N.get("nat_n_muse")
-    fig.text(0.01, 0.015, f"*Muse, natural passages: the lookup has too few switches ({n_sw} of {n}).",
+    fig.text(0.01, 0.12 / h, f"*Muse, natural passages: the lookup has too few switches ({n_sw} of {n}).",
              color=S.COL["muted"])  # fmt: skip
-    for j, (target, m, name) in enumerate(S.MODELS):
-        ax.text(j, 0.75, name.replace(" Glimmer 30B", "\nGlimmer 30B"), ha="center", va="bottom", fontsize=S.FONT,
-                weight="bold")  # fmt: skip
-        for i, (claim, cells) in enumerate(SCORECARD_V4):
-            status, after = cells[m]
-            sym, col = SYMBOL[status]
-            ax.text(j, -i, sym, ha="center", va="center", fontsize=S.FONT + 7, color=col, weight="bold")
-            if after:
-                ax.text(j + 0.2, -i + 0.18, "a", ha="left", va="center", fontsize=S.FONT, color=S.COL["muted"])
-            if claim == "The split in natural passages" and m == "muse":  # the footnote under the figure
-                ax.text(j + 0.2, -i + 0.18, "*", ha="left", va="center", fontsize=S.FONT + 2, color=S.COL["muted"])
-            S.record("fig11", target, claim.replace("\n", " "), status, source="after the data" if after else "fixed")
-    for i in range(len(SCORECARD_V4)):
-        if i % 2 == 0:
-            ax.axhspan(-i - 0.5, -i + 0.5, color="#f6f6f6", lw=0, zorder=0)
-    ax.set_xlim(-0.5, len(S.MODELS) - 0.5)
-    ax.set_ylim(-len(SCORECARD_V4) + 0.45, 1.5)
-    ax.set_yticks([-i for i in range(len(SCORECARD_V4))], [c for c, _ in SCORECARD_V4])
+    for j, name in enumerate(models):
+        ax.text(j, 0.55, textwrap.fill(name, 12), ha="center", va="bottom", fontsize=S.FONT, weight="bold",
+                linespacing=1.0)  # fmt: skip
+        for claim in claims:
+            got = cells.get((claim, name))
+            if got is None:
+                continue
+            cell, flag, key = got
+            sym, col = CELL_SYMBOL[cell]
+            ax.text(j, ys[claim], sym, ha="center", va="center", fontsize=S.FONT + 5, color=col, weight="bold")
+            if flag:
+                ax.text(j + 0.2, ys[claim] + 0.12, flag, ha="left", va="center", fontsize=S.FONT,
+                        color=S.COL["muted"])  # fmt: skip
+            src = ("after the data" if "a" in flag else "fixed") + (f"; {key}" if key else "")
+            S.record("fig11", target_of.get(name, name), claim, cell, source=src)
+    for k, claim in enumerate(claims):
+        if k % 2 == 0:
+            ax.axhspan(ys[claim] - 0.5, ys[claim] + 0.5, color="#f6f6f6", lw=0, zorder=0)
+    tr = blend(fig, ax)
+    for group, gy in heads:
+        ax.text(0.01, gy - 0.1, group, transform=tr, fontsize=S.FONT + 1, weight="bold", va="center")
+    ax.set_xlim(-0.5, len(models) - 0.5)
+    ax.set_ylim(y + 0.5, 0.5)
+    ax.set_yticks([ys[c] for c in claims], [textwrap.fill(c, 38) for c in claims])
     ax.set_xticks([])
     ax.tick_params(axis="y", length=0)
     for side in ("top", "right", "bottom", "left"):
@@ -1392,16 +1909,18 @@ def f11_scorecard(plt) -> None:
     S.save(fig, "fig11_scorecard")
 
 
-README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f03_order, f04_routes_design, f05_routes, f06_depth, f07_writes,
-               f08_first, f09_transfer, f10_left, f11_scorecard)  # fmt: skip
+README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f03_order, f03b_layers, f04_routes_design, f05_routes,
+               f06_depth, f07_writes, f08_first_locker, f09_transfer, f10_left, f11_scorecard)  # fmt: skip
+SUPP_FIGS = (s01_split, s01b_one_pick, s02_parts, s05_routes, s08_first_sentence, s10_removed_together)
 
 
-README_NAMES = ("fig00_setup", "fig01_split", "fig01b_settings", "fig02_specificity", "fig03_order",
-                "fig04_routes_design", "fig05_routes", "fig06_depth", "fig07_writes", "fig08_first_mentioned",
+README_NAMES = ("fig00_setup", "fig01_split", "fig01b_settings", "fig02_specificity", "fig03_order", "fig03b_layers",
+                "fig04_routes_design", "fig05_routes", "fig06_depth", "fig07_writes", "fig08_first_locker",
                 "fig09_transfer", "fig10_what_is_left", "fig11_scorecard")  # fmt: skip
 # the draft set's second sheet: the supplementary figures (README Appendix A) and docs/x0_details.md's figures
-SHEET_MORE = ("supp/s01_split_all_scene_sets", "supp/s02_parts_all", "supp/s05_routes_all_arms",
-              "supp/s10_removed_together_bars", "x0_necessity/overview", "x0_necessity/detail_x0_necessity_27b_chat_chat",
+SHEET_MORE = ("supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s02_parts_all",
+              "supp/s05_routes_all_arms", "supp/s08_first_sentence_and_label_free", "supp/s10_removed_together_bars",
+              "x0_necessity/overview", "x0_necessity/detail_x0_necessity_27b_chat_chat",
               "x0_necessity/detail_qwen35_9b_x0_necessity_chat", "x0_necessity/kmatch", "x0_necessity/kcurve",
               "x0_necessity/share", "x0_necessity/asked_first", "status_2026-10-24/f6_digits")  # fmt: skip
 
@@ -1427,30 +1946,28 @@ def contact_sheet(
 
 
 def main(argv: list[str] | None = None) -> None:
-    """Default: figures/story/ (+ figures/supp/, docs/figures_contact_sheet.png), as before. --out DIR: the whole draft
-    set (Dan, 26 Oct ~21:50 / ~22:45: figures/drafts/v5): the README figures with Fig. 8b beside Fig. 8, the
-    supplementary figures in DIR/supp, docs/x0_details.md's figures in DIR/x0_necessity (x0_figures) and
-    DIR/status_2026-10-24 (x0_status_pack's f6), each folder with its data.csv; DIR/contact_sheet.png (the README
-    figures) and DIR/contact_sheet_more.png (the rest). figures/story/, figures/supp/, figures/x0_necessity/ and docs/ stay
-    untouched."""
+    """Default: figures/story/ (+ figures/supp/, figures/story/scorecard.csv, docs/figures_contact_sheet.png). --out DIR:
+    the whole draft set (Dan, 26 Oct ~21:50 / ~22:45: figures/drafts/v5): the README figures, the supplementary figures
+    in DIR/supp, docs/x0_details.md's figures in DIR/x0_necessity (x0_figures) and DIR/status_2026-10-24
+    (x0_status_pack's f6), each folder with its data.csv; DIR/contact_sheet.png (the README figures) and
+    DIR/contact_sheet_more.png (the rest). figures/story/, figures/supp/, figures/x0_necessity/ and docs/ stay
+    untouched. (Fig. 8b, the 26 Oct draft, is Fig. 8 (a) since batch 45.)"""
     import argparse
 
     ap = argparse.ArgumentParser(description="The README figures, their data.csv and contact sheet.")
     ap.add_argument("--out", type=Path, default=None, help="draft output dir (default: figures/story)")
     args = ap.parse_args(argv)
-    figs, sheet = list(README_FIGS), S.REPO / "docs" / "figures_contact_sheet.png"
-    names: list[str] = list(README_NAMES)
+    sheet = S.REPO / "docs" / "figures_contact_sheet.png"
     out = None
     if args.out is not None:
         out = args.out if args.out.is_absolute() else S.REPO / args.out
         S.OUT, S.SUPP, sheet = out, out / "supp", out / "contact_sheet.png"
-        figs.insert(figs.index(f08_first) + 1, lambda plt: f08b_layout(plt, draft=False))
-        names.insert(names.index("fig08_first_mentioned") + 1, "fig08b_layout")
     plt = S.setup()
-    for f in (*figs, s01_split, s02_parts, s05_routes, s10_removed_together):
+    for f in (*README_FIGS, *SUPP_FIGS):
         f(plt)
+    check_scorecard_keys(S.OUT / "scorecard.csv")
     S.write_data()
-    contact_sheet(plt, names, sheet)
+    contact_sheet(plt, README_NAMES, sheet)
     if out is not None:
         from scripts import x0_status_pack as SP
 

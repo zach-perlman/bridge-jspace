@@ -1,6 +1,6 @@
 # Figure vocabulary
 
-One vocabulary across every figure the README or docs/x0_details.md shows (Dan, 26 Oct ~21:50 and ~22:45): Figs. 0-11, 1b and 8b, the supplementary figures (s01, s02, s05, s10), x0_figures' overview, details, kmatch, kcurve, share and asked_first, and the digit check (f6). Scope: every figure label, legend, subtitle, caption and README caption (figure alt texts, "*Fig. N.*" lines, table headers) uses only the canonical strings; prose keeps the exceptions named in the table. `tests/test_readme_build.py` fails on a banned variant in any of these figures' drawn text and in the captions (`docs/drafts/readme_v5_captions.md` until Tuesday's merge, then README.md).
+One vocabulary across every figure the README or docs/x0_details.md shows (Dan, 26 Oct ~21:50 and ~22:45): Figs. 0-11, 1b and 3b (8b until batch 45, now Fig. 8 (a)), the supplementary figures (s01, s01b, s02, s05, s08, s10), x0_figures' overview, details, kmatch, kcurve, share and asked_first, and the digit check (f6). Scope: every figure label, legend, subtitle, caption and README caption (figure alt texts, "*Fig. N.*" lines, table headers) uses only the canonical strings; prose keeps the exceptions named in the table. `tests/test_readme_build.py` fails on a banned variant in any of these figures' drawn text and in the captions (`docs/drafts/readme_v5_captions.md` until Tuesday's merge, then README.md).
 
 | Concept | Canonical label | Banned variants |
 |---|---|---|
@@ -29,5 +29,14 @@ Added for the x0 details figures (26 Oct ~23:00, the same words; Dan to confirm)
 | the other dictionaries | "logit-lens directions" (W_U), "input-embedding directions" (W_E), "random atoms"; the J++ dictionary at k atoms: "J++ part"; the lens itself: "the J++ lens" | "W_U", "W_E" |
 | X0's metrics | "extra loss"; "switches lost" (1 − switched without the part / switched with the whole change, in %); "gap" | "excess", "dependence", "J-dependence", "graded contrast", "C = ..." |
 | run codes | none on a figure (a run's name as provenance stays) | "X0" |
+
+Added for the batch-45 figures (27 Oct ~00:30, the README v5 figures; Dan to confirm):
+
+| Concept | Canonical label | Banned variants |
+|---|---|---|
+| 45m's scenes | "clean one-pick scenes" (the asked pick changes to an added locker item nobody picks; no duplicate pick) | "45m" on a figure |
+| 45e's control | "wrong pair": mean differences of other item pairs (same domain), at the share of identity outside J++ | "wrong-pair control" as a row label |
+| 45b's arms (Fig. 3b) | "the bridge-word change"; "copy at the locker sentences: every token" / "the item's tokens only"; "copy at the number or period only" (the changed prompt's states put into the original prompt) | "S patched into O", arm letters (a, c, d) |
+| cell states | "not counted (k switches)": a cell under X0's 30-switch bar that the rule fixed in advance does not count (Fig. 9's 45d panel); "pending" (Fig. 11: ○, a run still queued) | – |
 
 Typography: arrows are drawn as "→" and "↔" (Dan's "->" and "<->"), the dose as "×". A canonical string may wrap over lines on a figure; it is still the same string.
