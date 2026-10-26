@@ -10,7 +10,18 @@ inside each pair's own 25-atom J++ span (signed OMP of the pair's difference), t
 Writes results/x7_pcf/<name>/{pcf.npz, report.json, report.md}; `x6_routes run --alf-from x7_pcf/<name>` then runs the
 routes test with P_cf in place of Alf. UNVERIFIED.
 
+`varied` (45d, batch 45, jobs/c3/batch45.yaml; fixed in advance): the same method on the varied scenes (x0b_generalize's
+aligned cases of tasks_v2 set x0b_v2), per format (prose, json, table). Per format the scenes are split in two halves
+by bridge item (seed 0, disjoint items, split.json); on half 1 ("fit") the pairs: the bridge's locker statement trades places
+with another item's (a prose sentence, a JSON object, a table row), each keeping its own number, both before the asked
+pick so the bridge word sees both (in json / table every locker row then is; a swap of two statements after the pick
+leaves the bridge word's state unchanged), at most MAX_MOVES partners per scene (seeded), the bridge one token at the
+same index in O and S. Per format the PCA (centered, rank 4) of the bridge word's S - O: pcf_<format>.npz. Half 2
+("test") is the main test: `x0b_generalize run --pcf-from x7_pcf/<name>`.
+
 uv run python scripts/x7_pcf.py run --name x7_pcf_27b     # GPU; BJ_TARGET picks the model
+uv run python scripts/x7_pcf.py varied-plan               # tokenizer only: the split, the pairs per format, examples
+uv run python scripts/x7_pcf.py varied --name x45d_fit_27b  # GPU: the per-format bases
 """
 
 from __future__ import annotations
@@ -128,6 +139,129 @@ def natural_pairs(tok, seed: int = SEED) -> tuple[list[dict], collections.Counte
                         "ids": ids, "pos": {"org": at["org"][0], "alt": at["alt"][0]}})  # fmt: skip
     why["pairs"] = len(out)
     return out, why
+
+
+FORMATS = ("prose", "json", "table")  # 45d: the varied scenes' formats, one basis each
+SPLIT_SEED = 0  # 45d: the halves by bridge item
+
+
+def locker_statement(item: dict, thing: str) -> str:
+    """The whole locker statement of `thing` as tasks_v2 renders it in the item's format and number style."""
+    from scripts import tasks_v2 as T
+
+    n = item["facts"]["locker"][thing]
+    word = T.num(n, item["numbers"])
+    fmt = item["format"]
+    if fmt == "prose":
+        return f"The locker of {T.ref(T.DOMAINS[item['domain']], thing)} is {word}."
+    if fmt == "json":
+        return json.dumps({"item": thing, "locker": n if item["numbers"] == "digits" else word})
+    assert fmt == "table", fmt
+    return f"| {thing} | {word} |"
+
+
+def statement_at(item: dict, thing: str) -> int:
+    s = locker_statement(item, thing)
+    assert item["context"].count(s) == 1, f"{item.get('id')}: {s!r} is not once in the context"
+    return item["context"].index(s)
+
+
+def before_pick(item: dict, thing: str) -> bool:
+    """Whether thing's locker statement starts before the asked person's pick statement."""
+    from scripts import x0b_generalize as B
+
+    f = item["facts"]
+    return statement_at(item, thing) < B.bridge_start(item, item["context"], f["x"])
+
+
+def swap_lockers(item: dict, a: str, b: str) -> str:
+    """The item's context with the locker statements of a and b trading places, each keeping its own number."""
+    ctx = item["context"]
+    (p, sp), (q, sq) = sorted((statement_at(item, t), locker_statement(item, t)) for t in (a, b))
+    assert p + len(sp) <= q, f"{item.get('id')}: the two locker statements overlap"
+    return ctx[:p] + sq + ctx[p + len(sp) : q] + sp + ctx[q + len(sq) :]
+
+
+def split_items(bridges: list[str], seed: int = SPLIT_SEED) -> dict[str, list[str]]:
+    """Two disjoint halves of the bridge items (a seeded permutation of the sorted items): "fit" (the first half,
+    P_cf's pairs) and "test" (the rest, the main test)."""
+    keys = sorted(set(bridges))
+    perm = np.random.default_rng(seed).permutation(len(keys))
+    fit = sorted(keys[i] for i in perm[: len(keys) // 2])
+    return {"fit": fit, "test": sorted(set(keys) - set(fit))}
+
+
+def varied_pairs(
+    tok, cases: list[dict], items: dict[str, dict], seed: int = SEED, max_moves: int = MAX_MOVES
+) -> tuple[list[dict], collections.Counter]:
+    """Per varied scene (x0b_generalize's aligned cases; `items`: the lookup item per scene), pairs O / S: the bridge's
+    locker statement trades places with another item's, both before the asked pick, numbers kept (the lookup's answer
+    does not change); at most max_moves partners per scene (seeded). Per pair the lookup prompts' ids and the bridge's
+    token index, the same in O and S (pairs where it is not are dropped and counted)."""
+    from scripts import x0b_generalize as B
+
+    rng = random.Random(seed)
+    out, why = [], collections.Counter({"scenes": len(cases)})
+    for c in cases:
+        it = items[c["scene"]]
+        x = it["facts"]["x"]
+        assert x == c["bridge"], f"{c['scene']}: the case's bridge is not the item's"
+        if not before_pick(it, x):
+            why["the bridge's locker statement comes after the pick"] += 1
+            continue
+        partners = sorted(t for t in it["facts"]["locker"] if t != x and before_pick(it, t))
+        if not partners:
+            why["no other locker statement before the pick"] += 1
+            continue
+        why["scenes with a pair"] += 1
+        ids_o, pos = c["readers"][X.LOOKUP]["ids"]["org"], c["pos"]
+        for t in sorted(rng.sample(partners, min(max_moves, len(partners)))):
+            s_ctx = swap_lockers(it, x, t)
+            ids_s, at = B.encode(tok, it, s_ctx, x)
+            if at != [pos] or len(ids_s) != len(ids_o):
+                why["the bridge is not one token at the same index in O and S"] += 1
+                continue
+            if ids_s[pos:] != ids_o[pos:]:
+                why["O and S differ from the bridge on"] += 1
+                continue
+            out.append({"scene": c["scene"], "format": c["format"], "level": c["level"], "domain": c["domain"],
+                        "order": c["order"], "bridge": x, "partner": t, "pos": pos, "context": it["context"],
+                        "cf_context": s_ctx, "ids": {"org": ids_o, "alt": ids_s}})  # fmt: skip
+    why["pairs"] = len(out)
+    return out, why
+
+
+def in_half(c: dict, split: dict, half: str) -> bool:
+    """Whether the case's bridge item is in the given half ("fit" / "test") of its format's split."""
+    return c["bridge"] in split["formats"][c["format"]][half]
+
+
+def varied_plan(tok, set_name: str) -> tuple[list[dict], dict, dict]:
+    """Per format, the varied scenes' split by bridge item, and half 1's pairs (tokenizer only): pairs, split (per
+    format the two halves' items and cases), counts."""
+    from scripts import tasks_v2 as T
+    from scripts import x0b_generalize as B
+
+    cases, built = B.build_cases(tok, set_name)
+    per = {}
+    for f in FORMATS:
+        mine = [c for c in cases if c["format"] == f]
+        halves = split_items([c["bridge"] for c in mine])
+        per[f] = {**halves, "cases": {h: sum(c["bridge"] in set(v) for c in mine) for h, v in halves.items()}}
+    split = {"seed": SPLIT_SEED, "by": "bridge item, per format", "set": set_name, "formats": per,
+             "aligned_cases": built["cases"]}  # fmt: skip
+    items = {it["scene"]: it for it in T.load(set_name) if it["word"] == X.LOOKUP}
+    pairs, why = varied_pairs(tok, [c for c in cases if c["format"] in per and in_half(c, split, "fit")], items)
+    counts = {"pairs_per_format": dict(collections.Counter(p["format"] for p in pairs)), "why": dict(why)}
+    return pairs, split, counts
+
+
+def fit_basis(x: np.ndarray, rank: int = RANK) -> tuple[np.ndarray, np.ndarray, list[float]]:
+    """P_cf's fit: the top `rank` components of a centered PCA of the rows of x ([d, rank] orthonormal), the mean, and
+    the variance explained per component."""
+    assert x.shape[0] > rank, f"{x.shape[0]} pairs for a rank-{rank} basis"
+    _, s, vt = np.linalg.svd(x - x.mean(0), full_matrices=False)
+    return vt[:rank].T, x.mean(0), (s**2 / (s**2).sum()).tolist()
 
 
 def principal_cos2(p: np.ndarray, q: np.ndarray) -> list[float]:
@@ -302,18 +436,121 @@ def stage_natural(name: str, pcf_run: str) -> Path:
     return out
 
 
+def stage_varied(name: str, set_name: str = "x0b_v2") -> Path:
+    """45d's fit (module docstring): split.json, pairs.jsonl, pcf_<format>.npz and a descriptive report (variance
+    explained, the split-half noise ceiling by scene, cos² of the principal angles with U and between the formats)."""
+    import torch
+
+    from bridge_jspace.model import load_model
+    from bridge_jspace.utils import git_state, progress
+    from scripts import x0_massmean as MM
+
+    pins.check_run_name(name)
+    target = pins.model_pin()["target"]
+    layer = X.PREDICTED[target]
+    out = RESULTS / name
+    out.mkdir(parents=True, exist_ok=False)
+    m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "set": set_name,
+         "formats": list(FORMATS), "rank": RANK, "max_moves": MAX_MOVES,
+         "split": f"per format, the aligned varied scenes (x0b_generalize.build_cases) in two halves by bridge item, seed "
+                  f"{SPLIT_SEED}: fit (these pairs) and test (the main test, x0b_generalize --pcf-from)",
+         "pairs": "the bridge's locker statement trades places with another item's, both before the asked pick, "
+                  "numbers kept; the bridge one token at the same index in O and S",
+         "pca": "centered, per format, over the pairs' bridge-word differences S - O", "alf_from": R.STATES[target],
+         "seeds": {"split": SPLIT_SEED, "pairs": SEED}, "design": "jobs/c3/batch45.yaml, 45d (fixed in advance)"}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
+    model = load_model()
+    pairs, split, counts = varied_plan(model.tokenizer, set_name)
+    (out / "split.json").write_text(json.dumps({**split, "pairs": counts}, indent=1) + "\n")
+    X.write_jsonl(out / "pairs.jsonl", [{k: v for k, v in p.items() if k != "ids"} for p in pairs])
+    halves = {f: v["cases"] for f, v in split["formats"].items()}
+    print(json.dumps({"cases": halves, **counts}, indent=1), flush=True)
+
+    def state(ids: list[int], pos: int):
+        return model.run(torch.tensor([ids], device="cuda"), record=(layer,))[1][layer][pos].float().cpu()
+
+    diffs, h_org = [], {}
+    with torch.no_grad():
+        for p in progress(pairs, f"S - O at layer {layer} (pair)"):
+            if p["scene"] not in h_org:  # O is shared by the scene's pairs
+                h_org[p["scene"]] = state(p["ids"]["org"], p["pos"])
+            diffs.append((state(p["ids"]["alt"], p["pos"]) - h_org[p["scene"]]).double().numpy())
+    x = np.stack(diffs)
+    alf = MM.subspaces(R.STATES[target])[0]["Alf"]
+    report: dict = {"run": name, "model": target, "layer": layer, "split": {"seed": split["seed"], "cases": halves},
+                    "counts": counts, "random_mean_cos2": RANK / x.shape[1], "alf_rank": int(alf.shape[1]), "formats": {}}  # fmt: skip
+    bases = {}
+    for f in FORMATS:
+        idx = [i for i, p in enumerate(pairs) if p["format"] == f]
+        p_f, mean, var = fit_basis(x[idx])
+        bases[f] = p_f
+        np.savez_compressed(out / f"pcf_{f}.npz", P=p_f.astype(np.float32), mean=mean.astype(np.float32),
+                            var=np.array(var))  # fmt: skip
+        cos2 = principal_cos2(p_f, alf)
+        report["formats"][f] = {"pairs": len(idx), "scenes": len({pairs[i]["scene"] for i in idx}),
+                                "bridge_items": len({pairs[i]["bridge"] for i in idx}),
+                                "variance_explained": var[:SHOW], "variance_explained_cum": np.cumsum(var[:SHOW]).tolist(),
+                                "split_half": split_half(x[idx], [pairs[i]["scene"] for i in idx]),
+                                "cos2_with_alf": cos2, "mean_cos2_with_alf": float(np.mean(cos2))}  # fmt: skip
+    report["between_formats"] = {f"{a}/{b}": float(np.mean(principal_cos2(bases[a], bases[b])))
+                                 for i, a in enumerate(FORMATS) for b in FORMATS[i + 1 :]}  # fmt: skip
+    (out / "report.json").write_text(json.dumps(report, indent=1) + "\n")
+    lines = [f"# 45d's fit: a label-free basis per format in the varied scenes ({name})", "",
+             f"Model {target}, layer {layer}; set {set_name}, half 1 of the bridge items (seed {SPLIT_SEED}); pairs: the "
+             f"bridge's locker statement trades places with another item's, both before the asked pick, numbers kept; "
+             f"PCA centered, rank {RANK}. Descriptive; the test is x0b_generalize --pcf-from. UNVERIFIED.", "",
+             "| format | pairs | scenes | bridge items | variance explained 1-4 (cum.) | split-half mean cos² | "
+             f"mean cos² with U (random {RANK / x.shape[1]:.4f}) |", "|---|---|---|---|---|---|---|"]  # fmt: skip
+    for f, r in report["formats"].items():
+        lines.append(f"| {f} | {r['pairs']} | {r['scenes']} | {r['bridge_items']} | "
+                     f"{r['variance_explained_cum'][RANK - 1]:.3f} | {r['split_half']['mean_cos2']:.3f} | "
+                     f"{r['mean_cos2_with_alf']:.3f} |")  # fmt: skip
+    lines += ["", "Mean cos² between the formats' bases: "
+              + ", ".join(f"{k} {v:.3f}" for k, v in report["between_formats"].items()) + "."]  # fmt: skip
+    (out / "report.md").write_text("\n".join(lines) + "\n")
+    print("wrote", out, flush=True)
+    return out
+
+
+def show_pair(p: dict) -> str:
+    """O and S of one pair, the bridge's and the partner's locker statements as they differ (for the plan)."""
+    i = next(k for k, (a, b) in enumerate(zip(p["context"], p["cf_context"], strict=True)) if a != b)
+    j = len(p["context"]) - next(
+        k for k, (a, b) in enumerate(zip(p["context"][::-1], p["cf_context"][::-1], strict=True)) if a != b
+    )
+    return f"[{p['format']}] {p['bridge']} <-> {p['partner']} at token {p['pos']}\n  O: ...{p['context'][i:j]}...\n  S: ...{p['cf_context'][i:j]}..."
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "run", "natural"])
+    ap.add_argument("stage", choices=["plan", "run", "natural", "varied-plan", "varied"])
     ap.add_argument("--name")
     ap.add_argument("--n", type=int, default=N_PAIRS)
     ap.add_argument("--pcf", help="natural: the simple-scene P_cf run (results/x7_pcf/<run>) to compare with")
     ap.add_argument("--moves", default=None, metavar="J-K",
                     help="plan / run: only pairs whose bridge locker moves between these slots (45c: 1-2), rank 2, off U")  # fmt: skip
+    ap.add_argument("--set", default="x0b_v2", help="varied: the tasks_v2 set of the varied scenes")
     a = ap.parse_args()
     moves = frozenset(int(v) for v in a.moves.split("-")) if a.moves else None
     if a.stage == "natural":
         stage_natural(a.name, a.pcf)
+        return
+    if a.stage == "varied":
+        stage_varied(a.name, a.set)
+        return
+    if a.stage == "varied-plan":
+        from scripts import statement_positions as SP
+
+        made, split, counts = varied_plan(SP.load_tokenizer(), a.set)
+        halves = {f: {"items": {h: len(v[h]) for h in ("fit", "test")}, "cases": v["cases"]}
+                  for f, v in split["formats"].items()}  # fmt: skip
+        print(json.dumps({"halves": halves, **counts}, indent=1))
+        rng = random.Random(0)
+        for f in FORMATS:
+            mine = [p for p in made if p["format"] == f]
+            for p in rng.sample(mine, min(2, len(mine))):
+                print(show_pair(p))
         return
     if a.stage == "plan":
         from scripts import statement_positions as SP

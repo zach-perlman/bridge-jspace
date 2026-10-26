@@ -1,0 +1,28 @@
+id: x45d_27b
+title: "Batch 45d, a pointer outside templates (qwen3.6-27b): per format a label-free basis refit on half of the varied scenes, removed on the other half, U as the comparison"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.8
+depends_on: [x45_0_indep_9b]
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=;
+  uv run python scripts/x7_pcf.py varied --name x45d_fit_27b &&
+  uv run python scripts/x0b_generalize.py run --name x45d_27b --set x0b_v2 --no-curve --pcf-from x7_pcf/x45d_fit_27b --why "45d (batch 45): the refit basis per format on the held-out half, U as the comparison"
+examples_command: BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= uv run python scripts/x0b_generalize.py examples --name x45d_27b
+question: >-
+  In the varied scenes (prose, JSON, tables), does a pointer basis found there without labels (the P_cf method: the bridge word's change when its locker statement trades places with another item's, PCA rank 4, fit per format on half of the bridge items) cost the lookup beyond a random part of its share on the other half, where the simple-scene pointer basis U is the comparison?
+why_it_matters: >-
+  The pointer route is shown with a basis fit on simple scenes; if the varied scenes carry their own linear pointer, U missing it there says nothing about the route, and the claim that the lookup follows a pointer would hold outside templates (Dan, batch 45).
+hypotheses:
+  H-batch45: 'Q45.4 (45d) in docs/predictions_batch45.md: (a) "pointer elsewhere"; (b) "no linear pointer found"; (c) neither. Dan commits his answer before any result is opened.'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45d): "Pointer elsewhere" if the refit basis gives at least 0.2, with lower CI above 0.1, in 2 of 3 formats. "No linear pointer found" if all three formats are below 0.1 (point estimate); otherwise neither. Per model; the rule reads the lookup with the refit basis (extra loss = switches lost without the part minus without a random part of its share, at the layer fixed in advance, 27B L32); both readers and U reported beside it. Cluster bootstrap over bridge items, 10,000 resamples, seed 0. Implementation (not in batch45.yaml, fixed before any run): "at least" / "above" / "below" with a 1e-9 float tolerance, the lower CI strict; a format with no finite point estimate is not tested and never passes, and then the outcome is "incomplete" unless two other formats make "pointer elsewhere"; the cell validity (S_whole >= 0.30, >= 30 switched) is reported, not used.
+controls:
+- 'a random part at the refit basis''s share of the change, per scene'
+- 'U (the simple-scene pointer basis, x0_massmean''s Alf from the x0_probe_v4 states, not refit) and a random part at its share, on the same held-out items'
+- 'the recall on the identical patch'
+n: 'held-out half (Qwen tokenizer, before the gate): 409 prose / 162 JSON / 368 table aligned scenes, at most 40 eligible per domain x format x level cell; fit: 878 / 326 / 1,227 pairs from the other half'
+seeds: [0, 4301]
+notes: >-
+  Split per format by bridge item (seed 0; 30/31 prose, 15/15 JSON, 30/30 table items; the same as the 9B's: one tokenizer), split.json in the fit run. Pairs: the bridge's locker statement (a prose sentence, a JSON object, a table row) trades places with another item's, both before the asked pick (in json and tables the whole locker block then is; two statements after the pick leave the bridge word unchanged), numbers kept, at most 3 partners per scene (seed 4301); checked on the tokenizer (x7_pcf varied-plan; tests/test_x45d.py). x0b's arms (whole / no_part / no_rand) for J++ k=25, U and the refit basis at L32 only, no k curve. est_gpu_hours from the ledger: the T x0b run with --pointer on every format took 1.14 h on the 27B (results timestamps; its job t_helper_27b 1.32 h with x5), the P_cf fit of 1,000 pairs about 3 min; here half the scenes, one more part, about 2,400 fit pairs. Bar check: U's random part cost the lookup about 0 at its 2-5% share in batch 42's varied runs, so the 0.2 bar is reachable. Results stay closed until Dan's Q45.4 is committed. The verdict and figure (x0b_generalize pcf-verdict) run at the end of the command.

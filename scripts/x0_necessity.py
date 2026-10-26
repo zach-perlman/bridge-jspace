@@ -46,6 +46,9 @@ K_OF = {"jppdig": 10}  # dictionaries with fewer atoms than K_MAIN: all of them 
 # the pointer directions as a fixed dictionary (T, Dan 26 Oct ~11:55): [d, r] orthonormal, set by the caller with
 # K_OF["alf"] = r, so the part is the projection on their span
 ALF = None
+# 45d (batch 45): the label-free basis refit on varied scenes of one format, [d, r] orthonormal, set by the caller per
+# format with K_OF["pcf"] = r (x0b_generalize --pcf-from)
+PCF = None
 K_MAIN = 25
 K_CURVE = (10, 50, 100)  # at the predicted layer only, for CURVE_DICTS
 CURVE_DICTS = ("jpp", "we")
@@ -311,12 +314,13 @@ def first_among(lg, t: int, digits) -> bool:
 
 def read_row(lg, rd: dict, digits) -> dict:
     """The decisive read (the top token is the alt answer's first token), the cand read for alt and org
-    (descriptive), the top token's role, p(org), p(alt) and logit(alt) - logit(org)."""
+    (descriptive), the top token (id; batch 45's examples show it) and its role, p(org), p(alt) and logit(alt) -
+    logit(org)."""
     import torch
 
     top = int(lg.argmax())
     p = torch.softmax(lg.float(), -1)
-    return {"switched": int(top == rd["tok_b"]), "cand_switched": int(first_among(lg, rd["tok_b"], digits)),
+    return {"switched": int(top == rd["tok_b"]), "top": top, "cand_switched": int(first_among(lg, rd["tok_b"], digits)),
             "cand_org_first": int(first_among(lg, rd["tok_A"], digits)),
             "role": "b" if top == rd["tok_b"] else "A" if top == rd["tok_A"] else "other",
             "p_org": round(float(p[rd["tok_A"]]), 4), "p_alt": round(float(p[rd["tok_b"]]), 4),
@@ -452,6 +456,9 @@ def dictionary(name: str, layer: int, model, lens, letters):
     if name == "alf":
         assert ALF is not None, "set x0_necessity.ALF (and K_OF['alf']) to the pointer basis first"
         return ALF.T.contiguous()
+    if name == "pcf":
+        assert PCF is not None, "set x0_necessity.PCF (and K_OF['pcf']) to the format's refit basis first"
+        return PCF.T.contiguous()
     if name in ("wu", "we"):  # with BJ_DEVICE_MAP (the 122B) these weights may sit on another GPU than the home one
         w = model.hf.lm_head.weight if name == "wu" else model.hf.get_input_embeddings().weight
         rows = w[letters.to(w.device)].float().to("cuda")
