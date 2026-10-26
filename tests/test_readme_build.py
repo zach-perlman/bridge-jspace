@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import io
+import json
 import re
 
 import pytest
@@ -76,6 +77,13 @@ def test_render_markers(book):
     out = B.render(t, book)
     assert "A 7% [5, 11], 36 points, abc1234." in out
     assert "| Model | Setting |" in out
+
+
+def test_point_marker_drops_the_interval():
+    key, text = next((k, v["text"]) for k, v in json.loads((B.REPO / "docs" / "x0_numbers.json").read_text()).items()
+                     if " [" in v["text"])  # fmt: skip
+    out = B.render(f"{{{{pt|{key}}}}} / {{{{num|{key}}}}}", None).splitlines()[-1]  # type: ignore[arg-type]
+    assert out == f"{text.split(' [')[0]} / {text}"
 
 
 # ---------------------------------------------------------------- the repo's README

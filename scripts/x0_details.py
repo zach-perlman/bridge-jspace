@@ -663,6 +663,11 @@ def ld_numbers(num: Numbers) -> None:
 
 
 FS_GROUPS = ("(a) first sentence", "(b) first locker, not first sentence", "(c) neither")
+FS_NAMED = (  # x0_first_sentence.NAMED
+    "bridge named first, in its locker sentence",
+    "bridge named first, in a pick sentence",
+    "another item named first",
+)
 
 
 def first_sentence_numbers(num: Numbers) -> None:
@@ -683,6 +688,12 @@ def first_sentence_numbers(num: Numbers) -> None:
                     fsrc)  # fmt: skip
             num.add(f"fs_diff_{m}", ci(f[f"{X.LOOKUP}|(a) − (b, c)"]["extra_loss"]), fsrc)
             num.add(f"fs_keepdiff_{m}", ci(f[f"{X.LOOKUP}|(a) − (b, c)"]["keep_alf"]), fsrc)
+            # Dan ~16:45 (Fig. 8a): by which item the first sentence names (the bridge in its locker sentence / the
+            # bridge in a pick sentence / another item); absent in the analyses before that regrouping
+            named = [f.get(f"{X.LOOKUP}|named|{g}", {}) for g in FS_NAMED]
+            if any(named):
+                num.add(f"fs_named_{m}", " / ".join(f2(c["extra_loss"][0]) if "extra_loss" in c else "–" for c in named),
+                        fsrc)  # fmt: skip
         mv = pb.get(target, {}).get("moves", {})
         if mv:
             slot0 = [

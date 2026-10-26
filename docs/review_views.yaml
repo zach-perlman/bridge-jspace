@@ -96,7 +96,7 @@ views:
     title: Main test, two people swap picks
     status: phase1
     kind: x0
-    readme: "Section 1 table, row 'Two people swap picks (fixed in advance)'; Fig. 1; Appendix A 'Gap, two people swap picks'; scorecard row 1"
+    readme: "Section 1 'The split holds on all four models', Fig. 1; scorecard row 'The split (main test)'"
     claim: >-
       Recall needs the lens-readable (J++) part of the bridge; the lookup mostly doesn't. Gap = the recall's extra loss
       minus the lookup's; extra loss = the share of switches lost without the J++ part minus the share lost without a
@@ -125,7 +125,7 @@ views:
     title: Only the asked person's pick changes
     status: phase1
     kind: x0
-    readme: "Appendix A 'Gap, only the asked person's pick changes'; Fig. 7 caption ('confirmed on all four'); table 3c rows 'Only the asked person's pick changes'"
+    readme: "Section 1 'It holds in every setting', Fig. 1b panel 'Only the asked person's pick changes'"
     claim: >-
       The same gap when only the asked person's pick changes (one change in the prompt, not two people swapping).
     sources: [single_lk_excess_<m>, single_rc_excess_<m>, single_contrast_<m>]
@@ -150,7 +150,7 @@ views:
     title: "Routes test: what the lookup follows (C0 sanity, C1 same item moved, C2 another item moved)"
     status: phase1
     kind: routes
-    readme: "Section 2 (c) and its table rows 2-4; Fig. 3, Fig. 4; Appendix A routes rows; scorecard rows 'follows identity or position, never the value', 'the pointer part alone gives position answers'"
+    readme: "Section 3, Fig. 5 and its table; Section 4 'Removing the pointer stops position answers', 'Adding only the pointer'; scorecard rows 'Never the value', 'The pointer alone gives position'"
     claim: >-
       When another item moved, the lookup follows its identity or its locker sentence's position, never the new value.
       Removing the pointer directions cuts position; adding only them gives position answers on all but the 27B; the
@@ -192,7 +192,7 @@ views:
     title: Routes test at the early layer
     status: phase1
     kind: routes
-    readme: "Section 3 (a) and its table rows 'Identity share', 'Without J++: the original answer'; Appendix A 'Early layer, recall still switching without J++'"
+    readme: "Section 3 'Position appears with depth', Fig. 6; docs/x0_details.md 'Depth: the early layer'"
     claim: >-
       Early, the lookup follows identity only; without J++ the Qwens give the original answer.
     sources: [rte_C2_whole_identity_<m>, rte_C2_no_jpp_original_<m>, rte_C2_no_jpp_recall_follows_s_<m>, rte_C2_whole_position_<m>]
@@ -220,7 +220,7 @@ views:
     title: Pointer directions on the main items
     status: phase1
     kind: massmean
-    readme: "Section 2 (b) and its table row 'Lookup's extra loss without the pointer directions'; Appendix A 'Lookup, pointer directions'; scorecard row 'The lookup needs the pointer directions'"
+    readme: "Section 4 'Removing the pointer stops position answers'; docs/x0_details.md pointer table; scorecard row 'The lookup needs the pointer'"
     claim: >-
       Removing the pointer directions (4 directions that say where the item was first mentioned) costs the lookup on
       every model, the recall less.
@@ -251,7 +251,7 @@ views:
     title: "Writing the pointer (batch 44 A): h + s (mu_k - mu_j) at the bridge word"
     status: phase1
     kind: x8
-    readme: "Section 6 'Running now' (batch 44; not yet a README claim)"
+    readme: "Section 4 'One fixed vector written into the bridge moves the lookup', 'The recall follows a strong write', Fig. 7; scorecard rows 'A write moves the lookup', 'The recall follows the write'"
     claim: >-
       Batch 44: writing one generic address mu_k - mu_j at the bridge word sends the lookup to locker k, against a
       random direction of the same norm (Q44.1-3).
@@ -279,7 +279,7 @@ views:
     title: "Halfway writes (batch 44, descriptive)"
     status: later
     kind: x8
-    readme: "not yet in the README"
+    readme: "Section 5 'Later positions are coded elsewhere' (the halfway writes)"
     claim: "Halfway writes land on the middle locker (an ordinal code) or on an end / nowhere (categorical)."
     sources: []
     runs:
@@ -292,7 +292,7 @@ views:
     title: "B: filler variants and the shift in slots (batch 44 Q44.4)"
     status: later
     kind: x8_order
-    readme: "not yet in the README"
+    readme: "Section 5 'It mostly separates the first-mentioned item from the rest' (the neutral sentence), Fig. 8 (c)"
     claim: "Order, sentence index or distance sets the slot code (which filler variant shifts beta)."
     sources: []
     runs:
@@ -315,7 +315,7 @@ views:
     title: More J++ directions removed (k = 25 / 50 / 100)
     status: phase2
     kind: x0
-    readme: "Section 1, bullet 3 ('On the 27B the lookup needs J++ once more directions are removed')"
+    readme: "Section 1 'One model misses the strict rule'"
     claim: "On the 27B the lookup needs J++ once more directions are removed; the 9B, 122B and Muse keep the gap at k = 100."
     sources: [lk_excess_k25_27b, lk_excess_k50_27b, lk_excess_k100_27b, contrast_k100_<m>]
     filters:
@@ -346,7 +346,7 @@ views:
     title: Varied scenes (formats and levels)
     status: later
     kind: x0b
-    readme: "Section 1 table row 'Varied scenes'; Section 4 'the 122B's varied scenes'; scorecard row 2"
+    readme: "Section 1 'It holds in every setting', Fig. 1b panel 'Varied scenes'; scorecard row 'The split in varied scenes'"
     claim: "The gap shrinks outside simple scenes; Muse's stays the largest."
     sources: [x0b_c_<m>]
     runs:
@@ -359,7 +359,7 @@ views:
     title: Natural passages
     status: phase2
     kind: x5
-    readme: "Section 1 table row 'Natural passages'; Section 2 (a) the 27B's split; Section 4 gates missed; scorecard row 3"
+    readme: "Section 1, Fig. 1b panel 'Natural passages'; Section 2 the 27B's natural passages; Section 6 gates missed"
     claim: "The gap in natural passages; the 9B's at gate 0.75 after the data; Muse's lookup barely switches."
     sources: [natg75_gap_9b, nat_gap_27b, nat_gap_122b, nat_gap_muse, nat_rc_excess_muse, nat_lk_excess_muse]
     filters:
@@ -388,7 +388,7 @@ views:
     title: Translated locker key
     status: later
     kind: x4
-    readme: "Appendix A 'Lookup, translated locker key minus verbatim'; Section 4 positive control; scorecard row 5"
+    readme: "not in README v4 (docs/x0_details.md)"
     claim: "A verbatim locker key is not needed: the lookup switches as often with a translated key."
     sources: [x4_D_animals_<m>, x4_D_elements_27b]
     runs:
@@ -401,7 +401,7 @@ views:
     title: J++ against the layer's main directions at J++'s share
     status: later
     kind: x0_parts
-    readme: "Fig. 2; Section 1 caveat (122B); Appendix A 'Recall, J++ / main directions at J++'s share'; scorecard row 4"
+    readme: "Section 1 'It is specific to the lens's part', Fig. 2"
     claim: "Other parts of a similar size cost the recall less than J++."
     sources: [pcaeq_jpp_rc_excess_<m>, pcaeq_pca_eq_rc_excess_<m>, jppother_jpp_other_share_<m>]
     runs:
@@ -414,7 +414,7 @@ views:
     title: Matched scenes and the first-mention split (table 3c)
     status: later
     kind: composition
-    readme: "Section 1 table row 'Matched'; Section 3 (c) and table 3c; Appendix A n rows"
+    readme: "not in README v4's body (docs/x0_details.md; figures/supp/s01)"
     claim: "The recall needs J++ most where the pick is the bridge's first mention."
     sources: [comp_rep_both_gap_<m>, comp_two_fmyes_lk_cell_<m>, comp_two_fmyes_rc_<m>, comp_two_fmno_lk_cell_<m>, comp_two_fmno_rc_<m>,
               comp_one_fmyes_lk_cell_<m>, comp_one_fmyes_rc_<m>, comp_one_fmno_lk_cell_<m>, comp_one_fmno_rc_<m>, comp_rep_fmno_lk_cell_<m>, comp_rep_fmno_rc_<m>]
@@ -426,7 +426,7 @@ views:
     title: Lookups by sentence order
     status: phase2
     kind: x0
-    readme: "Section 2 (a); Fig. 11"
+    readme: "Section 2, Fig. 3"
     claim: >-
       Lookups switch in 65%-89% of locker-first scenes and 9%-19% otherwise (the whole change, the main test's scenes;
       locker-first = the original bridge's locker sentence before the asked person's pick sentence).
@@ -450,7 +450,7 @@ views:
     title: The pointer probe and first mention
     status: later
     kind: probe
-    readme: "Section 2 (b); Appendix A 'Pointer probe right; another person's earlier pick read as first mention'"
+    readme: "Section 4 'A probe reads the pointer, the lens does not'"
     claim: "The probe is right in 0.92-0.99 of scenes and points at the item's first mention, even another person's earlier pick."
     sources: [v4_b_before_<m>, v4_b_layout_before_27b, dup_otherfirst_reads_other_<m>]
     runs:
@@ -463,7 +463,7 @@ views:
     title: Fixed-in-advance replication
     status: later
     kind: x0
-    readme: "Section 2 table '(replicated)'; Section 4 'the 9B's fixed-in-advance replication', gates missed (122B)"
+    readme: "Section 4 (replicated in advance on the 9B and Muse); Section 6 'Failed when fixed in advance'"
     claim: "The pointer result replicates on the 9B and Muse; the 9B's J++ clause failed; the 122B's replication missed its gate."
     sources: [rep_alf_lk_excess_9b, rep_alf_lk_excess_27b, rep_alf_lk_excess_muse, rep_jpp_rc_excess_9b, rep_gate_rc_122b]
     runs:
@@ -477,7 +477,7 @@ views:
     status: phase2
     kind: routes
     join: false  # each run is its own layer and item set
-    readme: "Section 3 (a); Fig. 5; Appendix A 'Routes, position share at each tested layer'; scorecard row 'Position appears where the lookup stops needing J++'"
+    readme: "Section 3 'Position appears with depth', Fig. 6"
     claim: "Position appears by layer 12 (9B), 28 (27B), 33 (122B) and 26 (Muse)."
     sources: [rts8_C2_whole_position_9b, rts10_C2_whole_position_9b, rts20_C2_whole_position_27b, rts24_C2_whole_position_27b, rts24_C2_whole_position_122b,
               rts28_C2_whole_position_27b, rts30_C2_whole_position_122b, rts36_C2_whole_position_122b]
@@ -503,7 +503,7 @@ views:
     title: J++ and the pointer directions removed together
     status: phase2
     kind: routes
-    readme: "Section 3 (b) and its table rows; Fig. 6; Appendix A 'Sanity swap, lookup without both / pointer alone'; scorecard row 10"
+    readme: "Section 5 'About half of the route is unexplained', Fig. 10"
     claim: "Removing both costs the lookup more than the pointer alone only on the 27B; J++ and the pointer directions removed together still leave about half of the lookups switching."
     sources: [rtb_ex_C0_both_minus_alf_lk_<m>, rtb_ex_C0_both_lk_<m>, rtb_ex_C0_alf_lk_<m>, rtb_ex_C0_both_rc_9b, rtb_ex_C0_both_rc_27b]
     filters:
@@ -535,7 +535,7 @@ views:
     title: The pointer with J++ against the pointer with a random part of J++'s size
     status: phase2
     kind: routes
-    readme: "Section 3 (b) and its table rows 'Switches lost: pointer + J++ minus pointer + random', 'Lookups still switching with both removed'; Fig. 6"
+    readme: "Section 6 design errors (the bar out of reach); figures/supp/s10"
     claim: "Removing the pointer with J++ costs the lookup more than the pointer with a random part of J++'s size only on the 27B."
     sources: [rtc_lost_C0_jpp_minus_rand_lk_<m>, rtc_left_C0_alf_jpp_lk_<m>]
     filters:
@@ -566,7 +566,7 @@ views:
     title: Muse's J++ extra loss by depth
     status: later
     kind: x0
-    readme: "Fig. 5 (Muse panel)"
+    readme: "Fig. 6 (Muse panel)"
     claim: "Muse: the main test at layers 8-32 (after the data)."
     sources: []
     runs:
@@ -576,7 +576,7 @@ views:
     title: The locker number at the bridge word
     status: later
     kind: x0
-    readme: "Section 4 'The locker number at the bridge word'"
+    readme: "Section 6 'The locker number at the bridge word'"
     claim: "Never the answer; digit directions cost 0.00."
     sources: [dig_lk_jppdig_k10_before_27b]
     runs:
@@ -587,7 +587,7 @@ views:
     title: "The gap on the logit difference (batch 39)"
     status: phase2
     kind: x0
-    readme: "not yet in the README body (batch 39 scored)"
+    readme: "Section 1 'It is not a margin effect', Fig. 1b panel 'Same test, scored on the logit difference'"
     claim: >-
       The gap holds on the logit difference: an arm's shift = ld(arm) - ld(unedited), ld = the swapped answer's logit
       minus the original's; extra loss = (mean shift without the random part - mean shift without J++) / mean shift of
@@ -619,7 +619,7 @@ views:
     title: "The identity direction, with the pointer and J++ (batch 40)"
     status: phase2
     kind: routes
-    readme: "Section 3 (d)"
+    readme: "Section 5 'About half of the route is unexplained' (identity outside J++), Fig. 10"
     claim: >-
       With identity added, the sanity swap's lookups still switching drop, against a random part of the same share; the
       extra loss stays below the 0.80 bar fixed in advance. The recall needs identity on the 27B and Muse, not on the 9B.
@@ -661,7 +661,7 @@ views:
     status: later
     kind: x0b
     analyses: [results/t_pointer]
-    readme: "Section 6 'Running now'"
+    readme: "Section 5 'It carries over poorly to other texts', Fig. 9"
     claim: "Removing the pointer directions (fit on simple scenes) costs the lookup in varied scenes and natural passages."
     sources: []
     runs:
@@ -674,7 +674,7 @@ views:
     title: "P_cf: a pointer found without slot labels (batch 43)"
     status: later
     kind: routes
-    readme: "Section 6 'Running now'"
+    readme: "Section 5 'Later positions are coded elsewhere' (the label-free pointer), Fig. 8 (d)"
     claim: "A pointer derived from pairs that only move a locker sentence matches the labelled one and is necessary for position."
     sources: []
     runs:

@@ -18183,6 +18183,10 @@
   "text": "0.46 [0.31, 0.64]",
   "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
+ "fs_named_9b": {
+  "text": "0.66 / 0.24 / 0.29",
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
+ },
  "pm_keep_slot0_9b": {
   "text": "0.10 to 0.76",
   "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
@@ -18205,6 +18209,10 @@
  },
  "fs_keepdiff_27b": {
   "text": "0.16 [0.04, 0.31]",
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
+ },
+ "fs_named_27b": {
+  "text": "0.24 / 0.07 / 0.00",
   "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "pm_keep_slot0_27b": {
@@ -18231,6 +18239,10 @@
   "text": "0.07 [−0.16, 0.32]",
   "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
+ "fs_named_122b": {
+  "text": "0.52 / 0.18 / 0.08",
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
+ },
  "pm_keep_slot0_122b": {
   "text": "0.15 to 0.47",
   "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
@@ -18253,6 +18265,10 @@
  },
  "fs_keepdiff_muse": {
   "text": "0.23 [0.09, 0.39]",
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
+ },
+ "fs_named_muse": {
+  "text": "0.51 / 0.21 / 0.00",
   "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "pm_keep_slot0_muse": {

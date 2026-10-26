@@ -429,6 +429,59 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 | Only the asked person's pick changes | no | 0.00 [0.00, 0.00] | 0.17 [0.11, 0.23] | 100 | 0.01 [0.00, 0.04] | 0.49 [0.39, 0.60] | 103 | −0.01 [−0.07, 0.04] | 0.10 [0.03, 0.17] | 85 | 0.00 [0.00, 0.00] | 0.54 [0.32, 0.75] | 95 |
 | Same, fresh scenes | no | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 200 | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] | 200 | 0.00 [0.00, 0.00] | 0.06 [0.03, 0.09] | 200 | −0.01 [−0.03, 0.02] | 0.31 [0.16, 0.45] | 200 |
 
+## Tables moved from the README (README v4, Dan 26 Oct ~16:45)
+
+°: after the data, the gate lowered to 0.75. ‡: the lookup switches in only 10 of 60 passages; recall 0.75 [0.62, 0.86], lookup −0.20 [−0.55, 0.00].
+
+**The split in every setting.**
+
+| Gap | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Two people swap picks (fixed in advance) | 0.53 [0.42, 0.61] | 0.60 [0.50, 0.69] | 0.32 [0.20, 0.43] | 0.85 [0.68, 0.98] |
+| Only the asked person's pick changes | 0.39 [0.30, 0.46] | 0.56 [0.45, 0.65] | 0.28 [0.15, 0.39] | 0.67 [0.53, 0.80] |
+| Matched: fresh scenes, both locker sentences first, only the asked pick changes | 0.13 | 0.37 | 0.06° | 0.32 |
+| Varied scenes | 0.22 [0.14, 0.31] | 0.47 [0.42, 0.53] | 0.15 [0.12, 0.18] | 0.50 [0.40, 0.61] |
+| Natural passages | 0.52 [0.36, 0.68]° | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | not measurable‡ |
+| More J++ directions removed, 100: gap (27B: lookup's extra loss at 25 / 50 / 100) | 0.54 | 0.12 / 0.30 / 0.60 | 0.55 | 0.85 |
+| Logit difference: gap | 0.48 [0.42, 0.53] | 0.47 [0.42, 0.51] | 0.33 [0.29, 0.38] | 0.61 [0.52, 0.68] |
+| Logit difference (lookup / recall extra loss) | −0.05 [−0.07, −0.03] / 0.43 [0.37, 0.48] | 0.13 [0.11, 0.16] / 0.60 [0.54, 0.65] | −0.02 [−0.05, −0.00] / 0.31 [0.26, 0.34] | −0.03 [−0.05, −0.02] / 0.58 [0.49, 0.65] |
+
+**The pointer: removed, added alone, written.**
+
+| Pointer directions | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Lookup's extra loss without them | 0.47 [0.41, 0.53] (replicated) | 0.14 [0.07, 0.22] | 0.31 [0.20, 0.43] | 0.41 [0.34, 0.49] (replicated) |
+| Position without them / without a random part of their size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] | 0.27 [0.23, 0.32] / 0.55 [0.50, 0.60] |
+| Position with only their part / only a random part of its size | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01] | 0.21 [0.16, 0.26] / 0.00 [0.00, 0.00] | 0.29 [0.25, 0.34] / 0.01 [0.00, 0.03] |
+| Write, lookup's target share: s = 1 / 2 / 4; random direction, 4 | 0.02 [0.01, 0.03] / 0.46 [0.42, 0.50] / 0.73 [0.70, 0.77]; 0.00 [0.00, 0.00] | 0.01 [0.00, 0.01] / 0.24 [0.20, 0.29] / 0.50 [0.47, 0.53]; 0.01 [0.00, 0.01] | 0.01 [0.00, 0.01] / 0.50 [0.46, 0.54] / 0.66 [0.63, 0.69]; 0.00 [0.00, 0.01] | 0.05 [0.03, 0.07] / 0.52 [0.48, 0.55] / 0.52 [0.50, 0.54]; 0.01 [0.00, 0.02] |
+| Write at s = 4: changed recalls giving the target slot's item | 205 of 256 | 55 of 68 | 211 of 268 | 28 of 64 |
+
+**How far the pointer reaches.**
+
+| Pointer directions | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Lookup's extra loss without them, by what the first sentence names: the bridge in its locker sentence / the bridge in a pick sentence / another item | 0.66 / 0.24 / 0.29 | 0.24 / 0.07 / 0.00 | 0.52 / 0.18 / 0.08 | 0.51 / 0.21 / 0.00 |
+| Same, by locker sentence: first sentence / first locker, not first / neither | 0.66 (n 41) / 0.23 (n 22) / 0.33 (n 9) | 0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13) | 0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10) | 0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7) |
+| Same, first sentence minus the rest | 0.40 [0.18, 0.60] | 0.21 [0.05, 0.35] | 0.38 [0.21, 0.56] | 0.41 [0.25, 0.59] |
+| Neutral sentence before the first locker / before the first pick: the code's shift (B1 / B2) | 0.15 [0.13, 0.16] / 0.15 [0.14, 0.17] | 0.17 [0.15, 0.19] / 0.17 [0.16, 0.18] | 0.11 [0.09, 0.13]° / 0.28 [0.26, 0.30]° | 0.18 [0.17, 0.20] / 0.17 [0.15, 0.18] |
+| Routes, only their part: moves from or to slot 0 / 1 → 2 and 2 → 1 | 0.10 to 0.76 / 0.00 / 0.00 | 0.00 to 0.44 / 0.00 / 0.00 | 0.15 to 0.47 / 0.00 / 0.00 | 0.16 to 0.69 / 0.04 / 0.16 |
+| Routes, the whole change: 1 → 2 / 2 → 1 | 0.53 / 0.78 | 0.24 / 0.38 | 0.40 / 0.35 | 0.49 / 0.71 |
+| Varied scenes, lookup's extra loss without them | 0.11 [0.08, 0.13] | 0.05 [0.04, 0.06] | 0.06 [0.04, 0.07] | 0.15 [0.11, 0.19] |
+| Same: prose / json / table | 0.16 / 0.02 / 0.07 | 0.09 / 0.01 / 0.03 | 0.07 / 0.06 / 0.04 | 0.21 / 0.05 / 0.12 |
+| Natural passages (the fact before the bridge) | not tested (gate) | 0.07 [0.00, 0.18] | 0.07 [−0.02, 0.16] | 0.25 [0.00, 0.50] |
+| Sanity swap, both removed minus the pointer alone | 0.12 [0.04, 0.19] | 0.26 [0.19, 0.32] | 0.09 [0.03, 0.16]° | 0.03 [−0.03, 0.08] |
+| Lookups still switching: J++ and the pointer removed | 0.46 [0.41, 0.50] | 0.53 [0.48, 0.57] | 0.50 [0.45, 0.55]° | 0.74 [0.68, 0.79] |
+| Same, with identity outside J++ / its random part | {{num|rtd_left_C0_jpp+alf+idout_lk_9b}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_9b}} | {{num|rtd_left_C0_jpp+alf+idout_lk_27b}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_27b}} | not in this test | {{num|rtd_left_C0_jpp+alf+idout_lk_muse}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_muse}} |
+| Recall's extra loss without identity | 0.09 [0.04, 0.15] | 0.44 [0.34, 0.55] | not in this test | 0.39 [0.28, 0.49] |
+| Switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03]° | 0.01 [−0.02, 0.03] |
+
+**Depth: the early layer.**
+
+| Early layer, another item moved | Qwen3.5-9B (L6) | Qwen3.6-27B (L16) | Qwen3.5-122B (L27)° | Muse Glimmer 30B (L13) |
+|---|---|---|---|---|
+| Identity share | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 0.96 [0.93, 0.98] |
+| Without J++: the original answer | 0.99 [0.97, 1.00] | 0.99 [0.98, 1.00] | 0.84 [0.78, 0.89] | 0.26 [0.20, 0.31] |
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.

@@ -124,6 +124,59 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 | Only the asked person's pick changes | no | {{num|comp_one_fmno_lk_cell_9b}} | {{num|comp_one_fmno_rc_9b}} | {{num|comp_one_fmno_n_9b}} | {{num|comp_one_fmno_lk_cell_27b}} | {{num|comp_one_fmno_rc_27b}} | {{num|comp_one_fmno_n_27b}} | {{num|comp_one_fmno_lk_cell_122b}} | {{num|comp_one_fmno_rc_122b}} | {{num|comp_one_fmno_n_122b}} | {{num|comp_one_fmno_lk_cell_muse}} | {{num|comp_one_fmno_rc_muse}} | {{num|comp_one_fmno_n_muse}} |
 | Same, fresh scenes | no | {{num|comp_rep_fmno_lk_cell_9b}} | {{num|comp_rep_fmno_rc_9b}} | {{num|comp_rep_fmno_n_9b}} | {{num|comp_rep_fmno_lk_cell_27b}} | {{num|comp_rep_fmno_rc_27b}} | {{num|comp_rep_fmno_n_27b}} | {{num|comp_rep_fmno_lk_cell_122b}} | {{num|comp_rep_fmno_rc_122b}} | {{num|comp_rep_fmno_n_122b}} | {{num|comp_rep_fmno_lk_cell_muse}} | {{num|comp_rep_fmno_rc_muse}} | {{num|comp_rep_fmno_n_muse}} |
 
+## Tables moved from the README (README v4, Dan 26 Oct ~16:45)
+
+°: after the data, the gate lowered to 0.75. ‡: the lookup switches in only {{num|nat_lk_whole_sw_muse}} of {{num|nat_n_muse}} passages; recall {{num|nat_rc_excess_muse}}, lookup {{num|nat_lk_excess_muse}}.
+
+**The split in every setting.**
+
+| Gap | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Two people swap picks (fixed in advance) | {{num|contrast_9b}} | {{num|contrast_27b}} | {{num|contrast_122b}} | {{num|contrast_muse}} |
+| Only the asked person's pick changes | {{num|single_contrast_9b}} | {{num|single_contrast_27b}} | {{num|single_contrast_122b}} | {{num|single_contrast_muse}} |
+| Matched: fresh scenes, both locker sentences first, only the asked pick changes | {{num|comp_rep_both_gap_9b}} | {{num|comp_rep_both_gap_27b}} | {{num|comp_rep_both_gap_122b}}° | {{num|comp_rep_both_gap_muse}} |
+| Varied scenes | {{num|x0b_c_9b}} | {{num|x0b_c_27b}} | {{num|x0b_c_122b}} | {{num|x0b_c_muse}} |
+| Natural passages | {{num|natg75_gap_9b}}° | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} | not measurable‡ |
+| More J++ directions removed, 100: gap (27B: lookup's extra loss at 25 / 50 / 100) | {{num|contrast_k100_9b}} | {{num|lk_excess_k25_27b}} / {{num|lk_excess_k50_27b}} / {{num|lk_excess_k100_27b}} | {{num|contrast_k100_122b}} | {{num|contrast_k100_muse}} |
+| Logit difference: gap | {{num|ld_gap_9b}} | {{num|ld_gap_27b}} | {{num|ld_gap_122b}} | {{num|ld_gap_muse}} |
+| Logit difference (lookup / recall extra loss) | {{num|ld_lk_9b}} / {{num|ld_rc_9b}} | {{num|ld_lk_27b}} / {{num|ld_rc_27b}} | {{num|ld_lk_122b}} / {{num|ld_rc_122b}} | {{num|ld_lk_muse}} / {{num|ld_rc_muse}} |
+
+**The pointer: removed, added alone, written.**
+
+| Pointer directions | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Lookup's extra loss without them | {{num|rep_alf_lk_excess_9b}} (replicated) | {{num|mmlf_Alf_lk_excess_27b}} | {{num|mmlf_Alf_lk_excess_122b}} | {{num|rep_alf_lk_excess_muse}} (replicated) |
+| Position without them / without a random part of their size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | {{num|rtg_C2_no_alf_position_122b}} / {{num|rtg_C2_no_alf_rand_position_122b}} | {{num|rt_C2_no_alf_position_muse}} / {{num|rt_C2_no_alf_rand_position_muse}} |
+| Position with only their part / only a random part of its size | {{num|rtk_C2_keep_alf_position_9b}} / {{num|rtk_C2_keep_alf_rand_position_9b}} | {{num|rtk_C2_keep_alf_position_27b}} / {{num|rtk_C2_keep_alf_rand_position_27b}} | {{num|rtk_C2_keep_alf_position_122b}} / {{num|rtk_C2_keep_alf_rand_position_122b}} | {{num|rtk_C2_keep_alf_position_muse}} / {{num|rtk_C2_keep_alf_rand_position_muse}} |
+| Write, lookup's target share: s = 1 / 2 / 4; random direction, 4 | {{num|x8_t1_9b}} / {{num|x8_t2_9b}} / {{num|x8_t4_9b}}; {{num|x8_rand4_9b}} | {{num|x8_t1_27b}} / {{num|x8_t2_27b}} / {{num|x8_t4_27b}}; {{num|x8_rand4_27b}} | {{num|x8_t1_122b}} / {{num|x8_t2_122b}} / {{num|x8_t4_122b}}; {{num|x8_rand4_122b}} | {{num|x8_t1_muse}} / {{num|x8_t2_muse}} / {{num|x8_t4_muse}}; {{num|x8_rand4_muse}} |
+| Write at s = 4: changed recalls giving the target slot's item | {{num|x8_rc_target_9b}} | {{num|x8_rc_target_27b}} | {{num|x8_rc_target_122b}} | {{num|x8_rc_target_muse}} |
+
+**How far the pointer reaches.**
+
+| Pointer directions | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Lookup's extra loss without them, by what the first sentence names: the bridge in its locker sentence / the bridge in a pick sentence / another item | {{num|fs_named_9b}} | {{num|fs_named_27b}} | {{num|fs_named_122b}} | {{num|fs_named_muse}} |
+| Same, by locker sentence: first sentence / first locker, not first / neither | {{num|fs_groups_9b}} | {{num|fs_groups_27b}} | {{num|fs_groups_122b}} | {{num|fs_groups_muse}} |
+| Same, first sentence minus the rest | {{num|fs_diff_9b}} | {{num|fs_diff_27b}} | {{num|fs_diff_122b}} | {{num|fs_diff_muse}} |
+| Neutral sentence before the first locker / before the first pick: the code's shift (B1 / B2) | {{num|x8_order_b1_9b}} / {{num|x8_order_b2_9b}} | {{num|x8_order_b1_27b}} / {{num|x8_order_b2_27b}} | {{num|x8_order_b1_122b}}° / {{num|x8_order_b2_122b}}° | {{num|x8_order_b1_muse}} / {{num|x8_order_b2_muse}} |
+| Routes, only their part: moves from or to slot 0 / 1 → 2 and 2 → 1 | {{num|pm_keep_slot0_9b}} / {{num|pm_keep_12_9b}} | {{num|pm_keep_slot0_27b}} / {{num|pm_keep_12_27b}} | {{num|pm_keep_slot0_122b}} / {{num|pm_keep_12_122b}} | {{num|pm_keep_slot0_muse}} / {{num|pm_keep_12_muse}} |
+| Routes, the whole change: 1 → 2 / 2 → 1 | {{num|pm_whole_12_9b}} | {{num|pm_whole_12_27b}} | {{num|pm_whole_12_122b}} | {{num|pm_whole_12_muse}} |
+| Varied scenes, lookup's extra loss without them | {{num|tptr_pooled_9b}} | {{num|tptr_pooled_27b}} | {{num|tptr_pooled_122b}} | {{num|tptr_pooled_muse}} |
+| Same: prose / json / table | {{num|tptr_split_9b}} | {{num|tptr_split_27b}} | {{num|tptr_split_122b}} | {{num|tptr_split_muse}} |
+| Natural passages (the fact before the bridge) | {{num|tptr_natural_9b}} | {{num|tptr_natural_27b}} | {{num|tptr_natural_122b}} | {{num|tptr_natural_muse}} |
+| Sanity swap, both removed minus the pointer alone | {{num|rtb_ex_C0_both_minus_alf_lk_9b}} | {{num|rtb_ex_C0_both_minus_alf_lk_27b}} | {{num|rtb_ex_C0_both_minus_alf_lk_122b}}° | {{num|rtb_ex_C0_both_minus_alf_lk_muse}} |
+| Lookups still switching: J++ and the pointer removed | {{num|rtc_left_C0_alf_jpp_lk_9b}} | {{num|rtc_left_C0_alf_jpp_lk_27b}} | {{num|rtc_left_C0_alf_jpp_lk_122b}}° | {{num|rtc_left_C0_alf_jpp_lk_muse}} |
+| Same, with identity outside J++ / its random part | {{num|rtd_left_C0_jpp+alf+idout_lk_9b}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_9b}} | {{num|rtd_left_C0_jpp+alf+idout_lk_27b}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_27b}} | not in this test | {{num|rtd_left_C0_jpp+alf+idout_lk_muse}} / {{num|rtd_randleft_C0_jpp+alf+idout_lk_muse}} |
+| Recall's extra loss without identity | {{num|rtd_ex_C0_id_rc_9b}} | {{num|rtd_ex_C0_id_rc_27b}} | not in this test | {{num|rtd_ex_C0_id_rc_muse}} |
+| Switches lost: pointer + J++ minus pointer + random | {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}}° | {{num|rtc_lost_C0_jpp_minus_rand_lk_muse}} |
+
+**Depth: the early layer.**
+
+| Early layer, another item moved | Qwen3.5-9B (L6) | Qwen3.6-27B (L16) | Qwen3.5-122B (L27)° | Muse Glimmer 30B (L13) |
+|---|---|---|---|---|
+| Identity share | {{num|rte_C2_whole_identity_9b}} | {{num|rte_C2_whole_identity_27b}} | {{num|rte_C2_whole_identity_122b}} | {{num|rte_C2_whole_identity_muse}} |
+| Without J++: the original answer | {{num|rte_C2_no_jpp_original_9b}} | {{num|rte_C2_no_jpp_original_27b}} | {{num|rte_C2_no_jpp_original_122b}} | {{num|rte_C2_no_jpp_original_muse}} |
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.
