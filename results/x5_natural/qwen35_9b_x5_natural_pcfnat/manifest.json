@@ -1,0 +1,41 @@
+{
+  "exp": "x5_natural",
+  "run": "qwen35_9b_x5_natural_pcfnat",
+  "written_utc": "2026-10-26T14:29:18Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~00:20; spec jobs/c3/x5_natural.yaml; prediction: batch 31, Q31.6).",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "619b90697bbb1b5128a31317fa5d9ac9d82c9d19",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "set": "jsuite_v2_1_test_chat",
+  "inputs": {
+    "data/tasks_v2/jsuite_v2_1_test_chat/items.jsonl": "0401091f71a54983e9b94947b31efad503a552d1b36beba3de6f8aa44d47df70"
+  },
+  "layer": 12,
+  "k": 25,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
+  "rule": "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  }
+}
