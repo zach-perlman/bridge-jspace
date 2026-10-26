@@ -447,6 +447,15 @@ def fig5(plt) -> None:
     S.save(fig, "fig5_depth")
 
 
+D1_RUNS = {
+    "qwen3.5-9b": "qwen35_9b_x6_routes_d1",
+    "qwen3.6-27b": "x6_routes_d1_27b",
+    "muse-glimmer-30b": "muse30b_x6_routes_d1_r2",
+}
+D1_PARTS = (("d1", "alf", "the pointer"), ("both", "both", "the pointer + J++"),
+            ("d1", "jpp+alf+idout", "the pointer + J++\n+ identity outside J++"))  # fmt: skip
+
+
 def fig6(plt) -> None:
     """Top: the sanity swap's lookup extra loss without J++, without the pointer directions, without both (batch 34's
     bar dotted); bottom: the switches lost without the pointer directions, with J++, with a random part of J++'s share
@@ -462,9 +471,9 @@ def fig6(plt) -> None:
         ("alf + J++", "pointer + J++"),
         ("alf + random (J++ share)", "pointer + random\n(J++'s share)"),
     )
-    fig, axes = plt.subplots(2, len(runs), figsize=(S.WIDTH, 5.6), sharey="row")
-    fig.subplots_adjust(left=0.19, right=0.995, top=0.80, bottom=0.09, wspace=0.10, hspace=0.66)
-    S.title(fig, "Removing J++ and the pointer directions together")
+    fig, axes = plt.subplots(3, len(runs), figsize=(S.WIDTH, 8.0), sharey="row")
+    fig.subplots_adjust(left=0.21, right=0.995, top=0.86, bottom=0.07, wspace=0.10, hspace=0.62)
+    S.title(fig, "Removing J++, the pointer directions and identity together")
     for j, (target, _, name, run, ctrl_run, kind) in enumerate(runs):
         top, bot = axes[0, j], axes[1, j]
         S.extra_axis(top)
@@ -515,8 +524,34 @@ def fig6(plt) -> None:
             bot.plot([bar, bar], [-1.35, -0.65], color="#333333", lw=1.6, ls=":")
             S.record("fig6", target, "batch 36's bar (pointer + random + 0.15)", round(bar, 4), source=ctrl_run)
         bot.set_ylim(-len(ctrl) + 0.4, 0.6)
+        # the identity direction (batch 40): the lookup's extra loss without the pointer, the pointer + J++ (the
+        # both-removed run) and the pointer + J++ + identity outside J++, each part's median share of the change beside it
+        third = axes[2, j]
+        S.extra_axis(third)
+        d1 = (
+            latest(pins.RESULTS_DIR / "x6_routes" / D1_RUNS[target], "verdict-*/verdict.json")
+            if D1_RUNS.get(target)
+            else None
+        )
+        dx = {(x["condition"], x["reader"], x["part"]): x for x in (d1 or {}).get("extra", [])}
+        if not dx:
+            S.empty(third, "not run")
+        else:
+            for i, (src, part, _) in enumerate(D1_PARTS):
+                e = (dx if src == "d1" else ex).get(("C0", X.LOOKUP, part))
+                if e is None:
+                    continue
+                S.dot(third, 0, -i, e["excess"], S.COL["lookup"], kind)
+                third.text(0.98, -i, f"{100 * e['share']:.0f}%", ha="right", va="center", fontsize=9, color=S.COL["muted"],
+                           transform=third.get_yaxis_transform())  # fmt: skip
+                S.record("fig6", target, f"the sanity swap, lookup extra loss without {D1_PARTS[i][2]}", *e["excess"],
+                         source=D1_RUNS[target] if src == "d1" else run)  # fmt: skip
+                S.record("fig6", target, f"share of the change: {D1_PARTS[i][2]}", round(e["share"], 4),
+                         source=D1_RUNS[target] if src == "d1" else run)  # fmt: skip
+        third.set_ylim(-len(D1_PARTS) + 0.4, 0.6)
     axes[0, 0].set_yticks([-i for i in range(len(parts))], [p[1] for p in parts])
     axes[1, 0].set_yticks([-i for i in range(len(ctrl))], [c[1] for c in ctrl])
+    axes[2, 0].set_yticks([-i for i in range(len(D1_PARTS))], [d[2].removeprefix("the ") for d in D1_PARTS])
     for ax in axes[:, 0]:
         ax.tick_params(axis="y", length=0)
     marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7),
@@ -551,16 +586,27 @@ SCORECARD = (
      {"9b": ("held", "fixed"), "27b": ("no", "fixed"), "122b": ("held", "after"), "muse": ("held", "after")}),
     ("J++ and the pointer together cost the\nlookup more than the pointer alone",
      {"9b": ("no", "fixed"), "27b": ("held", "fixed"), "122b": ("no", "after"), "muse": ("no", "fixed")}),
+    # README v3 (Dan ~16:40): the writes at s = 2 / 4 (s = 1, fixed in advance, moved nothing: a design error); the
+    # recall's split, the first-sentence check and the slot moves after the data; T fixed in advance (batch 42)
+    ("A fixed vector written at the bridge\nmoves the lookup (s = 2, 4)",
+     {"9b": ("held", "after"), "27b": ("partial", "after"), "122b": ("held", "after"), "muse": ("not tested", "after")}),
+    ("The recall follows a strong write\nto the target slot's item",
+     {"9b": ("held", "after"), "27b": ("partial", "after"), "122b": ("held", "after"), "muse": ("not tested", "after")}),
+    ("The pointer directions reach beyond\nthe first sentence",
+     {"9b": ("partial", "after"), "27b": ("no", "after"), "122b": ("partial", "after"), "muse": ("no", "after")}),
+    ("Fit on simple scenes, they cost the\nlookup in varied and natural text",
+     {"9b": ("no", "fixed"), "27b": ("no", "fixed"), "122b": ("no", "fixed"), "muse": ("not tested", "fixed")}),
 )  # fmt: skip
+WORDS = {10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen", 14: "fourteen", 15: "fifteen"}
 STATUS_COL = {"held": "#2f7d4f", "partial": "#c98a12", "no": "#b8433a", "not tested": "#9a9a9a"}
 
 
 def fig7(plt) -> None:
     """The scorecard: rows = claims, columns = models; colour and word = status; filled = fixed in advance, open =
     after the data."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 6.2))
-    fig.subplots_adjust(left=0.36, right=0.995, top=0.83, bottom=0.02)
-    S.title(fig, "What held where: ten claims on four models")
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 8.4))
+    fig.subplots_adjust(left=0.36, right=0.995, top=0.87, bottom=0.02)
+    S.title(fig, f"What held where: {WORDS[len(SCORECARD)]} claims on four models")
     for j, (target, m, name) in enumerate(S.MODELS):
         ax.text(j, 0.75, name, ha="center", va="bottom", fontsize=9.5, weight="bold")
         for i, (claim, cells) in enumerate(SCORECARD):
@@ -585,8 +631,17 @@ def fig7(plt) -> None:
     S.save(fig, "fig7_scorecard")
 
 
-X8_RUNS = {"9b": "qwen35_9b_x8_write", "27b": "x8_write_27b", "122b": "qwen35_122b_x8_write_g75", "muse": "muse30b_x8_write"}
-PAIR_COL = {(0, 1): "#2b7bba", (0, 2): "#e08a1e", (1, 2): "#2e9e5b"}  # one hue per slot pair; dashed = the reverse write
+X8_RUNS = {
+    "9b": "qwen35_9b_x8_write",
+    "27b": "x8_write_27b",
+    "122b": "qwen35_122b_x8_write_g75",
+    "muse": "muse30b_x8_write",
+}
+PAIR_COL = {
+    (0, 1): "#2b7bba",
+    (0, 2): "#e08a1e",
+    (1, 2): "#2e9e5b",
+}  # one hue per slot pair; dashed = the reverse write
 ITEM_COL = {"target": "#6a4bd6", "third": "#d98cb3", "other": "#c8c8c8"}
 
 
@@ -638,8 +693,10 @@ def fig8(plt) -> None:
             S.empty(right, "recall split\nnot computed")
             continue
         n = {(c["kind"], c["s"]): c["n"] for c in cells if c["pair"] is None}
-        bars = [(f"s={s:g}", "write", s) for s in sorted({c["s"] for c in cells if c["kind"] == "write"})] + [("rand\ns=4", "random", 4)]
-        for x, (label, kind, s) in enumerate(bars):
+        bars = [(f"s={s:g}", "write", s) for s in sorted({c["s"] for c in cells if c["kind"] == "write"})] + [
+            ("rand\ns=4", "random", 4)
+        ]
+        for x, (_label, kind, s) in enumerate(bars):
             got = rc["changed_by_item"].get(f"{kind}|{s:g}", {})
             bottom = 0.0
             for item, col in ITEM_COL.items():
@@ -663,9 +720,162 @@ def fig8(plt) -> None:
     S.save(fig, "fig8_writes")
 
 
+FS_GROUPS = ("(a) first sentence", "(b) first locker, not first sentence", "(c) neither")
+FS_LABEL = ("first sentence", "first locker,\nnot first sentence", "neither")
+
+
+def fig9(plt) -> None:
+    """After the data: top, the main test's pointer removal by where the bridges' locker sentences sit (the lookup with
+    its CI, the recall grey; scripts/x0_first_sentence.py); bottom, the routes test per pointer move pooled into moves
+    from or to slot 0 and moves between slots 1 and 2: the whole change's position share against only the pointer part's
+    (x8_write.py pairs; n-weighted means of the moves)."""
+    first = latest(pins.RESULTS_DIR / "x0_massmean", "first-sentence-*/first.json") or {}
+    pairs = latest(pins.RESULTS_DIR / "x8_write", "pairs-*/pairs.json") or {}
+    fig, axes = plt.subplots(2, len(S.MODELS), figsize=(S.WIDTH, 6.0), gridspec_kw={"height_ratios": [1.1, 1]})
+    fig.subplots_adjust(left=0.19, right=0.995, top=0.76, bottom=0.10, wspace=0.12, hspace=0.62)
+    fig.suptitle("Our pointer directions mostly mark the first sentence;\nthe model tells later places apart without them", x=0.01,
+                 y=0.995, ha="left", fontsize=12, weight="bold")  # fmt: skip
+    for j, (target, _m, name) in enumerate(S.MODELS):
+        top, bot = axes[0, j], axes[1, j]
+        S.extra_axis(top)
+        top.set_title(name, fontsize=10.5, weight="bold")
+        f = first.get(target, {})
+        for i, g in enumerate(FS_GROUPS):
+            lk, rc = f.get(f"{X.LOOKUP}|{g}", {}), f.get(f"{X.RECALL}|{g}", {})
+            if "extra_loss" in rc:
+                top.plot([rc["extra_loss"][0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
+            if "extra_loss" in lk:
+                S.dot(top, 0, -i, lk["extra_loss"], S.COL["lookup"], "after")
+                top.text(0.98, -i, f"n {lk['n']}", ha="right", va="center", fontsize=8.5, color=S.COL["muted"],
+                         transform=top.get_yaxis_transform())  # fmt: skip
+                S.record("fig9", target, f"lookup extra loss without the pointer: {g}", *lk["extra_loss"], n=lk["n"],
+                         source="x0_first_sentence")  # fmt: skip
+        top.set_ylim(-len(FS_GROUPS) + 0.4, 0.6)
+        moves = pairs.get(target, {}).get("moves", {})
+        groups = (("with slot 0", [k for k in moves if "0" in k.split("-")]), ("1 ↔ 2", ["1-2", "2-1"]))
+        for gi, (label, keys) in enumerate(groups):
+            for ai, (arm, col) in enumerate((("whole", "#c8c8c8"), ("keep_alf", S.COL["position"]))):
+                vals = [
+                    (moves[k]["position"][arm], moves[k]["n"])
+                    for k in keys
+                    if k in moves and moves[k]["position"][arm] is not None
+                ]
+                if not vals:
+                    continue
+                share = sum(v * n for v, n in vals) / sum(n for _, n in vals)
+                bot.bar(gi + (ai - 0.5) * 0.36, share, width=0.34, color=col, edgecolor="white")
+                if share < 0.03:  # a bar too short to see: say its value
+                    bot.text(
+                        gi + (ai - 0.5) * 0.36, 0.02, f"{share:.2f}", ha="center", va="bottom", fontsize=8.5, color=col
+                    )
+                S.record("fig9", target, f"routes, position share, {arm}, moves {label}", round(share, 4),
+                         n=sum(n for _, n in vals), source="x8_write pairs")  # fmt: skip
+        bot.set_xticks([0, 1], [g[0] for g in groups], fontsize=9.5)
+        bot.set_ylim(0, 1)
+        bot.grid(axis="y", color="#eeeeee")
+        if j:
+            bot.tick_params(labelleft=False)
+    axes[0, 0].set_yticks([-i for i in range(len(FS_GROUPS))], FS_LABEL)
+    for ax in axes[0, 1:]:
+        ax.set_yticks([])
+    axes[1, 0].set_ylabel("position share")
+    marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7, mfc="white"),
+             plt.Line2D([], [], marker="o", ls="", color="#9a9a9a", ms=4.5),
+             plt.Rectangle((0, 0), 1, 1, color="#c8c8c8"), plt.Rectangle((0, 0), 1, 1, color=S.COL["position"])]  # fmt: skip
+    fig.legend(marks, ["main test: lookup's extra loss without the pointer (95% CI)", "recall",
+                       "routes: the whole change", "routes: only the pointer part"], loc="upper left",
+               bbox_to_anchor=(0.0, 0.905), ncol=2, frameon=False, fontsize=9.5, handletextpad=0.3)  # fmt: skip
+    S.save(fig, "fig9_first_sentence")
+
+
+TRANSFER_RUNS = {  # the varied-scene and natural runs with the pointer arm (T), and without it (J++ only) as fallback
+    "qwen3.5-9b": (("qwen35_9b_x0b_v2_ptr", "qwen35_9b_x0b_v2"), ("qwen35_9b_x5_natural_ptr", "qwen35_9b_x5_natural_g75")),
+    "qwen3.6-27b": (("x0b_v2_ptr_27b", "x0b_v2_27b"), ("x5_natural_ptr_27b", "x5_natural_27b")),
+    "qwen3.5-122b-a10b": (("qwen35_122b_x0b_v2_ptr", "qwen35_122b_x0b_v2"), ("qwen35_122b_x5_natural_ptr", "qwen35_122b_x5_natural")),
+    "muse-glimmer-30b": (("muse30b_x0b_v2_ptr", "muse30b_x0b_v2"), ("muse30b_x5_natural_ptr", "muse30b_x5_natural")),
+}  # fmt: skip
+SCENES = ("simple", "prose", "json", "table", "natural")
+
+
+def transfer_cells(target: str) -> dict[tuple[str, str], tuple | None]:
+    """(scenes, part) -> the lookup's extra loss (value, lo, hi): simple from docs/x0_numbers.json (J++ on the pointer
+    directions' own scenes; the pointer directions there); varied per format and natural (the passages whose fact comes
+    before the bridge) from the run files, J++ and the pointer on the same items when the pointer run is in."""
+    from scripts import x5_natural_split as NS
+
+    m = next(k for t, k, _ in S.MODELS if t == target)
+    out: dict = {
+        ("simple", "jpp"): S.parse(N.get(f"ss_jpp_lk_excess_{m}")),
+        ("simple", "alf"): S.parse(N.get(f"mmlf_Alf_lk_excess_{m}")),
+    }
+    (x0b_ptr, x0b), (nat_ptr, nat) = TRANSFER_RUNS[target]
+    for runs, kind in (((x0b_ptr, x0b), "x0b"), ((nat_ptr, nat), "x5")):
+        base = pins.RESULTS_DIR / ("x0b_generalize" if kind == "x0b" else "x5_natural")
+        run = next((r for r in runs if (base / r / "outcomes.jsonl").exists()), None)
+        out[(kind, "gate")] = (base / runs[0]).exists() and not (base / runs[0] / "outcomes.jsonl").exists()
+        out[(kind, "after")] = run is not None and run.endswith(
+            "_g75"
+        )  # the 9B's natural J++: gate 0.75, after the data
+        if run is None:
+            continue
+        cases = {c["scene"]: c for c in X.read_jsonl(base / run / "cases.jsonl")}
+        rows = X.read_jsonl(base / run / "outcomes.jsonl")
+        if kind == "x0b":
+            layer = json.loads((base / run / "manifest.json").read_text())["predicted"]
+            rows = [r for r in rows if r["layer"] == layer]
+        done = {r["scene"] for r in rows if r["arm"] == "whole"}
+        subsets = ({f: {s for s in done if cases[s]["format"] == f} for f in ("prose", "json", "table")} if kind == "x0b"
+                   else {"natural": {s for s in done if NS.placement(cases[s])["original"] == "before"}})  # fmt: skip
+        for name, scenes in subsets.items():
+            for part in ("jpp", "alf"):
+                if part == "alf" and run != runs[0]:
+                    continue  # the pointer arm only in the T runs
+                cell = NS.cells(rows, scenes, X.N_BOOT, part).get(X.LOOKUP) if scenes else None
+                out[(name, part)] = tuple(cell["excess"]) if cell else None
+    return out
+
+
+def fig10(plt) -> None:
+    """Per model, the lookup's extra loss without J++ and without the pointer directions in simple scenes, varied scenes
+    by format and natural passages (fact first); the pointer directions fit on the simple scenes, not refit."""
+    fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 4.4), sharey=True)
+    fig.subplots_adjust(left=0.13, right=0.995, top=0.76, bottom=0.13, wspace=0.10)
+    S.title(fig, "The split travels; our pointer does not")
+    for j, (target, _, name) in enumerate(S.MODELS):
+        ax = axes[j]
+        S.extra_axis(ax)
+        ax.set_title(name, fontsize=10.5, weight="bold")
+        cells = transfer_cells(target)
+        for i, sc in enumerate(SCENES):
+            for part, col, dy in (("jpp", "#3a3a3a", 0.16), ("alf", S.COL["position"], -0.16)):
+                v = cells.get((sc, part))
+                kind = "x5" if sc == "natural" else "x0b"
+                if v is None:
+                    if part == "alf" and sc != "simple":
+                        why = "not tested (gate)" if cells.get((kind, "gate")) else "not landed"
+                        ax.text(0.45, -i + dy, why, fontsize=7.5, color=S.COL["muted"], va="center")
+                    continue
+                S.dot(
+                    ax, 0, -i + dy, v, col, "rerun" if part == "jpp" and cells.get((kind, "after")) else "fixed", size=6
+                )
+                S.record("fig10", target, f"lookup extra loss without {'J++' if part == 'jpp' else 'the pointer'}: {sc}", *v,
+                         source="readme_story_figures.transfer_cells")  # fmt: skip
+        ax.set_ylim(-len(SCENES) + 0.4, 0.6)
+    axes[0].set_yticks(
+        [-i for i in range(len(SCENES))], ["simple", "varied: prose", "varied: json", "varied: table", "natural"]
+    )
+    marks = [
+        plt.Line2D([], [], marker="o", ls="", color="#3a3a3a", ms=6),
+        plt.Line2D([], [], marker="o", ls="", color=S.COL["position"], ms=6),
+    ]
+    fig.legend(marks, ["lookup without J++", "lookup without the pointer directions (fit on simple scenes)"], loc="upper left",
+               bbox_to_anchor=(0.0, 0.90), ncol=2, frameon=False, fontsize=9.5, handletextpad=0.3)  # fmt: skip
+    S.save(fig, "fig10_transfer")
+
+
 def main() -> None:
     plt = S.setup()
-    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8):
+    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10):
         f(plt)
     S.write_data()
     print(S.OUT)

@@ -190,6 +190,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     x8_numbers(num)
     t_pointer_numbers(num)
     first_sentence_numbers(num)
+    ld_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -569,6 +570,16 @@ def x8_numbers(num: Numbers) -> None:
         num.add(f"x8_sreal_min_{m}", f2(min(b["s_real"].values())), src)
         num.add(f"x8_sreal_max_{m}", f2(max(b["s_real"].values())), src)
         num.add(f"x8_same_legs_{m}", f"{b['same_legs'][0]} of {b['same_legs'][1]}", src)
+        got = b["changed_by_item"].get("write|4", {})
+        num.add(f"x8_rc_target_{m}", f"{got.get('target', 0)} of {sum(got.values())}", src)
+    for m, run in X8.items():  # the lookup's target share per dose, all pairs (the verdict)
+        found = sorted((pins.RESULTS_DIR / "x8_write" / run).glob("verdict-*/verdict.json"))
+        if not found:
+            continue
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        for c in json.loads(found[-1].read_text())["cells"]:
+            if c["pair"] is None:
+                num.add(f"x8_{'t' if c['kind'] == 'write' else 'rand'}{c['s']:g}_{m}", ci(c["target"]), src)
 
 
 def t_pointer_numbers(num: Numbers) -> None:
@@ -596,6 +607,23 @@ def t_pointer_numbers(num: Numbers) -> None:
     for key, vals in (("tptr_varied_range", pooled), ("tptr_natural_range", nats)):
         lo, hi = (f2(min(vals)), f2(max(vals))) if vals else ("–", "–")
         num.add(key, lo if lo == hi else f"{lo} to {hi}", src)
+
+
+LD_NAME = {"9b": "9B", "27b": "27B", "122b": "122B", "muse": "Muse"}
+
+
+def ld_numbers(num: Numbers) -> None:
+    """Batch 39 (scripts/x0_logit_diff.py): the gap on the logit difference per model, and each reader's extra loss."""
+    found = sorted((pins.RESULTS_DIR / "x0_logit_diff").glob("*/ld.json"))
+    if not found:
+        return
+    b = json.loads(found[-1].read_text())["models"]
+    src = str(found[-1].relative_to(pins.REPO_ROOT))
+    for m, name in LD_NAME.items():
+        if name in b:
+            num.add(f"ld_gap_{m}", ci(b[name]["gap"]), src)
+            num.add(f"ld_lk_{m}", ci(b[name]["lookup"]["extra"]), src)
+            num.add(f"ld_rc_{m}", ci(b[name]["recall"]["extra"]), src)
 
 
 FS_GROUPS = ("(a) first sentence", "(b) first locker, not first sentence", "(c) neither")

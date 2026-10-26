@@ -5090,15 +5090,33 @@ numbers,,x8_sreal_9b,9B 1.36 to 2.70,,,,results/x8_write/qwen35_9b_x8_write/reca
 numbers,,x8_sreal_min_9b,1.36,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_sreal_max_9b,2.70,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_same_legs_9b,93 of 600,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
+numbers,,x8_rc_target_9b,205 of 256,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_sreal_27b,27B 1.04 to 2.08,,,,results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json
 numbers,,x8_sreal_min_27b,1.04,,,,results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json
 numbers,,x8_sreal_max_27b,2.08,,,,results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json
 numbers,,x8_same_legs_27b,95 of 600,,,,results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json
+numbers,,x8_rc_target_27b,55 of 68,,,,results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json
 numbers,,x8_sreal_122b,122B 1.37 to 2.76,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
 numbers,,x8_sreal_min_122b,1.37,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
 numbers,,x8_sreal_max_122b,2.76,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
 numbers,,x8_same_legs_122b,94 of 600,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
+numbers,,x8_rc_target_122b,211 of 268,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
 numbers,,x8_sreal_muse,Muse not landed,,,,results/x8_write/muse30b_x8_write
+numbers,,x8_t1_9b,"0.02 [0.01, 0.03]",,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+numbers,,x8_t2_9b,"0.46 [0.42, 0.50]",,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+numbers,,x8_t4_9b,"0.73 [0.70, 0.77]",,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+numbers,,x8_rand1_9b,"0.00 [0.00, 0.00]",,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+numbers,,x8_rand4_9b,"0.00 [0.00, 0.00]",,,,results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.json
+numbers,,x8_t1_27b,"0.01 [0.00, 0.01]",,,,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+numbers,,x8_t2_27b,"0.24 [0.20, 0.29]",,,,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+numbers,,x8_t4_27b,"0.50 [0.47, 0.53]",,,,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+numbers,,x8_rand1_27b,"0.00 [0.00, 0.01]",,,,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+numbers,,x8_rand4_27b,"0.01 [0.00, 0.01]",,,,results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.json
+numbers,,x8_t1_122b,"0.01 [0.00, 0.01]",,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+numbers,,x8_t2_122b,"0.50 [0.46, 0.54]",,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+numbers,,x8_t4_122b,"0.66 [0.63, 0.69]",,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+numbers,,x8_rand1_122b,"0.00 [0.00, 0.00]",,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
+numbers,,x8_rand4_122b,"0.00 [0.00, 0.01]",,,,results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json
 numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T124519Z/verdict.json
 numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T124519Z/verdict.json
 numbers,,tptr_natural_9b,not tested (gate),,,,results/t_pointer/verdict-20261026T124519Z/verdict.json
@@ -5116,27 +5134,39 @@ numbers,,tptr_natural_range,0.07,,,,results/t_pointer/verdict-20261026T124519Z/v
 numbers,,fs_groups_9b,0.66 (n 41) / 0.23 (n 22) / 0.33 (n 9),,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_diff_9b,"0.40 [0.18, 0.60]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_keepdiff_9b,"0.46 [0.31, 0.64]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
-numbers,,pm_keep_slot0_9b,0.10 to 0.76,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
-numbers,,pm_keep_12_9b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
-numbers,,pm_whole_12_9b,0.53 / 0.78,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
+numbers,,pm_keep_slot0_9b,0.10 to 0.76,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,pm_keep_12_9b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,pm_whole_12_9b,0.53 / 0.78,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
 numbers,,fs_groups_27b,0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13),,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_diff_27b,"0.21 [0.05, 0.35]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_keepdiff_27b,"0.16 [0.04, 0.31]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
-numbers,,pm_keep_slot0_27b,0.00 to 0.44,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
-numbers,,pm_keep_12_27b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
-numbers,,pm_whole_12_27b,0.24 / 0.38,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
+numbers,,pm_keep_slot0_27b,0.00 to 0.44,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,pm_keep_12_27b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,pm_whole_12_27b,0.24 / 0.38,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
 numbers,,fs_groups_122b,0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10),,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_diff_122b,"0.38 [0.21, 0.56]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_keepdiff_122b,"0.07 [−0.16, 0.32]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
-numbers,,pm_keep_slot0_122b,0.15 to 0.47,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
-numbers,,pm_keep_12_122b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
-numbers,,pm_whole_12_122b,0.40 / 0.35,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
+numbers,,pm_keep_slot0_122b,0.15 to 0.47,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,pm_keep_12_122b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,pm_whole_12_122b,0.40 / 0.35,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
 numbers,,fs_groups_muse,0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7),,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_diff_muse,"0.41 [0.25, 0.59]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_keepdiff_muse,"0.23 [0.09, 0.39]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
-numbers,,pm_keep_slot0_muse,0.16 to 0.69,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
-numbers,,pm_keep_12_muse,0.04 / 0.16,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
-numbers,,pm_whole_12_muse,0.49 / 0.71,,,,results/x8_write/pairs-20261026T132656Z/pairs.json
+numbers,,pm_keep_slot0_muse,0.16 to 0.69,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,pm_keep_12_muse,0.04 / 0.16,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,pm_whole_12_muse,0.49 / 0.71,,,,results/x8_write/pairs-20261026T134600Z/pairs.json
+numbers,,ld_gap_9b,"0.48 [0.42, 0.53]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_lk_9b,"−0.05 [−0.07, −0.03]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_rc_9b,"0.43 [0.37, 0.48]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_gap_27b,"0.47 [0.42, 0.51]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_lk_27b,"0.13 [0.11, 0.16]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_rc_27b,"0.60 [0.54, 0.65]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_gap_122b,"0.33 [0.29, 0.38]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_lk_122b,"−0.02 [−0.05, −0.00]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_rc_122b,"0.31 [0.26, 0.34]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_gap_muse,"0.61 [0.52, 0.68]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_lk_muse,"−0.03 [−0.05, −0.02]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
+numbers,,ld_rc_muse,"0.58 [0.49, 0.65]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
 numbers,,share_rho_27b,0.79,,,,results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json
 numbers,,ctx_lookup_full,84%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
 numbers,,ctx_lookup_noj,87%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json

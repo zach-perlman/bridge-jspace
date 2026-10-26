@@ -417,6 +417,18 @@ Tables: [letter atoms](../results/x0_atoms/x0_atoms_27b_letters/tables.md), [eve
 
 [Verdict](../results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.md).
 
+## The first-mention table (README Section 5 keeps four rows)
+
+J++ extra loss by whether the asked pick is the bridge's first mention (no = matched), after the data; italics: under 30 lookup switches (count shown); n: items per row; the 122B's fresh scenes at gate 0.75.
+
+| Swap | First mention? | 9b lookup | 9b recall | 9b n | 27b lookup | 27b recall | 27b n | 122b lookup | 122b recall | 122b n | muse lookup | muse recall | muse n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Two people swap picks | yes | *−0.21 [−0.43, −0.05]; 19 switches* | 0.65 [0.57, 0.73] | 100 | *0.11 [0.00, 0.40]; 9 switches* | 0.81 [0.71, 0.91] | 99 | *0.08 [0.00, 0.23]; 13 switches* | 0.41 [0.26, 0.54] | 115 | *−0.30 [−0.44, 0.00]; 10 switches* | 0.80 [0.65, 0.92] | 108 |
+| Two people swap picks | no | 0.01 [−0.04, 0.07] | 0.35 [0.26, 0.43] | 100 | 0.14 [0.07, 0.22] | 0.67 [0.58, 0.76] | 101 | −0.01 [−0.08, 0.06] | 0.20 [0.10, 0.30] | 85 | −0.07 [−0.12, −0.02] | 0.68 [0.46, 0.88] | 92 |
+| Only the asked person's pick changes | yes | *−0.11 [−0.29, 0.10]; 19 switches* | 0.57 [0.47, 0.67] | 100 | *0.33 [0.10, 0.60]; 12 switches* | 0.73 [0.58, 0.86] | 97 | *0.00 [0.00, 0.00]; 14 switches* | 0.40 [0.25, 0.54] | 115 | *−0.10 [−0.29, 0.00]; 10 switches* | 0.76 [0.64, 0.87] | 105 |
+| Only the asked person's pick changes | no | 0.00 [0.00, 0.00] | 0.17 [0.11, 0.23] | 100 | 0.01 [0.00, 0.04] | 0.49 [0.39, 0.60] | 103 | −0.01 [−0.07, 0.04] | 0.10 [0.03, 0.17] | 85 | 0.00 [0.00, 0.00] | 0.54 [0.32, 0.75] | 95 |
+| Same, fresh scenes | no | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 200 | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] | 200 | 0.00 [0.00, 0.00] | 0.06 [0.03, 0.09] | 200 | −0.01 [−0.03, 0.02] | 0.31 [0.16, 0.45] | 200 |
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.
