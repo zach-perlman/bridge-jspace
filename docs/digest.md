@@ -1,4 +1,4 @@
-# Results digest (generated 2026-10-26 02:30 UTC by scripts/results_digest.py)
+# Results digest (generated 2026-10-26 04:28 UTC by scripts/results_digest.py)
 
 Every number is read from results/ (jsuite2_score, soft_score, jswap and probe_ceiling summaries). M - K: points lost on
 memory finals minus stated-fact finals under the top-10 J++ removal at the band, start all, 95% bootstrap over bridges.
@@ -8,7 +8,7 @@ Swaps: transfer (donor - third) on PM. '-' = not run (or not yet).
 
 | Model | Band | J++ M - K | n (M) | K lost | rotated | logit lens | by probability | size-matched variance (pcasize) | renderings |
 |---|---|---|---|---|---|---|---|---|---|
-| Qwen3.6-27B | L32-40 | +51 [46, 55] | 892 | 2.6 | +3 | +2 | +50 [47, 54] | +12 [10, 15] | -, - |
+| Qwen3.6-27B | L32-40 | +51 [46, 55] | 892 | 2.6 | +3 | +2 | +50 [47, 54] | +12 [10, 15] | +49, +50 |
 | Qwen3.5-9B | L12-16 | +43 [37, 49] | 563 | 5.0 | +2 | +1 | +35 [31, 40] | +7 [5, 10] | +42, +43 |
 | DeepSeek-V4-Flash | L18-23 | +18 [14, 22] | 504 | 2.4 | +5 | +2 | +21 [18, 25] | +9 [5, 13] | - |
 | Ministral-3-14B | L32-37 | +23 [19, 28] | 645 | 1.9 | +1 | +4 | +37 [34, 41] | +1 [0, 2] | - |
