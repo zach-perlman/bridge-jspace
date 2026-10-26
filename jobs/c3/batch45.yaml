@@ -134,3 +134,39 @@ tests:
       with the digit read; a missed gate means "not tested (gate)".
     rule: the split and "never the value" hold if the gap stays at least 0.2 and the value share stays at 0.
     gpu_hours: 1.5
+
+  # added 26 Oct ~21:55 (Dan, after 45g / 45b / 45d / 45a results; proposed by the critic agent); fixed before its run
+  - id: 45k
+    title: Why does the 27B lookup lose with more J++ atoms?
+    motivating_data: >-
+      main test, lookup extra loss 0.12 / 0.30 / 0.60 at k = 25 / 50 / 100 on the 27B, about 0 on the other three; the
+      9B's J++ part at k = 100 holds MORE of the change (44%) than the 27B's (31%), so "removed too much" does not
+      explain it.
+    design: >-
+      routes C0 and C2 on the 27B and the 9B (Muse if time), at the layers fixed in advance; arms no_jpp at k = 25, 50,
+      100 (signed OMP), each against its random part of the same share; route shares (identity / position / original);
+      per item, mean cos^2 between the span of the k picked atoms and (i) U (the pointer directions), (ii) the identity
+      direction mu_alt - mu_org. Overfitting control: the k = 100 atoms OMP picks for ANOTHER scene's change (jpp_other,
+      x0_parts.other_part), refit to this change by least squares, removed against its random part.
+    rules:
+      identity: >-
+        "Identity route is lens-readable on the 27B" if on the 27B, from k = 25 to k = 100, identity answers in C2 fall
+        by at least 0.2 more than with the random part, while position answers fall by less than 0.1 (or rise); and on
+        the 9B neither falls by at least 0.1.
+      pointer: >-
+        "Pointer becomes lens-readable on the 27B" if position answers in C2 fall by at least 0.2 more than with the
+        random part, and the k = 100 span's mean cos^2 with U is at least 0.5.
+      generic: '"Generic fitting" if jpp_other at k = 100 costs the 27B lookup at least 2/3 of what this scene''s J++ costs.'
+      otherwise: '"can''t tell". Report all four per model.'
+    as_computed: >-
+      Fixed by the agent before the run (Dan may override before the run): "fall from k = 25 to k = 100 by at least x
+      more than with the random part" = [share(no_jpp25) - share(no_jpp100)] - [share(no_jpp25_rand) -
+      share(no_jpp100_rand)] >= x, C2 lookup route shares, point estimates (paired cluster-bootstrap CIs beside them);
+      "position falls by less than 0.1 (or rises)" = the same difference for position < 0.1; the 9B clause: both
+      identity's and position's difference < 0.1. Mean cos^2 with U = per C2 item ||P_span(atoms) U||_F^2 / rank(U),
+      averaged over the items; with the identity direction, ||P_span(atoms) u||^2 / ||u||^2. "Costs the lookup" = the
+      lookup's extra loss in C0 (switches lost without the part minus without its random part, over the whole change's
+      switches), as the main-test curve that motivates the test. Each label is evaluated per model; Q45.9 is scored on
+      the 27B: the labels that hold there, "can't tell" if none.
+    queue: after the 45b sweep, before the 122B block; if the queue cannot finish by Tue 10:00, cut 45a on the 122B first.
+    gpu_hours: 1.5
