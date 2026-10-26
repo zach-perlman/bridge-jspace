@@ -189,6 +189,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     predictions_numbers(num)
     x8_numbers(num)
     t_pointer_numbers(num)
+    first_sentence_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -584,13 +585,50 @@ def t_pointer_numbers(num: Numbers) -> None:
         num.add(f"tptr_pooled_{m}", ci(lk(varied["pooled"])) if varied else "not landed", src)
         num.add(f"tptr_split_{m}", " / ".join(f2(lk(varied[f])[0]) for f in ("prose", "json", "table")) if varied
                 else "not landed", src)  # fmt: skip
-        num.add(f"tptr_natural_{m}", "not landed" if nat is None else "not tested (gate)" if "gate" in nat else ci(lk(nat)), src)
+        num.add(
+            f"tptr_natural_{m}",
+            "not landed" if nat is None else "not tested (gate)" if "gate" in nat else ci(lk(nat)),
+            src,
+        )
     # the README's scope line: the range over the models landed so far (point estimates)
     pooled = [r["varied"]["pooled"]["PP"]["excess"][0] for r in blob.values() if r.get("varied")]
     nats = [r["natural"]["PP"]["excess"][0] for r in blob.values() if r.get("natural") and "gate" not in r["natural"]]
     for key, vals in (("tptr_varied_range", pooled), ("tptr_natural_range", nats)):
         lo, hi = (f2(min(vals)), f2(max(vals))) if vals else ("–", "–")
         num.add(key, lo if lo == hi else f"{lo} to {hi}", src)
+
+
+FS_GROUPS = ("(a) first sentence", "(b) first locker, not first sentence", "(c) neither")
+
+
+def first_sentence_numbers(num: Numbers) -> None:
+    """After the data (Dan 26 Oct ~16:20): the main test's pointer removal by where the bridges' locker sentences sit
+    (scripts/x0_first_sentence.py), and the routes per pointer move (x8_write.py pairs): only the pointer part on the moves
+    from or to slot 0 vs between slots 1 and 2, and the whole change between slots 1 and 2."""
+    first = sorted((pins.RESULTS_DIR / "x0_massmean").glob("first-sentence-*/first.json"))
+    pairs = sorted((pins.RESULTS_DIR / "x8_write").glob("pairs-*/pairs.json"))
+    fb = json.loads(first[-1].read_text()) if first else {}
+    pb = json.loads(pairs[-1].read_text()) if pairs else {}
+    fsrc = str(first[-1].relative_to(pins.REPO_ROOT)) if first else ""
+    psrc = str(pairs[-1].relative_to(pins.REPO_ROOT)) if pairs else ""
+    for m, (target, *_) in MODELS.items():
+        f = fb.get(target, {})
+        if f:
+            cells = [f.get(f"{X.LOOKUP}|{g}", {}) for g in FS_GROUPS]
+            num.add(f"fs_groups_{m}", " / ".join(f"{f2(c['extra_loss'][0])} (n {c['n']})" if "extra_loss" in c else "–" for c in cells),
+                    fsrc)  # fmt: skip
+            num.add(f"fs_diff_{m}", ci(f[f"{X.LOOKUP}|(a) − (b, c)"]["extra_loss"]), fsrc)
+            num.add(f"fs_keepdiff_{m}", ci(f[f"{X.LOOKUP}|(a) − (b, c)"]["keep_alf"]), fsrc)
+        mv = pb.get(target, {}).get("moves", {})
+        if mv:
+            slot0 = [
+                v["position"]["keep_alf"]
+                for k, v in mv.items()
+                if "0" in k.split("-") and v["position"]["keep_alf"] is not None
+            ]
+            num.add(f"pm_keep_slot0_{m}", f"{f2(min(slot0))} to {f2(max(slot0))}", psrc)
+            num.add(f"pm_keep_12_{m}", " / ".join(f2(mv[k]["position"]["keep_alf"]) for k in ("1-2", "2-1")), psrc)
+            num.add(f"pm_whole_12_{m}", " / ".join(f2(mv[k]["position"]["whole"]) for k in ("1-2", "2-1")), psrc)
 
 
 def predictions_numbers(num: Numbers) -> None:

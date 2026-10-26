@@ -17931,6 +17931,102 @@
   "text": "0.07",
   "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
  },
+ "fs_groups_9b": {
+  "text": "0.66 (n 41) / 0.23 (n 22) / 0.33 (n 9)",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "fs_diff_9b": {
+  "text": "0.40 [0.18, 0.60]",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "fs_keepdiff_9b": {
+  "text": "0.46 [0.31, 0.64]",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "pm_keep_slot0_9b": {
+  "text": "0.10 to 0.76",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "pm_keep_12_9b": {
+  "text": "0.00 / 0.00",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "pm_whole_12_9b": {
+  "text": "0.53 / 0.78",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "fs_groups_27b": {
+  "text": "0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13)",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "fs_diff_27b": {
+  "text": "0.21 [0.05, 0.35]",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "fs_keepdiff_27b": {
+  "text": "0.16 [0.04, 0.31]",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "pm_keep_slot0_27b": {
+  "text": "0.00 to 0.44",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "pm_keep_12_27b": {
+  "text": "0.00 / 0.00",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "pm_whole_12_27b": {
+  "text": "0.24 / 0.38",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "fs_groups_122b": {
+  "text": "0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10)",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "fs_diff_122b": {
+  "text": "0.38 [0.21, 0.56]",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "fs_keepdiff_122b": {
+  "text": "0.07 [−0.16, 0.32]",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "pm_keep_slot0_122b": {
+  "text": "0.15 to 0.47",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "pm_keep_12_122b": {
+  "text": "0.00 / 0.00",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "pm_whole_12_122b": {
+  "text": "0.40 / 0.35",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "fs_groups_muse": {
+  "text": "0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7)",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "fs_diff_muse": {
+  "text": "0.41 [0.25, 0.59]",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "fs_keepdiff_muse": {
+  "text": "0.23 [0.09, 0.39]",
+  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+ },
+ "pm_keep_slot0_muse": {
+  "text": "0.16 to 0.69",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "pm_keep_12_muse": {
+  "text": "0.04 / 0.16",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
+ "pm_whole_12_muse": {
+  "text": "0.49 / 0.71",
+  "source": "results/x8_write/pairs-20261026T132656Z/pairs.json"
+ },
  "share_rho_27b": {
   "text": "0.79",
   "source": "results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json"
