@@ -108,6 +108,14 @@ def entity_means(states_run: str) -> dict[str, np.ndarray]:
     return {e: res[[i for i, x in enumerate(ents) if x == e]].mean(0) for e in sorted(set(ents))}
 
 
+def pointer_means(states_run: str) -> dict[int, np.ndarray]:
+    """The class means behind the pointer directions (Alf): each locker-sentence index's mean layout-free state (batch
+    44: the written address mu_k - mu_j lies in Alf's span by construction)."""
+    _, _, res, items, _ = layout_free(states_run)
+    idx = [int(it["locker_index"]) for it in items]
+    return {k: res[[i for i, x in enumerate(idx) if x == k]].mean(0) for k in sorted(set(idx))}
+
+
 def subspaces(states_run: str) -> tuple[dict[str, np.ndarray], dict]:
     """A, V, span(A, V), Alf (A after subtracting each layout group's mean) and Id (the same, by the bridge's identity)
     from a probe run's locker-before org states."""
