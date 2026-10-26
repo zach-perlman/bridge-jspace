@@ -18,7 +18,7 @@ fail() { echo "=== $1 FAILED"; tail -3 "$2"; fails=$((fails + 1)); }
 for step in "$@"; do
   IFS=: read -r kind a b c d e f <<< "$step"
   case $kind in
-    waitq) until grep -qs "^EXIT" $R-$a.log; do sleep 60; done; echo "=== $a finished $(date -u +%T)";;
+    waitq) until grep -qs "^EXIT [0-9]" $R-$a.log; do sleep 60; done; echo "=== $a finished $(date -u +%T)";;
     rend)
       export BJ_TARGET=$a; p=$b; band=$c; batch=$d; set_=${e}_test_chat; cn=${p}${set_}_competence_cand2_v1; r=${p}${set_}_ko_cand2_v1
       CONDS="paper10 paper10_rot unembed10 unembed10_rot"; SA=""

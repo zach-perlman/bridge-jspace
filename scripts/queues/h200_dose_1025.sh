@@ -17,7 +17,7 @@ fails=0
 for step in "$@"; do
   IFS=: read -r kind a b c d <<< "$step"
   case $kind in
-    waitq) until grep -qs "^EXIT" $R-$a.log; do sleep 60; done; echo "=== $a finished $(date -u +%T)";;
+    waitq) until grep -qs "^EXIT [0-9]" $R-$a.log; do sleep 60; done; echo "=== $a finished $(date -u +%T)";;
     waitfile) until [ -f "$a" ]; do sleep 60; done; echo "=== $a present $(date -u +%T)";;
     mem) until [ "$(nvidia-smi -i $a --query-gpu=memory.free --format=csv,noheader,nounits)" -ge $((b * 1024)) ]; do sleep 60; done;;
     dose)
@@ -25,11 +25,12 @@ for step in "$@"; do
       band=$($PY scripts/profile_pick.py ${p}${DEV}_profile_cand2_v1 2>/dev/null)
       nl=$($PY -c "import sys; sys.path.insert(0, 'src'); from bridge_jspace import pins; print(pins.N_LAYERS)")
       [[ "$band" =~ ^[0-9]+-[0-9]+$ ]] || { echo "=== DOSE $a: no profile pick ('$band')"; fails=$((fails + 1)); continue; }
-      r=${p}${DEV}_dose_L${band}_cand2_v1
+      r=${p}${DEV}_dose_L${band}_cand2_v1; SA=""; NN=$n
+      if [ -f /workspace/scratch/${p}sample_dev.txt ]; then SA="--sample-per-word $n --sample-seed 0"; NN=1000; echo "=== DOSE $a: a random $n per word over all relations (seed 0)"; fi  # amendment 49 note 1
       echo "=== DOSE $a at L$band $(date -u +%T)"
       [ -f results/ablate_v2/$r/summary.json ] || $PY scripts/ablate_v2.py --name $r --why "$W: $a, removal sizes at its profile pick L$band" --plan bands \
         --bands $band --conditions top1 top1_rot top3 top3_rot paper10 paper10_rot top30 top30_rot --tasks $DEV --tasks-competence ${p}${DEV}_competence_cand2_v1 \
-        --tasks-words PP PK PM MP MK MM --tasks-level all --n $n --kinds clean --batch $batch --read cand2 > /workspace/scratch/$r.log 2>&1 < /dev/null \
+        --tasks-words PP PK PM MP MK MM --tasks-level all --n $NN --kinds clean --batch $batch --read cand2 $SA > /workspace/scratch/$r.log 2>&1 < /dev/null \
         || { echo "=== DOSE $a FAILED"; tail -3 /workspace/scratch/$r.log; fails=$((fails + 1)); continue; }
       $PY scripts/profile_score.py $r $nl --set $DEV | sed "s/^/=== DOSE $a /";;
     *) echo "=== unknown step $step"; fails=$((fails + 1));;

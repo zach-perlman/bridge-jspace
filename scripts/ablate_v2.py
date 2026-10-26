@@ -361,7 +361,7 @@ def main(args) -> None:
     tok = model.tokenizer
     bands = make_bands(args.plan, pins.N_LAYERS, args.bands, args.workspace)
     manifest = {"run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+                "git_commit": commit, "git_state": pins.git_state(), "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
                 "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "read": args.read, "sample_per_word": args.sample_per_word, "sample_seed": args.sample_seed, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",

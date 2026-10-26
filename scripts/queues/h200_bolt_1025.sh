@@ -36,7 +36,7 @@ else
 fi
 free=$(df -BG --output=avail /workspace | tail -1 | tr -dc 0-9)
 echo "=== $KEY download, $free GB free $(date -u +%T)"
-[ "$free" -ge 160 ] || { echo "=== $KEY download: only $free GB free, stopped"; exit 1; }
+[ "$free" -ge 160 ] || [ -d /workspace/hf_cache/hub/models--nvidia--NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16/snapshots/$REV ] || { echo "=== $KEY download: only $free GB free, stopped"; exit 1; }
 CUDA_VISIBLE_DEVICES="" .venv/bin/python -c "
 from huggingface_hub import snapshot_download
 print('=== BOLTDL done', snapshot_download('$REPO', revision='$REV'))

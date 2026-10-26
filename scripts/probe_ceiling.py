@@ -91,7 +91,7 @@ def main(a) -> None:
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "model": pins.model_pin(), "lens": pins.FROZEN_LENS,
                                                        "band": a.band, "layers": layers, "dev_competence": a.dev_competence,
                                                        "test_competence": a.test_competence, "conditions": CONDS, "k_max": 10,
-                                                       "git_commit": commit, "seeds": {"probe_rot": f"{SEED_PROBE_ROT}+layer", "cv": 0}}, indent=2) + "\n")  # fmt: skip
+                                                       "git_commit": commit, "git_state": pins.git_state(), "seeds": {"probe_rot": f"{SEED_PROBE_ROT}+layer", "cv": 0}}, indent=2) + "\n")  # fmt: skip
     items = {s: {json.loads(x)["id"]: json.loads(x) for x in (JS.DATA / s / "items.jsonl").read_text().splitlines()} for s in (DEV, TEST)}
 
     def facts_prompts(set_name, comp):

@@ -18,7 +18,7 @@ fails=0
 for step in "$@"; do
   IFS=: read -r kind a b c d <<< "$step"
   case $kind in
-    waitq) until grep -qs "^EXIT" $R-$a.log; do sleep 60; done; echo "=== $a finished $(date -u +%T)";;
+    waitq) until grep -qs "^EXIT [0-9]" $R-$a.log; do sleep 60; done; echo "=== $a finished $(date -u +%T)";;
     probe)
       export BJ_TARGET=$a; r=${b}probe_ceiling_L${c}_v1
       echo "=== probe_ceiling/$r $(date -u +%T)"

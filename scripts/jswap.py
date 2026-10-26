@@ -118,7 +118,7 @@ def main(a) -> None:
     band = list(range(int(a.band.split("-")[0]), int(a.band.split("-")[1]) + 1))
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "band": a.band,
                                                        "set": a.set, "competence": a.competence, "conditions": a.conds, "k": 10,
-                                                       "git_commit": commit, "limit": a.limit, "sample_per_word": a.sample_per_word, "sample_seed": a.sample_seed}, indent=2) + "\n")  # fmt: skip
+                                                       "git_commit": commit, "git_state": pins.git_state(), "limit": a.limit, "sample_per_word": a.sample_per_word, "sample_seed": a.sample_seed}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / a.set / "items.jsonl").read_text().splitlines()}

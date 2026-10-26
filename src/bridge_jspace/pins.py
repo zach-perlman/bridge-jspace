@@ -623,6 +623,22 @@ if TARGET != "qwen3.6-27b":
     FROZEN_LENS = TARGETS[TARGET].get("frozen_lens", FROZEN_LENS)  # a target with no J++ freezes its J-lens
 
 
+def git_state() -> dict[str, Any]:
+    """2026-10-26 (amendment 49 note 1): the working tree at run start, so a run whose code was not yet committed shows
+    as such: HEAD, tracked files that differ from it, untracked scripts, and a hash of the diff."""
+    import subprocess
+
+    def git(*a: str) -> str:
+        return subprocess.run(["git", *a], capture_output=True, text=True, cwd=REPO_ROOT).stdout
+
+    dirty = [line[3:] for line in git("status", "--porcelain", "--untracked-files=no").splitlines() if line.strip()]
+    new = [line[3:] for line in git("status", "--porcelain", "--untracked-files=all", "--", "scripts", "src").splitlines()
+           if line.startswith("??") and line.endswith((".py", ".sh"))]  # fmt: skip
+    diff = git("diff", "HEAD", "--", "scripts", "src")
+    return {"head": git("rev-parse", "HEAD").strip(), "dirty_files": dirty, "untracked_scripts": new,
+            "code_diff_sha256": hashlib.sha256(diff.encode()).hexdigest() if diff else None}  # fmt: skip
+
+
 def model_pin() -> dict[str, str]:
     """The target model as manifests record it."""
     pin = {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": TARGETS[TARGET].get("attn", "sdpa")}

@@ -324,7 +324,7 @@ def make(name: str, seed: int, n_scenes: int) -> None:
         (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in its))
         commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
         (out / "manifest.json").write_text(json.dumps({"set": f"{name}_{fr}", "seed": seed, "scenes_per_bridge": n_scenes,
-                                                       "n": len(its), "git_commit": commit,
+                                                       "n": len(its), "git_commit": commit, "git_state": pins.git_state(),
                                                        "by_word": collections.Counter(it["word"] for it in its),
                                                        "script": "scripts/natural_v1.py"}, indent=2) + "\n")  # fmt: skip
         print(f"{name}_{fr}: {len(its)} items", dict(collections.Counter((it["domain"], it["word"]) for it in its)))
@@ -400,7 +400,7 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
     assert not (out / "summary.json").exists(), f"{out} has results; runs are written once"
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(),
-                                                   "git_commit": commit, "guess": True,
+                                                   "git_commit": commit, "git_state": pins.git_state(), "guess": True,
                                                    "read": read, "hop1": hop1, "words": words, "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
                                                    "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip
     model = load_model()

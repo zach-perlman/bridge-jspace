@@ -1485,3 +1485,36 @@ nothing is claimed with that lens. Ministral's was 0.651 vs 0.461.
   - every run of record.
 - **Readings:** unchanged, with the CIs the smaller n gives. If a reading's CI straddles its threshold because of the
   smaller n, it is reported as undecided, not re-run.
+
+**Amendment 49, note 1 (Zach, 2026-10-26 01:05 UTC, before Bolt's profile; Zach: "Go ahead"): the dev profiles and doses held only the country relations.**
+- **Found:** "first n per word" (--n 40) took each word's first eligible items. jsuite_v2_dev_chat lists the country
+  relations first, so every v2 dev depth profile and dose so far ran on country bridges only:
+
+  | Model | Items | Bridges | Mix |
+  |---|---|---|---|
+  | 27B | 240 | 24 | countries -> continent only |
+  | 9B | 240 | 37 | 198 countries, 42 languages |
+  | Ministral | 240 | 34 | 177 / 63 |
+  | DeepSeek | 240 | 40 | 162 / 78 |
+  | Lightning | 240 | 36 | 204 / 36 |
+
+  amendment 39's sweeps (--n 100) also took people and a few cities.
+- **What this changes:**
+  - Every profile pick (DeepSeek L18-23, Ministral, Lightning L27-33) and every dose curve was chosen on country-bridge
+    items; the 27B's on countries -> continent alone, a relation with 5 answers.
+  - Any depth-profile or dose claim is about country bridges only.
+  - Not changed: the test knock-outs, swaps, cross-relation swaps, probe and variance runs, which took every eligible
+    item of all 8 relations.
+- **Fix:**
+  - Bolt's profile and dose (not yet run) take a seeded random 40 per word over all eligible items: h200_profile_1025.sh
+    and h200_dose_1025.sh read /workspace/scratch/nem35b_sample_dev.txt, and use ablate_v2 --sample-per-word 40
+    --sample-seed 0 with --n 1000.
+  - Profile reruns on all relations (profile step "rs", run names ..._profile_rs40_...) for the 27B, 9B, Lightning
+    and Ministral are queued for Monday if the write-up uses depth profiles. DeepSeek's cache is dropped, so its
+    profile stays country-only, reported as such.
+  - The picks already used for test runs are not revisited. They are dev choices, and the test runs they led to stand
+    as run.
+- **Also from this note (not experiment changes):**
+  - manifests record the working tree (pins.git_state: dirty files, untracked scripts, code-diff hash);
+  - queue waits need a numeric EXIT line;
+  - Bolt's chain can restart past its disk check once the snapshot is on disk.

@@ -60,7 +60,7 @@ def main(a) -> None:
     band = list(range(int(a.band.split("-")[0]), int(a.band.split("-")[1]) + 1))
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(),
                                                        "lens": pins.FROZEN_LENS, "band": a.band, "set": a.set, "competence": a.competence,
-                                                       "relations": RELS, "conditions": CONDS, "k": 10, "git_commit": commit,
+                                                       "relations": RELS, "conditions": CONDS, "k": 10, "git_commit": commit, "git_state": pins.git_state(),
                                                        "limit": a.limit, "seed": "random.Random(item id)"}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
