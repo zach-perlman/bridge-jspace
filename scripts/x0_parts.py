@@ -14,7 +14,9 @@ share (X0's rand_sub), both readers on the identical patch, X0's top-token read:
        part's share of ||Δ||² is closest to that item's jpp share (signed OMP on orthonormal atoms takes them in order
        of |coefficient|, so this is exact; checked against signed OMP at k = 25 on every run);
   jpp_other  (Dan, 25 Oct ~12:00, opt-in with --parts) the control: the K atoms signed OMP picks for another scene's
-       change (a different bridge pair, the partner fixed by OTHER_SEED), refit to this scene's change by least squares;
+       change (a different bridge pair, the partner fixed by OTHER_SEED), refit to this scene's change by least squares
+       (--other-k: another atom count; 45k's generic control, Dan 26 Oct ~22:05: 100 atoms on the main run's items,
+       --single x0_necessity_27b_chat, whose alt is the cf);
   jwo  (Dan, ~22:05, opt-in with --parts) word-orthogonal jw: signed OMP, k = 25, fit on Δ - w over the J++ letter atoms
        (variants banned) projected off the word's span and renormalised, so it holds none of the word's energy (checked
        per item); removing it leaves the word part intact.
@@ -29,6 +31,7 @@ redundant: either suffices".
 
 uv run python scripts/x0_parts.py run --name x0_parts_27b --single x0_single_27b_r2      # GPU, then the verdict
 uv run python scripts/x0_parts.py run --name x0_pcaeq_27b --single x0_single_27b_r2 --parts pca_eq,jwo,jpp
+uv run python scripts/x0_parts.py run --name x0_jppother100_27b --single x0_necessity_27b_chat --parts jpp_other,jpp --other-k 100
 uv run python scripts/x0_parts.py verdict --name x0_parts_27b                             # CPU
 """
 
@@ -177,8 +180,9 @@ def omp_atoms(dictionary, x, k: int):
     return chosen
 
 
-def partners(cases: list[dict], seed: int = OTHER_SEED) -> list[int]:
-    """For each case, another case whose bridge pair shares no bridge with it (seeded order, first that fits)."""
+def partners(cases: list[dict], seed: int = OTHER_SEED, group: str | None = None) -> list[int]:
+    """For each case, another case whose bridge pair shares no bridge with it (seeded order, first that fits); with
+    group (a case key, e.g. x6_routes' "condition"), only among the cases with the same value of it."""
     import random
 
     order = list(range(len(cases)))
@@ -186,20 +190,22 @@ def partners(cases: list[dict], seed: int = OTHER_SEED) -> list[int]:
     out = []
     for i, c in enumerate(cases):
         mine = {c["bridge"], c["cf_bridge"]}
-        out.append(next(j for j in order if j != i and not ({cases[j]["bridge"], cases[j]["cf_bridge"]} & mine)))
+        out.append(next(j for j in order if j != i and (group is None or cases[j][group] == c[group])
+                        and not ({cases[j]["bridge"], cases[j]["cf_bridge"]} & mine)))  # fmt: skip
     return out
 
 
-def other_part(jdic, x, cases: list[dict]):
-    """jpp_other: each row of x projected (least squares) on the K atoms signed OMP picked for its partner's row.
-    Returns (parts [n, d], partner index per row)."""
+def other_part(jdic, x, cases: list[dict], k: int = K, atoms=None, group: str | None = None):
+    """jpp_other: each row of x projected (least squares) on the k atoms signed OMP picked for its partner's row
+    (partners(cases, group=group)). atoms: signed OMP's picks for every row [n, >= k] if already computed (its first k
+    are its picks at k: the pursuit is greedy). Returns (parts [n, d], partner index per row)."""
     import torch
 
-    atoms = omp_atoms(jdic, x, K)
-    pj = partners(cases)
+    atoms = omp_atoms(jdic, x, k) if atoms is None else atoms[:, :k]
+    pj = partners(cases, group=group)
     out = torch.zeros_like(x)
     for i, j in enumerate(pj):
-        v = jdic[atoms[j]].float()  # [K, d]
+        v = jdic[atoms[j]].float()  # [k, d]
         out[i] = torch.linalg.lstsq(v.T, x[i][:, None]).solution[:, 0] @ v
     return out, pj
 
@@ -227,11 +233,17 @@ def keep_cells(rows: list[dict], n_boot: int) -> list[dict]:
 
 
 def stage_run(
-    name: str, single: str, x0b: str | None = None, used: tuple[str, ...] | None = None, keep: tuple[str, ...] = ()
+    name: str,
+    single: str,
+    x0b: str | None = None,
+    used: tuple[str, ...] | None = None,
+    keep: tuple[str, ...] = (),
+    other_k: int = K,
 ) -> Path:
     """The single-change run's items (the four parts, or `used`), or with x0b an X0b run's eligible items (w, jw, jpp:
     Dan's item 6, the X0b arms). keep: parts also pasted alone, against the random part of their share alone (Dan,
-    25 Oct ~00:20)."""
+    25 Oct ~00:20). `single` may also be the main run (alt cf; 45k's generic control, Dan 26 Oct ~22:05): its items
+    with its own alt. other_k: jpp_other's atom count (45k: 100)."""
     import torch
 
     from bridge_jspace.lens import JLens
@@ -247,13 +259,15 @@ def stage_run(
 
     src_dir = B.RESULTS / x0b if x0b else X.RESULTS / single
     sm = json.loads((src_dir / "manifest.json").read_text())
-    assert x0b or sm["alt"] == "single", f"{single} is not a single-change run"
+    alt = "single" if x0b else sm.get("alt", "cf")  # runs written before 24 Oct have no "alt": theirs was the cf
+    assert alt in ("single", "cf"), f"{single}: alt {alt!r}"
     used = used or (("w", "jw", "jpp") if x0b else PARTS)
     assert "pca_eq" not in used or "jpp" in used, "pca_eq matches the jpp part's share: run jpp beside it"
     assert set(keep) <= set(used), "a kept part must be one of the parts"
+    assert other_k == K or "jpp_other" in used, "--other-k is jpp_other's atom count: run jpp_other"
     layer = sm["predicted"]
     scenes = sorted({r["scene"] for r in X.read_jsonl(src_dir / "outcomes.jsonl") if r["rendering"] == "chat"})
-    X.ALT = "single"
+    X.ALT = alt
     model = load_model()
     lens = JLens(model, "jpp")
     tok = model.tokenizer
@@ -263,7 +277,7 @@ def stage_run(
     pca, pca_info = pca_dictionary(model, layer) if {"pca", "pca_eq"} & set(used) else (None, None)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "single": x0b or single, "source_exp": "x0b_generalize" if x0b else X.EXP, "single_code": sm["code"],
-         "set": sm["set"], "layer": layer, "items": len(scenes), "k": K, "parts": list(used), "keep": list(keep), "pca": pca_info, "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
+         "set": sm["set"], "alt": alt, "layer": layer, "items": len(scenes), "k": K, "other_k": other_k, "parts": list(used), "keep": list(keep), "pca": pca_info, "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED, "held_out": HELD_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     print(json.dumps(pca_info), flush=True)
@@ -284,7 +298,7 @@ def stage_run(
         x = torch.stack(deltas)
         parts = {"jpp": X.fit(jdic, x, K, "signed")}
         if "jpp_other" in used:
-            parts["jpp_other"], partner = other_part(jdic, x, cases)
+            parts["jpp_other"], partner = other_part(jdic, x, cases, other_k)
             m["jpp_other_partners"] = {c["scene"]: cases[j]["scene"] for c, j in zip(cases, partner, strict=True)}
             (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
         if pca is not None:
@@ -305,7 +319,7 @@ def stage_run(
             share = parts[d].norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
             rand = SP.random_subspace_part(x, share, basis)
             fit = {"w": "lsq", "pca_eq": "eq", "jpp_other": "other"}.get(d, "signed")
-            k = 0 if d in ("w", "pca_eq") else K
+            k = 0 if d in ("w", "pca_eq") else other_k if d == "jpp_other" else K
             arms[(d, k, fit, "no_part")] = x - parts[d]
             arms[(d, k, fit, "no_rand")] = x - rand
             if d in keep:
@@ -348,9 +362,10 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     label = {"w": "word only (least squares)", "jw": "J++ without the word (k = 25)", "pca": f"PCA top {N_PCA} (k = 25)",
              "jpp": "J++ (k = 25, reference)", "pca_eq": f"PCA top {N_PCA} at J++'s share (k per item)",
              "jwo": "J++ without the word, orthogonal to the word (k = 25)",
-             "jpp_other": "J++ atoms fitted to another scene's change (k = 25)"}  # fmt: skip
+             "jpp_other": f"J++ atoms fitted to another scene's change (k = {m.get('other_k', K)})"}  # fmt: skip
+    items = "single-change" if m.get("alt", "single") == "single" else f"alt {m['alt']}"
     lines = [f"# Word, J++ without the word, PCA: {name}", "",
-             f"{NOTE} Model {m['model']['target']}, layer {m['layer']}, the single-change items of {m['single']} (n = "
+             f"{NOTE} Model {m['model']['target']}, layer {m['layer']}, the {items} items of {m['single']} (n = "
              f"{m['items']}); each part removed against a random subspace of its own share; bootstrap over bridge entities "
              f"({n_boot} resamples). "
              + (f"Word variants per item: median {statistics.median(nvar)} (range {min(nvar)}-{max(nvar)}). " if nvar else "")
@@ -411,16 +426,17 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["run", "verdict"])
     ap.add_argument("--name", required=True)
-    ap.add_argument("--single", default="x0_single_27b_r2")
+    ap.add_argument("--single", default="x0_single_27b_r2", help="run: the x0_necessity run whose items (its alt)")
     ap.add_argument("--x0b", default=None, help="run: an X0b run's eligible items instead (parts w, jw, jpp)")
     ap.add_argument("--parts", default=None, help=f"run: comma-separated, of {PARTS}, pca_eq, jwo (default: {PARTS})")
     ap.add_argument("--keep", default="", help="run: comma-separated parts also pasted alone (keep-only arms)")
+    ap.add_argument("--other-k", type=int, default=K, help="run: jpp_other's atom count (45k: 100)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "run":
         used = tuple(a.parts.split(",")) if a.parts else None
         assert used is None or set(used) <= {*PARTS, "pca_eq", "jwo", "jpp_other"}, used
-        stage_run(a.name, a.single, a.x0b, used, tuple(k for k in a.keep.split(",") if k))
+        stage_run(a.name, a.single, a.x0b, used, tuple(k for k in a.keep.split(",") if k), a.other_k)
     stage_verdict(a.name, a.n_boot)
 
 

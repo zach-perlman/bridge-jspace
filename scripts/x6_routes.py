@@ -51,6 +51,14 @@ Batch 45 (Dan 26 Oct ~18:30; designs and rules in jobs/c3/batch45.yaml, fixed in
   the scene's J++ atoms and the pointer directions, each against a random part of its own share. Verdict: 45e's rule
   per model (identity_control_flags); idctrl-summary: over the models (identity_specific).
 --rendering nochat (45i): X0's prompt without the chat template (thinking off), read by X0's digit rule (amendment 3).
+--jpp-ks / --jpp-other (45k, with C0 and C2): J++ removed at k = 25 (the existing no_jpp), 50 and 100 atoms (signed OMP),
+  and jpp_other at k = 100 (the atoms signed OMP picks for another scene of the same condition, x0_parts.partners, refit
+  here by least squares), each against a random part of its own share. Per item in norms.jsonl: the mean cos^2 between
+  the k atoms' span and the pointer directions U (||P U||_F^2 / rank U) and the identity direction mu_alt - mu_org (None
+  where an entity has no class mean; the scene is kept), and the partner scene. Verdict: 45k's clauses per model
+  (jppk_rule); jppk-summary: the labels over the models and Q45.9 on the 27B, with Dan's ~22:05 overrides (the 27B's C0
+  extra loss at k = 100 below 0.2 -> can't tell; generic fitting read on the main test: an x0_parts run with jpp_other at
+  k = 100 against the kmatch run's J++ at k = 100; generic first, then the other labels).
 --sealed: no verdict after the run (batch 45: no result is opened before Dan's predictions are committed).
 examples (CPU): 10 random items (seed 0), each reader's prompt as the model reads it with the patch position marked
   ⟦...⟧, the source prompt, and every arm's answer.
@@ -61,6 +69,9 @@ uv run python scripts/x6_routes.py plan --prepend V0,V1,V2,V3,V4          # 45a'
 uv run python scripts/x6_routes.py run --name x6_routes_x45a_27b --conditions C2 --prepend V0,V1,V2,V3,V4 --sealed
 uv run python scripts/x6_routes.py examples --name x6_routes_x45a_27b     # CPU
 uv run python scripts/x6_routes.py idctrl-summary --names qwen35_9b_x6_routes_x45e,x6_routes_x45e_27b,muse30b_x6_routes_x45e
+uv run python scripts/x6_routes.py run --name x6_routes_x45k_27b --conditions C0,C2 --jpp-ks 25 50 100 --jpp-other
+uv run python scripts/x6_routes.py jppk-summary --names x6_routes_x45k_27b,qwen35_9b_x6_routes_x45k,muse30b_x6_routes_x45k
+    --generic-run x0_parts/x0_jppother100_27b --kmatch-run x0_necessity/x0_kmatch_27b    # (one line) CPU
 """
 
 from __future__ import annotations
@@ -96,7 +107,9 @@ ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "n
         "no_jppalfidout_rand", "keep_id", "keep_id_rand", "no_idsub",
         # --identity-controls (45e a): the wrong-pair and PCA controls at idout's share, alone and with J++ + the pointer
         "no_wrong", "no_wrong_rand", "no_pca", "no_pca_rand", "no_jppalfwrong", "no_jppalfwrong_rand", "no_jppalfpca",
-        "no_jppalfpca_rand")  # fmt: skip
+        "no_jppalfpca_rand",
+        # --jpp-ks / --jpp-other (45k): J++ at k = 50 and 100 (k = 25 is no_jpp), another scene's 100 atoms refit here
+        "no_jpp50", "no_jpp50_rand", "no_jpp100", "no_jpp100_rand", "no_jppother100", "no_jppother100_rand")  # fmt: skip
 # --bothoff-ctrl: switches lost (Jdep) without the pointer directions, without them and J++, without them and a random
 # part of J++'s share; the question is the second minus the third (Dan's Q36.1)
 CTRL = (("alf", "no_alf"), ("alf + J++", "no_both"), ("alf + random (J++ share)", "no_alf_jrand"))
@@ -104,7 +117,9 @@ PARTS = (("jpp", "no_jpp", "no_jpp_rand"), ("alf", "no_alf", "no_alf_rand"), ("b
          ("id", "no_id", "no_id_rand"), ("idout", "no_idout", "no_idout_rand"),
          ("alf+idout", "no_alfidout", "no_alfidout_rand"), ("jpp+alf+idout", "no_jppalfidout", "no_jppalfidout_rand"),
          ("wrong", "no_wrong", "no_wrong_rand"), ("pca", "no_pca", "no_pca_rand"),
-         ("jpp+alf+wrong", "no_jppalfwrong", "no_jppalfwrong_rand"), ("jpp+alf+pca", "no_jppalfpca", "no_jppalfpca_rand"))  # fmt: skip
+         ("jpp+alf+wrong", "no_jppalfwrong", "no_jppalfwrong_rand"), ("jpp+alf+pca", "no_jppalfpca", "no_jppalfpca_rand"),
+         ("jpp50", "no_jpp50", "no_jpp50_rand"), ("jpp100", "no_jpp100", "no_jpp100_rand"),
+         ("jppother100", "no_jppother100", "no_jppother100_rand"))  # fmt: skip
 # the one-pick lookup switch rate in scenes with both locker sentences before the pick (x0_massmean_lf's items, the
 # whole change), the reference C0 must reproduce (Dan: within 0.10)
 C0_REF = {
@@ -123,6 +138,21 @@ PREPEND_ARMS = ("whole", "keep_alf", "keep_alf_rand", "no_alf", "no_alf_rand")
 PREPEND_SEED, WRONG_SEED, EXAMPLES_SEED, N_EXAMPLES = 4501, 4505, 0, 10
 FIRST_CUT, FIRST_NEAR = 0.5, 0.10  # 45a: "at most half of V0" / "within 0.10 of V0"
 IDC_LEFT, IDC_CUT, IDC_MODELS = 0.5, 0.15, 2  # 45e: at most half; at least 0.15 more; on at least 2 of 3 models
+# 45k: the J++ atom counts (k = X.K_MAIN is the existing jpp part and no_jpp arm), jpp_other's atoms, the bars (falls by
+# at least 0.2 / less than 0.1 more than with the random part; mean cos^2 >= 0.5; at least 2/3 of J++'s extra loss; Dan's
+# ~22:05 precondition: the 27B's C0 lookup extra loss at k = 100 at least 0.2)
+JPP_KS, JPP_OTHER_K = (25, 50, 100), 100
+JPPK_FALL, JPPK_NEAR, JPPK_COS2, JPPK_GENERIC, JPPK_PRE = 0.2, 0.1, 0.5, 2 / 3, 0.2
+JPPK_LOSS = (("jpp25", "no_jpp", "no_jpp_rand"), ("jpp50", "no_jpp50", "no_jpp50_rand"),
+             ("jpp100", "no_jpp100", "no_jpp100_rand"), ("jpp_other100", "no_jppother100", "no_jppother100_rand"))  # fmt: skip
+JPPK_ARMS = ("whole", *(a for _, no, rand in JPPK_LOSS for a in (no, rand)))
+JPPK_D_ARMS = ("no_jpp", "no_jpp100", "no_jpp_rand", "no_jpp100_rand")  # d_X: k = 25 -> 100, each against its random
+JPPK_LABELS = {"identity": "Identity route is lens-readable", "pointer": "Pointer becomes lens-readable",
+               "generic": "Generic fitting"}  # fmt: skip
+Q45_9 = {"precondition": "can't tell: the main-test curve does not reproduce in routes scenes",
+         "identity": "(a) Identity route is lens-readable on the 27B", "pointer": "(b) Pointer becomes lens-readable on "
+         "the 27B", "generic": "(c) Generic fitting", "none": "(d) can't tell"}  # fmt: skip
+TARGET_27B, TARGET_9B = "qwen3.6-27b", "qwen3.5-9b"  # 45k: Q45.9 is scored on the 27B; the 9B is the identity clause's
 EPS = 1e-9  # thresholds on shares of counts: a share exactly at the bar counts as at the bar
 PICK = re.compile(r"(\w+) picked the (\w+)\.")
 MARK = "⟦{}⟧"  # the patch position in an example's prompt
@@ -521,6 +551,97 @@ def control_parts(
     }
 
 
+def orthonormal(a):
+    """An orthonormal basis (double) of the columns of a ([d, m]; a vector [d] is one column), [d, 0] if a is zero."""
+    import torch
+
+    a = a.double()
+    a = a[:, None] if a.dim() == 1 else a
+    u, s, _ = torch.linalg.svd(a, full_matrices=False)
+    return u[:, s > s[0] * 1e-6] if s.numel() and float(s[0]) > 0 else u[:, :0]
+
+
+def _cos2(q, b) -> float | None:
+    """||Q^T B||_F^2 / rank(B) for orthonormal Q, B (None if B has no column)."""
+    return float((q.T @ b).pow(2).sum() / b.shape[1]) if b.shape[1] else None
+
+
+def mean_cos2(cols, v) -> float | None:
+    """45k: the mean cos^2 between span(cols) ([d, k]) and span(v) ([d, r], or a vector [d]): ||P_cols Q_v||_F^2 /
+    rank(v), Q_v an orthonormal basis of v. For the orthonormal pointer directions U it is ||P U||_F^2 / rank(U); for a
+    vector u, ||P u||^2 / ||u||^2. None if v is zero."""
+    return _cos2(orthonormal(cols), orthonormal(v))
+
+
+def jpp_geometry(jdic, atoms, ks, alf, u: list, parts: dict | None = None) -> list[dict]:
+    """45k, per row: for each k of ks, the mean cos^2 between the span of the first k atoms signed OMP picked for it
+    (atoms [n, >= max ks], rows of jdic; the pursuit is greedy, so these are its picks at k) and the pointer directions
+    alf ([d, r]), and the identity direction u[i] ([d]; None where an entity has no class mean: then None). parts
+    ({k: [n, d]}, X.fit's J++ parts): each checked to lie in its k atoms' span, so the geometry is the removed part's."""
+    a = orthonormal(alf)
+    out = []
+    for i in range(atoms.shape[0]):
+        rec: dict = {}
+        b = None if u[i] is None else orthonormal(u[i])
+        for k in ks:
+            q = orthonormal(jdic[atoms[i, :k]].T)
+            for key, c in ((f"cos2_U_jpp{k}", _cos2(q, a)), (f"cos2_id_jpp{k}", None if b is None else _cos2(q, b))):
+                rec[key] = None if c is None else round(c, 6)
+            if parts is not None:
+                p = parts[k][i].double()
+                off = float((p - q @ (q.T @ p)).norm() / p.norm().clamp_min(1e-30))
+                assert off < 1e-3, f"row {i}: the k = {k} J++ part is not in its atoms' span ({off:.2e})"
+        out.append(rec)
+    return out
+
+
+def jppk_parts(jdic, x, chosen: list[dict], ks: tuple[int, ...], other: bool, jpp, alf, means: dict):
+    """45k (jobs/c3/batch45.yaml, fixed in advance). The J++ part at each k of ks (signed OMP, X.fit; k = X.K_MAIN is
+    `jpp`, the existing no_jpp arm's part, so no new part), and with `other` jpp_other at JPP_OTHER_K: the atoms signed
+    OMP picks for another scene's change (x0_parts.partners within the scene's condition), refit to this scene's change
+    by least squares (x0_parts.other_part). Per row (jpp_geometry): the mean cos^2 of each k's atom span with the pointer
+    directions alf and with the identity direction mu_alt - mu_org (means: entity -> class mean; None where an entity
+    has none, the scene kept), and the partner scene. Returns ({part: [n, d]} for the new arms, per-row records)."""
+    from scripts import x0_parts as XP
+
+    kmax = max([*ks, JPP_OTHER_K if other else 0])
+    if not kmax:
+        return {}, [{} for _ in chosen]
+    atoms = XP.omp_atoms(jdic, x, kmax)
+    fits = {k: jpp if k == X.K_MAIN else X.fit(jdic, x, k, "signed") for k in ks}
+    u = [means[c["cf_bridge"]] - means[c["bridge"]] if c["bridge"] in means and c["cf_bridge"] in means else None
+         for c in chosen]  # fmt: skip
+    recs = jpp_geometry(jdic, atoms, ks, alf, u, fits)
+    parts = {f"jpp{k}": v for k, v in fits.items() if k != X.K_MAIN}
+    if other:
+        parts[f"jppother{JPP_OTHER_K}"], pj = XP.other_part(jdic, x, chosen, JPP_OTHER_K, atoms, group="condition")
+        for rec, j in zip(recs, pj, strict=True):
+            rec["jpp_other_partner"] = chosen[j]["scene"]
+    return parts, recs
+
+
+def jppk_arm_names(ks, other: bool) -> dict[str, tuple[str, str]]:
+    """45k's (removed, random) arms per part, as stage_run names them: J++ at each k of ks (k = X.K_MAIN: the existing
+    no_jpp arms) and, with other, jpp_other at JPP_OTHER_K."""
+    parts = {f"jpp{k}": "jpp" if k == X.K_MAIN else f"jpp{k}" for k in sorted(ks)}
+    if other:
+        parts[f"jpp_other{JPP_OTHER_K}"] = f"jppother{JPP_OTHER_K}"
+    return {label: (f"no_{p}", f"no_{p}_rand") for label, p in parts.items()}
+
+
+def removal_arms(x, parts: dict, basis) -> tuple[dict, dict]:
+    """Each part removed (no_<part>) and, against it, a random part of its own share per row removed (no_<part>_rand,
+    statement_positions.random_subspace_part over `basis`). Returns (arms, {part: share per row})."""
+    from scripts import statement_positions as SP
+
+    arms, sh = {}, {}
+    for k, v in parts.items():
+        sh[k] = v.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
+        arms[f"no_{k}"] = x - v
+        arms[f"no_{k}_rand"] = x - SP.random_subspace_part(x, sh[k], basis)
+    return arms, sh
+
+
 def stage_run(
     name: str,
     smoke: bool,
@@ -539,6 +660,8 @@ def stage_run(
     identity_controls: bool = False,
     rendering: str = "chat",
     sealed: bool = False,
+    jpp_ks: tuple[int, ...] = (),
+    jpp_other: bool = False,
 ) -> Path:
     import torch
 
@@ -557,6 +680,10 @@ def stage_run(
         "--prepend (45a): --conditions C2 only, the fresh-scene pointer directions, no other arm set"
     )
     assert identity or not identity_controls, "--identity-controls needs --identity"
+    assert set(jpp_ks) <= set(JPP_KS), f"--jpp-ks {jpp_ks}: of {JPP_KS}"
+    assert len(set(jpp_ks)) == len(jpp_ks), f"--jpp-ks {jpp_ks}: a k twice"
+    x45k = bool(jpp_ks or jpp_other)
+    assert not x45k or (pointer and not prepend), "--jpp-ks / --jpp-other (45k): the pointer directions, no --prepend"
     if rendering != "chat":  # 45i: X0's digit read (amendment 3), the read X0's no-template runs use
         X.READ = "digit"
     target = pins.model_pin()["target"]
@@ -586,6 +713,16 @@ def stage_run(
         m.update({"wrong_seed": WRONG_SEED, "batch45": "45e",
                   "wrong_pairs": "class-mean differences of entity pairs from the bridge's own domain (Dan 26 Oct ~21:20) "
                                  "sharing no entity with the scene's pair"})  # fmt: skip
+    if x45k:  # 45k (jobs/c3/batch45.yaml): the partners are added once the changes are known
+        from scripts import x0_parts as XP
+
+        m["x45k"] = {"ks": sorted(jpp_ks), "other": jpp_other, "other_k": JPP_OTHER_K if jpp_other else None,
+                     "arms": jppk_arm_names(jpp_ks, jpp_other), "omp": "signed (X.fit); the geometry over x0_parts.omp_atoms' first k picks at the largest k",
+                     "partner_rule": "x0_parts.partners within the scene's condition: the first scene of a seeded order "
+                                     "whose bridge pair shares no bridge with it", "partner_seed": XP.OTHER_SEED,
+                     "geometry": "per item and k: ||P_span(atoms) U||_F^2 / rank(U) (U: the pointer directions) and "
+                                 "||P_span(atoms) u||^2 / ||u||^2 (u = mu_alt - mu_org, x0_massmean.entity_means; None "
+                                 "where an entity has no class mean, the scene kept)"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
     tok = model.tokenizer
@@ -702,11 +839,27 @@ def stage_run(
                 arms[f"no_{name}_rand"] = x - SP.random_subspace_part(x, sh[k], basis)
             arms.update({"keep_id": parts["id"], "keep_id_rand": SP.random_subspace_part(x, sh["id"], basis),
                          "no_idsub": x - parts["idsub"]})  # fmt: skip
+        rec45k: list[dict] = [{} for _ in chosen]  # 45k: per item, the atoms' geometry and jpp_other's partner
+        if x45k:
+            assert alf is not None
+            ent45 = {e: torch.tensor(v, dtype=torch.float32, device="cuda")
+                     for e, v in MM.entity_means(STATES[target]).items()}  # fmt: skip
+            more, rec45k = jppk_parts(jdic, x, chosen, jpp_ks, jpp_other, jpp, alf, ent45)
+            more_arms, more_sh = removal_arms(x, more, basis)
+            arms.update(more_arms)
+            sh.update(more_sh)
+            if jpp_other:
+                m["x45k"]["partners"] = {
+                    c["scene"]: r["jpp_other_partner"] for c, r in zip(chosen, rec45k, strict=True)
+                }
+            m["x45k"]["no_identity_mean"] = {cond: sum(c["condition"] == cond and not (c["bridge"] in ent45 and
+                                                       c["cf_bridge"] in ent45) for c in chosen) for cond in conds}  # fmt: skip
+            (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
         for i, c in enumerate(progress(chosen, f"reads at layer {layer} (case)")):
             pv = {"variant": c["variant"], "base_scene": c["base_scene"], "move": c["move"]} if prepend else {}
             norms.append({"scene": c["scene"], "condition": c["condition"], **pv, "norm": round(float(x[i].norm()), 4),
                           **{f"share_{k}": round(float(v[i]), 5) for k, v in sh.items()},
-                          **{k: v[i] for k, v in kcount.items()}})  # fmt: skip
+                          **{k: v[i] for k, v in kcount.items()}, **rec45k[i]})  # fmt: skip
             for w, rd in c["readers"].items():
                 edits = [{}] + [{layer: AddRows(arms[a][i : i + 1], [c["pos"]])} for a in arms]
                 logits, _ = X.read_logits(model, rd["ids"]["org"], edits, c["rendering"], c["space"], ws)
@@ -946,6 +1099,216 @@ def never_value(rows: list[dict], n_boot: int = X.N_BOOT) -> dict:
             "value_zero_in_every_arm": bool(per) and all(p["value_count"] == 0 for p in per.values())}  # fmt: skip
 
 
+def jppk_geometry(norms: list[dict], ks) -> dict:
+    """45k: per condition and k, the mean cos^2 of the k atoms' span with the pointer directions (U) and with the
+    identity direction (id; None where an entity has no class mean, left out here) over the items: n, of, mean, median."""
+    out: dict = {}
+    for cond in sorted({r["condition"] for r in norms}):
+        mine = [r for r in norms if r["condition"] == cond]
+        for k in ks:
+            for what in ("U", "id"):
+                v = [r[f"cos2_{what}_jpp{k}"] for r in mine if r.get(f"cos2_{what}_jpp{k}") is not None]
+                out.setdefault(cond, {}).setdefault(f"jpp{k}", {})[what] = {
+                    "n": len(v),
+                    "of": len(mine),
+                    "mean": float(np.mean(v)) if v else float("nan"),
+                    "median": float(np.median(v)) if v else float("nan"),
+                }
+    return out
+
+
+def jppk_rule(rows: list[dict], norms: list[dict], ks, n_boot: int = X.N_BOOT) -> dict:
+    """45k (jobs/c3/batch45.yaml, as_computed and Dan's ~22:05 overrides, fixed before the run), one model, the lookup.
+    C2: d_X = [share_X(no_jpp) - share_X(no_jpp100)] - [share_X(no_jpp_rand) - share_X(no_jpp100_rand)] for X =
+    identity and position (no_jpp: k = 25), point estimates with paired cluster-bootstrap CIs; the k = 100 span's mean
+    cos^2 with U over the C2 items. C0: each part's extra loss (X.cell: switches lost without the part minus without its
+    random part, over the whole change's switches) for J++ at 25 / 50 / 100 and jpp_other at 100. Clauses:
+    identity_falls (d_identity >= 0.2 and d_position < 0.1), neither_falls (both < 0.1: the 9B's), pointer (d_position
+    >= 0.2 and the cos^2 >= 0.5). The precondition (on the 27B): C0's extra loss at k = 100 >= 0.2. The routes jpp_other
+    against J++ at 100 is descriptive (generic fitting is read on the main test: generic_rule). Route shares per arm (C0,
+    C2) and the geometry (jppk_geometry) beside them."""
+    nan = float("nan")
+    lk = [r for r in rows if r["reader"] == X.LOOKUP]
+    out: dict = {"shares": {}, "d": {}, "c0_loss": {}, "geometry": jppk_geometry(norms, ks)}
+    for cond in ("C0", "C2"):
+        by = {a: {r["scene"]: r for r in lk if r["condition"] == cond and r["arm"] == a} for a in JPPK_ARMS}
+        by = {a: v for a, v in by.items() if v}
+        if "whole" not in by:
+            continue
+        scenes_ = sorted(set.intersection(*(set(v) for v in by.values())))
+        ents = [by["whole"][s]["entity"] for s in scenes_]
+        sw = {f"{rt}|{a}": [int(by[a][s]["route"] == rt) for s in scenes_] for a in by for rt in ROUTES}
+        rr = X.resampled_rates(sw, ents, n_boot)
+        pt = {k: float(np.mean(v)) for k, v in sw.items()}
+        out["shares"][cond] = {"n": len(scenes_), "entities": len(set(ents)),
+                               "arms": {a: {rt: [pt[f"{rt}|{a}"], *X.interval(rr[f"{rt}|{a}"])] for rt in ROUTES}
+                                        for a in by}}  # fmt: skip
+        if cond == "C2" and all(a in by for a in JPPK_D_ARMS):
+            for rt in ("identity", "position"):
+
+                def d(s, rt=rt):
+                    return (s[f"{rt}|no_jpp"] - s[f"{rt}|no_jpp100"]) - (
+                        s[f"{rt}|no_jpp_rand"] - s[f"{rt}|no_jpp100_rand"]
+                    )
+
+                out["d"][rt] = [d(pt), *X.interval(d(rr))]
+        if cond == "C0":
+            s0 = {a: [int(by[a][s]["switched"]) for s in scenes_] for a in by}
+            r0 = X.resampled_rates(s0, ents, n_boot)  # the draws X.cell makes (same entities, same seed): paired
+            ex_r = {}
+            for part, no, rand in JPPK_LOSS:
+                if no in by and rand in by:
+                    c = X.cell({"whole": s0["whole"], "no_part": s0[no], "no_rand": s0[rand]}, ents, n_boot)
+                    share = [r[f"share_{no[3:]}"] for r in norms if r["condition"] == "C0" and f"share_{no[3:]}" in r]
+                    out["c0_loss"][part] = {**{k: c[k] for k in ("n", "S_whole", "Jdep", "Rdep", "excess", "valid")},
+                                            "median_share": float(np.median(share)) if share else nan}  # fmt: skip
+                    ex_r[part] = X.dependence(r0["whole"], r0[no]) - X.dependence(r0["whole"], r0[rand])
+            if "jpp100" in ex_r and "jpp_other100" in ex_r:
+                pts = {p: out["c0_loss"][p]["excess"][0] for p in ("jpp100", "jpp_other100")}
+                out["routes_generic"] = {
+                    "jpp_other100": pts["jpp_other100"],
+                    "jpp100": pts["jpp100"],
+                    "other_minus_bar": [pts["jpp_other100"] - JPPK_GENERIC * pts["jpp100"],
+                                        *X.interval(ex_r["jpp_other100"] - JPPK_GENERIC * ex_r["jpp100"])],
+                    "holds": bool(pts["jpp_other100"] >= JPPK_GENERIC * pts["jpp100"] - EPS),
+                    "note": "descriptive (Dan 26 Oct ~22:05: generic fitting is read on the main test)",
+                }  # fmt: skip
+    d_id, d_pos = (out["d"].get(rt, [nan])[0] for rt in ("identity", "position"))
+    cos2 = out["geometry"].get("C2", {}).get("jpp100", {}).get("U", {}).get("mean", nan)
+    pre = out["c0_loss"].get("jpp100", {}).get("excess", [nan])[0]
+    out["cos2_U_jpp100_C2"] = cos2
+    out["precondition"] = {"c0_extra_loss_jpp100": pre, "holds": bool(pre >= JPPK_PRE - EPS)}
+    out["clauses"] = {
+        "identity_falls": bool(d_id >= JPPK_FALL - EPS and d_pos < JPPK_NEAR - EPS),
+        "neither_falls": bool(d_id < JPPK_NEAR - EPS and d_pos < JPPK_NEAR - EPS),
+        "pointer": bool(d_pos >= JPPK_FALL - EPS and cos2 >= JPPK_COS2 - EPS),
+    }
+    out["tested"] = {"d": len(out["d"]) == 2, "cos2": not np.isnan(cos2), "precondition": not np.isnan(pre)}
+    return out
+
+
+def main_test_cell(rows: list[dict], part: tuple[str, int, str], layer: int, n_boot: int = X.N_BOOT) -> dict | None:
+    """The lookup's X0 cell (chat, the layer) of one part (dict, k, omp) against its random part, from X0-style outcome
+    rows (x0_necessity, x0_parts): X.cells_of over the part's rows and the whole change's. None without them."""
+    mine = [r for r in rows if r.get("rendering") == "chat" and r["layer"] == layer and r["reader"] == X.LOOKUP
+            and (r["arm"] == "whole" or (r["dict"], r["k"], r["omp"]) == part)]  # fmt: skip
+    return X.cells_of(mine, n_boot).get(("chat", layer, X.LOOKUP, *part))
+
+
+def generic_rule(other: dict | None, jpp: dict | None) -> dict:
+    """45k's "Generic fitting" (Dan 26 Oct ~22:05, read on the main test): the lookup's extra loss of jpp_other at k =
+    100 (another scene's atoms refit) is at least 2/3 of this scene's J++ at k = 100's (X0 cells; point estimates)."""
+    nan = float("nan")
+    ex_o, ex_j = (c["excess"][0] if c else nan for c in (other, jpp))
+    return {"jpp_other100": other["excess"] if other else None, "jpp100": jpp["excess"] if jpp else None,
+            "n": [other["n"] if other else None, jpp["n"] if jpp else None], "bar": JPPK_GENERIC * ex_j,
+            "holds": bool(ex_o >= JPPK_GENERIC * ex_j - EPS), "tested": other is not None and jpp is not None}  # fmt: skip
+
+
+def main_test_generic(generic_run: str, kmatch_run: str, n_boot: int = X.N_BOOT) -> dict:
+    """generic_rule on the main test: generic_run (results/<exp>/<name>: an x0_parts run with jpp_other at k = 100 on
+    the main run's items) against kmatch_run (an x0_necessity run with J++ at k = 100, signed, at the same layer)."""
+    src = {"generic": pins.RESULTS_DIR / generic_run, "kmatch": pins.RESULTS_DIR / kmatch_run}
+    gm, km = (json.loads((src[k] / "manifest.json").read_text()) for k in ("generic", "kmatch"))
+    assert "jpp_other" in gm["parts"], f"{generic_run}: no jpp_other part"
+    assert gm.get("other_k") == JPP_OTHER_K, f"{generic_run}: jpp_other at k = {gm.get('other_k')}, not {JPP_OTHER_K}"
+    layer = gm["layer"]
+    assert layer == km["predicted"], f"{generic_run} at layer {layer}, {kmatch_run} at {km['predicted']}"
+    g_rows, k_rows = (X.read_jsonl(src[k] / "outcomes.jsonl") for k in ("generic", "kmatch"))
+    other = main_test_cell(g_rows, ("jpp_other", JPP_OTHER_K, "other"), layer, n_boot)
+    jpp = main_test_cell(k_rows, ("jpp", JPP_OTHER_K, "signed"), layer, n_boot)
+    items = [{r["scene"] for r in rs if r["arm"] == "whole" and r["layer"] == layer and r.get("rendering") == "chat"}
+             for rs in (g_rows, k_rows)]  # fmt: skip
+    return {**generic_rule(other, jpp), "generic_run": generic_run, "kmatch_run": kmatch_run, "layer": layer,
+            "main_run": gm.get("single"), "models": [gm["model"]["target"], km["model"]["target"]],
+            "same_items": items[0] == items[1]}  # fmt: skip
+
+
+def jppk_labels(flags: dict[str, dict], targets: dict[str, str], generic: dict | None = None) -> dict:
+    """45k's labels per model (flags: run -> jppk_rule; targets: run -> model target) and Q45.9's outcome on the 27B
+    (Dan's ~22:05 overrides). "Identity route is lens-readable": the model's identity clause and the 9B's neither-falls
+    clause; "Pointer becomes lens-readable": the model's own clause; "Generic fitting": the 27B only, read on the main
+    test (generic: generic_rule; the routes jpp_other arm is descriptive). A run whose C0 check failed (tested False)
+    holds no label. Q45.9: "can't tell: the main-test curve does not reproduce in routes scenes" if the 27B's C0 lookup
+    extra loss at k = 100 is below 0.2 (it overrides everything); else "Generic fitting" if it holds; else the labels
+    that hold on the 27B; else "can't tell"."""
+    assert len(set(targets.values())) == len(targets), f"one run per model: {targets}"
+    nine = next((n for n, t in targets.items() if t == TARGET_9B), None)
+    nine_ok = bool(nine and flags[nine].get("c0_ok", True) and flags[nine]["clauses"]["neither_falls"])
+    held = {}
+    for name, f in flags.items():
+        mine = []
+        if f.get("c0_ok", True):
+            if f["clauses"]["identity_falls"] and nine_ok:
+                mine.append("identity")
+            if f["clauses"]["pointer"]:
+                mine.append("pointer")
+            if targets[name] == TARGET_27B and generic and generic["holds"]:
+                mine.append("generic")
+        held[name] = mine
+    r27 = next((n for n, t in targets.items() if t == TARGET_27B), None)
+    if r27 is None:
+        q = {"outcome": ["not scored: no 27B run"], "run": None}
+    elif not flags[r27].get("c0_ok", True):
+        q = {"outcome": ["not scored: the 27B's C0 check failed"], "run": r27}
+    else:
+        pre = flags[r27]["precondition"]
+        out = ([Q45_9["precondition"]] if not pre["holds"] else [Q45_9["generic"]] if "generic" in held[r27] else
+               [Q45_9[h] for h in held[r27]] or [Q45_9["none"]])  # fmt: skip
+        q = {"outcome": out, "run": r27, "precondition": pre}
+    q["generic"] = generic
+    q["generic_tested"] = bool(generic and generic["tested"])
+    return {"labels": {n: [JPPK_LABELS[h] for h in h_] or ["can't tell"] for n, h_ in held.items()},
+            "held": held, "nine_b": nine, "nine_b_neither_falls": nine_ok, "q45_9": q}  # fmt: skip
+
+
+def jppk_lines(r: dict, ci) -> list[str]:
+    """The 45k section of a run's verdict.md (r: jppk_rule; ci: [point, lo, hi] -> text)."""
+    yn = lambda b: "yes" if b else "no"  # noqa: E731
+    lines = ["Lookup route shares per arm (no_jpp: J++ at k = 25; each part against a random part of its own share; "
+             "C0 has no position or identity answer: its switch counts as other):",
+             "", "| condition | arm | n | " + " | ".join(ROUTES) + " |", "|---|---|---|" + "---|" * len(ROUTES)]  # fmt: skip
+    for cond, s in r["shares"].items():
+        lines += [
+            f"| {cond} | {a} | {s['n']} | " + " | ".join(ci(v[rt]) for rt in ROUTES) + " |"
+            for a, v in s["arms"].items()
+        ]
+    if r["d"]:
+        lines += ["", f"C2, from k = 25 to k = 100, the fall beyond the random part's ([share(no_jpp) - share(no_jpp100)] "
+                  f"- [share(no_jpp_rand) - share(no_jpp100_rand)], paired): identity {ci(r['d']['identity'])}, position "
+                  f"{ci(r['d']['position'])}."]  # fmt: skip
+    lines += ["", "Mean cos^2 between the span of the k picked atoms and the pointer directions U (||P U||_F^2 / rank U) "
+              "and the identity direction mu_alt - mu_org (items with both class means):", "",
+              "| condition | k | U: mean | U: median | n | identity: mean | identity: median | n of items |",
+              "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for cond, by_k in r["geometry"].items():
+        for k, g in by_k.items():
+            u, i = g["U"], g["id"]
+            lines.append(f"| {cond} | {k[3:]} | {u['mean']:.3f} | {u['median']:.3f} | {u['n']} | {i['mean']:.3f} | "
+                         f"{i['median']:.3f} | {i['n']} of {i['of']} |")  # fmt: skip
+    if r["c0_loss"]:
+        lines += ["", "C0, lookup: extra loss of the switch (switches lost without the part minus without its random "
+                  "part, over the whole change's switches):", "",
+                  "| part | n | S_whole | Jdep | Rdep | extra loss | median share |", "|---|---|---|---|---|---|---|"]  # fmt: skip
+        lines += [f"| {p} | {c['n']} | {c['S_whole'][0]:.2f} | {ci(c['Jdep'])} | {ci(c['Rdep'])} | {ci(c['excess'])} | "
+                  f"{c['median_share']:.3f} |" for p, c in r["c0_loss"].items()]  # fmt: skip
+    pre = r["precondition"]
+    lines += ["", f"Precondition (Dan ~22:05, on the 27B): C0 lookup extra loss at k = 100 = "
+              f"{pre['c0_extra_loss_jpp100']:.2f} (>= {JPPK_PRE}: {yn(pre['holds'])})."]  # fmt: skip
+    if "routes_generic" in r:
+        g = r["routes_generic"]
+        lines.append(f"Descriptive (generic fitting is read on the main test): jpp_other100's C0 extra loss "
+                     f"{g['jpp_other100']:.2f} vs 2/3 of jpp100's {g['jpp100']:.2f}; difference "
+                     f"{ci(g['other_minus_bar'])}.")  # fmt: skip
+    c = r["clauses"]
+    lines += ["", f"Clauses on this model: identity falls >= {JPPK_FALL} beyond random and position < {JPPK_NEAR} "
+              f"{yn(c['identity_falls'])}; neither falls by {JPPK_NEAR} (the 9B's clause) {yn(c['neither_falls'])}; "
+              f"position falls >= {JPPK_FALL} beyond random and the k = 100 span's mean cos^2 with U over C2 "
+              f"({r['cos2_U_jpp100_C2']:.3f}) >= {JPPK_COS2}: {yn(c['pointer'])}. The labels and Q45.9 need the 9B and "
+              "the main-test runs: jppk-summary."]  # fmt: skip
+    return lines
+
+
 def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     src = RESULTS / name
     m = json.loads((src / "manifest.json").read_text())
@@ -1068,6 +1431,14 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
                    f"{ci(w['identity'])}, position {ci(w['position'])}. " if w else "No C2 whole-change rows. ")
                   + f"\"Never the value\" (the value share stays at 0): **{'holds' if nv['holds'] else 'does not hold'}**"
                   f"; value share 0 in every arm: {'yes' if nv['value_zero_in_every_arm'] else 'no'}."]  # fmt: skip
+    if m.get("x45k"):
+        b45["x45k"] = r = jppk_rule(rows, norms, m["x45k"]["ks"], n_boot)
+        lines += [
+            "",
+            "## 45k: why does the lookup lose with more J++ atoms? (jobs/c3/batch45.yaml, fixed in advance)",
+            "",
+        ]
+        lines += jppk_lines(r, ci)
     (out / "verdict.json").write_text(
         json.dumps({"run": name, "manifest": m, "rows": blob, "extra": extra, "ctrl": ctrl, **b45}, indent=1) + "\n"
     )
@@ -1172,9 +1543,60 @@ def stage_idctrl_summary(names: list[str], n_boot: int = X.N_BOOT) -> Path:
     return out
 
 
+def stage_jppk_summary(
+    names: list[str], generic_run: str | None = None, kmatch_run: str | None = None, n_boot: int = X.N_BOOT
+) -> Path:
+    """45k over the models (CPU): each --jpp-ks run's clauses (jppk_rule; a run whose C0 check failed holds no label),
+    generic fitting on the main test (main_test_generic over generic_run and kmatch_run, results/<exp>/<name>; without
+    them not tested), the labels per model and Q45.9's outcome on the 27B (jppk_labels)."""
+    flags, models = {}, {}
+    for name in names:
+        src = RESULTS / name
+        m = json.loads((src / "manifest.json").read_text())
+        assert m.get("x45k"), f"{name} is not a 45k run (--jpp-ks / --jpp-other)"
+        f = jppk_rule(X.read_jsonl(src / "outcomes.jsonl"), X.read_jsonl(src / "norms.jsonl"), m["x45k"]["ks"], n_boot)
+        c0 = json.loads((src / "c0_check.json").read_text()) if (src / "c0_check.json").exists() else None
+        f.update({"c0_check": c0, "c0_ok": bool(c0 and c0["ok"])})
+        flags[name], models[name] = f, m["model"]["target"]
+    generic = main_test_generic(generic_run, kmatch_run, n_boot) if generic_run and kmatch_run else None
+    res = jppk_labels(flags, models, generic)
+    out = RESULTS / f"x45k-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir(parents=True)
+    (out / "x45k.json").write_text(json.dumps({"runs": models, "flags": flags, **res}, indent=1) + "\n")
+    f2 = lambda v: f"{v:.2f}"  # noqa: E731
+    yn = lambda b: "yes" if b else "no"  # noqa: E731
+    lines = ["# 45k: why does the 27B lookup lose with more J++ atoms? (jobs/c3/batch45.yaml, fixed in advance; Dan's "
+             "~22:05 overrides)", "",
+             "| run | model | C0 extra loss k = 100 | d identity (C2) | d position (C2) | cos^2 U, k = 100 (C2 mean) | "
+             "identity falls | neither falls | pointer | labels |", "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for name, f in flags.items():
+        d = [f2(f["d"][rt][0]) if rt in f["d"] else "–" for rt in ("identity", "position")]
+        c = f["clauses"]
+        lines.append(f"| {name} | {models[name]} | {f2(f['precondition']['c0_extra_loss_jpp100'])} | {d[0]} | {d[1]} | "
+                     f"{f2(f['cos2_U_jpp100_C2'])} | {yn(c['identity_falls'])} | {yn(c['neither_falls'])} | "
+                     f"{yn(c['pointer'])} | {', '.join(res['labels'][name])}"
+                     + ("" if f["c0_ok"] else " (C0 check failed: no label)") + " |")  # fmt: skip
+    if generic and generic["tested"]:
+        lines += ["", f"Generic fitting, on the main test (layer {generic['layer']}, the lookup's extra loss): jpp_other "
+                  f"at k = 100 {X.fmt3(generic['jpp_other100'])} ({generic['generic_run']}) vs 2/3 of J++ at k = 100 "
+                  f"{X.fmt3(generic['jpp100'])} ({generic['kmatch_run']}) = {f2(generic['bar'])} -> "
+                  f"{yn(generic['holds'])}; the same items: {yn(generic['same_items'])}."]  # fmt: skip
+    else:
+        lines += ["", "Generic fitting, on the main test: not tested (pass --generic-run and --kmatch-run)."]
+    q = res["q45_9"]
+    lines += ["", f"9B's clause (neither falls by {JPPK_NEAR}): {yn(res['nine_b_neither_falls'])}"
+              + (f" ({res['nine_b']})" if res["nine_b"] else " (no 9B run)") + ". Q45.9, scored on the 27B "
+              "(precondition first, then generic fitting, then the labels that hold): **"
+              + "; ".join(q["outcome"]) + "**" + ("" if q["generic_tested"] else " (generic fitting not tested)")
+              + ". UNVERIFIED."]  # fmt: skip
+    (out / "x45k.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "run", "verdict", "examples", "idctrl-summary"])
+    ap.add_argument("stage", choices=["plan", "run", "verdict", "examples", "idctrl-summary", "jppk-summary"])
     ap.add_argument("--name")
     ap.add_argument("--smoke", action="store_true", help="run: C0 on 20 scenes only (the sanity check)")
     ap.add_argument("--layer", type=int, default=None, help="run: a layer other than the one fixed in advance")
@@ -1200,7 +1622,12 @@ def main() -> None:
     ap.add_argument("--rendering", choices=RENDERINGS, default="chat",
                     help="run / plan: nochat = X0's prompt without the chat template, read by X0's digit rule (45i)")  # fmt: skip
     ap.add_argument("--sealed", action="store_true", help="run: no verdict after the run (batch 45: results closed)")
-    ap.add_argument("--names", default="", help="idctrl-summary: the --identity-controls runs, comma-separated")
+    ap.add_argument("--jpp-ks", nargs="+", type=int, default=[], choices=JPP_KS,
+                    help="run: 45k's J++ removed at these atom counts, each against its random part (25: no_jpp)")  # fmt: skip
+    ap.add_argument("--jpp-other", action="store_true", help=f"run: 45k's jpp_other at k = {JPP_OTHER_K}")
+    ap.add_argument("--names", default="", help="idctrl-summary / jppk-summary: the runs, comma-separated")
+    ap.add_argument("--generic-run", default=None, help="jppk-summary: <exp>/<name>, x0_parts jpp_other at k = 100")
+    ap.add_argument("--kmatch-run", default=None, help="jppk-summary: <exp>/<name>, x0_necessity J++ at k = 100")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     prepend = tuple(v for v in a.prepend.split(",") if v)
@@ -1212,6 +1639,9 @@ def main() -> None:
         return
     if a.stage == "idctrl-summary":
         stage_idctrl_summary([n for n in a.names.split(",") if n], a.n_boot)
+        return
+    if a.stage == "jppk-summary":
+        stage_jppk_summary([n for n in a.names.split(",") if n], a.generic_run, a.kmatch_run, a.n_boot)
         return
     if a.stage == "run":
         conds = tuple(c for c in a.conditions.split(",") if c)
@@ -1234,6 +1664,8 @@ def main() -> None:
             identity_controls=a.identity_controls,
             rendering=a.rendering,
             sealed=a.sealed,
+            jpp_ks=tuple(a.jpp_ks),
+            jpp_other=a.jpp_other,
         )
     if a.stage == "verdict" or not (a.smoke or a.sealed):
         stage_verdict(a.name, a.n_boot)
