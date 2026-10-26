@@ -253,5 +253,8 @@ def first_token_logits(
     keep = last.unique()  # sorted positions to keep; each row reads its own
     with _forward_hooks([(model.layers[layer], hook_for(layer)) for layer in sorted(edits)]):
         out = model.hf(input_ids=ids, attention_mask=torch.ones_like(ids), use_cache=False, logits_to_keep=keep)
+    rows = torch.arange(ids.shape[0], device=ids.device)
+    if out.logits.shape[1] == ids.shape[1]:  # 2026-10-26 (amendment 49 note 4): the model ignored logits_to_keep (Bolt's own
+        return out.logits[rows, last].float()  # code returns every position), so each row is read at its own last position
     col = torch.searchsorted(keep, last)
-    return out.logits[torch.arange(ids.shape[0], device=ids.device), col].float()
+    return out.logits[rows, col].float()

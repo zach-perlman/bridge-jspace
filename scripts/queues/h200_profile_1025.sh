@@ -44,6 +44,7 @@ PY
       SA=""; NN=$n; sfx=""
       if [ -f /workspace/scratch/${p}sample_dev.txt ] || [ "${e:-}" = rs ]; then SA="--sample-per-word $n --sample-seed 0"; NN=1000; fi
       [ "${e:-}" = rs ] && sfx="_rs$n"
+      [ -f /workspace/scratch/${p}pad.txt ] && SA="$SA --pad"  # amendment 49 note 4: right-padded batches for this model
       cn=${p}${DEV}_competence_cand2_v1; r=${p}${DEV}_profile${sfx}_cand2_v1
       [ -n "$SA" ] && echo "=== PROFILE $a: a random $n per word over all relations (seed 0), run $r"
       echo "=== PROFILE $a bands $BANDS ($NL blocks) $(date -u +%T)"

@@ -27,6 +27,7 @@ for step in "$@"; do
       [[ "$band" =~ ^[0-9]+-[0-9]+$ ]] || { echo "=== DOSE $a: no profile pick ('$band')"; fails=$((fails + 1)); continue; }
       r=${p}${DEV}_dose_L${band}_cand2_v1; SA=""; NN=$n
       if [ -f /workspace/scratch/${p}sample_dev.txt ]; then SA="--sample-per-word $n --sample-seed 0"; NN=1000; echo "=== DOSE $a: a random $n per word over all relations (seed 0)"; fi  # amendment 49 note 1
+      [ -f /workspace/scratch/${p}pad.txt ] && SA="$SA --pad"  # amendment 49 note 4
       echo "=== DOSE $a at L$band $(date -u +%T)"
       [ -f results/ablate_v2/$r/summary.json ] || $PY scripts/ablate_v2.py --name $r --why "$W: $a, removal sizes at its profile pick L$band" --plan bands \
         --bands $band --conditions top1 top1_rot top3 top3_rot paper10 paper10_rot top30 top30_rot --tasks $DEV --tasks-competence ${p}${DEV}_competence_cand2_v1 \

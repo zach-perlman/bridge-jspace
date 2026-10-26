@@ -85,12 +85,13 @@ PY
       fi
       S=$(cat /workspace/scratch/${P}sample.txt 2>/dev/null); SA=""  # amendment 49: a seeded random N per word if the file holds N
       [[ "$S" =~ ^[0-9]+$ ]] && SA="--sample-per-word $S --sample-seed 0" && echo "=== $KEY $kind: $S items per word (seed 0)"
+      PADA=""; [ -f /workspace/scratch/${P}pad.txt ] && PADA="--pad"  # amendment 49 note 4: right-padded knock-out batches
       if [ $kind = test ]; then
         r=${P}${SET}_ko_cand2_v1
         echo "=== ablate_v2/$r at L$band $(date -u +%T)"
         [ -f results/ablate_v2/$r/summary.json ] || $PY scripts/ablate_v2.py --name $r --why "$W: $KEY, v2 facts at L$band (dev-chosen)" --plan bands \
           --bands $band --conditions paper10 paper10_rot unembed10 unembed10_rot --tasks $SET --tasks-competence $cn --tasks-words $FACTS \
-          --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 $SA > /workspace/scratch/$r.log 2>&1 || { fail "$KEY v2 KO" /workspace/scratch/$r.log; continue; }
+          --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 $SA $PADA > /workspace/scratch/$r.log 2>&1 || { fail "$KEY v2 KO" /workspace/scratch/$r.log; continue; }
         $PY scripts/jsuite2_score.py $r --set $SET --by-relation | grep -E "^facts (paper10|unembed10|paper10_rot|unembed10_rot) +(start=|half=)" | sed "s/^/=== NQV2 $KEY: /"
       else
         r=${P}jswap_v2_v1; rb=${P}bridge_readout_v2_v1

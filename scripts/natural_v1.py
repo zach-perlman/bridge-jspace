@@ -418,8 +418,17 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
                          "format": it["format"], "level": it["level"], "numbers": "words", "c_op": None, "ids": ids,
                          "answer_kind": it["kind"], "expected": a, "kind": it["kind"], "answer": a})  # fmt: skip
     t0 = time.time()
-    S.read_answers(model, tok, jobs)
+    import os
+
     import torch
+
+    # 2026-10-26 (amendment 49 note 4): a model built by its own code (pins remote_lm, Bolt) costs ~0.5 s per forward
+    # whatever the batch, and exact-length groups hold 1-3 prompts: its reads run in right-padded batches of 32 (each row
+    # read at its own last token, ablate.first_token_logits, as ablate_v2 --pad) and hop 1 is generated greedily in the
+    # same padded batches, each row stopped at its first end token. Every other model keeps the exact-length path.
+    fast = bool(pins.TARGETS[pins.TARGET].get("remote_lm")) and bool(os.environ.get("BJ_PADDED_COMPETENCE"))  # opt-in: Bolt's code overrides logits_to_keep (note 4)
+    if not fast:
+        S.read_answers(model, tok, jobs)
 
     items_ = T.load(set_name)
     vocab, dom_of = vocab_of(items_), {it["id"]: it["domain"] for it in items_}
@@ -433,26 +442,69 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
     by_len = collections.defaultdict(list)
     for j in jobs:
         by_len[len(j["ids"])].append(j)
+    if fast:
+        from bridge_jspace.ablate import first_token_logits
+
+        pad_id = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
+        space = S.ids(tok, " ")
+        srt = sorted(jobs, key=lambda j: len(j["ids"]))
+        batches = [srt[i : i + 32] for i in range(0, len(srt), 32)]
+
+        def padded(seqs):
+            L = max(map(len, seqs))
+            x = torch.tensor([q + [pad_id] * (L - len(q)) for q in seqs], device="cuda")
+            return first_token_logits(model, x, {}, torch.tensor([len(q) - 1 for q in seqs], device="cuda"))
+    else:
+        batches = [group[st : st + 64] for group in by_len.values() for st in range(0, len(group), 64)]
     with torch.inference_mode():
-        for group in by_len.values():
-            for st in range(0, len(group), 64):
-                chunk = group[st : st + 64]
+        for chunk in batches:
+            if fast:
+                logits = padded([j["ids"] for j in chunk])
+                forced = [j["ids"] + (space if j["answer_kind"] == "digit" else []) for j in chunk]
+                flog = logits if all(f == j["ids"] for f, j in zip(forced, chunk, strict=True)) else padded(forced)
+                logp = flog.log_softmax(-1)
+                for row, j in enumerate(chunk):  # S.read_answers' reads, at the same position
+                    j["forced"] = forced[row]
+                    t = S.answer_token(tok, j["expected"], j["answer_kind"])
+                    other = flog[row].clone()
+                    other[t] = -float("inf")
+                    j["p_answer"] = round(float(logp[row, t].exp()), 5)
+                    j["margin"] = round(float(flog[row, t] - other.max()), 3)
+                    j["read_top"] = tok.decode([int(flog[row].argmax())]).strip()
+            else:
                 logits = model.hf(input_ids=torch.tensor([j["ids"] for j in chunk], device="cuda"), logits_to_keep=1).logits[:, -1].float()
-                for row, j in enumerate(chunk):
-                    want = S.answer_token(tok, j["expected"], j["kind"])
-                    own = own_vocab.get((j["id"], j["part"]))  # natural3: per-step / whole-question vocabularies
-                    pool = own or vocab[(dom_of[j["id"]], "bridge" if j["part"] == "step1" else "answer")]
-                    ok_ids = {want} | ({S.answer_token(tok, FIRST_NAMES.get(j["expected"], j["expected"]), j["kind"])} if j["part"] == "step1" else set())
-                    c = torch.tensor(sorted({S.answer_token(tok, v, j["kind"]) for v in pool} | ok_ids), device="cuda")
-                    j["correct_cand"] = int(c[logits[row, c].argmax()]) in ok_ids
-                    # cand2 (2026-10-23, amendment 20): every candidate in either case (animals' prompt answers are
-                    # lowercase), and for hop 1 each of the item's own names for the bridge (natplus's rare people's
-                    # first names were missing from FIRST_NAMES here, so their hop 1 failed the cand read)
-                    both = lambda v, k=j["kind"]: {S.answer_token(tok, v, k), S.answer_token(tok, v.lower(), k)}  # noqa: E731
-                    ok2 = both(j["expected"]) | {t for x in j["alt_names"] for t in both(x)}
-                    c2 = torch.tensor(sorted({t for v in pool for t in both(v)} | ok2), device="cuda")
-                    j["correct_cand2"] = int(c2[logits[row, c2].argmax()]) in ok2
-    if hop1 == "gen":  # 2026-10-23 (amendment 23): hop 1 checked by the name it generates (bridge names share first tokens)
+            for row, j in enumerate(chunk):
+                want = S.answer_token(tok, j["expected"], j["kind"])
+                own = own_vocab.get((j["id"], j["part"]))  # natural3: per-step / whole-question vocabularies
+                pool = own or vocab[(dom_of[j["id"]], "bridge" if j["part"] == "step1" else "answer")]
+                ok_ids = {want} | ({S.answer_token(tok, FIRST_NAMES.get(j["expected"], j["expected"]), j["kind"])} if j["part"] == "step1" else set())
+                c = torch.tensor(sorted({S.answer_token(tok, v, j["kind"]) for v in pool} | ok_ids), device="cuda")
+                j["correct_cand"] = int(c[logits[row, c].argmax()]) in ok_ids
+                # cand2 (2026-10-23, amendment 20): every candidate in either case (animals' prompt answers are
+                # lowercase), and for hop 1 each of the item's own names for the bridge (natplus's rare people's
+                # first names were missing from FIRST_NAMES here, so their hop 1 failed the cand read)
+                both = lambda v, k=j["kind"]: {S.answer_token(tok, v, k), S.answer_token(tok, v.lower(), k)}  # noqa: E731
+                ok2 = both(j["expected"]) | {t for x in j["alt_names"] for t in both(x)}
+                c2 = torch.tensor(sorted({t for v in pool for t in both(v)} | ok2), device="cuda")
+                j["correct_cand2"] = int(c2[logits[row, c2].argmax()]) in ok2
+    if hop1 == "gen" and fast:  # amendment 49 note 4: greedy in right-padded batches, each row stopped at its first end token
+        eos = model.hf.generation_config.eos_token_id
+        eos = set(eos if isinstance(eos, list) else [eos]) | {tok.eos_token_id}
+        s1 = sorted([j for j in jobs if j["part"] == "step1"], key=lambda j: len(j["ids"]))
+        with torch.inference_mode():
+            for st in range(0, len(s1), 32):
+                chunk = s1[st : st + 32]
+                cur, done = [list(j["ids"]) for j in chunk], [False] * len(chunk)
+                for _ in range(8):
+                    nxt = padded(cur).argmax(-1).tolist()
+                    for b, t in enumerate(nxt):
+                        cur[b].append(tok.eos_token_id if done[b] else t)
+                        done[b] = done[b] or t in eos
+                for j, c in zip(chunk, cur, strict=True):
+                    j["gen"] = tok.decode(c[len(j["ids"]) :], skip_special_tokens=True)
+                    names = j["alt_names"] or [j["expected"]]
+                    j["correct_gen"] = any(re.search(r"\b" + re.escape(a.lower()) + r"\b", j["gen"].lower()) for a in names)
+    elif hop1 == "gen":  # 2026-10-23 (amendment 23): hop 1 checked by the name it generates (bridge names share first tokens)
         step1 = collections.defaultdict(list)
         for j in jobs:
             if j["part"] == "step1":

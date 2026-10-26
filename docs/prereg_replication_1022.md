@@ -1616,3 +1616,25 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   the other options.
 - **Order:** Bolt's chain is relaunched now (gates repeated). Monday's queue (amendment 50) and the pointer tests
   (amendment 51) wait for it, as before.
+
+**Amendment 49, note 4 (Zach, 2026-10-26 08:40 UTC): a padded fast path for Bolt was tried, failed its own check, and was discarded; Bolt runs on exact-length batches.**
+- **Why tried:** Bolt's forward costs ~0.5 s per call whatever the batch. Our scripts batch prompts of equal length
+  only, so its competence and knock-outs ran as thousands of near-empty forwards.
+- **What was tried:**
+  - ablate_v2 --pad (right-padded batches) for Bolt's profile, dose and test knock-out, through a flag file
+    (/workspace/scratch/nem35b_pad.txt);
+  - a padded natural_v1 competence path for remote_lm models;
+  - Bolt's dev profile, run in padded batches by scripts/queues/h200_padprof_1026.sh while its queue script was paused.
+- **What went wrong:** the padded profile's unedited reads were right on 20 of 240 items. The exact-length competence
+  run had all 240 right. Cause: Bolt's own forward ignores logits_to_keep and returns every position's logits.
+  ablate.first_token_logits indexed the kept positions, so padded rows were read at the wrong positions. Exact-length
+  reads take the last position and are unaffected; so is every other model, which honours logits_to_keep.
+- **Done:**
+  - The padded profile was discarded (moved to scratch/killed_1025/nem35b_profile_padded_BROKEN; nothing read from it).
+  - The flag file was removed.
+  - natural_v1's padded path is opt-in only (BJ_PADDED_COMPETENCE; not set anywhere).
+  - Bolt's queue resumed on exact-length batches. Its profile is re-running as amendment 49 note 1 specifies
+    (40 random per word over all relations).
+  - first_token_logits now reads each row at its own last position when the model returns every position. Checked
+    on a random-weight 8-block Bolt: padded reads give the same argmax as one-by-one reads (4 of 4).
+  - The fast-competence check against the exact path never finished (stopped). No Bolt result uses a padded path.
