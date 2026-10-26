@@ -1,0 +1,44 @@
+{
+  "exp": "x7_pcf",
+  "run": "muse30b_x45d_fit",
+  "written_utc": "2026-10-26T18:26:31Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "27d270d6b1e3760764ab726e2f2bc70242fef923",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "layer": 26,
+  "set": "x0b_v2",
+  "formats": [
+    "prose",
+    "json",
+    "table"
+  ],
+  "rank": 4,
+  "max_moves": 3,
+  "split": "per format, the aligned varied scenes (x0b_generalize.build_cases) in two halves by bridge item, seed 0: fit (these pairs) and test (the main test, x0b_generalize --pcf-from)",
+  "pairs": "the bridge's locker statement trades places with another item's, both before the asked pick, numbers kept; the bridge one token at the same index in O and S",
+  "pca": "centered, per format, over the pairs' bridge-word differences S - O",
+  "alf_from": "muse30b_x0_probe_v4",
+  "seeds": {
+    "split": 0,
+    "pairs": 4301
+  },
+  "design": "jobs/c3/batch45.yaml, 45d (fixed in advance)"
+}
