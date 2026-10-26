@@ -1,0 +1,83 @@
+{
+  "exp": "x0_necessity",
+  "run": "x45i_main_nochat_27b",
+  "why": "Batch 45i (Dan 26 Oct ~18:30): the main test without the chat template; gate 0.80 fixed, no lowered rerun",
+  "written_utc": "2026-10-26T21:12:02Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "a597fe1678ec71266848824bc0934792f5705c0e",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "515ccc97e15ed9719d542fcbd2b1903a77dac981899a7947bed80404fa5e5113"
+  },
+  "layers": [
+    32
+  ],
+  "predicted": 32,
+  "renderings": [
+    "nochat"
+  ],
+  "dicts": [
+    "jpp",
+    "wu",
+    "we",
+    "rand"
+  ],
+  "k": 25,
+  "k_of": {},
+  "k_curve": {
+    "dicts": [
+      "jpp",
+      "we"
+    ],
+    "k": [
+      10,
+      50,
+      100
+    ]
+  },
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+    "mode": "digit",
+    "digit": "amendment 3: the step of the first digit token in 8 greedy tokens (non-chat renderings, when mode is digit)"
+  },
+  "descriptive": false,
+  "alt": "cf",
+  "curve_all_layers": false,
+  "readout": false,
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}
