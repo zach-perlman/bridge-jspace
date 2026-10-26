@@ -1,6 +1,7 @@
 """x0_massmean: the mass-mean basis spans the centred class means, is orthonormal, and has rank classes - 1."""
 
 import numpy as np
+import pytest
 
 from scripts import x0_massmean as MM
 
@@ -63,3 +64,12 @@ def test_two_routes_rule_b_and_the_random_part():
     assert MM.rule_45g(c)["b"] is False  # J++ 0.4 >= 0.3, but the union adds 0.55 - 0.4 = 0.15 >= 0.1
     rows = _two_routes_rows({"before": {}, "after": {"no_jpp": 0.5, "no_jppAlf": 0.55}})
     assert MM.rule_45g(MM.two_routes_cells(rows, 500))["b"] is True
+
+
+def test_source_alt_reads_main_runs_without_the_alt_key():
+    # the 9B / 27B main runs (before 24 Oct) have no "alt" key: their alt is the generator's cf
+    assert MM.source_alt({"predicted": 12}, "two_routes", "old_main") == "cf"
+    assert MM.source_alt({"alt": "cf"}, "two_routes", "main") == "cf"
+    assert MM.source_alt({"alt": "single"}, "main", "one_pick") == "single"
+    with pytest.raises(AssertionError):
+        MM.source_alt({"predicted": 12}, "main", "old_main")

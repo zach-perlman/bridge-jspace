@@ -140,6 +140,14 @@ def subspaces(states_run: str) -> tuple[dict[str, np.ndarray], dict]:
     return {"A": a, "V": v, "AV": av, "Alf": alf, "Id": idn}, info
 
 
+def source_alt(sm: dict, mode: str, single: str) -> str:
+    """The source run's alt. Runs written before 24 Oct (7928e53e) have no "alt" key: their alt was always the
+    generator's cf. two_routes also runs on the main test (two people swap); the others need a one-pick run."""
+    alt = sm.get("alt", "cf")
+    assert alt == "single" or mode in ALL_ITEMS, f"{single} is not a single-change run"
+    return alt
+
+
 def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Path:
     import torch
 
@@ -152,11 +160,9 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     sm = json.loads((X.RESULTS / single / "manifest.json").read_text())
-    # two_routes also runs on the main test (two people swap: the generator's cf alt); the others need a one-pick run
-    assert sm["alt"] == "single" or mode in ALL_ITEMS, f"{single} is not a single-change run"
     layer = sm["predicted"]
     basis_np, info = subspaces(states_run)
-    X.ALT = sm["alt"] or "cf"
+    X.ALT = source_alt(sm, mode, single)
     model = load_model()
     tok = model.tokenizer
     cases, _ = X.build_cases(tok, sm["set"])
