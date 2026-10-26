@@ -240,6 +240,17 @@ def test_verdict_on_synthetic_runs(tmp_path, monkeypatch, plan, outcome):
     assert png.exists() and png.parent.name.startswith("analysis-") and png.parent.parent == out.parent
 
 
+def test_verdict_drops_a_format_with_too_few_switches(tmp_path, monkeypatch):
+    # every format switches N_ENT * PER_ENT lookups; with the bar one above that, no format counts
+    monkeypatch.setattr(B, "RESULTS", tmp_path)
+    monkeypatch.setattr(B, "MIN_SWITCHED", N_ENT * PER_ENT + 1)
+    _run(tmp_path, "toy_x45d", {"prose": ("even", 0.4), "json": ("even", 0.4), "table": ("even", 0.0)})
+    out = B.write_pcf_verdict("toy_x45d", n_boot=200)
+    v = json.loads((out / "verdict.json").read_text())["verdict"]
+    assert v["outcome"] == "incomplete" and v["too_few_switches"] == list(B.FORMATS)
+    assert "does not count" in (out / "verdict.md").read_text()
+
+
 def test_verdict_refuses_a_run_without_pcf(tmp_path, monkeypatch):
     monkeypatch.setattr(B, "RESULTS", tmp_path)
     (tmp_path / "r").mkdir()

@@ -71,6 +71,7 @@ FAIL_LOOKUP, FAIL_C_HI = 0.20, 0.10
 # > 0.1 in at least 2 of the 3 formats; "no linear pointer found" if all three point estimates are < 0.1
 FORMATS = ("prose", "json", "table")
 ELSEWHERE, ELSEWHERE_LO, ELSEWHERE_FORMATS, NONE_BELOW = 0.20, 0.10, 2, 0.10
+MIN_SWITCHED = 30  # 45d: a format's lookup cell needs this many whole-change switches to count (Dan 26 Oct ~21:20)
 PCF_RULE = ('"Pointer elsewhere" if the refit basis gives a lookup extra loss of at least 0.2, with lower CI above 0.1, '
             'in 2 of 3 formats; "No linear pointer found" if all three formats are below 0.1 (point estimate); '
             "otherwise neither.")  # fmt: skip
@@ -616,8 +617,14 @@ def write_pcf_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     fmt_of = {c["scene"]: c["format"] for c in X.read_jsonl(src / "cases.jsonl")}
     pred = m["predicted"]
     cells = pcf_cells(rows, fmt_of, pred, n_boot)
-    lookup = {f: cells[(f, "pcf", X.LOOKUP)]["excess"] if (f, "pcf", X.LOOKUP) in cells else None for f in FORMATS}
+    # Dan 26 Oct ~21:20, decided after the first 45d results: a cell with fewer than 30 lookup switches under the whole
+    # change cannot count; that format is "not tested"
+    few = [f for f in FORMATS if (f, "pcf", X.LOOKUP) in cells
+           and cells[(f, "pcf", X.LOOKUP)]["switched_whole"] < MIN_SWITCHED]  # fmt: skip
+    lookup = {f: cells[(f, "pcf", X.LOOKUP)]["excess"] if (f, "pcf", X.LOOKUP) in cells and f not in few else None
+              for f in FORMATS}  # fmt: skip
     v = pcf_rule(lookup)
+    v["too_few_switches"] = few
     shares: dict[tuple, list[float]] = collections.defaultdict(list)
     for s in X.read_jsonl(src / "shares.jsonl"):
         if s["layer"] == pred and s["dict"] in PARTS_45D:
@@ -637,7 +644,9 @@ def write_pcf_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
              "UNVERIFIED.", "", f"Rule (fixed in advance, on the lookup with the refit basis): {PCF_RULE}", "",
              f"**Outcome: {v['outcome']}** (formats at >= {ELSEWHERE} with lower CI > {ELSEWHERE_LO}: "
              f"{', '.join(v['passed']) or 'none'}; below {NONE_BELOW}: {', '.join(v['below']) or 'none'}; not tested: "
-             f"{', '.join(v['not_tested']) or 'none'}).", "",
+             f"{', '.join(v['not_tested']) or 'none'}). A format whose lookup has fewer than {MIN_SWITCHED} switches "
+             f"under the whole change does not count (Dan 26 Oct ~21:20, decided after the first 45d results): "
+             f"{', '.join(few) or 'none'}.", "",
              "| format | part | reader | n | items | switched (whole) | valid | median share | Jdep | Rdep | extra loss |",
              "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for f in FORMATS:
