@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 2029ffa3 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at c735a5e7 from the run files.
 
 ## Setup
 
@@ -134,8 +134,11 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ## 6. Next
 
-- **Running now.** The item's identity as one direction, removed with the pointer and J++, to account for the rest of the lookup's route; the pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; where the route is read, by blocking attention from the question to the bridge word or the locker sentences.
-- **Later.** The same tests without the chat template; answers by sampling, not the top token; new datasets; OLMo checkpoints across training; intermediates in reasoning traces; DeepSeek-V4-Flash, which needs about four H200-class GPUs or native FP4, and its lens's residual stream named.
+- **Running now.** The item's identity as one direction, removed with the pointer and J++, to account for the rest of the lookup's route; the pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; writing the pointer: adding the difference between two slots' mean states to send the lookup to another locker.
+- **Follow-up: answers by sampling.** Read the answer by sampling, not the top token, to see whether the split holds over the answer distribution.
+- **Follow-up: routes and pointer tests without the chat template.** The main test without the template exists for the 9B and the 27B only; the routes test and the pointer directions have not been run without it.
+- **Follow-up: OLMo checkpoints.** The same tests across OLMo's training checkpoints, to see when the pointer appears.
+- **Later.** New datasets; intermediates in reasoning traces; DeepSeek-V4-Flash, which needs about four H200-class GPUs or native FP4, and its lens's residual stream named.
 
 ## Appendix A. Key numbers
 
