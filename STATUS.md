@@ -26,6 +26,17 @@ Every cell from docs/x0_numbers.json (in figures/story/data.csv). Lookup / recal
 Scored 25 Oct: Q32.7, Q32.8 right; Q33.1, Q34.1, Q35.1, Q36.1, Q37.1 wrong; Q37.2 right (predictions/2026-10-25_dan.md; calibration in predictions/README.md). Batch 38 (Muse): not scored yet.
 
 
+
+# Monday 26 Oct (Dan's plan ~10:30, addendum ~10:35; agent). Decisions logged, not asked
+
+- Step 1, batch 38 scored (ef8ea103): 11 of 12 right, Q38.9 wrong; calibration over 93 answers. Q38.11 reported as the two readers' extra loss (8dbc8a59), as Dan asked.
+- Step 2, batch 39 written in Dan's wording (70a39416), answers pending; no value read. Fixed in the preamble before any value: the fraction of the shift lost is a ratio of means (as the switch-based loss); the gap is a point estimate; Q39.2's tercile counts if each reader has at least 30 switched items in it (X0's validity bar). Q39.1 counts Muse (the ~10:30 wording, "all four models"); Muse is also the report's fourth column (the addendum). The per-arm logit differences are saved on all four models (checked by field).
+- Step 3, README (4ba988e2): Muse in Figs. 1, 2, 4, 5, 6 and table 3c; full model names as panel titles, no "after the data" in titles (Dan ~11:10); the body budget raised to 2,000 words and Appendix C removed (Dan ~11:30; the internal-codes test now covers the whole page). Per-model numbers moved into small tables in each section. The 122B's fresh-scene cells in table 3c and Appendix A from the rerun at gate 0.75 (after the data).
+- Fig. 5's Muse panel had two points (the grid's layers 13 / 26 / 34; L34 no valid cell): muse_depth queued (Dan ~11:15 asked why), the main test at L8-L32 every 2 layers, after the data, descriptive; Fig. 5 reads it once it lands.
+- x0_strata: the readers' confidence is asked for by name, FEATURES stays the scene's own features (adding it there broke x0_details' strata table); x0_details' sentence-order numbers take the newest strata run that has the sentence order.
+- Batches 40 (D1) and 41 (D2) written in Dan's wording (495fbddf), before any run.
+- Next, in Dan's order: batch 39's analysis once answered; step 4 (fig7 scorecard, the Next section); D1 after batch 40's answers; D2 after D1. The H100 box kept (step 5).
+
 # Overnight 25-26 Oct: the Muse grid, defaults taken, DeepSeek-V4-Flash note (agent)
 
 Queue on the H100 box (check: `make queue-status QUEUE=h100`): x0_122b_b11 (the 122B replication rerun at gate 0.75, after the data; it replaced b10, which the queue blocked because it depended on b9, which ended FAILED), then muse_g1, g2, g3, g4b, g5, g6 (2-GPU jobs, one lane per GPU; muse_g6 one GPU). Every Muse step runs through scripts/muse_step.sh, so nothing waits for me.
