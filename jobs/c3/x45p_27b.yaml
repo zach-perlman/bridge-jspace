@@ -1,0 +1,43 @@
+id: x45p_27b
+title: "Batch 45p on the 27B (L32; optional, cut first): does the recall read the new item's earlier mention when its locker came first? 45m's locker-first scenes, the change without its J++ part at the bridge, plus the new item's token without its J++ part / without a random part / another locker item's token without its J++ part"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.15
+depends_on: [x45_0_indep_9b]
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=; uv run python scripts/x45p.py run --name x45p_27b --why "batch 45, test 45p (jobs/c3/batch45.yaml; Q45.13): on 45m's scenes whose new item's locker sentence comes before the asked pick, the bridge-word change without its J++ part, plus the new item's token in its locker sentence without its own J++ part, against a random part of the same share and against another locker item's token; sealed"
+question: >-
+  When the new item's locker sentence came before the asked pick, does the recall read that earlier mention: once the
+  bridge-word change has lost its J++ part, does also taking the J++ part out of the new item's token in its locker
+  sentence cost the recall more switches than a random part of the same share there, and more than the same edit at
+  another locker item's token?
+why_it_matters: >-
+  In 45m's clean design the recall needs J++ at the bridge word, but not completely in locker-before scenes. If the
+  recall can find the item through its earlier mention, the switches left after the bridge word's J++ part is gone
+  should depend on the J++ part of that mention's token, and not on a random part or another item's token.
+hypotheses:
+  Q45.13: "Dan's answer in predictions/2026-10-26_dan.md (Q45.13); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x45p.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45p): "The recall reads the earlier mention" if the recall's switch loss in
+  (2) exceeds (3) by at least 0.2 and (4) by at least 0.15, on at least 2 of 3 models; the lookup reported beside it.
+  As computed (fixed before any code; Dan may override before the run): the items are each model's 45m run's scenes whose new bridge's (alt) locker
+  sentence comes before the asked pick (x0_strata 'alt locker vs asked pick'), at the layer fixed in advance; all edits
+  at that layer. Base edit at the bridge word: the whole change minus its J++ part (signed OMP, k = 25). Arm (2)
+  replaces the new item's token state in its locker sentence (all of its tokens if it has more than one) by that state
+  minus its own J++ part (signed OMP, k = 25, on h); (3) by h minus a random part of the same share (X0's random
+  subspace, seed 888 + layer); (4) the same as (2) at the item token of another locker sentence, the first in context
+  order whose item is neither the bridge nor the new item. Switch = the top token is S's answer; the recall's switch
+  loss in arm k = 1 - S_k / S_1 over the items (S_1: the switches with the base edit alone). Holds on a model if loss_2
+  - loss_3 >= 0.2 and loss_2 - loss_4 >= 0.15, point estimates (cluster-bootstrap CIs over bridge items, 10,000, seed 0,
+  beside them); on the batch if on at least 2 of 3. O alone with arm (2)'s edit: the share of items both readers still
+  read right (reported, not in the rule). A model where the base edit switches fewer than 30 recalls is not tested.
+  Scored by hand: scripts/x45p.py verdict (EPS 1e-9 at the bars).
+controls:
+- '(3) the same tokens without a random part of the same share of ||h||^2 (X0''s random subspace, seed 888 + L)'
+- '(4) the J++ edit at another locker item''s token (the first locker sentence in context order whose item is neither the bridge nor the new item)'
+- '(1) the base edit alone (S_1, the denominator); the whole change and O unedited beside it, and the rerun whole / base edit against 45m''s stored whole / no_part'
+- 'O alone with (2)''s item edit: both readers must still read O''s answers (reported)'
+n: 'the 45m run''s locker-first scenes (alt locker before the asked pick); plan check on the 27B: 254 of 574 items at L32, none dropped (43 bridge items)'
+seeds: [0, 888, 4513]
+notes: "Batch 45 overnight addition (Dan, 27 Oct ~00:30), optional, cut first; queue after 45q and 45i'. Sealed: the run writes manifest, plan, cases, outcomes, norms (J++ / random shares) and 10 examples' greedy texts, no verdict. By hand after Dan's Q45.13 is committed: uv run python scripts/x45p.py verdict --runs qwen35_9b_x45p x45p_27b muse30b_x45p (CPU). Seeds: 0 the bootstrap and examples, 888 + layer the random subspace, 4513 45m's fresh draws. Cost: 2 forwards + 7 reads per reader per item at one layer, 254 items; 45n on the 27B (4 reads per reader, ~100 items) took 2.4 min."
