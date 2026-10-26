@@ -1,0 +1,40 @@
+{
+  "exp": "x7_pcf",
+  "run": "qwen35_9b_x7_pcf12",
+  "written_utc": "2026-10-26T20:09:34Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "a597fe1678ec71266848824bc0934792f5705c0e",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 12,
+  "pairs": 1000,
+  "rank": 2,
+  "pca": "centered, over the pairs' bridge-word differences S - O",
+  "alf_from": "qwen35_9b_x0_probe_v4",
+  "moves": [
+    1,
+    2
+  ],
+  "orthogonal_to_U": "the differences projected off U (Alf) before the PCA",
+  "seeds": {
+    "pairs": 4301
+  },
+  "note": "Dan 26 Oct ~10:45 / ~11:55; batch 43 (--moves: batch 45c)"
+}
