@@ -15,3 +15,8 @@ __pycache__/
 # jlens interactive slice pages from examples runs: ~0.5 MB each, regenerate with the examples config
 results/**/slices/
 examples/**/slices/
+# Claude Code: personal settings and their backups; the autonomy window's state and log (.claude/autonomy/)
+.claude/settings.local.json
+.claude/settings.local.json.*
+.claude/autonomy/state.json
+.claude/autonomy/log.txt

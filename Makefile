@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run data-report examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats
+.PHONY: install fmt lint typecheck test test-model check run data-report examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -66,6 +66,18 @@ ifeq ($(QUEUE),all)
 else
 	$(JOBQ) stats --gpus $(QUEUE_GPUS_$(QUEUE))
 endif
+
+# Claude Code autonomy window (.claude/autonomy/, not part of the experiments; stdlib only): no permission prompts for a
+# while (e.g. overnight); the old limits come back by themselves at the deadline. git push / reset --hard / clean /
+# rm -rf stay denied.
+autonomy:           ## no permission prompts until the deadline: make autonomy HOURS=10 (or UNTIL=11:00)
+	python3 .claude/autonomy/autonomy.py grant $(if $(HOURS),--hours $(HOURS)) $(if $(UNTIL),--until "$(UNTIL)")
+
+autonomy-status:    ## is a window open, until when, watcher and caffeinate alive
+	python3 .claude/autonomy/autonomy.py status
+
+autonomy-off:       ## close the window now (the old limits back)
+	python3 .claude/autonomy/autonomy.py revoke
 
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export
