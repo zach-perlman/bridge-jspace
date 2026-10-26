@@ -131,6 +131,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **Raw examples.** Ten natural passages ([docs/natural_examples.md](docs/natural_examples.md)) and routes cases (the pack).
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier {{num|pred_brier}} over {{num|pred_n}} answers, worse than always answering {{q|50%}}; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.
+- **Inventory.** [docs/inventory.md](docs/inventory.md) labels every script and run current, superseded, legacy or unknown; pre-pivot experiments are kept and labelled legacy.
 
 ## 6. Next
 

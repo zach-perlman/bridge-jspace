@@ -1,3 +1,5 @@
+legacy: maps the 23 Oct README, see docs/review_views.yaml
+
 # Names, internal codes, scripts and specs
 
 The only place internal codes appear. The README's claims and the grid's findings map as below; the README numbers its claims 1-7, the grid its findings 1-8.

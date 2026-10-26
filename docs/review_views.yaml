@@ -286,7 +286,8 @@ views:
     readme: "not yet in the README"
     claim: "The 5 class means behind the pointer directions lie on a monotone first component (PC1 share >= 0.7 -> ordinal)."
     sources: []
-    per_item: "none: an aggregate over the class means of the x0_probe v4 states (results/x8_write/geometry-*); no per-item file"
+    per_item: "none: an aggregate over the class means of the x0_probe v4 states; no per-item file"
+    analyses: [results/x8_write/geometry-*]
 
   - id: k_curve
     title: More J++ directions removed (k = 25 / 50 / 100)
@@ -485,6 +486,7 @@ views:
     title: "T: the pointer directions beyond simple scenes (batch 42)"
     status: later
     kind: x0b
+    analyses: [results/t_pointer]
     readme: "Section 6 'Running now'"
     claim: "Removing the pointer directions (fit on simple scenes) costs the lookup in varied scenes and natural passages."
     sources: []
