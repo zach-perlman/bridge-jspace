@@ -23,6 +23,7 @@ import json
 import math
 import os
 import random
+import re
 import statistics
 import sys
 import time
@@ -190,7 +191,10 @@ DESCRIPTIVE = False  # amendment 3: run on the items each reader gets right even
 DIGIT_IDS: set[int] = set()  # the digit tokens, set by stage_run (the digit read)
 READOUT = False  # the digit check (c): the J++ readout of the answer digits at the bridge's word
 ALT = "cf"  # the alt: the generator's cf (two picks swap; X0) or "single" (only the asked pick changes; after data)
+# or "fresh" (45m, batch 45: a locker item nobody picks is added to both prompts and becomes the asked pick)
+FRESH_SEED = 4513  # 45m's draws per scene (item, digit, slot), each from its own stream keyed by the scene id
 CURVE_ALL = False  # the k curve at every layer, not only the predicted one (after data)
+NONNEG = True  # the non-negative J++ arm at the predicted layer (45m leaves it out to keep the run small)
 Arm = tuple[str, int, str, str]  # (dictionary, k, fit, arm)
 WHOLE: Arm = ("-", 0, "-", "whole")
 MAIN = ("jpp", K_MAIN, "signed")  # the decisive dictionary, k and fit
@@ -211,7 +215,8 @@ def render(tok, item: dict, rendering: str, context: str) -> str:
 
 def alt_context(item: dict) -> str:
     """The alt context: the generator's cf (two picks swap), or with ALT == "single" the org context with only the asked
-    person's pick changed to the cf bridge, which another person already picks; every other sentence as in org."""
+    person's pick changed to the cf bridge, which another person already picks; every other sentence as in org. With
+    ALT == "fresh" the same, on the item fresh_pair made (its cf bridge is the added item nobody picks)."""
     if ALT == "cf":
         return item["cf_context"]
     from scripts import statement_positions as SP
@@ -270,8 +275,49 @@ def scene_case(tok, pair: dict[str, dict], rendering: str) -> tuple[dict | None,
             "upstream": readers[LOOKUP]["upstream"], "space": S.ids(tok, " "), "readers": readers}, None  # fmt: skip
 
 
+def fresh_pair(tok, pair: dict[str, dict]) -> tuple[dict[str, dict] | None, str | None]:
+    """45m (batch 45; jobs/c3/batch45.yaml): both readers' items with one locker item that nobody picks added, or the
+    reason the scene is dropped. The item: from the scene's domain, not in the scene and not named in its context, its
+    recall answer (its number) not the bridge's, one token as a bridge must be (the generator's check). Its locker: a
+    digit no thing of the scene has and not its own number (the generator's rule), written as the scene writes numbers.
+    Its sentence goes before one of the scene's locker sentences or after the last (uniform over those slots). Item,
+    digit and slot are drawn from their own streams keyed by FRESH_SEED and the scene id. The returned items' context is
+    the org context with that sentence; their cf bridge is the item and their cf answer its locker digit (lookup) or
+    its number (recall), so the "single" alt (only the asked pick changes) changes the bridge to it."""
+    from scripts import tasks_v2 as T
+
+    it = pair[LOOKUP]
+    dom, facts, context = T.DOMAINS[it["domain"]], it["scene_facts"], it["context"]
+    taken = {*facts["pick"].values(), *facts["locker"], *(t for _, t in it.get("facts", {}).get("lookalike_picks", []))}
+    cands = [t for t in dom.values
+             if t not in taken and not re.search(rf"\b{re.escape(t)}\b", context)
+             and dom.values[t] != dom.values[it["bridge"]] and T._single(tok, t)]  # fmt: skip
+    if not cands:
+        return None, "fresh: no item of the domain outside the scene with another number and one token"
+    draw = lambda what: random.Random(f"x45m|{FRESH_SEED}|{it['scene']}|{what}")  # noqa: E731
+    new = draw("item").choice(cands)
+    free = [d for d in range(1, 10) if d not in facts["locker"].values() and d != dom.values[new]]
+    if not free:
+        return None, "fresh: no free locker digit"
+    digit = draw("digit").choice(free)
+    sents = re.split(r"(?<=\.) ", context)
+    assert " ".join(sents) == context, f"{it['id']}: the context does not split into sentences"
+    lockers = [i for i, s in enumerate(sents) if s.startswith("The locker of ")]
+    assert lockers, f"{it['id']}: no locker sentence"
+    slot = draw("slot").randrange(len(lockers) + 1)  # before locker sentence `slot`; len(lockers): after the last
+    at = lockers[slot] if slot < len(lockers) else lockers[-1] + 1
+    sentence = f"The locker of {T.ref(dom, new)} is {T.num(digit, it['numbers'])}."
+    info = {"item": new, "digit": digit, "slot": slot, "slots": len(lockers) + 1, "sentence_index": at,
+            "sentence": sentence, "seed": FRESH_SEED, "candidates": len(cands)}  # fmt: skip
+    answer = {LOOKUP: str(digit), RECALL: str(dom.values[new])}
+    out = {w: {**pair[w], "context": " ".join([*sents[:at], sentence, *sents[at:]]), "cf_bridge": new,
+               "cf_answer": answer[w], "fresh": info} for w in READERS}  # fmt: skip
+    return out, None
+
+
 def build_cases(tok, set_name: str) -> tuple[list[dict], dict]:
-    """Every scene of the set with both readers, in scene order, per rendering; drops counted by reason."""
+    """Every scene of the set with both readers, in scene order, per rendering; drops counted by reason. With ALT ==
+    "fresh", each scene as fresh_pair makes it (a scene it cannot make is dropped once, not per rendering)."""
     from scripts import tasks_v2 as T
 
     by_scene: dict[str, dict[str, dict]] = collections.defaultdict(dict)
@@ -287,12 +333,17 @@ def build_cases(tok, set_name: str) -> tuple[list[dict], dict]:
         if any(pair[LOOKUP][k] != pair[RECALL][k] for k in ("context", "cf_context", "bridge", "cf_bridge")):
             dropped["the readers' scenes differ"] += 1
             continue
+        if ALT == "fresh":
+            pair, why = fresh_pair(tok, pair)  # type: ignore[assignment]
+            if pair is None:
+                dropped[why] += 1
+                continue
         for r in RENDERINGS:
             c, why = scene_case(tok, pair, r)
             if c is None:
                 dropped[f"{r}: {why}"] += 1
             else:
-                cases.append(c)
+                cases.append(c if ALT != "fresh" else {**c, "fresh": pair[LOOKUP]["fresh"]})
     counts = collections.Counter(c["rendering"] for c in cases)
     return cases, {"scenes": len(by_scene), "cases": dict(counts), "dropped": dict(dropped)}
 
@@ -534,7 +585,7 @@ def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predi
             specs = [(name, K_OF.get(name, K_MAIN), "signed") for name in DICTS]
             if la == predicted or CURVE_ALL:
                 specs += [(name, k, "signed") for name in CURVE_DICTS for k in K_CURVE if name not in K_OF]
-                specs += [("jpp", K_MAIN, "nonneg")] if "jpp" in DICTS else []
+                specs += [("jpp", K_MAIN, "nonneg")] if "jpp" in DICTS and NONNEG else []
             basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(SUBSPACE_SEED + la)).to("cuda")
             shares = []
             for name in dict.fromkeys(s[0] for s in specs):
@@ -606,7 +657,9 @@ def stage_run(
                   "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
                   "mode": READ, "digit": f"amendment 3: the step of the first digit token in {GEN_TOKENS} greedy tokens "
                                          "(non-chat renderings, when mode is digit)"},
-         "descriptive": DESCRIPTIVE, "alt": ALT, "curve_all_layers": CURVE_ALL, "readout": READOUT,
+         "descriptive": DESCRIPTIVE, "alt": ALT, "curve_all_layers": CURVE_ALL, "readout": READOUT, "nonneg_arm": NONNEG,
+         **({"fresh": {"seed": FRESH_SEED, "design": "jobs/c3/batch45.yaml, 45m", "draws": "x0_necessity.fresh_pair"}}
+            if ALT == "fresh" else {}),
          "seeds": {"random_dictionary": f"{RAND_DICT_SEED} + layer (CPU)", "random_subspace": f"{SUBSPACE_SEED} + layer (CPU)",
                    "bootstrap": BOOT_SEED, "examples": EXAMPLES_SEED},
          "design": "jobs/c3/X0.md"}  # fmt: skip
@@ -845,7 +898,7 @@ def figures(verdict_dir: Path) -> list[Path]:
 
 
 def main() -> None:
-    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT  # the manifest records them
+    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT, NONNEG  # the manifest records them
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name", required=True, help="run name (results/x0_necessity/<name>/)")
@@ -856,11 +909,14 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=N_BOOT)
     ap.add_argument("--curve-dicts", nargs="+", default=list(CURVE_DICTS), choices=["jpp", "wu", "we", "rand", "jppall"],
                     help="run: dictionaries of the k curve at the predicted layer")  # fmt: skip
-    ap.add_argument("--curve-k", nargs="+", type=int, default=list(K_CURVE), help="run: the k curve's atom counts")
+    ap.add_argument("--curve-k", nargs="*", type=int, default=list(K_CURVE),
+                    help="run: the k curve's atom counts (none given: no k curve)")  # fmt: skip
+    ap.add_argument("--no-nonneg", action="store_true", help="run: no non-negative J++ arm at the predicted layer")
     ap.add_argument("--read", choices=("first", "digit"), default=READ,
                     help="run, non-chat renderings: first non-whitespace token, or the first digit token (amendment 3)")  # fmt: skip
-    ap.add_argument("--alt", choices=("cf", "single"), default=ALT,
-                    help="run: the generator's cf (X0), or only the asked person's pick changed (after data)")  # fmt: skip
+    ap.add_argument("--alt", choices=("cf", "single", "fresh"), default=ALT,
+                    help="run: the generator's cf (X0), or only the asked person's pick changed (after data), or "
+                         "fresh: to an added locker item nobody picks (45m)")  # fmt: skip
     ap.add_argument("--curve-all-layers", action="store_true", help="run: the k curve at every layer")
     ap.add_argument("--dicts", nargs="+", default=list(DICTS), choices=["jpp", "wu", "we", "rand", "jppall", "jppdig"])
     ap.add_argument("--readout", action="store_true", help="run: the J++ readout's answer-digit ranks (digit check)")
@@ -871,7 +927,7 @@ def main() -> None:
     a = ap.parse_args()
     CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
     READ, DESCRIPTIVE, ALT, CURVE_ALL = a.read, a.descriptive, a.alt, a.curve_all_layers
-    DICTS, READOUT = tuple(a.dicts), a.readout
+    DICTS, READOUT, NONNEG = tuple(a.dicts), a.readout, not a.no_nonneg
     if a.stage == "plan":  # tokenizer only
         from scripts import statement_positions as SP
 
