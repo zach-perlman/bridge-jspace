@@ -1,0 +1,33 @@
+{
+  "exp": "x8_write",
+  "run": "muse30b_x8_order_r2",
+  "written_utc": "2026-10-26T15:37:37Z",
+  "stage": "order",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "4d44d449af4e2d2e4ba0ff407cb3a58236e681a7",
+    "dirty": true
+  },
+  "layer": 26,
+  "fillers": [
+    "The weather stayed mild and quiet for most of the afternoon.",
+    "Everyone agreed that the meeting had gone on far too long.",
+    "Nobody could remember when the hallway lights had last been changed.",
+    "It was later than usual when the cleaning crew finally arrived."
+  ],
+  "gate": 0.8,
+  "filler_tokens": [
+    10,
+    12
+  ],
+  "mu_from": "muse30b_x0_probe_v4",
+  "note": "batch 44 B (Dan 26 Oct ~13:00); results closed until its answers",
+  "items": 300
+}
