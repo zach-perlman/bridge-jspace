@@ -420,24 +420,24 @@ fig09,muse-glimmer-30b,lookup extra loss without the pointer: natural,0.25,0.0,0
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ + pointer: the part",0.44966442953020136,0.40549595987740317,0.4895123106060607,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ + pointer: a random part of the same size",0.8791946308724832,0.8363636363636363,0.9177236864921103,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,share of the change: J++ + pointer,0.3314,,,,qwen35_9b_x6_routes_bothoff
-fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity: the part",0.0738255033557047,0.044378698224852076,0.10839160839160844,,qwen35_9b_x6_routes_d1
-fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity: a random part of the same size",0.3825503355704698,0.33333333333333337,0.4341637010676156,,qwen35_9b_x6_routes_d1
-fig10,qwen3.5-9b,share of the change: + identity,0.5565,,,,qwen35_9b_x6_routes_d1
+fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: the part",0.0738255033557047,0.044378698224852076,0.10839160839160844,,qwen35_9b_x6_routes_d1
+fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.3825503355704698,0.33333333333333337,0.4341637010676156,,qwen35_9b_x6_routes_d1
+fig10,qwen3.5-9b,share of the change: + identity outside J++,0.5565,,,,qwen35_9b_x6_routes_d1
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ + pointer: the part",0.5272108843537415,0.4784133562715045,0.5746031746031747,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ + pointer: a random part of the same size",0.9353741496598639,0.8973369671349638,0.970150489275477,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,share of the change: J++ + pointer,0.2606,,,,x6_routes_bothoff_27b
-fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity: the part",0.1774744027303754,0.1333333333333333,0.22311023762094484,,x6_routes_d1_27b
-fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity: a random part of the same size",0.6689419795221843,0.625,0.7173144876325088,,x6_routes_d1_27b
-fig10,qwen3.6-27b,share of the change: + identity,0.3504,,,,x6_routes_d1_27b
+fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: the part",0.1774744027303754,0.1333333333333333,0.22311023762094484,,x6_routes_d1_27b
+fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.6689419795221843,0.625,0.7173144876325088,,x6_routes_d1_27b
+fig10,qwen3.6-27b,share of the change: + identity outside J++,0.3504,,,,x6_routes_d1_27b
 fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ + pointer: the part",0.5,0.4486682249075473,0.5476206695212145,,qwen35_122b_x6_routes_bothoff_g75
 fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ + pointer: a random part of the same size",0.85,0.8096774193548387,0.8888888888888888,,qwen35_122b_x6_routes_bothoff_g75
 fig10,qwen3.5-122b-a10b,share of the change: J++ + pointer,0.369,,,,qwen35_122b_x6_routes_bothoff_g75
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without J++ + pointer: the part",0.7391304347826086,0.6816475578995644,0.7947761194029851,,muse30b_x6_routes
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without J++ + pointer: a random part of the same size",1.0474308300395256,1.0039058700145915,1.0909090909090908,,muse30b_x6_routes
 fig10,muse-glimmer-30b,share of the change: J++ + pointer,0.2503,,,,muse30b_x6_routes
-fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity: the part",0.5224489795918367,0.4672123235647826,0.5833333333333333,,muse30b_x6_routes_d1_r2
-fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity: a random part of the same size",0.8163265306122449,0.7566535717890912,0.8787878787878788,,muse30b_x6_routes_d1_r2
-fig10,muse-glimmer-30b,share of the change: + identity,0.3802,,,,muse30b_x6_routes_d1_r2
+fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: the part",0.5224489795918367,0.4672123235647826,0.5833333333333333,,muse30b_x6_routes_d1_r2
+fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.8163265306122449,0.7566535717890912,0.8787878787878788,,muse30b_x6_routes_d1_r2
+fig10,muse-glimmer-30b,share of the change: + identity outside J++,0.3802,,,,muse30b_x6_routes_d1_r2
 fig11,qwen3.5-9b,The split (main test),held,,,,fixed
 fig11,qwen3.5-9b,The split on the logit difference,held,,,,fixed
 fig11,qwen3.5-9b,The split in varied scenes,held,,,,fixed

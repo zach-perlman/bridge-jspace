@@ -1116,57 +1116,61 @@ LEFT_RUNS = {"9b": ("qwen35_9b_x6_routes_bothoff", "qwen35_9b_x6_routes_d1"),
              "27b": ("x6_routes_bothoff_27b", "x6_routes_d1_27b"),
              "122b": ("qwen35_122b_x6_routes_bothoff_g75", None),
              "muse": ("muse30b_x6_routes", "muse30b_x6_routes_d1_r2")}  # fmt: skip
-LEFT_PARTS = (("both", "J++ +\npointer"), ("jpp+alf+idout", "+ identity"))
+LEFT_PARTS = (("both", "J++ + pointer"), ("jpp+alf+idout", "+ identity\noutside J++"))
 
 
 def f10_left(plt) -> None:
-    """The sanity swap: the share of the whole change's lookup switches still switching with J++ and the pointer removed
-    (the both-removed runs) and with identity outside J++ removed too (batch 40), each beside a random part of the same
-    size (grey); the part's median share of the change in its label."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 5.6))
-    fig.subplots_adjust(left=0.09, right=0.995, top=0.63, bottom=0.25)
+    """The sanity swap, one panel per model (as Figs. 8 and 9), one row per removal: J++ and the pointer (the both-removed
+    runs), and identity outside J++ removed too (batch 40). Per row, the share of the whole change's lookup switches
+    still switching with the part removed (purple) and with a random part of the same size removed (grey), joined by a
+    line: its length is the part's extra loss. The part's median share of the change under the row (Dan ~22:00: the
+    one-axis version was hard to read)."""
+    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 4.3), sharey=True)
+    fig.subplots_adjust(left=0.17, right=0.985, top=0.60, bottom=0.14, wspace=0.12)
     S.title(fig, "About half the lookups still switch with J++ and the pointer removed",
-            "Sanity swap. Still switching: a share of the whole change's switches, so it can exceed 1.\n"
-            "'+ identity': also identity outside J++. % = the part's share of the change.")  # fmt: skip
-    ticks, labels = [], []
-    for i, (target, m, _name) in enumerate(S.MODELS):
+            "Sanity swap. Lookups still switching, as a share of the whole change's switches. The line from\n"
+            "grey to purple is what the part removes beyond a random part of its size (its extra loss).")  # fmt: skip
+    grey = "#a8a8a8"
+    for ax, (target, m, _name) in zip(axes, S.MODELS, strict=True):
+        ax.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
+        ax.set_xlim(0, 1.12)  # a random part can leave more switches than the whole change (Muse: 1.05)
+        ax.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
+        ax.axvline(1.0, color="#cccccc", lw=0.8, ls="--", zorder=0)
+        ax.grid(axis="x", color="#eeeeee")
+        ax.set_axisbelow(True)
+        ax.set_xlabel("still switching")
+        kind = "after" if m in LOWERED_M else "fixed"
         for k, (part, label) in enumerate(LEFT_PARTS):
-            x = i * 2.6 + k * 1.15
+            y = -k
             run = LEFT_RUNS[m][0 if part == "both" else 1]
             v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json") if run else None
             e = next((e for e in (v or {}).get("extra", []) if e["condition"] == "C0" and e["reader"] == X.LOOKUP
                       and e["part"] == part), None)  # fmt: skip
-            ticks.append(x)
             if e is None:
-                labels.append(label + "\n")
-                ax.text(
-                    x + 0.15, 0.5, "not in\nthis test", ha="center", va="center", fontsize=S.FONT, color=S.COL["muted"]
-                )
+                ax.text(0.56, y, "not in this test", ha="center", va="center", fontsize=S.FONT, color=S.COL["muted"])
                 continue
-            kind = "after" if m in LOWERED_M else "fixed"
-            for lost, col, dx in ((e["Jdep"], S.COL["lookup"], 0.0), (e["Rdep"], "#a8a8a8", 0.32)):
+            pts = {}
+            for lost, col, what in ((e["Jdep"], S.COL["lookup"], "the part"),
+                                    (e["Rdep"], grey, "a random part of the same size")):  # fmt: skip
                 left = (1 - lost[0], 1 - lost[2], 1 - lost[1])
-                ax.plot([x + dx] * 2, [left[1], left[2]], color=col, lw=1.6)
-                ax.plot([x + dx], [left[0]], "o", ms=8, mfc=col if kind == "fixed" else "white", mec=col, mew=1.6)
-                what = "the part" if col == S.COL["lookup"] else "a random part of the same size"
+                pts[col] = left
                 S.record("fig10", target, f"sanity swap, lookups still switching without {label.replace(chr(10), ' ')}: {what}",
                          *left, source=run)  # fmt: skip
-            labels.append(f"{label}\n({100 * e['share']:.0f}%)")
-            S.record(
-                "fig10", target, f"share of the change: {label.replace(chr(10), ' ')}", round(e["share"], 4), source=run
-            )
-        ax.text(i * 2.6 + 0.65, -0.36, name_of(m, m in LOWERED_M), transform=ax.get_xaxis_transform(), ha="center",
-                va="top", fontsize=S.FONT, weight="bold")  # fmt: skip
-    ax.set_xticks([t + 0.16 for t in ticks], labels)
-    ax.tick_params(axis="x", length=0)
-    ax.set_ylim(0, 1.12)  # a random part can leave more switches than the whole change (Muse: 1.05)
-    ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
-    ax.set_ylabel("lookups still switching")
-    ax.grid(axis="y", color="#eeeeee")
-    ax.set_axisbelow(True)
+            ax.plot([pts[grey][0], pts[S.COL["lookup"]][0]], [y, y], color=S.COL["lookup"], lw=2.2, alpha=0.35, zorder=2)
+            for col, left in pts.items():
+                ax.plot([left[1], left[2]], [y, y], color=col, lw=1.6, zorder=3, solid_capstyle="butt")
+                face = col if kind == "fixed" else "white"
+                ax.plot([left[0]], [y], "o", ms=8, mfc=face, mec=col, mew=1.6, zorder=4)
+            ax.text(0.02, y - 0.3, f"{100 * e['share']:.0f}% of the change", ha="left", va="center", fontsize=S.FONT,
+                    color=S.COL["muted"])  # fmt: skip
+            S.record("fig10", target, f"share of the change: {label.replace(chr(10), ' ')}", round(e["share"], 4),
+                     source=run)  # fmt: skip
+        ax.set_ylim(-len(LEFT_PARTS) + 0.45, 0.45)
+        ax.tick_params(axis="y", length=0)
+    axes[0].set_yticks([-k for k in range(len(LEFT_PARTS))], [label for _, label in LEFT_PARTS])
     sh, sl = S.status_handles()
-    legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8), plt.Line2D([], [], marker="o", ls="", color="#a8a8a8", ms=8), *sh],
-           ["part removed", "random part, same size", *sl], 0.82)  # fmt: skip
+    legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8), plt.Line2D([], [], marker="o", ls="", color=grey, ms=8), *sh],
+           ["part removed", "random part, same size", *sl], 0.80)  # fmt: skip
     S.save(fig, "fig10_what_is_left")
 
 
