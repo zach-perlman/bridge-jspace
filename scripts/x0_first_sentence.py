@@ -3,7 +3,9 @@
 The main test's pointer removal (x0_massmean: the 9B and 27B layout-free runs, the 122B and Muse grid runs, on their
 one-change items), the items the whole change switches, split by where the original and the changed bridge's locker
 sentences sit: (a) either is the context's first sentence; (b) either is the first locker sentence but not the first
-sentence (a pick sentence comes before it); (c) neither. Per group and reader: n, the extra loss without the pointer
+sentence (a pick sentence comes before it); (c) neither; and (Dan ~16:45) by which item the first sentence names
+(NAMED: the bridge in its locker sentence, the bridge in a pick sentence, another item). Per group and reader: n, the
+extra loss without the pointer
 directions (switches lost without Alf minus lost without its random part, over the whole change's switches) and the
 switch rate with only the pointer part (keep_Alf), with cluster-bootstrap intervals over bridge entities (10,000
 resamples, seed 0). UNVERIFIED.
@@ -43,6 +45,23 @@ def group_of(case: dict) -> str:
     if lockers and lockers[0] in where:
         return GROUPS[1]
     return GROUPS[2]
+
+
+# Dan ~16:45 (Fig. 8a: "bridge named first / another item named first"): the same items by which item the context's
+# first sentence names, the bridge (original or changed) or another item, and whether that sentence is a locker or a pick
+NAMED = (
+    "bridge named first, in its locker sentence",
+    "bridge named first, in a pick sentence",
+    "another item named first",
+)
+
+
+def named_of(case: dict) -> str:
+    """Which item the context's first sentence names, and in which kind of sentence (NAMED)."""
+    first = re.split(r"(?<=\.)\s+", case["context"])[0]
+    if not any(re.search(rf"\b{re.escape(e)}\b", first) for e in (case["bridge"], case["cf_bridge"])):
+        return NAMED[2]
+    return NAMED[0] if first.startswith("The locker of") else NAMED[1]
 
 
 def cell(rows: dict[str, dict], scenes: list[str], ent: dict[str, str], n_boot: int) -> dict:
@@ -113,6 +132,14 @@ def main(n_boot: int = X.N_BOOT) -> Path:
                     )
                 else:
                     lines.append(f"| {target} | {name} | {g} | {c['n']} | – | – |")
+            for g in NAMED:
+                mine = sorted(s for s in switched if named_of(cases[s]) == g)
+                c = cell(rows[w], mine, ent, n_boot) if len({ent[s] for s in mine}) >= 2 else {"n": len(mine)}
+                blob[target][f"{w}|named|{g}"] = c
+                if "extra_loss" in c:
+                    lines.append(
+                        f"| {target} | {name} | {g} | {c['n']} | {ci(c['extra_loss'])} | {ci(c['keep_alf'])} |"
+                    )
             by = {g: sorted(s for s in switched if group_of(cases[s]) == g) for g in GROUPS}
             for label, g2 in (("(a) − (b)", by[GROUPS[1]]), ("(a) − (b, c)", by[GROUPS[1]] + by[GROUPS[2]])):
                 d = diff(rows[w], by[GROUPS[0]], g2, ent, n_boot)
