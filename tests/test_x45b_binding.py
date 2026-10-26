@@ -410,6 +410,41 @@ def test_sweep_layers_run_from_half_to_l_every_two():
     assert B.sweep_layers(13) == [6, 8, 10, 12, 13]  # L always included
 
 
+def test_role_positions_split_each_locker_sentence():
+    tok = WordTok()
+    it = item_record(0, tok)
+    roles = B.role_positions(tok, it)
+    ids = it["readers"][X.LOOKUP]["ids"]["org"]
+    # the fake tokenizer keeps the final '.' on the value's word: value and final are the same token there
+    assert [tok.decode([ids[p]]).strip() for p in roles["item"][0]] == ["nitrogen", "hydrogen", "carbon"]
+    assert [tok.decode([ids[p]]).strip() for p in roles["value"][0]] == ["5.", "6.", "4."]
+    assert roles["final"][0] == roles["value"][0]
+    assert all(p in it["patched"] for o, _ in roles.values() for p in o)
+    assert roles["item"][1] == [it["source"][it["patched"].index(p)] for p in roles["item"][0]]
+
+
+def test_role_positions_on_the_9b_items():
+    # the real tokenizer on the 45b run's stored items (skipped where the tokenizer or the run is absent)
+    from bridge_jspace import pins
+
+    path = pins.RESULTS_DIR / "x45b_binding" / "qwen35_9b_x45b_binding" / "cases.jsonl"
+    if not path.exists():
+        pytest.skip("no 45b 9B run here")
+    try:
+        from scripts import statement_positions as SP
+
+        tok = SP.load_tokenizer()
+    except Exception as e:
+        pytest.skip(f"no tokenizer: {e}")
+    for it in X.read_jsonl(path)[:20]:
+        roles = B.role_positions(tok, it)
+        ids = it["readers"][X.LOOKUP]["ids"]["org"]
+        n = len(it["lockers"]["sentences"])
+        assert len(roles["final"][0]) == n and all(tok.decode([ids[p]]) == "." for p in roles["final"][0])
+        items = [B.LOCKER_RE.match(s).group(1) for s in it["lockers"]["sentences"]]  # type: ignore[union-attr]
+        assert "".join(tok.decode([ids[p]]) for p in roles["item"][0]).split() == " ".join(items).split()
+
+
 def test_sweep_stage_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
     import torch
 
@@ -425,7 +460,7 @@ def test_sweep_stage_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
     out = B.stage_sweep("fake_sweep", "test")
     layer = X.PREDICTED[pins.TARGET]
     layers = B.sweep_layers(layer)
-    arms = ["none", *(f"{s}{la}" for la in layers for s in ("bw", "ls")), "S"]
+    arms = ["none", *(f"{s}{la}" for la in layers for s in B.SWEEP_ARMS), "S"]
     rows = X.read_jsonl(out / "outcomes.jsonl")
     assert {(r["scene"], r["reader"], r["arm"]) for r in rows} == {
         (it["scene"], w, a) for it in items for w in X.READERS for a in arms
@@ -434,9 +469,11 @@ def test_sweep_stage_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
     # each sweep edit sits at its layer and positions; ls<l> makes O's locker tokens S's at l
     it, (_, edits) = items[0], fake.calls[0]
     ids = it["readers"][X.LOOKUP]["ids"]
+    where = {"bw": [it["pos"]], "ls": it["patched"],
+             **{arm: it["roles"][role]["org"] for role, arm in B.ROLE_ARM.items()}}  # fmt: skip
     for e, arm in zip(edits[1:], arms[1:-1], strict=True):
         ((la, add),) = e.items()
-        assert la == int(arm[2:]) and add.positions == ([it["pos"]] if arm.startswith("bw") else it["patched"])
+        assert la == int(arm[2:]) and add.positions == where[arm[:2]]
     la = layers[0]
     h = {v: fake.run(torch.tensor([ids[v]]), record=(la,))[1][la] for v in ("org", "alt")}
     assert torch.allclose(h["org"][it["patched"]] + edits[arms.index(f"ls{la}")][la].delta, h["alt"][it["source"]])

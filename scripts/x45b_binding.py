@@ -39,6 +39,7 @@ import argparse
 import collections
 import json
 import random
+import re
 import statistics
 import sys
 import time
@@ -367,11 +368,44 @@ def stage_run(name: str, why: str) -> Path:
 
 
 SWEEP_STEP = 2  # the layer sweep (Dan 26 Oct ~21:20; descriptive, after the data): every 2 layers from L/2 to L
+# the sweep's arms per layer: the bridge word, every locker-sentence token, and (Dan ~22:00) only the item, only the
+# value (the digit or number word) or only the sentence-final token of every locker sentence
+SWEEP_ARMS = {"bw": "the bridge-word change", "ls": "S patched into O at every locker-sentence token",
+              "li": "only the item's tokens inside the locker sentences", "lv": "only the value token(s)",
+              "lf": "only the sentence-final token"}  # fmt: skip
+ROLE_ARM = {"item": "li", "value": "lv", "final": "lf"}
+LOCKER_RE = re.compile(r"^The locker of (?:the )?(.+) is (.+?)\.$")
 
 
 def sweep_layers(layer: int) -> list[int]:
     """The sweep's layers: L // 2 to L every SWEEP_STEP layers, L always included."""
     return sorted(set(range(layer // 2, layer + 1, SWEEP_STEP)) | {layer})
+
+
+def role_positions(tok, it: dict) -> dict[str, tuple[list[int], list[int]]]:
+    """Per role (item / value / final), O's positions and the paired S positions inside every locker sentence: the
+    tokens whose characters overlap the item's name, the value, or the final '.' ('The locker of [the] <item> is
+    <value>.'), found by decoding the sentence's tokens one by one. O and S hold the same locker sentences, paired in
+    order (select's alignment), so the k-th token plays the same role in both."""
+    ids = it["readers"][X.LOOKUP]["ids"]["org"]
+    out: dict[str, tuple[list[int], list[int]]] = {r: ([], []) for r in ROLE_ARM}
+    for sent, po, ps in zip(it["lockers"]["sentences"], it["lockers"]["org"], it["lockers"]["alt"], strict=True):
+        pieces = [tok.decode([ids[p]]) for p in po]
+        start = "".join(pieces).find(sent)
+        m = LOCKER_RE.match(sent)
+        assert start >= 0, f"{it['scene']}: {sent!r} is not in its tokens' text"
+        assert m, f"{it['scene']}: {sent!r} is not a locker sentence"
+        spans = {"item": m.span(1), "value": m.span(2), "final": (len(sent) - 1, len(sent))}
+        at = -start
+        for k, piece in enumerate(pieces):
+            a, b = at, at + len(piece)
+            at = b
+            for role, (x, y) in spans.items():
+                if a < y and b > x:
+                    out[role][0].append(po[k])
+                    out[role][1].append(ps[k])
+    assert all(o for o, _ in out.values()), f"{it['scene']}: a role has no token"
+    return out
 
 
 def stage_sweep(name: str, why: str) -> Path:
@@ -395,14 +429,17 @@ def stage_sweep(name: str, why: str) -> Path:
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
          "model": pins.model_pin(), "code": git_state(), "main_run": main_run, "layer": layer, "sweep_layers": layers,
-         "arms": {"bw<l>": "the bridge-word change at layer l", "ls<l>": "S patched into O at every locker-sentence "
-                  "token, at layer l", "none": ARM_TEXT["none"], "S": ARM_TEXT["S"]},
+         "arms": {**{f"{k}<l>": f"{v}, at layer l" for k, v in SWEEP_ARMS.items()}, "none": ARM_TEXT["none"],
+                  "S": ARM_TEXT["S"]},
+         "roles": "item / value / final tokens of every locker sentence by character overlap (role_positions)",
          "items_rule": "as the 45b run (x45b_binding.select)", "read": "as the 45b run",
          "descriptive": "after the data (Dan 26 Oct ~21:20): no rule", "seeds": {"bootstrap": X.BOOT_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
     tok = model.tokenizer
     items, counts = select(tok, main_run, layer)
+    for it in items:
+        it["roles"] = {r: {"org": o, "alt": s} for r, (o, s) in role_positions(tok, it).items()}
     (out / "plan.json").write_text(json.dumps(counts, indent=2) + "\n")
     X.write_jsonl(out / "cases.jsonl", items)
     assert items, "no items"
@@ -419,12 +456,15 @@ def stage_sweep(name: str, why: str) -> Path:
             for la in layers:
                 edits[f"bw{la}"] = {la: AddRows((h["alt"][la][pos] - h["org"][la][pos])[None], [pos])}
                 edits[f"ls{la}"] = {la: AddRows(h["alt"][la][source] - h["org"][la][patched], patched)}
+                for role, arm in ROLE_ARM.items():
+                    o, s = it["roles"][role]["org"], it["roles"][role]["alt"]
+                    edits[f"{arm}{la}"] = {la: AddRows(h["alt"][la][s] - h["org"][la][o], o)}
             for w, rd in it["readers"].items():
                 base = {"scene": it["scene"], "entity": it["entity"], "reader": w}
                 logits, _ = X.read_logits(model, rd["ids"]["org"], list(edits.values()), RENDERING, it["space"], ws)
                 s_logits, _ = X.read_logits(model, rd["ids"]["alt"], [{}], RENDERING, it["space"], ws)
                 for arm, lg in zip((*edits, S_ARM), [*logits, s_logits[0]], strict=True):
-                    la = int(arm[2:]) if arm[:2] in ("bw", "ls") else None
+                    la = int(arm[2:]) if arm[:2] in SWEEP_ARMS else None
                     rows.append({**base, "arm": arm, "layer": la, **X.read_row(lg, rd, digits)})
     X.write_jsonl(out / "outcomes.jsonl", rows)
     print("wrote", out, flush=True)
@@ -432,8 +472,8 @@ def stage_sweep(name: str, why: str) -> Path:
 
 
 def sweep_cells(rows: list[dict], n_boot: int = X.N_BOOT) -> dict[str, list[dict]]:
-    """Per reader and sweep layer: the bridge-word change's and the locker-sentence patch's switch rate over the items,
-    and the patch's share of S's switches (among the items S switches), with cluster-bootstrap CIs over bridge
+    """Per reader and sweep layer: each sweep arm's switch rate over the items (the arms the run has), and each
+    locker-sentence arm's share of S's switches (among the items S switches), with cluster-bootstrap CIs over bridge
     entities."""
     out: dict[str, list[dict]] = {}
     for w in X.READERS:
@@ -444,18 +484,22 @@ def sweep_cells(rows: list[dict], n_boot: int = X.N_BOOT) -> dict[str, list[dict
         arms = sorted({r["arm"] for r in mine})
         cols = {a: [by[(s, a)] for s in scenes] for a in arms}
         layers = sorted({r["layer"] for r in mine if r["layer"] is not None})
+        kinds = [k for k in SWEEP_ARMS if f"{k}{layers[0]}" in cols]
         for la in layers:
-            cols[f"ls{la}_and_S"] = [x & y for x, y in zip(cols[f"ls{la}"], cols[S_ARM], strict=True)]
+            for k in kinds[1:]:  # every locker-sentence arm (not the bridge word)
+                cols[f"{k}{la}_and_S"] = [x & y for x, y in zip(cols[f"{k}{la}"], cols[S_ARM], strict=True)]
         boot = X.resampled_rates(cols, [entity[s] for s in scenes], n_boot)
         n, n_s = len(scenes), sum(cols[S_ARM])
         cells = []
         for la in layers:
-            with np.errstate(divide="ignore", invalid="ignore"):
-                ratio = boot[f"ls{la}_and_S"] / np.where(boot[S_ARM] > 0, boot[S_ARM], np.nan)
-            cells.append({"layer": la, "n": n, "S_switched": n_s,
-                          "bw": [sum(cols[f"bw{la}"]) / n, *X.interval(boot[f"bw{la}"])],
-                          "ls": [sum(cols[f"ls{la}"]) / n, *X.interval(boot[f"ls{la}"])],
-                          "ls_of_S": [sum(cols[f"ls{la}_and_S"]) / n_s if n_s else None, *X.interval(ratio)]})  # fmt: skip
+            cell: dict[str, Any] = {"layer": la, "n": n, "S_switched": n_s}
+            for k in kinds:
+                cell[k] = [sum(cols[f"{k}{la}"]) / n, *X.interval(boot[f"{k}{la}"])]
+                if k != "bw":
+                    with np.errstate(divide="ignore", invalid="ignore"):
+                        ratio = boot[f"{k}{la}_and_S"] / np.where(boot[S_ARM] > 0, boot[S_ARM], np.nan)
+                    cell[f"{k}_of_S"] = [sum(cols[f"{k}{la}_and_S"]) / n_s if n_s else None, *X.interval(ratio)]
+            cells.append(cell)
         out[w] = cells
     return out
 
@@ -470,10 +514,11 @@ def stage_sweep_table(name: str, n_boot: int = X.N_BOOT) -> Path:
              f"Model {m['model']['target']}, L = {m['layer']}; the 45b items (locker after the pick). Switch = the top "
              f"token is S's answer. Cluster bootstrap over bridge entities ({n_boot} resamples). UNVERIFIED.", ""]  # fmt: skip
     for w, rows_ in cells.items():
-        lines += [f"## {'lookup' if w == X.LOOKUP else 'recall'} (n = {rows_[0]['n']}, S switches {rows_[0]['S_switched']})",
-                  "", "| layer | bridge-word change | locker-sentence patch | patch, share of S's switches |",
-                  "|---|---|---|---|"]  # fmt: skip
-        lines += [f"| {c['layer']} | {fmt(c['bw'])} | {fmt(c['ls'])} | {fmt(c['ls_of_S'])} |" for c in rows_]
+        kinds = [k for k in SWEEP_ARMS if k in rows_[0]]
+        lines += [f"## {'lookup' if w == X.LOOKUP else 'recall'} (n = {rows_[0]['n']}, S switches {rows_[0]['S_switched']}): "
+                  "switch rate over the items", "", "| layer | " + " | ".join(SWEEP_ARMS[k] for k in kinds) + " |",
+                  "|---" * (len(kinds) + 1) + "|"]  # fmt: skip
+        lines += [f"| {c['layer']} | " + " | ".join(fmt(c[k]) for k in kinds) + " |" for c in rows_]
         lines.append("")
     (out / "sweep.json").write_text(json.dumps({"run": name, "cells": cells}, indent=1) + "\n")
     (out / "sweep.md").write_text("\n".join(lines) + "\n")
