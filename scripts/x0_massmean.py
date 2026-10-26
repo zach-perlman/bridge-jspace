@@ -396,9 +396,80 @@ def stage_score45g(names: list[str], n_boot: int = X.N_BOOT) -> Path:
     return out
 
 
+ARM_LABELS = {"none": "unedited", "whole": "the whole change", "no_jpp": "without J++", "no_Alf": "without the pointer U",
+              "no_jppAlf": "without J++ and U", "no_jpp_rand": "without a random part (J++'s share)",
+              "no_Alf_rand": "without a random part (U's share)",
+              "no_jppAlf_rand": "without a random part (J++ and U's share)"}  # fmt: skip
+
+
+def examples_blob(tok, name: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED) -> tuple[dict, list[str]]:
+    """k random items (seed) of a run, both readers: the prompt as the model reads it with the bridge word (where the
+    change is added) marked, the sentence order, and each arm's answer (the top token when stored, and its class). The
+    job-page examples.json blob and a Markdown version (as x0b_generalize's 45d examples)."""
+    import random
+
+    from scripts import suite_v1 as S
+    from scripts.x0b_generalize import MARK, marked_prompt
+
+    src = RESULTS / name
+    m = json.loads((src / "manifest.json").read_text())
+    X.ALT = m.get("alt", "single")  # before batch 45 every run was on a one-pick run
+    cases = {c["scene"]: c for c in X.build_cases(tok, m["set"])[0] if c["rendering"] == "chat"}
+    rows = X.read_jsonl(src / "outcomes.jsonl")
+    got = {(r["scene"], r["reader"], r["arm"]): r for r in rows}
+    arms = list(dict.fromkeys(r["arm"] for r in rows))
+    scenes = sorted({r["scene"] for r in rows})
+    pick = sorted(random.Random(seed).sample(scenes, min(k, len(scenes))))
+    space = S.ids(tok, " ")
+    role = {"b": "changed answer", "A": "original answer", "other": "other"}
+    examples, md = [], [f"# Examples: {name} (mode {m['mode']})", "",
+                        f"{len(pick)} random items (seed {seed}) of {len(scenes)}; the prompt as the model reads it (the chat "
+                        f"read appends a space), {MARK[0]}the bridge word{MARK[1]} where the change is added at layer "
+                        f"{m['layer']}; each arm's answer = the top token at the read step. UNVERIFIED.", ""]  # fmt: skip
+    for s in pick:
+        c = cases[s]
+        order = next((r.get("org_order") for r in rows if r["scene"] == s), None)
+        md += [f"## {s} (bridge {c['bridge']} -> {c['cf_bridge']}; its locker sentence {order or '?'} the pick)", ""]
+        for w, rd in c["readers"].items():
+            text, a, b = marked_prompt(tok, rd["ids"]["org"], c["pos"], space)
+            answers = {}
+            for arm in arms:
+                r = got.get((s, w, arm))
+                if r is not None:
+                    top = repr(tok.decode([r["top"]])) if "top" in r else "(not stored)"
+                    answers[ARM_LABELS.get(arm, arm)] = f"{top}, {role[r['role']]}"
+            reader = "lookup" if w == X.LOOKUP else "recall"
+            examples.append({"group": reader, "family": reader, "item_id": s, "prompt": text,
+                             "spans": [{"start": a, "end": b, "role": "patch position (the bridge word)"}],
+                             "condition": f"the bridge {c['bridge']} -> {c['cf_bridge']} at layer {m['layer']}; its "
+                                          f"locker sentence {order or '?'} the pick",
+                             "answers": {"clean": rd["answer"], "edited": answers.get("the whole change"),
+                                         "expected": {"original": rd["answer"], "changed": rd["cf_answer"]}},
+                             "numbers": answers, "why": f"random item (seed {seed})"})  # fmt: skip
+            md += [f"**{reader}** (original {rd['answer']}, changed {rd['cf_answer']})", "", "```",
+                   text[:a] + MARK[0] + text[a:b] + MARK[1] + text[b:], "```", "", "| arm | answer |", "|---|---|",
+                   *(f"| {label} | {ans} |" for label, ans in answers.items()), ""]  # fmt: skip
+    blob = {"exp": EXP, "run": name, "seed": seed, "k": k,
+            "groups": [{"key": g, "title": g, "definition": f"the {g} reader on the same patch", "n_total": len(pick)}
+                       for g in ("lookup", "recall")], "examples": examples}  # fmt: skip
+    return blob, md
+
+
+def stage_examples(name: str) -> Path:
+    from scripts import statement_positions as SP
+
+    path = RESULTS / name / "examples.json"
+    assert not path.exists(), f"{path} exists; written once"
+    blob, md = examples_blob(SP.load_tokenizer(), name)
+    path.write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
+    (RESULTS / name / "examples.md").write_text("\n".join(md) + "\n")
+    print("wrote", path, len(blob["examples"]), "examples")
+    return path
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["run", "verdict", "score45g"])
+    ap.add_argument("stage", choices=["run", "verdict", "score45g", "examples"])
     ap.add_argument("--name", help="run / verdict: the run name")
     ap.add_argument("--names", nargs="+", default=[], help="score45g: the batch-45g runs")
     ap.add_argument("--single", default="x0_single_27b_r2")
@@ -408,6 +479,9 @@ def main() -> None:
     a = ap.parse_args()
     if a.stage == "score45g":
         stage_score45g(a.names, a.n_boot)
+        return
+    if a.stage == "examples":
+        stage_examples(a.name)
         return
     if a.stage == "run":
         stage_run(a.name, a.single, a.states, a.mode)
