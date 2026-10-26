@@ -1659,3 +1659,20 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     directions. <= 1/3 at K = 100 means it is not in J-space at that depth. Otherwise, partial.
   - Size caveat: a top-100 span takes more of the residual than top-10. The rotated K-span is the same-size control,
     and the logit lens at K is the same-rule control.
+
+**Amendment 52, note 1 (Zach, 2026-10-26 17:56 UTC; Zach: "Can we speed it up?"): the K-span projection by the normal equations for Bolt's K = 30/100 runs.**
+- **Why:** the first try ran at ~0.8 rows/s, about 5 h for the knock-out. ablate.top_span_removal projects each position on
+  its top-K atoms through a batched fp64 QR of a d x K matrix, which dominates at K = 100.
+- **Change:** with BJ_GRAM_PROJ=1, the same projection is computed by the K x K normal equations in fp64
+  (A^T (A A^T + 1e-10 I)^-1 A x).
+  - Speed: ~11x faster at K = 100 on random data (0.19 s vs 2.18 s per call), ~9x at K = 10.
+  - Random data: equal to QR to 4e-13.
+  - Real data (the 9B's J++ lens and WikiText residuals at L14, K = 10/30/100, J++ and identity dictionaries):
+    per-position relative difference <= 1.3e-8.
+  - QR stays the default. The flag is set only in scripts/queues/h200_boltk_1026.sh, so no earlier run or rerun is
+    affected.
+- **Discarded:** the first (QR) knock-out was stopped at 325 items and moved to
+  scratch/killed_1025/nem35b_k30k100_qr_partial. Its interim numbers were seen (68 memory items, the shortest prompts
+  first): M - K top30 +1.5, top30_rot 0, top100 +20.6, top100_rot +1.5, unembed30 0, unembed100 0, K lost 0. They are
+  not used. The rerun covers the same 150 random items per word from the start. The removal sizes (K = 10/30/100) from
+  the first try stand.

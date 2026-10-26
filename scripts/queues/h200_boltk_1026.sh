@@ -5,7 +5,7 @@
 set -u
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
-export UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True CUDA_VISIBLE_DEVICES=0,1 BJ_TARGET=nemotron-3.5-bolt
+export UV_CACHE_DIR=/workspace/uv-cache PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True CUDA_VISIBLE_DEVICES=0,1 BJ_TARGET=nemotron-3.5-bolt BJ_GRAM_PROJ=1  # amendment 52 note 1
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 W="Zach (2026-10-26, prereg amendment 52)"
