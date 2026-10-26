@@ -168,5 +168,15 @@ tests:
       lookup's extra loss in C0 (switches lost without the part minus without its random part, over the whole change's
       switches), as the main-test curve that motivates the test. Each label is evaluated per model; Q45.9 is scored on
       the 27B: the labels that hold there, "can't tell" if none.
+    overrides: >-
+      Dan 26 Oct ~22:05, before any 45k job starts (they replace the readings above where they differ). 1. Precondition:
+      report the 27B's C0 lookup extra loss at k = 100 (no_jpp100 vs its random part); if it is below 0.2, the verdict is
+      "can't tell: the main-test curve does not reproduce in routes scenes", whatever the other clauses say. 2. "Generic
+      fitting" is computed on the main test, where the curve lives: the 27B's main-test items (d1_topics_v3, chat, L32),
+      jpp_other at k = 100 against its random part, compared with this scene's J++ at k = 100 from the existing kmatch run
+      (results/x0_necessity/x0_kmatch_27b, jpp k = 100 signed); "costs" = the lookup's extra loss; generic if jpp_other's
+      >= 2/3 of J++'s (point estimates). A separate job (about 0.3 GPU-h). The routes jpp_other arm stays, descriptive.
+      3. Precedence for Q45.9: if "generic" holds, it is the verdict; otherwise the labels that hold; otherwise "can't
+      tell". The other readings stay as fixed above.
     queue: after the 45b sweep, before the 122B block; if the queue cannot finish by Tue 10:00, cut 45a on the 122B first.
     gpu_hours: 1.5
