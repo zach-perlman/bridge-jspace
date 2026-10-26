@@ -1,0 +1,41 @@
+{
+  "run": "nem35l_jswap_xrel_v2_v1",
+  "why": "Zach (2026-10-26, prereg amendment 50): nemotron-3.5-lightning, the cross-relation swap at L27-33",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": "jpp",
+  "band": "27-33",
+  "set": "jsuite_v2_test_chat",
+  "competence": "nem35l_jsuite_v2_test_chat_competence_cand2_v1",
+  "relations": [
+    "countries",
+    "languages"
+  ],
+  "conditions": [
+    "swap",
+    "swap_srel",
+    "swap_xrel",
+    "swap_xrel_rot",
+    "swap_xrel_u",
+    "paste_xrel"
+  ],
+  "k": 10,
+  "git_commit": "b60d92066a6477cce9533e1dffd252e952c30c6e",
+  "git_state": {
+    "head": "b60d92066a6477cce9533e1dffd252e952c30c6e",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "seed": "random.Random(item id)"
+}

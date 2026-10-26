@@ -1,0 +1,29 @@
+{
+  "run": "nem35b_jswap_v2_L44-55_v1",
+  "why": "Zach (2026-10-25, prereg amendment 44): nemotron-3.5-bolt, the swap at mid depth L44-55",
+  "target": "nemotron-3.5-bolt",
+  "band": "44-55",
+  "set": "jsuite_v2_test_chat",
+  "competence": "nem35b_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "e13839d29aa8e105541096072ff21bbe01f125a0",
+  "git_state": {
+    "head": "e13839d29aa8e105541096072ff21bbe01f125a0",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "sample_per_word": 0,
+  "sample_seed": 0
+}

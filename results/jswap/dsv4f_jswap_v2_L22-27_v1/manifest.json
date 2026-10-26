@@ -1,0 +1,19 @@
+{
+  "run": "dsv4f_jswap_v2_L22-27_v1",
+  "why": "Zach (2026-10-25, prereg amendment 42): deepseek-v4-flash, the swap at mid depth L22-27",
+  "target": "deepseek-v4-flash",
+  "band": "22-27",
+  "set": "jsuite_v2_test_chat",
+  "competence": "dsv4f_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "ebc781c772ce6a8c277586a2193b7afc5fa5c7d4",
+  "limit": 0
+}

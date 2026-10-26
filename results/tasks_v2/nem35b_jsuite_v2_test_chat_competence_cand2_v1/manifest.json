@@ -1,0 +1,43 @@
+{
+  "run": "nem35b_jsuite_v2_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-25, prereg amendment 40): nemotron-3.5-bolt on jsuite_v2_test_chat",
+  "set": "jsuite_v2_test_chat",
+  "model": {
+    "target": "nemotron-3.5-bolt",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+    "revision": "e09a4cedb1787db1760375ee5539f222cae0c672",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "e13839d29aa8e105541096072ff21bbe01f125a0",
+  "git_state": {
+    "head": "e13839d29aa8e105541096072ff21bbe01f125a0",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "PP",
+    "PK",
+    "PM",
+    "PA",
+    "PN",
+    "MP",
+    "MK",
+    "MM",
+    "MA",
+    "MN",
+    "TP",
+    "TK",
+    "TM",
+    "TA",
+    "TN"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-26T10:03:48Z"
+}

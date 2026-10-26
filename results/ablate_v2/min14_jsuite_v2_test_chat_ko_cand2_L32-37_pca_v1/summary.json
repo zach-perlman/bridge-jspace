@@ -1,0 +1,208 @@
+{
+  "seconds": 1290,
+  "band_seconds": {
+    "L32-37": 1102
+  },
+  "unedited_accuracy": {
+    "PP/clean": 1,
+    "MA/clean": 1,
+    "MN/clean": 1,
+    "MM/clean": 1,
+    "MP/clean": 1,
+    "PK/clean": 1,
+    "PM/clean": 1,
+    "PA/clean": 1,
+    "PN/clean": 1,
+    "MK/clean": 1,
+    "TP/clean": 1,
+    "TA/clean": 1,
+    "TK/clean": 1,
+    "TN/clean": 1,
+    "TM/clean": 1
+  },
+  "cells": {
+    "L32-37": {
+      "PP/clean": {
+        "paper10_pcasize": {
+          "n": 284,
+          "accuracy": 0.9753521126760564,
+          "dlogp": 0.04798324923001313
+        },
+        "pca1": {
+          "n": 284,
+          "accuracy": 0.9683098591549296,
+          "dlogp": -0.0333503017661481
+        }
+      },
+      "MA/clean": {
+        "paper10_pcasize": {
+          "n": 241,
+          "accuracy": 0.9875518672199171,
+          "dlogp": -0.03579878346084632
+        },
+        "pca1": {
+          "n": 241,
+          "accuracy": 0.9875518672199171,
+          "dlogp": -0.10354713467429794
+        }
+      },
+      "MN/clean": {
+        "paper10_pcasize": {
+          "n": 241,
+          "accuracy": 0.991701244813278,
+          "dlogp": -0.08269475742795238
+        },
+        "pca1": {
+          "n": 241,
+          "accuracy": 0.9875518672199171,
+          "dlogp": -0.11430674200102613
+        }
+      },
+      "MM/clean": {
+        "paper10_pcasize": {
+          "n": 241,
+          "accuracy": 0.9875518672199171,
+          "dlogp": -0.06892040406085799
+        },
+        "pca1": {
+          "n": 241,
+          "accuracy": 0.9875518672199171,
+          "dlogp": -0.09464880212220263
+        }
+      },
+      "MP/clean": {
+        "paper10_pcasize": {
+          "n": 241,
+          "accuracy": 0.979253112033195,
+          "dlogp": 0.08470577316952341
+        },
+        "pca1": {
+          "n": 241,
+          "accuracy": 0.9543568464730291,
+          "dlogp": 0.004548961832441672
+        }
+      },
+      "PK/clean": {
+        "paper10_pcasize": {
+          "n": 284,
+          "accuracy": 1,
+          "dlogp": -0.013550483059441856
+        },
+        "pca1": {
+          "n": 284,
+          "accuracy": 1,
+          "dlogp": -0.10942014086888353
+        }
+      },
+      "PM/clean": {
+        "paper10_pcasize": {
+          "n": 284,
+          "accuracy": 0.9964788732394366,
+          "dlogp": -0.08069687886061626
+        },
+        "pca1": {
+          "n": 284,
+          "accuracy": 0.9929577464788732,
+          "dlogp": -0.1517620140266829
+        }
+      },
+      "PA/clean": {
+        "paper10_pcasize": {
+          "n": 284,
+          "accuracy": 0.9964788732394366,
+          "dlogp": -0.053762633552478165
+        },
+        "pca1": {
+          "n": 284,
+          "accuracy": 0.9964788732394366,
+          "dlogp": -0.14439432379272532
+        }
+      },
+      "PN/clean": {
+        "paper10_pcasize": {
+          "n": 284,
+          "accuracy": 1,
+          "dlogp": -0.14206204774287265
+        },
+        "pca1": {
+          "n": 284,
+          "accuracy": 0.9964788732394366,
+          "dlogp": -0.2352332527104191
+        }
+      },
+      "MK/clean": {
+        "paper10_pcasize": {
+          "n": 241,
+          "accuracy": 1,
+          "dlogp": 0.006898230965371452
+        },
+        "pca1": {
+          "n": 241,
+          "accuracy": 1,
+          "dlogp": -0.047891829978150904
+        }
+      },
+      "TP/clean": {
+        "paper10_pcasize": {
+          "n": 120,
+          "accuracy": 0.9166666666666666,
+          "dlogp": 0.1171030578261707
+        },
+        "pca1": {
+          "n": 120,
+          "accuracy": 0.9,
+          "dlogp": 0.006359873637105314
+        }
+      },
+      "TA/clean": {
+        "paper10_pcasize": {
+          "n": 120,
+          "accuracy": 0.9833333333333333,
+          "dlogp": -0.04938192926013774
+        },
+        "pca1": {
+          "n": 120,
+          "accuracy": 0.9666666666666667,
+          "dlogp": -0.11101586433020809
+        }
+      },
+      "TK/clean": {
+        "paper10_pcasize": {
+          "n": 120,
+          "accuracy": 1,
+          "dlogp": 0.002991858758014132
+        },
+        "pca1": {
+          "n": 120,
+          "accuracy": 1,
+          "dlogp": -0.0717817822478537
+        }
+      },
+      "TN/clean": {
+        "paper10_pcasize": {
+          "n": 120,
+          "accuracy": 0.975,
+          "dlogp": -0.049995871890011284
+        },
+        "pca1": {
+          "n": 120,
+          "accuracy": 0.9916666666666667,
+          "dlogp": -0.06075202582323982
+        }
+      },
+      "TM/clean": {
+        "paper10_pcasize": {
+          "n": 120,
+          "accuracy": 0.9583333333333334,
+          "dlogp": -0.07804361457019696
+        },
+        "pca1": {
+          "n": 120,
+          "accuracy": 0.9666666666666667,
+          "dlogp": -0.06306717099323578
+        }
+      }
+    }
+  },
+  "sink_positions": {}
+}

@@ -1,0 +1,32 @@
+{
+  "run": "jswap_xrel_v2_v1",
+  "why": "Zach (2026-10-25, prereg amendment 47): qwen3.6-27b, the cross-relation swap at L32-40",
+  "target": "qwen3.6-27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "band": "32-40",
+  "set": "jsuite_v2_test_chat",
+  "competence": "jsuite_v2_test_chat_competence_cand2_v1",
+  "relations": [
+    "countries",
+    "languages"
+  ],
+  "conditions": [
+    "swap",
+    "swap_srel",
+    "swap_xrel",
+    "swap_xrel_rot",
+    "swap_xrel_u",
+    "paste_xrel"
+  ],
+  "k": 10,
+  "git_commit": "1a5a861f1bfe67bf06d830fe63a7219b2b8f63e0",
+  "limit": 0,
+  "seed": "random.Random(item id)"
+}

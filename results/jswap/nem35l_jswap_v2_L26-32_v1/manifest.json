@@ -1,0 +1,29 @@
+{
+  "run": "nem35l_jswap_v2_L26-32_v1",
+  "why": "Zach (2026-10-25, prereg amendment 42): nemotron-3.5-lightning, the swap at mid depth L26-32",
+  "target": "nemotron-3.5-lightning",
+  "band": "26-32",
+  "set": "jsuite_v2_test_chat",
+  "competence": "nem35l_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 10,
+  "git_commit": "253df7760277d13f427c0ed3f57a207e8de04b72",
+  "git_state": {
+    "head": "253df7760277d13f427c0ed3f57a207e8de04b72",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "sample_per_word": 0,
+  "sample_seed": 0
+}

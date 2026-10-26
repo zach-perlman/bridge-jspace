@@ -1,0 +1,766 @@
+{
+  "seconds": 1043,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 179,
+      "whole": 0.81,
+      "all_steps": 0.994,
+      "median_margin": 3.62,
+      "guess": 0.391,
+      "top_wrong": [
+        [
+          "South",
+          2
+        ],
+        [
+          "A",
+          2
+        ],
+        [
+          "H",
+          2
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 179,
+      "whole": 0.804,
+      "all_steps": 1,
+      "median_margin": 4.0,
+      "guess": 0.201,
+      "top_wrong": [
+        [
+          "Europe",
+          5
+        ],
+        [
+          "A",
+          2
+        ],
+        [
+          "Sw",
+          2
+        ]
+      ]
+    },
+    "PK/L0": {
+      "n": 179,
+      "whole": 0.994,
+      "all_steps": 1,
+      "median_margin": 5.0,
+      "guess": 0.285,
+      "top_wrong": [
+        [
+          "m",
+          1
+        ]
+      ]
+    },
+    "PK/L1": {
+      "n": 179,
+      "whole": 0.983,
+      "all_steps": 0.994,
+      "median_margin": 4.88,
+      "guess": 0.162,
+      "top_wrong": [
+        [
+          "Russian",
+          1
+        ],
+        [
+          "French",
+          1
+        ],
+        [
+          "Australia",
+          1
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 179,
+      "whole": 0.961,
+      "all_steps": 0.994,
+      "median_margin": 3.5,
+      "guess": 0.196,
+      "top_wrong": [
+        [
+          "German",
+          1
+        ],
+        [
+          "Spain",
+          1
+        ],
+        [
+          "France",
+          1
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 179,
+      "whole": 0.955,
+      "all_steps": 1,
+      "median_margin": 3.0,
+      "guess": 0.112,
+      "top_wrong": [
+        [
+          "German",
+          2
+        ],
+        [
+          "C",
+          1
+        ],
+        [
+          "Spanish",
+          1
+        ]
+      ]
+    },
+    "PA/L0": {
+      "n": 179,
+      "whole": 0.972,
+      "all_steps": 1,
+      "median_margin": 3.75,
+      "guess": 0.536,
+      "top_wrong": [
+        [
+          "W",
+          1
+        ],
+        [
+          "France",
+          1
+        ],
+        [
+          "China",
+          1
+        ]
+      ]
+    },
+    "PA/L1": {
+      "n": 179,
+      "whole": 0.95,
+      "all_steps": 1,
+      "median_margin": 3.0,
+      "guess": 0.324,
+      "top_wrong": [
+        [
+          "German",
+          2
+        ],
+        [
+          "C",
+          1
+        ],
+        [
+          "English",
+          1
+        ]
+      ]
+    },
+    "PN/L0": {
+      "n": 179,
+      "whole": 0.978,
+      "all_steps": 1,
+      "median_margin": 4.12,
+      "guess": 0.257,
+      "top_wrong": [
+        [
+          "Port",
+          1
+        ],
+        [
+          "India",
+          1
+        ],
+        [
+          "In",
+          1
+        ]
+      ]
+    },
+    "PN/L1": {
+      "n": 179,
+      "whole": 0.961,
+      "all_steps": 0.989,
+      "median_margin": 3.5,
+      "guess": 0.128,
+      "top_wrong": [
+        [
+          "C",
+          1
+        ],
+        [
+          "Italian",
+          1
+        ],
+        [
+          "French",
+          1
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 179,
+      "whole": 0.771,
+      "all_steps": 0.955,
+      "median_margin": 2.62,
+      "guess": 0.38,
+      "top_wrong": [
+        [
+          "Europe",
+          4
+        ],
+        [
+          "A",
+          3
+        ],
+        [
+          "Asia",
+          3
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 179,
+      "whole": 0.57,
+      "all_steps": 0.95,
+      "median_margin": 1.0,
+      "guess": 0.279,
+      "top_wrong": [
+        [
+          "A",
+          5
+        ],
+        [
+          "Sw",
+          5
+        ],
+        [
+          "Italy",
+          5
+        ]
+      ]
+    },
+    "MK/L0": {
+      "n": 179,
+      "whole": 0.978,
+      "all_steps": 0.983,
+      "median_margin": 4.75,
+      "guess": 0.324,
+      "top_wrong": [
+        [
+          "Port",
+          1
+        ],
+        [
+          "French",
+          1
+        ],
+        [
+          "Spain",
+          1
+        ]
+      ]
+    },
+    "MK/L1": {
+      "n": 179,
+      "whole": 0.933,
+      "all_steps": 0.978,
+      "median_margin": 4.38,
+      "guess": 0.201,
+      "top_wrong": [
+        [
+          "rept",
+          2
+        ],
+        [
+          "South",
+          1
+        ],
+        [
+          "Europe",
+          1
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 179,
+      "whole": 0.966,
+      "all_steps": 0.978,
+      "median_margin": 3.75,
+      "guess": 0.056,
+      "top_wrong": [
+        [
+          "D",
+          1
+        ],
+        [
+          "Spanish",
+          1
+        ],
+        [
+          "Italy",
+          1
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 179,
+      "whole": 0.922,
+      "all_steps": 0.961,
+      "median_margin": 3.38,
+      "guess": 0.017,
+      "top_wrong": [
+        [
+          "C",
+          1
+        ],
+        [
+          "South",
+          1
+        ],
+        [
+          "Asia",
+          1
+        ]
+      ]
+    },
+    "MA/L0": {
+      "n": 179,
+      "whole": 0.978,
+      "all_steps": 0.972,
+      "median_margin": 3.75,
+      "guess": 0.615,
+      "top_wrong": [
+        [
+          "South",
+          1
+        ],
+        [
+          "D",
+          1
+        ],
+        [
+          "Bird",
+          1
+        ]
+      ]
+    },
+    "MA/L1": {
+      "n": 179,
+      "whole": 0.95,
+      "all_steps": 0.972,
+      "median_margin": 3.62,
+      "guess": 0.307,
+      "top_wrong": [
+        [
+          "C",
+          1
+        ],
+        [
+          "South",
+          1
+        ],
+        [
+          "English",
+          1
+        ]
+      ]
+    },
+    "MN/L0": {
+      "n": 179,
+      "whole": 0.955,
+      "all_steps": 0.978,
+      "median_margin": 4.0,
+      "guess": 0.128,
+      "top_wrong": [
+        [
+          "South",
+          1
+        ],
+        [
+          "English",
+          1
+        ],
+        [
+          "French",
+          1
+        ]
+      ]
+    },
+    "MN/L1": {
+      "n": 179,
+      "whole": 0.944,
+      "all_steps": 0.961,
+      "median_margin": 3.62,
+      "guess": 0.089,
+      "top_wrong": [
+        [
+          "M",
+          2
+        ],
+        [
+          "C",
+          1
+        ],
+        [
+          "Europe",
+          1
+        ]
+      ]
+    },
+    "TP/L0": {
+      "n": 179,
+      "whole": 0.447,
+      "all_steps": 0.81,
+      "median_margin": -0.88,
+      "guess": 0.274,
+      "top_wrong": [
+        [
+          "G",
+          6
+        ],
+        [
+          "Sw",
+          6
+        ],
+        [
+          "Europe",
+          5
+        ]
+      ]
+    },
+    "TP/L1": {
+      "n": 179,
+      "whole": 0.48,
+      "all_steps": 0.726,
+      "median_margin": -0.25,
+      "guess": 0.296,
+      "top_wrong": [
+        [
+          "Sw",
+          6
+        ],
+        [
+          "Den",
+          6
+        ],
+        [
+          "Germany",
+          5
+        ]
+      ]
+    },
+    "TK/L0": {
+      "n": 179,
+      "whole": 0.682,
+      "all_steps": 0.849,
+      "median_margin": 2.12,
+      "guess": 0.402,
+      "top_wrong": [
+        [
+          "G",
+          6
+        ],
+        [
+          "A",
+          4
+        ],
+        [
+          "South",
+          3
+        ]
+      ]
+    },
+    "TK/L1": {
+      "n": 179,
+      "whole": 0.603,
+      "all_steps": 0.737,
+      "median_margin": 1.5,
+      "guess": 0.385,
+      "top_wrong": [
+        [
+          "rept",
+          4
+        ],
+        [
+          "South",
+          3
+        ],
+        [
+          "French",
+          3
+        ]
+      ]
+    },
+    "TM/L0": {
+      "n": 179,
+      "whole": 0.447,
+      "all_steps": 0.894,
+      "median_margin": -0.38,
+      "guess": 0.184,
+      "top_wrong": [
+        [
+          "A",
+          6
+        ],
+        [
+          "South",
+          6
+        ],
+        [
+          "Dan",
+          6
+        ]
+      ]
+    },
+    "TM/L1": {
+      "n": 179,
+      "whole": 0.397,
+      "all_steps": 0.777,
+      "median_margin": -0.88,
+      "guess": 0.123,
+      "top_wrong": [
+        [
+          "Sw",
+          8
+        ],
+        [
+          "A",
+          6
+        ],
+        [
+          "Japan",
+          6
+        ]
+      ]
+    },
+    "TA/L0": {
+      "n": 179,
+      "whole": 0.704,
+      "all_steps": 0.877,
+      "median_margin": 1.12,
+      "guess": 0.385,
+      "top_wrong": [
+        [
+          "am",
+          4
+        ],
+        [
+          "South",
+          3
+        ],
+        [
+          "Sw",
+          3
+        ]
+      ]
+    },
+    "TA/L1": {
+      "n": 179,
+      "whole": 0.62,
+      "all_steps": 0.777,
+      "median_margin": 0.75,
+      "guess": 0.369,
+      "top_wrong": [
+        [
+          "Sw",
+          6
+        ],
+        [
+          "Japan",
+          5
+        ],
+        [
+          "A",
+          4
+        ]
+      ]
+    },
+    "TN/L0": {
+      "n": 179,
+      "whole": 0.676,
+      "all_steps": 0.855,
+      "median_margin": 1.12,
+      "guess": 0.313,
+      "top_wrong": [
+        [
+          "South",
+          4
+        ],
+        [
+          "Spain",
+          4
+        ],
+        [
+          "m",
+          4
+        ]
+      ]
+    },
+    "TN/L1": {
+      "n": 179,
+      "whole": 0.587,
+      "all_steps": 0.737,
+      "median_margin": 0.38,
+      "guess": 0.352,
+      "top_wrong": [
+        [
+          "Europe",
+          5
+        ],
+        [
+          "South",
+          5
+        ],
+        [
+          "Spanish",
+          4
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "animals": {
+      "PP": 0.882,
+      "PK": 0.971,
+      "PM": 0.941,
+      "PA": 0.941,
+      "PN": 0.912,
+      "MP": 0.676,
+      "MK": 0.912,
+      "MM": 0.853,
+      "MA": 0.882,
+      "MN": 0.853,
+      "TP": 0.559,
+      "TK": 0.529,
+      "TM": 0.471,
+      "TA": 0.529,
+      "TN": 0.5
+    },
+    "cities": {
+      "PP": 0.808,
+      "PK": 1,
+      "PM": 0.942,
+      "PA": 0.981,
+      "PN": 1,
+      "MP": 0.615,
+      "MK": 0.923,
+      "MM": 0.942,
+      "MA": 0.981,
+      "MN": 0.942,
+      "TP": 0.481,
+      "TK": 0.769,
+      "TM": 0.481,
+      "TA": 0.654,
+      "TN": 0.788
+    },
+    "companies": {
+      "PP": 0.929,
+      "PK": 1,
+      "PM": 0.929,
+      "PA": 0.929,
+      "PN": 0.952,
+      "MP": 0.857,
+      "MK": 0.976,
+      "MM": 0.976,
+      "MA": 1,
+      "MN": 0.976,
+      "TP": 0.5,
+      "TK": 0.714,
+      "TM": 0.381,
+      "TA": 0.619,
+      "TN": 0.595
+    },
+    "countries": {
+      "PP": 0.792,
+      "PK": 1,
+      "PM": 0.979,
+      "PA": 0.979,
+      "PN": 0.979,
+      "MP": 0.417,
+      "MK": 0.958,
+      "MM": 0.938,
+      "MA": 0.938,
+      "MN": 0.938,
+      "TP": 0.458,
+      "TK": 0.729,
+      "TM": 0.521,
+      "TA": 0.688,
+      "TN": 0.708
+    },
+    "dishes": {
+      "PP": 0.763,
+      "PK": 1,
+      "PM": 0.947,
+      "PA": 0.974,
+      "PN": 0.974,
+      "MP": 0.737,
+      "MK": 1,
+      "MM": 1,
+      "MA": 1,
+      "MN": 1,
+      "TP": 0.605,
+      "TK": 0.763,
+      "TM": 0.553,
+      "TA": 0.789,
+      "TN": 0.763
+    },
+    "landmarks": {
+      "PP": 0.714,
+      "PK": 0.976,
+      "PM": 1,
+      "PA": 0.976,
+      "PN": 1,
+      "MP": 0.738,
+      "MK": 0.976,
+      "MM": 0.905,
+      "MA": 0.952,
+      "MN": 0.976,
+      "TP": 0.357,
+      "TK": 0.476,
+      "TM": 0.405,
+      "TA": 0.595,
+      "TN": 0.595
+    },
+    "languages": {
+      "PP": 0.75,
+      "PK": 1,
+      "PM": 1,
+      "PA": 0.95,
+      "PN": 0.975,
+      "MP": 0.475,
+      "MK": 0.9,
+      "MM": 0.975,
+      "MA": 0.975,
+      "MN": 0.95,
+      "TP": 0.45,
+      "TK": 0.6,
+      "TM": 0.65,
+      "TA": 0.725,
+      "TN": 0.625
+    },
+    "people": {
+      "PP": 0.823,
+      "PK": 0.968,
+      "PM": 0.935,
+      "PA": 0.952,
+      "PN": 0.952,
+      "MP": 0.823,
+      "MK": 0.984,
+      "MM": 0.952,
+      "MA": 0.968,
+      "MN": 0.952,
+      "TP": 0.371,
+      "TK": 0.548,
+      "TM": 0.081,
+      "TA": 0.677,
+      "TN": 0.484
+    }
+  },
+  "pick": {}
+}

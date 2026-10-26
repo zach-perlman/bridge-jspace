@@ -1,0 +1,35 @@
+{
+  "run": "qwen35_9b_jsuite_v2_dev_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-25, prereg amendment 42): qwen3.5-9b on jsuite_v2_dev_chat",
+  "set": "jsuite_v2_dev_chat",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "28df98bc846342a42cb71812c88ee72c89c18b2e",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "PP",
+    "PK",
+    "PM",
+    "PA",
+    "PN",
+    "MP",
+    "MK",
+    "MM",
+    "MA",
+    "MN",
+    "TP",
+    "TK",
+    "TM",
+    "TA",
+    "TN"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-25T18:33:55Z"
+}

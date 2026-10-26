@@ -1,0 +1,57 @@
+{
+  "run": "nem35b_textloss_top_v2gate_v1",
+  "why": "Zach (2026-10-25, prereg amendment 40): nemotron-3.5-bolt plain-text gate",
+  "written_utc": "2026-10-26T06:05:18Z",
+  "model": {
+    "target": "nemotron-3.5-bolt",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+    "revision": "e09a4cedb1787db1760375ee5539f222cae0c672",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "a29ea5bf92976c202c65a72a3a0e139bfd19ea68353722bbab78a094d8e24040"
+  ],
+  "layers": [
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60
+  ],
+  "conditions": [
+    "none",
+    "top10",
+    "top10_rot"
+  ],
+  "doc": "python scripts/removal_textloss.py --name N --why W --layers L [L ...] [--conditions none jspace rotated top10 top10_rot]\n"
+}

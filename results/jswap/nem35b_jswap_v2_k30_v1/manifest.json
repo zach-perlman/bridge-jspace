@@ -1,0 +1,29 @@
+{
+  "run": "nem35b_jswap_v2_k30_v1",
+  "why": "Zach (2026-10-26, prereg amendment 52): Bolt J-part swap with K 30 at L42-53",
+  "target": "nemotron-3.5-bolt",
+  "band": "42-53",
+  "set": "jsuite_v2_test_chat",
+  "competence": "nem35b_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 30,
+  "git_commit": "2a2822f59a4309a8fe8fde44f05f53cf73efc9b3",
+  "git_state": {
+    "head": "2a2822f59a4309a8fe8fde44f05f53cf73efc9b3",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "sample_per_word": 150,
+  "sample_seed": 0
+}

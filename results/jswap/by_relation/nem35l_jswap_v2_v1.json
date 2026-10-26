@@ -1,0 +1,752 @@
+{
+ "run": "nem35l_jswap_v2_v1",
+ "set": "jsuite_v2_test_chat",
+ "finals": "M A N pooled",
+ "by_relation": {
+  "animals": {
+   "MEM/none": {
+    "n": 105,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 102,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap": {
+    "n": 105,
+    "kept": 79.0,
+    "donor": 11.4,
+    "third": 1.9,
+    "other": 7.6,
+    "n_third": 102,
+    "transfer": 9.8,
+    "ci": [
+     2.0,
+     19.5
+    ]
+   },
+   "MEM/remove": {
+    "n": 105,
+    "kept": 97.1,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 2.9,
+    "n_third": 102,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap_rot": {
+    "n": 105,
+    "kept": 99.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 1.0,
+    "n_third": 102,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap_u": {
+    "n": 105,
+    "kept": 99.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 1.0,
+    "n_third": 102,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap_comp": {
+    "n": 105,
+    "kept": 70.5,
+    "donor": 3.8,
+    "third": 5.7,
+    "other": 20.0,
+    "n_third": 102,
+    "transfer": -2.0,
+    "ci": [
+     -6.1,
+     1.7
+    ]
+   },
+   "MEM/paste": {
+    "n": 105,
+    "kept": 68.6,
+    "donor": 6.7,
+    "third": 6.7,
+    "other": 18.1,
+    "n_third": 102,
+    "transfer": 0.0,
+    "ci": [
+     -3.0,
+     2.7
+    ]
+   }
+  },
+  "cities": {
+   "MEM/none": {
+    "n": 165,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 165,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap": {
+    "n": 165,
+    "kept": 32.1,
+    "donor": 59.4,
+    "third": 1.2,
+    "other": 7.3,
+    "n_third": 165,
+    "transfer": 58.2,
+    "ci": [
+     49.1,
+     67.4
+    ]
+   },
+   "MEM/remove": {
+    "n": 165,
+    "kept": 72.1,
+    "donor": 3.0,
+    "third": 4.2,
+    "other": 20.6,
+    "n_third": 165,
+    "transfer": -1.2,
+    "ci": [
+     -4.6,
+     2.0
+    ]
+   },
+   "MEM/swap_rot": {
+    "n": 165,
+    "kept": 97.6,
+    "donor": 0.0,
+    "third": 0.6,
+    "other": 1.8,
+    "n_third": 165,
+    "transfer": -0.6,
+    "ci": [
+     -2.1,
+     0.0
+    ]
+   },
+   "MEM/swap_u": {
+    "n": 165,
+    "kept": 98.2,
+    "donor": 0.0,
+    "third": 0.6,
+    "other": 1.2,
+    "n_third": 165,
+    "transfer": -0.6,
+    "ci": [
+     -2.0,
+     0.0
+    ]
+   },
+   "MEM/swap_comp": {
+    "n": 165,
+    "kept": 30.3,
+    "donor": 14.5,
+    "third": 10.9,
+    "other": 44.2,
+    "n_third": 165,
+    "transfer": 3.6,
+    "ci": [
+     -3.1,
+     10.0
+    ]
+   },
+   "MEM/paste": {
+    "n": 165,
+    "kept": 27.9,
+    "donor": 20.0,
+    "third": 10.9,
+    "other": 41.2,
+    "n_third": 165,
+    "transfer": 9.1,
+    "ci": [
+     -0.6,
+     17.3
+    ]
+   }
+  },
+  "companies": {
+   "MEM/none": {
+    "n": 137,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 137,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap": {
+    "n": 137,
+    "kept": 28.5,
+    "donor": 56.2,
+    "third": 5.1,
+    "other": 10.2,
+    "n_third": 137,
+    "transfer": 51.1,
+    "ci": [
+     39.7,
+     61.8
+    ]
+   },
+   "MEM/remove": {
+    "n": 137,
+    "kept": 59.9,
+    "donor": 7.3,
+    "third": 10.9,
+    "other": 21.9,
+    "n_third": 137,
+    "transfer": -3.6,
+    "ci": [
+     -11.4,
+     3.8
+    ]
+   },
+   "MEM/swap_rot": {
+    "n": 137,
+    "kept": 94.2,
+    "donor": 0.0,
+    "third": 2.9,
+    "other": 2.9,
+    "n_third": 137,
+    "transfer": -2.9,
+    "ci": [
+     -5.6,
+     -0.7
+    ]
+   },
+   "MEM/swap_u": {
+    "n": 137,
+    "kept": 93.4,
+    "donor": 3.6,
+    "third": 1.5,
+    "other": 1.5,
+    "n_third": 137,
+    "transfer": 2.2,
+    "ci": [
+     -2.0,
+     6.7
+    ]
+   },
+   "MEM/swap_comp": {
+    "n": 137,
+    "kept": 30.7,
+    "donor": 29.2,
+    "third": 16.8,
+    "other": 23.4,
+    "n_third": 137,
+    "transfer": 12.4,
+    "ci": [
+     1.5,
+     23.4
+    ]
+   },
+   "MEM/paste": {
+    "n": 137,
+    "kept": 17.5,
+    "donor": 38.0,
+    "third": 22.6,
+    "other": 21.9,
+    "n_third": 137,
+    "transfer": 15.3,
+    "ci": [
+     1.6,
+     29.1
+    ]
+   }
+  },
+  "countries": {
+   "MEM/none": {
+    "n": 135,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 123,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap": {
+    "n": 135,
+    "kept": 25.2,
+    "donor": 68.1,
+    "third": 0.7,
+    "other": 5.9,
+    "n_third": 123,
+    "transfer": 65.9,
+    "ci": [
+     53.3,
+     77.5
+    ]
+   },
+   "MEM/remove": {
+    "n": 135,
+    "kept": 69.6,
+    "donor": 7.4,
+    "third": 8.9,
+    "other": 14.1,
+    "n_third": 123,
+    "transfer": -1.6,
+    "ci": [
+     -7.6,
+     5.6
+    ]
+   },
+   "MEM/swap_rot": {
+    "n": 135,
+    "kept": 95.6,
+    "donor": 1.5,
+    "third": 0.7,
+    "other": 2.2,
+    "n_third": 123,
+    "transfer": 0.8,
+    "ci": [
+     0.0,
+     2.4
+    ]
+   },
+   "MEM/swap_u": {
+    "n": 135,
+    "kept": 94.1,
+    "donor": 3.0,
+    "third": 0.7,
+    "other": 2.2,
+    "n_third": 123,
+    "transfer": 2.4,
+    "ci": [
+     -0.9,
+     5.8
+    ]
+   },
+   "MEM/swap_comp": {
+    "n": 135,
+    "kept": 30.4,
+    "donor": 28.9,
+    "third": 15.6,
+    "other": 25.2,
+    "n_third": 123,
+    "transfer": 13.0,
+    "ci": [
+     3.2,
+     23.8
+    ]
+   },
+   "MEM/paste": {
+    "n": 135,
+    "kept": 20.0,
+    "donor": 39.3,
+    "third": 15.6,
+    "other": 25.2,
+    "n_third": 123,
+    "transfer": 23.6,
+    "ci": [
+     8.9,
+     39.2
+    ]
+   }
+  },
+  "dishes": {
+   "MEM/none": {
+    "n": 132,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 132,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap": {
+    "n": 132,
+    "kept": 69.7,
+    "donor": 23.5,
+    "third": 0.8,
+    "other": 6.1,
+    "n_third": 132,
+    "transfer": 22.7,
+    "ci": [
+     11.3,
+     34.8
+    ]
+   },
+   "MEM/remove": {
+    "n": 132,
+    "kept": 88.6,
+    "donor": 1.5,
+    "third": 0.8,
+    "other": 9.1,
+    "n_third": 132,
+    "transfer": 0.8,
+    "ci": [
+     -1.6,
+     3.6
+    ]
+   },
+   "MEM/swap_rot": {
+    "n": 132,
+    "kept": 97.0,
+    "donor": 0.8,
+    "third": 0.8,
+    "other": 1.5,
+    "n_third": 132,
+    "transfer": 0.0,
+    "ci": [
+     -2.2,
+     2.1
+    ]
+   },
+   "MEM/swap_u": {
+    "n": 132,
+    "kept": 96.2,
+    "donor": 1.5,
+    "third": 0.0,
+    "other": 2.3,
+    "n_third": 132,
+    "transfer": 1.5,
+    "ci": [
+     0.0,
+     4.0
+    ]
+   },
+   "MEM/swap_comp": {
+    "n": 132,
+    "kept": 78.8,
+    "donor": 3.8,
+    "third": 1.5,
+    "other": 15.9,
+    "n_third": 132,
+    "transfer": 2.3,
+    "ci": [
+     -1.4,
+     6.4
+    ]
+   },
+   "MEM/paste": {
+    "n": 132,
+    "kept": 66.7,
+    "donor": 15.9,
+    "third": 1.5,
+    "other": 15.9,
+    "n_third": 132,
+    "transfer": 14.4,
+    "ci": [
+     7.7,
+     22.5
+    ]
+   }
+  },
+  "landmarks": {
+   "MEM/none": {
+    "n": 102,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 102,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap": {
+    "n": 102,
+    "kept": 71.6,
+    "donor": 20.6,
+    "third": 1.0,
+    "other": 6.9,
+    "n_third": 102,
+    "transfer": 19.6,
+    "ci": [
+     5.4,
+     34.3
+    ]
+   },
+   "MEM/remove": {
+    "n": 102,
+    "kept": 92.2,
+    "donor": 0.0,
+    "third": 2.0,
+    "other": 5.9,
+    "n_third": 102,
+    "transfer": -2.0,
+    "ci": [
+     -4.6,
+     0.0
+    ]
+   },
+   "MEM/swap_rot": {
+    "n": 102,
+    "kept": 98.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 2.0,
+    "n_third": 102,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap_u": {
+    "n": 102,
+    "kept": 98.0,
+    "donor": 2.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 102,
+    "transfer": 2.0,
+    "ci": [
+     0.0,
+     4.3
+    ]
+   },
+   "MEM/swap_comp": {
+    "n": 102,
+    "kept": 74.5,
+    "donor": 4.9,
+    "third": 2.9,
+    "other": 17.6,
+    "n_third": 102,
+    "transfer": 2.0,
+    "ci": [
+     -3.5,
+     8.5
+    ]
+   },
+   "MEM/paste": {
+    "n": 102,
+    "kept": 73.5,
+    "donor": 8.8,
+    "third": 2.9,
+    "other": 14.7,
+    "n_third": 102,
+    "transfer": 5.9,
+    "ci": [
+     -2.0,
+     14.0
+    ]
+   }
+  },
+  "languages": {
+   "MEM/none": {
+    "n": 120,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 114,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap": {
+    "n": 120,
+    "kept": 25.8,
+    "donor": 65.8,
+    "third": 2.5,
+    "other": 5.8,
+    "n_third": 114,
+    "transfer": 64.9,
+    "ci": [
+     49.5,
+     78.9
+    ]
+   },
+   "MEM/remove": {
+    "n": 120,
+    "kept": 69.2,
+    "donor": 5.0,
+    "third": 3.3,
+    "other": 22.5,
+    "n_third": 114,
+    "transfer": 1.8,
+    "ci": [
+     -2.0,
+     6.1
+    ]
+   },
+   "MEM/swap_rot": {
+    "n": 120,
+    "kept": 93.3,
+    "donor": 0.0,
+    "third": 1.7,
+    "other": 5.0,
+    "n_third": 114,
+    "transfer": -1.8,
+    "ci": [
+     -4.0,
+     0.0
+    ]
+   },
+   "MEM/swap_u": {
+    "n": 120,
+    "kept": 95.0,
+    "donor": 2.5,
+    "third": 0.8,
+    "other": 1.7,
+    "n_third": 114,
+    "transfer": 1.8,
+    "ci": [
+     -1.5,
+     5.1
+    ]
+   },
+   "MEM/swap_comp": {
+    "n": 120,
+    "kept": 20.0,
+    "donor": 21.7,
+    "third": 20.8,
+    "other": 37.5,
+    "n_third": 114,
+    "transfer": 0.9,
+    "ci": [
+     -11.1,
+     12.0
+    ]
+   },
+   "MEM/paste": {
+    "n": 120,
+    "kept": 12.5,
+    "donor": 31.7,
+    "third": 19.2,
+    "other": 36.7,
+    "n_third": 114,
+    "transfer": 13.2,
+    "ci": [
+     -0.9,
+     27.5
+    ]
+   }
+  },
+  "people": {
+   "MEM/none": {
+    "n": 134,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 128,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MEM/swap": {
+    "n": 134,
+    "kept": 35.8,
+    "donor": 55.2,
+    "third": 2.2,
+    "other": 6.7,
+    "n_third": 128,
+    "transfer": 53.1,
+    "ci": [
+     38.9,
+     66.4
+    ]
+   },
+   "MEM/remove": {
+    "n": 134,
+    "kept": 68.7,
+    "donor": 5.2,
+    "third": 3.0,
+    "other": 23.1,
+    "n_third": 128,
+    "transfer": 2.3,
+    "ci": [
+     -2.5,
+     7.1
+    ]
+   },
+   "MEM/swap_rot": {
+    "n": 134,
+    "kept": 91.0,
+    "donor": 0.7,
+    "third": 0.7,
+    "other": 7.5,
+    "n_third": 128,
+    "transfer": 0.0,
+    "ci": [
+     -2.3,
+     2.4
+    ]
+   },
+   "MEM/swap_u": {
+    "n": 134,
+    "kept": 97.8,
+    "donor": 1.5,
+    "third": 0.0,
+    "other": 0.7,
+    "n_third": 128,
+    "transfer": 1.6,
+    "ci": [
+     0.0,
+     4.0
+    ]
+   },
+   "MEM/swap_comp": {
+    "n": 134,
+    "kept": 31.3,
+    "donor": 24.6,
+    "third": 13.4,
+    "other": 30.6,
+    "n_third": 128,
+    "transfer": 10.2,
+    "ci": [
+     -3.4,
+     23.2
+    ]
+   },
+   "MEM/paste": {
+    "n": 134,
+    "kept": 29.9,
+    "donor": 35.8,
+    "third": 9.0,
+    "other": 25.4,
+    "n_third": 128,
+    "transfer": 25.8,
+    "ci": [
+     12.7,
+     40.4
+    ]
+   }
+  }
+ },
+ "swap_positive": "8 of 8"
+}

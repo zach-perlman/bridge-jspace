@@ -1,0 +1,29 @@
+{
+  "run": "min14_jswap_v2_L20-25_k100_v1",
+  "why": "Zach (2026-10-26, prereg amendment 53): Ministral J-part swap with K 100 at mid depth L20-25",
+  "target": "ministral-3-14b",
+  "band": "20-25",
+  "set": "jsuite_v2_test_chat",
+  "competence": "min14_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 100,
+  "git_commit": "9951d56e10856e128583d8046e8691cab1bc2bc2",
+  "git_state": {
+    "head": "9951d56e10856e128583d8046e8691cab1bc2bc2",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "sample_per_word": 0,
+  "sample_seed": 0
+}

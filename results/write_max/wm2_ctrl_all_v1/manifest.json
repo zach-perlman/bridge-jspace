@@ -1,0 +1,94 @@
+{
+  "run": "wm2_ctrl_all_v1",
+  "why": "Zach (2026-10-20), Phase 1d: the strongest fair write (write_max v2), tasks_v2 ctrl_v8, all four levels pooled",
+  "written_utc": "2026-10-21T03:43:06Z",
+  "git_commit": "072e9967ee14544bca180c10430c810da2ff3c5f",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "band": [
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40
+  ],
+  "single_layers": [
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40
+  ],
+  "early_layers": [
+    16,
+    20,
+    24
+  ],
+  "possets": [
+    "question",
+    "final",
+    "all"
+  ],
+  "alphas": [
+    0.05,
+    0.1,
+    0.2,
+    0.4,
+    0.8
+  ],
+  "alphas_early": [
+    0.2,
+    0.4,
+    0.8,
+    1.6
+  ],
+  "swaps": [
+    1.0,
+    2.0,
+    4.0
+  ],
+  "transplants": [
+    1.0,
+    2.0
+  ],
+  "natural": [
+    1.0,
+    2.0
+  ],
+  "keep_gate": 0.95,
+  "families": [
+    "PP",
+    "PM",
+    "MP",
+    "MM"
+  ],
+  "countries": true,
+  "n_per_family": 1000,
+  "tf32": true,
+  "tasks": [
+    "ctrl_v8",
+    "ctrl_v8_competence_v1",
+    "all"
+  ],
+  "from_competence": null,
+  "doc": "Cases: suite map_A8_v1 (BL BR RL RR) and countries map_v1, or a tasks_v2 set made with counterfactuals (--tasks: PP PM\nMP MM by default, compared at one level). Each case: the clean prompt with bridge I, its C prompt with bridge X.\n\nSites: position sets question (the question's tokens after C's changed ones, through the end), final (the answer-\nreading position only), all (every position); layers: every --single-step-th layer of the band --band (28-40 by\ndefault: where memory-final families break under the depth sweep), and every layer of the band at once (\"joint\").\nWrites (each at every site, each with a matched-norm random control: every row replaced by a random direction of the\nsame norm):\n  copy         C's whole residual difference (lens-free positive control: can this site move the answer at all?)\n  lens_add     alpha x |h| x unit(v_X - v_I), alpha in ALPHAS (v = unit J-lens vectors)\n  lens_swap    swap the residual's least-squares coefficients on v_I and v_X, times SWAPS\n  lens_transpl the J-space part of C's residual in place of the clean one's (25-atom OMP over the lens dictionary)\n  dom_add      alpha x |h| x unit(mu_X - mu_I): mu_e = the mean clean residual (over the site's positions) of other\n               cases whose bridge is e, from other scenes only (cross-fitted: the case's own scene is never used)\n  dom_natural  (mu_X - mu_I) itself, times 1 and 2 (an in-distribution size)\nInjection control (layers --early, question positions): lens_add and embed_add (alpha x |h| x unit(E_X - E_I), the\ninput-embedding difference: planting the token) at ALPHAS_EARLY. If embed_add flips as often as lens_add there, an\nearly \"write\" is the model re-reading an injected token, not a written bridge.\nScored by suite_split's answer read: role b (top token = C's answer), A (the clean answer), other.\nBreakage gate: a cell (write x site x strength) counts only if its random control keeps the clean answer on >= 95% of\ncases; every reported cell carries its \"other\" rate. Intervals: 95% bootstrap over bridge entities.\n\nRules (fixed before the run, 2026-10-20):\n  C2 holds at the band if M->P's (RL / MP) best gated lens write (lens_add, lens_swap, lens_transpl; single or joint)\n  flips <= its control + 5 points, while M->M's (RR / MM) flips >= 4x its control (and >= 10%).\n  Reading of M->P's dom writes (only if C2 holds): dom flips >= its control + 20 points -> \"linearly writable at these\n  sites, but not along the lens\"; dom within control + 5 and copy >= 50% -> \"no single direction found here writes it\n  (the copy does)\"; copy < 50% -> \"these sites do not carry M->P's bridge; look elsewhere\".\n  Injection: early lens_add's best flips within 10 points of embed_add's -> early lens writes are token injection.\n\nA new target (BJ_TARGET; 2026-10-21, Gemma 4 31B-it): --from-competence takes the suite cases from its own competence\nrun and builds its country cases with the model; --layers gives the band's layers when the lens covers only some.\n\npython scripts/write_max.py --name N --why W [--n 60] [--families ...] [--band 28-40] [--tasks SET --tasks-competence RUN]\n"
+}

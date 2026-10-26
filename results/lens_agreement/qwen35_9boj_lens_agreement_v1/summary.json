@@ -1,0 +1,175 @@
+{
+  "n_texts": 16,
+  "n_positions": 1631,
+  "mean_nll": 2.579896032810211,
+  "lens_source_layers": [
+    0,
+    30,
+    31
+  ],
+  "top10_agreement": {
+    "0": {
+      "lens": 0.061925199264255056,
+      "logit": 0.04475781729000613
+    },
+    "1": {
+      "lens": 0.023298589822194973,
+      "logit": 0.06069895769466585
+    },
+    "2": {
+      "lens": 0.018393623543838136,
+      "logit": 0.06866952789699571
+    },
+    "3": {
+      "lens": 0.05518087063151441,
+      "logit": 0.08215818516247701
+    },
+    "4": {
+      "lens": 0.15021459227467812,
+      "logit": 0.10423053341508277
+    },
+    "5": {
+      "lens": 0.10423053341508277,
+      "logit": 0.11036174126302882
+    },
+    "6": {
+      "lens": 0.11404046597179644,
+      "logit": 0.11220110361741263
+    },
+    "7": {
+      "lens": 0.11649294911097487,
+      "logit": 0.13243408951563457
+    },
+    "8": {
+      "lens": 0.09196811771919068,
+      "logit": 0.13120784794604537
+    },
+    "9": {
+      "lens": 0.19497240956468423,
+      "logit": 0.1336603310852238
+    },
+    "10": {
+      "lens": 0.17657878602084612,
+      "logit": 0.13304721030042918
+    },
+    "11": {
+      "lens": 0.20294297976701411,
+      "logit": 0.13182096873083998
+    },
+    "12": {
+      "lens": 0.2041692213366033,
+      "logit": 0.1489883507050889
+    },
+    "13": {
+      "lens": 0.15941140404659718,
+      "logit": 0.15389331698344574
+    },
+    "14": {
+      "lens": 0.15144083384426732,
+      "logit": 0.15328019619865113
+    },
+    "15": {
+      "lens": 0.11526670754138565,
+      "logit": 0.16860821581851626
+    },
+    "16": {
+      "lens": 0.22440220723482526,
+      "logit": 0.18209687308399755
+    },
+    "17": {
+      "lens": 0.21704475781729002,
+      "logit": 0.19865113427345188
+    },
+    "18": {
+      "lens": 0.1882280809319436,
+      "logit": 0.22440220723482526
+    },
+    "19": {
+      "lens": 0.31514408338442673,
+      "logit": 0.21520539546290618
+    },
+    "20": {
+      "lens": 0.4328632740649908,
+      "logit": 0.27467811158798283
+    },
+    "21": {
+      "lens": 0.3623543838136113,
+      "logit": 0.31453096259963215
+    },
+    "22": {
+      "lens": 0.40036787247087674,
+      "logit": 0.3801348865726548
+    },
+    "23": {
+      "lens": 0.522378908645003,
+      "logit": 0.42244022072348253
+    },
+    "24": {
+      "lens": 0.46842427958307786,
+      "logit": 0.4917228694052728
+    },
+    "25": {
+      "lens": 0.4537093807480074,
+      "logit": 0.5493562231759657
+    },
+    "26": {
+      "lens": 0.3923973022685469,
+      "logit": 0.6161863887185776
+    },
+    "27": {
+      "lens": 0.6302881667688535,
+      "logit": 0.6995708154506438
+    },
+    "28": {
+      "lens": 0.7817290006131208,
+      "logit": 0.809319435928878
+    },
+    "29": {
+      "lens": 0.8638871857755978,
+      "logit": 0.8963825873697119
+    },
+    "30": {
+      "lens": 0.9393010423053342,
+      "logit": 0.9656652360515021
+    }
+  },
+  "chat": [
+    {
+      "q": "What is the capital of France?",
+      "gold": "Paris",
+      "out": " Paris<|im_end|>\n<|endoftext|><|im_start|>user",
+      "right": true
+    },
+    {
+      "q": "In which country is Lyon located?",
+      "gold": "France",
+      "out": " France<|im_end|>\n<|endoftext|><|im_start|>user",
+      "right": true
+    },
+    {
+      "q": "What language is spoken in Brazil?",
+      "gold": "Portuguese",
+      "out": " Portuguese<|im_end|>\n<|endoftext|><|im_start|>user",
+      "right": true
+    },
+    {
+      "q": "What is the capital of the country where Munich is located?",
+      "gold": "Berlin",
+      "out": " Berlin<|im_end|>\n<|endoftext|><|im_start|>user",
+      "right": true
+    },
+    {
+      "q": "What currency is used in the country whose capital is Tokyo?",
+      "gold": "Yen",
+      "out": " Yen<|im_end|>\n<|endoftext|><|im_start|>user",
+      "right": true
+    },
+    {
+      "q": "Emma lives in Kenya. What is the capital of the country where Emma lives?",
+      "gold": "Nairobi",
+      "out": " Nairobi<|im_end|>\n<|endoftext|><|im_start|>user",
+      "right": true
+    }
+  ],
+  "chat_right": 6
+}

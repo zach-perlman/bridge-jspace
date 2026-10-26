@@ -1,0 +1,36 @@
+{
+  "run": "nem35l_jsuite_v2_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-25, prereg amendment 40): nemotron-3.5-lightning on jsuite_v2_test_chat",
+  "set": "jsuite_v2_test_chat",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "git_commit": "58d5460cdc198f59852cfccbdcc7ad0f29c17826",
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "PP",
+    "PK",
+    "PM",
+    "PA",
+    "PN",
+    "MP",
+    "MK",
+    "MM",
+    "MA",
+    "MN",
+    "TP",
+    "TK",
+    "TM",
+    "TA",
+    "TN"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-26T00:44:16Z"
+}

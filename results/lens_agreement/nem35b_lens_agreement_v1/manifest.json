@@ -1,0 +1,24 @@
+{
+  "run": "nem35b_lens_agreement_v1",
+  "why": "Zach (2026-10-25, amendment 46): nemotron-3.5-bolt, our J++, lens check",
+  "written_utc": "2026-10-26T06:03:37Z",
+  "model": {
+    "target": "nemotron-3.5-bolt",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+    "revision": "e09a4cedb1787db1760375ee5539f222cae0c672",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": [
+    "jpp",
+    "a29ea5bf92976c202c65a72a3a0e139bfd19ea68353722bbab78a094d8e24040"
+  ],
+  "argv": [
+    "scripts/lens_agreement.py",
+    "--name",
+    "nem35b_lens_agreement_v1",
+    "--why",
+    "Zach (2026-10-25, amendment 46): nemotron-3.5-bolt, our J++, lens check"
+  ],
+  "doc": "lens_agreement: does a lens read the model's own next-token prediction from earlier layers? (Zach, 2026-10-21: a\nsanity check for third-party lenses, solarkyle's plain J-lenses for Mistral-Small-24B-2501 and the two bridges, before\nruns lean on them.) On removal_textloss's 16 WikiText rows (first 128 tokens), the share of positions (from 16 on) where\nthe model's own top-1 next token (the final block, unembedded) is in the lens's top 10 at each layer, for the target's\nfrozen lens and for the logit lens (no J). Also the model's mean next-token loss on the rows (from position 4, as\nremoval_textloss), and greedy answers to a few chat questions. Not jpp_lens's pass@10 (other items and grading); numbers\nare comparable across targets run with this script."
+}
