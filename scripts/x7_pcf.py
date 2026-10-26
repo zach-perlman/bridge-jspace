@@ -131,6 +131,24 @@ def principal_cos2(p: np.ndarray, q: np.ndarray) -> list[float]:
     return [float(s) ** 2 for s in np.linalg.svd(p.T @ q, compute_uv=False)]
 
 
+def top_pcs(x: np.ndarray, rank: int = RANK) -> np.ndarray:
+    """The top `rank` components of a centered PCA of the rows of x, as an orthonormal [d, rank] basis."""
+    _, _, vt = np.linalg.svd(x - x.mean(0), full_matrices=False)
+    return vt[:rank].T
+
+
+def split_half(x: np.ndarray, groups: list[str], seed: int = 0) -> dict:
+    """The noise ceiling (Dan 26 Oct ~12:55): the top-RANK PCA fit on two random halves of the groups (passages or
+    pairs; seed 0), and the mean cos² of the principal angles between the halves."""
+    keys = sorted(set(groups))
+    pick = set(np.asarray(keys)[np.random.default_rng(seed).permutation(len(keys))[: len(keys) // 2]].tolist())
+    a = [i for i, g in enumerate(groups) if g in pick]
+    b = [i for i, g in enumerate(groups) if g not in pick]
+    cos2 = principal_cos2(top_pcs(x[a]), top_pcs(x[b]))
+    return {"rows": [len(a), len(b)], "groups": [len(pick), len(keys) - len(pick)], "cos2": cos2,
+            "mean_cos2": float(np.mean(cos2)), "seed": seed}  # fmt: skip
+
+
 def stage_run(name: str, n: int = N_PAIRS) -> Path:
     import torch
 
@@ -178,6 +196,7 @@ def stage_run(name: str, n: int = N_PAIRS) -> Path:
     report = {"run": name, "model": target, "layer": layer, "pairs": len(cases), "dropped": dict(dropped),
               "variance_explained": var[:SHOW], "variance_explained_cum": np.cumsum(var[:SHOW]).tolist(),
               "cos2_with_alf": cos2, "mean_cos2_with_alf": float(np.mean(cos2)), "random_mean_cos2": RANK / p.shape[0],
+              "split_half": split_half(xd, [c["scene"] for c in cases]),
               "alf_rank": int(alf.shape[1]), "share_in_jpp_span": {"mean": float(np.mean(in_jpp)),
                                                                   "median": float(np.median(in_jpp))}}  # fmt: skip
     np.savez_compressed(out / "pcf.npz", P=p.astype(np.float32), mean=xd.mean(0).astype(np.float32), var=np.array(var))
@@ -187,6 +206,9 @@ def stage_run(name: str, n: int = N_PAIRS) -> Path:
              f"Model {target}, layer {layer}; {len(cases)} pairs (the bridge's locker sentence trades places with another "
              f"item's, digits kept); PCA centered over the bridge word's S - O. UNVERIFIED.", "",
              f"- Variance explained by components 1-{SHOW}: {pct}.",
+             f"- Split-half noise ceiling (two random halves by {'passage' if 'counts' in report else 'pair'}, seed 0): "
+             f"mean cos² {report['split_half']['mean_cos2']:.3f} ({report['split_half']['rows'][0]} / "
+             f"{report['split_half']['rows'][1]} rows).",
              f"- Principal angles with the mass-mean pointer directions (rank {alf.shape[1]}): cos² "
              + ", ".join(f"{v:.3f}" for v in cos2) + f"; mean {np.mean(cos2):.3f} (a random subspace: {RANK / p.shape[0]:.4f}).",
              f"- P_cf's share inside each pair's 25-atom J++ span: mean {np.mean(in_jpp):.3f}, median "
@@ -245,6 +267,7 @@ def stage_natural(name: str, pcf_run: str) -> Path:
     report = {"run": name, "model": target, "layer": layer, "counts": dict(why),
               "passages_allowing_a_move": why["passages that allow a move"], "pairs": len(cases),
               "variance_explained": var[:SHOW], "cos2_with_pcf": cos_pcf, "mean_cos2_with_pcf": float(np.mean(cos_pcf)),
+              "split_half": split_half(xd, [c["scene"] for c in cases]),
               "cos2_with_alf": cos_alf, "mean_cos2_with_alf": float(np.mean(cos_alf)),
               "random_mean_cos2": RANK / p.shape[0],
               "share_in_jpp_span": {"mean": float(np.mean(in_jpp)), "median": float(np.median(in_jpp))}}  # fmt: skip
@@ -255,6 +278,9 @@ def stage_natural(name: str, pcf_run: str) -> Path:
              f"Model {target}, layer {layer}; {why['passages that allow a move']} of {why['passages']} passages allow a "
              f"move ({dict(why)}); {len(cases)} pairs; PCA centered over the bridge word's S - O. UNVERIFIED.", "",
              f"- Variance explained by components 1-{SHOW}: {pct}.",
+             f"- Split-half noise ceiling (two random halves by {'passage' if 'counts' in report else 'pair'}, seed 0): "
+             f"mean cos² {report['split_half']['mean_cos2']:.3f} ({report['split_half']['rows'][0]} / "
+             f"{report['split_half']['rows'][1]} rows).",
              f"- cos² of the principal angles with P_cf ({pcf_run}): " + ", ".join(f"{v:.3f}" for v in cos_pcf)
              + f"; mean {np.mean(cos_pcf):.3f}. With the mass-mean pointer directions: mean {np.mean(cos_alf):.3f} "
              f"(a random subspace: {RANK / p.shape[0]:.4f}).",
