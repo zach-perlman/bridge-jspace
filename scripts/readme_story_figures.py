@@ -7,6 +7,7 @@ uv run python scripts/readme_story_figures.py
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from pathlib import Path
@@ -1070,6 +1071,78 @@ def f08_first(plt) -> None:
     d.set_ylabel("mean cos²")
     d.grid(axis="y", color="#eeeeee")
     S.save(fig, "fig08_first_mentioned")
+
+
+# Fig. 8b (Dan ~21:40, draft until Tuesday's merge): 45a's sentence before the lockers, rows top to bottom with a divider
+# after the second; the variants' labels as the README words them
+LAYOUT_ROWS = (("V0", "no sentence"), ("V4", "a neutral sentence"), ("V1", "a pick: the first-locker item"),
+               ("V2", "a pick: another locker item"), ("V3", "a pick: an item with no locker"))  # fmt: skip
+DRAFTS = S.REPO / "figures" / "drafts"
+
+
+def f08b_layout(plt, draft: bool = True) -> None:
+    """After the data (45a, results/x6_routes/x45a-descriptive-*): per model, the lookup's answers on first-locker moves
+    under the whole change, by the sentence added before the lockers (stacked: identity, position, original; other only
+    if >= 0.02; value is 0 everywhere), and beta, the shift of the pointer's code vs no sentence. The 122B's panel only
+    once its run is in the table. draft: saved to figures/drafts/ with its data.csv rows beside it (fig08b_layout.csv)."""
+    table = latest(pins.RESULTS_DIR / "x6_routes", "x45a-descriptive-*/table.json") or {}
+    by = {b["model"]: (run, b) for run, b in table.items()}
+    models = [(t, m) for t, m, _ in S.MODELS if t in by]
+    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 4.6), sharey=True, squeeze=False)
+    fig.subplots_adjust(left=0.27, right=0.905, top=0.66, bottom=0.13, wspace=0.40)
+    S.title(fig, "Naming an item before the lockers switches the lookup from position to identity",
+            "Routes test (another item moved), one sentence added before the lockers in both prompts. After the\n"
+            "data; the rule fixed in advance read only the pointer part (mixed). β: shift of the pointer's code, in positions.",
+            limit=86)  # fmt: skip
+    ys = [0, -1, -2.4, -3.4, -4.4]  # the gap after the second row holds the divider
+    for ax, (target, m) in zip(axes[0], models, strict=True):
+        run, b = by[target]
+        ax.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
+        r, beta = b["routes"], b["beta"]
+        for (v, label), y in zip(LAYOUT_ROWS, ys, strict=True):
+            share, left = r["share"][f"whole|{v}"], 0.0
+            for route in ("identity", "position", "value", "original", "other"):
+                sh = share.get(route, 0.0)
+                if sh <= 0 or (route == "other" and sh < 0.02):
+                    continue
+                ax.barh(y, sh, left=left, height=0.68, color=ROUTE_COL[route], edgecolor="white", lw=0.8)
+                if route in ("identity", "position") and sh >= 0.10:
+                    pct = round(100 * float(f"{sh:.2f}"))  # the percent of the README's two-decimal number
+                    ax.text(left + sh / 2, y, f"{pct}", ha="center", va="center", fontsize=S.FONT,
+                            color="white" if route == "identity" else "#222222")  # fmt: skip
+                ci = r["identity_ci"][f"whole|{v}"] if route == "identity" else (None, None)
+                S.record("fig08b", target, f"45a, first-locker moves, whole change, {label}: {route} share", round(sh, 4),
+                         *ci, n=r["n"], source=f"x6_routes/{run}")  # fmt: skip
+                left += sh
+            if v in beta:
+                bv = beta[v]["beta"]
+                ax.text(1.03, y, f"β {bv[0]:.2f}", va="center", ha="left", fontsize=S.FONT, color=S.COL["muted"],
+                        transform=ax.get_yaxis_transform())  # fmt: skip
+                S.record("fig08b", target, f"45a, beta vs no sentence: {label}", round(bv[0], 4), bv[1], bv[2],
+                         n=beta[v]["n"], source=f"x6_routes/{run}")  # fmt: skip
+        ax.plot([0, 1], [-1.7, -1.7], color="#999999", ls="--", lw=1, clip_on=False)
+        ax.set_xlim(0, 1)
+        ax.set_xticks([0, 0.5, 1], ["0", "50", "100"])
+        ax.set_ylim(-4.85, 0.5)
+        ax.tick_params(axis="y", length=0)
+        for side in ("left", "right", "top"):
+            ax.spines[side].set_visible(False)
+    axes[0][0].set_yticks(ys, [label for _, label in LAYOUT_ROWS])
+    fig.supxlabel("% of lookup answers (first-locker moves, whole change)", x=0.6, y=0.01, fontsize=S.FONT)
+    names = {"identity": "identity", "position": "position", "original": "original answer"}
+    legend(fig, [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[k]) for k in names], list(names.values()), 0.80)
+    if not draft:
+        S.save(fig, "fig08b_layout")
+        return
+    DRAFTS.mkdir(parents=True, exist_ok=True)
+    fig.savefig(DRAFTS / "fig08b_layout.svg", facecolor="white")
+    fig.savefig(DRAFTS / "fig08b_layout.png", dpi=200, facecolor="white")
+    plt.close(fig)
+    rows = [r for r in S.ROWS if r["figure"] == "fig08b"]
+    with (DRAFTS / "fig08b_layout.csv").open("w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0]))
+        w.writeheader()
+        w.writerows(rows)
 
 
 def f09_transfer(plt) -> None:
