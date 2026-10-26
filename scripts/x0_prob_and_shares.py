@@ -72,7 +72,7 @@ def prob_cells(rows: list[dict], layer: int, n_boot: int) -> dict:
 def aggregations(ratio: np.ndarray, norm2: np.ndarray) -> dict:
     """The share of the change three ways: pooled, the mean of per-item ratios, the median."""
     return {"pooled": float((ratio * norm2).sum() / norm2.sum()), "mean": float(ratio.mean()),
-            "median": float(np.median(ratio)), "n": int(len(ratio))}  # fmt: skip
+            "median": float(np.median(ratio)), "n": len(ratio)}  # fmt: skip
 
 
 def main() -> None:
