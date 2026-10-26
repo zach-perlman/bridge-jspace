@@ -177,6 +177,21 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 | Identity share | {{num|rte_C2_whole_identity_9b}} | {{num|rte_C2_whole_identity_27b}} | {{num|rte_C2_whole_identity_122b}} | {{num|rte_C2_whole_identity_muse}} |
 | Without J++: the original answer | {{num|rte_C2_no_jpp_original_9b}} | {{num|rte_C2_no_jpp_original_27b}} | {{num|rte_C2_no_jpp_original_122b}} | {{num|rte_C2_no_jpp_original_muse}} |
 
+## Tier 0 of the batch-45 brief (Dan, 26 Oct ~18:30; after the data, descriptive)
+
+**Shares of the change.** Every "% of the change" in the README is the median over items of ‖PΔ‖² / ‖Δ‖². For the 9B's J++ + pointer + identity outside J++ (sanity swap) that is {{num|share_median_jppalfid_9b}}; the mean of the per-item ratios is {{num|share_mean_jppalfid_9b}} and the pooled ratio (Σ‖PΔ‖² / Σ‖Δ‖²) {{num|share_pooled_jppalfid_9b}} (27B {{num|share_median_jppalfid_27b}} / {{num|share_mean_jppalfid_27b}} / {{num|share_pooled_jppalfid_27b}}; Muse {{num|share_median_jppalfid_muse}} / {{num|share_mean_jppalfid_muse}} / {{num|share_pooled_jppalfid_muse}}).
+
+**The split by sentence order** (main test; [split_by_order.md](split_by_order.md) has every design). The lookup's extra loss is a share of the lookups the whole change switches, so it is measurable only where the locker sentence comes before the pick.
+
+| Main test | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Gap, all scenes (fixed in advance) | {{num|sbo_swap_all_gap_9b}} | {{num|sbo_swap_all_gap_27b}} | {{num|sbo_swap_all_gap_122b}} | {{num|sbo_swap_all_gap_muse}} |
+| Gap, locker before the pick | {{num|sbo_swap_before_gap_9b}} | {{num|sbo_swap_before_gap_27b}} | {{num|sbo_swap_before_gap_122b}} | {{num|sbo_swap_before_gap_muse}} |
+| Gap, locker after the pick | {{num|sbo_swap_after_gap_9b}} | {{num|sbo_swap_after_gap_27b}} | {{num|sbo_swap_after_gap_122b}} | {{num|sbo_swap_after_gap_muse}} |
+| Lookups switched: before / after | {{num|sbo_swap_before_lksw_9b}} / {{num|sbo_swap_after_lksw_9b}} | {{num|sbo_swap_before_lksw_27b}} / {{num|sbo_swap_after_lksw_27b}} | {{num|sbo_swap_before_lksw_122b}} / {{num|sbo_swap_after_lksw_122b}} | {{num|sbo_swap_before_lksw_muse}} / {{num|sbo_swap_after_lksw_muse}} |
+
+**The switch as a probability** (the TA's sampling question): with "switch" replaced by p_alt, the expected switch rate when sampling at T = 1, the main test's gap is {{num|prob_gap_9b}} (9B), {{num|prob_gap_27b}} (27B), {{num|prob_gap_122b}} (122B), {{num|prob_gap_muse}} (Muse); lookup {{num|prob_lk_9b}} / {{num|prob_lk_27b}} / {{num|prob_lk_122b}} / {{num|prob_lk_muse}}, recall {{num|prob_rc_9b}} / {{num|prob_rc_27b}} / {{num|prob_rc_122b}} / {{num|prob_rc_muse}}.
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.

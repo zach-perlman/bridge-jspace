@@ -482,6 +482,21 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 | Identity share | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 0.96 [0.93, 0.98] |
 | Without J++: the original answer | 0.99 [0.97, 1.00] | 0.99 [0.98, 1.00] | 0.84 [0.78, 0.89] | 0.26 [0.20, 0.31] |
 
+## Tier 0 of the batch-45 brief (Dan, 26 Oct ~18:30; after the data, descriptive)
+
+**Shares of the change.** Every "% of the change" in the README is the median over items of ‖PΔ‖² / ‖Δ‖². For the 9B's J++ + pointer + identity outside J++ (sanity swap) that is 56%; the mean of the per-item ratios is 50% and the pooled ratio (Σ‖PΔ‖² / Σ‖Δ‖²) 46% (27B 35% / 37% / 32%; Muse 38% / 35% / 29%).
+
+**The split by sentence order** (main test; [split_by_order.md](split_by_order.md) has every design). The lookup's extra loss is a share of the lookups the whole change switches, so it is measurable only where the locker sentence comes before the pick.
+
+| Main test | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Gap, all scenes (fixed in advance) | 0.53 [0.42, 0.61] | 0.60 [0.50, 0.69] | 0.32 [0.20, 0.43] | 0.85 [0.68, 0.98] |
+| Gap, locker before the pick | 0.34 [0.23, 0.43] | 0.52 [0.40, 0.65] | 0.21 [0.10, 0.33] | 0.75 [0.51, 0.95] |
+| Gap, locker after the pick | 0.86 [0.67, 1.10] | 0.70 [0.40, 0.88] | 0.33 [0.09, 0.53] | 1.10 [0.83, 1.30] |
+| Lookups switched: before / after | 86% / 19% | 76% / 9% | 89% / 11% | 65% / 9% |
+
+**The switch as a probability** (the TA's sampling question): with "switch" replaced by p_alt, the expected switch rate when sampling at T = 1, the main test's gap is 0.51 [0.44, 0.58] (9B), 0.53 [0.46, 0.59] (27B), 0.34 [0.27, 0.41] (122B), 0.73 [0.59, 0.82] (Muse); lookup −0.05 [−0.07, −0.03] / 0.17 [0.13, 0.22] / −0.01 [−0.05, 0.02] / −0.03 [−0.05, −0.01], recall 0.46 [0.39, 0.53] / 0.70 [0.63, 0.76] / 0.33 [0.26, 0.40] / 0.70 [0.57, 0.79].
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.

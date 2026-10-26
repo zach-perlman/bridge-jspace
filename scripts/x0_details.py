@@ -192,6 +192,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     predictions_numbers(num)
     x8_numbers(num)
     x8_order_numbers(num)
+    tier0_numbers(num)
     t_pointer_numbers(num)
     first_sentence_numbers(num)
     ld_numbers(num)
@@ -616,6 +617,41 @@ def x8_order_numbers(num: Numbers) -> None:
     num.add("x8_order_models", " and ".join([", ".join(landed[:-1]), landed[-1]]) if len(landed) > 1
             else "".join(landed) or "–", src)  # fmt: skip
     num.add("x8_order_j0_range", f"{f2(min(j0))}-{f2(max(j0))}" if j0 else "–", src)
+
+
+SBO_DESIGNS = {"swap": "two people swap", "one": "only the asked pick", "fresh": "fresh scenes"}
+
+
+def tier0_numbers(num: Numbers) -> None:
+    """The batch-45 brief's Tier 0 (Dan 26 Oct ~18:30; after the data, descriptive): T0.2 the split by sentence order
+    (scripts/x0_split_by_order.py: sbo_<design>_<all|before|after>_<lk|rc|gap|lksw>_<m>); T0.3 the extra loss on p_alt
+    (prob_<lk|rc|gap>_<m>); T0.4 a share of the change three ways (share_<median|mean|pooled>_<part>_<m>)."""
+    found = sorted((pins.RESULTS_DIR / "x0_composition").glob("split-by-order-*/split.json"))
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        for key, v in json.loads(found[-1].read_text())["cells"].items():
+            target, design = key.split("|")
+            m = next(k for k, (t, *_) in MODELS.items() if t == target)
+            for grp, c in v["cells"].items():
+                for k, field in (("lk", "lookup"), ("rc", "recall"), ("gap", "gap")):
+                    num.add(f"sbo_{design}_{grp}_{k}_{m}", ci(c[field]), src)
+                num.add(f"sbo_{design}_{grp}_lksw_{m}", pct(c["lookup_switch"]), src)
+                num.add(f"sbo_{design}_{grp}_n_{m}", str(c["n"]), src)
+    found = sorted((pins.RESULTS_DIR / "x0_composition").glob("prob-shares-*/prob_shares.json"))
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        blob = json.loads(found[-1].read_text())
+        for target, c in blob["prob"].items():
+            m = next(k for k, (t, *_) in MODELS.items() if t == target)
+            for k, field in (("lk", "prob_lookup"), ("rc", "prob_recall"), ("gap", "prob_gap")):
+                num.add(f"prob_{k}_{m}", ci(c[field]), src)
+        for key, ag in blob["shares"].items():
+            target, part = key.split("|")
+            m = next(k for k, (t, *_) in MODELS.items() if t == target)
+            slug = {"jpp+alf+idout": "jppalfid", "jpp": "jpp"}[part]
+            for agg in ("median", "mean", "pooled"):
+                if ag[agg] == ag[agg]:  # not nan
+                    num.add(f"share_{agg}_{slug}_{m}", pct(ag[agg]), src)
 
 
 def t_pointer_numbers(num: Numbers) -> None:
