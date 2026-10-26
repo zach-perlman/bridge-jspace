@@ -1531,3 +1531,23 @@ generation now passes use_cache=False for a model built by its own code (pins re
 Nothing else changes. The 27B's renderings (amendment 49), queued after Bolt, started when Bolt's chain exited.
 Bolt's chain is relaunched to wait for them, then repeats its gates and continues as amendments 44, 46, 49 and
 49 note 1.
+
+## Amendment 50 (Zach, 2026-10-26 03:40 UTC, before any run below): Monday's queue after Bolt
+
+- **Why:** Lightning's test (+53, J-specific, all relations) makes it the second family. Its evidence should match the
+  Qwens': the same controls, data seeds and mechanism tests. CLAUDE.md also requires the 27B headline rerun from a clean
+  checkout. Amendment 49 note 1 queued the all-relation profiles.
+- **GPU 1 (job h200monL), after Bolt:**
+  - Lightning's probe ceiling and variance control at L27-33 (amendment 48 and note 1, as the Qwens'), then its
+    cross-relation swap at L27-33 (amendment 47; scripts/queues/h200_xrelm_1026.sh).
+  - Lightning's renderings jsuite_v2r2 and jsuite_v2r3 at 150 per word (amendment 49: paper10 / rot / unembed10).
+  - All-relation dev profiles (amendment 49 note 1, "rs", 40 per word) for Lightning and Ministral.
+- **GPU 0 (job h200mon0), after Bolt:**
+  - The 27B v2 headline from a clean checkout: scripts/queues/h200_clean27_1026.sh, a copy of amendment 37 C's (the
+    9B's) with the 27B's target, band and batch (32, as the run of record), compared row by row with the run of
+    record.
+  - All-relation dev profiles for the 27B and the 9B.
+- **Readings:** those of the amendments named, unchanged. The clean rerun passes if every shared row agrees
+  (correct, correct_cand2, correct_top). Any difference is reported with its count, not explained away. The profiles
+  are descriptive: the depth of the J-specific band on all relations, beside the country-only profile. Picks already
+  used are not revisited.
