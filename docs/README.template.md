@@ -141,6 +141,9 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 ## 6. Next
 
 - **Running now.** The pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; writing the pointer: adding the difference between two slots' mean states to send the lookup to another locker.
+
+![Writing the pointer: one fixed vector per slot pair, against a random direction; batch 44, the 9B so far](figures/story/fig8_writes.png)
+
 - **Follow-up: answers by sampling.** Read the answer by sampling, not the top token, to see whether the split holds over the answer distribution.
 - **Follow-up: routes and pointer tests without the chat template.** The main test without the template exists for the 9B and the 27B only; the routes test and the pointer directions have not been run without it.
 - **Follow-up: OLMo checkpoints.** The same tests across OLMo's training checkpoints, to see when the pointer appears.

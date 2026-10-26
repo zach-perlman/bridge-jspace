@@ -585,9 +585,84 @@ def fig7(plt) -> None:
     S.save(fig, "fig7_scorecard")
 
 
+X8_RUNS = {"9b": "qwen35_9b_x8_write", "27b": "x8_write_27b", "122b": "qwen35_122b_x8_write_g75", "muse": "muse30b_x8_write"}
+PAIR_COL = {(0, 1): "#2b7bba", (0, 2): "#e08a1e", (1, 2): "#2e9e5b"}  # one hue per slot pair; dashed = the reverse write
+ITEM_COL = {"target": "#6a4bd6", "third": "#d98cb3", "other": "#c8c8c8"}
+
+
+def fig8(plt) -> None:
+    """Batch 44 (after the data for the recall split and s*): per model, left, the lookup's target share against the
+    dose s, one line per slot pair (j -> k), the random direction of the same norm as the baseline, a dotted mark at each
+    pair's s* (the dose at the median norm of a real pointer change); right, the recall's changed answers by whose
+    legs they give (the item at the target slot, the third slot, other), as a share of the writes, per s."""
+    fig = plt.figure(figsize=(S.WIDTH, 6.0))
+    grid = fig.add_gridspec(2, 4, left=0.075, right=0.99, top=0.76, bottom=0.10, wspace=0.42, hspace=0.62,
+                            width_ratios=[1.25, 1, 1.25, 1])  # fmt: skip
+    S.title(fig, "One fixed vector moves the lookup to its slot once the push is as strong as a real change", limit=90)
+    for i, (target, m, name) in enumerate(S.MODELS):
+        left, right = fig.add_subplot(grid[i // 2, 2 * (i % 2)]), fig.add_subplot(grid[i // 2, 2 * (i % 2) + 1])
+        fig.text((left.get_position().x0 + right.get_position().x1) / 2, left.get_position().y1 + 0.035, name,
+                 ha="center", fontsize=10.5, weight="bold")  # fmt: skip
+        root = pins.RESULTS_DIR / "x8_write" / X8_RUNS[m]
+        v, rc = latest(root, "verdict-*/verdict.json"), latest(root, "recall-*/recall.json")
+        if v is None:
+            for ax in (left, right):
+                ax.axis("off")
+            S.empty(left, "not landed")
+            continue
+        cells = v["cells"]
+        for (a, b), col in PAIR_COL.items():
+            for j, k, ls in ((a, b, "-"), (b, a, "--")):
+                pts = sorted((c["s"], c["target"]) for c in cells if c["kind"] == "write" and c["pair"] == [j, k])
+                left.plot([s for s, _ in pts], [t[0] for _, t in pts], ls=ls, marker="o", ms=3.5, lw=1.6, color=col)
+                for s, t in pts:
+                    S.record("fig8", target, f"lookup target share, write {j} -> {k}, s = {s:g}", *t, source=X8_RUNS[m])
+            if rc:
+                s_star = rc["s_real"][f"{a}-{b}"]
+                left.axvline(s_star, color=col, ls=":", lw=1.2)
+                S.record("fig8", target, f"s* (real pointer-change norm), slots {a}-{b}", s_star, source=X8_RUNS[m])
+        rand = sorted((c["s"], c["target"]) for c in cells if c["kind"] == "random" and c["pair"] is None)
+        left.plot([s for s, _ in rand], [t[0] for _, t in rand], ls="-", marker="s", ms=3.5, lw=1.4, color="#9a9a9a")
+        for s, t in rand:
+            S.record("fig8", target, f"lookup target share, random direction, s = {s:g}", *t, source=X8_RUNS[m])
+        left.set_xlim(0.7, 4.3)
+        left.set_xticks([1, 2, 4])
+        left.set_ylim(0, 1)
+        left.set_xlabel("dose s")
+        left.set_ylabel("lookup: target share", fontsize=9.5)
+        left.grid(axis="y", color="#eeeeee")
+        if not rc:
+            S.empty(right, "recall split\nnot computed")
+            continue
+        n = {(c["kind"], c["s"]): c["n"] for c in cells if c["pair"] is None}
+        bars = [(f"s={s:g}", "write", s) for s in sorted({c["s"] for c in cells if c["kind"] == "write"})] + [("rand\ns=4", "random", 4)]
+        for x, (label, kind, s) in enumerate(bars):
+            got = rc["changed_by_item"].get(f"{kind}|{s:g}", {})
+            bottom = 0.0
+            for item, col in ITEM_COL.items():
+                share = got.get(item, 0) / n[(kind, s)]
+                right.bar(x, share, bottom=bottom, color=col, width=0.7, edgecolor="white", linewidth=0.8)
+                bottom += share
+                S.record("fig8", target, f"recall changed to the {item} slot's item, {kind} s = {s:g} (share of writes)", share,
+                         n=n[(kind, s)], source=X8_RUNS[m])  # fmt: skip
+        right.set_xticks(range(len(bars)), [b[0] for b in bars], fontsize=8.5)
+        right.set_ylim(0, 0.6)
+        right.set_ylabel("recall changed", fontsize=9.5)
+        right.grid(axis="y", color="#eeeeee")
+    lines = [plt.Line2D([], [], color=c, lw=1.6) for c in PAIR_COL.values()]
+    lines += [plt.Line2D([], [], color="#555555", lw=1.6, ls="--"), plt.Line2D([], [], color="#9a9a9a", marker="s", lw=1.4),
+              plt.Line2D([], [], color="#555555", ls=":", lw=1.2)]  # fmt: skip
+    lines += [plt.Rectangle((0, 0), 1, 1, color=c) for c in ITEM_COL.values()]
+    fig.legend(lines, ["lookup, slots 0 ↔ 1", "slots 0 ↔ 2", "slots 1 ↔ 2", "dashed: the reverse write",
+                       "random direction, same size", "dotted: s at a real change's size", "recall changed (share of writes): the target slot's item",
+                       "the third slot's item", "other"], loc="upper left", bbox_to_anchor=(0.0, 0.94), ncol=3,
+               frameon=False, fontsize=9)  # fmt: skip
+    S.save(fig, "fig8_writes")
+
+
 def main() -> None:
     plt = S.setup()
-    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6, fig7):
+    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8):
         f(plt)
     S.write_data()
     print(S.OUT)

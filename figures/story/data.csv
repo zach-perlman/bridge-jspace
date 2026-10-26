@@ -525,6 +525,41 @@ fig7,muse-glimmer-30b,"The lookup follows identity or position, never the value"
 fig7,muse-glimmer-30b,The pointer part alone gives position answers,held,,,,verdicts; fixed
 fig7,muse-glimmer-30b,Position appears where the lookup stops needing J++,held,,,,verdicts; after
 fig7,muse-glimmer-30b,J++ and the pointer together cost the lookup more than the pointer alone,no,,,,verdicts; fixed
+fig8,qwen3.5-9b,"lookup target share, write 0 -> 1, s = 1",0.043010752688172046,0.010416666666666666,0.08235294117647059,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 0 -> 1, s = 2",0.9247311827956989,0.8764044943820225,0.9693954854669139,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 0 -> 1, s = 4",0.8924731182795699,0.8351648351648352,0.9479166666666666,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 1 -> 0, s = 1",0.046296296296296294,0.010309278350515464,0.08771929824561403,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 1 -> 0, s = 2",0.8981481481481481,0.8316831683168316,0.9603960396039604,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 1 -> 0, s = 4",0.9351851851851852,0.8921568627450981,0.9736842105263158,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"s* (real pointer-change norm), slots 0-1",1.6002000097565734,,,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 0 -> 2, s = 1",0.021505376344086023,0.0,0.05263157894736842,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 0 -> 2, s = 2",0.45161290322580644,0.33707865168539325,0.5698924731182796,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 0 -> 2, s = 4",0.6666666666666666,0.5714285714285714,0.7631649688737974,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 2 -> 0, s = 1",0.0,0.0,0.0,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 2 -> 0, s = 2",0.5050505050505051,0.3978494623655914,0.6067415730337079,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 2 -> 0, s = 4",0.8787878787878788,0.8095238095238095,0.9397590361445783,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"s* (real pointer-change norm), slots 0-2",1.3614667856475815,,,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 1 -> 2, s = 1",0.0,0.0,0.0,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 1 -> 2, s = 2",0.0,0.0,0.0,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 1 -> 2, s = 4",0.5092592592592593,0.40336134453781514,0.6288659793814433,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 2 -> 1, s = 1",0.0,0.0,0.0,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 2 -> 1, s = 2",0.0,0.0,0.0,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, write 2 -> 1, s = 4",0.5353535353535354,0.4025934431422237,0.6513761467889908,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"s* (real pointer-change norm), slots 1-2",2.6997942386831273,,,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, random direction, s = 1",0.0,0.0,0.0,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"lookup target share, random direction, s = 4",0.0,0.0,0.0,,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the target slot's item, write s = 1 (share of writes)",0.035,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the third slot's item, write s = 1 (share of writes)",0.005,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the other slot's item, write s = 1 (share of writes)",0.0,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the target slot's item, write s = 2 (share of writes)",0.18166666666666667,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the third slot's item, write s = 2 (share of writes)",0.02,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the other slot's item, write s = 2 (share of writes)",0.013333333333333334,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the target slot's item, write s = 4 (share of writes)",0.3416666666666667,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the third slot's item, write s = 4 (share of writes)",0.06333333333333334,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the other slot's item, write s = 4 (share of writes)",0.021666666666666667,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the target slot's item, random s = 4 (share of writes)",0.008333333333333333,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the third slot's item, random s = 4 (share of writes)",0.013333333333333334,,,600,qwen35_9b_x8_write
+fig8,qwen3.5-9b,"recall changed to the other slot's item, random s = 4 (share of writes)",0.008333333333333333,,,600,qwen35_9b_x8_write
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
