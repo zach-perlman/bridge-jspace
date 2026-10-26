@@ -1,0 +1,682 @@
+{
+ "exp": "x0_massmean",
+ "run": "muse30b_x45g_one",
+ "seed": 0,
+ "k": 10,
+ "groups": [
+  {
+   "key": "lookup",
+   "title": "lookup",
+   "definition": "the lookup reader on the same patch",
+   "n_total": 10
+  },
+  {
+   "key": "recall",
+   "title": "recall",
+   "definition": "the recall reader on the same patch",
+   "n_total": 10
+  }
+ ],
+ "examples": [
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0018",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the butterfly is 5. Sara picked the butterfly. Rose picked the fox. The locker of the eagle is 4. The locker of the fox is 3. Jack picked the eagle.\nWhich locker belongs to Jack's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 380,
+     "end": 386,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge eagle -> butterfly at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "4",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "5"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0018",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the butterfly is 5. Sara picked the butterfly. Rose picked the fox. The locker of the eagle is 4. The locker of the fox is 3. Jack picked the eagle.\nHow many legs does Jack's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 380,
+     "end": 386,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge eagle -> butterfly at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "2",
+    "edited": "(not stored), original answer",
+    "expected": {
+     "original": "2",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), original answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0093",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the crow is seven. Anna picked the wolf. Eve picked the crow. Owen picked the goat. The locker of the goat is six. The locker of the wolf is five.\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 316,
+     "end": 321,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge goat -> crow at layer 26; its locker sentence after the pick",
+   "answers": {
+    "clean": "6",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "6",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), changed answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0093",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the crow is seven. Anna picked the wolf. Eve picked the crow. Owen picked the goat. The locker of the goat is six. The locker of the wolf is five.\nHow many legs does Owen's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 316,
+     "end": 321,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge goat -> crow at layer 26; its locker sentence after the pick",
+   "answers": {
+    "clean": "4",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0112",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Luke picked carbon. The locker of lithium is 6. The locker of nitrogen is 3. The locker of carbon is 2. Hugo picked nitrogen. Kyle picked lithium.\nWhich locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 340,
+     "end": 349,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge nitrogen -> carbon at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "3",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "3",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), changed answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0112",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Luke picked carbon. The locker of lithium is 6. The locker of nitrogen is 3. The locker of carbon is 2. Hugo picked nitrogen. Kyle picked lithium.\nWhat is the atomic number of Hugo's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 340,
+     "end": 349,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge nitrogen -> carbon at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "7",
+    "edited": "(not stored), original answer",
+    "expected": {
+     "original": "7",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), original answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0143",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of gamma is two. The locker of delta is eight. Emma picked gamma. Clara picked delta. Owen picked alpha. The locker of alpha is seven.\nWhich locker belongs to Emma's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 294,
+     "end": 300,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge gamma -> alpha at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "2",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0143",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of gamma is two. The locker of delta is eight. Emma picked gamma. Clara picked delta. Owen picked alpha. The locker of alpha is seven.\nWhich position in the Greek alphabet does Emma's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 294,
+     "end": 300,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge gamma -> alpha at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "3",
+    "edited": "(not stored), other",
+    "expected": {
+     "original": "3",
+     "changed": "1"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), other",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), other",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), other",
+    "without a random part (U's share)": "(not stored), other",
+    "without a random part (J++ and U's share)": "(not stored), other"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0154",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Tara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked oxygen. Max picked helium. The locker of oxygen is five.\nWhich locker belongs to Sean's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 320,
+     "end": 327,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge oxygen -> helium at layer 26; its locker sentence after the pick",
+   "answers": {
+    "clean": "5",
+    "edited": "(not stored), original answer",
+    "expected": {
+     "original": "5",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), original answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0154",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Tara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked oxygen. Max picked helium. The locker of oxygen is five.\nWhat is the atomic number of Sean's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 320,
+     "end": 327,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge oxygen -> helium at layer 26; its locker sentence after the pick",
+   "answers": {
+    "clean": "8",
+    "edited": "(not stored), original answer",
+    "expected": {
+     "original": "8",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), original answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0159",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Olivia picked the pig. Ryan picked the spider. The locker of the bee is 2. The locker of the pig is 9. Lucy picked the bee. The locker of the spider is 7.\nWhich locker belongs to Lucy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 343,
+     "end": 347,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge bee -> spider at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "2",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), changed answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0159",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Olivia picked the pig. Ryan picked the spider. The locker of the bee is 2. The locker of the pig is 9. Lucy picked the bee. The locker of the spider is 7.\nHow many legs does Lucy's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 343,
+     "end": 347,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge bee -> spider at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "6",
+    "edited": "(not stored), original answer",
+    "expected": {
+     "original": "6",
+     "changed": "8"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), original answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0177",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the mouse is six. The locker of the chicken is four. Tara picked the chicken. The locker of the cat is one. Peter picked the cat. Iris picked the mouse.\nWhich locker belongs to Iris's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 384,
+     "end": 390,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge mouse -> chicken at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "6",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "6",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0177",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the mouse is six. The locker of the chicken is four. Tara picked the chicken. The locker of the cat is one. Peter picked the cat. Iris picked the mouse.\nHow many legs does Iris's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 384,
+     "end": 390,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge mouse -> chicken at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "4",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), changed answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0179",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of delta is six. Diana picked alpha. Beth picked delta. The locker of beta is three. The locker of alpha is seven. Will picked beta.\nWhich locker belongs to Beth's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 284,
+     "end": 290,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge delta -> alpha at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "6",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "6",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), changed answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0179",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of delta is six. Diana picked alpha. Beth picked delta. The locker of beta is three. The locker of alpha is seven. Will picked beta.\nWhich position in the Greek alphabet does Beth's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 284,
+     "end": 290,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge delta -> alpha at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "4",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "1"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), changed answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0190",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of carbon is nine. Alice picked carbon. The locker of helium is seven. Lucy picked nitrogen. Sara picked helium. The locker of nitrogen is six.\nWhich locker belongs to Alice's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 267,
+     "end": 274,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge carbon -> nitrogen at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "9",
+    "edited": "(not stored), original answer",
+    "expected": {
+     "original": "9",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), original answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0190",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of carbon is nine. Alice picked carbon. The locker of helium is seven. Lucy picked nitrogen. Sara picked helium. The locker of nitrogen is six.\nWhat is the atomic number of Alice's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 267,
+     "end": 274,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge carbon -> nitrogen at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "6",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "6",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0289",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Noah picked lithium. Laura picked nitrogen. The locker of oxygen is 7. The locker of nitrogen is 1. Amy picked oxygen. The locker of lithium is 2.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 335,
+     "end": 342,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge oxygen -> lithium at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "7",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "7",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), other",
+    "without J++ and U": "(not stored), other",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0289",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-26.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Noah picked lithium. Laura picked nitrogen. The locker of oxygen is 7. The locker of nitrogen is 1. Amy picked oxygen. The locker of lithium is 2.\nWhat is the atomic number of Amy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 335,
+     "end": 342,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge oxygen -> lithium at layer 26; its locker sentence before the pick",
+   "answers": {
+    "clean": "8",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "8",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), other",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  }
+ ]
+}
