@@ -1,0 +1,71 @@
+{
+ "counts": {
+  "cases": {
+   "animals/same": 400,
+   "animals/xlang": 400,
+   "elements/same": 400,
+   "elements/syn": 400
+  },
+  "recall_answers_differ": {
+   "animals/same": 181,
+   "animals/xlang": 181,
+   "elements/same": 400,
+   "elements/syn": 400
+  },
+  "dropped": {},
+  "entities": {
+   "animals": 8,
+   "elements": 6
+  }
+ },
+ "gate": {
+  "animals/same/PP": {
+   "cases": 400,
+   "org_accuracy": 0.985,
+   "pass": true,
+   "eligible": 388
+  },
+  "animals/same/PM": {
+   "cases": 400,
+   "org_accuracy": 0.9975,
+   "pass": true,
+   "eligible": 180
+  },
+  "animals/xlang/PP": {
+   "cases": 400,
+   "org_accuracy": 0.9725,
+   "pass": true,
+   "eligible": 378
+  },
+  "animals/xlang/PM": {
+   "cases": 400,
+   "org_accuracy": 0.9925,
+   "pass": true,
+   "eligible": 180
+  },
+  "elements/same/PP": {
+   "cases": 400,
+   "org_accuracy": 0.99,
+   "pass": true,
+   "eligible": 395
+  },
+  "elements/same/PM": {
+   "cases": 400,
+   "org_accuracy": 1.0,
+   "pass": true,
+   "eligible": 400
+  },
+  "elements/syn/PP": {
+   "cases": 400,
+   "org_accuracy": 0.97,
+   "pass": true,
+   "eligible": 380
+  },
+  "elements/syn/PM": {
+   "cases": 400,
+   "org_accuracy": 0.9975,
+   "pass": true,
+   "eligible": 398
+  }
+ }
+}
