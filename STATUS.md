@@ -27,6 +27,14 @@ Scored 25 Oct: Q32.7, Q32.8 right; Q33.1, Q34.1, Q35.1, Q36.1, Q37.1 wrong; Q37.
 
 
 
+# Night of 26-27 Oct: batch 45 in run mode (Dan ~18:25; agent). Results sealed until Dan's predictions per test
+
+- Pre-registration: b37d31ad (jobs/c3/batch45.yaml, docs/predictions_batch45.md). `git push` is denied by the session's settings, so the commit is local until Dan pushes; every batch-45 job runs code that descends from it.
+- 45.0 independent check (dcd81029; scripts/indep_check.py, written from scratch by a separate agent): PASS, 20 / 20 items on every arm, largest |ld| difference 0.125 (5dc200a6). The queue proceeds.
+- mats: a second worker on GPU 1 (jobq-gpu1) beside jobq-gpu0-1, so 1-GPU jobs run two at a time; the 2-GPU 122B block is queued last (each worker checks free memory before starting a job).
+- Sealing: batch-45 jobs run with no verdict after the run (x0_massmean two_routes, x8_write --pairs / --dose-from, x0_necessity --sealed, x6_routes --sealed, x45b without a verdict stage in the job); only exit codes, row counts, gate.json and wall times are looked at.
+- Tier 0 (17c2daf0, c4689ab2): T0.2 split by order (docs/split_by_order.md), T0.3 p_alt, T0.4 shares (docs/x0_details.md); README drafts in docs/drafts/ (not merged). Tier 2 drafts c757a805.
+
 # Monday 26 Oct (Dan's plan ~10:30, addendum ~10:35; agent). Decisions logged, not asked
 
 - Step 1, batch 38 scored (ef8ea103): 11 of 12 right, Q38.9 wrong; calibration over 93 answers. Q38.11 reported as the two readers' extra loss (8dbc8a59), as Dan asked.
