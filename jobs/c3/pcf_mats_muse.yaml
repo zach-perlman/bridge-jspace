@@ -1,0 +1,23 @@
+id: pcf_mats_muse
+title: "P_cf (batch 43) on mats (moved from the helper box to balance the two queues): fit at the layer fixed in advance, then the routes test with it, muse-glimmer-30b"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.8
+depends_on: [x6_routes_r2]
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= uv run python scripts/x7_pcf.py run --name muse30b_x7_pcf && BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name muse30b_x6_routes_pcf --conditions C0,C2 --keeponly --alf-from x7_pcf/muse30b_x7_pcf --c0-min 0.5
+question: >-
+  Does a pointer found without slot labels (P_cf: the top 4 components of the bridge word's change when only its locker sentence moves) match the mass-mean pointer directions, and does removing or adding it alone move the lookup's position answers as theirs did?
+why_it_matters: >-
+  The mass-mean pointer directions use slot labels; P_cf asks whether the same subspace falls out of the model's own response to moving the sentence (Dan).
+hypotheses:
+  H-batch43: 'Dan''s batch 43 (Q43.1-Q43.3), predictions/2026-10-26_dan.md, committed before any result is opened'
+decision_rule: >-
+  Fixed in advance (batch 43): P_cf = the top 4 components of a centered PCA over 1,000 pairs at the layer fixed in advance; Q43.1 mean cos² of the principal angles with the mass-mean pointer directions >= 0.5; Q43.2 another item moved, removing P_cf cuts the position share by >= 0.20 more than its random part; each over the 9B, the 27B, the 122B and Muse. Descriptive: the variance explained by 1-8, P_cf's share inside the pairs' J++ spans, the sanity swap, only P_cf added. Gates as for the routes test (the 122B at 0.75, after the data, as its earlier routes runs). Cluster bootstrap over the bridge item, 10,000 resamples, seed 0.
+controls:
+- 'a random part at P_cf''s share, per scene'
+- 'the recall on the identical patch'
+n: '1,000 pairs for the fit; 300 scenes per routes condition'
+seeds: [4301, 2510, 0]
+notes: "Results stay closed until Dan's batch-43 answers are committed. The natural-passage step (P_cf_nat) is not in these jobs (if time, a later job)."
