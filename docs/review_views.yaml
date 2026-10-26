@@ -1,0 +1,519 @@
+# The review views: one per claim the README makes. The single source of truth for the review dashboard
+# (scripts/review.py: make review-serve / review-export / review-summary) and, from Phase 2, for docs/verify_pack.md.
+# Per view: the claim in the README's words, the docs/x0_numbers.json keys it backs ("sources"; <m> = 9b / 27b / 122b /
+# muse, the same keys as the `source` column of figures/story/data.csv), per model the run dirs and their per-item
+# files, the filters that make the claim's item set (as the verdict used them), and what each answer class means.
+# Read-only on results/. status: phase1 = in the dashboard now; later = listed, not yet in the dashboard.
+version: 1
+
+models:
+  qwen3.5-9b: {key: 9b, label: Qwen3.5-9B, layer: 12}
+  qwen3.6-27b: {key: 27b, label: Qwen3.6-27B, layer: 32}
+  qwen3.5-122b-a10b: {key: 122b, label: Qwen3.5-122B, layer: 33}
+  muse-glimmer-30b: {key: muse, label: Muse Glimmer 30B, layer: 26}
+
+# Token ids are decoded with tokenizer.json only, at the revision pinned in src/bridge_jspace/pins.py (hf_hub_download
+# of that one file). The three Qwens share one tokenizer.json (sha256 5f9e4d4901a92b99...); Muse has its own.
+
+# How each kind's per-item files are read (src/bridge_jspace/review/).
+kinds:
+  x0:
+    files: [cases.jsonl, outcomes.jsonl, shares.jsonl, competence.jsonl, gate.json]
+    prompts: >-
+      cases.jsonl per (scene, rendering): context / cf_context, bridge / cf_bridge, pos (the bridge's token index, where
+      the change is added), readers.{PP,PM}: question, answer / cf_answer, ids.org / ids.alt, tok_A / tok_b.
+    outcomes: >-
+      per (scene, rendering, layer, reader, dict, k, omp, arm): switched, role, p_org, p_alt, ld. No top token is
+      stored: the stored class is role.
+    classes:
+      b: switched - the top token is the swapped answer's token (tok_b)
+      A: original - the top token is the original answer's token (tok_A)
+      other: neither
+    eligible: >-
+      x0_necessity.gate_and_eligible: org and alt said right and read right by both readers (competence.jsonl), the
+      first 200 in scene order; the item set is the scenes in outcomes.jsonl at the layer.
+  routes:
+    files: [cases.jsonl, outcomes.jsonl, norms.jsonl, competence.jsonl, gate.json, c0_check.json]
+    prompts: >-
+      cases.jsonl per scene (700 generated per condition, seed 2510): context (O) / cf_context (S), bridge (the O
+      pick) / cf_bridge (the S pick), pos, expect (the digit each route predicts), route_tokens, readers as x0.
+    outcomes: per (scene, condition, reader, arm) - top (token id), route (lookup only), switched, role, p_org, p_alt, ld.
+    classes:
+      identity: the bridge item's own locker digit in S (C1 - the same as original; reported as identity)
+      position: the digit in S of the locker sentence at the bridge's sentence slot in O
+      value: the new digit S gives the moved item
+      original: O's answer
+      other: none of these. C0 stores "other" for a correct switch (route_tokens has no "switch"); for C0 the class is
+        re-derived from expect - switch / original / other.
+      recall: switched = the recall follows S (the top token is S's answer, the S pick's legs)
+    eligible: >-
+      x6_routes: both readers say and read O's and S's answers right (competence.jsonl), the first 300 per condition;
+      the item set is the scenes in outcomes.jsonl for the condition.
+  massmean:
+    files: [outcomes.jsonl, manifest.json]
+    prompts: >-
+      none of its own: the cases.jsonl of the run named in manifest.json "single" (the one-change main test), joined by
+      scene.
+    outcomes: per (scene, reader, arm) - switched, role, p_org, p_alt, ld, share_<part>.
+    classes: {b: switched, A: original, other: neither}
+    eligible: >-
+      manifest items_rule - the one-change items whose org and alt locker sentences both come before the asked pick;
+      the item set is the scenes in outcomes.jsonl.
+  x8:
+    files: [outcomes.jsonl, gate.json, manifest.json]
+    prompts: >-
+      none of its own: x8_write.stage_run builds O from x6_routes' generator (same seed 2510, C2, same eligibility), so
+      its scenes are the C2 cases of the model's routes run, joined by scene. Checked per item (badge): the stored entity
+      is that case's bridge and j its locker slot.
+    outcomes: per (scene, reader, kind none / write / random, j, k, s) - top, norm, class (lookup), changed (recall).
+    classes:
+      target: the digit of locker slot k (the slot written to)
+      original: the digit of locker slot j (the bridge's own)
+      third: the digit of the remaining slot
+      other: none of the three
+      recall: changed = the recall's top token differs from its unwritten read
+
+views:
+  # ---------------------------------------------------------------- Phase 1 (Tuesday's hand check)
+  - id: main_swap
+    title: Main test, two people swap picks
+    status: phase1
+    kind: x0
+    readme: "Section 1 table, row 'Two people swap picks (fixed in advance)'; Fig. 1; Appendix A 'Gap, two people swap picks'; scorecard row 1"
+    claim: >-
+      Recall needs the lens-readable (J++) part of the bridge; the lookup mostly doesn't. Gap = the recall's extra loss
+      minus the lookup's; extra loss = the share of switches lost without the J++ part minus the share lost without a
+      random part of the same size.
+    sources: [lk_excess_<m>, rc_excess_<m>, contrast_<m>]
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:  # label: [arm, dict, k, omp]
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without J++: [no_part, jpp, 25, signed]
+        without its random part: [no_rand, jpp, 25, signed]
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part, gap: true}
+    runs:
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
+      qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
+      qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity_r2]
+      muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
+    superseded:
+      qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity]
+
+  - id: single_change
+    title: Only the asked person's pick changes
+    status: phase1
+    kind: x0
+    readme: "Appendix A 'Gap, only the asked person's pick changes'; Fig. 7 caption ('confirmed on all four'); table 3c rows 'Only the asked person's pick changes'"
+    claim: >-
+      The same gap when only the asked person's pick changes (one change in the prompt, not two people swapping).
+    sources: [single_lk_excess_<m>, single_rc_excess_<m>, single_contrast_<m>]
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without J++: [no_part, jpp, 25, signed]
+        without its random part: [no_rand, jpp, 25, signed]
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part, gap: true}
+    runs:
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_single_r2]
+      qwen3.6-27b: [results/x0_necessity/x0_single_27b_r2]
+      qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_single]
+      muse-glimmer-30b: [results/x0_necessity/muse30b_x0_single]
+
+  - id: routes
+    title: "Routes test: what the lookup follows (C0 sanity, C1 same item moved, C2 another item moved)"
+    status: phase1
+    kind: routes
+    readme: "Section 2 (c) and its table rows 2-4; Fig. 3, Fig. 4; Appendix A routes rows; scorecard rows 'follows identity or position, never the value', 'the pointer part alone gives position answers'"
+    claim: >-
+      When another item moved, the lookup follows its identity or its locker sentence's position, never the new value.
+      Removing the pointer directions cuts position; adding only them gives position answers on all but the 27B; the
+      J++ part alone moves none.
+    sources: [rt_C2_whole_identity_9b, rt_C2_whole_position_9b, rt_C2_no_alf_position_9b, rt_C2_no_alf_rand_position_9b,
+              rt_C2_whole_identity_27b, rt_C2_whole_position_27b, rt_C2_no_alf_position_27b, rt_C2_no_alf_rand_position_27b,
+              rt_C2_whole_identity_muse, rt_C2_whole_position_muse, rt_C2_no_alf_position_muse, rt_C2_no_alf_rand_position_muse,
+              rtg_C2_whole_identity_122b, rtg_C2_whole_position_122b, rtg_C2_no_alf_position_122b, rtg_C2_no_alf_rand_position_122b,
+              rtk_C2_keep_alf_position_<m>, rtk_C2_keep_alf_rand_position_<m>, rtk_C2_keep_jpp_identity_<m>]
+    filters:
+      layer: fixed
+      conditions: [C0, C1, C2]
+      readers: [PP, PM]
+      arms:  # label: arm (the first run that has it; keep-only arms come from the keep-only run, C1 and C2 only)
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without J++'s random part: no_jpp_rand
+        without the pointer directions: no_alf
+        without the pointer's random part: no_alf_rand
+        only the pointer part: keep_alf
+        only a random part of its size: keep_alf_rand
+        only the J++ part: keep_jpp
+        only a random part of J++'s size: keep_jpp_rand
+    headline: {stat: route_share, condition: C2, reader: PP, arms: [whole, without the pointer directions, without the pointer's random part, only the pointer part, only a random part of its size, only the J++ part]}
+    runs:  # the main run first (it fixes the item set); the keep-only run joined by scene and condition
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes, results/x6_routes/qwen35_9b_x6_routes_keeponly]
+      qwen3.6-27b: [results/x6_routes/x6_routes_27b, results/x6_routes/x6_routes_keeponly_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_g75, results/x6_routes/qwen35_122b_x6_routes_keeponly_g75]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes]
+    notes: "122B: gate lowered to 0.75 after the data (its run at 0.80, qwen35_122b_x6_routes_c0, stopped at the gate and backs Section 4's 'not tested' line: rt_c0gate_rc_122b)."
+    superseded:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_c0]
+      qwen3.6-27b: [results/x6_routes/x6_routes_c0_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_g75_c0]
+
+  - id: routes_early
+    title: Routes test at the early layer
+    status: phase1
+    kind: routes
+    readme: "Section 3 (a) and its table rows 'Identity share', 'Without J++: the original answer'; Appendix A 'Early layer, recall still switching without J++'"
+    claim: >-
+      Early, the lookup follows identity only; without J++ the Qwens give the original answer.
+    sources: [rte_C2_whole_identity_<m>, rte_C2_no_jpp_original_<m>, rte_C2_no_jpp_recall_follows_s_<m>, rte_C2_whole_position_<m>]
+    filters:
+      layer: run  # the run's own layer: 9B L6, 27B L16, 122B L27, Muse L13
+      conditions: [C0, C1, C2]
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without J++'s random part: no_jpp_rand
+    headline: {stat: route_share, condition: C2, reader: PP, arms: [whole, without J++]}
+    runs:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_l6]
+      qwen3.6-27b: [results/x6_routes/x6_routes_l16_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_l27_g75]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_l13]
+    superseded:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_c0_l6]
+      qwen3.6-27b: [results/x6_routes/x6_routes_c0_l16_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_c0_l27_g75]
+
+  - id: pointer_main
+    title: Pointer directions on the main items
+    status: phase1
+    kind: massmean
+    readme: "Section 2 (b) and its table row 'Lookup's extra loss without the pointer directions'; Appendix A 'Lookup, pointer directions'; scorecard row 'The lookup needs the pointer directions'"
+    claim: >-
+      Removing the pointer directions (4 directions that say where the item was first mentioned) costs the lookup on
+      every model, the recall less.
+    sources: [mmlf_Alf_lk_excess_<m>]
+    filters:
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: none
+        whole: whole
+        without the pointer directions: no_Alf
+        without their random part: no_Alf_rand
+        only the pointer part: keep_Alf
+        only a random part of its size: keep_Alf_rand
+    headline: {stat: extra_loss, whole: whole, part: without the pointer directions, random: without their random part}
+    runs:
+      qwen3.5-9b: [results/x0_massmean/qwen35_9b_x0_massmean_lf]
+      qwen3.6-27b: [results/x0_massmean/x0_massmean_lf_27b]
+      qwen3.5-122b-a10b: [results/x0_massmean/qwen35_122b_x0_massmean_grid]
+      muse-glimmer-30b: [results/x0_massmean/muse30b_x0_massmean_grid]
+    notes: "9B and 27B: the layout-free pointer (mode layout_free); 122B and Muse: the grid mode. The 9B's main table cell (0.47, replicated) comes from x0_replicate; this view backs Appendix A's row."
+    superseded:
+      qwen3.5-9b: [results/x0_massmean/qwen35_9b_x0_massmean]
+      qwen3.6-27b: [results/x0_massmean/x0_massmean_27b]
+
+  - id: x8_writes
+    title: "Writing the pointer (batch 44 A): h + s (mu_k - mu_j) at the bridge word"
+    status: phase1
+    kind: x8
+    readme: "Section 6 'Running now' (batch 44; not yet a README claim)"
+    claim: >-
+      Batch 44: writing one generic address mu_k - mu_j at the bridge word sends the lookup to locker k, against a
+      random direction of the same norm (Q44.1-3).
+    sources: []
+    filters:
+      layer: fixed
+      readers: [PP, PM]
+      kinds: [write, random]
+      s: [1, 2, 4]
+    headline: {stat: x8_target_minus_random, s: 1}
+    cases_from:  # the C2 cases of the routes run with the same generator, seed and gate
+      qwen3.5-9b: results/x6_routes/qwen35_9b_x6_routes
+      qwen3.6-27b: results/x6_routes/x6_routes_27b
+      qwen3.5-122b-a10b: results/x6_routes/qwen35_122b_x6_routes_g75
+      muse-glimmer-30b: results/x6_routes/muse30b_x6_routes
+    runs:
+      qwen3.5-9b: [results/x8_write/qwen35_9b_x8_write]
+      qwen3.6-27b: [results/x8_write/x8_write_27b]
+      qwen3.5-122b-a10b: [results/x8_write/qwen35_122b_x8_write_g75]
+      muse-glimmer-30b: [results/x8_write/muse30b_x8_write]
+
+  # ---------------------------------------------------------------- later (Phase 2 adds them to the dashboard)
+  - id: x8_halfway
+    title: "Halfway writes (batch 44, descriptive)"
+    status: later
+    kind: x8
+    readme: "not yet in the README"
+    claim: "Halfway writes land on the middle locker (an ordinal code) or on an end / nowhere (categorical)."
+    sources: []
+    runs:
+      qwen3.5-9b: [results/x8_write/qwen35_9b_x8_halfway]
+      qwen3.6-27b: [results/x8_write/x8_halfway_27b]
+      qwen3.5-122b-a10b: [results/x8_write/qwen35_122b_x8_halfway_g75]
+      muse-glimmer-30b: [results/x8_write/muse30b_x8_halfway]
+
+  - id: x8_order
+    title: "B: filler variants and the shift in slots (batch 44 Q44.4)"
+    status: later
+    kind: x8_order
+    readme: "not yet in the README"
+    claim: "Order, sentence index or distance sets the slot code (which filler variant shifts beta)."
+    sources: []
+    runs:
+      qwen3.5-9b: [results/x8_write/qwen35_9b_x8_order]
+      qwen3.6-27b: [results/x8_write/x8_order_27b]
+      qwen3.5-122b-a10b: [results/x8_write/qwen35_122b_x8_order_g75]
+      muse-glimmer-30b: [results/x8_write/muse30b_x8_order]
+
+  - id: pointer_geometry
+    title: "Pointer geometry (batch 44, CPU, descriptive)"
+    status: later
+    kind: aggregate
+    readme: "not yet in the README"
+    claim: "The 5 class means behind the pointer directions lie on a monotone first component (PC1 share >= 0.7 -> ordinal)."
+    sources: []
+    per_item: "none: an aggregate over the class means of the x0_probe v4 states (results/x8_write/geometry-*); no per-item file"
+
+  - id: k_curve
+    title: More J++ directions removed (k = 25 / 50 / 100)
+    status: later
+    kind: x0
+    readme: "Section 1, bullet 3 ('On the 27B the lookup needs J++ once more directions are removed')"
+    claim: "On the 27B the lookup needs J++ once more directions are removed; the 9B, 122B and Muse keep the gap at k = 100."
+    sources: [lk_excess_k25_27b, lk_excess_k50_27b, lk_excess_k100_27b, contrast_k100_<m>]
+    runs:
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_kmatch]
+      qwen3.6-27b: [results/x0_necessity/x0_kmatch_27b]
+      qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity_r2]
+      muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
+
+  - id: varied_scenes
+    title: Varied scenes (formats and levels)
+    status: later
+    kind: x0b
+    readme: "Section 1 table row 'Varied scenes'; Section 4 'the 122B's varied scenes'; scorecard row 2"
+    claim: "The gap shrinks outside simple scenes; Muse's stays the largest."
+    sources: [x0b_c_<m>]
+    runs:
+      qwen3.5-9b: [results/x0b_generalize/qwen35_9b_x0b_v2]
+      qwen3.6-27b: [results/x0b_generalize/x0b_v2_27b]
+      qwen3.5-122b-a10b: [results/x0b_generalize/qwen35_122b_x0b_v2]
+      muse-glimmer-30b: [results/x0b_generalize/muse30b_x0b_v2]
+
+  - id: natural
+    title: Natural passages
+    status: later
+    kind: x5
+    readme: "Section 1 table row 'Natural passages'; Section 2 (a) the 27B's split; Section 4 gates missed; scorecard row 3"
+    claim: "The gap in natural passages; the 9B's at gate 0.75 after the data; Muse's lookup barely switches."
+    sources: [natg75_gap_9b, nat_gap_27b, nat_gap_122b, nat_rc_excess_muse, nat_lk_excess_muse, nat_n_muse, nat_gate_lk_9b,
+              natsplit_before_lk_sw_27b, natsplit_before_n_27b, natsplit_after_lk_sw_27b, natsplit_after_n_27b, natsplit_before_lk_27b]
+    runs:
+      qwen3.5-9b: [results/x5_natural/qwen35_9b_x5_natural_g75, results/x5_natural/qwen35_9b_x5_natural]
+      qwen3.6-27b: [results/x5_natural/x5_natural_27b]
+      qwen3.5-122b-a10b: [results/x5_natural/qwen35_122b_x5_natural]
+      muse-glimmer-30b: [results/x5_natural/muse30b_x5_natural]
+    notes: "qwen35_9b_x5_natural stopped at its gate (lookup 0.78) and backs Section 4's 'not tested' line; it stays current."
+
+  - id: translated_key
+    title: Translated locker key
+    status: later
+    kind: x4
+    readme: "Appendix A 'Lookup, translated locker key minus verbatim'; Section 4 positive control; scorecard row 5"
+    claim: "A verbatim locker key is not needed: the lookup switches as often with a translated key."
+    sources: [x4_D_animals_<m>, x4_D_elements_27b]
+    runs:
+      qwen3.5-9b: [results/x4_alias/qwen35_9b_x4_patch]
+      qwen3.6-27b: [results/x4_alias/x4_patch_27b]
+      qwen3.5-122b-a10b: [results/x4_alias/qwen35_122b_x4_patch]
+      muse-glimmer-30b: [results/x4_alias/muse30b_x4_patch]
+
+  - id: parts_equal_share
+    title: J++ against the layer's main directions at J++'s share
+    status: later
+    kind: x0_parts
+    readme: "Fig. 2; Section 1 caveat (122B); Appendix A 'Recall, J++ / main directions at J++'s share'; scorecard row 4"
+    claim: "Other parts of a similar size cost the recall less than J++."
+    sources: [pcaeq_jpp_rc_excess_<m>, pcaeq_pca_eq_rc_excess_<m>, jppother_jpp_other_share_<m>]
+    runs:
+      qwen3.5-9b: [results/x0_parts/qwen35_9b_x0_pcaeq, results/x0_parts/qwen35_9b_x0_jppother]
+      qwen3.6-27b: [results/x0_parts/x0_pcaeq_27b, results/x0_parts/x0_jppother_27b]
+      qwen3.5-122b-a10b: [results/x0_parts/qwen35_122b_x0_parts]
+      muse-glimmer-30b: [results/x0_parts/muse30b_x0_parts]
+
+  - id: matched_scenes
+    title: Matched scenes and the first-mention split (table 3c)
+    status: later
+    kind: composition
+    readme: "Section 1 table row 'Matched'; Section 3 (c) and table 3c; Appendix A n rows"
+    claim: "The recall needs J++ most where the pick is the bridge's first mention."
+    sources: [comp_rep_both_gap_<m>, comp_two_fmyes_lk_cell_<m>, comp_two_fmyes_rc_<m>, comp_two_fmno_lk_cell_<m>, comp_two_fmno_rc_<m>,
+              comp_one_fmyes_lk_cell_<m>, comp_one_fmyes_rc_<m>, comp_one_fmno_lk_cell_<m>, comp_one_fmno_rc_<m>, comp_rep_fmno_lk_cell_<m>, comp_rep_fmno_rc_<m>]
+    runs:
+      all: [results/x0_composition/x0_composition_20261026]
+    per_item: "x0_composition is an analysis over the main, one-change and fresh-scene runs' outcomes.jsonl; its items are those runs' items split by first mention"
+
+  - id: sentence_order
+    title: Lookups by sentence order
+    status: later
+    kind: x0
+    readme: "Section 2 (a)"
+    claim: "Lookups switch in 76%-89% of locker-first scenes and 9%-19% otherwise."
+    sources: [lk_order_before_<m>, lk_order_after_<m>]
+    runs:
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
+      qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
+      qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity_r2]
+      muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
+
+  - id: pointer_probe
+    title: The pointer probe and first mention
+    status: later
+    kind: probe
+    readme: "Section 2 (b); Appendix A 'Pointer probe right; another person's earlier pick read as first mention'"
+    claim: "The probe is right in 0.92-0.99 of scenes and points at the item's first mention, even another person's earlier pick."
+    sources: [v4_b_before_<m>, v4_b_layout_before_27b, dup_otherfirst_reads_other_<m>]
+    runs:
+      qwen3.5-9b: [results/x0_probe/qwen35_9b_x0_probe_v4, results/x0_amnesic/qwen35_9b_x0_amnesic]
+      qwen3.6-27b: [results/x0_probe/x0_probe_v4_27b, results/x0_amnesic/x0_amnesic_27b]
+      qwen3.5-122b-a10b: [results/x0_probe/qwen35_122b_x0_probe_v4, results/x0_amnesic/qwen35_122b_x0_amnesic]
+      muse-glimmer-30b: [results/x0_probe/muse30b_x0_probe_v4, results/x0_amnesic/muse30b_x0_amnesic]
+
+  - id: replication
+    title: Fixed-in-advance replication
+    status: later
+    kind: x0
+    readme: "Section 2 table '(replicated)'; Section 4 'the 9B's fixed-in-advance replication', gates missed (122B)"
+    claim: "The pointer result replicates on the 9B and Muse; the 9B's J++ clause failed; the 122B's replication missed its gate."
+    sources: [rep_alf_lk_excess_9b, rep_alf_lk_excess_27b, rep_alf_lk_excess_muse, rep_jpp_rc_excess_9b, rep_gate_rc_122b]
+    runs:
+      qwen3.5-9b: [results/x0_replicate/qwen35_9b_x0_replicate]
+      qwen3.6-27b: [results/x0_replicate/x0_replicate_27b]
+      qwen3.5-122b-a10b: [results/x0_replicate/qwen35_122b_x0_replicate, results/x0_replicate/qwen35_122b_x0_replicate_g75]
+      muse-glimmer-30b: [results/x0_replicate/muse30b_x0_replicate]
+
+  - id: routes_sweep
+    title: Routes at more layers (position appears with depth)
+    status: later
+    kind: routes
+    readme: "Section 3 (a); Fig. 5; Appendix A 'Routes, position share at each tested layer'; scorecard row 'Position appears where the lookup stops needing J++'"
+    claim: "Position appears by layer 12 (9B), 28 (27B), 33 (122B) and 26 (Muse)."
+    sources: [rts8_C2_whole_position_9b, rts10_C2_whole_position_9b, rts20_C2_whole_position_27b, rts24_C2_whole_position_27b, rts24_C2_whole_position_122b,
+              rts28_C2_whole_position_27b, rts30_C2_whole_position_122b, rts36_C2_whole_position_122b]
+    runs:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_sweep_l8, results/x6_routes/qwen35_9b_x6_routes_sweep_l10]
+      qwen3.6-27b: [results/x6_routes/x6_routes_sweep_l20_27b, results/x6_routes/x6_routes_sweep_l24_27b, results/x6_routes/x6_routes_sweep_l28_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_sweep_l24_g75, results/x6_routes/qwen35_122b_x6_routes_sweep_l30_g75, results/x6_routes/qwen35_122b_x6_routes_sweep_l36_g75]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_l34]
+    notes: "Muse L34 stopped at its sanity gate (C0 moved no lookup): 'not tested', stays current."
+
+  - id: both_removed
+    title: J++ and the pointer directions removed together
+    status: later
+    kind: routes
+    readme: "Section 3 (b) and its table rows; Fig. 6; Appendix A sanity-swap rows; scorecard row 10"
+    claim: "Removing both costs the lookup more than the pointer alone, and more than the pointer with a random part of J++'s size, only on the 27B."
+    sources: [rtb_ex_C0_both_minus_alf_lk_<m>, rtb_ex_C0_both_lk_<m>, rtb_ex_C0_alf_lk_<m>, rtb_ex_C0_both_rc_<m>,
+              rtc_lost_C0_jpp_minus_rand_lk_<m>, rtc_left_C0_alf_jpp_lk_<m>, rtc_ex_C0_jpp_rc_9b]
+    runs:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_bothoff, results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl]
+      qwen3.6-27b: [results/x6_routes/x6_routes_bothoff_27b, results/x6_routes/x6_routes_bothoff_ctrl_27b]
+      qwen3.5-122b-a10b: [results/x6_routes/qwen35_122b_x6_routes_bothoff_g75, results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes]
+
+  - id: muse_depth
+    title: Muse's J++ extra loss by depth
+    status: later
+    kind: x0
+    readme: "Fig. 5 (Muse panel)"
+    claim: "Muse: the main test at layers 8-32 (after the data)."
+    sources: []
+    runs:
+      muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity_depth]
+
+  - id: digits
+    title: The locker number at the bridge word
+    status: later
+    kind: x0
+    readme: "Section 4 'The locker number at the bridge word'"
+    claim: "Never the answer; digit directions cost 0.00."
+    sources: [dig_lk_jppdig_k10_before_27b]
+    runs:
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_digit_r2]
+      qwen3.6-27b: [results/x0_necessity/x0_digit_27b_r2]
+
+  - id: logit_diff
+    title: "The gap on the logit difference (batch 39)"
+    status: later
+    kind: x0
+    readme: "not yet in the README body (batch 39 scored)"
+    claim: "The gap holds on the logit difference ld = logit(alt) - logit(org), recounted from the per-arm ld fields."
+    sources: []
+    runs:
+      all: [results/x0_logit_diff/x0_logit_diff_20261026]
+    per_item: "the main runs' outcomes.jsonl (ld per arm), the same item sets as main_swap"
+
+  - id: d1_identity
+    title: "D1: the identity direction (batch 40)"
+    status: later
+    kind: routes
+    readme: "Section 6 'Running now'"
+    claim: "The item's identity as one direction, removed with the pointer and J++, accounts for the rest of the lookup's route."
+    sources: []
+    runs:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_d1]
+      qwen3.6-27b: [results/x6_routes/x6_routes_d1_27b]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_d1_r2]
+    superseded:
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_d1]
+
+  - id: t_pointer
+    title: "T: the pointer directions beyond simple scenes (batch 42)"
+    status: later
+    kind: x0b
+    readme: "Section 6 'Running now'"
+    claim: "Removing the pointer directions (fit on simple scenes) costs the lookup in varied scenes and natural passages."
+    sources: []
+    runs:
+      qwen3.5-9b: [results/x0b_generalize/qwen35_9b_x0b_v2_ptr, results/x5_natural/qwen35_9b_x5_natural_ptr]
+      qwen3.6-27b: [results/x0b_generalize/x0b_v2_ptr_27b, results/x5_natural/x5_natural_ptr_27b]
+      qwen3.5-122b-a10b: [results/x0b_generalize/qwen35_122b_x0b_v2_ptr, results/x5_natural/qwen35_122b_x5_natural_ptr]
+      muse-glimmer-30b: [results/x0b_generalize/muse30b_x0b_v2_ptr, results/x5_natural/muse30b_x5_natural_ptr]
+
+  - id: p_cf
+    title: "P_cf: a pointer found without slot labels (batch 43)"
+    status: later
+    kind: routes
+    readme: "Section 6 'Running now'"
+    claim: "A pointer derived from pairs that only move a locker sentence matches the labelled one and is necessary for position."
+    sources: []
+    runs:
+      qwen3.5-9b: [results/x7_pcf/qwen35_9b_x7_pcf, results/x6_routes/qwen35_9b_x6_routes_pcf, results/x7_pcf/qwen35_9b_x7_pcf_nat, results/x5_natural/qwen35_9b_x5_natural_pcfnat]
+      qwen3.6-27b: [results/x7_pcf/x7_pcf_27b, results/x6_routes/x6_routes_pcf_27b, results/x7_pcf/x7_pcf_27b_nat, results/x5_natural/x5_natural_pcfnat_27b]
+      qwen3.5-122b-a10b: [results/x7_pcf/qwen35_122b_x7_pcf, results/x6_routes/qwen35_122b_x6_routes_pcf_g75, results/x7_pcf/qwen35_122b_x7_pcf_nat, results/x5_natural/qwen35_122b_x5_natural_pcfnat]
+      muse-glimmer-30b: [results/x7_pcf/muse30b_x7_pcf, results/x6_routes/muse30b_x6_routes_pcf, results/x7_pcf/muse30b_x7_pcf_nat, results/x5_natural/muse30b_x5_natural_pcfnat]
+
+  - id: no_template
+    title: The main test without the chat template
+    status: later
+    kind: x0
+    readme: "Section 6 follow-up (not a README claim)"
+    claim: "The raw rendering (no template): the 9B could not be tested (raw gate 0); the 27B's raw run."
+    sources: []
+    runs:
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
+      qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_notemplate]
