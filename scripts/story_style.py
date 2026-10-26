@@ -3,7 +3,8 @@ column (8.8 in wide, fonts >= 11 pt), the claim as the title (about 12 words) an
 fixed colours (lookup purple, recall dark grey; identity blue, position orange, value green, unchanged light grey;
 random controls light grey); extra loss as a dot with a 95% CI whisker on a shared [-0.2, 1.0] axis; models in the
 order 9B, 27B, 122B, Muse; one status encoding: filled = fixed in advance, open = after the data, a degree sign on the
-label = a rerun with a gate lowered after the data. Every plotted number is recorded for figures/story/data.csv."""
+label = a rerun with a gate lowered after the data. Every plotted number is recorded for figures/story/data.csv. The
+words on the figures: docs/glossary.md."""
 
 from __future__ import annotations
 
@@ -58,7 +59,7 @@ def status_handles(kinds=("fixed", "after", "lowered")) -> tuple[list, list[str]
     g = "#7a7a7a"
     hs = {"fixed": (plt.Line2D([], [], marker="o", ls="", color=g, ms=7), "fixed in advance"),
           "after": (plt.Line2D([], [], marker="o", ls="", mfc="white", mec=g, mew=1.6, ms=7), "after the data"),
-          "lowered": (plt.Line2D([], [], ls="", marker=""), f"{LOWERED} gate lowered after the data")}  # fmt: skip
+          "lowered": (plt.Line2D([], [], ls="", marker=""), f"{LOWERED} gate lowered to 0.75 after the data")}  # fmt: skip
     return [hs[k][0] for k in kinds], [hs[k][1] for k in kinds]
 
 

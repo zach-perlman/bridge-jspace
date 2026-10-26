@@ -137,3 +137,132 @@ def test_readme_body_has_no_internal_codes():
     removed on 26 Oct)."""
     body = re.sub(r"<!--.*?-->", "", (B.REPO / "README.md").read_text(), flags=re.S)
     assert not CODES.findall(body), CODES.findall(body)
+
+
+# ---------------------------------------------------------------- the figure vocabulary (docs/glossary.md)
+
+# Tuesday's merge: check README.md. Set True once the v5 figures and captions are in README.md; until then the
+# canonical lines of docs/drafts/readme_v5_captions.md are checked instead.
+CHECK_README = False
+CAPTIONS_DRAFT = B.REPO / "docs" / "drafts" / "readme_v5_captions.md"
+
+# docs/glossary.md's banned variants, one regex each. Case-sensitive unless marked (?i:...); \b = whole words only.
+BANNED = {
+    # "J++" as a part name: a J++ not followed by " part", unless it names the lens ("identity outside J++")
+    "J++ alone": r"(?<!outside )(?<!inside )J\+\+(?! part)",
+    "lens's part": r"lens's part|lens-readable part",
+    # any case: "Our pointer directions" opens a sentence
+    "pointer variants": r"(?i:\bour pointer\b|\bpointer directions?\b|\bpointer part\b)",
+    # internal names, capitalised and whole: "U" must not hit "UNVERIFIED" or "U.S."
+    "Alf / U": r"\bAlf\b|\bU\b(?!\.)",
+    "idout": r"\bidout\b|\bidentity direction\b",
+    "random-part variants": r"random part, same size|random directions|random part of its size|J\+\+ size",
+    "PCA variants": r"(?i:\bmain directions\b)",
+    # removing / keeping: "X alone" in any form, "edit" and its inflections
+    "removal variants": r"part removed|no J\+\+|(?i:keep-only)|\balone\b|\bedit(?:s|ed|ing)?\b",
+    # "original" only as "original answer" / "original prompt" (across a line break too)
+    "answer classes": r"\bunchanged\b|\boriginal\b(?!\s(?:answer|prompt))",
+    # "Changed" as a row title (capitalised, no "prompt" after it); O / S as prompt names: a lone capital letter
+    "prompt variants": r"\bswapped\b|\bChanged\b(?!\sprompt)|(?<![\w'’])[OS](?![\w'’.])",
+    "slot": r"(?i:\bslots?\b)",
+    # "locker first" / "locker after" unless it goes on "the pick"; "locker-first" in figures and captions
+    "sentence-order variants": r"\blocker[- ](?:first|after)\b(?!\sthe pick)",
+    "scene-set variants": r"\bC[0-2]\b|\bjson\b|\bsimple\b(?!\sscenes)|(?i:\bsame test\b)|one-change scenes",
+    "neutral-sentence codes": r"\bB[12]\b",
+    # "s" / "s*" as a symbol: a lone s, not the possessive "Iris's" (an apostrophe before it)
+    "metric variants": r"J\+\+ extra loss|\bJdep\b|(?<![\w'’])s\*?(?![\w'’*])|\bbeta\b",
+    "share variants": r"\bposition share\b",
+    "cell-state variants": r"not in this test|\bqueued\b|not measurable",
+    "status variants": r"fixed in advance \(main test\)|gate lowered after the data",
+}
+KEPT = {  # exact strings that keep a banned variant, each by Dan's decision
+    "Our pointer directions separate the first-mentioned item from the rest",  # Fig. 8: waits for Tuesday's "first"
+    "J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",  # Fig. 10, 11 pt (~22:10)
+    "random directions",  # Fig. 2's fourth panel, named so in Dan's per-figure list
+}
+
+
+def banned(texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
+    """(where, text, rule) for each text that matches a banned variant, the allowed strings left out."""
+    return [(where, text, rule) for where, text in texts if text not in KEPT
+            for rule, rx in BANNED.items() if re.search(rx, text)]  # fmt: skip
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["the recall needs J++", "without J++", "J++ extra loss", "our pointer", "pointer directions", "Alf", "U", "idout",
+     "random part, same size", "main directions", "part removed", "The pointer alone gives position", "unchanged",
+     "added into the original", "Changed", "slot 1", "locker first", "C2", "json", "simple", "Same test, scored",
+     "B1 (purple)", "s = 4", "s*", "beta", "position share", "not in this test", "queued", "not measurable",
+     "° gate lowered after the data", "O"],
+)  # fmt: skip
+def test_the_matcher_catches_each_banned_variant(text):
+    assert banned([("example", text)]), text
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["J++ part", "without the J++ part", "identity outside J++", "UNVERIFIED", "Iris's pick", "the asked person's pick",
+     "original answer → 2", "original\nprompt", "changed prompt", "locker after\nthe pick", "first locker",
+     "simple scenes", "varied scenes: prose / JSON / table", "code shift (positions)", "β 0.15",
+     "° gate lowered to 0.75 after the data", "random part (same size)", "random direction (same size)",
+     "PCA directions (same size)", "too few switches (10 of 60)", "not tested (gate)", "S.save", *KEPT],
+)  # fmt: skip
+def test_the_matcher_passes_the_canonical_strings(text):
+    assert not banned([("example", text)]), banned([("example", text)])
+
+
+@pytest.fixture(scope="module")
+def figure_texts() -> list[tuple[str, str]]:
+    """Every text drawn on the README figures (Figs. 0-11, 1b and 8b): titles, subtitles, panel titles, axis and tick
+    labels, legends and notes, rendered from the run files without saving anything."""
+    import matplotlib.pyplot as plt
+    from matplotlib.text import Text
+
+    from scripts import readme_story_figures as F
+    from scripts import story_style as S
+
+    if not (F.pins.RESULTS_DIR / "x6_routes").exists():
+        pytest.skip("the run files are not in results/")
+    texts: list[tuple[str, str]] = []
+
+    def grab(fig, name: str, supp: bool = False) -> None:
+        texts.extend((name, t.get_text()) for t in fig.findobj(Text) if t.get_text().strip())
+        plt.close(fig)
+
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setattr(S, "save", grab)
+        mp.setattr(S, "ROWS", [])
+        p = S.setup()
+        for f in F.README_FIGS:
+            f(p)
+        F.f08b_layout(p, draft=False)
+    return texts
+
+
+def test_readme_figures_use_the_glossary(figure_texts):
+    names = {where for where, _ in figure_texts}
+    assert {"fig00_setup", "fig01b_settings", "fig08b_layout", "fig11_scorecard"} <= names, names
+    assert not banned(figure_texts), banned(figure_texts)
+
+
+def caption_texts() -> list[tuple[str, str]]:
+    """Until Tuesday's merge the canonical lines of the captions draft; then README.md's figure alt texts, "*Fig. N.*"
+    caption lines and table headers (the line above each |---| row)."""
+    if not CHECK_README:
+        lines = CAPTIONS_DRAFT.read_text().splitlines()
+        return [("readme_v5_captions.md", line.split(": ", 1)[1]) for line in lines if line.startswith("- canonical ")]
+    text = re.sub(r"<!--.*?-->", "", (B.REPO / "README.md").read_text(), flags=re.S)
+    lines = text.splitlines()
+    alts = [("alt text", a) for a in re.findall(r"!\[([^\]]*)\]\(figures/", text)]
+    captions = [("caption", line) for line in lines if re.match(r"\*Fig\. \w+\.\*", line)]
+    headers = [
+        ("table header", lines[i - 1]) for i, line in enumerate(lines) if i and re.fullmatch(r"\|(?:-+\|)+", line)
+    ]
+    return alts + captions + headers
+
+
+def test_readme_captions_use_the_glossary():
+    texts = caption_texts()
+    assert texts, "no captions found"
+    assert not banned(texts), banned(texts)
