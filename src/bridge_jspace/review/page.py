@@ -114,6 +114,12 @@ whole change. An item counts only if the whole change switched it.</li></ul></de
 def expected_html(it: dict) -> str:
     c = it["case"]
     rd = c["readers"]
+    if it["kind"] == "x5":
+        return (f"Relation: {E(str(c.get('relation', '')))} ({E(str(c.get('genre', '')))}). " + " ".join(
+            f"{I.READER_NAME[w].capitalize()}: original answer {E(str(rd[w]['answer']))}, changed answer "
+            f"{E(str(rd[w]['cf_answer']))}." for w in I.READERS)
+            + f" The passage's own value for the bridge (what a recall that reads the passage would say): "
+              f"{E(str(rd['PM'].get('lure', '–')))} → {E(str(rd['PM'].get('cf_lure', '–')))}.")  # fmt: skip
     if it["kind"] == "routes":
         exp = ", ".join(f"{k} {v}" for k, v in c["expect"].items())
         return (f"Lookup, the answer each route predicts: {E(exp)}. Recall: original answer {E(str(rd['PM']['answer']))} "
@@ -140,6 +146,15 @@ def bridge_html(it: dict) -> str:
     text = (f"The bridge, the asked person's pick, is <b>{E(c['bridge'])}</b> in the original prompt and "
             f"<b>{E(c['cf_bridge'])}</b> in the changed one; the change is added at its token ({c['pos']}).")  # fmt: skip
     o = it.get("order") or {}
+    if it["kind"] == "x5":
+        text = (f"The bridge, the entity the questions are about, is <b>{E(c['bridge'])}</b> in the original passage and "
+                f"<b>{E(c['cf_bridge'])}</b> in the changed one (its binding sentence only); the change is added at its token "
+                f"({c['pos']}).")  # fmt: skip
+    if o and it["kind"] == "x5":
+        word = {"before": "<b>before</b>", "after": "<b>after</b>", "not found": "(not found)"}
+        return text + (f"<br>Sentence order: the sentence with {E(c['bridge'])}'s fact comes {word[o['original']]} the "
+                       f"bridge's mention; {E(c['cf_bridge'])}'s fact comes {word[o['changed']]} it (the lookup switches "
+                       "mostly where the fact comes first).")  # fmt: skip
     if o:
         word = {"before": "<b>before</b>", "after": "<b>after</b>", "not found": "(not found)"}
         first = " (locker-first: the items the lookup claims are about)" if o["original"] == "before" else ""
@@ -166,7 +181,7 @@ def stored_label(it: dict, w: str, r: dict) -> str:
         return I.route_class(r, it["condition"]) if w == "PP" else ("follows S" if r["switched"] else "stays")
     if it["kind"] == "x8":
         return r.get("class") or ("changed" if r.get("changed") else "unchanged")
-    return r["role"]
+    return I.whole_class(r, it["case"], w)
 
 
 def answer_of(it: dict, w: str, r: dict) -> tuple[str, str]:
@@ -179,7 +194,7 @@ def answer_of(it: dict, w: str, r: dict) -> tuple[str, str]:
         if r["role"] == "A":
             return str(rd["answer"]), f"original answer ({c['bridge']}'s)"
         return "?", "another token (not stored)"
-    d = C.piece(it["model"], r["top"]).strip()
+    d = C.top_text(it["model"], r["top"]).strip()
     if it["kind"] == "routes" and w == "PP":
         route = I.route_class(r, it["condition"])
         return d, {"switch": "changed answer", "original": "original answer"}.get(route, f"{route} route")
@@ -315,7 +330,7 @@ def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
                     f"<tr class='mut'><td>{I.READER_NAME[w]}</td><td>{name}</td><td colspan=5>not in the run</td></tr>"
                 )
                 continue
-            top = E(repr(C.piece(m, r["top"]))) if "top" in r else "<span class='mut'>not stored</span>"
+            top = E(repr(C.top_text(m, r["top"]))) if "top" in r else "<span class='mut'>not stored</span>"
             run = f" <span class='mut'>(run {E(r['_run'])})</span>" if "_run" in r else ""
             lab = stored_label(it, w, r)
             plain = PLAIN.get(lab, lab) + (f" ({lab})" if lab in ("A", "b") else "")
@@ -365,6 +380,8 @@ def controls(v: dict, p: dict, server: bool) -> str:
         extra += sel("s", ["all", *v["filters"].get("s", [])]) + sel("kind", ["all", *v["filters"].get("kinds", [])])
     if v["kind"] in ("x0", "massmean"):
         extra += sel("order", ["all", "locker first", "locker after"])
+    if v["kind"] == "x5":
+        extra += sel("order", ["all", "fact first", "fact after"])
     sup = (f"<label><span><input type='checkbox' name='superseded' value='1' {'checked' if p.get('superseded') else ''}>"
            "superseded runs</span></label>") if v.get("superseded") else ""  # fmt: skip
     return (f"<form class='ctl box' method='get' action='/view'><input type='hidden' name='view' value='{E(v['id'])}'>"

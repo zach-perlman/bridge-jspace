@@ -105,7 +105,20 @@ def x0_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
             whole = rows[w].get("whole")
             status = "in set" if in_set else competence_status(run, scene, rend)
             out.append(
-                _item(v, model, run, layer, scene, w, None, case, rows, sh, whole["role"] if whole else status, status)
+                _item(
+                    v,
+                    model,
+                    run,
+                    layer,
+                    scene,
+                    w,
+                    None,
+                    case,
+                    rows,
+                    sh,
+                    whole_class(whole, case, w) if whole else status,
+                    status,
+                )
             )
     return out
 
@@ -136,13 +149,37 @@ def sentence_order(case: dict | None) -> dict[str, str]:
     return out
 
 
+def whole_class(row: dict, case: dict | None, reader: str) -> str:
+    """The stored class under the whole change: the main test's role (b / A / other); natural passages store the top
+    word instead (switched = it is the changed answer)."""
+    if "role" in row:
+        return row["role"]
+    rd = (case or {}).get("readers", {}).get(reader, {})
+    return "b" if row["switched"] else "A" if row.get("top") == rd.get("answer") else "other"
+
+
+def fact_order(case: dict | None) -> dict[str, str]:
+    """Natural passages: whether the original bridge's fact sentence (and the changed bridge's) comes before or after
+    the bridge's mention, as x5_natural_split.placement (the README's natural-passage split)."""
+    if not case:
+        return {}
+    import sys
+
+    sys.path.insert(0, str(REPO))
+    from scripts import x5_natural_split as NS
+
+    pl = NS.placement(case)
+    return {"original": pl["original"], "changed": pl["new"]}
+
+
 def _item(v, model, run, layer, scene, reader, condition, case, rows, shares, cls, status, extra=None) -> Item:
     tail = f"|{condition}" if condition else ""
     tail += f"|{extra['kind']}|{extra['j']}-{extra['k']}|s{extra['s']}" if extra else ""
     return {"id": f"{model}|{run.split('/')[-1]}|{scene}|{reader}{tail}", "view": v["id"], "kind": v["kind"],
             "model": model, "run": run, "layer": layer, "scene": scene, "reader": reader, "condition": condition,
             "case": case, "rows": rows, "shares": shares, "cls": cls, "status": status, "in_set": status == "in set",
-            "x8": extra or {}, "order": sentence_order(case) if v["kind"] in ("x0", "massmean") else {}}  # fmt: skip
+            "x8": extra or {}, "order": sentence_order(case) if v["kind"] in ("x0", "massmean")
+            else fact_order(case) if v["kind"] == "x5" else {}}  # fmt: skip
 
 
 # --------------------------------------------------------------------------------------------- routes (x6_routes)
@@ -247,7 +284,7 @@ def x8_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
     return out
 
 
-LOADERS = {"x0": x0_items, "massmean": massmean_items, "x8": x8_items}
+LOADERS = {"x0": x0_items, "x5": x0_items, "massmean": massmean_items, "x8": x8_items}
 
 
 @lru_cache(maxsize=256)
@@ -285,7 +322,8 @@ def facets(it: Item, params: dict) -> bool:
     order = params.get("order")
     if (
         order not in (None, "", "all")
-        and it["order"].get("original") != {"locker first": "before", "locker after": "after"}[order]
+        and it["order"].get("original")
+        != {"locker first": "before", "locker after": "after", "fact first": "before", "fact after": "after"}[order]
     ):
         return False
     if params.get("condition") not in (None, "", "all") and it["condition"] != params["condition"]:

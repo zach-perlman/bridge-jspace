@@ -52,6 +52,11 @@ def piece(model: str, token: int) -> str:
     return tokenizer(model).decode([int(token)], skip_special_tokens=False)
 
 
+def top_text(model: str, top: int | str) -> str:
+    """A stored top: a token id (routes, x8), or already the answer word (natural passages)."""
+    return top if isinstance(top, str) else piece(model, top)
+
+
 def _strip(s: str) -> str:
     return s.strip().strip(".,'\"")
 
@@ -109,6 +114,8 @@ def check_diff(it: dict) -> tuple[str, str]:
 
 def check_answers(it: dict) -> tuple[str, str]:
     rd, m = it["case"]["readers"][it["reader"]], it["model"]
+    if "tok_A" not in rd:  # natural passages: answers are words, read among the relation's answer words
+        return NA, "answer words (no answer token stored)"
     a, b = _strip(piece(m, rd["tok_A"])), _strip(piece(m, rd["tok_b"]))
     ok = a == str(rd["answer"]) and b == str(rd["cf_answer"])
     return (PASS if ok else FAIL), f"tok_A {a!r} / {rd['answer']!r}; tok_b {b!r} / {rd['cf_answer']!r}"
@@ -125,6 +132,11 @@ def route_of(digit: str, expect: dict, condition: str) -> str:
 def check_class(it: dict) -> tuple[str, str]:
     m, c, w = it["model"], it["case"], it["reader"]
     rows = {label: r for label, r in it["rows"][w].items() if r is not None}
+    if it["kind"] == "x5":  # the top is stored as the answer word: switched = it is the changed answer
+        rd = c["readers"][w]
+        bad = [f"{label}: top {r['top']!r}, switched {r['switched']}" for label, r in rows.items()
+               if bool(r["switched"]) != (r["top"] == rd["cf_answer"])]  # fmt: skip
+        return (FAIL if bad else PASS), "; ".join(bad[:4]) or f"{len(rows)} rows agree"
     if it["kind"] in ("x0", "massmean"):
         return NA, "no top token stored (role is the stored class)"
     bad = []

@@ -50,6 +50,22 @@ kinds:
     eligible: >-
       x6_routes: both readers say and read O's and S's answers right (competence.jsonl), the first 300 per condition;
       the item set is the scenes in outcomes.jsonl for the condition.
+  x5:
+    files: [cases.jsonl, outcomes.jsonl, competence.jsonl, gate.json]
+    prompts: >-
+      cases.jsonl per passage: context / cf_context (the bridge changed in its binding sentence only), bridge /
+      cf_bridge, pos, relation, genre, readers.{PP,PM}: question, answer / cf_answer (words), lure / cf_lure (the
+      passage's own value for the bridge), ids.org / ids.alt.
+    outcomes: >-
+      per (scene, layer, reader, dict, k, omp, arm): switched, top (the answer word read: the top first token among the
+      relation's answer words), org_read, lure_org / lure_alt, share. No p / ld stored.
+    classes:
+      b: changed answer - the top word is the changed passage's answer (it switched)
+      A: original answer - the top word is the original passage's answer
+      other: another answer word
+    eligible: >-
+      x5_natural: both readers read the original and changed passages right (competence.jsonl); the item set is the
+      passages in outcomes.jsonl at the layer.
   massmean:
     files: [outcomes.jsonl, manifest.json]
     prompts: >-
@@ -341,18 +357,32 @@ views:
 
   - id: natural
     title: Natural passages
-    status: later
+    status: phase2
     kind: x5
     readme: "Section 1 table row 'Natural passages'; Section 2 (a) the 27B's split; Section 4 gates missed; scorecard row 3"
     claim: "The gap in natural passages; the 9B's at gate 0.75 after the data; Muse's lookup barely switches."
-    sources: [natg75_gap_9b, nat_gap_27b, nat_gap_122b, nat_rc_excess_muse, nat_lk_excess_muse, nat_n_muse, nat_gate_lk_9b,
-              natsplit_before_lk_sw_27b, natsplit_before_n_27b, natsplit_after_lk_sw_27b, natsplit_after_n_27b, natsplit_before_lk_27b]
+    sources: [natg75_gap_9b, nat_gap_27b, nat_gap_122b, nat_gap_muse, nat_rc_excess_muse, nat_lk_excess_muse]
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without J++: [no_part, jpp, 25, signed]
+        without its random part: [no_rand, jpp, 25, signed]
+    headline:
+      - {stat: extra_loss, reader: PP, part: without J++, random: without its random part, key: "nat_lk_excess_<m>|natg75_lk_excess_<m>"}
+      - {stat: extra_loss, reader: PM, part: without J++, random: without its random part, key: "nat_rc_excess_<m>|natg75_rc_excess_<m>"}
+      - {stat: gap, part: without J++, random: without its random part, key: "nat_gap_<m>|natg75_gap_<m>"}
     runs:
       qwen3.5-9b: [results/x5_natural/qwen35_9b_x5_natural_g75, results/x5_natural/qwen35_9b_x5_natural]
       qwen3.6-27b: [results/x5_natural/x5_natural_27b]
       qwen3.5-122b-a10b: [results/x5_natural/qwen35_122b_x5_natural]
       muse-glimmer-30b: [results/x5_natural/muse30b_x5_natural]
-    notes: "qwen35_9b_x5_natural stopped at its gate (lookup 0.78) and backs Section 4's 'not tested' line; it stays current."
+    notes: >-
+      The 9B: its run at the fixed gate (qwen35_9b_x5_natural, lookup 0.78 < 0.80) stopped before any change and backs
+      Section 4's 'not tested'; the dashboard shows its rerun at gate 0.75 (after the data, descriptive).
 
   - id: translated_key
     title: Translated locker key

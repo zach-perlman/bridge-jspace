@@ -38,7 +38,11 @@ def first_number(text: str) -> float | None:
 
 
 def compare(value: float, key: str | None) -> dict:
+    """Against data.csv; key may list alternatives "a|b" (the first that exists, e.g. the 9B's natural run at gate
+    0.75 has natg75_* keys)."""
     vals, _ = data_csv()
+    if key and "|" in key:
+        key = next((k for k in key.split("|") if k in vals), key.split("|")[0])
     if not key or key not in vals:
         return {"key": key or "", "data": "", "status": "no source"}
     ref = first_number(vals[key])

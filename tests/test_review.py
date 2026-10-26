@@ -136,6 +136,16 @@ def test_server_pages_and_marks(tmp_path, monkeypatch):
         httpd.shutdown()
 
 
+def test_every_view_renders_its_cards():
+    from bridge_jspace.review import page as P
+
+    for v in I.shown():
+        for m in MODELS:
+            for which in ("set", "out", "superseded"):
+                for it in I.items(v["id"], m, which)[:3]:
+                    assert "What the model answered" in P.card(it, 0, False, None) or it["case"] is None, it["id"]
+
+
 def test_export_writes_a_page_per_view(tmp_path):
     from scripts import review as R
 
@@ -148,7 +158,7 @@ def test_export_writes_a_page_per_view(tmp_path):
 @pytest.mark.parametrize(
     "view_id",
     ["main_swap", "single_change", "routes", "routes_early", "pointer_main", "routes_sweep", "both_removed",
-     "both_removed_ctrl", "d1_identity", "k_curve", "logit_diff"],
+     "both_removed_ctrl", "d1_identity", "k_curve", "logit_diff", "natural"],
 )  # fmt: skip
 def test_recount_equals_data_csv(view_id):
     from bridge_jspace.review import recount as RC
