@@ -1518,3 +1518,16 @@ nothing is claimed with that lens. Ministral's was 0.651 vs 0.461.
   - manifests record the working tree (pins.git_state: dirty files, untracked scripts, code-diff hash);
   - queue waits need a numeric EXIT line;
   - Bolt's chain can restart past its disk check once the snapshot is on disk.
+
+**Amendment 49, note 2 (Zach, 2026-10-26 03:15 UTC): Bolt's competence generates without a cache; the order changed.**
+Bolt's first try passed its gates:
+- smoke: unembed exact, no-op edit 0.0, plain text 2.39 nats;
+- kernel check: NLL diff +0.0017, top-1 agreement 0.957.
+
+It then stopped at the competence smoke. transformers' generate() hands Bolt's own code (NemotronHPuzzleForCausalLM) a
+DynamicCache, and Bolt's Mamba blocks need their hybrid cache (AttributeError: conv_states). natural_v1's hop-1
+generation now passes use_cache=False for a model built by its own code (pins remote_lm). Checked on a random-weight
+8-block Bolt: the default fails as in the run, and use_cache=False gives the same tokens as a plain greedy loop.
+Nothing else changes. The 27B's renderings (amendment 49), queued after Bolt, started when Bolt's chain exited.
+Bolt's chain is relaunched to wait for them, then repeats its gates and continues as amendments 44, 46, 49 and
+49 note 1.

@@ -462,8 +462,11 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
                 for st in range(0, len(group), 32):
                     chunk = group[st : st + 32]
                     ids = torch.tensor([j["ids"] for j in chunk], device="cuda")
+                    # 2026-10-26 (amendment 49 note 2): a model built by its own code (pins remote_lm, Bolt) wants its hybrid
+                    # Mamba cache, and generate() hands it transformers' DynamicCache; it generates without a cache
                     seqs = model.hf.generate(input_ids=ids, attention_mask=torch.ones_like(ids), max_new_tokens=8,
-                                             do_sample=False, pad_token_id=tok.eos_token_id)  # fmt: skip
+                                             do_sample=False, pad_token_id=tok.eos_token_id,
+                                             **({"use_cache": False} if pins.TARGETS[pins.TARGET].get("remote_lm") else {}))  # fmt: skip
                     for j, seq in zip(chunk, seqs, strict=True):
                         j["gen"] = tok.decode(seq[ids.shape[1] :], skip_special_tokens=True)
                         names = j["alt_names"] or [j["expected"]]

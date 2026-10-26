@@ -42,8 +42,9 @@ from huggingface_hub import snapshot_download
 print('=== BOLTDL done', snapshot_download('$REPO', revision='$REV'))
 " 2>&1 | grep -v -E "it/s|Fetching" | tail -2
 echo "=== df after: $(df -h /workspace | tail -1 | awk '{print $4}')"
-# 2026-10-25 22:00 UTC: also after amendment 48's 9B (GPU 1) and 27B / Ministral (GPU 0) runs
-for j in h200nemL11-1025-2100 h200qrend9-1025-1720 h200qprof-1025-1700 h200q9ta-1025-2200 h200qta2-1025-2200; do until grep -qs "^EXIT" $R-$j.log; do sleep 60; done; done
+# 2026-10-25 22:00 UTC: also after amendment 48's 9B (GPU 1) and 27B / Ministral (GPU 0) runs; 2026-10-26 03:05 UTC (relaunch
+# after the competence-smoke failure): also after the 27B renderings, which started when the first try exited
+for j in h200nemL11-1025-2100 h200qrend9-1025-1720 h200qprof-1025-1700 h200q9ta-1025-2200 h200qta2-1025-2200 h200qrend27r2-1025-2200 h200qrend27r3-1025-2200; do until grep -qs "^EXIT [0-9]" $R-$j.log; do sleep 60; done; done
 for g in 0 1; do until [ "$(nvidia-smi -i $g --query-gpu=memory.free --format=csv,noheader,nounits)" -ge 120000 ]; do sleep 60; done; done
 echo "=== GPUs 0,1 free $(date -u +%T)"
 $PY scripts/new_model_smoke.py > /workspace/scratch/${P}smoke.log 2>&1 < /dev/null || { echo "=== $KEY smoke FAILED"; tail -5 /workspace/scratch/${P}smoke.log; exit 1; }
