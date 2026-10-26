@@ -1,7 +1,7 @@
 # Batch 45 (Dan, 26 Oct ~18:30): the night of 26 to 27 Oct. Every rule below is fixed in advance as written, before any
 # run. Claims freeze Tue 27 Oct 21:00; results landing after it are labelled "after the freeze". No result of a test is
-# opened or reported until docs/predictions_batch45.md holds Dan's commit for that test (45.0 is a check, not a
-# question). One job spec per GPU job (jobs/c3/x45_*.yaml) is written when its code is committed; each names this file.
+# opened or reported until predictions/2026-10-26_dan.md, section "Batch 45" (moved from docs/predictions_batch45.md,
+# Dan ~20:40), holds Dan's commit for that test (45.0 is a check, not a question). One job spec per GPU job (jobs/c3/x45_*.yaml) is written when its code is committed; each names this file.
 #
 # Common settings, as before: layers 9B L12, 27B L32, 122B L33 (gate 0.75, after the data, as its routes runs), Muse
 # L26; cluster bootstrap over bridge items, 10,000 resamples, seed 0; every part removed or kept is paired with a random
@@ -14,7 +14,7 @@
 batch: 45
 by: Dan, 26 Oct ~18:30
 freeze: "Tue 27 Oct 21:00 CET"
-predictions: docs/predictions_batch45.md
+predictions: predictions/2026-10-26_dan.md  # section "Batch 45"; docs/predictions_batch45.md until ~20:40
 queue_order: [45.0, 45g, 45a, 45d, 45b, 45c, 45e, 45i]
 do_not_queue: ["45h (a computed bridge): wait for Dan", "OLMo checkpoints", "DeepSeek-V4-Flash", "new datasets"]
 
