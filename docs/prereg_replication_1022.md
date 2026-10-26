@@ -1701,7 +1701,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     - Paste at L20-25 (+14.9) is below the old 20 bar. Amendment 49's lesson stands: paste is not a ceiling. The K-part
       swap is read against paste and beside swap_comp.
 
-### Amendment 53 note 1 (Zach, 2026-10-26 22:27 UTC, after the K = 30 swap, before the K = 100 swap finished)
+### Amendment 53 note 1 (Zach, 2026-10-26 22:23 UTC, after the K = 30 swap, before the K = 100 swap finished)
 
 - The +14.9 / +14.2 / +1.8 quoted above are the PM cell alone (n 284, amendment 41), but the reading says "memory
   finals pooled". Pooled over PM PA PN TM TA TN (scripts/jswap_pool.py, n 1212), the K = 10 run gives paste +9.5
