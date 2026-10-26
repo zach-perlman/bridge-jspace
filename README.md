@@ -13,7 +13,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at 0b224d73 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at d7e526e7 from the run files.
 
 ## Setup
 
@@ -45,12 +45,12 @@
 | Only the asked person's pick changes | 0.39 [0.30, 0.46] | 0.56 [0.45, 0.65] | 0.28 [0.15, 0.39] | 0.67 [0.53, 0.80] |
 | Matched: fresh scenes, both locker sentences first, only the asked pick changes | 0.13 | 0.37 | 0.06° | 0.32 |
 | Varied scenes | 0.22 [0.14, 0.31] | 0.47 [0.42, 0.53] | 0.15 [0.12, 0.18] | 0.50 [0.40, 0.61] |
-| Natural passages | 0.52 [0.36, 0.68]° | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | recall 0.75 [0.62, 0.86], lookup −0.20 [−0.55, 0.00] (60 passages) |
+| Natural passages | 0.52 [0.36, 0.68]° | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | 0.95 [0.64, 1.33]‡ |
 | More J++ directions removed, 100: gap (27B: lookup's extra loss at 25 / 50 / 100) | 0.54 | 0.12 / 0.30 / 0.60 | 0.55 | 0.85 |
 | Logit difference: gap | 0.48 [0.42, 0.53] | 0.47 [0.42, 0.51] | 0.33 [0.29, 0.38] | 0.61 [0.52, 0.68] |
 | Logit difference (lookup / recall extra loss) | −0.05 [−0.07, −0.03] / 0.43 [0.37, 0.48] | 0.13 [0.11, 0.16] / 0.60 [0.54, 0.65] | −0.02 [−0.05, −0.00] / 0.31 [0.26, 0.34] | −0.03 [−0.05, −0.02] / 0.58 [0.49, 0.65] |
 
-*°: after the data, the gate lowered to 0.75.*
+*°: after the data, the gate lowered to 0.75. ‡: the lookup switches in only 10 of 60 passages.*
 
 ![No other part costs the recall as much as the scene's own J++](figures/story/fig2_parts.png)
 *Fig. 2. †: two people swap picks; others: only the asked pick changes.*
@@ -63,8 +63,10 @@
 
 - **What we did.** (a) Split lookups by sentence order. (b) Swapped prompts where the item's identity, its locker sentence's position and the locker value predict different lockers (Fig. 3).
 - **What we found.**
-  - (a) Lookups switch in 76%-89% of locker-first scenes and 9%-19% otherwise; lookup claims here are about locker-first scenes. On the 27B's natural passages the lookup switches mostly when the fact comes first (55 of 75 vs 5 of 62).
+  - (a) Lookups switch in 65%-89% of locker-first scenes and 9%-19% otherwise (Fig. 11); lookup claims here are about locker-first scenes. On the 27B's natural passages the lookup switches mostly when the fact comes first (55 of 75 vs 5 of 62).
   - (b) When another item moved, the lookup follows its identity or its locker sentence's position, never the new value (Fig. 4); the J++ part alone moves none.
+
+![Lookups follow the change mostly when the locker sentence comes first](figures/story/fig11_order.png)
 
 | Another item moved | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
@@ -84,14 +86,14 @@
 - **What we did.** (a) Probed the bridge word for which sentence holds the item's locker; removed the 4 **pointer directions** that separate those answers, or added only them. (b) Wrote one fixed vector per slot pair (two slots' mean states' difference) at three doses, against a random direction of the same size.
 - **What we found.**
   - (a) The probe is right in 0.92-0.99 of scenes (layout alone: 0.53), almost none of it in J++, and points at the item's first mention, even another person's earlier pick. Removing the pointer directions costs the lookup on every model, the recall less, and cuts position answers; adding only them gives position answers on all but the 27B.
-  - (b) At the dose fixed in advance (s = 1) the write moves nothing. Stronger writes send the lookup to the target locker and a random direction does not; when the recall changes under the strongest write, it mostly gives the target slot's item (table, Fig. 8). Muse pending.
+  - (b) At the dose fixed in advance (s = 1) the write moves nothing. Stronger writes send the lookup to the target locker and a random direction does not; when the recall changes under the strongest write, it mostly gives the target slot's item (table, Fig. 8).
 
 | Pointer directions | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Lookup's extra loss without them | 0.47 [0.41, 0.53] (replicated) | 0.14 [0.07, 0.22] | 0.31 [0.20, 0.43] | 0.41 [0.34, 0.49] (replicated) |
 | Position without them / without a random part of their size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] | 0.27 [0.23, 0.32] / 0.55 [0.50, 0.60] |
-| Write, lookup's target share: s = 1 / 2 / 4; random direction, 4 | 0.02 [0.01, 0.03] / 0.46 [0.42, 0.50] / 0.73 [0.70, 0.77]; 0.00 [0.00, 0.00] | 0.01 [0.00, 0.01] / 0.24 [0.20, 0.29] / 0.50 [0.47, 0.53]; 0.01 [0.00, 0.01] | 0.01 [0.00, 0.01] / 0.50 [0.46, 0.54] / 0.66 [0.63, 0.69]; 0.00 [0.00, 0.01] | not landed |
-| Write at s = 4: changed recalls giving the target slot's item | 205 of 256 | 55 of 68 | 211 of 268 | not landed |
+| Write, lookup's target share: s = 1 / 2 / 4; random direction, 4 | 0.02 [0.01, 0.03] / 0.46 [0.42, 0.50] / 0.73 [0.70, 0.77]; 0.00 [0.00, 0.00] | 0.01 [0.00, 0.01] / 0.24 [0.20, 0.29] / 0.50 [0.47, 0.53]; 0.01 [0.00, 0.01] | 0.01 [0.00, 0.01] / 0.50 [0.46, 0.54] / 0.66 [0.63, 0.69]; 0.00 [0.00, 0.01] | 0.05 [0.03, 0.07] / 0.52 [0.48, 0.55] / 0.52 [0.50, 0.54]; 0.01 [0.00, 0.02] |
+| Write at s = 4: changed recalls giving the target slot's item | 205 of 256 | 55 of 68 | 211 of 268 | 28 of 64 |
 | Position with only their part / only a random part of its size | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01] | 0.21 [0.16, 0.26] / 0.00 [0.00, 0.00] | 0.29 [0.25, 0.34] / 0.01 [0.00, 0.03] |
 
 *°: after the data, the gate lowered to 0.75.*
@@ -106,7 +108,6 @@
 - **First sentence.** The pointer directions we found mostly mark whether the item's mention was the prompt's first sentence (Fig. 9a). In the routes test only their part moves the lookup to or from slot 0, not between slots 1 and 2, while the whole change does (Fig. 9b): the position route exists for other places too, mostly outside these directions.
 - **Transfer.** Fit on simple scenes and not refit, they cost the lookup 0.05 to 0.15 in varied scenes and 0.07 to 0.25 in natural passages, while the lookup still does not need J++ there (Fig. 10).
 - **What is left.** J++ and the pointer directions removed together leave about half of the sanity swap's lookups switching, and cost more than the pointer alone only on the 27B. Adding the item's identity outside J++ leaves fewer, but a random part of the same share removes most switches too (Fig. 6, table). About half of the route around the lens is still unexplained. The recall needs identity on the 27B and Muse, not the 9B.
-- **A pointer found without slot labels** is pending on three models.
 
 | Pointer directions, by where the item sits | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
@@ -182,7 +183,7 @@
 
 - **Hand-checked numbers.** None yet ([docs/review_summary.md](docs/review_summary.md)); [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
 - **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them.
-- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.34 over 102 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
+- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.34 over 106 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
 - **Inventory.** [docs/inventory.md](docs/inventory.md): pre-pivot experiments are kept and labelled legacy.
 
 ## 8. Related work and what is new
@@ -191,7 +192,7 @@ Language models bind an entity to its attributes in context (Feng & Steinhardt 2
 
 ## 9. Next
 
-- **Running now.** Muse's transfer and writes; a pointer found without slot labels.
+- **Follow-up: what tells slots 1 and 2 apart**; identity test on the 122B.
 - **Follow-up: answers by sampling**, not the top token.
 - **Follow-up: the routes and pointer tests without the chat template.**
 - **Follow-up: OLMo checkpoints**: when the pointer appears in training.

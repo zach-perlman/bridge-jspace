@@ -147,8 +147,24 @@
   "text": "86%",
   "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
  },
+ "lk_order_before_9b_k": {
+  "text": "86",
+  "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
+ },
+ "lk_order_before_9b_n": {
+  "text": "100",
+  "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
+ },
  "lk_order_after_9b": {
   "text": "19%",
+  "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
+ },
+ "lk_order_after_9b_k": {
+  "text": "19",
+  "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
+ },
+ "lk_order_after_9b_n": {
+  "text": "100",
   "source": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl"
  },
  "lk_excess_up_9b": {
@@ -327,8 +343,24 @@
   "text": "76%",
   "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
  },
+ "lk_order_before_27b_k": {
+  "text": "77",
+  "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
+ },
+ "lk_order_before_27b_n": {
+  "text": "101",
+  "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
+ },
  "lk_order_after_27b": {
   "text": "9%",
+  "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
+ },
+ "lk_order_after_27b_k": {
+  "text": "9",
+  "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
+ },
+ "lk_order_after_27b_n": {
+  "text": "99",
   "source": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl"
  },
  "lk_excess_up_27b": {
@@ -495,8 +527,24 @@
   "text": "89%",
   "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
  },
+ "lk_order_before_122b_k": {
+  "text": "76",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_order_before_122b_n": {
+  "text": "85",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
  "lk_order_after_122b": {
   "text": "11%",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_order_after_122b_k": {
+  "text": "13",
+  "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
+ },
+ "lk_order_after_122b_n": {
+  "text": "115",
   "source": "results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl"
  },
  "lk_excess_up_122b": {
@@ -671,8 +719,24 @@
   "text": "65%",
   "source": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
  },
+ "lk_order_before_muse_k": {
+  "text": "60",
+  "source": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
+ },
+ "lk_order_before_muse_n": {
+  "text": "92",
+  "source": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
+ },
  "lk_order_after_muse": {
   "text": "9%",
+  "source": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
+ },
+ "lk_order_after_muse_k": {
+  "text": "10",
+  "source": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
+ },
+ "lk_order_after_muse_n": {
+  "text": "108",
   "source": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
  },
  "lk_excess_up_muse": {
@@ -3599,6 +3663,10 @@
   "text": "0.59 [0.50, 0.67]",
   "source": "results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json"
  },
+ "nat_lk_whole_sw_27b": {
+  "text": "60",
+  "source": "results/x5_natural/x5_natural_27b/outcomes.jsonl"
+ },
  "nat_cases_122b": {
   "text": "154 of 358",
   "source": "results/x5_natural/qwen35_122b_x5_natural/gate.json"
@@ -3627,6 +3695,10 @@
   "text": "0.34 [0.24, 0.43]",
   "source": "results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json"
  },
+ "nat_lk_whole_sw_122b": {
+  "text": "56",
+  "source": "results/x5_natural/qwen35_122b_x5_natural/outcomes.jsonl"
+ },
  "nat_cases_muse": {
   "text": "114 of 358",
   "source": "results/x5_natural/muse30b_x5_natural/gate.json"
@@ -3654,6 +3726,10 @@
  "nat_rc_excess_muse": {
   "text": "0.75 [0.62, 0.86]",
   "source": "results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.json"
+ },
+ "nat_lk_whole_sw_muse": {
+  "text": "10",
+  "source": "results/x5_natural/muse30b_x5_natural/outcomes.jsonl"
  },
  "natg75_gap_9b": {
   "text": "0.52 [0.36, 0.68]",
@@ -17816,7 +17892,7 @@
   "source": "results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json"
  },
  "pred_n": {
-  "text": "102",
+  "text": "106",
   "source": "predictions/README.md"
  },
  "pred_brier": {
@@ -18053,15 +18129,15 @@
  },
  "pm_keep_slot0_9b": {
   "text": "0.10 to 0.76",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "pm_keep_12_9b": {
   "text": "0.00 / 0.00",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "pm_whole_12_9b": {
   "text": "0.53 / 0.78",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "fs_groups_27b": {
   "text": "0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13)",
@@ -18077,15 +18153,15 @@
  },
  "pm_keep_slot0_27b": {
   "text": "0.00 to 0.44",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "pm_keep_12_27b": {
   "text": "0.00 / 0.00",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "pm_whole_12_27b": {
   "text": "0.24 / 0.38",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "fs_groups_122b": {
   "text": "0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10)",
@@ -18101,15 +18177,15 @@
  },
  "pm_keep_slot0_122b": {
   "text": "0.15 to 0.47",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "pm_keep_12_122b": {
   "text": "0.00 / 0.00",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "pm_whole_12_122b": {
   "text": "0.40 / 0.35",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "fs_groups_muse": {
   "text": "0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7)",
@@ -18125,15 +18201,15 @@
  },
  "pm_keep_slot0_muse": {
   "text": "0.16 to 0.69",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "pm_keep_12_muse": {
   "text": "0.04 / 0.16",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "pm_whole_12_muse": {
   "text": "0.49 / 0.71",
-  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T151225Z/pairs.json"
  },
  "ld_gap_9b": {
   "text": "0.48 [0.42, 0.53]",

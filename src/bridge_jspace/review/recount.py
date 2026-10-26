@@ -7,6 +7,7 @@ or no source.
   route share  the share of the lookup's items whose class under an arm is the route (C0: switch / original / other);
                recall follows S: the share of the recall's items that switch
   x8           the target share of the writes minus that of the random directions, at the headline's s
+  order        the lookups the whole change switches (k of n), the locker sentence before / after the pick sentence
 """
 
 from __future__ import annotations
@@ -199,6 +200,14 @@ def recount(view_id: str) -> list[dict]:
                 gap = ex["PM"] - ex["PP"]
                 out.append({"model": m, "quantity": "gap (recall - lookup)", "n": out[-1]["n"], "value": gap,
                             **compare(gap, h["keys"]["gap"].replace("<m>", mk))})  # fmt: skip
+        elif h.get("stat") == "order_switched":  # the lookups the whole change switches, by sentence order
+            for o in ("before", "after"):
+                lk = [it for it in got if it["reader"] == "PP" and it["order"].get("original") == o]
+                k = switched([it["rows"]["PP"].get("whole") for it in lk])
+                for what, val in (("k", k), ("n", len(lk))):
+                    key = h["keys"][what].replace("<o>", o).replace("<m>", mk)
+                    out.append({"model": m, "quantity": f"lookups switched, locker {o} the pick: {what}", "n": len(lk),
+                                "value": float(val), **compare(val, key)})  # fmt: skip
         elif h.get("stat") == "route_share":
             out += route_shares(v, got, h, m, mk)
         elif h.get("stat") == "x8_target_minus_random":

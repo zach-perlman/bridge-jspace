@@ -45,12 +45,12 @@
 | Only the asked person's pick changes | {{num|single_contrast_9b}} | {{num|single_contrast_27b}} | {{num|single_contrast_122b}} | {{num|single_contrast_muse}} |
 | Matched: fresh scenes, both locker sentences first, only the asked pick changes | {{num|comp_rep_both_gap_9b}} | {{num|comp_rep_both_gap_27b}} | {{num|comp_rep_both_gap_122b}}° | {{num|comp_rep_both_gap_muse}} |
 | Varied scenes | {{num|x0b_c_9b}} | {{num|x0b_c_27b}} | {{num|x0b_c_122b}} | {{num|x0b_c_muse}} |
-| Natural passages | {{num|natg75_gap_9b}}° | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} | recall {{num|nat_rc_excess_muse}}, lookup {{num|nat_lk_excess_muse}} ({{num|nat_n_muse}} passages) |
+| Natural passages | {{num|natg75_gap_9b}}° | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} | {{num|nat_gap_muse}}‡ |
 | More J++ directions removed, 100: gap (27B: lookup's extra loss at 25 / 50 / 100) | {{num|contrast_k100_9b}} | {{num|lk_excess_k25_27b}} / {{num|lk_excess_k50_27b}} / {{num|lk_excess_k100_27b}} | {{num|contrast_k100_122b}} | {{num|contrast_k100_muse}} |
 | Logit difference: gap | {{num|ld_gap_9b}} | {{num|ld_gap_27b}} | {{num|ld_gap_122b}} | {{num|ld_gap_muse}} |
 | Logit difference (lookup / recall extra loss) | {{num|ld_lk_9b}} / {{num|ld_rc_9b}} | {{num|ld_lk_27b}} / {{num|ld_rc_27b}} | {{num|ld_lk_122b}} / {{num|ld_rc_122b}} | {{num|ld_lk_muse}} / {{num|ld_rc_muse}} |
 
-*°: after the data, the gate lowered to 0.75.*
+*°: after the data, the gate lowered to 0.75. ‡: the lookup switches in only {{num|nat_lk_whole_sw_muse}} of {{num|nat_n_muse}} passages.*
 
 ![No other part costs the recall as much as the scene's own J++](figures/story/fig2_parts.png)
 *Fig. 2. †: two people swap picks; others: only the asked pick changes.*
@@ -63,8 +63,10 @@
 
 - **What we did.** (a) Split lookups by sentence order. (b) Swapped prompts where the item's identity, its locker sentence's position and the locker value predict different lockers (Fig. 3).
 - **What we found.**
-  - (a) Lookups switch in {{num|lk_order_before_27b}}-{{num|lk_order_before_122b}} of locker-first scenes and {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} otherwise; lookup claims here are about locker-first scenes. On the 27B's natural passages the lookup switches mostly when the fact comes first ({{num|natsplit_before_lk_sw_27b}} of {{num|natsplit_before_n_27b}} vs {{num|natsplit_after_lk_sw_27b}} of {{num|natsplit_after_n_27b}}).
+  - (a) Lookups switch in {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}} of locker-first scenes and {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} otherwise (Fig. 11); lookup claims here are about locker-first scenes. On the 27B's natural passages the lookup switches mostly when the fact comes first ({{num|natsplit_before_lk_sw_27b}} of {{num|natsplit_before_n_27b}} vs {{num|natsplit_after_lk_sw_27b}} of {{num|natsplit_after_n_27b}}).
   - (b) When another item moved, the lookup follows its identity or its locker sentence's position, never the new value (Fig. 4); the J++ part alone moves none.
+
+![Lookups follow the change mostly when the locker sentence comes first](figures/story/fig11_order.png)
 
 | Another item moved | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
@@ -84,14 +86,14 @@
 - **What we did.** (a) Probed the bridge word for which sentence holds the item's locker; removed the 4 **pointer directions** that separate those answers, or added only them. (b) Wrote one fixed vector per slot pair (two slots' mean states' difference) at three doses, against a random direction of the same size.
 - **What we found.**
   - (a) The probe is right in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes (layout alone: {{num|v4_b_layout_before_27b}}), almost none of it in J++, and points at the item's first mention, even another person's earlier pick. Removing the pointer directions costs the lookup on every model, the recall less, and cuts position answers; adding only them gives position answers on all but the 27B.
-  - (b) At the dose fixed in advance (s = 1) the write moves nothing. Stronger writes send the lookup to the target locker and a random direction does not; when the recall changes under the strongest write, it mostly gives the target slot's item (table, Fig. 8). Muse pending.
+  - (b) At the dose fixed in advance (s = 1) the write moves nothing. Stronger writes send the lookup to the target locker and a random direction does not; when the recall changes under the strongest write, it mostly gives the target slot's item (table, Fig. 8).
 
 | Pointer directions | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Lookup's extra loss without them | {{num|rep_alf_lk_excess_9b}} (replicated) | {{num|mmlf_Alf_lk_excess_27b}} | {{num|mmlf_Alf_lk_excess_122b}} | {{num|rep_alf_lk_excess_muse}} (replicated) |
 | Position without them / without a random part of their size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | {{num|rtg_C2_no_alf_position_122b}} / {{num|rtg_C2_no_alf_rand_position_122b}} | {{num|rt_C2_no_alf_position_muse}} / {{num|rt_C2_no_alf_rand_position_muse}} |
-| Write, lookup's target share: s = 1 / 2 / 4; random direction, 4 | {{num|x8_t1_9b}} / {{num|x8_t2_9b}} / {{num|x8_t4_9b}}; {{num|x8_rand4_9b}} | {{num|x8_t1_27b}} / {{num|x8_t2_27b}} / {{num|x8_t4_27b}}; {{num|x8_rand4_27b}} | {{num|x8_t1_122b}} / {{num|x8_t2_122b}} / {{num|x8_t4_122b}}; {{num|x8_rand4_122b}} | not landed |
-| Write at s = 4: changed recalls giving the target slot's item | {{num|x8_rc_target_9b}} | {{num|x8_rc_target_27b}} | {{num|x8_rc_target_122b}} | not landed |
+| Write, lookup's target share: s = 1 / 2 / 4; random direction, 4 | {{num|x8_t1_9b}} / {{num|x8_t2_9b}} / {{num|x8_t4_9b}}; {{num|x8_rand4_9b}} | {{num|x8_t1_27b}} / {{num|x8_t2_27b}} / {{num|x8_t4_27b}}; {{num|x8_rand4_27b}} | {{num|x8_t1_122b}} / {{num|x8_t2_122b}} / {{num|x8_t4_122b}}; {{num|x8_rand4_122b}} | {{num|x8_t1_muse}} / {{num|x8_t2_muse}} / {{num|x8_t4_muse}}; {{num|x8_rand4_muse}} |
+| Write at s = 4: changed recalls giving the target slot's item | {{num|x8_rc_target_9b}} | {{num|x8_rc_target_27b}} | {{num|x8_rc_target_122b}} | {{num|x8_rc_target_muse}} |
 | Position with only their part / only a random part of its size | {{num|rtk_C2_keep_alf_position_9b}} / {{num|rtk_C2_keep_alf_rand_position_9b}} | {{num|rtk_C2_keep_alf_position_27b}} / {{num|rtk_C2_keep_alf_rand_position_27b}} | {{num|rtk_C2_keep_alf_position_122b}} / {{num|rtk_C2_keep_alf_rand_position_122b}} | {{num|rtk_C2_keep_alf_position_muse}} / {{num|rtk_C2_keep_alf_rand_position_muse}} |
 
 *°: after the data, the gate lowered to 0.75.*
@@ -106,7 +108,6 @@
 - **First sentence.** The pointer directions we found mostly mark whether the item's mention was the prompt's first sentence (Fig. 9a). In the routes test only their part moves the lookup to or from slot 0, not between slots 1 and 2, while the whole change does (Fig. 9b): the position route exists for other places too, mostly outside these directions.
 - **Transfer.** Fit on simple scenes and not refit, they cost the lookup {{num|tptr_varied_range}} in varied scenes and {{num|tptr_natural_range}} in natural passages, while the lookup still does not need J++ there (Fig. 10).
 - **What is left.** J++ and the pointer directions removed together leave about half of the sanity swap's lookups switching, and cost more than the pointer alone only on the 27B. Adding the item's identity outside J++ leaves fewer, but a random part of the same share removes most switches too (Fig. 6, table). About half of the route around the lens is still unexplained. The recall needs identity on the 27B and Muse, not the 9B.
-- **A pointer found without slot labels** is pending on three models.
 
 | Pointer directions, by where the item sits | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
@@ -191,7 +192,7 @@ Language models bind an entity to its attributes in context (Feng & Steinhardt 2
 
 ## 9. Next
 
-- **Running now.** Muse's transfer and writes; a pointer found without slot labels.
+- **Follow-up: what tells slots 1 and 2 apart**; identity test on the 122B.
 - **Follow-up: answers by sampling**, not the top token.
 - **Follow-up: the routes and pointer tests without the chat template.**
 - **Follow-up: OLMo checkpoints**: when the pointer appears in training.

@@ -561,8 +561,8 @@ fig7,muse-glimmer-30b,"The lookup follows identity or position, never the value"
 fig7,muse-glimmer-30b,The pointer part alone gives position answers,held,,,,verdicts; fixed
 fig7,muse-glimmer-30b,Position appears where the lookup stops needing J++,held,,,,verdicts; after
 fig7,muse-glimmer-30b,J++ and the pointer together cost the lookup more than the pointer alone,no,,,,verdicts; fixed
-fig7,muse-glimmer-30b,"A fixed vector written at the bridge moves the lookup (s = 2, 4)",not tested,,,,verdicts; after
-fig7,muse-glimmer-30b,The recall follows a strong write to the target slot's item,not tested,,,,verdicts; after
+fig7,muse-glimmer-30b,"A fixed vector written at the bridge moves the lookup (s = 2, 4)",held,,,,verdicts; after
+fig7,muse-glimmer-30b,The recall follows a strong write to the target slot's item,partial,,,,verdicts; after
 fig7,muse-glimmer-30b,The pointer directions reach beyond the first sentence,no,,,,verdicts; after
 fig7,muse-glimmer-30b,"Fit on simple scenes, they cost the lookup in varied and natural text",no,,,,verdicts; fixed
 fig8,qwen3.5-9b,"lookup target share, write 0 -> 1, s = 1",0.043010752688172046,0.010416666666666666,0.08235294117647059,,qwen35_9b_x8_write
@@ -772,6 +772,22 @@ fig10,muse-glimmer-30b,lookup extra loss without J++: table,0.05660377358490565,
 fig10,muse-glimmer-30b,lookup extra loss without the pointer: table,0.12264150943396246,0.07233747044917246,0.17972479676901568,,readme_story_figures.transfer_cells
 fig10,muse-glimmer-30b,lookup extra loss without J++: natural,-0.25,-0.6666666666666666,0.0,,readme_story_figures.transfer_cells
 fig10,muse-glimmer-30b,lookup extra loss without the pointer: natural,0.25,0.0,0.5,,readme_story_figures.transfer_cells
+fig11,qwen3.5-9b,"lookups switched by the whole change, locker sentence before the pick",0.86,0.7786,0.9147,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+fig11,qwen3.5-9b,"recalls switched by the whole change, locker sentence before the pick",1.0,0.963,1.0,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+fig11,qwen3.5-9b,"lookups switched by the whole change, locker sentence after the pick",0.19,0.1251,0.2778,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+fig11,qwen3.5-9b,"recalls switched by the whole change, locker sentence after the pick",0.97,0.9155,0.9897,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+fig11,qwen3.6-27b,"lookups switched by the whole change, locker sentence before the pick",0.7624,0.6707,0.8348,101,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+fig11,qwen3.6-27b,"recalls switched by the whole change, locker sentence before the pick",0.7426,0.6495,0.8178,101,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+fig11,qwen3.6-27b,"lookups switched by the whole change, locker sentence after the pick",0.0909,0.0486,0.1638,99,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+fig11,qwen3.6-27b,"recalls switched by the whole change, locker sentence after the pick",0.7576,0.6646,0.8313,99,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+fig11,qwen3.5-122b-a10b,"lookups switched by the whole change, locker sentence before the pick",0.8941,0.8109,0.9433,85,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig11,qwen3.5-122b-a10b,"recalls switched by the whole change, locker sentence before the pick",0.9529,0.8852,0.9816,85,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig11,qwen3.5-122b-a10b,"lookups switched by the whole change, locker sentence after the pick",0.113,0.0673,0.1838,115,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig11,qwen3.5-122b-a10b,"recalls switched by the whole change, locker sentence after the pick",0.8957,0.8264,0.9393,115,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig11,muse-glimmer-30b,"lookups switched by the whole change, locker sentence before the pick",0.6522,0.5505,0.7416,92,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig11,muse-glimmer-30b,"recalls switched by the whole change, locker sentence before the pick",0.5109,0.4104,0.6105,92,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig11,muse-glimmer-30b,"lookups switched by the whole change, locker sentence after the pick",0.0926,0.0511,0.1621,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig11,muse-glimmer-30b,"recalls switched by the whole change, locker sentence after the pick",0.6481,0.5544,0.7317,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -809,7 +825,11 @@ numbers,,rc_excess_k50_9b,0.62,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outco
 numbers,,rc_excess_k100_9b,0.47,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 numbers,,rc_excess_k200_9b,0.18,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 numbers,,lk_order_before_9b,86%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_before_9b_k,86,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_before_9b_n,100,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_order_after_9b,19%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_after_9b_k,19,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_after_9b_n,100,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_excess_up_9b,−0.03,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_swhole_up_9b,69%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_n_up_9b,108,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -854,7 +874,11 @@ numbers,,rc_excess_k50_27b,0.80,,,,results/x0_necessity/x0_kmatch_27b/outcomes.j
 numbers,,rc_excess_k100_27b,0.67,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
 numbers,,rc_excess_k200_27b,0.50,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
 numbers,,lk_order_before_27b,76%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_order_before_27b_k,77,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_order_before_27b_n,101,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_order_after_27b,9%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_order_after_27b_k,9,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_order_after_27b_n,99,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_excess_up_27b,0.16,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_swhole_up_27b,63%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_n_up_27b,97,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
@@ -896,7 +920,11 @@ numbers,,rc_excess_k25_122b,0.32,,,,results/x0_necessity/qwen35_122b_x0_necessit
 numbers,,rc_excess_k50_122b,0.45,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_excess_k100_122b,0.43,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_order_before_122b,89%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_order_before_122b_k,76,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_order_before_122b_n,85,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_order_after_122b,11%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_order_after_122b_k,13,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_order_after_122b_n,115,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_excess_up_122b,0.04,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_swhole_up_122b,61%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_n_up_122b,83,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
@@ -940,7 +968,11 @@ numbers,,rc_excess_k50_muse,0.83,,,,results/x0_necessity/muse30b_x0_necessity/ou
 numbers,,rc_excess_k100_muse,0.85,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_excess_k200_muse,0.70,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_order_before_muse,65%,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_before_muse_k,60,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_before_muse_n,92,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_order_after_muse,9%,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_after_muse_k,10,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,lk_order_after_muse_n,108,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_excess_up_muse,−0.10,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_swhole_up_muse,53%,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_n_up_muse,97,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
@@ -1672,6 +1704,7 @@ numbers,,nat_label_27b,mixed,,,,results/x5_natural/x5_natural_27b/verdict-202610
 numbers,,nat_n_27b,137,,,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json
 numbers,,nat_lk_excess_27b,"0.32 [0.20, 0.45]",,,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json
 numbers,,nat_rc_excess_27b,"0.59 [0.50, 0.67]",,,,results/x5_natural/x5_natural_27b/verdict-20261024T232738Z/verdict.json
+numbers,,nat_lk_whole_sw_27b,60,,,,results/x5_natural/x5_natural_27b/outcomes.jsonl
 numbers,,nat_cases_122b,154 of 358,,,,results/x5_natural/qwen35_122b_x5_natural/gate.json
 numbers,,nat_gate_lk_122b,0.92,,,,results/x5_natural/qwen35_122b_x5_natural/gate.json
 numbers,,nat_gap_122b,"0.44 [0.32, 0.58]",,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
@@ -1679,6 +1712,7 @@ numbers,,nat_label_122b,holds,,,,results/x5_natural/qwen35_122b_x5_natural/verdi
 numbers,,nat_n_122b,114,,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
 numbers,,nat_lk_excess_122b,"−0.11 [−0.20, −0.03]",,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
 numbers,,nat_rc_excess_122b,"0.34 [0.24, 0.43]",,,,results/x5_natural/qwen35_122b_x5_natural/verdict-20261025T005420Z/verdict.json
+numbers,,nat_lk_whole_sw_122b,56,,,,results/x5_natural/qwen35_122b_x5_natural/outcomes.jsonl
 numbers,,nat_cases_muse,114 of 358,,,,results/x5_natural/muse30b_x5_natural/gate.json
 numbers,,nat_gate_lk_muse,0.82,,,,results/x5_natural/muse30b_x5_natural/gate.json
 numbers,,nat_gap_muse,"0.95 [0.64, 1.33]",,,,results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.json
@@ -1686,6 +1720,7 @@ numbers,,nat_label_muse,holds,,,,results/x5_natural/muse30b_x5_natural/verdict-2
 numbers,,nat_n_muse,60,,,,results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.json
 numbers,,nat_lk_excess_muse,"−0.20 [−0.55, 0.00]",,,,results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.json
 numbers,,nat_rc_excess_muse,"0.75 [0.62, 0.86]",,,,results/x5_natural/muse30b_x5_natural/verdict-20261026T023226Z/verdict.json
+numbers,,nat_lk_whole_sw_muse,10,,,,results/x5_natural/muse30b_x5_natural/outcomes.jsonl
 numbers,,natg75_gap_9b,"0.52 [0.36, 0.68]",,,,results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json
 numbers,,natg75_n_9b,83,,,,results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json
 numbers,,natg75_lk_excess_9b,"0.03 [−0.08, 0.15]",,,,results/x5_natural/qwen35_9b_x5_natural_g75/verdict-20261025T135050Z/verdict.json
@@ -5226,7 +5261,7 @@ numbers,,x4_C_animals_same_muse,"0.35 [0.13, 0.51]",,,,results/x4_alias/muse30b_
 numbers,,x4_C_animals_xlang_muse,"0.36 [0.20, 0.52]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,x4_C_elements_same_muse,"0.57 [0.38, 0.72]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,x4_C_elements_syn_muse,"0.76 [0.54, 0.96]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
-numbers,,pred_n,102,,,,predictions/README.md
+numbers,,pred_n,106,,,,predictions/README.md
 numbers,,pred_brier,0.34,,,,predictions/README.md
 numbers,,x8_sreal_9b,9B 1.36 to 2.70,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_sreal_min_9b,1.36,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
@@ -5285,27 +5320,27 @@ numbers,,tptr_natural_range,0.07 to 0.25,,,,results/t_pointer/verdict-20261026T1
 numbers,,fs_groups_9b,0.66 (n 41) / 0.23 (n 22) / 0.33 (n 9),,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_diff_9b,"0.40 [0.18, 0.60]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_keepdiff_9b,"0.46 [0.31, 0.64]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
-numbers,,pm_keep_slot0_9b,0.10 to 0.76,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
-numbers,,pm_keep_12_9b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
-numbers,,pm_whole_12_9b,0.53 / 0.78,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
+numbers,,pm_keep_slot0_9b,0.10 to 0.76,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_keep_12_9b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_whole_12_9b,0.53 / 0.78,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_27b,0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13),,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_diff_27b,"0.21 [0.05, 0.35]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_keepdiff_27b,"0.16 [0.04, 0.31]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
-numbers,,pm_keep_slot0_27b,0.00 to 0.44,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
-numbers,,pm_keep_12_27b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
-numbers,,pm_whole_12_27b,0.24 / 0.38,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
+numbers,,pm_keep_slot0_27b,0.00 to 0.44,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_keep_12_27b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_whole_12_27b,0.24 / 0.38,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_122b,0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10),,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_diff_122b,"0.38 [0.21, 0.56]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_keepdiff_122b,"0.07 [−0.16, 0.32]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
-numbers,,pm_keep_slot0_122b,0.15 to 0.47,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
-numbers,,pm_keep_12_122b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
-numbers,,pm_whole_12_122b,0.40 / 0.35,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
+numbers,,pm_keep_slot0_122b,0.15 to 0.47,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_keep_12_122b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_whole_12_122b,0.40 / 0.35,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_muse,0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7),,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_diff_muse,"0.41 [0.25, 0.59]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
 numbers,,fs_keepdiff_muse,"0.23 [0.09, 0.39]",,,,results/x0_massmean/first-sentence-20261026T133627Z/first.json
-numbers,,pm_keep_slot0_muse,0.16 to 0.69,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
-numbers,,pm_keep_12_muse,0.04 / 0.16,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
-numbers,,pm_whole_12_muse,0.49 / 0.71,,,,results/x8_write/pairs-20261026T141229Z/pairs.json
+numbers,,pm_keep_slot0_muse,0.16 to 0.69,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_keep_12_muse,0.04 / 0.16,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_whole_12_muse,0.49 / 0.71,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,ld_gap_9b,"0.48 [0.42, 0.53]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
 numbers,,ld_lk_9b,"−0.05 [−0.07, −0.03]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
 numbers,,ld_rc_9b,"0.43 [0.37, 0.48]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json

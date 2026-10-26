@@ -589,9 +589,9 @@ SCORECARD = (
     # README v3 (Dan ~16:40): the writes at s = 2 / 4 (s = 1, fixed in advance, moved nothing: a design error); the
     # recall's split, the first-sentence check and the slot moves after the data; T fixed in advance (batch 42)
     ("A fixed vector written at the bridge\nmoves the lookup (s = 2, 4)",
-     {"9b": ("held", "after"), "27b": ("partial", "after"), "122b": ("held", "after"), "muse": ("not tested", "after")}),
+     {"9b": ("held", "after"), "27b": ("partial", "after"), "122b": ("held", "after"), "muse": ("held", "after")}),
     ("The recall follows a strong write\nto the target slot's item",
-     {"9b": ("held", "after"), "27b": ("partial", "after"), "122b": ("held", "after"), "muse": ("not tested", "after")}),
+     {"9b": ("held", "after"), "27b": ("partial", "after"), "122b": ("held", "after"), "muse": ("partial", "after")}),
     ("The pointer directions reach beyond\nthe first sentence",
      {"9b": ("partial", "after"), "27b": ("no", "after"), "122b": ("partial", "after"), "muse": ("no", "after")}),
     ("Fit on simple scenes, they cost the\nlookup in varied and natural text",
@@ -873,9 +873,65 @@ def fig10(plt) -> None:
     S.save(fig, "fig10_transfer")
 
 
+AFTER_COL = "#c9b6dd"  # the lookup with the locker sentence after the pick (figures/status_2026-10-25/f4_order.png)
+
+
+def fig11(plt) -> None:
+    """After the data: the lookups (bars, 95% Wilson) and the recalls (grey dots) switched by the whole change in the main
+    test, the original bridge's locker sentence before vs after the asked person's pick sentence (x0_strata's split, as
+    x0_details' lk_order_* keys)."""
+    from bridge_jspace.stats import wilson
+    from scripts import x0_strata as ST
+
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 4.6))
+    fig.subplots_adjust(left=0.08, right=0.995, top=0.80, bottom=0.22)
+    # Dan's title with "change" for "edit": the README's word (its test bans "edit")
+    S.title(fig, "Lookups follow the change mostly when the locker sentence comes first")
+    xs, labels = [], []
+    for i, (target, m, name) in enumerate(S.MODELS):
+        run, la = MAIN_RUNS[m], X.PREDICTED[target]
+        rows = [x for x in XF.Run(run).rows if x["rendering"] == "chat" and x["layer"] == la and x["arm"] == "whole"]
+        cases = {c["scene"]: c for c in X.read_jsonl(X.RESULTS / run / "cases.jsonl") if c["rendering"] == "chat"}
+        for j, order in enumerate(("before", "after")):
+            mine = [x for x in rows if ST.features(cases[x["scene"]])["org locker vs asked pick"] == order]
+            src = f"results/x0_necessity/{run}/outcomes.jsonl"
+            for w in (X.LOOKUP, X.RECALL):
+                got = [x["switched"] for x in mine if x["reader"] == w]
+                k, n = sum(got), len(got)
+                p, lo, hi = (100 * t for t in wilson(k, n))
+                x = i * 3.6 + j * 1.25  # room for the "(k of n)" label between a bar and its recall dot
+                if w == X.LOOKUP:
+                    ax.bar(
+                        x, p, width=0.7, color=S.COL["lookup"] if order == "before" else AFTER_COL, edgecolor="white"
+                    )
+                    ax.errorbar(x, p, yerr=[[p - lo], [hi - p]], color="#333333", capsize=3, lw=1)
+                    ax.text(x, hi + 2, f"{p:.0f}%\n({k} of {n})", ha="center", va="bottom", fontsize=8.5)
+                else:
+                    ax.plot([x + 0.72], [p], "o", ms=4.5, color="#9a9a9a", zorder=3)
+                what = "lookups" if w == X.LOOKUP else "recalls"
+                S.record("fig11", target, f"{what} switched by the whole change, locker sentence {order} the pick",
+                         round(p / 100, 4), round(lo / 100, 4), round(hi / 100, 4), n, source=src)  # fmt: skip
+            xs.append(i * 3.6 + j * 1.25)
+            labels.append(f"locker\n{order}")
+        ax.text(i * 3.6 + 0.625, -0.2, f"{name}, layer {la}", transform=ax.get_xaxis_transform(), ha="center", va="top",
+                fontsize=9, weight="bold")  # fmt: skip
+    ax.set_xticks(xs, labels, fontsize=8.5)
+    ax.set_ylim(0, 112)
+    ax.set_ylabel("switched by the whole change (%)")
+    ax.grid(axis="y", color="#eeeeee")
+    ax.set_axisbelow(True)
+    marks = [plt.Rectangle((0, 0), 1, 1, color=S.COL["lookup"]), plt.Rectangle((0, 0), 1, 1, color=AFTER_COL),
+             plt.Line2D([], [], marker="o", ls="", color="#9a9a9a", ms=4.5)]  # fmt: skip
+    fig.legend(marks, ["lookup, locker sentence before the pick", "lookup, after", "recall, same scenes"],
+               loc="upper left", bbox_to_anchor=(0.0, 0.93), ncol=3, frameon=False, fontsize=9.5, handletextpad=0.4)  # fmt: skip
+    fig.text(0.01, 0.015, "The whole change, no part removed; the main test's scenes at the layers fixed in advance; 95% "
+             "Wilson intervals.\nUnverified. Descriptive, added after the data.", fontsize=8, color=S.COL["muted"])  # fmt: skip
+    S.save(fig, "fig11_order")
+
+
 def main() -> None:
     plt = S.setup()
-    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10):
+    for f in (fig0, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10, fig11):
         f(plt)
     S.write_data()
     print(S.OUT)

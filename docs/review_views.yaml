@@ -424,11 +424,22 @@ views:
 
   - id: sentence_order
     title: Lookups by sentence order
-    status: later
+    status: phase2
     kind: x0
-    readme: "Section 2 (a)"
-    claim: "Lookups switch in 76%-89% of locker-first scenes and 9%-19% otherwise."
-    sources: [lk_order_before_<m>, lk_order_after_<m>]
+    readme: "Section 2 (a); Fig. 11"
+    claim: >-
+      Lookups switch in 65%-89% of locker-first scenes and 9%-19% otherwise (the whole change, the main test's scenes;
+      locker-first = the original bridge's locker sentence before the asked person's pick sentence).
+    sources: [lk_order_before_<m>, lk_order_after_<m>, lk_order_before_<m>_k, lk_order_before_<m>_n,
+              lk_order_after_<m>_k, lk_order_after_<m>_n]
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+    headline: {stat: order_switched, keys: {k: "lk_order_<o>_<m>_k", n: "lk_order_<o>_<m>_n"}}
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
       qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]

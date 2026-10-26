@@ -145,7 +145,10 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
         whole = [x for x in rows if x["layer"] == la and x["reader"] == X.LOOKUP and x["arm"] == "whole"]
         for order in ("before", "after"):
             mine = [x for x in whole if ST.features(cases[x["scene"]])["org locker vs asked pick"] == order]
-            num.add(f"lk_order_{order}_{m}", pct(sum(x["switched"] for x in mine) / len(mine)), src)
+            k = sum(x["switched"] for x in mine)
+            num.add(f"lk_order_{order}_{m}", pct(k / len(mine)), src)
+            num.add(f"lk_order_{order}_{m}_k", str(k), src)
+            num.add(f"lk_order_{order}_{m}_n", str(len(mine)), src)
         # upstream change
         for name, keep in (("up", lambda x: x["upstream"]), ("af", lambda x: not x["upstream"])):
             sub = X.cells_of([x for x in rows if x["layer"] == la and keep(x)])
@@ -408,6 +411,9 @@ def natural_numbers(num: Numbers) -> None:
         num.add(f"nat_n_{m}", str(v["main"]["n"]), src)
         for w, k in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
             num.add(f"nat_{k}_excess_{m}", ci(v["main"]["excess"][w]), src)
+        whole = [r for r in X.read_jsonl(root / "outcomes.jsonl") if r["arm"] == "whole" and r["reader"] == X.LOOKUP]
+        num.add(f"nat_lk_whole_sw_{m}", str(sum(r["switched"] for r in whole)),
+                str((root / "outcomes.jsonl").relative_to(pins.REPO_ROOT)))  # fmt: skip
     for m, run in NATURAL_G75.items():  # the reruns after the data, gate lowered to 0.75 (descriptive; natg75_*)
         found = sorted((pins.RESULTS_DIR / "x5_natural" / run).glob("verdict-*/verdict.json"))
         if not found:
