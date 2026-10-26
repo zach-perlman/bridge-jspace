@@ -601,7 +601,8 @@ def fig8(plt) -> None:
     S.title(fig, "One fixed vector moves the lookup to its slot once the push is as strong as a real change", limit=90)
     for i, (target, m, name) in enumerate(S.MODELS):
         left, right = fig.add_subplot(grid[i // 2, 2 * (i % 2)]), fig.add_subplot(grid[i // 2, 2 * (i % 2) + 1])
-        fig.text((left.get_position().x0 + right.get_position().x1) / 2, left.get_position().y1 + 0.035, name,
+        label = name + (" (gate 0.75, after the data)" if m == "122b" else "")  # as its routes runs
+        fig.text((left.get_position().x0 + right.get_position().x1) / 2, left.get_position().y1 + 0.035, label,
                  ha="center", fontsize=10.5, weight="bold")  # fmt: skip
         root = pins.RESULTS_DIR / "x8_write" / X8_RUNS[m]
         v, rc = latest(root, "verdict-*/verdict.json"), latest(root, "recall-*/recall.json")
