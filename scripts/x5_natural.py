@@ -193,7 +193,7 @@ def stage_plan() -> None:
         )
 
 
-def stage_run(name: str, gate_min: float = X.GATE, pointer: bool = False) -> Path:
+def stage_run(name: str, gate_min: float = X.GATE, pointer: bool = False, alf_from: str | None = None) -> Path:
     import torch
 
     from bridge_jspace.lens import JLens
@@ -268,13 +268,15 @@ def stage_run(name: str, gate_min: float = X.GATE, pointer: bool = False) -> Pat
             from scripts import x0_massmean as MM
             from scripts.x6_routes import STATES
 
-            alf = torch.tensor(MM.subspaces(STATES[target])[0]["Alf"], dtype=torch.float32, device="cuda")
+            pbasis = (np.load(pins.RESULTS_DIR / alf_from / "pcf.npz")["P"] if alf_from  # P_cf_nat (batch 43)
+                      else MM.subspaces(STATES[target])[0]["Alf"])  # fmt: skip
+            alf = torch.tensor(pbasis, dtype=torch.float32, device="cuda")
             ptr = (x @ alf) @ alf.T
             psh = ptr.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
             r = alf.shape[1]
             arms[("alf", r, "signed", "no_part")] = x - ptr
             arms[("alf", r, "signed", "no_rand")] = x - SP.random_subspace_part(x, psh, basis)
-            m["pointer_from"] = STATES[target]
+            m["pointer_from"] = alf_from or STATES[target]
         keys = list(arms)
         rows = []
         for i, c in enumerate(progress(cases, f"reads at layer {layer} (case)")):
@@ -369,12 +371,13 @@ def main() -> None:
     ap.add_argument("--gate", type=float, default=X.GATE, help="run: a lowered, descriptive read-accuracy gate")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--pointer", action="store_true", help="run: also the pointer directions as a part (T)")
+    ap.add_argument("--alf-from", default=None, help="run, with --pointer: the basis from results/<path>/pcf.npz")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
         return
     if a.stage == "run":
-        stage_run(a.name, a.gate, a.pointer)
+        stage_run(a.name, a.gate, a.pointer, a.alf_from)
     stage_verdict(a.name, a.n_boot)
 
 

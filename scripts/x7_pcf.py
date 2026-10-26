@@ -19,6 +19,7 @@ import argparse
 import collections
 import json
 import random
+import re
 import sys
 import time
 from pathlib import Path
@@ -68,6 +69,61 @@ def pairs(tok, n: int, seed: int = SEED) -> tuple[list[dict], collections.Counte
         case["slots"] = {"org": order.index(A), "alt": order.index(other)}
         out.append(case)
     return out, dropped
+
+
+MAX_MOVES = 3  # natural pairs per passage at most (seeded choice of the target slots)
+
+
+def natural_pairs(tok, seed: int = SEED) -> tuple[list[dict], collections.Counter]:
+    """Natural passages (x5_natural's set and cases): the sentence with the bridge's first mention moved to another
+    place in its paragraph, still before the binding sentence, its words unchanged; per pair the lookup prompts of O and
+    S and the bridge word's token index (in the binding sentence) in each. Passages that allow no move are counted."""
+    from bridge_jspace.tokens import raw_encoding
+    from scripts import statement_positions as SP
+    from scripts import tasks_v2 as T
+    from scripts import x5_natural as N
+
+    items = {pp["scene"]: pp for pp, _ in N.load()[0]}
+    cases, _ = N.build_cases(tok)
+    rng = random.Random(seed)
+    out, why = [], collections.Counter({"passages": len(cases)})
+    for c in cases:
+        ctx, bridge = c["context"], c["bridge"]
+        sents = N.sentences(ctx)
+        bind = next(s for s in sents if N.names(s, bridge) and not N.values_in(s, c["vocab"]))
+        first = next(s for s in sents if N.names(s, bridge))
+        if first == bind:
+            why["the binding sentence is the first mention"] += 1
+            continue
+        para = next(line for line in ctx.split("\n") if first in line)
+        ps = [s for s in re.split(r"(?<=[.!?])\s+", para) if s]
+        if " ".join(ps) != para or first not in ps:
+            why["the paragraph does not split cleanly"] += 1
+            continue
+        f = ps.index(first)
+        b = ps.index(bind) if bind in ps else len(ps)
+        targets = [t for t in range(b) if t != f]
+        if not targets:
+            why["no other place before the binding sentence"] += 1
+            continue
+        why["passages that allow a move"] += 1
+        for t in sorted(rng.sample(targets, min(MAX_MOVES, len(targets)))):
+            moved = ps[:f] + ps[f + 1 :]
+            moved.insert(t, first)
+            s_ctx = ctx.replace(para, " ".join(moved))
+            ids, at = {}, {}
+            for v, cc in (("org", ctx), ("alt", s_ctx)):
+                text = T.render(tok, {**items[c["scene"]], "context": cc})
+                enc = raw_encoding(tok, text, offsets=True)
+                w0 = text.index(cc) + cc.index(bind) + bind.rindex(bridge)
+                ids[v], at[v] = list(enc["input_ids"]), SP.tokens_in(enc["offset_mapping"], w0, w0 + len(bridge))
+            if len(at["org"]) != 1 or len(at["alt"]) != 1:
+                why["the bridge is not one token"] += 1
+                continue
+            out.append({"scene": c["scene"], "relation": c["relation"], "bridge": bridge, "move": [f, t],
+                        "ids": ids, "pos": {"org": at["org"][0], "alt": at["alt"][0]}})  # fmt: skip
+    why["pairs"] = len(out)
+    return out, why
 
 
 def principal_cos2(p: np.ndarray, q: np.ndarray) -> list[float]:
@@ -140,12 +196,84 @@ def stage_run(name: str, n: int = N_PAIRS) -> Path:
     return out
 
 
+def stage_natural(name: str, pcf_run: str) -> Path:
+    """P_cf_nat (batch 43's natural-passage step, Dan 26 Oct ~11:25): the same PCA over natural pairs (natural_pairs),
+    the bridge word read in the binding sentence; its principal angles with P_cf (x7_pcf/<pcf_run>) and with Alf."""
+    import torch
+
+    from bridge_jspace.lens import JLens
+    from bridge_jspace.model import load_model
+    from bridge_jspace.utils import git_state, progress
+    from scripts import x0_massmean as MM
+    from scripts.x0_parts import omp_atoms
+
+    pins.check_run_name(name)
+    target = pins.model_pin()["target"]
+    layer = X.PREDICTED[target]
+    out = RESULTS / name
+    out.mkdir(parents=True, exist_ok=False)
+    m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "rank": RANK,
+         "pairs_from": "x5_natural's passages: the bridge's first-mention sentence moved within its paragraph, still "
+                       f"before the binding sentence, words unchanged (at most {MAX_MOVES} moves per passage)",
+         "pcf_run": pcf_run, "alf_from": R.STATES[target], "seeds": {"moves": SEED}}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
+    model = load_model()
+    cases, why = natural_pairs(model.tokenizer)
+    X.write_jsonl(out / "cases.jsonl", [{k: v for k, v in c.items() if k != "ids"} for c in cases])
+    with torch.no_grad():
+        diffs = []
+        for c in progress(cases, f"S - O at layer {layer} (natural pair)"):
+            h = {v: model.run(torch.tensor([c["ids"][v]], device="cuda"), record=(layer,))[1][layer][c["pos"][v]].float()
+                 for v in ("org", "alt")}  # fmt: skip
+            diffs.append((h["alt"] - h["org"]).to("cuda"))
+        x = torch.stack(diffs)
+        jdic = JLens(model, "jpp").vectors(layer, model.letter_token_ids())
+        atoms = omp_atoms(jdic, x, X.K_MAIN)
+    xd = x.double().cpu().numpy()
+    _, s, vt = np.linalg.svd(xd - xd.mean(0), full_matrices=False)
+    var = (s**2 / (s**2).sum()).tolist()
+    p = vt[:RANK].T
+    pcf = np.load(pins.RESULTS_DIR / EXP / pcf_run / "pcf.npz")["P"].astype(np.float64)
+    alf = MM.subspaces(R.STATES[target])[0]["Alf"]
+    cos_pcf, cos_alf = principal_cos2(p, pcf), principal_cos2(p, alf)
+    pt = torch.tensor(p, dtype=torch.float64, device="cuda")
+    in_jpp = []
+    for i in range(len(cases)):
+        q, _ = torch.linalg.qr(jdic[atoms[i]].T.double())
+        in_jpp.append(float(((q.T @ pt) ** 2).sum()) / RANK)
+    report = {"run": name, "model": target, "layer": layer, "counts": dict(why),
+              "passages_allowing_a_move": why["passages that allow a move"], "pairs": len(cases),
+              "variance_explained": var[:SHOW], "cos2_with_pcf": cos_pcf, "mean_cos2_with_pcf": float(np.mean(cos_pcf)),
+              "cos2_with_alf": cos_alf, "mean_cos2_with_alf": float(np.mean(cos_alf)),
+              "random_mean_cos2": RANK / p.shape[0],
+              "share_in_jpp_span": {"mean": float(np.mean(in_jpp)), "median": float(np.median(in_jpp))}}  # fmt: skip
+    np.savez_compressed(out / "pcf.npz", P=p.astype(np.float32), mean=xd.mean(0).astype(np.float32), var=np.array(var))
+    (out / "report.json").write_text(json.dumps(report, indent=1) + "\n")
+    pct = ", ".join(f"{k + 1}: {100 * v:.1f}%" for k, v in enumerate(var[:SHOW]))
+    lines = [f"# P_cf_nat, the pointer from natural passages: {name}", "",
+             f"Model {target}, layer {layer}; {why['passages that allow a move']} of {why['passages']} passages allow a "
+             f"move ({dict(why)}); {len(cases)} pairs; PCA centered over the bridge word's S - O. UNVERIFIED.", "",
+             f"- Variance explained by components 1-{SHOW}: {pct}.",
+             f"- cos² of the principal angles with P_cf ({pcf_run}): " + ", ".join(f"{v:.3f}" for v in cos_pcf)
+             + f"; mean {np.mean(cos_pcf):.3f}. With the mass-mean pointer directions: mean {np.mean(cos_alf):.3f} "
+             f"(a random subspace: {RANK / p.shape[0]:.4f}).",
+             f"- P_cf_nat's share inside each pair's 25-atom J++ span: mean {np.mean(in_jpp):.3f} (descriptive)."]  # fmt: skip
+    (out / "report.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines), flush=True)
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "run"])
+    ap.add_argument("stage", choices=["plan", "run", "natural"])
     ap.add_argument("--name")
     ap.add_argument("--n", type=int, default=N_PAIRS)
+    ap.add_argument("--pcf", help="natural: the simple-scene P_cf run (results/x7_pcf/<run>) to compare with")
     a = ap.parse_args()
+    if a.stage == "natural":
+        stage_natural(a.name, a.pcf)
+        return
     if a.stage == "plan":
         from scripts import statement_positions as SP
 
