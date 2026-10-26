@@ -1639,7 +1639,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     on a random-weight 8-block Bolt: padded reads give the same argmax as one-by-one reads (4 of 4).
   - The fast-competence check against the exact path never finished (stopped). No Bolt result uses a padded path.
 
-## Amendment 52 (Zach, 2026-10-26 16:45 UTC, before any run below): is Bolt's dependence spread over more directions?
+## Amendment 52 (Zach, 2026-10-26 16:31 UTC, before any run below): is Bolt's dependence spread over more directions?
 
 - **Why (Zach: "possible bolt didn't work because we didn't remove enough directions? M-K went up with more directions
   removed right?"):** Bolt's dev dose at L42-53 rose with K (top1 +1, top3 +1, top10 +8, top30 +15 [6, 24];
