@@ -13,7 +13,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at 718c901f from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at c15015f2 from the run files.
 
 ## Setup
 
@@ -170,7 +170,7 @@
   - Removing the identity direction alone cut the identity route on the 27B only.
   - Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup 0.78), the 122B's routes (recall 0.797) and replication (recall 0.77); reruns at 0.75 are descriptive.
 - **Design errors.**
-  - The write's dose fixed in advance, s = 1, was below a real change's size on every pair (s needed: 9B 1.36 to 2.70; 27B 1.04 to 2.08; 122B 1.37 to 2.76; Muse not landed).
+  - The write's dose fixed in advance, s = 1, was below a real change's size on every pair (s needed: 9B 1.36 to 2.70; 27B 1.04 to 2.08; 122B 1.37 to 2.76; Muse 1.12 to 2.30).
   - The bar for J++, the pointer and identity removed together was out of reach at their share: the random part alone removes most switches on the Qwens.
 - **Limits.**
   - The pointer directions are fit on 5 slot labels and carry mostly first-vs-rest; the code for later slots is not captured (per-move table).
@@ -182,7 +182,7 @@
 
 - **Hand-checked numbers.** None yet ([docs/review_summary.md](docs/review_summary.md)); [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
 - **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them.
-- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.34 over 100 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
+- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.34 over 102 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
 - **Inventory.** [docs/inventory.md](docs/inventory.md): pre-pivot experiments are kept and labelled legacy.
 
 ## 8. Related work and what is new

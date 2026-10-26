@@ -17816,7 +17816,7 @@
   "source": "results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json"
  },
  "pred_n": {
-  "text": "100",
+  "text": "102",
   "source": "predictions/README.md"
  },
  "pred_brier": {
@@ -17884,8 +17884,24 @@
   "source": "results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json"
  },
  "x8_sreal_muse": {
-  "text": "Muse not landed",
-  "source": "results/x8_write/muse30b_x8_write"
+  "text": "Muse 1.12 to 2.30",
+  "source": "results/x8_write/muse30b_x8_write/recall-20261026T141228Z/recall.json"
+ },
+ "x8_sreal_min_muse": {
+  "text": "1.12",
+  "source": "results/x8_write/muse30b_x8_write/recall-20261026T141228Z/recall.json"
+ },
+ "x8_sreal_max_muse": {
+  "text": "2.30",
+  "source": "results/x8_write/muse30b_x8_write/recall-20261026T141228Z/recall.json"
+ },
+ "x8_same_legs_muse": {
+  "text": "122 of 600",
+  "source": "results/x8_write/muse30b_x8_write/recall-20261026T141228Z/recall.json"
+ },
+ "x8_rc_target_muse": {
+  "text": "28 of 64",
+  "source": "results/x8_write/muse30b_x8_write/recall-20261026T141228Z/recall.json"
  },
  "x8_t1_9b": {
   "text": "0.02 [0.01, 0.03]",
@@ -17946,6 +17962,26 @@
  "x8_rand4_122b": {
   "text": "0.00 [0.00, 0.01]",
   "source": "results/x8_write/qwen35_122b_x8_write_g75/verdict-20261026T125705Z/verdict.json"
+ },
+ "x8_t1_muse": {
+  "text": "0.05 [0.03, 0.07]",
+  "source": "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json"
+ },
+ "x8_t2_muse": {
+  "text": "0.52 [0.48, 0.55]",
+  "source": "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json"
+ },
+ "x8_t4_muse": {
+  "text": "0.52 [0.50, 0.54]",
+  "source": "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json"
+ },
+ "x8_rand1_muse": {
+  "text": "0.00 [0.00, 0.00]",
+  "source": "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json"
+ },
+ "x8_rand4_muse": {
+  "text": "0.01 [0.00, 0.02]",
+  "source": "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json"
  },
  "tptr_pooled_9b": {
   "text": "0.11 [0.08, 0.13]",
@@ -18017,15 +18053,15 @@
  },
  "pm_keep_slot0_9b": {
   "text": "0.10 to 0.76",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "pm_keep_12_9b": {
   "text": "0.00 / 0.00",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "pm_whole_12_9b": {
   "text": "0.53 / 0.78",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "fs_groups_27b": {
   "text": "0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13)",
@@ -18041,15 +18077,15 @@
  },
  "pm_keep_slot0_27b": {
   "text": "0.00 to 0.44",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "pm_keep_12_27b": {
   "text": "0.00 / 0.00",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "pm_whole_12_27b": {
   "text": "0.24 / 0.38",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "fs_groups_122b": {
   "text": "0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10)",
@@ -18065,15 +18101,15 @@
  },
  "pm_keep_slot0_122b": {
   "text": "0.15 to 0.47",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "pm_keep_12_122b": {
   "text": "0.00 / 0.00",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "pm_whole_12_122b": {
   "text": "0.40 / 0.35",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "fs_groups_muse": {
   "text": "0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7)",
@@ -18089,15 +18125,15 @@
  },
  "pm_keep_slot0_muse": {
   "text": "0.16 to 0.69",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "pm_keep_12_muse": {
   "text": "0.04 / 0.16",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "pm_whole_12_muse": {
   "text": "0.49 / 0.71",
-  "source": "results/x8_write/pairs-20261026T134600Z/pairs.json"
+  "source": "results/x8_write/pairs-20261026T141229Z/pairs.json"
  },
  "ld_gap_9b": {
   "text": "0.48 [0.42, 0.53]",
