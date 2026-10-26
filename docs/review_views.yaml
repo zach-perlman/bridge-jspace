@@ -126,6 +126,57 @@ kinds:
     eligible: >-
       x45b_binding.select on the main run: its items at L whose original locker sentence comes after the asked pick, the
       locker sentences aligned; every one is read, so none is outside the set.
+  x45a_prepend:  # a kind of its own: one item is a base scene in every variant (the routes loader keys one case per item)
+    files: [cases.jsonl, outcomes.jsonl, norms.jsonl, beta.jsonl, competence.jsonl, gate.json, manifest.json]
+    prompts: >-
+      cases.jsonl per (base scene, variant) (x6_routes.prepend_cases): the routes C2 case with one sentence put before O's
+      and S's first sentence ("prepended": V0 none, V1-V3 a new person's pick, V4 a filler), scene "<base>-<variant>",
+      base_scene, variant, move (the pointer's: the O bridge's locker slot -> the S bridge's), pos, expect, readers as
+      routes.
+    outcomes: >-
+      per (base scene, variant, reader, arm): top, route (lookup), switched, role, p_org, p_alt, ld. norms.jsonl: each
+      variant's share_alf / share_jpp and norm; beta.jsonl: the code's shift vs V0 at O's bridge word (V1-V4).
+    classes:  # the stored route under the view's class_arm (only the pointer part) in V0; the card shows every variant
+      identity: the S bridge item's own locker digit in S
+      position: the digit in S of the locker sentence at the bridge's sentence slot in O
+      value: the new digit S gives the moved item
+      original: O's answer
+      other: none of these
+      recall: follows S (the top token is S's answer) or stays
+    eligible: >-
+      x6_routes --prepend: the base scenes eligible (both readers say and read O's and S's answers) in every variant that
+      passed its gate, the first 300 in scene order; every variant of a base scene is read (paired).
+  x45d:  # a kind of its own: x0's rows on varied formats; the format, the fit run's split and the cell gate on top
+    files: [cases.jsonl, outcomes.jsonl, shares.jsonl, competence.jsonl, gate.json, manifest.json]
+    prompts: >-
+      cases.jsonl per scene (x0b_generalize.scene_case, the held-out half only): context / cf_context in prose, JSON or
+      table, format, level, domain, numbers, order (the bridge's locker statement vs the asked pick), facts, bridge /
+      cf_bridge, pos, readers as x0. The fit run (manifest pcf_from, results/x7_pcf/*_x45d_fit) has split.json: per
+      format, the bridge items of the fit and the test (held-out) halves.
+    outcomes: >-
+      as x0 at the run's layer (manifest predicted), with the top token: dict jpp (k 25, signed and nonneg), alf (U, the
+      simple-scene pointer, k 4), pcf (the format's refit basis, k 4); shares.jsonl per (scene, dict, k, omp): share,
+      rand_share.
+    classes:
+      b: changed answer - the top token is the changed prompt's answer (it switched)
+      A: original answer - the top token is the original prompt's answer
+      other: another token
+    eligible: >-
+      x0b_generalize.gate_cells: per cell (domain / format / level) the read gate (>= 0.80, both readers), then org and
+      alt said and read right by both readers, at most 40 per cell in scene order.
+  x45g:  # a kind of its own: massmean's rows on every item, two runs (scene sets) per model, the stored sentence order
+    files: [outcomes.jsonl, manifest.json]
+    prompts: >-
+      none of its own: the cases.jsonl of the run named in manifest.json "single" (x0_necessity), the cases
+      x0_massmean.examples_blob rebuilds (X.build_cases on the manifest's set with its alt: cf = two people swap, single =
+      only the asked pick), joined by scene. Checked per item (badge): the stored entity is the case's bridge, and the
+      stored org_order / alt_order are the case's sentence order.
+    outcomes: >-
+      per (scene, reader, arm): switched, role, p_org, p_alt, ld, share_jpp / share_Alf / share_jppAlf, org_order /
+      alt_order (x0_strata.features: the original / changed bridge's locker sentence vs the asked pick). No top token.
+    classes: {b: changed answer (it switched), A: original answer, other: another token (not stored)}
+    eligible: >-
+      x0_massmean --mode two_routes: every chat item of the single run, both sentence orders (manifest items_rule).
 
 views:
   # ---------------------------------------------------------------- Phase 1 (Tuesday's hand check)
@@ -428,6 +479,174 @@ views:
     runs:
       qwen3.5-9b: [results/x45b_binding/qwen35_9b_x45b_sweep_v2]
       qwen3.6-27b: [results/x45b_binding/x45b_sweep_v2_27b]
+
+  # ---------------------------------------------------------------- batch 45, landed and scored (Dan 27 Oct ~00:30)
+  # Draft views for tests whose runs landed and were scored (UNVERIFIED): no README claim and no sources yet. The claim
+  # field states the test as fixed in advance (jobs/c3/batch45.yaml), not its result; notes say where the score is.
+  # 45q: not defined yet (Dan 27 Oct ~00:30); no view until its design is fixed.
+  - id: x45a_prepend
+    title: "45a: first mention or first locker? One sentence put before the scene (batch 45)"
+    status: phase1
+    kind: x45a_prepend
+    readme: "not yet in the README (batch 45, test 45a: x6_routes --prepend V0-V4 on C2; jobs/c3/batch45.yaml)"
+    claim: >-
+      Fixed in advance: on the C2 moves to or from the first locker, with only the pointer part added, the lookup's
+      position share in V1, V2 and V3 (a new person's pick before the scene: of the first-locker item, of another locker
+      item, of an item with no locker) each at most half of V0's with the paired CI of the cut above 0, and V4 (a neutral
+      filler) not cut -> "first locker stated before any item"; V1-V3 each within 0.10 of V0 -> "order of lockers, picks
+      ignored"; otherwise mixed (x6_routes.first_locker_rule).
+    sources: []
+    filters:
+      layer: fixed
+      readers: [PP, PM]
+      class_arm: only the pointer part
+      facets: {move: [to or from the first locker, other moves]}
+      arms:  # label: arm (x6_routes.PREPEND_ARMS), read in every variant
+        unedited: none
+        whole: whole
+        only the pointer part: keep_alf
+        only a random part of its size: keep_alf_rand
+        without the pointer directions: no_alf
+        without the pointer's random part: no_alf_rand
+      items: >-
+        the base C2 scenes x6_routes --prepend read in all five variants (eligible in every variant, the first 300); one
+        item per base scene and reader, every variant on its card
+    runs:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_x45a]
+      qwen3.6-27b: [results/x6_routes/x6_routes_x45a_27b]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_x45a]
+    notes: >-
+      Scored (UNVERIFIED): each run's verdict-*/ (first_locker_rule) and results/x6_routes/x45a-descriptive-*. Each card
+      shows the base scene in V0-V4 side by side (O and S; the prepended sentence outlined), the pointer's move (the
+      rule reads only moves to or from the first locker: the move filter), and per variant each arm's answer, the
+      pointer part's share and the code's shift beta vs V0.
+
+  - id: x45d_formats
+    title: "45d: a pointer outside templates, the refit basis on held-out prose / JSON / table scenes (batch 45)"
+    status: phase1
+    kind: x45d
+    readme: "not yet in the README (batch 45, test 45d: x0b_generalize --pcf-from x7_pcf/*_x45d_fit; jobs/c3/batch45.yaml)"
+    claim: >-
+      Fixed in advance: "pointer elsewhere" if removing the format's label-free basis, refit on the other half of the
+      bridge items, costs the lookup an extra loss of at least 0.2 (lower CI above 0.1) in 2 of the 3 formats; "no linear
+      pointer found" if all three are below 0.1; otherwise neither. A format with fewer than 30 lookup switches under the
+      whole change does not count (Dan 26 Oct ~21:20, after the first results).
+    sources: []
+    filters:
+      rendering: chat
+      layer: run  # manifest predicted: 9B L12, 27B L32, Muse L26
+      readers: [PP, PM]
+      facets: {format: [prose, json, table]}
+      arms:  # label: [arm, dict, k, omp]; J++ nonneg (also in the run) is left out
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without the refit basis: [no_part, pcf, 4, signed]
+        its random part (the refit basis's share): [no_rand, pcf, 4, signed]
+        without U (the simple-scene pointer): [no_part, alf, 4, signed]
+        its random part (U's share): [no_rand, alf, 4, signed]
+        without J++: [no_part, jpp, 25, signed]
+        its random part (J++'s share): [no_rand, jpp, 25, signed]
+      items: >-
+        the held-out half (per format, the bridge items of the fit run's split.json "test"), eligible in a cell that passed
+        its gate, at most 40 per cell
+    runs:
+      qwen3.5-9b: [results/x0b_generalize/qwen35_9b_x45d]
+      qwen3.6-27b: [results/x0b_generalize/x45d_27b]
+      muse-glimmer-30b: [results/x0b_generalize/muse30b_x45d]
+    notes: >-
+      Scored (UNVERIFIED): each run's x45d-*/verdict.md (the rule) and analysis-*-x45d/ (its figure). The fit runs, named
+      in each run's manifest (pcf_from): results/x7_pcf/qwen35_9b_x45d_fit, x45d_fit_27b, muse30b_x45d_fit (split.json,
+      pcf_<format>.npz). Each card shows the format, level and domain, and the bridge's half of split.json (tagged held
+      out, or flagged).
+
+  - id: x45e_identity
+    title: "45e: identity controls, the wrong-pair and PCA controls at identity outside J++'s share (batch 45)"
+    status: phase1
+    kind: routes
+    readme: "not yet in the README (batch 45, test 45e: x6_routes --identity --identity-controls, same-domain pairs; jobs/c3/batch45.yaml)"
+    claim: >-
+      Fixed in advance, per model: (i) C0: the share of the whole change's lookup switches still switching without J++,
+      the pointer and identity outside J++ is at most half of that without J++, the pointer and the wrong-pair control;
+      (ii) C2: removing identity outside J++ alone cuts the lookup's identity answers at least 0.15 more than removing the
+      wrong-pair control alone. "Identity outside J++ is specific" if both hold on at least 2 of 3 models; the PCA control
+      is descriptive (x6_routes.identity_control_flags, identity_specific).
+    sources: []
+    filters:
+      layer: fixed
+      conditions: [C0, C2]
+      readers: [PP, PM]
+      facets: {control: [reached, short, empty]}  # the wrong-pair control: below 0.9 of the target short, k_wrong 0 empty
+      arms:  # label: arm (x6_routes --identity --identity-controls)
+        unedited: none
+        whole: whole
+        without identity outside J++: no_idout
+        its random part (identity outside J++): no_idout_rand
+        without the wrong-pair control: no_wrong
+        its random part (the wrong-pair control): no_wrong_rand
+        without the PCA control: no_pca
+        its random part (the PCA control): no_pca_rand
+        without J++, the pointer and identity outside J++: no_jppalfidout
+        their random part (with identity outside J++): no_jppalfidout_rand
+        without J++, the pointer and the wrong-pair control: no_jppalfwrong
+        their random part (with the wrong-pair control): no_jppalfwrong_rand
+        without J++, the pointer and the PCA control: no_jppalfpca
+        their random part (with the PCA control): no_jppalfpca_rand
+        without identity: no_id
+        without identity's random part: no_id_rand
+        without the pointer and identity outside J++: no_alfidout
+        their random part (the pointer and identity outside J++): no_alfidout_rand
+        only identity: keep_id
+        only a random part of identity's size: keep_id_rand
+        without the identity subspace: no_idsub
+    runs:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_x45e_dom]
+      qwen3.6-27b: [results/x6_routes/x6_routes_x45e_27b_dom]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_x45e_dom]
+    notes: >-
+      Scored (UNVERIFIED): each run's verdict-*/ and results/x6_routes/x45e-* (over the models). The wrong pairs are
+      drawn from the bridge's own domain (Dan 26 Oct ~21:20, the _dom runs). Each card shows the controls' achieved
+      share beside identity outside J++'s (alone and with J++ and the pointer), k_wrong, k_pca and n_wrong_pool
+      (norms.jsonl); a control below 0.9 of the target is tagged short, one with no direction (k = 0, its arm removes
+      nothing) empty (the control filter: the wrong-pair control). Muse: 290 scenes per condition.
+
+  - id: x45g_two_routes
+    title: "45g: two routes for the recall? J++, the pointer and both removed, every item (batch 45)"
+    status: phase1
+    kind: x45g
+    join: false  # every run its own item set: per model the main test (two people swap) and the one-pick set
+    readme: "not yet in the README (batch 45, test 45g: x0_massmean --mode two_routes; jobs/c3/batch45.yaml)"
+    claim: >-
+      Fixed in advance (x0_massmean.rule_45g), per run (model x scene set) on the recall: (a) in locker-before scenes the
+      extra loss with J++ and the pointer removed together is at least 0.3 and at least 0.2 above the larger single
+      removal, that difference's paired CI excluding 0; (b) in locker-after scenes J++ alone costs at least 0.3 and adding
+      the pointer adds less than 0.1. Rule (a) holds for the batch on at least 3 of 4 models. The groups are the run's
+      org_order.
+    sources: []
+    filters:
+      layer: fixed
+      readers: [PP, PM]
+      facets: {scenes: [two people swap, only the asked pick]}
+      arms:  # label: arm (x0_massmean two_routes)
+        unedited: none
+        whole: whole
+        without J++: no_jpp
+        without J++'s random part: no_jpp_rand
+        without the pointer directions: no_Alf
+        without the pointer's random part: no_Alf_rand
+        without both: no_jppAlf
+        without both's random part: no_jppAlf_rand
+      items: >-
+        every chat item of the run its manifest names (single), both sentence orders; per model two runs, the main test
+        (two people swap) and the one-pick set
+    runs:  # the 122B's two runs had not landed on 27 Oct ~00:30
+      qwen3.5-9b: [results/x0_massmean/qwen35_9b_x45g_swap_r2, results/x0_massmean/qwen35_9b_x45g_one_r2]
+      qwen3.6-27b: [results/x0_massmean/x45g_swap_27b_r2, results/x0_massmean/x45g_one_27b_r2]
+      qwen3.5-122b-a10b: [results/x0_massmean/qwen35_122b_x45g_swap, results/x0_massmean/qwen35_122b_x45g_one]
+      muse-glimmer-30b: [results/x0_massmean/muse30b_x45g_swap, results/x0_massmean/muse30b_x45g_one]
+    notes: >-
+      Scored (UNVERIFIED): results/x0_massmean/score45g-*. The runs store no cases and no top token: the prompts are the
+      single run's cases.jsonl (checked per item: the stored entity is the case's bridge, and the stored org_order /
+      alt_order are the case's sentence order). The order filter reads the case; the scenes filter picks the scene set.
 
   # ---------------------------------------------------------------- later (Phase 2 adds them to the dashboard)
   - id: x8_halfway

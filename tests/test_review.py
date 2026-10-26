@@ -1,6 +1,7 @@
 """The review dashboard (src/bridge_jspace/review/, scripts/review.py) on the repo's runs: deterministic samples, the
 item sets against the verdicts' n, the class re-derivation on hand-picked items, and checks that fail on bad data.
-Batch 45's views (45k, 45m, the 45b sweep) on planted runs in each writer's layout, and on the repo before they land."""
+Batch 45's views (45k, 45m, the 45b sweep; and, scored, 45a, 45d, 45e, 45g) on planted runs in each writer's layout,
+and on the repo before and after they land."""
 
 import copy
 import glob
@@ -195,7 +196,7 @@ def planted(tmp_path, monkeypatch):
     from scripts import review as R
 
     def clear():
-        for f in (I.read_jsonl, I._items, R.stats, R.recount):
+        for f in (I.read_jsonl, I.competence_by_scene, I._items, R.stats, R.recount):
             f.cache_clear()
 
     clear()
@@ -212,9 +213,13 @@ def test_batch45_views_are_shown_with_no_sources_and_no_readme_claim():
         assert v["kind"] in I.spec()["kinds"] and "not scored yet" in v["title"], vid
 
 
-@pytest.mark.parametrize("view_id", X45)
+X45_SCORED = ("x45a_prepend", "x45d_formats", "x45e_identity", "x45g_two_routes")
+
+
+@pytest.mark.parametrize("view_id", X45 + X45_SCORED)
 def test_batch45_views_on_the_repo_before_and_after_their_runs_land(view_id):
-    # before a run lands: no items, and its page names the run as not landed; after: its items render
+    # before a run lands: no items, and its page names the run as not landed; after: its items render. join: false
+    # (45g's two scene sets per model): every landed run gives items
     from bridge_jspace.review import page as P
     from scripts import review as R
 
@@ -223,12 +228,15 @@ def test_batch45_views_on_the_repo_before_and_after_their_runs_land(view_id):
     for m in MODELS:
         runs = v["runs"].get(m, [])
         got = I.items(view_id, m)
-        if not runs or I.run_state(runs[0]) != "landed":
+        landed = [r for r in runs if I.run_state(r) == "landed"]
+        used = landed if v.get("join", True) is False else runs[:1] if runs and runs[0] in landed else []
+        if not used:
             assert got == [], (view_id, m)
             for r, s in I.not_landed(v, m):
                 assert f"{r}: {s}" in page, (view_id, r)
         else:
-            assert got and all(P.card(it, 0, False, None) for it in got[:3])
+            assert {it["run"] for it in got} == set(used), (view_id, m)
+            assert all(P.card(it, 0, False, None) for it in got[:3])
 
 
 def test_x45k_routes_on_a_planted_run(planted):
@@ -476,3 +484,318 @@ def test_pack_lists_runs_not_landed(planted, tmp_path):
 
     out = R.pack(tmp_path / "pack.md").read_text()
     assert "Not landed yet: `results/x45b_binding/qwen35_9b_x45b_sweep_v2` (not run yet)" in out
+
+
+# ---- batch 45, landed and scored: 45a, 45d, 45e, 45g (Dan 27 Oct ~00:30) --------------------------------------------
+PREPEND = ("V0", "V1", "V2", "V3", "V4")
+
+
+def latest_in(run: str, pattern: str) -> dict:
+    with open(sorted(glob.glob(f"{I.REPO}/{run}/{pattern}"))[-1]) as f:
+        return json.load(f)
+
+
+def test_scored_batch45_views_are_shown_with_no_sources_and_no_readme_claim():
+    shown = {v["id"] for v in I.shown()}
+    for vid in X45_SCORED:
+        v = I.view(vid)
+        assert vid in shown and v["sources"] == [] and v["readme"].startswith("not yet in the README"), vid
+        assert v["kind"] in I.spec()["kinds"] and v["claim"].startswith("Fixed in advance"), vid
+    assert not [v["id"] for v in I.spec()["views"] if "45q" in v["id"]]  # 45q is not defined yet: a note, no view
+    assert "45q: not defined yet" in I.VIEWS_FILE.read_text()
+
+
+@pytest.mark.parametrize("view_id", X45_SCORED)
+def test_scored_batch45_items_pass_the_automatic_checks(view_id):
+    for m in MODELS:
+        s = C.summary(I.items(view_id, m))
+        assert not s["fail"], (m, {k: ex[:2] for k, ex in s["examples"].items()})
+
+
+def test_x45a_item_sets_match_the_verdicts_n():
+    v = I.view("x45a_prepend")
+    for m, runs in v["runs"].items():
+        moves = latest(runs[0])["x45a"]["moves"]
+        got = [it for it in I.items("x45a_prepend", m) if it["reader"] == "PP"]
+        assert len(got) == moves["all"]["n"], m
+        assert sum(I.facets(it, {"move": "to or from the first locker"}) for it in got) == moves["first_locker"]["n"], m
+        assert all(tuple(it["more"]["variants"]) == PREPEND for it in got), m
+
+
+def test_x45d_item_sets_match_the_verdicts_n_and_are_held_out():
+    v = I.view("x45d_formats")
+    for m, runs in v["runs"].items():
+        got = I.items("x45d_formats", m)
+        for c in latest_in(runs[0], "x45d-*/verdict.json")["cells"]:
+            if c["part"] == "pcf":
+                n = sum(it["reader"] == c["reader"] and it["facet"]["format"] == c["format"] for it in got)
+                assert n == c["n"], (m, c["format"], c["reader"])
+        assert all(it["more"]["split"]["bridge"] == "test" for it in got), m  # the refit basis never saw the bridge
+        assert all(it["order"]["original"] in ("before", "after") for it in got), m
+
+
+def test_x45e_item_sets_match_the_verdicts_n():
+    v = I.view("x45e_identity")
+    for m, runs in v["runs"].items():
+        got = I.items("x45e_identity", m)
+        for r in latest(runs[0])["rows"]:
+            if r["arm"] == "whole":
+                assert sum(it["condition"] == r["condition"] and it["reader"] == "PP" for it in got) == r["n"], m
+
+
+def test_x45g_item_sets_match_the_score_per_run_and_order_group():
+    score = latest_in("results/x0_massmean", "score45g-*/score.json")
+    v = I.view("x45g_two_routes")
+    for m, runs in v["runs"].items():
+        got = I.items("x45g_two_routes", m)
+        for run in runs:
+            mine = [it for it in got if it["run"] == run]
+            cells = score["runs"].get(run.split("/")[-1], {}).get("cells")
+            if cells is None:  # not landed (the 122B) or not scored
+                assert not mine or I.run_state(run) == "landed", run
+                continue
+            for key, cell in cells.items():
+                w, grp = key.split("|")
+                n = sum(it["reader"] == w and grp in ("all", it["more"]["stored_order"]["org_order"]) for it in mine)
+                assert n == cell["n"], (run, key)
+
+
+def test_x45g_cases_are_the_cases_examples_blob_rebuilds():
+    """x0_massmean.examples_blob rebuilds a 45g run's cases (X.build_cases on the manifest's set with its alt); the view
+    reads the single run's cases.jsonl: the same prompts, checked on the target's tokenizer (both scene sets)."""
+    from bridge_jspace import pins
+    from scripts import x0_necessity as X
+    from scripts import x45m as M
+
+    try:
+        tok = M.tokenizer()
+    except Exception:
+        pytest.skip("target tokenizer not cached")
+    runs = [r for r in I.view("x45g_two_routes")["runs"].get(pins.TARGET, []) if I.run_state(r) == "landed"]
+    if not runs:
+        pytest.skip(f"no 45g run of {pins.TARGET} landed")
+    got = I.items("x45g_two_routes", pins.TARGET)
+    for run in runs:
+        m = I.read_json(f"{run}/manifest.json")
+        with pytest.MonkeyPatch.context() as mp:
+            mp.setattr(X, "ALT", m["alt"])
+            mp.setattr(X, "RENDERINGS", ("chat",))
+            built = {c["scene"]: c for c in X.build_cases(tok, m["set"])[0]}
+        mine = [it for it in got if it["run"] == run]
+        assert mine, run
+        for it in mine:
+            c, b = it["case"], built[it["scene"]]
+            assert all(c[k] == b[k] for k in ("context", "cf_context", "bridge", "cf_bridge", "pos")), it["id"]
+            for w in I.READERS:
+                same = [c["readers"][w][k] == b["readers"][w][k] for k in ("ids", "tok_A", "tok_b", "question")]
+                assert all(same), it["id"]
+
+
+def test_x45a_shows_every_variant_of_a_base_scene_on_a_planted_run(planted):
+    from bridge_jspace.review import page as P
+
+    run = "results/x6_routes/x6_routes_x45a_27b"
+    src = REAL / run
+    rows, cases = jl(src / "outcomes.jsonl"), jl(src / "cases.jsonl")
+    done = sorted({r["base_scene"] for r in rows if r["arm"] == "whole"})
+    bases = done[:3]
+    out_base = next(c["base_scene"] for c in cases if c["base_scene"] not in set(done))
+    put(planted, run, "cases.jsonl", [c for c in cases if c["base_scene"] in {*bases, out_base}])
+    put(planted, run, "outcomes.jsonl", [r for r in rows if r["base_scene"] in bases])
+    for name in ("norms.jsonl", "beta.jsonl"):
+        put(planted, run, name, [r for r in jl(src / name) if r["base_scene"] in bases])
+    put(planted, run, "manifest.json", json.loads((src / "manifest.json").read_text()))
+    # the base scene outside the set: read right everywhere but in V2, where the recall misreads S
+    put(planted, run, "competence.jsonl", [{"scene": f"{out_base}-{x}", "rendering": "chat", "reader": w, "variant": o,
+                                            "right": True, "read_right": not (x == "V2" and w == "PM" and o == "alt")}
+                                           for x in PREPEND for w in I.READERS for o in ("org", "alt")])  # fmt: skip
+    put(planted, "results/x6_routes/muse30b_x6_routes_x45a", "manifest.json", {"layer": 26, "prepend": list(PREPEND)})
+
+    v = I.view("x45a_prepend")
+    arms = v["filters"]["arms"]
+    got = I.items("x45a_prepend", "qwen3.6-27b")
+    assert sorted({it["scene"] for it in got}) == bases and len(got) == 2 * len(bases)
+    for it in got:
+        vs = it["more"]["variants"]
+        assert tuple(vs) == PREPEND and len(it["rows"][it["reader"]]) == len(PREPEND) * len(arms)
+        assert all(r is not None for r in it["rows"][it["reader"]].values()), it["id"]
+        assert vs["V0"]["prepended"] == "" and all(
+            vs[x]["context"] == f"{vs[x]['prepended']} {vs['V0']['context']}" for x in PREPEND[1:]
+        )
+        assert it["facet"]["move"] == ("to or from the first locker" if 0 in vs["V0"]["move"] else "other moves")
+        cls_row = it["rows"][it["reader"]]["V0 · only the pointer part"]  # the class: V0, only the pointer part
+        assert it["cls"] == (
+            cls_row["route"] if it["reader"] == "PP" else "follows S" if cls_row["switched"] else "stays"
+        )
+        checks = C.run_checks(it)
+        assert not [n for n, (s, _) in checks.items() if s == C.FAIL], (it["id"], checks)
+        assert checks["label from the top token"][0] == C.PASS
+    it = got[0]
+    card = P.card(it, 0, False, None)
+    for x in PREPEND[1:]:  # outlined in O and in S
+        assert card.count(f"<span class='ins'>{html.escape(it['more']['variants'][x]['prepended'])}</span>") == 2, x
+    assert card.count("<td title=") == len(I.READERS) * len(PREPEND) * len(arms)  # each reader, variant and arm
+    assert "code shift β vs V0" in card
+    assert ("the 45a rule's items" if 0 in it["more"]["move"] else "outside the rule's moves") in card
+    # a tampered row fails the label check, named by its variant
+    bad = copy.deepcopy(it)
+    r = bad["rows"]["PP"]["V3 · whole"]
+    r["route"] = "value" if r["route"] != "value" else "identity"
+    status, detail = C.run_checks(bad)["label from the top token"]
+    assert status == C.FAIL and detail.startswith("V3: ")
+    # outside the paired set: the variant that made it ineligible
+    out = I.items("x45a_prepend", "qwen3.6-27b", "out")
+    assert {o["scene"] for o in out} == {out_base} and out[0]["status"] == "V2: ineligible: competence (PM/alt)"
+    assert all(P.card(o, 0, False, None) for o in out)
+    # not landed: no run dir (9B), a run dir without outcomes (Muse, running)
+    assert I.items("x45a_prepend", "qwen3.5-9b") == [] and I.not_landed(v, "qwen3.5-9b")[0][1] == "not run yet"
+    assert I.items("x45a_prepend", "muse-glimmer-30b") == []
+    assert I.not_landed(v, "muse-glimmer-30b")[0][1].startswith("no outcomes.jsonl yet")
+
+
+def test_x45d_shows_the_format_and_the_held_out_half_on_a_planted_run(planted):
+    from bridge_jspace.review import page as P
+    from scripts import review as R
+
+    run, fit = "results/x0b_generalize/x45d_27b", "results/x7_pcf/x45d_fit_27b"
+    rows, cases = jl(REAL / run / "outcomes.jsonl"), jl(REAL / run / "cases.jsonl")
+    done = {r["scene"] for r in rows}
+    first: dict[str, str] = {}
+    for c in cases:
+        if c["scene"] in done:
+            first.setdefault(c["format"], c["scene"])
+    scenes = sorted(first.values())
+    out_c = next(c for c in cases if c["scene"] not in done)
+    cell = "/".join(str(out_c[k]) for k in I.CELL)
+    put(planted, run, "cases.jsonl", [c for c in cases if c["scene"] in {*scenes, out_c["scene"]}])
+    put(planted, run, "outcomes.jsonl", [r for r in rows if r["scene"] in scenes])
+    put(planted, run, "shares.jsonl", [s for s in jl(REAL / run / "shares.jsonl") if s["scene"] in scenes])
+    put(planted, run, "manifest.json", json.loads((REAL / run / "manifest.json").read_text()))
+    put(planted, run, "gate.json", {"counts": {}, "gate": {cell: {"cases": 1, "org_accuracy": {"PP": 0.5, "PM": 0.9},
+                                                                  "pass": False, "eligible": 0, "used": 0}}})  # fmt: skip
+    put(planted, fit, "split.json", json.loads((REAL / fit / "split.json").read_text()))
+
+    got = I.items("x45d_formats", "qwen3.6-27b")
+    assert sorted({it["scene"] for it in got}) == scenes
+    assert {it["facet"]["format"] for it in got} == {"prose", "json", "table"}
+    for it in got:
+        assert it["order"]["original"] == it["case"]["order"] and it["order"]["changed"] in ("before", "after")
+        assert set(it["shares"]) == {"pcf", "pcf_rand", "alf", "alf_rand", "jpp", "jpp_rand"}
+        assert it["more"]["split"]["bridge"] == "test" and it["more"]["split"]["n_fit"] > 0
+        assert all(r is not None for r in it["rows"][it["reader"]].values()), it["id"]
+        checks = C.run_checks(it)
+        assert not [n for n, (s, _) in checks.items() if s == C.FAIL], (it["id"], checks)
+        assert checks["label from the top token"][0] == C.PASS
+    js = next(it for it in got if it["facet"]["format"] == "json")
+    card = P.card(js, 0, False, None)
+    assert "Format <b>JSON</b>" in card and "held out" in card and "locker statement" in card
+    assert f"the refit basis {100 * js['shares']['pcf']:.0f}%" in card  # its share on the card
+    bad = copy.deepcopy(js)
+    bad["more"]["split"]["bridge"] = "fit"
+    assert "bridge in the fit half" in P.card(bad, 0, False, None)
+    # the format filter, from the URL to the sample
+    assert sorted(it["scene"] for it in got if I.facets(it, {"format": "json"})) == [js["scene"]] * 2
+    page = R.render_view({"view": "x45d_formats", "seed": "0", "n": "10", "format": "json"}, False, "test")
+    assert js["scene"] in page and not [s for s in scenes if s != js["scene"] and f"scene {s} " in page]
+    # outside the set: a cell whose read gate failed
+    out = I.items("x45d_formats", "qwen3.6-27b", "out")
+    assert [o["status"] for o in out] == [f"the cell's read gate failed ({cell})"] * 2
+
+
+def test_x45e_shows_the_controls_share_beside_identity_outside_jpp_on_a_planted_run(planted):
+    from bridge_jspace.review import page as P
+
+    run = "results/x6_routes/x6_routes_x45e_27b_dom"
+    src = REAL / run
+    norms = {(n["scene"], n["condition"]): n for n in jl(src / "norms.jsonl")}
+
+    def pick(cond: str, kind: str) -> str:
+        return next(s for (s, c), n in sorted(norms.items()) if c == cond and I.wrong_reached(
+            {"idout": n["share_idout"], "wrong": n["share_wrong"]}, n["k_wrong"]) == kind)  # fmt: skip
+
+    c2 = {kind: pick("C2", kind) for kind in ("reached", "short", "empty")}
+    c0 = [f"C0-{i:04d}" for i in range(1, 6)]  # the first five C0 scenes: 1-2 read, 3 taken and dropped, 4-5 beyond N
+    read = {*c0[:2], *c2.values()}
+    keys = {(s, s[:2]) for s in [*c0, *c2.values()]}
+    put(planted, run, "cases.jsonl", [c for c in jl(src / "cases.jsonl") if (c["scene"], c["condition"]) in keys])
+    put(planted, run, "outcomes.jsonl", [r for r in jl(src / "outcomes.jsonl") if r["scene"] in read])
+    put(planted, run, "norms.jsonl", [n for k, n in norms.items() if k[0] in read])
+    put(planted, run, "manifest.json", {**json.loads((src / "manifest.json").read_text()), "n_per_condition": 3,
+                                        "identity_dropped": {"C0": 1, "C2": 0}})  # fmt: skip
+    put(planted, run, "competence.jsonl", [{"scene": s, "rendering": "chat", "reader": w, "variant": o, "right": True,
+                                            "read_right": True} for s in c0 for w in I.READERS for o in ("org", "alt")])  # fmt: skip
+
+    v = I.view("x45e_identity")
+    got = I.items("x45e_identity", "qwen3.6-27b")
+    assert sorted({it["scene"] for it in got}) == sorted(read)
+    for it in got:
+        assert all(it["rows"][w][label] is not None for w in I.READERS for label in v["filters"]["arms"]), it["id"]
+        assert "both" not in it["shares"] and {"idout", "wrong", "pca"} <= set(it["shares"])  # no --bothoff: no union
+        assert set(it["more"]["controls"]) == {"k_wrong", "k_pca", "n_wrong_pool"}
+        checks = C.run_checks(it)
+        assert not [n for n, (s, _) in checks.items() if s == C.FAIL], (it["id"], checks)
+    for kind, scene in c2.items():
+        it = next(x for x in got if x["scene"] == scene and x["reader"] == "PP")
+        assert it["facet"]["control"] == kind and I.facets(it, {"control": kind})
+        card = P.card(it, 0, False, None)
+        sh = it["shares"]
+        target = f"identity outside J++ <b>{100 * sh['idout']:.1f}%</b> (the target)"
+        assert f"Controls at identity outside J++'s share (norms.jsonl): {target}" in card
+        wrong = f"the wrong-pair control <b>{100 * sh['wrong']:.1f}%</b> ({sh['wrong'] / sh['idout']:.2f} of the target"
+        assert wrong in card and "Geometry (norms.jsonl)" not in card
+        tail = card.split(wrong, 1)[1].split(" · ", 1)[0]  # the wrong-pair control's own tag
+        assert ("0 directions: removes nothing" in tail) == (kind == "empty")
+        assert ("short of the target" in tail) == (kind == "short")
+    out = {o["scene"]: o["status"] for o in I.items("x45e_identity", "qwen3.6-27b", "out")}
+    assert out[c0[2]].startswith("eligible and taken, dropped before the reads")
+    assert out[c0[3]] == out[c0[4]] == "eligible, beyond the first N taken"
+
+
+def test_x45g_shows_both_scene_sets_and_the_stored_order_on_a_planted_run(planted):
+    from bridge_jspace.review import page as P
+    from scripts import review as R
+
+    v = I.view("x45g_two_routes")
+    planted_runs = [*v["runs"]["qwen3.6-27b"], v["runs"]["muse-glimmer-30b"][0]]  # Muse: only its swap run landed
+    for run in planted_runs:
+        m = json.loads((REAL / run / "manifest.json").read_text())
+        rows = jl(REAL / run / "outcomes.jsonl")
+        scenes = sorted({r["scene"] for r in rows})[:3]
+        put(planted, run, "manifest.json", m)
+        put(planted, run, "outcomes.jsonl", [r for r in rows if r["scene"] in scenes])
+        single = f"results/x0_necessity/{m['single']}"
+        put(planted, single, "cases.jsonl", [c for c in jl(REAL / single / "cases.jsonl")
+                                             if c["scene"] in scenes and c.get("rendering", "chat") == "chat"])  # fmt: skip
+
+    got = I.items("x45g_two_routes", "qwen3.6-27b")
+    assert {it["run"] for it in got} == set(v["runs"]["qwen3.6-27b"]) and len(got) == 2 * 3 * 2
+    assert {it["facet"]["scenes"] for it in got} == {"two people swap", "only the asked pick"}
+    for it in got:
+        assert all(r is not None for r in it["rows"][it["reader"]].values()), it["id"]
+        assert set(it["shares"]) == {"jpp", "Alf", "jppAlf"}
+        assert it["order"]["original"] == it["more"]["stored_order"]["org_order"]
+        checks = C.run_checks(it)
+        assert checks["second run has the same prompts"][0] == C.PASS and checks["label from the top token"][0] == C.NA
+        assert not [n for n, (s, _) in checks.items() if s == C.FAIL], (it["id"], checks)
+    one = [it for it in got if I.facets(it, {"scenes": "only the asked pick"})]
+    assert len(one) == 6 and all(it["run"].endswith("x45g_one_27b_r2") for it in one)
+    card = P.card(got[0], 0, False, None)
+    assert f"Scene set: <b>{got[0]['more']['scene_set']}</b>" in card and "org_order <b>" in card
+    assert "J++ and the pointer (their union)" in card and "without both" in card
+    for key, val in (("org_order", "after"), ("alt_order", "after")):  # the stored order against the case's
+        bad = copy.deepcopy(got[0])
+        bad["more"]["stored_order"][key] = "before" if bad["more"]["stored_order"][key] == val else val
+        status, detail = C.run_checks(bad)["second run has the same prompts"]
+        assert status == C.FAIL and key in detail
+    bad = copy.deepcopy(got[0])
+    bad["more"]["entity"] = "nobody"
+    assert C.run_checks(bad)["second run has the same prompts"][0] == C.FAIL
+    # the 122B's runs not landed, Muse's one-pick run not landed: its swap run's items only
+    swap_122b, one_122b = v["runs"]["qwen3.5-122b-a10b"]
+    assert I.items("x45g_two_routes", "qwen3.5-122b-a10b") == []
+    assert I.not_landed(v, "qwen3.5-122b-a10b") == [(swap_122b, "not run yet"), (one_122b, "not run yet")]
+    muse = I.items("x45g_two_routes", "muse-glimmer-30b")
+    assert muse and {it["run"] for it in muse} == {v["runs"]["muse-glimmer-30b"][0]}
+    assert I.not_landed(v, "muse-glimmer-30b") == [(v["runs"]["muse-glimmer-30b"][1], "not run yet")]
+    page = R.render_view({"view": "x45g_two_routes", "seed": "0", "n": "10"}, False, "test")
+    assert f"{swap_122b}: not run yet; {one_122b}: not run yet" in page

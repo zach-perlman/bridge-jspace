@@ -1,8 +1,8 @@
 """Each view's item set per model, read from its runs' per-item files only, and deterministic samples of it.
 
-An item is one (scene, reader) read under the view's arms (routes: per condition; x8: one write j -> k at dose s).
-Every item carries the rows of all readers of its scene, so a card can show both questions; the sampled reader's rows
-decide its class and its checks. Items outside the claim's set (ineligible, beyond the first N, a superseded run) are
+An item is one (scene, reader) read under the view's arms (routes: per condition; x8: one write j -> k at dose s; 45a:
+one base scene in every variant). Every item carries the rows of all readers of its scene, so a card can show both
+questions; the sampled reader's rows decide its class and its checks. Items outside the claim's set (ineligible, beyond the first N, a superseded run) are
 loaded only on request and are never mixed into the claim's sample.
 """
 
@@ -19,6 +19,7 @@ from typing import Any
 import yaml
 
 REPO = Path(__file__).resolve().parents[3]
+CODE_ROOT = REPO  # where scripts/ is imported from (REPO, where the runs are read, is moved in the tests)
 VIEWS_FILE = REPO / "docs" / "review_views.yaml"
 READERS = ("PP", "PM")  # lookup, recall
 READER_NAME = {"PP": "lookup", "PM": "recall"}
@@ -62,9 +63,18 @@ def legs() -> dict[str, int]:
     return dict(T.DOMAINS["animals"].values)
 
 
+def scripts_on_path() -> None:
+    import sys
+
+    if str(CODE_ROOT) not in sys.path:
+        sys.path.insert(0, str(CODE_ROOT))
+
+
 def layer_of(v: dict, model: str, run: str) -> int:
+    """The view's layer: the model's fixed layer, or ("run") the run's own (x0b_generalize stores it as "predicted")."""
     if v["filters"].get("layer") == "run":
-        return int(read_json(f"{run}/manifest.json")["layer"])
+        m = read_json(f"{run}/manifest.json")
+        return int(m["layer"] if "layer" in m else m["predicted"])
     return int(spec()["models"][model]["layer"])
 
 
@@ -108,11 +118,20 @@ def not_landed(v: dict, model: str) -> list[tuple[str, str]]:
     return [(r, s) for r in runs if (s := run_state(r)) != "landed"]
 
 
+@lru_cache(maxsize=64)
+def competence_by_scene(repo: str, run: str) -> dict[str, list[dict]]:
+    """A run's competence.jsonl rows by scene (keyed by the repo root too: the tests move it)."""
+    out = collections.defaultdict(list)
+    for r in read_jsonl(f"{run}/competence.jsonl"):
+        out[r["scene"]].append(r)
+    return dict(out)
+
+
 def competence_status(run: str, scene: str, rendering: str | None = "chat") -> str:
     """Why a generated case is outside the item set: competence failed (org or alt not said / read right by a reader),
     or eligible but beyond the first N taken."""
-    rows = [r for r in read_jsonl(f"{run}/competence.jsonl") if r["scene"] == scene
-            and (rendering is None or r.get("rendering", rendering) == rendering)]  # fmt: skip
+    rows = [r for r in competence_by_scene(str(REPO), run).get(scene, [])
+            if rendering is None or r.get("rendering", rendering) == rendering]  # fmt: skip
     if not rows:
         return "not read (no competence row)"
     bad = [f"{r['reader']}/{r['variant']}" for r in rows if not (r["right"] and r["read_right"])]
@@ -233,27 +252,24 @@ def fresh_group(case: dict | None) -> str | None:
     """45m (a case with "fresh"): locker-before / locker-after / mixed, by the score's own rule (x45m.group_of)."""
     if not case or "fresh" not in case:
         return None
-    import sys
-
-    root = str(Path(__file__).resolve().parents[3])  # the code's root (REPO is where the runs are read)
-    if root not in sys.path:
-        sys.path.insert(0, root)
+    scripts_on_path()
     from scripts import x45m
 
     return x45m.group_of(case)
 
 
 def _item(
-    v, model, run, layer, scene, reader, condition, case, rows, shares, cls, status, extra=None, more=None
+    v, model, run, layer, scene, reader, condition, case, rows, shares, cls, status, extra=None, more=None, facet=None
 ) -> Item:
-    """more: what the card shows beside the shares (routes 45k: norms.jsonl's geometry; the sweep: its layers)."""
+    """more: what the card shows beside the shares (routes 45k: norms.jsonl's geometry; the sweep: its layers); facet:
+    the item's value of each of the view's facets (filters.facets, a select on the page: 45a's move, 45d's format)."""
     tail = f"|{condition}" if condition else ""
     tail += f"|{extra['kind']}|{extra['j']}-{extra['k']}|s{extra['s']}" if extra else ""
     return {"id": f"{model}|{run.split('/')[-1]}|{scene}|{reader}{tail}", "view": v["id"], "kind": v["kind"],
             "model": model, "run": run, "layer": layer, "scene": scene, "reader": reader, "condition": condition,
             "case": case, "rows": rows, "shares": shares, "cls": cls, "status": status, "in_set": status == "in set",
-            "x8": extra or {}, "more": more or {}, "group": fresh_group(case),
-            "order": sentence_order(case) if v["kind"] in ("x0", "massmean", "x0_parts")
+            "x8": extra or {}, "more": more or {}, "group": fresh_group(case), "facet": facet or {},
+            "order": sentence_order(case) if v["kind"] in ("x0", "massmean", "x0_parts", "x45g")
             else fact_order(case) if v["kind"] == "x5" else {}}  # fmt: skip
 
 
@@ -270,7 +286,11 @@ def routes_items(v: dict, model: str, runs: list[str], in_set: bool = True) -> l
         run: {(c["scene"], c["condition"]): c for c in read_jsonl(f"{run}/cases.jsonl")} for run in runs[1:]
     }
     norms = {(r["scene"], r["condition"]): r for r in read_jsonl(f"{first}/norms.jsonl")}
+    manifest = read_json(f"{first}/manifest.json")
+    bothoff = manifest.get("bothoff", True)
     done = sorted({(k[0], k[1]) for k in by_run[first] if k[3] == "whole" and k[1] in conds})
+    taken = routes_taken(first, cases, manifest.get("n_per_condition")) if not in_set else set()
+    gate = read_json(f"{first}/gate.json").get("gate", {})
     out = []
     for key in done if in_set else sorted(set(cases) - set(done)):
         scene, cond = key
@@ -285,6 +305,8 @@ def routes_items(v: dict, model: str, runs: list[str], in_set: bool = True) -> l
                         break
         nm = norms.get(key, {})
         sh = {k.removeprefix("share_"): val for k, val in nm.items() if k.startswith("share_")}
+        if not bothoff:  # x6_routes stores share_both = 0 when the union was not computed
+            sh.pop("both", None)
         if "norm" in nm:
             sh["norm"] = nm["norm"]
         # 45k: the atoms' geometry and jpp_other's partner (its bridge pair, to see that it shares no bridge)
@@ -294,19 +316,62 @@ def routes_items(v: dict, model: str, runs: list[str], in_set: bool = True) -> l
             geo["jpp_other_partner"] = nm["jpp_other_partner"] + (
                 f" ({pc['bridge']} → {pc['cf_bridge']})" if pc else ""
             )
+        # 45e: the controls' directions (k_wrong, k_pca) and the same-domain pairs the wrong-pair control drew from
+        ctl = {k: nm[k] for k in ("k_wrong", "k_pca", "n_wrong_pool") if k in nm}
+        if ctl:
+            geo["controls"] = ctl
+        facet = {"control": wrong_reached(sh, ctl.get("k_wrong"))} if "wrong" in sh and "idout" in sh else None
         case = cases.get(key)
         if case is not None:
             case = {**case, "_joined": {run.split("/")[-1]: joined_cases[run].get(key) for run in runs[1:]}}
+        if in_set:
+            status = "in set"
+        elif gate.get(cond, {}).get("pass") is False:
+            status = f"{cond}'s read gate failed"
+        elif key in taken:  # among the first N eligible, but no reads: --identity drops entities without a class mean
+            status = ("eligible and taken, dropped before the reads (an entity without a class mean: identity arms)"
+                      if manifest.get("identity_dropped") else "eligible and taken, not read")  # fmt: skip
+        else:
+            status = competence_status(first, scene, None)
         for w in f.get("readers", READERS):
             whole = rows[w].get("whole")
-            status = "in set" if in_set else competence_status(first, scene, None)
             cls = (
                 (route_class(whole, cond) if w == "PP" else ("follows S" if whole["switched"] else "stays"))
                 if whole
                 else status
             )
-            out.append(_item(v, model, first, layer, scene, w, cond, case, rows, sh, cls, status, more=geo))
+            out.append(
+                _item(v, model, first, layer, scene, w, cond, case, rows, sh, cls, status, more=geo, facet=facet)
+            )
     return out
+
+
+def routes_taken(run: str, cases: dict, n: int | None) -> set[tuple[str, str]]:
+    """The (scene, condition) keys x6_routes took: per condition the first n in case order whose readers said and read
+    O's and S's answers right (competence.jsonl)."""
+    if not n:
+        return set()
+    ok: dict[str, list] = collections.defaultdict(list)
+    for r in read_jsonl(f"{run}/competence.jsonl"):
+        ok[r["scene"]].append(bool(r["right"] and r["read_right"]))
+    per: dict[str, list] = collections.defaultdict(list)
+    for key in cases:  # cases.jsonl's order
+        if ok.get(key[0]) and all(ok[key[0]]):
+            per[key[1]].append(key)
+    return {k for keys in per.values() for k in keys[:n]}
+
+
+WRONG_SHORT = 0.9  # x6_routes.wrong_share_report: a control below 0.9 of identity outside J++'s share is "short"
+
+
+def wrong_reached(shares: dict, k_wrong: int | None = None) -> str:
+    """45e: whether the wrong-pair control reached identity outside J++'s share in this scene: "empty" (it took no
+    direction, so its arm removes nothing), "short" (below WRONG_SHORT of the target: a same-domain pool too small to
+    reach it), else "reached"."""
+    t = shares["idout"]
+    if k_wrong == 0:
+        return "empty"
+    return "short" if t > 0 and shares["wrong"] < WRONG_SHORT * t else "reached"
 
 
 def route_class(row: dict, condition: str) -> str:
@@ -437,26 +502,200 @@ def sweep_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item
     return out
 
 
+# ------------------------------------------------------------------------- 45a: a sentence before the scene (x6_routes)
+PREPEND_WHAT = {
+    "V0": "nothing (the control: the routes scene, rerun)",
+    "V1": "a new person's pick of the item whose locker is first in O",
+    "V2": "the same new person's pick of another locker item",
+    "V3": "the same new person's pick of an item with no locker in the scene",
+    "V4": "a neutral filler sentence",
+}  # x6_routes.prepend_sentences
+SEP = " · "  # a 45a row's label: "<variant> · <arm label>"
+
+
+def first_locker(move: list[int]) -> bool:
+    """45a's rule reads the moves to or from the first locker (x6_routes.first_locker_rule: slot 0 in the move)."""
+    return 0 in move
+
+
+def prepend_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
+    """x6_routes --prepend: one item per (base scene, reader) holding every variant (V0 none, V1-V3 a new person's pick,
+    V4 a filler; manifest "prepend"), so a card shows one base scene in all of them. case: the first variant's (V0);
+    more["variants"]: each variant's case (prompts, pos, the prepended sentence); rows keyed "<variant> · <arm label>";
+    more["norms"] / more["beta"]: each variant's shares and the code's shift vs V0 (beta.jsonl). Class: the stored
+    route (lookup) or follows S / stays (recall) under the view's class_arm in the first variant. Outside the set: the
+    base scenes not read, with each variant's competence."""
+    f = v["filters"]
+    m = read_json(f"{run}/manifest.json")
+    variants = list(m.get("prepend") or [])
+    if not variants:  # the manifest is written before the reads: none means the run is not there
+        return []
+    cases: dict[str, dict[str, dict]] = collections.defaultdict(dict)
+    for c in read_jsonl(f"{run}/cases.jsonl"):
+        cases[c["base_scene"]][c["variant"]] = c
+    got = {(r["base_scene"], r["variant"], r["reader"], r["arm"]): r for r in read_jsonl(f"{run}/outcomes.jsonl")}
+    norms = {(r["base_scene"], r["variant"]): r for r in read_jsonl(f"{run}/norms.jsonl")}
+    beta = {(r["base_scene"], r["variant"]): r for r in read_jsonl(f"{run}/beta.jsonl")}
+    layer = layer_of(v, model, run)
+    class_label = f.get("class_arm", "whole")
+    done = sorted({k[0] for k in got if k[3] == "whole"})
+    out = []
+    for base in done if in_set else sorted(set(cases) - set(done)):
+        per = {x: cases[base][x] for x in variants if x in cases[base]}
+        case = next(iter(per.values()), None)
+        rows = {w: {f"{x}{SEP}{label}": got.get((base, x, w, arm)) for x in per for label, arm in f["arms"].items()}
+                for w in READERS}  # fmt: skip
+        move = list(case["move"]) if case else []
+        more = {"variants": per, "norms": {x: norms.get((base, x)) for x in per},
+                "beta": {x: beta.get((base, x)) for x in per}, "move": move, "class_arm": class_label}  # fmt: skip
+        facet = {"move": "to or from the first locker" if first_locker(move) else "other moves"}
+        for w in f.get("readers", READERS):
+            first = rows[w].get(f"{variants[0]}{SEP}{class_label}")
+            if in_set:
+                status = "in set"
+                cls = (
+                    (route_class(first, "C2") if w == "PP" else "follows S" if first["switched"] else "stays")
+                    if first
+                    else "-"
+                )
+            else:
+                status = prepend_status(run, per)
+                cls = status
+            out.append(_item(v, model, run, layer, base, w, "C2", case, rows, {}, cls, status, more=more, facet=facet))
+    return out
+
+
+def prepend_status(run: str, per: dict[str, dict]) -> str:
+    """Why a base scene is outside 45a's paired set: a variant in which it is ineligible (or not read), else eligible
+    in every variant but beyond the first N."""
+    bad = [
+        f"{x}: {s}"
+        for x, c in per.items()
+        if not (s := competence_status(run, c["scene"], None)).startswith("eligible")
+    ]
+    return "; ".join(bad) if bad else "eligible in every variant, beyond the first N taken"
+
+
+def variant_item(it: Item, x: str) -> Item:
+    """45a: one variant of an item as a routes item (that variant's case and rows), for the checks and the card."""
+    rows = {w: {label.split(SEP, 1)[1]: r for label, r in got.items() if label.split(SEP, 1)[0] == x}
+            for w, got in it["rows"].items()}  # fmt: skip
+    return {**it, "kind": "routes", "condition": "C2", "case": it["more"]["variants"][x], "rows": rows}
+
+
+# ------------------------------------------------------------- 45d: varied formats, the refit basis (x0b_generalize)
+CELL = ("domain", "format", "level")  # x0b_generalize.CELL: the gate's cell
+
+
+def x45d_order(case: dict | None) -> dict[str, str]:
+    """45d: whether the bridge's locker statement comes before the asked pick (the case's "order", as
+    x0b_generalize.order_of; sentence_order reads prose only), and the changed bridge's in the changed prompt, from the
+    format's own statements (prose sentence, JSON object, table row)."""
+    if not case:
+        return {}
+    scripts_on_path()
+    from scripts import x0b_generalize as XB
+
+    out = {"original": case.get("order", "not found")}
+    try:
+        pick, lock = XB.statements(case, case["facts"]["person"], case["cf_bridge"])
+        ctx = case["cf_context"]
+        out["changed"] = "before" if ctx.index(lock) < ctx.index(pick) else "after"
+    except (KeyError, ValueError):
+        out["changed"] = "not found"
+    return out
+
+
+def split_half(halves: dict, entity: str | None) -> str:
+    """Which half of a format's split.json an entity is in: test (held out), fit, or neither."""
+    return "test" if entity in halves.get("test", ()) else "fit" if entity in halves.get("fit", ()) else "neither"
+
+
+def x45d_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
+    """x0b_generalize --pcf-from (45d): X0's rows (top token stored) on the held-out half of the varied scenes, read by
+    x0's loader at the run's layer. On top: the format as a facet; the bridge's and the changed bridge's half of the fit
+    run's split.json (the manifest's pcf_from); the sentence order from the case; each part's share and its random
+    part's from shares.jsonl (dict, k, omp of the view's arms); outside the set, a cell (domain / format / level) whose
+    read gate failed before competence."""
+    m = read_json(f"{run}/manifest.json")
+    if not m.get("pcf_from"):  # not a 45d run, or the manifest of a run not there
+        return []
+    split = read_json(f"results/{m['pcf_from']}/split.json").get("formats", {})
+    gate = read_json(f"{run}/gate.json").get("gate", {})
+    layer = layer_of(v, model, run)
+    parts = [(d, k, omp) for arm, d, k, omp in v["filters"]["arms"].values() if arm == "no_part"]  # the view's order
+    shares = {(r["scene"], r["dict"]): r for r in read_jsonl(f"{run}/shares.jsonl")
+              if r.get("layer", layer) == layer and (r["dict"], r["k"], r["omp"]) in parts}  # fmt: skip
+    got = x0_items(v, model, run, in_set)
+    for it in got:
+        c = it["case"] or {}
+        fmt = c.get("format")
+        halves = split.get(fmt, {})
+        it["facet"] = {"format": fmt}
+        it["order"] = x45d_order(it["case"])
+        it["shares"] = {}
+        for d, _, _ in parts:
+            s = shares.get((it["scene"], d))
+            if s:
+                it["shares"][d] = s["share"]
+                it["shares"][f"{d}_rand"] = s["rand_share"]
+        it["more"] = {"split": {"fit_run": f"results/{m['pcf_from']}", "format": fmt, "n_fit": len(halves.get("fit", ())),
+                                "bridge": split_half(halves, c.get("bridge")), "cf_bridge": split_half(halves, c.get("cf_bridge"))}}  # fmt: skip
+        if not in_set and c:
+            cell = "/".join(str(c[k]) for k in CELL)
+            if gate.get(cell, {}).get("pass") is False:
+                it["status"] = it["cls"] = f"the cell's read gate failed ({cell})"
+    return got
+
+
+# --------------------------------------------------------------- 45g: two routes for the recall (x0_massmean)
+SCENE_SET = {"cf": "two people swap", "single": "only the asked pick"}  # x0_massmean.stage_score45g's names
+
+
+def x45g_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
+    """x0_massmean --mode two_routes (45g): massmean's rows (no top token, no cases of their own) on every item of the
+    run the manifest names ("single": the main test, two people swap, or the one-pick set, by its "alt"); the prompts
+    are that run's cases.jsonl, the cases x0_massmean.examples_blob rebuilds (X.build_cases on the manifest's set with
+    its alt). Each item keeps the stored sentence order (org_order / alt_order: the 45g rule's groups), the stored
+    entity (checked against the case) and its scene set (a facet)."""
+    m = read_json(f"{run}/manifest.json")
+    if not m.get("single"):
+        return []
+    got = massmean_items(v, model, run, in_set)
+    first = {}
+    for r in read_jsonl(f"{run}/outcomes.jsonl"):
+        first.setdefault(r["scene"], r)
+    scene_set = SCENE_SET.get(m.get("alt", "single"), str(m.get("alt")))
+    for it in got:
+        r = first[it["scene"]]
+        it["more"] = {"stored_order": {"org_order": r.get("org_order"), "alt_order": r.get("alt_order")},
+                      "entity": r.get("entity"), "scene_set": scene_set,
+                      "cases_from": f"results/x0_necessity/{m['single']}/cases.jsonl"}  # fmt: skip
+        it["facet"] = {"scenes": scene_set}
+    return got
+
+
 LOADERS = {"x0": x0_items, "x5": x0_items, "massmean": massmean_items, "x8": x8_items, "x0_parts": x0_parts_items,
-           "x45b_sweep": sweep_items}  # fmt: skip
+           "x45b_sweep": sweep_items, "x45a_prepend": prepend_items, "x45d": x45d_items, "x45g": x45g_items}  # fmt: skip
 
 
 @lru_cache(maxsize=256)
 def _items(view_id: str, model: str, which: str) -> tuple[Item, ...]:
-    """which: "set" (the claim's items), "out" (outside it: ineligible / beyond N), "superseded"."""
+    """which: "set" (the claim's items), "out" (outside it: ineligible / beyond N), "superseded". join: false -> every
+    run its own item set (routes: its own chain; other kinds: every run of the model, e.g. 45g's two scene sets)."""
     v = view(view_id)
     runs = v.get("superseded", {}).get(model, []) if which == "superseded" else v.get("runs", {}).get(model, [])
     runs = [r for r in runs if (REPO / r).exists()]
     if not runs:
         return ()
     in_set = which == "set"
+    joined = which != "superseded" and v.get("join", True)
     if v["kind"] == "routes":
         got = []
-        joined = which != "superseded" and v.get("join", True)  # join: false -> every run its own item set
         for chain in [runs] if joined else [[r] for r in runs]:
             got += routes_items(v, model, chain, in_set or which == "superseded")
     else:
-        got = [it for run in (runs[:1] if which != "superseded" else runs)
+        got = [it for run in (runs[:1] if joined else runs)
                for it in LOADERS[v["kind"]](v, model, run, in_set or which == "superseded")]  # fmt: skip
     if which == "superseded":
         for it in got:
@@ -470,12 +709,16 @@ def items(view_id: str, model: str, which: str = "set") -> list[Item]:
 
 def facets(it: Item, params: dict) -> bool:
     """The URL's filters beyond model: reader, condition (routes), s and kind (x8), sentence order (the main test:
-    "locker first" = the original bridge's locker sentence before the asked pick, as the README's lookup claims), and
-    45m's group (locker-before / locker-after / mixed, as x45m scores it)."""
+    "locker first" = the original bridge's locker sentence before the asked pick, as the README's lookup claims), 45m's
+    group (locker-before / locker-after / mixed, as x45m scores it), and the item's own facets (the view's
+    filters.facets: 45a's move, 45d's format, 45e's control, 45g's scene set)."""
     if params.get("reader") not in (None, "", "all") and it["reader"] != params["reader"]:
         return False
     if params.get("group") not in (None, "", "all") and it.get("group") != params["group"]:
         return False
+    for name, val in it.get("facet", {}).items():
+        if params.get(name) not in (None, "", "all") and val != params[name]:
+            return False
     order = params.get("order")
     if (
         order not in (None, "", "all")

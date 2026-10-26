@@ -17,6 +17,7 @@ CLASS_COLOR = {"b": "ok", "switch": "ok", "target": "ok", "follows S": "ok", "ch
                "original": "org", "stays": "org", "unchanged": "org", "identity": "id", "position": "pos",
                "value": "val", "third": "third", "other": "oth"}  # fmt: skip
 PARAMS = ("view", "seed", "n", "mode", "model", "reader", "condition", "s", "kind", "group", "out", "superseded")
+# beyond these, a view's own facets (filters.facets: 45a's move, 45d's format, 45e's control, 45g's scenes)
 
 CSS = """
 :root{--bg:#fbfbfa;--fg:#1d1d1f;--mut:#6b6b70;--card:#fff;--line:#e3e3e6;--hl:#fff1a8;--pos:#ffd0d0;
@@ -98,7 +99,16 @@ SHARE_NAME = {"jpp": "J++ part", "alf": "pointer directions", "random part": "it
               "Alf": "pointer directions", "V": "value subspace", "pca": "main directions", "id": "identity",
               "idout": "identity outside J++", "both": "J++ and the pointer", "jpp50": "J++ part (k = 50)",
               "jpp100": "J++ part (k = 100)", "jppother100": "another scene's 100 atoms, refit here",
-              "jpp_other": "another scene's atoms, refit here"}  # fmt: skip
+              "jpp_other": "another scene's atoms, refit here",
+              # 45d: each part's random part (x0b_generalize's shares.jsonl) and the refit basis
+              "jpp_rand": "J++'s random part", "alf_rand": "the pointer's random part", "pcf": "the refit basis",
+              "pcf_rand": "the refit basis's random part",
+              # 45e (x6_routes --identity --identity-controls) and 45g (x0_massmean two_routes)
+              "wrong": "the wrong-pair control", "alf+idout": "the pointer and identity outside J++",
+              "jpp+alf+idout": "J++, the pointer and identity outside J++",
+              "jpp+alf+wrong": "J++, the pointer and the wrong-pair control",
+              "jpp+alf+pca": "J++, the pointer and the main directions", "idsub": "the identity subspace",
+              "jppAlf": "J++ and the pointer (their union)"}  # fmt: skip
 GEOMETRY_NAME = {"cos2_U": "mean cos² with the pointer directions", "cos2_id": "cos² with the identity direction"}
 
 LEGEND = """<details class='box'><summary><b>How to read a card</b></summary><ul>
@@ -166,9 +176,10 @@ def bridge_html(it: dict) -> str:
     if o:
         word = {"before": "<b>before</b>", "after": "<b>after</b>", "not found": "(not found)"}
         first = " (locker-first: the items the lookup claims are about)" if o["original"] == "before" else ""
-        text += (f"<br>Sentence order: in the original prompt, {E(c['bridge'])}'s locker sentence comes "
-                 f"{word[o['original']]} the asked pick{first}; in the changed prompt, {E(c['cf_bridge'])}'s locker "
-                 f"sentence comes {word[o['changed']]} it.")  # fmt: skip
+        noun = "locker statement" if it["kind"] == "x45d" else "locker sentence"  # 45d: a JSON object or a table row
+        text += (f"<br>Sentence order: in the original prompt, {E(c['bridge'])}'s {noun} comes "
+                 f"{word[o['original']]} the asked pick{first}; in the changed prompt, {E(c['cf_bridge'])}'s {noun} "
+                 f"comes {word[o['changed']]} it.")  # fmt: skip
     return text
 
 
@@ -185,7 +196,7 @@ def shares_html(shares: dict) -> str:
 
 
 def stored_label(it: dict, w: str, r: dict) -> str:
-    if it["kind"] == "routes":
+    if it["kind"] in ("routes", "x45a_prepend"):
         return I.route_class(r, it["condition"]) if w == "PP" else ("follows S" if r["switched"] else "stays")
     if it["kind"] == "x8":
         return r.get("class") or ("changed" if r.get("changed") else "unchanged")
@@ -303,6 +314,9 @@ def arm_name(it: dict, label: str) -> str:
     if it["kind"] == "x45b_sweep":
         sw = I.sweep_arm(label)
         return f"{label}: {I.SWEEP_KINDS[sw[0]]} at L{sw[1]}" if sw else SWEEP_END.get(label, label)
+    if it["kind"] == "x45a_prepend":  # "<variant> · <arm label>"
+        x, _, arm = label.partition(I.SEP)
+        return f"{x}: {ARM_NAME.get(arm, arm)}"
     return str(ARM_NAME.get(label, label))
 
 
@@ -371,7 +385,7 @@ def fresh_html(it: dict) -> str:
 def geometry_html(it: dict) -> str:
     """45k: per item, norms.jsonl's geometry of each k's atoms (routes) and jpp_other's partner scene (routes, and the
     main-test control from its manifest)."""
-    geo = it.get("more") or {}
+    geo = {k: v for k, v in (it.get("more") or {}).items() if k != "controls"}  # 45e's controls: controls_html
     if it["kind"] not in ("routes", "x0_parts") or not geo:
         return ""
     parts = []
@@ -385,9 +399,65 @@ def geometry_html(it: dict) -> str:
     return f"<p class='mut'>{where}: " + "; ".join(parts) + "</p>"
 
 
+def controls_html(it: dict) -> str:
+    """45e: the controls' achieved share beside identity outside J++'s (their target) in this scene, alone and in the
+    union with J++ and the pointer directions; the directions each control took (k_wrong, k_pca) and the same-domain
+    pairs the wrong-pair control drew from (n_wrong_pool). A control below 0.9 of the target is tagged short."""
+    sh, ctl = it["shares"], (it.get("more") or {}).get("controls") or {}
+    if "wrong" not in sh or "idout" not in sh:
+        return ""
+
+    def vs(key: str, target: float, how: str, k: int | None = None) -> str:
+        got = sh.get(key)
+        if got is None:
+            return f"{E(SHARE_NAME.get(key, key))} not stored"
+        ratio = f"{got / target:.2f} of the target" if target > 0 else "no target"
+        flag = (" " + tag("0 directions: removes nothing", "fail") if k == 0 else
+                " " + tag("short of the target", "fail") if target > 0 and got < I.WRONG_SHORT * target else "")  # fmt: skip
+        return f"{E(SHARE_NAME.get(key, key))} <b>{100 * got:.1f}%</b> ({ratio}{how}){flag}"
+
+    t, u = sh["idout"], sh.get("jpp+alf+idout", 0.0)
+    pool = f"; {ctl['k_wrong']} directions from {ctl['n_wrong_pool']} same-domain pairs" if "k_wrong" in ctl else ""
+    pca = f"; {ctl['k_pca']} directions" if "k_pca" in ctl else ""
+    return (f"<p>Controls at identity outside J++'s share (norms.jsonl): identity outside J++ <b>{100 * t:.1f}%</b> (the "
+            f"target) · {vs('wrong', t, pool, ctl.get('k_wrong'))} · {vs('pca', t, pca, ctl.get('k_pca'))} (the PCA "
+            f"control).<br>With J++ and the pointer directions: J++, the pointer and identity outside J++ "
+            f"<b>{100 * u:.1f}%</b> · {vs('jpp+alf+wrong', u, '')} · {vs('jpp+alf+pca', u, '')}.</p>")  # fmt: skip
+
+
+FORMAT_NAME = {"prose": "prose", "json": "JSON", "table": "table"}
+
+
+def x45d_html(it: dict) -> str:
+    """45d: the scene's format and cell, and the bridges' halves of the fit run's split (the refit basis is fit on the
+    other half; the bridge must be in the held-out half)."""
+    c, sp = it["case"], (it.get("more") or {}).get("split")
+    if it["kind"] != "x45d" or not sp:
+        return ""
+    held = tag("held out", "pass") if sp["bridge"] == "test" else tag(f"bridge in the {sp['bridge']} half", "fail")
+    return (f"<p>Format <b>{E(str(FORMAT_NAME.get(c['format'], c['format'])))}</b> · level {c['level']} · {E(c['domain'])} · "
+            f"numbers as {E(c['numbers'])}. {held} The bridge <b>{E(c['bridge'])}</b> is in the <b>{sp['bridge']}</b> half "
+            f"of {E(sp['fit_run'])}/split.json for {E(c['format'])} (its refit basis was fit on the {sp['n_fit']} bridge items "
+            f"of the fit half); the changed bridge {E(c['cf_bridge'])} is in the {sp['cf_bridge']} half.</p>")  # fmt: skip
+
+
+def x45g_html(it: dict) -> str:
+    """45g: the scene set and the sentence order the run stored (the rule's groups), beside the case's."""
+    more = it.get("more") or {}
+    if it["kind"] != "x45g" or not more:
+        return ""
+    st = more["stored_order"]
+    return (f"<p>Scene set: <b>{E(more['scene_set'])}</b> (prompts: {E(more['cases_from'])}, the run named in the "
+            f"manifest's single). Stored by the run (the 45g rule's groups): org_order <b>{E(str(st['org_order']))}</b> "
+            f"(the original bridge's locker sentence vs the asked pick), alt_order {E(str(st['alt_order']))} (the changed "
+            "bridge's).</p>")  # fmt: skip
+
+
 def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
     if it["kind"] == "x45b_sweep":
         return sweep_card(it, seed, mark)
+    if it["kind"] == "x45a_prepend":
+        return prepend_card(it, seed, mark)
     c, m, w0 = it["case"], it["model"], it["reader"]
     x8 = it["x8"]
     cond_name = {"C0": "sanity swap", "C1": "the same item moved", "C2": "another item moved"}
@@ -410,7 +480,8 @@ def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
                  f"<tr><td class='prompt'>{org}</td><td class='prompt'>{alt}</td></tr></table>")  # fmt: skip
     qs = " &nbsp; ".join(f"<span class='{'me' if w == w0 else 'mut'}'>{I.READER_NAME[w]}: {E(c['readers'][w]['question'])}</span>"
                          for w in I.READERS)  # fmt: skip
-    parts.append(f"{fresh_html(it)}<p>{qs}<br>{bridge_html(it) if not x8 else ''} {expected_html(it)}</p>")
+    parts.append(f"{fresh_html(it)}{x45d_html(it)}<p>{qs}<br>{bridge_html(it) if not x8 else ''} {expected_html(it)}</p>"
+                 f"{x45g_html(it)}{controls_html(it)}")  # fmt: skip
     parts.append(answers_html(it))
     rd = c["readers"][w0]
     diff = set(C.diff_positions(it))
@@ -521,10 +592,113 @@ def sweep_card(it: dict, seed: int, mark: dict | None) -> str:
     return "".join(parts)
 
 
+# ------------------------------------------------------------------------------------------------- the 45a card
+def prepend_grid(it: dict, w: str, per_change: bool) -> str:
+    """One reader's answers in 45a: a row per arm, a column per variant (the top token, coloured by the stored route or
+    by follows S / stays); per_change: then each variant's shares and the code's shift vs V0 (one change for both
+    readers, so shown once)."""
+    more = it["more"]
+    xs = list(more["variants"])
+    rd = it["case"]["readers"][w]
+    head = "<tr><th>change applied</th>" + "".join(f"<th>{E(x)}</th>" for x in xs) + "</tr>"
+    body = []
+    for label in I.view(it["view"])["filters"]["arms"]:
+        cells = []
+        for x in xs:
+            r = it["rows"][w].get(f"{x}{I.SEP}{label}")
+            if r is None:
+                cells.append("<td class='mut'>–</td>")
+                continue
+            sub = I.variant_item(it, x)
+            d, what = answer_of(sub, w, r)
+            lab = stored_label(sub, w, r)
+            cells.append(f"<td title='{E(what)}; P(original answer) {r.get('p_org', '–')}, P(changed answer) "
+                         f"{r.get('p_alt', '–')}'>{tag(d, CLASS_COLOR.get(lab, 'oth'))} <span class='mut' "
+                         f"style='font-size:11px'>{E(lab)}</span></td>")  # fmt: skip
+        mark = " <span class='mut'>(the class)</span>" if label == more["class_arm"] else ""
+        body.append(f"<tr><td>{E(str(ARM_NAME.get(label, label)))}{mark}</td>{''.join(cells)}</tr>")
+
+    def per(fn) -> str:
+        return "".join(f"<td class='mut'>{fn(x)}</td>" for x in xs)
+
+    def share(x: str, k: str) -> str:
+        n = more["norms"].get(x) or {}
+        return f"{100 * n[k]:.0f}%" if k in n else "–"
+
+    def beta(x: str) -> str:
+        b = more["beta"].get(x)
+        return f"{b['beta']:+.2f}" if b else "–"
+
+    def size(x: str) -> str:
+        n = more["norms"].get(x) or {}
+        return f"{n['norm']:.1f}" if "norm" in n else "–"
+
+    if per_change:
+        body += [f"<tr><td class='mut'>share of the pointer part</td>{per(lambda x: share(x, 'share_alf'))}</tr>",
+                 f"<tr><td class='mut'>share of the J++ part</td>{per(lambda x: share(x, 'share_jpp'))}</tr>",
+                 f"<tr><td class='mut'>size of the change</td>{per(size)}</tr>",
+                 f"<tr><td class='mut'>code shift β vs V0 (beta.jsonl)</td>{per(beta)}</tr>"]  # fmt: skip
+    key = (f"original answer {E(str(rd['answer']))}, changed answer {E(str(rd['cf_answer']))}" if w == "PM" else
+           ", ".join(f"{k} {v}" for k, v in it["case"]["expect"].items()))  # fmt: skip
+    return (f"<p class='{'me' if w == it['reader'] else ''}' style='margin:6px 0'><b>{I.READER_NAME[w]}</b>: "
+            f"{E(rd['question'])} <span class='mut'>({key})</span></p><div class='wrap'><table class='grid'>{head}"
+            f"{''.join(body)}</table></div>")  # fmt: skip
+
+
+def prepend_card(it: dict, seed: int, mark: dict | None) -> str:
+    """45a: one base scene in every variant, side by side (O and S, the prepended sentence outlined), the pointer's
+    move, and each arm's answer per variant for both readers."""
+    c, m, w0, more = it["case"], it["model"], it["reader"], it["more"]
+    move = more["move"]
+    head = (f"{E(I.spec()['models'][m]['label'])} · layer {it['layer']} · run {E(it['run'].split('/')[-1])} · base scene "
+            f"{E(it['scene'])} · {I.READER_NAME[w0]} · C2 (another item moved)")  # fmt: skip
+    status = "" if it["in_set"] else " " + tag(it["status"], "st")
+    parts = [f"<div class='card{'' if it['in_set'] else ' outside'}'><div class='hdr'>{head}{status}</div>"
+             f"<div class='mut' style='font-size:11px'>{E(it['id'])}</div>"]  # fmt: skip
+    if c is None:
+        return "".join(parts) + "<p>No case for this base scene in the run's cases.jsonl.</p></div>"
+    rows = [
+        "<table><tr><th style='width:16%'>variant: the sentence put before the scene (outlined)</th><th>O, the "
+        "original prompt (the model reads this)</th><th>S, the source prompt (the change is taken from here)</th></tr>"
+    ]
+    for x, vc in more["variants"].items():
+        o, s = marked(vc["context"], vc["cf_context"]), marked(vc["cf_context"], vc["context"])
+        if vc.get("prepended"):
+            o, s = outlined(o, vc["prepended"]), outlined(s, vc["prepended"])
+        rows.append(f"<tr><td><b>{E(x)}</b><br><span class='mut'>{E(I.PREPEND_WHAT.get(x, ''))}</span></td>"
+                    f"<td class='prompt'>{o}</td><td class='prompt'>{s}</td></tr>")  # fmt: skip
+    parts.append("".join(rows) + "</table>")
+    first = I.first_locker(move)
+    where = ("a move to or from the first locker: the 45a rule's items" if first else
+             "not to or from the first locker: outside the rule's moves (descriptive)")  # fmt: skip
+    pos = ", ".join(f"{x} {vc['pos']}" for x, vc in more["variants"].items())
+    asked = re.search(r"([A-Z][a-z]+)'s pick", c["readers"]["PP"]["question"])
+    parts.append(f"<p>The bridge, {E(asked.group(1) if asked else 'the asked person')}'s pick, is <b>{E(c['bridge'])}</b> "
+                 f"in O and <b>{E(c['cf_bridge'])}</b> in S; the change is added at its token ({pos}). The pointer moves "
+                 f"from locker slot {move[0] if move else '?'} to slot {move[1] if move else '?'} (the O bridge's → the S "
+                 f"bridge's): {where}. {expected_html(I.variant_item(it, next(iter(more['variants']))))}</p>")  # fmt: skip
+    parts.append("<div class='ans'><b>What the model answered</b> <span class='mut'>(a column per variant; hover a cell for "
+                 "P(original) and P(changed))</span>"
+                 + "".join(prepend_grid(it, w, w == w0) for w in sorted(I.READERS, key=lambda x: x != w0)) + "</div>")  # fmt: skip
+    strips = []
+    for x, vc in more["variants"].items():
+        rd = vc["readers"][w0]
+        diff = {i for i, (a, b) in enumerate(zip(rd["ids"]["org"], rd["ids"]["alt"], strict=False)) if a != b}
+        strips.append(f"<p class='mut'>{E(x)}: O</p>{tokens_html(m, rd['ids']['org'], vc['pos'], diff)}")
+    parts.append(f"<details><summary>O's tokens as the model saw them, per variant ({I.READER_NAME[w0]}; the change is "
+                 f"added at <span class='toks'><span class='at'>pos</span></span>, tokens that differ in S marked)</summary>"
+                 f"{''.join(strips)}</details>")  # fmt: skip
+    parts.append(numbers_html(it))
+    parts.append(checks_and_form(it, seed, mark))
+    return "".join(parts)
+
+
 def controls(v: dict, p: dict, server: bool) -> str:
+    facet_names = list(v.get("filters", {}).get("facets", {}))
     if not server:
         return (f"<p class='mut'>Static export: seed {p['seed']}, N = {p['n']} per model, {p['mode']}"
-                + "".join(f", {k} {p[k]}" for k in ("reader", "condition", "s", "kind", "order", "group") if p.get(k) not in (None, "", "all"))
+                + "".join(f", {k} {p[k]}" for k in ("reader", "condition", "s", "kind", "order", "group", *facet_names)
+                          if p.get(k) not in (None, "", "all"))
                 + ". Marks are kept in this browser; use “download marks”.</p>")  # fmt: skip
 
     def sel(name, opts):
@@ -542,12 +716,14 @@ def controls(v: dict, p: dict, server: bool) -> str:
         extra += sel("condition", ["all", *v["filters"].get("conditions", [])])
     if v["kind"] == "x8":
         extra += sel("s", ["all", *v["filters"].get("s", [])]) + sel("kind", ["all", *v["filters"].get("kinds", [])])
-    if v["kind"] in ("x0", "massmean"):
+    if v["kind"] in ("x0", "massmean", "x45d", "x45g"):
         extra += sel("order", ["all", "locker first", "locker after"])
     if v["kind"] == "x5":
         extra += sel("order", ["all", "fact first", "fact after"])
     if v.get("filters", {}).get("groups"):  # 45m: x45m's groups
         extra += sel("group", ["all", *v["filters"]["groups"]])
+    for name, values in v.get("filters", {}).get("facets", {}).items():  # 45a's move, 45d's format, ...
+        extra += sel(name, ["all", *values])
     sup = (f"<label><span><input type='checkbox' name='superseded' value='1' {'checked' if p.get('superseded') else ''}>"
            "superseded runs</span></label>") if v.get("superseded") else ""  # fmt: skip
     return (f"<form class='ctl box' method='get' action='/view'><input type='hidden' name='view' value='{E(v['id'])}'>"
@@ -575,6 +751,10 @@ def filters_plain(v: dict) -> str:
         bits.append("writes and random directions at dose s = " + ", ".join(map(str, f.get("s", []))))
     if f.get("groups"):
         bits.append("groups (filter): " + ", ".join(f["groups"]))
+    for name, values in f.get("facets", {}).items():
+        bits.append(f"{name} (filter): " + ", ".join(map(str, values)))
+    if f.get("class_arm"):
+        bits.append(f"class: the answer under “{f['class_arm']}” in the first variant")
     items = f.get("items") or "the items the run used (both readers read the original and changed prompts right)"
     return "; ".join(b for b in bits if b) + f"; {items}."
 

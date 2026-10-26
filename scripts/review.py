@@ -64,7 +64,7 @@ def recount(view_id: str) -> list[dict]:
 def params_of(q: dict[str, str], v: dict) -> dict:
     p = {"view": v["id"], "seed": int(q.get("seed") or 0), "n": int(q.get("n") or 5), "mode": q.get("mode") or "uniform",
          "model": q.get("model") or "all", "reader": q.get("reader") or "all"}  # fmt: skip
-    for k in ("condition", "s", "kind", "order", "group"):
+    for k in ("condition", "s", "kind", "order", "group", *v.get("filters", {}).get("facets", {})):
         p[k] = q.get(k) or "all"
     p["out"], p["superseded"] = q.get("out") == "1", q.get("superseded") == "1"
     return p

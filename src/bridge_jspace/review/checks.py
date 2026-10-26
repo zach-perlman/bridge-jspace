@@ -8,11 +8,15 @@ code. A disagreement is a finding: it is listed (view page, STATUS), never fixed
   label from the top token: the class re-derived from the decoded top token and the expected digits equals the stored label
                       (routes C0: the stored route is "other" for a switch, a known quirk: original <-> original,
                       switch or other <-> other; the switched flag is checked on its own); x0 runs before batch 45
-                      store no top token: n/a; x0 runs since (45m), x0_parts and the 45b sweep: the role the stored
-                      top token gives against tok_A / tok_b equals the stored role, and switched = role b
+                      store no top token: n/a; x0 runs since (45m), x0_parts, the 45b sweep and 45d: the role the stored
+                      top token gives against tok_A / tok_b equals the stored role, and switched = role b; 45g stores none:
+                      n/a
   probabilities agree with the label: switched = (role b); role b: p_alt >= p_org, ld >= 0; role A: the reverse; p > 0.5 decides the role
   second run has the same prompts: routes: a second run whose rows are used has the same prompts; x8: the stored entity is the joined
-                      case's bridge and j its locker slot
+                      case's bridge and j its locker slot; 45g: the stored entity is the single run's case's bridge, and the
+                      stored org_order / alt_order (the rule's groups) are the case's sentence order, re-derived here
+45a (one base scene in five variants): every check runs on each variant's case and rows; a failure in any variant fails
+the item (named by variant).
 """
 
 from __future__ import annotations
@@ -139,7 +143,7 @@ def check_class(it: dict) -> tuple[str, str]:
         bad = [f"{label}: top {r['top']!r}, switched {r['switched']}" for label, r in rows.items()
                if bool(r["switched"]) != (r["top"] == rd["cf_answer"])]  # fmt: skip
         return (FAIL if bad else PASS), "; ".join(bad[:4]) or f"{len(rows)} rows agree"
-    if it["kind"] in ("x0", "massmean", "x0_parts", "x45b_sweep"):
+    if it["kind"] in ("x0", "massmean", "x0_parts", "x45b_sweep", "x45d", "x45g"):
         # runs since batch 45 store the top token (x0_necessity.read_row): the role it gives against the case's answer
         # tokens (b = tok_b, A = tok_A, else other) must be the stored role, and switched must be role b
         rd = c["readers"][w]
@@ -216,6 +220,18 @@ def check_joined(it: dict) -> tuple[str, str]:
             (PASS if ok else FAIL),
             f"entity {entity!r} / case bridge {c['bridge']!r}; j {it['x8']['j']} / slot {slots.index(c['bridge']) if c['bridge'] in slots else '?'}",
         )
+    if it["kind"] == "x45g":
+        from bridge_jspace.review import items as I
+
+        more, got = it["more"], I.sentence_order(c)
+        derived = {"org_order": got.get("original"), "alt_order": got.get("changed")}
+        bad = [f"{k} {more['stored_order'][k]!r} / case {derived[k]!r}" for k in derived
+               if more["stored_order"][k] != derived[k]]  # fmt: skip
+        if more["entity"] != c["bridge"]:
+            bad.insert(0, f"entity {more['entity']!r} / case bridge {c['bridge']!r}")
+        return (FAIL if bad else PASS), "; ".join(bad) or (
+            f"entity {c['bridge']!r}; org_order {derived['org_order']}, alt_order {derived['alt_order']} as the case"
+        )
     used = {r["_run"] for r in it["rows"][it["reader"]].values() if r and "_run" in r}
     joined = {run: jc for run, jc in (c.get("_joined") or {}).items() if run in used}
     if not joined:
@@ -226,7 +242,27 @@ def check_joined(it: dict) -> tuple[str, str]:
     return (FAIL if bad else PASS), (f"prompts differ in {bad}" if bad else f"same prompts in {list(joined)}")
 
 
+def per_variant(it: dict) -> dict[str, tuple[str, str]]:
+    """45a: each check on every variant (its case and rows as a routes item); fail if any variant fails, n/a if every
+    variant is n/a, else pass."""
+    from bridge_jspace.review import items as I
+
+    got = [(x, run_checks(I.variant_item(it, x))) for x in it["more"]["variants"]]
+    out = {}
+    for name in CHECKS:
+        fails = [f"{x}: {r[name][1]}" for x, r in got if r[name][0] == FAIL]
+        if fails:
+            out[name] = (FAIL, "; ".join(fails))
+        elif all(r[name][0] == NA for _, r in got):
+            out[name] = (NA, got[0][1][name][1])
+        else:
+            out[name] = (PASS, f"every variant ({', '.join(x for x, _ in got)}); {got[0][0]}: {got[0][1][name][1]}")
+    return out
+
+
 def run_checks(it: dict) -> dict[str, tuple[str, str]]:
+    if it["kind"] == "x45a_prepend" and it["case"] is not None:
+        return per_variant(it)
     if it["case"] is None:
         return {
             name: (FAIL if name == "second run has the same prompts" else NA, "no case for this scene")
