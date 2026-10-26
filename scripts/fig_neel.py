@@ -493,33 +493,49 @@ def f06() -> None:
         else:
             ax.set_yticklabels([])
     fig.text(0.05, 0.885, "A   Depth: M − K for a 1/8-wide removal window slid through the model (dev, all relations; shaded: the test band)", fontsize=10.5, fontweight="bold")
-    # B: positions
-    bx = fig.add_axes((0.2, 0.11, 0.55, 0.33))
-    style(bx)
+    # B: positions, by start at the mid bands; pooled at the late bands
     modes = [("all", "every token", J), ("bridge", "bridge mention only", "#184f95"), ("context", "whole passage only", JL), ("question", "question only", LOGIT)]
-    for r, (lab, allrun, runs) in enumerate(POSITIONS):
+    for i, (lab, allrun, runs) in enumerate(POSITIONS[:3]):
+        bx = fig.add_axes((0.07 + i * 0.205, 0.11, 0.17, 0.3))
+        style(bx)
+        for r, st in enumerate("PTM"):
+            for k, (mode, _ml, col) in enumerate(modes):
+                run = allrun if mode == "all" else runs.get(mode)
+                v = cell(run, f"paper10/start={st}") if run else None
+                y = r + (k - 1.5) * 0.19
+                if v:
+                    bx.barh(y, v[0], height=0.17, color=col)
+                    bx.text(max(v[0], 0) + 1, y, f"{v[0]:+.0f}", va="center", fontsize=6.5, color=INK2)
+        bx.set_yticks(range(3), ["read (P)", "tracked (T)", "recalled (M)"] if i == 0 else ["", "", ""])
+        bx.set_ylim(2.5, -0.55)
+        bx.set_xlim(-5, 85)
+        bx.axvline(0, color=AXIS, lw=1)
+        bx.set_title(lab, fontsize=9)
+        bx.set_xlabel("M \u2212 K, points")
+    bx = fig.add_axes((0.77, 0.11, 0.21, 0.3))
+    style(bx)
+    lates = POSITIONS[3:]
+    for r, (lab, allrun, runs) in enumerate(lates):
         for k, (mode, _ml, col) in enumerate(modes):
             run = allrun if mode == "all" else runs.get(mode)
             v = cell(run, "paper10/start=all") if run else None
             y = r + (k - 1.5) * 0.19
             if v:
                 bx.barh(y, v[0], height=0.17, color=col)
-                bx.text(max(v[0], 0) + 0.8, y, f"{v[0]:+.0f}", va="center", fontsize=7, color=INK2)
-            elif "Lightning" in lab and k == 1:
-                bx.text(0.8, y + 0.19, "mention / passage / question only: running tonight (amendment 54)", va="center", fontsize=7, color=MUTED)
-    bx.set_yticks(range(len(POSITIONS)), [p[0] for p in POSITIONS])
-    bx.set_ylim(len(POSITIONS) - 0.4, -0.6)
+                bx.text(max(v[0], 0) + 1, y, f"{v[0]:+.0f}", va="center", fontsize=6.5, color=INK2)
+    bx.set_yticks(range(len(lates)), [p_[0].replace(", late ", "\n") for p_ in lates])
+    bx.set_ylim(len(lates) - 0.5, -0.55)
     bx.set_xlim(-5, 62)
     bx.axvline(0, color=AXIS, lw=1)
-    bx.axhline(2.5, color=GRID, lw=1.2)
-    bx.set_xlabel("M − K when the removal acts only there, points (start all)")
-    bx.legend(handles=[plt.Rectangle((0, 0), 1, 1, color=c, label=ml) for _m, ml, c in modes], loc="upper left", bbox_to_anchor=(1.01, 1.0), frameon=False, fontsize=8)
-    fig.text(0.05, 0.47, "B   Position: where in the prompt the removal must act", fontsize=10.5, fontweight="bold")
-    header(fig, "Where: at mid depth the dependence sits on the bridge's own mention; at late depth it moves to the question",
-           "The same removal restricted to a window of layers (A) or to a part of the prompt (B)")  # fmt: skip
+    bx.set_title("late bands (all starts)", fontsize=9)
+    bx.set_xlabel("M \u2212 K, points")
+    bx.legend(handles=[plt.Rectangle((0, 0), 1, 1, color=c, label=ml) for _m, ml, c in modes], loc="lower right", bbox_to_anchor=(1.0, 1.1), ncol=2, frameon=False, fontsize=7.5)
+    fig.text(0.05, 0.47, "B   Position: the removal applied only to one part of the prompt (mid bands by how the bridge was reached; late bands pooled)", fontsize=10.5, fontweight="bold")
+    header(fig, "Where: a bridge read from the passage needs J-space at its own mention in the Qwens (in Lightning, mention and question); late in depth, at the question",
+           "The same removal restricted to a window of layers (A) or to a part of the prompt (B). A recalled bridge (start M) needs it at several places at once: no single region carries it")  # fmt: skip
     note(fig, "A: hollow markers: stated facts (K) also lose >= 20 points there (not a split). Windows overlap; no intervals (n ~80 per final per window). Bolt is flat at K = 10 (its effect needs ~100 directions, F10). "
-              "The 9B's all-relation pick would be L16-19; its test band L12-16 came from the first facts set.\nB: jsuite_v2 test, all eligible items; 'bridge mention' = the bridge's own tokens; the 27B's late band has no all-token run. "
-              "Late, the dependence is in the question in the 27B, Ministral and the 122B; Ministral has no mid-depth dependence to localize (A).")  # fmt: skip
+              "The 9B's all-relation pick would be L16-19; its test band L12-16 came from the first facts set.\nB: jsuite_v2 test, all eligible items; 'bridge mention' = the bridge's own tokens (named twice for P and T starts, once in passing for M); the 27B's late band has no all-token run. "
+              "Late, the dependence is in the question in the 27B, Ministral and the 122B; Ministral has no mid-depth dependence to localize (A). Bolt's split (at K = 100) is in F12.")  # fmt: skip
     save(fig, "F06_where")
 
 
