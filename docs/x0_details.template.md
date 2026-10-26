@@ -192,6 +192,20 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 
 **The switch as a probability** (the TA's sampling question): with "switch" replaced by p_alt, the expected switch rate when sampling at T = 1, the main test's gap is {{num|prob_gap_9b}} (9B), {{num|prob_gap_27b}} (27B), {{num|prob_gap_122b}} (122B), {{num|prob_gap_muse}} (Muse); lookup {{num|prob_lk_9b}} / {{num|prob_lk_27b}} / {{num|prob_lk_122b}} / {{num|prob_lk_muse}}, recall {{num|prob_rc_9b}} / {{num|prob_rc_27b}} / {{num|prob_rc_122b}} / {{num|prob_rc_muse}}.
 
+## Writing between the second and third locker (batch 45c; after the data, descriptive)
+
+A strong write can switch on a route the model does not use at its natural size; the removal and keep-only arms say the real change carries little of it (Q45.6: the pair of directions found from second-vs-third moves halves position on none of the three models, and only it gives position in under 0.15 of scenes). The write adds a fixed vector, μ of the target locker minus μ of the bridge's, at the bridge word; the dose is in units of a real pointer change. Share of writes whose lookup answers the written locker (n: writes per pair).
+
+| Write, second ↔ third locker | Qwen3.5-9B: 1 → 2 / 2 → 1 | Qwen3.6-27B: 1 → 2 / 2 → 1 | Muse Glimmer 30B: 1 → 2 / 2 → 1 |
+|---|---|---|---|
+| dose 1 | {{num|x45c_write_12_1_9b}} / {{num|x45c_write_21_1_9b}} | {{num|x45c_write_12_1_27b}} / {{num|x45c_write_21_1_27b}} | {{num|x45c_write_12_1_muse}} / {{num|x45c_write_21_1_muse}} |
+| dose 2 | {{num|x45c_write_12_2_9b}} / {{num|x45c_write_21_2_9b}} | {{num|x45c_write_12_2_27b}} / {{num|x45c_write_21_2_27b}} | {{num|x45c_write_12_2_muse}} / {{num|x45c_write_21_2_muse}} |
+| dose 3 | {{num|x45c_write_12_3_9b}} / {{num|x45c_write_21_3_9b}} | {{num|x45c_write_12_3_27b}} / {{num|x45c_write_21_3_27b}} | {{num|x45c_write_12_3_muse}} / {{num|x45c_write_21_3_muse}} |
+| dose 4 | {{num|x45c_write_12_4_9b}} / {{num|x45c_write_21_4_9b}} | {{num|x45c_write_12_4_27b}} / {{num|x45c_write_21_4_27b}} | {{num|x45c_write_12_4_muse}} / {{num|x45c_write_21_4_muse}} |
+| random direction (same size), dose 1 | {{num|x45c_random_12_1_9b}} / {{num|x45c_random_21_1_9b}} | {{num|x45c_random_12_1_27b}} / {{num|x45c_random_21_1_27b}} | {{num|x45c_random_12_1_muse}} / {{num|x45c_random_21_1_muse}} |
+| random direction (same size), dose 4 | {{num|x45c_random_12_4_9b}} / {{num|x45c_random_21_4_9b}} | {{num|x45c_random_12_4_27b}} / {{num|x45c_random_21_4_27b}} | {{num|x45c_random_12_4_muse}} / {{num|x45c_random_21_4_muse}} |
+| n | {{num|x45c_n_12_9b}} / {{num|x45c_n_21_9b}} | {{num|x45c_n_12_27b}} / {{num|x45c_n_21_27b}} | {{num|x45c_n_12_muse}} / {{num|x45c_n_21_muse}} |
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.

@@ -193,6 +193,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     x8_numbers(num)
     x8_order_numbers(num)
     tier0_numbers(num)
+    x45c_numbers(num)
     t_pointer_numbers(num)
     first_sentence_numbers(num)
     ld_numbers(num)
@@ -620,6 +621,27 @@ def x8_order_numbers(num: Numbers) -> None:
 
 
 SBO_DESIGNS = {"swap": "two people swap", "one": "only the asked pick", "fresh": "fresh scenes"}
+
+
+X45C_WRITES = {"9b": "qwen35_9b_x8_write12", "27b": "x8_write12_27b", "muse": "muse30b_x8_write12"}
+
+
+def x45c_numbers(num: Numbers) -> None:
+    """Batch 45c's writes (Dan 26 Oct ~22:40: descriptive, after the data, here and not in the README body): mu_k - mu_j
+    written between the second and third locker at doses 1-4 x a real change, and a random direction of the same norm
+    at doses 1 and 4; x45c_<write|random>_<jk>_<dose>_<m> = the share of writes whose lookup answers the written
+    locker (results/x8_write/score45c-*)."""
+    found = sorted((pins.RESULTS_DIR / "x8_write").glob("score45c-*/score.json"))
+    if not found:
+        return
+    src = str(found[-1].relative_to(pins.REPO_ROOT))
+    blob = json.loads(found[-1].read_text())
+    for m, run in X45C_WRITES.items():
+        for key, v in blob.get(run, {}).items():
+            pair, kind, dose = key.split("|")
+            num.add(f"x45c_{kind}_{pair.replace('-', '')}_{dose}_{m}", f2(v["target"]), src)
+            if (kind, dose) == ("write", "1"):  # the same writes at every dose
+                num.add(f"x45c_n_{pair.replace('-', '')}_{m}", str(v["n"]), src)
 
 
 def tier0_numbers(num: Numbers) -> None:

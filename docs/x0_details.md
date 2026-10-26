@@ -497,6 +497,20 @@ J++ extra loss by whether the asked pick is the bridge's first mention (no = mat
 
 **The switch as a probability** (the TA's sampling question): with "switch" replaced by p_alt, the expected switch rate when sampling at T = 1, the main test's gap is 0.51 [0.44, 0.58] (9B), 0.53 [0.46, 0.59] (27B), 0.34 [0.27, 0.41] (122B), 0.73 [0.59, 0.82] (Muse); lookup −0.05 [−0.07, −0.03] / 0.17 [0.13, 0.22] / −0.01 [−0.05, 0.02] / −0.03 [−0.05, −0.01], recall 0.46 [0.39, 0.53] / 0.70 [0.63, 0.76] / 0.33 [0.26, 0.40] / 0.70 [0.57, 0.79].
 
+## Writing between the second and third locker (batch 45c; after the data, descriptive)
+
+A strong write can switch on a route the model does not use at its natural size; the removal and keep-only arms say the real change carries little of it (Q45.6: the pair of directions found from second-vs-third moves halves position on none of the three models, and only it gives position in under 0.15 of scenes). The write adds a fixed vector, μ of the target locker minus μ of the bridge's, at the bridge word; the dose is in units of a real pointer change. Share of writes whose lookup answers the written locker (n: writes per pair).
+
+| Write, second ↔ third locker | Qwen3.5-9B: 1 → 2 / 2 → 1 | Qwen3.6-27B: 1 → 2 / 2 → 1 | Muse Glimmer 30B: 1 → 2 / 2 → 1 |
+|---|---|---|---|
+| dose 1 | 0.06 / 0.07 | 0.00 / 0.00 | 0.09 / 0.13 |
+| dose 2 | 0.70 / 0.78 | 0.03 / 0.06 | 0.39 / 0.55 |
+| dose 3 | 0.69 / 0.91 | 0.22 / 0.55 | 0.52 / 0.80 |
+| dose 4 | 0.66 / 0.92 | 0.41 / 0.73 | 0.50 / 0.80 |
+| random direction (same size), dose 1 | 0.00 / 0.00 | 0.00 / 0.00 | 0.00 / 0.01 |
+| random direction (same size), dose 4 | 0.00 / 0.00 | 0.00 / 0.01 | 0.04 / 0.14 |
+| n | 108 / 99 | 111 / 100 | 101 / 100 |
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.
