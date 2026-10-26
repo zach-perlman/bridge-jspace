@@ -1,0 +1,23 @@
+id: pcfnat_helper_27b
+title: "P_cf's natural-passage step (batch 43, Q43.3) on helper: fit P_cf_nat, then remove it from the natural-passage change, qwen3.6-27b"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= uv run python scripts/x7_pcf.py natural --name x7_pcf_27b_nat --pcf x7_pcf_27b && BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= uv run python scripts/x5_natural.py run --name x5_natural_pcfnat_27b --pointer --alf-from x7_pcf/x7_pcf_27b_nat
+question: >-
+  Does a pointer found without slot labels (P_cf: the top 4 components of the bridge word's change when only its locker sentence moves) match the mass-mean pointer directions, and does removing or adding it alone move the lookup's position answers as theirs did?
+why_it_matters: >-
+  The mass-mean pointer directions use slot labels; P_cf asks whether the same subspace falls out of the model's own response to moving the sentence (Dan).
+hypotheses:
+  H-batch43: 'Dan''s batch 43 (Q43.1-Q43.3), predictions/2026-10-26_dan.md, committed before any result is opened'
+decision_rule: >-
+  Fixed in advance (batch 43): P_cf = the top 4 components of a centered PCA over 1,000 pairs at the layer fixed in advance; Q43.1 mean cos² of the principal angles with the mass-mean pointer directions >= 0.5; Q43.2 another item moved, removing P_cf cuts the position share by >= 0.20 more than its random part; each over the 9B, the 27B, the 122B and Muse. Descriptive: the variance explained by 1-8, P_cf's share inside the pairs' J++ spans, the sanity swap, only P_cf added. Gates as for the routes test (the 122B at 0.75, after the data, as its earlier routes runs). Cluster bootstrap over the bridge item, 10,000 resamples, seed 0.
+controls:
+- 'a random part at P_cf''s share, per scene'
+- 'the recall on the identical patch'
+n: '1,000 pairs for the fit; 300 scenes per routes condition'
+seeds: [4301, 2510, 0]
+notes: "Results stay closed until Dan's batch-43 answers are committed. The natural-passage step (P_cf_nat) is not in these jobs (if time, a later job)."
