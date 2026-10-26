@@ -1,0 +1,27 @@
+id: x45b_sweep_9b
+title: "Batch 45b layer sweep on the 9B (descriptive, after the data): the bridge-word change vs S patched into the locker sentences, every 2 layers from L/2 to L (6, 8, 10, 12), locker-after scenes"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.15
+depends_on: [x45_0_indep_9b]
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x45b_binding.py sweep --name qwen35_9b_x45b_sweep --why "45b layer sweep (Dan 26 Oct ~21:20; descriptive, after the data): bridge word vs locker sentences at L6-L12 every 2 layers" && uv run python scripts/x45b_binding.py sweep-table --name qwen35_9b_x45b_sweep
+question: >-
+  Between L/2 and L, at which layers does the locker-after scenes' binding sit at the bridge word, and from which layer
+  on at the locker sentences?
+why_it_matters: >-
+  45b held on both models: at L the locker-sentence patch switches 0.66 of S's lookups and the bridge-word change 0.20;
+  at L/2 it turns around (0.12 vs 0.68). The sweep locates where the binding moves from the bridge word to the locker
+  sentences.
+hypotheses:
+  descriptive: 'after the data (Dan 26 Oct ~21:20); no rule, no prediction'
+decision_rule: >-
+  Descriptive, no rule. Per reader and layer: the bridge-word change's switch rate over the items, the locker-sentence
+  patch's switch rate and its share of S's switches, with cluster-bootstrap CIs over bridge entities (10,000, seed 0).
+controls:
+- 'O unedited (arm none) and S read on S (the reference), as the 45b run'
+- 'the recall on the identical patches'
+n: 'the 100 locker-after items of the 45b run (x45b_binding.select on qwen35_9b_x0_necessity)'
+seeds: [0]
+notes: "Queued after 45i and before the 122B block (Dan ~21:20). Arms bw<l> (as 45b's a) and ls<l> (as 45b's c) at l = 6, 8, 10, 12; L12 and L6 repeat 45b's a / c / b_half / d as a check."

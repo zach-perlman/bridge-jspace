@@ -366,6 +366,121 @@ def stage_run(name: str, why: str) -> Path:
     return out
 
 
+SWEEP_STEP = 2  # the layer sweep (Dan 26 Oct ~21:20; descriptive, after the data): every 2 layers from L/2 to L
+
+
+def sweep_layers(layer: int) -> list[int]:
+    """The sweep's layers: L // 2 to L every SWEEP_STEP layers, L always included."""
+    return sorted(set(range(layer // 2, layer + 1, SWEEP_STEP)) | {layer})
+
+
+def stage_sweep(name: str, why: str) -> Path:
+    """45b's layer sweep (descriptive, after the data): on the same locker-after items, at each sweep layer, the
+    bridge-word change (arm bw<l>, as a) and S patched into O at every locker-sentence token (arm ls<l>, as c); none and
+    S as in the run. Reads as stage_run."""
+    import torch
+
+    from bridge_jspace import chat
+    from bridge_jspace.model import load_model
+    from bridge_jspace.utils import git_state, progress
+    from scripts.exp04_brew_parts import AddRows
+
+    pins.check_run_name(name)
+    assert chat.FORMAT == "chat", "45b renders the main test's chat prompts: run with BJ_FORMAT unset"
+    target = pins.TARGET
+    assert target in MAIN_RUN, f"45b runs on {sorted(MAIN_RUN)}, not {target}"
+    main_run, layer = MAIN_RUN[target], X.PREDICTED[target]
+    layers = sweep_layers(layer)
+    out = RESULTS / name
+    out.mkdir(parents=True, exist_ok=False)
+    m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+         "model": pins.model_pin(), "code": git_state(), "main_run": main_run, "layer": layer, "sweep_layers": layers,
+         "arms": {"bw<l>": "the bridge-word change at layer l", "ls<l>": "S patched into O at every locker-sentence "
+                  "token, at layer l", "none": ARM_TEXT["none"], "S": ARM_TEXT["S"]},
+         "items_rule": "as the 45b run (x45b_binding.select)", "read": "as the 45b run",
+         "descriptive": "after the data (Dan 26 Oct ~21:20): no rule", "seeds": {"bootstrap": X.BOOT_SEED}}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
+    model = load_model()
+    tok = model.tokenizer
+    items, counts = select(tok, main_run, layer)
+    (out / "plan.json").write_text(json.dumps(counts, indent=2) + "\n")
+    X.write_jsonl(out / "cases.jsonl", items)
+    assert items, "no items"
+    ws = X.whitespace_mask(model)
+    digits = torch.tensor(X.digit_ids(tok), device=model.device)
+    rows = []
+    with torch.no_grad():
+        for it in progress(items, f"45b sweep L{layers[0]}-L{layer} (item)"):
+            ids = it["readers"][X.LOOKUP]["ids"]
+            h = {v: model.run(torch.tensor([ids[v]], device=model.device), record=tuple(layers))[1]
+                 for v in ("org", "alt")}  # fmt: skip
+            pos, patched, source = it["pos"], it["patched"], it["source"]
+            edits: dict[str, dict] = {"none": {}}
+            for la in layers:
+                edits[f"bw{la}"] = {la: AddRows((h["alt"][la][pos] - h["org"][la][pos])[None], [pos])}
+                edits[f"ls{la}"] = {la: AddRows(h["alt"][la][source] - h["org"][la][patched], patched)}
+            for w, rd in it["readers"].items():
+                base = {"scene": it["scene"], "entity": it["entity"], "reader": w}
+                logits, _ = X.read_logits(model, rd["ids"]["org"], list(edits.values()), RENDERING, it["space"], ws)
+                s_logits, _ = X.read_logits(model, rd["ids"]["alt"], [{}], RENDERING, it["space"], ws)
+                for arm, lg in zip((*edits, S_ARM), [*logits, s_logits[0]], strict=True):
+                    la = int(arm[2:]) if arm[:2] in ("bw", "ls") else None
+                    rows.append({**base, "arm": arm, "layer": la, **X.read_row(lg, rd, digits)})
+    X.write_jsonl(out / "outcomes.jsonl", rows)
+    print("wrote", out, flush=True)
+    return out
+
+
+def sweep_cells(rows: list[dict], n_boot: int = X.N_BOOT) -> dict[str, list[dict]]:
+    """Per reader and sweep layer: the bridge-word change's and the locker-sentence patch's switch rate over the items,
+    and the patch's share of S's switches (among the items S switches), with cluster-bootstrap CIs over bridge
+    entities."""
+    out: dict[str, list[dict]] = {}
+    for w in X.READERS:
+        mine = [r for r in rows if r["reader"] == w]
+        entity = {r["scene"]: r["entity"] for r in mine}
+        scenes = list(entity)
+        by = {(r["scene"], r["arm"]): int(r["switched"]) for r in mine}
+        arms = sorted({r["arm"] for r in mine})
+        cols = {a: [by[(s, a)] for s in scenes] for a in arms}
+        layers = sorted({r["layer"] for r in mine if r["layer"] is not None})
+        for la in layers:
+            cols[f"ls{la}_and_S"] = [x & y for x, y in zip(cols[f"ls{la}"], cols[S_ARM], strict=True)]
+        boot = X.resampled_rates(cols, [entity[s] for s in scenes], n_boot)
+        n, n_s = len(scenes), sum(cols[S_ARM])
+        cells = []
+        for la in layers:
+            with np.errstate(divide="ignore", invalid="ignore"):
+                ratio = boot[f"ls{la}_and_S"] / np.where(boot[S_ARM] > 0, boot[S_ARM], np.nan)
+            cells.append({"layer": la, "n": n, "S_switched": n_s,
+                          "bw": [sum(cols[f"bw{la}"]) / n, *X.interval(boot[f"bw{la}"])],
+                          "ls": [sum(cols[f"ls{la}"]) / n, *X.interval(boot[f"ls{la}"])],
+                          "ls_of_S": [sum(cols[f"ls{la}_and_S"]) / n_s if n_s else None, *X.interval(ratio)]})  # fmt: skip
+        out[w] = cells
+    return out
+
+
+def stage_sweep_table(name: str, n_boot: int = X.N_BOOT) -> Path:
+    src = RESULTS / name
+    m = json.loads((src / "manifest.json").read_text())
+    cells = sweep_cells(X.read_jsonl(src / "outcomes.jsonl"), n_boot)
+    out = src / f"sweep-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    lines = [f"# 45b layer sweep (descriptive, after the data): {name}", "",
+             f"Model {m['model']['target']}, L = {m['layer']}; the 45b items (locker after the pick). Switch = the top "
+             f"token is S's answer. Cluster bootstrap over bridge entities ({n_boot} resamples). UNVERIFIED.", ""]  # fmt: skip
+    for w, rows_ in cells.items():
+        lines += [f"## {'lookup' if w == X.LOOKUP else 'recall'} (n = {rows_[0]['n']}, S switches {rows_[0]['S_switched']})",
+                  "", "| layer | bridge-word change | locker-sentence patch | patch, share of S's switches |",
+                  "|---|---|---|---|"]  # fmt: skip
+        lines += [f"| {c['layer']} | {fmt(c['bw'])} | {fmt(c['ls'])} | {fmt(c['ls_of_S'])} |" for c in rows_]
+        lines.append("")
+    (out / "sweep.json").write_text(json.dumps({"run": name, "cells": cells}, indent=1) + "\n")
+    (out / "sweep.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def site(arm: str) -> str:
     return "bridge word" if arm in BRIDGE_ARMS else "locker sentences" if arm in LOCKER_ARMS else "-"
 
@@ -587,7 +702,7 @@ def stage_examples(name: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "run", "verdict", "examples"])
+    ap.add_argument("stage", choices=["plan", "run", "verdict", "examples", "sweep", "sweep-table"])
     ap.add_argument("--name", help="run name (results/x45b_binding/<name>/); not for plan")
     ap.add_argument("--why", default="batch 45, test 45b (jobs/c3/batch45.yaml)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
@@ -600,6 +715,10 @@ def main() -> None:
         stage_run(a.name, a.why)
     elif a.stage == "verdict":
         stage_verdict(a.name, a.n_boot)
+    elif a.stage == "sweep":
+        stage_sweep(a.name, a.why)
+    elif a.stage == "sweep-table":
+        stage_sweep_table(a.name, a.n_boot)
     else:
         stage_examples(a.name)
 

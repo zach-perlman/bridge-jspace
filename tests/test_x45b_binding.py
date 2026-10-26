@@ -402,3 +402,43 @@ def test_run_stage_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
     # the CPU stages run on its output
     assert B.stage_examples("fake_run").exists()
     assert (B.stage_verdict("fake_run", n_boot=200) / "verdict.json").exists()
+
+
+def test_sweep_layers_run_from_half_to_l_every_two():
+    assert B.sweep_layers(12) == [6, 8, 10, 12]
+    assert B.sweep_layers(32) == list(range(16, 33, 2))
+    assert B.sweep_layers(13) == [6, 8, 10, 12, 13]  # L always included
+
+
+def test_sweep_stage_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
+    import torch
+
+    from bridge_jspace import model as M
+    from bridge_jspace import pins
+
+    tok = WordTok()
+    items = [item_record(i, tok) for i in range(12)]
+    fake = FakeModel(tok)
+    monkeypatch.setattr(M, "load_model", lambda: fake)
+    monkeypatch.setattr(B, "select", lambda *_: (items, {"items": 12}))
+    monkeypatch.setattr(B, "RESULTS", tmp_path / "x45b")
+    out = B.stage_sweep("fake_sweep", "test")
+    layer = X.PREDICTED[pins.TARGET]
+    layers = B.sweep_layers(layer)
+    arms = ["none", *(f"{s}{la}" for la in layers for s in ("bw", "ls")), "S"]
+    rows = X.read_jsonl(out / "outcomes.jsonl")
+    assert {(r["scene"], r["reader"], r["arm"]) for r in rows} == {
+        (it["scene"], w, a) for it in items for w in X.READERS for a in arms
+    }
+    assert {r["layer"] for r in rows if r["arm"].startswith("ls")} == set(layers)
+    # each sweep edit sits at its layer and positions; ls<l> makes O's locker tokens S's at l
+    it, (_, edits) = items[0], fake.calls[0]
+    ids = it["readers"][X.LOOKUP]["ids"]
+    for e, arm in zip(edits[1:], arms[1:-1], strict=True):
+        ((la, add),) = e.items()
+        assert la == int(arm[2:]) and add.positions == ([it["pos"]] if arm.startswith("bw") else it["patched"])
+    la = layers[0]
+    h = {v: fake.run(torch.tensor([ids[v]]), record=(la,))[1][la] for v in ("org", "alt")}
+    assert torch.allclose(h["org"][it["patched"]] + edits[arms.index(f"ls{la}")][la].delta, h["alt"][it["source"]])
+    cells = json.loads((B.stage_sweep_table("fake_sweep", n_boot=200) / "sweep.json").read_text())["cells"]
+    assert [c["layer"] for c in cells[X.LOOKUP]] == layers and all(c["n"] == 12 for c in cells[X.RECALL])
