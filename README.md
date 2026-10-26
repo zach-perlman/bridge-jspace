@@ -10,7 +10,7 @@
 - **The pointer we found is narrow:** it mostly separates the first-mentioned item from the rest and explains little outside simple scenes. About half of the lookup's route around the lens is still open.
 - **For monitoring:** a lens on the bridge word shows which item the model is using, but not where in the context the model will read its answer from.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at f37eb942 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at 1fad1c34 from the run files.
 
 ## Setup
 
@@ -122,7 +122,7 @@ How far does the pointer we found reach?
 
 - **About half of the route is unexplained:** with J++ and the pointer removed together, about half of the lookups still switch. Removing identity outside J++ as well removes most of what is left on the 9B and 27B, far more than a random part of the same share; on Muse half still switch (table). These parts are 35%-56% of the change, so a random part also removes most on the 9B.
 
-![About half the lookups still switch with J++ and the pointer removed](figures/story/fig10_what_is_left.png)
+![J++, the pointer and identity outside J++ stop most lookups on the 9B and 27B, not on Muse](figures/story/fig10_what_is_left.png)
 *Fig. 10.*
 
 | Sanity swap, J++ + pointer + identity outside J++ removed | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |

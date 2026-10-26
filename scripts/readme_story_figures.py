@@ -1106,7 +1106,7 @@ def f08b_layout(plt, draft: bool = True) -> None:
                 if sh <= 0 or (route == "other" and sh < 0.02):
                     continue
                 ax.barh(y, sh, left=left, height=0.68, color=ROUTE_COL[route], edgecolor="white", lw=0.8)
-                if route in ("identity", "position") and sh >= 0.10:
+                if route in ("identity", "position") and sh >= 0.13:  # narrower: the label overflows (Dan ~22:05)
                     pct = round(100 * float(f"{sh:.2f}"))  # the percent of the README's two-decimal number
                     ax.text(left + sh / 2, y, f"{pct}", ha="center", va="center", fontsize=S.FONT,
                             color="white" if route == "identity" else "#222222")  # fmt: skip
@@ -1200,9 +1200,9 @@ def f10_left(plt) -> None:
     one-axis version was hard to read)."""
     fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 4.3), sharey=True)
     fig.subplots_adjust(left=0.17, right=0.985, top=0.60, bottom=0.14, wspace=0.12)
-    S.title(fig, "About half the lookups still switch with J++ and the pointer removed",
+    S.title(fig, "J++, the pointer and identity outside J++ stop most lookups on the 9B and 27B, not on Muse",
             "Sanity swap. Lookups still switching, as a share of the whole change's switches. The line from\n"
-            "grey to purple is what the part removes beyond a random part of its size (its extra loss).")  # fmt: skip
+            "grey to purple is what the part removes beyond a random part of its size (its extra loss).", limit=90)  # fmt: skip
     grey = "#a8a8a8"
     for ax, (target, m, _name) in zip(axes, S.MODELS, strict=True):
         ax.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
