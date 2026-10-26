@@ -1,10 +1,14 @@
-"""Verification pack for Dan (25 Oct plan, step 4): for each README finding, one raw-count table recounted directly from
+"""Superseded (26 Oct): docs/verify_pack.md is now written by `uv run python scripts/review.py pack` from
+docs/review_views.yaml, so the dashboard and the pack cannot drift; this script is kept (no moves before Friday) and its
+output, if run, goes to docs/verify_pack_25oct.md.
+
+Verification pack for Dan (25 Oct plan, step 4): for each README finding, one raw-count table recounted directly from
 the per-item files (outcomes.jsonl, cases.jsonl, eligible.jsonl; no verdict or aggregate file is read), with the file
 paths and the one-line command that prints it; 10 random route cases (seed 0) with both prompts and the lookup's answer
 per arm; the outputs recomputed locally after the jobq copy bug, with their commands. Extra loss from counts:
 (switches without the random part - switches without the part) / switches with the whole change.
 
-uv run python scripts/verify_pack.py                 # writes docs/verify_pack.md
+uv run python scripts/verify_pack.py                 # writes docs/verify_pack_25oct.md
 uv run python scripts/verify_pack.py --only 3        # prints finding 3's table
 """
 
@@ -25,7 +29,7 @@ from scripts import x0_necessity as X
 from scripts import x0_strata as ST
 
 R = pins.RESULTS_DIR
-OUT = pins.REPO_ROOT / "docs" / "verify_pack.md"
+OUT = pins.REPO_ROOT / "docs" / "verify_pack_25oct.md"
 LAYER = {"9B": 12, "27B": 32, "122B": 33}
 CMD = "uv run python scripts/verify_pack.py --only {}"
 READER = {X.LOOKUP: "lookup", X.RECALL: "recall"}

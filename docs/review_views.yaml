@@ -3,7 +3,8 @@
 # Per view: the claim in the README's words, the docs/x0_numbers.json keys it backs ("sources"; <m> = 9b / 27b / 122b /
 # muse, the same keys as the `source` column of figures/story/data.csv), per model the run dirs and their per-item
 # files, the filters that make the claim's item set (as the verdict used them), and what each answer class means.
-# Read-only on results/. status: phase1 = in the dashboard now; later = listed, not yet in the dashboard.
+# Read-only on results/. status: phase1 = in the dashboard now; later = listed, not yet in the dashboard. headline: the
+# numbers the dashboard recounts over the whole item set (Phase 2) and compares with figures/story/data.csv.
 version: 1
 
 models:
@@ -94,7 +95,8 @@ views:
         whole: [whole, "-", 0, "-"]
         without J++: [no_part, jpp, 25, signed]
         without its random part: [no_rand, jpp, 25, signed]
-    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part, gap: true}
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part,
+               keys: {PP: lk_excess_<m>, PM: rc_excess_<m>, gap: contrast_<m>}}
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
       qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
@@ -120,7 +122,8 @@ views:
         whole: [whole, "-", 0, "-"]
         without J++: [no_part, jpp, 25, signed]
         without its random part: [no_rand, jpp, 25, signed]
-    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part, gap: true}
+    headline: {stat: extra_loss, whole: whole, part: without J++, random: without its random part,
+               keys: {PP: single_lk_excess_<m>, PM: single_rc_excess_<m>, gap: single_contrast_<m>}}
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_single_r2]
       qwen3.6-27b: [results/x0_necessity/x0_single_27b_r2]
@@ -186,7 +189,7 @@ views:
         whole: whole
         without J++: no_jpp
         without J++'s random part: no_jpp_rand
-    headline: {stat: route_share, condition: C2, reader: PP, arms: [whole, without J++]}
+    headline: {stat: route_share, condition: C2, reader: PP, arms: [whole, without J++, without J++'s random part]}
     runs:
       qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_l6]
       qwen3.6-27b: [results/x6_routes/x6_routes_l16_27b]
@@ -216,7 +219,8 @@ views:
         without their random part: no_Alf_rand
         only the pointer part: keep_Alf
         only a random part of its size: keep_Alf_rand
-    headline: {stat: extra_loss, whole: whole, part: without the pointer directions, random: without their random part}
+    headline: {stat: extra_loss, whole: whole, part: without the pointer directions, random: without their random part,
+               keys: {PP: mmlf_Alf_lk_excess_<m>}}
     runs:
       qwen3.5-9b: [results/x0_massmean/qwen35_9b_x0_massmean_lf]
       qwen3.6-27b: [results/x0_massmean/x0_massmean_lf_27b]

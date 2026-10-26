@@ -133,3 +133,12 @@ def test_export_writes_a_page_per_view(tmp_path):
     pages = sorted(p.name for p in out.glob("*.html"))
     assert pages == sorted(["index.html", *(f"{v['id']}.html" for v in I.phase1())])
     assert "C2-" in (out / "routes.html").read_text()  # the export's routes sample is C2 (views file)
+
+
+@pytest.mark.parametrize("view_id", ["main_swap", "single_change", "routes", "routes_early", "pointer_main"])
+def test_recount_equals_data_csv(view_id):
+    from bridge_jspace.review import recount as RC
+
+    rows = RC.recount(view_id)
+    assert not [r for r in rows if r["status"] == "mismatch"]
+    assert {r["model"] for r in rows if r["status"] == "match"} == set(MODELS)

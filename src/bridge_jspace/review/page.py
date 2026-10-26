@@ -249,10 +249,32 @@ def checks_box(stats: dict[str, dict]) -> str:
     )
 
 
-def view_page(v: dict, p: dict, samples: dict[str, Any], stats: dict, server: bool, commit: str, marks: dict) -> str:
+def recount_box(rows: list[dict]) -> str:
+    """The view's headline numbers recounted over the whole item set, beside data.csv (mismatches first)."""
+    if not rows:
+        return ""
+    count = {s: sum(r["status"] == s for r in rows) for s in ("match", "mismatch", "no source")}
+    head = (f"<b>Recount from the per-item files</b> (whole item set): {tag(str(count['match']), 'pass')} match, "
+            f"{tag(str(count['mismatch']), 'fail' if count['mismatch'] else 'pass')} mismatch, {count['no source']} no source "
+            "(figures/story/data.csv, 2 decimals)")  # fmt: skip
+    order = sorted(rows, key=lambda r: (r["status"] != "mismatch", r["status"] == "no source"))
+    table = [
+        "<table><tr><th>model</th><th>quantity</th><th>n</th><th>recount</th><th>data.csv</th><th>key</th><th></th></tr>"
+    ]
+    for r in order:
+        cls = {"match": "pass", "mismatch": "fail"}.get(r["status"], "na")
+        table.append(f"<tr><td>{E(I.spec()['models'][r['model']]['key'])}</td><td>{E(r['quantity'])}</td><td>{r['n']}</td>"
+                     f"<td>{r['value']:.4f}</td><td>{E(r['data'])}</td><td class='mut'>{E(r['key'])}</td><td>{tag(r['status'], cls)}</td></tr>")  # fmt: skip
+    table.append("</table>")
+    return f"<div class='box'>{head}<details{' open' if count['mismatch'] else ''}><summary>all rows</summary>{''.join(table)}</details></div>"
+
+
+def view_page(
+    v: dict, p: dict, samples: dict[str, Any], stats: dict, server: bool, commit: str, marks: dict, recount: list[dict]
+) -> str:
     seed = int(p["seed"])
     body = [f"<p><a href='{'/' if server else 'index.html'}'>← all views</a></p><h1>{E(v['title'])}</h1>", controls(v, p, server),
-            claim_box(v), checks_box(stats), "<p><button onclick='download()'>download marks</button> "
+            claim_box(v), recount_box(recount), checks_box(stats), "<p><button onclick='download()'>download marks</button> "
             "<span class='mut'>(also kept in this browser)</span></p>"]  # fmt: skip
     for section, label in (("set", "Sample from the claim's item set"), ("out", "Outside the claim's set (ineligible or beyond the first N)"),
                            ("superseded", "Superseded runs")):  # fmt: skip
@@ -277,15 +299,19 @@ def view_page(v: dict, p: dict, samples: dict[str, Any], stats: dict, server: bo
     return page(v["title"], "".join(body), server, commit)
 
 
-def index_page(rows: list[tuple[dict, dict]], server: bool, commit: str, seed: int, n: int) -> str:
+def index_page(rows: list[tuple[dict, dict, list[dict]]], server: bool, commit: str, seed: int, n: int) -> str:
     body = ["<h1>Review: read the claims' items by hand</h1><p class='mut'>Each view is one README claim (docs/review_views.yaml); "
             f"items come from the runs' per-item files, decoded with the pinned tokenizers. Commit {E(commit)}.</p><table>"
-            "<tr><th>view</th><th>items per model (lookup + recall)</th><th>automatic-check failures</th></tr>"]  # fmt: skip
-    for v, stats in rows:
+            "<tr><th>view</th><th>items per model (lookup + recall)</th><th>automatic-check failures</th>"
+            "<th>recount vs data.csv</th></tr>"]  # fmt: skip
+    for v, stats, rec in rows:
         params = {"view": v["id"], "seed": seed, "n": n, **v.get("export", {})}
         counts = ", ".join(f"{I.spec()['models'][m]['key']} {s['n']}" for m, s in stats.items())
         fails = sum(sum(s["fail"].values()) for s in stats.values())
+        mism = sum(r["status"] == "mismatch" for r in rec)
+        match = sum(r["status"] == "match" for r in rec)
         body.append(f"<tr><td><a href='{link(params, server)}'>{E(v['title'])}</a></td><td>{counts}</td>"
-                    f"<td>{tag(str(fails), 'fail' if fails else 'pass')}</td></tr>")  # fmt: skip
+                    f"<td>{tag(str(fails), 'fail' if fails else 'pass')}</td><td>{match} match, "
+                    f"{tag(str(mism), 'fail' if mism else 'pass')} mismatch</td></tr>")  # fmt: skip
     body.append("</table>")
     return page("Review", "".join(body), server, commit)

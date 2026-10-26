@@ -128,8 +128,8 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ## 5. How we checked
 
-- **Hand-checked numbers.** None yet; [docs/verify_pack.md](docs/verify_pack.md) recounts each section's numbers from per-item files, with commands.
-- **Raw examples.** Ten natural passages ([docs/natural_examples.md](docs/natural_examples.md)) and routes cases (the pack).
+- **Hand-checked numbers.** None yet; [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
+- **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them; natural passages in [docs/natural_examples.md](docs/natural_examples.md).
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier {{num|pred_brier}} over {{num|pred_n}} answers, worse than always answering {{q|50%}}; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.
 - **Inventory.** [docs/inventory.md](docs/inventory.md) labels every script and run current, superseded, legacy or unknown; pre-pivot experiments are kept and labelled legacy.
