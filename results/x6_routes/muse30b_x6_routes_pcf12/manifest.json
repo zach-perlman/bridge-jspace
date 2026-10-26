@@ -1,0 +1,64 @@
+{
+  "exp": "x6_routes",
+  "run": "muse30b_x6_routes_pcf12",
+  "written_utc": "2026-10-26T20:42:17Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "a597fe1678ec71266848824bc0934792f5705c0e",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "layer": 26,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+    "C0",
+    "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "keeponly": true,
+  "identity": false,
+  "alf_from": "x7_pcf/muse30b_x7_pcf12",
+  "c0_min": 0.5,
+  "fixed_layer": 26,
+  "c0_reference": {
+    "run": null,
+    "lookup_switch": null,
+    "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+    "scenes": 2510,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  },
+  "rendering": "chat",
+  "read": "chat (the top token after a space)",
+  "prepend": [],
+  "identity_controls": false,
+  "sealed": true,
+  "items": {
+    "C0": 300,
+    "C2": 300
+  }
+}

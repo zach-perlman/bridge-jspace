@@ -1,0 +1,68 @@
+{
+  "exp": "x8_write",
+  "run": "muse30b_x8_write12",
+  "written_utc": "2026-10-26T21:02:29Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "a597fe1678ec71266848824bc0934792f5705c0e",
+    "dirty": true
+  },
+  "layer": 26,
+  "stage": "write",
+  "s": [
+    1.0,
+    2.0,
+    3.0,
+    4.0
+  ],
+  "rand_s": [
+    1.0,
+    4.0
+  ],
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "mu_from": "muse30b_x0_probe_v4",
+  "seeds": {
+    "scenes": 2510,
+    "random_directions": 4401
+  },
+  "pairs": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      1
+    ]
+  ],
+  "dose_from": "muse30b_x8_write",
+  "s_star": {
+    "0-1": 1.3793268440741207,
+    "0-2": 1.1225943998316448,
+    "1-0": 1.3793268440741207,
+    "1-2": 2.2952376739678546,
+    "2-0": 1.1225943998316448,
+    "2-1": 2.2952376739678546
+  },
+  "note": "batch 44 (Dan 26 Oct ~13:00); results closed until its answers",
+  "items": 300,
+  "norms": {
+    "step": {
+      "0-1": 41.3812,
+      "0-2": 50.8449,
+      "1-0": 41.3812,
+      "1-2": 24.8681,
+      "2-0": 50.8449,
+      "2-1": 24.8681
+    },
+    "median_U_UT_delta_C2": 57.0782
+  }
+}
