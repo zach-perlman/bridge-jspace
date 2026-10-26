@@ -128,7 +128,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ## 5. How we checked
 
-- **Hand-checked numbers.** None yet; [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
+- **Hand-checked numbers.** None yet ([docs/review_summary.md](docs/review_summary.md)); [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
 - **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them; natural passages in [docs/natural_examples.md](docs/natural_examples.md).
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier {{num|pred_brier}} over {{num|pred_n}} answers, worse than always answering {{q|50%}}; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.

@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 89a03e90 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 5fa90fac from the run files.
 
 ## Setup
 
@@ -128,7 +128,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ## 5. How we checked
 
-- **Hand-checked numbers.** None yet; [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
+- **Hand-checked numbers.** None yet ([docs/review_summary.md](docs/review_summary.md)); [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
 - **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them; natural passages in [docs/natural_examples.md](docs/natural_examples.md).
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.33 over 97 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.

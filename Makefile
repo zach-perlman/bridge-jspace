@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run data-report review-serve review-export examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
+.PHONY: install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -90,6 +90,9 @@ review-serve:       ## the review dashboard (docs/review_views.yaml) on http://l
 
 review-export:      ## a static sample of every review view under review/seed-<SEED>/ (SEED=0 N=10; no GPU)
 	uv run python scripts/review.py export --seed $(or $(SEED),0) --n $(or $(N),10)
+
+review-summary:     ## docs/review_summary.md: items read by hand per view, flagged, seeds, automatic-check failures
+	uv run python scripts/review.py summary
 
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export
