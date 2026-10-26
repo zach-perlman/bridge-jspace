@@ -807,9 +807,10 @@ def main() -> None:
         print("median cases per cell:", statistics.median(counts["cases_per_cell"].values()))
     elif a.stage == "run":
         stage_run(a.name, a.why, a.set, tuple(a.formats), tuple(a.levels), not a.no_curve, a.pointer, a.pcf_from)
-        figures(write_verdict(a.name, a.n_boot))
-        if a.pcf_from:
-            pcf_figure(write_pcf_verdict(a.name, a.n_boot))
+        # 45d is sealed until Dan's predictions are committed (Dan 26 Oct 18:25): no verdict runs after the run;
+        # pcf-verdict (and verdict) run by hand once Q45.4 is filled
+        if not a.pcf_from:
+            figures(write_verdict(a.name, a.n_boot))
     elif a.stage == "pcf-verdict":
         pcf_figure(write_pcf_verdict(a.name, a.n_boot))
     elif a.stage == "examples":
