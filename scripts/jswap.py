@@ -118,7 +118,7 @@ def main(a) -> None:
     band = list(range(int(a.band.split("-")[0]), int(a.band.split("-")[1]) + 1))
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "band": a.band,
                                                        "set": a.set, "competence": a.competence, "conditions": a.conds, "k": 10,
-                                                       "git_commit": commit, "limit": a.limit}, indent=2) + "\n")  # fmt: skip
+                                                       "git_commit": commit, "limit": a.limit, "sample_per_word": a.sample_per_word, "sample_seed": a.sample_seed}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / a.set / "items.jsonl").read_text().splitlines()}
@@ -152,6 +152,13 @@ def main(a) -> None:
         jobs.append({**p, "x": x, "d": d, "th": th, "pairs": pairs, "dom": dom, "final": it["final"],
                      "fx": forms(tok, ans[x], kind), "fd": forms(tok, ans[d], kind), "ft": forms(tok, ans[th], kind) if th else set(),
                      "ax": ans[x], "ad": ans[d], "at": ans[th] if th else None})  # fmt: skip
+    if a.sample_per_word:  # 2026-10-26 (amendment 49): a seeded random subset of each word's jobs, not the first n
+        per = collections.defaultdict(list)
+        for j in jobs:
+            per[j["family"]].append(j)
+        pick = {f: set(range(len(v))) if len(v) <= a.sample_per_word else set(random.Random(f"{a.sample_seed}:{f}").sample(range(len(v)), a.sample_per_word))
+                for f, v in per.items()}  # fmt: skip
+        jobs = [j for f in words for k, j in enumerate(per[f]) if k in pick[f]]
     if a.limit:
         per = collections.defaultdict(list)
         for j in jobs:
@@ -288,5 +295,7 @@ if __name__ == "__main__":
     ap.add_argument("--set", default="jsuite_v1_facts_test_chat")
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--limit", type=int, default=0, help="first N jobs per word (a smoke)")
+    ap.add_argument("--sample-per-word", type=int, default=0, help="a seeded random N jobs per word (0: all)")
+    ap.add_argument("--sample-seed", type=int, default=0)
     ap.add_argument("--conds", nargs="+", default=list(CONDS), choices=list(CONDS + ANS_CONDS), help="conditions (default: the original six)")
     main(ap.parse_args())

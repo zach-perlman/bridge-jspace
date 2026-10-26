@@ -1460,3 +1460,28 @@ nothing is claimed with that lens. Ministral's was 0.651 vs 0.461.
     pca1 PK 1/4, PM 1/4.
 - **Runs.** DeepSeek's job (h200dsta) and Monday's job (h200qta) were relaunched with these conditions before
   starting.
+
+## Amendment 49 (Zach, 2026-10-26 00:45 UTC, before any run below): a seeded random half of the items for Bolt's test and swap and for the 27B's renderings
+
+- **Why (Zach: "do we need that much data … just because it has more eligible items that doesn't mean we need to
+  calculate it from all of them", then "Do it"):** our readings are threshold decisions. The 27B's v2 M - K has a CI of
+  about +/-3.5 at ~890 items per final. Half the items gives about +/-5, which leads to the same decision on every
+  reading in amendments 38 B, 39, 42 and 48. The full runs cost compute that the last day needs (Bolt runs across two
+  GPUs; the renderings take ~5 GPU-hours).
+- **How:** a seeded random sample per word replaces --n's "first n per word", which leans toward the first bridges and
+  relations. It is implemented as ablate_v2 and jswap --sample-per-word N --sample-seed 0, with random.Random("0:WORD")
+  over the word's sorted eligible item ids (ablate_v2) or over its jobs (jswap). A word with N or fewer keeps all of
+  them, so the tracked-start words (n 13-60) keep every item. Both are recorded in the manifest.
+- **Applies to:**
+  - Bolt's test knock-out and its swap at the profile pick: 150 per word (h200_nq40_1025.sh reads
+    /workspace/scratch/nem35b_sample.txt). Same conditions, same run names.
+  - The 27B's renderings jsuite_v2r2 and jsuite_v2r3: 150 per word (about half). The conditions are paper10, paper10_rot
+    and unembed10. unembed10_rot, the logit lens's own rotation, has been about 0 on every model and is dropped. Run
+    names end in _s150.
+- **Not changed:**
+  - Lightning (its test and swap run at full n tonight);
+  - Bolt's dev profile and dose (n 40 per word already), and its mid-depth swap L44-55 (inside its running chain);
+  - the 27B and Ministral amendment-48 runs, already queued;
+  - every run of record.
+- **Readings:** unchanged, with the CIs the smaller n gives. If a reading's CI straddles its threshold because of the
+  smaller n, it is reported as undecided, not re-run.

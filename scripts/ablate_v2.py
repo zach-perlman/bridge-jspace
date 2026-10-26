@@ -364,7 +364,7 @@ def main(args) -> None:
                 "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "read": args.read, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "read": args.read, "sample_per_word": args.sample_per_word, "sample_seed": args.sample_seed, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -390,6 +390,16 @@ def main(args) -> None:
             args.tasks_strata,
             args.tasks_per_word,
         )
+        if args.sample_per_word:  # 2026-10-26 (amendment 49): a seeded random subset of each word's items, not the first n
+            import random
+
+            ids_by: dict = collections.defaultdict(set)
+            for p in prompts:
+                ids_by[p["family"]].add(p["id"])
+            keep = {i for f, ids in ids_by.items()
+                    for i in (ids if len(ids) <= args.sample_per_word else random.Random(f"{args.sample_seed}:{f}").sample(sorted(ids), args.sample_per_word))}  # fmt: skip
+            prompts = [p for p in prompts if p["id"] in keep]
+            print(f"sampled {args.sample_per_word} per word (seed {args.sample_seed}): {len(keep)} items", flush=True)
     else:
         competence = COMPETENCE if args.wording == "A" else {f: "competence_b_v1" for f in ("BL", "BR", "RL", "RR")}
         if args.competence:  # a new target: its own suite_v1 competence run decides eligibility
@@ -603,6 +613,8 @@ if __name__ == "__main__":
     ap.add_argument("--families", nargs="+", default=["BL", "BR", "RL", "RR", "R", "B"])
     ap.add_argument("--kinds", nargs="+", default=["clean"], choices=["clean", "hop", "step1", "step2", "step3"])
     ap.add_argument("--n", type=int, default=100)
+    ap.add_argument("--sample-per-word", type=int, default=0, help="tasks: a seeded random N items per word (0: all eligible, then --n)")
+    ap.add_argument("--sample-seed", type=int, default=0)
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument(
         "--pad", action="store_true", help="length-sorted right-padded batches (validated against exact-length)"

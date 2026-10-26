@@ -83,18 +83,20 @@ PY
           || { fail "$KEY test competence" /workspace/scratch/$cn.log; continue; }
         python3 -c "import json,sys; s=json.load(open(sys.argv[1]))['by_word_level']; print('=== NQCOMP', sys.argv[2], {k: round(v['whole'], 2) for k, v in s.items()})" results/tasks_v2/$cn/summary.json $KEY
       fi
+      S=$(cat /workspace/scratch/${P}sample.txt 2>/dev/null); SA=""  # amendment 49: a seeded random N per word if the file holds N
+      [[ "$S" =~ ^[0-9]+$ ]] && SA="--sample-per-word $S --sample-seed 0" && echo "=== $KEY $kind: $S items per word (seed 0)"
       if [ $kind = test ]; then
         r=${P}${SET}_ko_cand2_v1
         echo "=== ablate_v2/$r at L$band $(date -u +%T)"
         [ -f results/ablate_v2/$r/summary.json ] || $PY scripts/ablate_v2.py --name $r --why "$W: $KEY, v2 facts at L$band (dev-chosen)" --plan bands \
           --bands $band --conditions paper10 paper10_rot unembed10 unembed10_rot --tasks $SET --tasks-competence $cn --tasks-words $FACTS \
-          --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 > /workspace/scratch/$r.log 2>&1 || { fail "$KEY v2 KO" /workspace/scratch/$r.log; continue; }
+          --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 $SA > /workspace/scratch/$r.log 2>&1 || { fail "$KEY v2 KO" /workspace/scratch/$r.log; continue; }
         $PY scripts/jsuite2_score.py $r --set $SET --by-relation | grep -E "^facts (paper10|unembed10|paper10_rot|unembed10_rot) +(start=|half=)" | sed "s/^/=== NQV2 $KEY: /"
       else
         r=${P}jswap_v2_v1; rb=${P}bridge_readout_v2_v1
         echo "=== jswap/$r at L$band $(date -u +%T)"
         [ -f results/jswap/$r/summary.json ] || $PY scripts/jswap.py --name $r --why "$W: $KEY on v2 at L$band (dev-chosen)" --set $SET --band $band \
-          --competence $cn --batch 8 > /workspace/scratch/$r.log 2>&1 || { fail "$KEY jswap" /workspace/scratch/$r.log; continue; }
+          --competence $cn --batch 8 $SA > /workspace/scratch/$r.log 2>&1 || { fail "$KEY jswap" /workspace/scratch/$r.log; continue; }
         grep -E "^(PM|TM|PN|TN|PK|TK|PP|TP) (swap|remove|swap_rot|swap_u|swap_comp|paste) " /workspace/scratch/$r.log | sed "s/^/=== NQSWAP $KEY /"
         $PY scripts/jswap_by_relation.py $r --set $SET | grep -v -i warn | sed "s/^/=== NQSWAPREL $KEY /"
         [ -f results/bridge_readout/$rb/summary.json ] || $PY scripts/bridge_readout.py --name $rb --set $SET --competence $cn --batch 8 \
