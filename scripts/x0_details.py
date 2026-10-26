@@ -191,6 +191,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     x4_numbers(num)
     predictions_numbers(num)
     x8_numbers(num)
+    x8_order_numbers(num)
     t_pointer_numbers(num)
     first_sentence_numbers(num)
     ld_numbers(num)
@@ -586,6 +587,35 @@ def x8_numbers(num: Numbers) -> None:
         for c in json.loads(found[-1].read_text())["cells"]:
             if c["pair"] is None:
                 num.add(f"x8_{'t' if c['kind'] == 'write' else 'rand'}{c['s']:g}_{m}", ci(c["target"]), src)
+
+
+# Batch 44 B (order / sentence index / distance); Muse: the rerun at the window fixed in advance (its BOS miscount fixed)
+X8_ORDER = {"9b": "qwen35_9b_x8_order", "27b": "x8_order_27b", "122b": "qwen35_122b_x8_order_g75",
+            "muse": "muse30b_x8_order_r2"}  # fmt: skip
+
+
+def x8_order_numbers(num: Numbers) -> None:
+    """Batch 44 B: per model the mean beta of B1 / B2 (the verdict) and, after the data, B1's for items in the first slot
+    (j = 0, point estimate); for the README's line the models landed so far and the range of that j = 0 shift."""
+    label = {"9b": "9B", "27b": "27B", "122b": "122B", "muse": "Muse"}
+    landed, j0 = [], []
+    for m, run in X8_ORDER.items():
+        found = sorted((pins.RESULTS_DIR / "x8_write" / run).glob("verdict-*/verdict.json"))
+        if not found:
+            continue
+        v = json.loads(found[-1].read_text())["variants"]
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        for b in ("B1", "B2"):
+            num.add(f"x8_order_{b.lower()}_{m}", ci(v[b]["beta"]), src)
+        rows = [r for r in X.read_jsonl(found[-1].parent.parent / "outcomes.jsonl") if r["j"] == 0 and "B1" in r]
+        beta0 = sum(r["B1"]["beta"] for r in rows) / len(rows)
+        num.add(f"x8_order_b1_j0_{m}", f2(beta0), src.rsplit("/", 2)[0] + "/outcomes.jsonl")
+        landed.append(label[m])
+        j0.append(beta0)
+    src = "results/x8_write (" + ", ".join(X8_ORDER.values()) + ")"
+    num.add("x8_order_models", " and ".join([", ".join(landed[:-1]), landed[-1]]) if len(landed) > 1
+            else "".join(landed) or "–", src)  # fmt: skip
+    num.add("x8_order_j0_range", f"{f2(min(j0))}-{f2(max(j0))}" if j0 else "–", src)
 
 
 def t_pointer_numbers(num: Numbers) -> None:

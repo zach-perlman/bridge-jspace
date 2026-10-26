@@ -534,8 +534,8 @@ def fig6(plt) -> None:
             else None
         )
         dx = {(x["condition"], x["reader"], x["part"]): x for x in (d1 or {}).get("extra", [])}
-        if not dx:
-            S.empty(third, "not run")
+        if not dx:  # batch 40 covered the 9B, the 27B and Muse only (Dan ~16:40: "not in this test")
+            S.empty(third, "not in this test")
         else:
             for i, (src, part, _) in enumerate(D1_PARTS):
                 e = (dx if src == "d1" else ex).get(("C0", X.LOOKUP, part))
@@ -733,7 +733,7 @@ def fig9(plt) -> None:
     pairs = latest(pins.RESULTS_DIR / "x8_write", "pairs-*/pairs.json") or {}
     fig, axes = plt.subplots(2, len(S.MODELS), figsize=(S.WIDTH, 6.0), gridspec_kw={"height_ratios": [1.1, 1]})
     fig.subplots_adjust(left=0.19, right=0.995, top=0.76, bottom=0.10, wspace=0.12, hspace=0.62)
-    fig.suptitle("Our pointer directions mostly mark the first sentence;\nthe model tells later places apart without them", x=0.01,
+    fig.suptitle("Our pointer directions mostly separate the first-mentioned item from the rest;\nthe model tells later places apart without them", x=0.01,
                  y=0.995, ha="left", fontsize=12, weight="bold")  # fmt: skip
     for j, (target, _m, name) in enumerate(S.MODELS):
         top, bot = axes[0, j], axes[1, j]

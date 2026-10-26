@@ -5303,6 +5303,14 @@ numbers,,x8_t2_muse,"0.52 [0.48, 0.55]",,,,results/x8_write/muse30b_x8_write/ver
 numbers,,x8_t4_muse,"0.52 [0.50, 0.54]",,,,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
 numbers,,x8_rand1_muse,"0.00 [0.00, 0.00]",,,,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
 numbers,,x8_rand4_muse,"0.01 [0.00, 0.02]",,,,results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json
+numbers,,x8_order_b1_9b,"0.15 [0.13, 0.16]",,,,results/x8_write/qwen35_9b_x8_order/verdict-20261026T151045Z/verdict.json
+numbers,,x8_order_b2_9b,"0.15 [0.14, 0.17]",,,,results/x8_write/qwen35_9b_x8_order/verdict-20261026T151045Z/verdict.json
+numbers,,x8_order_b1_j0_9b,0.23,,,,results/x8_write/qwen35_9b_x8_order/outcomes.jsonl
+numbers,,x8_order_b1_27b,"0.17 [0.15, 0.19]",,,,results/x8_write/x8_order_27b/verdict-20261026T152255Z/verdict.json
+numbers,,x8_order_b2_27b,"0.17 [0.16, 0.18]",,,,results/x8_write/x8_order_27b/verdict-20261026T152255Z/verdict.json
+numbers,,x8_order_b1_j0_27b,0.34,,,,results/x8_write/x8_order_27b/outcomes.jsonl
+numbers,,x8_order_models,9B and 27B,,,,"results/x8_write (qwen35_9b_x8_order, x8_order_27b, qwen35_122b_x8_order_g75, muse30b_x8_order_r2)"
+numbers,,x8_order_j0_range,0.23-0.34,,,,"results/x8_write (qwen35_9b_x8_order, x8_order_27b, qwen35_122b_x8_order_g75, muse30b_x8_order_r2)"
 numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_natural_9b,not tested (gate),,,,results/t_pointer/verdict-20261026T140221Z/verdict.json

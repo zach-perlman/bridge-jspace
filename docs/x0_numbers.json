@@ -18059,6 +18059,38 @@
   "text": "0.01 [0.00, 0.02]",
   "source": "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.json"
  },
+ "x8_order_b1_9b": {
+  "text": "0.15 [0.13, 0.16]",
+  "source": "results/x8_write/qwen35_9b_x8_order/verdict-20261026T151045Z/verdict.json"
+ },
+ "x8_order_b2_9b": {
+  "text": "0.15 [0.14, 0.17]",
+  "source": "results/x8_write/qwen35_9b_x8_order/verdict-20261026T151045Z/verdict.json"
+ },
+ "x8_order_b1_j0_9b": {
+  "text": "0.23",
+  "source": "results/x8_write/qwen35_9b_x8_order/outcomes.jsonl"
+ },
+ "x8_order_b1_27b": {
+  "text": "0.17 [0.15, 0.19]",
+  "source": "results/x8_write/x8_order_27b/verdict-20261026T152255Z/verdict.json"
+ },
+ "x8_order_b2_27b": {
+  "text": "0.17 [0.16, 0.18]",
+  "source": "results/x8_write/x8_order_27b/verdict-20261026T152255Z/verdict.json"
+ },
+ "x8_order_b1_j0_27b": {
+  "text": "0.34",
+  "source": "results/x8_write/x8_order_27b/outcomes.jsonl"
+ },
+ "x8_order_models": {
+  "text": "9B and 27B",
+  "source": "results/x8_write (qwen35_9b_x8_order, x8_order_27b, qwen35_122b_x8_order_g75, muse30b_x8_order_r2)"
+ },
+ "x8_order_j0_range": {
+  "text": "0.23-0.34",
+  "source": "results/x8_write (qwen35_9b_x8_order, x8_order_27b, qwen35_122b_x8_order_g75, muse30b_x8_order_r2)"
+ },
  "tptr_pooled_9b": {
   "text": "0.11 [0.08, 0.13]",
   "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"

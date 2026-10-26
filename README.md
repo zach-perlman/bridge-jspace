@@ -7,13 +7,13 @@
 
 - Recall needs the part of the bridge word a lens can read (J++); the lookup, which reads its answer from the prompt, mostly does not. This holds on four models from two families, and on the logit difference too. The gap is smaller outside simple scenes.
 - In simple scenes, the lookup instead takes which item it is (identity, mostly outside J++) and where that item was first mentioned (a pointer). One fixed vector written into the bridge word moves the lookup to the locker of the mention it points at. Under a strong write, the recall follows it to that mention's item.
-- Our pointer directions mostly mark "first sentence of the prompt". The model also tells later positions apart, but mostly outside them. Fit on simple scenes, they explain little in varied scenes and natural text. About half of the route around the lens is still unexplained.
+- Our pointer directions mostly separate the first-mentioned item from the rest. The model also tells later positions apart, but mostly outside them. Fit on simple scenes, they explain little in varied scenes and natural text. About half of the route around the lens is still unexplained.
 - Why it matters: a lens shows what the bridge is. What steers a lookup from context is where it was mentioned, and the lens does not show that.
 
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at d7e526e7 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at 4d44d449 from the run files.
 
 ## Setup
 
@@ -45,12 +45,12 @@
 | Only the asked person's pick changes | 0.39 [0.30, 0.46] | 0.56 [0.45, 0.65] | 0.28 [0.15, 0.39] | 0.67 [0.53, 0.80] |
 | Matched: fresh scenes, both locker sentences first, only the asked pick changes | 0.13 | 0.37 | 0.06° | 0.32 |
 | Varied scenes | 0.22 [0.14, 0.31] | 0.47 [0.42, 0.53] | 0.15 [0.12, 0.18] | 0.50 [0.40, 0.61] |
-| Natural passages | 0.52 [0.36, 0.68]° | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | 0.95 [0.64, 1.33]‡ |
+| Natural passages | 0.52 [0.36, 0.68]° | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | not measurable‡ |
 | More J++ directions removed, 100: gap (27B: lookup's extra loss at 25 / 50 / 100) | 0.54 | 0.12 / 0.30 / 0.60 | 0.55 | 0.85 |
 | Logit difference: gap | 0.48 [0.42, 0.53] | 0.47 [0.42, 0.51] | 0.33 [0.29, 0.38] | 0.61 [0.52, 0.68] |
 | Logit difference (lookup / recall extra loss) | −0.05 [−0.07, −0.03] / 0.43 [0.37, 0.48] | 0.13 [0.11, 0.16] / 0.60 [0.54, 0.65] | −0.02 [−0.05, −0.00] / 0.31 [0.26, 0.34] | −0.03 [−0.05, −0.02] / 0.58 [0.49, 0.65] |
 
-*°: after the data, the gate lowered to 0.75. ‡: the lookup switches in only 10 of 60 passages.*
+*°: after the data, the gate lowered to 0.75. ‡: the lookup switches in only 10 of 60 passages; recall 0.75 [0.62, 0.86], lookup −0.20 [−0.55, 0.00].*
 
 ![No other part costs the recall as much as the scene's own J++](figures/story/fig2_parts.png)
 *Fig. 2. †: two people swap picks; others: only the asked pick changes.*
@@ -99,15 +99,18 @@
 *°: after the data, the gate lowered to 0.75.*
 
 ![Writing the pointer: one fixed vector per slot pair, against a random direction](figures/story/fig8_writes.png)
-*Fig. 8. The dose fixed in advance (s = 1) moves nothing on any model; s\* marks a real pointer change's size. The real change's pointer part does not move the lookup between slots 1 and 2 either, while the whole change does: our 4 directions miss how the model tells later slots apart.*
+*Fig. 8. s\* marks a real pointer change's size.*
 
 ## 4. How far the pointer reaches
 
 *After the data, except the transfer bars and the identity direction, fixed in advance.*
 
-- **First sentence.** The pointer directions we found mostly mark whether the item's mention was the prompt's first sentence (Fig. 9a). In the routes test only their part moves the lookup to or from slot 0, not between slots 1 and 2, while the whole change does (Fig. 9b): the position route exists for other places too, mostly outside these directions.
+- **First mention.** The pointer directions we found mostly separate the first-mentioned item from the rest (Fig. 9a); alone, they move the lookup only to or from slot 0 (Fig. 9b).
+- **Order, not position.** A neutral sentence before the first locker barely moves the code (B, 9B and 27B), so it tracks the order of mentions, not the position in the text; items in the first slot shift a little (0.23-0.34).
+- **Halfway writes** are asymmetric: from the first slot they sometimes land on the second, from the third almost never; the code is first-vs-rest, not a line.
+- **A pointer found without slot labels** overlaps ours by about a third, is as causal, and also misses the moves between slots 1 and 2 on the Qwens.
 - **Transfer.** Fit on simple scenes and not refit, they cost the lookup 0.05 to 0.15 in varied scenes and 0.07 to 0.25 in natural passages, while the lookup still does not need J++ there (Fig. 10).
-- **What is left.** J++ and the pointer directions removed together leave about half of the sanity swap's lookups switching, and cost more than the pointer alone only on the 27B. Adding the item's identity outside J++ leaves fewer, but a random part of the same share removes most switches too (Fig. 6, table). About half of the route around the lens is still unexplained. The recall needs identity on the 27B and Muse, not the 9B.
+- **What is left.** J++ and the pointer directions removed together leave about half of the sanity swap's lookups switching (Fig. 6, table); adding identity outside J++ leaves fewer, but so does a random part of its share. About half of the route around the lens is still unexplained. The recall needs identity on the 27B and Muse, not the 9B.
 
 | Pointer directions, by where the item sits | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
@@ -121,13 +124,13 @@
 | Natural passages (the fact before the bridge) | not tested (gate) | 0.07 [0.00, 0.18] | 0.07 [−0.02, 0.16] | 0.25 [0.00, 0.50] |
 | Sanity swap, both removed minus the pointer alone | 0.12 [0.04, 0.19] | 0.26 [0.19, 0.32] | 0.09 [0.03, 0.16]° | 0.03 [−0.03, 0.08] |
 | Lookups still switching: J++ and the pointer removed | 0.46 [0.41, 0.50] | 0.53 [0.48, 0.57] | 0.50 [0.45, 0.55]° | 0.74 [0.68, 0.79] |
-| Same, with identity outside J++ / its random part | 0.07 [0.04, 0.11] / 0.38 [0.33, 0.43] | 0.18 [0.13, 0.22] / 0.67 [0.62, 0.72] | not run | 0.52 [0.47, 0.58] / 0.82 [0.76, 0.88] |
-| Recall's extra loss without identity | 0.09 [0.04, 0.15] | 0.44 [0.34, 0.55] | not run | 0.39 [0.28, 0.49] |
+| Same, with identity outside J++ / its random part | 0.07 [0.04, 0.11] / 0.38 [0.33, 0.43] | 0.18 [0.13, 0.22] / 0.67 [0.62, 0.72] | not in this test | 0.52 [0.47, 0.58] / 0.82 [0.76, 0.88] |
+| Recall's extra loss without identity | 0.09 [0.04, 0.15] | 0.44 [0.34, 0.55] | not in this test | 0.39 [0.28, 0.49] |
 | Switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03]° | 0.01 [−0.02, 0.03] |
 
 *°: after the data, the gate lowered to 0.75 (the routes and sanity-swap rows of the 122B).*
 
-![Our pointer directions mostly mark the first sentence; the model tells later places apart without them](figures/story/fig9_first_sentence.png)
+![Our pointer directions mostly separate the first-mentioned item from the rest; the model tells later places apart without them](figures/story/fig9_first_sentence.png)
 ![The split travels; our pointer does not](figures/story/fig10_transfer.png)
 ![Removing J++, the pointer directions and identity together](figures/story/fig6_both_removed.png)
 *Fig. 9, Fig. 10, Fig. 6. Fig. 6: dots against dotted bars; grey: recall; each part's share of the change on its bar.*
@@ -174,7 +177,6 @@
   - The write's dose fixed in advance, s = 1, was below a real change's size on every pair (s needed: 9B 1.36 to 2.70; 27B 1.04 to 2.08; 122B 1.37 to 2.76; Muse 1.12 to 2.30).
   - The bar for J++, the pointer and identity removed together was out of reach at their share: the random part removes most switches on the Qwens.
 - **Limits.**
-  - The pointer directions are fit on 5 slot labels and carry mostly first-vs-rest; the code for later slots is not captured (per-move table).
   - The locker number at the bridge word: never the answer; digit directions cost 0.00.
   - One-token answers and bridges; the reader is confounded with the answer's source (prompt vs memory). The 122B in FP8.
   - Zach's knock-out finds the split weak outside Qwen; our change-removal finds it on Muse.
@@ -188,7 +190,7 @@
 
 ## 8. Related work and what is new
 
-Language models bind an entity to its attributes in context (Feng & Steinhardt 2023) and track entities through pointer-like mechanisms (Prakash et al.); the order of bound entities lives in a low-dimensional subspace (Dai et al. 2024). Two-hop recall resolves its bridge early (Biran et al. 2024). Our routes test sets identity, position and value against each other as in Gur-Arieh et al. (2025); the pointer directions are mass-mean directions (Marks & Tegmark 2023); a part that moves an answer when added alone can mislead (Makelov et al. 2023), so every part has a random part of its size beside it. The lens is the workspace paper's J++ (Gurnee et al. 2026). New here: two readers of one word need different parts of it, the lens-readable part only for recall; our pointer directions mostly mark the first sentence; one fixed vector steers the lookup.
+Language models bind an entity to its attributes in context (Feng & Steinhardt 2023) and track entities through pointer-like mechanisms (Prakash et al.); the order of bound entities lives in a low-dimensional subspace (Dai et al. 2024). Two-hop recall resolves its bridge early (Biran et al. 2024). Our routes test sets identity, position and value against each other as in Gur-Arieh et al. (2025); the pointer directions are mass-mean directions (Marks & Tegmark 2023); a part that moves an answer when added alone can mislead (Makelov et al. 2023), so every part has a random part of its size beside it. The lens is the workspace paper's J++ (Gurnee et al. 2026). New here: two readers of one word need different parts of it, the lens-readable part only for recall; our pointer directions mostly separate the first-mentioned item from the rest; one fixed vector steers the lookup.
 
 ## 9. Next
 
