@@ -602,8 +602,8 @@ TARGETS["nemotron-3.5-bolt"] = {
         "hub_mamba": {"repo": "kernels-community/mamba-ssm", "revision": "28017f36635a6b94d911333812beeed5dd901ac0"},
     },
     "frozen_lens": "jpp",  # our J++ (amendment 45; Zach: no plain J-lenses); fit not yet built
-    "lenses": {"jpp": ("local", "cache/nemotron-3.5-bolt/lenses/jpp/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jpp_lens.pt", None)},
-    "frozen_lens_sha256": None,  # set when the Bolt fit is done
+    "lenses": {"jpp": ("local", "cache/nemotron-3.5-bolt/lenses/jpp/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jpp_lens.pt", "a29ea5bf92976c202c65a72a3a0e139bfd19ea68353722bbab78a094d8e24040")},  # our J++, LN rule only (h200_nemfit_1025.sh); held-out macro pass@10: {'NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16_jpp_lens': 0.8, 'logit': 0.658, 'pooled_lens': 0.751}
+    "frozen_lens_sha256": "a29ea5bf92976c202c65a72a3a0e139bfd19ea68353722bbab78a094d8e24040",
 }
 
 # 2026-10-25: the 9B split over two GPUs (blocks 0-15 on cuda:0, 16-31 on cuda:1), to check model.split_gpus against the
