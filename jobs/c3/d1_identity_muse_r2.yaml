@@ -1,0 +1,24 @@
+id: d1_identity_muse_r2
+title: "D1 (batch 40) for Muse L26, rerun on the helper box: d1_identity's Muse step stopped on an entity without a class mean (zebra); scenes whose two entities lack class means now dropped and counted"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name muse30b_x6_routes_d1_r2 --conditions C0,C2 --identity --c0-min 0.5
+question: >-
+  Does the lookup's route at the bridge word come down to the identity direction, the pointer directions and J++: what is left of its switches without all three, does the rank-1 identity direction carry the identity answers (another item moved), and does the recall need it?
+why_it_matters: >-
+  Completes the accounting (Dan): J++ and the pointer directions removed together leave about half of the lookups switching (9B, 27B); the rest may be the item's identity outside J++.
+hypotheses:
+  H-batch40: 'Dan''s batch 40 (Q40.1-Q40.3), predictions/2026-10-26_dan.md, committed before any result is opened'
+decision_rule: >-
+  Fixed in advance (batch 40, ~11:55): the identity part per scene = the unit direction mu_alt - mu_org (the two entities' mean layout-free bridge-word states on the probe's fresh scenes, x0_probe v4, locker-before; layout means taken out as for the pointer directions); "identity outside J++" = it orthogonalized against the scene's 25 signed-OMP J++ atoms. Q40.1: the sanity swap, without J++ + the pointer directions + identity outside J++, the lookup's extra loss (switches lost minus its random part's) >= 0.80. Q40.2: another item moved, without identity (rank 1), the identity share falls >= 0.20 more than with its random part removed and the position share stays within 0.10 of the whole change's. Q40.3: the recall's extra loss without identity (rank 1) >= 0.20 in the sanity swap. Each counted over the 9B, the 27B and Muse. Gates as for the routes test (read accuracy 0.80; C0 within 0.10 of the reference, Muse C0 >= 0.50). Cluster bootstrap over the bridge item, 10,000 resamples, seed 0.
+controls:
+- 'each removal against a random part of its own share (per scene)'
+- 'the recall on the identical patch'
+- 'descriptive: without the identity subspace (rank = entities - 1), its share reported'
+n: '300 scenes per condition (the sanity swap, another item moved) per model'
+seeds: [2510, 0]
+notes: "Results stay closed until Dan's batch-40 answers are committed. Every part's share of the change in norms.jsonl; the identity subspace's rank in the manifest."

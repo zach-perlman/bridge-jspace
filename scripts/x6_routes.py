@@ -359,6 +359,11 @@ def stage_run(
     (out / "gate.json").write_text(json.dumps({"dropped": dropped, "gate": gate}, indent=2) + "\n")
     if not chosen:
         raise SystemExit("no condition passed the gate fixed in advance (or none had eligible items); see gate.json")
+    if identity:  # D1: mu_alt - mu_org needs both entities' class means (the probe's entities); other scenes dropped
+        ent_means = MM.entity_means(STATES[target])
+        keep = [c for c in chosen if c["bridge"] in ent_means and c["cf_bridge"] in ent_means]
+        m["identity_dropped"] = {cond: sum(c["condition"] == cond for c in chosen if c not in keep) for cond in conds}
+        chosen = keep
     sub = MM.subspaces(STATES[target])[0] if pointer else {}
     if alf_from:  # P_cf (x7_pcf, batch 43) in place of the mass-mean pointer directions
         sub["Alf"] = np.load(pins.RESULTS_DIR / alf_from / "pcf.npz")["P"]
@@ -391,8 +396,7 @@ def stage_run(
                          "keep_jpp": jpp, "keep_jpp_rand": SP.random_subspace_part(x, sh["jpp"], basis)})  # fmt: skip
         if identity:  # D1: the rank-1 identity direction mu_alt - mu_org, and it outside the scene's J++ atoms
             assert alf is not None
-            means = {e: torch.tensor(v, dtype=torch.float32, device="cuda")
-                     for e, v in MM.entity_means(STATES[target]).items()}  # fmt: skip
+            means = {e: torch.tensor(v, dtype=torch.float32, device="cuda") for e, v in ent_means.items()}
             u, u_out, atoms = identity_dirs(means, [(c["bridge"], c["cf_bridge"]) for c in chosen], jdic, x, X.K_MAIN)
             idsub = torch.tensor(sub["Id"], dtype=torch.float32, device="cuda")
             m["id_rank"] = int(idsub.shape[1])
