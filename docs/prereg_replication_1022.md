@@ -1551,3 +1551,38 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   (correct, correct_cand2, correct_top). Any difference is reported with its count, not explained away. The profiles
   are descriptive: the depth of the J-specific band on all relations, beside the country-only profile. Picks already
   used are not revisited.
+
+## Amendment 51 (Zach, 2026-10-26 03:26 UTC, before any run below; a 9B smoke of 2 jobs per word ran first for the mechanics and its numbers were seen): what the mention's J-part carries (scripts/jswap_pointer.py)
+
+- **Why (Zach: "Go ahead with 1-3"):** the cross-relation swap (amendment 47) and the probe swap (amendment 48) say the
+  mention's J-part at mid depth carries which entity, and that the attribute is recalled later. Three open questions:
+  1. Does this hold beyond the country relations?
+  2. Is the J-part just the entity's name?
+  3. Where is the attribute looked up?
+- **Design:** jswap's jobs (same donors, thirds and positions, so `swap` reproduces jswap) on every facts relation,
+  words PP PK PM PA PN TP TK TM TA TN, at the model's band, 150 random jobs per word (seed "0:WORD", amendment 49).
+  1. **Context-free donor.** D's J-part comes from a one-sentence neutral prompt in the same chat framing: "A reader
+     asked a question about D in the letters page.", a sentence the passages use. Conditions: swap_neutral, its
+     same-size rotation (swap_neutral_rot), the logit lens's top-10 (swap_neutral_u), the whole residual
+     (paste_neutral).
+  2. **Own name.** Own-word rows are each entity's surface tokens plus every row with cosine >= 0.5 to its concept
+     token (ablate_v2's keep_own rows).
+     - swap_own swaps only the span of up to 10 own-word rows with the highest logits at each side.
+     - swap_noown is jswap's swap with the own-word rows (and the answer's protected rows) never chosen.
+  3. **Timeline.** Under none, swap and swap_neutral, the J++ lens's pick among the item's candidate answers at the
+     answer position, at every lens layer from the band's first on.
+- **Measure:** transfer (donor - third) on the memory finals pooled (PM PA PN TM TA TN), overall and per relation,
+  95% bootstrap over bridges.
+- **Readings, fixed now:**
+  1. **Context-free donor.** swap_neutral >= 2/3 of swap means the J-part carries the entity whatever its context;
+     <= 1/3 means what transfers depends on the passage; otherwise mixed. "General across relations" means >= 2/3 on at
+     least 6 of the 8 relations where swap >= 10. Predictions: swap_neutral_rot and swap_neutral_u < 5; lookups
+     (PP PK TP TK) kept >= 80% under every condition. Not read if swap < 10.
+  2. **Own name.** swap_noown <= 1/3 of swap means what the J-part carries is the entity's own-word directions (its
+     name, as the model will say it); >= 2/3 means it carries the entity beyond those directions; otherwise mixed.
+     swap_own is reported beside it, descriptive.
+  3. **Timeline (descriptive).** On memory items right unedited, the share whose lens pick at the answer position is
+     X's answer (none) or D's (swap) at each layer. Also reported: the first layer from which D's answer leads in more
+     than half the items.
+- **Runs (scripts/queues/h200_ptr_1026.sh):** the 9B at L12-16 first (beside the 27B renderings, before Bolt). Then
+  the 27B at L32-40 and Lightning at L27-33, after Monday's queue.
