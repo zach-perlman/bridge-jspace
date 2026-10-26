@@ -1774,3 +1774,26 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - GPU 0: 27B, then 9B, then Lightning's clean rerun.
   - GPU 1: Lightning, Lightning's position split, then Ministral.
   - Then both GPUs: Bolt, then Bolt's position split.
+
+### Amendment 54 note 1 (Zach, 2026-10-26 23:28 UTC, after Lightning's dose grid, before any other model's dose result)
+
+- **Seen first:** Lightning's grid at L27-33.
+  - J++ M − K at K 1 / 3 / 10 / 30 / 100 / 300: +46 / +50 / +51 / +54 / +54 / +69.
+  - Greedy stated facts lose 1-5 at every K.
+  - Rotated: +3 / +2 / +4 / +5 / +8 / +18.
+  - Size-matched: +8 / +9 / +15 / +30 (K 10 / 30 / 100 / 300).
+  - By probability, stated facts lose 8 / 10 / 10 / 29 / 50 / 56, and the soft M − K falls from +44 at K 10 to +18 at
+    K 300.
+- **The plateau reading as written uses the greedy J++ M − K and a greedy limit.** On Lightning:
+  - no K reaches the limit, so the largest value is K 300's +69 and K\* = 300 ("distributed");
+  - yet K 1 alone already gives +46;
+  - the step at 300 comes with the rotated and size-matched controls rising too;
+  - stated facts keep their top candidate but lose half their probability from K 30 on.
+  - The pre-registered reading is still reported, as written, for every model.
+- **Added now, as secondary readings for every model in the grid:**
+  - **Excess plateau:** the plateau K\* computed on the J-specific excess (J++ M − K minus the larger of rotated and
+    size-matched) instead of the raw J++ M − K. Same 90% rule, same concentrated / distributed bands.
+  - **Probability limit:** the smallest K at which stated facts lose > 10 points by probability (soft score). Readings
+    are also given only for K below it.
+  - **Lightning under both:** the excess is 43 / 48 / 43 / 45 / 39 / 39, so the excess K\* = 1 (concentrated). Its
+    probability limit is K 30.
