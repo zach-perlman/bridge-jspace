@@ -1,0 +1,65 @@
+{
+  "exp": "x0b_generalize",
+  "run": "x0b_v2_ptr_27b",
+  "why": "",
+  "written_utc": "2026-10-26T11:25:23Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "b3a6f2292fb2865f0ee6dd09afdba6bff4a96509",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "set": "x0b_v2",
+  "inputs": {
+    "data/tasks_v2/x0b_v2/items.jsonl": "3d327acdaebb68b531d6c49c03b4fb38c8002402d423ab94ec118877a12f87f3",
+    "jobs/c3/X0b.md": "fd3178831224a500e23984e3f41ed25af363f3686911d00a78038ef2fa53d7fd"
+  },
+  "layers": [
+    32
+  ],
+  "predicted": 32,
+  "dicts": [
+    "jpp",
+    "alf"
+  ],
+  "k": 25,
+  "cap_per_cell": 40,
+  "gate": "per cell ('domain', 'format', 'level'): >= 0.8 unedited org accuracy (decisive read), both readers",
+  "alt": "the asked pick becomes another person's pick (first by name with a different locker and memory number that aligns); built here for every domain",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  },
+  "rule": {
+    "hold": [
+      0.1,
+      0.2,
+      0.2,
+      0.1
+    ],
+    "fail": [
+      0.2,
+      0.1
+    ]
+  },
+  "k_curve": [],
+  "formats": [],
+  "levels": [],
+  "pointer_from": "x0_probe_v4_27b",
+  "design": "jobs/c3/X0b.md (v2, exploratory)"
+}
