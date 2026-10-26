@@ -1638,3 +1638,24 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - first_token_logits now reads each row at its own last position when the model returns every position. Checked
     on a random-weight 8-block Bolt: padded reads give the same argmax as one-by-one reads (4 of 4).
   - The fast-competence check against the exact path never finished (stopped). No Bolt result uses a padded path.
+
+## Amendment 52 (Zach, 2026-10-26 16:45 UTC, before any run below): is Bolt's dependence spread over more directions?
+
+- **Why (Zach: "possible bolt didn't work because we didn't remove enough directions? M-K went up with more directions
+  removed right?"):** Bolt's dev dose at L42-53 rose with K (top1 +1, top3 +1, top10 +8, top30 +15 [6, 24];
+  rotations 0; K lost 0). The Qwens and Lightning saturate by K <= 10. Bolt's J-part swap (K = 10) carried +2.8 against
+  a paste ceiling of +19.5. Both readings use K = 10, which may be too few directions for Bolt.
+- **Design (scripts/queues/h200_boltk_1026.sh):** at L42-53, on the same 150 random items per word as Bolt's top-10 test
+  (seed 0).
+  - Removal sizes: removal_size.py --ks 10 30 100.
+  - Knock-out: top30, top30_rot, top100, top100_rot, unembed30, unembed100.
+  - J-part swap: jswap --k 30 and --k 100 (the swapped span is the top-K J++ directions; the other five conditions at
+    that K).
+- **Readings, fixed now:**
+  - **Knock-out.** M - K at top100 >= 30, with its rotation <= 5 and the logit lens at 100 below half of it, means the
+    dependence is distributed (more directions than K = 10). M - K < 15 at top100 means it is absent. Otherwise, weak.
+    K (stated-fact) loss is reported beside each, and removal size beside each K.
+  - **Swap.** The memory finals pooled. A K-part swap >= 2/3 of paste means the identity is in J-space, spread over K
+    directions. <= 1/3 at K = 100 means it is not in J-space at that depth. Otherwise, partial.
+  - Size caveat: a top-100 span takes more of the residual than top-10. The rotated K-span is the same-size control,
+    and the logit lens at K is the same-rule control.

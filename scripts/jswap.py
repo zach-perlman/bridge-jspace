@@ -117,7 +117,7 @@ def main(a) -> None:
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     band = list(range(int(a.band.split("-")[0]), int(a.band.split("-")[1]) + 1))
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "band": a.band,
-                                                       "set": a.set, "competence": a.competence, "conditions": a.conds, "k": 10,
+                                                       "set": a.set, "competence": a.competence, "conditions": a.conds, "k": a.k,
                                                        "git_commit": commit, "git_state": pins.git_state(), "limit": a.limit, "sample_per_word": a.sample_per_word, "sample_seed": a.sample_seed}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -238,7 +238,7 @@ def main(a) -> None:
                     else:
                         D = unembed if cond == "swap_u" else dic[la]
                         g = groups_na if cond == "swap_noans" else groups
-                        rx, rd = top_span_removal(D, hx, 10, protected=g), top_span_removal(D, hd, 10, protected=g)
+                        rx, rd = top_span_removal(D, hx, a.k, protected=g), top_span_removal(D, hd, a.k, protected=g)
                         new = {"swap": hx - rx + rd, "remove": hx - rx, "swap_rot": hx + (rd - rx) @ rot[la].T, "swap_u": hx - rx + rd,
                                "swap_comp": rx + hd - rd, "paste": hd, "swap_noans": hx - rx + rd}[cond]  # fmt: skip
                     h = h.clone()
@@ -298,4 +298,5 @@ if __name__ == "__main__":
     ap.add_argument("--sample-per-word", type=int, default=0, help="a seeded random N jobs per word (0: all)")
     ap.add_argument("--sample-seed", type=int, default=0)
     ap.add_argument("--conds", nargs="+", default=list(CONDS), choices=list(CONDS + ANS_CONDS), help="conditions (default: the original six)")
+    ap.add_argument("--k", type=int, default=10, help="size of the swapped J-part (2026-10-26, amendment 52; default jswap's 10)")
     main(ap.parse_args())
