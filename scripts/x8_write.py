@@ -471,6 +471,9 @@ KEEPONLY = {"qwen3.5-9b": "qwen35_9b_x6_routes_keeponly", "qwen3.6-27b": "x6_rou
 X8_RUN = {"qwen3.5-9b": "qwen35_9b_x8_write", "qwen3.6-27b": "x8_write_27b", "qwen3.5-122b-a10b": "qwen35_122b_x8_write_g75",
           "muse-glimmer-30b": "muse30b_x8_write"}  # fmt: skip
 PAIRS = ((0, 1), (0, 2), (1, 2))
+# batch 43's routes runs with the label-free pointer (P_cf, --alf-from; their no_alf / keep_alf arms remove / keep it)
+PCF_ROUTES = {"qwen3.5-9b": "qwen35_9b_x6_routes_pcf", "qwen3.6-27b": "x6_routes_pcf_27b",
+              "qwen3.5-122b-a10b": "qwen35_122b_x6_routes_pcf_g75", "muse-glimmer-30b": "muse30b_x6_routes_pcf"}  # fmt: skip
 
 
 def half_means(states_run: str, entities: set[str]) -> tuple[dict[int, np.ndarray], np.ndarray, list[dict]]:
@@ -495,36 +498,35 @@ def half_means(states_run: str, entities: set[str]) -> tuple[dict[int, np.ndarra
     return {k: res[[i for i, x in enumerate(idx) if x == k]].mean(0) for k in sorted(set(idx))}, res, its
 
 
-def swapped_pair(case: dict) -> tuple[int, int]:
-    """The two slots whose locker sentences the routes case's S swapped (C2: the moved item's and the other's)."""
-    o, s = slots_of(case["context"]), slots_of(case["cf_context"])
-    a, b = (i for i, (x, y) in enumerate(zip(o, s, strict=True)) if x[0] != y[0])
-    return a, b
+def pointer_move(case: dict) -> tuple[int, int]:
+    """Where the routes case's change moves the pointer: from the O bridge's locker slot (in O) to the S bridge's locker
+    slot (in S), comparable with x8's write j -> k (Dan 26 Oct ~16:00)."""
+    o, s = [x for x, _ in slots_of(case["context"])], [x for x, _ in slots_of(case["cf_context"])]
+    return o.index(case["bridge"]), s.index(case["cf_bridge"])
 
 
 def stage_pairs() -> Path:
-    """After the data, descriptive (Dan 26 Oct ~15:30; CPU): why the write between slots 1 and 2 moves the lookup least.
-    (a) the address vectors' stability: the class means refit on two halves of the probe states split by bridge entity
-    (seed 0), cos(mu_k - mu_j) between the halves per pair, and ||mu_k - mu_j|| against the pooled within-class spread of
-    the layout-free states projected on that pair's direction; (b) the real pointer part: in the routes test's keep-only
-    arm (C2, only the pointer part of each scene's own change added) the lookup's position share split by the two slots
-    whose locker sentences S swapped; beside it the mean-difference write's target share at s = 4 per pair."""
+    """After the data, descriptive (Dan 26 Oct ~15:30, regrouped ~16:00; CPU): the slot pairs. (a) The address vectors'
+    stability per pair: the class means refit on two halves of the probe states split by bridge entity (seed 0), cos(mu_k
+    - mu_j) between the halves, and ||mu_k - mu_j|| against the pooled within-class SD of the layout-free states along
+    that direction. (b) Per pointer move j -> k (the O bridge's slot -> the S bridge's slot, routes C2): the lookup's
+    position share under the whole change, without the pointer directions, without a random part of their size (the
+    routes run), and with only the pointer part or only a random part of its size (the keep-only run); beside it the
+    mean-difference write j -> k at s = 4 (x8: target share)."""
     import random
+
+    from scripts import x0_massmean as MM
 
     out = RESULTS / f"pairs-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     blob: dict = {"after_the_data": True}
-    lines = ["# The slot pairs: address stability and the real pointer part (after the data, descriptive)", "",
-             "(a) cos between the two halves' mu_k - mu_j (probe states split by bridge entity, seed 0); separation = "
-             "||mu_k - mu_j|| / the pooled within-class SD of the layout-free states along that direction (all states). "
-             "(b) Routes C2, keep-only arm: the lookup's position share with only the real change's pointer part added, by "
-             "the two slots S swapped; the whole change and the random part of the pointer's size beside it. x8: the "
-             "mean-difference write's target share at s = 4, both directions of the pair pooled. UNVERIFIED.", "",
-             "| model | pair | cos (half A, half B) | separation | ‖μk − μj‖ | within SD | x8 write s = 4 target | n | keep-only pointer: position | whole: position | keep-only random: position | n |",
-             "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    f = lambda v: "–" if v is None else f"{v:.2f}"  # noqa: E731
+    stab = ["## (a) The address vectors per slot pair", "",
+            "| model | pair | cos (half A, half B) | separation | ‖μk − μj‖ | within SD |", "|---|---|---|---|---|---|"]  # fmt: skip
+    move = ["## (b) Per pointer move j -> k: the lookup's position share (routes C2) and the mean-difference write", "",
+            "| model | move | n | whole | without the pointer | without its random part | only the pointer part | only a random part | x8 write s = 4: target | without P_cf | only P_cf |",
+            "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
     for target, states in R.STATES.items():
-        from scripts import x0_massmean as MM
-
         _, _, res, items, _ = MM.layout_free(states)
         mu = MM.pointer_means(states)
         idx = np.array([int(it["locker_index"]) for it in items])
@@ -534,36 +536,62 @@ def stage_pairs() -> Path:
             half_means(states, set(ents[: len(ents) // 2]))[0],
             half_means(states, set(ents[len(ents) // 2 :]))[0],
         ]
-        x8 = sorted((RESULTS / X8_RUN[target]).glob("verdict-*/verdict.json"))
-        cells = json.loads(x8[-1].read_text())["cells"] if x8 else []
-        keep = R.RESULTS / KEEPONLY[target]
-        cases = {c["scene"]: c for c in X.read_jsonl(keep / "cases.jsonl") if c["condition"] == "C2"}
-        rows = [r for r in X.read_jsonl(keep / "outcomes.jsonl") if r["condition"] == "C2" and r["reader"] == X.LOOKUP]
-        blob[target] = {}
+        blob[target] = {"pairs": {}, "moves": {}}
         for j, k in PAIRS:
             d = mu[k] - mu[j]
             u = d / np.linalg.norm(d)
             sd = float(np.sqrt((np.var(res[idx == j] @ u) + np.var(res[idx == k] @ u)) / 2))
             da, db = halves[0][k] - halves[0][j], halves[1][k] - halves[1][j]
             cos = float(da @ db / np.linalg.norm(da) / np.linalg.norm(db))
-            wr = [c for c in cells if c["kind"] == "write" and c["s"] == 4 and c["pair"] in ([j, k], [k, j])]
-            tgt = sum(c["target"][0] * c["n"] for c in wr) / max(1, sum(c["n"] for c in wr)) if wr else None
-            mine = [r for r in rows if r["scene"] in cases and tuple(sorted(swapped_pair(cases[r["scene"]]))) == (j, k)]
-            share = {arm: (float(np.mean([r["route"] == "position" for r in mine if r["arm"] == arm]))
-                           if any(r["arm"] == arm for r in mine) else None)
-                     for arm in ("keep_alf", "whole", "keep_alf_rand")}  # fmt: skip
-            n_keep = sum(r["arm"] == "keep_alf" for r in mine)
-            blob[target][f"{j}-{k}"] = {"cos_halves": cos, "separation": float(np.linalg.norm(d)) / sd,
-                                        "norm": float(np.linalg.norm(d)), "within_sd": sd, "x8_s4_target": tgt,
-                                        "x8_n": sum(c["n"] for c in wr), "position": share, "n_keeponly": n_keep}  # fmt: skip
-            f = lambda v: "–" if v is None else f"{v:.2f}"  # noqa: E731
-            lines.append(f"| {target} | {j} ↔ {k} | {cos:.2f} | {np.linalg.norm(d) / sd:.2f} | {np.linalg.norm(d):.2f} | "
-                         f"{sd:.2f} | {f(tgt)} | {sum(c['n'] for c in wr)} | {f(share['keep_alf'])} | {f(share['whole'])} | "
-                         f"{f(share['keep_alf_rand'])} | {n_keep} |")  # fmt: skip
-    lines += ["", "Reading (Dan, fixed before this table): if the real pointer part moves the lookup between slots 1 and 2 "
-              "but the mean-difference vector does not, or its direction is unstable across halves -> our estimate's "
-              "artefact; if neither moves it and the direction is stable -> the model's code separates the first slot from "
-              "the rest more than the second from the third."]  # fmt: skip
+            blob[target]["pairs"][f"{j}-{k}"] = {"cos_halves": cos, "separation": float(np.linalg.norm(d)) / sd,
+                                                 "norm": float(np.linalg.norm(d)), "within_sd": sd}  # fmt: skip
+            stab.append(
+                f"| {target} | {j} ↔ {k} | {cos:.2f} | {np.linalg.norm(d) / sd:.2f} | {np.linalg.norm(d):.2f} | {sd:.2f} |"
+            )
+        x8 = sorted((RESULTS / X8_RUN[target]).glob("verdict-*/verdict.json"))
+        cells = json.loads(x8[-1].read_text())["cells"] if x8 else []
+        rows = []
+        for run, arms in (
+            (ROUTES_OF[target], ("whole", "no_alf", "no_alf_rand")),
+            (KEEPONLY[target], ("keep_alf", "keep_alf_rand")),
+        ):
+            cases = {c["scene"]: c for c in X.read_jsonl(R.RESULTS / run / "cases.jsonl") if c["condition"] == "C2"}
+            rows += [(pointer_move(cases[r["scene"]]), r) for r in X.read_jsonl(R.RESULTS / run / "outcomes.jsonl")
+                     if r["condition"] == "C2" and r["reader"] == X.LOOKUP and r["arm"] in arms]  # fmt: skip
+        pcf_rows = []
+        pcf = R.RESULTS / PCF_ROUTES[target]
+        if (pcf / "outcomes.jsonl").exists():
+            cases = {c["scene"]: c for c in X.read_jsonl(pcf / "cases.jsonl") if c["condition"] == "C2"}
+            pcf_rows = [(pointer_move(cases[r["scene"]]), r) for r in X.read_jsonl(pcf / "outcomes.jsonl")
+                        if r["condition"] == "C2" and r["reader"] == X.LOOKUP and r["arm"] in ("no_alf", "keep_alf")]  # fmt: skip
+        for j, k in ((a, b) for a in SLOTS for b in SLOTS if a != b):
+            share, n = {}, 0
+            for arm in ("whole", "no_alf", "no_alf_rand", "keep_alf", "keep_alf_rand"):
+                mine = [r for mv, r in rows if mv == (j, k) and r["arm"] == arm]
+                share[arm] = float(np.mean([r["route"] == "position" for r in mine])) if mine else None
+                n = max(n, len(mine))
+            for arm in ("no_alf", "keep_alf"):
+                mine = [r for mv, r in pcf_rows if mv == (j, k) and r["arm"] == arm]
+                share[f"pcf_{arm}"] = float(np.mean([r["route"] == "position" for r in mine])) if mine else None
+            wr = next((c for c in cells if c["kind"] == "write" and c["s"] == 4 and c["pair"] == [j, k]), None)
+            blob[target]["moves"][f"{j}-{k}"] = {
+                "n": n,
+                "position": share,
+                "x8_s4_target": wr["target"][0] if wr else None,
+            }
+            main = ("whole", "no_alf", "no_alf_rand", "keep_alf", "keep_alf_rand")
+            move.append(f"| {target} | {j} → {k} | {n} | " + " | ".join(f(share[a]) for a in main)
+                        + f" | {f(wr['target'][0] if wr else None)} | {f(share['pcf_no_alf'])} | {f(share['pcf_keep_alf'])} |")  # fmt: skip
+    lines = ["# The slot pairs (after the data, descriptive)", "",
+             "(a) cos between the two halves' mu_k - mu_j (probe states split by bridge entity, seed 0); separation = ||mu_k - "
+             "mu_j|| / the pooled within-class SD of the layout-free states along that direction. (b) The routes test's C2 "
+             "items grouped by the pointer's move, from the O bridge's locker slot to the S bridge's (Dan's correction, "
+             "~16:00: the first version grouped by the two slots S swapped, which is not the pointer's move). UNVERIFIED.",
+             "", *stab, "", *move, "",
+             "Reading (Dan ~16:00): the pointer directions carry first slot vs the rest; the model also separates slots 1 and 2 "
+             "(the whole change gives position answers there) but mostly outside the 4 pointer directions. Neither branch of "
+             "the reading fixed before fits (that the mean-difference vector is our artefact, or that the model does not "
+             "separate 1 and 2): a third outcome."]  # fmt: skip
     (out / "pairs.json").write_text(json.dumps(blob, indent=1) + "\n")
     (out / "pairs.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

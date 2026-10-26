@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at d4a5f747 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 895e4823 from the run files.
 
 ## Setup
 
@@ -124,16 +124,17 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - The 27B's strict rule: lookup lost 0.14 [0.08, 0.20] (bar 0.10).
 - The 9B's fixed-in-advance replication: its J++ clause failed (recall 0.12 [0.06, 0.19]).
 - The gap everywhere: the 122B's varied scenes (0.15 [0.12, 0.18], every format alike) and the 27B's natural passages (0.27 [0.13, 0.41]) are in between.
-- Writing the pointer: s = 1, fixed in advance, was below a real pointer change's size on every slot pair (s needed: 9B 1.36 to 2.70; 27B 1.04 to 2.08; 122B 1.37 to 2.76; Muse not landed); a design error, not a finding.
+- Writing the pointer: s = 1, fixed in advance, was below a real change's size on every pair (s needed: 9B 1.36 to 2.70; 27B 1.04 to 2.08; 122B 1.37 to 2.76; Muse not landed): a design error, not a finding.
+- The pointer directions are fit on 5 slot labels and carry mostly first-vs-rest; the code for later slots is not captured (per-move table).
 - The locker number at the bridge word: never the answer; digit directions cost 0.00. The positive control (chemical symbols) stayed below its 0.20 bar: 27B 0.15 [0.10, 0.19].
-- Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup 0.78), the 122B's routes (recall 0.797) and replication (recall 0.77); their reruns at 0.75 are after the data, descriptive, none a confirmation. The 122B in FP8.
-- One-token answers (and one-token bridges in natural passages). The reader is confounded with the answer's source (prompt vs memory); Zach's M − K addresses it for the knock-out, not for these swaps.
-- With Zach's knock-out the split is weak outside Qwen; with our change-removal it holds on Muse (the two measure different things: necessity of the state vs whether the change transfers).
+- Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup 0.78), the 122B's routes (recall 0.797) and replication (recall 0.77); reruns at 0.75 are descriptive. The 122B in FP8.
+- One-token answers and bridges. The reader is confounded with the answer's source (prompt vs memory).
+- Zach's knock-out finds the split weak outside Qwen; our change-removal finds it on Muse (different measures).
 
 ## 5. How we checked
 
 - **Hand-checked numbers.** None yet ([docs/review_summary.md](docs/review_summary.md)); [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
-- **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them; natural passages in [docs/natural_examples.md](docs/natural_examples.md).
+- **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them.
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.33 over 97 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.
 - **Inventory.** [docs/inventory.md](docs/inventory.md): pre-pivot experiments are kept and labelled legacy.
@@ -143,12 +144,12 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **Running now.** The pointer directions in Muse's varied scenes and natural passages; a pointer found without slot labels (P_cf); writing the pointer on Muse.
 
 ![Writing the pointer: one fixed vector per slot pair, against a random direction](figures/story/fig8_writes.png)
-*Fig. 8. The dose fixed in advance (s = 1) moves nothing on any model; s\* marks a real pointer change's size.*
+*Fig. 8. The dose fixed in advance (s = 1) moves nothing on any model; s\* marks a real pointer change's size. The real change's pointer part does not move the lookup between slots 1 and 2 either, while the whole change does: our 4 directions miss how the model tells later slots apart.*
 
 - **Follow-up: answers by sampling**, not the top token.
-- **Follow-up: the routes and pointer tests without the chat template** (the main test has it on the 9B and 27B).
+- **Follow-up: the routes and pointer tests without the chat template.**
 - **Follow-up: OLMo checkpoints**, to see when in training the pointer appears.
-- **Later.** New datasets; intermediates in reasoning traces; DeepSeek-V4-Flash, which needs about four H200-class GPUs or native FP4, and its lens's residual stream named.
+- **Later.** New datasets; intermediates in reasoning traces; DeepSeek-V4-Flash (about four H200s or native FP4; its lens's residual stream unnamed).
 
 ## Appendix A. Key numbers
 
