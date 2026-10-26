@@ -511,12 +511,15 @@ def sweep_cells(rows: list[dict], n_boot: int = X.N_BOOT) -> dict[str, list[dict
 def stage_sweep_table(name: str, n_boot: int = X.N_BOOT) -> Path:
     src = RESULTS / name
     m = json.loads((src / "manifest.json").read_text())
-    cells = sweep_cells(X.read_jsonl(src / "outcomes.jsonl"), n_boot)
+    keep, sanity = sane(X.read_jsonl(src / "cases.jsonl"))  # Dan ~22:35: only the items passing the sanity check
+    cells = sweep_cells([r for r in X.read_jsonl(src / "outcomes.jsonl") if r["scene"] in keep], n_boot)
     out = src / f"sweep-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
     lines = [f"# 45b layer sweep (descriptive, after the data): {name}", "",
-             f"Model {m['model']['target']}, L = {m['layer']}; the 45b items (locker after the pick). Switch = the top "
-             f"token is S's answer. Cluster bootstrap over bridge entities ({n_boot} resamples). UNVERIFIED.", ""]  # fmt: skip
+             f"Model {m['model']['target']}, L = {m['layer']}; the 45b items (locker after the pick) that pass the sanity "
+             f"check (O and S the same length and the same ids after the bridge word): {sanity['pass']} of "
+             f"{sanity['items']}, {sanity['dropped']} dropped. Switch = the top token is S's answer. Cluster bootstrap "
+             f"over bridge entities ({n_boot} resamples). UNVERIFIED.", ""]  # fmt: skip
     for w, rows_ in cells.items():
         kinds = [k for k in SWEEP_ARMS if k in rows_[0]]
         lines += [f"## {'lookup' if w == X.LOOKUP else 'recall'} (n = {rows_[0]['n']}, S switches {rows_[0]['S_switched']}): "
@@ -524,7 +527,7 @@ def stage_sweep_table(name: str, n_boot: int = X.N_BOOT) -> Path:
                   "|---" * (len(kinds) + 1) + "|"]  # fmt: skip
         lines += [f"| {c['layer']} | " + " | ".join(fmt(c[k]) for k in kinds) + " |" for c in rows_]
         lines.append("")
-    (out / "sweep.json").write_text(json.dumps({"run": name, "cells": cells}, indent=1) + "\n")
+    (out / "sweep.json").write_text(json.dumps({"run": name, "sanity": sanity, "cells": cells}, indent=1) + "\n")
     (out / "sweep.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     return out

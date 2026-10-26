@@ -457,6 +457,7 @@ def test_sweep_stage_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
     monkeypatch.setattr(M, "load_model", lambda: fake)
     monkeypatch.setattr(B, "select", lambda *_: (items, {"items": 12}))
     monkeypatch.setattr(B, "RESULTS", tmp_path / "x45b")
+    monkeypatch.setattr(B, "same_after_bridge", lambda it: True)  # the fake items swap a later pick too
     out = B.stage_sweep("fake_sweep", "test")
     layer = X.PREDICTED[pins.TARGET]
     layers = B.sweep_layers(layer)

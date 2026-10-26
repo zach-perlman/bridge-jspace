@@ -1,0 +1,302 @@
+{
+  "run": "x45b_binding_27b",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "main_run": "x0_necessity_27b_chat",
+  "layer": 32,
+  "arm_layers": {
+    "a": 32,
+    "b_half": 16,
+    "b_quarter": 8,
+    "c": 32,
+    "d": 16
+  },
+  "rule_text": "the reading-order explanation holds if (c) or (d) switches at least half of the lookups that S itself switches, while (a) stays at or below 0.25.",
+  "rule": {
+    "verdict": "holds",
+    "holds": true,
+    "c_at_least_half_of_S": true,
+    "d_at_least_half_of_S": false,
+    "a_at_most_0.25": true
+  },
+  "readers": {
+    "PP": {
+      "n": 99,
+      "entities": 33,
+      "S_switched": 99,
+      "hits": {
+        "none": 0,
+        "a": 8,
+        "b_half": 78,
+        "b_quarter": 96,
+        "c": 59,
+        "d": 3,
+        "S": 99
+      },
+      "rate": {
+        "none": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "a": [
+          0.08080808080808081,
+          0.033707865168539325,
+          0.1308411214953271
+        ],
+        "b_half": [
+          0.7878787878787878,
+          0.721425644028103,
+          0.8617021276595744
+        ],
+        "b_quarter": [
+          0.9696969696969697,
+          0.9401666666666667,
+          1.0
+        ],
+        "c": [
+          0.5959595959595959,
+          0.48936170212765956,
+          0.6941258169934639
+        ],
+        "d": [
+          0.030303030303030304,
+          0.0,
+          0.07058823529411765
+        ],
+        "S": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "hits_of_S": {
+        "c": 59,
+        "d": 3
+      },
+      "of_S": {
+        "c": [
+          0.5959595959595959,
+          0.48936170212765956,
+          0.6941258169934639
+        ],
+        "d": [
+          0.030303030303030304,
+          0.0,
+          0.07058823529411765
+        ]
+      }
+    },
+    "PM": {
+      "n": 99,
+      "entities": 33,
+      "S_switched": 99,
+      "hits": {
+        "none": 0,
+        "a": 75,
+        "b_half": 96,
+        "b_quarter": 98,
+        "c": 3,
+        "d": 0,
+        "S": 99
+      },
+      "rate": {
+        "none": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "a": [
+          0.7575757575757576,
+          0.6635491552839683,
+          0.845360824742268
+        ],
+        "b_half": [
+          0.9696969696969697,
+          0.9259259259259259,
+          1.0
+        ],
+        "b_quarter": [
+          0.98989898989899,
+          0.9690721649484536,
+          1.0
+        ],
+        "c": [
+          0.030303030303030304,
+          0.0,
+          0.057148711943793826
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "S": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "hits_of_S": {
+        "c": 3,
+        "d": 0
+      },
+      "of_S": {
+        "c": [
+          0.030303030303030304,
+          0.0,
+          0.057148711943793826
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "plan": {
+    "main_run": "x0_necessity_27b_chat",
+    "layer": 32,
+    "main_items": 200,
+    "locker_after": 99,
+    "dropped": {},
+    "align": {
+      "token": 99
+    },
+    "items": 99,
+    "entities": 33
+  },
+  "checks": {
+    "PP a vs stored whole at L32": {
+      "n": 99,
+      "agree": 98,
+      "rerun": 8,
+      "stored": 9
+    },
+    "PP b_half vs stored whole at L16": {
+      "n": 99,
+      "agree": 99,
+      "rerun": 78,
+      "stored": 78
+    },
+    "PP S vs stored S read": {
+      "n": 99,
+      "agree": 99,
+      "rerun": 99,
+      "stored": 99
+    },
+    "PM a vs stored whole at L32": {
+      "n": 99,
+      "agree": 99,
+      "rerun": 75,
+      "stored": 75
+    },
+    "PM b_half vs stored whole at L16": {
+      "n": 99,
+      "agree": 99,
+      "rerun": 96,
+      "stored": 96
+    },
+    "PM S vs stored S read": {
+      "n": 99,
+      "agree": 99,
+      "rerun": 99,
+      "stored": 99
+    }
+  },
+  "median_delta_norm": {
+    "a": 50.0606,
+    "b_half": 26.9392,
+    "b_quarter": 17.2689,
+    "c": 97.0178,
+    "d": 30.7171
+  },
+  "n_boot": 10000,
+  "seed": 0,
+  "sanity": {
+    "items": 99,
+    "pass": 34,
+    "dropped": 65,
+    "rule": {
+      "verdict": "does not hold",
+      "holds": false,
+      "c_at_least_half_of_S": false,
+      "d_at_least_half_of_S": false,
+      "a_at_most_0.25": true
+    }
+  },
+  "sanity_lookup": {
+    "n": 34,
+    "entities": 23,
+    "S_switched": 34,
+    "hits": {
+      "none": 0,
+      "a": 3,
+      "b_half": 32,
+      "b_quarter": 34,
+      "c": 12,
+      "d": 0,
+      "S": 34
+    },
+    "rate": {
+      "none": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "a": [
+        0.08823529411764706,
+        0.0,
+        0.19444444444444445
+      ],
+      "b_half": [
+        0.9411764705882353,
+        0.8611111111111112,
+        1.0
+      ],
+      "b_quarter": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "c": [
+        0.35294117647058826,
+        0.21212121212121213,
+        0.475
+      ],
+      "d": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "S": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "hits_of_S": {
+      "c": 12,
+      "d": 0
+    },
+    "of_S": {
+      "c": [
+        0.35294117647058826,
+        0.21212121212121213,
+        0.475
+      ],
+      "d": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}
