@@ -206,6 +206,59 @@ A strong write can switch on a route the model does not use at its natural size;
 | random direction (same size), dose 4 | {{num|x45c_random_12_4_9b}} / {{num|x45c_random_21_4_9b}} | {{num|x45c_random_12_4_27b}} / {{num|x45c_random_21_4_27b}} | {{num|x45c_random_12_4_muse}} / {{num|x45c_random_21_4_muse}} |
 | n | {{num|x45c_n_12_9b}} / {{num|x45c_n_21_9b}} | {{num|x45c_n_12_27b}} / {{num|x45c_n_21_27b}} | {{num|x45c_n_12_muse}} / {{num|x45c_n_21_muse}} |
 
+## Batch 45 behind README v5 (27 Oct; UNVERIFIED)
+
+Rules and readings: [predictions/2026-10-26_dan.md](../predictions/2026-10-26_dan.md), batch 45; specs in [jobs/c3/batch45.yaml](../jobs/c3/batch45.yaml).
+
+**The clean design (45m, fixed in advance).** An added locker item nobody picks becomes the asked person's pick, so only the bridge token differs. Extra loss without the J++ part (25 directions) against a random part of the same size, at the layer fixed in advance; the lookup's extra loss is not measurable where the locker comes after the pick (too few switches).
+
+| Clean design | Qwen3.5-9B | Qwen3.6-27B | Muse Glimmer 30B |
+|---|---|---|---|
+| Gap, locker before the pick (the rule) | {{num|x45m_before_gap_9b}} | {{num|x45m_before_gap_27b}} | {{num|x45m_before_gap_muse}} |
+| Lookup extra loss, locker before the pick | {{num|x45m_before_lk_9b}} | {{num|x45m_before_lk_27b}} | {{num|x45m_before_lk_muse}} |
+| Recall extra loss: locker before / after the pick | {{num|x45m_before_rc_9b}} / {{num|x45m_after_rc_9b}} | {{num|x45m_before_rc_27b}} / {{num|x45m_after_rc_27b}} | {{num|x45m_before_rc_muse}} / {{num|x45m_after_rc_muse}} |
+| Gap, all scenes | {{num|x45m_all_gap_9b}} | {{num|x45m_all_gap_27b}} | {{num|x45m_all_gap_muse}} |
+| Lookups switched by the whole change: before / after | {{num|x45m_before_lksw_9b}} / {{num|x45m_after_lksw_9b}} | {{num|x45m_before_lksw_27b}} / {{num|x45m_after_lksw_27b}} | {{num|x45m_before_lksw_muse}} / {{num|x45m_after_lksw_muse}} |
+| n: before / after / all | {{num|x45m_before_n_9b}} / {{num|x45m_after_n_9b}} / {{num|x45m_all_n_9b}} | {{num|x45m_before_n_27b}} / {{num|x45m_after_n_27b}} / {{num|x45m_all_n_27b}} | {{num|x45m_before_n_muse}} / {{num|x45m_after_n_muse}} / {{num|x45m_all_n_muse}} |
+
+**Locker after the pick, by layer (45b's sweep; after the data).** Main-test items whose two prompts are identical after the bridge word (9B {{num|x45bsw_pass_9b}}, 27B {{num|x45bsw_pass_27b}}). Share of lookups switched by: the bridge-word change; the changed prompt's states copied into every locker-sentence token; only into the item names in those sentences; only into the numbers. 45b's rule on these items (copy at the layer fixed in advance, share of the lookups the changed prompt switches / the bridge-word change over all items): 9B {{num|x45b_sane_c_9b}} / {{num|x45b_sane_a_9b}}, 27B {{num|x45b_sane_c_27b}} / {{num|x45b_sane_a_27b}}, Muse ({{num|x45b_sane_pass_muse}}) {{num|x45b_sane_c_muse}} / {{num|x45b_sane_a_muse}}.
+
+| Qwen3.5-9B, layer | bridge word | locker sentences | item names | numbers |
+|---|---|---|---|---|
+| 6 | {{num|x45bsw_bw_L6_9b}} | {{num|x45bsw_ls_L6_9b}} | {{num|x45bsw_li_L6_9b}} | {{num|x45bsw_lv_L6_9b}} |
+| 8 | {{num|x45bsw_bw_L8_9b}} | {{num|x45bsw_ls_L8_9b}} | {{num|x45bsw_li_L8_9b}} | {{num|x45bsw_lv_L8_9b}} |
+| 10 | {{num|x45bsw_bw_L10_9b}} | {{num|x45bsw_ls_L10_9b}} | {{num|x45bsw_li_L10_9b}} | {{num|x45bsw_lv_L10_9b}} |
+| 12 (fixed in advance) | {{num|x45bsw_bw_L12_9b}} | {{num|x45bsw_ls_L12_9b}} | {{num|x45bsw_li_L12_9b}} | {{num|x45bsw_lv_L12_9b}} |
+
+| Qwen3.6-27B, layer | bridge word | locker sentences | item names | numbers |
+|---|---|---|---|---|
+| 16 | {{num|x45bsw_bw_L16_27b}} | {{num|x45bsw_ls_L16_27b}} | {{num|x45bsw_li_L16_27b}} | {{num|x45bsw_lv_L16_27b}} |
+| 20 | {{num|x45bsw_bw_L20_27b}} | {{num|x45bsw_ls_L20_27b}} | {{num|x45bsw_li_L20_27b}} | {{num|x45bsw_lv_L20_27b}} |
+| 24 | {{num|x45bsw_bw_L24_27b}} | {{num|x45bsw_ls_L24_27b}} | {{num|x45bsw_li_L24_27b}} | {{num|x45bsw_lv_L24_27b}} |
+| 28 | {{num|x45bsw_bw_L28_27b}} | {{num|x45bsw_ls_L28_27b}} | {{num|x45bsw_li_L28_27b}} | {{num|x45bsw_lv_L28_27b}} |
+| 32 (fixed in advance) | {{num|x45bsw_bw_L32_27b}} | {{num|x45bsw_ls_L32_27b}} | {{num|x45bsw_li_L32_27b}} | {{num|x45bsw_lv_L32_27b}} |
+
+**A refit pointer per format (45d, fixed in advance).** Fit without labels on half of each format's varied scenes, removed from the change on the other half; the lookup's extra loss (a format with fewer than 30 lookup switches does not count).
+
+| Refit pointer | Qwen3.5-9B | Qwen3.6-27B | Muse Glimmer 30B |
+|---|---|---|---|
+| Prose | {{num|x45d_prose_9b}} | {{num|x45d_prose_27b}} | {{num|x45d_prose_muse}} |
+| JSON | {{num|x45d_json_9b}} | {{num|x45d_json_27b}} | {{num|x45d_json_muse}} |
+| Table | {{num|x45d_table_9b}} | {{num|x45d_table_27b}} | {{num|x45d_table_muse}} |
+| The rule's label | {{num|x45d_outcome_9b}} | {{num|x45d_outcome_27b}} | {{num|x45d_outcome_muse}} |
+
+**What the prompt names first (45a; the rule fixed in advance, these numbers after the data).** One sentence put at the start of both prompts. Identity share of the lookup's answers under the whole change on moves to or from the first locker, and the code shift β (positions) at the bridge word against no sentence.
+
+| First sentence | Qwen3.5-9B: identity / β | Qwen3.6-27B: identity / β | Muse Glimmer 30B: identity / β |
+|---|---|---|---|
+| none | {{num|x45a_id_V0_9b}} / – | {{num|x45a_id_V0_27b}} / – | {{num|x45a_id_V0_muse}} / – |
+| a pick naming the first locker's item | {{num|x45a_id_V1_9b}} / {{num|x45a_beta_V1_9b}} | {{num|x45a_id_V1_27b}} / {{num|x45a_beta_V1_27b}} | {{num|x45a_id_V1_muse}} / {{num|x45a_beta_V1_muse}} |
+| a pick naming another item with a locker | {{num|x45a_id_V2_9b}} / {{num|x45a_beta_V2_9b}} | {{num|x45a_id_V2_27b}} / {{num|x45a_beta_V2_27b}} | {{num|x45a_id_V2_muse}} / {{num|x45a_beta_V2_muse}} |
+| a pick naming an item with no locker | {{num|x45a_id_V3_9b}} / {{num|x45a_beta_V3_9b}} | {{num|x45a_id_V3_27b}} / {{num|x45a_beta_V3_27b}} | {{num|x45a_id_V3_muse}} / {{num|x45a_beta_V3_muse}} |
+| a neutral sentence | {{num|x45a_id_V4_9b}} / {{num|x45a_beta_V4_9b}} | {{num|x45a_id_V4_27b}} / {{num|x45a_beta_V4_27b}} | {{num|x45a_id_V4_muse}} / {{num|x45a_beta_V4_muse}} |
+
+**Other batch-45 numbers the README quotes.** Identity outside J++ against a wrong-pair direction (45e): identity answers cut beyond it {{num|x45e_cut_9b}} (9B), {{num|x45e_cut_27b}} (27B), {{num|x45e_cut_muse}} (Muse; bar 0.15). Without the chat template, the routes test's value answers (another item moved, whole change): {{num|x45i_value_9b}} (9B), {{num|x45i_value_27b}} (27B). The independent re-implementation of the 9B's main test: {{num|indep_agree_9b}} items agree on every arm.
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.

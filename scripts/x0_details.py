@@ -626,15 +626,24 @@ SBO_DESIGNS = {"swap": "two people swap", "one": "only the asked pick", "fresh":
 
 X45B_SWEEP = {"9b": "qwen35_9b_x45b_sweep_v2", "27b": "x45b_sweep_v2_27b"}
 X45B_RUNS = {"9b": "qwen35_9b_x45b_binding", "27b": "x45b_binding_27b", "muse": "muse30b_x45b_binding"}
+X45D = {"9b": "qwen35_9b_x45d", "27b": "x45d_27b", "muse": "muse30b_x45d"}
+X45I_ROUTES = {"9b": "qwen35_9b_x6_routes_x45i_nochat", "27b": "x6_routes_x45i_nochat_27b"}
+INDEP = {"9b": "qwen35_9b_x45_indep"}
 
 
 def batch45_numbers(num: Numbers) -> None:
-    """Batch 45's numbers for the README v5 draft (Dan 27 Oct ~00:20; all UNVERIFIED):
-    45m, the clean one-pick design: x45m_<before|after|all>_<lk|rc|gap|n>_<m> (results/x0_necessity/x45m-*);
+    """Batch 45's numbers for the README v5 draft (Dan 27 Oct ~00:20 / ~00:30; all UNVERIFIED):
+    45m, the clean one-pick design: x45m_<before|after|all>_<lk|rc|gap|n>_<m> (results/x0_necessity/x45m-*) and the
+    lookups the whole change switches, x45m_<group>_lksw_<m> (%);
     the 45b sweep on the items identical after the bridge word: x45bsw_<bw|ls|li|lv|lf>_L<layer>_<m> (the lookup's
     switch rate) and x45bsw_pass_<m>; 45b's rule on those items: x45b_sane_<pass|c|a>_<m>;
     45e: x45e_left_<idout|wrong>_<m> (the sanity swap's lookups still switching), x45e_cut_<m> (identity answers cut
-    beyond the wrong pair, CI)."""
+    beyond the wrong pair, CI);
+    45d: x45d_<prose|json|table>_<m>, the lookup's extra loss without the refit basis on the held-out half ("not
+    counted" for a format with too few switches), and x45d_outcome_<m> (the rule's label);
+    45i's routes run without the chat template (descriptive): x45i_value_<m>, value answers "k of n" (another item
+    moved, whole change);
+    45.0, the independent re-implementation: indep_agree_<m>, "k of n" items agreeing on every arm (the fewest)."""
     root = pins.RESULTS_DIR
     found = sorted((root / "x0_necessity").glob("x45m-*/x45m.json"))
     if found:
@@ -644,6 +653,8 @@ def batch45_numbers(num: Numbers) -> None:
             for grp, c in (mod.get("cells") or {}).items():
                 g = grp.split("-")[-1]  # locker-before -> before
                 num.add(f"x45m_{g}_n_{m}", str(c["n"]), src)
+                if c.get("lookup"):
+                    num.add(f"x45m_{g}_lksw_{m}", pct(c["lookup"]["S_whole"][0]), src)
                 for k, cell in (("lk", c.get("lookup")), ("rc", c.get("recall"))):
                     if cell and cell.get("valid"):
                         num.add(f"x45m_{g}_{k}_{m}", ci(cell["excess"]), src)
@@ -689,6 +700,26 @@ def batch45_numbers(num: Numbers) -> None:
                 num.add(f"x45e_left_wrong_{m}", f2(f["c0"]["left"]["no_jppalfwrong"][0]), src)
             if f.get("c2"):
                 num.add(f"x45e_cut_{m}", ci(f["c2"]["idout_vs_wrong"]), src)
+    for m, run in X45D.items():
+        found = sorted((root / "x0b_generalize" / run).glob("x45d-*/verdict.json"))
+        if found:
+            src = str(found[-1].relative_to(pins.REPO_ROOT))
+            blob = json.loads(found[-1].read_text())
+            num.add(f"x45d_outcome_{m}", blob["verdict"]["outcome"], src)
+            for fmt, v in blob["lookup_refit"].items():
+                num.add(f"x45d_{fmt}_{m}", ci(v) if v else "not counted", src)
+    for m, run in X45I_ROUTES.items():
+        found = sorted((root / "x6_routes" / run).glob("verdict-*/verdict.json"))
+        if found:
+            src = str(found[-1].relative_to(pins.REPO_ROOT))
+            whole = json.loads(found[-1].read_text())["x45i"]["arms"]["whole"]
+            num.add(f"x45i_value_{m}", f"{whole['value_count']} of {whole['n']}", src)
+    for m, run in INDEP.items():
+        path = root / "indep_check" / run / "summary.json"
+        if path.exists():
+            blob = json.loads(path.read_text())
+            agree = min(a["items_agree"] for k, a in blob["arms"].items() if k != "none")  # the rule's arms
+            num.add(f"indep_agree_{m}", f"{agree} of {blob['n_items']}", str(path.relative_to(pins.REPO_ROOT)))
 
 
 X45C_WRITES = {"9b": "qwen35_9b_x8_write12", "27b": "x8_write12_27b", "muse": "muse30b_x8_write12"}

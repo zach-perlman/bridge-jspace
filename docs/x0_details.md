@@ -511,6 +511,59 @@ A strong write can switch on a route the model does not use at its natural size;
 | random direction (same size), dose 4 | 0.00 / 0.00 | 0.00 / 0.01 | 0.04 / 0.14 |
 | n | 108 / 99 | 111 / 100 | 101 / 100 |
 
+## Batch 45 behind README v5 (27 Oct; UNVERIFIED)
+
+Rules and readings: [predictions/2026-10-26_dan.md](../predictions/2026-10-26_dan.md), batch 45; specs in [jobs/c3/batch45.yaml](../jobs/c3/batch45.yaml).
+
+**The clean design (45m, fixed in advance).** An added locker item nobody picks becomes the asked person's pick, so only the bridge token differs. Extra loss without the J++ part (25 directions) against a random part of the same size, at the layer fixed in advance; the lookup's extra loss is not measurable where the locker comes after the pick (too few switches).
+
+| Clean design | Qwen3.5-9B | Qwen3.6-27B | Muse Glimmer 30B |
+|---|---|---|---|
+| Gap, locker before the pick (the rule) | 0.23 [0.14, 0.31] | 0.53 [0.42, 0.62] | 0.38 [0.23, 0.54] |
+| Lookup extra loss, locker before the pick | −0.01 [−0.03, 0.00] | 0.01 [0.00, 0.02] | 0.05 [0.01, 0.10] |
+| Recall extra loss: locker before / after the pick | 0.21 [0.13, 0.29] / 0.79 [0.70, 0.88] | 0.54 [0.43, 0.63] / 0.87 [0.81, 0.93] | 0.43 [0.28, 0.60] / 0.85 [0.73, 0.93] |
+| Gap, all scenes | 0.48 [0.40, 0.55] | 0.69 [0.63, 0.75] | 0.64 [0.52, 0.73] |
+| Lookups switched by the whole change: before / after | 99% / 5% | 98% / 0% | 87% / 0% |
+| n: before / after / all | 151 / 166 / 417 | 202 / 236 / 574 | 143 / 170 / 409 |
+
+**Locker after the pick, by layer (45b's sweep; after the data).** Main-test items whose two prompts are identical after the bridge word (9B 36 of 100, 27B 34 of 99). Share of lookups switched by: the bridge-word change; the changed prompt's states copied into every locker-sentence token; only into the item names in those sentences; only into the numbers. 45b's rule on these items (copy at the layer fixed in advance, share of the lookups the changed prompt switches / the bridge-word change over all items): 9B 0.39 [0.26, 0.53] / 0.28 [0.16, 0.40], 27B 0.35 [0.21, 0.47] / 0.09 [0.00, 0.19], Muse (34 of 108) 0.41 [0.26, 0.58] / 0.18 [0.06, 0.31].
+
+| Qwen3.5-9B, layer | bridge word | locker sentences | item names | numbers |
+|---|---|---|---|---|
+| 6 | 0.92 | 0.03 | 0.00 | 0.00 |
+| 8 | 0.53 | 0.06 | 0.06 | 0.00 |
+| 10 | 0.36 | 0.06 | 0.00 | 0.00 |
+| 12 (fixed in advance) | 0.28 | 0.39 | 0.28 | 0.00 |
+
+| Qwen3.6-27B, layer | bridge word | locker sentences | item names | numbers |
+|---|---|---|---|---|
+| 16 | 0.94 | 0.00 | 0.00 | 0.00 |
+| 20 | 0.91 | 0.00 | 0.00 | 0.00 |
+| 24 | 0.82 | 0.00 | 0.00 | 0.00 |
+| 28 | 0.50 | 0.29 | 0.29 | 0.00 |
+| 32 (fixed in advance) | 0.09 | 0.35 | 0.26 | 0.00 |
+
+**A refit pointer per format (45d, fixed in advance).** Fit without labels on half of each format's varied scenes, removed from the change on the other half; the lookup's extra loss (a format with fewer than 30 lookup switches does not count).
+
+| Refit pointer | Qwen3.5-9B | Qwen3.6-27B | Muse Glimmer 30B |
+|---|---|---|---|
+| Prose | 0.24 [0.16, 0.32] | 0.08 [0.04, 0.13] | 0.23 [0.16, 0.31] |
+| JSON | 0.24 [0.16, 0.30] | 0.09 [0.05, 0.12] | not counted |
+| Table | 0.18 [0.13, 0.24] | 0.13 [0.09, 0.17] | 0.47 [0.34, 0.60] |
+| The rule's label | pointer elsewhere | neither | pointer elsewhere |
+
+**What the prompt names first (45a; the rule fixed in advance, these numbers after the data).** One sentence put at the start of both prompts. Identity share of the lookup's answers under the whole change on moves to or from the first locker, and the code shift β (positions) at the bridge word against no sentence.
+
+| First sentence | Qwen3.5-9B: identity / β | Qwen3.6-27B: identity / β | Muse Glimmer 30B: identity / β |
+|---|---|---|---|
+| none | 0.54 / – | 0.65 / – | 0.47 / – |
+| a pick naming the first locker's item | 0.89 / 0.32 | 0.91 / 0.37 | 0.50 / 0.60 |
+| a pick naming another item with a locker | 0.96 / 0.35 | 0.90 / 0.30 | 0.59 / 0.54 |
+| a pick naming an item with no locker | 0.85 / 0.69 | 0.97 / 0.61 | 0.60 / 0.83 |
+| a neutral sentence | 0.58 / 0.15 | 0.73 / 0.17 | 0.46 / 0.18 |
+
+**Other batch-45 numbers the README quotes.** Identity outside J++ against a wrong-pair direction (45e): identity answers cut beyond it 0.06 [0.02, 0.10] (9B), 0.12 [0.08, 0.16] (27B), 0.04 [0.01, 0.07] (Muse; bar 0.15). Without the chat template, the routes test's value answers (another item moved, whole change): 0 of 300 (9B), 0 of 300 (27B). The independent re-implementation of the 9B's main test: 20 of 20 items agree on every arm.
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.
