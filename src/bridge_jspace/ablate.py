@@ -203,8 +203,11 @@ def removal_edit(method: str, dic, rows: list[RowSettings], rotation: torch.Tens
             counts[1] += B * T
         idx = keep.nonzero().squeeze(1)
         r = torch.zeros_like(x)
-        for s in range(0, idx.numel(), chunk):
-            sel = idx[s : s + chunk]
+        # 2026-10-26 (amendment 54): above K = 100 the [m, k, d] float64 atoms of a 4096-row chunk outgrow the GPU (50 GB
+        # at K = 300, d = 5120), so fewer rows per chunk (~8 GiB); rows are independent, and K <= 100 is unchanged
+        step = chunk if k <= 100 else max(128, min(chunk, 2**33 // (k * d * 8)))
+        for s in range(0, idx.numel(), step):
+            sel = idx[s : s + step]
             owner = sel // T
             groups: Groups = []
             for b in owner.unique().tolist():

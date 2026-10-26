@@ -1711,3 +1711,66 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   reported beside it (bars 9.9 / 5.0).
 - Seen before writing this: K = 30 pooled swap +3.5 [2.3, 4.9] (paste +9.5, swap_comp +8.4, rot +0.1, u +0.1); PM
   cell swap +2.9 [1.1, 4.9]. The K = 100 swap and the knock-out had not finished.
+
+## Amendment 54 (Zach, 2026-10-26 23:00 UTC, before any run below; the 8-item smoke only): one dose grid for every model
+
+- **Why (Zach: "Are our experiments uneven? Would it make sense to queue the remove 30, 100 directions on the other
+  models? ... to see at what point it plateaus with adding more?"):**
+  - K = 30 / 100 were run on the test set only for the two models that looked weak at K = 10 (Bolt, Ministral;
+    amendments 52, 53). Raising K only where the effect was small is asymmetric.
+  - The dev doses stop at K = 30 (Lightning, Ministral, DeepSeek, Bolt). The Qwens' doses are on the older full2 set.
+  - Fixed K is not a fixed removal size: the top-10 J++ removal takes 6% of the residual in Bolt, 13-20% elsewhere.
+- **Design** (scripts/queues/h200_dose_1026.sh; normal-equations projection as amendment 52 note 1; above K = 100 the
+  removal is computed over fewer positions per chunk, which is exact, rows being independent; K <= 100 unchanged):
+  - **Models,** each at its test band: Qwen 27B L32-40, Qwen 9B L12-16, Nemotron Lightning L27-33, Ministral L32-37,
+    Nemotron Bolt L42-53. DeepSeek and OLMo-3 32B are not cached now. If they come back, the same design runs on them in
+    a note to this amendment.
+  - **Items:** the test set, a seeded random 150 per word (seed 0, Bolt's K-run sample), the 15 facts words, eligible
+    items by each model's test competence.
+  - **Conditions:**
+    - J++ top K for K in {1, 3, 10, 30, 100, 300};
+    - the same removal randomly rotated (same norm, random direction) at every K;
+    - the same norm along the top-256 principal directions (topK_pcasize) at K in {10, 30, 100, 300};
+    - the logit lens's top K at K in {10, 30, 100, 300}.
+  - **Removal size** at the band for every K: J++, logit lens and top principal directions.
+  - **Scoring:** jsuite2_score (M - K, start all, bootstrap over bridges, seed 0) and soft_score.
+  - **Gap filling in the same queue:**
+    - **(B) Position splits** where none exist: Lightning at L27-33 (paper10, rotated, logit lens; bridge mention only /
+      the passage / the question on; all eligible items as its headline); Bolt at L42-53 (top100 and its rotation;
+      bridge / question; 150 per word).
+    - **(C) The clean-checkout rerun CLAUDE.md asks for,** for Lightning's headline (competence, then paper10 / rotated /
+      logit lens / its rotation at L27-33, from a fresh worktree, compared row by row), as done for both Qwens.
+- **Readings, fixed now:**
+  - **Specificity limit:** the smallest K at which stated facts (K finals) lose more than 10 points, or the size-matched
+    control's M - K exceeds half the J++ M - K. Readings below use only K under the limit.
+  - **Plateau K\*:** the smallest K whose J++ M - K is >= 90% of the model's largest under the limit.
+    - Concentrated if K\* <= 10.
+    - Distributed if K\* >= 100.
+    - Otherwise, intermediate.
+  - **J-specific excess** at each K: the J++ M - K minus the larger of its rotated and size-matched M - K.
+  - **Matched size** (descriptive): the J++ M - K and the excess at 15% and 20% removal share, interpolated linearly in
+    share between neighbouring grid points, where both are under the limit.
+- **Expectations,** written before any run:
+  - **From the dev doses and the K runs:**
+    - Lightning concentrated (dev top-1 +51, top-3 +54, top-10 +52, top-30 +42).
+    - Ministral concentrated (dev 24 / 35 / 39 / 34 at K 1 / 3 / 10 / 30; test 23 / 24 / 19 at 10 / 30 / 100).
+    - Bolt distributed (test 6 / 14 / 31 at 10 / 30 / 100).
+  - **The Qwens, from the older full2 set:**
+    - 27B: 20 / 33 / 36 / 46 / 60 at K 1 / 5 / 10 / 25 / 100, with lookups losing 12 at 100.
+    - 9B: 31 / 37 / 38 / 35 / 48 at K 1 / 5 / 10 / 25 / 100.
+    - So the 27B may keep rising until specificity breaks, and the 9B may be flat to 30 and then rise.
+  - **What would change the story:**
+    - If the 27B's K\* is >= 30 under the limit, "the Qwens are concentrated" is wrong. The claim becomes graded by
+      matched size, not by K.
+    - If Bolt's excess at matched size reaches Lightning's, Bolt is not weaker, only spread out.
+- **Smoke, seen before this was committed** (8 items per word, PM and PK only, 27B at L32-40; it checked that K = 300
+  fits in memory). Memory items right (of 8):
+  - top300: 1;
+  - top300_pcasize: 2 (stated facts 7 of 8);
+  - top300_rot and unembed300: 7.
+  - So the size-matched control may already break recall at K = 300. The specificity limit above was written with this
+    in view; the readings were not changed by it.
+- **Allocation:**
+  - GPU 0: 27B, then 9B, then Lightning's clean rerun.
+  - GPU 1: Lightning, Lightning's position split, then Ministral.
+  - Then both GPUs: Bolt, then Bolt's position split.

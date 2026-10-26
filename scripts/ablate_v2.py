@@ -303,7 +303,7 @@ def top_k(cond: str) -> int | None:
     if cond.startswith("paper10"):
         return 10
     # topK: the J-lens dictionary; unembedK (2026-10-22, the size-matched specificity control): the unembedding rows
-    m = re.fullmatch(r"(?:top|unembed|pca)(\d+)(_nosink)?(_rot|_rdict)?", cond)
+    m = re.fullmatch(r"(?:top|unembed|pca)(\d+)(_nosink)?(_rot|_rdict|_pcasize)?", cond)  # _pcasize: amendment 54
     return int(m[1]) if m else None
 
 
