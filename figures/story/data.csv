@@ -469,7 +469,7 @@ fig11,qwen3.5-122b-a10b,The lookup needs the pointer,held,,,,after the data
 fig11,qwen3.5-122b-a10b,The pointer alone gives position,held,,,,after the data
 fig11,qwen3.5-122b-a10b,A write moves the lookup,held,,,,after the data
 fig11,qwen3.5-122b-a10b,The recall follows the write,held,,,,after the data
-fig11,qwen3.5-122b-a10b,"First-mentioned item, not position in the text",not tested,,,,after the data
+fig11,qwen3.5-122b-a10b,"First-mentioned item, not position in the text",held,,,,after the data
 fig11,qwen3.5-122b-a10b,The pointer transfers,no,,,,fixed
 fig11,muse-glimmer-30b,The split (main test),held,,,,fixed
 fig11,muse-glimmer-30b,The split on the logit difference,held,,,,fixed
@@ -480,7 +480,7 @@ fig11,muse-glimmer-30b,The lookup needs the pointer,held,,,,fixed
 fig11,muse-glimmer-30b,The pointer alone gives position,held,,,,fixed
 fig11,muse-glimmer-30b,A write moves the lookup,held,,,,after the data
 fig11,muse-glimmer-30b,The recall follows the write,partial,,,,after the data
-fig11,muse-glimmer-30b,"First-mentioned item, not position in the text",not tested,,,,after the data
+fig11,muse-glimmer-30b,"First-mentioned item, not position in the text",held,,,,after the data
 fig11,muse-glimmer-30b,The pointer transfers,no,,,,fixed
 s01,qwen3.5-9b,"Simple scenes, two people swap picks: lookup extra loss",-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,"Simple scenes, two people swap picks: recall extra loss",0.5,0.41,0.57,,rc_excess_9b
@@ -5456,24 +5456,28 @@ numbers,,tptr_natural_range,0.07 to 0.25,,,,results/t_pointer/verdict-20261026T1
 numbers,,fs_groups_9b,0.66 (n 41) / 0.23 (n 22) / 0.33 (n 9),,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_diff_9b,"0.40 [0.18, 0.60]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_keepdiff_9b,"0.46 [0.31, 0.64]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
+numbers,,fs_named_9b,0.66 / 0.24 / 0.29,,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,pm_keep_slot0_9b,0.10 to 0.76,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_keep_12_9b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_whole_12_9b,0.53 / 0.78,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_27b,0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13),,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_diff_27b,"0.21 [0.05, 0.35]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_keepdiff_27b,"0.16 [0.04, 0.31]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
+numbers,,fs_named_27b,0.24 / 0.07 / 0.00,,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,pm_keep_slot0_27b,0.00 to 0.44,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_keep_12_27b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_whole_12_27b,0.24 / 0.38,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_122b,0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10),,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_diff_122b,"0.38 [0.21, 0.56]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_keepdiff_122b,"0.07 [−0.16, 0.32]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
+numbers,,fs_named_122b,0.52 / 0.18 / 0.08,,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,pm_keep_slot0_122b,0.15 to 0.47,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_keep_12_122b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_whole_12_122b,0.40 / 0.35,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_muse,0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7),,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_diff_muse,"0.41 [0.25, 0.59]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_keepdiff_muse,"0.23 [0.09, 0.39]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
+numbers,,fs_named_muse,0.51 / 0.21 / 0.00,,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,pm_keep_slot0_muse,0.16 to 0.69,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_keep_12_muse,0.04 / 0.16,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_whole_12_muse,0.49 / 0.71,,,,results/x8_write/pairs-20261026T151225Z/pairs.json

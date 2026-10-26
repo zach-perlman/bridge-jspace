@@ -1181,8 +1181,8 @@ SCORECARD_V4 = (
     ("The pointer alone gives position", {"9b": ("held", 0), "27b": ("no", 0), "122b": ("held", 1), "muse": ("held", 0)}),
     ("A write moves the lookup", {"9b": ("held", 1), "27b": ("partial", 1), "122b": ("held", 1), "muse": ("held", 1)}),
     ("The recall follows the write", {"9b": ("held", 1), "27b": ("partial", 1), "122b": ("held", 1), "muse": ("partial", 1)}),
-    ("First-mentioned item,\nnot position in the text", {"9b": ("held", 0), "27b": ("held", 1), "122b": ("not tested", 1),
-                                                          "muse": ("not tested", 1)}),
+    ("First-mentioned item,\nnot position in the text", {"9b": ("held", 0), "27b": ("held", 1), "122b": ("held", 1),
+                                                          "muse": ("held", 1)}),
     ("The pointer transfers", {"9b": ("no", 0), "27b": ("no", 0), "122b": ("no", 0), "muse": ("no", 0)}),
 )  # fmt: skip
 SYMBOL = {"held": ("✓", "#2f7d4f"), "partial": ("~", "#b07a0a"), "no": ("✗", "#b8433a"), "not tested": ("–", "#8a8a8a")}
