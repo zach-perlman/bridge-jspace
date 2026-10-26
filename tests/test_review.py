@@ -84,21 +84,21 @@ def test_class_rederivation_on_hand_picked_items():
     assert it["cls"] == "target"
     for view_id, m in (("routes", "qwen3.5-9b"), ("x8_writes", "qwen3.5-9b"), ("routes_early", "muse-glimmer-30b")):
         for it in I.items(view_id, m)[:50]:
-            assert C.run_checks(it)["class from top"][0] == C.PASS, it["id"]
+            assert C.run_checks(it)["label from the top token"][0] == C.PASS, it["id"]
 
 
 def test_checks_fail_on_tampered_items():
     it = copy.deepcopy(item("routes", "qwen3.5-9b", "C2-0333", "PP"))
     it["rows"]["PP"]["whole"]["route"] = "identity"
-    assert C.run_checks(it)["class from top"][0] == C.FAIL
+    assert C.run_checks(it)["label from the top token"][0] == C.FAIL
     it = copy.deepcopy(item("main_swap", "qwen3.5-9b", I.items("main_swap", "qwen3.5-9b")[0]["scene"], "PP"))
     it["case"]["pos"] -= 1
-    assert C.run_checks(it)["bridge at pos"][0] == C.FAIL
+    assert C.run_checks(it)["bridge at the change's token"][0] == C.FAIL
     row = it["rows"]["PP"]["whole"]
     row["switched"] = 1 - row["switched"]
-    assert C.run_checks(it)["p / ld vs label"][0] == C.FAIL
+    assert C.run_checks(it)["probabilities agree with the label"][0] == C.FAIL
     it["case"]["readers"]["PP"]["ids"]["alt"] = it["case"]["readers"]["PP"]["ids"]["alt"][:-1]
-    assert C.run_checks(it)["only scene words"][0] == C.FAIL
+    assert C.run_checks(it)["only the scene's words differ"][0] == C.FAIL
 
 
 def test_server_pages_and_marks(tmp_path, monkeypatch):

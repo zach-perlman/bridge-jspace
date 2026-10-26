@@ -84,11 +84,11 @@ def x0_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
         case = cases.get(scene)
         rows = {w: {label: idx.get((scene, w, *a)) for label, a in arms.items()} for w in READERS}
         sh = {}
-        for label, (arm, d, k, omp) in arms.items():
+        for arm, d, k, omp in arms.values():
             s = shares.get((scene, d, k, omp))
-            if s and arm == "no_part":
-                sh[f"{label} (||part||² / ||Δ||²)"] = s["share"]
-                sh["its random part"] = s["rand_share"]
+            if s and arm == "no_part":  # k = 25 is the main part; the k-curve's others named by k
+                sh["jpp" if k == 25 else f"jpp_k{k}"] = s["share"]
+                sh["random part" if k == 25 else f"random part_k{k}"] = s["rand_share"]
         for w in f.get("readers", READERS):
             whole = rows[w].get("whole")
             status = "in set" if in_set else competence_status(run, scene, rend)
@@ -136,7 +136,7 @@ def routes_items(v: dict, model: str, runs: list[str], in_set: bool = True) -> l
         nm = norms.get(key, {})
         sh = {k.removeprefix("share_"): val for k, val in nm.items() if k.startswith("share_")}
         if "norm" in nm:
-            sh["||Δ||"] = nm["norm"]
+            sh["norm"] = nm["norm"]
         case = cases.get(key)
         if case is not None:
             case = {**case, "_joined": {run.split("/")[-1]: joined_cases[run].get(key) for run in runs[1:]}}
@@ -205,7 +205,7 @@ def x8_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
                 continue
             cls = r["class"] if w == "PP" else ("changed" if r["changed"] else "unchanged")
             out.append(_item(v, model, run, int(m["layer"]), scene, w, None, cases.get(scene), rws,
-                             {"||write||": extra["norm"]}, cls, "in set", extra))  # fmt: skip
+                             {"write norm": extra["norm"]}, cls, "in set", extra))  # fmt: skip
     return out
 
 

@@ -37,7 +37,7 @@ font-size:12px;color:#fff}.st{background:var(--mut)}.ok{background:var(--ok)}.or
 .prompt{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12.5px}.toks span{border:1px solid var(--line);
 border-radius:3px;margin:1px;padding:0 2px;display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:12px}
 .toks span.at{background:var(--pos);font-weight:700}.toks span.df{background:var(--hl)}.me{font-weight:600}
-.marks{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}.marks input[type=text]{flex:1;min-width:200px}
+.marks{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}.ans{background:var(--bg);border-left:3px solid var(--id);padding:6px 10px;margin:8px 0}.ans .tag{font-family:ui-monospace,Menlo,monospace}.marks input[type=text]{flex:1;min-width:200px}
 """
 
 JS = """
@@ -86,23 +86,68 @@ def marked(text: str, other: str) -> str:
     return "".join(f"<mark>{E(x)}</mark>" if x != y and x.strip() else E(x) for x, y in zip(a, b, strict=True))
 
 
+PLAIN = {"b": "changed answer", "A": "original answer", "other": "another token", "switch": "changed answer",
+         "follows S": "follows the change", "stays": "original answer", "changed": "changed", "unchanged": "unchanged"}  # fmt: skip
+ARM_NAME = {"unedited": "no change", "whole": "the whole change", "unwritten": "no write"}
+SHARE_NAME = {"jpp": "J++ part", "alf": "pointer directions", "random part": "its random part", "A": "probe subspace",
+              "Alf": "pointer directions", "V": "value subspace", "pca": "main directions", "id": "identity",
+              "idout": "identity outside J++", "both": "J++ and the pointer"}  # fmt: skip
+
+LEGEND = """<details class='box'><summary><b>How to read a card</b></summary><ul>
+<li><b>Original prompt</b>: what the model reads. <b>Changed prompt</b>: the same scene with the bridge (the asked
+person's pick) changed; the change is taken from it. Words that differ are highlighted.</li>
+<li><b>The change</b>: the difference of the model's hidden state at the bridge word (changed minus original), at the
+layer shown, added to the original prompt there. <b>The whole change</b>: all of it. <b>Without X</b>: the change minus
+its X part. <b>Without its random part</b>: minus a random part of the same size (the control). <b>Only X</b>: only the
+X part added.</li>
+<li><b>Original answer</b>: the answer to the original prompt; <b>changed answer</b>: the answer to the changed prompt.
+The model <b>switches</b> when it gives the changed answer. Lookup: the locker written in the prompt; recall: a fact
+from memory.</li>
+<li><b>P(original answer)</b>, <b>P(changed answer)</b>: the probability the model gives each answer's first token.
+<b>Logit gap</b>: logit of the changed answer minus logit of the original; above 0 the changed answer is preferred.</li>
+<li><b>What it is</b>: the run's own label for the top token (its code in brackets: A = original answer, b = changed
+answer). The main test stores no top token, only this label, so "another token" cannot be shown.</li>
+<li><b>Extra loss</b>: (switches kept without the random part − switches kept without the part) / switches with the
+whole change. An item counts only if the whole change switched it.</li></ul></details>"""
+
+
 def expected_html(it: dict) -> str:
     c = it["case"]
+    rd = c["readers"]
     if it["kind"] == "routes":
-        exp = ", ".join(f"{k} → {v}" for k, v in c["expect"].items())
-        return f"<b>Routes predict</b> (lookup): {E(exp)}. " + "; ".join(
-            f"{I.READER_NAME[w]}: O {E(str(c['readers'][w]['answer']))}, S {E(str(c['readers'][w]['cf_answer']))}"
-            for w in I.READERS
-        )
+        exp = ", ".join(f"{k} {v}" for k, v in c["expect"].items())
+        return (f"Lookup, the answer each route predicts: {E(exp)}. Recall: original answer {E(str(rd['PM']['answer']))} "
+                f"({E(c['bridge'])}), changed answer {E(str(rd['PM']['cf_answer']))} ({E(c['cf_bridge'])}).")  # fmt: skip
     if it["kind"] == "x8":
         digits = [d for _, d in C.LOCKER.findall(c["context"])]
         j, k = it["x8"]["j"], it["x8"]["k"]
         third = ({0, 1, 2} - {j, k}).pop()
-        return (f"<b>Slots</b> {E(' · '.join(f'{n}: {d}' for n, d in enumerate(digits)))}; write j = {j} → k = {k}: "
-                f"target {E(digits[k])}, original {E(digits[j])}, third {E(digits[third])}; recall answer "
-                f"{E(str(c['readers']['PM']['answer']))}")  # fmt: skip
-    return "; ".join(f"{I.READER_NAME[w]}: org {E(str(c['readers'][w]['answer']))}, cf (swapped) "
-                     f"{E(str(c['readers'][w]['cf_answer']))}" for w in I.READERS)  # fmt: skip
+        return (f"Locker sentences in order: {E(', '.join(f'slot {n} → {d}' for n, d in enumerate(digits)))}. The write "
+                f"moves the pointer from slot {j} (the bridge's) to slot {k}: target {E(digits[k])}, original {E(digits[j])}, "
+                f"third {E(digits[third])}. Recall's answer: {E(str(rd['PM']['answer']))}.")  # fmt: skip
+    return " ".join(f"{I.READER_NAME[w].capitalize()}: original answer {E(str(rd[w]['answer']))}, changed answer "
+                    f"{E(str(rd[w]['cf_answer']))}." for w in I.READERS)  # fmt: skip
+
+
+def bridge_html(it: dict) -> str:
+    c = it["case"]
+    if c["bridge"] == c["cf_bridge"]:
+        return (f"The bridge, the asked person's pick, is <b>{E(c['bridge'])}</b> in both prompts (token {c['pos']}); the "
+                "prompts differ in the highlighted words.")  # fmt: skip
+    return (f"The bridge, the asked person's pick, is <b>{E(c['bridge'])}</b> in the original prompt and "
+            f"<b>{E(c['cf_bridge'])}</b> in the changed one; the change is added at its token ({c['pos']}).")  # fmt: skip
+
+
+def shares_html(shares: dict) -> str:
+    parts = []
+    for k, v in shares.items():
+        if k in ("norm", "write norm"):
+            parts.append(f"{'size of the change' if k == 'norm' else 'size of the write'} {v:.1f}")
+        else:
+            base, _, kk = k.partition("_k")
+            name = str(SHARE_NAME.get(base, base)) + (f" (k = {kk})" if kk else "")
+            parts.append(f"{E(str(name))} {100 * v:.0f}%")
+    return "<p class='mut'>Share of the change's size (squared) in: " + ", ".join(parts) + "</p>"
 
 
 def stored_label(it: dict, w: str, r: dict) -> str:
@@ -113,51 +158,153 @@ def stored_label(it: dict, w: str, r: dict) -> str:
     return r["role"]
 
 
+def answer_of(it: dict, w: str, r: dict) -> tuple[str, str]:
+    """The answer an arm's top token gives, and what it is. The main test stores no top token, but its role names it:
+    A = the original answer's token, b = the swapped answer's; other = a token the run did not store."""
+    c, rd = it["case"], it["case"]["readers"][w]
+    if "top" not in r:
+        if r["role"] == "b":
+            return str(rd["cf_answer"]), f"changed answer ({c['cf_bridge']}'s)"
+        if r["role"] == "A":
+            return str(rd["answer"]), f"original answer ({c['bridge']}'s)"
+        return "?", "another token (not stored)"
+    d = C.piece(it["model"], r["top"]).strip()
+    if it["kind"] == "routes" and w == "PP":
+        route = I.route_class(r, it["condition"])
+        return d, {"switch": "changed answer", "original": "original answer"}.get(route, f"{route} route")
+    if it["kind"] == "x8" and w == "PP":
+        cls = r["class"]
+        return d, f"slot {cls[4:]}'s digit" if cls.startswith("slot") else cls
+    who = (f"changed answer ({c['cf_bridge']}'s)" if d == str(rd["cf_answer"]) else
+           f"original answer ({c['bridge']}'s)" if d == str(rd["answer"]) else "another answer")  # fmt: skip
+    return d, who
+
+
+def answer_class(what: str) -> str:
+    """The colour of an answer by what it is."""
+    for prefix, cls in (("changed", "ok"), ("original", "org"), ("identity", "id"), ("position", "pos"), ("value", "val"),
+                        ("target", "ok"), ("third", "third"), ("slot", "org")):  # fmt: skip
+        if what.startswith(prefix):
+            return cls
+    return "oth"
+
+
+def contribution(it: dict, w: str) -> list[str]:
+    """How this item counts in the view's extra loss: only items the whole change switched are counted; +1 when the
+    switch is lost without the part and kept without its random part, -1 the reverse, 0 otherwise."""
+    v = I.view(it["view"])
+    h = v.get("headline")
+    entries = [h] if isinstance(h, dict) else h or []
+    pairs = []
+    for e in entries:
+        usable = (
+            "part" in e
+            and e.get("random")
+            and e.get("stat", "extra_loss") in ("extra_loss", "ld_extra", "gap", "extra_loss_minus")
+        )
+        mine = e.get("reader", w) == w and e.get("condition", it["condition"]) == it["condition"]
+        if usable and mine and (e["part"], e["random"]) not in pairs:
+            pairs.append((e["part"], e["random"]))
+    rows = it["rows"][w]
+    whole = rows.get("whole")
+    if not pairs or whole is None:
+        return []
+    if not whole["switched"]:
+        return ["the whole change did not switch it, so it is not among the switches the extra loss counts"]
+    out = []
+    for part, rand in pairs:
+        rp, rr = rows.get(part), rows.get(rand)
+        if rp is None or rr is None:
+            continue
+        lost_p, lost_r = not rp["switched"], not rr["switched"]
+        n = int(lost_p) - int(lost_r)
+        out.append(f"the whole change switched it; {part}: the switch is {'lost' if lost_p else 'kept'}; {rand}: "
+                   f"{'lost' if lost_r else 'kept'} → this item adds {n:+d} to the extra loss's numerator")  # fmt: skip
+    return out
+
+
+def answers_html(it: dict) -> str:
+    """What the model answered, per reader: before the change, then under each arm, with what each answer is."""
+    c, w0 = it["case"], it["reader"]
+    out = ["<div class='ans'><b>What the model answered</b>"]
+    for w in sorted(I.READERS, key=lambda x: x != w0):
+        rows = [(label, r) for label, r in it["rows"][w].items() if r is not None]
+        if not rows:
+            continue
+        rd = c["readers"][w]
+        key = (f"original answer {E(str(rd['answer']))} = {E(c['bridge'])}'s; changed answer {E(str(rd['cf_answer']))} = "
+               f"{E(c['cf_bridge'])}'s" if it["kind"] != "x8" else f"original answer {E(str(rd['answer']))}")  # fmt: skip
+        steps = []
+        for i, (label, r) in enumerate(rows):
+            ans, what = answer_of(it, w, r)
+            name = (
+                "before the change"
+                if i == 0 and label in ("unedited", "unwritten")
+                else E(str(ARM_NAME.get(label, label)))
+            )
+            steps.append(
+                f"{name} <span class='tag {answer_class(what)}'>{E(ans)}</span> <span class='mut'>{E(what)}</span>"
+            )
+        first, rest = steps[0], steps[1:]
+        line = first + (" &nbsp;→&nbsp; " + " · ".join(rest) if rest else "")
+        notes = "".join(f"<br><span class='mut'>{E(n)}</span>" for n in contribution(it, w))
+        out.append(f"<p class='{'me' if w == w0 else ''}' style='margin:6px 0'><b>{I.READER_NAME[w]}</b>: "
+                   f"{E(rd['question'])} <span class='mut'>({key})</span><br>{line}{notes}</p>")  # fmt: skip
+    out.append("</div>")
+    return "".join(out)
+
+
 def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
     c, m, w0 = it["case"], it["model"], it["reader"]
     x8 = it["x8"]
-    head = (f"{E(I.spec()['models'][m]['label'])} · L{it['layer']} · {E(it['run'].split('/')[-1])} · {E(it['scene'])} · "
-            f"{I.READER_NAME[w0]}" + (f" · {it['condition']}" if it["condition"] else "")
-            + (f" · {x8['kind']} j = {x8['j']} → k = {x8['k']}, s = {x8['s']:g}" if x8 else ""))  # fmt: skip
+    cond_name = {"C0": "sanity swap", "C1": "the same item moved", "C2": "another item moved"}
+    head = (f"{E(I.spec()['models'][m]['label'])} · layer {it['layer']} · run {E(it['run'].split('/')[-1])} · scene "
+            f"{E(it['scene'])} · {I.READER_NAME[w0]}" + (f" · {it['condition']} ({cond_name[it['condition']]})" if it["condition"] else "")
+            + (f" · {'write' if x8['kind'] == 'write' else 'random direction'} from slot {x8['j']} to slot {x8['k']}, "
+               f"dose s = {x8['s']:g}" if x8 else ""))  # fmt: skip
     status = "" if it["in_set"] else " " + tag(it["status"], "st")
     parts = [f"<div class='card{'' if it['in_set'] else ' outside'}'><div class='hdr'>{head}{status}</div>"
              f"<div class='mut' style='font-size:11px'>{E(it['id'])}</div>"]  # fmt: skip
     if c is None:
         parts.append("<p>No case for this scene in the run's cases.jsonl.</p></div>")
         return "".join(parts)
-    alt_note = " (the routes case's S: not read by x8)" if x8 else ""
-    parts.append("<table><tr><th style='width:50%'>original (org / O)</th><th>alt (cf / S)" + alt_note + "</th></tr>"
+    right = ("Second prompt of the routes case (not used by the write)" if x8 else
+             "Changed prompt (the change is taken from here)")  # fmt: skip
+    parts.append("<table><tr><th style='width:50%'>Original prompt (the model reads this)</th><th>" + right + "</th></tr>"
                  f"<tr><td class='prompt'>{marked(c['context'], c['cf_context'])}</td>"
                  f"<td class='prompt'>{marked(c['cf_context'], c['context'])}</td></tr></table>")  # fmt: skip
     qs = " &nbsp; ".join(f"<span class='{'me' if w == w0 else 'mut'}'>{I.READER_NAME[w]}: {E(c['readers'][w]['question'])}</span>"
                          for w in I.READERS)  # fmt: skip
-    parts.append(f"<p>{qs}<br>bridge <b>{E(c['bridge'])}</b> → <b>{E(c['cf_bridge'])}</b> at token {c['pos']}. "
-                 f"{expected_html(it)}</p>")  # fmt: skip
+    parts.append(f"<p>{qs}<br>{bridge_html(it) if not x8 else ''} {expected_html(it)}</p>")
+    parts.append(answers_html(it))
     rd = c["readers"][w0]
     diff = set(C.diff_positions(it))
     parts.append(f"<details><summary>tokens as the model saw them ({I.READER_NAME[w0]}; the change is added at "
                  f"<span class='toks'><span class='at'>{c['pos']}</span></span>, differing tokens marked)</summary>"
-                 f"<p class='mut'>org</p>{tokens_html(m, rd['ids']['org'], c['pos'], diff)}"
-                 f"<p class='mut'>alt</p>{tokens_html(m, rd['ids']['alt'], c['pos'], diff)}</details>")  # fmt: skip
-    rows = ["<table><tr><th>reader</th><th>arm</th><th>top token</th><th>stored label</th><th>p_org</th><th>p_alt</th>"
-            "<th>ld</th></tr>"]  # fmt: skip
+                 f"<p class='mut'>original prompt</p>{tokens_html(m, rd['ids']['org'], c['pos'], diff)}"
+                 f"<p class='mut'>changed prompt</p>{tokens_html(m, rd['ids']['alt'], c['pos'], diff)}</details>")  # fmt: skip
+    rows = ["<details><summary>the stored numbers per change</summary><table><tr><th>reader</th><th>change applied</th>"
+            "<th>top token</th><th>what it is (run's label)</th><th>P(original answer)</th><th>P(changed answer)</th>"
+            "<th>logit gap (changed − original)</th></tr>"]  # fmt: skip
     for w in sorted(I.READERS, key=lambda x: x != w0):
         for label, r in it["rows"][w].items():
+            name = E(str(ARM_NAME.get(label, label)))
             if r is None:
                 rows.append(
-                    f"<tr class='mut'><td>{I.READER_NAME[w]}</td><td>{E(label)}</td><td colspan=5>not in the run</td></tr>"
+                    f"<tr class='mut'><td>{I.READER_NAME[w]}</td><td>{name}</td><td colspan=5>not in the run</td></tr>"
                 )
                 continue
             top = E(repr(C.piece(m, r["top"]))) if "top" in r else "<span class='mut'>not stored</span>"
-            run = f" <span class='mut'>({E(r['_run'])})</span>" if "_run" in r else ""
+            run = f" <span class='mut'>(run {E(r['_run'])})</span>" if "_run" in r else ""
             lab = stored_label(it, w, r)
-            rows.append(f"<tr class='{'me' if w == w0 else ''}'><td>{I.READER_NAME[w]}</td><td>{E(label)}{run}</td><td>{top}</td>"
-                        f"<td>{tag(lab)}</td><td>{r.get('p_org', '–')}</td><td>{r.get('p_alt', '–')}</td><td>{r.get('ld', '–')}</td></tr>")  # fmt: skip
-    rows.append("</table>")
+            plain = PLAIN.get(lab, lab) + (f" ({lab})" if lab in ("A", "b") else "")
+            rows.append(f"<tr class='{'me' if w == w0 else ''}'><td>{I.READER_NAME[w]}</td><td>{name}{run}</td><td>{top}</td>"
+                        f"<td>{tag(plain, CLASS_COLOR.get(lab, 'st'))}</td><td>{r.get('p_org', '–')}</td><td>{r.get('p_alt', '–')}</td>"
+                        f"<td>{r.get('ld', '–')}</td></tr>")  # fmt: skip
+    rows.append("</table></details>")
     parts.append("".join(rows))
     if it["shares"]:
-        parts.append("<p class='mut'>shares: " + ", ".join(f"{E(k)} {v:.3f}" if isinstance(v, float) else f"{E(k)} {v}"
-                                                          for k, v in it["shares"].items()) + "</p>")  # fmt: skip
+        parts.append(shares_html(it["shares"]))
     badges = " ".join(f"<span class='tag {st.replace('/', '')}' title='{E(d)}'>{E(n)}: {st}</span>"
                       for n, (st, d) in C.run_checks(it).items())  # fmt: skip
     parts.append(f"<p>{badges}</p>")
@@ -205,6 +352,27 @@ def controls(v: dict, p: dict, server: bool) -> str:
             f"</span></label>{sup}<button>show</button></form>")  # fmt: skip
 
 
+def filters_plain(v: dict) -> str:
+    """The view's filters in words."""
+    f = v.get("filters", {})
+    cond = {"C0": "C0 sanity swap", "C1": "C1 the same item moved", "C2": "C2 another item moved"}
+    bits = []
+    if f.get("rendering"):
+        bits.append("prompts in the chat template" if f["rendering"] == "chat" else f"{f['rendering']} prompts")
+    bits.append({"fixed": "each model's layer fixed in advance", "run": "each run's own layer"}.get(f.get("layer"), ""))
+    bits.append(" and ".join(I.READER_NAME[w] for w in f.get("readers", I.READERS)))
+    if f.get("conditions"):
+        bits.append(", ".join(cond[c] for c in f["conditions"]))
+    if f.get("arms"):
+        bits.append("changes: " + ", ".join(str(ARM_NAME.get(a, a)) for a in f["arms"]))
+    if f.get("kinds"):
+        bits.append("writes and random directions at dose s = " + ", ".join(map(str, f.get("s", []))))
+    return (
+        "; ".join(b for b in bits if b)
+        + "; the items the run used (both readers read the original and changed prompts right)."
+    )
+
+
 def claim_box(v: dict) -> str:
     runs = "".join(
         f"<li>{E(I.spec()['models'][m]['label'])}: {', '.join(E(r) for r in rs)}</li>"
@@ -215,7 +383,7 @@ def claim_box(v: dict) -> str:
     return (
         f"<div class='box'><p><b>Claim.</b> {E(v['claim'])}</p><p class='mut'>README: {E(v.get('readme', ''))}</p>"
         f"<p class='mut'>Sources (docs/x0_numbers.json): {E(', '.join(v.get('sources', [])) or 'none yet')}</p>"
-        f"<p class='mut'>Filters: {E(json.dumps(v.get('filters', {})))}</p><ul class='mut'>{runs}</ul>"
+        f"<p class='mut'>Item set: {E(filters_plain(v))}</p><ul class='mut'>{runs}</ul>"
         f"<p style='font-size:12.5px'>Classes: {cls}</p>"
         + (f"<p class='mut'>{E(v['notes'])}</p>" if v.get("notes") else "")
         + "</div>"
@@ -274,7 +442,7 @@ def view_page(
 ) -> str:
     seed = int(p["seed"])
     body = [f"<p><a href='{'/' if server else 'index.html'}'>← all views</a></p><h1>{E(v['title'])}</h1>", controls(v, p, server),
-            claim_box(v), recount_box(recount), checks_box(stats), "<p><button onclick='download()'>download marks</button> "
+            claim_box(v), LEGEND, recount_box(recount), checks_box(stats), "<p><button onclick='download()'>download marks</button> "
             "<span class='mut'>(also kept in this browser)</span></p>"]  # fmt: skip
     for section, label in (("set", "Sample from the claim's item set"), ("out", "Outside the claim's set (ineligible or beyond the first N)"),
                            ("superseded", "Superseded runs")):  # fmt: skip

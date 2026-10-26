@@ -27,9 +27,9 @@ kinds:
       per (scene, rendering, layer, reader, dict, k, omp, arm): switched, role, p_org, p_alt, ld. No top token is
       stored: the stored class is role.
     classes:
-      b: switched - the top token is the swapped answer's token (tok_b)
-      A: original - the top token is the original answer's token (tok_A)
-      other: neither
+      b: changed answer - the top token is the changed prompt's answer (it switched)
+      A: original answer - the top token is the original prompt's answer
+      other: another token (not stored)
     eligible: >-
       x0_necessity.gate_and_eligible: org and alt said right and read right by both readers (competence.jsonl), the
       first 200 in scene order; the item set is the scenes in outcomes.jsonl at the layer.
@@ -56,7 +56,7 @@ kinds:
       none of its own: the cases.jsonl of the run named in manifest.json "single" (the one-change main test), joined by
       scene.
     outcomes: per (scene, reader, arm) - switched, role, p_org, p_alt, ld, share_<part>.
-    classes: {b: switched, A: original, other: neither}
+    classes: {b: changed answer (it switched), A: original answer, other: another token (not stored)}
     eligible: >-
       manifest items_rule - the one-change items whose org and alt locker sentences both come before the asked pick;
       the item set is the scenes in outcomes.jsonl.

@@ -1,15 +1,15 @@
 """Automatic checks on an item, recomputed from its per-item files and the pinned tokenizer, independently of the run
 code. A disagreement is a finding: it is listed (view page, STATUS), never fixed, and the check is not changed to pass.
 
-  bridge at pos       the token at pos decodes to the bridge (org) and to the cf bridge (alt)
-  only scene words    org and alt ids have the same length and differ only at tokens of words the scene changes;
+  bridge at the change's token: the token at pos decodes to the bridge (org) and to the cf bridge (alt)
+  only the scene's words differ: org and alt ids have the same length and differ only at tokens of words the scene changes;
                       pos differs iff the bridge does
-  answer tokens       tok_A / tok_b decode to the original / swapped answer
-  class from top      the class re-derived from the decoded top token and the expected digits equals the stored label
+  answers decode right: tok_A / tok_b decode to the original / swapped answer
+  label from the top token: the class re-derived from the decoded top token and the expected digits equals the stored label
                       (routes C0: the stored route is "other" for a switch, a known quirk: original <-> original,
                       switch or other <-> other; the switched flag is checked on its own); x0 stores no top token: n/a
-  p / ld vs label     switched = (role b); role b: p_alt >= p_org, ld >= 0; role A: the reverse; p > 0.5 decides the role
-  joined run          routes: a second run whose rows are used has the same prompts; x8: the stored entity is the joined
+  probabilities agree with the label: switched = (role b); role b: p_alt >= p_org, ld >= 0; role A: the reverse; p > 0.5 decides the role
+  second run has the same prompts: routes: a second run whose rows are used has the same prompts; x8: the stored entity is the joined
                       case's bridge and j its locker slot
 """
 
@@ -24,7 +24,14 @@ from typing import Any
 from bridge_jspace import pins
 
 PASS, FAIL, NA = "pass", "fail", "n/a"
-CHECKS = ("bridge at pos", "only scene words", "answer tokens", "class from top", "p / ld vs label", "joined run")
+CHECKS = (
+    "bridge at the change's token",
+    "only the scene's words differ",
+    "answers decode right",
+    "label from the top token",
+    "probabilities agree with the label",
+    "second run has the same prompts",
+)
 WORD = re.compile(r"[A-Za-z0-9]+")
 LOCKER = re.compile(r"The locker of the (\w+) is (\d)\.")
 EPS = 1e-6
@@ -195,9 +202,12 @@ def check_joined(it: dict) -> tuple[str, str]:
 
 def run_checks(it: dict) -> dict[str, tuple[str, str]]:
     if it["case"] is None:
-        return {name: (FAIL if name == "joined run" else NA, "no case for this scene") for name in CHECKS}
-    out = {"bridge at pos": check_pos(it), "only scene words": check_diff(it), "answer tokens": check_answers(it),
-           "class from top": check_class(it), "p / ld vs label": check_probs(it), "joined run": check_joined(it)}  # fmt: skip
+        return {
+            name: (FAIL if name == "second run has the same prompts" else NA, "no case for this scene")
+            for name in CHECKS
+        }
+    out = {"bridge at the change's token": check_pos(it), "only the scene's words differ": check_diff(it), "answers decode right": check_answers(it),
+           "label from the top token": check_class(it), "probabilities agree with the label": check_probs(it), "second run has the same prompts": check_joined(it)}  # fmt: skip
     return out
 
 
