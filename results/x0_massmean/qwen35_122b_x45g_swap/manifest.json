@@ -1,0 +1,59 @@
+{
+  "exp": "x0_massmean",
+  "run": "qwen35_122b_x45g_swap",
+  "written_utc": "2026-10-26T23:40:28Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct ~20:05; layout-free arm ~21:50); not part of X0's rule.",
+  "single": "qwen35_122b_x0_necessity_r2",
+  "single_code": {
+    "sha": "490b12dfd0d3b988e8a00fd3ccb2aa4b8f31bd32",
+    "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 33,
+  "items": 200,
+  "subspaces": {
+    "states_run": "qwen35_122b_x0_probe_v4",
+    "n": 758,
+    "rank": {
+      "A": 4,
+      "V": 8,
+      "AV": 12,
+      "Alf": 4,
+      "Id": 45
+    },
+    "layout_groups": {
+      "groups": 31,
+      "items_kept": 758,
+      "singletons_dropped": 0
+    },
+    "A_Alf_overlap": 0.718264907534683
+  },
+  "mode": "two_routes",
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_Alf",
+    "no_jppAlf",
+    "no_jpp_rand",
+    "no_Alf_rand",
+    "no_jppAlf_rand"
+  ],
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "7ed03aaab90a921c94f4fcc10d3846f3528106a8",
+    "dirty": true
+  },
+  "items_rule": "every item of the run, both sentence orders (the order recorded per row)",
+  "alt": "cf",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  }
+}
