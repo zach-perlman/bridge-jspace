@@ -113,6 +113,12 @@ def entity_means(states_run: str) -> dict[str, np.ndarray]:
     return {e: res[[i for i, x in enumerate(ents) if x == e]].mean(0) for e in sorted(set(ents))}
 
 
+def entity_domains(states_run: str) -> dict[str, str]:
+    """Each bridge entity's domain (animals / greek / elements) in a probe run's locker-before items."""
+    _, _, _, items, _ = layout_free(states_run)
+    return {it["entity"]: it["domain"] for it in items}
+
+
 def pointer_means(states_run: str) -> dict[int, np.ndarray]:
     """The class means behind the pointer directions (Alf): each locker-sentence index's mean layout-free state (batch
     44: the written address mu_k - mu_j lies in Alf's span by construction)."""

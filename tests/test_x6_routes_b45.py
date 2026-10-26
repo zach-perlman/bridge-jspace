@@ -155,6 +155,35 @@ def test_control_parts_hold_idouts_share_and_the_union():
     assert (share(parts["jpp+alf+wrong"]) >= share(parts["wrong"]) - 1e-5).all()
 
 
+def test_control_parts_take_wrong_pairs_from_the_bridges_domain():
+    # animals live in the first 10 coordinates, the Greek letters in the last 10: a same-domain control has no Greek part
+    g = torch.Generator().manual_seed(7)
+    d, n = 20, 4
+    animals = {e: torch.cat([torch.randn(10, generator=g), torch.zeros(10)]) for e in "abcdef"}
+    greek = {e: torch.cat([torch.zeros(10), torch.randn(10, generator=g)]) for e in ("alpha", "beta", "gamma")}
+    domain_of = {**dict.fromkeys(animals, "animals"), **dict.fromkeys(greek, "greek")}
+    jdic = torch.eye(d)
+    alf = torch.eye(d)[:, :1]
+    x = torch.randn(n, d, generator=g)
+    chosen = [{"scene": f"C0-{i:04d}", "bridge": "a", "cf_bridge": "b"} for i in range(n)]
+    idout = 0.9 * x  # a large target: the control takes every same-domain direction it can
+    atoms = [[0]] * n
+    parts, k = R.control_parts(
+        x, idout, {**animals, **greek}, chosen, jdic, atoms, alf, torch.eye(d), domain_of=domain_of
+    )
+    assert parts["wrong"][:, 10:].abs().max() < 1e-5 and parts["wrong"][:, :10].abs().max() > 0.1
+    assert k["n_wrong_pool"] == [4] * n and max(k["k_wrong"]) <= 3  # c, e, f + d: at most 3 independent differences
+    mixed, _ = R.control_parts(x, idout, {**animals, **greek}, chosen, jdic, atoms, alf, torch.eye(d))
+    assert mixed["wrong"][:, 10:].abs().max() > 0.1  # without domain_of the pool mixes domains
+
+
+def test_wrong_share_report_flags_a_short_pool():
+    norms = [{"condition": "C0", "share_idout": 0.10, "share_wrong": s, "n_wrong_pool": p}
+             for s, p in ((0.10, 30), (0.11, 30), (0.05, 3))]  # fmt: skip
+    rep = R.wrong_share_report(norms)["C0"]
+    assert rep["n"] == 3 and rep["short"] == 1 and rep["min_pool"] == 3 and abs(rep["median_ratio"] - 1.0) < 1e-9
+
+
 # ---- 45a: the rule ---------------------------------------------------------------------------------------------------
 
 

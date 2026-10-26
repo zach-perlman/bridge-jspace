@@ -479,17 +479,32 @@ def prepend_betas(chosen: list[dict], h_org: list, alf, mu: dict) -> list[dict]:
     return out
 
 
-def control_parts(x, idout, means: dict, chosen: list[dict], jdic, atoms, alf, pca, seed: int = WRONG_SEED):
+def control_parts(
+    x,
+    idout,
+    means: dict,
+    chosen: list[dict],
+    jdic,
+    atoms,
+    alf,
+    pca,
+    seed: int = WRONG_SEED,
+    domain_of: dict[str, str] | None = None,
+):
     """45e (a): per scene (row of x), the two controls at the share of x that identity outside J++ holds (idout: that
     part, [n, d]): the wrong-pair part (wrong_pair_basis, seeded per scene) and the PCA part (x0_parts.equal_share over
     pca's unit rows), each also in the union with the scene's J++ atoms (atoms[i]: rows of jdic) and the pointer
-    directions alf (span_part, least-squares projection). Returns ({part: [n, d]}, {"k_wrong", "k_pca": per scene})."""
+    directions alf (span_part, least-squares projection). With domain_of (entity -> domain), the wrong pairs come from
+    the bridge's own domain only (Dan 26 Oct ~21:20: never mixed; a short pool shows in the achieved share). Returns
+    ({part: [n, d]}, {"k_wrong", "k_pca", "n_wrong_pool": per scene})."""
     import torch
 
     from scripts import x0_parts as XP
 
     at_share = idout.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
-    wrong = [wrong_pair_basis(means, (c["bridge"], c["cf_bridge"]), x[i], float(at_share[i]),
+    pools = [{e: v for e, v in means.items() if domain_of is None or domain_of.get(e) == domain_of[c["bridge"]]}
+             for c in chosen]  # fmt: skip
+    wrong = [wrong_pair_basis(pools[i], (c["bridge"], c["cf_bridge"]), x[i], float(at_share[i]),
                               random.Random(f"{seed}|{c['scene']}"))[0] for i, c in enumerate(chosen)]  # fmt: skip
     pca_part, k_pca = XP.equal_share(pca, x, at_share)
     top = (x @ pca.T).abs().argsort(dim=-1, descending=True)  # equal_share's atoms: the first k_pca of these
@@ -498,7 +513,12 @@ def control_parts(x, idout, means: dict, chosen: list[dict], jdic, atoms, alf, p
              "jpp+alf+wrong": span_part(x, [torch.cat([jcols[i], q], 1) for i, q in enumerate(wrong)]),
              "jpp+alf+pca": span_part(x, [torch.cat([jcols[i], pca[top[i, : int(k_pca[i])]].T], 1)
                                           for i in range(len(chosen))])}  # fmt: skip
-    return parts, {"k_wrong": [int(q.shape[1]) for q in wrong], "k_pca": [int(k) for k in k_pca]}
+    n_pool = [len(set(p) - {c["bridge"], c["cf_bridge"]}) for p, c in zip(pools, chosen, strict=True)]
+    return parts, {
+        "k_wrong": [int(q.shape[1]) for q in wrong],
+        "k_pca": [int(k) for k in k_pca],
+        "n_wrong_pool": n_pool,
+    }
 
 
 def stage_run(
@@ -564,7 +584,8 @@ def stage_run(
                   "arms": list(PREPEND_ARMS)})  # fmt: skip
     if identity_controls:
         m.update({"wrong_seed": WRONG_SEED, "batch45": "45e",
-                  "wrong_pairs": "class-mean differences of entity pairs sharing no entity with the scene's pair"})  # fmt: skip
+                  "wrong_pairs": "class-mean differences of entity pairs from the bridge's own domain (Dan 26 Oct ~21:20) "
+                                 "sharing no entity with the scene's pair"})  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
     tok = model.tokenizer
@@ -665,7 +686,8 @@ def stage_run(
 
                 pca, m["pca"] = XP.pca_dictionary(model, layer)
                 assert isinstance(pca, torch.Tensor)
-                more, kcount = control_parts(x, parts["idout"], means, chosen, jdic, atoms, alf, pca)
+                more, kcount = control_parts(x, parts["idout"], means, chosen, jdic, atoms, alf, pca,
+                                             domain_of=MM.entity_domains(STATES[target]))  # fmt: skip
                 parts.update(more)
                 removed += [
                     ("wrong", "wrong"),
@@ -884,6 +906,20 @@ def identity_control_flags(rows: list[dict], n_boot: int = X.N_BOOT) -> dict:
     return out
 
 
+def wrong_share_report(norms: list[dict], short: float = 0.9) -> dict:
+    """45e: how close the wrong-pair control came to identity outside J++'s share, per condition: the median of
+    share_wrong / share_idout, the scenes whose control holds less than `short` of the target (a same-domain pool too
+    small to reach it: reported, not mixed with other domains; Dan 26 Oct ~21:20) and the smallest pool."""
+    out = {}
+    for cond in sorted({r["condition"] for r in norms if "share_wrong" in r}):
+        mine = [r for r in norms if r["condition"] == cond and "share_wrong" in r]
+        ratio = [r["share_wrong"] / r["share_idout"] for r in mine if r["share_idout"] > 0]
+        out[cond] = {"n": len(mine), "median_ratio": float(np.median(ratio)) if ratio else float("nan"),
+                     "short": sum(v < short for v in ratio),
+                     "min_pool": min((r["n_wrong_pool"] for r in mine if "n_wrong_pool" in r), default=None)}  # fmt: skip
+    return out
+
+
 def identity_specific(flags: dict[str, dict]) -> dict:
     """45e's rule over the models (model -> identity_control_flags): identity outside J++ is specific if (i) and (ii)
     both hold on at least 2 of the 3 models."""
@@ -1006,6 +1042,11 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     if m.get("identity_controls"):
         b45["x45e"] = f = identity_control_flags(rows, n_boot)
         lines += ["", "## 45e (a): identity controls (jobs/c3/batch45.yaml, fixed in advance)", ""]
+        f["wrong_share"] = ws = wrong_share_report(norms)
+        lines.append("The wrong-pair control's share against identity outside J++'s (wrong pairs from the bridge's own "
+                     "domain): " + "; ".join(f"{c} median ratio {v['median_ratio']:.2f}, {v['short']} of {v['n']} scenes "
+                                             f"under 0.9, smallest pool {v['min_pool']} entities"
+                                             for c, v in ws.items()) + ".")  # fmt: skip
         if f["c0"]:
             lines.append("C0, lookup, share of the whole change's switches still switching (n = "
                          f"{f['c0']['n']}): " + "; ".join(f"{a} {ci(v)}" for a, v in f["c0"]["left"].items())
