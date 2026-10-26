@@ -33,6 +33,14 @@ New file names (`figures/story/figNN_*.png`) leave the 26 Oct files (`fig0_setup
 | 10 | About half of the lookups still switch with J++ and the pointer removed | Each purple dot against its grey random dot. | One panel. x = models; per model two removals, J++ + pointer and J++ + pointer + identity outside J++, each with its share of the change in the label. Each has a grey dot beside it for a random part of the same size. y = lookups still switching in the sanity swap. The 122B shows "not in this test" for the identity removal. | `fig10` rows; `rtc_left_*`, `rtd_left_*`, `rtd_randleft_*`, `rtd_share_*` | the dotted bars fixed in advance (Q34, Q36, Q40) and the "switches lost" panel → `supp/s10_removed_together_bars.png` |
 | 11 | What held where | One row per claim, in story order. | 11 rows: the split; the split on the logit difference; varied scenes; natural passages; never the value; the pointer is needed; the pointer alone gives position; a write moves the lookup; the recall follows the write; the first-mentioned item, not the position in the text; transfer. Each cell has a symbol (✓ held, ~ partial, ✗ no, – not tested) and a small "a" for after the data. | `fig11` rows | – |
 
+**Changes after Dan's mock-ups (~17:15).**
+- Fig. 1 is the main test alone, with rows = models and the gap with its interval at the right.
+- New Fig. 1b, "In every setting, recall needs J++ more than the lookup does": one panel per setting, with rows = models.
+  - The settings are the logit difference, only the asked person's pick changes, varied scenes and natural passages.
+  - Muse's natural-passage lookup reads "too few (10 of 60)" and its gap "–".
+  - The "matched" rows stay in `supp/s01`.
+- Fig. 2 follows the same layout: one panel per part, with rows = models and the share of the change in each row label.
+
 ## Open question for Dan (Fig. 8 a, and the wording "first-mentioned item")
 
 The three groups in the current Fig. 9a are defined by the bridge's locker sentence:

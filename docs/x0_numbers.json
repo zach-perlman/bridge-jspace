@@ -18083,12 +18083,36 @@
   "text": "0.34",
   "source": "results/x8_write/x8_order_27b/outcomes.jsonl"
  },
+ "x8_order_b1_122b": {
+  "text": "0.11 [0.09, 0.13]",
+  "source": "results/x8_write/qwen35_122b_x8_order_g75/verdict-20261026T160006Z/verdict.json"
+ },
+ "x8_order_b2_122b": {
+  "text": "0.28 [0.26, 0.30]",
+  "source": "results/x8_write/qwen35_122b_x8_order_g75/verdict-20261026T160006Z/verdict.json"
+ },
+ "x8_order_b1_j0_122b": {
+  "text": "0.22",
+  "source": "results/x8_write/qwen35_122b_x8_order_g75/outcomes.jsonl"
+ },
+ "x8_order_b1_muse": {
+  "text": "0.18 [0.17, 0.20]",
+  "source": "results/x8_write/muse30b_x8_order_r2/verdict-20261026T154612Z/verdict.json"
+ },
+ "x8_order_b2_muse": {
+  "text": "0.17 [0.15, 0.18]",
+  "source": "results/x8_write/muse30b_x8_order_r2/verdict-20261026T154612Z/verdict.json"
+ },
+ "x8_order_b1_j0_muse": {
+  "text": "0.26",
+  "source": "results/x8_write/muse30b_x8_order_r2/outcomes.jsonl"
+ },
  "x8_order_models": {
-  "text": "9B and 27B",
+  "text": "9B, 27B, 122B and Muse",
   "source": "results/x8_write (qwen35_9b_x8_order, x8_order_27b, qwen35_122b_x8_order_g75, muse30b_x8_order_r2)"
  },
  "x8_order_j0_range": {
-  "text": "0.23-0.34",
+  "text": "0.22-0.34",
   "source": "results/x8_write (qwen35_9b_x8_order, x8_order_27b, qwen35_122b_x8_order_g75, muse30b_x8_order_r2)"
  },
  "tptr_pooled_9b": {
@@ -18149,15 +18173,15 @@
  },
  "fs_groups_9b": {
   "text": "0.66 (n 41) / 0.23 (n 22) / 0.33 (n 9)",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "fs_diff_9b": {
   "text": "0.40 [0.18, 0.60]",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "fs_keepdiff_9b": {
   "text": "0.46 [0.31, 0.64]",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "pm_keep_slot0_9b": {
   "text": "0.10 to 0.76",
@@ -18173,15 +18197,15 @@
  },
  "fs_groups_27b": {
   "text": "0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13)",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "fs_diff_27b": {
   "text": "0.21 [0.05, 0.35]",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "fs_keepdiff_27b": {
   "text": "0.16 [0.04, 0.31]",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "pm_keep_slot0_27b": {
   "text": "0.00 to 0.44",
@@ -18197,15 +18221,15 @@
  },
  "fs_groups_122b": {
   "text": "0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10)",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "fs_diff_122b": {
   "text": "0.38 [0.21, 0.56]",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "fs_keepdiff_122b": {
   "text": "0.07 [−0.16, 0.32]",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "pm_keep_slot0_122b": {
   "text": "0.15 to 0.47",
@@ -18221,15 +18245,15 @@
  },
  "fs_groups_muse": {
   "text": "0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7)",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "fs_diff_muse": {
   "text": "0.41 [0.25, 0.59]",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "fs_keepdiff_muse": {
   "text": "0.23 [0.09, 0.39]",
-  "source": "results/x0_massmean/first-sentence-20261026T133627Z/first.json"
+  "source": "results/x0_massmean/first-sentence-20261026T155222Z/first.json"
  },
  "pm_keep_slot0_muse": {
   "text": "0.16 to 0.69",

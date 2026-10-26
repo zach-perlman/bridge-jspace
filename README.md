@@ -13,7 +13,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at 4d44d449 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at f3a047df from the run files.
 
 ## Setup
 
@@ -106,7 +106,7 @@
 *After the data, except the transfer bars and the identity direction, fixed in advance.*
 
 - **First mention.** The pointer directions we found mostly separate the first-mentioned item from the rest (Fig. 9a); alone, they move the lookup only to or from slot 0 (Fig. 9b).
-- **Order, not position.** A neutral sentence before the first locker barely moves the code (B, 9B and 27B), so it tracks the order of mentions, not the position in the text; items in the first slot shift a little (0.23-0.34).
+- **Order, not position.** A neutral sentence before the first locker barely moves the code (B, 9B, 27B, 122B and Muse), so it tracks the order of mentions, not the position in the text; items in the first slot shift a little (0.22-0.34).
 - **Halfway writes** are asymmetric: from the first slot they sometimes land on the second, from the third almost never; the code is first-vs-rest, not a line.
 - **A pointer found without slot labels** overlaps ours by about a third, is as causal, and also misses the moves between slots 1 and 2 on the Qwens.
 - **Transfer.** Fit on simple scenes and not refit, they cost the lookup 0.05 to 0.15 in varied scenes and 0.07 to 0.25 in natural passages, while the lookup still does not need J++ there (Fig. 10).
