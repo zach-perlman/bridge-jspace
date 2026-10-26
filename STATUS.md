@@ -1,52 +1,29 @@
-# Results matrix, 25 Oct ~20:45 (agent). All numbers UNVERIFIED
+# Results matrix, 26 Oct ~04:30 (agent). All numbers UNVERIFIED
 
-Regenerated as x0_122b_b9's parts land. Every cell from docs/x0_numbers.json (in figures/story/data.csv). Lookup / recall = the two readers; extra loss and gap as in the README. 122B routes runs are after the data (gate 0.75). Pending cells fill when x0_122b_b9 lands (running since ~20:22: the 122B's bothoff control, keep-only parts, routes at L24 / L30 / L36, fresh scenes).
+Every cell from docs/x0_numbers.json (in figures/story/data.csv). Lookup / recall = the two readers; extra loss and gap as in the README. 122B routes runs are after the data (gate 0.75), and so are its fresh scenes (x0_122b_b11; the run fixed in advance stopped at its gate). Muse Glimmer 30B (held out, another family; L26 fixed in advance): batch 38's rules as for the Qwens, every gate passed at 0.80 on the first try, except its routes at L34 (the sanity swap moved the lookup in no scene: not tested); its labels are my reading of the fixed rules, not yet scored against Q38.
 
-| Hypothesis | 9B (L12) | 27B (L32) | 122B (L33) |
-|---|---|---|---|
-| Recall needs J++ more than the lookup (main test; fixed in advance) | held: gap 0.53 [0.42, 0.61] | partial: gap 0.60 [0.50, 0.69]; lookup 0.14 [0.08, 0.20] over its 0.10 bar | held: gap 0.32 [0.20, 0.43] |
-| Only the asked pick changes | gap 0.39 [0.30, 0.46] | gap 0.56 [0.45, 0.65] | held (fixed in advance): gap 0.28 [0.15, 0.39] |
-| Varied scenes (rule fixed before the run) | held: gap 0.22 [0.14, 0.31] | held: gap 0.47 [0.42, 0.53] | in between: gap 0.15 [0.12, 0.18] |
-| Natural passages (rule fixed before the run) | not tested at 0.80 (lookup 0.78); after the data at 0.75: gap 0.52 [0.36, 0.68] | in between: gap 0.27 [0.13, 0.41]; lookup 0.32 [0.20, 0.45] | held: gap 0.44 [0.32, 0.58] |
-| A verbatim key needed (translated key) | did not hold: D −0.02 [−0.05, −0.00] | did not hold: D 0.01 [−0.01, 0.04] | did not hold: D −0.00 [−0.01, 0.00] |
-| J++ is only the layer's main directions (recall, J++ vs PCA at its share) | did not hold: 0.37 [0.29, 0.43] vs 0.13 [0.06, 0.19] | did not hold: 0.61 [0.51, 0.69] vs 0.16 [0.08, 0.23] | close: 0.26 [0.16, 0.36] vs 0.21 [0.13, 0.30] |
-| J++ fitted to another scene costs the recall (Q33.1) | no: −0.01 [−0.02, 0.00] (2% of the change) | no: 0.02 [−0.01, 0.05] (1%) | no (after the data): −0.01 [−0.03, 0.00] (2%) |
-| The bridge word holds a first-mention pointer outside J++ (probe) | held: 0.97; 0.90 | held: 0.99; partial 0.56 | held: 0.92; 0.96 |
-| The lookup needs the pointer directions (lookup / recall extra loss) | held, replicated: 0.47 [0.41, 0.53] / 0.15 [0.10, 0.21] | weak: 0.14 [0.07, 0.22] / 0.16 [0.02, 0.31] | held: 0.31 [0.20, 0.43] / 0.13 [0.02, 0.26] |
-| Routes, another item moved: identity / position / value (fixed in advance) | 0.48 [0.43, 0.53] / 0.51 [0.46, 0.56] / 0.00 [0.00, 0.00] | 0.66 [0.60, 0.71] / 0.34 [0.28, 0.39] / 0.00 [0.00, 0.00] | after the data (gate 0.75): 0.61 [0.56, 0.67] / 0.38 [0.33, 0.44] / 0.00 [0.00, 0.00] |
-| Routes: position needs the pointer directions (without them / random part) | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] |
-| Early layer: identity only; without J++ the original answer | L6 1.00 [1.00, 1.00]; 0.99 [0.97, 1.00] | L16 1.00 [1.00, 1.00]; 0.99 [0.98, 1.00] | L27 (after the data) 1.00 [1.00, 1.00]; 0.84 [0.78, 0.89] |
-| Position appears where the lookup stops needing J++ (Q35.1) | held: L6 0.00 [0.00, 0.00], L8 0.03 [0.01, 0.05], L10 0.02 [0.01, 0.04], L12 0.51 [0.46, 0.56] | did not hold: L24 0.00 [0.00, 0.00] (lookup no longer needs J++), L28 0.34 [0.29, 0.40] | after the data: L24 0.00 [0.00, 0.00], L27 0.00 [0.00, 0.00], L30 0.00 [0.00, 0.00], L33 0.38 [0.33, 0.44], L36 0.58 [0.52, 0.63] |
-| Removing J++ and the pointer together costs the lookup >= 0.15 more than the pointer (Q34.1) | no: 0.12 [0.04, 0.19] | yes: 0.26 [0.19, 0.32] | no (after the data): 0.09 [0.03, 0.16] |
-| ... and J++ beats a random part of its size there (Q36.1, switches lost) | no: −0.08 [−0.11, −0.04] | yes: 0.23 [0.18, 0.27] | no (after the data): 0.00 [−0.02, 0.03] |
-| The pointer part alone gives position answers (Q37.1) | yes: 0.26 [0.20, 0.32] vs 0.00 [0.00, 0.00] | no: 0.09 [0.06, 0.12] vs 0.00 [0.00, 0.01] | descriptive (after the data): 0.21 [0.16, 0.26] |
-| The J++ part alone gives identity answers (Q37.2) | no: 0.00 [0.00, 0.00] | no: 0.00 [0.00, 0.00] | descriptive (after the data): 0.00 [0.00, 0.00] |
-| Recall needs J++ more where the pick is the bridge's first mention (only the asked pick changes: yes / no) | 0.57 [0.47, 0.67] / 0.17 [0.11, 0.23]; fresh scenes 0.12 [0.06, 0.19] | 0.73 [0.58, 0.86] / 0.49 [0.39, 0.60]; fresh scenes 0.37 [0.28, 0.46] | 0.40 [0.25, 0.54] / 0.10 [0.03, 0.17]; fresh scenes pending (b9) |
+| Hypothesis | 9B (L12) | 27B (L32) | 122B (L33) | Muse 30B (L26) |
+|---|---|---|---|---|
+| Recall needs J++ more than the lookup (main test; fixed in advance) | held: gap 0.53 [0.42, 0.61] | partial: gap 0.60 [0.50, 0.69]; lookup 0.14 [0.08, 0.20] over its 0.10 bar | held: gap 0.32 [0.20, 0.43] | held: gap 0.85 [0.68, 0.98] |
+| Only the asked pick changes | gap 0.39 [0.30, 0.46] | gap 0.56 [0.45, 0.65] | held (fixed in advance): gap 0.28 [0.15, 0.39] | held: gap 0.67 [0.53, 0.80] |
+| Varied scenes (rule fixed before the run) | held: gap 0.22 [0.14, 0.31] | held: gap 0.47 [0.42, 0.53] | in between: gap 0.15 [0.12, 0.18] (prose and tables, levels 0-1) | held: gap 0.50 [0.40, 0.61] (every format and level) |
+| Natural passages (rule fixed before the run) | not tested at 0.80 (lookup 0.78); after the data at 0.75: gap 0.52 [0.36, 0.68] | in between: gap 0.27 [0.13, 0.41]; lookup 0.32 [0.20, 0.45] | held: gap 0.44 [0.32, 0.58] | held: gap 0.95 [0.64, 1.33] |
+| A verbatim key needed (translated key) | did not hold: D −0.02 [−0.05, −0.00] | did not hold: D 0.01 [−0.01, 0.04] | did not hold: D −0.00 [−0.01, 0.00] | did not hold: D −0.06 [−0.08, −0.04] |
+| J++ is only the layer's main directions (recall, J++ vs PCA at its share) | did not hold: 0.37 [0.29, 0.43] vs 0.13 [0.06, 0.19] | did not hold: 0.61 [0.51, 0.69] vs 0.16 [0.08, 0.23] | close: 0.26 [0.16, 0.36] vs 0.21 [0.13, 0.30] | did not hold: 0.66 [0.53, 0.78] vs 0.18 [0.08, 0.26] |
+| J++ fitted to another scene costs the recall (Q33.1) | no: −0.01 [−0.02, 0.00] (2% of the change) | no: 0.02 [−0.01, 0.05] (1%) | no (after the data): −0.01 [−0.03, 0.00] (2%) | no: 0.04 [0.01, 0.09] (1%) |
+| The bridge word holds a first-mention pointer outside J++ (probe) | held: 0.97; 0.90 | held: 0.99; partial 0.56 | held: 0.92; 0.96 | held: 0.97; partial 0.65 |
+| The lookup needs the pointer directions (lookup / recall extra loss) | held, replicated: 0.47 [0.41, 0.53] / 0.15 [0.10, 0.21] | weak: 0.14 [0.07, 0.22] / 0.16 [0.02, 0.31] | held: 0.31 [0.20, 0.43] / 0.13 [0.02, 0.26] | held, replicated: 0.41 [0.34, 0.49] / 0.08 [0.00, 0.17] |
+| Routes, another item moved: identity / position / value (fixed in advance) | 0.48 [0.43, 0.53] / 0.51 [0.46, 0.56] / 0.00 [0.00, 0.00] | 0.66 [0.60, 0.71] / 0.34 [0.28, 0.39] / 0.00 [0.00, 0.00] | after the data (gate 0.75): 0.61 [0.56, 0.67] / 0.38 [0.33, 0.44] / 0.00 [0.00, 0.00] | 0.44 [0.38, 0.49] / 0.54 [0.49, 0.60] / 0.00 [0.00, 0.00] |
+| Routes: position needs the pointer directions (without them / random part) | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] | 0.27 [0.23, 0.32] / 0.55 [0.50, 0.60] |
+| Early layer: identity only; without J++ the original answer | L6 1.00 [1.00, 1.00]; 0.99 [0.97, 1.00] | L16 1.00 [1.00, 1.00]; 0.99 [0.98, 1.00] | L27 (after the data) 1.00 [1.00, 1.00]; 0.84 [0.78, 0.89] | L13 0.96 [0.93, 0.98]; 0.26 [0.20, 0.31] |
+| Position appears where the lookup stops needing J++ (Q35.1) | held: L6 0.00 [0.00, 0.00], L8 0.03 [0.01, 0.05], L10 0.02 [0.01, 0.04], L12 0.51 [0.46, 0.56] | did not hold: L24 0.00 [0.00, 0.00] (lookup no longer needs J++), L28 0.34 [0.29, 0.40] | after the data: L24 0.00 [0.00, 0.00], L27 0.00 [0.00, 0.00], L30 0.00 [0.00, 0.00], L33 0.38 [0.33, 0.44], L36 0.58 [0.52, 0.63] | no sweep: L13 0.04 [0.02, 0.07], L26 0.54 [0.49, 0.60]; L34 not tested (sanity swap gate) |
+| Removing J++ and the pointer together costs the lookup >= 0.15 more than the pointer (Q34.1) | no: 0.12 [0.04, 0.19] | yes: 0.26 [0.19, 0.32] | no (after the data): 0.09 [0.03, 0.16] | no: 0.03 [−0.03, 0.08] |
+| ... and J++ beats a random part of its size there (Q36.1, switches lost) | no: −0.08 [−0.11, −0.04] | yes: 0.23 [0.18, 0.27] | no (after the data): 0.00 [−0.02, 0.03] | no: 0.01 [−0.02, 0.03] |
+| The pointer part alone gives position answers (Q37.1) | yes: 0.26 [0.20, 0.32] vs 0.00 [0.00, 0.00] | no: 0.09 [0.06, 0.12] vs 0.00 [0.00, 0.01] | descriptive (after the data): 0.21 [0.16, 0.26] | yes: 0.29 [0.25, 0.34] vs 0.01 [0.00, 0.03] |
+| The J++ part alone gives identity answers (Q37.2) | no: 0.00 [0.00, 0.00] | no: 0.00 [0.00, 0.00] | descriptive (after the data): 0.00 [0.00, 0.00] | no: 0.00 [0.00, 0.00] |
+| Recall needs J++ more where the pick is the bridge's first mention (only the asked pick changes: yes / no) | 0.57 [0.47, 0.67] / 0.17 [0.11, 0.23]; fresh scenes 0.12 [0.06, 0.19] | 0.73 [0.58, 0.86] / 0.49 [0.39, 0.60]; fresh scenes 0.37 [0.28, 0.46] | 0.40 [0.25, 0.54] / 0.10 [0.03, 0.17]; fresh scenes after the data (gate 0.75) 0.06 [0.03, 0.09] | 0.76 [0.64, 0.87] / 0.54 [0.32, 0.75]; fresh scenes 0.31 [0.16, 0.45] |
 
-Scored today: Q32.7, Q32.8 right; Q33.1, Q34.1, Q35.1, Q36.1, Q37.1 wrong; Q37.2 right (predictions/2026-10-25_dan.md; calibration in predictions/README.md).
-
-## Overnight 25-26 Oct: the Muse grid, defaults taken, DeepSeek-V4-Flash note (agent)
-
-Queue on the H100 box (check: `make queue-status QUEUE=h100`): x0_122b_b11 (the 122B replication rerun at gate 0.75, after the data; it replaced b10, which the queue blocked because it depended on b9, which ended FAILED), then muse_g1, g2, g3, g4b, g5, g6 (2-GPU jobs, one lane per GPU; muse_g6 one GPU). Every Muse step runs through scripts/muse_step.sh, so nothing waits for me.
-
-Defaults taken (Dan: log, don't ask):
-- Muse target copied from origin/zach/v8-breadth-1021, not merged: MUSE_TEMPLATE_EDITS (no date line, reasoning low, the answer channel opened), the final norm's gain "weight", the output multiplier in Model.unembed. Kept ours: the run prefix muse30b_ and the lens from the Hub (the same file: sha256 90fc5e52..., verified on the box). Weights downloaded to /ephemeral/hf and checked file by file against the Hub.
-- Smoke: tokenizer-level on every grid script (all plan stages run on Muse); one GPU smoke of x6_routes (20 sanity-swap scenes, L26, no pointer arms) passed end to end. The other scripts were not GPU-smoked: the GPUs were busy with b9 until it ended.
-- G1 fallback (Dan ~00:20): a run whose gate.json says the readers' gate missed at 0.80 is redone as *_g75 with BJ_GATE=0.75 (X0's gate is now an env override), after the data, descriptive, not scored; if it misses at 0.75 too it is "not tested". Per-cell gates (varied scenes, keys) are partial by design and not redone.
-- G2: every Muse routes run has --c0-min 0.5 (Muse has no C0 reference run). G3 (J++ >= 10% of the change at L26) is read from the outputs afterwards.
-- Varied scenes on Muse: as on the 9B / 27B (prose / json / table, levels 0-2, the k = 50 / 100 curve; Dan 26 Oct ~00:50). My first default copied the 122B's cut (prose and tables, levels 0-1, no curve), which was chosen there for the 122B's speed, not by a rule; muse_g4 was cancelled before it started and replaced by muse_g4b at the same place in the queue (about one GPU-hour more by estimate).
-- The 122B's varied scenes the same way (Dan 26 Oct ~01:00: "122B теж?"): x0_122b_b12 (qwen35_122b_x0b_v2_all, every format, levels 0-2, the curve, L33), queued after muse_g6 so no Muse job waits. After the data, descriptive, not scored: it overlaps b6's cells, which were seen; the 122B verdict fixed in advance stays b6's. Reported pooled and split into b6's cells vs the new ones (json; level 2). b7's parts are not rerun on the new cells.
-- muse_g3 ended FAILED, by its gate, not a code error: the routes at L34 stopped at G2 (the sanity swap moved the lookup in none of the scenes, bar half): "not tested", not lowered, not requeued (G2 as fixed). Its other steps finished (the routes at L13, the parts, the first-mention split). The first-mention table wrote into the one-change run's folder, which the queue's pull skips (new folders only): recomputed locally from the same outcomes, identical to the box log.
-- The overnight shell chain I first wrote was never started (Dan asked for the jobq queue instead).
-- The 122B replication fixed in advance stopped at its gate (recall 0.77 < 0.80): not tested; b11 is the descriptive rerun.
-
-DeepSeek-V4-Flash feasibility (CPU only, no download):
-- Weights: 284B total, 13B active (MoE); "FP4 + FP8 mixed" (experts FP4, the rest FP8); about 150-170 GB on disk by third-party counts.
-- Our box (2x H100, 160 GB): does not fit, before activations. H100 has no native FP4; transformers would dequantize the experts to bf16 (about 570 GB). vLLM's recipes list H200 / B200 and larger.
-- HF implementation: transformers model type deepseek_v4 (AutoModelForCausalLM). The residual is 4 parallel streams (mHC, hc_mult = 4), shape [B, S, 4, D] through each block, mixed by attn_hc / ffn_hc, collapsed to one stream by a final head before the model norm. Whether output_hidden_states returns the 4 streams or a collapse was not stated in the docs found.
-- Lens: koayon/jpp-lenses has a J++ for it (deepseek-v4-flash/lens.pt, layers 0-41, its recall@10 on its card, hyper-connections detached in the fit); its card does not say which stream (or which collapse) it reads.
-- Chat: no Jinja template; a Python encoder (encoding_dsv4: encode_messages); modes non-think / think high / think max.
-- Verdict: not on this box. It needs about 4x H200-class memory or a box with native FP4, and an answer to which residual the lens reads.
+Scored 25 Oct: Q32.7, Q32.8 right; Q33.1, Q34.1, Q35.1, Q36.1, Q37.1 wrong; Q37.2 right (predictions/2026-10-25_dan.md; calibration in predictions/README.md). Batch 38 (Muse): not scored yet.
 
 # Results opened, 25 Oct ~12:45 (agent; after Dan's batch-31 / 32 commit). All numbers UNVERIFIED
 

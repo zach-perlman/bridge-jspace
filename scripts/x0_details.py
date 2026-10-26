@@ -28,35 +28,44 @@ NUMBERS = DOCS / "x0_numbers.json"
 TEMPLATE = DOCS / "x0_details.template.md"
 MODELS = {"9b": ("qwen3.5-9b", "qwen35_9b_x0_necessity", "qwen35_9b_x0_kmatch"),
           "27b": ("qwen3.6-27b", "x0_necessity_27b_chat", "x0_kmatch_27b"),
-          "122b": ("qwen3.5-122b-a10b", "qwen35_122b_x0_necessity_r2", "qwen35_122b_x0_necessity_r2")}  # fmt: skip
+          "122b": ("qwen3.5-122b-a10b", "qwen35_122b_x0_necessity_r2", "qwen35_122b_x0_necessity_r2"),
+          "muse": ("muse-glimmer-30b", "muse30b_x0_necessity", "muse30b_x0_necessity")}  # fmt: skip
 CTX = "results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json"
 NOCHAT = {"9b": "qwen35_9b_x0_necessity_nothink", "27b": "x0_necessity_27b_nothink"}
-DIGIT = {"9b": "qwen35_9b_x0_digit_r2", "27b": "x0_digit_27b_r2", "122b": "qwen35_122b_x0_necessity_r2"}
-SINGLE = {"9b": "qwen35_9b_x0_single_r2", "27b": "x0_single_27b_r2", "122b": "qwen35_122b_x0_single"}
+DIGIT = {"9b": "qwen35_9b_x0_digit_r2", "27b": "x0_digit_27b_r2", "122b": "qwen35_122b_x0_necessity_r2",
+         "muse": "muse30b_x0_necessity"}  # fmt: skip
+SINGLE = {"9b": "qwen35_9b_x0_single_r2", "27b": "x0_single_27b_r2", "122b": "qwen35_122b_x0_single",
+          "muse": "muse30b_x0_single"}  # fmt: skip
 PROBES = {"9b": "qwen35_9b_x0_probe", "27b": "x0_probe_27b"}
-PROBES_V4 = {"9b": "qwen35_9b_x0_probe_v4", "27b": "x0_probe_v4_27b", "122b": "qwen35_122b_x0_probe_v4"}
-AMNESIC = {"9b": "qwen35_9b_x0_amnesic", "27b": "x0_amnesic_27b", "122b": "qwen35_122b_x0_amnesic"}
-X0B = {"9b": "qwen35_9b_x0b_v2", "27b": "x0b_v2_27b", "122b": "qwen35_122b_x0b_v2"}
+PROBES_V4 = {"9b": "qwen35_9b_x0_probe_v4", "27b": "x0_probe_v4_27b", "122b": "qwen35_122b_x0_probe_v4",
+             "muse": "muse30b_x0_probe_v4"}  # fmt: skip
+AMNESIC = {"9b": "qwen35_9b_x0_amnesic", "27b": "x0_amnesic_27b", "122b": "qwen35_122b_x0_amnesic",
+           "muse": "muse30b_x0_amnesic"}  # fmt: skip
+X0B = {"9b": "qwen35_9b_x0b_v2", "27b": "x0b_v2_27b", "122b": "qwen35_122b_x0b_v2", "muse": "muse30b_x0b_v2"}
 ATOMS = {"letters": "x0_atoms_27b_letters", "all": "x0_atoms_27b_all", "letters_9b": "qwen35_9b_x0_atoms_letters"}
 PARTS = {"9b": "qwen35_9b_x0_parts", "27b": "x0_parts_27b"}
 MASSMEAN = {"9b": "qwen35_9b_x0_massmean", "27b": "x0_massmean_27b"}
-MASSMEAN_LF = {"9b": "qwen35_9b_x0_massmean_lf", "27b": "x0_massmean_lf_27b", "122b": "qwen35_122b_x0_massmean_grid"}
-PCAEQ = {"9b": "qwen35_9b_x0_pcaeq", "27b": "x0_pcaeq_27b", "122b": "qwen35_122b_x0_parts"}
+MASSMEAN_LF = {"9b": "qwen35_9b_x0_massmean_lf", "27b": "x0_massmean_lf_27b", "122b": "qwen35_122b_x0_massmean_grid",
+               "muse": "muse30b_x0_massmean_grid"}  # fmt: skip
+PCAEQ = {"9b": "qwen35_9b_x0_pcaeq", "27b": "x0_pcaeq_27b", "122b": "qwen35_122b_x0_parts", "muse": "muse30b_x0_parts"}
 X0BPARTS = {"9b": "qwen35_9b_x0b_parts", "27b": "x0b_parts_27b", "122b": "qwen35_122b_x0b_parts"}
-JPPOTHER = {"9b": "qwen35_9b_x0_jppother", "27b": "x0_jppother_27b", "122b": "qwen35_122b_x0_jppother"}
+JPPOTHER = {"9b": "qwen35_9b_x0_jppother", "27b": "x0_jppother_27b", "122b": "qwen35_122b_x0_jppother",
+            "muse": "muse30b_x0_jppother"}  # fmt: skip
 X4 = {"9b": ("qwen35_9b_x4_probe", "qwen35_9b_x4_patch"), "27b": ("x4_probe_27b", "x4_patch_27b"),
-      "122b": ("qwen35_122b_x4_probe", "qwen35_122b_x4_patch")}  # fmt: skip
-REPLICATE = {"9b": "qwen35_9b_x0_replicate", "27b": "x0_replicate_27b"}
-NATURAL = {"9b": "qwen35_9b_x5_natural", "27b": "x5_natural_27b", "122b": "qwen35_122b_x5_natural"}
-ROUTES = {"9b": "qwen35_9b_x6_routes", "27b": "x6_routes_27b"}
+      "122b": ("qwen35_122b_x4_probe", "qwen35_122b_x4_patch"), "muse": ("muse30b_x4_probe", "muse30b_x4_patch")}  # fmt: skip
+REPLICATE = {"9b": "qwen35_9b_x0_replicate", "27b": "x0_replicate_27b", "muse": "muse30b_x0_replicate"}
+NATURAL = {"9b": "qwen35_9b_x5_natural", "27b": "x5_natural_27b", "122b": "qwen35_122b_x5_natural",
+           "muse": "muse30b_x5_natural"}  # fmt: skip
+ROUTES = {"9b": "qwen35_9b_x6_routes", "27b": "x6_routes_27b", "muse": "muse30b_x6_routes"}
 # rte: the early layers (9B L6, 27B L16); rtg: the 122B after the data, gate 0.75; rtb: J++ and the pointer
 # directions removed together (x6_routes_bothoff)
-ROUTES_MORE = {"rte": {"9b": "qwen35_9b_x6_routes_l6", "27b": "x6_routes_l16_27b", "122b": "qwen35_122b_x6_routes_l27_g75"},
+ROUTES_MORE = {"rte": {"9b": "qwen35_9b_x6_routes_l6", "27b": "x6_routes_l16_27b", "122b": "qwen35_122b_x6_routes_l27_g75",
+                       "muse": "muse30b_x6_routes_l13"},
                "rtg": {"122b": "qwen35_122b_x6_routes_g75"},
                "rtb": {"9b": "qwen35_9b_x6_routes_bothoff", "27b": "x6_routes_bothoff_27b",
-                       "122b": "qwen35_122b_x6_routes_bothoff_g75"},
+                       "122b": "qwen35_122b_x6_routes_bothoff_g75", "muse": "muse30b_x6_routes"},
                "rtc": {"9b": "qwen35_9b_x6_routes_bothoff_ctrl", "27b": "x6_routes_bothoff_ctrl_27b",
-                       "122b": "qwen35_122b_x6_routes_bothoff_ctrl_g75"},
+                       "122b": "qwen35_122b_x6_routes_bothoff_ctrl_g75", "muse": "muse30b_x6_routes"},
                # the layer sweep (batch 35): rts<layer>_*
                "rts8": {"9b": "qwen35_9b_x6_routes_sweep_l8"}, "rts10": {"9b": "qwen35_9b_x6_routes_sweep_l10"},
                "rts20": {"27b": "x6_routes_sweep_l20_27b"},
@@ -65,7 +74,7 @@ ROUTES_MORE = {"rte": {"9b": "qwen35_9b_x6_routes_l6", "27b": "x6_routes_l16_27b
                "rts36": {"122b": "qwen35_122b_x6_routes_sweep_l36_g75"},
                "rts28": {"27b": "x6_routes_sweep_l28_27b"},
                "rtk": {"9b": "qwen35_9b_x6_routes_keeponly", "27b": "x6_routes_keeponly_27b",
-                       "122b": "qwen35_122b_x6_routes_keeponly_g75"}}  # fmt: skip
+                       "122b": "qwen35_122b_x6_routes_keeponly_g75", "muse": "muse30b_x6_routes"}}  # fmt: skip
 NATURAL_G75 = {"9b": "qwen35_9b_x5_natural_g75"}
 ORDER = "org locker vs asked pick"
 
@@ -428,7 +437,7 @@ def composition_numbers(num: Numbers) -> None:
     orders = {"all": "all", "both locker sentences before the pick": "both", "only the original's before": "org",
               "the original's after": "after", "first mention: yes": "fmyes", "first mention: no": "fmno"}  # fmt: skip
     for r in json.loads(found[-1].read_text())["rows"]:
-        m = {"qwen3.5-9b": "9b", "qwen3.6-27b": "27b", "qwen3.5-122b-a10b": "122b"}[r["model"]]
+        m = {target: key for key, (target, _, _) in MODELS.items()}[r["model"]]
         key = f"comp_{swaps[r['swap']]}_{orders[r['order']]}"
         num.add(f"{key}_n_{m}", str(r["n"]), src)
         for w, wk in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):

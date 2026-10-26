@@ -40,10 +40,16 @@ RUNS = {
                          ("only the asked pick", "x0_necessity/x0_single_27b_r2"),
                          ("only the asked pick (replication, fresh scenes)", "x0_replicate/x0_replicate_27b")],
                     "x0_massmean/x0_massmean_lf_27b"),
+    # the 122B's fresh scenes: the rerun at gate 0.75 (x0_122b_b11; after the data, descriptive), the run fixed in
+    # advance having stopped at its gate (recall 0.77 < 0.80)
     "qwen3.5-122b-a10b": (33, [("two people swap", "x0_necessity/qwen35_122b_x0_necessity_r2"),
                                ("only the asked pick", "x0_necessity/qwen35_122b_x0_single"),
-                               ("only the asked pick (replication, fresh scenes)", "x0_replicate/qwen35_122b_x0_replicate")],
+                               ("only the asked pick (replication, fresh scenes)", "x0_replicate/qwen35_122b_x0_replicate_g75")],
                           "x0_massmean/qwen35_122b_x0_massmean_grid"),
+    "muse-glimmer-30b": (26, [("two people swap", "x0_necessity/muse30b_x0_necessity"),
+                              ("only the asked pick", "x0_necessity/muse30b_x0_single"),
+                              ("only the asked pick (replication, fresh scenes)", "x0_replicate/muse30b_x0_replicate")],
+                         "x0_massmean/muse30b_x0_massmean_grid"),
 }  # fmt: skip
 ORDERS = ("both locker sentences before the pick", "only the original's before", "the original's after")
 
