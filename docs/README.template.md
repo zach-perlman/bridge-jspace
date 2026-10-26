@@ -35,7 +35,7 @@ Does removing the part of the bridge the lens can read cost the recall more than
 *Fig. 1.*
 
 - **It is not a margin effect:** scored on the logit difference instead of switches, the gap is about the same ({{pt|ld_gap_122b}} to {{pt|ld_gap_muse}}).
-- **It holds in every setting, weaker outside simple scenes:** when only the asked pick changes, in varied formats and in natural passages, where Muse's lookup switches too rarely to measure.
+- **It holds in every setting, weaker outside simple scenes**; in natural passages Muse's lookup switches too rarely to measure.
 
 ![In every setting, recall needs J++ more than the lookup does](figures/story/fig01b_settings.png)
 *Fig. 1b.*
@@ -92,12 +92,12 @@ Which route does the lookup take: the item's identity, its position, or the numb
 
 *Removal after the data, replicated in advance on the 9B and Muse; the routes arms and the writes fixed in advance; the writes' recall split after the data.*
 
-Is "where the item was first mentioned" a part of the bridge word that the model uses?
+Is "where the item's locker is stated" a part of the bridge word that the model uses?
 
-- **A probe reads the pointer, the lens does not:** a linear probe on the bridge word tells which sentence first mentioned the item in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes (layout alone: {{num|v4_b_layout_before_27b}}), almost none of it in J++. A probe shows the information is there, not its use, so we tested the four **pointer directions** that separate the positions causally.
+- **A probe reads the pointer, the lens does not:** a linear probe on the bridge word tells which sentence holds the item's locker in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes (layout alone: {{num|v4_b_layout_before_27b}}), almost none of it in J++. A probe shows the information is there, not its use, so we tested the four **pointer directions** that separate the positions causally.
 - **Removing the pointer stops position answers:** they drop to near zero on the Qwens and by half on Muse; a random part of the same size barely changes them, and the recall loses much less than the lookup (Fig. 5).
 - **Adding only the pointer creates position answers** on three of four models (not the 27B); a random part of the same size creates none.
-- **One fixed vector written into the bridge moves the lookup:** the mean difference between two positions, the same for every scene, sends the lookup to the target locker in a quarter to a half of the writes once it is as large as a real change; a random vector moves nothing. The strength fixed in advance was too small and moved nothing, a design error on our side.
+- **One fixed vector written into the bridge moves the lookup:** the mean difference between two positions, the same for every scene, sends the lookup to the target locker in a quarter to a half of the writes once it is as large as a real change; a random vector moves nothing. The strength fixed in advance moved nothing (a design error, Section 6).
 - **The recall follows a strong write to the item:** on the Qwens about four in five of the recalls a strong write changes name the item at the target position (Muse: {{num|x8_rc_target_muse}}).
 
 ![One fixed vector written at the bridge sends the lookup to its locker](figures/story/fig07_writes.png)
@@ -120,10 +120,16 @@ How far does the pointer we found reach?
 ![The split carries over to other texts; our pointer does not](figures/story/fig09_transfer.png)
 *Fig. 9.*
 
-- **About half of the route is unexplained:** with J++ and the pointer removed together, about half of the lookups still switch. Removing identity outside J++ as well takes away most of the rest, but a random part of the same size removes most switches too. The recall needs identity on the 27B and Muse, not the 9B.
+- **About half of the route is unexplained:** with J++ and the pointer removed together, about half of the lookups still switch. Removing identity outside J++ as well removes most of what is left on the 9B and 27B, far more than a random part of the same share; on Muse half still switch (table). These parts are {{num|rtd_share_C0_jpp+alf+idout_27b}}-{{num|rtd_share_C0_jpp+alf+idout_9b}} of the change, so a random part also removes most on the 9B.
 
 ![About half the lookups still switch with J++ and the pointer removed](figures/story/fig10_what_is_left.png)
 *Fig. 10.*
+
+| Sanity swap, J++ + pointer + identity outside J++ removed | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
+|---|---|---|---|---|
+| Lookups still switching: the part removed / a random part of its share | {{pt|rtd_left_C0_jpp+alf+idout_lk_9b}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_9b}} | {{pt|rtd_left_C0_jpp+alf+idout_lk_27b}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_27b}} | not in this test | {{pt|rtd_left_C0_jpp+alf+idout_lk_muse}} / {{pt|rtd_randleft_C0_jpp+alf+idout_lk_muse}} |
+| The part's share of the change | {{num|rtd_share_C0_jpp+alf+idout_9b}} | {{num|rtd_share_C0_jpp+alf+idout_27b}} | – | {{num|rtd_share_C0_jpp+alf+idout_muse}} |
+| Recall's extra loss without identity alone | {{num|rtd_ex_C0_id_rc_9b}} | {{num|rtd_ex_C0_id_rc_27b}} | – | {{num|rtd_ex_C0_id_rc_muse}} |
 
 ## 6. What did not hold
 
