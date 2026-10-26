@@ -1,0 +1,25 @@
+id: x45e_27b
+title: "Batch 45e (a) on the 27B L32: identity controls. The sanity swap (C0) and another item moved (C2) with the identity arms and two controls at the share of identity outside J++: wrong entity pairs and the layer's top PCA directions, each alone and with J++ + the pointer"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on: [x45_0_indep_9b]
+command: >-
+  BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_x45e_27b --conditions C0,C2 --identity --identity-controls --sealed
+question: >-
+  Is "identity outside J++" specific to the swapped pair's identity, or does any identity-like part of the same share (other entity pairs' class-mean differences, the layer's top PCA directions) remove as much of the lookup?
+why_it_matters: >-
+  With J++ and the pointer, identity outside J++ removes most of what is left of the lookup on the 9B and 27B, far more than a random part of the same share (README Section 5); the removed parts are 35%-56% of the change. The wrong-pair control tells "the pair's identity" from "any direction of that kind".
+hypotheses:
+  H-batch45: 'Q45.7 (45e) in docs/predictions_batch45.md, committed by Dan before any result is opened'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45e): identity outside J++ is specific if both hold on at least 2 of 3 models: removing it together with J++ + pointer leaves at most half of the lookups that the wrong-pair control leaves; in C2 it cuts identity answers at least 0.15 more than the wrong-pair control. As computed (x6_routes.identity_control_flags per model, idctrl-summary over the 9B, 27B and Muse runs): (i) C0, lookup: S(no_jppalfidout) / S(whole) <= 0.5 x S(no_jppalfwrong) / S(whole), the share of the whole change's switches still switching, point estimates; (ii) C2, lookup: identity share without the wrong pair minus identity share without idout (both removed alone) >= 0.15, point estimates; a model whose C0 check fails counts as not tested. Paired cluster-bootstrap CIs, the PCA control and the union-arm version of (ii) reported beside it. Wrong-pair control per scene: class-mean differences (x0_massmean.entity_means) of entity pairs that share no entity with the scene's swapped pair, in a seeded order, orthonormalised one at a time until the span holds idout's share of the scene's change (the count closest to it); PCA: x0_parts.pca_dictionary at idout's share (x0_parts.equal_share). Gates as the routes test (read accuracy 0.80; C0 within 0.10 of the 27B's reference). Cluster bootstrap over the bridge item, 10,000 resamples, seed 0.
+controls:
+- 'the wrong-pair control and the PCA control at idout''s share of each scene''s change, alone and in the union with the scene''s 25 J++ atoms and the pointer directions'
+- 'every removed part against a random part of its own share (per scene)'
+- 'the existing identity arms (D1) in the same run, so the comparison is paired'
+- 'the recall on the identical patch'
+n: '300 scenes per condition (C0, C2), fewer where an entity has no class mean (dropped and counted, as D1)'
+seeds: [2510, 4505, 888, 0]
+notes: "Sealed (--sealed): no verdict runs after the job. After Dan's commit of Q45.7, by hand: uv run python scripts/x6_routes.py verdict --name x6_routes_x45e_27b; then idctrl-summary over the three 45e runs (see x45e_9b); uv run python scripts/x6_routes.py examples --name x6_routes_x45e_27b (CPU)."

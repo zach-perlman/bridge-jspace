@@ -1,0 +1,25 @@
+id: x45a_9b
+title: "Batch 45a on the 9B L12: first mention or first locker? Routes C2 with one sentence before both prompts (V0 none, V1 a pick of the first-locker item, V2 of another locker item, V3 of an item with no locker, V4 a neutral filler)"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on: [x45_0_indep_9b]
+command: >-
+  BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name qwen35_9b_x6_routes_x45a --conditions C2 --prepend V0,V1,V2,V3,V4 --sealed
+question: >-
+  Is the pointer's first slot "the first locker sentence" or "the first item stated before any other"? When a pick sentence naming an item comes before the lockers, does the pointer part alone still give position answers on moves to or from the first locker?
+why_it_matters: >-
+  The pointer's wording rests on what slot 0 codes (Dan, batch 45). A pick sentence before the lockers separates "first locker" from "first mention": V1-V3 move the first mention, V4 moves only the distance.
+hypotheses:
+  H-batch45: 'Q45.3 (45a) in docs/predictions_batch45.md, committed by Dan before any result is opened'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45a): "First locker stated before any item" if V1, V2 and V3 each cut only-pointer position on first-locker moves to at most half of V0 (paired CI excluding 0) while V4 does not; "Order of lockers, picks ignored" if V1, V2 and V3 stay within 0.10 of V0; otherwise mixed. As computed (x6_routes.first_locker_rule): the lookup's position share with only the pointer part (keep_alf) on the C2 scenes whose pointer move (the O bridge's locker slot -> the S bridge's) involves slot 0, the base scenes every variant has (paired); a variant cuts if its point estimate is <= 0.5 x V0's and the paired cluster-bootstrap 95% CI of V0 minus it has lower bound > 0; within = |variant - V0| <= 0.10 on the point estimates; if both rules hold (possible when V0 <= 0.2) the first is reported and flagged; a variant that misses its gate makes the verdict "not tested". Read beside it (descriptive): without the pointer against its random part; the code's shift beta per variant vs V0 (U U^T (h_v - h_V0) at O's bridge word on mu_j+1 - mu_j), overall and per slot j. Gate as the routes test (O's read accuracy >= 0.80 per reader, per variant). Cluster bootstrap over bridge items, 10,000 resamples, seed 0.
+controls:
+- 'V0: the unchanged routes C2 prompts (a rerun; the same 700 base scenes, checked token for token on the tokenizer)'
+- 'V4: a neutral sentence of 10-12 tokens (x8_write.FILLERS, as batch 44 B1)'
+- 'every kept or removed part against a random part of the same share of the change (per scene)'
+- 'the recall on the identical patch'
+n: "up to 300 base C2 scenes eligible in every variant (5 variants each)"
+seeds: [2510, 4501, 888, 0]
+notes: "Sealed (--sealed): no verdict runs after the job. After Dan's commit of Q45.3, by hand: uv run python scripts/x6_routes.py verdict --name qwen35_9b_x6_routes_x45a; uv run python scripts/x6_routes.py examples --name qwen35_9b_x6_routes_x45a (CPU: 10 random items, seed 0, prompts as the model reads them, patch position marked). beta.jsonl holds the code's shift per scene; outcomes.jsonl rows carry variant, base_scene and move. Pointer basis: Alf from qwen35_9b_x0_probe_v4 (not refit)."
