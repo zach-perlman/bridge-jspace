@@ -297,11 +297,29 @@ views:
 
   - id: k_curve
     title: More J++ directions removed (k = 25 / 50 / 100)
-    status: later
+    status: phase2
     kind: x0
     readme: "Section 1, bullet 3 ('On the 27B the lookup needs J++ once more directions are removed')"
     claim: "On the 27B the lookup needs J++ once more directions are removed; the 9B, 122B and Muse keep the gap at k = 100."
     sources: [lk_excess_k25_27b, lk_excess_k50_27b, lk_excess_k100_27b, contrast_k100_<m>]
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without J++ (k = 25): [no_part, jpp, 25, signed]
+        its random part (k = 25): [no_rand, jpp, 25, signed]
+        without J++ (k = 50): [no_part, jpp, 50, signed]
+        its random part (k = 50): [no_rand, jpp, 50, signed]
+        without J++ (k = 100): [no_part, jpp, 100, signed]
+        its random part (k = 100): [no_rand, jpp, 100, signed]
+    headline:
+      - {stat: extra_loss, reader: PP, part: "without J++ (k = 25)", random: "its random part (k = 25)", key: lk_excess_k25_<m>}
+      - {stat: extra_loss, reader: PP, part: "without J++ (k = 50)", random: "its random part (k = 50)", key: lk_excess_k50_<m>}
+      - {stat: extra_loss, reader: PP, part: "without J++ (k = 100)", random: "its random part (k = 100)", key: lk_excess_k100_<m>}
+      - {stat: gap, part: "without J++ (k = 100)", random: "its random part (k = 100)", key: contrast_k100_<m>}
     runs:
       qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_kmatch]
       qwen3.6-27b: [results/x0_necessity/x0_kmatch_27b]
@@ -526,14 +544,35 @@ views:
 
   - id: logit_diff
     title: "The gap on the logit difference (batch 39)"
-    status: later
+    status: phase2
     kind: x0
     readme: "not yet in the README body (batch 39 scored)"
-    claim: "The gap holds on the logit difference ld = logit(alt) - logit(org), recounted from the per-arm ld fields."
+    claim: >-
+      The gap holds on the logit difference: an arm's shift = ld(arm) - ld(unedited), ld = the swapped answer's logit
+      minus the original's; extra loss = (mean shift without the random part - mean shift without J++) / mean shift of
+      the whole change; gap = the recall's minus the lookup's (Q39.1: all four >= 0.20).
     sources: []
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without J++: [no_part, jpp, 25, signed]
+        without its random part: [no_rand, jpp, 25, signed]
+    ref_file: results/x0_logit_diff/x0_logit_diff_20261026/ld.json  # no data.csv number: compared with the analysis output
+    ref_models: {qwen3.5-9b: 9B, qwen3.6-27b: 27B, qwen3.5-122b-a10b: 122B, muse-glimmer-30b: Muse}
+    headline:
+      - {stat: ld_extra, reader: PP, part: without J++, random: without its random part, ref: "models.<M>.lookup.extra.0"}
+      - {stat: ld_extra, reader: PM, part: without J++, random: without its random part, ref: "models.<M>.recall.extra.0"}
+      - {stat: ld_gap, part: without J++, random: without its random part, ref: "models.<M>.gap.0"}
     runs:
-      all: [results/x0_logit_diff/x0_logit_diff_20261026]
-    per_item: "the main runs' outcomes.jsonl (ld per arm), the same item sets as main_swap"
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x0_necessity]
+      qwen3.6-27b: [results/x0_necessity/x0_necessity_27b_chat]
+      qwen3.5-122b-a10b: [results/x0_necessity/qwen35_122b_x0_necessity_r2]
+      muse-glimmer-30b: [results/x0_necessity/muse30b_x0_necessity]
+    analyses: [results/x0_logit_diff/x0_logit_diff_20261026]
 
   - id: d1_identity
     title: "The identity direction, with the pointer and J++ (batch 40)"

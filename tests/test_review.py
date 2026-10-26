@@ -138,7 +138,7 @@ def test_export_writes_a_page_per_view(tmp_path):
 @pytest.mark.parametrize(
     "view_id",
     ["main_swap", "single_change", "routes", "routes_early", "pointer_main", "routes_sweep", "both_removed",
-     "both_removed_ctrl", "d1_identity"],
+     "both_removed_ctrl", "d1_identity", "k_curve", "logit_diff"],
 )  # fmt: skip
 def test_recount_equals_data_csv(view_id):
     from bridge_jspace.review import recount as RC

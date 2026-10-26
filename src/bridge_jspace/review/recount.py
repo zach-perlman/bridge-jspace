@@ -73,9 +73,50 @@ def lost(items: list[dict], reader: str, part: str) -> float:
     return 1 - switched([r.get(part) for r in mine]) / whole if whole else float("nan")
 
 
-def one_part(got: list[dict], e: dict, m: str, mk: str) -> dict:
-    """A headline entry on one condition and reader: extra_loss / lost, or the difference of two (…_minus)."""
+def ld_extra(items: list[dict], reader: str, h: dict) -> float:
+    """On the logit difference (batch 39): the shift of an arm = ld(arm) - ld(unedited); extra loss = (mean shift
+    without the random part - mean shift without the part) / mean shift of the whole change."""
+    mine = [it["rows"][reader] for it in items if it["reader"] == reader]
+    shift = {
+        a: sum(r[a]["ld"] - r["unedited"]["ld"] for r in mine) / len(mine) for a in ("whole", h["part"], h["random"])
+    }
+    return (shift[h["random"]] - shift[h["part"]]) / shift["whole"]
+
+
+def compare_ref(value: float, ref: str, model_name: str, file: str) -> dict:
+    """Against an analysis output (full precision): the JSON field at ref, <M> = the file's name for the model."""
+    blob = I.read_json(file)
+    for k in ref.replace("<M>", model_name).split("."):
+        blob = blob[int(k)] if isinstance(blob, list) else blob.get(k, {})
+    ok = isinstance(blob, float | int) and abs(value - blob) <= 1e-9
+    return {"key": f"{file.split('/')[-2]}: {ref.replace('<M>', model_name)}", "data": f"{blob:.4f}" if ok or isinstance(blob, float) else "",
+            "status": "match" if ok else "mismatch"}  # fmt: skip
+
+
+def one_part(got: list[dict], e: dict, m: str, mk: str, v: dict | None = None) -> dict:
+    """A headline entry on one condition and reader: extra_loss / lost, or the difference of two (…_minus); ld_extra
+    / ld_gap on the logit difference, compared with the view's ref_file."""
     pool = [it for it in got if e.get("condition") in (None, it["condition"])]
+    if e["stat"] in ("ld_extra", "ld_gap"):
+        h = {"part": e["part"], "random": e["random"]}
+        val = (
+            ld_extra(pool, e.get("reader", "PP"), h)
+            if e["stat"] == "ld_extra"
+            else ld_extra(pool, "PM", h) - ld_extra(pool, "PP", h)
+        )
+        name = (
+            f"{I.READER_NAME[e['reader']]} extra loss on ld"
+            if e["stat"] == "ld_extra"
+            else "gap on ld (recall - lookup)"
+        )
+        ref = compare_ref(val, e["ref"], (v or {}).get("ref_models", {}).get(m, m), (v or {})["ref_file"])
+        return {"model": m, "quantity": name, "n": sum(it["reader"] == "PP" for it in pool), "value": val, **ref}
+    if e["stat"] == "gap":  # the recall's extra loss minus the lookup's, on switches
+        h = {"whole": "whole", "part": e["part"], "random": e["random"]}
+        val = extra_loss(pool, "PM", h)[0] - extra_loss(pool, "PP", h)[0]
+        n = sum(it["reader"] == "PP" for it in pool)
+        return {"model": m, "quantity": f"gap (recall - lookup): {e['part']}", "n": n, "value": val,
+                **compare(val, e["key"].replace("<m>", mk))}  # fmt: skip
     w = e["reader"]
     n = sum(it["reader"] == w for it in pool)
     h = {"whole": "whole", "part": e["part"], "random": e.get("random")}
@@ -132,7 +173,7 @@ def recount(view_id: str) -> list[dict]:
             if e["stat"] == "route_share":
                 out += route_shares(v, got, e, m, mk)
             else:
-                out.append(one_part(got, e, m, mk))
+                out.append(one_part(got, e, m, mk, v))
         h = v.get("headline", {}) if isinstance(v.get("headline"), dict) else {}
         if h.get("stat") == "extra_loss":
             ex = {}
