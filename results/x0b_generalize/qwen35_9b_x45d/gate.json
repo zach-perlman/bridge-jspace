@@ -1,0 +1,561 @@
+{
+ "counts": {
+  "scenes": 4410,
+  "cases": 2258,
+  "dropped": {
+   "animals: no other pick with a different locker and memory number": 9,
+   "animals: the bridge is not one token at one position in org and alt": 215,
+   "elements: the bridge is not one token at one position in org and alt": 365,
+   "greek: the bridge is not one token at one position in org and alt": 60,
+   "instruments: no other pick with a different locker and memory number": 49,
+   "instruments: the bridge is not one token at one position in org and alt": 266,
+   "planets: the bridge is not one token at one position in org and alt": 261,
+   "shapes: the bridge is not one token at one position in org and alt": 496,
+   "vehicles: the bridge is not one token at one position in org and alt": 431
+  },
+  "cases_per_cell": {
+   "animals/json/0": 18,
+   "animals/json/1": 36,
+   "animals/json/2": 31,
+   "animals/prose/0": 42,
+   "animals/prose/1": 60,
+   "animals/prose/2": 56,
+   "animals/table/0": 51,
+   "animals/table/1": 57,
+   "animals/table/2": 55,
+   "elements/prose/0": 41,
+   "elements/prose/1": 47,
+   "elements/prose/2": 41,
+   "elements/table/0": 41,
+   "elements/table/1": 49,
+   "elements/table/2": 46,
+   "greek/json/0": 61,
+   "greek/json/1": 62,
+   "greek/json/2": 65,
+   "greek/prose/0": 64,
+   "greek/prose/1": 63,
+   "greek/prose/2": 63,
+   "greek/table/0": 63,
+   "greek/table/1": 65,
+   "greek/table/2": 64,
+   "instruments/prose/0": 42,
+   "instruments/prose/1": 53,
+   "instruments/prose/2": 63,
+   "instruments/table/0": 39,
+   "instruments/table/1": 59,
+   "instruments/table/2": 59,
+   "planets/prose/0": 59,
+   "planets/prose/1": 62,
+   "planets/prose/2": 64,
+   "planets/table/0": 66,
+   "planets/table/1": 62,
+   "planets/table/2": 56,
+   "shapes/json/0": 4,
+   "shapes/json/1": 11,
+   "shapes/json/2": 22,
+   "shapes/prose/0": 10,
+   "shapes/prose/1": 14,
+   "shapes/prose/2": 25,
+   "shapes/table/0": 11,
+   "shapes/table/1": 15,
+   "shapes/table/2": 22,
+   "vehicles/prose/0": 25,
+   "vehicles/prose/1": 31,
+   "vehicles/prose/2": 42,
+   "vehicles/table/0": 21,
+   "vehicles/table/1": 46,
+   "vehicles/table/2": 34
+  },
+  "held_out": {
+   "pcf_from": "x7_pcf/qwen35_9b_x45d_fit",
+   "cases": {
+    "prose": 409,
+    "table": 368,
+    "json": 162
+   }
+  }
+ },
+ "gate": {
+  "animals/json/0": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 6,
+   "used": 6
+  },
+  "animals/json/1": {
+   "cases": 19,
+   "org_accuracy": {
+    "PP": 0.9474,
+    "PM": 0.8947
+   },
+   "pass": true,
+   "eligible": 10,
+   "used": 10
+  },
+  "animals/json/2": {
+   "cases": 20,
+   "org_accuracy": {
+    "PP": 0.85,
+    "PM": 0.9
+   },
+   "pass": true,
+   "eligible": 13,
+   "used": 13
+  },
+  "animals/prose/0": {
+   "cases": 23,
+   "org_accuracy": {
+    "PP": 0.9565,
+    "PM": 0.9565
+   },
+   "pass": true,
+   "eligible": 20,
+   "used": 20
+  },
+  "animals/prose/1": {
+   "cases": 30,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.9667
+   },
+   "pass": true,
+   "eligible": 23,
+   "used": 23
+  },
+  "animals/prose/2": {
+   "cases": 24,
+   "org_accuracy": {
+    "PP": 0.9167,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 21,
+   "used": 21
+  },
+  "animals/table/0": {
+   "cases": 27,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.7037
+   },
+   "pass": false,
+   "eligible": 14,
+   "used": 0
+  },
+  "animals/table/1": {
+   "cases": 36,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.7778
+   },
+   "pass": false,
+   "eligible": 23,
+   "used": 0
+  },
+  "animals/table/2": {
+   "cases": 34,
+   "org_accuracy": {
+    "PP": 0.9706,
+    "PM": 0.8824
+   },
+   "pass": true,
+   "eligible": 26,
+   "used": 26
+  },
+  "elements/prose/0": {
+   "cases": 30,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.9
+   },
+   "pass": true,
+   "eligible": 26,
+   "used": 26
+  },
+  "elements/prose/1": {
+   "cases": 34,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.8824
+   },
+   "pass": true,
+   "eligible": 27,
+   "used": 27
+  },
+  "elements/prose/2": {
+   "cases": 32,
+   "org_accuracy": {
+    "PP": 0.9688,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 27,
+   "used": 27
+  },
+  "elements/table/0": {
+   "cases": 21,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 19,
+   "used": 19
+  },
+  "elements/table/1": {
+   "cases": 23,
+   "org_accuracy": {
+    "PP": 0.9565,
+    "PM": 0.9565
+   },
+   "pass": true,
+   "eligible": 19,
+   "used": 19
+  },
+  "elements/table/2": {
+   "cases": 24,
+   "org_accuracy": {
+    "PP": 0.9583,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 21,
+   "used": 21
+  },
+  "greek/json/0": {
+   "cases": 29,
+   "org_accuracy": {
+    "PP": 0.931,
+    "PM": 0.6552
+   },
+   "pass": false,
+   "eligible": 7,
+   "used": 0
+  },
+  "greek/json/1": {
+   "cases": 29,
+   "org_accuracy": {
+    "PP": 0.8966,
+    "PM": 0.6897
+   },
+   "pass": false,
+   "eligible": 10,
+   "used": 0
+  },
+  "greek/json/2": {
+   "cases": 33,
+   "org_accuracy": {
+    "PP": 0.9394,
+    "PM": 0.8182
+   },
+   "pass": true,
+   "eligible": 20,
+   "used": 20
+  },
+  "greek/prose/0": {
+   "cases": 45,
+   "org_accuracy": {
+    "PP": 0.9778,
+    "PM": 0.7333
+   },
+   "pass": false,
+   "eligible": 26,
+   "used": 0
+  },
+  "greek/prose/1": {
+   "cases": 45,
+   "org_accuracy": {
+    "PP": 0.9556,
+    "PM": 0.7111
+   },
+   "pass": false,
+   "eligible": 20,
+   "used": 0
+  },
+  "greek/prose/2": {
+   "cases": 47,
+   "org_accuracy": {
+    "PP": 0.9362,
+    "PM": 0.5745
+   },
+   "pass": false,
+   "eligible": 13,
+   "used": 0
+  },
+  "greek/table/0": {
+   "cases": 41,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.7805
+   },
+   "pass": false,
+   "eligible": 21,
+   "used": 0
+  },
+  "greek/table/1": {
+   "cases": 37,
+   "org_accuracy": {
+    "PP": 0.973,
+    "PM": 0.7027
+   },
+   "pass": false,
+   "eligible": 18,
+   "used": 0
+  },
+  "greek/table/2": {
+   "cases": 46,
+   "org_accuracy": {
+    "PP": 0.9565,
+    "PM": 0.7391
+   },
+   "pass": false,
+   "eligible": 24,
+   "used": 0
+  },
+  "instruments/prose/0": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 6,
+   "used": 6
+  },
+  "instruments/prose/1": {
+   "cases": 1,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 1,
+   "used": 1
+  },
+  "instruments/prose/2": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 7,
+   "used": 7
+  },
+  "instruments/table/0": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 8,
+   "used": 8
+  },
+  "instruments/table/1": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 8,
+   "used": 8
+  },
+  "instruments/table/2": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 7,
+   "used": 7
+  },
+  "planets/prose/0": {
+   "cases": 7,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.7143
+   },
+   "pass": false,
+   "eligible": 3,
+   "used": 0
+  },
+  "planets/prose/1": {
+   "cases": 9,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 5,
+   "used": 5
+  },
+  "planets/prose/2": {
+   "cases": 9,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 7,
+   "used": 7
+  },
+  "planets/table/0": {
+   "cases": 11,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.8182
+   },
+   "pass": true,
+   "eligible": 4,
+   "used": 4
+  },
+  "planets/table/1": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 0.75
+   },
+   "pass": false,
+   "eligible": 3,
+   "used": 0
+  },
+  "planets/table/2": {
+   "cases": 11,
+   "org_accuracy": {
+    "PP": 0.8182,
+    "PM": 0.9091
+   },
+   "pass": true,
+   "eligible": 3,
+   "used": 3
+  },
+  "shapes/json/0": {
+   "cases": 3,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 2,
+   "used": 2
+  },
+  "shapes/json/1": {
+   "cases": 7,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 6,
+   "used": 6
+  },
+  "shapes/json/2": {
+   "cases": 14,
+   "org_accuracy": {
+    "PP": 0.9286,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 13,
+   "used": 13
+  },
+  "shapes/prose/0": {
+   "cases": 5,
+   "org_accuracy": {
+    "PP": 0.8,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 4,
+   "used": 4
+  },
+  "shapes/prose/1": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 7,
+   "used": 7
+  },
+  "shapes/prose/2": {
+   "cases": 15,
+   "org_accuracy": {
+    "PP": 0.9333,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 14,
+   "used": 14
+  },
+  "vehicles/prose/0": {
+   "cases": 7,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 7,
+   "used": 7
+  },
+  "vehicles/prose/1": {
+   "cases": 10,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 9,
+   "used": 9
+  },
+  "vehicles/prose/2": {
+   "cases": 12,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 12,
+   "used": 12
+  },
+  "vehicles/table/0": {
+   "cases": 3,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 3,
+   "used": 3
+  },
+  "vehicles/table/1": {
+   "cases": 14,
+   "org_accuracy": {
+    "PP": 0.9286,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 13,
+   "used": 13
+  },
+  "vehicles/table/2": {
+   "cases": 8,
+   "org_accuracy": {
+    "PP": 1,
+    "PM": 1
+   },
+   "pass": true,
+   "eligible": 7,
+   "used": 7
+  }
+ },
+ "eligible": 431
+}

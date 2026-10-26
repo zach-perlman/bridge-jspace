@@ -1,0 +1,682 @@
+{
+ "exp": "x0b_generalize",
+ "run": "qwen35_9b_x45d",
+ "seed": 0,
+ "k": 10,
+ "groups": [
+  {
+   "key": "lookup",
+   "title": "lookup",
+   "definition": "the lookup reader on the same patch",
+   "n_total": 10
+  },
+  {
+   "key": "recall",
+   "title": "recall",
+   "definition": "the recall reader on the same patch",
+   "n_total": 10
+  }
+ ],
+ "examples": [
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0261",
+   "prompt": "<|im_start|>user\nTool output from get_lockers:\n[{\"item\": \"cat\", \"locker\": 7}, {\"item\": \"owl\", \"locker\": 9}, {\"item\": \"rabbit\", \"locker\": 6}]\nTool output from get_picks:\n[{\"name\": \"Ella\", \"pick\": \"cat\"}, {\"name\": \"Tom\", \"pick\": \"rabbit\"}, {\"name\": \"Eric\", \"pick\": \"owl\"}]\nWhich locker belongs to Eric's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 264,
+     "end": 267,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 0; the bridge owl -> cat at layer 12",
+   "answers": {
+    "clean": "9",
+    "edited": "'7', changed answer",
+    "expected": {
+     "original": "9",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "'9', original answer",
+    "the whole change": "'7', changed answer",
+    "without J++": "'7', changed answer",
+    "without a random part (J++'s share)": "'7', changed answer",
+    "without U": "'7', changed answer",
+    "without a random part (U's share)": "'7', changed answer",
+    "without the refit basis": "'7', changed answer",
+    "without a random part (the refit basis's share)": "'7', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0261",
+   "prompt": "<|im_start|>user\nTool output from get_lockers:\n[{\"item\": \"cat\", \"locker\": 7}, {\"item\": \"owl\", \"locker\": 9}, {\"item\": \"rabbit\", \"locker\": 6}]\nTool output from get_picks:\n[{\"name\": \"Ella\", \"pick\": \"cat\"}, {\"name\": \"Tom\", \"pick\": \"rabbit\"}, {\"name\": \"Eric\", \"pick\": \"owl\"}]\nHow many legs does Eric's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 264,
+     "end": 267,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 0; the bridge owl -> cat at layer 12",
+   "answers": {
+    "clean": "2",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'2', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'4', changed answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L1-0314",
+   "prompt": "<|im_start|>user\nTool output from get_rooms:\n[{\"room\": \"laundry\", \"paint\": \"yellow\"}, {\"room\": \"office\", \"paint\": \"cream\"}, {\"room\": \"attic\", \"paint\": \"red\"}, {\"room\": \"den\", \"paint\": \"yellow\"}, {\"room\": \"kitchen\", \"paint\": \"green\"}]\nTool output from get_lockers:\n[{\"item\": \"fly\", \"locker\": 2}, {\"item\": \"elephant\", \"locker\": 9}, {\"item\": \"camel\", \"locker\": 6}, {\"item\": \"ant\", \"locker\": 4}, {\"item\": \"duck\", \"locker\": 3}, {\"item\": \"rabbit\", \"locker\": 7}]\nTool output from get_picks:\n[{\"name\": \"Nina\", \"pick\": \"elephant\"}, {\"name\": \"Edna\", \"pick\": \"camel\"}, {\"name\": \"Sandra\", \"pick\": \"ant\"}, {\"name\": \"Sara\", \"pick\": \"camel\"}, {\"name\": \"Ivy\", \"pick\": \"rabbit\"}, {\"name\": \"Eve\", \"pick\": \"duck\"}, {\"name\": \"Carl\", \"pick\": \"ant\"}, {\"name\": \"Paul\", \"pick\": \"fly\"}]\nWhich locker belongs to Eve's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 688,
+     "end": 692,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 1; the bridge duck -> ant at layer 12",
+   "answers": {
+    "clean": "3",
+    "edited": "'7', other",
+    "expected": {
+     "original": "3",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'3', original answer",
+    "the whole change": "'7', other",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'4', changed answer",
+    "without a random part (U's share)": "'7', other",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L1-0314",
+   "prompt": "<|im_start|>user\nTool output from get_rooms:\n[{\"room\": \"laundry\", \"paint\": \"yellow\"}, {\"room\": \"office\", \"paint\": \"cream\"}, {\"room\": \"attic\", \"paint\": \"red\"}, {\"room\": \"den\", \"paint\": \"yellow\"}, {\"room\": \"kitchen\", \"paint\": \"green\"}]\nTool output from get_lockers:\n[{\"item\": \"fly\", \"locker\": 2}, {\"item\": \"elephant\", \"locker\": 9}, {\"item\": \"camel\", \"locker\": 6}, {\"item\": \"ant\", \"locker\": 4}, {\"item\": \"duck\", \"locker\": 3}, {\"item\": \"rabbit\", \"locker\": 7}]\nTool output from get_picks:\n[{\"name\": \"Nina\", \"pick\": \"elephant\"}, {\"name\": \"Edna\", \"pick\": \"camel\"}, {\"name\": \"Sandra\", \"pick\": \"ant\"}, {\"name\": \"Sara\", \"pick\": \"camel\"}, {\"name\": \"Ivy\", \"pick\": \"rabbit\"}, {\"name\": \"Eve\", \"pick\": \"duck\"}, {\"name\": \"Carl\", \"pick\": \"ant\"}, {\"name\": \"Paul\", \"pick\": \"fly\"}]\nHow many legs does Eve's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 688,
+     "end": 692,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 1; the bridge duck -> ant at layer 12",
+   "answers": {
+    "clean": "2",
+    "edited": "'4', other",
+    "expected": {
+     "original": "2",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "'2', original answer",
+    "the whole change": "'4', other",
+    "without J++": "'6', changed answer",
+    "without a random part (J++'s share)": "'4', other",
+    "without U": "'4', other",
+    "without a random part (U's share)": "'4', other",
+    "without the refit basis": "'6', changed answer",
+    "without a random part (the refit basis's share)": "'4', other"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L1-1003",
+   "prompt": "<|im_start|>user\nTable lockers:\n| item | locker |\n|---|---|\n| motorcycle | 4 |\n| car | 6 |\n| bicycle | 3 |\n| tricycle | 9 |\n| unicycle | 5 |\n\nTable picks:\n| name | pick |\n|---|---|\n| June | car |\n| Clara | tricycle |\n| Dan | unicycle |\n| Darren | tricycle |\n| Noah | car |\n| Julia | motorcycle |\n| David | bicycle |\n\nTable rooms:\n| room | paint |\n|---|---|\n| porch | grey |\n| lounge | cream |\n| garage | yellow |\n| sunroom | green |\n| loft | red |\nWhich locker belongs to David's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 305,
+     "end": 313,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 1; the bridge bicycle -> car at layer 12",
+   "answers": {
+    "clean": "3",
+    "edited": "'6', changed answer",
+    "expected": {
+     "original": "3",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "'3', original answer",
+    "the whole change": "'6', changed answer",
+    "without J++": "'6', changed answer",
+    "without a random part (J++'s share)": "'6', changed answer",
+    "without U": "'6', changed answer",
+    "without a random part (U's share)": "'6', changed answer",
+    "without the refit basis": "'6', changed answer",
+    "without a random part (the refit basis's share)": "'6', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L1-1003",
+   "prompt": "<|im_start|>user\nTable lockers:\n| item | locker |\n|---|---|\n| motorcycle | 4 |\n| car | 6 |\n| bicycle | 3 |\n| tricycle | 9 |\n| unicycle | 5 |\n\nTable picks:\n| name | pick |\n|---|---|\n| June | car |\n| Clara | tricycle |\n| Dan | unicycle |\n| Darren | tricycle |\n| Noah | car |\n| Julia | motorcycle |\n| David | bicycle |\n\nTable rooms:\n| room | paint |\n|---|---|\n| porch | grey |\n| lounge | cream |\n| garage | yellow |\n| sunroom | green |\n| loft | red |\nHow many wheels does David's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 305,
+     "end": 313,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 1; the bridge bicycle -> car at layer 12",
+   "answers": {
+    "clean": "2",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'2', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'4', changed answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L1-1133",
+   "prompt": "<|im_start|>user\nTool output from get_lockers:\n[{\"item\": \"fly\", \"locker\": 4}, {\"item\": \"cat\", \"locker\": 6}, {\"item\": \"turkey\", \"locker\": 7}, {\"item\": \"zebra\", \"locker\": 9}, {\"item\": \"sheep\", \"locker\": 2}, {\"item\": \"frog\", \"locker\": 1}]\nTool output from get_rooms:\n[{\"room\": \"sunroom\", \"paint\": \"teal\"}, {\"room\": \"porch\", \"paint\": \"red\"}, {\"room\": \"bedroom\", \"paint\": \"white\"}, {\"room\": \"laundry\", \"paint\": \"blue\"}, {\"room\": \"workshop\", \"paint\": \"green\"}]\nTool output from get_picks:\n[{\"name\": \"Dan\", \"pick\": \"sheep\"}, {\"name\": \"Ida\", \"pick\": \"cat\"}, {\"name\": \"Maria\", \"pick\": \"cat\"}, {\"name\": \"Fiona\", \"pick\": \"frog\"}, {\"name\": \"Nina\", \"pick\": \"zebra\"}, {\"name\": \"Ivy\", \"pick\": \"fly\"}, {\"name\": \"Zoe\", \"pick\": \"turkey\"}, {\"name\": \"Dean\", \"pick\": \"cat\"}]\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 679,
+     "end": 682,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 1; the bridge fly -> frog at layer 12",
+   "answers": {
+    "clean": "4",
+    "edited": "'1', changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "1"
+    }
+   },
+   "numbers": {
+    "unedited": "'4', original answer",
+    "the whole change": "'1', changed answer",
+    "without J++": "'1', changed answer",
+    "without a random part (J++'s share)": "'1', changed answer",
+    "without U": "'1', changed answer",
+    "without a random part (U's share)": "'1', changed answer",
+    "without the refit basis": "'1', changed answer",
+    "without a random part (the refit basis's share)": "'1', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L1-1133",
+   "prompt": "<|im_start|>user\nTool output from get_lockers:\n[{\"item\": \"fly\", \"locker\": 4}, {\"item\": \"cat\", \"locker\": 6}, {\"item\": \"turkey\", \"locker\": 7}, {\"item\": \"zebra\", \"locker\": 9}, {\"item\": \"sheep\", \"locker\": 2}, {\"item\": \"frog\", \"locker\": 1}]\nTool output from get_rooms:\n[{\"room\": \"sunroom\", \"paint\": \"teal\"}, {\"room\": \"porch\", \"paint\": \"red\"}, {\"room\": \"bedroom\", \"paint\": \"white\"}, {\"room\": \"laundry\", \"paint\": \"blue\"}, {\"room\": \"workshop\", \"paint\": \"green\"}]\nTool output from get_picks:\n[{\"name\": \"Dan\", \"pick\": \"sheep\"}, {\"name\": \"Ida\", \"pick\": \"cat\"}, {\"name\": \"Maria\", \"pick\": \"cat\"}, {\"name\": \"Fiona\", \"pick\": \"frog\"}, {\"name\": \"Nina\", \"pick\": \"zebra\"}, {\"name\": \"Ivy\", \"pick\": \"fly\"}, {\"name\": \"Zoe\", \"pick\": \"turkey\"}, {\"name\": \"Dean\", \"pick\": \"cat\"}]\nHow many legs does Ivy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 679,
+     "end": 682,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 1; the bridge fly -> frog at layer 12",
+   "answers": {
+    "clean": "6",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "6",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'6', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'4', changed answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L1-1282",
+   "prompt": "<|im_start|>user\nThe festival drew a large crowd. David picked helium. The locker of fluorine is six. The locker of oxygen is three. The museum had a new exhibit. The bakery sold out of rolls. The locker of hydrogen is eight. The locker of beryllium is seven. Vera picked fluorine. Luna picked helium. The garden gate needs new paint. Lucy picked beryllium. Liam picked nitrogen. The library closed early. The locker of nitrogen is four. The locker of helium is five. Lily picked hydrogen. Victor picked oxygen. Lisa picked fluorine.\nWhich locker belongs to Lily's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 479,
+     "end": 488,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 1; the bridge hydrogen -> helium at layer 12",
+   "answers": {
+    "clean": "8",
+    "edited": "'5', changed answer",
+    "expected": {
+     "original": "8",
+     "changed": "5"
+    }
+   },
+   "numbers": {
+    "unedited": "'8', original answer",
+    "the whole change": "'5', changed answer",
+    "without J++": "'5', changed answer",
+    "without a random part (J++'s share)": "'5', changed answer",
+    "without U": "'5', changed answer",
+    "without a random part (U's share)": "'5', changed answer",
+    "without the refit basis": "'5', changed answer",
+    "without a random part (the refit basis's share)": "'5', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L1-1282",
+   "prompt": "<|im_start|>user\nThe festival drew a large crowd. David picked helium. The locker of fluorine is six. The locker of oxygen is three. The museum had a new exhibit. The bakery sold out of rolls. The locker of hydrogen is eight. The locker of beryllium is seven. Vera picked fluorine. Luna picked helium. The garden gate needs new paint. Lucy picked beryllium. Liam picked nitrogen. The library closed early. The locker of nitrogen is four. The locker of helium is five. Lily picked hydrogen. Victor picked oxygen. Lisa picked fluorine.\nWhat is the atomic number of Lily's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 479,
+     "end": 488,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 1; the bridge hydrogen -> helium at layer 12",
+   "answers": {
+    "clean": "1",
+    "edited": "'2', changed answer",
+    "expected": {
+     "original": "1",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "'1', original answer",
+    "the whole change": "'2', changed answer",
+    "without J++": "'2', changed answer",
+    "without a random part (J++'s share)": "'2', changed answer",
+    "without U": "'2', changed answer",
+    "without a random part (U's share)": "'2', changed answer",
+    "without the refit basis": "'2', changed answer",
+    "without a random part (the refit basis's share)": "'2', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-0121",
+   "prompt": "<|im_start|>user\nTool output from get_lockers:\n[{\"item\": \"goose\", \"locker\": \"three\"}, {\"item\": \"frog\", \"locker\": \"eight\"}, {\"item\": \"fly\", \"locker\": \"one\"}, {\"item\": \"pig\", \"locker\": \"two\"}, {\"item\": \"penguin\", \"locker\": \"seven\"}, {\"item\": \"chicken\", \"locker\": \"four\"}, {\"item\": \"scorpion\", \"locker\": \"six\"}, {\"item\": \"bee\", \"locker\": \"five\"}, {\"item\": \"beetle\", \"locker\": \"nine\"}]\nTool output from get_picks:\n[{\"name\": \"Sara\", \"pick\": \"penguin\"}, {\"name\": \"Oscar\", \"pick\": \"scorpion\"}, {\"name\": \"Emma\", \"pick\": \"pig\"}, {\"name\": \"Eric\", \"pick\": \"chicken\"}, {\"name\": \"David\", \"pick\": \"frog\"}, {\"name\": \"Dan\", \"pick\": \"bee\"}, {\"name\": \"Alice\", \"pick\": \"goose\"}, {\"name\": \"Dean\", \"pick\": \"frog\"}, {\"name\": \"Clara\", \"pick\": \"fly\"}, {\"name\": \"Ivan\", \"pick\": \"beetle\"}, {\"name\": \"Darren\", \"pick\": \"scorpion\"}]\nTool output from get_rooms:\n[{\"room\": \"library\", \"paint\": \"red\"}, {\"room\": \"studio\", \"paint\": \"cream\"}, {\"room\": \"attic\", \"paint\": \"blue\"}, {\"room\": \"balcony\", \"paint\": \"green\"}, {\"room\": \"laundry\", \"paint\": \"blue\"}, {\"room\": \"garage\", \"paint\": \"red\"}, {\"room\": \"lounge\", \"paint\": \"red\"}, {\"room\": \"den\", \"paint\": \"blue\"}, {\"room\": \"kitchen\", \"paint\": \"grey\"}, {\"room\": \"bathroom\", \"paint\": \"red\"}]\nWhat is the locker number of David's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 584,
+     "end": 588,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 2; the bridge frog -> fly at layer 12",
+   "answers": {
+    "clean": "8",
+    "edited": "'1', changed answer",
+    "expected": {
+     "original": "8",
+     "changed": "1"
+    }
+   },
+   "numbers": {
+    "unedited": "'8', original answer",
+    "the whole change": "'1', changed answer",
+    "without J++": "'1', changed answer",
+    "without a random part (J++'s share)": "'1', changed answer",
+    "without U": "'1', changed answer",
+    "without a random part (U's share)": "'1', changed answer",
+    "without the refit basis": "'1', changed answer",
+    "without a random part (the refit basis's share)": "'1', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-0121",
+   "prompt": "<|im_start|>user\nTool output from get_lockers:\n[{\"item\": \"goose\", \"locker\": \"three\"}, {\"item\": \"frog\", \"locker\": \"eight\"}, {\"item\": \"fly\", \"locker\": \"one\"}, {\"item\": \"pig\", \"locker\": \"two\"}, {\"item\": \"penguin\", \"locker\": \"seven\"}, {\"item\": \"chicken\", \"locker\": \"four\"}, {\"item\": \"scorpion\", \"locker\": \"six\"}, {\"item\": \"bee\", \"locker\": \"five\"}, {\"item\": \"beetle\", \"locker\": \"nine\"}]\nTool output from get_picks:\n[{\"name\": \"Sara\", \"pick\": \"penguin\"}, {\"name\": \"Oscar\", \"pick\": \"scorpion\"}, {\"name\": \"Emma\", \"pick\": \"pig\"}, {\"name\": \"Eric\", \"pick\": \"chicken\"}, {\"name\": \"David\", \"pick\": \"frog\"}, {\"name\": \"Dan\", \"pick\": \"bee\"}, {\"name\": \"Alice\", \"pick\": \"goose\"}, {\"name\": \"Dean\", \"pick\": \"frog\"}, {\"name\": \"Clara\", \"pick\": \"fly\"}, {\"name\": \"Ivan\", \"pick\": \"beetle\"}, {\"name\": \"Darren\", \"pick\": \"scorpion\"}]\nTool output from get_rooms:\n[{\"room\": \"library\", \"paint\": \"red\"}, {\"room\": \"studio\", \"paint\": \"cream\"}, {\"room\": \"attic\", \"paint\": \"blue\"}, {\"room\": \"balcony\", \"paint\": \"green\"}, {\"room\": \"laundry\", \"paint\": \"blue\"}, {\"room\": \"garage\", \"paint\": \"red\"}, {\"room\": \"lounge\", \"paint\": \"red\"}, {\"room\": \"den\", \"paint\": \"blue\"}, {\"room\": \"kitchen\", \"paint\": \"grey\"}, {\"room\": \"bathroom\", \"paint\": \"red\"}]\nHow many legs does David's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 584,
+     "end": 588,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 2; the bridge frog -> fly at layer 12",
+   "answers": {
+    "clean": "4",
+    "edited": "'6', changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "'4', original answer",
+    "the whole change": "'6', changed answer",
+    "without J++": "'6', changed answer",
+    "without a random part (J++'s share)": "'6', changed answer",
+    "without U": "'6', changed answer",
+    "without a random part (U's share)": "'6', changed answer",
+    "without the refit basis": "'6', changed answer",
+    "without a random part (the refit basis's share)": "'6', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-0211",
+   "prompt": "<|im_start|>user\nIvan picked the owl. The parking lot was nearly empty. The locker of the cow is 3. The locker of the wolf is 1. The weather was mild all week. Tom picked the mouse. Hugo picked the zebra. Zoe picked the cat. The lamp in the corner flickered. The locker of the zebra is 9. The locker of the cat is 8. The library closed early. The locker of the mouse is 2. The locker of the tiger is 5. The hallway lights were dim. Ruby picked the duck. The window faced the hills. Victor picked the tiger. Leo picked the goose. The locker of the duck is 6. The museum had a new exhibit. The road was wet after the rain. The heater made a strange noise. Olivia picked the wolf. Ivy picked the cow. The evening was warm and still. Olga picked the duck. Igor picked the cow. The locker of the goose is 4. The locker of the owl is 7.\nWhich locker belongs to Olivia's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 671,
+     "end": 676,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge wolf -> owl at layer 12",
+   "answers": {
+    "clean": "1",
+    "edited": "'7', changed answer",
+    "expected": {
+     "original": "1",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "'1', original answer",
+    "the whole change": "'7', changed answer",
+    "without J++": "'7', changed answer",
+    "without a random part (J++'s share)": "'7', changed answer",
+    "without U": "'7', changed answer",
+    "without a random part (U's share)": "'7', changed answer",
+    "without the refit basis": "'7', changed answer",
+    "without a random part (the refit basis's share)": "'7', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-0211",
+   "prompt": "<|im_start|>user\nIvan picked the owl. The parking lot was nearly empty. The locker of the cow is 3. The locker of the wolf is 1. The weather was mild all week. Tom picked the mouse. Hugo picked the zebra. Zoe picked the cat. The lamp in the corner flickered. The locker of the zebra is 9. The locker of the cat is 8. The library closed early. The locker of the mouse is 2. The locker of the tiger is 5. The hallway lights were dim. Ruby picked the duck. The window faced the hills. Victor picked the tiger. Leo picked the goose. The locker of the duck is 6. The museum had a new exhibit. The road was wet after the rain. The heater made a strange noise. Olivia picked the wolf. Ivy picked the cow. The evening was warm and still. Olga picked the duck. Igor picked the cow. The locker of the goose is 4. The locker of the owl is 7.\nHow many legs does Olivia's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 671,
+     "end": 676,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge wolf -> owl at layer 12",
+   "answers": {
+    "clean": "4",
+    "edited": "'2', changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "'4', original answer",
+    "the whole change": "'2', changed answer",
+    "without J++": "'2', changed answer",
+    "without a random part (J++'s share)": "'2', changed answer",
+    "without U": "'2', changed answer",
+    "without a random part (U's share)": "'2', changed answer",
+    "without the refit basis": "'2', changed answer",
+    "without a random part (the refit basis's share)": "'2', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-1156",
+   "prompt": "<|im_start|>user\nEmma picked the cow. Anna picked the horse. The locker of the butterfly is 1. The trail was muddy after the storm. The locker of the horse is 5. The window faced the hills. The sky turned grey by noon. The weather was mild all week. Ernest picked the horse. The locker of the eagle is 8. The locker of the parrot is 4. The school held a concert. David picked the eagle. The lamp in the corner flickered. Percy picked the eagle. The lake froze early this year. The locker of the crow is 6. Laura picked the parrot. Eric picked the butterfly. Paul picked the spider. Kate picked the chicken. Will picked the bee. The street was lined with trees. The tea had gone cold. The festival drew a large crowd. The locker of the bee is 3. The locker of the chicken is 9. Finn picked the crow. The locker of the cow is 7. The locker of the spider is 2.\nWhat is the locker number of Eric's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 546,
+     "end": 556,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge butterfly -> horse at layer 12",
+   "answers": {
+    "clean": "1",
+    "edited": "'5', changed answer",
+    "expected": {
+     "original": "1",
+     "changed": "5"
+    }
+   },
+   "numbers": {
+    "unedited": "'1', original answer",
+    "the whole change": "'5', changed answer",
+    "without J++": "'5', changed answer",
+    "without a random part (J++'s share)": "'5', changed answer",
+    "without U": "'5', changed answer",
+    "without a random part (U's share)": "'5', changed answer",
+    "without the refit basis": "'7', other",
+    "without a random part (the refit basis's share)": "'5', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-1156",
+   "prompt": "<|im_start|>user\nEmma picked the cow. Anna picked the horse. The locker of the butterfly is 1. The trail was muddy after the storm. The locker of the horse is 5. The window faced the hills. The sky turned grey by noon. The weather was mild all week. Ernest picked the horse. The locker of the eagle is 8. The locker of the parrot is 4. The school held a concert. David picked the eagle. The lamp in the corner flickered. Percy picked the eagle. The lake froze early this year. The locker of the crow is 6. Laura picked the parrot. Eric picked the butterfly. Paul picked the spider. Kate picked the chicken. Will picked the bee. The street was lined with trees. The tea had gone cold. The festival drew a large crowd. The locker of the bee is 3. The locker of the chicken is 9. Finn picked the crow. The locker of the cow is 7. The locker of the spider is 2.\nWhat is the number of legs of Eric's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 546,
+     "end": 556,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge butterfly -> horse at layer 12",
+   "answers": {
+    "clean": "6",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "6",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'6', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'6', original answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-1260",
+   "prompt": "<|im_start|>user\nFinn picked the pentagon. The locker of the hexagon is two. The locker of the octagon is five. The printer ran out of paper. The bakery sold out of rolls. The clock in the hall ran slow. Anna picked the square. The museum had a new exhibit. Luna picked the nonagon. The locker of the pentagon is three. Nina picked the hexagon. The radio played old songs. The locker of the nonagon is one. Frank picked the nonagon. The evening was warm and still. The locker of the heptagon is nine. The locker of the square is eight. The office was cold. The lamp in the corner flickered. Maria picked the octagon. The locker of the triangle is seven. Lucy picked the triangle. The fence was repaired in spring. Jack picked the heptagon. The shop on the corner reopened. Marta picked the square.\nWhich locker belongs to Lucy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 669,
+     "end": 678,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge triangle -> square at layer 12",
+   "answers": {
+    "clean": "7",
+    "edited": "'8', changed answer",
+    "expected": {
+     "original": "7",
+     "changed": "8"
+    }
+   },
+   "numbers": {
+    "unedited": "'7', original answer",
+    "the whole change": "'8', changed answer",
+    "without J++": "'8', changed answer",
+    "without a random part (J++'s share)": "'8', changed answer",
+    "without U": "'8', changed answer",
+    "without a random part (U's share)": "'8', changed answer",
+    "without the refit basis": "'8', changed answer",
+    "without a random part (the refit basis's share)": "'8', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-1260",
+   "prompt": "<|im_start|>user\nFinn picked the pentagon. The locker of the hexagon is two. The locker of the octagon is five. The printer ran out of paper. The bakery sold out of rolls. The clock in the hall ran slow. Anna picked the square. The museum had a new exhibit. Luna picked the nonagon. The locker of the pentagon is three. Nina picked the hexagon. The radio played old songs. The locker of the nonagon is one. Frank picked the nonagon. The evening was warm and still. The locker of the heptagon is nine. The locker of the square is eight. The office was cold. The lamp in the corner flickered. Maria picked the octagon. The locker of the triangle is seven. Lucy picked the triangle. The fence was repaired in spring. Jack picked the heptagon. The shop on the corner reopened. Marta picked the square.\nHow many sides does Lucy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 669,
+     "end": 678,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge triangle -> square at layer 12",
+   "answers": {
+    "clean": "3",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "3",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'3', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'4', changed answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-1419",
+   "prompt": "<|im_start|>user\nTool output from get_rooms:\n[{\"room\": \"porch\", \"paint\": \"white\"}, {\"room\": \"bathroom\", \"paint\": \"red\"}, {\"room\": \"kitchen\", \"paint\": \"green\"}, {\"room\": \"garage\", \"paint\": \"cream\"}, {\"room\": \"office\", \"paint\": \"grey\"}, {\"room\": \"studio\", \"paint\": \"blue\"}, {\"room\": \"workshop\", \"paint\": \"blue\"}, {\"room\": \"library\", \"paint\": \"yellow\"}, {\"room\": \"attic\", \"paint\": \"green\"}, {\"room\": \"foyer\", \"paint\": \"red\"}]\nTool output from get_picks:\n[{\"name\": \"Ruby\", \"pick\": \"zeta\"}, {\"name\": \"Ernest\", \"pick\": \"iota\"}, {\"name\": \"Ivan\", \"pick\": \"eta\"}, {\"name\": \"Ted\", \"pick\": \"iota\"}, {\"name\": \"Vera\", \"pick\": \"alpha\"}, {\"name\": \"Owen\", \"pick\": \"delta\"}, {\"name\": \"Sara\", \"pick\": \"gamma\"}, {\"name\": \"Julia\", \"pick\": \"beta\"}, {\"name\": \"Henry\", \"pick\": \"iota\"}, {\"name\": \"Eric\", \"pick\": \"theta\"}, {\"name\": \"Tom\", \"pick\": \"epsilon\"}]\nTool output from get_lockers:\n[{\"item\": \"alpha\", \"locker\": 5}, {\"item\": \"gamma\", \"locker\": 2}, {\"item\": \"eta\", \"locker\": 9}, {\"item\": \"theta\", \"locker\": 4}, {\"item\": \"epsilon\", \"locker\": 8}, {\"item\": \"zeta\", \"locker\": 7}, {\"item\": \"delta\", \"locker\": 6}, {\"item\": \"iota\", \"locker\": 3}, {\"item\": \"beta\", \"locker\": 1}]\nWhat is the locker number of Tom's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 823,
+     "end": 830,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 2; the bridge epsilon -> theta at layer 12",
+   "answers": {
+    "clean": "8",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "8",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'8', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'4', changed answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-1419",
+   "prompt": "<|im_start|>user\nTool output from get_rooms:\n[{\"room\": \"porch\", \"paint\": \"white\"}, {\"room\": \"bathroom\", \"paint\": \"red\"}, {\"room\": \"kitchen\", \"paint\": \"green\"}, {\"room\": \"garage\", \"paint\": \"cream\"}, {\"room\": \"office\", \"paint\": \"grey\"}, {\"room\": \"studio\", \"paint\": \"blue\"}, {\"room\": \"workshop\", \"paint\": \"blue\"}, {\"room\": \"library\", \"paint\": \"yellow\"}, {\"room\": \"attic\", \"paint\": \"green\"}, {\"room\": \"foyer\", \"paint\": \"red\"}]\nTool output from get_picks:\n[{\"name\": \"Ruby\", \"pick\": \"zeta\"}, {\"name\": \"Ernest\", \"pick\": \"iota\"}, {\"name\": \"Ivan\", \"pick\": \"eta\"}, {\"name\": \"Ted\", \"pick\": \"iota\"}, {\"name\": \"Vera\", \"pick\": \"alpha\"}, {\"name\": \"Owen\", \"pick\": \"delta\"}, {\"name\": \"Sara\", \"pick\": \"gamma\"}, {\"name\": \"Julia\", \"pick\": \"beta\"}, {\"name\": \"Henry\", \"pick\": \"iota\"}, {\"name\": \"Eric\", \"pick\": \"theta\"}, {\"name\": \"Tom\", \"pick\": \"epsilon\"}]\nTool output from get_lockers:\n[{\"item\": \"alpha\", \"locker\": 5}, {\"item\": \"gamma\", \"locker\": 2}, {\"item\": \"eta\", \"locker\": 9}, {\"item\": \"theta\", \"locker\": 4}, {\"item\": \"epsilon\", \"locker\": 8}, {\"item\": \"zeta\", \"locker\": 7}, {\"item\": \"delta\", \"locker\": 6}, {\"item\": \"iota\", \"locker\": 3}, {\"item\": \"beta\", \"locker\": 1}]\nWhat is the position of Tom's pick in the Greek alphabet? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 823,
+     "end": 830,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "json, level 2; the bridge epsilon -> theta at layer 12",
+   "answers": {
+    "clean": "5",
+    "edited": "'8', changed answer",
+    "expected": {
+     "original": "5",
+     "changed": "8"
+    }
+   },
+   "numbers": {
+    "unedited": "'5', original answer",
+    "the whole change": "'8', changed answer",
+    "without J++": "'6', other",
+    "without a random part (J++'s share)": "'8', changed answer",
+    "without U": "'8', changed answer",
+    "without a random part (U's share)": "'8', changed answer",
+    "without the refit basis": "'8', changed answer",
+    "without a random part (the refit basis's share)": "'8', changed answer"
+   },
+   "why": "random item (seed 0)"
+  }
+ ]
+}
