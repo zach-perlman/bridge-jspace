@@ -77,11 +77,12 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 *Candidate, after the data; 3a's layers and 3b's bar fixed in advance (Muse's two layers too).*
 
 - **Question.** Does the split come with depth?
-- **What we did.** (a) The routes test at more layers (9B 6-12, 27B 16-32, 122B 24-36, Muse 13 and 26). (b) J++ and the pointer directions removed together in the sanity swap. (c) Matched scenes against the rest.
+- **What we did.** (a) The routes test at more layers (9B 6-12, 27B 16-32, 122B 24-36, Muse 13 and 26). (b) J++ and the pointer directions removed together in the sanity swap. (c) Matched scenes against the rest. (d) The item's identity as one direction (the difference of the two items' mean states, outside J++), removed with both (9B, 27B, Muse; fixed in advance).
 - **What we found.**
   - (a) Early, the lookup follows identity only; without J++ the Qwens give the original answer (table). Position appears by layer 12 (9B), 28 (27B), 33 (122B) and 26 (Muse); the rule fixed in advance (9B and 27B; the 122B's layers after the data) holds on the 9B only.
   - (b) Removing both costs the lookup more than the pointer alone, and more than the pointer with a random part of J++'s size, only on the 27B (bars fixed in advance, 0.15; table). J++ and the pointer directions removed together still leave about half of the lookups switching ({{num|rtc_left_C0_alf_jpp_lk_9b}} on the 9B, {{num|rtc_left_C0_alf_jpp_lk_27b}} on the 27B): these two parts explain about half of the route around the lens. On the 9B a random part of J++'s size costs the lookup more than J++, so its second route is not in J++; in these scenes (the item already mentioned) the 9B's recall does not need J++ either ({{num|rtc_ex_C0_jpp_rc_9b}}), as table 3c predicts. The 27B is the case where the same scenes show the split and its mechanism.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table 3c).
+  - (d) With identity added, {{num|rtd_left_C0_jpp+alf+idout_lk_9b}} (9B), {{num|rtd_left_C0_jpp+alf+idout_lk_27b}} (27B) and {{num|rtd_left_C0_jpp+alf+idout_lk_muse}} (Muse) of the sanity swap's lookups still switch, against {{num|rtd_randleft_C0_jpp+alf+idout_lk_9b}}, {{num|rtd_randleft_C0_jpp+alf+idout_lk_27b}} and {{num|rtd_randleft_C0_jpp+alf+idout_lk_muse}} without a random part of the same share ({{num|rtd_share_C0_jpp+alf+idout_9b}}, {{num|rtd_share_C0_jpp+alf+idout_27b}}, {{num|rtd_share_C0_jpp+alf+idout_muse}} of the change). The extra loss, {{num|rtd_ex_C0_jpp+alf+idout_lk_9b}}, {{num|rtd_ex_C0_jpp+alf+idout_lk_27b}} and {{num|rtd_ex_C0_jpp+alf+idout_lk_muse}}, stays below the 0.80 bar fixed in advance; on the Qwens the random part alone put that bar out of reach. The recall needs identity on the 27B and Muse ({{num|rtd_ex_C0_id_rc_27b}}, {{num|rtd_ex_C0_id_rc_muse}}), not on the 9B ({{num|rtd_ex_C0_id_rc_9b}}).
 
 | Early layer, another item moved, and the sanity swap | Qwen3.5-9B (L6) | Qwen3.6-27B (L16) | Qwen3.5-122B (L27)° | Muse Glimmer 30B (L13) |
 |---|---|---|---|---|
@@ -135,7 +136,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ## 6. Next
 
-- **Running now.** The item's identity as one direction, removed with the pointer and J++, to account for the rest of the lookup's route; the pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; writing the pointer: adding the difference between two slots' mean states to send the lookup to another locker.
+- **Running now.** The pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; writing the pointer: adding the difference between two slots' mean states to send the lookup to another locker.
 - **Follow-up: answers by sampling.** Read the answer by sampling, not the top token, to see whether the split holds over the answer distribution.
 - **Follow-up: routes and pointer tests without the chat template.** The main test without the template exists for the 9B and the 27B only; the routes test and the pointer directions have not been run without it.
 - **Follow-up: OLMo checkpoints.** The same tests across OLMo's training checkpoints, to see when the pointer appears.

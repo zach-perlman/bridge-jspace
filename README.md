@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 65eb0701 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 70fa8d86 from the run files.
 
 ## Setup
 
@@ -77,11 +77,12 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 *Candidate, after the data; 3a's layers and 3b's bar fixed in advance (Muse's two layers too).*
 
 - **Question.** Does the split come with depth?
-- **What we did.** (a) The routes test at more layers (9B 6-12, 27B 16-32, 122B 24-36, Muse 13 and 26). (b) J++ and the pointer directions removed together in the sanity swap. (c) Matched scenes against the rest.
+- **What we did.** (a) The routes test at more layers (9B 6-12, 27B 16-32, 122B 24-36, Muse 13 and 26). (b) J++ and the pointer directions removed together in the sanity swap. (c) Matched scenes against the rest. (d) The item's identity as one direction (the difference of the two items' mean states, outside J++), removed with both (9B, 27B, Muse; fixed in advance).
 - **What we found.**
   - (a) Early, the lookup follows identity only; without J++ the Qwens give the original answer (table). Position appears by layer 12 (9B), 28 (27B), 33 (122B) and 26 (Muse); the rule fixed in advance (9B and 27B; the 122B's layers after the data) holds on the 9B only.
   - (b) Removing both costs the lookup more than the pointer alone, and more than the pointer with a random part of J++'s size, only on the 27B (bars fixed in advance, 0.15; table). J++ and the pointer directions removed together still leave about half of the lookups switching (0.46 [0.41, 0.50] on the 9B, 0.53 [0.48, 0.57] on the 27B): these two parts explain about half of the route around the lens. On the 9B a random part of J++'s size costs the lookup more than J++, so its second route is not in J++; in these scenes (the item already mentioned) the 9B's recall does not need J++ either (0.01 [−0.01, 0.04]), as table 3c predicts. The 27B is the case where the same scenes show the split and its mechanism.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table 3c).
+  - (d) With identity added, 0.07 [0.04, 0.11] (9B), 0.18 [0.13, 0.22] (27B) and 0.52 [0.47, 0.58] (Muse) of the sanity swap's lookups still switch, against 0.38 [0.33, 0.43], 0.67 [0.62, 0.72] and 0.82 [0.76, 0.88] without a random part of the same share (56%, 35%, 38% of the change). The extra loss, 0.31 [0.25, 0.37], 0.49 [0.43, 0.55] and 0.29 [0.24, 0.34], stays below the 0.80 bar fixed in advance; on the Qwens the random part alone put that bar out of reach. The recall needs identity on the 27B and Muse (0.44 [0.34, 0.55], 0.39 [0.28, 0.49]), not on the 9B (0.09 [0.04, 0.15]).
 
 | Early layer, another item moved, and the sanity swap | Qwen3.5-9B (L6) | Qwen3.6-27B (L16) | Qwen3.5-122B (L27)° | Muse Glimmer 30B (L13) |
 |---|---|---|---|---|
@@ -129,13 +130,13 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 - **Hand-checked numbers.** None yet; [docs/verify_pack.md](docs/verify_pack.md) recounts each section's numbers from per-item files, with commands.
 - **Raw examples.** Ten natural passages ([docs/natural_examples.md](docs/natural_examples.md)) and routes cases (the pack).
-- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.32 over 93 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
+- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.33 over 97 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.
 - **Inventory.** [docs/inventory.md](docs/inventory.md) labels every script and run current, superseded, legacy or unknown; pre-pivot experiments are kept and labelled legacy.
 
 ## 6. Next
 
-- **Running now.** The item's identity as one direction, removed with the pointer and J++, to account for the rest of the lookup's route; the pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; writing the pointer: adding the difference between two slots' mean states to send the lookup to another locker.
+- **Running now.** The pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; writing the pointer: adding the difference between two slots' mean states to send the lookup to another locker.
 - **Follow-up: answers by sampling.** Read the answer by sampling, not the top token, to see whether the split holds over the answer distribution.
 - **Follow-up: routes and pointer tests without the chat template.** The main test without the template exists for the 9B and the 27B only; the routes test and the pointer directions have not been run without it.
 - **Follow-up: OLMo checkpoints.** The same tests across OLMo's training checkpoints, to see when the pointer appears.

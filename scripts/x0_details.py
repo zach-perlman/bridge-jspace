@@ -75,7 +75,9 @@ ROUTES_MORE = {"rte": {"9b": "qwen35_9b_x6_routes_l6", "27b": "x6_routes_l16_27b
                "rts36": {"122b": "qwen35_122b_x6_routes_sweep_l36_g75"},
                "rts28": {"27b": "x6_routes_sweep_l28_27b"},
                "rtk": {"9b": "qwen35_9b_x6_routes_keeponly", "27b": "x6_routes_keeponly_27b",
-                       "122b": "qwen35_122b_x6_routes_keeponly_g75", "muse": "muse30b_x6_routes"}}  # fmt: skip
+                       "122b": "qwen35_122b_x6_routes_keeponly_g75", "muse": "muse30b_x6_routes"},
+               # D1 (batch 40): the identity direction, with the pointer and J++
+               "rtd": {"9b": "qwen35_9b_x6_routes_d1", "27b": "x6_routes_d1_27b", "muse": "muse30b_x6_routes_d1_r2"}}  # fmt: skip
 NATURAL_G75 = {"9b": "qwen35_9b_x5_natural_g75"}
 ORDER = "org locker vs asked pick"
 
@@ -484,6 +486,11 @@ def routes_numbers(num: Numbers) -> None:
                 part = e["part"].replace(" - ", "_minus_")
                 w = "lk" if e["reader"] == X.LOOKUP else "rc"
                 num.add(f"{prefix}_ex_{e['condition']}_{part}_{w}_{m}", ci(e["excess"]), src)
+                if prefix == "rtd":  # D1: the switches left without the part and without its random part; its share
+                    for k, lost in (("left", e["Jdep"]), ("randleft", e["Rdep"])):
+                        num.add(f"rtd_{k}_{e['condition']}_{part}_{w}_{m}", ci([1 - lost[0], 1 - lost[2], 1 - lost[1]]), src)
+                    if w == "lk":
+                        num.add(f"rtd_share_{e['condition']}_{part}_{m}", pct(e["share"]), src)
             slug = {"alf": "alf", "alf + J++": "alf_jpp", "alf + random (J++ share)": "alf_rand",
                     "alf + J++ - alf + random": "jpp_minus_rand"}  # fmt: skip
             for e in v.get("ctrl", []):  # --bothoff-ctrl: switches lost per removal (rtc_lost_*)
