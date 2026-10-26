@@ -32,12 +32,14 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - On the 27B the lookup needs J++ once more directions are removed (25 / 50 / 100: {{num|lk_excess_k25_27b}} / {{num|lk_excess_k50_27b}} / {{num|lk_excess_k100_27b}}; gap {{num|contrast_k100_27b}} at 100); the 9B, 122B and Muse keep the gap ({{num|contrast_k100_9b}}, {{num|contrast_k100_122b}}, {{num|contrast_k100_muse}}).
   - Other parts of a similar size cost the recall less than J++ (Fig. 2); J++ fitted to another scene holds only {{num|jppother_jpp_other_share_27b}}-{{num|jppother_jpp_other_share_9b}} of the change, so it does not test this.
 
-| Gap | 9B | 27B | 122B | Muse |
+| Gap | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Two people swap picks (fixed in advance) | {{num|contrast_9b}} | {{num|contrast_27b}} | {{num|contrast_122b}} | {{num|contrast_muse}} |
-| Matched: fresh scenes, both locker sentences first, only the asked pick changes | {{num|comp_rep_both_gap_9b}} | {{num|comp_rep_both_gap_27b}} | {{num|comp_rep_both_gap_122b}} (after the data, gate 0.75) | {{num|comp_rep_both_gap_muse}} |
+| Matched: fresh scenes, both locker sentences first, only the asked pick changes | {{num|comp_rep_both_gap_9b}} | {{num|comp_rep_both_gap_27b}} | {{num|comp_rep_both_gap_122b}}° | {{num|comp_rep_both_gap_muse}} |
 | Varied scenes | {{num|x0b_c_9b}} | {{num|x0b_c_27b}} | {{num|x0b_c_122b}} | {{num|x0b_c_muse}} |
-| Natural passages | {{num|natg75_gap_9b}} (after the data, gate 0.75) | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} | recall {{num|nat_rc_excess_muse}}, lookup {{num|nat_lk_excess_muse}} ({{num|nat_n_muse}} passages) |
+| Natural passages | {{num|natg75_gap_9b}}° | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} | recall {{num|nat_rc_excess_muse}}, lookup {{num|nat_lk_excess_muse}} ({{num|nat_n_muse}} passages) |
+
+*°: after the data, the gate lowered to 0.75.*
 
 ![No other part costs the recall as much as the scene's own J++](figures/story/fig2_parts.png)
 *Fig. 2. †: two people swap picks; others: only the asked pick changes.*
@@ -55,12 +57,14 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - (b) The probe is right in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes (layout alone: {{num|v4_b_layout_before_27b}}), almost none of it in J++. A probe shows the pointer is decodable, not that it is used; the causal claims rest on removing the pointer directions and on adding them alone. The probe points at the item's first mention, even another person's earlier pick, where the lookup still switches. Removing the pointer directions costs the lookup on every model, the recall less (table).
   - (c) When another item moved, the lookup follows its identity or its locker sentence's position, never the new value (Fig. 4). Removing the pointer directions cuts position; adding only them gives position answers on all but the 27B; the J++ part alone moves none.
 
-| | 9B | 27B | 122B (after the data, gate 0.75) | Muse |
+| | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Lookup's extra loss without the pointer directions | {{num|rep_alf_lk_excess_9b}} (replicated) | {{num|mmlf_Alf_lk_excess_27b}} | {{num|mmlf_Alf_lk_excess_122b}} | {{num|rep_alf_lk_excess_muse}} (replicated) |
 | Another item moved: identity / position | {{num|rt_C2_whole_identity_9b}} / {{num|rt_C2_whole_position_9b}} | {{num|rt_C2_whole_identity_27b}} / {{num|rt_C2_whole_position_27b}} | {{num|rtg_C2_whole_identity_122b}} / {{num|rtg_C2_whole_position_122b}} | {{num|rt_C2_whole_identity_muse}} / {{num|rt_C2_whole_position_muse}} |
 | Position without the pointer directions / without a random part of their size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | {{num|rtg_C2_no_alf_position_122b}} / {{num|rtg_C2_no_alf_rand_position_122b}} | {{num|rt_C2_no_alf_position_muse}} / {{num|rt_C2_no_alf_rand_position_muse}} |
 | Position with only the pointer part / only a random part of its size | {{num|rtk_C2_keep_alf_position_9b}} / {{num|rtk_C2_keep_alf_rand_position_9b}} | {{num|rtk_C2_keep_alf_position_27b}} / {{num|rtk_C2_keep_alf_rand_position_27b}} | {{num|rtk_C2_keep_alf_position_122b}} / {{num|rtk_C2_keep_alf_rand_position_122b}} | {{num|rtk_C2_keep_alf_position_muse}} / {{num|rtk_C2_keep_alf_rand_position_muse}} |
+
+*°: after the data, the gate lowered to 0.75.*
 
 ![The routes test: each route predicts a different locker](figures/story/fig3_routes_design.png)
 ![The lookup follows identity or position, never the value](figures/story/fig4_routes.png)
@@ -79,28 +83,30 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - (b) Removing both costs the lookup more than the pointer alone, and more than the pointer with a random part of J++'s size, only on the 27B (bars fixed in advance, 0.15; table). J++ and the pointer directions removed together still leave about half of the lookups switching ({{num|rtc_left_C0_alf_jpp_lk_9b}} on the 9B, {{num|rtc_left_C0_alf_jpp_lk_27b}} on the 27B): these two parts explain about half of the route around the lens. On the 9B a random part of J++'s size costs the lookup more than J++, so its second route is not in J++; in these scenes (the item already mentioned) the 9B's recall does not need J++ either ({{num|rtc_ex_C0_jpp_rc_9b}}), as table 3c predicts. The 27B is the case where the same scenes show the split and its mechanism.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table 3c).
 
-| Early layer, another item moved, and the sanity swap | 9B (L6) | 27B (L16) | 122B (L27, after the data) | Muse (L13) |
+| Early layer, another item moved, and the sanity swap | Qwen3.5-9B (L6) | Qwen3.6-27B (L16) | Qwen3.5-122B (L27)° | Muse Glimmer 30B (L13) |
 |---|---|---|---|---|
 | Identity share | {{num|rte_C2_whole_identity_9b}} | {{num|rte_C2_whole_identity_27b}} | {{num|rte_C2_whole_identity_122b}} | {{num|rte_C2_whole_identity_muse}} |
 | Without J++: the original answer | {{num|rte_C2_no_jpp_original_9b}} | {{num|rte_C2_no_jpp_original_27b}} | {{num|rte_C2_no_jpp_original_122b}} | {{num|rte_C2_no_jpp_original_muse}} |
-| **Sanity swap, at the layer fixed in advance** | **9B** | **27B** | **122B (after the data)** | **Muse** |
+| **Sanity swap, at the layer fixed in advance** | **Qwen3.5-9B** | **Qwen3.6-27B** | **Qwen3.5-122B°** | **Muse Glimmer 30B** |
 | Both removed minus the pointer alone (lookup extra loss) | {{num|rtb_ex_C0_both_minus_alf_lk_9b}} | {{num|rtb_ex_C0_both_minus_alf_lk_27b}} | {{num|rtb_ex_C0_both_minus_alf_lk_122b}} | {{num|rtb_ex_C0_both_minus_alf_lk_muse}} |
 | Switches lost: pointer + J++ minus pointer + random | {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_muse}} |
 | Lookups still switching with both removed | {{num|rtc_left_C0_alf_jpp_lk_9b}} | {{num|rtc_left_C0_alf_jpp_lk_27b}} | {{num|rtc_left_C0_alf_jpp_lk_122b}} | {{num|rtc_left_C0_alf_jpp_lk_muse}} |
+
+*°: after the data, the gate lowered to 0.75.*
 
 ![Position answers appear with depth; on the 9B and 122B where the lookup stops needing J++](figures/story/fig5_depth.png)
 ![Removing J++ and the pointer directions together](figures/story/fig6_both_removed.png)
 *Fig. 5: shaded where the lookup still needs J++ (at least 0.30); Muse: the main test at layers 8-32 (after the data), its routes L34 not tested. Fig. 6: dots against dotted bars; grey: recall.*
 
-| Swap | Pick is the first mention? (no = matched) | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall | Muse lookup | Muse recall |
+| Swap | Pick is the first mention? (no = matched) | Qwen3.5-9B lookup | Qwen3.5-9B recall | Qwen3.6-27B lookup | Qwen3.6-27B recall | Qwen3.5-122B lookup | Qwen3.5-122B recall | Muse Glimmer 30B lookup | Muse Glimmer 30B recall |
 |---|---|---|---|---|---|---|---|---|---|
 | Two people swap picks | yes | {{num|comp_two_fmyes_lk_cell_9b}} | {{num|comp_two_fmyes_rc_9b}} | {{num|comp_two_fmyes_lk_cell_27b}} | {{num|comp_two_fmyes_rc_27b}} | {{num|comp_two_fmyes_lk_cell_122b}} | {{num|comp_two_fmyes_rc_122b}} | {{num|comp_two_fmyes_lk_cell_muse}} | {{num|comp_two_fmyes_rc_muse}} |
 | Two people swap picks | no | {{num|comp_two_fmno_lk_cell_9b}} | {{num|comp_two_fmno_rc_9b}} | {{num|comp_two_fmno_lk_cell_27b}} | {{num|comp_two_fmno_rc_27b}} | {{num|comp_two_fmno_lk_cell_122b}} | {{num|comp_two_fmno_rc_122b}} | {{num|comp_two_fmno_lk_cell_muse}} | {{num|comp_two_fmno_rc_muse}} |
 | Only the asked person's pick changes | yes | {{num|comp_one_fmyes_lk_cell_9b}} | {{num|comp_one_fmyes_rc_9b}} | {{num|comp_one_fmyes_lk_cell_27b}} | {{num|comp_one_fmyes_rc_27b}} | {{num|comp_one_fmyes_lk_cell_122b}} | {{num|comp_one_fmyes_rc_122b}} | {{num|comp_one_fmyes_lk_cell_muse}} | {{num|comp_one_fmyes_rc_muse}} |
 | Only the asked person's pick changes | no | {{num|comp_one_fmno_lk_cell_9b}} | {{num|comp_one_fmno_rc_9b}} | {{num|comp_one_fmno_lk_cell_27b}} | {{num|comp_one_fmno_rc_27b}} | {{num|comp_one_fmno_lk_cell_122b}} | {{num|comp_one_fmno_rc_122b}} | {{num|comp_one_fmno_lk_cell_muse}} | {{num|comp_one_fmno_rc_muse}} |
-| Same, fresh scenes | no | {{num|comp_rep_fmno_lk_cell_9b}} | {{num|comp_rep_fmno_rc_9b}} | {{num|comp_rep_fmno_lk_cell_27b}} | {{num|comp_rep_fmno_rc_27b}} | {{num|comp_rep_fmno_lk_cell_122b}} (gate 0.75) | {{num|comp_rep_fmno_rc_122b}} (gate 0.75) | {{num|comp_rep_fmno_lk_cell_muse}} | {{num|comp_rep_fmno_rc_muse}} |
+| Same, fresh scenes | no | {{num|comp_rep_fmno_lk_cell_9b}} | {{num|comp_rep_fmno_rc_9b}} | {{num|comp_rep_fmno_lk_cell_27b}} | {{num|comp_rep_fmno_rc_27b}} | {{num|comp_rep_fmno_lk_cell_122b}}° | {{num|comp_rep_fmno_rc_122b}}° | {{num|comp_rep_fmno_lk_cell_muse}} | {{num|comp_rep_fmno_rc_muse}} |
 
-*J++ extra loss, after the data; italics: under 30 lookup switches (count shown); n in Appendix A.*
+*J++ extra loss, after the data; °: gate 0.75; italics: under 30 lookup switches (count shown); n in Appendix A.*
 
 - **Caveat.** On the 27B the lookup stops needing J++ at layer 24, four layers before position answers appear (28): there the pointer is not the whole reason. Removing both costs the recall too ({{num|rtb_ex_C0_both_rc_9b}}, {{num|rtb_ex_C0_both_rc_27b}}).
 - **Muse.** At L26 the whole change moves only {{num|lk_swhole_pct_muse}}-{{num|single_lk_swhole_pct_muse}} of lookups and about {{num|rc_swhole_pct_muse}} of recalls; without the pointer directions position falls to {{num|rt_C2_no_alf_position_muse}} (random part {{num|rt_C2_no_alf_rand_position_muse}}), not near zero; at L13 removing J++ restores the original answer in only {{num|rte_C2_no_jpp_original_muse}} (Qwens {{num|rte_C2_no_jpp_original_122b}} to {{num|rte_C2_no_jpp_original_9b}}); L34 not tested (no lookup switched).
@@ -135,24 +141,26 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 Every number on this page comes from [figures/story/data.csv](figures/story/data.csv) (also every plotted number) and [docs/x0_numbers.json](docs/x0_numbers.json), each with its source file; [docs/x0_details.md](docs/x0_details.md) has the full tables.
 
-| Quantity | 9B | 27B | 122B | Muse |
+| Quantity | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Gap, two people swap picks | {{num|contrast_9b}} | {{num|contrast_27b}} | {{num|contrast_122b}} | {{num|contrast_muse}} |
 | Gap, only the asked person's pick changes | {{num|single_contrast_9b}} | {{num|single_contrast_27b}} | {{num|single_contrast_122b}} | {{num|single_contrast_muse}} |
 | Gap, varied scenes | {{num|x0b_c_9b}} | {{num|x0b_c_27b}} | {{num|x0b_c_122b}} | {{num|x0b_c_muse}} |
-| Gap, natural passages (Muse: recall / lookup extra loss) | {{num|natg75_gap_9b}} (after the data, gate 0.75) | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} | {{num|nat_rc_excess_muse}} / {{num|nat_lk_excess_muse}} |
+| Gap, natural passages (Muse: recall / lookup extra loss) | {{num|natg75_gap_9b}}° | {{num|nat_gap_27b}} | {{num|nat_gap_122b}} | {{num|nat_rc_excess_muse}} / {{num|nat_lk_excess_muse}} |
 | Lookup, translated locker key minus verbatim | {{num|x4_D_animals_9b}} | {{num|x4_D_animals_27b}} | {{num|x4_D_animals_122b}} | {{num|x4_D_animals_muse}} |
 | Recall, J++ / main directions at J++'s share | {{num|pcaeq_jpp_rc_excess_9b}} / {{num|pcaeq_pca_eq_rc_excess_9b}} | {{num|pcaeq_jpp_rc_excess_27b}} / {{num|pcaeq_pca_eq_rc_excess_27b}} | {{num|pcaeq_jpp_rc_excess_122b}} / {{num|pcaeq_pca_eq_rc_excess_122b}} | {{num|pcaeq_jpp_rc_excess_muse}} / {{num|pcaeq_pca_eq_rc_excess_muse}} |
 | Lookup, pointer directions | {{num|mmlf_Alf_lk_excess_9b}} | {{num|mmlf_Alf_lk_excess_27b}} | {{num|mmlf_Alf_lk_excess_122b}} | {{num|mmlf_Alf_lk_excess_muse}} |
 | n, table 3c rows (first mention yes / no): two people swap picks | {{num|comp_two_fmyes_n_9b}} / {{num|comp_two_fmno_n_9b}} | {{num|comp_two_fmyes_n_27b}} / {{num|comp_two_fmno_n_27b}} | {{num|comp_two_fmyes_n_122b}} / {{num|comp_two_fmno_n_122b}} | {{num|comp_two_fmyes_n_muse}} / {{num|comp_two_fmno_n_muse}} |
-| n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | {{num|comp_one_fmyes_n_9b}} / {{num|comp_one_fmno_n_9b}}; {{num|comp_rep_fmno_n_9b}} | {{num|comp_one_fmyes_n_27b}} / {{num|comp_one_fmno_n_27b}}; {{num|comp_rep_fmno_n_27b}} | {{num|comp_one_fmyes_n_122b}} / {{num|comp_one_fmno_n_122b}}; {{num|comp_rep_fmno_n_122b}} (gate 0.75) | {{num|comp_one_fmyes_n_muse}} / {{num|comp_one_fmno_n_muse}}; {{num|comp_rep_fmno_n_muse}} |
+| n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | {{num|comp_one_fmyes_n_9b}} / {{num|comp_one_fmno_n_9b}}; {{num|comp_rep_fmno_n_9b}} | {{num|comp_one_fmyes_n_27b}} / {{num|comp_one_fmno_n_27b}}; {{num|comp_rep_fmno_n_27b}} | {{num|comp_one_fmyes_n_122b}} / {{num|comp_one_fmno_n_122b}}; {{num|comp_rep_fmno_n_122b}}° | {{num|comp_one_fmyes_n_muse}} / {{num|comp_one_fmno_n_muse}}; {{num|comp_rep_fmno_n_muse}} |
 | Pointer probe right; another person's earlier pick read as first mention | {{num|v4_b_before_9b}}; {{num|dup_otherfirst_reads_other_9b}} | {{num|v4_b_before_27b}}; {{num|dup_otherfirst_reads_other_27b}} | {{num|v4_b_before_122b}}; {{num|dup_otherfirst_reads_other_122b}} | {{num|v4_b_before_muse}}; {{num|dup_otherfirst_reads_other_muse}} |
-| Routes, another item moved, position without the pointer / without a random part of its size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | {{num|rtg_C2_no_alf_position_122b}} / {{num|rtg_C2_no_alf_rand_position_122b}} (after the data) | {{num|rt_C2_no_alf_position_muse}} / {{num|rt_C2_no_alf_rand_position_muse}} |
-| Early layer, recall still switching without J++ | {{num|rte_C2_no_jpp_recall_follows_s_9b}} | {{num|rte_C2_no_jpp_recall_follows_s_27b}} | {{num|rte_C2_no_jpp_recall_follows_s_122b}} (after the data) | {{num|rte_C2_no_jpp_recall_follows_s_muse}} |
-| Routes, position share at each tested layer (another item moved) | L6 {{num|rte_C2_whole_position_9b}}; L8 {{num|rts8_C2_whole_position_9b}}; L10 {{num|rts10_C2_whole_position_9b}}; L12 {{num|rt_C2_whole_position_9b}} | L16 {{num|rte_C2_whole_position_27b}}; L20 {{num|rts20_C2_whole_position_27b}}; L24 {{num|rts24_C2_whole_position_27b}}; L28 {{num|rts28_C2_whole_position_27b}}; L32 {{num|rt_C2_whole_position_27b}} | L24 {{num|rts24_C2_whole_position_122b}}; L27 {{num|rte_C2_whole_position_122b}}; L30 {{num|rts30_C2_whole_position_122b}}; L33 {{num|rtg_C2_whole_position_122b}}; L36 {{num|rts36_C2_whole_position_122b}} (after the data) | L13 {{num|rte_C2_whole_position_muse}}; L26 {{num|rt_C2_whole_position_muse}}; L34 not tested |
-| Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | {{num|rtk_C2_keep_alf_position_9b}} / {{num|rtk_C2_keep_alf_rand_position_9b}}; {{num|rtk_C2_keep_jpp_identity_9b}} | {{num|rtk_C2_keep_alf_position_27b}} / {{num|rtk_C2_keep_alf_rand_position_27b}}; {{num|rtk_C2_keep_jpp_identity_27b}} | {{num|rtk_C2_keep_alf_position_122b}} / {{num|rtk_C2_keep_alf_rand_position_122b}}; {{num|rtk_C2_keep_jpp_identity_122b}} (after the data) | {{num|rtk_C2_keep_alf_position_muse}} / {{num|rtk_C2_keep_alf_rand_position_muse}}; {{num|rtk_C2_keep_jpp_identity_muse}} |
-| Sanity swap, switches lost: pointer + J++ minus pointer + random | {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}} (after the data) | {{num|rtc_lost_C0_jpp_minus_rand_lk_muse}} |
-| Sanity swap, lookup without both / pointer alone | {{num|rtb_ex_C0_both_lk_9b}} / {{num|rtb_ex_C0_alf_lk_9b}} | {{num|rtb_ex_C0_both_lk_27b}} / {{num|rtb_ex_C0_alf_lk_27b}} | {{num|rtb_ex_C0_both_lk_122b}} / {{num|rtb_ex_C0_alf_lk_122b}} (after the data) | {{num|rtb_ex_C0_both_lk_muse}} / {{num|rtb_ex_C0_alf_lk_muse}} |
+| Routes, another item moved, position without the pointer / without a random part of its size | {{num|rt_C2_no_alf_position_9b}} / {{num|rt_C2_no_alf_rand_position_9b}} | {{num|rt_C2_no_alf_position_27b}} / {{num|rt_C2_no_alf_rand_position_27b}} | {{num|rtg_C2_no_alf_position_122b}} / {{num|rtg_C2_no_alf_rand_position_122b}}° | {{num|rt_C2_no_alf_position_muse}} / {{num|rt_C2_no_alf_rand_position_muse}} |
+| Early layer, recall still switching without J++ | {{num|rte_C2_no_jpp_recall_follows_s_9b}} | {{num|rte_C2_no_jpp_recall_follows_s_27b}} | {{num|rte_C2_no_jpp_recall_follows_s_122b}}° | {{num|rte_C2_no_jpp_recall_follows_s_muse}} |
+| Routes, position share at each tested layer (another item moved) | L6 {{num|rte_C2_whole_position_9b}}; L8 {{num|rts8_C2_whole_position_9b}}; L10 {{num|rts10_C2_whole_position_9b}}; L12 {{num|rt_C2_whole_position_9b}} | L16 {{num|rte_C2_whole_position_27b}}; L20 {{num|rts20_C2_whole_position_27b}}; L24 {{num|rts24_C2_whole_position_27b}}; L28 {{num|rts28_C2_whole_position_27b}}; L32 {{num|rt_C2_whole_position_27b}} | L24 {{num|rts24_C2_whole_position_122b}}; L27 {{num|rte_C2_whole_position_122b}}; L30 {{num|rts30_C2_whole_position_122b}}; L33 {{num|rtg_C2_whole_position_122b}}; L36 {{num|rts36_C2_whole_position_122b}}° | L13 {{num|rte_C2_whole_position_muse}}; L26 {{num|rt_C2_whole_position_muse}}; L34 not tested |
+| Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | {{num|rtk_C2_keep_alf_position_9b}} / {{num|rtk_C2_keep_alf_rand_position_9b}}; {{num|rtk_C2_keep_jpp_identity_9b}} | {{num|rtk_C2_keep_alf_position_27b}} / {{num|rtk_C2_keep_alf_rand_position_27b}}; {{num|rtk_C2_keep_jpp_identity_27b}} | {{num|rtk_C2_keep_alf_position_122b}} / {{num|rtk_C2_keep_alf_rand_position_122b}}; {{num|rtk_C2_keep_jpp_identity_122b}}° | {{num|rtk_C2_keep_alf_position_muse}} / {{num|rtk_C2_keep_alf_rand_position_muse}}; {{num|rtk_C2_keep_jpp_identity_muse}} |
+| Sanity swap, switches lost: pointer + J++ minus pointer + random | {{num|rtc_lost_C0_jpp_minus_rand_lk_9b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_27b}} | {{num|rtc_lost_C0_jpp_minus_rand_lk_122b}}° | {{num|rtc_lost_C0_jpp_minus_rand_lk_muse}} |
+| Sanity swap, lookup without both / pointer alone | {{num|rtb_ex_C0_both_lk_9b}} / {{num|rtb_ex_C0_alf_lk_9b}} | {{num|rtb_ex_C0_both_lk_27b}} / {{num|rtb_ex_C0_alf_lk_27b}} | {{num|rtb_ex_C0_both_lk_122b}} / {{num|rtb_ex_C0_alf_lk_122b}}° | {{num|rtb_ex_C0_both_lk_muse}} / {{num|rtb_ex_C0_alf_lk_muse}} |
+
+*°: after the data, the gate lowered to 0.75.*
 
 ## Appendix B. Supplementary figures
 

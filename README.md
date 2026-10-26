@@ -12,7 +12,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at a31c2460 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 5). Built at 2029ffa3 from the run files.
 
 ## Setup
 
@@ -32,12 +32,14 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - On the 27B the lookup needs J++ once more directions are removed (25 / 50 / 100: 0.12 / 0.30 / 0.60; gap 0.07 at 100); the 9B, 122B and Muse keep the gap (0.54, 0.55, 0.85).
   - Other parts of a similar size cost the recall less than J++ (Fig. 2); J++ fitted to another scene holds only 1%-2% of the change, so it does not test this.
 
-| Gap | 9B | 27B | 122B | Muse |
+| Gap | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Two people swap picks (fixed in advance) | 0.53 [0.42, 0.61] | 0.60 [0.50, 0.69] | 0.32 [0.20, 0.43] | 0.85 [0.68, 0.98] |
-| Matched: fresh scenes, both locker sentences first, only the asked pick changes | 0.13 | 0.37 | 0.06 (after the data, gate 0.75) | 0.32 |
+| Matched: fresh scenes, both locker sentences first, only the asked pick changes | 0.13 | 0.37 | 0.06° | 0.32 |
 | Varied scenes | 0.22 [0.14, 0.31] | 0.47 [0.42, 0.53] | 0.15 [0.12, 0.18] | 0.50 [0.40, 0.61] |
-| Natural passages | 0.52 [0.36, 0.68] (after the data, gate 0.75) | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | recall 0.75 [0.62, 0.86], lookup −0.20 [−0.55, 0.00] (60 passages) |
+| Natural passages | 0.52 [0.36, 0.68]° | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | recall 0.75 [0.62, 0.86], lookup −0.20 [−0.55, 0.00] (60 passages) |
+
+*°: after the data, the gate lowered to 0.75.*
 
 ![No other part costs the recall as much as the scene's own J++](figures/story/fig2_parts.png)
 *Fig. 2. †: two people swap picks; others: only the asked pick changes.*
@@ -55,12 +57,14 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - (b) The probe is right in 0.92-0.99 of scenes (layout alone: 0.53), almost none of it in J++. A probe shows the pointer is decodable, not that it is used; the causal claims rest on removing the pointer directions and on adding them alone. The probe points at the item's first mention, even another person's earlier pick, where the lookup still switches. Removing the pointer directions costs the lookup on every model, the recall less (table).
   - (c) When another item moved, the lookup follows its identity or its locker sentence's position, never the new value (Fig. 4). Removing the pointer directions cuts position; adding only them gives position answers on all but the 27B; the J++ part alone moves none.
 
-| | 9B | 27B | 122B (after the data, gate 0.75) | Muse |
+| | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Lookup's extra loss without the pointer directions | 0.47 [0.41, 0.53] (replicated) | 0.14 [0.07, 0.22] | 0.31 [0.20, 0.43] | 0.41 [0.34, 0.49] (replicated) |
 | Another item moved: identity / position | 0.48 [0.43, 0.53] / 0.51 [0.46, 0.56] | 0.66 [0.60, 0.71] / 0.34 [0.28, 0.39] | 0.61 [0.56, 0.67] / 0.38 [0.33, 0.44] | 0.44 [0.38, 0.49] / 0.54 [0.49, 0.60] |
 | Position without the pointer directions / without a random part of their size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] | 0.27 [0.23, 0.32] / 0.55 [0.50, 0.60] |
 | Position with only the pointer part / only a random part of its size | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01] | 0.21 [0.16, 0.26] / 0.00 [0.00, 0.00] | 0.29 [0.25, 0.34] / 0.01 [0.00, 0.03] |
+
+*°: after the data, the gate lowered to 0.75.*
 
 ![The routes test: each route predicts a different locker](figures/story/fig3_routes_design.png)
 ![The lookup follows identity or position, never the value](figures/story/fig4_routes.png)
@@ -79,28 +83,30 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
   - (b) Removing both costs the lookup more than the pointer alone, and more than the pointer with a random part of J++'s size, only on the 27B (bars fixed in advance, 0.15; table). J++ and the pointer directions removed together still leave about half of the lookups switching (0.46 [0.41, 0.50] on the 9B, 0.53 [0.48, 0.57] on the 27B): these two parts explain about half of the route around the lens. On the 9B a random part of J++'s size costs the lookup more than J++, so its second route is not in J++; in these scenes (the item already mentioned) the 9B's recall does not need J++ either (0.01 [−0.01, 0.04]), as table 3c predicts. The 27B is the case where the same scenes show the split and its mechanism.
   - (c) The recall needs J++ most where the pick is the bridge's first mention (table 3c).
 
-| Early layer, another item moved, and the sanity swap | 9B (L6) | 27B (L16) | 122B (L27, after the data) | Muse (L13) |
+| Early layer, another item moved, and the sanity swap | Qwen3.5-9B (L6) | Qwen3.6-27B (L16) | Qwen3.5-122B (L27)° | Muse Glimmer 30B (L13) |
 |---|---|---|---|---|
 | Identity share | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 0.96 [0.93, 0.98] |
 | Without J++: the original answer | 0.99 [0.97, 1.00] | 0.99 [0.98, 1.00] | 0.84 [0.78, 0.89] | 0.26 [0.20, 0.31] |
-| **Sanity swap, at the layer fixed in advance** | **9B** | **27B** | **122B (after the data)** | **Muse** |
+| **Sanity swap, at the layer fixed in advance** | **Qwen3.5-9B** | **Qwen3.6-27B** | **Qwen3.5-122B°** | **Muse Glimmer 30B** |
 | Both removed minus the pointer alone (lookup extra loss) | 0.12 [0.04, 0.19] | 0.26 [0.19, 0.32] | 0.09 [0.03, 0.16] | 0.03 [−0.03, 0.08] |
 | Switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03] | 0.01 [−0.02, 0.03] |
 | Lookups still switching with both removed | 0.46 [0.41, 0.50] | 0.53 [0.48, 0.57] | 0.50 [0.45, 0.55] | 0.74 [0.68, 0.79] |
+
+*°: after the data, the gate lowered to 0.75.*
 
 ![Position answers appear with depth; on the 9B and 122B where the lookup stops needing J++](figures/story/fig5_depth.png)
 ![Removing J++ and the pointer directions together](figures/story/fig6_both_removed.png)
 *Fig. 5: shaded where the lookup still needs J++ (at least 0.30); Muse: the main test at layers 8-32 (after the data), its routes L34 not tested. Fig. 6: dots against dotted bars; grey: recall.*
 
-| Swap | Pick is the first mention? (no = matched) | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall | Muse lookup | Muse recall |
+| Swap | Pick is the first mention? (no = matched) | Qwen3.5-9B lookup | Qwen3.5-9B recall | Qwen3.6-27B lookup | Qwen3.6-27B recall | Qwen3.5-122B lookup | Qwen3.5-122B recall | Muse Glimmer 30B lookup | Muse Glimmer 30B recall |
 |---|---|---|---|---|---|---|---|---|---|
 | Two people swap picks | yes | *−0.21 [−0.43, −0.05]; 19 switches* | 0.65 [0.57, 0.73] | *0.11 [0.00, 0.40]; 9 switches* | 0.81 [0.71, 0.91] | *0.08 [0.00, 0.23]; 13 switches* | 0.41 [0.26, 0.54] | *−0.30 [−0.44, 0.00]; 10 switches* | 0.80 [0.65, 0.92] |
 | Two people swap picks | no | 0.01 [−0.04, 0.07] | 0.35 [0.26, 0.43] | 0.14 [0.07, 0.22] | 0.67 [0.58, 0.76] | −0.01 [−0.08, 0.06] | 0.20 [0.10, 0.30] | −0.07 [−0.12, −0.02] | 0.68 [0.46, 0.88] |
 | Only the asked person's pick changes | yes | *−0.11 [−0.29, 0.10]; 19 switches* | 0.57 [0.47, 0.67] | *0.33 [0.10, 0.60]; 12 switches* | 0.73 [0.58, 0.86] | *0.00 [0.00, 0.00]; 14 switches* | 0.40 [0.25, 0.54] | *−0.10 [−0.29, 0.00]; 10 switches* | 0.76 [0.64, 0.87] |
 | Only the asked person's pick changes | no | 0.00 [0.00, 0.00] | 0.17 [0.11, 0.23] | 0.01 [0.00, 0.04] | 0.49 [0.39, 0.60] | −0.01 [−0.07, 0.04] | 0.10 [0.03, 0.17] | 0.00 [0.00, 0.00] | 0.54 [0.32, 0.75] |
-| Same, fresh scenes | no | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] | 0.00 [0.00, 0.00] (gate 0.75) | 0.06 [0.03, 0.09] (gate 0.75) | −0.01 [−0.03, 0.02] | 0.31 [0.16, 0.45] |
+| Same, fresh scenes | no | −0.01 [−0.02, 0.00] | 0.12 [0.06, 0.19] | 0.01 [0.00, 0.02] | 0.37 [0.28, 0.46] | 0.00 [0.00, 0.00]° | 0.06 [0.03, 0.09]° | −0.01 [−0.03, 0.02] | 0.31 [0.16, 0.45] |
 
-*J++ extra loss, after the data; italics: under 30 lookup switches (count shown); n in Appendix A.*
+*J++ extra loss, after the data; °: gate 0.75; italics: under 30 lookup switches (count shown); n in Appendix A.*
 
 - **Caveat.** On the 27B the lookup stops needing J++ at layer 24, four layers before position answers appear (28): there the pointer is not the whole reason. Removing both costs the recall too (0.34 [0.28, 0.40], 0.44 [0.37, 0.52]).
 - **Muse.** At L26 the whole change moves only 35%-43% of lookups and about 58% of recalls; without the pointer directions position falls to 0.27 [0.23, 0.32] (random part 0.55 [0.50, 0.60]), not near zero; at L13 removing J++ restores the original answer in only 0.26 [0.20, 0.31] (Qwens 0.84 [0.78, 0.89] to 0.99 [0.97, 1.00]); L34 not tested (no lookup switched).
@@ -135,24 +141,26 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 Every number on this page comes from [figures/story/data.csv](figures/story/data.csv) (also every plotted number) and [docs/x0_numbers.json](docs/x0_numbers.json), each with its source file; [docs/x0_details.md](docs/x0_details.md) has the full tables.
 
-| Quantity | 9B | 27B | 122B | Muse |
+| Quantity | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |
 |---|---|---|---|---|
 | Gap, two people swap picks | 0.53 [0.42, 0.61] | 0.60 [0.50, 0.69] | 0.32 [0.20, 0.43] | 0.85 [0.68, 0.98] |
 | Gap, only the asked person's pick changes | 0.39 [0.30, 0.46] | 0.56 [0.45, 0.65] | 0.28 [0.15, 0.39] | 0.67 [0.53, 0.80] |
 | Gap, varied scenes | 0.22 [0.14, 0.31] | 0.47 [0.42, 0.53] | 0.15 [0.12, 0.18] | 0.50 [0.40, 0.61] |
-| Gap, natural passages (Muse: recall / lookup extra loss) | 0.52 [0.36, 0.68] (after the data, gate 0.75) | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | 0.75 [0.62, 0.86] / −0.20 [−0.55, 0.00] |
+| Gap, natural passages (Muse: recall / lookup extra loss) | 0.52 [0.36, 0.68]° | 0.27 [0.13, 0.41] | 0.44 [0.32, 0.58] | 0.75 [0.62, 0.86] / −0.20 [−0.55, 0.00] |
 | Lookup, translated locker key minus verbatim | −0.02 [−0.05, −0.00] | 0.01 [−0.01, 0.04] | −0.00 [−0.01, 0.00] | −0.06 [−0.08, −0.04] |
 | Recall, J++ / main directions at J++'s share | 0.37 [0.29, 0.43] / 0.13 [0.06, 0.19] | 0.61 [0.51, 0.69] / 0.16 [0.08, 0.23] | 0.26 [0.16, 0.36] / 0.21 [0.13, 0.30] | 0.66 [0.53, 0.78] / 0.18 [0.08, 0.26] |
 | Lookup, pointer directions | 0.49 [0.38, 0.59] | 0.14 [0.07, 0.22] | 0.31 [0.20, 0.43] | 0.34 [0.24, 0.46] |
 | n, table 3c rows (first mention yes / no): two people swap picks | 100 / 100 | 99 / 101 | 115 / 85 | 108 / 92 |
-| n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | 100 / 100; 200 | 97 / 103; 200 | 115 / 85; 200 (gate 0.75) | 105 / 95; 200 |
+| n, table 3c rows: only the asked person's pick changes; fresh scenes (no) | 100 / 100; 200 | 97 / 103; 200 | 115 / 85; 200° | 105 / 95; 200 |
 | Pointer probe right; another person's earlier pick read as first mention | 0.97; 0.90 | 0.99; 0.56 | 0.92; 0.96 | 0.97; 0.65 |
-| Routes, another item moved, position without the pointer / without a random part of its size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41] (after the data) | 0.27 [0.23, 0.32] / 0.55 [0.50, 0.60] |
-| Early layer, recall still switching without J++ | 0.05 [0.02, 0.08] | 0.01 [0.00, 0.02] | 0.20 [0.13, 0.28] (after the data) | 0.59 [0.52, 0.68] |
-| Routes, position share at each tested layer (another item moved) | L6 0.00 [0.00, 0.00]; L8 0.03 [0.01, 0.05]; L10 0.02 [0.01, 0.04]; L12 0.51 [0.46, 0.56] | L16 0.00 [0.00, 0.00]; L20 0.00 [0.00, 0.00]; L24 0.00 [0.00, 0.00]; L28 0.34 [0.29, 0.40]; L32 0.34 [0.28, 0.39] | L24 0.00 [0.00, 0.00]; L27 0.00 [0.00, 0.00]; L30 0.00 [0.00, 0.00]; L33 0.38 [0.33, 0.44]; L36 0.58 [0.52, 0.63] (after the data) | L13 0.04 [0.02, 0.07]; L26 0.54 [0.49, 0.60]; L34 not tested |
-| Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01]; 0.00 [0.00, 0.00] | 0.21 [0.16, 0.26] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00] (after the data) | 0.29 [0.25, 0.34] / 0.01 [0.00, 0.03]; 0.00 [0.00, 0.00] |
-| Sanity swap, switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03] (after the data) | 0.01 [−0.02, 0.03] |
-| Sanity swap, lookup without both / pointer alone | 0.43 [0.39, 0.47] / 0.31 [0.26, 0.37] | 0.41 [0.35, 0.47] / 0.15 [0.12, 0.19] | 0.35 [0.29, 0.41] / 0.26 [0.22, 0.30] (after the data) | 0.31 [0.25, 0.37] / 0.28 [0.23, 0.33] |
+| Routes, another item moved, position without the pointer / without a random part of its size | 0.08 [0.05, 0.12] / 0.54 [0.49, 0.59] | 0.06 [0.03, 0.09] / 0.25 [0.19, 0.31] | 0.05 [0.02, 0.07] / 0.36 [0.31, 0.41]° | 0.27 [0.23, 0.32] / 0.55 [0.50, 0.60] |
+| Early layer, recall still switching without J++ | 0.05 [0.02, 0.08] | 0.01 [0.00, 0.02] | 0.20 [0.13, 0.28]° | 0.59 [0.52, 0.68] |
+| Routes, position share at each tested layer (another item moved) | L6 0.00 [0.00, 0.00]; L8 0.03 [0.01, 0.05]; L10 0.02 [0.01, 0.04]; L12 0.51 [0.46, 0.56] | L16 0.00 [0.00, 0.00]; L20 0.00 [0.00, 0.00]; L24 0.00 [0.00, 0.00]; L28 0.34 [0.29, 0.40]; L32 0.34 [0.28, 0.39] | L24 0.00 [0.00, 0.00]; L27 0.00 [0.00, 0.00]; L30 0.00 [0.00, 0.00]; L33 0.38 [0.33, 0.44]; L36 0.58 [0.52, 0.63]° | L13 0.04 [0.02, 0.07]; L26 0.54 [0.49, 0.60]; L34 not tested |
+| Routes, added alone: position with the pointer part / with its random part; identity with the J++ part | 0.26 [0.20, 0.32] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00] | 0.09 [0.06, 0.12] / 0.00 [0.00, 0.01]; 0.00 [0.00, 0.00] | 0.21 [0.16, 0.26] / 0.00 [0.00, 0.00]; 0.00 [0.00, 0.00]° | 0.29 [0.25, 0.34] / 0.01 [0.00, 0.03]; 0.00 [0.00, 0.00] |
+| Sanity swap, switches lost: pointer + J++ minus pointer + random | −0.08 [−0.11, −0.04] | 0.23 [0.18, 0.27] | 0.00 [−0.02, 0.03]° | 0.01 [−0.02, 0.03] |
+| Sanity swap, lookup without both / pointer alone | 0.43 [0.39, 0.47] / 0.31 [0.26, 0.37] | 0.41 [0.35, 0.47] / 0.15 [0.12, 0.19] | 0.35 [0.29, 0.41] / 0.26 [0.22, 0.30]° | 0.31 [0.25, 0.37] / 0.28 [0.23, 0.33] |
+
+*°: after the data, the gate lowered to 0.75.*
 
 ## Appendix B. Supplementary figures
 
