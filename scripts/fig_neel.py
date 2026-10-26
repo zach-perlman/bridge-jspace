@@ -683,6 +683,7 @@ def dose_data(m: str, pre: str, band: str) -> list[dict] | None:
     run = f"{pre}{SET}_ko_cand2_{band}_dose54_s150_v1"
     sc = score(run).get("facts")
     size = load(RES / "removal_size" / f"{pre}removal_size_{band}_dose54_v1" / "summary.json")
+    soft = load(A2 / "soft_score" / f"{run}.json") or {}
     if not sc or not size:
         return None
     med = lambda key: sorted(v[key] for v in size["median_share"].values())[len(size["median_share"]) // 2] * 100  # noqa: E731
@@ -692,15 +693,34 @@ def dose_data(m: str, pre: str, band: str) -> list[dict] | None:
         if not c:
             continue
         g = lambda cond: (sc.get(f"{cond}/start=all") or {}).get("contrasts", {}).get("M-K", {}).get("diff")  # noqa: E731
+        so = soft.get(f"top{k}", {})
         out.append({"k": k, "share": med(f"jlens_top{k}"), "mk": c["contrasts"]["M-K"]["diff"], "ci": c["contrasts"]["M-K"]["ci"],
-                    "K": c["loss"]["K"], "rot": g(f"top{k}_rot"), "pc": g(f"top{k}_pcasize"), "u": g(f"unembed{k}")})  # fmt: skip
+                    "K": c["loss"]["K"], "rot": g(f"top{k}_rot"), "pc": g(f"top{k}_pcasize"), "u": g(f"unembed{k}"),
+                    "smk": so.get("soft_M-K"), "sK": so.get("soft", {}).get("K")})  # fmt: skip
+        r = out[-1]
+        ctrl = [v for v in (r["rot"], r["pc"]) if v is not None]
+        r["exc"] = r["mk"] - max(ctrl) if ctrl else None
     return out
 
 
+def dose_readings(d: list[dict]) -> dict:
+    """Amendment 54's readings (as written) and note 1's secondary readings."""
+    cls = lambda k: "concentrated" if k <= 10 else "distributed" if k >= 100 else "intermediate"  # noqa: E731
+    lim = next((r["k"] for r in d if r["K"] > 10 or (r["pc"] is not None and r["pc"] > r["mk"] / 2)), None)
+    under = [r for r in d if lim is None or r["k"] < lim] or d[:1]
+    top = max(r["mk"] for r in under)
+    kstar = next(r["k"] for r in under if r["mk"] >= 0.9 * top)
+    eu = [r for r in under if r["exc"] is not None]
+    etop = max(r["exc"] for r in eu) if eu else None
+    ekstar = next((r["k"] for r in eu if r["exc"] >= 0.9 * etop), None) if eu else None
+    plim = next((r["k"] for r in d if r["sK"] is not None and r["sK"] > 10), None)
+    return {"limit": lim, "kstar": kstar, "cls": cls(kstar), "ekstar": ekstar, "ecls": cls(ekstar) if ekstar else None, "plim": plim}
+
+
 def f10() -> None:
-    fig = plt.figure(figsize=(16, 6.6))
-    axes = [fig.add_axes((0.05 + i * 0.325, 0.16, 0.27, 0.62)) for i in range(3)]
-    pending = []
+    fig = plt.figure(figsize=(17, 7.6))
+    axes = [fig.add_axes((0.045 + i * 0.205, 0.2, 0.17, 0.55)) for i in range(4)]
+    pending, table = [], []
     for m, pre, band in DOSE54:
         d = dose_data(m, pre, band)
         if not d:
@@ -708,32 +728,51 @@ def f10() -> None:
             continue
         x = [r["share"] for r in d]
         col, mk_ = DCOL[m], DMK[m]
-        axes[0].plot(x, [r["mk"] for r in d], "-", color=col, lw=2, marker=mk_, ms=6, mec=SURF, mew=1.2, label=SHORT[m])
+        kw = dict(color=col, lw=2, marker=mk_, ms=6, mec=SURF, mew=1.2)
+        axes[0].plot(x, [r["mk"] for r in d], "-", label=SHORT[m], **kw)
+        pcx = [(r["share"], r["pc"]) for r in d if r["pc"] is not None]
+        axes[0].plot([a for a, _ in pcx], [b for _, b in pcx], ":", color=col, lw=1.3, marker=mk_, ms=4, mfc=SURF, mec=col)
         for r in d:
             if r["k"] in (1, 10, 100, 300):
                 axes[0].annotate(f"{r['k']}", (r["share"], r["mk"]), xytext=(3, 4), textcoords="offset points", fontsize=6.5, color=MUTED)
-        exc = [r["mk"] - max(v for v in (r["rot"], r["pc"]) if v is not None) if r["rot"] is not None else None for r in d]
-        axes[1].plot([a for a, e in zip(x, exc, strict=True) if e is not None], [e for e in exc if e is not None], "-", color=col, lw=2, marker=mk_, ms=6, mec=SURF, mew=1.2)
-        axes[2].plot(x, [r["K"] for r in d], "-", color=col, lw=2, marker=mk_, ms=6, mec=SURF, mew=1.2)
-        pcx = [(r["share"], r["pc"]) for r in d if r["pc"] is not None]
-        axes[0].plot([a for a, _ in pcx], [b for _, b in pcx], ":", color=col, lw=1.2, marker=mk_, ms=4, mfc=SURF, mec=col)
+        ex = [(r["share"], r["exc"]) for r in d if r["exc"] is not None]
+        axes[1].plot([a for a, _ in ex], [b for _, b in ex], "-", **kw)
+        sm = [(r["share"], r["smk"]) for r in d if r["smk"] is not None]
+        axes[2].plot([a for a, _ in sm], [b for _, b in sm], "-", **kw)
+        axes[3].plot(x, [r["K"] for r in d], "-", **kw)
+        sk = [(r["share"], r["sK"]) for r in d if r["sK"] is not None]
+        axes[3].plot([a for a, _ in sk], [b for _, b in sk], "--", color=col, lw=1.6, marker=mk_, ms=4, mfc=SURF, mec=col)
+        rd = dose_readings(d)
+        table.append((SHORT[m], rd))
     for ax in axes:
         style(ax, "both")
-        ax.set_xlabel("share of the residual norm removed at the band (J++ top K; median)")
+        ax.set_xlabel("share of the residual removed\n(J++ top K, median over the band)")
         ax.axhline(0, color=AXIS, lw=1)
-    axes[0].set_title("A   M − K (solid: J++ top K; dotted: same norm, top principal directions)", fontsize=9.5)
-    axes[1].set_title("B   J-specific excess: J++ minus max(rotated, size-matched)", fontsize=9.5)
-    axes[2].set_title("C   Stated facts lost (where specificity ends)", fontsize=9.5)
-    axes[2].axhline(10, color=AXIS, lw=1, ls="--")
-    axes[2].text(1, 11, "limit: 10 points", fontsize=7, color=MUTED)
-    axes[0].legend(loc="upper left", frameon=False, fontsize=8)
-    if pending:
-        axes[0].text(0.98, 0.02, "pending: " + ", ".join(pending), transform=axes[0].transAxes, ha="right", fontsize=7.5, color=MUTED)
-    top = header(fig, "How much J-space: the dependence against the size of the removal, K = 1 to 300 directions (amendment 54)",
-                 "Test set, 150 random items per word (seed 0), each model at its band; numbers at points are K")  # fmt: skip
-    bot = note(fig, "Readings fixed before the runs (amendment 54): specificity limit = smallest K where stated facts lose > 10 or the size-matched control exceeds half the J++ effect; "
-                    "plateau K* = smallest K reaching 90% of the largest M − K under the limit (concentrated if <= 10, distributed if >= 100). "
-                    "The per-word sample draws M and K items from partly different scenes (70-97 of 150 shared): noise, not bias.")  # fmt: skip
+    axes[0].set_title("A   M − K, greedy\n(dotted: same norm, top principal directions)", fontsize=9.5)
+    axes[1].set_title("B   J-specific excess\n(J++ minus max(rotated, size-matched))", fontsize=9.5)
+    axes[2].set_title("C   M − K by probability", fontsize=9.5)
+    axes[3].set_title("D   Stated facts lost\n(solid: greedy; dashed: by probability)", fontsize=9.5)
+    axes[3].axhline(10, color=AXIS, lw=1, ls="--")
+    axes[3].text(0.02, 0.6, "limit: 10 points", transform=axes[3].get_yaxis_transform(), fontsize=7, color=MUTED)
+    axes[0].legend(loc="upper left", frameon=False, fontsize=7.5)
+    ty = 0.86
+    fig.text(0.865, ty, "Readings", fontsize=9.5, fontweight="bold")
+    ty -= 0.035
+    fig.text(0.865, ty, "K* as pre-registered / on the excess;\nprobability limit (note 1)", fontsize=7.5, color=MUTED, va="top")
+    ty -= 0.07
+    for lab, rd in table:
+        fig.text(0.865, ty, lab, fontsize=8.5, fontweight="bold", va="top")
+        fig.text(0.865, ty - 0.028, f"K* {rd['kstar']} ({rd['cls']}) / {rd['ekstar']} ({rd['ecls']})\nprob. limit: K {rd['plim'] or '> 300'}", fontsize=7.5, color=INK2, va="top")
+        ty -= 0.085
+    for lab in pending:
+        fig.text(0.865, ty, f"{lab}: running", fontsize=8, color=MUTED, va="top")
+        ty -= 0.03
+    top = header(fig, "How much J-space: the J-specific part of the dependence is there from the first few directions; more directions mostly add damage that is not specific",
+                 "Amendment 54: K = 1, 3, 10, 30, 100, 300 J++ directions at each model's band; test set, 150 random items per word (seed 0); numbers at points are K")  # fmt: skip
+    note(fig, "Pre-registered (amendment 54): specificity limit = smallest K where stated facts lose > 10 points (greedy) or the size-matched control exceeds half the J++ M − K; plateau K* = smallest K reaching 90% of the largest "
+              "J++ M − K under the limit (<= 10 concentrated, >= 100 distributed). Note 1 (written after Lightning's grid, before the others): the same plateau rule on the J-specific excess, and a limit by probability "
+              "(stated facts lose > 10 points of answer probability): greedy accuracy hides that large removals also drain the stated answer's probability. "
+              "The per-word sample draws M and K items from partly different scenes: noise, not bias.")  # fmt: skip
     save(fig, "F10_dose")
 
 
@@ -931,7 +970,7 @@ def f11() -> None:
 
 # ---------------------------------------------------------------------------------------------------------------- F12
 
-STATUS = {"good": ("#0ca30c", "✓"), "warn": ("#fab219", "~"), "bad": ("#d03b3b", "✗"), "untest": ("#898781", "⊘"), "none": (None, "·"), "pend": (None, "…")}
+STATUS = {"good": ("#0ca30c", "✓"), "warn": ("#fab219", "~"), "bad": ("#d03b3b", "✗"), "untest": ("#898781", "⊘"), "none": (None, "·"), "pend": (None, "…"), "info": (None, "")}
 
 
 def f12() -> None:
@@ -991,7 +1030,13 @@ def f12() -> None:
         else:
             cells.append(("none", "not run"))
         cells.append(where)
-        cells.append(dose)
+        dz = {mm: (pp, bb) for mm, pp, bb in DOSE54}.get(m)
+        d = dose_data(m, *dz) if dz else None
+        if d:
+            rd = dose_readings(d)
+            cells.append(("info", f"K* {rd['kstar']} (as written)\nexcess K* {rd['ekstar']}; prob. limit {rd['plim'] or '>300'}"))
+        else:
+            cells.append(dose)
         rows.append((label, cells))
 
     v2row("Qwen3.6-27B", "Qwen 27B (hybrid)", "textloss_top_l32_40_v1", "jswap_v2_v1", True, ("good", "toy x3, natural x3,\nnatplus, v1"),
@@ -1035,9 +1080,7 @@ def f12() -> None:
             ax.text(j + 0.1, y + 0.5, icon, ha="left", va="center", fontsize=10, color=col or MUTED, fontweight="bold")
             ax.text(j + 0.55, y + 0.5, txt, ha="center", va="center", fontsize=7, color=INK2)
     ax.axhline(10, xmin=0, xmax=1, color=AXIS, lw=1.2)
-    for st, (col, icon), lab in zip(("good", "warn", "bad", "untest", "none", "pend"), STATUS.values(), ("holds", "weak / partial", "fails", "untestable", "not run", "running (amendment 54)"), strict=True):
-        pass
-    leg = [plt.Rectangle((0, 0), 1, 1, color=c or PANEL, alpha=0.4 if c else 1, label=f"{i}  {lab}") for (c, i), lab in zip(STATUS.values(), ("holds", "weak / partial", "fails", "untestable", "not run", "running tonight"), strict=True)]
+    leg = [plt.Rectangle((0, 0), 1, 1, color=c or PANEL, alpha=0.4 if c else 1, label=f"{i}  {lab}") for (c, i), lab in zip(list(STATUS.values())[:6], ("holds", "weak / partial", "fails", "untestable", "not run", "running tonight"), strict=True)]
     ax.legend(handles=leg, loc="upper left", bbox_to_anchor=(0, -0.0), ncol=6, frameon=False, fontsize=8.5)
     top = header(fig, "Scorecard: every model we tried, every test; the gaps (·) are what is left for days 9-12",
                  "Above the line: models run on jsuite v2 at their band; below: models stopped earlier (untestable, failed on the earlier datasets, or weights deleted)")  # fmt: skip
