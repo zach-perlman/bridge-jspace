@@ -1,0 +1,29 @@
+{
+  "exp": "x8_write",
+  "run": "qwen35_122b_x8_order_g75",
+  "written_utc": "2026-10-26T15:38:58Z",
+  "stage": "order",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "2a9a586dca043335c7bdecc21bc850305d3ef8a8",
+    "dirty": true
+  },
+  "layer": 33,
+  "fillers": [
+    "The weather stayed mild and quiet for most of the afternoon.",
+    "Everyone agreed that the meeting had gone on far too long.",
+    "Nobody could remember when the hallway lights had last been changed.",
+    "It was later than usual when the cleaning crew finally arrived."
+  ],
+  "gate": 0.75,
+  "mu_from": "qwen35_122b_x0_probe_v4",
+  "note": "batch 44 B (Dan 26 Oct ~13:00); results closed until its answers",
+  "items": 300
+}

@@ -1,0 +1,44 @@
+{
+  "exp": "x8_write",
+  "run": "qwen35_122b_x8_halfway_g75",
+  "written_utc": "2026-10-26T15:16:22Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "2a9a586dca043335c7bdecc21bc850305d3ef8a8",
+    "dirty": true
+  },
+  "layer": 33,
+  "stage": "halfway",
+  "s": [
+    1.0,
+    4.0
+  ],
+  "rand_s": [],
+  "gate": 0.75,
+  "gate_fixed_in_advance": 0.8,
+  "mu_from": "qwen35_122b_x0_probe_v4",
+  "seeds": {
+    "scenes": 2510,
+    "random_directions": 4401
+  },
+  "note": "batch 44 (Dan 26 Oct ~13:00); results closed until its answers",
+  "items": 300,
+  "norms": {
+    "step": {
+      "0-1": 0.9262,
+      "0-2": 1.0484,
+      "1-0": 0.9262,
+      "1-2": 0.5214,
+      "2-0": 1.0484,
+      "2-1": 0.5214
+    },
+    "median_U_UT_delta_C2": 1.4382
+  }
+}
