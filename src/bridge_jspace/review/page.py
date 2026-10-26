@@ -137,8 +137,16 @@ def bridge_html(it: dict) -> str:
     if c["bridge"] == c["cf_bridge"]:
         return (f"The bridge, the asked person's pick, is <b>{E(c['bridge'])}</b> in both prompts (token {c['pos']}); the "
                 "prompts differ in the highlighted words.")  # fmt: skip
-    return (f"The bridge, the asked person's pick, is <b>{E(c['bridge'])}</b> in the original prompt and "
+    text = (f"The bridge, the asked person's pick, is <b>{E(c['bridge'])}</b> in the original prompt and "
             f"<b>{E(c['cf_bridge'])}</b> in the changed one; the change is added at its token ({c['pos']}).")  # fmt: skip
+    o = it.get("order") or {}
+    if o:
+        word = {"before": "<b>before</b>", "after": "<b>after</b>", "not found": "(not found)"}
+        first = " (locker-first: the items the lookup claims are about)" if o["original"] == "before" else ""
+        text += (f"<br>Sentence order: in the original prompt, {E(c['bridge'])}'s locker sentence comes "
+                 f"{word[o['original']]} the asked pick{first}; in the changed prompt, {E(c['cf_bridge'])}'s locker "
+                 f"sentence comes {word[o['changed']]} it.")  # fmt: skip
+    return text
 
 
 def shares_html(shares: dict) -> str:
@@ -337,7 +345,7 @@ def card(it: dict, seed: int, server: bool, mark: dict | None) -> str:
 def controls(v: dict, p: dict, server: bool) -> str:
     if not server:
         return (f"<p class='mut'>Static export: seed {p['seed']}, N = {p['n']} per model, {p['mode']}"
-                + "".join(f", {k} {p[k]}" for k in ("reader", "condition", "s", "kind") if p.get(k) not in (None, "", "all"))
+                + "".join(f", {k} {p[k]}" for k in ("reader", "condition", "s", "kind", "order") if p.get(k) not in (None, "", "all"))
                 + ". Marks are kept in this browser; use “download marks”.</p>")  # fmt: skip
 
     def sel(name, opts):
@@ -355,6 +363,8 @@ def controls(v: dict, p: dict, server: bool) -> str:
         extra += sel("condition", ["all", *v["filters"].get("conditions", [])])
     if v["kind"] == "x8":
         extra += sel("s", ["all", *v["filters"].get("s", [])]) + sel("kind", ["all", *v["filters"].get("kinds", [])])
+    if v["kind"] in ("x0", "massmean"):
+        extra += sel("order", ["all", "locker first", "locker after"])
     sup = (f"<label><span><input type='checkbox' name='superseded' value='1' {'checked' if p.get('superseded') else ''}>"
            "superseded runs</span></label>") if v.get("superseded") else ""  # fmt: skip
     return (f"<form class='ctl box' method='get' action='/view'><input type='hidden' name='view' value='{E(v['id'])}'>"

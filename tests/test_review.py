@@ -87,6 +87,16 @@ def test_class_rederivation_on_hand_picked_items():
             assert C.run_checks(it)["label from the top token"][0] == C.PASS, it["id"]
 
 
+def test_sentence_order_and_its_filter():
+    # read by hand: "Finn picked helium. The locker of hydrogen is three. Clara picked hydrogen. ... The locker of helium
+    # is six." -> the original bridge's locker before Clara's pick (locker-first); the changed bridge's after it
+    it = item("main_swap", "qwen3.5-9b", "P2-L0-0247", "PM")
+    assert it["order"] == {"original": "before", "changed": "after"}
+    pool = I.items("main_swap", "qwen3.5-9b")
+    first = [x for x in pool if I.facets(x, {"order": "locker first"})]
+    assert first and all(x["order"]["original"] == "before" for x in first) and len(first) < len(pool)
+
+
 def test_checks_fail_on_tampered_items():
     it = copy.deepcopy(item("routes", "qwen3.5-9b", "C2-0333", "PP"))
     it["rows"]["PP"]["whole"]["route"] = "identity"

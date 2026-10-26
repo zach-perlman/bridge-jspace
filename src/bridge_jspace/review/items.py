@@ -11,6 +11,7 @@ from __future__ import annotations
 import collections
 import json
 import random
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -109,13 +110,39 @@ def x0_items(v: dict, model: str, run: str, in_set: bool = True) -> list[Item]:
     return out
 
 
+def sentence_order(case: dict | None) -> dict[str, str]:
+    """Whether a prompt's bridge's locker sentence comes before or after the asked person's pick sentence, in the
+    original prompt (its bridge) and the changed one (its bridge): the README's "locker-first" is the original's
+    "before" (x0_strata's "org locker vs asked pick")."""
+    if not case:
+        return {}
+    asked = re.search(r"([A-Z][a-z]+)'s pick", case["readers"]["PP"]["question"])
+    out = {}
+    for name, ctx, bridge in (
+        ("original", case["context"], case["bridge"]),
+        ("changed", case["cf_context"], case["cf_bridge"]),
+    ):
+        sents = re.split(r"(?<=\.)\s+", ctx)
+        pick = next((i for i, s in enumerate(sents) if asked and s.startswith(f"{asked.group(1)} picked")), None)
+        lock = next(
+            (
+                i
+                for i, s in enumerate(sents)
+                if s.startswith("The locker of") and re.search(rf"\b{re.escape(bridge)}\b", s)
+            ),
+            None,
+        )
+        out[name] = "not found" if pick is None or lock is None else "before" if lock < pick else "after"
+    return out
+
+
 def _item(v, model, run, layer, scene, reader, condition, case, rows, shares, cls, status, extra=None) -> Item:
     tail = f"|{condition}" if condition else ""
     tail += f"|{extra['kind']}|{extra['j']}-{extra['k']}|s{extra['s']}" if extra else ""
     return {"id": f"{model}|{run.split('/')[-1]}|{scene}|{reader}{tail}", "view": v["id"], "kind": v["kind"],
             "model": model, "run": run, "layer": layer, "scene": scene, "reader": reader, "condition": condition,
             "case": case, "rows": rows, "shares": shares, "cls": cls, "status": status, "in_set": status == "in set",
-            "x8": extra or {}}  # fmt: skip
+            "x8": extra or {}, "order": sentence_order(case) if v["kind"] in ("x0", "massmean") else {}}  # fmt: skip
 
 
 # --------------------------------------------------------------------------------------------- routes (x6_routes)
@@ -251,8 +278,15 @@ def items(view_id: str, model: str, which: str = "set") -> list[Item]:
 
 
 def facets(it: Item, params: dict) -> bool:
-    """The URL's filters beyond model: reader, condition (routes), s and kind (x8)."""
+    """The URL's filters beyond model: reader, condition (routes), s and kind (x8), sentence order (the main test:
+    "locker first" = the original bridge's locker sentence before the asked pick, as the README's lookup claims)."""
     if params.get("reader") not in (None, "", "all") and it["reader"] != params["reader"]:
+        return False
+    order = params.get("order")
+    if (
+        order not in (None, "", "all")
+        and it["order"].get("original") != {"locker first": "before", "locker after": "after"}[order]
+    ):
         return False
     if params.get("condition") not in (None, "", "all") and it["condition"] != params["condition"]:
         return False
