@@ -4,10 +4,13 @@ cells at one layer (word, J++ k = 25) split by scene features. Writes results/x0
 
 Strata: upstream change (the other changed pick comes before the asked one: yes / no); domain; the asked person's pick
 sentence's place among the pick sentences (1st / 2nd / 3rd); whether the locker sentence of the org bridge, and of the
-alt bridge, comes before or after the asked pick sentence. Per stratum: n, switched by the whole edit, S_whole, Jdep,
-Rdep, excess (cluster bootstrap over entities, as X0) and the label; strata with fewer than 30 switched are flagged.
+alt bridge, comes before or after the asked pick sentence; each reader's confidence (Dan's plan step 5, 25 Oct ~23:00:
+its unpatched p_org, the 'none' arm, in terciles over the run's scenes at the layer). Per stratum: n, switched by the
+whole edit, S_whole, Jdep, Rdep, excess (cluster bootstrap over entities, as X0) and the label; strata with fewer than
+30 switched are flagged.
 
 uv run python scripts/x0_strata.py --name x0_necessity_27b_chat --layer 32
+uv run python scripts/x0_strata.py --name x0_necessity_27b_chat --layer 32 --features "recall's confidence"
 """
 
 from __future__ import annotations
@@ -21,6 +24,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+import numpy as np
 
 from scripts import x0_necessity as X
 
@@ -47,7 +52,30 @@ def features(case: dict) -> dict[str, str]:
             "org locker vs asked pick": locker(case["bridge"]), "alt locker vs asked pick": locker(case["cf_bridge"])}  # fmt: skip
 
 
-FEATURES = ("upstream", "domain", "asked pick place", "org locker vs asked pick", "alt locker vs asked pick")
+CONFIDENCE = {"lookup's confidence": X.LOOKUP, "recall's confidence": X.RECALL}
+FEATURES = (
+    "upstream",
+    "domain",
+    "asked pick place",
+    "org locker vs asked pick",
+    "alt locker vs asked pick",
+    *CONFIDENCE,
+)
+
+
+def confidence(rows: list[dict]) -> tuple[dict[str, dict[str, str]], dict[str, list[float]]]:
+    """Per scene, each reader's unpatched p_org (the 'none' arm) as its tercile over the scenes (1 low / 2 mid / 3
+    high), and the tercile cut points."""
+    p = {(r["scene"], r["reader"]): r["p_org"] for r in rows if r["arm"] == "none"}
+    feat: dict[str, dict[str, str]] = {}
+    cuts = {}
+    for name, w in CONFIDENCE.items():
+        vals = {s: v for (s, ww), v in p.items() if ww == w}
+        lo, hi = (float(q) for q in np.quantile(list(vals.values()), [1 / 3, 2 / 3]))
+        cuts[name] = [lo, hi]
+        for s, v in vals.items():
+            feat.setdefault(s, {})[name] = "1 low" if v < lo else "2 mid" if v < hi else "3 high"
+    return feat, cuts
 
 
 def readout_lines(readout: list[dict], feat: dict, features: list[str]) -> list[str]:
@@ -81,14 +109,23 @@ def main() -> None:
     src = X.RESULTS / a.name
     rows = [r for r in X.read_jsonl(src / "outcomes.jsonl") if r["rendering"] == "chat" and r["layer"] == a.layer]
     cases = {c["scene"]: c for c in X.read_jsonl(src / "cases.jsonl") if c["rendering"] == "chat"}
-    feat = {s: features(cases[s]) for s in {r["scene"] for r in rows}}
+    conf, cuts = confidence(rows)
+    feat = {
+        s: {**features(cases[s]), **conf.get(s, dict.fromkeys(CONFIDENCE, "none"))} for s in {r["scene"] for r in rows}
+    }
     lines = [f"# X0 strata: {a.name}, layer {a.layer}, the bridge's word, J++ k = 25", "",
              f"{NOTE} Bootstrap over the org bridge entity, {a.n_boot} resamples, seed {X.BOOT_SEED}. "
              "⚠ = fewer than 30 items switched by the whole edit (the cell is 'can't tell'). UNVERIFIED.", ""]  # fmt: skip
-    blob: dict = {"run": a.name, "layer": a.layer, "note": NOTE, "strata": []}
+    blob: dict = {"run": a.name, "layer": a.layer, "note": NOTE, "confidence_cuts": cuts, "strata": []}
     for key in a.features:
-        lines += [f"## {key}", "", "| value | reader | dict | k | fit | n | switched | S_whole | Jdep | Rdep | excess | "
-                  "label |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+        lines += [f"## {key}", ""]
+        if key in CONFIDENCE:
+            lines += [
+                f"The reader's unpatched p_org in terciles; cut points {cuts[key][0]:.3f} and {cuts[key][1]:.3f}.",
+                "",
+            ]
+        lines += ["| value | reader | dict | k | fit | n | switched | S_whole | Jdep | Rdep | excess | label |",
+                  "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
         for value in sorted({f[key] for f in feat.values()}):
             cells = X.cells_of([r for r in rows if feat[r["scene"]][key] == value], a.n_boot)
             keys = sorted(k for k in cells if a.all_dicts or k[3:] == X.MAIN)
