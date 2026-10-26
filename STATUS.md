@@ -35,7 +35,11 @@ Scored 25 Oct: Q32.7, Q32.8 right; Q33.1, Q34.1, Q35.1, Q36.1, Q37.1 wrong; Q37.
 - Fig. 5's Muse panel had two points (the grid's layers 13 / 26 / 34; L34 no valid cell): muse_depth queued (Dan ~11:15 asked why), the main test at L8-L32 every 2 layers, after the data, descriptive; Fig. 5 reads it once it lands.
 - x0_strata: the readers' confidence is asked for by name, FEATURES stays the scene's own features (adding it there broke x0_details' strata table); x0_details' sentence-order numbers take the newest strata run that has the sentence order.
 - Batches 40 (D1) and 41 (D2) written in Dan's wording (495fbddf), before any run.
-- Next, in Dan's order: batch 39's analysis once answered; step 4 (fig7 scorecard, the Next section); D1 after batch 40's answers; D2 after D1. The H100 box kept (step 5).
+- Dan ~11:55 (answers to the open points) applied before any run (066db8ac): Q39.1 counts Muse; Q39.2 "can't tell" if fewer than two terciles count; batch 40 redefined (the rank-1 identity direction mu_alt - mu_org, identity outside J++, the arms; the identity subspace descriptive); batch 41's isolation arm and whole locker sentences, Q41.3; batch 42 (T) written; batch 43's P_cf share in J++.
+- muse_depth landed (f94922cf, after the data, descriptive): Fig. 5's Muse panel is a depth curve.
+- D1 (05400b9b): x6_routes --identity, job d1_identity running on the H100 (27B on GPU0; 9B then Muse on GPU1); results closed until batch 40's answers.
+- T (d4d12f60): x0b_generalize --pointer and x5_natural --pointer (a fixed pointer dictionary in X0; OMP over its 4 orthonormal atoms equals the projection, checked); jobs t_pointer and t_pointer_122b queued on the H100 after D1 until Dan's second box is up (then moved there under new ids; one id, one box). The 9B's natural passages may miss the 0.80 gate again: not tested, no rerun unless Dan asks.
+- Next: batch 39's analysis once answered; step 4 (fig7 scorecard, the Next section); P_cf (batch 43) after T; D2 (batch 41) last. Cut order if late (Dan): D2 first, then P_cf's natural-passage step.
 
 # Overnight 25-26 Oct: the Muse grid, defaults taken, DeepSeek-V4-Flash note (agent)
 
