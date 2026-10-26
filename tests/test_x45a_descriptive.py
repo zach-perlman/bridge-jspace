@@ -16,15 +16,16 @@ def _rows() -> list[dict]:
             for arm in ("whole", "keep_alf", "no_alf"):
                 route = "position" if v == "V0" else {"whole": "identity", "keep_alf": "original"}.get(arm, "other")
                 rows.append({"reader": X.LOOKUP, "variant": v, "base_scene": f"b{b}", "move": move, "arm": arm,
-                             "route": route})  # fmt: skip
+                             "route": route, "entity": f"e{b}"})  # fmt: skip
                 rows.append({"reader": X.RECALL, "variant": v, "base_scene": f"b{b}", "move": move, "arm": arm,
                              "route": None})  # fmt: skip
     return rows
 
 
 def test_route_table_on_first_locker_moves_of_common_scenes():
-    t = D.route_table(_rows())
+    t = D.route_table(_rows(), 200)
     assert t["n"] == 2 and t["variants"] == ["V0", "V1"]
+    assert t["identity_ci"]["whole|V1"] == [1.0, 1.0] and t["identity_ci"]["whole|V0"] == [0.0, 0.0]
     assert t["share"]["whole|V0"]["position"] == 1.0
     assert t["share"]["whole|V1"]["identity"] == 1.0 and t["share"]["keep_alf|V1"]["original"] == 1.0
     assert abs(sum(t["share"]["keep_alf|V1"].values()) - 1.0) < 1e-9

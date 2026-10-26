@@ -31,20 +31,70 @@ from scripts import x6_routes as R
 
 ROUTES = ("identity", "position", "value", "original", "other")
 ARMS = {"whole": "the whole change", "keep_alf": "the pointer part only"}
+DRAFTS = R.pins.REPO_ROOT / "docs" / "drafts"
+FIG_DRAFTS = R.pins.REPO_ROOT / "figures" / "drafts"
+VARIANT_KEY = ("V0 nothing · V1 a pick naming the first-locker item · V2 a pick naming another locker item ·\n"
+               "V3 a pick naming an item with no locker · V4 a neutral sentence")  # fmt: skip
 
 
-def route_table(rows: list[dict]) -> dict:
+def panel(blob: dict, stem: Path) -> Path:
+    """Fig. 8's draft panel (d): per model, the lookup's identity share under the whole change on first-locker moves,
+    by the sentence put before the lockers, with its 95% CI (story_style's visual language; after the data)."""
+    from scripts import story_style as S
+
+    plt = S.setup()
+    runs = list(blob)
+    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 3.6), sharey=True)
+    for ax, run in zip(np.atleast_1d(axes), runs, strict=True):
+        r = blob[run]["routes"]
+        label = next(name for target, _, name in S.MODELS if target == blob[run]["model"])
+        vs = r["variants"]
+        y = [r["share"][f"whole|{v}"]["identity"] for v in vs]
+        lo_hi = [r["identity_ci"][f"whole|{v}"] for v in vs]
+        x = np.arange(len(vs))
+        ax.bar(x, y, width=0.6, color=S.COL["identity"], zorder=2)
+        ax.errorbar(x, y, yerr=[[v - lo for v, (lo, _) in zip(y, lo_hi, strict=True)],
+                                [hi - v for v, (_, hi) in zip(y, lo_hi, strict=True)]],
+                    fmt="none", ecolor="#333333", elinewidth=1.2, capsize=0, zorder=3)  # fmt: skip
+        for xi, yi, (_, hi) in zip(x, y, lo_hi, strict=True):
+            ax.text(xi, hi + 0.02, f"{yi:.2f}", ha="center", va="bottom", fontsize=S.FONT, color="#333333")
+        ax.set_xticks(x)
+        ax.set_xticklabels(vs)
+        ax.set_ylim(0, 1.18)
+        ax.set_yticks([0, 0.5, 1.0])
+        ax.set_title(f"{label} (n = {r['n']})", fontsize=S.FONT)
+        ax.grid(axis="y", color="#e6e6e6", lw=0.8, zorder=0)
+    np.atleast_1d(axes)[0].set_ylabel("identity share")
+    S.title(fig, "Once a pick sentence comes first, the Qwens' lookup follows identity",
+            "(d) Whole change, moves to or from the first locker; one sentence put before the lockers. After the data.")  # fmt: skip
+    fig.text(0.01, 0.02, VARIANT_KEY, ha="left", va="bottom", fontsize=S.FONT, color=S.COL["muted"])
+    fig.subplots_adjust(top=0.76, bottom=0.27, left=0.08, right=0.99, wspace=0.08)
+    stem.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(stem.with_suffix(".svg"), facecolor="white")
+    fig.savefig(stem.with_suffix(".png"), dpi=200, facecolor="white")
+    plt.close(fig)
+    return stem.with_suffix(".png")
+
+
+def route_table(rows: list[dict], n_boot: int = X.N_BOOT) -> dict:
     """Per arm and variant, the lookup's route shares on the first-locker moves, over the base scenes present in every
-    variant (as the rule)."""
+    variant (as the rule), and the identity share's cluster-bootstrap CI over bridge items (the Fig. 8 panel)."""
     lk = [r for r in rows if r["reader"] == X.LOOKUP and r.get("variant") and r["arm"] in ARMS]
     variants = [v for v in R.PREPEND if any(r["variant"] == v for r in lk)]
     bases = set.intersection(*({r["base_scene"] for r in lk if r["variant"] == v} for v in variants))
-    first = {r["base_scene"] for r in lk if 0 in r["move"]} & bases
-    out: dict = {"n": len(first), "variants": variants, "share": {}}
+    first = sorted({r["base_scene"] for r in lk if 0 in r["move"]} & bases)
+    out: dict = {"n": len(first), "variants": variants, "share": {}, "identity_ci": {}}
+    if not first:
+        return out
+    route = {(r["base_scene"], r["variant"], r["arm"]): r["route"] for r in lk}
+    ent = {r["base_scene"]: r["entity"] for r in lk}
+    cols = {f"{a}|{v}": [int(route[(b, v, a)] == "identity") for b in first] for a in ARMS for v in variants}
+    rr = X.resampled_rates(cols, [ent[b] for b in first], n_boot)
     for a in ARMS:
         for v in variants:
-            got = Counter(r["route"] for r in lk if r["arm"] == a and r["variant"] == v and r["base_scene"] in first)
-            out["share"][f"{a}|{v}"] = {k: got[k] / len(first) for k in ROUTES} if first else {}
+            got = Counter(route[(b, v, a)] for b in first)
+            out["share"][f"{a}|{v}"] = {k: got[k] / len(first) for k in ROUTES}
+            out["identity_ci"][f"{a}|{v}"] = list(X.interval(rr[f"{a}|{v}"]))
     return out
 
 
@@ -75,6 +125,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--runs", nargs="+", required=True, help="45a routes runs (results/x6_routes/<run>)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument(
+        "--draft", action="store_true", help="also docs/drafts/x0_details_45a.md and the Fig. 8 panel draft"
+    )
     a = ap.parse_args()
     out = R.RESULTS / f"x45a-descriptive-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
@@ -84,7 +137,7 @@ def main() -> None:
         src = R.RESULTS / run
         m = json.loads((src / "manifest.json").read_text())
         cases = X.read_jsonl(src / "cases.jsonl")
-        routes = route_table(X.read_jsonl(src / "outcomes.jsonl"))
+        routes = route_table(X.read_jsonl(src / "outcomes.jsonl"), a.n_boot)
         betas = beta_table(X.read_jsonl(src / "beta.jsonl"), a.n_boot)
         acc = accuracy_table(X.read_jsonl(src / "competence.jsonl"), {c["scene"]: c["variant"] for c in cases})
         blob[run] = {
@@ -97,10 +150,12 @@ def main() -> None:
         lines += [f"## {m['model']['target']} (L{m['layer']}; {run})", "",
                   f"1. The lookup's answer route on the first-locker moves (n = {routes['n']} base scenes, the same in "
                   "every variant): identity / position / value / original / other.", "",
-                  "| variant | " + " | ".join(ARMS.values()) + " |", "|---|---|---|"]  # fmt: skip
+                  "| variant | " + " | ".join(ARMS.values()) + " | identity, whole change [CI] |", "|---|---|---|---|"]  # fmt: skip
         for v in routes["variants"]:
             cells = [" / ".join(f"{routes['share'][f'{arm}|{v}'][k]:.2f}" for k in ROUTES) for arm in ARMS]
-            lines.append(f"| {v} | " + " | ".join(cells) + " |")
+            lo, hi = routes["identity_ci"][f"whole|{v}"]
+            lines.append(f"| {v} | " + " | ".join(cells) + f" | {routes['share'][f'whole|{v}']['identity']:.2f} "
+                         f"[{lo:.2f}, {hi:.2f}] |")  # fmt: skip
         lines += ["", "2. beta, the code's shift vs V0 at O's bridge word (units of mu_j+1 - mu_j; all moves):", "",
                   "| variant | n | beta [CI] |", "|---|---|---|"]  # fmt: skip
         lines += [
@@ -119,6 +174,15 @@ def main() -> None:
     (out / "table.json").write_text(json.dumps(blob, indent=1) + "\n")
     (out / "table.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
+    if a.draft:  # Dan ~21:45: drafts for Tuesday's merge (x0_details section, Fig. 8 panel); README untouched
+        DRAFTS.mkdir(parents=True, exist_ok=True)
+        (DRAFTS / "x0_details_45a.md").write_text(
+            f"<!-- generated by scripts/x45a_descriptive.py --draft from {out.relative_to(R.pins.REPO_ROOT)}; "
+            "merge into docs/x0_details.template.md on Tue -->\n\n"
+            + "\n".join(lines).replace("# 45a,", "## 45a,", 1)
+            + "\n"
+        )
+        print("wrote", panel(blob, FIG_DRAFTS / "fig08d_45a_identity"))
 
 
 if __name__ == "__main__":
