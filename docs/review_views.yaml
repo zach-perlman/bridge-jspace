@@ -71,7 +71,7 @@ kinds:
       original: the digit of locker slot j (the bridge's own)
       third: the digit of the remaining slot
       other: none of the three
-      recall: changed = the recall's top token differs from its unwritten read
+      recall: changed = the recall's top token is not O's answer (tok_A; x8_write.stage_run)
 
 views:
   # ---------------------------------------------------------------- Phase 1 (Tuesday's hand check)
@@ -157,6 +157,7 @@ views:
         only the J++ part: keep_jpp
         only a random part of J++'s size: keep_jpp_rand
     headline: {stat: route_share, condition: C2, reader: PP, arms: [whole, without the pointer directions, without the pointer's random part, only the pointer part, only a random part of its size, only the J++ part]}
+    export: {condition: C2}  # the static export's sample (Dan: routes C2)
     runs:  # the main run first (it fixes the item set); the keep-only run joined by scene and condition
       qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes, results/x6_routes/qwen35_9b_x6_routes_keeponly]
       qwen3.6-27b: [results/x6_routes/x6_routes_27b, results/x6_routes/x6_routes_keeponly_27b]
@@ -241,6 +242,7 @@ views:
       kinds: [write, random]
       s: [1, 2, 4]
     headline: {stat: x8_target_minus_random, s: 1}
+    export: {s: 1, kind: write}  # the static export's sample (Dan: x8 A at s = 1)
     cases_from:  # the C2 cases of the routes run with the same generator, seed and gate
       qwen3.5-9b: results/x6_routes/qwen35_9b_x6_routes
       qwen3.6-27b: results/x6_routes/x6_routes_27b

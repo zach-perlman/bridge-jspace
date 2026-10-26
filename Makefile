@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run data-report examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
+.PHONY: install fmt lint typecheck test test-model check run data-report review-serve review-export examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -84,6 +84,12 @@ autonomy-status:    ## is a window open, until when, watcher and caffeinate aliv
 
 autonomy-off:       ## close the window now (the old limits back)
 	python3 .claude/autonomy/autonomy.py revoke
+
+review-serve:       ## the review dashboard (docs/review_views.yaml) on http://localhost:$(PORT) (SEED=7 PORT=8001; no GPU)
+	uv run python scripts/review.py serve --seed $(or $(SEED),7) --port $(or $(PORT),8001)
+
+review-export:      ## a static sample of every review view under review/seed-<SEED>/ (SEED=0 N=10; no GPU)
+	uv run python scripts/review.py export --seed $(or $(SEED),0) --n $(or $(N),10)
 
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export

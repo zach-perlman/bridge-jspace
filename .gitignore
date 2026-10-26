@@ -20,3 +20,5 @@ examples/**/slices/
 .claude/settings.local.json.*
 .claude/autonomy/state.json
 .claude/autonomy/log.txt
+# review dashboard exports (make review-export); review/marks.jsonl, the hand marks, is tracked
+/review/seed-*/
