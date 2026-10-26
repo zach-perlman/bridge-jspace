@@ -1,0 +1,70 @@
+{
+  "run": "nem35l_probe_ceiling_L27-33_v1",
+  "why": "Zach (2026-10-25, prereg amendment 48): nemotron-3.5-lightning, the probe ceiling at the mention, causal part at L27-33",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": "jpp",
+  "band": "27-33",
+  "layers": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50
+  ],
+  "dev_competence": "nem35l_jsuite_v2_dev_chat_competence_cand2_v1",
+  "test_competence": "nem35l_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "swap_probe",
+    "swap_probe_rot",
+    "remove",
+    "remove_probe",
+    "paste"
+  ],
+  "k_max": 10,
+  "git_commit": "e13839d29aa8e105541096072ff21bbe01f125a0",
+  "git_state": {
+    "head": "b60d92066a6477cce9533e1dffd252e952c30c6e",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "seeds": {
+    "probe_rot": "4242+layer",
+    "cv": 0
+  }
+}
