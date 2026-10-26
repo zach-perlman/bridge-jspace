@@ -22,7 +22,7 @@ Replace with (the rule's verdict first, then after the data):
 
 ## 3. Fig. 8 title (line 115 and scripts/readme_story_figures.py line 996)
 
-Now: "Our pointer directions separate the first-mentioned item from the rest". Replace with: "Our pointer directions mark the first locker, in the clean layout" (alt text the same). New panel (d): identity share by variant, whole change, three models (draft render: figures/drafts/fig08d_45a_identity.png).
+Now: "Our pointer directions separate the first-mentioned item from the rest". Replace with: "Our pointer directions mark the first locker, in the clean layout" (alt text the same). New panel (e) (Fig. 8 already has (a)-(d)): identity share by variant, whole change, the three models plus a 122B column for the queued run; drawn as a row of Fig. 8 (draft render: figures/drafts/fig08d_45a_identity.png).
 
 ## 4. Section 6, Limits (line 149)
 

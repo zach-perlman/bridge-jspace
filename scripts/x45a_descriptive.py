@@ -38,37 +38,43 @@ VARIANT_KEY = ("V0 nothing · V1 a pick naming the first-locker item · V2 a pic
 
 
 def panel(blob: dict, stem: Path) -> Path:
-    """Fig. 8's draft panel (d): per model, the lookup's identity share under the whole change on first-locker moves,
-    by the sentence put before the lockers, with its 95% CI (story_style's visual language; after the data)."""
+    """Fig. 8's draft panel (e), drawn as a row of Fig. 8 (scripts/readme_story_figures.f08_first: the same column grid,
+    bold model titles, open marks = after the data): per model, the lookup's identity share under the whole change on
+    first-locker moves, by the sentence put before the lockers, with its 95% CI; dashed: V0, no sentence."""
+    from scripts import readme_story_figures as RSF
     from scripts import story_style as S
 
     plt = S.setup()
-    runs = list(blob)
-    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 3.6), sharey=True)
-    for ax, run in zip(np.atleast_1d(axes), runs, strict=True):
-        r = blob[run]["routes"]
-        label = next(name for target, _, name in S.MODELS if target == blob[run]["model"])
-        vs = r["variants"]
-        y = [r["share"][f"whole|{v}"]["identity"] for v in vs]
-        lo_hi = [r["identity_ci"][f"whole|{v}"] for v in vs]
-        x = np.arange(len(vs))
-        ax.bar(x, y, width=0.6, color=S.COL["identity"], zorder=2)
-        ax.errorbar(x, y, yerr=[[v - lo for v, (lo, _) in zip(y, lo_hi, strict=True)],
-                                [hi - v for v, (_, hi) in zip(y, lo_hi, strict=True)]],
-                    fmt="none", ecolor="#333333", elinewidth=1.2, capsize=0, zorder=3)  # fmt: skip
-        for xi, yi, (_, hi) in zip(x, y, lo_hi, strict=True):
-            ax.text(xi, hi + 0.02, f"{yi:.2f}", ha="center", va="bottom", fontsize=S.FONT, color="#333333")
-        ax.set_xticks(x)
-        ax.set_xticklabels(vs)
-        ax.set_ylim(0, 1.18)
-        ax.set_yticks([0, 0.5, 1.0])
-        ax.set_title(f"{label} (n = {r['n']})", fontsize=S.FONT)
-        ax.grid(axis="y", color="#e6e6e6", lw=0.8, zorder=0)
-    np.atleast_1d(axes)[0].set_ylabel("identity share")
-    S.title(fig, "Once a pick sentence comes first, the Qwens' lookup follows identity",
-            "(d) Whole change, moves to or from the first locker; one sentence put before the lockers. After the data.")  # fmt: skip
-    fig.text(0.01, 0.02, VARIANT_KEY, ha="left", va="bottom", fontsize=S.FONT, color=S.COL["muted"])
-    fig.subplots_adjust(top=0.76, bottom=0.27, left=0.08, right=0.99, wspace=0.08)
+    by_target = {b["model"]: b for b in blob.values()}
+    fig = plt.figure(figsize=(S.WIDTH, 3.5))
+    grid = fig.add_gridspec(1, 4, left=0.24, right=0.99, top=0.72, bottom=0.30, wspace=0.14)  # as Fig. 8 (a) / (b)
+    fig.text(0.01, 0.90, "(e) A sentence before the lockers: the lookup's identity share, whole change", fontsize=S.FONT,
+             weight="bold", va="bottom")  # fmt: skip
+    col = S.COL["identity"]
+    for j, (target, m, _) in enumerate(S.MODELS):
+        ax = fig.add_subplot(grid[0, j])
+        ax.set_title(RSF.name_of(m, m in RSF.LOWERED_M), fontsize=S.FONT, weight="bold")
+        ax.set_ylim(0, 1)
+        ax.set_xlim(-0.6, len(R.PREPEND) - 0.4)
+        ax.set_xticks(range(len(R.PREPEND)), R.PREPEND)
+        ax.grid(axis="y", color="#eeeeee")
+        if j:
+            ax.tick_params(labelleft=False)
+        else:
+            ax.set_ylabel("identity share")
+        b = by_target.get(target)
+        if b is None:
+            S.empty(ax, "queued\n(if time)")
+            continue
+        r = b["routes"]
+        v0 = r["share"]["whole|V0"]["identity"]
+        ax.axhline(v0, color="#999999", ls="--", lw=1, zorder=1)
+        for i, v in enumerate(r["variants"]):
+            y, (lo, hi) = r["share"][f"whole|{v}"]["identity"], r["identity_ci"][f"whole|{v}"]
+            ax.plot([i, i], [lo, hi], color=col, lw=1.6, zorder=2, solid_capstyle="butt")
+            ax.plot([i], [y], "o", ms=7, mfc="white", mec=col, mew=1.6, zorder=3)
+    fig.text(0.01, 0.02, VARIANT_KEY + ". After the data; dashed: V0. 95% CI.", ha="left", va="bottom",
+             fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
     stem.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(stem.with_suffix(".svg"), facecolor="white")
     fig.savefig(stem.with_suffix(".png"), dpi=200, facecolor="white")
