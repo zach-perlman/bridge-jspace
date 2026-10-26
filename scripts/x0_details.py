@@ -585,6 +585,12 @@ def t_pointer_numbers(num: Numbers) -> None:
         num.add(f"tptr_split_{m}", " / ".join(f2(lk(varied[f])[0]) for f in ("prose", "json", "table")) if varied
                 else "not landed", src)  # fmt: skip
         num.add(f"tptr_natural_{m}", "not landed" if nat is None else "not tested (gate)" if "gate" in nat else ci(lk(nat)), src)
+    # the README's scope line: the range over the models landed so far (point estimates)
+    pooled = [r["varied"]["pooled"]["PP"]["excess"][0] for r in blob.values() if r.get("varied")]
+    nats = [r["natural"]["PP"]["excess"][0] for r in blob.values() if r.get("natural") and "gate" not in r["natural"]]
+    for key, vals in (("tptr_varied_range", pooled), ("tptr_natural_range", nats)):
+        lo, hi = (f2(min(vals)), f2(max(vals))) if vals else ("–", "–")
+        num.add(key, lo if lo == hi else f"{lo} to {hi}", src)
 
 
 def predictions_numbers(num: Numbers) -> None:

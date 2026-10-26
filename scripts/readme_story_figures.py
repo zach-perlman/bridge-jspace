@@ -596,9 +596,11 @@ def fig8(plt) -> None:
     pair's s* (the dose at the median norm of a real pointer change); right, the recall's changed answers by whose
     legs they give (the item at the target slot, the third slot, other), as a share of the writes, per s."""
     fig = plt.figure(figsize=(S.WIDTH, 6.0))
-    grid = fig.add_gridspec(2, 4, left=0.075, right=0.99, top=0.76, bottom=0.10, wspace=0.42, hspace=0.62,
+    grid = fig.add_gridspec(2, 4, left=0.075, right=0.99, top=0.72, bottom=0.10, wspace=0.42, hspace=0.62,
                             width_ratios=[1.25, 1, 1.25, 1])  # fmt: skip
-    S.title(fig, "One fixed vector moves the lookup to its slot once the push is as strong as a real change", limit=90)
+    # Dan's wording (26 Oct ~15:30), two lines: too long for story_style's one-line title
+    fig.suptitle("A fixed vector moves the lookup to the slot it points at:\nreliably to and from the first slot, barely "
+                 "between the second and third", x=0.01, y=0.995, ha="left", fontsize=12, weight="bold")  # fmt: skip
     for i, (target, m, name) in enumerate(S.MODELS):
         left, right = fig.add_subplot(grid[i // 2, 2 * (i % 2)]), fig.add_subplot(grid[i // 2, 2 * (i % 2) + 1])
         label = name + (" (gate 0.75, after the data)" if m == "122b" else "")  # as its routes runs
@@ -656,7 +658,7 @@ def fig8(plt) -> None:
     lines += [plt.Rectangle((0, 0), 1, 1, color=c) for c in ITEM_COL.values()]
     fig.legend(lines, ["lookup, slots 0 ↔ 1", "slots 0 ↔ 2", "slots 1 ↔ 2", "dashed: the reverse write",
                        "random direction, same size", "dotted: s at a real change's size", "recall changed (share of writes): the target slot's item",
-                       "the third slot's item", "other"], loc="upper left", bbox_to_anchor=(0.0, 0.94), ncol=3,
+                       "the third slot's item", "other"], loc="upper left", bbox_to_anchor=(0.0, 0.905), ncol=3,
                frameon=False, fontsize=9)  # fmt: skip
     S.save(fig, "fig8_writes")
 

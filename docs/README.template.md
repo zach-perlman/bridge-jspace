@@ -74,6 +74,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 *Fig. 3, Fig. 4. Blue: identity; orange: position; no green (value). Hatched: 122B, after the data, gate 0.75.*
 
 - **Caveat.** Same item moved: a random part of the pointer's size also removed position (F20).
+- **Scope.** The pointer directions explain the route around the lens in simple scenes; fitted there and not refit, they cost the lookup {{num|tptr_varied_range}} in varied scenes and {{num|tptr_natural_range}} in natural passages, while the lookup still does not need J++ there. Whether a pointer fit on those texts does better: P_cf (pending).
 
 ## 3. Why the readers split: with depth the bridge adds a pointer the lens can't see
 
@@ -123,12 +124,11 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - The 27B's strict rule: lookup lost {{num|lk_excess_27b}} (bar 0.10).
 - The 9B's fixed-in-advance replication: its J++ clause failed (recall {{num|rep_jpp_rc_excess_9b}}).
 - The gap everywhere: the 122B's varied scenes ({{num|x0b_c_122b}}, every format alike) and the 27B's natural passages ({{num|nat_gap_27b}}) are in between.
-- Writing the pointer: the dose fixed in advance, s = 1, was below a real pointer change's size on every slot pair (s needed: {{num|x8_sreal_9b}}; {{num|x8_sreal_27b}}; {{num|x8_sreal_122b}}; {{num|x8_sreal_muse}}); a design error, not a finding.
+- Writing the pointer: s = 1, fixed in advance, was below a real pointer change's size on every slot pair (s needed: {{num|x8_sreal_9b}}; {{num|x8_sreal_27b}}; {{num|x8_sreal_122b}}; {{num|x8_sreal_muse}}); a design error, not a finding.
 - The locker number at the bridge word: never the answer; digit directions cost {{num|dig_lk_jppdig_k10_before_27b}}. The positive control (chemical symbols) stayed below its 0.20 bar: 27B {{num|x4_D_elements_27b}}.
 - Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup {{num|nat_gate_lk_9b}}), the 122B's routes (recall {{num|rt_c0gate_rc_122b}}) and replication (recall {{num|rep_gate_rc_122b}}); their reruns at 0.75 are after the data, descriptive, none a confirmation. The 122B in FP8.
 - One-token answers (and one-token bridges in natural passages). The reader is confounded with the answer's source (prompt vs memory); Zach's M − K addresses it for the knock-out, not for these swaps.
 - With Zach's knock-out the split is weak outside Qwen; with our change-removal it holds on Muse (the two measure different things: necessity of the state vs whether the change transfers).
-- DeepSeek-V4-Flash not run: FP4 experts (about 570 GB in bf16); its lens's residual stream unknown (Next).
 
 ## 5. How we checked
 
@@ -136,13 +136,14 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 - **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them; natural passages in [docs/natural_examples.md](docs/natural_examples.md).
 - **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier {{num|pred_brier}} over {{num|pred_n}} answers, worse than always answering {{q|50%}}; the mechanistic questions were mostly wrong.
 - **"Fixed in advance"**: test, layer, sample and bar committed before any result; "after the data": chosen after seeing results.
-- **Inventory.** [docs/inventory.md](docs/inventory.md) labels every script and run current, superseded, legacy or unknown; pre-pivot experiments are kept and labelled legacy.
+- **Inventory.** [docs/inventory.md](docs/inventory.md): pre-pivot experiments are kept and labelled legacy.
 
 ## 6. Next
 
-- **Running now.** The pointer directions in varied scenes and natural passages; a pointer found without slot labels, from pairs that only move a locker sentence; writing the pointer: adding the difference between two slots' mean states to send the lookup to another locker.
+- **Running now.** The pointer directions in Muse's varied scenes and natural passages; a pointer found without slot labels (P_cf); writing the pointer on Muse.
 
-![Writing the pointer: one fixed vector per slot pair, against a random direction; batch 44, the 9B so far](figures/story/fig8_writes.png)
+![Writing the pointer: one fixed vector per slot pair, against a random direction](figures/story/fig8_writes.png)
+*Fig. 8. The dose fixed in advance (s = 1) moves nothing on any model; s\* marks a real pointer change's size.*
 
 - **Follow-up: answers by sampling**, not the top token.
 - **Follow-up: the routes and pointer tests without the chat template** (the main test has it on the 9B and 27B).
