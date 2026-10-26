@@ -171,7 +171,7 @@
   - Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup {{num|nat_gate_lk_9b}}), the 122B's routes (recall {{num|rt_c0gate_rc_122b}}) and replication (recall {{num|rep_gate_rc_122b}}); reruns at 0.75 are descriptive.
 - **Design errors.**
   - The write's dose fixed in advance, s = 1, was below a real change's size on every pair (s needed: {{num|x8_sreal_9b}}; {{num|x8_sreal_27b}}; {{num|x8_sreal_122b}}; {{num|x8_sreal_muse}}).
-  - The bar for J++, the pointer and identity removed together was out of reach at their share: the random part alone removes most switches on the Qwens.
+  - The bar for J++, the pointer and identity removed together was out of reach at their share: the random part removes most switches on the Qwens.
 - **Limits.**
   - The pointer directions are fit on 5 slot labels and carry mostly first-vs-rest; the code for later slots is not captured (per-move table).
   - The locker number at the bridge word: never the answer; digit directions cost {{num|dig_lk_jppdig_k10_before_27b}}.
@@ -194,7 +194,7 @@ Language models bind an entity to its attributes in context (Feng & Steinhardt 2
 - **Running now.** Muse's transfer and writes; a pointer found without slot labels.
 - **Follow-up: answers by sampling**, not the top token.
 - **Follow-up: the routes and pointer tests without the chat template.**
-- **Follow-up: OLMo checkpoints**, to see when in training the pointer appears.
+- **Follow-up: OLMo checkpoints**: when the pointer appears in training.
 - **Later.** New datasets; intermediates in reasoning traces; DeepSeek-V4-Flash (about four H200s or native FP4; its lens's residual stream unnamed).
 
 ## Appendix A. Links

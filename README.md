@@ -13,7 +13,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at c15015f2 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at ce1986a4 from the run files.
 
 ## Setup
 
@@ -171,7 +171,7 @@
   - Gates missed (bar 0.80), not tested: the 9B's natural passages (lookup 0.78), the 122B's routes (recall 0.797) and replication (recall 0.77); reruns at 0.75 are descriptive.
 - **Design errors.**
   - The write's dose fixed in advance, s = 1, was below a real change's size on every pair (s needed: 9B 1.36 to 2.70; 27B 1.04 to 2.08; 122B 1.37 to 2.76; Muse 1.12 to 2.30).
-  - The bar for J++, the pointer and identity removed together was out of reach at their share: the random part alone removes most switches on the Qwens.
+  - The bar for J++, the pointer and identity removed together was out of reach at their share: the random part removes most switches on the Qwens.
 - **Limits.**
   - The pointer directions are fit on 5 slot labels and carry mostly first-vs-rest; the code for later slots is not captured (per-move table).
   - The locker number at the bridge word: never the answer; digit directions cost 0.00.
@@ -194,7 +194,7 @@ Language models bind an entity to its attributes in context (Feng & Steinhardt 2
 - **Running now.** Muse's transfer and writes; a pointer found without slot labels.
 - **Follow-up: answers by sampling**, not the top token.
 - **Follow-up: the routes and pointer tests without the chat template.**
-- **Follow-up: OLMo checkpoints**, to see when in training the pointer appears.
+- **Follow-up: OLMo checkpoints**: when the pointer appears in training.
 - **Later.** New datasets; intermediates in reasoning traces; DeepSeek-V4-Flash (about four H200s or native FP4; its lens's residual stream unnamed).
 
 ## Appendix A. Links
