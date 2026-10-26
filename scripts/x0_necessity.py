@@ -43,6 +43,9 @@ RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "X0.md"
 DICTS = ("jpp", "wu", "we", "rand")  # J++ (main arm), the logit lens's W_U, the input embeddings W_E, Gaussian
 K_OF = {"jppdig": 10}  # dictionaries with fewer atoms than K_MAIN: all of them removed (the digit check)
+# the pointer directions as a fixed dictionary (T, Dan 26 Oct ~11:55): [d, r] orthonormal, set by the caller with
+# K_OF["alf"] = r, so the part is the projection on their span
+ALF = None
 K_MAIN = 25
 K_CURVE = (10, 50, 100)  # at the predicted layer only, for CURVE_DICTS
 CURVE_DICTS = ("jpp", "we")
@@ -446,6 +449,9 @@ def dictionary(name: str, layer: int, model, lens, letters):
         return lens.vectors(layer, torch.tensor(every, device="cuda"))
     if name == "jppdig":
         return lens.vectors(layer, torch.tensor(sorted(DIGIT_IDS), device="cuda"))
+    if name == "alf":
+        assert ALF is not None, "set x0_necessity.ALF (and K_OF['alf']) to the pointer basis first"
+        return ALF.T.contiguous()
     if name in ("wu", "we"):  # with BJ_DEVICE_MAP (the 122B) these weights may sit on another GPU than the home one
         w = model.hf.lm_head.weight if name == "wu" else model.hf.get_input_embeddings().weight
         rows = w[letters.to(w.device)].float().to("cuda")

@@ -193,7 +193,7 @@ def stage_plan() -> None:
         )
 
 
-def stage_run(name: str, gate_min: float = X.GATE) -> Path:
+def stage_run(name: str, gate_min: float = X.GATE, pointer: bool = False) -> Path:
     import torch
 
     from bridge_jspace.lens import JLens
@@ -264,6 +264,17 @@ def stage_run(name: str, gate_min: float = X.GATE) -> Path:
         basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer)).to("cuda")
         arms = {X.WHOLE: x, ("jpp", X.K_MAIN, "signed", "no_part"): x - part,
                 ("jpp", X.K_MAIN, "signed", "no_rand"): x - SP.random_subspace_part(x, share, basis)}  # fmt: skip
+        if pointer:  # T (Dan 26 Oct ~11:55): the pointer directions fit on the simple scenes, not refit
+            from scripts import x0_massmean as MM
+            from scripts.x6_routes import STATES
+
+            alf = torch.tensor(MM.subspaces(STATES[target])[0]["Alf"], dtype=torch.float32, device="cuda")
+            ptr = (x @ alf) @ alf.T
+            psh = ptr.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
+            r = alf.shape[1]
+            arms[("alf", r, "signed", "no_part")] = x - ptr
+            arms[("alf", r, "signed", "no_rand")] = x - SP.random_subspace_part(x, psh, basis)
+            m["pointer_from"] = STATES[target]
         keys = list(arms)
         rows = []
         for i, c in enumerate(progress(cases, f"reads at layer {layer} (case)")):
@@ -318,7 +329,8 @@ def label(g: list[float]) -> str:
 def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     src = RESULTS / name
     m = json.loads((src / "manifest.json").read_text())
-    rows = [r for r in X.read_jsonl(src / "outcomes.jsonl") if r["arm"] in ("whole", "no_part", "no_rand")]
+    rows = [r for r in X.read_jsonl(src / "outcomes.jsonl")
+            if r["arm"] in ("whole", "no_part", "no_rand") and r["dict"] in ("jpp", "-")]  # fmt: skip
     out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
     ci = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
@@ -356,12 +368,13 @@ def main() -> None:
     ap.add_argument("--name")
     ap.add_argument("--gate", type=float, default=X.GATE, help="run: a lowered, descriptive read-accuracy gate")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--pointer", action="store_true", help="run: also the pointer directions as a part (T)")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
         return
     if a.stage == "run":
-        stage_run(a.name, a.gate)
+        stage_run(a.name, a.gate, a.pointer)
     stage_verdict(a.name, a.n_boot)
 
 

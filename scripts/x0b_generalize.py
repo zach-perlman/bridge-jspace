@@ -253,9 +253,17 @@ def gate_cells(cases: list[dict], comp: list[dict]) -> tuple[dict, list[dict]]:
 
 
 def stage_run(
-    name: str, why: str, set_name: str, formats: tuple[str, ...] = (), levels: tuple[int, ...] = (), curve: bool = True
+    name: str,
+    why: str,
+    set_name: str,
+    formats: tuple[str, ...] = (),
+    levels: tuple[int, ...] = (),
+    curve: bool = True,
+    pointer: bool = False,
 ) -> Path:
-    """formats / levels: keep only those cells (the 122B's b6, Dan 25 Oct ~00:20); curve: the k = 50 / 100 curve."""
+    """formats / levels: keep only those cells (the 122B's b6, Dan 25 Oct ~00:20); curve: the k = 50 / 100 curve;
+    pointer: also the pointer directions as a part (T, Dan 26 Oct ~11:55: fit on the simple scenes at the layer fixed
+    in advance, not refit), at that layer only."""
     import torch
 
     from bridge_jspace import chat
@@ -271,6 +279,15 @@ def stage_run(
         ("jpp",),
         K_CURVE if curve else (),
     )  # k = 25 everywhere; 50 / 100 at the predicted layer
+    if pointer:
+        from scripts import x0_massmean as MM
+        from scripts.x6_routes import STATES
+
+        alf = MM.subspaces(STATES[pins.TARGET])[0]["Alf"]
+        X.ALF = torch.tensor(alf, dtype=torch.float32, device="cuda")
+        X.K_OF["alf"] = alf.shape[1]
+        X.DICTS = ("jpp", "alf")
+        layers = (predicted,)
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     items = pins.DATA_DIR / "tasks_v2" / set_name / "items.jsonl"
@@ -284,6 +301,7 @@ def stage_run(
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED},
          "rule": {"hold": [HOLD_LOOKUP, HOLD_LOOKUP_HI, HOLD_C, HOLD_C_LO], "fail": [FAIL_LOOKUP, FAIL_C_HI]},
          "k_curve": list(K_CURVE) if curve else [], "formats": list(formats), "levels": list(levels),
+         "pointer_from": STATES[pins.TARGET] if pointer else None,
          "design": "jobs/c3/X0b.md (v2, exploratory)"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()
@@ -502,6 +520,7 @@ def main() -> None:
     ap.add_argument("--formats", nargs="*", default=[], help="run: keep only these formats")
     ap.add_argument("--levels", nargs="*", type=int, default=[], help="run: keep only these levels")
     ap.add_argument("--no-curve", action="store_true", help="run: no k = 50 / 100 curve")
+    ap.add_argument("--pointer", action="store_true", help="run: also the pointer directions as a part (T)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
@@ -513,7 +532,7 @@ def main() -> None:
         print("entities:", len({c["bridge"] for c in cases}), "levels:", collections.Counter(c["level"] for c in cases))
         print("median cases per cell:", statistics.median(counts["cases_per_cell"].values()))
     elif a.stage == "run":
-        stage_run(a.name, a.why, a.set, tuple(a.formats), tuple(a.levels), not a.no_curve)
+        stage_run(a.name, a.why, a.set, tuple(a.formats), tuple(a.levels), not a.no_curve, a.pointer)
         figures(write_verdict(a.name, a.n_boot))
     elif a.stage == "cross":
         cross(a.name, a.n_boot)

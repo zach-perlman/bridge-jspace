@@ -61,9 +61,12 @@ def group_of(p: dict[str, str]) -> str:
     return "both fact sentences before" if p["new"] == "before" else "only the original's before"
 
 
-def cells(rows: list[dict], scenes: set[str], n_boot: int) -> dict[str, dict]:
-    mine = [r for r in rows if r["scene"] in scenes]
-    return {k[2]: c for k, c in X.cells_of(mine, n_boot).items() if k[3:] == ("jpp", X.K_MAIN, "signed")}
+PARTS = {"jpp": ("jpp", X.K_MAIN, "signed"), "alf": ("alf", 4, "signed")}  # alf: the pointer directions (T)
+
+
+def cells(rows: list[dict], scenes: set[str], n_boot: int, part: str = "jpp") -> dict[str, dict]:
+    mine = [r for r in rows if r["scene"] in scenes and r["dict"] in (PARTS[part][0], "-")]
+    return {k[2]: c for k, c in X.cells_of(mine, n_boot).items() if k[3:] == PARTS[part]}
 
 
 def examples(path: Path, run: str, cases: dict, rows: list[dict], n: int) -> None:
@@ -102,6 +105,7 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--examples", type=Path, default=None)
     ap.add_argument("--n-examples", type=int, default=10)
+    ap.add_argument("--part", choices=sorted(PARTS), default="jpp", help="the removed part (alf: the pointer, T)")
     a = ap.parse_args()
     src = RESULTS / a.run
     cases = {c["scene"]: c for c in X.read_jsonl(src / "cases.jsonl")}
@@ -113,7 +117,7 @@ def main() -> None:
     out = src / f"split-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
     fmt = lambda v: f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"  # noqa: E731
-    lines = [f"# {a.run}: J++ extra loss by where the answer's fact sentence sits (descriptive, after the data)", "",
+    lines = [f"# {a.run}: {'J++' if a.part == 'jpp' else 'the pointer directions'}: extra loss by where the answer's fact sentence sits (descriptive, after the data)", "",
              f"Cluster bootstrap over bridge entities ({a.n_boot} resamples). UNVERIFIED.", "",
              "| split | group | n | lookup switches (whole change) | lookup extra loss | recall switches | recall extra loss |",
              "|---|---|---|---|---|---|---|"]  # fmt: skip
@@ -122,7 +126,7 @@ def main() -> None:
                        ("both fact sentences", groups)):  # fmt: skip
         for g in sorted(set(lab.values())):
             scenes = {s for s in done if lab[s] == g}
-            c = cells(rows, scenes, a.n_boot)
+            c = cells(rows, scenes, a.n_boot, a.part)
             table.append({"split": split, "group": g, "n": len(scenes),
                           **{w: {k: c[w][k] for k in ("excess", "Jdep", "Rdep", "S_whole", "switched_whole")} for w in c}})  # fmt: skip
             lk, rc = c[X.LOOKUP], c[X.RECALL]
