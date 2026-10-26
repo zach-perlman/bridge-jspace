@@ -90,7 +90,7 @@ The **bridge** is the item Iris picked (*frog*). The **lookup** asks for its loc
 
 ![Position answers appear with depth; on the 9B and 122B where the lookup stops needing J++](figures/story/fig5_depth.png)
 ![Removing J++ and the pointer directions together](figures/story/fig6_both_removed.png)
-*Fig. 5: shaded where the lookup still needs J++ (at least 0.30); Muse's L34 not tested. Fig. 6: dots against dotted bars; grey: recall.*
+*Fig. 5: shaded where the lookup still needs J++ (at least 0.30); Muse: the main test at layers 8-32 (after the data), its routes L34 not tested. Fig. 6: dots against dotted bars; grey: recall.*
 
 | Swap | Pick is the first mention? (no = matched) | 9B lookup | 9B recall | 27B lookup | 27B recall | 122B lookup | 122B recall | Muse lookup | Muse recall |
 |---|---|---|---|---|---|---|---|---|---|

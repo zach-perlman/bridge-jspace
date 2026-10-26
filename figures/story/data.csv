@@ -404,10 +404,29 @@ fig5,qwen3.5-122b-a10b,"layer 27: position share (another item moved, whole chan
 fig5,qwen3.5-122b-a10b,"layer 30: position share (another item moved, whole change)",0.0,0.0,0.0,300,qwen35_122b_x6_routes_sweep_l30_g75
 fig5,qwen3.5-122b-a10b,"layer 33: position share (another item moved, whole change)",0.38333333333333336,0.32786885245901637,0.4384858044164038,300,qwen35_122b_x6_routes_g75
 fig5,qwen3.5-122b-a10b,"layer 36: position share (another item moved, whole change)",0.58,0.5229001396996458,0.6336996336996337,300,qwen35_122b_x6_routes_sweep_l36_g75
-fig5,muse-glimmer-30b,layer 13: lookup J++ extra loss,0.33333333333333326,0.2427110914974994,0.41111252115059227,200,muse30b_x0_necessity
-fig5,muse-glimmer-30b,layer 26: lookup J++ extra loss,-0.09999999999999987,-0.1506876494890194,-0.039215686274509776,200,muse30b_x0_necessity
-fig5,muse-glimmer-30b,layer 13: recall J++ extra loss,0.5517241379310345,0.4285714285714286,0.6529418479720656,200,muse30b_x0_necessity
-fig5,muse-glimmer-30b,layer 26: recall J++ extra loss,0.7521367521367521,0.6097420801794226,0.8691606757728252,200,muse30b_x0_necessity
+fig5,muse-glimmer-30b,layer 8: lookup J++ extra loss,0.6369047619047621,0.5695026349383,0.7106956126392363,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 10: lookup J++ extra loss,0.38607594936708856,0.3040935672514621,0.4649173806609546,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 12: lookup J++ extra loss,0.3795620437956204,0.27642276422764234,0.46376811594202894,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 14: lookup J++ extra loss,0.3129770992366412,0.2295081967213115,0.38364962702939887,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 16: lookup J++ extra loss,0.04347826086956519,0.0,0.08943089430894313,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 18: lookup J++ extra loss,0.06306306306306309,0.00925713557594285,0.12149532710280364,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 20: lookup J++ extra loss,0.06666666666666665,0.0,0.13637334887334873,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 22: lookup J++ extra loss,0.04395604395604402,-0.012820512820512775,0.08999999999999997,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 24: lookup J++ extra loss,-0.02777777777777779,-0.08046440489432714,0.027027027027026973,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 26: lookup J++ extra loss,-0.09999999999999987,-0.1506876494890194,-0.039215686274509776,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 8: recall J++ extra loss,0.5114942528735632,0.4137866217267306,0.5882352941176471,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 10: recall J++ extra loss,0.45029239766081863,0.35536918225315356,0.5376884422110553,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 12: recall J++ extra loss,0.6342857142857143,0.5037580061264272,0.7289719626168225,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 14: recall J++ extra loss,0.5485714285714285,0.42770989618852767,0.6543224099675713,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 16: recall J++ extra loss,0.41954022988505735,0.3178248974008209,0.5114942528735632,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 18: recall J++ extra loss,0.37356321839080464,0.2823529411764707,0.4484543892533584,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 20: recall J++ extra loss,0.5085714285714287,0.40740740740740744,0.5914655616626588,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 22: recall J++ extra loss,0.335483870967742,0.23030303030303023,0.4473720558301832,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 24: recall J++ extra loss,0.2957746478873239,0.19090909090909092,0.3793103448275862,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 26: recall J++ extra loss,0.7521367521367521,0.6097420801794226,0.8691606757728252,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 28: recall J++ extra loss,0.7171717171717171,0.536073269513991,0.8583333333333333,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 30: recall J++ extra loss,0.012048192771084376,-0.04707282913165281,0.05747126436781613,200,muse30b_x0_necessity_depth
+fig5,muse-glimmer-30b,layer 32: recall J++ extra loss,0.5312499999999999,0.42422958397534666,0.65855044345898,200,muse30b_x0_necessity_depth
 fig5,muse-glimmer-30b,"layer 13: position share (another item moved, whole change)",0.043333333333333335,0.02090256309515194,0.06927785399021828,300,muse30b_x6_routes_l13
 fig5,muse-glimmer-30b,"layer 26: position share (another item moved, whole change)",0.5433333333333333,0.49195879635933265,0.5962148086423427,300,muse30b_x6_routes
 fig6,qwen3.5-9b,"the sanity swap, lookup extra loss without J++",-0.003355704697986628,-0.011029411764705843,0.0,,qwen35_9b_x6_routes_bothoff
