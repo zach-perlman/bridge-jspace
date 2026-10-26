@@ -595,7 +595,7 @@ SCORECARD = (
     ("The pointer directions reach beyond\nthe first sentence",
      {"9b": ("partial", "after"), "27b": ("no", "after"), "122b": ("partial", "after"), "muse": ("no", "after")}),
     ("Fit on simple scenes, they cost the\nlookup in varied and natural text",
-     {"9b": ("no", "fixed"), "27b": ("no", "fixed"), "122b": ("no", "fixed"), "muse": ("not tested", "fixed")}),
+     {"9b": ("no", "fixed"), "27b": ("no", "fixed"), "122b": ("no", "fixed"), "muse": ("no", "fixed")}),
 )  # fmt: skip
 WORDS = {10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen", 14: "fourteen", 15: "fifteen"}
 STATUS_COL = {"held": "#2f7d4f", "partial": "#c98a12", "no": "#b8433a", "not tested": "#9a9a9a"}
