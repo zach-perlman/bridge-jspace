@@ -1,0 +1,165 @@
+{
+  "run": "qwen35_9b_x45m_fresh",
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "gate": {
+    "counts": {
+      "scenes": 600,
+      "cases": {
+        "chat": 600,
+        "raw": 600,
+        "nochat": 600
+      },
+      "dropped": {}
+    },
+    "gate": {
+      "chat": {
+        "cases": 600,
+        "org_accuracy": {
+          "PP": 0.97,
+          "PM": 0.8533
+        },
+        "said_accuracy": {
+          "PP": 0.97,
+          "PM": 0.855
+        },
+        "cand_accuracy": {
+          "PP": 0.965,
+          "PM": 0.8483
+        },
+        "pass": true,
+        "eligible": 417,
+        "enough": true,
+        "descriptive": false
+      }
+    }
+  },
+  "verdict": {
+    "predicted": 12,
+    "chat": {
+      "verdict": "confirmed",
+      "lookup_label": "around",
+      "recall_label": "through",
+      "h_token": "no W_E rows",
+      "split_layers": [
+        12
+      ]
+    },
+    "asked_first_subset": {
+      "predicted": 12,
+      "chat": {
+        "verdict": "confirmed",
+        "lookup_label": "around",
+        "recall_label": "through",
+        "h_token": "no W_E rows",
+        "split_layers": [
+          12
+        ]
+      }
+    },
+    "reads_agree_on_whole": 0.994
+  },
+  "cells": [
+    {
+      "rendering": "chat",
+      "layer": 12,
+      "reader": "PM",
+      "dict": "jpp",
+      "k": 25,
+      "omp": "signed",
+      "n": 417,
+      "entities": 45,
+      "S_whole": [
+        0.9856,
+        0.969,
+        0.9934
+      ],
+      "S_no_part": [
+        0.4844,
+        0.4368,
+        0.5323
+      ],
+      "S_no_rand": [
+        0.9616,
+        0.9386,
+        0.9762
+      ],
+      "switched_whole": 411,
+      "valid": true,
+      "Jdep": [
+        0.5085158150851581,
+        0.4433711810593157,
+        0.5707199055861527
+      ],
+      "Rdep": [
+        0.024330900243308973,
+        0.010489327234610176,
+        0.041769041769041726
+      ],
+      "excess": [
+        0.4841849148418491,
+        0.41790967201414964,
+        0.5482256316660014
+      ],
+      "label": "through"
+    },
+    {
+      "rendering": "chat",
+      "layer": 12,
+      "reader": "PP",
+      "dict": "jpp",
+      "k": 25,
+      "omp": "signed",
+      "n": 417,
+      "entities": 45,
+      "S_whole": [
+        0.518,
+        0.4701,
+        0.5656
+      ],
+      "S_no_part": [
+        0.47,
+        0.4226,
+        0.518
+      ],
+      "S_no_rand": [
+        0.4724,
+        0.425,
+        0.5204
+      ],
+      "switched_whole": 216,
+      "valid": true,
+      "Jdep": [
+        0.09259259259259256,
+        0.0662983425414364,
+        0.11764705882352944
+      ],
+      "Rdep": [
+        0.08796296296296291,
+        0.05349739222288251,
+        0.12107623318385652
+      ],
+      "excess": [
+        0.00462962962962965,
+        -0.022224702380952407,
+        0.03243557510999378
+      ],
+      "label": "around"
+    }
+  ]
+}

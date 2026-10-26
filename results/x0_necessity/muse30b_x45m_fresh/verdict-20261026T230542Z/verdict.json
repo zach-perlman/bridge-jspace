@@ -1,0 +1,169 @@
+{
+  "run": "muse30b_x45m_fresh",
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "gate": {
+    "counts": {
+      "scenes": 600,
+      "cases": {
+        "chat": 565,
+        "raw": 565,
+        "nochat": 565
+      },
+      "dropped": {
+        "chat: the bridge is not one token at one position in org and alt": 35,
+        "raw: the bridge is not one token at one position in org and alt": 35,
+        "nochat: the bridge is not one token at one position in org and alt": 35
+      }
+    },
+    "gate": {
+      "chat": {
+        "cases": 565,
+        "org_accuracy": {
+          "PP": 0.9681,
+          "PM": 0.885
+        },
+        "said_accuracy": {
+          "PP": 0.9699,
+          "PM": 0.8779
+        },
+        "cand_accuracy": {
+          "PP": 0.9681,
+          "PM": 0.885
+        },
+        "pass": true,
+        "eligible": 409,
+        "enough": true,
+        "descriptive": false
+      }
+    }
+  },
+  "verdict": {
+    "predicted": 26,
+    "chat": {
+      "verdict": "confirmed",
+      "lookup_label": "around",
+      "recall_label": "through",
+      "h_token": "no W_E rows",
+      "split_layers": [
+        26
+      ]
+    },
+    "asked_first_subset": {
+      "predicted": 26,
+      "chat": {
+        "verdict": "confirmed",
+        "lookup_label": "around",
+        "recall_label": "through",
+        "h_token": "no W_E rows",
+        "split_layers": [
+          26
+        ]
+      }
+    },
+    "reads_agree_on_whole": 0.9939
+  },
+  "cells": [
+    {
+      "rendering": "chat",
+      "layer": 26,
+      "reader": "PM",
+      "dict": "jpp",
+      "k": 25,
+      "omp": "signed",
+      "n": 409,
+      "entities": 44,
+      "S_whole": [
+        0.7164,
+        0.6708,
+        0.7579
+      ],
+      "S_no_part": [
+        0.2005,
+        0.1646,
+        0.242
+      ],
+      "S_no_rand": [
+        0.7042,
+        0.6582,
+        0.7463
+      ],
+      "switched_whole": 293,
+      "valid": true,
+      "Jdep": [
+        0.7201365187713311,
+        0.6313993174061434,
+        0.7965398111637666
+      ],
+      "Rdep": [
+        0.017064846416382284,
+        -0.016000641025641037,
+        0.05703422053231933
+      ],
+      "excess": [
+        0.7030716723549488,
+        0.5967209741617755,
+        0.7922543047603127
+      ],
+      "label": "through"
+    },
+    {
+      "rendering": "chat",
+      "layer": 26,
+      "reader": "PP",
+      "dict": "jpp",
+      "k": 25,
+      "omp": "signed",
+      "n": 409,
+      "entities": 44,
+      "S_whole": [
+        0.3203,
+        0.2769,
+        0.367
+      ],
+      "S_no_part": [
+        0.3227,
+        0.2793,
+        0.3695
+      ],
+      "S_no_rand": [
+        0.3423,
+        0.298,
+        0.3896
+      ],
+      "switched_whole": 131,
+      "valid": true,
+      "Jdep": [
+        -0.007633587786259666,
+        -0.04424918785706291,
+        0.02521008403361347
+      ],
+      "Rdep": [
+        -0.0687022900763361,
+        -0.125,
+        -0.022597808079520863
+      ],
+      "excess": [
+        0.06106870229007644,
+        0.024193548387096753,
+        0.11111111111111105
+      ],
+      "label": "around"
+    }
+  ]
+}
