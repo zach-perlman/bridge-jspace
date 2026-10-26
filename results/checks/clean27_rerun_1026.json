@@ -1,0 +1,23 @@
+{
+ "clean_worktree_commit": "e13839d",
+ "ko_rows_shared": 22325,
+ "ko_rows_differing": {
+  "correct": 0,
+  "correct_cand2": 0,
+  "correct_top": 0
+ },
+ "ko_max_abs_logp_diff": 0.0,
+ "competence_rows_shared": 29102,
+ "competence_rows_differing": {
+  "correct": 0,
+  "correct_cand2": 0,
+  "correct_top": 0,
+  "gen": 0
+ },
+ "m_minus_k": 51,
+ "m_minus_k_ci": [
+  46,
+  55
+ ],
+ "logit_lens_m_minus_k": 2
+}
