@@ -122,7 +122,7 @@ How far does the pointer we found reach?
 
 - **About half of the route is unexplained:** with J++ and the pointer removed together, about half of the lookups still switch. Removing identity outside J++ as well removes most of what is left on the 9B and 27B, far more than a random part of the same share; on Muse half still switch (table). These parts are {{num|rtd_share_C0_jpp+alf+idout_27b}}-{{num|rtd_share_C0_jpp+alf+idout_9b}} of the change, so a random part also removes most on the 9B.
 
-![J++, the pointer and identity outside J++ stop most lookups on the 9B and 27B, not on Muse](figures/story/fig10_what_is_left.png)
+![J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's](figures/story/fig10_what_is_left.png)
 *Fig. 10.*
 
 | Sanity swap, J++ + pointer + identity outside J++ removed | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B | Muse Glimmer 30B |

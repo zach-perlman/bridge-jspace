@@ -1200,7 +1200,7 @@ def f10_left(plt) -> None:
     one-axis version was hard to read)."""
     fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 4.3), sharey=True)
     fig.subplots_adjust(left=0.17, right=0.985, top=0.60, bottom=0.14, wspace=0.12)
-    S.title(fig, "J++, the pointer and identity outside J++ stop most lookups on the 9B and 27B, not on Muse",
+    S.title(fig, "J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",
             "Sanity swap. Lookups still switching, as a share of the whole change's switches. The line from\n"
             "grey to purple is what the part removes beyond a random part of its size (its extra loss).", limit=90)  # fmt: skip
     grey = "#a8a8a8"
