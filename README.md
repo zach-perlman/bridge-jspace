@@ -13,7 +13,7 @@
 ![Recall needs the J++ part; the lookup mostly doesn't](figures/story/fig1_readers.png)
 *Fig. 1. Lookup against recall in each row; grey band: not needed. Muse's natural passages: no gap (few lookup switches).*
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at d3d8f993 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at 718c901f from the run files.
 
 ## Setup
 
@@ -104,7 +104,7 @@
 *After the data, except the transfer bars and the identity direction, fixed in advance.*
 
 - **First sentence.** The pointer directions we found mostly mark whether the item's mention was the prompt's first sentence (Fig. 9a). In the routes test only their part moves the lookup to or from slot 0, not between slots 1 and 2, while the whole change does (Fig. 9b): the position route exists for other places too, mostly outside these directions.
-- **Transfer.** Fit on simple scenes and not refit, they cost the lookup 0.05 to 0.11 in varied scenes and 0.07 in natural passages, while the lookup still does not need J++ there (Fig. 10).
+- **Transfer.** Fit on simple scenes and not refit, they cost the lookup 0.05 to 0.15 in varied scenes and 0.07 to 0.25 in natural passages, while the lookup still does not need J++ there (Fig. 10).
 - **What is left.** J++ and the pointer directions removed together leave about half of the sanity swap's lookups switching, and cost more than the pointer alone only on the 27B. Adding the item's identity outside J++ leaves fewer, but a random part of the same share removes most switches too (Fig. 6, table). About half of the route around the lens is still unexplained. The recall needs identity on the 27B and Muse, not the 9B.
 - **A pointer found without slot labels** is pending on three models.
 
@@ -115,9 +115,9 @@
 | Only their part's switch rate, first sentence minus the rest | 0.46 [0.31, 0.64] | 0.16 [0.04, 0.31] | 0.07 [−0.16, 0.32] | 0.23 [0.09, 0.39] |
 | Routes, only their part: moves from or to slot 0 / 1 → 2 and 2 → 1 | 0.10 to 0.76 / 0.00 / 0.00 | 0.00 to 0.44 / 0.00 / 0.00 | 0.15 to 0.47 / 0.00 / 0.00 | 0.16 to 0.69 / 0.04 / 0.16 |
 | Routes, the whole change: 1 → 2 / 2 → 1 | 0.53 / 0.78 | 0.24 / 0.38 | 0.40 / 0.35 | 0.49 / 0.71 |
-| Varied scenes, lookup's extra loss without them | 0.11 [0.08, 0.13] | 0.05 [0.04, 0.06] | 0.06 [0.04, 0.07] | not landed |
-| Same: prose / json / table | 0.16 / 0.02 / 0.07 | 0.09 / 0.01 / 0.03 | 0.07 / 0.06 / 0.04 | not landed |
-| Natural passages (the fact before the bridge) | not tested (gate) | 0.07 [0.00, 0.18] | 0.07 [−0.02, 0.16] | not landed |
+| Varied scenes, lookup's extra loss without them | 0.11 [0.08, 0.13] | 0.05 [0.04, 0.06] | 0.06 [0.04, 0.07] | 0.15 [0.11, 0.19] |
+| Same: prose / json / table | 0.16 / 0.02 / 0.07 | 0.09 / 0.01 / 0.03 | 0.07 / 0.06 / 0.04 | 0.21 / 0.05 / 0.12 |
+| Natural passages (the fact before the bridge) | not tested (gate) | 0.07 [0.00, 0.18] | 0.07 [−0.02, 0.16] | 0.25 [0.00, 0.50] |
 | Sanity swap, both removed minus the pointer alone | 0.12 [0.04, 0.19] | 0.26 [0.19, 0.32] | 0.09 [0.03, 0.16]° | 0.03 [−0.03, 0.08] |
 | Lookups still switching: J++ and the pointer removed | 0.46 [0.41, 0.50] | 0.53 [0.48, 0.57] | 0.50 [0.45, 0.55]° | 0.74 [0.68, 0.79] |
 | Same, with identity outside J++ / its random part | 0.07 [0.04, 0.11] / 0.38 [0.33, 0.43] | 0.18 [0.13, 0.22] / 0.67 [0.62, 0.72] | not run | 0.52 [0.47, 0.58] / 0.82 [0.76, 0.88] |
@@ -182,7 +182,7 @@
 
 - **Hand-checked numbers.** None yet ([docs/review_summary.md](docs/review_summary.md)); [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
 - **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them.
-- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.33 over 97 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
+- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.34 over 100 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
 - **Inventory.** [docs/inventory.md](docs/inventory.md): pre-pivot experiments are kept and labelled legacy.
 
 ## 8. Related work and what is new

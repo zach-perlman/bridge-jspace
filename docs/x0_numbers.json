@@ -17816,11 +17816,11 @@
   "source": "results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json"
  },
  "pred_n": {
-  "text": "97",
+  "text": "100",
   "source": "predictions/README.md"
  },
  "pred_brier": {
-  "text": "0.33",
+  "text": "0.34",
   "source": "predictions/README.md"
  },
  "x8_sreal_9b": {
@@ -17949,59 +17949,59 @@
  },
  "tptr_pooled_9b": {
   "text": "0.11 [0.08, 0.13]",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_split_9b": {
   "text": "0.16 / 0.02 / 0.07",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_natural_9b": {
   "text": "not tested (gate)",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_pooled_27b": {
   "text": "0.05 [0.04, 0.06]",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_split_27b": {
   "text": "0.09 / 0.01 / 0.03",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_natural_27b": {
   "text": "0.07 [0.00, 0.18]",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_pooled_122b": {
   "text": "0.06 [0.04, 0.07]",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_split_122b": {
   "text": "0.07 / 0.06 / 0.04",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_natural_122b": {
   "text": "0.07 [−0.02, 0.16]",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_pooled_muse": {
-  "text": "not landed",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "text": "0.15 [0.11, 0.19]",
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_split_muse": {
-  "text": "not landed",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "text": "0.21 / 0.05 / 0.12",
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_natural_muse": {
-  "text": "not landed",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "text": "0.25 [0.00, 0.50]",
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_varied_range": {
-  "text": "0.05 to 0.11",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "text": "0.05 to 0.15",
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "tptr_natural_range": {
-  "text": "0.07",
-  "source": "results/t_pointer/verdict-20261026T124519Z/verdict.json"
+  "text": "0.07 to 0.25",
+  "source": "results/t_pointer/verdict-20261026T140221Z/verdict.json"
  },
  "fs_groups_9b": {
   "text": "0.66 (n 41) / 0.23 (n 22) / 0.33 (n 9)",
