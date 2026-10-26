@@ -7,7 +7,9 @@ code. A disagreement is a finding: it is listed (view page, STATUS), never fixed
   answers decode right: tok_A / tok_b decode to the original / swapped answer
   label from the top token: the class re-derived from the decoded top token and the expected digits equals the stored label
                       (routes C0: the stored route is "other" for a switch, a known quirk: original <-> original,
-                      switch or other <-> other; the switched flag is checked on its own); x0 stores no top token: n/a
+                      switch or other <-> other; the switched flag is checked on its own); x0 runs before batch 45
+                      store no top token: n/a; x0 runs since (45m), x0_parts and the 45b sweep: the role the stored
+                      top token gives against tok_A / tok_b equals the stored role, and switched = role b
   probabilities agree with the label: switched = (role b); role b: p_alt >= p_org, ld >= 0; role A: the reverse; p > 0.5 decides the role
   second run has the same prompts: routes: a second run whose rows are used has the same prompts; x8: the stored entity is the joined
                       case's bridge and j its locker slot
@@ -137,8 +139,20 @@ def check_class(it: dict) -> tuple[str, str]:
         bad = [f"{label}: top {r['top']!r}, switched {r['switched']}" for label, r in rows.items()
                if bool(r["switched"]) != (r["top"] == rd["cf_answer"])]  # fmt: skip
         return (FAIL if bad else PASS), "; ".join(bad[:4]) or f"{len(rows)} rows agree"
-    if it["kind"] in ("x0", "massmean"):
-        return NA, "no top token stored (role is the stored class)"
+    if it["kind"] in ("x0", "massmean", "x0_parts", "x45b_sweep"):
+        # runs since batch 45 store the top token (x0_necessity.read_row): the role it gives against the case's answer
+        # tokens (b = tok_b, A = tok_A, else other) must be the stored role, and switched must be role b
+        rd = c["readers"][w]
+        topped = {label: r for label, r in rows.items() if isinstance(r.get("top"), int)}
+        if not topped:
+            return NA, "no top token stored (role is the stored class)"
+        wrong = []
+        for label, r in topped.items():
+            derived = "b" if r["top"] == rd["tok_b"] else "A" if r["top"] == rd["tok_A"] else "other"
+            if derived != r["role"] or bool(r["switched"]) != (derived == "b"):
+                wrong.append(f"{label}: top {_strip(piece(m, r['top']))!r} -> {derived}, stored {r['role']} "
+                             f"(switched {r['switched']})")  # fmt: skip
+        return (FAIL if wrong else PASS), "; ".join(wrong[:4]) or f"{len(topped)} rows agree"
     bad = []
     if it["kind"] == "routes":
         rd = c["readers"][w]

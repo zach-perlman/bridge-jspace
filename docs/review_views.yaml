@@ -5,6 +5,8 @@
 # files, the filters that make the claim's item set (as the verdict used them), and what each answer class means.
 # Read-only on results/. status: phase1 = in the dashboard now; later = listed, not yet in the dashboard. headline: the
 # numbers the dashboard recounts over the whole item set (Phase 2) and compares with figures/story/data.csv.
+# join_runs (per model): runs whose rows give the arms the view's run does not have, joined by scene (x0_parts). A run
+# that has not landed gives no items; its view lists it as "not run yet" (no run dir) or "no outcomes.jsonl yet".
 version: 1
 
 models:
@@ -89,6 +91,41 @@ kinds:
       third: the digit of the remaining slot
       other: none of the three
       recall: changed = the recall's top token is not O's answer (tok_A; x8_write.stage_run)
+  x0_parts:  # a kind of its own: x0's loader reads a run's own cases.jsonl, and shares with rand_share and a layer
+    files: [outcomes.jsonl, shares.jsonl, manifest.json]
+    prompts: >-
+      none of its own: the cases.jsonl of the run named in manifest.json "single" (under "source_exp", x0_necessity),
+      joined by scene, as massmean. The view's join_runs (x0 runs) give the arms this run does not have, by scene; their
+      prompts are checked per item (badge "second run has the same prompts").
+    outcomes: >-
+      as x0, per (scene, layer, reader, dict, k, omp, arm); dict jpp_other has omp "other" and k its atom count; shares.jsonl
+      per (scene, dict, k, omp) has no layer and no rand_share. Runs since batch 45 store the top token.
+    classes:
+      b: changed answer - the top token is the changed prompt's answer (it switched)
+      A: original answer - the top token is the original prompt's answer
+      other: another token
+    eligible: >-
+      x0_parts.stage_run: every scene of the source run's chat outcomes; the item set is the scenes in outcomes.jsonl at
+      the layer.
+  x45b_sweep:  # a kind of its own: per-layer arms, patches at several positions, cases keyed "entity"
+    files: [cases.jsonl, outcomes.jsonl, manifest.json, plan.json]
+    prompts: >-
+      cases.jsonl per item (x45b_binding.select, then role_positions): context (O) / cf_context (S), entity (the bridge) /
+      cf_bridge, pos (the bridge word), patched (O's locker-sentence token positions) / source (S's), lockers (sentences,
+      positions per sentence, align), marks (character spans of the bridge word and the locker sentences in the lookup's
+      O text), roles.{item,value,final}.{org,alt} (token positions), readers.{PP,PM}: question, answer / cf_answer,
+      ids.org / ids.alt, tok_A / tok_b, text.org / text.alt. The readers' prompts are the same through the last locker
+      token (select), so one set of positions serves both.
+    outcomes: >-
+      per (scene, reader, arm): none (O unedited), bw<l> / ls<l> / li<l> / lv<l> / lf<l> at each sweep layer l (manifest
+      sweep_layers: L/2 to L every 2), S (S read on S); layer, switched, top, role, p_org, p_alt, ld.
+    classes:  # an item's class is S read on S's role (b = S itself switches; the sweep's "share of S's switches" counts these)
+      b: S's answer (switched)
+      A: O's answer
+      other: another token
+    eligible: >-
+      x45b_binding.select on the main run: its items at L whose original locker sentence comes after the asked pick, the
+      locker sentences aligned; every one is read, so none is outside the set.
 
 views:
   # ---------------------------------------------------------------- Phase 1 (Tuesday's hand check)
@@ -273,6 +310,124 @@ views:
       qwen3.6-27b: [results/x8_write/x8_write_27b]
       qwen3.5-122b-a10b: [results/x8_write/qwen35_122b_x8_write_g75]
       muse-glimmer-30b: [results/x8_write/muse30b_x8_write]
+
+  # ---------------------------------------------------------------- batch 45, before scoring (Dan 26 Oct ~22:40)
+  # Added before these runs land and before any of them is scored: no README claim, no sources. The claim field states
+  # the test as fixed in advance, not a result. Until a run lands its view lists it as "not run yet".
+  - id: x45k_routes
+    title: "45k: J++ removed at k = 25 / 50 / 100 in the routes test (batch 45, not scored yet)"
+    status: phase1
+    kind: routes
+    readme: "not yet in the README (batch 45, test 45k: jobs/c3/x45k_*_q2.yaml, Q45.9)"
+    claim: >-
+      Fixed in advance: as J++ grows from 25 to 100 atoms, does the lookup lose the identity or the position route in C2
+      beyond a random part of the same share; the 27B's C0 lookup extra loss at k = 100 is the precondition; another
+      scene's 100 atoms refit here (jpp_other) are descriptive in this run. Not scored yet.
+    sources: []
+    filters:
+      layer: fixed
+      conditions: [C0, C2]
+      readers: [PP, PM]
+      arms:  # label: arm (x6_routes --jpp-ks 25 50 100 --jpp-other; k = 25 is the existing no_jpp)
+        unedited: none
+        whole: whole
+        without J++ (k = 25): no_jpp
+        its random part (k = 25): no_jpp_rand
+        without J++ (k = 50): no_jpp50
+        its random part (k = 50): no_jpp50_rand
+        without J++ (k = 100): no_jpp100
+        its random part (k = 100): no_jpp100_rand
+        without another scene's 100 atoms: no_jppother100
+        their random part: no_jppother100_rand
+        without the pointer directions: no_alf
+        without the pointer's random part: no_alf_rand
+    runs:
+      qwen3.5-9b: [results/x6_routes/qwen35_9b_x6_routes_x45k]
+      qwen3.6-27b: [results/x6_routes/x6_routes_x45k_27b]
+      muse-glimmer-30b: [results/x6_routes/muse30b_x6_routes_x45k]
+    notes: >-
+      Each card shows norms.jsonl's geometry: each part's share, the mean cos^2 of each k's atoms with the pointer
+      directions (cos2_U_jpp<k>) and with the identity direction (cos2_id_jpp<k>; none where an entity has no class mean),
+      and jpp_other's partner scene with its bridge pair (x0_parts.partners: no shared bridge). Muse runs only if time.
+      The generic-fitting clause is read on the main test: view x45k_generic.
+
+  - id: x45k_generic
+    title: "45k's generic-fitting control on the main test, 27B (batch 45, not scored yet)"
+    status: phase1
+    kind: x0_parts
+    readme: "not yet in the README (batch 45, test 45k, Dan's override 2 at ~22:05: jobs/c3/x45k_generic_27b_q2.yaml)"
+    claim: >-
+      Fixed in advance: "generic fitting" if, on the 27B's main-test items, removing the 100 J++ atoms signed OMP picks for
+      another scene's change (refit to this scene's) costs the lookup at least 2/3 of what removing the scene's own 100
+      atoms costs (the kmatch run), each against a random part of its share. Not scored yet.
+    sources: []
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      arms:  # label: [arm, dict, k, omp]; the last two from the kmatch run (join_runs), the same scenes and prompts
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without J++ (k = 25): [no_part, jpp, 25, signed]
+        its random part (k = 25): [no_rand, jpp, 25, signed]
+        without another scene's 100 atoms: [no_part, jpp_other, 100, other]
+        their random part: [no_rand, jpp_other, 100, other]
+        without J++ (k = 100, kmatch run): [no_part, jpp, 100, signed]
+        its random part (k = 100, kmatch run): [no_rand, jpp, 100, signed]
+    runs:
+      qwen3.6-27b: [results/x0_parts/x0_jppother100_27b]
+    join_runs:
+      qwen3.6-27b: [results/x0_necessity/x0_kmatch_27b]
+    notes: >-
+      The prompts are x0_necessity_27b_chat's (the run's manifest "single"); each card names jpp_other's partner scene and
+      its bridge pair (manifest jpp_other_partners). The kmatch rows are tagged with their run on the card.
+
+  - id: x45m_fresh
+    title: "45m: the split in the clean one-pick design (batch 45, not scored yet)"
+    status: phase1
+    kind: x0
+    readme: "not yet in the README (batch 45, test 45m: jobs/c3/x45m_*_q2.yaml, Q45.10)"
+    claim: >-
+      Fixed in advance: a locker item that nobody picks is added to both prompts and the asked pick changes from the
+      bridge to it (one token changes, no duplicate pick). The split holds in the clean design if, on at least 2 of 3
+      models, in locker-before scenes the gap is at least 0.3 and the lookup's extra loss at most 0.10 (scripts/x45m.py
+      score). Not scored yet.
+    sources: []
+    filters:
+      rendering: chat
+      layer: fixed
+      readers: [PP, PM]
+      groups: [locker-before, locker-after, mixed]  # x45m.group_of: both locker sentences before / after the asked pick
+      arms:
+        unedited: [none, "-", 0, "-"]
+        whole: [whole, "-", 0, "-"]
+        without J++: [no_part, jpp, 25, signed]
+        without its random part: [no_rand, jpp, 25, signed]
+    runs:
+      qwen3.5-9b: [results/x0_necessity/qwen35_9b_x45m_fresh]
+      qwen3.6-27b: [results/x0_necessity/x45m_fresh_27b]
+      muse-glimmer-30b: [results/x0_necessity/muse30b_x45m_fresh]
+    notes: "Each card outlines the inserted sentence in both prompts and names its item, locker digit and slot (cases.jsonl 'fresh')."
+
+  - id: x45b_sweep
+    title: "45b layer sweep: the bridge word vs the locker sentences, L/2 to L (descriptive, not scored yet)"
+    status: phase1
+    kind: x45b_sweep
+    readme: "not yet in the README (batch 45, the 45b layer sweep: jobs/c3/x45b_sweep_*_v2.yaml; descriptive, after the data)"
+    claim: >-
+      Descriptive, no rule (Dan 26 Oct ~21:20 and ~22:00): on 45b's locker-after items, at each layer from L/2 to L every
+      2, the bridge-word change (bw) against S patched into O at every locker-sentence token (ls), or only at the items'
+      (li), the values' (lv) or the sentence-final tokens (lf). Not scored yet.
+    sources: []
+    filters:
+      layer: run
+      readers: [PP, PM]
+      items: >-
+        the 45b items (x45b_binding.select: the main test's items whose original locker sentence comes after the asked
+        pick, locker sentences aligned); every arm at every sweep layer, O unedited and S read on S
+    runs:
+      qwen3.5-9b: [results/x45b_binding/qwen35_9b_x45b_sweep_v2]
+      qwen3.6-27b: [results/x45b_binding/x45b_sweep_v2_27b]
 
   # ---------------------------------------------------------------- later (Phase 2 adds them to the dashboard)
   - id: x8_halfway

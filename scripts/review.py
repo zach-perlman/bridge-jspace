@@ -64,7 +64,7 @@ def recount(view_id: str) -> list[dict]:
 def params_of(q: dict[str, str], v: dict) -> dict:
     p = {"view": v["id"], "seed": int(q.get("seed") or 0), "n": int(q.get("n") or 5), "mode": q.get("mode") or "uniform",
          "model": q.get("model") or "all", "reader": q.get("reader") or "all"}  # fmt: skip
-    for k in ("condition", "s", "kind", "order"):
+    for k in ("condition", "s", "kind", "order", "group"):
         p[k] = q.get(k) or "all"
     p["out"], p["superseded"] = q.get("out") == "1", q.get("superseded") == "1"
     return p
@@ -195,6 +195,8 @@ def pack(out: Path | None = None) -> Path:
                   "Runs: " + "; ".join(f"{I.spec()['models'][m]['label']}: " + ", ".join(f"`{r}`" for r in rs)
                                        for m, rs in v["runs"].items()) + ".", "",
                   f"Item set: `{json.dumps(v['filters'])}`.", "",
+                  *([f"Not landed yet: {'; '.join(f'`{r}` ({s})' for m in v['runs'] for r, s in I.not_landed(v, m))}.", ""]
+                    if any(I.not_landed(v, m) for m in v["runs"]) else []),
                   f"Command: `uv run python scripts/review.py pack` (this table); items: `make review-serve`, view `{v['id']}`.", ""]  # fmt: skip
         if rows:
             lines += ["| model | quantity | n | recount | data.csv | key | |", "|---|---|---|---|---|---|---|"]
