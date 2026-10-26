@@ -1,0 +1,67 @@
+{
+ "run": "muse30b_x0_single",
+ "layer": 26,
+ "note": "Descriptive, added after data (Dan's cross-tab, 24 Oct evening); not part of X0's rule.",
+ "rows": [
+  {
+   "reader": "PP",
+   "first": "locker",
+   "n": 42,
+   "whole": [
+    0.9761904761904762,
+    0.926829268292683,
+    1.0
+   ],
+   "without the J++ part": [
+    0.9761904761904762,
+    0.926829268292683,
+    1.0
+   ]
+  },
+  {
+   "reader": "PP",
+   "first": "other pick",
+   "n": 26,
+   "whole": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "without the J++ part": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "reader": "PM",
+   "first": "locker",
+   "n": 42,
+   "whole": [
+    0.4523809523809524,
+    0.30434782608695654,
+    0.6285714285714286
+   ],
+   "without the J++ part": [
+    0.2619047619047619,
+    0.125,
+    0.4375
+   ]
+  },
+  {
+   "reader": "PM",
+   "first": "other pick",
+   "n": 26,
+   "whole": [
+    0.7307692307692307,
+    0.5263157894736842,
+    0.8787878787878788
+   ],
+   "without the J++ part": [
+    0.46153846153846156,
+    0.25,
+    0.6521739130434783
+   ]
+  }
+ ]
+}

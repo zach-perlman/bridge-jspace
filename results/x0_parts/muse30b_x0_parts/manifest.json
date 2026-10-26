@@ -1,0 +1,60 @@
+{
+  "exp": "x0_parts",
+  "run": "muse30b_x0_parts",
+  "written_utc": "2026-10-26T00:46:05Z",
+  "note": "Descriptive, added after data (Dan's audit, 24 Oct ~19:30, item 2); not part of X0's rule.",
+  "single": "muse30b_x0_single",
+  "source_exp": "x0_necessity",
+  "single_code": {
+    "sha": "bb7ecdf4b3062b01647ad7cd7b0786a90e4cb21f",
+    "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 26,
+  "items": 200,
+  "k": 25,
+  "parts": [
+    "w",
+    "jwo",
+    "pca_eq",
+    "jpp"
+  ],
+  "keep": [
+    "w",
+    "jwo"
+  ],
+  "pca": {
+    "set": "d1_topics_v4",
+    "prompts": 200,
+    "tokens": 20865,
+    "seed": 0,
+    "n": 2000,
+    "variance_share": 0.992808198190467
+  },
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "bb7ecdf4b3062b01647ad7cd7b0786a90e4cb21f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "held_out": 0
+  }
+}
