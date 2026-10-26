@@ -27,6 +27,8 @@ The one-pick caveat (Dan ~22:10) goes into two captions only, Fig. 1b's (its one
 
 ## Fig. 2
 
+The fourth panel is "random atoms" (Dan ~22:40): a dictionary of random atoms picked by the same OMP at its own (smaller) share, not the matched control; the figure's subtitle says so.
+
 - current alt text: No other part of the same size costs the recall as much as J++
 - current caption: *Fig. 2.*
 - canonical alt text: No other part of the same size costs the recall as much as the J++ part
@@ -90,11 +92,11 @@ The one-pick caveat (Dan ~22:10) goes into two captions only, Fig. 1b's (its one
 
 ## Fig. 10
 
-Dan's title (~22:10) kept as written: with "The J++ part" it is 92 characters and renders at about 10 pt, below the 11 pt floor. A form that keeps the part name at 11 pt drops the articles: "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's" (84 characters, 11.0 pt); Dan's call.
+Dan's title (~22:40): 84 characters, 11.0 pt.
 
 - current alt text: J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's
 - current caption: *Fig. 10.*
-- canonical alt text: J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's
+- canonical alt text: J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's
 - canonical caption: *Fig. 10.*
 
 ## Fig. 11
@@ -120,3 +122,28 @@ The test's README scope is table headers; the rows and the footnote below follow
 - canonical row: Recall's extra loss without identity (nothing else removed)
 - current cell: not in this test (the 122B)
 - canonical cell: not run (the 122B)
+
+## Supplementary figures (README Appendix A)
+
+Their link texts already use the vocabulary ("every scene set", "every part", "every routes arm", "the parts removed together, with the bars fixed in advance"); the figures are in figures/drafts/v5/supp/ and replace figures/supp/ at the merge.
+
+## docs/x0_details.md (from docs/x0_details.template.md)
+
+The figures are in figures/drafts/v5/x0_necessity/ and figures/drafts/v5/status_2026-10-24/ and replace figures/x0_necessity/ and figures/status_2026-10-24/f6_digits.png at the merge. The page's prose still says "excess", "J-dependence", "edit" and "flips"; it is outside this pass (labels only), so the figures and the prose differ until it is reworded.
+
+- current alt text: Overview: excess by layer, two models, three prompt formats
+- canonical alt text: Overview: extra loss by layer, two models, three prompt formats
+- current alt text: 27B detail
+- canonical alt text: 27B detail
+- current alt text: 9B detail
+- canonical alt text: 9B detail
+- current alt text: Equal removed share
+- canonical alt text: Equal share of the change
+- current alt text: Excess against the number of atoms
+- canonical alt text: Extra loss against the number of atoms
+- current alt text: Share against J-dependence
+- canonical alt text: Share of the change against switches lost
+- current alt text: Upstream change
+- canonical alt text: Upstream change
+- current alt text: The digit check
+- canonical alt text: The digit check

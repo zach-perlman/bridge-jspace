@@ -50,42 +50,47 @@ def latest(path: Path, pattern: str):
 
 def s01_split(plt) -> None:
     """Supplementary to Fig. 1: per model, the lookup's and the recall's J++ extra loss in each setting, joined; the gap printed."""
-    rows = [("Simple scenes,\ntwo people swap picks", "lk_excess_{m}", "rc_excess_{m}", "contrast_{m}", {}),
-            ("Simple scenes, only the asked\nperson's pick changes", "single_lk_excess_{m}", "single_rc_excess_{m}",
+    rows = [("main test\n(two people swap picks)", "lk_excess_{m}", "rc_excess_{m}", "contrast_{m}", {}),
+            ("one-pick scenes (only\nthe asked pick changes)", "single_lk_excess_{m}", "single_rc_excess_{m}",
              "single_contrast_{m}", {"9b": "after", "27b": "after"}),
-            ("Matched scenes,\ntwo people swap picks", "comp_two_fmno_lk_{m}", "comp_two_fmno_rc_{m}", None,
+            ("matched scenes\n(two people swap picks)", "comp_two_fmno_lk_{m}", "comp_two_fmno_rc_{m}", None,
              {"9b": "after", "27b": "after", "122b": "after", "muse": "after"}),
-            ("Matched scenes, only the asked\nperson's pick changes", "comp_one_fmno_lk_{m}", "comp_one_fmno_rc_{m}",
+            ("matched scenes (only\nthe asked pick changes)", "comp_one_fmno_lk_{m}", "comp_one_fmno_rc_{m}",
              None, {"9b": "after", "27b": "after", "122b": "after", "muse": "after"}),
-            ("Varied scenes", "x0b_lk_excess_{m}", "x0b_rc_excess_{m}", "x0b_c_{m}", {}),
-            ("Natural passages", "nat_lk_excess_{m}", "nat_rc_excess_{m}", "nat_gap_{m}", {})]  # fmt: skip
-    fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 5.9), sharey=True)
-    fig.subplots_adjust(left=0.295, right=0.995, top=0.80, bottom=0.10, wspace=0.10)
-    S.title(fig, "The split in every scene set", "Extra loss without the J++ part, 95% CI; gap = recall minus lookup.")
+            ("varied scenes: prose /\nJSON / table", "x0b_lk_excess_{m}", "x0b_rc_excess_{m}", "x0b_c_{m}", {}),
+            ("natural passages", "nat_lk_excess_{m}", "nat_rc_excess_{m}", "nat_gap_{m}", {})]  # fmt: skip
+    fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 6.3), sharey=True)
+    fig.subplots_adjust(left=0.295, right=0.995, top=0.74, bottom=0.09, wspace=0.10)
+    S.title(fig, "The split in every scene set",
+            "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
+            "(same size); 95% CI. Gap = recall minus lookup.")  # fmt: skip
     for ax, (target, m, name) in zip(axes, S.MODELS, strict=True):
         S.extra_axis(ax)
         ax.set_title(name, fontsize=10.5, weight="bold")
         for i, (label, lk_k, rc_k, gap_k, kinds) in enumerate(rows):
             y = -i
             lk, rc = S.parse(N.get(lk_k.format(m=m))), S.parse(N.get(rc_k.format(m=m)))
-            if label == "Varied scenes":
+            if lk_k.startswith("x0b_"):  # varied scenes: the X0b verdict's cells
                 lk, rc = x0b_cell(target, X.LOOKUP), x0b_cell(target, X.RECALL)
+            natural = lk_k.startswith("nat_")
             kind = kinds.get(m, "fixed")
             if lk is None or rc is None:
                 rerun = latest(pins.RESULTS_DIR / "x5_natural" / "qwen35_9b_x5_natural_g75", "verdict-*/verdict.json")
-                if label == "Natural passages" and m == "9b" and rerun:
+                if natural and m == "9b" and rerun:
                     lk, rc = rerun["main"]["excess"][X.LOOKUP], rerun["main"]["excess"][X.RECALL]
                     kind = "rerun"
                 else:
-                    ax.text(0.4, y, "not tested: gate" if label == "Natural passages" else "not run", ha="center",
-                            va="center", fontsize=9.5, color=S.COL["muted"])  # fmt: skip
+                    ax.text(0.4, y, "not tested (gate)" if natural else "not run", ha="center", va="center",
+                            fontsize=9.5, color=S.COL["muted"])  # fmt: skip
                     continue
             ax.plot([lk[0], rc[0]], [y, y], color="#cccccc", lw=2.2, zorder=1)
             S.dot(ax, 0, y, lk, S.COL["lookup"], kind)
             S.dot(ax, 0, y, rc, S.COL["recall"], kind)
+            if kind == "rerun":  # the gate lowered to 0.75 after the data, as on Fig. 1b's 9B°
+                ax.text(max(lk[2], rc[2]) + 0.03, y, S.LOWERED, va="center", fontsize=S.FONT)
             g = S.parse(N.get(gap_k.format(m=m))) if gap_k else None
             gap = g[0] if g and kind != "rerun" else rc[0] - lk[0]
-            if (m, label) not in NO_GAP_LABEL:
+            if (m, "Natural passages" if natural else label) not in NO_GAP_LABEL:
                 ax.text(
                     (lk[0] + rc[0]) / 2,
                     y + 0.3,
@@ -110,8 +115,8 @@ def s01_split(plt) -> None:
     axes[0].set_yticks([-i for i in range(len(rows))], [r[0] for r in rows])
     axes[0].tick_params(axis="y", length=0)
     hs, ls = reader_handles(plt)
-    sh, sl = S.status_handles(("fixed", "after"))
-    legend(fig, hs + sh, ls + sl, 0.905)
+    sh, sl = S.status_handles()
+    legend(fig, hs + sh, ls + sl, 0.86)
     S.save(fig, "s01_split_all_scene_sets", supp=True)
 
 
@@ -155,17 +160,20 @@ def parts_cells() -> dict[str, dict[str, dict]]:
 
 
 def s02_parts(plt) -> None:
-    """Supplementary to Fig. 2: every part tried, per model."""
-    parts = [("jpp", "J++"), ("jwo", "J++ without the\nword's directions"), ("w", "The word alone"),
-             ("pca_eq", "Main directions at\nJ++'s share"), ("jpp_other", "J++ fitted to\nanother scene"),
-             ("wu", "Logit lens\n(main test)"), ("we", "Input embeddings\n(main test)"), ("rand", "Random directions\n(main test)")]  # fmt: skip
+    """Supplementary to Fig. 2: every part tried, per model; status as in Fig. 2 (the parts runs on the one-pick scenes
+    after the data, the logit-lens, input-embedding and random-atom dictionaries from the main test fixed in advance)."""
+    parts = [("jpp", "J++ part"), ("jwo", "J++ part without the\nword's directions"), ("w", "the word's directions"),
+             ("pca_eq", "PCA directions\n(same size)"), ("jpp_other", "J++ part fitted to\nanother scene"),
+             ("wu", "logit-lens directions"), ("we", "input-embedding\ndirections"), ("rand", "random atoms")]  # fmt: skip
     cells = parts_cells()
-    fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 5.4), sharey=True)
-    fig.subplots_adjust(left=0.205, right=0.995, top=0.80, bottom=0.10, wspace=0.12)
+    fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 6.4), sharey=True)
+    fig.subplots_adjust(left=0.205, right=0.995, top=0.70, bottom=0.09, wspace=0.12)
     S.title(
         fig,
-        "Every part we removed, against J++",
-        "Recall open with 95% CI, lookup purple; grey % = the part's share of the change.",
+        "Every part we removed, against the J++ part",
+        "Extra loss (0-1): switches lost without the part, minus those lost without a random part\n"
+        "(same size); recall with 95% CI. The first five rows: one-pick scenes (only the asked pick\n"
+        "changes); the last three: main test (two people swap picks). Random atoms: a dictionary.",
     )
     for ax, (target, m, name) in zip(axes, S.MODELS, strict=True):
         S.extra_axis(ax)
@@ -174,9 +182,9 @@ def s02_parts(plt) -> None:
             y = -i
             c = cells[m].get(p)
             if c is None or "recall" not in c:
-                ax.text(0.4, y, "not run yet", ha="center", va="center", fontsize=9.5, color=S.COL["muted"])
+                ax.text(0.4, y, "not run", ha="center", va="center", fontsize=9.5, color=S.COL["muted"])
                 continue
-            S.dot(ax, 0, y, c["recall"], S.COL["recall"], "after")
+            S.dot(ax, 0, y, c["recall"], S.COL["recall"], "fixed" if p in ("wu", "we", "rand") else "after")
             ax.plot([c["lookup"][0]], [y], "o", ms=4.5, color=S.COL["lookup"], zorder=4)
             if c["share"] is not None:
                 # a white box: a recall interval reaching the right edge (Muse's J++) must not read as a minus sign
@@ -201,16 +209,17 @@ def s02_parts(plt) -> None:
         ax.grid(axis="x", color="#eeeeee")
     axes[0].set_yticks([-i for i in range(len(parts))], [p[1] for p in parts])
     axes[0].tick_params(axis="y", length=0)
-    marks = [plt.Line2D([], [], marker="o", ls="", mfc="white", mec=S.COL["recall"], mew=1.6, ms=7),
-             plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=4.5),
+    sh, sl = S.status_handles(("fixed", "after"))
+    marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=7),
+             plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=4.5), *sh,
              plt.Line2D([], [], ls="", marker="")]  # fmt: skip
-    fig.legend(marks, ["recall (95% CI)", "lookup", "grey % = the part's share of the change"], loc="upper left",
-               bbox_to_anchor=(0.0, 0.94), ncol=3, frameon=False, fontsize=9.5, handletextpad=0.3)  # fmt: skip
+    legend(fig, marks, ["recall", "lookup", *sl, "grey % = the part's share of the change"], 0.835)
     S.save(fig, "s02_parts_all", supp=True)
 
 
-ARMS4 = (("whole", "whole change"), ("no_jpp", "without J++"), ("no_jpp_rand", "without a random part\nas large as J++"),
-         ("no_alf", "without the pointer"), ("no_alf_rand", "without a random part\nas large as the pointer"))  # fmt: skip
+# s05's rows; each random part (same size) sits directly under its part
+ARMS4 = (("whole", "whole change"), ("no_jpp", "without the J++ part"), ("no_jpp_rand", "without a random part\n(same size)"),
+         ("no_alf", "without the pointer"), ("no_alf_rand", "without a random part\n(same size)"))  # fmt: skip
 ROUTES = (
     ("identity", "identity"),
     ("position", "position"),
@@ -222,8 +231,8 @@ ROUTE_COL = {"identity": S.COL["identity"], "position": S.COL["position"], "valu
              "original": S.COL["original"], "other": S.COL["other"]}  # fmt: skip
 
 
-KEEP4 = (("keep_alf", "only the pointer part"), ("keep_alf_rand", "only a random part\nas large as the pointer"),
-         ("keep_jpp", "only the J++ part"), ("keep_jpp_rand", "only a random part\nas large as J++"))  # fmt: skip
+KEEP4 = (("keep_alf", "only the pointer"), ("keep_alf_rand", "only a random part\n(same size)"),
+         ("keep_jpp", "only the J++ part"), ("keep_jpp_rand", "only a random part\n(same size)"))  # fmt: skip
 
 
 def s05_routes(plt) -> None:
@@ -236,11 +245,13 @@ def s05_routes(plt) -> None:
             ("muse-glimmer-30b", "Muse Glimmer 30B", "muse30b_x6_routes", "muse30b_x6_routes", "fixed"))  # fmt: skip
     ys = [-i for i in range(len(ARMS4))] + [-len(ARMS4) - 0.6 - i for i in range(len(KEEP4))]
     labels = [a[1] for a in ARMS4] + [a[1] for a in KEEP4]
-    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 5.4), sharey=True)
-    fig.subplots_adjust(left=0.28, right=0.985, top=0.80, bottom=0.10, wspace=0.14)
-    S.title(fig, "Every routes arm, another item moved", f"Hatched: gate lowered after the data ({S.LOWERED}).")
+    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 5.9), sharey=True)
+    fig.subplots_adjust(left=0.28, right=0.985, top=0.77, bottom=0.09, wspace=0.22)
+    S.title(fig, "Every routes arm, another item moved",
+            "Routes test (another item moved): lookup answers (%). Each random part (same size) sits under\n"
+            f"its part. Fixed in advance; hatched: {S.LOWERED} gate lowered to 0.75 after the data.")  # fmt: skip
     for ax, (target, name, run, keep_run, kind) in zip(axes, runs, strict=True):
-        ax.set_title(name, fontsize=10.5, weight="bold")
+        ax.set_title(name + (S.LOWERED if kind == "rerun" else ""), fontsize=10.5, weight="bold")
         ax.set_xlim(0, 1)
         ax.set_xticks([0, 0.5, 1], ["0", "50", "100"])
         ax.axhline(-len(ARMS4) + 0.2, color="#bbbbbb", lw=0.8)
@@ -250,7 +261,7 @@ def s05_routes(plt) -> None:
                 ax.text(
                     0.5,
                     (y0[0] + y0[-1]) / 2,
-                    "not run yet",
+                    "not run",
                     ha="center",
                     va="center",
                     fontsize=10,
@@ -274,12 +285,11 @@ def s05_routes(plt) -> None:
                              source=source)  # fmt: skip
                     left += sh
         ax.set_ylim(ys[-1] - 0.6, 0.6)
-    fig.supxlabel("% of lookup answers", x=0.63, y=0.01, fontsize=10.5)
+    fig.supxlabel("lookup answers (%)", x=0.63, y=0.01, fontsize=10.5)
     axes[0].set_yticks(ys, labels)
     axes[0].tick_params(axis="y", length=0)
     hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[r]) for r, _ in ROUTES[:4]]
-    fig.legend(hs, [n for _, n in ROUTES[:4]], loc="upper left", bbox_to_anchor=(0.005, 0.935), ncol=4, frameon=False,
-               fontsize=10, handlelength=1.2)  # fmt: skip
+    legend(fig, hs, [n for _, n in ROUTES[:4]], 0.865)
     S.save(fig, "s05_routes_all_arms", supp=True)
 
 
@@ -288,54 +298,61 @@ D1_RUNS = {
     "qwen3.6-27b": "x6_routes_d1_27b",
     "muse-glimmer-30b": "muse30b_x6_routes_d1_r2",
 }
-D1_PARTS = (("d1", "alf", "the pointer"), ("both", "both", "the pointer + J++"),
-            ("d1", "jpp+alf+idout", "the pointer + J++\n+ identity outside J++"))  # fmt: skip
+D1_PARTS = (("d1", "alf", "the pointer"), ("both", "both", "the pointer and\nthe J++ part"),
+            ("d1", "jpp+alf+idout", "the pointer, the\nJ++ part and identity\noutside J++"))  # fmt: skip
 
 
 def s10_removed_together(plt) -> None:
-    """Top: the sanity swap's lookup extra loss without J++, without the pointer directions, without both (batch 34's
-    bar dotted); bottom: the switches lost without the pointer directions, with J++, with a random part of J++'s share
-    (batch 36's bar: the random union + 0.15, dotted). The recall as small grey dots."""
+    """Top: the sanity swap's lookup extra loss without the J++ part, without the pointer, without both (batch 34's bar
+    dotted); middle: the switches lost without the pointer, with the J++ part, with a random part of the J++ part's
+    size (batch 36's bar: the random union + 0.15, dotted); bottom: batch 40's parts with their share of the change. The
+    recall as small grey dots."""
     runs = (("qwen3.5-9b", "9b", "Qwen3.5-9B", "qwen35_9b_x6_routes_bothoff", "qwen35_9b_x6_routes_bothoff_ctrl", "fixed"),
             ("qwen3.6-27b", "27b", "Qwen3.6-27B", "x6_routes_bothoff_27b", "x6_routes_bothoff_ctrl_27b", "fixed"),
             ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B", "qwen35_122b_x6_routes_bothoff_g75",
              "qwen35_122b_x6_routes_bothoff_ctrl_g75", "rerun"),
             ("muse-glimmer-30b", "muse", "Muse Glimmer 30B", "muse30b_x6_routes", "muse30b_x6_routes", "fixed"))  # fmt: skip
-    parts = (("jpp", "without J++"), ("alf", "without the pointer"), ("both", "without both"))
+    parts = (("jpp", "without the J++ part"), ("alf", "without the pointer"),
+             ("both", "without the J++ part\nand the pointer"))  # fmt: skip
     ctrl = (
-        ("alf", "pointer"),
-        ("alf + J++", "pointer + J++"),
-        ("alf + random (J++ share)", "pointer + random\n(J++'s share)"),
+        ("alf", "without the pointer"),
+        ("alf + J++", "without the pointer\nand the J++ part"),
+        ("alf + random (J++ share)", "without the pointer and\na random part (same size)"),
     )
-    fig, axes = plt.subplots(3, len(runs), figsize=(S.WIDTH, 8.0), sharey="row")
-    fig.subplots_adjust(left=0.21, right=0.995, top=0.86, bottom=0.07, wspace=0.10, hspace=0.62)
+    fig, axes = plt.subplots(3, len(runs), figsize=(S.WIDTH, 9.6), sharey="row",
+                             gridspec_kw={"height_ratios": [1, 1, 1.4]})  # the bottom row's labels run to three lines  # fmt: skip
+    fig.subplots_adjust(left=0.26, right=0.985, top=0.78, bottom=0.06, wspace=0.20, hspace=0.58)
     S.title(
         fig,
-        "Removing J++, the pointer and identity together: the bars",
-        "Dotted: bars fixed in advance (Q34 top, Q36 middle); bottom: Q40's parts with their share.",
+        "Removing the J++ part, the pointer and identity outside J++: the bars",
+        "Sanity swap. Extra loss (0-1): switches lost without the part, minus those lost without a random\n"
+        "part (same size). Dotted: bars fixed in advance (Q34 top, Q36 middle); bottom: Q40's parts with\n"
+        "their share of the change.",
     )
     for j, (target, _, name, run, ctrl_run, kind) in enumerate(runs):
         top, bot = axes[0, j], axes[1, j]
         S.extra_axis(top)
-        top.set_title(name, fontsize=10.5, weight="bold")
+        top.set_title(name + (S.LOWERED if kind == "rerun" else ""), fontsize=10.5, weight="bold")
         v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
         ex = {(x["condition"], x["reader"], x["part"]): x for x in (v or {}).get("extra", [])}
         if not ex:
-            S.empty(top, "pending")
+            S.empty(top, "not run")
         else:
             for i, (p, label) in enumerate(parts):
                 lk, rc = ex[("C0", X.LOOKUP, p)]["excess"], ex[("C0", X.RECALL, p)]["excess"]
                 top.plot([rc[0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
                 S.dot(top, 0, -i, lk, S.COL["lookup"], "rerun" if kind == "rerun" else "fixed")
-                S.record("s10", target, f"the sanity swap, lookup extra loss {label}", *lk, source=run)
-                S.record("s10", target, f"the sanity swap, recall extra loss {label}", *rc, source=run)
+                S.record("s10", target, f"the sanity swap, lookup extra loss {label.replace(chr(10), ' ')}", *lk,
+                         source=run)  # fmt: skip
+                S.record("s10", target, f"the sanity swap, recall extra loss {label.replace(chr(10), ' ')}", *rc,
+                         source=run)  # fmt: skip
             bar = ex[("C0", X.LOOKUP, "alf")]["excess"][0] + 0.15
             top.plot([bar, bar], [-2.35, -1.65], color="#333333", lw=1.6, ls=":")
             S.record("s10", target, "batch 34's bar (pointer alone + 0.15)", round(bar, 4), source=run)
         top.set_ylim(-len(parts) + 0.4, 0.6)
-        bot.set_xlim(0, 1)
-        bot.set_xticks([0, 0.5, 1.0], ["0", "0.5", "1"])
-        bot.set_xlabel("switches lost")
+        bot.set_xlim(0, 100)
+        bot.set_xticks(*PCT)
+        bot.set_xlabel("switches lost (%)")
         bot.grid(axis="x", color="#eeeeee")
         cv = latest(pins.RESULTS_DIR / "x6_routes" / ctrl_run, "verdict-*/verdict.json") if ctrl_run else None
         cc = {(x["condition"], x["reader"], x["arm"]): x for x in (cv or {}).get("ctrl", [])}
@@ -344,8 +361,8 @@ def s10_removed_together(plt) -> None:
         else:
             for i, (arm, label) in enumerate(ctrl):
                 lk, rc = cc[("C0", X.LOOKUP, arm)]["lost"], cc[("C0", X.RECALL, arm)]["lost"]
-                bot.plot([rc[0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
-                S.dot(bot, 0, -i, lk, S.COL["lookup"], kind)
+                bot.plot([100 * rc[0]], [-i - 0.22], "o", ms=4.5, color="#9a9a9a", zorder=3)
+                S.dot(bot, 0, -i, tuple(100 * x for x in lk), S.COL["lookup"], kind)
                 S.record(
                     "s10",
                     target,
@@ -361,10 +378,10 @@ def s10_removed_together(plt) -> None:
                     source=ctrl_run,
                 )
             bar = cc[("C0", X.LOOKUP, "alf + random (J++ share)")]["lost"][0] + 0.15
-            bot.plot([bar, bar], [-1.35, -0.65], color="#333333", lw=1.6, ls=":")
+            bot.plot([100 * bar, 100 * bar], [-1.35, -0.65], color="#333333", lw=1.6, ls=":")
             S.record("s10", target, "batch 36's bar (pointer + random + 0.15)", round(bar, 4), source=ctrl_run)
         bot.set_ylim(-len(ctrl) + 0.4, 0.6)
-        # the identity direction (batch 40): the lookup's extra loss without the pointer, the pointer + J++ (the
+        # identity outside J++ (batch 40): the lookup's extra loss without the pointer, the pointer + J++ (the
         # both-removed run) and the pointer + J++ + identity outside J++, each part's median share of the change beside it
         third = axes[2, j]
         S.extra_axis(third)
@@ -374,31 +391,32 @@ def s10_removed_together(plt) -> None:
             else None
         )
         dx = {(x["condition"], x["reader"], x["part"]): x for x in (d1 or {}).get("extra", [])}
-        if not dx:  # batch 40 covered the 9B, the 27B and Muse only (Dan ~16:40: "not in this test")
-            S.empty(third, "not in this test")
+        if not dx:  # batch 40 covered the 9B, the 27B and Muse only
+            S.empty(third, "not run")
         else:
-            for i, (src, part, _) in enumerate(D1_PARTS):
+            for i, (src, part, label) in enumerate(D1_PARTS):
                 e = (dx if src == "d1" else ex).get(("C0", X.LOOKUP, part))
                 if e is None:
                     continue
                 S.dot(third, 0, -i, e["excess"], S.COL["lookup"], kind)
                 third.text(0.98, -i, f"{100 * e['share']:.0f}%", ha="right", va="center", fontsize=9, color=S.COL["muted"],
                            transform=third.get_yaxis_transform())  # fmt: skip
-                S.record("s10", target, f"the sanity swap, lookup extra loss without {D1_PARTS[i][2]}", *e["excess"],
+                what = label.replace("\n", " ")
+                S.record("s10", target, f"the sanity swap, lookup extra loss without {what}", *e["excess"],
                          source=D1_RUNS[target] if src == "d1" else run)  # fmt: skip
-                S.record("s10", target, f"share of the change: {D1_PARTS[i][2]}", round(e["share"], 4),
+                S.record("s10", target, f"share of the change: {what}", round(e["share"], 4),
                          source=D1_RUNS[target] if src == "d1" else run)  # fmt: skip
         third.set_ylim(-len(D1_PARTS) + 0.4, 0.6)
     axes[0, 0].set_yticks([-i for i in range(len(parts))], [p[1] for p in parts])
     axes[1, 0].set_yticks([-i for i in range(len(ctrl))], [c[1] for c in ctrl])
-    axes[2, 0].set_yticks([-i for i in range(len(D1_PARTS))], [d[2].removeprefix("the ") for d in D1_PARTS])
+    axes[2, 0].set_yticks([-i for i in range(len(D1_PARTS))], [f"without {d[2]}" for d in D1_PARTS])
     for ax in axes[:, 0]:
         ax.tick_params(axis="y", length=0)
+    sh, sl = S.status_handles()
     marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7),
              plt.Line2D([], [], marker="o", ls="", color="#9a9a9a", ms=4.5),
-             plt.Line2D([], [], ls=":", color="#333333", lw=1.6)]  # fmt: skip
-    fig.legend(marks, ["lookup (95% CI)", "recall", "bar fixed in advance (Q34, Q36)"], loc="upper left",
-               bbox_to_anchor=(0.0, 0.945), ncol=3, frameon=False, fontsize=9.5, handletextpad=0.3)  # fmt: skip
+             plt.Line2D([], [], ls=":", color="#333333", lw=1.6), *sh]  # fmt: skip
+    legend(fig, marks, ["lookup (95% CI)", "recall", "bar fixed in advance (Q34, Q36)", *sl], 0.875)
     S.save(fig, "s10_removed_together_bars", supp=True)
 
 
@@ -637,21 +655,23 @@ def f01b_settings(plt) -> None:
 
 
 # Fig. 2: one panel per part, rows = models with the part's share of the change in the label; J++ and the main
-# directions from the parts runs (one-change scenes, after the data), the logit lens and random directions from the main
-# test (fixed in advance), as in parts_cells
+# directions from the parts runs (one-change scenes, after the data), the logit lens and the random atoms from the main
+# test (fixed in advance), as in parts_cells. "rand" is a dictionary of random atoms picked by the same OMP at its own
+# (smaller) share, not the matched control (Dan ~22:40)
 SPEC_PARTS = (("jpp", "J++ part"), ("pca_eq", "PCA directions (same size)"), ("wu", "logit-lens directions"),
-              ("rand", "random directions"))  # fmt: skip
+              ("rand", "random atoms"))  # fmt: skip
 
 
 def f02_specificity(plt) -> None:
     """Per part, per model: the recall's extra loss (dot with CI) and the lookup's (small purple dot); the part's share of
     the change in the row label."""
     cells = parts_cells()
-    fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, 7.2), sharex=True)
-    fig.subplots_adjust(left=0.13, right=0.99, top=0.71, bottom=0.09, wspace=0.42, hspace=0.38)
+    fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, 7.5), sharex=True)
+    fig.subplots_adjust(left=0.13, right=0.99, top=0.69, bottom=0.085, wspace=0.42, hspace=0.38)
     S.title(fig, "No other part of the same size costs the recall as much as the J++ part",
             "Extra loss (0-1): switches lost without the part, minus those lost without a random part\n"
-            "(same size). Recall with 95% CI; % = the part's share of the change.\n"
+            "(same size). Recall with 95% CI; % = the part's share of the change. Random atoms: a dictionary\n"
+            "of random atoms, picked by the same OMP at its own share.\n"
             "J++ part and PCA directions: one-pick scenes (only the asked pick changes).\n"
             "The other two panels: main test (two people swap picks).", limit=71)  # fmt: skip
     for ax, (p, title) in zip(axes.flat, SPEC_PARTS, strict=True):
@@ -680,7 +700,7 @@ def f02_specificity(plt) -> None:
     sh, sl = S.status_handles(("fixed", "after"))
     legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=8),
                  plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=6), *sh],
-           ["recall", "lookup", *sl], 0.835)  # fmt: skip
+           ["recall", "lookup", *sl], 0.805)  # fmt: skip
     S.save(fig, "fig02_specificity")
 
 
@@ -1269,8 +1289,8 @@ def f10_left(plt) -> None:
     one-axis version was hard to read)."""
     fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 4.5), sharey=True)
     fig.subplots_adjust(left=0.17, right=0.985, top=0.60, bottom=0.15, wspace=0.12)
-    # Dan's title (~22:10) as written: with "The J++ part" it would be 92 characters, below 11 pt
-    S.title(fig, "J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",
+    # Dan's title (~22:40): 84 characters, 11.0 pt
+    S.title(fig, "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",
             "Sanity swap. Lookups still switching (%), out of the whole change's switches. The line from\n"
             "grey to purple is what the part removes beyond a random part (same size): its extra loss.", limit=90)  # fmt: skip
     grey = "#a8a8a8"
@@ -1379,6 +1399,11 @@ README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f03_order, 
 README_NAMES = ("fig00_setup", "fig01_split", "fig01b_settings", "fig02_specificity", "fig03_order",
                 "fig04_routes_design", "fig05_routes", "fig06_depth", "fig07_writes", "fig08_first_mentioned",
                 "fig09_transfer", "fig10_what_is_left", "fig11_scorecard")  # fmt: skip
+# the draft set's second sheet: the supplementary figures (README Appendix A) and docs/x0_details.md's figures
+SHEET_MORE = ("supp/s01_split_all_scene_sets", "supp/s02_parts_all", "supp/s05_routes_all_arms",
+              "supp/s10_removed_together_bars", "x0_necessity/overview", "x0_necessity/detail_x0_necessity_27b_chat_chat",
+              "x0_necessity/detail_qwen35_9b_x0_necessity_chat", "x0_necessity/kmatch", "x0_necessity/kcurve",
+              "x0_necessity/share", "x0_necessity/asked_first", "status_2026-10-24/f6_digits")  # fmt: skip
 
 
 def contact_sheet(
@@ -1402,9 +1427,12 @@ def contact_sheet(
 
 
 def main(argv: list[str] | None = None) -> None:
-    """Default: figures/story/ (+ figures/supp/, docs/figures_contact_sheet.png), as before. --out DIR: a draft set
-    (Dan, 26 Oct ~21:50: figures/drafts/v5) with the supplementary figures in DIR/supp, Fig. 8b beside Fig. 8, and
-    DIR's own data.csv and contact_sheet.png; figures/story/ and docs/ stay untouched."""
+    """Default: figures/story/ (+ figures/supp/, docs/figures_contact_sheet.png), as before. --out DIR: the whole draft
+    set (Dan, 26 Oct ~21:50 / ~22:45: figures/drafts/v5): the README figures with Fig. 8b beside Fig. 8, the
+    supplementary figures in DIR/supp, docs/x0_details.md's figures in DIR/x0_necessity (x0_figures) and
+    DIR/status_2026-10-24 (x0_status_pack's f6), each folder with its data.csv; DIR/contact_sheet.png (the README
+    figures) and DIR/contact_sheet_more.png (the rest). figures/story/, figures/supp/, figures/x0_necessity/ and docs/ stay
+    untouched."""
     import argparse
 
     ap = argparse.ArgumentParser(description="The README figures, their data.csv and contact sheet.")
@@ -1412,6 +1440,7 @@ def main(argv: list[str] | None = None) -> None:
     args = ap.parse_args(argv)
     figs, sheet = list(README_FIGS), S.REPO / "docs" / "figures_contact_sheet.png"
     names: list[str] = list(README_NAMES)
+    out = None
     if args.out is not None:
         out = args.out if args.out.is_absolute() else S.REPO / args.out
         S.OUT, S.SUPP, sheet = out, out / "supp", out / "contact_sheet.png"
@@ -1422,6 +1451,13 @@ def main(argv: list[str] | None = None) -> None:
         f(plt)
     S.write_data()
     contact_sheet(plt, names, sheet)
+    if out is not None:
+        from scripts import x0_status_pack as SP
+
+        XF.render(out / "x0_necessity")
+        SP.render(out / "status_2026-10-24", ["f6"])  # after x0_figures: its style() recolours scripts.figs.common
+        plt = S.setup()
+        contact_sheet(plt, SHEET_MORE, out / "contact_sheet_more.png")
     print(S.OUT)
 
 

@@ -6,6 +6,7 @@ import csv
 import io
 import json
 import re
+from pathlib import Path
 
 import pytest
 
@@ -148,14 +149,16 @@ CAPTIONS_DRAFT = B.REPO / "docs" / "drafts" / "readme_v5_captions.md"
 
 # docs/glossary.md's banned variants, one regex each. Case-sensitive unless marked (?i:...); \b = whole words only.
 BANNED = {
-    # "J++" as a part name: a J++ not followed by " part", unless it names the lens ("identity outside J++")
-    "J++ alone": r"(?<!outside )(?<!inside )J\+\+(?! part)",
+    # "J++" as a part name: a J++ not followed by " part" (or " lens", the lens itself), unless it names the lens in
+    # "identity outside J++"
+    "J++ alone": r"(?<!outside )(?<!inside )J\+\+(?! part| lens)",
     "lens's part": r"lens's part|lens-readable part",
     # any case: "Our pointer directions" opens a sentence
     "pointer variants": r"(?i:\bour pointer\b|\bpointer directions?\b|\bpointer part\b)",
     # internal names, capitalised and whole: "U" must not hit "UNVERIFIED" or "U.S."
     "Alf / U": r"\bAlf\b|\bU\b(?!\.)",
     "idout": r"\bidout\b|\bidentity direction\b",
+    # "random directions" too: Fig. 2's dictionary is "random atoms" (Dan ~22:40)
     "random-part variants": r"random part, same size|random directions|random part of its size|J\+\+ size",
     "PCA variants": r"(?i:\bmain directions\b)",
     # removing / keeping: "X alone" in any form, "edit" and its inflections
@@ -174,11 +177,12 @@ BANNED = {
     "share variants": r"\bposition share\b",
     "cell-state variants": r"not in this test|\bqueued\b|not measurable",
     "status variants": r"fixed in advance \(main test\)|gate lowered after the data",
+    # the x0 details' own words (glossary rows added with them): any case for excess / dependence; W_U / W_E and
+    # the run code X0 exactly ("x0_kmatch", a run name, stays)
+    "x0 details variants": r"(?i:\bexcess\b|\bdependence\b|graded contrast)|\bW_[UE]\b|\bX0\b|\bC =",
 }
 KEPT = {  # exact strings that keep a banned variant, each by Dan's decision
     "Our pointer directions separate the first-mentioned item from the rest",  # Fig. 8: waits for Tuesday's "first"
-    "J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's",  # Fig. 10, 11 pt (~22:10)
-    "random directions",  # Fig. 2's fourth panel, named so in Dan's per-figure list
 }
 
 
@@ -191,10 +195,12 @@ def banned(texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
 @pytest.mark.parametrize(
     "text",
     ["the recall needs J++", "without J++", "J++ extra loss", "our pointer", "pointer directions", "Alf", "U", "idout",
-     "random part, same size", "main directions", "part removed", "The pointer alone gives position", "unchanged",
-     "added into the original", "Changed", "slot 1", "locker first", "C2", "json", "simple", "Same test, scored",
-     "B1 (purple)", "s = 4", "s*", "beta", "position share", "not in this test", "queued", "not measurable",
-     "° gate lowered after the data", "O"],
+     "random part, same size", "random directions", "main directions", "part removed", "The pointer alone gives position",
+     "unchanged", "added into the original", "Changed", "slot 1", "locker first", "C2", "json", "simple",
+     "Same test, scored", "B1 (purple)", "s = 4", "s*", "beta", "position share", "not in this test", "queued",
+     "not measurable", "° gate lowered after the data", "O", "excess (J++ minus random)", "J++ dependence", "W_U",
+     "graded contrast C", "X0 · added after data",
+     "J++, the pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's"],
 )  # fmt: skip
 def test_the_matcher_catches_each_banned_variant(text):
     assert banned([("example", text)]), text
@@ -206,44 +212,60 @@ def test_the_matcher_catches_each_banned_variant(text):
      "original answer → 2", "original\nprompt", "changed prompt", "locker after\nthe pick", "first locker",
      "simple scenes", "varied scenes: prose / JSON / table", "code shift (positions)", "β 0.15",
      "° gate lowered to 0.75 after the data", "random part (same size)", "random direction (same size)",
-     "PCA directions (same size)", "too few switches (10 of 60)", "not tested (gate)", "S.save", *KEPT],
+     "random atoms", "PCA directions (same size)", "too few switches (10 of 60)", "not tested (gate)", "S.save",
+     "the J++ lens fitted on the bf16 weights", "run x0_kmatch_27b", "switches lost (%)",
+     "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's", *KEPT],
 )  # fmt: skip
 def test_the_matcher_passes_the_canonical_strings(text):
     assert not banned([("example", text)]), banned([("example", text)])
 
 
 @pytest.fixture(scope="module")
-def figure_texts() -> list[tuple[str, str]]:
-    """Every text drawn on the README figures (Figs. 0-11, 1b and 8b): titles, subtitles, panel titles, axis and tick
-    labels, legends and notes, rendered from the run files without saving anything."""
-    import matplotlib.pyplot as plt
+def figure_texts(tmp_path_factory) -> dict[str, list[str]]:
+    """Every text drawn on every figure the README or docs/x0_details.md shows, by figure: the README figures (Figs.
+    0-11, 1b and 8b), the supplementary ones, x0_figures' and x0_status_pack's f6. Rendered from the run files with
+    savefig caught, so nothing is written (the scripts' data.csv go to a temporary folder)."""
+    import matplotlib
+    from matplotlib.figure import Figure
     from matplotlib.text import Text
 
     from scripts import readme_story_figures as F
     from scripts import story_style as S
+    from scripts import x0_figures as XF
+    from scripts import x0_status_pack as SP
+    from scripts.figs import common as FC
 
     if not (F.pins.RESULTS_DIR / "x6_routes").exists():
         pytest.skip("the run files are not in results/")
-    texts: list[tuple[str, str]] = []
+    tmp = tmp_path_factory.mktemp("figures")
+    texts: dict[str, list[str]] = {}
 
-    def grab(fig, name: str, supp: bool = False) -> None:
-        texts.extend((name, t.get_text()) for t in fig.findobj(Text) if t.get_text().strip())
-        plt.close(fig)
+    def grab(fig, fname, *args, **kwargs) -> None:
+        texts[Path(str(fname)).stem] = [t.get_text() for t in fig.findobj(Text) if t.get_text().strip()]
 
-    with pytest.MonkeyPatch.context() as mp:
-        mp.setattr(S, "save", grab)
-        mp.setattr(S, "ROWS", [])
+    with pytest.MonkeyPatch.context() as mp, matplotlib.rc_context():
+        mp.setattr(Figure, "savefig", grab)
+        for mod, name, value in ((S, "ROWS", []), (S, "OUT", tmp), (S, "SUPP", tmp / "supp"), (SP, "OUT", SP.OUT),
+                                 (SP, "SHOW_CLOSED", SP.SHOW_CLOSED), (FC, "LOOKUP", FC.LOOKUP),
+                                 (FC, "RECALL", FC.RECALL)):  # fmt: skip
+            mp.setattr(mod, name, value)  # restored on exit: the renders below set them
         p = S.setup()
-        for f in F.README_FIGS:
+        for f in (*F.README_FIGS, F.s01_split, F.s02_parts, F.s05_routes, F.s10_removed_together):
             f(p)
         F.f08b_layout(p, draft=False)
+        XF.render(tmp / "x0_necessity")
+        SP.render(tmp / "status", ["f6"])
     return texts
 
 
-def test_readme_figures_use_the_glossary(figure_texts):
-    names = {where for where, _ in figure_texts}
-    assert {"fig00_setup", "fig01b_settings", "fig08b_layout", "fig11_scorecard"} <= names, names
-    assert not banned(figure_texts), banned(figure_texts)
+def test_every_shown_figure_uses_the_glossary(figure_texts):
+    from scripts import readme_story_figures as F
+
+    # the README's figures, Fig. 8b, and the second contact sheet's (supplementary + docs/x0_details.md's)
+    shown = {*F.README_NAMES, "fig08b_layout", *(Path(n).name for n in F.SHEET_MORE)}
+    assert shown <= set(figure_texts), shown - set(figure_texts)
+    flat = [(name, t) for name, ts in figure_texts.items() for t in ts]
+    assert not banned(flat), banned(flat)
 
 
 def caption_texts() -> list[tuple[str, str]]:

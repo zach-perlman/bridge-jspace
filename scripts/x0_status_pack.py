@@ -48,8 +48,9 @@ MODELS = (("qwen3.5-9b", "Qwen3.5-9B", "qwen35_9b_x0_necessity", "qwen35_9b_x0_k
           ("qwen3.5-122b-a10b", "Qwen3.5-122B", "qwen35_122b_x0_necessity_r2", "qwen35_122b_x0_necessity_r2"))  # fmt: skip
 RUNS = ", ".join(m[2] for m in MODELS)
 BIG = (
-    "122B: FP8 weights, mixture of experts, J++ fitted on the bf16 weights, 2x H100 (hardware gate 0.998); its curve "
-    "over the number of J++ directions, the dictionaries and the digit check come from its main-test run (25-100)."
+    "122B: FP8 weights, mixture of experts, the J++ lens fitted on the bf16 weights, 2x H100 (hardware gate 0.998); its "
+    "curve over the number of directions in the J++ part, the dictionaries and the digit check come from its main-test "
+    "run (25-100)."
 )
 NAME = {X.LOOKUP: "lookup", X.RECALL: "recall"}
 CI = "95% CIs: bootstrap over bridge entities (10,000 resamples)"
@@ -298,14 +299,17 @@ DIGIT = {"qwen3.5-9b": "qwen35_9b_x0_digit_r2", "qwen3.6-27b": "x0_digit_27b_r2"
 
 def f6(plt, F, color, grey) -> None:
     """The digit check, locker-before items: extra flips lost with J++ over letter tokens vs every token (digits
-    included) at 25 / 50 / 100 atoms, and with the 10 digit directions alone."""
+    included) at 25 / 50 / 100 atoms, and with the 10 digit directions alone. Labels in docs/glossary.md's words (shown
+    on docs/x0_details.md)."""
     import json
 
     fig, axes = plt.subplots(1, len(MODELS), figsize=(18, 5.6), sharey=True)
     xs = {"jppdig": 0, 25: 1, 50: 2, 100: 3}
     for ax, (target, label, _, _) in zip(axes, MODELS, strict=True):
         run = DIGIT[target]
-        path = sorted((X.RESULTS / run).glob("strata-*/strata.json"))[-1]
+        # the newest strata file with the digit dictionaries (the 122B's strata of 26 Oct has the main one only)
+        path = next(p for p in sorted((X.RESULTS / run).glob("strata-*/strata.json"), reverse=True)
+                    if '"jppdig"' in p.read_text())  # fmt: skip
         rows = [s for s in json.loads(path.read_text())["strata"]
                 if s["feature"] == "org locker vs asked pick" and s["value"] == "before" and s["omp"] == "signed"]  # fmt: skip
         ax.axhspan(0, X.AROUND_EXCESS, color="#f1f1f1", lw=0, zorder=0)
@@ -326,24 +330,25 @@ def f6(plt, F, color, grey) -> None:
             record("f6", target, run, X.PREDICTED[target], w, "extra loss, digit directions only, locker before",
                    dig["excess"][0], dig["excess"][1], dig["excess"][2], dig["n"])  # fmt: skip
         ax.set_xticks(
-            list(xs.values()), ["10 digit\ndirections only", "25 directions", "50 directions", "100 directions"]
+            list(xs.values()), ["only the 10 digit\ndirections", "25 directions", "50 directions", "100 directions"]
         )
         ax.set_title(f"{label}, layer {X.PREDICTED[target]}")
         ax.grid(axis="y", color="#eeeeee")
         ax.set_axisbelow(True)
-    axes[0].set_ylabel(YL)
+    axes[0].set_ylabel("extra loss without the part")
     axes[0].set_ylim(-0.3, 1.0)
     h = [plt.Line2D([], [], color=F.LOOKUP, lw=2.2, marker="o"), plt.Line2D([], [], color=F.RECALL, lw=2.2, marker="o"),
          plt.Line2D([], [], color="#777777", lw=2.2), plt.Line2D([], [], color="#777777", lw=1.6, ls="--")]  # fmt: skip
-    head(fig, "Adding the digit tokens to J++ changes nothing",
-         "Items where the locker sentence comes before the pick sentence (where lookups flip). J++ over letter-bearing "
-         "tokens (as in the main test) and over every token, digits included, give the same extra loss; the 10 digit directions alone "
-         "give none.", h, ["lookup", "recall", "J++, letter tokens", "J++, every token"])  # fmt: skip
-    foot(fig, [f"n = 85-101 scenes per point (locker-before items of the main test's scenes); {CI}. Light band: 0 to "
-               "0.10, counts as 'not needed'; dotted line: 0.20, counts as 'needed'. Unverified. Descriptive, added after "
-               "the data (the reading fixed in advance: if digits made the lookup 'needed', the main test's lookup result was the excluded "
-               f"digit). {BIG}"])  # fmt: skip
-    fig.tight_layout(rect=(0, 0.07, 1, 0.80))
+    head(fig, "Adding the digit tokens to the J++ part changes nothing",
+         "Locker before the pick (where lookups switch). Extra loss (0-1): switches lost without the part, minus those "
+         "lost without a random part (same size). The J++ part over letter-bearing tokens (as in the main test) and "
+         "over every token, digits included, gives the same extra loss; removing only the 10 digit directions costs "
+         "nothing.", h, ["lookup", "recall", "J++ part, letter tokens", "J++ part, every token"])  # fmt: skip
+    foot(fig, [f"n = 85-101 scenes per point (locker before the pick, the main test's scenes); {CI}. Light band: 0 to "
+               "0.10, counts as 'not needed'; dotted line: 0.20, counts as 'needed'. Unverified. Descriptive, after the "
+               "data (the reading fixed in advance: if digits made the lookup 'needed', the main test's lookup result was "
+               f"the excluded digit). {BIG}"])  # fmt: skip
+    fig.tight_layout(rect=(0, 0.10, 1, 0.80))
     fig.savefig(OUT / "f6_digits.png", dpi=150, facecolor="white")
     plt.close(fig)
 
@@ -1299,43 +1304,18 @@ def f23(plt, F, color, grey) -> None:
     plt.close(fig)
 
 
-def main() -> None:
-    import argparse
+def render(out: Path, only: list[str] | None = None, show_closed: bool = False) -> Path:
+    """The figures named in `only` (f1 ... f23; default all) and their data.csv into out."""
     import json
 
     global OUT, SHOW_CLOSED
-    ap = argparse.ArgumentParser()
-    ap.add_argument(
-        "--show-closed", action="store_true", help="draw batch 31's runs (Dan: only once his answers are in)"
-    )
-    ap.add_argument("--out", type=Path, default=OUT)
-    a = ap.parse_args()
-    OUT, SHOW_CLOSED = a.out, a.show_closed
+    OUT, SHOW_CLOSED = out, show_closed
     OUT.mkdir(parents=True, exist_ok=True)
+    rows_csv.clear()
     plt, F, color, grey = style()
-    f1(plt, F, color, grey)
-    f2(plt, F, color, grey)
-    f3(plt, F, color, grey)
-    f4(plt, F, color, grey)
-    f5(plt, F, color, grey)
-    f6(plt, F, color, grey)
-    f7(plt, F, color, grey)
-    f8(plt, F, color, grey)
-    f9(plt, F, color, grey)
-    f10(plt, F, color, grey)
-    f11(plt, F, color, grey)
-    f12(plt, F, color, grey)
-    f13(plt, F, color, grey)
-    f14(plt, F, color, grey)
-    f15(plt, F, color, grey)
-    f16(plt, F, color, grey)
-    f17(plt, F, color, grey)
-    f18(plt, F, color, grey)
-    f19(plt, F, color, grey)
-    f20(plt, F, color, grey)
-    f21(plt, F, color, grey)
-    f22(plt, F, color, grey)
-    f23(plt, F, color, grey)
+    for f in (f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16, f17, f18, f19, f20, f21, f22, f23):
+        if only is None or f.__name__ in only:
+            f(plt, F, color, grey)
     buf = io.StringIO()
     w = csv.DictWriter(
         buf, fieldnames=["figure", "model", "run", "layer", "reader", "quantity", "value", "lo", "hi", "n"]
@@ -1346,7 +1326,20 @@ def main() -> None:
     for key, num in json.loads((pins.REPO_ROOT / "docs" / "x0_numbers.json").read_text()).items():
         w.writerow({"figure": "numbers", "run": num["source"], "quantity": key, "value": num["text"]})
     (OUT / "data.csv").write_text(buf.getvalue())
-    print(OUT)
+    return OUT
+
+
+def main() -> None:
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "--show-closed", action="store_true", help="draw batch 31's runs (Dan: only once his answers are in)"
+    )
+    ap.add_argument("--out", type=Path, default=OUT)
+    ap.add_argument("--only", nargs="*", default=None, help="the figures to draw, e.g. f6 (default: all)")
+    a = ap.parse_args()
+    print(render(a.out, a.only, a.show_closed))
 
 
 if __name__ == "__main__":
