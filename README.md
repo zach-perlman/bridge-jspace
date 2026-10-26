@@ -10,7 +10,7 @@
 - **The pointer we found is narrow:** it mostly separates the first-mentioned item from the rest and explains little outside simple scenes. About half of the lookup's route around the lens is still open.
 - **For monitoring:** a lens on the bridge word shows which item the model is using, but not where in the context the model will read its answer from.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at 1b55f52a from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at 18420efa from the run files.
 
 ## Setup
 
@@ -25,7 +25,7 @@
 
 ## 1. Recall needs the lens-readable part; the lookup does not
 
-*Fixed in advance (the main test; Muse's whole grid); the other settings' bars set before each run.*
+*Fixed in advance (the main test; Muse's whole grid; the other settings' bars).*
 
 Does removing the part of the bridge the lens can read cost the recall more than the lookup?
 
@@ -59,7 +59,7 @@ When can a change at the bridge word redirect the lookup at all?
 *Fig. 3.*
 
 - **The reason is reading order:** when the locker sentence comes first, the bridge word can carry a link back to it. When it comes later, the locker sentence makes the link itself, from the earlier, unchanged mention, and our change never reaches it.
-- **So every lookup claim is about locker-first scenes.** On the 27B's natural passages, too, the lookup switches mostly when the fact comes first (55 of 75 vs 5 of 62).
+- **So every lookup claim is about locker-first scenes.** On the 27B's natural passages the lookup switches mostly when the fact comes first (55 of 75 vs 5 of 62).
 
 ## 3. The lookup uses which item it is and where it was first mentioned
 
@@ -110,7 +110,7 @@ Is "where the item was first mentioned" a part of the bridge word that the model
 How far does the pointer we found reach?
 
 - **It mostly separates the first-mentioned item from the rest:** removing it costs the lookup most when the bridge's locker sentence opens the prompt, less when the bridge is first named in a pick sentence, and little when another item comes first. A neutral sentence before the first locker barely moves the code (B, 9B, 27B, 122B and Muse), so it tracks the order of mentions, not the position in the text; items in the first slot shift a little (0.22-0.34).
-- **Later positions are coded elsewhere:** the pointer moves the lookup to and from the first locker, not between the second and third, though the whole change does. Halfway writes are asymmetric: from the first slot they sometimes land on the second, from the third almost never; the code is first-vs-rest, not a line. A pointer found without slot labels overlaps ours by about a third, is as causal, and also misses the moves between slots 1 and 2 on the Qwens.
+- **Later positions are coded elsewhere:** the pointer moves the lookup to and from the first locker, not between the second and third on the Qwens (Muse: 0.10), though the whole change does. Halfway writes are asymmetric: from the first slot they sometimes land on the second, from the third almost never; the code is first-vs-rest, not a line. A pointer found without slot labels overlaps ours by about a third, is as causal, and also misses the moves between slots 1 and 2 on the Qwens.
 
 ![Our pointer directions separate the first-mentioned item from the rest](figures/story/fig08_first_mentioned.png)
 *Fig. 8.*

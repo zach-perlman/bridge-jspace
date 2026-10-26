@@ -703,6 +703,9 @@ def first_sentence_numbers(num: Numbers) -> None:
             ]
             num.add(f"pm_keep_slot0_{m}", f"{f2(min(slot0))} to {f2(max(slot0))}", psrc)
             num.add(f"pm_keep_12_{m}", " / ".join(f2(mv[k]["position"]["keep_alf"]) for k in ("1-2", "2-1")), psrc)
+            # the two moves pooled, weighted by their items (Fig. 8b's bar)
+            w = [(mv[k]["position"]["keep_alf"], mv[k]["n"]) for k in ("1-2", "2-1")]
+            num.add(f"pm_keep_12w_{m}", f2(sum(v * n for v, n in w) / sum(n for _, n in w)), psrc)
             num.add(f"pm_whole_12_{m}", " / ".join(f2(mv[k]["position"]["whole"]) for k in ("1-2", "2-1")), psrc)
 
 

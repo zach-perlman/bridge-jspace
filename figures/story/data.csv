@@ -441,7 +441,7 @@ fig10,muse-glimmer-30b,share of the change: + identity,0.3802,,,,muse30b_x6_rout
 fig11,qwen3.5-9b,The split (main test),held,,,,fixed
 fig11,qwen3.5-9b,The split on the logit difference,held,,,,fixed
 fig11,qwen3.5-9b,The split in varied scenes,held,,,,fixed
-fig11,qwen3.5-9b,The split in natural passages,not tested,,,,fixed
+fig11,qwen3.5-9b,The split in natural passages,held,,,,after the data
 fig11,qwen3.5-9b,Never the value,held,,,,fixed
 fig11,qwen3.5-9b,The lookup needs the pointer,held,,,,fixed
 fig11,qwen3.5-9b,The pointer alone gives position,held,,,,fixed
@@ -5459,6 +5459,7 @@ numbers,,fs_keepdiff_9b,"0.46 [0.31, 0.64]",,,,results/x0_massmean/first-sentenc
 numbers,,fs_named_9b,0.66 / 0.24 / 0.29,,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,pm_keep_slot0_9b,0.10 to 0.76,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_keep_12_9b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_keep_12w_9b,0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_whole_12_9b,0.53 / 0.78,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_27b,0.24 (n 37) / 0.05 (n 20) / 0.00 (n 13),,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_diff_27b,"0.21 [0.05, 0.35]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
@@ -5466,6 +5467,7 @@ numbers,,fs_keepdiff_27b,"0.16 [0.04, 0.31]",,,,results/x0_massmean/first-senten
 numbers,,fs_named_27b,0.24 / 0.07 / 0.00,,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,pm_keep_slot0_27b,0.00 to 0.44,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_keep_12_27b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_keep_12w_27b,0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_whole_12_27b,0.24 / 0.38,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_122b,0.52 (n 25) / 0.21 (n 19) / 0.00 (n 10),,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_diff_122b,"0.38 [0.21, 0.56]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
@@ -5473,6 +5475,7 @@ numbers,,fs_keepdiff_122b,"0.07 [−0.16, 0.32]",,,,results/x0_massmean/first-se
 numbers,,fs_named_122b,0.52 / 0.18 / 0.08,,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,pm_keep_slot0_122b,0.15 to 0.47,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_keep_12_122b,0.00 / 0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_keep_12w_122b,0.00,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_whole_12_122b,0.40 / 0.35,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,fs_groups_muse,0.51 (n 39) / 0.14 (n 21) / 0.00 (n 7),,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,fs_diff_muse,"0.41 [0.25, 0.59]",,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
@@ -5480,6 +5483,7 @@ numbers,,fs_keepdiff_muse,"0.23 [0.09, 0.39]",,,,results/x0_massmean/first-sente
 numbers,,fs_named_muse,0.51 / 0.21 / 0.00,,,,results/x0_massmean/first-sentence-20261026T155222Z/first.json
 numbers,,pm_keep_slot0_muse,0.16 to 0.69,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_keep_12_muse,0.04 / 0.16,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
+numbers,,pm_keep_12w_muse,0.10,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,pm_whole_12_muse,0.49 / 0.71,,,,results/x8_write/pairs-20261026T151225Z/pairs.json
 numbers,,ld_gap_9b,"0.48 [0.42, 0.53]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json
 numbers,,ld_lk_9b,"−0.05 [−0.07, −0.03]",,,,results/x0_logit_diff/x0_logit_diff_20261026/ld.json

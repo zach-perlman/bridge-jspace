@@ -1123,10 +1123,11 @@ def f10_left(plt) -> None:
     """The sanity swap: the share of the whole change's lookup switches still switching with J++ and the pointer removed
     (the both-removed runs) and with identity outside J++ removed too (batch 40), each beside a random part of the same
     size (grey); the part's median share of the change in its label."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 5.2))
-    fig.subplots_adjust(left=0.09, right=0.995, top=0.68, bottom=0.27)
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 5.6))
+    fig.subplots_adjust(left=0.09, right=0.995, top=0.63, bottom=0.25)
     S.title(fig, "About half the lookups still switch with J++ and the pointer removed",
-            "Sanity swap. '+ identity': also identity outside J++. % = the part's share of the change.")  # fmt: skip
+            "Sanity swap. Still switching: a share of the whole change's switches, so it can exceed 1.\n"
+            "'+ identity': also identity outside J++. % = the part's share of the change.")  # fmt: skip
     ticks, labels = [], []
     for i, (target, m, _name) in enumerate(S.MODELS):
         for k, (part, label) in enumerate(LEFT_PARTS):
@@ -1158,13 +1159,14 @@ def f10_left(plt) -> None:
                 va="top", fontsize=S.FONT, weight="bold")  # fmt: skip
     ax.set_xticks([t + 0.16 for t in ticks], labels)
     ax.tick_params(axis="x", length=0)
-    ax.set_ylim(0, 1)
+    ax.set_ylim(0, 1.12)  # a random part can leave more switches than the whole change (Muse: 1.05)
+    ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     ax.set_ylabel("lookups still switching")
     ax.grid(axis="y", color="#eeeeee")
     ax.set_axisbelow(True)
     sh, sl = S.status_handles()
     legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8), plt.Line2D([], [], marker="o", ls="", color="#a8a8a8", ms=8), *sh],
-           ["part removed", "random part, same size", *sl], 0.86)  # fmt: skip
+           ["part removed", "random part, same size", *sl], 0.82)  # fmt: skip
     S.save(fig, "fig10_what_is_left")
 
 
@@ -1174,7 +1176,7 @@ SCORECARD_V4 = (
     ("The split (main test)", {"9b": ("held", 0), "27b": ("partial", 0), "122b": ("held", 0), "muse": ("held", 0)}),
     ("The split on the logit difference", {"9b": ("held", 0), "27b": ("held", 0), "122b": ("held", 0), "muse": ("held", 0)}),
     ("The split in varied scenes", {"9b": ("held", 0), "27b": ("held", 0), "122b": ("partial", 0), "muse": ("held", 0)}),
-    ("The split in natural passages", {"9b": ("not tested", 0), "27b": ("partial", 0), "122b": ("held", 0),
+    ("The split in natural passages", {"9b": ("held", 1), "27b": ("partial", 0), "122b": ("held", 0),
                                        "muse": ("not tested", 0)}),
     ("Never the value", {"9b": ("held", 0), "27b": ("held", 0), "122b": ("held", 1), "muse": ("held", 0)}),
     ("The lookup needs the pointer", {"9b": ("held", 0), "27b": ("partial", 1), "122b": ("held", 1), "muse": ("held", 0)}),
@@ -1191,9 +1193,12 @@ SYMBOL = {"held": ("✓", "#2f7d4f"), "partial": ("~", "#b07a0a"), "no": ("✗",
 def f11_scorecard(plt) -> None:
     """Rows = claims in story order, columns = models; a symbol per cell (held / partial / no / not tested) and a small
     'a' for after the data."""
-    fig, ax = plt.subplots(figsize=(S.WIDTH, 6.6))
-    fig.subplots_adjust(left=0.36, right=0.99, top=0.86, bottom=0.02)
+    fig, ax = plt.subplots(figsize=(S.WIDTH, 6.9))
+    fig.subplots_adjust(left=0.36, right=0.99, top=0.86, bottom=0.07)
     S.title(fig, "What held where", "✓ held   ~ partial   ✗ no   – not tested;   a: after the data")
+    n_sw, n = N.get("nat_lk_whole_sw_muse"), N.get("nat_n_muse")
+    fig.text(0.01, 0.015, f"*Muse, natural passages: not measurable; the lookup switches in {n_sw} of {n}.",
+             color=S.COL["muted"])  # fmt: skip
     for j, (target, m, name) in enumerate(S.MODELS):
         ax.text(j, 0.75, name.replace(" Glimmer 30B", "\nGlimmer 30B"), ha="center", va="bottom", fontsize=S.FONT,
                 weight="bold")  # fmt: skip
@@ -1203,6 +1208,8 @@ def f11_scorecard(plt) -> None:
             ax.text(j, -i, sym, ha="center", va="center", fontsize=S.FONT + 7, color=col, weight="bold")
             if after:
                 ax.text(j + 0.2, -i + 0.18, "a", ha="left", va="center", fontsize=S.FONT, color=S.COL["muted"])
+            if claim == "The split in natural passages" and m == "muse":  # the footnote under the figure
+                ax.text(j + 0.2, -i + 0.18, "*", ha="left", va="center", fontsize=S.FONT + 2, color=S.COL["muted"])
             S.record("fig11", target, claim.replace("\n", " "), status, source="after the data" if after else "fixed")
     for i in range(len(SCORECARD_V4)):
         if i % 2 == 0:
