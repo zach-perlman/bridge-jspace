@@ -437,3 +437,12 @@ def test_verdict_and_summary_of_45k_runs(tmp_path, monkeypatch):
     (tmp_path / "x6_routes" / "r27" / "c0_check.json").write_text(json.dumps({"ok": False}))
     s = json.loads((R.stage_jppk_summary(["r27", "r9"], n_boot=100) / "x45k.json").read_text())
     assert s["q45_9"]["outcome"] == ["not scored: the 27B's C0 check failed"]
+
+
+def test_orthonormal_spans_the_columns_and_keeps_the_device():
+    a = torch.tensor([[1.0, 1.0, 2.0], [0.0, 1.0, 1.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])  # rank 2
+    q = R.orthonormal(a)
+    assert q.shape == (4, 2) and q.device == a.device and q.dtype == torch.float64
+    assert torch.allclose(q.T @ q, torch.eye(2, dtype=torch.float64), atol=1e-10)
+    assert torch.allclose(q @ (q.T @ a.double()), a.double(), atol=1e-10)  # spans every column
+    assert R.orthonormal(torch.zeros(4, 2)).shape == (4, 0)

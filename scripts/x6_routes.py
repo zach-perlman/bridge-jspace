@@ -557,7 +557,9 @@ def orthonormal(a):
 
     a = a.double()
     a = a[:, None] if a.dim() == 1 else a
-    u, s, _ = torch.linalg.svd(a, full_matrices=False)
+    # the SVD of a thin [d, m] matrix on the CPU: on a crowded GPU cusolver may fail to create its handle (45k Muse)
+    u, s, _ = torch.linalg.svd(a.cpu(), full_matrices=False)
+    u = u.to(a.device)
     return u[:, s > s[0] * 1e-6] if s.numel() and float(s[0]) > 0 else u[:, :0]
 
 
