@@ -1,0 +1,29 @@
+id: x45n_9b
+title: "Batch 45n on the 9B (L12): is the link the locker sentences carry outside the lens? 45b's locker-sentence copy at L, whole / without each token's J++ part / without a random part of its share"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.15
+depends_on: [x45_0_indep_9b]
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x45b_binding.py link --name qwen35_9b_x45n --why "batch 45, test 45n (jobs/c3/batch45.yaml; Q45.11): 45b's locker-sentence copy at L without each token's J++ part vs without a random part"
+question: >-
+  When the locker comes after the pick, does the locker-sentence copy still switch the lookup without the J++ part of
+  each copied token?
+why_it_matters: >-
+  45b held: copying S's states into the locker-sentence tokens at L switches about 0.6 of S's lookups. If the copy works
+  without its J++ part, the link the locker sentences carry is outside the lens, as the bridge word's pointer is.
+hypotheses:
+  Q45.11: "Dan's answer in predictions/2026-10-26_dan.md (Q45.11), committed before any 45n code (3d59e139)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45n): "the copied link is outside the lens" if the copy without J++ still
+  switches at least 0.8 of what the full copy switches, and at least as much as the copy without the random part minus
+  0.1, on both 9B and 27B; Muse reported. As computed: the lookup's switch rate over 45b's items that pass Dan's sanity
+  check (O and S the same length and token ids after the bridge word), point estimates; x45b_binding.py link-verdict.
+controls:
+- 'the full copy (45b arm c) and the copy without a random part of each token''s J++ share (X0''s random subspace)'
+- 'O unedited and S read on S'
+- 'the recall on the identical patches (descriptive)'
+n: '45b''s locker-after items that pass the sanity check (the drops counted)'
+seeds: [0, 888]
+notes: "By hand after the runs land: uv run python scripts/x45b_binding.py link-verdict --names qwen35_9b_x45n x45n_27b [muse30b_x45n] (CPU)."

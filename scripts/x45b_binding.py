@@ -58,7 +58,11 @@ from scripts import x0_strata as ST
 EXP = "x45b_binding"
 RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch45.yaml"
-MAIN_RUN = {"qwen3.5-9b": "qwen35_9b_x0_necessity", "qwen3.6-27b": "x0_necessity_27b_chat"}
+MAIN_RUN = {
+    "qwen3.5-9b": "qwen35_9b_x0_necessity",
+    "qwen3.6-27b": "x0_necessity_27b_chat",
+    "muse-glimmer-30b": "muse30b_x0_necessity",
+}  # Muse: Dan ~22:35, 45b on Muse after the sweep
 RENDERING = "chat"
 LOCKER_PREFIX = "The locker of "
 BRIDGE_ARMS = ("a", "b_half", "b_quarter")
@@ -526,6 +530,152 @@ def stage_sweep_table(name: str, n_boot: int = X.N_BOOT) -> Path:
     return out
 
 
+# 45n (Dan ~22:35, fixed in advance, jobs/c3/batch45.yaml): is the link the locker sentences carry outside the lens?
+LINK_ARMS = {"c": "S patched into O at every locker-sentence token, at L (45b's c)",
+             "c_nojpp": "the same copy without each token's J++ part (signed OMP, k = 25)",
+             "c_norand": "the same copy without a random part of each token's J++ share"}  # fmt: skip
+LINK_SHARE, LINK_SLACK = 0.8, 0.1  # without J++ >= 0.8 x the full copy, and >= without the random part - 0.1
+LINK_MODELS = ("qwen3.5-9b", "qwen3.6-27b")  # the rule reads these two; Muse is reported, not counted
+EPS = 1e-9
+
+
+def link_parts(delta, jdic, basis, k: int = X.K_MAIN):
+    """Per locker token (row of delta [n, d]): its J++ part (signed OMP, k atoms of jdic) and a random part of the same
+    share of the row's squared norm (X0's random subspace); rows with no change keep zero parts."""
+    import torch
+
+    from scripts import statement_positions as SP
+
+    part = torch.zeros_like(delta)
+    live = delta.norm(dim=-1) > 0
+    if bool(live.any()):
+        part[live] = X.fit(jdic, delta[live], k, "signed").to(delta.dtype)
+    share = part.norm(dim=-1) ** 2 / (delta.norm(dim=-1) ** 2).clamp_min(1e-30)
+    return part, SP.random_subspace_part(delta, share, basis).to(delta.dtype), share
+
+
+def stage_link(name: str, why: str) -> Path:
+    """45n's run (GPU): the 45b items at L; arms none, c, c_nojpp, c_norand, read on O, and S read on S."""
+    import torch
+
+    from bridge_jspace import chat
+    from bridge_jspace.lens import JLens
+    from bridge_jspace.model import load_model
+    from bridge_jspace.utils import git_state, progress
+    from scripts import statement_positions as SP
+    from scripts.exp04_brew_parts import AddRows
+
+    pins.check_run_name(name)
+    assert chat.FORMAT == "chat", "45n renders the main test's chat prompts: run with BJ_FORMAT unset"
+    target = pins.TARGET
+    assert target in MAIN_RUN, f"45n runs on {sorted(MAIN_RUN)}, not {target}"
+    main_run, layer = MAIN_RUN[target], X.PREDICTED[target]
+    out = RESULTS / name
+    out.mkdir(parents=True, exist_ok=False)
+    m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+         "model": pins.model_pin(), "code": git_state(), "main_run": main_run, "layer": layer, "test": "45n",
+         "arms": {**LINK_ARMS, "none": ARM_TEXT["none"], "S": ARM_TEXT["S"]}, "k": X.K_MAIN, "omp": "signed",
+         "random_part": f"X0's random subspace, seed {X.SUBSPACE_SEED} + layer, at each token's J++ share",
+         "items_rule": "as the 45b run (x45b_binding.select); the verdict keeps the items passing same_after_bridge",
+         "spec": "jobs/c3/batch45.yaml (45n)", "seeds": {"bootstrap": X.BOOT_SEED}}  # fmt: skip
+    (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
+    model = load_model()
+    tok = model.tokenizer
+    items, counts = select(tok, main_run, layer)
+    (out / "plan.json").write_text(json.dumps(counts, indent=2) + "\n")
+    X.write_jsonl(out / "cases.jsonl", items)
+    assert items, "no items"
+    ws = X.whitespace_mask(model)
+    digits = torch.tensor(X.digit_ids(tok), device=model.device)
+    jdic = JLens(model, "jpp").vectors(layer, model.letter_token_ids())
+    rows, norms, basis = [], [], None
+    with torch.no_grad():
+        for it in progress(items, f"45n at L{layer} (item)"):
+            ids = it["readers"][X.LOOKUP]["ids"]
+            h = {v: model.run(torch.tensor([ids[v]], device=model.device), record=(layer,))[1][layer]
+                 for v in ("org", "alt")}  # fmt: skip
+            patched, source = it["patched"], it["source"]
+            delta = (h["alt"][source] - h["org"][patched]).float().to(jdic.device)
+            if basis is None:
+                basis = SP.random_basis(delta.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer))
+                basis = basis.to(delta.device)
+            part, rand, share = link_parts(delta, jdic, basis)
+            dt = h["org"].dtype
+            edits = {"none": {}, "c": {layer: AddRows(delta.to(dt), patched)},
+                     "c_nojpp": {layer: AddRows((delta - part).to(dt), patched)},
+                     "c_norand": {layer: AddRows((delta - rand).to(dt), patched)}}  # fmt: skip
+            live = delta.norm(dim=-1) > 0
+            norms.append({"scene": it["scene"], "positions": len(patched), "changed_positions": int(live.sum()),
+                          "median_jpp_share": round(float(share[live].median()), 5) if bool(live.any()) else None})  # fmt: skip
+            for w, rd in it["readers"].items():
+                base = {"scene": it["scene"], "entity": it["entity"], "reader": w}
+                logits, _ = X.read_logits(model, rd["ids"]["org"], list(edits.values()), RENDERING, it["space"], ws)
+                s_logits, _ = X.read_logits(model, rd["ids"]["alt"], [{}], RENDERING, it["space"], ws)
+                for arm, lg in zip((*edits, S_ARM), [*logits, s_logits[0]], strict=True):
+                    rows.append({**base, "arm": arm, **X.read_row(lg, rd, digits)})
+    X.write_jsonl(out / "outcomes.jsonl", rows)
+    X.write_jsonl(out / "norms.jsonl", norms)
+    print("wrote", out, flush=True)
+    return out
+
+
+def link_rule(rate: dict[str, float]) -> bool:
+    """45n on one model's lookup switch rates (point estimates)."""
+    return (rate["c_nojpp"] >= LINK_SHARE * rate["c"] - EPS
+            and rate["c_nojpp"] >= rate["c_norand"] - LINK_SLACK - EPS)  # fmt: skip
+
+
+def stage_link_verdict(names: list[str], n_boot: int = X.N_BOOT) -> Path:
+    """45n's verdict over its runs: per model, the items passing the sanity check, each arm's switch rate per reader
+    with its CI, the rule per model and over the 9B and the 27B."""
+    out = RESULTS / f"x45n-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir()
+    blob: dict[str, Any] = {"rule": f"without J++ >= {LINK_SHARE} x the full copy and >= without the random part - "
+                                    f"{LINK_SLACK}, lookup, point estimates; both of {list(LINK_MODELS)}", "runs": {}}  # fmt: skip
+    lines = ["# 45n: is the link the locker sentences carry outside the lens? (jobs/c3/batch45.yaml, fixed in advance)",
+             "", "Lookup switch rate over the items passing the sanity check (O and S the same length and the same ids "
+             "after the bridge word); recall descriptive. UNVERIFIED.", "",
+             "| run | model | items (pass / all) | reader | " + " | ".join(("none", *LINK_ARMS, S_ARM)) + " | holds |",
+             "|---|---|---|---|" + "---|" * (len(LINK_ARMS) + 3)]  # fmt: skip
+    arms = ("none", *LINK_ARMS, S_ARM)
+    for name in names:
+        src = RESULTS / name
+        m = json.loads((src / "manifest.json").read_text())
+        keep, sanity = sane(X.read_jsonl(src / "cases.jsonl"))
+        rows = [r for r in X.read_jsonl(src / "outcomes.jsonl") if r["scene"] in keep]
+        res: dict[str, Any] = {"model": m["model"]["target"], "sanity": sanity, "readers": {}}
+        for w in X.READERS:
+            mine = [r for r in rows if r["reader"] == w]
+            ent = {r["scene"]: r["entity"] for r in mine}
+            scenes = list(ent)
+            by = {(r["scene"], r["arm"]): int(r["switched"]) for r in mine}
+            cols = {a: [by[(s, a)] for s in scenes] for a in arms}
+            boot = X.resampled_rates(cols, [ent[s] for s in scenes], n_boot)
+            res["readers"][w] = {a: [sum(cols[a]) / len(scenes), *X.interval(boot[a])] for a in arms}
+        rate = {a: v[0] for a, v in res["readers"][X.LOOKUP].items()}
+        res["holds"] = link_rule(rate)
+        blob["runs"][name] = res
+        for w in X.READERS:
+            cells = " | ".join(fmt(res["readers"][w][a]) for a in arms)
+            mark = ("yes" if res["holds"] else "no") if w == X.LOOKUP else ""
+            lines.append(f"| {name} | {res['model']} | {sanity['pass']} / {sanity['items']} | "
+                         f"{'lookup' if w == X.LOOKUP else 'recall'} | {cells} | {mark} |")  # fmt: skip
+    counted = {r["model"]: r["holds"] for r in blob["runs"].values() if r["model"] in LINK_MODELS}
+    blob["outlink"] = all(counted.get(t, False) for t in LINK_MODELS)
+    blob["missing"] = [t for t in LINK_MODELS if t not in counted]
+    verdict = ("the copied link is outside the lens" if blob["outlink"] else
+               "pending" if blob["missing"] else "not outside the lens")  # fmt: skip
+    blob["verdict"] = verdict
+    lines += [
+        "",
+        f"Verdict (both 9B and 27B): **{verdict}**" + (f" (missing: {blob['missing']})" if blob["missing"] else ""),
+    ]
+    (out / "x45n.json").write_text(json.dumps(blob, indent=1) + "\n")
+    (out / "x45n.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+    return out
+
+
 def site(arm: str) -> str:
     return "bridge word" if arm in BRIDGE_ARMS else "locker sentences" if arm in LOCKER_ARMS else "-"
 
@@ -618,6 +768,23 @@ def fmt(v: list) -> str:
     return "-" if v[0] is None else f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"
 
 
+def same_after_bridge(it: dict) -> bool:
+    """Dan's sanity check (26 Oct ~22:35): O and S have the same token count and every position after the bridge word
+    holds the same token id in both, for both readers' prompts (else S also differs after the bridge, e.g. the other
+    swapped pick comes later)."""
+    for rd in it["readers"].values():
+        o, s = rd["ids"]["org"], rd["ids"]["alt"]
+        if len(o) != len(s) or o[it["pos"] + 1 :] != s[it["pos"] + 1 :]:
+            return False
+    return True
+
+
+def sane(items: list[dict]) -> tuple[set[str], dict[str, int]]:
+    """The scenes that pass same_after_bridge, and the counts (pass / dropped)."""
+    keep = {it["scene"] for it in items if same_after_bridge(it)}
+    return keep, {"items": len(items), "pass": len(keep), "dropped": len(items) - len(keep)}
+
+
 def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     src = RESULTS / name
     m = json.loads((src / "manifest.json").read_text())
@@ -634,11 +801,18 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     med_norm = {arm: statistics.median(x["delta_norm"] for x in norms if x["arm"] == arm)
                 for arm in (*BRIDGE_ARMS, *LOCKER_ARMS)}  # fmt: skip
     checks = agreement(items, rows, layers)
+    keep, sanity = sane(items)  # Dan ~22:35: the rule again on the items that pass the sanity check
+    sane_lk = None
+    if keep:
+        _, ents, sw = item_table([x for x in rows if x["scene"] in keep], X.LOOKUP)
+        sane_lk = numbers(sw, ents, n_boot)
+    sanity["rule"] = rule(sane_lk) if sane_lk else None
     out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir()
     blob = {"run": name, "model": m["model"], "main_run": m["main_run"], "layer": m["layer"], "arm_layers": layers,
             "rule_text": RULE, "rule": r, "readers": per_reader, "plan": plan, "checks": checks,
-            "median_delta_norm": med_norm, "n_boot": n_boot, "seed": X.BOOT_SEED}  # fmt: skip
+            "median_delta_norm": med_norm, "n_boot": n_boot, "seed": X.BOOT_SEED, "sanity": sanity,
+            "sanity_lookup": sane_lk}  # fmt: skip
     (out / "verdict.json").write_text(json.dumps(blob, indent=2) + "\n")
     lk = per_reader[X.LOOKUP]
     lines = [f"# 45b, where the binding is made when the locker comes after the pick: {name}", "",
@@ -665,6 +839,12 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
               f"{fmt(rc['of_S'][arm])} ({rc['hits_of_S'][arm]} / {rc['S_switched']}) |" for arm in LOCKER_ARMS]  # fmt: skip
     lines += ["", "Checks against the main run (descriptive): " + "; ".join(
         f"{k}: {v['agree']} of {v['n']} agree (rerun {v['rerun']}, stored {v['stored']})" for k, v in checks.items())]  # fmt: skip
+    lines += ["", f"Sanity check (Dan ~22:35: O and S the same length, the same token ids after the bridge word, both "
+              f"readers): {sanity['pass']} of {sanity['items']} items pass, {sanity['dropped']} dropped."]  # fmt: skip
+    if sane_lk:
+        lines.append(f"The rule on the passing items: {sanity['rule']['verdict']}; (c) {sane_lk['hits_of_S']['c']} of "
+                     f"{sane_lk['S_switched']} S switches ({fmt(sane_lk['of_S']['c'])}), (d) {sane_lk['hits_of_S']['d']} "
+                     f"({fmt(sane_lk['of_S']['d'])}), (a) {sane_lk['hits']['a']} of {sane_lk['n']} ({fmt(sane_lk['rate']['a'])}).")  # fmt: skip
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     return out
@@ -747,13 +927,18 @@ def stage_examples(name: str, k: int = X.K_EXAMPLES, seed: int = X.EXAMPLES_SEED
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["plan", "run", "verdict", "examples", "sweep", "sweep-table"])
+    ap.add_argument("stage", choices=["plan", "run", "verdict", "examples", "sweep", "sweep-table", "link",
+                                      "link-verdict"])  # fmt: skip
     ap.add_argument("--name", help="run name (results/x45b_binding/<name>/); not for plan")
+    ap.add_argument("--names", nargs="+", default=[], help="link-verdict: the 45n runs (9B, 27B, Muse if run)")
     ap.add_argument("--why", default="batch 45, test 45b (jobs/c3/batch45.yaml)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
+        return
+    if a.stage == "link-verdict":
+        stage_link_verdict(a.names, a.n_boot)
         return
     assert a.name, f"{a.stage} needs --name"
     if a.stage == "run":
@@ -764,6 +949,8 @@ def main() -> None:
         stage_sweep(a.name, a.why)
     elif a.stage == "sweep-table":
         stage_sweep_table(a.name, a.n_boot)
+    elif a.stage == "link":
+        stage_link(a.name, a.why)
     else:
         stage_examples(a.name)
 

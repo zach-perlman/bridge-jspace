@@ -202,6 +202,10 @@ tests:
       gate fails is "not tested" and does not count as holding. X0's validity bar (S_whole >= 0.30 and >= 30 switches)
       reported per cell, not in the rule.
     queue: after the 45b sweep, before 45k; 45a on the 122B dropped to make room (Dan ~22:10).
+    change_before_run: >-
+      Dan ~22:40, before any 45m job started: every generated scene (x0_necessity --n-items 600), not the first 200, so
+      the locker-before rule rests on about 200 scenes per model. The agent's other readings (the insertion slot, the
+      number style, a failed gate counting among the 3) agreed.
     gpu_hours: 1.5
 
   # added 26 Oct ~22:35 (Dan, after 45b held); fixed before any 45n code or run

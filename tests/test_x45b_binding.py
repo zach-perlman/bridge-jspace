@@ -479,3 +479,116 @@ def test_sweep_stage_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
     assert torch.allclose(h["org"][it["patched"]] + edits[arms.index(f"ls{la}")][la].delta, h["alt"][it["source"]])
     cells = json.loads((B.stage_sweep_table("fake_sweep", n_boot=200) / "sweep.json").read_text())["cells"]
     assert [c["layer"] for c in cells[X.LOOKUP]] == layers and all(c["n"] == 12 for c in cells[X.RECALL])
+
+
+# ---- Dan's sanity check and 45n -------------------------------------------------------------------------------------
+
+
+def _ids_item(scene: str, org: list[int], alt: list[int], pos: int) -> dict:
+    return {"scene": scene, "pos": pos, "readers": {w: {"ids": {"org": org, "alt": alt}} for w in X.READERS}}
+
+
+def test_same_after_bridge():
+    assert B.same_after_bridge(_ids_item("a", [1, 2, 3, 4], [1, 9, 3, 4], 1))  # only the bridge differs
+    assert B.same_after_bridge(_ids_item("b", [5, 2, 3, 4], [6, 9, 3, 4], 1))  # the other pick comes first
+    assert not B.same_after_bridge(_ids_item("c", [1, 2, 3, 4], [1, 9, 3, 7], 1))  # a later token differs
+    assert not B.same_after_bridge(_ids_item("d", [1, 2, 3, 4], [1, 9, 3], 1))  # lengths differ
+    # the fake items swap Julia's pick (the bridge) and Mark's, which comes later: they fail
+    assert not B.same_after_bridge(item_record(0, WordTok()))
+    keep, counts = B.sane([_ids_item("a", [1, 2], [1, 3], 1), _ids_item("c", [1, 2, 3], [1, 9, 7], 1)])
+    assert keep == {"a"} and counts == {"items": 2, "pass": 1, "dropped": 1}
+
+
+def test_link_parts_share_and_zero_rows():
+    import torch
+
+    from scripts import statement_positions as SP
+
+    g = torch.Generator().manual_seed(3)
+    d = 24
+    jdic = torch.randn(60, d, generator=g)
+    jdic = jdic / jdic.norm(dim=1, keepdim=True)
+    delta = torch.randn(5, d, generator=g)
+    delta[2] = 0
+    basis = SP.random_basis(d, torch.Generator().manual_seed(0))
+    part, rand, share = B.link_parts(delta, jdic, basis, k=4)
+    assert float(part[2].abs().max()) == 0 and float(rand[2].abs().max()) == 0
+    live = [0, 1, 3, 4]
+    assert ((share[live] > 0) & (share[live] <= 1 + 1e-6)).all()
+    # the random part holds the same share to within one basis direction
+    rshare = rand.norm(dim=-1) ** 2 / delta.norm(dim=-1).clamp_min(1e-30) ** 2
+    one = ((delta @ basis) ** 2 / delta.norm(dim=-1, keepdim=True).clamp_min(1e-30) ** 2).max(dim=-1).values
+    assert ((rshare[live] - share[live]).abs() <= one[live] + 1e-5).all()
+
+
+def test_link_stage_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
+    import torch
+
+    from bridge_jspace import lens as L
+    from bridge_jspace import model as M
+
+    class FakeLens:
+        def __init__(self, model, name):
+            pass
+
+        def vectors(self, layer, ids):
+            v = torch.randn(40, 8, generator=torch.Generator().manual_seed(layer))
+            return v / v.norm(dim=1, keepdim=True)
+
+    tok = WordTok()
+    items = [item_record(i, tok) for i in range(10)]
+    fake = FakeModel(tok)
+    fake.letter_token_ids = lambda: list(range(40))
+    monkeypatch.setattr(M, "load_model", lambda: fake)
+    monkeypatch.setattr(L, "JLens", FakeLens)
+    monkeypatch.setattr(B, "select", lambda *_: (items, {"items": 10}))
+    monkeypatch.setattr(B, "RESULTS", tmp_path / "x45b")
+    out = B.stage_link("fake_link", "test")
+    rows = X.read_jsonl(out / "outcomes.jsonl")
+    arms = ["none", *B.LINK_ARMS, "S"]
+    assert {(r["scene"], r["reader"], r["arm"]) for r in rows} == {
+        (it["scene"], w, a) for it in items for w in X.READERS for a in arms
+    }
+    # c is 45b's full copy: O's locker tokens become S's; c_nojpp and c_norand subtract parts of it at the same tokens
+    it, (_, edits) = items[0], fake.calls[0]
+    ids = it["readers"][X.LOOKUP]["ids"]
+    la = X.PREDICTED[__import__("bridge_jspace.pins", fromlist=["TARGET"]).TARGET]
+    h = {v: fake.run(torch.tensor([ids[v]]), record=(la,))[1][la] for v in ("org", "alt")}
+    full = edits[arms.index("c")][la]
+    assert full.positions == it["patched"] and torch.allclose(
+        h["org"][it["patched"]] + full.delta, h["alt"][it["source"]]
+    )
+    assert all(edits[arms.index(a)][la].positions == it["patched"] for a in ("c_nojpp", "c_norand"))
+    assert len(X.read_jsonl(out / "norms.jsonl")) == 10
+
+
+def test_link_rule():
+    assert B.link_rule({"c": 0.6, "c_nojpp": 0.5, "c_norand": 0.55})  # 0.5 >= 0.48 and >= 0.45
+    assert not B.link_rule({"c": 0.6, "c_nojpp": 0.45, "c_norand": 0.5})  # under 0.8 of the full copy
+    assert not B.link_rule({"c": 0.5, "c_nojpp": 0.45, "c_norand": 0.6})  # more than 0.1 under the random part's
+    assert B.link_rule({"c": 0.5, "c_nojpp": 0.4, "c_norand": 0.5})  # exactly at both bars
+
+
+def test_link_verdict_on_planted_runs(tmp_path, monkeypatch):
+    monkeypatch.setattr(B, "RESULTS", tmp_path)
+    for name, target, nojpp in (("r9", "qwen3.5-9b", 1), ("r27", "qwen3.6-27b", 0)):
+        src = tmp_path / name
+        src.mkdir()
+        (src / "manifest.json").write_text(json.dumps({"model": {"target": target}}))
+        cases = [_ids_item(f"s{i}", [1, 2, 3], [1, 9, 3] if i < 18 else [1, 9, 7], 1) for i in range(20)]
+        X.write_jsonl(src / "cases.jsonl", cases)
+        rows = []
+        for i in range(20):
+            for w in X.READERS:
+                for arm, sw in (("none", 0), ("c", 1), ("c_nojpp", nojpp), ("c_norand", 1), ("S", 1)):
+                    rows.append({"scene": f"s{i}", "entity": f"e{i % 5}", "reader": w, "arm": arm, "switched": sw})
+        X.write_jsonl(src / "outcomes.jsonl", rows)
+    blob = json.loads((B.stage_link_verdict(["r9", "r27"], n_boot=100) / "x45n.json").read_text())
+    assert blob["runs"]["r9"]["sanity"] == {"items": 20, "pass": 18, "dropped": 2}
+    assert blob["runs"]["r9"]["holds"] and not blob["runs"]["r27"]["holds"]
+    assert blob["verdict"] == "not outside the lens"
+    other = tmp_path / "only9b"  # a second root: verdict folders are named by the second
+    other.mkdir()
+    (other / "r9").symlink_to(tmp_path / "r9")
+    monkeypatch.setattr(B, "RESULTS", other)
+    assert json.loads((B.stage_link_verdict(["r9"], n_boot=100) / "x45n.json").read_text())["verdict"] == "pending"

@@ -898,7 +898,7 @@ def figures(verdict_dir: Path) -> list[Path]:
 
 
 def main() -> None:
-    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT, NONNEG  # the manifest records them
+    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT, NONNEG, N_ITEMS  # the manifest records them
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name", required=True, help="run name (results/x0_necessity/<name>/)")
@@ -912,6 +912,8 @@ def main() -> None:
     ap.add_argument("--curve-k", nargs="*", type=int, default=list(K_CURVE),
                     help="run: the k curve's atom counts (none given: no k curve)")  # fmt: skip
     ap.add_argument("--no-nonneg", action="store_true", help="run: no non-negative J++ arm at the predicted layer")
+    ap.add_argument("--n-items", type=int, default=N_ITEMS,
+                    help="run: at most this many eligible scenes (45m, Dan ~22:40: every generated scene)")  # fmt: skip
     ap.add_argument("--read", choices=("first", "digit"), default=READ,
                     help="run, non-chat renderings: first non-whitespace token, or the first digit token (amendment 3)")  # fmt: skip
     ap.add_argument("--alt", choices=("cf", "single", "fresh"), default=ALT,
@@ -927,7 +929,7 @@ def main() -> None:
     a = ap.parse_args()
     CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
     READ, DESCRIPTIVE, ALT, CURVE_ALL = a.read, a.descriptive, a.alt, a.curve_all_layers
-    DICTS, READOUT, NONNEG = tuple(a.dicts), a.readout, not a.no_nonneg
+    DICTS, READOUT, NONNEG, N_ITEMS = tuple(a.dicts), a.readout, not a.no_nonneg, a.n_items
     if a.stage == "plan":  # tokenizer only
         from scripts import statement_positions as SP
 
