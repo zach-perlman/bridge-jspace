@@ -691,3 +691,348 @@ In which country is the city Tess Garland moved to last spring?
 
 - Expected: **Italy**. Right unedited: yes. Right under the J++ removal: **yes**.
 
+## nem35l_jsuite_v2_test_chat_ko_cand2_v1 (jsuite_v2_test_chat)
+
+**1. Recompute M - K yourself** (from the repo root on the GPU box; compare with docs/digest.md):
+
+```python
+import json
+run, set_ = "nem35l_jsuite_v2_test_chat_ko_cand2_v1", "jsuite_v2_test_chat"
+items = {json.loads(l)["id"]: json.loads(l) for l in open(f"data/tasks_v2/{set_}/items.jsonl")}
+rows = [json.loads(l) for l in open(f"results/ablate_v2/{run}/rows.jsonl")]
+rows = [r for r in rows if r["kind"] == "clean" and items[r["id"]].get("module") == "facts" and items[r["id"]]["start"] in "PMT"]
+ok = {r["id"] for r in rows if r["condition"] == "none" and r["correct"]}          # right unedited
+def lost(final, cond="paper10"):
+    sel = [r["correct"] for r in rows if r["condition"] == cond and r["id"] in ok and items[r["id"]]["final"] == final]
+    return 100 * (1 - sum(sel) / len(sel)), len(sel)
+(m, nm), (k, nk) = lost("M"), lost("K")
+print(f"M lost {m:.1f} (n {nm}), K lost {k:.1f} (n {nk}), M - K {m - k:+.1f}")
+```
+
+**2. Check 20 random items** (10 memory finals M, 10 stated-fact finals K; all right unedited).
+For each: is the expected answer correct? Does a K item state the fact in the passage, and an M item not? Did the removal change the answer as the table says?
+
+### 1. j2:chat:facts:PM-L1-00475 (word PM: start P, final M; relation languages; bridge Mexico)
+
+```
+Hi all,
+
+A few updates before Friday's meeting.
+
+As it passed through Waterloo Place, on the edge of the Bogside, hostilities began between supporters and opponents of the parade. Paul Whitaker spent last summer in Israel. Fighting between the two groups continued for two hours, then the police joined in. The new subtitles for the film from Italy are in Swedish. Aaron Pryce spent last summer in Mexico. They charged up William Street against the Bogsiders, followed by the' Paisleyites'. Laura Bennett spent last summer in Ivory Coast. The new subtitles for the film from Israel are in Persian. They were met with a hail of stones and petrol bombs. The new subtitles for the film from Ivory Coast are in Dutch. Maya Linden spent last summer in Italy. The ensuing battle became known as the Battle of the Bogside. Eli Thornton spent last summer in Sweden. The new subtitles for the film from Sweden are in English. Late in the evening, having been driven back repeatedly, the police fired canisters of CS gas into the crowd. The new subtitles for the film from Ghana are in Dutch. Jonah Wells spent last summer in Ghana. Mexico was mentioned in this week's travel column.
+
+Best,
+Marta
+
+What is the main official language of the country where Aaron Pryce spent last summer?
+```
+
+- Expected: **Spanish**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 2. j2:chat:facts:PM-L1-01135 (word PM: start P, final M; relation cities; bridge Moscow)
+
+```
+Meeting notes, 14 March.
+- This year's partner city for Gothenburg is in Austria.
+- This year's partner city for Toronto is in Switzerland.
+- After spying on Ricky and Lester through Lester's garage window, the colonel mistakenly concludes the pair is sexually involved.
+- This year's partner city for Hamburg is in Canada.
+- Ben Crowley has lived in Munich since last spring.
+- He later confronts and beats Ricky for the supposed affair and accuses him of being gay.
+- Ricky falsely admits the charges and goads his father into kicking him out of their home.
+- Maya Linden has lived in Jaipur since last spring.
+- Grace Holloway has lived in Gothenburg since last spring.
+- Paul Whitaker has lived in Toronto since last spring.
+- This year's partner city for Munich is in India.
+- This year's partner city for Jaipur is in Austria.
+- Meanwhile, Carolyn is sitting in her car in the rain, taking a gun out of the glove box while a voice on the radio talks about not being a victim.
+- Ricky goes to Jane's bedroom, finding her arguing with Angela about Angela's flirtation with Lester.
+- Nina Hart has lived in Hamburg since last spring.
+- Ricky convinces Jane to flee with him to New York City and assures Angela that she is ugly, boring, and ordinary.
+- Felix Ward has lived in Moscow since last spring.
+- The quiz night included a round on Moscow.
+Next meeting in two weeks.
+
+The city Felix Ward has lived in since last spring is in which country?
+```
+
+- Expected: **Russia**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 3. j2:chat:facts:MM-L0-00626 (word MM: start M, final M; relation people; bridge Mendeleev)
+
+```
+REGIONAL DESK - Organizers released new details ahead of next month's events.
+Mendeleev came up in this week's history quiz. In the new film series, Mozart is played by a Czech actor. Laura Bennett wrote a doctoral thesis on Mozart. Despite his financial problems, this was one of the happiest and most peaceful periods of his life. In the new film series, Puccini is played by a Chilean actor. Many of Du's poems from this period are peaceful depictions of his life at "thatched hut ". Hannah Kerr wrote a doctoral thesis on Puccini.
+More updates will follow.
+
+What was the nationality of the chemist who created the periodic table of the elements?
+```
+
+- Expected: **Russian**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 4. j2:chat:facts:PM-L0-00619 (word PM: start P, final M; relation people; bridge Lorca)
+
+```
+Posted by travel_notes_88:
+In the new film series, Goethe is played by an Austrian actor. Tess Garland wrote a doctoral thesis on Magritte. In the new film series, Magritte is played by a Chilean actor. He instead prefers to deflect the praise he receives to the players, athletic department, and his mentors. He has not been known to posture for more money, or to leak his name for open coaching positions. Simon Ashby wrote a doctoral thesis on Lorca. Lorca came up in this week's history quiz. Owen Marsh wrote a doctoral thesis on Goethe.
+Has anyone else heard about this?
+
+What was the nationality of the person Simon Ashby wrote a doctoral thesis on?
+```
+
+- Expected: **Spanish**. Right unedited: yes. Right under the J++ removal: **no**.
+
+### 5. j2:chat:facts:TM-L0-01743 (word TM: start T, final M; relation dishes; bridge miso soup)
+
+```
+Posted by travel_notes_88:
+The cooking club tried bouillabaisse. The dish miso soup was mentioned in this week's food column. At the food fair, the stall from China served dosa. At the food fair, the stall from Jamaica served guacamole. The travel blogger tried dosa. Then the travel blogger tried spanakopita. At the food fair, the stall from Switzerland served pho. Next, the travel blogger tried pho. In the wake of the fire, he made a new urban development plan. At the food fair, the stall from Canada served spanakopita. Houses after the fire were spaced out, built in brick, and faced by porticos on wide roads. At the food fair, the stall from Poland served bouillabaisse. Then the cooking club tried guacamole. After that, the cooking club tried miso soup.
+Has anyone else heard about this?
+
+Which country does the dish the cooking club tried last come from?
+```
+
+- Expected: **Japan**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 6. j2:chat:facts:TM-L0-00051 (word TM: start T, final M; relation countries; bridge Ghana)
+
+```
+Posted by travel_notes_88:
+The ceramics exhibition went to Uzbekistan. After that, the ceramics exhibition went to Thailand. The narrow defiles hampered the Russians; Strik's men had to march out of the canyons, form ranks and attack in waves. The delegation from Finland will hold its next meeting in Asia. The delegation from Uzbekistan will hold its next meeting in Europe. Then the ceramics exhibition went to Ghana. The textile exhibition went to Poland. Ghana was mentioned in this week's travel column. Then the textile exhibition went to Italy. Then the textile exhibition went to Finland. The delegation from Thailand will hold its next meeting in North America. Despite Strik's continuous assault in the next two to three hours, Mortier and Gazan pushed the Russians back up the narrow fissure in the hillside. The delegation from Poland will hold its next meeting in Asia. The delegation from Italy will hold its next meeting in North America.
+Has anyone else heard about this?
+
+On which continent is the country the ceramics exhibition went to last?
+```
+
+- Expected: **Africa**. Right unedited: yes. Right under the J++ removal: **no**.
+
+### 7. j2:chat:facts:PM-L1-00871 (word PM: start P, final M; relation people; bridge Vermeer)
+
+```
+REGIONAL DESK - Organizers released new details ahead of next month's events.
+Eli Thornton spent five years writing a thesis on Vermeer. With the recent growth of phylogenetics, this classification is no longer viable. The basic rhachitomous condition is found in many primitive tetrapods, and is not unique to one group of temnospondyls. Laura Bennett spent five years writing a thesis on Gandhi. Ruth Calloway spent five years writing a thesis on Ravel. Moreover, the distinction between rhachitomous and stereospondylous vertebrae is not entirely clear. Goethe will be portrayed by a Polish actor in a new film. Some temnospondyls have rhachitomous, semirhachitomous, and sterospondylous vertebrae at different points in the same vertebral column. Simon Ashby spent five years writing a thesis on Verdi. Maya Linden spent five years writing a thesis on Mozart. Other taxa have intermediate morphologies that do not fit into any category. A reader asked a question about Vermeer in the letters page. Mozart will be portrayed by a German actor in a new film. Owen Marsh spent five years writing a thesis on Goethe. Verdi will be portrayed by a Chilean actor in a new film. Gandhi will be portrayed by a Russian actor in a new film. Ravel will be portrayed by a Spanish actor in a new film. Rachitomi is no longer recognized as a group, but Stereospondyli is still considered valid.
+More updates will follow.
+
+The person Eli Thornton's thesis was about was of which nationality?
+```
+
+- Expected: **Dutch**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 8. j2:chat:facts:PM-L0-01276 (word PM: start P, final M; relation companies; bridge Rovio)
+
+```
+Posted by travel_notes_88:
+Next year, Volvo opens a new regional office in Denmark. Nora Blake spent a semester studying the history of Volvo. In early November the catapults were removed from both ships, and they loaded troops and munitions later that month. Next year, Hyundai opens a new regional office in Italy. While en route they were diverted to the Spratly Islands upon reports of heavy air raids at Manila. Simon Ashby spent a semester studying the history of Hyundai. Clara Dunmore spent a semester studying the history of Rovio. The marketing class discussed Rovio on Tuesday.
+Has anyone else heard about this?
+
+The company whose history Clara Dunmore studied for a semester comes from which country?
+```
+
+- Expected: **Finland**. Right unedited: yes. Right under the J++ removal: **no**.
+
+### 9. j2:chat:facts:PM-L1-02044 (word PM: start P, final M; relation animals; bridge gecko)
+
+```
+REGIONAL DESK - Organizers released new details ahead of next month's events.
+The new zoo put the salamander in its fish house. Gavin Shore sponsored the ant at the city zoo. The undersides of most temnospondyls are covered in rows of large ventral plates. During early stages of development, they first have only small, rounded scales. Alice Moreland sponsored the gecko at the city zoo. The new zoo put the bee in its fish house. Grace Holloway sponsored the ostrich at the city zoo. Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates. Ruth Calloway sponsored the bee at the city zoo. The plates overlap each other in a way that allows a wide range of flexibility. The new zoo put the ant in its bird house. Mark Ellison sponsored the platypus at the city zoo. Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales. A short film about the gecko was shown at the library. They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin. The new zoo put the platypus in its bird house. The new zoo put the ostrich in its fish house. Nina Hart sponsored the salamander at the city zoo.
+More updates will follow.
+
+Which class of animal does the animal Alice Moreland sponsored at the city zoo belong to?
+```
+
+- Expected: **reptile**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 10. j2:chat:facts:PM-L1-00157 (word PM: start P, final M; relation countries; bridge Brazil)
+
+```
+Posted by travel_notes_88:
+The delegation from Vietnam announced that its next meeting will take place in Europe. The delegation from Mexico announced that its next meeting will take place in Asia. The undersides of most temnospondyls are covered in rows of large ventral plates. A reader asked a question about Brazil in the letters page. Simon Ashby was raised in Italy. Nina Hart was raised in Mexico. During early stages of development, they first have only small, rounded scales. Alice Moreland was raised in Brazil. Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates. Gavin Shore was raised in Finland. The plates overlap each other in a way that allows a wide range of flexibility. The delegation from Thailand announced that its next meeting will take place in Europe. Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales. The delegation from Italy announced that its next meeting will take place in Asia. Felix Ward was raised in Vietnam. They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin. Fiona Lockwood was raised in Thailand. The delegation from Finland announced that its next meeting will take place in North America.
+Has anyone else heard about this?
+
+Which continent is the country where Alice Moreland was raised in?
+```
+
+- Expected: **South America**. Right unedited: yes. Right under the J++ removal: **no**.
+
+### 11. j2:chat:facts:MK-L1-02099 (word MK: start M, final K; relation animals; bridge tortoise)
+
+```
+Hi all,
+
+A few updates before Friday's meeting.
+
+One group of temnospondyls, the Branchiosauridae, is also known from larval specimens. Biologically, the mosquito is a kind of insect. Alice Moreland sponsored the butterfly at the city zoo. Branchiosaurids like Branchiosaurus and Apateon are represented by many fossils preserving skin and external gills. Felix Ward sponsored the mosquito at the city zoo. An entire growth series is exhibited in the wide range of sizes among specimens, but the lack of terrestrially adapted adult forms suggests that these temnospondyls were neotenic. Nina Hart sponsored the platypus at the city zoo. Unlike other temnospondyls, their postcranial skeletons developed quickly but were still partly cartilaginous when fully mature. Biologically, the tortoise is a kind of reptile. Biologically, the salamander is a kind of amphibian. Biologically, the butterfly is a kind of insect. Biologically, the ostrich is a kind of bird. Simon Ashby sponsored the ostrich at the city zoo. Adults likely had an aquatic lifestyle similar to juveniles. Hannah Kerr sponsored the salamander at the city zoo. Recently, large specimens of Apateon gracilis were described with adaptations toward a terrestrial lifestyle, indicating that not all branchiosaurs were neotenic. Biologically, the platypus is a kind of mammal.
+
+Best,
+Marta
+
+Which class of animal does the animal that carries its shell and can live over a hundred years belong to?
+```
+
+- Expected: **reptile**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 12. j2:chat:facts:TK-L0-01221 (word TK: start T, final K; relation companies; bridge Gucci)
+
+```
+Meeting notes, 14 March.
+- The sales team visited Hyundai.
+- After that, the sales team visited Huawei.
+- Lululemon is a company from Canada.
+- The archival records of the commission are open to the public to permit individuals to conduct their own research.
+- After that, the sales team visited Gucci.
+- Huawei is a company from China.
+- Hyundai is a company from South Korea.
+- Toyota is a company from Japan.
+- The news crew visited Carlsberg.
+- Investigation of archival records by members of the public periodically result in the identification of previously buried casualties.
+- Gucci is a company from Italy.
+- After that, the news crew visited Lululemon.
+- Then the news crew visited Toyota.
+- Carlsberg is a company from Denmark.
+Next meeting in two weeks.
+
+The company the sales team visited last comes from which country?
+```
+
+- Expected: **Italy**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 13. j2:chat:facts:MK-L1-00707 (word MK: start M, final K; relation people; bridge Aristotle)
+
+```
+Posted by travel_notes_88:
+Verdi was Italian by birth. Gandhi was Indian by birth. Dante was Italian by birth. The history of Nero's reign is problematic in that no historical sources survived that were contemporary with Nero. Liszt was Hungarian by birth. Aaron Pryce spent five years writing a thesis on Verdi. These first histories at one time did exist and were described as biased and fantastical, either overly critical or praising of Nero. Jonah Wells spent five years writing a thesis on Liszt. The original sources were also said to contradict on a number of events. Nonetheless, these lost primary sources were the basis of surviving secondary and tertiary histories on Nero written by the next generations of historians. Alice Moreland spent five years writing a thesis on Dante. Puccini was Italian by birth. Clara Dunmore spent five years writing a thesis on Puccini. A few of the contemporary historians are known by name. Fabius Rusticus, Cluvius Rufus and Pliny the Elder all wrote condemning histories on Nero that are now lost. Aristotle was Greek by birth. Hannah Kerr spent five years writing a thesis on Gandhi.
+Has anyone else heard about this?
+
+The philosopher who tutored Alexander the Great was of which nationality?
+```
+
+- Expected: **Greek**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 14. j2:chat:facts:PK-L0-00955 (word PK: start P, final K; relation cities; bridge Jaipur)
+
+```
+Posted by travel_notes_88:
+Istanbul is in Turkey. Twenty years after Nero's death, during the reign of Domitian, there was a third pretender. Shanghai is in China. He was supported by the Parthians, who only reluctantly gave him up, and the matter almost came to war. Clara Dunmore moved to Istanbul last spring. Eli Thornton moved to Jaipur last spring. Jaipur is in India. Aaron Pryce moved to Shanghai last spring.
+Has anyone else heard about this?
+
+In which country is the city Eli Thornton moved to last spring?
+```
+
+- Expected: **India**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 15. j2:chat:facts:MK-L1-00710 (word MK: start M, final K; relation people; bridge Bach)
+
+```
+Meeting notes, 14 March.
+- Grace Holloway spent five years writing a thesis on Aristotle.
+- Alice Moreland spent five years writing a thesis on Descartes.
+- The labyrinthodontian suborders Microsauria and Branchiosauria, both of which contain temnospondyls, were distinct from Labyrinthodonta.
+- Within Labyrinthodonta were the groups Rhachitomi, Labyrinthodonti, and Embolerimi.
+- Nina Hart spent five years writing a thesis on Gandhi.
+- Members of Rhachitomi, such as Archegosaurus and Eryops, had rhachitomous vertebrae with enlarged intercentra that displaced the pleurocentra.
+- Labyrinthodonti, such as Mastodonsaurus, Trematosaurus, and Micropholis, had lost their pleurocentra, and the intercentra made up the entire body of the vertebrae.
+- Aristotle was Greek by birth.
+- Descartes was French by birth.
+- Gandhi was Indian by birth.
+- Embolerimi had intercentra and pleurocentra that were of equal size.
+- Mark Ellison spent five years writing a thesis on Puccini.
+- Embolomeres are now identified as reptiliomorphs distantly related to temnospondyls.
+- Hokusai was Japanese by birth.
+- Maya Linden spent five years writing a thesis on Hokusai.
+- Puccini was Italian by birth.
+- Bach was German by birth.
+Next meeting in two weeks.
+
+The composer who wrote the Brandenburg Concertos was of which nationality?
+```
+
+- Expected: **German**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 16. j2:chat:facts:MK-L0-01544 (word MK: start M, final K; relation landmarks; bridge the Nazca Lines)
+
+```
+Meeting notes, 14 March.
+- Last summer, Iris Pemberton went to see the Eiffel Tower.
+- Nero claimed that Britannicus died from an epileptic seizure, but ancient historians all claim Britannicus' death came from Nero's poisoning him.
+- Last summer, Hannah Kerr went to see the Great Barrier Reef.
+- Supposedly, he enlisted the services of Locusta, a woman who specialized in the manufacture of poisons.
+- France is home to the Eiffel Tower.
+- Peru is home to the Nazca Lines.
+- Australia is home to the Great Barrier Reef.
+Next meeting in two weeks.
+
+Which country is the landmark that is a set of giant ancient figures etched into the desert and best seen from the air in?
+```
+
+- Expected: **Peru**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 17. j2:chat:facts:PK-L0-00544 (word PK: start P, final K; relation people; bridge Chekhov)
+
+```
+REGIONAL DESK - Organizers released new details ahead of next month's events.
+Maya Linden wrote a doctoral thesis on Borges. In the following shot, the camera does a complete circle of the TARDIS console, an effect not seen since the early days of the show. Chekhov was Russian. Borges was Argentine. Iris Pemberton wrote a doctoral thesis on Schiller. Metzstein wanted to include this shot to further emphasize the "bigger on the inside than the outside "nature of the time machine. Schiller was German. Nina Hart wrote a doctoral thesis on Chekhov.
+More updates will follow.
+
+What was the nationality of the person Nina Hart wrote a doctoral thesis on?
+```
+
+- Expected: **Russian**. Right unedited: yes. Right under the J++ removal: **yes**.
+
+### 18. j2:chat:facts:TK-L1-00765 (word TK: start T, final K; relation people; bridge Goethe)
+
+```
+Meeting notes, 14 March.
+- The radio series ran an episode on Descartes.
+- The names Stegocephalia and Labyrinthodontia were used interchangeably to refer to the order in which it belonged.
+- Edison was American.
+- Puccini was Italian.
+- Vermeer was Dutch.
+- The labyrinthodontian suborders Microsauria and Branchiosauria, both of which contain temnospondyls, were distinct from Labyrinthodonta.
+- Bartok was Hungarian.
+- Within Labyrinthodonta were the groups Rhachitomi, Labyrinthodonti, and Embolerimi.
+- Goethe was German.
+- Next, the radio series ran an episode on Vermeer.
+- Members of Rhachitomi, such as Archegosaurus and Eryops, had rhachitomous vertebrae with enlarged intercentra that displaced the pleurocentra.
+- The biography podcast ran an episode on Edison.
+- Descartes was French.
+- Next, the radio series ran an episode on Bartok.
+- Labyrinthodonti, such as Mastodonsaurus, Trematosaurus, and Micropholis, had lost their pleurocentra, and the intercentra made up the entire body of the vertebrae.
+- Next, the biography podcast ran an episode on Puccini.
+- Embolerimi had intercentra and pleurocentra that were of equal size.
+- Then the biography podcast ran an episode on Goethe.
+Next meeting in two weeks.
+
+What was the nationality of the person the biography podcast ran its latest episode on?
+```
+
+- Expected: **German**. Right unedited: yes. Right under the J++ removal: **no**.
+
+### 19. j2:chat:facts:MK-L1-00752 (word MK: start M, final K; relation people; bridge Escher)
+
+```
+Hi all,
+
+A few updates before Friday's meeting.
+
+Owen Marsh spent five years writing a thesis on Dostoevsky. Gandhi was Indian by birth. The scalp piece is formed from six strips running towards the back of the head. Simon Ashby spent five years writing a thesis on Galileo. Escher was Dutch by birth. Ravel was French by birth. The front of the headdress above the horizontal band is plain. Ruth Calloway spent five years writing a thesis on Gandhi. Mark Ellison spent five years writing a thesis on Ravel. Two short straps hang down from the headdress in front of the ears. Dostoevsky was Russian by birth. Galileo was Italian by birth. Maya Linden spent five years writing a thesis on Puccini. The ear jewellery is formed by large squared hoops or framed discs. The left and right ornaments are different, with radial lines on the left earflare, a feature absent on the right earflare. The head is badly damaged due to an unfinished reworking process. Puccini was Italian by birth.
+
+Best,
+Marta
+
+The artist who drew impossible staircases and endless tessellations was of which nationality?
+```
+
+- Expected: **Dutch**. Right unedited: yes. Right under the J++ removal: **no**.
+
+### 20. j2:chat:facts:PK-L0-01300 (word PK: start P, final K; relation companies; bridge Volkswagen)
+
+```
+REGIONAL DESK - Organizers released new details ahead of next month's events.
+Ben Crowley's business school thesis was about Spotify. Nestle was founded in Switzerland. Spotify was founded in Sweden. Nina Hart's business school thesis was about Volkswagen. The judicial branch is administered solely by the Supreme Court of the Philippines under the Metro Manila judicial region. The city government have control of the executive and legislative branch. Ruth Calloway's business school thesis was about Nestle. Volkswagen was founded in Germany.
+More updates will follow.
+
+What is the country of origin of the company Nina Hart's business school thesis was about?
+```
+
+- Expected: **Germany**. Right unedited: yes. Right under the J++ removal: **yes**.
+
