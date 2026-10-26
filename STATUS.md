@@ -33,6 +33,8 @@ Scored 25 Oct: Q32.7, Q32.8 right; Q33.1, Q34.1, Q35.1, Q36.1, Q37.1 wrong; Q37.
 - 45.0 independent check (dcd81029; scripts/indep_check.py, written from scratch by a separate agent): PASS, 20 / 20 items on every arm, largest |ld| difference 0.125 (5dc200a6). The queue proceeds.
 - mats: a second worker on GPU 1 (jobq-gpu1) beside jobq-gpu0-1, so 1-GPU jobs run two at a time; the 2-GPU 122B block is queued last (each worker checks free memory before starting a job).
 - Sealing: batch-45 jobs run with no verdict after the run (x0_massmean two_routes, x8_write --pairs / --dose-from, x0_necessity --sealed, x6_routes --sealed, x45b without a verdict stage in the job); only exit codes, row counts, gate.json and wall times are looked at.
+- 45g 9B / 27B failed at start (wrapper bug, KeyError 'alt': the 9B and 27B main runs' manifests predate the alt key, 7928e53e): x0_massmean.source_alt reads a missing key as cf, test added (d96b13c3); rerun once as x45g_9b_r2 / x45g_27b_r2 with new run names (705b87de; the failed jobs left empty swap dirs). Muse 45g, 45b 9B / 27B done, exit 0; rows: 45g Muse 3,200 + 3,200 (200 items x 8 arms x 2 readers), 45b 1,400 / 1,386 (100 / 99 locker-after items, 0 dropped), no NaN.
+- 45d (agent, cherry-picked 7b340eaa): the run's automatic X0b and 45d verdicts switched off for --pcf-from (27d270d6), as the sealing requires; queued.
 - Tier 0 (17c2daf0, c4689ab2): T0.2 split by order (docs/split_by_order.md), T0.3 p_alt, T0.4 shares (docs/x0_details.md); README drafts in docs/drafts/ (not merged). Tier 2 drafts c757a805.
 
 # Monday 26 Oct (Dan's plan ~10:30, addendum ~10:35; agent). Decisions logged, not asked
