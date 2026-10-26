@@ -1676,3 +1676,27 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   first): M - K top30 +1.5, top30_rot 0, top100 +20.6, top100_rot +1.5, unembed30 0, unembed100 0, K lost 0. They are
   not used. The rerun covers the same 150 random items per word from the start. The removal sizes (K = 10/30/100) from
   the first try stand.
+
+## Amendment 53 (Zach, 2026-10-26 22:10 UTC, before any run below): Ministral at K = 30 and 100
+
+- **Why (Zach: "Go ahead"):** Bolt's "readable, not carried" at K = 10 reversed at K = 100. Its J-part swap rose
+  2.8 -> 10.0 -> 41.3 with paste at 19.5, and its top-10 removal took only 5-7% of the residual (amendment 52).
+  Ministral at mid depth (L20-25) is the remaining "readable, not carried" case:
+  - J-part swap +1.8, paste +14.9, swap_comp +14.2;
+  - J++ and a supervised probe read the attribute there, and neither subspace carries it (amendment 48).
+  Its test M - K at L32-37 is +23 at K = 10.
+- **Design (scripts/queues/h200_mink_1026.sh), normal-equations projection (amendment 52 note 1):**
+  - The test knock-out at L32-37 with top30 / top100, their rotations and the logit lens at 30 and 100, on all eligible
+    items as the K = 10 run.
+  - Removal sizes at L20-25 and L32-37 (K 10/30/100).
+  - The J-part swap at mid depth L20-25 with K = 30 and 100, all items as the K = 10 run.
+- **Readings, fixed now, as amendment 52:**
+  - **Knock-out.** Distributed if top100 M - K >= 2x its top-10 value (>= 46), with its rotation <= 5 and the logit
+    lens at 100 below half of it. Unchanged if top100 is within 10 of +23. Otherwise, rising.
+  - **Swap** (memory finals pooled).
+    - A K = 100 J-part swap >= 2/3 of paste means the identity is in J-space, spread over K directions: Ministral is
+      no longer a "readable, not carried" case.
+    - <= 1/3 means it stays one.
+    - Otherwise, partial.
+    - Paste at L20-25 (+14.9) is below the old 20 bar. Amendment 49's lesson stands: paste is not a ceiling. The K-part
+      swap is read against paste and beside swap_comp.
