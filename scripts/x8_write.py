@@ -10,7 +10,7 @@ s in --s. Read: X0's chat read, both readers; the lookup's answer classified as 
 ||U U^T Delta|| of the real C2 changes (U: the pointer directions).
 B (stage order): forward passes only. B1 = O with a neutral filler sentence before the first locker sentence, B2 = the
 filler between the last locker sentence and the first pick sentence (fillers: a fixed list, no entity or digit, 10-12
-tokens). Gate per variant: the lookup reads right in >= 0.80 of scenes. Per scene d = U U^T (h_variant - h_B0) at the
+tokens; Muse 8-16, --filler-tokens, its tokenizer has none of 10-12). Gate per variant: the lookup reads right in >= 0.80 of scenes. Per scene d = U U^T (h_variant - h_B0) at the
 bridge word; beta = <d, mu_j' - mu_j> / ||mu_j' - mu_j||^2, j' = j + 1 (B1), j - 1 (B2, j in {1, 2}).
 Verdicts (stage verdict / order-verdict): cluster bootstrap over bridge items (10,000 resamples, seed 0). UNVERIFIED.
 
@@ -253,7 +253,13 @@ def with_filler(context: str, filler: str, where: str) -> str:
     return context[:end] + " " + filler + context[end:]
 
 
-def stage_order(name: str, gate_min: float) -> Path:
+def filler_lengths(tok) -> dict[str, int]:
+    """Each filler's own tokens as inserted mid-prompt (after a space): no BOS. raw_encoding would add Muse's BOS, a token
+    the inserted sentence does not have (that made every filler one token too long on Muse, 26 Oct)."""
+    return {f: len(tok(" " + f, add_special_tokens=False)["input_ids"]) for f in FILLERS}
+
+
+def stage_order(name: str, gate_min: float, filler_tokens: tuple[int, int] = (10, 12)) -> Path:
     import torch
 
     from bridge_jspace.model import load_model
@@ -270,10 +276,13 @@ def stage_order(name: str, gate_min: float) -> Path:
     out.mkdir(parents=True, exist_ok=False)
     model = load_model()
     tok = model.tokenizer
-    fillers = [f for f in FILLERS if 10 <= len(raw_encoding(tok, " " + f)["input_ids"]) <= 12]
-    assert fillers, "no filler of 10-12 tokens for this tokenizer"
+    lo, hi = filler_tokens
+    n_tok = filler_lengths(tok)
+    fillers = [f for f in FILLERS if lo <= n_tok[f] <= hi]
+    assert fillers, f"no filler of {lo}-{hi} tokens for this tokenizer: {sorted(n_tok.values())}"
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "stage": "order",
          "model": pins.model_pin(), "code": git_state(), "layer": layer, "fillers": fillers, "gate": gate_min,
+         "filler_tokens": [lo, hi],
          "mu_from": R.STATES[target], "note": "batch 44 B (Dan 26 Oct ~13:00); results closed until its answers"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     chosen, gate, ws, _ = eligible(model, gate_min, N_ITEMS)
@@ -304,7 +313,8 @@ def stage_order(name: str, gate_min: float) -> Path:
                 )
                 logits, _ = X.read_logits(model, ids, [{}], "chat", c["space"], ws)
                 right[v] = int(int(logits[0].argmax()) == rd["tok_A"])
-            row = {"scene": c["scene"], "entity": c["bridge"], "j": j, "filler": filler, "right": right}
+            row = {"scene": c["scene"], "entity": c["bridge"], "j": j, "filler": filler, "filler_tokens": n_tok[filler],
+                   "right": right}  # fmt: skip
             for v, jp in (("B1", j + 1), ("B2", j - 1)):
                 if jp < 0:
                     continue
@@ -607,6 +617,8 @@ def main() -> None:
     ap.add_argument("--halfway", action="store_true", help="run: only the halfway writes (descriptive)")
     ap.add_argument("--gate", type=float, default=X.GATE, help="the 122B: 0.75, after the data, as its routes runs")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--filler-tokens", nargs=2, type=int, default=[10, 12], metavar=("LO", "HI"),
+                    help="order: the fillers' length window (Muse: 8 16, Dan ~16:40; no filler of 10-12 tokens)")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "run":
         stage_run(a.name, tuple(a.s), tuple(a.rand_s), a.halfway, a.gate)
@@ -614,7 +626,7 @@ def main() -> None:
     elif a.stage == "verdict":
         stage_verdict(a.name, a.n_boot)
     elif a.stage == "order":
-        stage_order(a.name, a.gate)
+        stage_order(a.name, a.gate, tuple(a.filler_tokens))
         stage_order_verdict(a.name, a.n_boot)
     elif a.stage == "order-verdict":
         stage_order_verdict(a.name, a.n_boot)

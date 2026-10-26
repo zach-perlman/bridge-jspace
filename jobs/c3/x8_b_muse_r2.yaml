@@ -1,0 +1,25 @@
+id: x8_b_muse_r2
+title: "Batch 44 B on helper, Muse rerun (Dan ~16:40): fillers of 10-12 tokens (the window fixed in advance, its BOS miscount fixed), then 8-16 (Dan's widened window)"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=;
+  uv run python scripts/x8_write.py order --name muse30b_x8_order_r2; s1=$?;
+  uv run python scripts/x8_write.py order --name muse30b_x8_order_f816 --filler-tokens 8 16; s2=$?;
+  echo "exit 10-12=$s1 8-16=$s2"; test $s1 -eq 0 -a $s2 -eq 0
+question: >-
+  On Muse, our second model family: does a neutral sentence before the first locker sentence (B1) or before the first pick sentence (B2) shift the pointer code at the bridge word (order, sentence index or distance)?
+why_it_matters: >-
+  B is the test the pointer's wording rests on (Dan ~16:40): the 9B and the 27B show no shift (beta 0.15-0.17, order); Muse is the second family.
+hypotheses:
+  H-batch44: 'Batch 44 B, descriptive on Muse (Q44.4 is the 9B only, scored); predictions/2026-10-26_dan.md'
+decision_rule: >-
+  As x8_b_*: shifted = mean beta >= 0.5 with lower CI > 0; gate 0.80 per variant; cluster bootstrap over bridge items, 10,000 resamples, seed 0. x8_b_muse failed before any forward pass: the filler-length check counted Muse's BOS (every filler one token too long: 13-15 instead of 12-14). Fixed in x8_write.filler_lengths; the window fixed in advance (10-12) then keeps the 4 fillers of 12 tokens, Dan's 8-16 all 8. The length is reported per scene.
+controls:
+- 'B: the unchanged prompt B0 (paired shift)'
+n: "the routes test's eligible C2 scenes (up to 300)"
+seeds: [2510, 0]
+notes: "The failed run's empty folder results/x8_write/muse30b_x8_order stays (no move or delete before Friday)."

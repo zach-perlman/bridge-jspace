@@ -35,6 +35,16 @@ def test_filler_variants_move_index_or_distance():
     assert W.slots_of(b1) == W.slots_of(b2) == W.slots_of(ORG)
 
 
+def test_filler_lengths_leave_out_a_bos():
+    """A tokenizer that prepends a BOS unless told not to (Muse): the filler's length is its words, not words + 1."""
+
+    def tok(text, add_special_tokens=True):
+        return {"input_ids": ([1] if add_special_tokens else []) + [7] * len(text.split())}
+
+    n = W.filler_lengths(tok)
+    assert all(n[f] == len(f.split()) for f in W.FILLERS)
+
+
 def _write(tmp_path, monkeypatch, rows, manifest):
     monkeypatch.setattr(W, "RESULTS", tmp_path)
     src = tmp_path / "fake"
