@@ -229,3 +229,63 @@ tests:
       the 9B and the 27B; Muse is reported, not counted.
     queue: after the 45b sweep, before 45b on Muse, 45m, 45k and the 122B block (Dan ~22:35).
     gpu_hours: 0.4
+
+  # Overnight additions (Dan, 27 Oct ~00:30); fixed before any code or run; results stay closed until Dan's answers to
+  # Q45.12 and Q45.13 are committed. Queue after 45k and the 122B block, in the order 45q, 45i', 45p; cut 45p first.
+  - id: 45q
+    title: Where is the link made when the locker comes after the pick, on clean scenes?
+    design: >-
+      Scenes: 45m's scenes where the asked bridge's locker sentence comes after the pick. Only the bridge token
+      differs; assert per item that O and S have the same length and the same ids after the bridge word, and count
+      drops. 9B, 27B, Muse. Arms as 45b: (a) the bridge-word change at L; (b) the same at L/2 and L/4; (c) S copied
+      into every locker-sentence token at L; (d) the same at L/2; plus 45n's arm: (c) without each token's J++ part vs
+      (c) without a random part of the same share. Sweep (descriptive, after the data): (a) and (c) at every 4th layer
+      from 0 to the last; (c) split into the item's own token / the rest of the sentence / the number / the period.
+    rule: >-
+      45b's, unchanged: "the link is made in the locker sentences" if (c) or (d) switches at least half of the lookups
+      S switches while (a) stays at or below 0.25, on at least 2 of 3 models.
+    as_computed: >-
+      Fixed before any code (Dan may override before the run): the items are each model's 45m run's scenes
+      (qwen35_9b_x45m_fresh, x45m_fresh_27b, muse30b_x45m_fresh; chat, the layer fixed in advance) whose asked
+      bridge's (org) locker sentence comes after the asked pick (x0_strata), with the locker sentences aligned as 45b
+      does; an item failing the same-length / same-ids-after-the-bridge assert is dropped and counted. Per model the
+      rule reads the lookup, point estimates, as 45b's x45b_binding.rule (c or d >= 0.5 of S's switches, a <= 0.25 of
+      the items); holds on the batch if on at least 2 of 3. A model with no locker-after items or no S switch is not
+      tested and does not count. The 45n arms and the sweep are reported beside it, not in the rule. The sweep's
+      layers: 0, 4, 8, ... and the last layer; "the rest of the sentence" = the locker-sentence tokens that are not
+      the item's, the number's or the period's.
+    gpu_hours: 1.0
+
+  - id: 45i'
+    title: The main test without the chat template at gate 0.75 (descriptive, after the data)
+    design: >-
+      The 45i main test (no chat template, digit read) on the 9B (L12) and the 27B (L32) with the read gate lowered to
+      0.75; both missed 0.80 by 0.03-0.04. Report the gap and the locker-first gap; not scored. Specs
+      x45i_main_<9b|27b>_g75 (queued ~00:20 at the tail, re-queued behind 45q).
+    gpu_hours: 0.7
+
+  - id: 45p
+    title: Does the recall read the item's earlier mention when its locker came first? (optional, cut first)
+    design: >-
+      Scenes: 45m scenes where the new bridge's locker sentence comes before the asked pick (that sentence is in O
+      too). 9B, 27B, Muse. Arms, all on top of "the change without its J++ part at the bridge": (1) nothing more; (2)
+      at the new bridge's token in its locker sentence, that token's state without its J++ part (signed OMP, k = 25,
+      on h itself); (3) the same token without a random part of the same share; (4) another locker item's token
+      without its J++ part (control). Also O alone with arm (2)'s edit: O's own reads must stay right (report).
+    rule: >-
+      "The recall reads the earlier mention" if the recall's switch loss in (2) exceeds (3) by at least 0.2 and (4) by
+      at least 0.15, on at least 2 of 3 models; the lookup reported beside it.
+    as_computed: >-
+      Fixed before any code (Dan may override before the run): the items are each model's 45m run's scenes whose new
+      bridge's (alt) locker sentence comes before the asked pick (x0_strata 'alt locker vs asked pick'), at the layer
+      fixed in advance; all edits at that layer. Base edit at the bridge word: the whole change minus its J++ part
+      (signed OMP, k = 25). Arm (2) replaces the new item's token state in its locker sentence (all of its tokens if
+      it has more than one) by that state minus its own J++ part (signed OMP, k = 25, on h); (3) by h minus a random
+      part of the same share (X0's random subspace, seed 888 + layer); (4) the same as (2) at the item token of another
+      locker sentence, the first in context order whose item is neither the bridge nor the new item. Switch = the top
+      token is S's answer; the recall's switch loss in arm k = 1 - S_k / S_1 over the items (S_1: the switches with
+      the base edit alone). Holds on a model if loss_2 - loss_3 >= 0.2 and loss_2 - loss_4 >= 0.15, point estimates
+      (cluster-bootstrap CIs over bridge items, 10,000, seed 0, beside them); on the batch if on at least 2 of 3. O
+      alone with arm (2)'s edit: the share of items both readers still read right (reported, not in the rule). A
+      model where the base edit switches fewer than 30 recalls is not tested.
+    gpu_hours: 0.6
