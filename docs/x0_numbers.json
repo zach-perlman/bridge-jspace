@@ -17856,8 +17856,20 @@
   "source": "results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json"
  },
  "x8_sreal_122b": {
-  "text": "122B not landed",
-  "source": "results/x8_write/qwen35_122b_x8_write_g75"
+  "text": "122B 1.37 to 2.76",
+  "source": "results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json"
+ },
+ "x8_sreal_min_122b": {
+  "text": "1.37",
+  "source": "results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json"
+ },
+ "x8_sreal_max_122b": {
+  "text": "2.76",
+  "source": "results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json"
+ },
+ "x8_same_legs_122b": {
+  "text": "94 of 600",
+  "source": "results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json"
  },
  "x8_sreal_muse": {
   "text": "Muse not landed",

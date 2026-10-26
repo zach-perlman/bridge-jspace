@@ -595,6 +595,41 @@ fig8,qwen3.6-27b,"recall changed to the other slot's item, write s = 4 (share of
 fig8,qwen3.6-27b,"recall changed to the target slot's item, random s = 4 (share of writes)",0.0033333333333333335,,,600,x8_write_27b
 fig8,qwen3.6-27b,"recall changed to the third slot's item, random s = 4 (share of writes)",0.0,,,600,x8_write_27b
 fig8,qwen3.6-27b,"recall changed to the other slot's item, random s = 4 (share of writes)",0.0016666666666666668,,,600,x8_write_27b
+fig8,qwen3.5-122b-a10b,"lookup target share, write 0 -> 1, s = 1",0.0,0.0,0.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 0 -> 1, s = 2",0.6458333333333334,0.5051546391752577,0.78125,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 0 -> 1, s = 4",0.78125,0.7087378640776699,0.851063829787234,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 1 -> 0, s = 1",0.02912621359223301,0.0,0.06593665768194067,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 1 -> 0, s = 2",0.9902912621359223,0.967391304347826,1.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 1 -> 0, s = 4",0.9902912621359223,0.9693877551020408,1.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"s* (real pointer-change norm), slots 0-1",1.5527963722738067,,,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 0 -> 2, s = 1",0.0,0.0,0.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 0 -> 2, s = 2",0.5833333333333334,0.4756007003139338,0.6900119047619045,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 0 -> 2, s = 4",0.6145833333333334,0.5185073627844712,0.7037037037037037,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 2 -> 0, s = 1",0.0,0.0,0.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 2 -> 0, s = 2",0.7722772277227723,0.6666666666666666,0.8672566371681416,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 2 -> 0, s = 4",1.0,1.0,1.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"s* (real pointer-change norm), slots 0-2",1.371804654711942,,,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 1 -> 2, s = 1",0.0,0.0,0.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 1 -> 2, s = 2",0.009708737864077669,0.0,0.03225806451612903,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 1 -> 2, s = 4",0.44660194174757284,0.32323232323232326,0.5784313725490197,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 2 -> 1, s = 1",0.0,0.0,0.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 2 -> 1, s = 2",0.0,0.0,0.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, write 2 -> 1, s = 4",0.1188118811881188,0.05952380952380952,0.18627450980392157,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"s* (real pointer-change norm), slots 1-2",2.758342922899885,,,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, random direction, s = 1",0.0,0.0,0.0,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"lookup target share, random direction, s = 4",0.0033333333333333335,0.0,0.008823789233007686,,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the target slot's item, write s = 1 (share of writes)",0.025,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the third slot's item, write s = 1 (share of writes)",0.0033333333333333335,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the other slot's item, write s = 1 (share of writes)",0.0033333333333333335,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the target slot's item, write s = 2 (share of writes)",0.18166666666666667,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the third slot's item, write s = 2 (share of writes)",0.021666666666666667,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the other slot's item, write s = 2 (share of writes)",0.023333333333333334,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the target slot's item, write s = 4 (share of writes)",0.3516666666666667,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the third slot's item, write s = 4 (share of writes)",0.051666666666666666,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the other slot's item, write s = 4 (share of writes)",0.043333333333333335,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the target slot's item, random s = 4 (share of writes)",0.015,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the third slot's item, random s = 4 (share of writes)",0.01,,,600,qwen35_122b_x8_write_g75
+fig8,qwen3.5-122b-a10b,"recall changed to the other slot's item, random s = 4 (share of writes)",0.006666666666666667,,,600,qwen35_122b_x8_write_g75
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -5059,7 +5094,10 @@ numbers,,x8_sreal_27b,27B 1.04 to 2.08,,,,results/x8_write/x8_write_27b/recall-2
 numbers,,x8_sreal_min_27b,1.04,,,,results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json
 numbers,,x8_sreal_max_27b,2.08,,,,results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json
 numbers,,x8_same_legs_27b,95 of 600,,,,results/x8_write/x8_write_27b/recall-20261026T125618Z/recall.json
-numbers,,x8_sreal_122b,122B not landed,,,,results/x8_write/qwen35_122b_x8_write_g75
+numbers,,x8_sreal_122b,122B 1.37 to 2.76,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
+numbers,,x8_sreal_min_122b,1.37,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
+numbers,,x8_sreal_max_122b,2.76,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
+numbers,,x8_same_legs_122b,94 of 600,,,,results/x8_write/qwen35_122b_x8_write_g75/recall-20261026T125802Z/recall.json
 numbers,,x8_sreal_muse,Muse not landed,,,,results/x8_write/muse30b_x8_write
 numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T124519Z/verdict.json
 numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T124519Z/verdict.json
