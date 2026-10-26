@@ -180,3 +180,26 @@ tests:
       tell". The other readings stay as fixed above.
     queue: after the 45b sweep, before the 122B block; if the queue cannot finish by Tue 10:00, cut 45a on the 122B first.
     gpu_hours: 1.5
+
+  # added 26 Oct ~22:10 (Dan, after the duplicate check: in the one-pick design the new bridge is an item another person
+  # already picks); fixed before any 45m code or run
+  - id: 45m
+    title: The split in a clean one-pick design (no duplicate)
+    design: >-
+      scenes: the main-test generator plus one locker item that nobody picks, placed among the locker sentences; the
+      asked person's pick changes from the bridge to that item. One token changes, no duplicate, and both items' only
+      earlier mention is their locker sentence when the lockers come first. Both sentence orders. Models 9B, 27B, Muse,
+      at the layers fixed in advance; arms whole / no J++ / no random part (J++ k = 25, signed); both readers; X0's read,
+      gate and cells.
+    rule: >-
+      "The split holds in the clean design" if, on at least 2 of 3 models, in locker-before scenes the gap is at least
+      0.3 and the lookup's extra loss is at most 0.10; report all scenes and locker-after beside it.
+    as_computed: >-
+      Fixed by the agent before any code (Dan may override before the run): locker-before = both the original bridge's
+      and the new item's locker sentences come before the asked pick (x0_strata's 'org / alt locker vs asked pick'),
+      locker-after = both after; mixed scenes go only into "all scenes". Gap = recall's extra loss minus the lookup's,
+      point estimates decide (cluster-bootstrap CIs over bridge items beside them, 10,000, seed 0). A model whose read
+      gate fails is "not tested" and does not count as holding. X0's validity bar (S_whole >= 0.30 and >= 30 switches)
+      reported per cell, not in the rule.
+    queue: after the 45b sweep, before 45k; 45a on the 122B dropped to make room (Dan ~22:10).
+    gpu_hours: 1.5
