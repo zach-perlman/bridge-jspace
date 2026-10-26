@@ -1,0 +1,24 @@
+id: d1_identity
+title: "D1 (Dan 26 Oct ~10:35, redefined ~11:55): the rank-1 identity direction and the accounting of the lookup's route (x6_routes --identity), 27B L32 (GPU0); 9B L12 then Muse L26 (GPU1)"
+thread: C3
+gpus: 2
+mem_gb: 140
+est_gpu_hours: 2.0
+depends_on: [x6_routes_r2]
+command: >-
+  uv run python -c "import torch" && { { export CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP=; uv run python scripts/x6_routes.py run --name x6_routes_d1_27b --conditions C0,C2 --identity; } & p0=$!; { export CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP=; BJ_TARGET=qwen3.5-9b uv run python scripts/x6_routes.py run --name qwen35_9b_x6_routes_d1 --conditions C0,C2 --identity; s9=$?; BJ_TARGET=muse-glimmer-30b uv run python scripts/x6_routes.py run --name muse30b_x6_routes_d1 --conditions C0,C2 --identity --c0-min 0.5; sm=$?; test $s9 -eq 0 -a $sm -eq 0; } & p1=$!; wait $p0; s0=$?; wait $p1; s1=$?; echo "exit GPU0=$s0 GPU1=$s1"; test $s0 -eq 0 -a $s1 -eq 0; }
+question: >-
+  Does the lookup's route at the bridge word come down to the identity direction, the pointer directions and J++: what is left of its switches without all three, does the rank-1 identity direction carry the identity answers (another item moved), and does the recall need it?
+why_it_matters: >-
+  Completes the accounting (Dan): J++ and the pointer directions removed together leave about half of the lookups switching (9B, 27B); the rest may be the item's identity outside J++.
+hypotheses:
+  H-batch40: 'Dan''s batch 40 (Q40.1-Q40.3), predictions/2026-10-26_dan.md, committed before any result is opened'
+decision_rule: >-
+  Fixed in advance (batch 40, ~11:55): the identity part per scene = the unit direction mu_alt - mu_org (the two entities' mean layout-free bridge-word states on the probe's fresh scenes, x0_probe v4, locker-before; layout means taken out as for the pointer directions); "identity outside J++" = it orthogonalized against the scene's 25 signed-OMP J++ atoms. Q40.1: the sanity swap, without J++ + the pointer directions + identity outside J++, the lookup's extra loss (switches lost minus its random part's) >= 0.80. Q40.2: another item moved, without identity (rank 1), the identity share falls >= 0.20 more than with its random part removed and the position share stays within 0.10 of the whole change's. Q40.3: the recall's extra loss without identity (rank 1) >= 0.20 in the sanity swap. Each counted over the 9B, the 27B and Muse. Gates as for the routes test (read accuracy 0.80; C0 within 0.10 of the reference, Muse C0 >= 0.50). Cluster bootstrap over the bridge item, 10,000 resamples, seed 0.
+controls:
+- 'each removal against a random part of its own share (per scene)'
+- 'the recall on the identical patch'
+- 'descriptive: without the identity subspace (rank = entities - 1), its share reported'
+n: '300 scenes per condition (the sanity swap, another item moved) per model'
+seeds: [2510, 0]
+notes: "Results stay closed until Dan's batch-40 answers are committed. Every part's share of the change in norms.jsonl; the identity subspace's rank in the manifest."

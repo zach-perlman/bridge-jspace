@@ -29,6 +29,11 @@ and a random part of the J++ part's share (orthonormalized); per condition and r
 pointer directions, without them and J++, without them and the random part, and the second minus the third.
 --keeponly (x6_routes_keeponly, Dan 25 Oct ~15:50): four more arms that add ONLY a part of the change at the bridge
 word: the pointer-direction part, a random part of its share, the J++ part, a random part of J++'s share.
+--identity (D1, Dan 26 Oct ~11:55): per scene the rank-1 identity direction mu_alt - mu_org (the two entities' mean
+layout-free bridge-word states on the probe's fresh scenes) and that direction orthogonalized against the scene's 25 J++
+atoms ("idout"); arms without id, without idout, without the pointer directions + idout, without J++ + the pointer
+directions + idout, each against a random part of its own share; only id and its random part; and, descriptive, without
+the identity subspace (the mass-mean of all entities, rank = entities - 1). Every part's share in norms.jsonl.
 Rule (Dan, fixed in advance): a route counts as used if its share is >= 0.20 with lower CI >= 0.10 (cluster bootstrap
 over the bridge item, 10,000 resamples, seed 0). C0 must reproduce the one-pick lookup switch rate within 0.10, or the
 run stops.
@@ -63,11 +68,16 @@ ROUTES = ("identity", "position", "value", "original", "other")
 USED_SHARE, USED_LO = 0.20, 0.10
 C0_TOL = 0.10
 ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "no_both_rand", "no_alf_jrand",
-        "keep_alf", "keep_alf_rand", "keep_jpp", "keep_jpp_rand")  # fmt: skip
+        "keep_alf", "keep_alf_rand", "keep_jpp", "keep_jpp_rand",
+        # --identity (D1, Dan 26 Oct ~11:55): the rank-1 identity direction, it outside J++, with the pointer, with both
+        "no_id", "no_id_rand", "no_idout", "no_idout_rand", "no_alfidout", "no_alfidout_rand", "no_jppalfidout",
+        "no_jppalfidout_rand", "keep_id", "keep_id_rand", "no_idsub")  # fmt: skip
 # --bothoff-ctrl: switches lost (Jdep) without the pointer directions, without them and J++, without them and a random
 # part of J++'s share; the question is the second minus the third (Dan's Q36.1)
 CTRL = (("alf", "no_alf"), ("alf + J++", "no_both"), ("alf + random (J++ share)", "no_alf_jrand"))
-PARTS = (("jpp", "no_jpp", "no_jpp_rand"), ("alf", "no_alf", "no_alf_rand"), ("both", "no_both", "no_both_rand"))
+PARTS = (("jpp", "no_jpp", "no_jpp_rand"), ("alf", "no_alf", "no_alf_rand"), ("both", "no_both", "no_both_rand"),
+         ("id", "no_id", "no_id_rand"), ("idout", "no_idout", "no_idout_rand"),
+         ("alf+idout", "no_alfidout", "no_alfidout_rand"), ("jpp+alf+idout", "no_jppalfidout", "no_jppalfidout_rand"))  # fmt: skip
 # the one-pick lookup switch rate in scenes with both locker sentences before the pick (x0_massmean_lf's items, the
 # whole change), the reference C0 must reproduce (Dan: within 0.10)
 C0_REF = {
@@ -220,6 +230,42 @@ def union_part(jdic, alf, x, k: int):
     return out
 
 
+def span_part(x, cols):
+    """Each row of x projected onto the span of its own columns cols[i] ([d, m_i]), orthonormalized."""
+    import torch
+
+    out = torch.empty_like(x)
+    for i in range(x.shape[0]):
+        u, s, _ = torch.linalg.svd(cols[i].double(), full_matrices=False)
+        u = u[:, s > s[0] * 1e-6]
+        out[i] = (u @ (u.T @ x[i].double())).float()
+    return out
+
+
+def identity_dirs(means, pairs, jdic, x, k: int):
+    """D1 (Dan 26 Oct ~11:55): per scene the unit identity direction mu_alt - mu_org (`pairs`: (org, alt) entities;
+    `means`: entity -> mean layout-free state), and that direction orthogonalized against the scene's k signed-OMP J++
+    atoms ("identity outside J++"); also the atoms."""
+    import torch
+
+    from scripts.x0_parts import omp_atoms
+
+    atoms = omp_atoms(jdic, x, k)
+    u = torch.stack([means[alt] - means[org] for org, alt in pairs])
+    u = u / u.norm(dim=1, keepdim=True)
+    out = []
+    for i in range(len(pairs)):
+        q, _ = torch.linalg.qr(jdic[atoms[i]].T.double())
+        v = u[i].double() - q @ (q.T @ u[i].double())
+        out.append((v / v.norm()).float())
+    return u, torch.stack(out), atoms
+
+
+def rank1_part(x, u):
+    """Each row of x projected onto its own unit direction u[i]."""
+    return (x * u).sum(dim=1, keepdim=True) * u
+
+
 def random_k(x, share, basis):
     """Per row of x, the number of leading columns of `basis` whose projection keeps share[row] of the row's squared
     norm (the rule of statement_positions.random_subspace_part)."""
@@ -257,6 +303,7 @@ def stage_run(
     gate_min: float = X.GATE,
     ctrl: bool = False,
     keeponly: bool = False,
+    identity: bool = False,
 ) -> Path:
     import torch
 
@@ -275,12 +322,13 @@ def stage_run(
     assert pointer or not bothoff, "--bothoff needs the pointer directions"
     assert bothoff or not ctrl, "--bothoff-ctrl needs --bothoff"
     assert pointer or not keeponly, "--keeponly needs the pointer directions"
+    assert pointer or not identity, "--identity needs the pointer directions"
     conds = ("C0",) if smoke else conds
     n = N_SMOKE if smoke else N_ITEMS
     ref = c0_reference(target)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
-         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff, "bothoff_ctrl": ctrl, "keeponly": keeponly,
+         "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff, "bothoff_ctrl": ctrl, "keeponly": keeponly, "identity": identity,
          "alf_from": STATES[target] if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
          "c0_reference": {"run": C0_REF.get(target, (None,))[0], "lookup_switch": ref, "tolerance": C0_TOL},
          "rule": f"a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}",
@@ -310,7 +358,8 @@ def stage_run(
     (out / "gate.json").write_text(json.dumps({"dropped": dropped, "gate": gate}, indent=2) + "\n")
     if not chosen:
         raise SystemExit("no condition passed the gate fixed in advance (or none had eligible items); see gate.json")
-    alf = torch.tensor(MM.subspaces(STATES[target])[0]["Alf"], dtype=torch.float32, device="cuda") if pointer else None
+    sub = MM.subspaces(STATES[target])[0] if pointer else {}
+    alf = torch.tensor(sub["Alf"], dtype=torch.float32, device="cuda") if pointer else None
     jdic = JLens(model, "jpp").vectors(layer, model.letter_token_ids())
     rows, norms = [], []
     with torch.no_grad():
@@ -337,10 +386,33 @@ def stage_run(
         if keeponly:
             arms.update({"keep_alf": ptr, "keep_alf_rand": SP.random_subspace_part(x, sh["alf"], basis),
                          "keep_jpp": jpp, "keep_jpp_rand": SP.random_subspace_part(x, sh["jpp"], basis)})  # fmt: skip
+        if identity:  # D1: the rank-1 identity direction mu_alt - mu_org, and it outside the scene's J++ atoms
+            assert alf is not None
+            means = {e: torch.tensor(v, dtype=torch.float32, device="cuda")
+                     for e, v in MM.entity_means(STATES[target]).items()}  # fmt: skip
+            u, u_out, atoms = identity_dirs(means, [(c["bridge"], c["cf_bridge"]) for c in chosen], jdic, x, X.K_MAIN)
+            idsub = torch.tensor(sub["Id"], dtype=torch.float32, device="cuda")
+            m["id_rank"] = int(idsub.shape[1])
+            parts = {"id": rank1_part(x, u), "idout": rank1_part(x, u_out),
+                     "alf+idout": span_part(x, [torch.cat([alf, u_out[i : i + 1].T], 1) for i in range(len(chosen))]),
+                     "jpp+alf+idout": span_part(x, [torch.cat([jdic[atoms[i]].T, alf, u_out[i : i + 1].T], 1)
+                                                    for i in range(len(chosen))]),
+                     "idsub": (x @ idsub) @ idsub.T}  # fmt: skip
+            for k, v in parts.items():
+                sh[k] = v.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
+            for k, name in (
+                ("id", "id"),
+                ("idout", "idout"),
+                ("alf+idout", "alfidout"),
+                ("jpp+alf+idout", "jppalfidout"),
+            ):
+                arms[f"no_{name}"] = x - parts[k]
+                arms[f"no_{name}_rand"] = x - SP.random_subspace_part(x, sh[k], basis)
+            arms.update({"keep_id": parts["id"], "keep_id_rand": SP.random_subspace_part(x, sh["id"], basis),
+                         "no_idsub": x - parts["idsub"]})  # fmt: skip
         for i, c in enumerate(progress(chosen, f"reads at layer {layer} (case)")):
             norms.append({"scene": c["scene"], "condition": c["condition"], "norm": round(float(x[i].norm()), 4),
-                          "share_jpp": round(float(sh["jpp"][i]), 5), "share_alf": round(float(sh["alf"][i]), 5),
-                          "share_both": round(float(sh["both"][i]), 5)})  # fmt: skip
+                          **{f"share_{k}": round(float(v[i]), 5) for k, v in sh.items()}})  # fmt: skip
             for w, rd in c["readers"].items():
                 edits = [{}] + [{layer: AddRows(arms[a][i : i + 1], [c["pos"]])} for a in arms]
                 logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", c["space"], ws)
@@ -381,16 +453,19 @@ def extra_losses(
             ents = [by["whole"][s]["entity"] for s in scenes_]
             sw = {a: [int(by[a][s]["switched"]) for s in scenes_] for a in ARMS if by[a]}
             rr = X.resampled_rates(sw, ents, n_boot)
-            ex = {}
+            ex, point = {}, {}
             for part, no, rand in PARTS:
+                if no not in sw or rand not in sw:  # a run without these arms
+                    continue
                 c = X.cell({"whole": sw["whole"], "no_part": sw[no], "no_rand": sw[rand]}, ents, n_boot)
                 ex[part] = X.dependence(rr["whole"], rr[no]) - X.dependence(rr["whole"], rr[rand])
-                share = [n[f"share_{part}"] for n in (norms or []) if n["condition"] == cond]
+                point[part] = c["excess"][0]
+                share = [n[f"share_{part}"] for n in (norms or []) if n["condition"] == cond and f"share_{part}" in n]
                 out.append({"condition": cond, "reader": w, "part": part, **c,
                             "share": float(np.median(share)) if share else float("nan")})  # fmt: skip
-            point = out[-1]["excess"][0] - out[-2]["excess"][0]
-            out.append({"condition": cond, "reader": w, "part": "both - alf", "n": len(scenes_),
-                        "excess": [point, *X.interval(ex["both"] - ex["alf"])]})  # fmt: skip
+            if "both" in ex and "alf" in ex:
+                out.append({"condition": cond, "reader": w, "part": "both - alf", "n": len(scenes_),
+                            "excess": [point["both"] - point["alf"], *X.interval(ex["both"] - ex["alf"])]})  # fmt: skip
     return out
 
 
@@ -453,7 +528,7 @@ def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     lines += ["", f"Rule (fixed in advance): a route is used iff its share >= {USED_SHARE} with lower CI >= {USED_LO}. "
               "C1: identity = original (both a). Median norm of the change per condition: "
               + ", ".join(f"{b['condition']} {b['median_norm']:.2f}" for b in blob if b["arm"] == "whole") + "."]  # fmt: skip
-    extra = extra_losses(rows, m["conditions"], n_boot, norms) if "no_both" in arms else []
+    extra = extra_losses(rows, m["conditions"], n_boot, norms) if "no_both" in arms or "no_id" in arms else []
     if extra:
         lines += ["", "Extra loss of the switch (Jdep - Rdep, each part against a random part of its own share); "
                   "'both - alf': the union's extra loss minus the pointer directions' (paired resamples).", "",
@@ -499,6 +574,7 @@ def main() -> None:
         "--bothoff-ctrl", action="store_true", help="run: also without the pointer and a random J++-size part"
     )
     ap.add_argument("--keeponly", action="store_true", help="run: also arms that add only one part of the change")
+    ap.add_argument("--identity", action="store_true", help="run: also the identity-direction arms (D1)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
@@ -508,7 +584,17 @@ def main() -> None:
         conds = tuple(c for c in a.conditions.split(",") if c)
         assert set(conds) <= set(CONDITIONS), f"conditions {conds}"
         stage_run(
-            a.name, a.smoke, a.layer, a.c0_min, not a.no_pointer, conds, a.bothoff, a.gate, a.bothoff_ctrl, a.keeponly
+            a.name,
+            a.smoke,
+            a.layer,
+            a.c0_min,
+            not a.no_pointer,
+            conds,
+            a.bothoff,
+            a.gate,
+            a.bothoff_ctrl,
+            a.keeponly,
+            a.identity,
         )
     if not a.smoke:
         stage_verdict(a.name, a.n_boot)

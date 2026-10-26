@@ -47,11 +47,57 @@ def test_extra_losses_read_planted_effects():
     assert ex[("PP", "both")]["share"] == 0.12
 
 
+BOTHOFF_ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "no_both_rand")
+
+
 def test_extra_losses_without_the_control_arm():
     """Runs before --bothoff-ctrl have no no_alf_jrand rows; the extra losses still read."""
     rows = [{"scene": f"s{i}", "condition": "C0", "entity": f"e{i % 30}", "reader": w, "arm": a, "switched": 1}
-            for i in range(60) for w in ("PP", "PM") for a in R.ARMS if a != "no_alf_jrand"]  # fmt: skip
+            for i in range(60) for w in ("PP", "PM") for a in BOTHOFF_ARMS]  # fmt: skip
     assert {e["part"] for e in R.extra_losses(rows, ["C0"], 100)} == {"jpp", "alf", "both", "both - alf"}
+
+
+def test_extra_losses_of_an_identity_run_read_planted_effects():
+    """--identity runs (D1) have no union arm: the identity parts read, no 'both - alf' row."""
+    arms = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_id", "no_id_rand", "no_idout",
+            "no_idout_rand", "no_alfidout", "no_alfidout_rand", "no_jppalfidout", "no_jppalfidout_rand")  # fmt: skip
+    rows, norms = [], []
+    for i in range(80):
+        for w in ("PP", "PM"):
+            for a in arms:
+                lost = (a == "no_jppalfidout" and w == "PP") or (a == "no_id" and w == "PM" and i % 4 == 0)
+                rows.append({"scene": f"s{i}", "condition": "C0", "entity": f"e{i % 20}", "reader": w, "arm": a,
+                             "switched": int(not lost)})  # fmt: skip
+        norms.append({"condition": "C0", "share_id": 0.05, "share_jpp+alf+idout": 0.3})
+    ex = {(e["reader"], e["part"]): e for e in R.extra_losses(rows, ["C0"], 100, norms)}
+    assert {p for _, p in ex} == {"jpp", "alf", "id", "idout", "alf+idout", "jpp+alf+idout"}
+    assert ex[("PP", "jpp+alf+idout")]["excess"][0] == 1.0 and ex[("PM", "id")]["excess"][0] == 0.25
+    assert ex[("PP", "jpp+alf+idout")]["share"] == 0.3 and ex[("PP", "id")]["share"] == 0.05
+
+
+def test_identity_direction_and_its_part_outside_jpp():
+    jdic, _, x = _setup(4, n=5, d=40)
+    g = torch.Generator().manual_seed(5)
+    means = {e: torch.randn(40, generator=g) for e in ("frog", "tick", "duck")}
+    pairs = [("frog", "tick"), ("tick", "duck"), ("duck", "frog"), ("frog", "duck"), ("tick", "frog")]
+    u, u_out, atoms = R.identity_dirs(means, pairs, jdic, x, 5)
+    assert torch.allclose(u.norm(dim=1), torch.ones(5), atol=1e-5)
+    assert torch.allclose(u_out.norm(dim=1), torch.ones(5), atol=1e-5)
+    d = means["tick"] - means["frog"]
+    assert torch.allclose(u[0], d / d.norm(), atol=1e-5)  # mu_alt - mu_org
+    for i in range(5):
+        assert torch.allclose(jdic[atoms[i]] @ u_out[i], torch.zeros(5), atol=1e-4)  # nothing left along its atoms
+    part = R.rank1_part(x, u)
+    assert torch.allclose(x - part, x - (x @ u.T).diagonal()[:, None] * u, atol=1e-5)
+    assert torch.allclose(((x - part) * u).sum(1), torch.zeros(5), atol=1e-4)
+
+
+def test_span_part_projects_each_row_on_its_own_columns():
+    _, alf, x = _setup(6, n=4, d=30, r=2)
+    cols = [torch.cat([alf, x[i : i + 1].T], 1) for i in range(4)]
+    part = R.span_part(x, cols)
+    assert torch.allclose(part, x, atol=1e-4)  # each row lies in its own span
+    assert torch.allclose(R.span_part(x, [alf] * 4), (x @ alf) @ alf.T, atol=1e-4)
 
 
 def test_random_union_holds_the_pointer_and_the_share():

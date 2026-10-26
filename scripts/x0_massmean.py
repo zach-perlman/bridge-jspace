@@ -32,6 +32,7 @@ uv run python scripts/x0_massmean.py verdict --name x0_massmean_27b
 from __future__ import annotations
 
 import argparse
+import collections
 import json
 import sys
 import time
@@ -81,33 +82,49 @@ def mass_mean(x: np.ndarray, labels: list) -> np.ndarray:
     return u[:, : int((s > s.max() * 1e-8).sum())]
 
 
-def subspaces(states_run: str) -> tuple[dict[str, np.ndarray], dict]:
-    """A, V, span(A, V) and Alf (A after subtracting each layout group's mean) from a probe run's locker-before org
-    states."""
-    import collections
-
+def layout_free(states_run: str) -> tuple[list[dict], np.ndarray, np.ndarray, list[dict], collections.Counter]:
+    """A probe run's locker-before org states: their items and states, and the states of the items whose layout group
+    has more than one member with the group's mean taken out (the layout-free states Alf is fit on), with their items
+    and the group sizes."""
     src = P.RESULTS / states_run
     items = X.read_jsonl(src / "items.jsonl")
     keep = [i for i, it in enumerate(items) if it["order"] == "before"]
     h = np.load(src / "states.npz")["h"].astype(np.float64)[keep]
-    a = mass_mean(h, [items[i]["locker_index"] for i in keep])
-    v = mass_mean(h, [items[i]["answer"] for i in keep])
-    u, s, _ = np.linalg.svd(np.concatenate([a, v], 1), full_matrices=False)
-    av = u[:, : int((s > s.max() * 1e-8).sum())]
-    group = [P.layout(items[i]["context"], items[i]["pick_index"]) for i in keep]
+    kept = [items[i] for i in keep]
+    group = [P.layout(it["context"], it["pick_index"]) for it in kept]
     size = collections.Counter(group)
     multi = [j for j, g in enumerate(group) if size[g] > 1]
     res = h[multi].copy()
     for g in {group[j] for j in multi}:
         rows = [r for r, j in enumerate(multi) if group[j] == g]
         res[rows] -= res[rows].mean(0)
-    alf = mass_mean(res, [items[keep[j]]["locker_index"] for j in multi])
-    info = {"states_run": states_run, "n": len(keep),
-            "rank": {"A": a.shape[1], "V": v.shape[1], "AV": av.shape[1], "Alf": alf.shape[1]},
-            "layout_groups": {"groups": len(size), "items_kept": len(multi), "singletons_dropped": len(keep) - len(multi)},
+    return kept, h, res, [kept[j] for j in multi], size
+
+
+def entity_means(states_run: str) -> dict[str, np.ndarray]:
+    """Each bridge entity's mean layout-free state: D1's identity direction is mu_alt - mu_org (Dan 26 Oct ~11:55)."""
+    _, _, res, items, _ = layout_free(states_run)
+    ents = [it["entity"] for it in items]
+    return {e: res[[i for i, x in enumerate(ents) if x == e]].mean(0) for e in sorted(set(ents))}
+
+
+def subspaces(states_run: str) -> tuple[dict[str, np.ndarray], dict]:
+    """A, V, span(A, V), Alf (A after subtracting each layout group's mean) and Id (the same, by the bridge's identity)
+    from a probe run's locker-before org states."""
+    kept, h, res, multi, size = layout_free(states_run)
+    a = mass_mean(h, [it["locker_index"] for it in kept])
+    v = mass_mean(h, [it["answer"] for it in kept])
+    u, s, _ = np.linalg.svd(np.concatenate([a, v], 1), full_matrices=False)
+    av = u[:, : int((s > s.max() * 1e-8).sum())]
+    alf = mass_mean(res, [it["locker_index"] for it in multi])
+    # the identity subspace (D1, Dan 26 Oct ~11:55: descriptive only, one arm)
+    idn = mass_mean(res, [it["entity"] for it in multi])
+    info = {"states_run": states_run, "n": len(kept),
+            "rank": {"A": a.shape[1], "V": v.shape[1], "AV": av.shape[1], "Alf": alf.shape[1], "Id": idn.shape[1]},
+            "layout_groups": {"groups": len(size), "items_kept": len(multi), "singletons_dropped": len(kept) - len(multi)},
             # mean squared cosine of the principal angles between A and Alf (1: the same subspace, 0: orthogonal)
             "A_Alf_overlap": float(((a.T @ alf) ** 2).sum() / min(a.shape[1], alf.shape[1]))}  # fmt: skip
-    return {"A": a, "V": v, "AV": av, "Alf": alf}, info
+    return {"A": a, "V": v, "AV": av, "Alf": alf, "Id": idn}, info
 
 
 def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Path:
