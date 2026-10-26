@@ -206,25 +206,33 @@ def test_intervals_bracket_the_point_and_are_clustered():
 # ---- stages on planted run folders --------------------------------------------------------------------------------
 
 
-def item_record(i: int, tok: WordTok) -> dict:
-    """One 45b item as select() writes it, built with the fake tokenizer (O = ORG, S = ALT: two picks swapped)."""
-    text_o, text_s = wrap(ORG), wrap(ALT)
+def item_record(
+    i: int,
+    tok: WordTok,
+    org: str = ORG,
+    alt: str = ALT,
+    lockers: list[str] = LOCKERS,
+    cf: tuple[str, str] = ("carbon", "4"),
+) -> dict:
+    """One 45b item as select() writes it, built with the fake tokenizer (O = ORG, S = ALT: two picks swapped; cf: S's
+    bridge and answer)."""
+    text_o, text_s = wrap(org), wrap(alt)
     enc = tok(text_o, return_offsets_mapping=True)
     enc_s = tok(text_s, return_offsets_mapping=True)
-    pos_o = B.locker_positions(enc.offset_mapping, B.locker_spans(text_o, ORG))
-    pos_s = B.locker_positions(enc_s.offset_mapping, B.locker_spans(text_s, ALT))
+    pos_o = B.locker_positions(enc.offset_mapping, B.locker_spans(text_o, org))
+    pos_s = B.locker_positions(enc_s.offset_mapping, B.locker_spans(text_s, alt))
     patched, source, how = B.align(pos_o, pos_s, enc.input_ids, enc_s.input_ids)
     bridge = next(j for j, (a, b) in enumerate(enc.offset_mapping) if text_o[a:b].strip() == "hydrogen.")
     marks = {"bridge": [list(enc.offset_mapping[bridge])],
              "lockers": [[enc.offset_mapping[s[0]][0], enc.offset_mapping[s[-1]][1]] for s in pos_o]}  # fmt: skip
     digit = {d: tok(d).input_ids[0] for d in "0123456789"}
     readers = {w: {"id": f"{w}-{i}", "question": "Which locker belongs to Julia's pick?", "answer": "6",
-                   "cf_answer": "4", "tok_A": digit["6"], "tok_b": digit["4"],
+                   "cf_answer": cf[1], "tok_A": digit["6"], "tok_b": digit[cf[1]],
                    "ids": {"org": enc.input_ids, "alt": enc_s.input_ids}, "text": {"org": text_o, "alt": text_s}}
                for w in X.READERS}  # fmt: skip
-    return {"scene": f"s{i:03d}", "entity": f"e{i % 10}", "cf_bridge": "carbon", "domain": "elements", "pos": bridge,
+    return {"scene": f"s{i:03d}", "entity": f"e{i % 10}", "cf_bridge": cf[0], "domain": "elements", "pos": bridge,
             "space": [tok.vocab.setdefault(" ", len(tok.vocab))], "read_suffix": " ",
-            "lockers": {"sentences": LOCKERS, "org": pos_o, "alt": pos_s, "align": how},
+            "lockers": {"sentences": lockers, "org": pos_o, "alt": pos_s, "align": how},
             "patched": patched, "source": source, "marks": marks, "readers": readers,
             "stored": {"whole": {"12": {"PP": 0, "PM": 1}}, "S_read": {"PP": 1, "PM": 1}}}  # fmt: skip
 
@@ -593,3 +601,310 @@ def test_link_verdict_on_planted_runs(tmp_path, monkeypatch):
     (other / "r9").symlink_to(tmp_path / "r9")
     monkeypatch.setattr(B, "RESULTS", other)
     assert json.loads((B.stage_link_verdict(["r9"], n_boot=100) / "x45n.json").read_text())["verdict"] == "pending"
+
+
+# ---- 45q: 45m's clean scenes, the rest role, the run, the rule over three models ------------------------------------
+
+# 45m's design on the fake scene: a locker item nobody picks (oxygen) is added to both prompts; S changes Julia's pick
+# to it, so only the bridge token differs
+FRESH_ORG = ("The locker of nitrogen is 5. Julia picked hydrogen. The locker of oxygen is 7. The locker of hydrogen is 6. "
+             "The locker of carbon is 4. Eva picked nitrogen. Mark picked carbon.")  # fmt: skip
+FRESH_ALT = FRESH_ORG.replace("Julia picked hydrogen.", "Julia picked oxygen.")
+FRESH_LOCKERS = ["The locker of nitrogen is 5.", "The locker of oxygen is 7.", "The locker of hydrogen is 6.",
+                 "The locker of carbon is 4."]  # fmt: skip
+
+
+def fresh_record(i: int, tok: WordTok) -> dict:
+    it = item_record(i, tok, FRESH_ORG, FRESH_ALT, FRESH_LOCKERS, ("oxygen", "7"))
+    feats = {"org locker vs asked pick": "after", "alt locker vs asked pick": "after"}
+    return {**it, "features": feats, "fresh": {"item": "oxygen", "digit": 7, "sentence": FRESH_LOCKERS[1]}}
+
+
+def test_role_positions_rest_is_opt_in_and_partitions_the_locker_tokens():
+    tok = WordTok()
+    it = item_record(0, tok)
+    old, new = B.role_positions(tok, it), B.role_positions(tok, it, rest=True)
+    assert set(old) == {"item", "value", "final"}  # unchanged unless asked: the 45b sweep's roles
+    assert {r: new[r] for r in old} == old and set(new) == {*old, "rest"}
+    ids = it["readers"][X.LOOKUP]["ids"]["org"]
+    assert [tok.decode([ids[p]]).strip() for p in new["rest"][0]] == ["The", "locker", "of", "is"] * len(LOCKERS)
+    # every locker token has a role; rest shares none with the other three
+    assert set().union(*(set(o) for o, _ in new.values())) == set(it["patched"])
+    assert not set(new["rest"][0]) & set().union(*(set(o) for o, _ in old.values()))
+    assert new["rest"][1] == [it["source"][it["patched"].index(p)] for p in new["rest"][0]]
+
+
+def test_q_sweep_layers_run_to_the_last_lens_layer():
+    assert B.q_sweep_layers(32) == [0, 4, 8, 12, 16, 20, 24, 28, 30]  # the 9B: block 31's output is read by nothing
+    assert B.q_sweep_layers(64) == [*range(0, 61, 4), 62]
+    assert B.q_sweep_layers(52) == [*range(0, 49, 4), 50]
+    assert B.q_sweep_layers(34) == list(range(0, 33, 4))  # the last layer once
+
+
+def test_q_arms_order_and_layers():
+    sweep = [0, 4, 6]
+    arms = B.q_arms(12, sweep)
+    assert list(arms)[: len(B.O_ARMS)] == list(B.O_ARMS)
+    assert list(arms)[len(B.O_ARMS) : len(B.O_ARMS) + 2] == ["c_nojpp", "c_norand"]
+    assert len(arms) == len(B.O_ARMS) + 2 + len(B.Q_SWEEP_ARMS) * len(sweep)
+    assert arms["b_quarter"] == ("45b", 3) and arms["c_norand"] == ("45n", 12) and arms["lr6"] == ("sweep", 6)
+    assert arms["none"] == ("-", None)
+
+
+def test_answered_and_the_seal(tmp_path, monkeypatch):
+    path = tmp_path / "pred.md"
+    path.write_text("**Q45.11** old\n\nDan: yes · 70%; no · 30%\n\n**Q45.12** (45q) new\n- (a) yes\n\nDan:\n\n"
+                    "**Q45.13** (45p)\n\nDan: \n")  # fmt: skip
+    assert B.answered("Q45.11", path) and not B.answered("Q45.12", path) and not B.answered("Q45.13", path)
+    monkeypatch.setattr(B, "PREDICTIONS", path)
+    for argv in (["q-verdict", "--names", "r"], ["q-sweep-table", "--names", "r"], ["q-link-table", "--names", "r"]):
+        monkeypatch.setattr("sys.argv", ["x45b_binding.py", *argv])
+        with pytest.raises(SystemExit, match="45q is sealed"):
+            B.main()
+    # 45b's own CPU stages on a 45q run are sealed too
+    monkeypatch.setattr(B, "RESULTS", tmp_path)
+    (tmp_path / "qrun").mkdir()
+    (tmp_path / "qrun" / "manifest.json").write_text(json.dumps({"test": "45q"}))
+    for stage in ("verdict", "examples", "sweep-table"):
+        monkeypatch.setattr("sys.argv", ["x45b_binding.py", stage, "--name", "qrun"])
+        with pytest.raises(SystemExit, match="45q is sealed"):
+            B.main()
+    path.write_text(path.read_text().replace("Dan:\n\n**Q45.13", "Dan: yes · 60%\n\n**Q45.13"))
+    assert B.answered("Q45.12", path)
+    B.unsealed()  # no exit once Dan's answer is in
+
+
+def test_select_checks_the_runs_alt():
+    from bridge_jspace import pins
+
+    main, fresh = B.MAIN_RUN[pins.TARGET], B.FRESH_RUN[pins.TARGET]
+    if not all((X.RESULTS / r / "manifest.json").exists() for r in (main, fresh)):
+        pytest.skip("the target's main or 45m run is not here")
+    layer = X.PREDICTED[pins.TARGET]
+    with pytest.raises(AssertionError, match="not a 45m run"):
+        B.select(None, main, layer, "45m")
+    with pytest.raises(AssertionError, match="not the main test's alt"):
+        B.select(None, fresh, layer)
+    with pytest.raises(AssertionError, match="source"):
+        B.select(None, fresh, layer, "fresh")
+
+
+def real_tokenizer():
+    from scripts import x45m
+
+    try:
+        return x45m.tokenizer()
+    except Exception as e:
+        pytest.skip(f"target tokenizer not cached: {e}")
+
+
+def test_select_main_source_matches_the_stored_45b_run():
+    # existing behaviour: select() (source main) gives exactly the items the 45b run stored
+    from bridge_jspace import pins
+
+    run = {"qwen3.5-9b": "qwen35_9b_x45b_binding", "qwen3.6-27b": "x45b_binding_27b",
+           "muse-glimmer-30b": "muse30b_x45b_binding"}[pins.TARGET]  # fmt: skip
+    path = B.RESULTS / run / "cases.jsonl"
+    if not path.exists() or not (X.RESULTS / B.MAIN_RUN[pins.TARGET] / "cases.jsonl").exists():
+        pytest.skip("the target's 45b run or main run is not here")
+    tok = real_tokenizer()
+    items, counts = B.select(tok, B.MAIN_RUN[pins.TARGET], X.PREDICTED[pins.TARGET])
+    assert json.loads(json.dumps(items)) == X.read_jsonl(path)
+    assert "source" not in counts and counts["items"] == len(items)
+
+
+def test_select_fresh_items_on_the_targets_tokenizer():
+    from bridge_jspace import pins
+
+    run = B.FRESH_RUN[pins.TARGET]
+    if not (X.RESULTS / run / "cases.jsonl").exists():
+        pytest.skip("the target's 45m run is not here")
+    tok = real_tokenizer()
+    before = (X.ALT, X.RENDERINGS)
+    items, counts = B.select(tok, run, X.PREDICTED[pins.TARGET], "45m")
+    assert before == (X.ALT, X.RENDERINGS)  # the fresh alt only inside select
+    assert items and counts["source"] == "45m" and counts["items"] == len(items)
+    assert counts["dropped"] == {} and counts["align"] == {"token": len(items)}  # by construction: one token differs
+    assert counts["locker_after"] == len(items) <= counts["main_items"]
+    for it in items:
+        assert it["features"]["org locker vs asked pick"] == "after"
+        assert B.same_after_bridge(it)
+        for rd in it["readers"].values():  # only the bridge token differs
+            o, s = rd["ids"]["org"], rd["ids"]["alt"]
+            assert [k for k in range(len(o)) if o[k] != s[k]] == [it["pos"]]
+            assert all(it["fresh"]["sentence"] in rd["text"][v] for v in ("org", "alt"))
+        assert it["fresh"]["sentence"] in it["lockers"]["sentences"] and len(it["lockers"]["sentences"]) == 4
+    for it in items[:25]:
+        roles = B.role_positions(tok, it, rest=True)
+        ids = it["readers"][X.LOOKUP]["ids"]["org"]
+        assert set().union(*(set(o) for o, _ in roles.values())) == set(it["patched"])
+        others = set(roles["item"][0]) | set(roles["value"][0]) | set(roles["final"][0])
+        assert not set(roles["rest"][0]) & others
+        rest = "".join(tok.decode([ids[p]]) for p in roles["rest"][0])
+        assert set(rest.split()) <= {"The", "locker", "of", "the", "is"}, rest
+        assert all(tok.decode([ids[p]]).strip() == "." for p in roles["final"][0])
+
+
+class FakeJpp:
+    """A stand-in for bridge_jspace.lens.JLens: 40 unit atoms per layer (seeded by the layer)."""
+
+    def __init__(self, model=None, name="jpp"):
+        pass
+
+    def vectors(self, layer, ids):
+        import torch
+
+        v = torch.randn(40, 8, generator=torch.Generator().manual_seed(layer))
+        return v / v.norm(dim=1, keepdim=True)
+
+
+def test_q_run_end_to_end_on_a_fake_model(tmp_path, monkeypatch):
+    import torch
+
+    from bridge_jspace import lens as L
+    from bridge_jspace import model as M
+    from bridge_jspace import pins
+    from scripts import statement_positions as SP
+
+    tok = WordTok()
+    items = [fresh_record(i, tok) for i in range(10)]
+    assert all(B.same_after_bridge(it) for it in items)
+    fake = FakeModel(tok, n_layers=pins.N_LAYERS)
+    monkeypatch.setattr(fake, "letter_token_ids", lambda: list(range(40)), raising=False)
+    calls = []
+
+    def fake_select(*args):
+        calls.append(args[1:])
+        return items, {"items": len(items), "locker_after": len(items), "dropped": {}, "align": {"token": 10}}
+
+    monkeypatch.setattr(M, "load_model", lambda: fake)
+    monkeypatch.setattr(L, "JLens", FakeJpp)
+    monkeypatch.setattr(B, "select", fake_select)
+    monkeypatch.setattr(B, "RESULTS", tmp_path / "x45b")
+    monkeypatch.setattr(X, "RESULTS", tmp_path / "x0")
+    monkeypatch.setattr(pins, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(B, "SPEC", tmp_path / "batch45.yaml")
+    B.SPEC.write_text("")
+    fresh = tmp_path / "x0" / B.FRESH_RUN[pins.TARGET]
+    fresh.mkdir(parents=True)
+    for f in ("manifest.json", "cases.jsonl", "outcomes.jsonl", "competence.jsonl"):
+        (fresh / f).write_text("")
+    name = f"{pins.RUN_PREFIX}fake_q"  # the target's run prefix: the test runs under any BJ_TARGET
+    out = B.stage_q(name, "test")
+    layer = X.PREDICTED[pins.TARGET]
+    sweep = B.q_sweep_layers(pins.N_LAYERS)
+    arms = B.q_arms(layer, sweep)
+    assert calls == [(B.FRESH_RUN[pins.TARGET], layer, "45m")]
+    m = json.loads((out / "manifest.json").read_text())
+    assert m["test"] == "45q" and m["sweep_layers"] == sweep and m["arm_layers"] == B.arm_layers(layer)
+    rows = X.read_jsonl(out / "outcomes.jsonl")
+    assert {(r["scene"], r["reader"], r["arm"]) for r in rows} == {
+        (it["scene"], w, a) for it in items for w in X.READERS for a in (*arms, "S")
+    }
+    assert len(rows) == len(items) * len(X.READERS) * (len(arms) + 1)
+    fam = {r["arm"]: (r["family"], r["layer"]) for r in rows}
+    assert fam == {**arms, "S": ("-", None)}
+    # the first O read's edits (X.read_logits may split them over several batched calls)
+    edits: list[dict] = []
+    for _, e in fake.calls:
+        edits += e
+        if len(edits) >= len(arms):
+            break
+    assert len(edits) == len(arms) and edits[0] == {}
+    it = X.read_jsonl(out / "cases.jsonl")[0]
+    where = {"a": [it["pos"]], "b_half": [it["pos"]], "b_quarter": [it["pos"]], "c": it["patched"], "d": it["patched"],
+             "c_nojpp": it["patched"], "c_norand": it["patched"], "bw": [it["pos"]], "ls": it["patched"],
+             **{k: it["roles"][role]["org"] for role, k in B.Q_ROLE_ARM.items()}}  # fmt: skip
+    for arm, e in zip(list(arms)[1:], edits[1:], strict=True):
+        ((la, add),) = e.items()
+        assert la == arms[arm][1] and add.positions == where.get(arm, where.get(arm[:2])), arm
+    ids = it["readers"][X.LOOKUP]["ids"]
+    rec = (layer, sweep[1])
+    h = {v: fake.run(torch.tensor([ids[v]]), record=rec)[1] for v in ("org", "alt")}
+    by = dict(zip(arms, edits, strict=True))
+    # c, ls<l> and lr<l> make O's states at their tokens S's; the first locker sentence precedes the change
+    assert torch.allclose(h["org"][layer][it["patched"]] + by["c"][layer].delta, h["alt"][layer][it["source"]])
+    la = sweep[1]
+    rest = it["roles"]["rest"]
+    assert torch.allclose(h["org"][la][rest["org"]] + by[f"lr{la}"][la].delta, h["alt"][la][rest["alt"]])
+    # c_nojpp / c_norand: the copy at L without each token's J++ part / without the random part of its share
+    delta = h["alt"][layer][it["source"]] - h["org"][layer][it["patched"]]
+    basis = SP.random_basis(delta.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + layer))
+    part, rand, _ = B.link_parts(delta, FakeJpp().vectors(layer, None), basis)
+    assert torch.allclose(by["c_nojpp"][layer].delta, delta - part, atol=1e-5)
+    assert torch.allclose(by["c_norand"][layer].delta, delta - rand, atol=1e-5)
+    norms = X.read_jsonl(out / "norms.jsonl")
+    c_norm = next(n for n in norms if n["scene"] == it["scene"] and n["arm"] == "c")
+    assert c_norm["positions"] == 24 and c_norm["changed_positions"] == 18
+    assert len(norms) == len(items) * (len(B.BRIDGE_ARMS) + len(B.LOCKER_ARMS) + 1)
+    assert len(X.read_jsonl(out / "examples_greedy.jsonl")) == len(items) * len(X.READERS) * len(B.ARMS)
+    # the CPU stages (run by hand after Dan's answer) read it
+    v = json.loads((B.stage_q_verdict([name], n_boot=100) / "x45q.json").read_text())
+    (model,) = v["models"]
+    assert model["sanity"] == {"items": 10, "pass": 10, "dropped": 0} and model["readers"][X.LOOKUP]["n"] == 10
+    assert v["verdict"]["label"] == "pending" and pins.TARGET not in v["verdict"]["missing"]
+    link = json.loads((B.stage_q_link_table([name], n_boot=100) / "link.json").read_text())
+    assert set(link["runs"][name]["readers"][X.LOOKUP]) == {"none", "c", "c_nojpp", "c_norand", "S"}
+    cells = json.loads((B.stage_q_sweep_table([name], n_boot=100) / "sweep.json").read_text())["runs"][name]
+    assert [c["layer"] for c in cells["cells"][X.LOOKUP]] == sweep
+    assert {"bw", "ls", "li", "lr", "lv", "lf", "lr_of_S"} <= set(cells["cells"][X.LOOKUP][0])
+    assert B.stage_examples(name).exists()
+
+
+def write_q_run(root, name: str, target: str, lookup: dict | None, n: int = 20) -> None:
+    """A planted 45q run of n items passing the sanity check; lookup: the items each arm switches (the recall none);
+    None: the run has no outcomes yet."""
+    src = root / name
+    src.mkdir()
+    layer = X.PREDICTED[target]
+    (src / "manifest.json").write_text(json.dumps({"test": "45q", "model": {"target": target}, "main_run": "m45",
+                                                   "layer": layer, "arm_layers": B.arm_layers(layer)}))  # fmt: skip
+    (src / "plan.json").write_text(json.dumps({"locker_after": n, "dropped": {}, "items": n, "align": {"token": n}}))
+    cases = [{**_ids_item(f"s{i}", [1, 2, 3], [1, 9, 3], 1), "stored": {"whole": {}, "S_read": {}}} for i in range(n)]
+    X.write_jsonl(src / "cases.jsonl", cases)
+    if lookup is None:
+        return
+    rows = [{"scene": f"s{i}", "entity": f"e{i % 5}", "reader": w, "arm": a, "family": "-",
+             "switched": int(w == X.LOOKUP and i in lookup.get(a, ()))}
+            for i in range(n) for w in X.READERS for a in B.ARMS]  # fmt: skip
+    X.write_jsonl(src / "outcomes.jsonl", rows)
+
+
+HOLDS = {"S": range(20), "c": range(12), "a": range(3)}  # c 0.6 of S's switches, a 0.15
+FAILS = {"S": range(20), "c": range(5), "d": range(9), "a": range(10)}  # neither copy reaches half; a 0.5
+NO_S = {"c": range(10)}  # S switches no lookup: not tested
+
+
+@pytest.mark.parametrize(
+    ("plants", "label", "not_tested"),
+    [
+        ((HOLDS, HOLDS, FAILS), "holds", []),
+        ((HOLDS, NO_S, FAILS), "does not hold", ["r27"]),
+        ((HOLDS, HOLDS, None), "pending", []),
+        ((HOLDS, HOLDS, "empty"), "holds", ["rmuse"]),
+        ((FAILS, "empty", HOLDS), "does not hold", ["r27"]),
+    ],
+)
+def test_q_verdict_two_of_three(tmp_path, monkeypatch, plants, label, not_tested):
+    monkeypatch.setattr(B, "RESULTS", tmp_path)
+    names = ["r9", "r27", "rmuse"]
+    for name, target, plant in zip(names, B.Q_MODELS, plants, strict=True):
+        write_q_run(tmp_path, name, target, {} if plant == "empty" else plant, 0 if plant == "empty" else 20)
+    v = json.loads((B.stage_q_verdict(names, n_boot=200) / "x45q.json").read_text())
+    assert v["verdict"]["label"] == label and v["verdict"]["not_tested"] == not_tested
+    assert v["verdict"]["q45_12"] == {"holds": "(a) yes", "does not hold": "(b) no", "pending": "pending"}[label]
+    status = {m["run"]: m["status"] for m in v["models"]}
+    for name, plant in zip(names, plants, strict=True):
+        expect = "pending" if plant is None else "not tested" if plant in ("empty", NO_S) else "tested"
+        assert status[name] == expect
+    by = {m["run"]: m for m in v["models"]}
+    if plants[0] is HOLDS:
+        assert by["r9"]["holds"] and by["r9"]["readers"][X.LOOKUP]["of_S"]["c"][0] == pytest.approx(0.6)
+
+
+def test_q_verdict_refuses_two_runs_of_one_model(tmp_path, monkeypatch):
+    monkeypatch.setattr(B, "RESULTS", tmp_path)
+    for name in ("a", "b"):
+        write_q_run(tmp_path, name, "qwen3.5-9b", HOLDS)
+    with pytest.raises(AssertionError, match="two runs of one model"):
+        B.stage_q_verdict(["a", "b"], n_boot=100)
