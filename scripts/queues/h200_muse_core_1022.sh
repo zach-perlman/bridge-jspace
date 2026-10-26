@@ -60,6 +60,13 @@ $PY scripts/ablate_v2.py --name muse30_full2_ko_unembed_v1 --why "$WHY: the spec
 echo "=== dose $(date -u +%T)"
 $PY scripts/ablate_v2.py --name muse30_full2_dose_v1 --why "$WHY: knock-out dose (25 / 50 / 100 directions and same-size controls) at the chosen and relative-depth bands" \
   --plan bands --bands $(uniq_bands $MID 26-32) --conditions top25 top25_rot top50 top50_rot top100 top100_rot $T2 $K | tail -22 || echo "=== dose FAILED"
+# inserted 2026-10-22 ~10:30 UTC (Zach): the dose run was stopped after ~60% of items (no dose-dependence up to 100
+# directions); is Muse's null the model or our J++? The test-set C1 with Muse's published 900-prompt J-lens.
+echo "=== J-lens C1 $(date -u +%T)"
+BJ_TARGET=muse-glimmer-30b-jlens $PY scripts/ablate_v2.py --name muse30j_full2_ko_v1 \
+  --why "Zach (2026-10-22): Muse's test-set C1 with its published J-lens (is the J++ null the model or our lens?)" --plan bands \
+  --bands $(uniq_bands $MID 26-32) --conditions paper10$S paper10${S}_rot $T2 $K \
+  && BJ_TARGET=muse-glimmer-30b-jlens $PY scripts/c1_v2.py muse30j_full2_ko_v1 --middle L$MID --set full_v8 --suffix "$S" | tail -2 || echo "=== J-lens C1 FAILED"
 echo "=== C2 $(date -u +%T)"
 BJ_BATCH=32 $PY scripts/write_max.py --name muse30_smoke_wm2_full_1022 --why smoke --n 2 --band 26-28 \
   --single-step 1 --early 16 --possets question final $W2 || { echo "steering smoke failed: stop"; exit 1; }

@@ -48,6 +48,24 @@
           0.17483236258527132
         ]
       }
+    },
+    "c2_aligned": {
+      "run": "wm2_full2_aligned_v1",
+      "graded": false,
+      "mm_best": 0.19444444444444445,
+      "mp_best": 0,
+      "relative": "FAILS",
+      "narrow": "HOLDS",
+      "narrow_writes": {
+        "P": [
+          0.0,
+          0.10753284935927568
+        ],
+        "C": [
+          0.0,
+          0.1805011602838292
+        ]
+      }
     }
   },
   {
@@ -73,8 +91,14 @@
       "keepown_kills": false,
       "rot_seed_min": [
         0.8518518518518519,
-        0.8241758241758241
+        0.8611111111111112
       ]
+    },
+    "plain_text": {
+      "none": 2.628540761768818,
+      "top10": 0.1284567192196846,
+      "top10_rot": 0.017423115670681,
+      "untestable": false
     },
     "c2": {
       "run": "qwen3_32b_wm2_full2_v1",
@@ -91,6 +115,24 @@
         "C": [
           0.0,
           0.015208194658358869
+        ]
+      }
+    },
+    "c2_aligned": {
+      "run": "qwen3_32b_wm2_full2_aligned_v1",
+      "graded": true,
+      "mm_best": 0.75,
+      "mp_best": 0.075,
+      "relative": "HOLDS",
+      "narrow": "HOLDS",
+      "narrow_writes": {
+        "P": [
+          0.0,
+          0.2300344282538269
+        ],
+        "C": [
+          0.0,
+          0.28640070362166575
         ]
       }
     }
@@ -121,11 +163,64 @@
       "top10": 0.2731175571680069,
       "top10_rot": 0.031459465622901917,
       "untestable": false
+    },
+    "c2": {
+      "run": "muse30_wm2_full2_v1",
+      "graded": true,
+      "mm_best": 0.5625,
+      "mp_best": 0.0625,
+      "relative": "HOLDS",
+      "narrow": "FAILS",
+      "narrow_writes": {
+        "P": [
+          0.1145659317867138,
+          0.1400526921353906
+        ],
+        "C": [
+          0.03182298247412849,
+          0.17183880870746393
+        ]
+      }
+    },
+    "c2_aligned": {
+      "run": "muse30_wm2_full2_aligned_v1",
+      "graded": true,
+      "mm_best": 0.5,
+      "mp_best": 0.10416666666666667,
+      "relative": "HOLDS",
+      "narrow": "FAILS",
+      "narrow_writes": {
+        "P": [
+          0.1346582863206968,
+          0.07643611521073167
+        ],
+        "C": [
+          0.04610693690518306,
+          0.1708695422847137
+        ]
+      }
     }
   },
   {
     "model": "Qwen3.5-9B",
-    "lens": "published J++"
+    "lens": "published J++",
+    "c1": {
+      "band": "L12-16",
+      "loss": {
+        "PP": 0.025210084033613467,
+        "MP": 0.06976744186046513,
+        "PM": 0.3697478991596639,
+        "MM": 0.4883720930232558,
+        "CP": 0.00952380952380949,
+        "CM": 0.36190476190476195
+      },
+      "gap": 0.38157123314442054,
+      "controls_ok": true,
+      "holds": true,
+      "strict": false,
+      "gap_noguess": 0.4016499582289056,
+      "rot_seed_min": []
+    }
   },
   {
     "model": "Gemma 4 31B-it",
