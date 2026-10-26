@@ -53,6 +53,24 @@ fig1,qwen3.5-122b-a10b,Varied scenes: gap,0.15,,,,x0b_c_122b
 fig1,qwen3.5-122b-a10b,Natural passages: lookup extra loss,-0.11,-0.2,-0.03,,nat_lk_excess_122b
 fig1,qwen3.5-122b-a10b,Natural passages: recall extra loss,0.34,0.24,0.43,,nat_rc_excess_122b
 fig1,qwen3.5-122b-a10b,Natural passages: gap,0.44,,,,nat_gap_122b
+fig1,muse-glimmer-30b,"Simple scenes, two people swap picks: lookup extra loss",-0.1,-0.15,-0.04,,lk_excess_muse
+fig1,muse-glimmer-30b,"Simple scenes, two people swap picks: recall extra loss",0.75,0.61,0.87,,rc_excess_muse
+fig1,muse-glimmer-30b,"Simple scenes, two people swap picks: gap",0.85,,,,contrast_muse
+fig1,muse-glimmer-30b,"Simple scenes, only the asked person's pick changes: lookup extra loss",-0.01,-0.04,0.0,,single_lk_excess_muse
+fig1,muse-glimmer-30b,"Simple scenes, only the asked person's pick changes: recall extra loss",0.66,0.53,0.78,,single_rc_excess_muse
+fig1,muse-glimmer-30b,"Simple scenes, only the asked person's pick changes: gap",0.67,,,,single_contrast_muse
+fig1,muse-glimmer-30b,"Matched scenes, two people swap picks: lookup extra loss",-0.07,-0.12,-0.02,,comp_two_fmno_lk_muse
+fig1,muse-glimmer-30b,"Matched scenes, two people swap picks: recall extra loss",0.68,0.46,0.88,,comp_two_fmno_rc_muse
+fig1,muse-glimmer-30b,"Matched scenes, two people swap picks: gap",0.75,,,,recall minus lookup
+fig1,muse-glimmer-30b,"Matched scenes, only the asked person's pick changes: lookup extra loss",0.0,0.0,0.0,,comp_one_fmno_lk_muse
+fig1,muse-glimmer-30b,"Matched scenes, only the asked person's pick changes: recall extra loss",0.54,0.32,0.75,,comp_one_fmno_rc_muse
+fig1,muse-glimmer-30b,"Matched scenes, only the asked person's pick changes: gap",0.54,,,,recall minus lookup
+fig1,muse-glimmer-30b,Varied scenes: lookup extra loss,0.06374501992031867,0.031889854254439874,0.10096213054187199,,x0b_lk_excess_muse
+fig1,muse-glimmer-30b,Varied scenes: recall extra loss,0.5618181818181818,0.4774324693094728,0.6591940735266213,,x0b_rc_excess_muse
+fig1,muse-glimmer-30b,Varied scenes: gap,0.5,,,,x0b_c_muse
+fig1,muse-glimmer-30b,Natural passages: lookup extra loss,-0.2,-0.55,0.0,,nat_lk_excess_muse
+fig1,muse-glimmer-30b,Natural passages: recall extra loss,0.75,0.62,0.86,,nat_rc_excess_muse
+fig1,muse-glimmer-30b,Natural passages: gap,0.95,,,,nat_gap_muse
 fig2,qwen3.5-9b,J++: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,,qwen35_9b_x0_pcaeq
 fig2,qwen3.5-9b,J++: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,,qwen35_9b_x0_pcaeq
 fig2,qwen3.5-9b,J++: share of the change,0.18579,,,,qwen35_9b_x0_pcaeq
@@ -125,6 +143,30 @@ fig2,qwen3.5-122b-a10b,Input embeddings †: share of the change,0.178205,,,,qwe
 fig2,qwen3.5-122b-a10b,Random directions †: recall extra loss,0.0,-0.015873015873015928,0.015151515151515138,,qwen35_122b_x0_necessity_r2
 fig2,qwen3.5-122b-a10b,Random directions †: lookup extra loss,0.011235955056179692,-0.041095890410958846,0.05617977528089879,,qwen35_122b_x0_necessity_r2
 fig2,qwen3.5-122b-a10b,Random directions †: share of the change,0.13390000000000002,,,,qwen35_122b_x0_necessity_r2
+fig2,muse-glimmer-30b,J++: recall extra loss,0.6607142857142856,0.525635593220339,0.7809523809523808,,muse30b_x0_parts
+fig2,muse-glimmer-30b,J++: lookup extra loss,-0.011627906976744207,-0.0357142857142857,0.0,,muse30b_x0_parts
+fig2,muse-glimmer-30b,J++: share of the change,0.11665,,,,muse30b_x0_parts
+fig2,muse-glimmer-30b,J++ without the word's directions: recall extra loss,0.0714285714285714,0.0,0.1278217345689805,,muse30b_x0_parts
+fig2,muse-glimmer-30b,J++ without the word's directions: lookup extra loss,0.0,-0.03191489361702138,0.03174603174603163,,muse30b_x0_parts
+fig2,muse-glimmer-30b,J++ without the word's directions: share of the change,0.08548,,,,muse30b_x0_parts
+fig2,muse-glimmer-30b,The word alone: recall extra loss,0.2053571428571428,0.11649920975389474,0.2919749036332321,,muse30b_x0_parts
+fig2,muse-glimmer-30b,The word alone: lookup extra loss,0.03488372093023262,0.0,0.07272727272727275,,muse30b_x0_parts
+fig2,muse-glimmer-30b,The word alone: share of the change,0.04347,,,,muse30b_x0_parts
+fig2,muse-glimmer-30b,Main directions at J++'s share: recall extra loss,0.1785714285714285,0.08000000000000007,0.26016260162601634,,muse30b_x0_parts
+fig2,muse-glimmer-30b,Main directions at J++'s share: lookup extra loss,0.06976744186046502,0.019995049504950405,0.12162162162162149,,muse30b_x0_parts
+fig2,muse-glimmer-30b,Main directions at J++'s share: share of the change,0.11774499999999999,,,,muse30b_x0_parts
+fig2,muse-glimmer-30b,J++ fitted to another scene: recall extra loss,0.04385964912280693,0.011494252873563204,0.08695652173913038,,muse30b_x0_jppother
+fig2,muse-glimmer-30b,J++ fitted to another scene: lookup extra loss,0.0,0.0,0.0,,muse30b_x0_jppother
+fig2,muse-glimmer-30b,J++ fitted to another scene: share of the change,0.012539999999999999,,,,muse30b_x0_jppother
+fig2,muse-glimmer-30b,Logit lens †: recall extra loss,0.008547008547008739,-0.03614457831325302,0.040820508531281344,,muse30b_x0_necessity
+fig2,muse-glimmer-30b,Logit lens †: lookup extra loss,0.02857142857142858,-0.02631578947368407,0.08333333333333337,,muse30b_x0_necessity
+fig2,muse-glimmer-30b,Logit lens †: share of the change,0.04925,,,,muse30b_x0_necessity
+fig2,muse-glimmer-30b,Input embeddings †: recall extra loss,0.042735042735042805,0.0078125,0.0990099009900991,,muse30b_x0_necessity
+fig2,muse-glimmer-30b,Input embeddings †: lookup extra loss,0.042857142857142816,-0.05128205128205121,0.1333333333333332,,muse30b_x0_necessity
+fig2,muse-glimmer-30b,Input embeddings †: share of the change,0.072215,,,,muse30b_x0_necessity
+fig2,muse-glimmer-30b,Random directions †: recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,,muse30b_x0_necessity
+fig2,muse-glimmer-30b,Random directions †: lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,,muse30b_x0_necessity
+fig2,muse-glimmer-30b,Random directions †: share of the change,0.061265,,,,muse30b_x0_necessity
 fig4,qwen3.5-9b,"another item moved, whole: identity share",0.48,0.4259790139811488,0.5333333333333333,300,qwen35_9b_x6_routes
 fig4,qwen3.5-9b,"another item moved, whole: position share",0.51,0.4595447389136709,0.5611529144031713,300,qwen35_9b_x6_routes
 fig4,qwen3.5-9b,"another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
@@ -260,6 +302,51 @@ fig4,qwen3.5-122b-a10b,"another item moved, keep_jpp_rand: position share",0.0,0
 fig4,qwen3.5-122b-a10b,"another item moved, keep_jpp_rand: value share",0.0,0.0,0.0,300,qwen35_122b_x6_routes_keeponly_g75
 fig4,qwen3.5-122b-a10b,"another item moved, keep_jpp_rand: original share",1.0,1.0,1.0,300,qwen35_122b_x6_routes_keeponly_g75
 fig4,qwen3.5-122b-a10b,"another item moved, keep_jpp_rand: other share",0.0,0.0,0.0,300,qwen35_122b_x6_routes_keeponly_g75
+fig4,muse-glimmer-30b,"another item moved, whole: identity share",0.43666666666666665,0.38460960960960966,0.48837401181978657,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, whole: position share",0.5433333333333333,0.49195879635933265,0.5962148086423427,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, whole: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, whole: original share",0.02,0.004365867029622489,0.038063107595979556,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, whole: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp: identity share",0.39666666666666667,0.34493398079441295,0.44554455445544555,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp: position share",0.5633333333333334,0.5125,0.6185597095751936,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp: original share",0.04,0.018725716685918305,0.060932992394440055,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp_rand: identity share",0.4,0.3489914779585727,0.45222929936305734,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp_rand: position share",0.5333333333333333,0.4786885245901639,0.5869565217391305,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp_rand: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp_rand: original share",0.06666666666666667,0.04195804195804196,0.09060402684563758,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_jpp_rand: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf: identity share",0.43333333333333335,0.3838018424198326,0.47839531807555064,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf: position share",0.2733333333333333,0.22856875334403423,0.32191910543794106,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf: original share",0.29333333333333333,0.2450130499627144,0.3487544483985765,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf_rand: identity share",0.41333333333333333,0.36254855577689243,0.4631578947368421,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf_rand: position share",0.5466666666666666,0.49808316430020283,0.5968272425249169,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf_rand: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf_rand: original share",0.04,0.019736842105263157,0.0610470663944612,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, no_alf_rand: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf: identity share",0.04666666666666667,0.02464788732394366,0.07142857142857142,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf: position share",0.29333333333333333,0.2508140704043906,0.33574007220216606,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf: original share",0.66,0.6056757198335994,0.7122819033886085,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf_rand: identity share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf_rand: position share",0.01,0.0,0.0271189725397451,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf_rand: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf_rand: original share",0.99,0.9728810274602548,1.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_alf_rand: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp: identity share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp: position share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp: original share",1.0,1.0,1.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp: other share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp_rand: identity share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp_rand: position share",0.0033333333333333335,0.0,0.010344827586206896,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp_rand: value share",0.0,0.0,0.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp_rand: original share",0.9966666666666667,0.9896551724137931,1.0,300,muse30b_x6_routes
+fig4,muse-glimmer-30b,"another item moved, keep_jpp_rand: other share",0.0,0.0,0.0,300,muse30b_x6_routes
 fig5,qwen3.5-9b,layer 6: lookup J++ extra loss,0.6163522012578616,0.5294117647058824,0.6951219512195121,200,qwen35_9b_x0_necessity
 fig5,qwen3.5-9b,layer 8: lookup J++ extra loss,0.3700787401574802,0.2950790187522113,0.44852941176470595,200,qwen35_9b_x0_necessity
 fig5,qwen3.5-9b,layer 10: lookup J++ extra loss,0.26086956521739124,0.18811669628501307,0.32999999999999985,200,qwen35_9b_x0_necessity
@@ -317,6 +404,12 @@ fig5,qwen3.5-122b-a10b,"layer 27: position share (another item moved, whole chan
 fig5,qwen3.5-122b-a10b,"layer 30: position share (another item moved, whole change)",0.0,0.0,0.0,300,qwen35_122b_x6_routes_sweep_l30_g75
 fig5,qwen3.5-122b-a10b,"layer 33: position share (another item moved, whole change)",0.38333333333333336,0.32786885245901637,0.4384858044164038,300,qwen35_122b_x6_routes_g75
 fig5,qwen3.5-122b-a10b,"layer 36: position share (another item moved, whole change)",0.58,0.5229001396996458,0.6336996336996337,300,qwen35_122b_x6_routes_sweep_l36_g75
+fig5,muse-glimmer-30b,layer 13: lookup J++ extra loss,0.33333333333333326,0.2427110914974994,0.41111252115059227,200,muse30b_x0_necessity
+fig5,muse-glimmer-30b,layer 26: lookup J++ extra loss,-0.09999999999999987,-0.1506876494890194,-0.039215686274509776,200,muse30b_x0_necessity
+fig5,muse-glimmer-30b,layer 13: recall J++ extra loss,0.5517241379310345,0.4285714285714286,0.6529418479720656,200,muse30b_x0_necessity
+fig5,muse-glimmer-30b,layer 26: recall J++ extra loss,0.7521367521367521,0.6097420801794226,0.8691606757728252,200,muse30b_x0_necessity
+fig5,muse-glimmer-30b,"layer 13: position share (another item moved, whole change)",0.043333333333333335,0.02090256309515194,0.06927785399021828,300,muse30b_x6_routes_l13
+fig5,muse-glimmer-30b,"layer 26: position share (another item moved, whole change)",0.5433333333333333,0.49195879635933265,0.5962148086423427,300,muse30b_x6_routes
 fig6,qwen3.5-9b,"the sanity swap, lookup extra loss without J++",-0.003355704697986628,-0.011029411764705843,0.0,,qwen35_9b_x6_routes_bothoff
 fig6,qwen3.5-9b,"the sanity swap, recall extra loss without J++",0.013793103448275779,-0.0035211267605633756,0.03214285714285725,,qwen35_9b_x6_routes_bothoff
 fig6,qwen3.5-9b,"the sanity swap, lookup extra loss without the pointer",0.3120805369127516,0.2556378966585792,0.37353183581124755,,qwen35_9b_x6_routes_bothoff
@@ -359,6 +452,20 @@ fig6,qwen3.5-122b-a10b,"the sanity swap, recall switches lost: pointer + J++",0.
 fig6,qwen3.5-122b-a10b,"the sanity swap, lookup switches lost: pointer + random (J++'s share)",0.4966666666666667,0.44522850803564096,0.5490937950937951,,qwen35_122b_x6_routes_bothoff_ctrl_g75
 fig6,qwen3.5-122b-a10b,"the sanity swap, recall switches lost: pointer + random (J++'s share)",0.4285714285714286,0.3397646973118671,0.5073570875718708,,qwen35_122b_x6_routes_bothoff_ctrl_g75
 fig6,qwen3.5-122b-a10b,batch 36's bar (pointer + random + 0.15),0.6467,,,,qwen35_122b_x6_routes_bothoff_ctrl_g75
+fig6,muse-glimmer-30b,"the sanity swap, lookup extra loss without J++",0.011857707509881577,-0.009396087133735015,0.03571428571428559,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, recall extra loss without J++",0.21590909090909083,0.12345679012345678,0.32836353944562896,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer",0.2806324110671937,0.22793884959046906,0.3296306471306471,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, recall extra loss without the pointer",0.03409090909090917,-0.0612323390894819,0.12162986156888593,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, lookup extra loss without both",0.308300395256917,0.24894514767932507,0.36576333671685557,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, recall extra loss without both",0.4545454545454547,0.3428505291005291,0.5757575757575757,,muse30b_x6_routes
+fig6,muse-glimmer-30b,batch 34's bar (pointer alone + 0.15),0.4306,,,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, lookup switches lost: pointer",0.20158102766798425,0.1561151898734176,0.24513805030040112,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, recall switches lost: pointer",0.09090909090909094,0.011627906976744207,0.1717171717171717,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, lookup switches lost: pointer + J++",0.26086956521739135,0.2052238805970149,0.31835244210043556,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, recall switches lost: pointer + J++",0.5909090909090909,0.48051948051948046,0.7142857142857143,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, lookup switches lost: pointer + random (J++'s share)",0.25296442687747034,0.19831132693147088,0.3094362084456424,,muse30b_x6_routes
+fig6,muse-glimmer-30b,"the sanity swap, recall switches lost: pointer + random (J++'s share)",0.3295454545454546,0.2222222222222222,0.4555555555555556,,muse30b_x6_routes
+fig6,muse-glimmer-30b,batch 36's bar (pointer + random + 0.15),0.403,,,,muse30b_x6_routes
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -367,6 +474,7 @@ numbers,,lk_excess_9b,"−0.03 [−0.08, 0.03]",,,,results/x0_necessity/qwen35_9
 numbers,,lk_jdep_9b,0.22,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_rdep_9b,0.25,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_whole_9b,105,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,lk_swhole_pct_9b,52%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_noj_9b,82,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_norand_9b,79,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,lk_dropj_9b,11.5,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -375,6 +483,7 @@ numbers,,rc_excess_9b,"0.50 [0.41, 0.57]",,,,results/x0_necessity/qwen35_9b_x0_n
 numbers,,rc_jdep_9b,0.53,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,rc_rdep_9b,0.04,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,rc_whole_9b,197,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
+numbers,,rc_swhole_pct_9b,98%,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,rc_noj_9b,92,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,rc_norand_9b,190,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,rc_dropj_9b,52.5,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -382,9 +491,13 @@ numbers,,rc_droprand_9b,3.5,,,,results/x0_necessity/qwen35_9b_x0_necessity/outco
 numbers,,contrast_9b,"0.53 [0.42, 0.61]",,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,jshare_9b,0.23,,,,results/x0_necessity/qwen35_9b_x0_necessity/shares.jsonl
 numbers,,lk_excess_k25_9b,−0.02,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,contrast_k25_9b,0.52,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 numbers,,lk_excess_k50_9b,−0.03,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,contrast_k50_9b,0.65,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 numbers,,lk_excess_k100_9b,−0.08,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,contrast_k100_9b,0.54,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 numbers,,lk_excess_k200_9b,−0.17,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+numbers,,contrast_k200_9b,0.36,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 numbers,,rc_excess_k25_9b,0.50,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 numbers,,rc_excess_k50_9b,0.62,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 numbers,,rc_excess_k100_9b,0.47,,,,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
@@ -406,6 +519,7 @@ numbers,,lk_excess_27b,"0.14 [0.08, 0.20]",,,,results/x0_necessity/x0_necessity_
 numbers,,lk_jdep_27b,0.17,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_rdep_27b,0.03,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_whole_27b,86,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,lk_swhole_pct_27b,43%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_noj_27b,71,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_norand_27b,83,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,lk_dropj_27b,7.5,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
@@ -414,6 +528,7 @@ numbers,,rc_excess_27b,"0.74 [0.66, 0.80]",,,,results/x0_necessity/x0_necessity_
 numbers,,rc_jdep_27b,0.77,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,rc_rdep_27b,0.03,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,rc_whole_27b,150,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
+numbers,,rc_swhole_pct_27b,75%,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,rc_noj_27b,35,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,rc_norand_27b,146,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,rc_dropj_27b,57.5,,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
@@ -421,9 +536,13 @@ numbers,,rc_droprand_27b,2.0,,,,results/x0_necessity/x0_necessity_27b_chat/outco
 numbers,,contrast_27b,"0.60 [0.50, 0.69]",,,,results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl
 numbers,,jshare_27b,0.16,,,,results/x0_necessity/x0_necessity_27b_chat/shares.jsonl
 numbers,,lk_excess_k25_27b,0.12,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,contrast_k25_27b,0.65,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
 numbers,,lk_excess_k50_27b,0.30,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,contrast_k50_27b,0.50,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
 numbers,,lk_excess_k100_27b,0.60,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,contrast_k100_27b,0.07,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
 numbers,,lk_excess_k200_27b,0.58,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+numbers,,contrast_k200_27b,−0.08,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
 numbers,,rc_excess_k25_27b,0.77,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
 numbers,,rc_excess_k50_27b,0.80,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
 numbers,,rc_excess_k100_27b,0.67,,,,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
@@ -445,6 +564,7 @@ numbers,,lk_excess_122b,"0.00 [−0.06, 0.06]",,,,results/x0_necessity/qwen35_12
 numbers,,lk_jdep_122b,0.20,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_rdep_122b,0.20,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_whole_122b,89,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,lk_swhole_pct_122b,44%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_noj_122b,71,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_norand_122b,71,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_dropj_122b,9.0,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
@@ -453,6 +573,7 @@ numbers,,rc_excess_122b,"0.32 [0.22, 0.41]",,,,results/x0_necessity/qwen35_122b_
 numbers,,rc_jdep_122b,0.40,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_rdep_122b,0.08,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_whole_122b,184,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,rc_swhole_pct_122b,92%,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_noj_122b,111,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_norand_122b,169,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_dropj_122b,36.5,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
@@ -460,8 +581,11 @@ numbers,,rc_droprand_122b,7.5,,,,results/x0_necessity/qwen35_122b_x0_necessity_r
 numbers,,contrast_122b,"0.32 [0.20, 0.43]",,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,jshare_122b,0.25,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/shares.jsonl
 numbers,,lk_excess_k25_122b,0.00,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,contrast_k25_122b,0.32,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_excess_k50_122b,−0.02,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,contrast_k50_122b,0.47,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,lk_excess_k100_122b,−0.12,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+numbers,,contrast_k100_122b,0.55,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_excess_k25_122b,0.32,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_excess_k50_122b,0.45,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
 numbers,,rc_excess_k100_122b,0.43,,,,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
@@ -481,6 +605,7 @@ numbers,,lk_excess_muse,"−0.10 [−0.15, −0.04]",,,,results/x0_necessity/mus
 numbers,,lk_jdep_muse,0.01,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_rdep_muse,0.11,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_whole_muse,70,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,lk_swhole_pct_muse,35%,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_noj_muse,69,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_norand_muse,62,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_dropj_muse,0.5,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
@@ -489,6 +614,7 @@ numbers,,rc_excess_muse,"0.75 [0.61, 0.87]",,,,results/x0_necessity/muse30b_x0_n
 numbers,,rc_jdep_muse,0.72,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_rdep_muse,−0.03,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_whole_muse,117,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,rc_swhole_pct_muse,58%,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_noj_muse,33,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_norand_muse,121,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_dropj_muse,42.0,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
@@ -496,9 +622,13 @@ numbers,,rc_droprand_muse,-2.0,,,,results/x0_necessity/muse30b_x0_necessity/outc
 numbers,,contrast_muse,"0.85 [0.68, 0.98]",,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,jshare_muse,0.14,,,,results/x0_necessity/muse30b_x0_necessity/shares.jsonl
 numbers,,lk_excess_k25_muse,−0.10,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,contrast_k25_muse,0.85,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_excess_k50_muse,−0.01,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,contrast_k50_muse,0.84,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_excess_k100_muse,0.00,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,contrast_k100_muse,0.85,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,lk_excess_k200_muse,0.19,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+numbers,,contrast_k200_muse,0.52,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_excess_k25_muse,0.75,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_excess_k50_muse,0.83,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 numbers,,rc_excess_k100_muse,0.85,,,,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
@@ -647,6 +777,8 @@ numbers,,single_lk_excess_pt_9b,−0.02,,,,results/x0_necessity/qwen35_9b_x0_sin
 numbers,,single_rc_excess_9b,"0.37 [0.29, 0.43]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
 numbers,,single_lk_excess_k100_9b,0.12,,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
 numbers,,single_contrast_9b,"0.39 [0.30, 0.46]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
+numbers,,single_lk_swhole_pct_9b,53%,,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
+numbers,,single_rc_swhole_pct_9b,96%,,,,results/x0_necessity/qwen35_9b_x0_single_r2/outcomes.jsonl
 numbers,,paired_lk_excess_9b,"0.01 [−0.07, 0.08]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/paired-20261024T172817Z/paired.json
 numbers,,paired_rc_excess_9b,"−0.13 [−0.19, −0.08]",,,,results/x0_necessity/qwen35_9b_x0_single_r2/paired-20261024T172817Z/paired.json
 numbers,,single_lk_excess_27b,"0.05 [0.01, 0.09]",,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
@@ -654,6 +786,8 @@ numbers,,single_lk_excess_pt_27b,0.05,,,,results/x0_necessity/x0_single_27b_r2/o
 numbers,,single_rc_excess_27b,"0.61 [0.51, 0.69]",,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
 numbers,,single_lk_excess_k100_27b,0.49,,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
 numbers,,single_contrast_27b,"0.56 [0.45, 0.65]",,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
+numbers,,single_lk_swhole_pct_27b,48%,,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
+numbers,,single_rc_swhole_pct_27b,73%,,,,results/x0_necessity/x0_single_27b_r2/outcomes.jsonl
 numbers,,paired_lk_excess_27b,"−0.08 [−0.16, 0.00]",,,,results/x0_necessity/x0_single_27b_r2/paired-20261024T172816Z/paired.json
 numbers,,paired_rc_excess_27b,"−0.15 [−0.22, −0.08]",,,,results/x0_necessity/x0_single_27b_r2/paired-20261024T172816Z/paired.json
 numbers,,single_lk_excess_122b,"−0.01 [−0.06, 0.04]",,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
@@ -661,11 +795,15 @@ numbers,,single_lk_excess_pt_122b,−0.01,,,,results/x0_necessity/qwen35_122b_x0
 numbers,,single_rc_excess_122b,"0.27 [0.16, 0.36]",,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
 numbers,,single_lk_excess_k100_122b,−0.09,,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
 numbers,,single_contrast_122b,"0.28 [0.15, 0.39]",,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
+numbers,,single_lk_swhole_pct_122b,47%,,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
+numbers,,single_rc_swhole_pct_122b,90%,,,,results/x0_necessity/qwen35_122b_x0_single/outcomes.jsonl
 numbers,,single_lk_excess_muse,"−0.01 [−0.04, 0.00]",,,,results/x0_necessity/muse30b_x0_single/outcomes.jsonl
 numbers,,single_lk_excess_pt_muse,−0.01,,,,results/x0_necessity/muse30b_x0_single/outcomes.jsonl
 numbers,,single_rc_excess_muse,"0.66 [0.53, 0.78]",,,,results/x0_necessity/muse30b_x0_single/outcomes.jsonl
 numbers,,single_lk_excess_k100_muse,0.05,,,,results/x0_necessity/muse30b_x0_single/outcomes.jsonl
 numbers,,single_contrast_muse,"0.67 [0.53, 0.80]",,,,results/x0_necessity/muse30b_x0_single/outcomes.jsonl
+numbers,,single_lk_swhole_pct_muse,43%,,,,results/x0_necessity/muse30b_x0_single/outcomes.jsonl
+numbers,,single_rc_swhole_pct_muse,56%,,,,results/x0_necessity/muse30b_x0_single/outcomes.jsonl
 numbers,,probe_a_before_9b,0.13,,,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json
 numbers,,probe_a_chance_9b,0.11,,,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json
 numbers,,probe_b_before_9b,0.82,,,,results/x0_probe/qwen35_9b_x0_probe/probe-20261024T163340Z/probe.json
@@ -1604,26 +1742,32 @@ numbers,,rt_ex_C2_both_rc_muse,"0.37 [0.24, 0.50]",,,,results/x6_routes/muse30b_
 numbers,,rt_ex_C2_both_minus_alf_rc_muse,"0.34 [0.15, 0.55]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C0_alf_lk_muse,"0.20 [0.16, 0.25]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C0_alf_jpp_lk_muse,"0.26 [0.21, 0.32]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rt_left_C0_alf_jpp_lk_muse,"0.74 [0.68, 0.79]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C0_alf_rand_lk_muse,"0.25 [0.20, 0.31]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C0_jpp_minus_rand_lk_muse,"0.01 [−0.02, 0.03]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C0_alf_rc_muse,"0.09 [0.01, 0.17]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C0_alf_jpp_rc_muse,"0.59 [0.48, 0.71]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rt_left_C0_alf_jpp_rc_muse,"0.41 [0.29, 0.52]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C0_alf_rand_rc_muse,"0.33 [0.22, 0.46]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C0_jpp_minus_rand_rc_muse,"0.26 [0.16, 0.37]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C1_alf_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C1_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rt_left_C1_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C1_alf_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C1_jpp_minus_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C1_alf_rc_muse,"−0.02 [−0.04, −0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C1_alf_jpp_rc_muse,"−0.03 [−0.05, −0.01]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rt_left_C1_alf_jpp_rc_muse,"1.03 [1.01, 1.05]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C1_alf_rand_rc_muse,"−0.02 [−0.04, −0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C1_jpp_minus_rand_rc_muse,"−0.01 [−0.02, 0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C2_alf_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C2_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rt_left_C2_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C2_alf_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C2_jpp_minus_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C2_alf_rc_muse,"0.05 [−0.13, 0.22]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C2_alf_jpp_rc_muse,"0.61 [0.49, 0.72]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rt_left_C2_alf_jpp_rc_muse,"0.39 [0.28, 0.51]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C2_alf_rand_rc_muse,"0.36 [0.20, 0.53]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_lost_C2_jpp_minus_rand_rc_muse,"0.25 [0.12, 0.38]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rt_c0_muse,0.84,,,,results/x6_routes/muse30b_x6_routes/c0_check.json
@@ -2339,26 +2483,32 @@ numbers,,rtb_ex_C2_both_rc_muse,"0.37 [0.24, 0.50]",,,,results/x6_routes/muse30b
 numbers,,rtb_ex_C2_both_minus_alf_rc_muse,"0.34 [0.15, 0.55]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C0_alf_lk_muse,"0.20 [0.16, 0.25]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C0_alf_jpp_lk_muse,"0.26 [0.21, 0.32]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtb_left_C0_alf_jpp_lk_muse,"0.74 [0.68, 0.79]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C0_alf_rand_lk_muse,"0.25 [0.20, 0.31]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C0_jpp_minus_rand_lk_muse,"0.01 [−0.02, 0.03]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C0_alf_rc_muse,"0.09 [0.01, 0.17]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C0_alf_jpp_rc_muse,"0.59 [0.48, 0.71]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtb_left_C0_alf_jpp_rc_muse,"0.41 [0.29, 0.52]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C0_alf_rand_rc_muse,"0.33 [0.22, 0.46]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C0_jpp_minus_rand_rc_muse,"0.26 [0.16, 0.37]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C1_alf_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C1_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtb_left_C1_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C1_alf_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C1_jpp_minus_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C1_alf_rc_muse,"−0.02 [−0.04, −0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C1_alf_jpp_rc_muse,"−0.03 [−0.05, −0.01]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtb_left_C1_alf_jpp_rc_muse,"1.03 [1.01, 1.05]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C1_alf_rand_rc_muse,"−0.02 [−0.04, −0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C1_jpp_minus_rand_rc_muse,"−0.01 [−0.02, 0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C2_alf_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C2_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtb_left_C2_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C2_alf_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C2_jpp_minus_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C2_alf_rc_muse,"0.05 [−0.13, 0.22]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C2_alf_jpp_rc_muse,"0.61 [0.49, 0.72]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtb_left_C2_alf_jpp_rc_muse,"0.39 [0.28, 0.51]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C2_alf_rand_rc_muse,"0.36 [0.20, 0.53]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_lost_C2_jpp_minus_rand_rc_muse,"0.25 [0.12, 0.38]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtb_c0_muse,0.84,,,,results/x6_routes/muse30b_x6_routes/c0_check.json
@@ -2412,10 +2562,12 @@ numbers,,rtc_ex_C0_both_rc_9b,"0.34 [0.28, 0.40]",,,,results/x6_routes/qwen35_9b
 numbers,,rtc_ex_C0_both_minus_alf_rc_9b,"0.21 [0.15, 0.28]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_lost_C0_alf_lk_9b,"0.32 [0.26, 0.38]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_lost_C0_alf_jpp_lk_9b,"0.54 [0.50, 0.59]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
+numbers,,rtc_left_C0_alf_jpp_lk_9b,"0.46 [0.41, 0.50]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_lost_C0_alf_rand_lk_9b,"0.62 [0.57, 0.67]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_lost_C0_jpp_minus_rand_lk_9b,"−0.08 [−0.11, −0.04]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_lost_C0_alf_rc_9b,"0.13 [0.09, 0.18]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_lost_C0_alf_jpp_rc_9b,"0.52 [0.44, 0.60]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
+numbers,,rtc_left_C0_alf_jpp_rc_9b,"0.48 [0.40, 0.56]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_lost_C0_alf_rand_rc_9b,"0.39 [0.31, 0.46]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_lost_C0_jpp_minus_rand_rc_9b,"0.13 [0.09, 0.18]",,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/verdict-20261025T135917Z/verdict.json
 numbers,,rtc_c0_9b,0.99,,,,results/x6_routes/qwen35_9b_x6_routes_bothoff_ctrl/c0_check.json
@@ -2469,10 +2621,12 @@ numbers,,rtc_ex_C0_both_rc_27b,"0.43 [0.36, 0.51]",,,,results/x6_routes/x6_route
 numbers,,rtc_ex_C0_both_minus_alf_rc_27b,"0.27 [0.16, 0.37]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_lost_C0_alf_lk_27b,"0.15 [0.11, 0.18]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_lost_C0_alf_jpp_lk_27b,"0.47 [0.43, 0.52]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
+numbers,,rtc_left_C0_alf_jpp_lk_27b,"0.53 [0.48, 0.57]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_lost_C0_alf_rand_lk_27b,"0.24 [0.20, 0.29]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_lost_C0_jpp_minus_rand_lk_27b,"0.23 [0.18, 0.27]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_lost_C0_alf_rc_27b,"0.32 [0.25, 0.40]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_lost_C0_alf_jpp_rc_27b,"0.82 [0.76, 0.88]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
+numbers,,rtc_left_C0_alf_jpp_rc_27b,"0.18 [0.12, 0.24]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_lost_C0_alf_rand_rc_27b,"0.49 [0.40, 0.58]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_lost_C0_jpp_minus_rand_rc_27b,"0.33 [0.25, 0.41]",,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/verdict-20261025T140315Z/verdict.json
 numbers,,rtc_c0_27b,0.98,,,,results/x6_routes/x6_routes_bothoff_ctrl_27b/c0_check.json
@@ -2526,10 +2680,12 @@ numbers,,rtc_ex_C0_both_rc_122b,"0.24 [0.19, 0.29]",,,,results/x6_routes/qwen35_
 numbers,,rtc_ex_C0_both_minus_alf_rc_122b,"0.11 [0.03, 0.18]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_lost_C0_alf_lk_122b,"0.26 [0.22, 0.31]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_lost_C0_alf_jpp_lk_122b,"0.50 [0.45, 0.55]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
+numbers,,rtc_left_C0_alf_jpp_lk_122b,"0.50 [0.45, 0.55]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_lost_C0_alf_rand_lk_122b,"0.50 [0.45, 0.55]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_lost_C0_jpp_minus_rand_lk_122b,"0.00 [−0.02, 0.03]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_lost_C0_alf_rc_122b,"0.19 [0.13, 0.24]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_lost_C0_alf_jpp_rc_122b,"0.50 [0.41, 0.58]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
+numbers,,rtc_left_C0_alf_jpp_rc_122b,"0.50 [0.42, 0.59]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_lost_C0_alf_rand_rc_122b,"0.43 [0.34, 0.51]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_lost_C0_jpp_minus_rand_rc_122b,"0.07 [0.04, 0.11]",,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/verdict-20261025T194420Z/verdict.json
 numbers,,rtc_c0_122b,1.00,,,,results/x6_routes/qwen35_122b_x6_routes_bothoff_ctrl_g75/c0_check.json
@@ -2739,26 +2895,32 @@ numbers,,rtc_ex_C2_both_rc_muse,"0.37 [0.24, 0.50]",,,,results/x6_routes/muse30b
 numbers,,rtc_ex_C2_both_minus_alf_rc_muse,"0.34 [0.15, 0.55]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C0_alf_lk_muse,"0.20 [0.16, 0.25]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C0_alf_jpp_lk_muse,"0.26 [0.21, 0.32]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtc_left_C0_alf_jpp_lk_muse,"0.74 [0.68, 0.79]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C0_alf_rand_lk_muse,"0.25 [0.20, 0.31]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C0_jpp_minus_rand_lk_muse,"0.01 [−0.02, 0.03]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C0_alf_rc_muse,"0.09 [0.01, 0.17]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C0_alf_jpp_rc_muse,"0.59 [0.48, 0.71]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtc_left_C0_alf_jpp_rc_muse,"0.41 [0.29, 0.52]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C0_alf_rand_rc_muse,"0.33 [0.22, 0.46]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C0_jpp_minus_rand_rc_muse,"0.26 [0.16, 0.37]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C1_alf_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C1_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtc_left_C1_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C1_alf_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C1_jpp_minus_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C1_alf_rc_muse,"−0.02 [−0.04, −0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C1_alf_jpp_rc_muse,"−0.03 [−0.05, −0.01]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtc_left_C1_alf_jpp_rc_muse,"1.03 [1.01, 1.05]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C1_alf_rand_rc_muse,"−0.02 [−0.04, −0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C1_jpp_minus_rand_rc_muse,"−0.01 [−0.02, 0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C2_alf_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C2_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtc_left_C2_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C2_alf_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C2_jpp_minus_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C2_alf_rc_muse,"0.05 [−0.13, 0.22]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C2_alf_jpp_rc_muse,"0.61 [0.49, 0.72]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtc_left_C2_alf_jpp_rc_muse,"0.39 [0.28, 0.51]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C2_alf_rand_rc_muse,"0.36 [0.20, 0.53]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_lost_C2_jpp_minus_rand_rc_muse,"0.25 [0.12, 0.38]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtc_c0_muse,0.84,,,,results/x6_routes/muse30b_x6_routes/c0_check.json
@@ -3486,26 +3648,32 @@ numbers,,rtk_ex_C2_both_rc_muse,"0.37 [0.24, 0.50]",,,,results/x6_routes/muse30b
 numbers,,rtk_ex_C2_both_minus_alf_rc_muse,"0.34 [0.15, 0.55]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C0_alf_lk_muse,"0.20 [0.16, 0.25]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C0_alf_jpp_lk_muse,"0.26 [0.21, 0.32]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtk_left_C0_alf_jpp_lk_muse,"0.74 [0.68, 0.79]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C0_alf_rand_lk_muse,"0.25 [0.20, 0.31]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C0_jpp_minus_rand_lk_muse,"0.01 [−0.02, 0.03]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C0_alf_rc_muse,"0.09 [0.01, 0.17]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C0_alf_jpp_rc_muse,"0.59 [0.48, 0.71]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtk_left_C0_alf_jpp_rc_muse,"0.41 [0.29, 0.52]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C0_alf_rand_rc_muse,"0.33 [0.22, 0.46]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C0_jpp_minus_rand_rc_muse,"0.26 [0.16, 0.37]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C1_alf_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C1_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtk_left_C1_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C1_alf_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C1_jpp_minus_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C1_alf_rc_muse,"−0.02 [−0.04, −0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C1_alf_jpp_rc_muse,"−0.03 [−0.05, −0.01]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtk_left_C1_alf_jpp_rc_muse,"1.03 [1.01, 1.05]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C1_alf_rand_rc_muse,"−0.02 [−0.04, −0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C1_jpp_minus_rand_rc_muse,"−0.01 [−0.02, 0.00]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C2_alf_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C2_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtk_left_C2_alf_jpp_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C2_alf_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C2_jpp_minus_rand_lk_muse,"nan [nan, nan]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C2_alf_rc_muse,"0.05 [−0.13, 0.22]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C2_alf_jpp_rc_muse,"0.61 [0.49, 0.72]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
+numbers,,rtk_left_C2_alf_jpp_rc_muse,"0.39 [0.28, 0.51]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C2_alf_rand_rc_muse,"0.36 [0.20, 0.53]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_lost_C2_jpp_minus_rand_rc_muse,"0.25 [0.12, 0.38]",,,,results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z/verdict.json
 numbers,,rtk_c0_muse,0.84,,,,results/x6_routes/muse30b_x6_routes/c0_check.json
@@ -3515,301 +3683,361 @@ numbers,,rt_c0gate_eligible_122b,479 of 700,,,,results/x6_routes/qwen35_122b_x6_
 numbers,,comp_two_all_n_9b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_9b,"−0.03 [−0.08, 0.03]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_rc_9b,"0.50 [0.41, 0.57]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_all_gap_9b,0.53,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_sw_9b,105,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_cell_9b,"−0.03 [−0.08, 0.03]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_n_9b,75,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_9b,"−0.04 [−0.10, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_rc_9b,"0.23 [0.14, 0.31]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_both_gap_9b,0.27,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_sw_9b,72,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_cell_9b,"−0.04 [−0.10, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_n_9b,25,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_9b,"0.29 [0.07, 0.57]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_rc_9b,"0.72 [0.57, 0.88]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_org_gap_9b,0.43,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_sw_9b,14,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_cell_9b,"*0.29 [0.07, 0.57]; 14 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_n_9b,100,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_9b,"−0.21 [−0.43, −0.05]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_rc_9b,"0.65 [0.57, 0.73]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_after_gap_9b,0.86,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_sw_9b,19,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_cell_9b,"*−0.21 [−0.43, −0.05]; 19 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_n_9b,100,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_9b,"−0.21 [−0.43, −0.05]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_rc_9b,"0.65 [0.57, 0.73]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_fmyes_gap_9b,0.86,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_sw_9b,19,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_cell_9b,"*−0.21 [−0.43, −0.05]; 19 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_n_9b,100,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_9b,"0.01 [−0.04, 0.07]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_rc_9b,"0.35 [0.26, 0.43]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_fmno_gap_9b,0.34,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_sw_9b,86,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_cell_9b,"0.01 [−0.04, 0.07]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_n_9b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_9b,"−0.02 [−0.05, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_rc_9b,"0.37 [0.29, 0.43]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_all_gap_9b,0.39,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_sw_9b,106,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_cell_9b,"−0.02 [−0.05, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_n_9b,73,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_9b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_rc_9b,"0.06 [0.00, 0.12]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_both_gap_9b,0.06,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_sw_9b,72,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_cell_9b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_n_9b,27,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_9b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_rc_9b,"0.50 [0.33, 0.69]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_org_gap_9b,0.50,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_sw_9b,15,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_cell_9b,"*0.00 [0.00, 0.00]; 15 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_n_9b,100,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_9b,"−0.11 [−0.29, 0.10]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_rc_9b,"0.57 [0.47, 0.67]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_after_gap_9b,0.68,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_sw_9b,19,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_cell_9b,"*−0.11 [−0.29, 0.10]; 19 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_n_9b,100,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_9b,"−0.11 [−0.29, 0.10]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_rc_9b,"0.57 [0.47, 0.67]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_fmyes_gap_9b,0.68,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_sw_9b,19,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_cell_9b,"*−0.11 [−0.29, 0.10]; 19 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_n_9b,100,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_9b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_rc_9b,"0.17 [0.11, 0.23]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_fmno_gap_9b,0.17,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_sw_9b,87,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_cell_9b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_n_9b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_rc_9b,"0.12 [0.06, 0.19]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_all_gap_9b,0.13,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_sw_9b,199,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_cell_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_n_9b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_rc_9b,"0.12 [0.06, 0.19]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_both_gap_9b,0.13,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_sw_9b,199,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_cell_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_n_9b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_rc_9b,"0.12 [0.06, 0.19]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_fmno_gap_9b,0.13,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_sw_9b,199,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_cell_9b,"−0.01 [−0.02, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_n_27b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_27b,"0.14 [0.08, 0.20]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_rc_27b,"0.74 [0.66, 0.80]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_all_gap_27b,0.60,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_sw_27b,86,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_cell_27b,"0.14 [0.08, 0.20]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_n_27b,69,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_27b,"0.14 [0.06, 0.21]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_rc_27b,"0.73 [0.61, 0.83]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_both_gap_27b,0.59,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_sw_27b,66,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_cell_27b,"0.14 [0.06, 0.21]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_n_27b,32,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_27b,"0.18 [0.00, 0.45]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_rc_27b,"0.54 [0.32, 0.79]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_org_gap_27b,0.36,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_sw_27b,11,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_cell_27b,"*0.18 [0.00, 0.45]; 11 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_n_27b,99,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_27b,"0.11 [0.00, 0.40]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_rc_27b,"0.81 [0.71, 0.91]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_after_gap_27b,0.70,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_sw_27b,9,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_cell_27b,"*0.11 [0.00, 0.40]; 9 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_n_27b,99,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_27b,"0.11 [0.00, 0.40]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_rc_27b,"0.81 [0.71, 0.91]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_fmyes_gap_27b,0.70,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_sw_27b,9,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_cell_27b,"*0.11 [0.00, 0.40]; 9 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_n_27b,101,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_27b,"0.14 [0.07, 0.22]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_rc_27b,"0.67 [0.58, 0.76]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_fmno_gap_27b,0.52,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_sw_27b,77,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_cell_27b,"0.14 [0.07, 0.22]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_n_27b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_27b,"0.05 [0.01, 0.09]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_rc_27b,"0.61 [0.51, 0.69]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_all_gap_27b,0.56,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_sw_27b,95,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_cell_27b,"0.05 [0.01, 0.09]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_n_27b,70,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_27b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_rc_27b,"0.46 [0.34, 0.57]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_both_gap_27b,0.46,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_sw_27b,70,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_cell_27b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_n_27b,33,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_27b,"0.08 [0.00, 0.27]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_rc_27b,"0.56 [0.32, 0.80]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_org_gap_27b,0.48,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_sw_27b,13,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_cell_27b,"*0.08 [0.00, 0.27]; 13 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_n_27b,97,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_27b,"0.33 [0.10, 0.60]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_rc_27b,"0.73 [0.58, 0.86]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_after_gap_27b,0.40,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_sw_27b,12,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_cell_27b,"*0.33 [0.10, 0.60]; 12 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_n_27b,97,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_27b,"0.33 [0.10, 0.60]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_rc_27b,"0.73 [0.58, 0.86]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_fmyes_gap_27b,0.40,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_sw_27b,12,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_cell_27b,"*0.33 [0.10, 0.60]; 12 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_n_27b,103,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_27b,"0.01 [0.00, 0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_rc_27b,"0.49 [0.39, 0.60]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_fmno_gap_27b,0.48,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_sw_27b,83,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_cell_27b,"0.01 [0.00, 0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_n_27b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_rc_27b,"0.37 [0.28, 0.46]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_all_gap_27b,0.37,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_sw_27b,198,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_cell_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_n_27b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_rc_27b,"0.37 [0.28, 0.46]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_both_gap_27b,0.37,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_sw_27b,198,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_cell_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_n_27b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_rc_27b,"0.37 [0.28, 0.46]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_fmno_gap_27b,0.37,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_sw_27b,198,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_cell_27b,"0.01 [0.00, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_n_122b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_122b,"0.00 [−0.06, 0.06]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_rc_122b,"0.32 [0.22, 0.41]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_all_gap_122b,0.32,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_sw_122b,89,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_cell_122b,"0.00 [−0.06, 0.06]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_n_122b,53,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_122b,"−0.02 [−0.09, 0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_rc_122b,"0.14 [0.05, 0.23]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_both_gap_122b,0.16,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_sw_122b,51,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_cell_122b,"−0.02 [−0.09, 0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_n_122b,32,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_122b,"0.00 [−0.18, 0.21]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_rc_122b,"0.30 [0.12, 0.48]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_org_gap_122b,0.30,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_sw_122b,25,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_cell_122b,"*0.00 [−0.18, 0.21]; 25 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_n_122b,115,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_122b,"0.08 [0.00, 0.23]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_rc_122b,"0.41 [0.26, 0.54]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_after_gap_122b,0.33,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_sw_122b,13,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_cell_122b,"*0.08 [0.00, 0.23]; 13 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_n_122b,115,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_122b,"0.08 [0.00, 0.23]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_rc_122b,"0.41 [0.26, 0.54]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_fmyes_gap_122b,0.33,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_sw_122b,13,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_cell_122b,"*0.08 [0.00, 0.23]; 13 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_n_122b,85,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_122b,"−0.01 [−0.08, 0.06]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_rc_122b,"0.20 [0.10, 0.30]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_fmno_gap_122b,0.21,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_sw_122b,76,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_cell_122b,"−0.01 [−0.08, 0.06]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_n_122b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_122b,"−0.01 [−0.06, 0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_rc_122b,"0.27 [0.16, 0.36]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_all_gap_122b,0.28,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_sw_122b,94,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_cell_122b,"−0.01 [−0.06, 0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_n_122b,54,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_rc_122b,"0.08 [0.02, 0.15]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_both_gap_122b,0.08,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_sw_122b,54,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_cell_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_n_122b,31,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_122b,"−0.04 [−0.19, 0.14]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_rc_122b,"0.13 [0.03, 0.26]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_org_gap_122b,0.17,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_sw_122b,26,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_cell_122b,"*−0.04 [−0.19, 0.14]; 26 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_n_122b,115,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_rc_122b,"0.40 [0.25, 0.54]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_after_gap_122b,0.40,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_sw_122b,14,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_cell_122b,"*0.00 [0.00, 0.00]; 14 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_n_122b,115,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_rc_122b,"0.40 [0.25, 0.54]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_fmyes_gap_122b,0.40,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_sw_122b,14,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_cell_122b,"*0.00 [0.00, 0.00]; 14 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_n_122b,85,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_122b,"−0.01 [−0.07, 0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_rc_122b,"0.10 [0.03, 0.17]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_fmno_gap_122b,0.11,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_sw_122b,80,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_cell_122b,"−0.01 [−0.07, 0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_n_122b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_rc_122b,"0.06 [0.03, 0.09]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_all_gap_122b,0.06,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_sw_122b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_cell_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_n_122b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_rc_122b,"0.06 [0.03, 0.09]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_both_gap_122b,0.06,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_sw_122b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_cell_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_n_122b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_rc_122b,"0.06 [0.03, 0.09]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_fmno_gap_122b,0.06,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_sw_122b,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_cell_122b,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_n_muse,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_muse,"−0.10 [−0.15, −0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_rc_muse,"0.75 [0.61, 0.87]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_all_gap_muse,0.85,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_sw_muse,70,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_all_lk_cell_muse,"−0.10 [−0.15, −0.04]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_n_muse,68,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_muse,"−0.07 [−0.13, −0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_rc_muse,"0.52 [0.26, 0.80]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_both_gap_muse,0.59,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_sw_muse,55,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_both_lk_cell_muse,"−0.07 [−0.13, −0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_n_muse,24,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_muse,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_rc_muse,"1.00 [0.81, 1.23]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_org_gap_muse,1.00,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_sw_muse,5,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_org_lk_cell_muse,"*0.00 [0.00, 0.00]; 5 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_n_muse,108,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_muse,"−0.30 [−0.44, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_rc_muse,"0.80 [0.65, 0.92]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_after_gap_muse,1.10,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_sw_muse,10,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_after_lk_cell_muse,"*−0.30 [−0.44, 0.00]; 10 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_n_muse,108,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_muse,"−0.30 [−0.44, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_rc_muse,"0.80 [0.65, 0.92]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_fmyes_gap_muse,1.10,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_sw_muse,10,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmyes_lk_cell_muse,"*−0.30 [−0.44, 0.00]; 10 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_n_muse,92,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_muse,"−0.07 [−0.12, −0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_rc_muse,"0.68 [0.46, 0.88]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_two_fmno_gap_muse,0.75,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_sw_muse,60,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_two_fmno_lk_cell_muse,"−0.07 [−0.12, −0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_n_muse,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_muse,"−0.01 [−0.04, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_rc_muse,"0.66 [0.53, 0.78]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_all_gap_muse,0.67,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_sw_muse,86,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_all_lk_cell_muse,"−0.01 [−0.04, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_n_muse,68,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_muse,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_rc_muse,"0.42 [0.22, 0.64]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_both_gap_muse,0.42,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_sw_muse,67,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_both_lk_cell_muse,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_n_muse,27,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_muse,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_rc_muse,"0.92 [0.58, 1.17]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_org_gap_muse,0.92,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_sw_muse,9,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_org_lk_cell_muse,"*0.00 [0.00, 0.00]; 9 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_n_muse,105,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_muse,"−0.10 [−0.29, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_rc_muse,"0.76 [0.64, 0.87]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_after_gap_muse,0.86,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_sw_muse,10,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_after_lk_cell_muse,"*−0.10 [−0.29, 0.00]; 10 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_n_muse,105,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_muse,"−0.10 [−0.29, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_rc_muse,"0.76 [0.64, 0.87]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_fmyes_gap_muse,0.86,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_sw_muse,10,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmyes_lk_cell_muse,"*−0.10 [−0.29, 0.00]; 10 switches*",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_n_muse,95,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_muse,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_rc_muse,"0.54 [0.32, 0.75]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_one_fmno_gap_muse,0.54,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_sw_muse,76,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_one_fmno_lk_cell_muse,"0.00 [0.00, 0.00]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_n_muse,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_muse,"−0.01 [−0.03, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_rc_muse,"0.31 [0.16, 0.45]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_all_gap_muse,0.32,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_sw_muse,187,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_all_lk_cell_muse,"−0.01 [−0.03, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_n_muse,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_muse,"−0.01 [−0.03, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_rc_muse,"0.31 [0.16, 0.45]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_both_gap_muse,0.32,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_sw_muse,187,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_both_lk_cell_muse,"−0.01 [−0.03, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_n_muse,200,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_muse,"−0.01 [−0.03, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_rc_muse,"0.31 [0.16, 0.45]",,,,results/x0_composition/x0_composition_20261026/composition.json
+numbers,,comp_rep_fmno_gap_muse,0.32,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_sw_muse,187,,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,comp_rep_fmno_lk_cell_muse,"−0.01 [−0.03, 0.02]",,,,results/x0_composition/x0_composition_20261026/composition.json
 numbers,,natsplit_all_n_27b,137,,,,results/x5_natural/x5_natural_27b/split-20261025T120131Z/split.json
@@ -3957,6 +4185,8 @@ numbers,,x4_C_animals_same_muse,"0.35 [0.13, 0.51]",,,,results/x4_alias/muse30b_
 numbers,,x4_C_animals_xlang_muse,"0.36 [0.20, 0.52]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,x4_C_elements_same_muse,"0.57 [0.38, 0.72]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,x4_C_elements_syn_muse,"0.76 [0.54, 0.96]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
+numbers,,pred_n,93,,,,predictions/README.md
+numbers,,pred_brier,0.32,,,,predictions/README.md
 numbers,,share_rho_27b,0.79,,,,results/x0_necessity/x0_necessity_27b_chat/descriptive-*/cells.json
 numbers,,ctx_lookup_full,84%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json
 numbers,,ctx_lookup_noj,87%,,,,results/d1_verdict/x0_ctx_parts_27b_20261024-144050/verdict.json

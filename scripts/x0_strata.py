@@ -53,14 +53,9 @@ def features(case: dict) -> dict[str, str]:
 
 
 CONFIDENCE = {"lookup's confidence": X.LOOKUP, "recall's confidence": X.RECALL}
-FEATURES = (
-    "upstream",
-    "domain",
-    "asked pick place",
-    "org locker vs asked pick",
-    "alt locker vs asked pick",
-    *CONFIDENCE,
-)
+# the scene's own features (features() reads them from the case; x0_details tabulates these); the readers' confidence
+# comes from the outcomes and is asked for by name (--features "recall's confidence")
+FEATURES = ("upstream", "domain", "asked pick place", "org locker vs asked pick", "alt locker vs asked pick")
 
 
 def confidence(rows: list[dict]) -> tuple[dict[str, dict[str, str]], dict[str, list[float]]]:
@@ -104,7 +99,7 @@ def main() -> None:
     ap.add_argument("--layer", type=int, required=True)
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--all-dicts", action="store_true", help="every dictionary, k and fit, not only J++ k = 25")
-    ap.add_argument("--features", nargs="+", default=list(FEATURES), choices=list(FEATURES))
+    ap.add_argument("--features", nargs="+", default=list(FEATURES), choices=[*FEATURES, *CONFIDENCE])
     a = ap.parse_args()
     src = X.RESULTS / a.name
     rows = [r for r in X.read_jsonl(src / "outcomes.jsonl") if r["rendering"] == "chat" and r["layer"] == a.layer]

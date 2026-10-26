@@ -20,7 +20,23 @@ from scripts import x0_figures as XF
 from scripts import x0_necessity as X
 
 N = S.numbers()
-MAIN_RUNS = {"9b": "qwen35_9b_x0_necessity", "27b": "x0_necessity_27b_chat", "122b": "qwen35_122b_x0_necessity_r2"}
+MAIN_RUNS = {
+    "9b": "qwen35_9b_x0_necessity",
+    "27b": "x0_necessity_27b_chat",
+    "122b": "qwen35_122b_x0_necessity_r2",
+    "muse": "muse30b_x0_necessity",
+}
+# Muse's natural passages: the lookup switches in few of them, so its interval is too wide for a gap label (Dan, 26 Oct)
+NO_GAP_LABEL = {("muse", "Natural passages")}
+# Fig. 5's depth curve: Muse's main test at more layers (muse_depth, after the data), once it is in results/
+DEPTH_RUNS = {"muse": "muse30b_x0_necessity_depth"}
+
+
+def depth_run(m: str) -> str:
+    run = DEPTH_RUNS.get(m)
+    return run if run and (X.RESULTS / run / "outcomes.jsonl").exists() else MAIN_RUNS[m]
+
+
 NEEDS = 0.30  # the lookup "still needs J++" where its extra loss is at least this (Dan's Q35.1 bar), for Fig. 5's shade
 
 
@@ -68,17 +84,17 @@ def fig1(plt) -> None:
             ("Simple scenes, only the asked\nperson's pick changes", "single_lk_excess_{m}", "single_rc_excess_{m}",
              "single_contrast_{m}", {"9b": "after", "27b": "after"}),
             ("Matched scenes,\ntwo people swap picks", "comp_two_fmno_lk_{m}", "comp_two_fmno_rc_{m}", None,
-             {"9b": "after", "27b": "after", "122b": "after"}),
+             {"9b": "after", "27b": "after", "122b": "after", "muse": "after"}),
             ("Matched scenes, only the asked\nperson's pick changes", "comp_one_fmno_lk_{m}", "comp_one_fmno_rc_{m}",
-             None, {"9b": "after", "27b": "after", "122b": "after"}),
+             None, {"9b": "after", "27b": "after", "122b": "after", "muse": "after"}),
             ("Varied scenes", "x0b_lk_excess_{m}", "x0b_rc_excess_{m}", "x0b_c_{m}", {}),
             ("Natural passages", "nat_lk_excess_{m}", "nat_rc_excess_{m}", "nat_gap_{m}", {})]  # fmt: skip
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 5.9), sharey=True)
-    fig.subplots_adjust(left=0.285, right=0.995, top=0.80, bottom=0.10, wspace=0.10)
+    fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 5.9), sharey=True)
+    fig.subplots_adjust(left=0.295, right=0.995, top=0.80, bottom=0.10, wspace=0.10)
     S.title(fig, "Recall needs the J++ part; the lookup mostly doesn't")
     for ax, (target, m, name) in zip(axes, S.MODELS, strict=True):
         S.extra_axis(ax)
-        ax.set_title(name.replace("Qwen3.5-", "").replace("Qwen3.6-", ""), fontsize=11.5, weight="bold")
+        ax.set_title(name, fontsize=10.5, weight="bold")
         for i, (label, lk_k, rc_k, gap_k, kinds) in enumerate(rows):
             y = -i
             lk, rc = S.parse(N.get(lk_k.format(m=m))), S.parse(N.get(rc_k.format(m=m)))
@@ -99,9 +115,16 @@ def fig1(plt) -> None:
             S.dot(ax, 0, y, rc, S.COL["recall"], kind)
             g = S.parse(N.get(gap_k.format(m=m))) if gap_k else None
             gap = g[0] if g and kind != "rerun" else rc[0] - lk[0]
-            ax.text(
-                (lk[0] + rc[0]) / 2, y + 0.3, f"gap {gap:.2f}", ha="center", va="bottom", fontsize=9.5, color="#444444"
-            )
+            if (m, label) not in NO_GAP_LABEL:
+                ax.text(
+                    (lk[0] + rc[0]) / 2,
+                    y + 0.3,
+                    f"gap {gap:.2f}",
+                    ha="center",
+                    va="bottom",
+                    fontsize=9,
+                    color="#444444",
+                )
             for w, v in ((X.LOOKUP, lk), (X.RECALL, rc)):
                 S.record("fig1", target, f"{label.replace(chr(10), ' ')}: {'lookup' if w == X.LOOKUP else 'recall'} extra loss",
                          *v, source=lk_k.format(m=m) if w == X.LOOKUP else rc_k.format(m=m))  # fmt: skip
@@ -132,10 +155,10 @@ def fig1(plt) -> None:
 
 def x0b_cell(target: str, reader: str):
     """X0b's pooled cell at the layer fixed in advance (its verdict's cells), as (v, lo, hi)."""
-    run = {"qwen3.5-9b": "qwen35_9b_x0b_v2", "qwen3.6-27b": "x0b_v2_27b", "qwen3.5-122b-a10b": "qwen35_122b_x0b_v2"}[
-        target
-    ]
+    run = {"qwen3.5-9b": "qwen35_9b_x0b_v2", "qwen3.6-27b": "x0b_v2_27b", "qwen3.5-122b-a10b": "qwen35_122b_x0b_v2",
+           "muse-glimmer-30b": "muse30b_x0b_v2"}[target]  # fmt: skip
     v = latest(pins.RESULTS_DIR / "x0b_generalize" / run, "verdict-*/verdict.json")
+    assert v is not None, f"no X0b verdict for {run}"
     c = next(c for c in v["cells"] if c["layer"] == X.PREDICTED[target] and c["reader"] == reader and c["dict"] == "jpp"
              and c["k"] == X.K_MAIN and c["omp"] == "signed")  # fmt: skip
     return tuple(c["excess"])
@@ -147,7 +170,8 @@ def parts_cells() -> dict[str, dict[str, dict]]:
     out: dict[str, dict[str, dict]] = {}
     runs = {"9b": ("qwen35_9b_x0_pcaeq", "qwen35_9b_x0_parts", "qwen35_9b_x0_jppother"),
             "27b": ("x0_pcaeq_27b", "x0_parts_27b", "x0_jppother_27b"),
-            "122b": ("qwen35_122b_x0_parts", "qwen35_122b_x0_parts", "qwen35_122b_x0_jppother")}  # fmt: skip
+            "122b": ("qwen35_122b_x0_parts", "qwen35_122b_x0_parts", "qwen35_122b_x0_jppother"),
+            "muse": ("muse30b_x0_parts", "muse30b_x0_parts", "muse30b_x0_jppother")}  # fmt: skip
     for m, (pcaeq, word, other) in runs.items():
         cells: dict[str, dict] = {}
         for run, parts in ((pcaeq, ("jpp", "jwo", "pca_eq")), (word, ("w",)), (other, ("jpp_other",))):
@@ -157,7 +181,7 @@ def parts_cells() -> dict[str, dict[str, dict]]:
                     c = cells.setdefault(r["part"], {"share": r["median_share"], "source": run})
                     c["lookup" if r["reader"] == X.LOOKUP else "recall"] = r["excess"]
         run = XF.Run(MAIN_RUNS[m])
-        layer = X.PREDICTED[{"9b": "qwen3.5-9b", "27b": "qwen3.6-27b", "122b": "qwen3.5-122b-a10b"}[m]]
+        layer = X.PREDICTED[{k: t for t, k, _ in S.MODELS}[m]]
         allc = run.cells("chat")
         for d in ("wu", "we", "rand"):
             key = ("chat", layer, X.LOOKUP, d, X.K_MAIN, "signed")
@@ -173,12 +197,12 @@ def fig2(plt) -> None:
              ("pca_eq", "Main directions at\nJ++'s share"), ("jpp_other", "J++ fitted to\nanother scene"),
              ("wu", "Logit lens †"), ("we", "Input embeddings †"), ("rand", "Random directions †")]  # fmt: skip
     cells = parts_cells()
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 5.4), sharey=True)
-    fig.subplots_adjust(left=0.215, right=0.995, top=0.83, bottom=0.10, wspace=0.12)
+    fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 5.4), sharey=True)
+    fig.subplots_adjust(left=0.205, right=0.995, top=0.80, bottom=0.10, wspace=0.12)
     S.title(fig, "No other part costs the recall as much as the scene's own J++")
     for ax, (target, m, name) in zip(axes, S.MODELS, strict=True):
         S.extra_axis(ax)
-        ax.set_title(name.replace("Qwen3.5-", "").replace("Qwen3.6-", ""), fontsize=11.5, weight="bold")
+        ax.set_title(name, fontsize=10.5, weight="bold")
         for i, (p, label) in enumerate(parts):
             y = -i
             c = cells[m].get(p)
@@ -188,8 +212,10 @@ def fig2(plt) -> None:
             S.dot(ax, 0, y, c["recall"], S.COL["recall"], "after")
             ax.plot([c["lookup"][0]], [y], "o", ms=4.5, color=S.COL["lookup"], zorder=4)
             if c["share"] is not None:
+                # a white box: a recall interval reaching the right edge (Muse's J++) must not read as a minus sign
                 ax.text(1.0, y, f"{100 * c['share']:.0f}%", ha="right", va="center", fontsize=9.5, color=S.COL["muted"],
-                        transform=ax.get_yaxis_transform())  # fmt: skip
+                        transform=ax.get_yaxis_transform(), zorder=5,
+                        bbox=dict(boxstyle="square,pad=0.45", fc="white", ec="none"))  # fmt: skip
             S.record(
                 "fig2", target, f"{label.replace(chr(10), ' ')}: recall extra loss", *c["recall"], source=c["source"]
             )
@@ -268,17 +294,18 @@ KEEP4 = (("keep_alf", "only the pointer part"), ("keep_alf_rand", "only random (
 def fig4(plt) -> None:
     """Another item moved, at the layer fixed in advance: route shares per arm, the removals (x6_routes) above and each
     part added alone (x6_routes_keeponly) below; the 122B's runs after the data (gate 0.75), hatched."""
-    runs = (("qwen3.5-9b", "9B", "qwen35_9b_x6_routes", "qwen35_9b_x6_routes_keeponly", "fixed"),
-            ("qwen3.6-27b", "27B", "x6_routes_27b", "x6_routes_keeponly_27b", "fixed"),
-            ("qwen3.5-122b-a10b", "122B, after the data", "qwen35_122b_x6_routes_g75", "qwen35_122b_x6_routes_keeponly_g75",
-             "rerun"))  # fmt: skip
+    runs = (("qwen3.5-9b", "Qwen3.5-9B", "qwen35_9b_x6_routes", "qwen35_9b_x6_routes_keeponly", "fixed"),
+            ("qwen3.6-27b", "Qwen3.6-27B", "x6_routes_27b", "x6_routes_keeponly_27b", "fixed"),
+            ("qwen3.5-122b-a10b", "Qwen3.5-122B", "qwen35_122b_x6_routes_g75", "qwen35_122b_x6_routes_keeponly_g75",
+             "rerun"),
+            ("muse-glimmer-30b", "Muse Glimmer 30B", "muse30b_x6_routes", "muse30b_x6_routes", "fixed"))  # fmt: skip
     ys = [-i for i in range(len(ARMS4))] + [-len(ARMS4) - 0.6 - i for i in range(len(KEEP4))]
     labels = [a[1] for a in ARMS4] + [a[1] for a in KEEP4]
-    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 5.4), sharey=True)
-    fig.subplots_adjust(left=0.255, right=0.975, top=0.80, bottom=0.10, wspace=0.16)
+    fig, axes = plt.subplots(1, len(runs), figsize=(S.WIDTH, 5.4), sharey=True)
+    fig.subplots_adjust(left=0.28, right=0.985, top=0.80, bottom=0.10, wspace=0.14)
     S.title(fig, "The lookup follows identity or position, never the value")
     for ax, (target, name, run, keep_run, kind) in zip(axes, runs, strict=True):
-        ax.set_title(name, fontsize=11.5, weight="bold")
+        ax.set_title(name, fontsize=10.5, weight="bold")
         ax.set_xlim(0, 1)
         ax.set_xticks([0, 0.5, 1], ["0", "50", "100"])
         ax.axhline(-len(ARMS4) + 0.2, color="#bbbbbb", lw=0.8)
@@ -312,7 +339,7 @@ def fig4(plt) -> None:
                              source=source)  # fmt: skip
                     left += sh
         ax.set_ylim(ys[-1] - 0.6, 0.6)
-    axes[1].set_xlabel("% of lookup answers")
+    fig.supxlabel("% of lookup answers", x=0.63, y=0.01, fontsize=10.5)
     axes[0].set_yticks(ys, labels)
     axes[0].tick_params(axis="y", length=0)
     hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[r]) for r, _ in ROUTES[:4]]
@@ -332,15 +359,18 @@ def fig5(plt) -> None:
                       ("x6_routes_27b", 32, "fixed")),
               "122b": (("qwen35_122b_x6_routes_sweep_l24_g75", 24, "rerun"), ("qwen35_122b_x6_routes_l27_g75", 27, "rerun"),
                        ("qwen35_122b_x6_routes_sweep_l30_g75", 30, "rerun"), ("qwen35_122b_x6_routes_g75", 33, "rerun"),
-                       ("qwen35_122b_x6_routes_sweep_l36_g75", 36, "rerun"))}  # fmt: skip
-    fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharex="col", gridspec_kw={"height_ratios": [1.25, 1]})
-    fig.subplots_adjust(left=0.105, right=0.98, top=0.84, bottom=0.10, wspace=0.14, hspace=0.26)
+                       ("qwen35_122b_x6_routes_sweep_l36_g75", 36, "rerun")),
+              # Muse: L34 not tested (the sanity swap moved the lookup in no scene; batch 38's G2)
+              "muse": (("muse30b_x6_routes_l13", 13, "fixed"), ("muse30b_x6_routes", 26, "fixed"))}  # fmt: skip
+    fig, axes = plt.subplots(2, len(S.MODELS), figsize=(S.WIDTH, 5.6), sharex="col",
+                             gridspec_kw={"height_ratios": [1.25, 1]})  # fmt: skip
+    fig.subplots_adjust(left=0.095, right=0.985, top=0.84, bottom=0.10, wspace=0.14, hspace=0.26)
     # Dan's wording (25 Oct ~23:00), 86 characters
     S.title(fig, "Position answers appear with depth; on the 9B and 122B where the lookup stops needing J++", limit=90)
     for j, (target, m, name) in enumerate(S.MODELS):
         top, bot = axes[0, j], axes[1, j]
         n_layers = pins.TARGETS[target]["n_layers"]
-        cells = XF.Run(MAIN_RUNS[m]).cells("chat")
+        cells = XF.Run(depth_run(m)).cells("chat")
         layers = sorted({k[1] for k in cells})
         top.axhspan(S.XLIM[0], S.NOT_NEEDED, color=S.COL["band"], lw=0, zorder=0)
         span = []
@@ -352,7 +382,7 @@ def fig5(plt) -> None:
                              color=col, alpha=0.12, lw=0)  # fmt: skip
             for _, c, la in pts:
                 S.record("fig5", target, f"layer {la}: {'lookup' if w == X.LOOKUP else 'recall'} J++ extra loss", *c["excess"],
-                         n=c["n"], source=MAIN_RUNS[m])  # fmt: skip
+                         n=c["n"], source=depth_run(m))  # fmt: skip
             last_d, last_y = pts[-1][0], pts[-1][1]["excess"][0]
             if w == X.LOOKUP:
                 # one band per model: from the first layer measured to the last where the lookup needs J++ (>= NEEDS)
@@ -370,7 +400,7 @@ def fig5(plt) -> None:
                 )
             span += [pts[0][0], last_d]
         top.set_ylim(*S.XLIM)
-        top.set_title(name.replace("Qwen3.5-", "").replace("Qwen3.6-", ""), fontsize=11.5, weight="bold")
+        top.set_title(name, fontsize=10.5, weight="bold")
         top.grid(axis="y", color="#eeeeee")
         bot.set_ylim(0, 1)
         if not any(latest(pins.RESULTS_DIR / "x6_routes" / r, "verdict-*/verdict.json") for r, _, _ in routes[m]):
@@ -421,23 +451,24 @@ def fig6(plt) -> None:
     """Top: the sanity swap's lookup extra loss without J++, without the pointer directions, without both (batch 34's
     bar dotted); bottom: the switches lost without the pointer directions, with J++, with a random part of J++'s share
     (batch 36's bar: the random union + 0.15, dotted). The recall as small grey dots."""
-    runs = (("qwen3.5-9b", "9b", "9B", "qwen35_9b_x6_routes_bothoff", "qwen35_9b_x6_routes_bothoff_ctrl", "fixed"),
-            ("qwen3.6-27b", "27b", "27B", "x6_routes_bothoff_27b", "x6_routes_bothoff_ctrl_27b", "fixed"),
-            ("qwen3.5-122b-a10b", "122b", "122B, after the data", "qwen35_122b_x6_routes_bothoff_g75",
-             "qwen35_122b_x6_routes_bothoff_ctrl_g75", "rerun"))  # fmt: skip
+    runs = (("qwen3.5-9b", "9b", "Qwen3.5-9B", "qwen35_9b_x6_routes_bothoff", "qwen35_9b_x6_routes_bothoff_ctrl", "fixed"),
+            ("qwen3.6-27b", "27b", "Qwen3.6-27B", "x6_routes_bothoff_27b", "x6_routes_bothoff_ctrl_27b", "fixed"),
+            ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B", "qwen35_122b_x6_routes_bothoff_g75",
+             "qwen35_122b_x6_routes_bothoff_ctrl_g75", "rerun"),
+            ("muse-glimmer-30b", "muse", "Muse Glimmer 30B", "muse30b_x6_routes", "muse30b_x6_routes", "fixed"))  # fmt: skip
     parts = (("jpp", "without J++"), ("alf", "without the pointer"), ("both", "without both"))
     ctrl = (
         ("alf", "pointer"),
         ("alf + J++", "pointer + J++"),
         ("alf + random (J++ share)", "pointer + random\n(J++'s share)"),
     )
-    fig, axes = plt.subplots(2, 3, figsize=(S.WIDTH, 5.6), sharey="row")
-    fig.subplots_adjust(left=0.20, right=0.995, top=0.86, bottom=0.09, wspace=0.10, hspace=0.62)
+    fig, axes = plt.subplots(2, len(runs), figsize=(S.WIDTH, 5.6), sharey="row")
+    fig.subplots_adjust(left=0.19, right=0.995, top=0.80, bottom=0.09, wspace=0.10, hspace=0.66)
     S.title(fig, "Removing J++ and the pointer directions together")
     for j, (target, _, name, run, ctrl_run, kind) in enumerate(runs):
         top, bot = axes[0, j], axes[1, j]
         S.extra_axis(top)
-        top.set_title(name, fontsize=11.5, weight="bold")
+        top.set_title(name, fontsize=10.5, weight="bold")
         v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
         ex = {(x["condition"], x["reader"], x["part"]): x for x in (v or {}).get("extra", [])}
         if not ex:
@@ -488,8 +519,6 @@ def fig6(plt) -> None:
     axes[1, 0].set_yticks([-i for i in range(len(ctrl))], [c[1] for c in ctrl])
     for ax in axes[:, 0]:
         ax.tick_params(axis="y", length=0)
-    axes[0, 0].set_ylabel("extra loss", fontsize=9.5, color=S.COL["muted"])
-    axes[1, 0].set_ylabel("switches lost", fontsize=9.5, color=S.COL["muted"])
     marks = [plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=7),
              plt.Line2D([], [], marker="o", ls="", color="#9a9a9a", ms=4.5),
              plt.Line2D([], [], ls=":", color="#333333", lw=1.6)]  # fmt: skip

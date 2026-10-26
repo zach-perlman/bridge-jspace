@@ -103,7 +103,7 @@ def test_template_types_no_result_number():
     assert not typed, f"typed numbers in the template (use a marker or {{{{q|...}}}}): {typed}"
 
 
-MAX_BODY_WORDS = 1500  # Dan, 25 Oct (README v2): the main body, before the appendices, at most 1,500 words
+MAX_BODY_WORDS = 2000  # Dan, 26 Oct (was 1,500 in README v2): the main body, before the appendices
 CODES = re.compile(
     r"\bX[0-6]b?\b|\bAlf\b|\bjwo?\b|\bPP\b|\bPM\b|\bJdep\b|\bRdep\b| C |k =|\bcf\b|\bC[0-2]\b|\b[Ss]wap [12]\b"
     r"|\bone-pick\b|\btwo-pick\b|\bedit(?:ed)?\b"
@@ -125,6 +125,7 @@ def test_readme_body_fits_the_word_budget():
 
 
 def test_readme_body_has_no_internal_codes():
-    """Internal run codes and the banned terms appear only in Appendix C, which maps sections to runs (Dan, 25 Oct)."""
-    body = re.sub(r"<!--.*?-->", "", (B.REPO / "README.md").read_text().split("## Appendix C")[0], flags=re.S)
+    """No internal run codes or banned terms on the page (Dan, 25 Oct; the appendix that mapped sections to runs was
+    removed on 26 Oct)."""
+    body = re.sub(r"<!--.*?-->", "", (B.REPO / "README.md").read_text(), flags=re.S)
     assert not CODES.findall(body), CODES.findall(body)

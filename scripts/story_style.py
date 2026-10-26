@@ -23,7 +23,7 @@ WIDTH = 8.8  # inches: 880 px at 100 px per inch, GitHub's README column
 COL = {"lookup": "#6a4bd6", "recall": "#3a3a3a", "identity": "#2b7bba", "position": "#e08a1e", "original": "#c8c8c8",
        "value": "#2e9e5b", "other": "#ececec", "control": "#bdbdbd", "band": "#f0f0f0", "muted": "#777777"}  # fmt: skip
 MODELS = (("qwen3.5-9b", "9b", "Qwen3.5-9B"), ("qwen3.6-27b", "27b", "Qwen3.6-27B"),
-          ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B"))  # fmt: skip
+          ("qwen3.5-122b-a10b", "122b", "Qwen3.5-122B"), ("muse-glimmer-30b", "muse", "Muse Glimmer 30B"))  # fmt: skip
 XLIM = (-0.2, 1.0)
 NOT_NEEDED = 0.10  # the rule's "not needed" band (X0: extra loss <= 0.10)
 ROWS: list[dict] = []

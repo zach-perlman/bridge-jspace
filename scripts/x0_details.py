@@ -10,6 +10,7 @@ uv run python scripts/x0_details.py
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -119,6 +120,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
             num.add(f"{w}_rdep_{m}", f2(c["Rdep"][0]), src)
             n = c["n"]
             num.add(f"{w}_whole_{m}", str(round(c["S_whole"][0] * n)), src)
+            num.add(f"{w}_swhole_pct_{m}", pct(c["S_whole"][0]), src)
             num.add(f"{w}_noj_{m}", str(round(c["S_no_part"][0] * n)), src)
             num.add(f"{w}_norand_{m}", str(round(c["S_no_rand"][0] * n)), src)
             num.add(f"{w}_dropj_{m}", f"{100 * c['drop_noD'][0]:.1f}", src)
@@ -132,6 +134,10 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
             if l2 == la and d == "jpp" and omp == "signed":
                 num.add(f"{'lk' if w == X.LOOKUP else 'rc'}_excess_k{k}_{m}", f2(c["excess"][0]),
                         f"results/x0_necessity/{kmatch}/outcomes.jsonl")  # fmt: skip
+                other = kcells.get(("chat", la, X.RECALL if w == X.LOOKUP else X.LOOKUP, d, k, omp))
+                if w == X.LOOKUP and other:  # the gap along the curve (point estimate; the critic, 26 Oct)
+                    num.add(f"contrast_k{k}_{m}", f2(other["excess"][0] - c["excess"][0]),
+                            f"results/x0_necessity/{kmatch}/outcomes.jsonl")  # fmt: skip
         # sentence order (whole edit, lookups)
         cases = {c["scene"]: c for c in X.read_jsonl(r.dir / "cases.jsonl") if c["rendering"] == "chat"}
         whole = [x for x in rows if x["layer"] == la and x["reader"] == X.LOOKUP and x["arm"] == "whole"]
@@ -178,6 +184,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     composition_numbers(num)
     natsplit_numbers(num)
     x4_numbers(num)
+    predictions_numbers(num)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -196,7 +203,9 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
 def digit_numbers(num: Numbers, tables: dict[str, list[str]], m: str, run: str) -> None:
     """The digit check: lookups and recalls by locker order, J++ over letters (jpp) vs every token (jppall) at
     25 / 50 / 100 atoms, and the 10 digit directions alone (jppdig); the answer-digit readout."""
-    path = sorted((X.RESULTS / run).glob("strata-*/strata.json"))[-1]
+    # the newest strata run that has the sentence order (a later run may hold other features only, e.g. confidence)
+    path = [p for p in sorted((X.RESULTS / run).glob("strata-*/strata.json"))
+            if any(s["feature"] == ORDER for s in json.loads(p.read_text())["strata"])][-1]  # fmt: skip
     src = str(path.relative_to(pins.REPO_ROOT))
     rows = [s for s in json.loads(path.read_text())["strata"] if s["feature"] == ORDER and s["omp"] == "signed"]
     out = ["| locker vs pick | reader | dictionary | atoms | n | flipped by the whole edit | excess | label |",
@@ -254,6 +263,9 @@ def single_numbers(num: Numbers) -> None:
         num.add(f"single_rc_excess_{m}", ci(cells[("chat", la, X.RECALL, *X.MAIN)]["excess"]), src)
         num.add(f"single_lk_excess_k100_{m}", f2(cells[("chat", la, X.LOOKUP, "jpp", 100, "signed")]["excess"][0]), src)
         num.add(f"single_contrast_{m}", ci(XF.contrast(r, "chat", la)), src)  # C under the one-change edit
+        for w in X.READERS:
+            num.add(f"single_{'lk' if w == X.LOOKUP else 'rc'}_swhole_pct_{m}",
+                    pct(cells[("chat", la, w, *X.MAIN)]["S_whole"][0]), src)  # fmt: skip
         found = sorted((X.RESULTS / run).glob("paired-*/paired.json"))  # single minus two-change, shared items
         if not found:  # the 122B: no paired comparison was run
             continue
@@ -442,6 +454,7 @@ def composition_numbers(num: Numbers) -> None:
         num.add(f"{key}_n_{m}", str(r["n"]), src)
         for w, wk in ((X.LOOKUP, "lk"), (X.RECALL, "rc")):
             num.add(f"{key}_{wk}_{m}", ci(r[w]["excess"]), src)
+        num.add(f"{key}_gap_{m}", f2(r[X.RECALL]["excess"][0] - r[X.LOOKUP]["excess"][0]), src)  # point estimate
         # README v2 table 3c (Dan): a lookup cell whose whole change switches fewer than FEW_SWITCHES lookups is shown
         # in italics with its switch count (GitHub's Markdown has no grey)
         sw = round(r[X.LOOKUP]["S_whole"][0] * r["n"])
@@ -476,6 +489,9 @@ def routes_numbers(num: Numbers) -> None:
             for e in v.get("ctrl", []):  # --bothoff-ctrl: switches lost per removal (rtc_lost_*)
                 w = "lk" if e["reader"] == X.LOOKUP else "rc"
                 num.add(f"{prefix}_lost_{e['condition']}_{slug[e['arm']]}_{w}_{m}", ci(e["lost"]), src)
+                if slug[e["arm"]] == "alf_jpp":  # the switches left with both removed, 1 - lost
+                    left = [1 - e["lost"][0], 1 - e["lost"][2], 1 - e["lost"][1]]
+                    num.add(f"{prefix}_left_{e['condition']}_alf_jpp_{w}_{m}", ci(left), src)
             if (root / "c0_check.json").exists():
                 c0 = json.loads((root / "c0_check.json").read_text())
                 num.add(
@@ -519,6 +535,15 @@ def dup_nearest_numbers(num: Numbers) -> None:
                 num.add(f"dupnn_{sp}_{key}_alt_{m}", ci(r[f"{key}: alt's locker sentence"]["share"]), src)
                 num.add(f"dupnn_{sp}_{key}_other_{m}", ci(r[f"{key}: other pick sentence"]["share"]), src)
                 num.add(f"dupnn_{sp}_{key}_n_{m}", str(r[f"{key}: other pick sentence"]["n"]), src)
+
+
+def predictions_numbers(num: Numbers) -> None:
+    """Dan's prediction score as predictions/README.md's calibration states it (pred_brier, pred_n)."""
+    path = pins.REPO_ROOT / "predictions" / "README.md"
+    m = re.search(r"\((\d+) scored answers with a confidence\): mean Brier (\d\.\d+)", path.read_text())
+    if m:
+        num.add("pred_n", m.group(1), "predictions/README.md")
+        num.add("pred_brier", m.group(2), "predictions/README.md")
 
 
 def x4_numbers(num: Numbers) -> None:
