@@ -1,0 +1,1122 @@
+{
+ "run": "muse30b_x6_routes_x45a",
+ "model": "muse-glimmer-30b",
+ "layer": 26,
+ "rendering": "chat",
+ "read": "the top token after a space token appended to O",
+ "seed": 0,
+ "k": 10,
+ "of": 1500,
+ "examples": [
+  {
+   "scene": "C2-0402-V3",
+   "condition": "C2",
+   "variant": "V3",
+   "prepended": "Sara picked the cat.",
+   "move": [
+    0,
+    2
+   ],
+   "bridge_O": "dog",
+   "bridge_S": "turkey",
+   "pos": 77,
+   "expect": {
+    "identity": 1,
+    "position": 2,
+    "value": 7,
+    "original": 9
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Sean's pick?",
+     "answer_O": "9",
+     "answer_S": "7",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Sara picked the cat. The locker of the dog is 9. The locker of the turkey is 1. The locker of the fly is 2. Sean picked the⟦ dog⟧. Jack picked the turkey. Finn picked the fly.\nWhich locker belongs to Sean's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Sara picked the cat. The locker of the dog is 9. The locker of the fly is 2. The locker of the turkey is 7. Sean picked the⟦ turkey⟧. Jack picked the turkey. Finn picked the fly.\nWhich locker belongs to Sean's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "9",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "1",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "9",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "9",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "1",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "1",
+       "route": "identity",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Sean's pick have?",
+     "answer_O": "4",
+     "answer_S": "2",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Sara picked the cat. The locker of the dog is 9. The locker of the turkey is 1. The locker of the fly is 2. Sean picked the⟦ dog⟧. Jack picked the turkey. Finn picked the fly.\nHow many legs does Sean's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Sara picked the cat. The locker of the dog is 9. The locker of the fly is 2. The locker of the turkey is 7. Sean picked the⟦ turkey⟧. Jack picked the turkey. Finn picked the fly.\nHow many legs does Sean's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "2",
+       "route": null,
+       "switched": 1
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "2",
+       "route": null,
+       "switched": 1
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "2",
+       "route": null,
+       "switched": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0442-V1",
+   "condition": "C2",
+   "variant": "V1",
+   "prepended": "Frank picked the bee.",
+   "move": [
+    1,
+    2
+   ],
+   "bridge_O": "pig",
+   "bridge_S": "bee",
+   "pos": 82,
+   "expect": {
+    "identity": 9,
+    "position": 8,
+    "value": 7,
+    "original": 4
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Zoe's pick?",
+     "answer_O": "4",
+     "answer_S": "7",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Frank picked the bee. The locker of the bee is 9. The locker of the pig is 4. The locker of the owl is 8. Mark picked the bee. Zoe picked the⟦ pig⟧. Peter picked the owl.\nWhich locker belongs to Zoe's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Frank picked the bee. The locker of the owl is 8. The locker of the pig is 4. The locker of the bee is 7. Mark picked the bee. Zoe picked the⟦ bee⟧. Peter picked the owl.\nWhich locker belongs to Zoe's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "9",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "9",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "9",
+       "route": "identity",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Zoe's pick have?",
+     "answer_O": "4",
+     "answer_S": "6",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Frank picked the bee. The locker of the bee is 9. The locker of the pig is 4. The locker of the owl is 8. Mark picked the bee. Zoe picked the⟦ pig⟧. Peter picked the owl.\nHow many legs does Zoe's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Frank picked the bee. The locker of the owl is 8. The locker of the pig is 4. The locker of the bee is 7. Mark picked the bee. Zoe picked the⟦ bee⟧. Peter picked the owl.\nHow many legs does Zoe's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0038-V2",
+   "condition": "C2",
+   "variant": "V2",
+   "prepended": "Zoe picked the tick.",
+   "move": [
+    2,
+    1
+   ],
+   "bridge_O": "duck",
+   "bridge_S": "elephant",
+   "pos": 83,
+   "expect": {
+    "identity": 8,
+    "position": 2,
+    "value": 6,
+    "original": 5
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Julia's pick?",
+     "answer_O": "5",
+     "answer_S": "6",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Zoe picked the tick. The locker of the elephant is 8. The locker of the tick is 2. The locker of the duck is 5. Tom picked the elephant. Julia picked the⟦ duck⟧. Eric picked the tick.\nWhich locker belongs to Julia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Zoe picked the tick. The locker of the tick is 2. The locker of the elephant is 6. The locker of the duck is 5. Tom picked the elephant. Julia picked the⟦ elephant⟧. Eric picked the tick.\nWhich locker belongs to Julia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "5",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "8",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "5",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "5",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "8",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "8",
+       "route": "identity",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Julia's pick have?",
+     "answer_O": "2",
+     "answer_S": "4",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Zoe picked the tick. The locker of the elephant is 8. The locker of the tick is 2. The locker of the duck is 5. Tom picked the elephant. Julia picked the⟦ duck⟧. Eric picked the tick.\nHow many legs does Julia's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Zoe picked the tick. The locker of the tick is 2. The locker of the elephant is 6. The locker of the duck is 5. Tom picked the elephant. Julia picked the⟦ elephant⟧. Eric picked the tick.\nHow many legs does Julia's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0272-V0",
+   "condition": "C2",
+   "variant": "V0",
+   "prepended": "",
+   "move": [
+    1,
+    2
+   ],
+   "bridge_O": "ant",
+   "bridge_S": "sheep",
+   "pos": 77,
+   "expect": {
+    "identity": 6,
+    "position": 9,
+    "value": 8,
+    "original": 5
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Eve's pick?",
+     "answer_O": "5",
+     "answer_S": "8",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the sheep is 6. The locker of the ant is 5. The locker of the pig is 9. Iris picked the pig. Eve picked the⟦ ant⟧. Carl picked the sheep.\nWhich locker belongs to Eve's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the pig is 9. The locker of the ant is 5. The locker of the sheep is 8. Iris picked the pig. Eve picked the⟦ sheep⟧. Carl picked the sheep.\nWhich locker belongs to Eve's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "5",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "9",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "9",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "5",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "9",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "9",
+       "route": "position",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Eve's pick have?",
+     "answer_O": "6",
+     "answer_S": "4",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the sheep is 6. The locker of the ant is 5. The locker of the pig is 9. Iris picked the pig. Eve picked the⟦ ant⟧. Carl picked the sheep.\nHow many legs does Eve's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the pig is 9. The locker of the ant is 5. The locker of the sheep is 8. Iris picked the pig. Eve picked the⟦ sheep⟧. Carl picked the sheep.\nHow many legs does Eve's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "6",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "6",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "6",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "6",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "6",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "6",
+       "route": null,
+       "switched": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0527-V2",
+   "condition": "C2",
+   "variant": "V2",
+   "prepended": "Emma picked the deer.",
+   "move": [
+    0,
+    1
+   ],
+   "bridge_O": "turkey",
+   "bridge_S": "goat",
+   "pos": 87,
+   "expect": {
+    "identity": 3,
+    "position": 4,
+    "value": 5,
+    "original": 9
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Ivy's pick?",
+     "answer_O": "9",
+     "answer_S": "5",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Emma picked the deer. The locker of the turkey is 9. The locker of the deer is 4. The locker of the goat is 3. Dan picked the deer. Diana picked the goat. Ivy picked the⟦ turkey⟧.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Emma picked the deer. The locker of the turkey is 9. The locker of the goat is 5. The locker of the deer is 4. Dan picked the deer. Diana picked the goat. Ivy picked the⟦ goat⟧.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "9",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "4",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "9",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "9",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "4",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "4",
+       "route": "position",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Ivy's pick have?",
+     "answer_O": "2",
+     "answer_S": "4",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Emma picked the deer. The locker of the turkey is 9. The locker of the deer is 4. The locker of the goat is 3. Dan picked the deer. Diana picked the goat. Ivy picked the⟦ turkey⟧.\nHow many legs does Ivy's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Emma picked the deer. The locker of the turkey is 9. The locker of the goat is 5. The locker of the deer is 4. Dan picked the deer. Diana picked the goat. Ivy picked the⟦ goat⟧.\nHow many legs does Ivy's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "2",
+       "route": null,
+       "switched": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0509-V0",
+   "condition": "C2",
+   "variant": "V0",
+   "prepended": "",
+   "move": [
+    0,
+    1
+   ],
+   "bridge_O": "frog",
+   "bridge_S": "chicken",
+   "pos": 82,
+   "expect": {
+    "identity": 5,
+    "position": 6,
+    "value": 8,
+    "original": 1
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Hugo's pick?",
+     "answer_O": "1",
+     "answer_S": "8",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the frog is 1. The locker of the eagle is 6. The locker of the chicken is 5. Ruby picked the chicken. Tom picked the eagle. Hugo picked the⟦ frog⟧.\nWhich locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the frog is 1. The locker of the chicken is 8. The locker of the eagle is 6. Ruby picked the chicken. Tom picked the eagle. Hugo picked the⟦ chicken⟧.\nWhich locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "1",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "5",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "1",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "1",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "5",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "5",
+       "route": "identity",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Hugo's pick have?",
+     "answer_O": "4",
+     "answer_S": "2",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the frog is 1. The locker of the eagle is 6. The locker of the chicken is 5. Ruby picked the chicken. Tom picked the eagle. Hugo picked the⟦ frog⟧.\nHow many legs does Hugo's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the frog is 1. The locker of the chicken is 8. The locker of the eagle is 6. Ruby picked the chicken. Tom picked the eagle. Hugo picked the⟦ chicken⟧.\nHow many legs does Hugo's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "2",
+       "route": null,
+       "switched": 1
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "2",
+       "route": null,
+       "switched": 1
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "2",
+       "route": null,
+       "switched": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0420-V4",
+   "condition": "C2",
+   "variant": "V4",
+   "prepended": "Nobody could remember when the hallway lights had last been changed.",
+   "move": [
+    2,
+    1
+   ],
+   "bridge_O": "cow",
+   "bridge_S": "fly",
+   "pos": 90,
+   "expect": {
+    "identity": 8,
+    "position": 1,
+    "value": 6,
+    "original": 5
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Amy's pick?",
+     "answer_O": "5",
+     "answer_S": "6",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Nobody could remember when the hallway lights had last been changed. The locker of the fly is 8. The locker of the fox is 1. The locker of the cow is 5. Ruby picked the fox. Amy picked the⟦ cow⟧. Olivia picked the fly.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Nobody could remember when the hallway lights had last been changed. The locker of the fox is 1. The locker of the fly is 6. The locker of the cow is 5. Ruby picked the fox. Amy picked the⟦ fly⟧. Olivia picked the fly.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "5",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "1",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "1",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "5",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "1",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "1",
+       "route": "position",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Amy's pick have?",
+     "answer_O": "4",
+     "answer_S": "6",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Nobody could remember when the hallway lights had last been changed. The locker of the fly is 8. The locker of the fox is 1. The locker of the cow is 5. Ruby picked the fox. Amy picked the⟦ cow⟧. Olivia picked the fly.\nHow many legs does Amy's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Nobody could remember when the hallway lights had last been changed. The locker of the fox is 1. The locker of the fly is 6. The locker of the cow is 5. Ruby picked the fox. Amy picked the⟦ fly⟧. Olivia picked the fly.\nHow many legs does Amy's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0320-V1",
+   "condition": "C2",
+   "variant": "V1",
+   "prepended": "Emma picked the elephant.",
+   "move": [
+    1,
+    0
+   ],
+   "bridge_O": "tiger",
+   "bridge_S": "bee",
+   "pos": 82,
+   "expect": {
+    "identity": 2,
+    "position": 1,
+    "value": 6,
+    "original": 7
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Dan's pick?",
+     "answer_O": "7",
+     "answer_S": "6",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Emma picked the elephant. The locker of the elephant is 1. The locker of the tiger is 7. The locker of the bee is 2. Owen picked the bee. Dan picked the⟦ tiger⟧. Alice picked the elephant.\nWhich locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Emma picked the elephant. The locker of the bee is 6. The locker of the tiger is 7. The locker of the elephant is 1. Owen picked the bee. Dan picked the⟦ bee⟧. Alice picked the elephant.\nWhich locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "7",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "2",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "7",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "7",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "2",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "2",
+       "route": "identity",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Dan's pick have?",
+     "answer_O": "4",
+     "answer_S": "6",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Emma picked the elephant. The locker of the elephant is 1. The locker of the tiger is 7. The locker of the bee is 2. Owen picked the bee. Dan picked the⟦ tiger⟧. Alice picked the elephant.\nHow many legs does Dan's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Emma picked the elephant. The locker of the bee is 6. The locker of the tiger is 7. The locker of the elephant is 1. Owen picked the bee. Dan picked the⟦ bee⟧. Alice picked the elephant.\nHow many legs does Dan's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0497-V1",
+   "condition": "C2",
+   "variant": "V1",
+   "prepended": "Hugo picked the tiger.",
+   "move": [
+    1,
+    0
+   ],
+   "bridge_O": "wolf",
+   "bridge_S": "eagle",
+   "pos": 83,
+   "expect": {
+    "identity": 4,
+    "position": 6,
+    "value": 7,
+    "original": 8
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Clara's pick?",
+     "answer_O": "8",
+     "answer_S": "7",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Hugo picked the tiger. The locker of the tiger is 6. The locker of the wolf is 8. The locker of the eagle is 4. Leo picked the tiger. Clara picked the⟦ wolf⟧. Ben picked the eagle.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Hugo picked the tiger. The locker of the eagle is 7. The locker of the wolf is 8. The locker of the tiger is 6. Leo picked the tiger. Clara picked the⟦ eagle⟧. Ben picked the eagle.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "8",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "6",
+       "route": "position",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "8",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "8",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "8",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "6",
+       "route": "position",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Clara's pick have?",
+     "answer_O": "4",
+     "answer_S": "2",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Hugo picked the tiger. The locker of the tiger is 6. The locker of the wolf is 8. The locker of the eagle is 4. Leo picked the tiger. Clara picked the⟦ wolf⟧. Ben picked the eagle.\nHow many legs does Clara's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Hugo picked the tiger. The locker of the eagle is 7. The locker of the wolf is 8. The locker of the tiger is 6. Leo picked the tiger. Clara picked the⟦ eagle⟧. Ben picked the eagle.\nHow many legs does Clara's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "scene": "C2-0373-V3",
+   "condition": "C2",
+   "variant": "V3",
+   "prepended": "Finn picked the pig.",
+   "move": [
+    2,
+    0
+   ],
+   "bridge_O": "fox",
+   "bridge_S": "crow",
+   "pos": 78,
+   "expect": {
+    "identity": 6,
+    "position": 8,
+    "value": 1,
+    "original": 4
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Grace's pick?",
+     "answer_O": "4",
+     "answer_S": "1",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Finn picked the pig. The locker of the cow is 8. The locker of the crow is 6. The locker of the fox is 4. Grace picked the⟦ fox⟧. Olivia picked the crow. Adam picked the cow.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Finn picked the pig. The locker of the crow is 1. The locker of the cow is 8. The locker of the fox is 4. Grace picked the⟦ crow⟧. Olivia picked the crow. Adam picked the cow.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "6",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": "original",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "6",
+       "route": "identity",
+       "switched": 0
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "6",
+       "route": "identity",
+       "switched": 0
+      }
+     ]
+    },
+    "PM": {
+     "question": "How many legs does Grace's pick have?",
+     "answer_O": "4",
+     "answer_S": "2",
+     "prompt_O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Finn picked the pig. The locker of the cow is 8. The locker of the crow is 6. The locker of the fox is 4. Grace picked the⟦ fox⟧. Olivia picked the crow. Adam picked the cow.\nHow many legs does Grace's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "prompt_S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Finn picked the pig. The locker of the crow is 1. The locker of the cow is 8. The locker of the fox is 4. Grace picked the⟦ crow⟧. Olivia picked the crow. Adam picked the cow.\nHow many legs does Grace's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+     "arms": [
+      {
+       "arm": "none",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "whole",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "keep_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      },
+      {
+       "arm": "no_alf",
+       "answer": "2",
+       "route": null,
+       "switched": 1
+      },
+      {
+       "arm": "no_alf_rand",
+       "answer": "4",
+       "route": null,
+       "switched": 0
+      }
+     ]
+    }
+   }
+  }
+ ]
+}
