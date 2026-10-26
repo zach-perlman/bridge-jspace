@@ -1,0 +1,88 @@
+{
+  "exp": "x0_necessity",
+  "run": "muse30b_x0_necessity",
+  "why": "",
+  "written_utc": "2026-10-25T23:57:47Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "bb7ecdf4b3062b01647ad7cd7b0786a90e4cb21f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "515ccc97e15ed9719d542fcbd2b1903a77dac981899a7947bed80404fa5e5113"
+  },
+  "layers": [
+    13,
+    26,
+    34
+  ],
+  "predicted": 26,
+  "renderings": [
+    "chat"
+  ],
+  "dicts": [
+    "jpp",
+    "wu",
+    "we",
+    "rand",
+    "jppall",
+    "jppdig"
+  ],
+  "k": 25,
+  "k_of": {
+    "jppdig": 10
+  },
+  "k_curve": {
+    "dicts": [
+      "jpp"
+    ],
+    "k": [
+      50,
+      100,
+      200
+    ]
+  },
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+    "mode": "first",
+    "digit": "amendment 3: the step of the first digit token in 8 greedy tokens (non-chat renderings, when mode is digit)"
+  },
+  "descriptive": false,
+  "alt": "cf",
+  "curve_all_layers": false,
+  "readout": true,
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}
