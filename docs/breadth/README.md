@@ -18,7 +18,8 @@ entity, does that depend on whether the final fact is recalled or stated, and in
 - **Across models it is graded.**
   - Of nine models we could test, three show it strongly.
   - The rest are weak, carry the entity without needing it, share it with the logit lens, or lose it by probability.
-  - Bolt, Lightning's larger sibling, depends on its J++ directions little more than on any removal of the same size.
+  - Bolt (Lightning's larger sibling) and DeepSeek depend on their J++ directions little more than on any removal of
+    the same size, at every number of directions.
   - Three more models cannot be tested: any lens removal breaks them.
 - **Beyond two hops, what matters is whether the last step is recalled.**
   - A three-hop chain needs the directions when its last hop is recalled: Lightning loses
@@ -31,7 +32,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 14eeb14 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 7b40686 from the run files.
 
 ## Setup
 
@@ -95,7 +96,8 @@ Does removing what the lens reads cost recall more than reading?
   Under the knock-out, the models rarely name the bridge: 1% (27B), 5% (9B)
   and 1% (Lightning) of replies. They still know which entity it is, but not its fact.
 - **The other six models are in the grid (Section 7).** All six fail to show it cleanly:
-  - DeepSeek and Ministral are weak (+18, +23);
+  - DeepSeek and Ministral are weak (+18, +23); more directions do not rescue DeepSeek
+    (Section 5);
   - Bolt shows little: +6 at 10 directions, and at 100 a same-size removal along the top principal
     directions costs nearly as much as J++ (+24 vs +31);
   - OLMo does not need it (+5);
@@ -265,8 +267,8 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
 
 How many directions does the dependence need, and when does the removal stop being specific?
 
-- **In three of four models, most of the J-specific part is there in the first few directions; the 27B needs about
-  30.** M − K at 1, 10 and 100 directions:
+- **In the 9B, Lightning and Ministral, most of the J-specific part is there in the first few directions; the 27B needs
+  about 30.** M − K at 1, 10 and 100 directions:
 
   | Model | 1 | 10 | 100 |
   |---|---|---|---|
@@ -274,6 +276,7 @@ How many directions does the dependence need, and when does the removal stop bei
   | 9B | +34 | +44 | +52 |
   | Lightning | +46 | +51 | +54 |
   | Ministral | +21 | +26 | +22 |
+  | DeepSeek | +12 | +18 | +29 |
 
   The 27B keeps rising to 30 directions (+65).
 - **More directions add damage that is not specific.** Greedy answers hide it: the stated answer usually stays on top
@@ -299,7 +302,20 @@ How many directions does the dependence need, and when does the removal stop bei
   - Its J-part swap still carries the entity at 100 directions, as a context-free pointer (Section 4). Bolt's mention
     holds the entity in J-space, but its recall does not depend on those directions more than on any same-size removal.
 
-![The J-specific part sits in the first 1-30 directions; in Bolt a same-size removal costs about as much](figures/fig09_dose.png)
+- **DeepSeek is weak at every dose, not under-dosed** (amendment 56 D):
+
+  | Directions | J++ | Same size, top principal directions | Rotated |
+  |---|---|---|---|
+  | 10 | +18 | +13 | +5 |
+  | 30 | +22 | +19 | +5 |
+  | 100 | +29 | +26 | +8 |
+
+  - The pre-registered limit stops it at K 10; its J-specific excess peaks at 1 direction
+    (+8).
+  - Its top direction alone removes 11% of the residual; all 100 remove 21%.
+  - At 100 directions stated facts lose 17 points.
+
+![The J-specific part sits in the first 1-30 directions; in Bolt and DeepSeek a same-size removal costs about as much](figures/fig09_dose.png)
 *Fig. 9.*
 
 - **Swapping more directions.**
@@ -380,7 +396,7 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
 | Qwen3.6-27B (L32-40) | +0.30 nats | +51 [46, 55] | +3 / +2 | 0.24 | +50 | +49, +50 | 0 of 22325 differ | 0.06 | +63 / +62 | 1.09 | +75 / +8 | 30 (30) |
 | Qwen3.5-9B (L12-16) | +0.46 nats | +43 [37, 49] | +2 / +1 | 0.17 | +35 | +42, +43 | 0 of 14100 differ | 0.17 | +64 / +42 | 1.10 | +80 / +6 | 10 (3) |
 | Nemotron 3.5 Lightning (L27-33) | +1.67 nats | +53 [48, 59] | +4 / +9 | 0.15 | +44 | +49, +50 | 9 of 14075 differ | 0.22 | +45 / +14 | 1.01 | +62 / +2 | 300 (1) |
-| DeepSeek-V4-Flash (L18-23) | +1.68 nats | +18 [14, 22] | +5 / +2 | 0.49 | +21 | · | · | · | +10 / +19 (mid depth) | · | · | · |
+| DeepSeek-V4-Flash (L18-23) | +1.68 nats | +18 [14, 22] | +5 / +2 | 0.49 | +21 | · | · | · | +10 / +19 (mid depth) | · | · | 1 (1) |
 | Ministral-3-14B (L32-37) | +0.62 nats | +23 [19, 28] | +1 / +4 | 0.06 | +37 | · | · | 0.06 | +3 / +10 (mid depth) | · | · | 10 (3) |
 | Nemotron 3.5 Bolt (L42-53) | +0.20 nats | +6 [3, 9] | +0 / +2 | 1.28 | +6 | · | · | · | +3 / +20; K 100: +41 | 1.01 | · | 3 (3) |
 | OLMo-3-32B base (L12-20) | +0.04 nats | +5 [3, 8] | +2 / +2 | · | +4 | · | · | · | +41 / +53 | · | · | · |
@@ -455,9 +471,9 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 ## 10. Next
 
-- Running: DeepSeek's dose grid and position split; then amendment 57 (H0 on a larger numbers set, a second three-hop
+- Running: amendment 57 (H0 on a larger numbers set, a second three-hop
   seed, late-band positions for the 9B and Lightning).
-- OLMo at matched removal size (needs DeepSeek's cache dropped; not approved).
+- OLMo through the dose grid (needs DeepSeek's cache dropped; not approved).
 - H0 head-on: a bridge computed from the passage, on v2.
 - Late-band positions for the 9B and Lightning.
 - Hand-checking.

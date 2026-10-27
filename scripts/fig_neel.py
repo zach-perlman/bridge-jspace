@@ -793,7 +793,7 @@ def f10() -> None:
     h2 = [plt.Line2D([], [], color=INK2, lw=2, marker="o", ms=5, mec=SURF, label="greedy (top answer wrong)"),
           plt.Line2D([], [], color=INK2, lw=2, ls="--", marker="o", ms=5, mfc=SURF, mec=INK2, label="by probability (answer probability lost)")]  # fmt: skip
     fig.legend(handles=h2, loc="upper left", bbox_to_anchor=(0.055, 0.38), ncol=2, frameon=False, fontsize=8.5, title="Bottom row: stated facts lost", title_fontsize=8.5, alignment="left")
-    header(fig, "How much J-space: the J-specific part sits in the first 1-30 directions; past that, and in Bolt throughout, same-size removals cost about as much",
+    header(fig, "How much J-space: the J-specific part sits in the first 1-30 directions; past that, and in Bolt and DeepSeek throughout, same-size removals cost about as much",
            "Each model at its band; test set, 150 random items per word (seed 0). The gap between the blue line and the others is the J-specific part")  # fmt: skip
     note(fig, "Readings (amendment 54, as pre-registered): plateau K* = smallest K reaching 90% of the largest J++ M − K below the specificity limit (stated facts lose > 10 greedy, or the size-matched control exceeds half "
               "the J++ M − K); <= 10 concentrated, >= 100 distributed. Note 1 (written after Lightning, before the others): the same rule on the J-specific excess (J++ minus the larger of the random-direction and "
