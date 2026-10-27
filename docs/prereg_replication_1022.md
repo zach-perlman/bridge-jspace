@@ -1965,7 +1965,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - GPU 1: Lightning (competence, numbers, three-hop), the 9B's numbers (competence, knock-out), then Lightning's
     late band.
 
-### Amendment 57 note 1 (Zach, 2026-10-27 12:42 UTC, before any run below): Muse through the dose grid and the position split
+### Amendment 57 note 1 (Zach, 2026-10-27 12:40 UTC, before any run below): Muse through the dose grid and the position split
 
 - **Why:** GPU 1 is free after amendment 57's chain, and GPU 0 will be after the 9B's late band. Of the models still
   cached, Muse is the only testable one with no dose grid, no size-matched control and no position split (scorecard
