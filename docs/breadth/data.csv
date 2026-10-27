@@ -1619,6 +1619,9 @@ mod2.nl.numbers.unembed10_rot.loss.KL,numbers,nl,"jsuite_v2nb_test_chat numbers 
 mod2.nl.numbers.unembed10_rot.loss.AL,numbers,nl,"jsuite_v2nb_test_chat numbers points lost, AL (unembed10_rot)",17.7,,,62,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2nb_test_chat_numbers_ko_cand2_dd_v1.json
 mod2.nl.numbers.unembed10_rot.loss.KM,numbers,nl,"jsuite_v2nb_test_chat numbers points lost, KM (unembed10_rot)",40.7,,,177,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2nb_test_chat_numbers_ko_cand2_dd_v1.json
 mod2.nl.numbers.unembed10_rot.loss.AM,numbers,nl,"jsuite_v2nb_test_chat numbers points lost, AM (unembed10_rot)",36.9,,,65,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2nb_test_chat_numbers_ko_cand2_dd_v1.json
+clean57.n,reruns,all,amendment 57 clean-checkout comparisons,11.0,,,,count,results/checks/clean57_1027.json
+clean57.same,reruns,all,of them row-identical (every read and log-probability),11.0,,,,count,results/checks/clean57_1027.json
+clean57.rows,reruns,all,rows and items compared,122394.0,,,,count,results/checks/clean57_1027.json
 late.q9.all,positions,q9,"M - K at L26-29, all (paper10)",53.1,48,58,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L26-29_v1.json
 late.q9.all.rot,positions,q9,"M - K at L26-29, all (paper10_rot)",1.2,0,2,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L26-29_v1.json
 late.q9.all.u,positions,q9,"M - K at L26-29, all (unembed10)",27.5,23,32,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L26-29_v1.json

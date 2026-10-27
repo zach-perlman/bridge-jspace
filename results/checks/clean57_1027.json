@@ -1,0 +1,151 @@
+{
+ "what": "amendment 57 notes 2-3: clean-checkout reruns (/workspace/clean_bridge at 9722621) compared row by row with the runs of record",
+ "comparisons": [
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57A-1027-1310",
+   "clean_run": "clean_jsuite_v2nb_test_chat_competence_cand2_v1",
+   "rows_record": 22427,
+   "rows_clean": 22427,
+   "shared": 22427,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0,
+    "gen": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57A-1027-1310",
+   "clean_run": "clean_jsuite_v2nb_test_chat_numbers_ko_cand2_dd_v1",
+   "rows_record": 10050,
+   "rows_clean": 10050,
+   "shared": 10050,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57A-1027-1310",
+   "clean_run": "clean_jsuite_v2nb_test_chat_threehop_ko_cand2_v1",
+   "rows_record": 3240,
+   "rows_clean": 3240,
+   "shared": 3240,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57B-1027-1310",
+   "clean_run": "qwen35_9b_clean_jsuite_v2_test_chat_ko_cand2_L26-29_v1",
+   "rows_record": 14100,
+   "rows_clean": 14100,
+   "shared": 14100,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57B-1027-1310",
+   "clean_run": "qwen35_9b_clean_jsuite_v2_test_chat_ko_cand2_L26-29_posquestion_v1",
+   "rows_record": 8460,
+   "rows_clean": 8460,
+   "shared": 8460,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57B-1027-1310",
+   "clean_run": "qwen35_9b_clean_jsuite_v2_test_chat_ko_cand2_L26-29_posbridge_v1",
+   "rows_record": 8460,
+   "rows_clean": 8460,
+   "shared": 8460,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57B-1027-1310",
+   "clean_run": "qwen35_9b_clean_jsuite_v2nb_test_chat_competence_cand2_v1",
+   "rows_record": 17872,
+   "rows_clean": 17872,
+   "shared": 17872,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0,
+    "gen": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57B-1027-1310",
+   "clean_run": "qwen35_9b_clean_jsuite_v2nb_test_chat_numbers_ko_cand2_dd_v1",
+   "rows_record": 6545,
+   "rows_clean": 6545,
+   "shared": 6545,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57L-1027-1420",
+   "clean_run": "nem35l_clean_jsuite_v2_test_chat_ko_cand2_L33-39_v1",
+   "rows_record": 14200,
+   "rows_clean": 14200,
+   "shared": 14200,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57L-1027-1420",
+   "clean_run": "nem35l_clean_jsuite_v2_test_chat_ko_cand2_L33-39_posquestion_v1",
+   "rows_record": 8520,
+   "rows_clean": 8520,
+   "shared": 8520,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  },
+  {
+   "job": "bridge-cse_01EetL8PM7B9hLWZTfSi7urd-h200clean57L-1027-1420",
+   "clean_run": "nem35l_clean_jsuite_v2_test_chat_ko_cand2_L33-39_posbridge_v1",
+   "rows_record": 8520,
+   "rows_clean": 8520,
+   "shared": 8520,
+   "differing": {
+    "correct": 0,
+    "correct_cand2": 0,
+    "correct_top": 0
+   },
+   "max_abs_logp_diff": 0.0
+  }
+ ],
+ "all_identical": true
+}

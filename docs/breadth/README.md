@@ -35,7 +35,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at c2657736 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 9da1a0c6 from the run files.
 
 ## Setup
 
@@ -514,13 +514,16 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   20 random items per model.
 - **Clean-checkout reruns**: row-identical for the 27B and 9B. Lightning reproduces its headline, not row for row; a
   determinism check traces that to its inputs, not its kernels (Section 2).
-- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-57. EXPERIMENTS.md has one line per run, with
+  - Amendment 57's results (the larger numbers set, the second three-hop seed, the late bands) reran from a clean
+    checkout identical in 11 of 11 comparisons (122394 rows and items; every
+    read and log-probability equal), Lightning's late band included.
+- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-57 (with notes). EXPERIMENTS.md has one line per run, with
   its W&B link.
 
 ## 10. Next
 
-- Running: Muse's dose grid and position split (amendment 57 note 1).
-- OLMo through the dose grid (needs DeepSeek's cache dropped; not approved).
+- OLMo and Muse through the dose grid. Each needs a cache drop (Muse's weights are gone; only its lens is cached), so
+  each needs approval.
 - H0 head-on: a bridge computed from the passage, on v2.
 - Hand-checking.
 
