@@ -69,6 +69,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from scripts import pointer_fit as PF
 from scripts import pointer_swap as PS
@@ -219,7 +220,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     half_a, half_b = scene_split(list(scenes))
     doc = __doc__ or ""
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "config": cfg,
+                "model": pins.model_pin(), "switches": switches(), "config": cfg,
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in input_files(cfg)},
                 "split": {"half_a": half_a, "half_b": half_b, "folds": "fit on A, steer B; then fit on B, steer A"},
                 "seeds": {"split": SPLIT_SEED, "shuffle": SHUFFLE_SEED, "null": NULL_SEED, "bootstrap": BOOT_SEED,

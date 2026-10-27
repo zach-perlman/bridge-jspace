@@ -72,6 +72,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts import attn_knockout as A
 from scripts import suite_v1 as S
@@ -197,7 +198,7 @@ def stage_manifest(a: argparse.Namespace) -> None:
               pins.RESULTS_DIR / om["dataset"] / om["competence"] / "items.jsonl",
               A.RESULTS / a.src / "manifest.json", A.RESULTS / a.src / "cases.jsonl", A.RESULTS / a.src / "rows.jsonl"]  # fmt: skip
     m = {"exp": EXP, "run": a.name, "why": a.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "from": a.src, "original": om, "limit": a.limit, "smoke": a.smoke,
+         "model": pins.model_pin(), "switches": switches(), "from": a.src, "original": om, "limit": a.limit, "smoke": a.smoke,
          "family": FAMILY, "items": len(cases), "cases_report": report,
          "new_digits": dict(sorted(collections.Counter(c["new"] for c in cases).items())),
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs},

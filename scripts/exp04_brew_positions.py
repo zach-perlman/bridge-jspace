@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts.exp03_brew_swaps import ITEM_SETS, MAX_NEW_TOKENS, answer_colour, regime_positions, spans, write_jsonl
 from scripts.exp04_brew_parts import AddRows
@@ -81,6 +82,7 @@ def stage_manifest(name: str, why: str) -> None:
         "take X as the step: the positions where exp08's lenses read the intermediate, or the others?",
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "items": {
             s: {"file": str(ITEM_SETS[s][0].relative_to(pins.REPO_ROOT)), "sha256": ITEM_SETS[s][1]} for s in TEST_SETS
         },

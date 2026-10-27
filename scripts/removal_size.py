@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.ablate import LensDictionary, RowSettings, removal_edit
+from bridge_jspace.run_switches import switches
 from bridge_jspace.tokens import raw_encoding
 
 RESULTS = pins.RESULTS_DIR / "removal_size"
@@ -40,7 +41,7 @@ def main(name: str, why: str, layers: tuple[int, ...], ks: tuple[int, ...] = (1,
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
-    (out_dir / "manifest.json").write_text(json.dumps({"run": name, "why": why, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+    (out_dir / "manifest.json").write_text(json.dumps({"run": name, "why": why, "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
         "layers": list(layers), "pca": pca, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "doc": (__doc__ or "").split("\n\n")[0]}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     lens = JLens(model, pins.FROZEN_LENS)

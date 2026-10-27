@@ -1,7 +1,7 @@
 """Experiment base class: one config in, one never-overwritten run directory out.
 
 Run dir layout: results/<exp id>/<timestamp>/
-    manifest.json  written BEFORE run(): resolved config, git sha/dirty, packages, argv, seed
+    manifest.json  written BEFORE run(): resolved config, git sha/dirty, packages, argv, seed, env switches
     summary.json   headline numbers returned by run()
     *.jsonl, ...   raw per-item outputs written via self.save_*
 """
@@ -22,6 +22,7 @@ from jlens import JacobianLens
 
 from bridge_jspace.config import ExperimentConfig
 from bridge_jspace.models import LoadedModel, load_lens, load_model
+from bridge_jspace.run_switches import switches
 from bridge_jspace.utils import get_logger, git_state, package_versions, seed_everything
 
 
@@ -101,6 +102,7 @@ class Experiment(ABC):
                 "host": platform.node(),
                 "python": sys.version.split()[0],
                 "argv": sys.argv,
+                "switches": switches(),
                 "started": datetime.now().isoformat(timespec="seconds"),
             },
         )

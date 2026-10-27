@@ -38,6 +38,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 
 EXP = "x5_natural"
@@ -208,7 +209,7 @@ def stage_run(name: str, gate_min: float = X.GATE, pointer: bool = False, alf_fr
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "set": SET,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "set": SET,
          "inputs": {str(ITEMS.relative_to(pins.REPO_ROOT)): X.sha256_of(ITEMS)}, "layer": layer, "k": X.K_MAIN,
          "gate": gate_min, "gate_fixed_in_advance": X.GATE, "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
          "rule": f"gap >= {HOLD_GAP} with lower CI >= {HOLD_LO} holds; <= {FAIL_GAP} fails; otherwise mixed",

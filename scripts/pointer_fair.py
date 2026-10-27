@@ -109,6 +109,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts import pointer_fit as PF
@@ -320,7 +321,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     doc = __doc__ or ""
     v4 = is_v4(cfg)
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
                 "inputs": {PF.rel(p): sha256_of(p) for p in input_files(cfg)},
                 "entity_split": {d: {"fit": a, "held_out": b} for d, (a, b) in PF.pools(cfg).items()},
                 "ci": PS.CLUSTER_CI if v4 else {"kind": "entity-cluster bootstrap; Wilson reported next to it"},

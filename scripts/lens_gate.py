@@ -48,6 +48,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from bridge_jspace.tokens import raw_encoding
 
@@ -129,7 +130,7 @@ def main() -> int:
     assert not (out / "manifest.json").exists(), f"{out} exists; runs are written once"
     layers = [la for la in P.MAP_LAYERS if a.lo <= la < a.onset]
     data = pins.DATA_DIR / "tasks_v2" / a.tasks_set / "items.jsonl"
-    manifest = {"exp": EXP, "run": a.name, "why": a.why, "model": pins.model_pin(),
+    manifest = {"exp": EXP, "run": a.name, "why": a.why, "model": pins.model_pin(), "switches": switches(),
                 "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "tasks_set": a.tasks_set,
                 "data_sha256": sha256_of(data), "n": a.n, "layers": layers, "window": [a.lo, a.onset],
                 "gate": (__doc__ or "").split("Gate (fixed before the first run): ")[1].split("\n\nuv run")[0],

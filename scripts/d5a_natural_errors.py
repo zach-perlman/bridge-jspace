@@ -42,6 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from scripts import alias_pointer_v1 as AP
 from scripts import d5a_head_pointer as D
@@ -73,7 +74,7 @@ def stage_run(name: str, why: str, heads: list[str], sets: list[str], limit: int
     files = item_files(sets)
     root = pins.REPO_ROOT
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "format": chat.format_note(), "heads": heads, "sets": sets, "limit": limit,
+         "model": pins.model_pin(), "switches": switches(), "format": chat.format_note(), "heads": heads, "sets": sets, "limit": limit,
          "items": {k: {"file": str(f.relative_to(root)), "sha256": sha256_of(f)} for k, f in files.items()},
          "decision": (__doc__ or "").split("Decision rule")[1].split("Stages:")[0].strip()}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")

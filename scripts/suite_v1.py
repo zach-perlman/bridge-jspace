@@ -62,6 +62,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
+from bridge_jspace.run_switches import switches
 
 DATA = pins.DATA_DIR / "suite_v1"
 RESULTS = pins.RESULTS_DIR / "suite_v1"
@@ -882,6 +883,7 @@ def stage_manifest(name: str, why: str, which: str, limit: int | None) -> None:
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "set": which,
         "items": {label: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for label, f in set_files(which).items()},
         "limit": limit,

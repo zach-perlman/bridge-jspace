@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import control_split as C
 from scripts import exp09_bind_recall as E
 from scripts import suite_split as P
@@ -188,7 +189,7 @@ def main(
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "lens_layers": pins.LENS_LAYERS, "layers": list(LAYERS),
                 "k_atoms": K_ATOMS, "n_per_family": n, "skip_first": skip_first, "center": center, "rotated": rotated, "no_random": no_random,
                 "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip

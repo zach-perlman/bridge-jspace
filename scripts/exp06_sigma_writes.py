@@ -39,6 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import load_items, sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts.exp02_swaps import Probes, condition_atoms, prepare, swap
 from scripts.exp03_brew_swaps import (
@@ -173,6 +174,7 @@ def stage_manifest(name: str, why: str) -> None:
         "question": "Do edits shaped by the activation covariance (Σv) act more than the lens's own directions (v)?",
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "lenses": {lens: list(pins.LENS_SOURCES[lens]) for lens in LENSES},
         "sigma": {
             "file": str(SIGMA_FILE.relative_to(pins.REPO_ROOT)),

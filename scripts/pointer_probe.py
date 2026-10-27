@@ -42,6 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from scripts import pointer_fit as PF
 from scripts import pointer_swap as PS
@@ -126,7 +127,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     means_path = pins.CACHE_DIR / "pointer_fit" / cfg["same_means"] / "fits.pt" if cfg["same_means"] else None
     doc = __doc__ or ""
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "config": cfg,
+                "model": pins.model_pin(), "switches": switches(), "config": cfg,
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in files},
                 "same_means_file": str(means_path) if means_path else None,
                 "same_means_sha256": sha256_of(means_path) if means_path and means_path.exists() else None,

@@ -58,6 +58,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x0_strata as ST
 from scripts import x45b_binding as B
@@ -364,7 +365,7 @@ def stage_run(name: str, why: str) -> Path:
     out.mkdir(parents=True, exist_ok=False)
     src = X.RESULTS / run_45m
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "test": "45p",
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "test": "45p",
          "spec": "jobs/c3/batch45.yaml (45p)", "question": f"{QUESTION} ({PREDICTIONS})",
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p)
                     for p in (SPEC, src / "manifest.json", src / "cases.jsonl", src / "outcomes.jsonl")},

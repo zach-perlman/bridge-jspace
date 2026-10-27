@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp01_probes import K_ATOMS, PROBE_LAYERS, decompose
 from scripts.exp03_brew_swaps import answer_colour
@@ -104,6 +105,7 @@ def stage_manifest(tag: str, family: str, why: str) -> None:
         "question": "A bridge direction per country from exp09's own question (cue phrase, chat format): does it "
         "move the bridge where exp01's probes did not (B), and does its J-space part carry it?",
         "model": pins.model_pin(),
+        "switches": switches(),
         "lens": {"jpp": list(pins.LENS_SOURCES["jpp"])},
         "format": "chat_prefill (bridge_jspace.chat: the statement as a question, thinking off, 'Answer:' prefilled)",
         "prompts": {

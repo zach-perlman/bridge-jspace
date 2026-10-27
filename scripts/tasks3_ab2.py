@@ -32,6 +32,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import suite_v1 as S
 from scripts import tasks_v2 as T
 
@@ -136,7 +137,7 @@ def main(args) -> None:
     assert not (out / "summary.json").exists(), f"{out} has results; runs are written once"
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out / "manifest.json").write_text(json.dumps({"run": args.name, "why": args.why, "git_commit": commit, "n": args.n,
-                                                   "seed": args.seed, "model": pins.model_pin(),
+                                                   "seed": args.seed, "model": pins.model_pin(), "switches": switches(),
                                                    "doc": (__doc__ or "").split("\n\n", 1)[1],
                                                    "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip
     items = fresh_scenes(args.n, args.seed)

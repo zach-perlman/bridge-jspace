@@ -35,6 +35,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x6_routes as R
 
@@ -125,7 +126,7 @@ def stage_run(
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "layer": layer, "stage": "halfway" if halfway else "write",
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "layer": layer, "stage": "halfway" if halfway else "write",
          "s": list(s_list), "rand_s": [] if halfway else list(rand_s), "gate": gate_min, "gate_fixed_in_advance": X.GATE,
          "mu_from": R.STATES[target], "seeds": {"scenes": R.SEED, "random_directions": RAND_SEED},
          "pairs": [list(p) for p in pairs] if pairs else None, "dose_from": dose_from,
@@ -304,7 +305,7 @@ def stage_order(name: str, gate_min: float, filler_tokens: tuple[int, int] = (10
     fillers = [f for f in FILLERS if lo <= n_tok[f] <= hi]
     assert fillers, f"no filler of {lo}-{hi} tokens for this tokenizer: {sorted(n_tok.values())}"
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "stage": "order",
-         "model": pins.model_pin(), "code": git_state(), "layer": layer, "fillers": fillers, "gate": gate_min,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "layer": layer, "fillers": fillers, "gate": gate_min,
          "filler_tokens": [lo, hi],
          "mu_from": R.STATES[target], "note": "batch 44 B (Dan 26 Oct ~13:00); results closed until its answers"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")

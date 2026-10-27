@@ -39,6 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.tokens import raw_encoding
 from scripts import suite_v1 as S
 from scripts import twohop_pilot as T
@@ -143,7 +144,7 @@ def main(name: str, why: str, n: int, versions: tuple[str, ...] = ("MM", "MC"), 
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     inputs = [T.DATA / "screen.json", T.RESULTS / SCREEN_RUN / "items.jsonl"]
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
                 "alphas": list(ALPHAS), "seed": SEED, "n": n, "doc": (__doc__ or "").split("\n\n")[1],
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs}}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

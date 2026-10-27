@@ -78,6 +78,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.plotting import TERM as PLOT_TERM
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts import control_split as CS
@@ -808,7 +809,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     inputs += [S.data_dir(cfg["wording"]) / f"{f}.json" for f in cfg["families"]]
     doc = __doc__ or ""
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs},
                 "seeds": {"null": f"{NULL_SEED} + 1000003 x case index (one generator per item, rows in a fixed order)",
                           "bootstrap": BOOT_SEED, "n_boot": N_BOOT, "examples": EXAMPLE_SEED},

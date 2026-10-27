@@ -59,6 +59,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.tokens import raw_encoding
 from scripts import pointer_v4 as P4
 from scripts import statement_positions as SP
@@ -331,7 +332,7 @@ def stage_manifest_competence(name: str, why: str, limit: int | None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     assert not path.exists(), f"{path} exists; manifests are written once"
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": why,
-         "model": pins.model_pin(), "items": {"code": {"file": str(ITEMS.relative_to(pins.REPO_ROOT)),
+         "model": pins.model_pin(), "switches": switches(), "items": {"code": {"file": str(ITEMS.relative_to(pins.REPO_ROOT)),
                                                        "sha256": sha256_of(ITEMS)}},
          "limit": limit, "format": f"suite_v1's: {chat.format_note()}",
          "prompts": "clean, C (the key line changed), O (the spare line changed), hop1 (the key's value), hop2 (the "

@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import ablate_v2 as V
 
 RESULTS = pins.RESULTS_DIR / "lens_input_identity"
@@ -36,7 +37,7 @@ def main(name: str, why: str, n: int) -> None:
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
-    (out_dir / "manifest.json").write_text(json.dumps({"run": name, "why": why, "model": pins.model_pin(),
+    (out_dir / "manifest.json").write_text(json.dumps({"run": name, "why": why, "model": pins.model_pin(), "switches": switches(),
         "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "n_per_family": n,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip
     model = load_model()

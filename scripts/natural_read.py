@@ -46,6 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
+from bridge_jspace.run_switches import switches
 
 EXP = "natural_read"
 RESULTS = pins.RESULTS_DIR / EXP
@@ -344,7 +345,7 @@ def stage_manifest(name: str, why: str) -> None:
     assert not path.exists(), f"{path} exists; manifests are written once"
     f = pins.NATURAL_READ_FILE
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": why,
-         "model": pins.model_pin(), "items": {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)},
+         "model": pins.model_pin(), "switches": switches(), "items": {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)},
          "format": f"{chat.format_note()}; the user turn: paragraph, newline, question, '{INSTRUCTION}'",
          "prompts": {"full": "the paragraph", "alone": "the answer's sentence alone", "deleted": "the paragraph "
                      "without the answer's sentence", "swapped": "another article's paragraph (the item's swap_partner)"},

@@ -32,6 +32,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts.exp03_brew_swaps import ITEM_SETS, write_jsonl
 from scripts.exp04_brew_patch import counterfactuals
@@ -82,6 +83,7 @@ def stage_manifest(name: str, why: str) -> None:
         "intermediate I, against a distractor colour equally present in the prompt?",
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "items": {
             "source": "exp07_step_code/code_v1 items.jsonl, status eligible (exp04's eligibility)",
             "sha256": sha256_of(EXP07_RUN / "items.jsonl"),

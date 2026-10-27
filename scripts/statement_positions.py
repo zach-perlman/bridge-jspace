@@ -102,6 +102,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from bridge_jspace.utils import git_state, progress
@@ -600,6 +601,7 @@ def manifest_common(name: str, why: str, kind: str, families: list[str], n: int)
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "code": git_state(),
         "families": families,
         "n_per_family": n,

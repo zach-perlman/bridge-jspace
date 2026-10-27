@@ -49,6 +49,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts import suite_v1 as S
@@ -237,6 +238,7 @@ def manifest_common(name: str, why: str, kind: str, families: list[str], wording
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "families": families,
         "wording": wording,
         "items": {f: {"file": str(p.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(p)} for f, p in files.items()},

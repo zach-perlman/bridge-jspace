@@ -49,6 +49,7 @@ import numpy as np
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 
 EXP = "x0b_generalize"
@@ -326,7 +327,7 @@ def stage_run(
     out.mkdir(parents=True, exist_ok=False)
     items = pins.DATA_DIR / "tasks_v2" / set_name / "items.jsonl"
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "set": set_name,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "set": set_name,
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in (items, SPEC)},
          "layers": list(layers), "predicted": predicted, "dicts": list(X.DICTS), "k": X.K_MAIN, "cap_per_cell": CAP,
          "gate": f"per cell {CELL}: >= {X.GATE} unedited org accuracy (decisive read), both readers",

@@ -68,6 +68,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # for exp13's judg
 from bridge_jspace import chat, pins
 from bridge_jspace.clamp import SwapClamp, near_parallel
 from bridge_jspace.data import load_items, sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp13_greedy_answers.experiment import ends_sentence, judge
@@ -292,6 +293,7 @@ def stage_manifest(
         "question": "Does the swap target's answer appear when the bridge's representation is swapped for the "
         "target's, and does that depend on the J-space part of the representation?",
         "model": pins.model_pin(),
+        "switches": switches(),
         "lens": {"name": lens, "source": list(pins.LENS_SOURCES[lens])},
         "items": {"file": "data/probe_swap.json", "sha256": pins.PROBE_SWAP_SHA256},
         "scoring": scoring,

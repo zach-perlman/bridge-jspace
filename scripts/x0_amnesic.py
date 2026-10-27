@@ -31,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x0_probe as P
 from scripts import x0_strata as ST
@@ -80,7 +81,7 @@ def stage_run(name: str, single: str, probe_run: str) -> Path:
     q_np, info = probe_basis(probe_run)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "single": single, "single_code": sm["code"], "set": sm["set"], "layer": layer, "items": len(scenes),
-         "probe": info, "arms": list(ARMS), "k_saved": list(K_SAVE), "model": pins.model_pin(), "code": git_state(),
+         "probe": info, "arms": list(ARMS), "k_saved": list(K_SAVE), "model": pins.model_pin(), "switches": switches(), "code": git_state(),
          "lens": X.lens_record(), "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)",
                                             "bootstrap": X.BOOT_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")

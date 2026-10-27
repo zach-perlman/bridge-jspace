@@ -91,6 +91,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 
 EXP = "x6_routes"
@@ -715,7 +716,7 @@ def stage_run(
     n = N_SMOKE if smoke else N_ITEMS
     ref = c0_reference(target)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "seed": SEED,
          "smoke": smoke, "conditions": list(conds), "n_per_condition": n, "gate": gate_min, "gate_fixed_in_advance": X.GATE, "bothoff": bothoff, "bothoff_ctrl": ctrl, "keeponly": keeponly, "identity": identity,
          "alf_from": (alf_from or STATES[target]) if pointer else None, "c0_min": c0_min, "fixed_layer": X.PREDICTED[target],
          "c0_reference": {"run": C0_REF.get(target, (None,))[0], "lookup_switch": ref, "tolerance": C0_TOL},

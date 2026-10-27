@@ -68,6 +68,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x0_strata as ST
 
@@ -365,7 +366,7 @@ def stage_run(name: str, why: str) -> Path:
     out.mkdir(parents=True, exist_ok=False)
     src = X.RESULTS / main_run
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "spec": "jobs/c3/batch45.yaml (45b)",
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "spec": "jobs/c3/batch45.yaml (45b)",
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p)
                     for p in (SPEC, src / "manifest.json", src / "cases.jsonl", src / "outcomes.jsonl",
                               src / "competence.jsonl")},
@@ -502,7 +503,7 @@ def stage_sweep(name: str, why: str) -> Path:
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "main_run": main_run, "layer": layer, "sweep_layers": layers,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "main_run": main_run, "layer": layer, "sweep_layers": layers,
          "arms": {**{f"{k}<l>": f"{v}, at layer l" for k, v in SWEEP_ARMS.items()}, "none": ARM_TEXT["none"],
                   "S": ARM_TEXT["S"]},
          "roles": "item / value / final tokens of every locker sentence by character overlap (role_positions)",
@@ -648,7 +649,7 @@ def stage_link(name: str, why: str) -> Path:
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "main_run": main_run, "layer": layer, "test": "45n",
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "main_run": main_run, "layer": layer, "test": "45n",
          "arms": {**LINK_ARMS, "none": ARM_TEXT["none"], "S": ARM_TEXT["S"]}, "k": X.K_MAIN, "omp": "signed",
          "random_part": f"X0's random subspace, seed {X.SUBSPACE_SEED} + layer, at each token's J++ share",
          "items_rule": "as the 45b run (x45b_binding.select); the verdict keeps the items passing same_after_bridge",
@@ -1133,7 +1134,7 @@ def stage_q(name: str, why: str) -> Path:
     out.mkdir(parents=True, exist_ok=False)
     src = X.RESULTS / fresh_run
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "test": "45q", "spec": "jobs/c3/batch45.yaml (45q)",
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "test": "45q", "spec": "jobs/c3/batch45.yaml (45q)",
          "question": QUESTION,
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): X.sha256_of(p)
                     for p in (SPEC, src / "manifest.json", src / "cases.jsonl", src / "outcomes.jsonl",

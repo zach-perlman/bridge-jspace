@@ -51,6 +51,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import pointer_v1 as PV
 from scripts import pointer_v2 as P2
 from scripts import suite_v1 as S
@@ -375,7 +376,7 @@ def stage_manifest(name: str, why: str, limit: int | None) -> None:
     assert not path.exists(), f"{path} exists; manifests are written once"
     files = {f"main/{label}": f for label, f in set_files("main").items()}
     m = {"exp": "pointer_v3", "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": why,
-         "model": pins.model_pin(), "sets": ["main"],
+         "model": pins.model_pin(), "switches": switches(), "sets": ["main"],
          "items": {k: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for k, f in files.items()},
          "limit": limit, "format": "pointer_v1's competence: base, each source, the steps alone; greedy and answer read",
          "eligibility": "pointer_swap uses items with every prompt right"}  # fmt: skip

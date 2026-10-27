@@ -92,6 +92,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from scripts import pointer_swap as PS
 from scripts import pointer_v1 as PV
 from scripts import suite_v1 as S
@@ -343,7 +344,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     assert not (out_dir / "manifest.json").exists(), f"{out_dir} exists; runs are written once"
     doc = __doc__ or ""
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
                 "inputs": {rel(p): sha256_of(p) for p in input_files(cfg)},
                 "entity_split": {d: {"fit": a, "held_out": b} for d, (a, b) in pools(cfg).items()},
                 "ci": ci_of(cfg) or {"kind": "wilson; differences: item bootstrap"},

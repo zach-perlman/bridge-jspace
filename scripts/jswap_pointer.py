@@ -41,6 +41,7 @@ from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.ablate import OWN_COS, LensDictionary, rotation, top_span_removal  # noqa: E402
 from bridge_jspace.lens import JLens  # noqa: E402
 from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from bridge_jspace.run_switches import switches
 from scripts import jsuite_v2_tables as TB  # noqa: E402
 from scripts import jswap as JS  # noqa: E402
 from scripts import suite_v1 as S  # noqa: E402
@@ -69,7 +70,7 @@ def main(a) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     band = list(range(int(a.band.split("-")[0]), int(a.band.split("-")[1]) + 1))
-    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(),
+    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(), "switches": switches(),
                                                        "lens": pins.FROZEN_LENS, "band": a.band, "set": a.set, "competence": a.competence,
                                                        "conditions": CONDS, "timeline": TIMELINE, "neutral": NEUTRAL, "own_cos": OWN_COS,
                                                        "k": a.k, "git_commit": commit, "git_state": pins.git_state(), "limit": a.limit,

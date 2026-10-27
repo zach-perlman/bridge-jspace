@@ -40,6 +40,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp03_brew_swaps import write_jsonl
@@ -140,6 +141,7 @@ def stage_manifest(name: str, why: str) -> None:
         "why": why,
         "question": "Is a number the model computes in the prompt (S + a) carried in the J-space where it is used?",
         "model": pins.model_pin(),
+        "switches": switches(),
         "items": {"file": str(DATA.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(DATA)},
         "format": "chat_prefill (bridge_jspace.chat: 'What is the result? Answer with a single word and nothing else.', "
         "thinking off, 'Answer:' prefilled)",

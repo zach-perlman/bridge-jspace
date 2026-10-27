@@ -34,6 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from scripts.exp03_brew_swaps import write_jsonl
 from scripts.exp07_step_code import CODE_FILE, COLOURS, WINDOW, tokenized
@@ -82,6 +83,7 @@ def stage_manifest(name: str, why: str) -> None:
         "question": "On brew items the model gets wrong although it does each step alone, is the intermediate formed "
         "at exp04's window, and what answer does the state hold?",
         "model": pins.model_pin(),
+        "switches": switches(),
         "items": {
             s: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha}
             for s, (f, sha) in {

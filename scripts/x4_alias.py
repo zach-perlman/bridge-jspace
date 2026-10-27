@@ -41,6 +41,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 
 EXP = "x4_alias"
@@ -206,7 +207,7 @@ def stage_run(name: str, why: str, probe_only: bool) -> Path:
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "k": X.K_MAIN,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "k": X.K_MAIN,
          "conditions": CONDITIONS, "picks": N_PICKS, "seed": SEED, "probe_only": probe_only,
          "inputs": {str(p.relative_to(pins.REPO_ROOT)): __import__("bridge_jspace.data", fromlist=["sha256_of"]).sha256_of(p)
                     for p in (*sorted(DATA.glob("*_DL_*.json")), SPEC)},

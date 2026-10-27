@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import read_write as RW
 from scripts import suite_split as P
 from scripts.exp04_brew_parts import AddRows, SetRows
@@ -49,7 +50,7 @@ def main(args) -> None:
     layers = tuple(range(args.step, pins.N_LAYERS - 1, args.step))
     every = tuple(range(pins.N_LAYERS - 1))
     (out_dir / "manifest.json").write_text(json.dumps({
-        "run": args.name, "why": args.why, "git_commit": commit, "model": pins.model_pin(), "layers": list(layers),
+        "run": args.name, "why": args.why, "git_commit": commit, "model": pins.model_pin(), "switches": switches(), "layers": list(layers),
         "tasks": [args.tasks, args.tasks_competence], "families": args.families, "n_per_family": args.n, "window": args.window,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "doc": (__doc__ or "").split("\n\n")[1]},
         indent=2) + "\n")  # fmt: skip

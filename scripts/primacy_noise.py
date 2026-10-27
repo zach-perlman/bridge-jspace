@@ -38,6 +38,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import attn_knockout as AK
 from scripts import early_push as EP
 from scripts.exp04_brew_parts import AddRows
@@ -111,7 +112,7 @@ def stage_run(name: str, why: str, n: int, competence: str, blocking_run: str) -
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=True)
     assert not (out / "manifest.json").exists(), f"{out} exists; runs are written once"
-    (out / "manifest.json").write_text(json.dumps({"exp": EXP, "run": name, "why": why, "model": pins.model_pin(),
+    (out / "manifest.json").write_text(json.dumps({"exp": EXP, "run": name, "why": why, "model": pins.model_pin(), "switches": switches(),
         "n_per_topic": n, "competence": competence, "blocking_run": blocking_run, "sigmas": SIGMAS, "seed": SEED,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "design": __doc__}, indent=2) + "\n")  # fmt: skip
     model = load_model()

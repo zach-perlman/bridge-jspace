@@ -48,6 +48,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts.exp03_brew_swaps import (
     ITEM_SETS,
@@ -227,6 +228,7 @@ def stage_manifest(name: str, why: str) -> None:
         "does not? Does reshaping the lens direction by the activation covariance (Σv) do it?",
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "window": {
             "layers": list(WINDOW),
             "positions": "after_start (everything after the start line)",

@@ -38,6 +38,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_massmean as MM
 from scripts import x0_necessity as X
 from scripts import x0_parts as XP
@@ -77,7 +78,7 @@ def stage_run(name: str) -> Path:
     out.mkdir(parents=True, exist_ok=False)
     items = pins.DATA_DIR / "tasks_v2" / SET / "items.jsonl"
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "set": SET,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "set": SET,
          "inputs": {str(items.relative_to(pins.REPO_ROOT)): X.sha256_of(items)}, "layer": layer,
          "decisive": target == DECISIVE, "alt": "single", "items_rule": "chat; org and alt locker sentences both before "
          "the asked pick; eligible as in X0; the first N in scene order", "n": {"items": X.N_ITEMS, "min": X.N_MIN},

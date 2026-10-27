@@ -53,6 +53,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from bridge_jspace import pins
 from bridge_jspace.clamp import SwapClamp, near_parallel
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 
 EXP = "exp03_brew_swaps"
@@ -251,6 +252,7 @@ def stage_manifest(
         "question": "In an in-context two-step lookup, does swapping the intermediate's lens direction move the answer "
         "to the one the table predicts for the swapped-in colour, and at which prompt positions?",
         "model": pins.model_pin(),
+        "switches": switches(),
         "lenses": {lens: list(pins.LENS_SOURCES[lens]) for lens in LENSES},
         "items": {
             "set": item_set,

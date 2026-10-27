@@ -25,6 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 
 EXP = "x0_atoms"
@@ -110,7 +111,7 @@ def stage_run(name: str, source: str, layer: int, n: int, seed: int, vocab: str)
                if r["rendering"] == "chat" and r["layer"] == layer and (r["dict"], r["k"], r["omp"]) == X.MAIN}  # fmt: skip
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "source": source,
          "source_code": sm["code"], "set": sm["set"], "layer": layer, "n": n, "seed": seed, "k_max": K_MAX,
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(),
          "note": "descriptive, added after data (critic via Dan, 24 Oct); not part of X0's rule", "vocab": vocab,
          "samples": {"all": pick_all, "asked_first": pick_first}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")

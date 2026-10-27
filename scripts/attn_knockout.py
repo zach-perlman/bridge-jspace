@@ -108,6 +108,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.knockout import FULL, LINEAR, kernel_path, knock_out, layer_kinds, reference_chunk_rule
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import bootstrap_mean, cluster_bootstrap, paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from bridge_jspace.utils import progress
@@ -1092,7 +1093,7 @@ def stage_manifest(args) -> None:
     m = {
         "exp": EXP, "run": args.name, "why": args.why,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "model": pins.model_pin(), "dataset": args.dataset, "domains": args.domains,
+        "model": pins.model_pin(), "switches": switches(), "dataset": args.dataset, "domains": args.domains,
         "set": args.set if pointer else None, "gate_lo": args.gate_lo,
         "competence": args.competence if (pointer or tasks or natural) and args.eligibility == "map" else None,
         "tasks": {"set": args.tasks_set, "formats": args.formats, "level": args.level,

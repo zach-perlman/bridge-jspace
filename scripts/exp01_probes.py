@@ -43,6 +43,7 @@ from bridge_jspace.data import (
     more_prompt_files,
     sha256_of,
 )
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import ledoit_wolf
 
 EXP = "exp01_probes"
@@ -127,6 +128,7 @@ def stage_manifest() -> None:
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "question": "Build a bridge probe per entity and measure how much of it the J-lens dictionary explains.",
         "model": pins.model_pin(),
+        "switches": switches(),
         "lens": {
             "repo": pins.LENS_REPO,
             "revision": pins.LENS_REVISION,

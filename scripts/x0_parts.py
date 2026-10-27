@@ -51,6 +51,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 
 EXP = "x0_parts"
@@ -277,7 +278,7 @@ def stage_run(
     pca, pca_info = pca_dictionary(model, layer) if {"pca", "pca_eq"} & set(used) else (None, None)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "single": x0b or single, "source_exp": "x0b_generalize" if x0b else X.EXP, "single_code": sm["code"],
-         "set": sm["set"], "alt": alt, "layer": layer, "items": len(scenes), "k": K, "other_k": other_k, "parts": list(used), "keep": list(keep), "pca": pca_info, "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(),
+         "set": sm["set"], "alt": alt, "layer": layer, "items": len(scenes), "k": K, "other_k": other_k, "parts": list(used), "keep": list(keep), "pca": pca_info, "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(),
          "seeds": {"random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "bootstrap": X.BOOT_SEED, "held_out": HELD_SEED}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     print(json.dumps(pca_info), flush=True)

@@ -51,6 +51,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp03_brew_swaps import answer_colour, write_jsonl
@@ -260,6 +261,7 @@ def manifest_common(name: str, why: str, kind: str, item_set: str = "bind_recall
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "format": fmt,
         "format_detail": "raw text, no chat template"
         if fmt == "raw"

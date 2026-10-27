@@ -47,6 +47,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
+from bridge_jspace.run_switches import switches
 from scripts import pointer_v1 as PV
 from scripts import pointer_v2 as P2
 from scripts import pointer_v4 as P4
@@ -375,7 +376,7 @@ def stage_manifest(name: str, why: str, limit: int | None) -> None:
     root = pins.REPO_ROOT
     files = {f"main/{label}": f for label, f in set_files("main").items()}
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": why,
-         "model": pins.model_pin(), "sets": ["main"],
+         "model": pins.model_pin(), "switches": switches(), "sets": ["main"],
          "items": {k: {"file": str(f.relative_to(root)) if f.is_relative_to(root) else str(f), "sha256": sha256_of(f)}
                    for k, f in files.items()},
          "limit": limit, "format": f"pointer_v1's: {chat.format_note()}", "judge_mode": PV.judge_mode(),

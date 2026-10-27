@@ -34,6 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from scripts import control_split as C
 from scripts import exp09_bind_recall as E
 from scripts import suite_split as P
@@ -167,7 +168,7 @@ def main(
     )
     inputs = {p: sha256_of(p) for p in sources}
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "lens_layers": pins.LENS_LAYERS, "layers": list(LAYERS),
                 "scales": list(SCALES), "n_per_family": n, "doc": (__doc__ or "").split("\n\n")[1],
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): s for p, s in inputs.items()}}  # fmt: skip

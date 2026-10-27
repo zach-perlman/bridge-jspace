@@ -68,6 +68,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import suite_v1 as S
 
 DATA = pins.DATA_DIR / "tasks_v2"
@@ -1053,7 +1054,7 @@ def competence(set_name: str, run: str, why: str, guess: bool) -> None:
     out.mkdir(parents=True, exist_ok=True)
     assert not (out / "summary.json").exists(), f"{out} has results; runs are written once"
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(),
+    (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(), "switches": switches(),
                                                    "git_commit": commit, "guess": guess,
                                                    "generation": "greedy, 8 new tokens, batched by length",
                                                    "read": "suite_v1.read_answers: p and logit margin of the answer's first token",

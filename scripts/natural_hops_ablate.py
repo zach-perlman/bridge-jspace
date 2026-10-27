@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
+from bridge_jspace.run_switches import switches
 from bridge_jspace.tokens import raw_encoding
 from scripts import natural_rw as N
 from scripts import suite_v1 as S
@@ -44,7 +45,7 @@ def main(name: str, why: str, source: str) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(N.LAYERS),
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(N.LAYERS),
                 "items_from": source, "screen_run": N.SCREEN_RUN, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     keep = {json.loads(line)["id"] for line in (N.RESULTS / source / "ablation.jsonl").read_text().splitlines()}

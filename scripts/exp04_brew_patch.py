@@ -48,6 +48,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from scripts.exp03_brew_swaps import (
     ITEM_SETS,
@@ -218,6 +219,7 @@ def stage_manifest(
         "question": "In brew's two-step lookup, at which layers and prompt positions does the activation carry the "
         "intermediate as a step (patching it in redirects the second lookup), and where only the answer?",
         "model": pins.model_pin(),
+        "switches": switches(),
         "items": {
             "set": item_set,
             "file": str(ITEM_SETS[item_set][0].relative_to(pins.REPO_ROOT)),

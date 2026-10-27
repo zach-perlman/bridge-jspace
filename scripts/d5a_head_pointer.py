@@ -75,6 +75,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.knockout import FULL, capture_attention, decoder_layers, layer_kind
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import cluster_bootstrap, paired_bootstrap_diff, wilson
 from scripts import pointer_swap as PS
 from scripts import pointer_v4 as PV4
@@ -283,7 +284,7 @@ def stage_manifest(args) -> None:
     root = pins.REPO_ROOT
     m = {
         "exp": EXP, "run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "model": pins.model_pin(), "data": "pointer_v4", "families": families, "domains": domains, "n": args.n,
+        "model": pins.model_pin(), "switches": switches(), "data": "pointer_v4", "families": families, "domains": domains, "n": args.n,
         "items": {k: {"file": str(f.relative_to(root)) if f.is_relative_to(root) else str(f), "sha256": sha256_of(f)}
                   for k, f in files.items()},
         "competence": args.competence,

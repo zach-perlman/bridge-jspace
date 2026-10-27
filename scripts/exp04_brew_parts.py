@@ -36,6 +36,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts.exp03_brew_swaps import (
     ITEM_SETS,
@@ -142,6 +143,7 @@ def stage_manifest(name: str, map_run: str) -> None:
         "question": "Which part of the window's copy carries the intermediate as a step: its lens coordinates for I "
         "and X, its J-space part, or the rest?",
         "model": map_manifest["model"],
+        "switches": switches(),
         "items": map_manifest["items"],
         "map": {"run": map_run, "summary_sha256": sha256_of(map_dir / "summary.json"), "window_after_start": window},
         "counterfactuals": "patch_map's (C: S -> X, X -> c; O: two off-path rules changed), same seeds",

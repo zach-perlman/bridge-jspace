@@ -43,6 +43,7 @@ from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.ablate import LensDictionary, rotation, top_span_removal  # noqa: E402
 from bridge_jspace.lens import JLens  # noqa: E402
 from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from bridge_jspace.run_switches import switches
 from scripts import jsuite_v2_tables as TB  # noqa: E402
 from scripts import jswap as JS  # noqa: E402
 from scripts.ablate_v2 import bridge_positions, tasks_prompts  # noqa: E402
@@ -88,7 +89,7 @@ def main(a) -> None:
     lens = JLens(model, pins.FROZEN_LENS)
     src = sorted(int(x) for x in lens.source_layers)
     layers = sorted(set(src[:: a.stride]) | set(band))
-    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "model": pins.model_pin(), "lens": pins.FROZEN_LENS,
+    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "model": pins.model_pin(), "switches": switches(), "lens": pins.FROZEN_LENS,
                                                        "band": a.band, "layers": layers, "dev_competence": a.dev_competence,
                                                        "test_competence": a.test_competence, "conditions": CONDS, "k_max": 10,
                                                        "git_commit": commit, "git_state": pins.git_state(), "seeds": {"probe_rot": f"{SEED_PROBE_ROT}+layer", "cv": 0}}, indent=2) + "\n")  # fmt: skip

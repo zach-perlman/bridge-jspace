@@ -41,6 +41,7 @@ from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.ablate import LensDictionary, RowSettings, removal_edit, rotation  # noqa: E402
 from bridge_jspace.lens import JLens  # noqa: E402
 from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from bridge_jspace.run_switches import switches
 from bridge_jspace.tokens import raw_encoding  # noqa: E402
 
 DATA_FILE = pins.REPO_ROOT / "data" / "wsb_wrong_bridge.json"
@@ -97,7 +98,7 @@ def main(a) -> None:
     band = list(range(lo, hi + 1))
     out_dir.mkdir(parents=True)
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "model": pins.model_pin(), "lens": pins.FROZEN_LENS,
+    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "model": pins.model_pin(), "switches": switches(), "lens": pins.FROZEN_LENS,
                                                        "band": band, "screen": a.screen, "items_from": a.items_from, "n_items": len(items),
                                                        "alphas": ALPHAS, "git_commit": commit, "data": str(DATA_FILE.name),
                                                        "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip

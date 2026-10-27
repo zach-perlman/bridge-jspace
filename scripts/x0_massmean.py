@@ -44,6 +44,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_amnesic as AM
 from scripts import x0_necessity as X
 from scripts import x0_probe as P
@@ -186,7 +187,7 @@ def stage_run(name: str, single: str, states_run: str, mode: str = "main") -> Pa
     cases = [by_scene[s] for s in scenes]
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "single": single, "single_code": sm["code"], "set": sm["set"], "layer": layer, "items": len(scenes),
-         "subspaces": info, "mode": mode, "arms": list(arms_of(mode)), "model": pins.model_pin(), "code": git_state(),
+         "subspaces": info, "mode": mode, "arms": list(arms_of(mode)), "model": pins.model_pin(), "switches": switches(), "code": git_state(),
          "items_rule": "every item of the run, both sentence orders (the order recorded per row)" if mode in ALL_ITEMS
          else "single-change items whose org and alt locker sentences both come before the asked pick",
          "alt": X.ALT,

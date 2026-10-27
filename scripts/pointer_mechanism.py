@@ -65,6 +65,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from scripts import d5a_head_pointer as D
 from scripts import pointer_fit as PF
@@ -170,7 +171,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
     assert not (out_dir / "manifest.json").exists(), f"{out_dir} exists; runs are written once"
     files = PF.input_files(cfg)
     m_ = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-          "model": pins.model_pin(), "config": cfg, "layers": list(LAYERS), "alphas": list(ALPHAS), "heads": list(HEADS),
+          "model": pins.model_pin(), "switches": switches(), "config": cfg, "layers": list(LAYERS), "alphas": list(ALPHAS), "heads": list(HEADS),
           "inputs": {PF.rel(p): sha256_of(p) for p in files}, "seeds": {"perm": PERM_SEED, "null": NULL_SEED},
           "decision": (__doc__ or "").split("Decision rule")[1].split("Stages:")[0].strip()}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(m_, indent=2) + "\n")

@@ -31,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.ablate import LensDictionary, RowSettings, removal_edit, rotation  # noqa: E402
+from bridge_jspace.run_switches import switches
 from scripts import ablate_v2 as AV  # noqa: E402
 from scripts import tasks_v2 as T  # noqa: E402
 
@@ -76,7 +77,7 @@ def main(args) -> None:
     conds = ["none"] + args.conditions
     (out_dir / "manifest.json").write_text(json.dumps({
         "run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+        "git_commit": commit, "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
         "set": args.set, "competence": args.competence, "words": args.words, "level": args.level, "n_per_word": args.n,
         "band": AV.label(band), "conditions": conds, "max_new_tokens": args.max_new, "check": args.check,
         "read": args.read, "tf32": True, "strata": args.strata,

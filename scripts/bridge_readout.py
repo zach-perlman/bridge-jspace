@@ -25,6 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import pins  # noqa: E402
 from bridge_jspace.lens import JLens  # noqa: E402
 from bridge_jspace.model import _forward_hooks, load_model  # noqa: E402
+from bridge_jspace.run_switches import switches
 from scripts import suite_v1 as S  # noqa: E402
 from scripts.ablate_v2 import bridge_positions, tasks_prompts  # noqa: E402
 
@@ -44,7 +45,7 @@ def main(a) -> None:
     tok = model.tokenizer
     lens = JLens(model, pins.FROZEN_LENS)
     layers = [la for la in lens.layers if la % a.every == 0] if hasattr(lens, "layers") else list(range(0, pins.TARGETS[pins.TARGET]["n_layers"] - 1, a.every))
-    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "set": a.set, "competence": a.competence,
+    (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "switches": switches(), "set": a.set, "competence": a.competence,
                                                        "layers": layers, "git_commit": commit}, indent=2) + "\n")  # fmt: skip
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / a.set / "items.jsonl").read_text().splitlines()}
     v2 = a.set.startswith("jsuite_v2")

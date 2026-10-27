@@ -39,6 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins  # noqa: E402
+from bridge_jspace.run_switches import switches
 
 DATA = Path(__file__).resolve().parents[1] / "data" / "tasks_v2"
 TOKENIZERS = ["qwen3.6-27b", "qwen3.5-9b", "muse-glimmer-30b", "qwen3.5-122b-a10b"]
@@ -399,7 +400,7 @@ def competence(set_name: str, run: str, why: str, read: str = "top", limit: int 
     out.mkdir(parents=True, exist_ok=True)
     assert not (out / "summary.json").exists(), f"{out} has results; runs are written once"
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(),
+    (out / "manifest.json").write_text(json.dumps({"run": run, "why": why, "set": set_name, "model": pins.model_pin(), "switches": switches(),
                                                    "git_commit": commit, "git_state": pins.git_state(), "guess": True,
                                                    "read": read, "hop1": hop1, "words": words, "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
                                                    "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2) + "\n")  # fmt: skip

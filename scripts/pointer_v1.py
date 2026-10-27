@@ -70,6 +70,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
+from bridge_jspace.run_switches import switches
 from scripts import suite_v1 as S
 
 DATA = pins.DATA_DIR / "pointer_v1"
@@ -610,7 +611,7 @@ def stage_manifest(name: str, why: str, sets: list[str], limit: int | None) -> N
     files = {f"{s}/{label}": f for s in sets for label, f in set_files(s).items()}
     manifest = {
         "exp": "pointer_v1", "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": why,
-        "model": pins.model_pin(), "sets": sets,
+        "model": pins.model_pin(), "switches": switches(), "sets": sets,
         "items": {k: {"file": str(f.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(f)} for k, f in files.items()},
         "limit": limit,
         "format": f"suite_v1's: {chat.format_note()}; the context, a newline, the question and '{S.INSTRUCTION}' as the "

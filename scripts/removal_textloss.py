@@ -28,6 +28,7 @@ from bridge_jspace import pins
 from bridge_jspace.ablate import LensDictionary, RowSettings, removal_edit
 from bridge_jspace.ablate import rotation as rotation_v2
 from bridge_jspace.model import _forward_hooks
+from bridge_jspace.run_switches import switches
 from bridge_jspace.tokens import raw_encoding
 from scripts.ablate_pilot import Remove, Rotated, rotation
 
@@ -44,7 +45,7 @@ def main(name: str, why: str, layers: tuple[int, ...], conditions: tuple[str, ..
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(layers), "conditions": list(conditions),
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(layers), "conditions": list(conditions),
                 "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()

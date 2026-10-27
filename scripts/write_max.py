@@ -61,6 +61,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.ablate import LensDictionary, omp_fit
+from bridge_jspace.run_switches import switches
 from scripts import control_split as C
 from scripts import read_write as RW
 from scripts import suite_split as P
@@ -122,7 +123,7 @@ def main(args) -> None:
     early = tuple(args.early)
     rec_layers = tuple(sorted(set(band) | set(early)))
     manifest = {"run": args.name, "why": args.why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "git_commit": commit, "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+                "git_commit": commit, "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "band": list(band), "single_layers": list(singles), "early_layers": list(early), "possets": args.possets,
                 "alphas": list(ALPHAS), "alphas_early": list(ALPHAS_EARLY), "swaps": list(SWAPS),
                 "transplants": list(TRANSPLANTS), "natural": list(NATURAL), "keep_gate": KEEP_GATE,

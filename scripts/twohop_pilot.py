@@ -38,6 +38,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 
 DATA = pins.DATA_DIR / "twohop_pilot"
@@ -139,7 +140,7 @@ def competence(name: str, why: str, items_file: str = "items.json") -> None:
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     items_path = DATA / items_file
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "items": {"file": str(items_path.relative_to(pins.REPO_ROOT)),
+                "model": pins.model_pin(), "switches": switches(), "items": {"file": str(items_path.relative_to(pins.REPO_ROOT)),
                 "sha256": sha256_of(items_path)}, "format": "chat, thinking off, 'Answer:' prefilled, blank statement",
                 "generation": "greedy, 12 new tokens, batched by length", "judge": "an alias in the first line"}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

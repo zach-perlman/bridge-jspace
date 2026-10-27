@@ -22,6 +22,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from bridge_jspace import chat, pins
+from bridge_jspace.run_switches import switches
 from bridge_jspace.tokens import raw_encoding
 
 RESULTS = pins.RESULTS_DIR / "lens_agreement"
@@ -45,7 +46,7 @@ def main(name: str, why: str, layers: list[int] | None) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "argv": sys.argv,
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "argv": sys.argv,
                 "doc": (__doc__ or "").split("\n\n")[0]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()

@@ -54,6 +54,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from bridge_jspace.tokens import raw_encoding
 from bridge_jspace.utils import git_state
@@ -262,6 +263,7 @@ def stage_manifest(name: str, why: str, tasks: list[str], limit: int | None) -> 
         "the runs feed it (raw text; brew: chat with 'Answer:') and in the chat format, whole and hop by hop?",
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "tasks": {
             t: {"file": str(TASKS[t][0].relative_to(pins.REPO_ROOT)), "sha256": TASKS[t][1], "family": TASKS[t][3]}
             for t in tasks

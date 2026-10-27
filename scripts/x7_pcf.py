@@ -41,6 +41,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x6_routes as R
 
@@ -306,7 +307,7 @@ def stage_run(name: str, n: int = N_PAIRS, moves: frozenset[int] | None = None) 
     out.mkdir(parents=True, exist_ok=False)
     rank = RANK if moves is None else 2
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "pairs": n,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "pairs": n,
          "rank": rank, "pca": "centered, over the pairs' bridge-word differences S - O", "alf_from": R.STATES[target],
          "moves": sorted(moves) if moves else None,
          "orthogonal_to_U": "the differences projected off U (Alf) before the PCA" if moves else None,
@@ -381,7 +382,7 @@ def stage_natural(name: str, pcf_run: str) -> Path:
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "rank": RANK,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "rank": RANK,
          "pairs_from": "x5_natural's passages: the bridge's first-mention sentence moved within its paragraph, still "
                        f"before the binding sentence, words unchanged (at most {MAX_MOVES} moves per passage)",
          "pcf_run": pcf_run, "alf_from": R.STATES[target], "seeds": {"moves": SEED}}  # fmt: skip
@@ -451,7 +452,7 @@ def stage_varied(name: str, set_name: str = "x0b_v2") -> Path:
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-         "model": pins.model_pin(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "set": set_name,
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "layer": layer, "set": set_name,
          "formats": list(FORMATS), "rank": RANK, "max_moves": MAX_MOVES,
          "split": f"per format, the aligned varied scenes (x0b_generalize.build_cases) in two halves by bridge item, seed "
                   f"{SPLIT_SEED}: fit (these pairs) and test (the main test, x0b_generalize --pcf-from)",

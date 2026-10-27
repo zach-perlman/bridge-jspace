@@ -132,6 +132,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import wilson
 from scripts import pointer_v1 as PV
 from scripts import suite_v1 as S
@@ -448,7 +449,7 @@ def stage_manifest(args) -> None:
     root = pins.REPO_ROOT
     m = {
         "exp": EXP, "run": args.name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "why": args.why,
-        "model": pins.model_pin(), "data": args.data, "set": args.set, "levels": levels, "families": families,
+        "model": pins.model_pin(), "switches": switches(), "data": args.data, "set": args.set, "levels": levels, "families": families,
         "domains": domains, "family_roles": list(roles),
         # a smoke's items may live outside the repo (pointer_v4's BJ_POINTER_V4_DATA): absolute paths then
         "items": {k: {"file": str(f.relative_to(root)) if f.is_relative_to(root) else str(f), "sha256": sha256_of(f)}

@@ -174,6 +174,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts import early_push as EP
 from scripts import statement_positions as SP
@@ -897,7 +898,7 @@ def stage_run(name: str, why: str, cfg: dict) -> None:
         inputs.append(RESULTS / cfg["reuse"] / "outcomes.jsonl")
     doc = __doc__ or ""
     manifest = {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
+                "model": pins.model_pin(), "switches": switches(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "config": cfg,
                 "inputs": {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p) for p in inputs},
                 "seeds": {"random": f"{SEED} + 1000003 x item index", "offscene": f"Random('{SEED}:<scene>')",
                           "bootstrap": SEED, **({"fresh_scenes": cfg.get("fresh_seed", FRESH_SEED)} if cfg["scenes"] == "fresh" else {}),

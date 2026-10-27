@@ -44,6 +44,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
+from bridge_jspace.run_switches import switches
 from scripts import exp09_bind_recall as E
 from scripts import suite_split as P
 from scripts import suite_v1 as S
@@ -118,6 +119,7 @@ def manifest(name: str, why: str, kind: str) -> dict:
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": why,
         "model": pins.model_pin(),
+        "switches": switches(),
         "items": {"file": str(path.relative_to(pins.REPO_ROOT)), "sha256": sha, "families": list(FAMILIES)},
         "format": "chat template, thinking off, 'Answer:' prefilled (exp09's chat_prefill: the statement as a question)",
         "eligibility": "exp09's: clean, C and O each answered (greedy, 8 tokens, the capitals judge); a seeded sample "

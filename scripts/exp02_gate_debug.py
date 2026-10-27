@@ -37,6 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from bridge_jspace import pins
 from bridge_jspace.data import load_items, sha256_of
+from bridge_jspace.run_switches import switches
 
 OUTS = {
     "core": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug",
@@ -85,6 +86,7 @@ def stage_manifest(part: str) -> None:
         "run": out.name,
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "why": "gate failed: best full-probe flip rate 17% (band 32-48) < 30%; raw J-lens 55% at a ~9x smaller edit",
+        "switches": switches(),
         "question": QUESTIONS[part],
         "inputs": inputs,
         "layers": list(LAYERS),

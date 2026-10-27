@@ -40,6 +40,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x0_strata as ST
 
@@ -452,7 +453,7 @@ def stage_run(name: str, source: str | None, layer: int, set_name: str | None = 
     x0 = {r["scene"] for r in X.read_jsonl(X.RESULTS / source / "outcomes.jsonl") if r["rendering"] == "chat"} if source else set()  # fmt: skip
     m = {"exp": EXP, "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "note": NOTE,
          "source": source, "source_code": sm["code"], "set": sm["set"], "layer": layer, "x0_items": len(x0),
-         "model": pins.model_pin(), "code": git_state(), "position": "the asked person's bridge word, org run, chat",
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "position": "the asked person's bridge word, org run, chat",
          "folds": {"outer": K_OUTER, "inner": K_INNER, "penalties": list(RELS)},
          "seeds": {"bootstrap": X.BOOT_SEED}, "targets": {t: TARGETS[t] for t in TARGETS}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
