@@ -95,7 +95,7 @@ Dan; both parts fixed in advance, 3 of 3 models. <!-- src: predictions/2026-10-2
   - Weak: Ministral 14B 23.3 and DeepSeek V4 Flash 17.9 points. <!-- src: docs/breadth/data.csv | ko.mi.mk; ko.ds.mk -->
   - Not specific: on Nemotron Bolt and DeepSeek a same-size removal of the largest directions costs nearly as much as the lens part, at every number of directions (at 100: 24.0 against 31.3, and 25.9 against 28.7). <!-- src: docs/breadth/data.csv | dose.nb.k100.pc; dose.nb.k100; dose.ds.k100.pc; dose.ds.k100 -->
   - Carried, not needed: OLMo 32B's lens part moves recalled answers when swapped (41.4) but removing it costs 5.4. <!-- src: docs/breadth/data.csv | swap.ol.swap; ko.ol.mk -->
-  - Shared or fragile: Muse 30B shares 34.6 of its 59.9 with the logit lens's directions; Qwen 122B's 48.5 drops to 1.7 scored by probability. <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk; ko.q122.mk; ko.q122.soft -->
+  - Shared or fragile: Muse 30B shares 34.6 of its 59.9 with the logit lens's directions, though a same-size removal costs it at most 6.5 at any number of directions; Qwen 122B's 48.5 drops to 1.7 scored by probability. <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk; ko.q122.mk; ko.q122.soft --> <!-- src: docs/breadth/data.csv | dose.mu.k30.pc; dose.mu.k300.pc -->
   - Untestable: removing the top 10 lens directions breaks plain text on Gemma 4, gpt-oss and Kolibri (9.3, 4.7 and 6.4 nats added). <!-- src: docs/breadth/data.csv | text.gemma; text.gptoss; text.kol -->
 
 ![Recalled answers need the lens part on every dataset we built](figures/shared/j6_datasets.png)
@@ -113,7 +113,7 @@ Dan; both parts fixed in advance, 3 of 3 models. <!-- src: predictions/2026-10-2
 - **Deeper layers:** the question alone costs 47.1 of 50.0 (Qwen 27B), 52.6 of 53.1 (Qwen 9B) and 52.6 of 61.6 (Lightning); the mention alone 2.9, 0.2 and 0.5. Ministral 14B, tested only deep, agrees (24.0 of 23.3); Qwen 122B is split (question 28.3, mention 10.0, of 48.5). <!-- src: docs/breadth/data.csv | late.q27.question; late.q27.all; late.q9.question; late.q9.all; late.nl.question; late.nl.all --> <!-- src: docs/breadth/data.csv | late.q27.bridge; late.q9.bridge; late.nl.bridge --> <!-- src: docs/breadth/data.csv | pos.mi.question; ko.mi.mk; pos.q122.question; pos.q122.bridge; ko.q122.mk -->
 - **Deeper, more is shared with the logit lens's directions:** 27.5 (Qwen 9B) and 22.9 (Lightning), against 1.4 and 8.7 at middle layers. <!-- src: docs/breadth/data.csv | late.q9.all.u; late.nl.all.u; ko.q9.u; ko.nl.u -->
 - **Dan's routes test agrees in direction** (after the data): at an early layer the patch moves the lookup by identity only (inside the lens part on the Qwens); position answers appear a few layers later. <!-- src: docs/depth/README.md | Position appears with depth (candidate) -->
-- The same split on Muse 30B is queued (Where it breaks). <!-- src: jobs/c3/x57_pos_muse.yaml | question-only and bridge-mention-only -->
+- **Muse 30B**, tested only at layers 36-42, agrees: the question alone costs 59.3 of 59.9, the mention 1.8 (fixed in advance, amendment 57 note 1). <!-- src: docs/breadth/data.csv | pos.mu.question; ko.mu.mk; pos.mu.bridge -->
 
 ![Middle layers need the bridge's mention; deeper layers, the question](figures/shared/j7_where.png)
 
@@ -152,7 +152,6 @@ Full lists: [depth report](docs/depth/README.md) <!-- src: docs/depth/README.md 
 ## Pending tests
 
 - **Nemotron Lightning, Dan's method** at layer 27, the first layer of Zach's band; his lens file is now [public](https://huggingface.co/zachperlman20/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-jpp-lens). No test is planned for the order signal on Lightning. <!-- src: scripts/x45s.py | at L27 (the shallowest layer of Zach's band L27-33 -->
-- **Muse 30B, Zach's tools** at layers 36-42: how many directions it needs, and whether the question or the mention carries it (running on Zach's box). <!-- src: jobs/c3/x57_dose_muse.yaml | dose grid at L36-42 --> <!-- src: jobs/c3/x57_pos_muse.yaml | question-only and bridge-mention-only -->
 
 ## Open questions
 
