@@ -1,0 +1,405 @@
+{
+  "n_items": 20,
+  "min_items_agreeing": 19,
+  "arms": {
+    "none": {
+      "items_agree": 20,
+      "rows_agree": 40,
+      "rows": 40,
+      "switched_mine": {
+        "PP": 0,
+        "PM": 0
+      },
+      "switched_stored": {
+        "PP": 0,
+        "PM": 0
+      },
+      "max_abs_ld_diff": 0.0005,
+      "mean_abs_ld_diff": 0.0
+    },
+    "whole": {
+      "items_agree": 20,
+      "rows_agree": 40,
+      "rows": 40,
+      "switched_mine": {
+        "PP": 13,
+        "PM": 19
+      },
+      "switched_stored": {
+        "PP": 13,
+        "PM": 19
+      },
+      "max_abs_ld_diff": 0.0,
+      "mean_abs_ld_diff": 0.0
+    },
+    "no_part": {
+      "items_agree": 20,
+      "rows_agree": 40,
+      "rows": 40,
+      "switched_mine": {
+        "PP": 11,
+        "PM": 11
+      },
+      "switched_stored": {
+        "PP": 11,
+        "PM": 11
+      },
+      "max_abs_ld_diff": 0.0,
+      "mean_abs_ld_diff": 0.0
+    },
+    "no_rand": {
+      "items_agree": 20,
+      "rows_agree": 40,
+      "rows": 40,
+      "switched_mine": {
+        "PP": 8,
+        "PM": 19
+      },
+      "switched_stored": {
+        "PP": 8,
+        "PM": 19
+      },
+      "max_abs_ld_diff": 0.125,
+      "mean_abs_ld_diff": 0.0187
+    }
+  },
+  "verdict": "PASS",
+  "max_abs_ld_diff": 0.125,
+  "run": "qwen35_9b_x45_indep_pregate",
+  "layer": 12,
+  "pins_match_stored": true,
+  "pin_mismatches": [],
+  "prompts_match_stored": {
+    "ids": 20,
+    "pos": 20,
+    "answer_tokens": 20
+  },
+  "share": {
+    "max_abs_diff_vs_stored": 0.0,
+    "median_mine": 0.212605,
+    "max_abs_rand_minus_jpp": 0.0008604526519775391
+  },
+  "hook_vs_hidden_states_max_abs": 0.0,
+  "norm_gain": "one_plus_weight",
+  "n_atoms": 242132,
+  "lens": {
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5",
+    "source_layers": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "d_model": 4096,
+    "capture_point": "block_output"
+  },
+  "items": [
+    {
+      "scene": "P2-L0-0142",
+      "my_share": 0.18085,
+      "stored_share": 0.18085,
+      "my_rand_share": 0.1809,
+      "stored_rand_share": 0.1809,
+      "atoms": [
+        " nitrogen",
+        " OA",
+        " TN",
+        " coca",
+        "-même"
+      ]
+    },
+    {
+      "scene": "P2-L0-0290",
+      "my_share": 0.26882,
+      "stored_share": 0.26882,
+      "my_rand_share": 0.26882,
+      "stored_rand_share": 0.26882,
+      "atoms": [
+        "_ES",
+        " IID",
+        " PE",
+        " IU",
+        "epsilon"
+      ]
+    },
+    {
+      "scene": "P2-L0-0154",
+      "my_share": 0.17849,
+      "stored_share": 0.17849,
+      "my_rand_share": 0.1785,
+      "stored_rand_share": 0.1785,
+      "atoms": [
+        " Oxygen",
+        " HEL",
+        " Himself",
+        ".OUT",
+        " OB"
+      ]
+    },
+    {
+      "scene": "P2-L0-0017",
+      "my_share": 0.21243,
+      "stored_share": 0.21243,
+      "my_rand_share": 0.21237,
+      "stored_rand_share": 0.21237,
+      "atoms": [
+        " DEL",
+        " IW",
+        "DD",
+        " AOL",
+        "zcze"
+      ]
+    },
+    {
+      "scene": "P2-L0-0096",
+      "my_share": 0.26535,
+      "stored_share": 0.26535,
+      "my_rand_share": 0.26497,
+      "stored_rand_share": 0.26497,
+      "atoms": [
+        " Bee",
+        " Spider",
+        "cee",
+        "โนม",
+        "ость"
+      ]
+    },
+    {
+      "scene": "P2-L0-0193",
+      "my_share": 0.18222,
+      "stored_share": 0.18222,
+      "my_rand_share": 0.18213,
+      "stored_rand_share": 0.18213,
+      "atoms": [
+        " Carousel",
+        ".stringify",
+        "孔雀",
+        "氢气",
+        " conci"
+      ]
+    },
+    {
+      "scene": "P2-L0-0184",
+      "my_share": 0.17718,
+      "stored_share": 0.17718,
+      "my_rand_share": 0.17773,
+      "stored_rand_share": 0.17773,
+      "atoms": [
+        "hydro",
+        " reuse",
+        "ogh",
+        "CAL",
+        "我叫"
+      ]
+    },
+    {
+      "scene": "P2-L0-0149",
+      "my_share": 0.2294,
+      "stored_share": 0.2294,
+      "my_rand_share": 0.22928,
+      "stored_rand_share": 0.22928,
+      "atoms": [
+        " DEL",
+        "iota",
+        " IN",
+        "/I",
+        "ND"
+      ]
+    },
+    {
+      "scene": "P2-L0-0110",
+      "my_share": 0.21278,
+      "stored_share": 0.21278,
+      "my_rand_share": 0.21242,
+      "stored_rand_share": 0.21242,
+      "atoms": [
+        "_ES",
+        " epsilon",
+        "iota",
+        "(SE",
+        "_LO"
+      ]
+    },
+    {
+      "scene": "P2-L0-0181",
+      "my_share": 0.27059,
+      "stored_share": 0.27059,
+      "my_rand_share": 0.27145,
+      "stored_rand_share": 0.27145,
+      "atoms": [
+        "QN",
+        "ECH",
+        " NTN",
+        " HEL",
+        " Adrian"
+      ]
+    },
+    {
+      "scene": "P2-L0-0134",
+      "my_share": 0.1744,
+      "stored_share": 0.1744,
+      "my_rand_share": 0.17379,
+      "stored_rand_share": 0.17379,
+      "atoms": [
+        "epsilon",
+        "AHA",
+        " fün",
+        "次的",
+        "-la"
+      ]
+    },
+    {
+      "scene": "P2-L0-0224",
+      "my_share": 0.26563,
+      "stored_share": 0.26563,
+      "my_rand_share": 0.26545,
+      "stored_rand_share": 0.26545,
+      "atoms": [
+        " epsilon",
+        " Delta",
+        " IPS",
+        " DL",
+        ".LatLng"
+      ]
+    },
+    {
+      "scene": "P2-L0-0076",
+      "my_share": 0.3277,
+      "stored_share": 0.3277,
+      "my_rand_share": 0.32779,
+      "stored_rand_share": 0.32779,
+      "atoms": [
+        "锂",
+        "氢气",
+        "NotNil",
+        "жден",
+        " الخام"
+      ]
+    },
+    {
+      "scene": "P2-L0-0191",
+      "my_share": 0.229,
+      "stored_share": 0.229,
+      "my_rand_share": 0.22901,
+      "stored_rand_share": 0.22901,
+      "atoms": [
+        " iota",
+        "_beta",
+        "(IT",
+        "(AP",
+        " อิน"
+      ]
+    },
+    {
+      "scene": "P2-L0-0047",
+      "my_share": 0.22774,
+      "stored_share": 0.22774,
+      "my_rand_share": 0.22776,
+      "stored_rand_share": 0.22776,
+      "atoms": [
+        " BE",
+        "(beta",
+        " ISC",
+        "BW",
+        "(IO"
+      ]
+    },
+    {
+      "scene": "P2-L0-0105",
+      "my_share": 0.19515,
+      "stored_share": 0.19515,
+      "my_rand_share": 0.19529,
+      "stored_rand_share": 0.19529,
+      "atoms": [
+        "驼",
+        " Beetle",
+        " CrossAxisAlignment",
+        "mosfera",
+        " ria"
+      ]
+    },
+    {
+      "scene": "P2-L0-0289",
+      "my_share": 0.18397,
+      "stored_share": 0.18397,
+      "my_rand_share": 0.18331,
+      "stored_rand_share": 0.18331,
+      "atoms": [
+        " lithium",
+        " OA",
+        "stav",
+        "LIA",
+        "/weather"
+      ]
+    },
+    {
+      "scene": "P2-L0-0034",
+      "my_share": 0.18194,
+      "stored_share": 0.18194,
+      "my_rand_share": 0.18226,
+      "stored_rand_share": 0.18226,
+      "atoms": [
+        " Oxygen",
+        " HEL",
+        "QS",
+        "オー",
+        " nx"
+      ]
+    },
+    {
+      "scene": "P2-L0-0239",
+      "my_share": 0.18898,
+      "stored_share": 0.18898,
+      "my_rand_share": 0.18888,
+      "stored_rand_share": 0.18888,
+      "atoms": [
+        " DL",
+        " EPS",
+        "鹿",
+        "epsilon",
+        "(nd"
+      ]
+    },
+    {
+      "scene": "P2-L0-0091",
+      "my_share": 0.24695,
+      "stored_share": 0.24695,
+      "my_rand_share": 0.24676,
+      "stored_rand_share": 0.24676,
+      "atoms": [
+        "(O",
+        "(H",
+        " oxy",
+        " BH",
+        "BarButton"
+      ]
+    }
+  ]
+}

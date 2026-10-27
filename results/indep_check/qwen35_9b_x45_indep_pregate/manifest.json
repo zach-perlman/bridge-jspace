@@ -1,0 +1,83 @@
+{
+  "exp": "indep_check",
+  "run": "qwen35_9b_x45_indep_pregate",
+  "written_utc": "2026-10-27T11:25:25Z",
+  "what": "independent re-implementation of X0's main test (whole / no_part / no_rand) on stored items",
+  "stored_run": {
+    "dir": "/home/sesterce/jobq/runs/merge_pregate_indep_9b/code/results/x0_necessity/qwen35_9b_x0_necessity",
+    "manifest_sha256": "1c8b61e521a05eddce8e886ee91b3dbf7bb8fa549f3246d6875d871a9db5e6b2",
+    "outcomes_sha256": "2e5ba92b65dafa4d077fbcb663805d6e219108a325c9cf6265800adff7f9f834"
+  },
+  "pins_match_stored": true,
+  "pin_mismatches": [],
+  "model": {
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "device": "cuda"
+  },
+  "lens": {
+    "repo": "neuronpedia/jacobian-lens",
+    "file": "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+    "revision": "e166deb5ad540932100ef803c8c9bcc2a5453694",
+    "sha256_pinned": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "items_file": {
+    "path": "data/tasks_v2/d1_topics_v3/items.jsonl",
+    "sha256": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b"
+  },
+  "layer": 12,
+  "k": 25,
+  "n": 20,
+  "selection": "random.Random(0).sample(sorted scenes with whole, jpp/25/signed no_part and no_rand for both readers at chat layer 12, 20)",
+  "items": [
+    "P2-L0-0142",
+    "P2-L0-0290",
+    "P2-L0-0154",
+    "P2-L0-0017",
+    "P2-L0-0096",
+    "P2-L0-0193",
+    "P2-L0-0184",
+    "P2-L0-0149",
+    "P2-L0-0110",
+    "P2-L0-0181",
+    "P2-L0-0134",
+    "P2-L0-0224",
+    "P2-L0-0076",
+    "P2-L0-0191",
+    "P2-L0-0047",
+    "P2-L0-0105",
+    "P2-L0-0289",
+    "P2-L0-0034",
+    "P2-L0-0239",
+    "P2-L0-0091"
+  ],
+  "seeds": {
+    "selection": 0,
+    "random_subspace": "888 + layer (CPU)"
+  },
+  "batch_rows": 24,
+  "code": {
+    "sha": "f8907c126c33b68298954fcee850b64fcd26fac1",
+    "dirty": true,
+    "this_script_sha256": "ed9a140f36c39b61c01a909247c196ae62804cc224c717a204bcd5e23ec2099f",
+    "this_script_tracked": true
+  },
+  "argv": [
+    "scripts/indep_check.py",
+    "--name",
+    "qwen35_9b_x45_indep_pregate",
+    "--n",
+    "20",
+    "--layer",
+    "12",
+    "--device",
+    "cuda"
+  ],
+  "env": {
+    "torch": "2.11.0+cu128",
+    "transformers": "5.17.0",
+    "gpu": "NVIDIA H100 PCIe"
+  }
+}
