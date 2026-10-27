@@ -10,18 +10,28 @@ V0 vs V2), 45b's bridge-word vs locker-sentence patches (9B, 27B) and 45d's refi
 Their runs are not in docs/review_views.yaml: each has its own loader from the run's per-item files, its recount is
 compared with the run's verdict / table file (not in data.csv), and 5 items each are drawn the same way.
 
+Then 45m, 45q and 45p (Dan 27 Oct ~14:40; UNVERIFIED), each on the 9B, the 27B and Muse (each test's rule counts all
+three): each part loads its run's per-item files, recounts the rule's numbers against the verdict file the predictions
+cite, and shows 10 items drawn as the six numbers draw, with the patched positions marked from the stored ones
+(⟦bridge:…⟧, ⟦locker:…⟧, ⟦new:…⟧, ⟦control:…⟧, as the 45p verify pack) and each arm's stored answer for both readers.
+The stored positions are re-derived from the decoded tokens and compared, for every item of every run.
+
 uv run python scripts/handcheck_pack.py      # docs/handcheck_pack.md (generated; do not hand-edit)
 """
 
 from __future__ import annotations
 
+import math
 import random
 import re
 import subprocess
 import sys
+import warnings
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
+
+import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -849,6 +859,651 @@ def card_45d(it: dict) -> list[str]:
             f"answer {rd['cf_answer']} (token `{C.piece(m, rd['tok_b'])!r}`).", "", *md_table(rows)]  # fmt: skip
 
 
+# ------------------------------------------------------------------- 45m, 45q, 45p (Dan 27 Oct ~14:40; after batch 45)
+# Each test's rule counts the 9B, the 27B and Muse, so each model is its own part (as 45b's 9B and 27B above), with
+# N_SHOW items drawn as the six numbers draw. Every prompt is marked from the run's stored positions, and those are
+# re-derived from the decoded tokens and compared, for every item of the run. Each recount is compared with the verdict
+# file the predictions cite (predictions/2026-10-26_dan.md, Q45.10 / Q45.12 / Q45.13).
+QPM_MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
+SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse"}
+X45M_RUNS = {"qwen3.5-9b": "results/x0_necessity/qwen35_9b_x45m_fresh",
+             "qwen3.6-27b": "results/x0_necessity/x45m_fresh_27b",
+             "muse-glimmer-30b": "results/x0_necessity/muse30b_x45m_fresh"}  # fmt: skip
+X45M_REF = "results/x0_necessity/x45m-20261026T230628Z/x45m.json"
+X45M_GROUPS = ("locker-before", "locker-after", "all")
+X45M_LABEL = {"none": "unedited", **X0_ARMS}  # stored arm -> the main test's label, so gap() recounts 45m as test 1
+X45Q_RUNS = {"qwen3.5-9b": "results/x45b_binding/qwen35_9b_x45q", "qwen3.6-27b": "results/x45b_binding/x45q_27b",
+             "muse-glimmer-30b": "results/x45b_binding/muse30b_x45q"}  # fmt: skip
+X45Q_REF = "results/x45b_binding/x45q-20261027T005345Z/x45q.json"
+X45Q_LINK_REF = "results/x45b_binding/x45q-link-20261027T005346Z/link.json"
+X45Q_ARMS = ("none", "a", "b_half", "b_quarter", "c", "d", "c_nojpp", "c_norand", "S")
+X45Q_RULE_ARMS = ("none", "a", "b_half", "b_quarter", "c", "d", "S")  # x45q.json's; the link arms are in link.json
+X45Q_LINK_ARMS = ("none", "c", "c_nojpp", "c_norand", "S")
+X45Q_WHAT = {"none": "O unedited", "a": "the bridge-word change, at L", "b_half": "the bridge-word change, at L/2",
+             "b_quarter": "the bridge-word change, at L/4", "c": "S copied into every locker-sentence token, at L",
+             "d": "S copied into every locker-sentence token, at L/2",
+             "c_nojpp": "c without each token's J++ part (k = 25, signed)",
+             "c_norand": "c without a random part of each token's J++ share", "S": "S read on S, unedited"}  # fmt: skip
+X45P_RUNS = {"qwen3.5-9b": "results/x45p/qwen35_9b_x45p", "qwen3.6-27b": "results/x45p/x45p_27b",
+             "muse-glimmer-30b": "results/x45p/muse30b_x45p"}  # fmt: skip
+X45P_REF = "results/x45p/x45p-20261027T012017Z/x45p.json"
+X45P_EXAMPLES = "results/x45p/x45p-20261027T012017Z/examples.md"
+X45P_ARMS = ("none", "whole", "a1", "a2", "a3", "a4", "o2")
+X45P_WHAT = {"none": "O unedited", "whole": "the whole change at the bridge word",
+             "a1": "(1) base edit: the whole change minus its J++ part, at the bridge word",
+             "a2": "(2) base edit + the new item's token(s) without their own J++ part",
+             "a3": "(3) base edit + the same token(s) without a random part of the same share",
+             "a4": "(4) base edit + the control item's token(s) without their own J++ part",
+             "o2": "(2)'s item edit alone, no base edit"}  # fmt: skip
+LOCKER_TEXT = re.compile(r"The locker of (?:the )?(.+?) is (.+?)\.")
+
+
+def close(x: float, y: float) -> bool:
+    return (math.isnan(x) and math.isnan(y)) or abs(x - y) <= FLOAT_TOL
+
+
+def close_all(xs: list[float], ys: list[float]) -> bool:
+    return len(xs) == len(ys) and all(close(float(x), float(y)) for x, y in zip(xs, ys, strict=True))
+
+
+def ci_or_none(v: list[float]) -> str:
+    return "undefined (the whole change switches none)" if math.isnan(v[0]) else ci(v[0], (v[1], v[2]))
+
+
+def kn_ci(k: int, n: int, lo_hi: tuple[float, float] | list[float]) -> str:
+    return f"{k} of {n}, {ci(k / n, (lo_hi[0], lo_hi[1]))}"
+
+
+def marked_prompt(ids: list[int], model: str, marks: list[tuple[int, int, str]]) -> list[str]:
+    """The prompt decoded token by token (exactly the full decode), ⟦label:…⟧ around each token run [start, end) in
+    marks (as the 45p verify pack marks its examples), ␣ the space token the read appends. A run's leading whitespace
+    stays outside its mark; runs must not overlap."""
+    parts = [C.piece(model, t) for t in ids]
+    assert "".join(parts) == C.tokenizer(model).decode(ids, skip_special_tokens=False), "per-token decode differs"
+    last = -1
+    for i, j, label in sorted(marks):
+        assert last < i < j, f"marks overlap or are empty at token {i}"
+        core = parts[i].lstrip()
+        parts[i] = parts[i][: len(parts[i]) - len(core)] + f"⟦{label}:" + core
+        parts[j - 1] += "⟧"
+        last = j - 1
+    return ["```text", "".join(parts) + SPACE, "```", ""]
+
+
+def token_spans(ids: list[int], model: str) -> tuple[str, list[tuple[int, int]]]:
+    """The prompt decoded token by token and each token's [start, end) characters in it."""
+    parts = [C.piece(model, t) for t in ids]
+    spans, at = [], 0
+    for p in parts:
+        spans.append((at, at + len(p)))
+        at += len(p)
+    return "".join(parts), spans
+
+
+def over(spans: list[tuple[int, int]], a: int, b: int) -> list[int]:
+    """The tokens whose (non-empty) characters overlap [a, b)."""
+    return [i for i, (x, y) in enumerate(spans) if y > x and x < b and y > a]
+
+
+def char_marks(spans: list[tuple[int, int]], positions: list[int]) -> list[list[int]]:
+    """Each run of consecutive positions as the [start, end) characters it covers (the runs' stored 'marks')."""
+    return [[spans[i][0], spans[j - 1][1]] for i, j in runs_of(positions)]
+
+
+def bridge_bad(case: dict, model: str, bridge: str, new: str, last_marked: int) -> list[str]:
+    """What disagrees with the stored bridge position: per reader, the tokens where O and S differ must be exactly
+    [pos]; the token decodes to the bridge in O and to the new item in S; the recall's prompt equals the lookup's up to
+    the last marked token (so the same positions are patched in both)."""
+    bad, pos = [], case["pos"]
+    for w in READERS:
+        o, s = case["readers"][w]["ids"]["org"], case["readers"][w]["ids"]["alt"]
+        diff = [i for i, (x, y) in enumerate(zip(o, s, strict=True)) if x != y] if len(o) == len(s) else None
+        if diff != [pos]:
+            bad.append(
+                f"{NAME[w]}: O and S differ at {diff if diff is not None else 'different lengths'}, stored pos {pos}"
+            )
+    o, s = case["readers"]["PP"]["ids"]["org"], case["readers"]["PP"]["ids"]["alt"]
+    if (C.piece(model, o[pos]).strip(), C.piece(model, s[pos]).strip()) != (bridge, new):
+        bad.append(f"token {pos} decodes {C.piece(model, o[pos])!r} / {C.piece(model, s[pos])!r}, not {bridge} / {new}")
+    a, b = case["readers"]["PP"]["ids"]["org"], case["readers"]["PM"]["ids"]["org"]
+    if a[: last_marked + 1] != b[: last_marked + 1]:
+        bad.append(f"the recall's prompt differs from the lookup's before token {last_marked}")
+    return bad
+
+
+def found_text(case: dict, model: str) -> tuple[str, list[tuple[int, int]], list[str]]:
+    """The lookup's O decoded with each token's characters, and whether the stored rendered text is that decode."""
+    text, spans = token_spans(case["readers"]["PP"]["ids"]["org"], model)
+    stored = case["readers"]["PP"].get("text", {}).get("org")
+    return text, spans, [] if stored is None or stored == text else ["the stored text is not the exact decode"]
+
+
+def stored_rows(pool: list[dict], arms: tuple[str, ...]) -> tuple[int, list[str]]:
+    """How many (item, reader, arm) answers are stored, and which are not."""
+    missing = [f"{it['scene']} {NAME[w]} {a}" for it in pool for w in READERS for a in arms if it["rows"][w][a] is None]
+    return len(pool) * len(READERS) * len(arms) - len(missing), missing
+
+
+def rows_note(pool: list[dict], arms: tuple[str, ...]) -> str:
+    have, missing = stored_rows(pool, arms)
+    return (f"Stored answers: all {have} (item, reader, arm) rows are in outcomes.jsonl with a top token; none is "
+            "recomputed." if not missing else
+            f"Stored answers: {have} rows stored; NOT stored (shown as such on the cards): {', '.join(missing)}.")  # fmt: skip
+
+
+def positions_check(pool: list[dict], what: str) -> tuple[dict, str]:
+    """The items whose marked (stored) positions agree with the ones re-derived from the decoded tokens."""
+    ok = sum(not it["bad"] for it in pool)
+    bad = [f"{it['scene']}: {'; '.join(it['bad'])}" for it in pool if it["bad"]]
+    note = f"Positions ({what}): agree on {ok} of {len(pool)} items." + (" Disagree: " + " · ".join(bad) if bad else "")
+    got = check45("positions: marked = re-derived from the decoded tokens", f"{ok} of {len(pool)} items agree",
+                  f"{len(pool)} items' stored positions", ok == len(pool), head=True)  # fmt: skip
+    return {**got, "src": f"{pool[0]['run']}/cases.jsonl"}, note
+
+
+def answer_cell(model: str, r: dict | None) -> str:
+    return "not stored" if r is None else f"`{C.piece(model, r['top'])!r}`"
+
+
+def expected(case: dict, model: str) -> str:
+    return " ".join(f"{NAME[w].capitalize()}: {rd['question']} O's answer {rd['answer']} (token "
+                    f"`{C.piece(model, rd['tok_A'])!r}`), S's answer {rd['cf_answer']} (token "
+                    f"`{C.piece(model, rd['tok_b'])!r}`)." for w, rd in ((w, case["readers"][w]) for w in READERS))  # fmt: skip
+
+
+def shared_tail(case: dict, model: str) -> list[str]:
+    """The recall's O prompt after the tokens it shares with the lookup's."""
+    a, b = case["readers"]["PP"]["ids"]["org"], case["readers"]["PM"]["ids"]["org"]
+    i = next(i for i, (x, y) in enumerate(zip(a, b, strict=False)) if x != y)
+    return [f"O, recall: the same first {i} tokens (every mark above included), then:", "", "```text",
+            C.tokenizer(model).decode(b[i:], skip_special_tokens=False) + SPACE, "```", ""]  # fmt: skip
+
+
+def positions_line(it: dict, found: str) -> str:
+    verdict = "**agree**" if not it["bad"] else "**DISAGREE**: " + "; ".join(it["bad"])
+    return f"Positions, stored vs re-derived from the decoded tokens: {found} {verdict}."
+
+
+def s_line(case: dict, model: str) -> str:
+    return (f"S (both readers' prompts): O with these tokens changed (index: O → S): {token_diffs(case, model)}; every "
+            "other token the same.")  # fmt: skip
+
+
+# 45m: the clean one-pick design (x0_necessity --alt fresh): only the bridge token differs between O and S
+def group_45m(case: dict) -> str:
+    """locker-before / locker-after / mixed: the bridge's and the new item's locker sentences vs the asked pick
+    (x0_strata's features, as 45m groups its scenes)."""
+    f = ST.features(case)
+    o, a = f["org locker vs asked pick"], f["alt locker vs asked pick"]
+    return "locker-before" if o == a == "before" else "locker-after" if o == a == "after" else "mixed"
+
+
+def x45m_pool(model: str) -> list[dict]:
+    """45m's scored scenes: the chat cases with outcomes at the run's layer, one item per scene with both readers' rows
+    (none, whole, and J++ k = 25 signed's no_part / no_rand) under the main test's labels."""
+    run = X45M_RUNS[model]
+    layer = I.read_json(f"{run}/manifest.json")["predicted"]
+    cases = {c["scene"]: c for c in I.read_jsonl(f"{run}/cases.jsonl") if c["rendering"] == "chat"}
+    rows: dict[tuple[str, str, str], dict] = {}
+    for r in I.read_jsonl(f"{run}/outcomes.jsonl"):
+        if r["rendering"] != "chat" or r["layer"] != layer or r["arm"] not in X45M_LABEL:
+            continue
+        if r["arm"] in ("no_part", "no_rand") and (r["dict"], r["k"], r["omp"]) != X.MAIN:
+            continue
+        key = (r["scene"], r["reader"], X45M_LABEL[r["arm"]])
+        assert key not in rows, key
+        rows[key] = r
+    out = []
+    for s in sorted({s for s, _, lab in rows if lab == "whole"}):
+        c = cases[s]
+        out.append({"scene": s, "id": s, "model": model, "run": run, "layer": layer, "case": c, "group": group_45m(c),
+                    "bridge": c["bridge"], "new": c["cf_bridge"], "bad": bridge_bad(c, model, c["bridge"],
+                                                                                    c["cf_bridge"], c["pos"]),
+                    "rows": {w: {lab: rows.get((s, w, lab)) for lab in X45M_LABEL.values()} for w in READERS}})  # fmt: skip
+    return out
+
+
+def x45m_number(model: str, pool: list[dict]) -> Addition:
+    ref = next(m for m in I.read_json(X45M_REF)["models"] if m["target"] == model)
+    assert ref["run"] == Path(X45M_RUNS[model]).name, ref["run"]
+    labs = list(X45M_LABEL.values())
+    assert not stored_rows(pool, tuple(labs))[1], "45m: a stored row is missing; the recount needs every arm"
+    table = [["scenes", "n", *(f"{NAME[w]} switched: whole / without J++ / without its random part" for w in READERS),
+              *(f"{NAME[w]} extra loss [CI]" for w in READERS), "gap [CI]", "x45m.json gap", "matches"]]  # fmt: skip
+    checks = []
+    for g in X45M_GROUPS:
+        mine = pool if g == "all" else [it for it in pool if it["group"] == g]
+        cell = ref["cells"][g]
+        with warnings.catch_warnings():  # an extra loss is nan where the whole change switches none (all-nan draws)
+            warnings.simplefilter("ignore", RuntimeWarning)
+            res = gap(mine)
+        n, k = res["n"], res["k"]
+        ok_k = n == cell["n"] and all(
+            k[(w, "whole")] == cell[NAME[w]]["switched_whole"]
+            and all(k[(w, a)] == round(cell[NAME[w]][f"S_{a}"][0] * n) for a in ("no_part", "no_rand"))
+            for w in READERS)  # fmt: skip
+        ex = {w: [res["ex"][w], *res["ex_ci"][w]] for w in READERS}
+        gp = [res["gap"], *res["gap_ci"]]
+        ok_ex = {w: close_all(ex[w], cell[NAME[w]]["excess"]) for w in READERS}
+        ok_gap = close_all(gp, cell["gap"])
+        table.append([g, str(n), *(" / ".join(str(k[(w, a)]) for a in X0_ARMS) for w in READERS),
+                      *(ci_or_none(ex[w]) for w in READERS), ci_or_none(gp), ci_or_none(cell["gap"]),
+                      yes(ok_k and all(ok_ex.values()) and ok_gap)])  # fmt: skip
+        checks.append(check45(f"{g}: n and switched counts (both readers, three arms)", f"n {n}",
+                              f"n {cell['n']}, switched_whole and S_no_part / S_no_rand × n", ok_k))  # fmt: skip
+        for w in READERS:
+            checks.append(check45(f"{g}: {NAME[w]}'s extra loss", ci_or_none(ex[w]), ci_or_none(cell[NAME[w]]["excess"]),
+                                  ok_ex[w], head=g == "locker-before" and w == "PP"))  # fmt: skip
+        checks.append(check45(f"{g}: gap", ci_or_none(gp), ci_or_none(cell["gap"]), ok_gap, head=g == "locker-before"))
+    pos_check, pos_note = positions_check(pool, "the marked bridge token is the only token where O and S differ, for "
+                                                "both readers, and decodes to the bridge in O and to the new item in S")  # fmt: skip
+    checks.append(pos_check)
+    rows = [(it, w, it["rows"][w][lab]) for it in pool for w in READERS for lab in labs]
+    role = sum(role_of(r["top"], it["case"]["readers"][w]) == r["role"] for it, w, r in rows)
+    sw = sum(int(r["switched"]) == int(r["role"] == "b") for _, _, r in rows)
+    groups = {g: sum(it["group"] == g for it in pool) for g in ("locker-before", "locker-after", "mixed")}
+    notes = ["Extra loss per reader = (1 − k_no_part / k_whole) − (1 − k_no_rand / k_whole) = (k_no_rand − k_no_part) "
+             "/ k_whole (X0's Jdep − Rdep); gap = recall's − lookup's. CI: cluster bootstrap over the bridge item, 10,000 "
+             "resamples, seed 0, both readers on the same draws (X.resampled_rates, as the run's verdict).",
+             f"Groups (x0_strata's features, as scripts/x45m.py): locker-before {groups['locker-before']}, locker-after "
+             f"{groups['locker-after']}, mixed {groups['mixed']} (mixed only in 'all'). Rule (fixed in advance): in "
+             "locker-before scenes the gap at least 0.3 and the lookup's extra loss at most 0.10, on at least 2 of 3 "
+             "models.",
+             f"Cross-checks over all {len(rows)} rows (both readers, {len(labs)} arms): the role re-derived from the "
+             f"decoded top token (S's answer's token = b, O's = A) equals the stored role on {role}; switched equals "
+             f"(role = b) on {sw}.", rows_note(pool, tuple(labs)), pos_note]  # fmt: skip
+    short = SHORT[model]
+    return Addition(f"45m · {short}", f"45m on the {short}: the clean one-pick design (Q45.10)",
+                    "One locker item that nobody picks is added to both prompts and S's asked pick changes from the "
+                    "bridge to it, so only the bridge token differs between O and S. The change (h_S − h_O at the bridge "
+                    "word at the layer fixed in advance) whole, without its J++ part (k = 25, signed), and without a "
+                    "random part of the same share; both readers. The rule reads the locker-before scenes.",
+                    model, X45M_RUNS[model], X45M_REF,
+                    f"the {len(pool)} scenes with outcomes at layer {pool[0]['layer']} (the run's eligible scenes)",
+                    table, notes, checks, pool, card_45m)  # fmt: skip
+
+
+def card_45m(it: dict) -> list[str]:
+    c, m = it["case"], it["model"]
+    f = ST.features(c)
+    rows = [["reader", "arm", "top token (decoded)", "stored role", "role re-derived from the top token", "switched",
+             "p(O's answer)", "p(S's answer)"]]  # fmt: skip
+    for w in READERS:
+        for lab in X45M_LABEL.values():
+            r = it["rows"][w][lab]
+            name = "before the change" if lab == "unedited" else lab
+            rows.append([NAME[w], name, "not stored", "–", "–", "–", "–", "–"] if r is None else
+                        [NAME[w], name, answer_cell(m, r), r["role"], role_of(r["top"], c["readers"][w]),
+                         str(r["switched"]), f"{r['p_org']:.3f}", f"{r['p_alt']:.3f}"])  # fmt: skip
+    pos = c["pos"]
+    diff = {w: [i for i, (x, y) in enumerate(zip(c["readers"][w]["ids"]["org"], c["readers"][w]["ids"]["alt"],
+                                                 strict=False)) if x != y] for w in READERS}  # fmt: skip
+    return [f"**{it['group']}**: the bridge's locker sentence comes {f['org locker vs asked pick']} the asked pick, the "
+            f"new item's {f['alt locker vs asked pick']}. Added locker sentence, in O and S: “{c['fresh']['sentence']}” "
+            f"(the new item {c['fresh']['item']}: nobody picks it in O; in S the asked person picks it).", "",
+            f"O, lookup ({LABEL[m]}; the model reads this; ⟦bridge:…⟧ = token {pos}, where the change is added at "
+            f"layer {it['layer']}):", "", *marked_prompt(c["readers"]["PP"]["ids"]["org"], m, [(pos, pos + 1, "bridge")]),
+            *shared_tail(c, m), s_line(c, m), "",
+            positions_line(it, f"bridge: stored pos {pos}; the tokens where O and S differ: lookup {diff['PP']}, "
+                               f"recall {diff['PM']}."), "",
+            f"Expected: {expected(c, m)}", "", *md_table(rows)]  # fmt: skip
+
+
+# 45q: on 45m's clean locker-after scenes, the bridge-word change vs S copied into the locker sentences (x45b_binding)
+def lockers_found(case: dict, model: str) -> tuple[list[list[int]], list[str]]:
+    """The locker sentences' tokens re-derived from the lookup's decoded O ('The locker of [the] <item> is <n>.' in the
+    text, the tokens overlapping each), and what disagrees with the stored ones: the sentences, their positions, the
+    patched and source positions, the character marks; and the bridge's stored position and mark."""
+    text, spans, bad = found_text(case, model)
+    found_m = list(LOCKER_TEXT.finditer(text))
+    found = [over(spans, x.start(), x.end()) for x in found_m]
+    if [x.group(0) for x in found_m] != case["lockers"]["sentences"]:
+        bad.append(f"locker sentences {[x.group(0) for x in found_m]} ≠ stored {case['lockers']['sentences']}")
+    if found != case["lockers"]["org"]:
+        bad.append(f"locker tokens {found} ≠ stored {case['lockers']['org']}")
+    if [p for f in found for p in f] != case["patched"] or case["source"] != case["patched"]:
+        bad.append("the stored patched / source positions are not the locker tokens")
+    if [x for f in found for x in char_marks(spans, f)] != case["marks"]["lockers"]:
+        bad.append("the stored locker marks are not the locker tokens' characters")
+    if [list(spans[case["pos"]])] != case["marks"]["bridge"]:
+        bad.append("the stored bridge mark is not the bridge token's characters")
+    if any(p == case["pos"] for f in found for p in f):
+        bad.append("the bridge token is inside a locker sentence")
+    last = max([case["pos"], *(p for f in found for p in f)])
+    return found, bad + bridge_bad(case, model, case["entity"], case["cf_bridge"], last)
+
+
+def x45q_pool(model: str) -> list[dict]:
+    """Every item of the run (cases.jsonl: 45m's locker-after scenes), with both readers' rows for the arms shown."""
+    run = X45Q_RUNS[model]
+    rows: dict[tuple[str, str, str], dict] = {}
+    for r in I.read_jsonl(f"{run}/outcomes.jsonl"):
+        if r["arm"] in X45Q_ARMS:
+            key = (r["scene"], r["reader"], r["arm"])
+            assert key not in rows, key
+            rows[key] = r
+    out = []
+    for c in sorted(I.read_jsonl(f"{run}/cases.jsonl"), key=lambda c: c["scene"]):
+        found, bad = lockers_found(c, model)
+        out.append({"scene": c["scene"], "id": c["scene"], "model": model, "run": run, "case": c,
+                    "bridge": c["entity"], "new": c["cf_bridge"], "found": found, "bad": bad,
+                    "rows": {w: {a: rows.get((c["scene"], w, a)) for a in X45Q_ARMS} for w in READERS}})  # fmt: skip
+    return out
+
+
+def x45q_number(model: str, pool: list[dict]) -> Addition:
+    run = X45Q_RUNS[model]
+    name = Path(run).name
+    ref = next(m for m in I.read_json(X45Q_REF)["models"] if m["run"] == name)
+    link = I.read_json(X45Q_LINK_REF)["runs"][name]["readers"]
+    man = I.read_json(f"{run}/manifest.json")
+    layers = {**man["arm_layers"], "c_nojpp": man["layer"], "c_norand": man["layer"]}
+    assert not stored_rows(pool, X45Q_ARMS)[1], "45q: a stored row is missing; the recount needs every arm"
+    n = len(pool)
+    ents = [it["rows"]["PP"]["none"]["entity"] for it in pool]
+    sw = {(w, a): [int(it["rows"][w][a]["switched"]) for it in pool] for w in READERS for a in X45Q_ARMS}
+    for w in READERS:
+        for a in ("c", "d"):
+            sw[(w, f"{a}&S")] = [x & y for x, y in zip(sw[(w, a)], sw[(w, "S")], strict=True)]
+    k = {key: sum(v) for key, v in sw.items()}
+    boot = X.resampled_rates({f"{w}|{a}": v for (w, a), v in sw.items()}, ents)
+    rate = {(w, a): [k[(w, a)] / n, *X.interval(boot[f"{w}|{a}"])] for w in READERS for a in X45Q_ARMS}
+    of_s = {}
+    for w in READERS:
+        for a in ("c", "d"):
+            with np.errstate(divide="ignore", invalid="ignore"):
+                ratio = boot[f"{w}|{a}&S"] / np.where(boot[f"{w}|S"] > 0, boot[f"{w}|S"], np.nan)
+            of_s[(w, a)] = [k[(w, f"{a}&S")] / k[(w, "S")], *X.interval(ratio)]
+    file = ref["readers"]
+    table = [["arm", "what", "layer", "lookup: switched, share [CI]", "recall: switched, share [CI]", "file (lookup)",
+              "matches"]]  # fmt: skip
+    checks = [check45("n (items)", str(n), str(file["PP"]["n"]), n == file["PP"]["n"] == file["PM"]["n"])]
+    for a in X45Q_ARMS:
+        ok, src = {}, {}
+        for w in READERS:
+            ok[w], src[w] = True, []
+            if a in X45Q_RULE_ARMS:
+                ok[w] &= k[(w, a)] == file[w]["hits"][a] and close_all(rate[(w, a)], file[w]["rate"][a])
+                src[w].append(f"x45q.json {kn_ci(file[w]['hits'][a], n, file[w]['rate'][a][1:])}")
+            if a in X45Q_LINK_ARMS:
+                ok[w] &= close_all(rate[(w, a)], link[w][a])
+                src[w].append(f"link.json {ci(link[w][a][0], (link[w][a][1], link[w][a][2]))}")
+        texts = {w: kn_ci(k[(w, a)], n, rate[(w, a)][1:]) for w in READERS}
+        table.append([a, X45Q_WHAT[a], str(layers.get(a, "–")), texts["PP"], texts["PM"], "; ".join(src["PP"]),
+                      yes(all(ok.values()))])  # fmt: skip
+        ref = X45Q_REF if a in X45Q_RULE_ARMS else X45Q_LINK_REF
+        checks += [{**check45(f"{a}: {NAME[w]} switched", texts[w], "; ".join(src[w]), ok[w],
+                              head=a == "a" and w == "PP"), "src": ref} for w in READERS]  # fmt: skip
+    for a in ("c", "d"):
+        ok = {w: k[(w, f"{a}&S")] == file[w]["hits_of_S"][a] and k[(w, "S")] == file[w]["S_switched"]
+              and close_all(of_s[(w, a)], file[w]["of_S"][a]) for w in READERS}  # fmt: skip
+        texts = {w: kn_ci(k[(w, f"{a}&S")], k[(w, "S")], of_s[(w, a)][1:]) for w in READERS}
+        src = {w: f"x45q.json {kn_ci(file[w]['hits_of_S'][a], file[w]['S_switched'], file[w]['of_S'][a][1:])}"
+               for w in READERS}  # fmt: skip
+        table.append([f"{a} among S's switches", "items both S and the arm switch / items S switches",
+                      str(layers[a]), texts["PP"], texts["PM"], src["PP"], yes(all(ok.values()))])  # fmt: skip
+        checks += [{**check45(f"{a} among S's switches: {NAME[w]}", texts[w], src[w], ok[w],
+                              head=a == "c" and w == "PP"), "src": X45Q_REF} for w in READERS]  # fmt: skip
+    pos_check, pos_note = positions_check(pool, "the marked bridge token is the only token where O and S differ, for "
+                                                "both readers; the marked locker tokens are those of every 'The locker "
+                                                "of … is ….' sentence in the decoded prompt, equal to the stored "
+                                                "lockers, patched and source positions and character marks")  # fmt: skip
+    checks.append(pos_check)
+    rows = [(it, w, it["rows"][w][a]) for it in pool for w in READERS for a in X45Q_ARMS]
+    text = sum(C.piece(model, r["top"]) == r["top_text"] for _, _, r in rows)
+    role = sum(role_of(r["top"], it["case"]["readers"][w]) == r["role"] for it, w, r in rows)
+    swr = sum(int(r["switched"]) == int(r["role"] == "b") for _, _, r in rows)
+    notes = ["Lookup decides, recall descriptive. Switch = the top token is S's answer's token. Rule (45b's, fixed in "
+             "advance): (c) or (d) switches at least half of the lookups S switches while (a) stays at or below 0.25, "
+             "on at least 2 of 3 models. The link arms (c_nojpp, c_norand) are reported beside it (link.json), not in "
+             "it. CI: cluster bootstrap over the bridge item, 10,000 resamples, seed 0 (X.resampled_rates; c / d among "
+             "S's switches = the ratio of the resampled shares, as the run's verdict).",
+             f"Cross-checks over all {len(rows)} rows (both readers, {len(X45Q_ARMS)} arms): the decoded top token "
+             f"equals the stored top_text on {text}; the role re-derived from the top token equals the stored role on "
+             f"{role}; switched equals (role = b) on {swr}.", rows_note(pool, X45Q_ARMS), pos_note]  # fmt: skip
+    short = SHORT[model]
+    return Addition(f"45q · {short}", f"45q on the {short}: the bridge word vs the locker sentences, clean scenes "
+                    "(Q45.12)", "On 45m's scenes whose bridge's locker sentence comes after the asked pick: the "
+                    "bridge-word change at L, L/2, L/4 (a, b_half, b_quarter) against S's states copied into every "
+                    "locker-sentence token at L or L/2 (c, d), and the copy without its J++ part or without a random part "
+                    "of the same share (c_nojpp, c_norand, at L); S read on S.", model, run,
+                    f"{X45Q_REF} and {X45Q_LINK_REF}", f"all {n} items of the run (cases.jsonl)", table, notes, checks,
+                    pool, card_45q)  # fmt: skip
+
+
+def card_45q(it: dict) -> list[str]:
+    c, m = it["case"], it["model"]
+    f, pos = c["features"], c["pos"]
+    marks = [(pos, pos + 1, "bridge"), *((i, j, "locker") for sent in c["lockers"]["org"] for i, j in runs_of(sent))]
+    rows = [["reader", "arm", "what", "layer (stored)", "top token (decoded)", "stored top_text", "stored role",
+             "switched"]]  # fmt: skip
+    for w in READERS:
+        for a in X45Q_ARMS:
+            r = it["rows"][w][a]
+            rows.append([NAME[w], a, X45Q_WHAT[a], "not stored", "not stored", "–", "–", "–"] if r is None else
+                        [NAME[w], a, X45Q_WHAT[a], "–" if r["layer"] is None else str(r["layer"]), answer_cell(m, r),
+                         f"`{r['top_text']!r}`", r["role"], str(r["switched"])])  # fmt: skip
+    found = "; ".join(
+        f"{s} → tokens {p[0]}–{p[-1]}" for s, p in zip(c["lockers"]["sentences"], it["found"], strict=False)
+    )
+    return [f"The bridge's locker sentence comes {f['org locker vs asked pick']} the asked pick, the new item's "
+            f"{f['alt locker vs asked pick']}. Added locker sentence, in O and S: “{c['fresh']['sentence']}”.", "",
+            f"O, lookup ({LABEL[m]}; the model reads this; ⟦bridge:…⟧ = token {pos}, where a, b_half and b_quarter add "
+            f"the change; ⟦locker:…⟧ = the {len(c['lockers']['org'])} locker sentences, {len(c['patched'])} tokens, "
+            "where c, d, c_nojpp and c_norand copy S's states in):", "", *marked_prompt(c["readers"]["PP"]["ids"]["org"], m, marks),
+            *shared_tail(c, m), s_line(c, m), "",
+            positions_line(it, f"bridge: stored pos {pos}, the only token where O and S differ; locker sentences found "
+                               f"in the decoded prompt: {found}; stored: the same sentences at tokens "
+                               f"{', '.join(f'{p[0]}–{p[-1]}' for p in c['lockers']['org'])}."), "",
+            f"Expected: {expected(c, m)}", "", *md_table(rows)]  # fmt: skip
+
+
+# 45p: with the new item's locker first, the base edit at the bridge plus an edit at the new item's earlier mention
+def item_tokens(spans: list[tuple[int, int]], m: re.Match) -> list[int]:
+    return over(spans, *m.span(1))
+
+
+def items_found(case: dict, model: str) -> tuple[dict[str, list[int]], list[str]]:
+    """The new item's and the control item's tokens re-derived from the lookup's decoded O (the item's name inside its
+    'The locker of [the] <item> is <n>.' sentence; control: the first such sentence whose item is neither the bridge
+    nor the new item), and what disagrees with the stored positions, items and character marks."""
+    text, spans, bad = found_text(case, model)
+    lockers = list(LOCKER_TEXT.finditer(text))
+    mine = [x for x in lockers if x.group(1) == case["cf_bridge"]]
+    ctl = next((x for x in lockers if x.group(1) not in (case["entity"], case["cf_bridge"])), None)
+    found = {"new": item_tokens(spans, mine[0]) if len(mine) == 1 else [],
+             "control": item_tokens(spans, ctl) if ctl else []}  # fmt: skip
+    if len(mine) != 1:
+        bad.append(f"the new item has {len(mine)} locker sentences in the decoded prompt")
+    if ctl is None or ctl.group(1) != case["control"]["item"]:
+        bad.append(f"control item {None if ctl is None else ctl.group(1)!r} ≠ stored {case['control']['item']!r}")
+    for part in ("new", "control"):
+        p = found[part]
+        if p != case[part]["positions"]:
+            bad.append(f"{part} tokens {p} ≠ stored {case[part]['positions']}")
+        if "".join(C.piece(model, case["readers"]["PP"]["ids"]["org"][i]) for i in p).strip() != case[part]["item"]:
+            bad.append(f"the {part} tokens do not decode to exactly {case[part]['item']!r}")
+        if char_marks(spans, p) != case["marks"][part]:
+            bad.append(f"the stored {part} mark is not the {part} tokens' characters")
+    if [list(spans[case["pos"]])] != case["marks"]["bridge"]:
+        bad.append("the stored bridge mark is not the bridge token's characters")
+    if not found["new"] or max(found["new"]) >= case["pos"]:
+        bad.append("the new item's tokens are not before the bridge word")
+    if len({case["pos"], *found["new"], *found["control"]}) != 1 + len(found["new"]) + len(found["control"]):
+        bad.append("the marked positions overlap")
+    last = max([case["pos"], *found["new"], *found["control"]])
+    return found, bad + bridge_bad(case, model, case["entity"], case["cf_bridge"], last)
+
+
+def marks_45p(case: dict) -> list[tuple[int, int, str]]:
+    return [(case["pos"], case["pos"] + 1, "bridge"), *((i, j, "new") for i, j in runs_of(case["new"]["positions"])),
+            *((i, j, "control") for i, j in runs_of(case["control"]["positions"]))]  # fmt: skip
+
+
+def verify_pack_prompts(run: str) -> dict[tuple[str, str], str]:
+    """The run's marked O prompts in the 45p verify pack (X45P_EXAMPLES, written by scripts/x45p.py from the stored
+    character marks): (scene, reader) -> the text between its fences."""
+    lines = (I.REPO / X45P_EXAMPLES).read_text().split("\n")
+    out: dict[tuple[str, str], str] = {}
+    section = scene = reader = ""
+    i = 0
+    while i < len(lines):
+        x = lines[i]
+        if x.startswith("## "):
+            section = x[3:].split(":")[0]
+        elif x.startswith("### "):
+            scene = x[4:].split(" ")[0]
+        elif x.startswith(("**lookup**", "**recall**")):
+            reader = "PP" if x.startswith("**lookup**") else "PM"
+        elif x == "```" and section == Path(run).name:
+            j = lines.index("```", i + 1)
+            out[(scene, reader)] = "\n".join(lines[i + 1 : j])
+            i = j
+        i += 1
+    return out
+
+
+def x45p_pool(model: str) -> list[dict]:
+    """Every item of the run (cases.jsonl: 45m's scenes whose new item's locker sentence comes before the asked pick),
+    with both readers' rows per arm."""
+    run = X45P_RUNS[model]
+    rows: dict[tuple[str, str, str], dict] = {}
+    for r in I.read_jsonl(f"{run}/outcomes.jsonl"):
+        key = (r["scene"], r["reader"], r["arm"])
+        assert key not in rows, key
+        rows[key] = r
+    out = []
+    for c in sorted(I.read_jsonl(f"{run}/cases.jsonl"), key=lambda c: c["scene"]):
+        found, bad = items_found(c, model)
+        out.append({"scene": c["scene"], "id": c["scene"], "model": model, "run": run, "case": c,
+                    "bridge": c["entity"], "new": c["cf_bridge"], "found": found, "bad": bad,
+                    "rows": {w: {a: rows.get((c["scene"], w, a)) for a in X45P_ARMS} for w in READERS}})  # fmt: skip
+    return out
+
+
+def x45p_number(model: str, pool: list[dict]) -> Addition:
+    run = X45P_RUNS[model]
+    ref = next(m for m in I.read_json(X45P_REF)["models"] if m["run"] == Path(run).name)
+    assert not stored_rows(pool, X45P_ARMS)[1], "45p: a stored row is missing; the recount needs every arm"
+    n = len(pool)
+    ents = [it["rows"]["PM"]["none"]["entity"] for it in pool]
+    sw = {(w, a): [int(it["rows"][w][a]["switched"]) for it in pool] for w in READERS for a in X45P_ARMS}
+    k = {key: sum(v) for key, v in sw.items()}
+    boot = X.resampled_rates({f"{w}|{a}": v for (w, a), v in sw.items()}, ents)
+    loss, diff = {}, {}
+    for w in READERS:
+        dep = {a: X.dependence(boot[f"{w}|a1"], boot[f"{w}|{a}"]) for a in ("a2", "a3", "a4")}
+        point = {a: 1 - k[(w, a)] / k[(w, "a1")] if k[(w, "a1")] else math.nan for a in dep}
+        loss[w] = {a: [point[a], *X.interval(dep[a])] for a in dep}
+        diff[w] = {f"2-{j}": [point["a2"] - point[f"a{j}"], *X.interval(dep["a2"] - dep[f"a{j}"])] for j in (3, 4)}
+    file = {w: ref["readers"][NAME[w]] for w in READERS}
+    table = [["arm", "what", "recall: switched (k of n)", "lookup: switched", "x45p.json (recall / lookup)", "matches"]]
+    checks = [check45("n (items)", str(n), str(file["PM"]["n"]), n == file["PM"]["n"] == file["PP"]["n"])]
+    for a in X45P_ARMS:
+        ok = all(k[(w, a)] == file[w]["hits"][a] for w in READERS)
+        table.append([a, X45P_WHAT[a], kn(k[("PM", a)], n), kn(k[("PP", a)], n),
+                      f"{file['PM']['hits'][a]} / {file['PP']['hits'][a]}", yes(ok)])  # fmt: skip
+        checks.append(check45(f"{a}: switched (recall / lookup)", f"{k[('PM', a)]} / {k[('PP', a)]}",
+                              f"{file['PM']['hits'][a]} / {file['PP']['hits'][a]}", ok, head=a == "a1"))  # fmt: skip
+    for a in ("a2", "a3", "a4"):
+        ok = all(close_all(loss[w][a], file[w]["loss"][a]) for w in READERS)
+        text = f"{ci_or_none(loss['PM'][a])}; {ci_or_none(loss['PP'][a])}"
+        src = f"{ci_or_none(file['PM']['loss'][a])}; {ci_or_none(file['PP']['loss'][a])}"
+        table.append([f"loss_{a[1]} = 1 − S_{a[1]} / S_1", "", ci_or_none(loss["PM"][a]), ci_or_none(loss["PP"][a]), src,
+                      yes(ok)])  # fmt: skip
+        checks.append(check45(f"loss_{a[1]} (recall; lookup)", text, src, ok))
+    for d, bar in (("2-3", 0.2), ("2-4", 0.15)):
+        ok = all(close_all(diff[w][d], file[w]["diff"][d]) for w in READERS)
+        what = f"loss_2 − loss_{d[-1]}"
+        table.append([what, f"the rule's bar: at least {bar} (recall)", ci_or_none(diff["PM"][d]),
+                      ci_or_none(diff["PP"][d]), f"{ci_or_none(file['PM']['diff'][d])}; {ci_or_none(file['PP']['diff'][d])}",
+                      yes(ok)])  # fmt: skip
+        checks.append(check45(f"recall: {what}", ci_or_none(diff["PM"][d]), ci_or_none(file["PM"]["diff"][d]),
+                              ok and close_all(diff["PP"][d], file["PP"]["diff"][d]), head=True))  # fmt: skip
+    both = {a: sum(all(it["rows"][w][a]["right"] for w in READERS) for it in pool) for a in ("none", "o2")}
+    ok = all(both[a] == ref["o_alone"][a]["both_right"] for a in both)
+    table.append(["o2 / none: both readers read O right", "top token = O's answer, both readers",
+                  f"o2 {both['o2']} of {n}; none {both['none']} of {n}", "",
+                  f"{ref['o_alone']['o2']['both_right']} / {ref['o_alone']['none']['both_right']}", yes(ok)])  # fmt: skip
+    checks.append(check45("both readers right: o2 / none", f"{both['o2']} / {both['none']}",
+                          f"{ref['o_alone']['o2']['both_right']} / {ref['o_alone']['none']['both_right']}", ok))  # fmt: skip
+    pos_check, pos_note = positions_check(pool, "the marked bridge token is the only token where O and S differ, for "
+                                                "both readers; the marked new and control tokens are exactly the item's "
+                                                "name inside its locker sentence in the decoded prompt (control: the "
+                                                "first locker sentence whose item is neither the bridge nor the new "
+                                                "item), equal to the stored positions and character marks; the new "
+                                                "item's tokens come before the bridge word")  # fmt: skip
+    checks.append(pos_check)
+    by_scene = {it["scene"]: it for it in pool}
+    shown = verify_pack_prompts(run)
+    same = sum(s in by_scene and txt == marked_prompt(by_scene[s]["case"]["readers"][w]["ids"]["org"], model,
+                                                     marks_45p(by_scene[s]["case"]))[1].replace(SPACE, " ")
+               for (s, w), txt in shown.items())  # fmt: skip
+    vp_scenes = {s for s, _ in shown}
+    drawn = vp_scenes == {it["scene"] for it in draw(pool)}
+    checks.append(check45("marked prompts (both readers) = the run's verify pack", f"{same} of {len(shown)} prompts",
+                          f"{X45P_EXAMPLES} ({len(vp_scenes)} items)", bool(shown) and same == len(shown)))  # fmt: skip
+    rows = [(it, w, it["rows"][w][a]) for it in pool for w in READERS for a in X45P_ARMS]
+    text = sum(C.piece(model, r["top"]) == r["top_text"] for _, _, r in rows)
+    role = sum(role_of(r["top"], it["case"]["readers"][w]) == r["role"] for it, w, r in rows)
+    swr = sum(int(r["switched"]) == int(r["role"] == "b") for _, _, r in rows)
+    right = sum(int(r["right"]) == int(r["top"] == it["case"]["readers"][w]["tok_A"]) for it, w, r in rows)
+    notes = ["The recall decides, the lookup beside it. loss_k = 1 − S_k / S_1 (S_k the switch rate under arm k, S_1 "
+             "the base edit's); rule (fixed in advance): loss_2 − loss_3 at least 0.2 and loss_2 − loss_4 at least "
+             "0.15 on the recall, a model with fewer than 30 base-edit recall switches not tested; at least 2 of 3 "
+             "models. CI: cluster bootstrap over the bridge item, 10,000 resamples, seed 0 (X.resampled_rates, paired "
+             "across arms, as the run's verdict).",
+             f"Cross-checks over all {len(rows)} rows (both readers, {len(X45P_ARMS)} arms): the decoded top token "
+             f"equals the stored top_text on {text}; the role re-derived from the top token equals the stored role on "
+             f"{role}; switched equals (role = b) on {swr}; right equals (top = O's answer's token) on {right}.",
+             rows_note(pool, X45P_ARMS), pos_note,
+             f"The marked prompts here (from the stored token positions) equal the run's verify pack ({X45P_EXAMPLES}, "
+             f"marked from the stored character spans) on {same} of {len(shown)} prompts: its {len(vp_scenes)} items, "
+             "both readers" + ("; they are the 10 items drawn here." if drawn else ".")]  # fmt: skip
+    short = SHORT[model]
+    return Addition(f"45p · {short}", f"45p on the {short}: the new item's earlier mention, its locker first (Q45.13)",
+                    "On 45m's scenes whose new item's locker sentence comes before the asked pick: (1) the base edit "
+                    "(the bridge-word change without its J++ part), then on top of it the new item's token(s) in its "
+                    "locker sentence without their own J++ part (2), without a random part of the same share (3), or "
+                    "the control item's token(s) without their J++ part (4); all at the layer fixed in advance, on O.",
+                    model, run, X45P_REF, f"all {n} items of the run (cases.jsonl)", table, notes, checks, pool,
+                    card_45p)  # fmt: skip
+
+
+def card_45p(it: dict) -> list[str]:
+    c, m = it["case"], it["model"]
+    pos, ctl = c["pos"], c["control"]
+    marks = marks_45p(c)
+    rows = [["reader", "arm", "what", "top token (decoded)", "stored top_text", "switched", "right (O's answer)"]]
+    for w in READERS:
+        for a in X45P_ARMS:
+            r = it["rows"][w][a]
+            rows.append([NAME[w], a, X45P_WHAT[a], "not stored", "–", "–", "–"] if r is None else
+                        [NAME[w], a, X45P_WHAT[a], answer_cell(m, r), f"`{r['top_text']!r}`", str(r["switched"]),
+                         str(r["right"])])  # fmt: skip
+    fd = it["found"]
+    return [f"New item {c['new']['item']}: its locker sentence “{c['new']['sentence']}” comes before the asked pick. "
+            f"Control item {ctl['item']} (“{ctl['sentence']}”, {ctl['vs_new']} the new item's, {ctl['vs_asked_pick']} "
+            "the asked pick).", "",
+            f"O, lookup ({LABEL[m]}; the model reads this; ⟦bridge:…⟧ = token {pos}, where the base edit (a1–a4) and "
+            "the whole change go; ⟦new:…⟧ = the new item's token(s), edited in a2, a3 and o2; ⟦control:…⟧ = the "
+            "control item's token(s), edited in a4):", "", *marked_prompt(c["readers"]["PP"]["ids"]["org"], m, marks),
+            *shared_tail(c, m), s_line(c, m), "",
+            positions_line(it, f"bridge: stored pos {pos}, the only token where O and S differ; new item found at "
+                               f"tokens {fd['new']} (stored {c['new']['positions']}); control at {fd['control']} "
+                               f"(stored {ctl['positions']})."), "",
+            f"Expected: {expected(c, m)}", "", *md_table(rows)]  # fmt: skip
+
+
+def additions_qpm() -> list[Addition]:
+    """45m, 45q and 45p, each on the 9B, the 27B and Muse."""
+    return [
+        *(x45m_number(m, x45m_pool(m)) for m in QPM_MODELS),
+        *(x45q_number(m, x45q_pool(m)) for m in QPM_MODELS),
+        *(x45p_number(m, x45p_pool(m)) for m in QPM_MODELS),
+    ]
+
+
 def additions() -> list[Addition]:
     return [x45a_number(x45a_pool()), *(x45b_number(m, x45b_pool(m)) for m in X45B_RUNS), x45d_number(x45d_pool())]
 
@@ -863,11 +1518,17 @@ def render_45(adds: list[Addition]) -> list[str]:
              f"itself. Then {N_SHOW_45} items per part drawn with `random.Random({SEED}).sample(items, {N_SHOW_45})` over "
              "the recount's items sorted by scene, decoded as above (⟦ ⟧ the token where the change is added, ␣ the space "
              "token the read appends) with each run's own model's tokenizer at its pinned revision.", ""]  # fmt: skip
+    return lines + parts_lines(adds, N_SHOW_45)
+
+
+def parts_lines(adds: list[Addition], n_show: int) -> list[str]:
+    """The parts' summary of headline checks, then per part its recount, checks and drawn items' cards."""
+    lines: list[str] = []
     summary = [["part", "number", "file", "file's number", "recount", "matches"]]
     for a in adds:
         for c in a.checks:
             if c["head"]:
-                summary.append([a.tag, c["what"], f"`{a.ref}`", c["file"], c["recount"], yes(c["match"])])
+                summary.append([a.tag, c["what"], f"`{c.get('src', a.ref)}`", c["file"], c["recount"], yes(c["match"])])
     lines += [*md_table(summary), ""]
     bad = [(a.tag, c) for a in adds for c in a.checks if not c["match"]]
     lines += ["Every other number checked below matches its file too." if not bad else
@@ -880,7 +1541,7 @@ def render_45(adds: list[Addition]) -> list[str]:
                   *md_table([["number", "recount", "file", "matches"]]
                             + [[c["what"], c["recount"], c["file"], yes(c["match"])] for c in a.checks]), "",
                   f"#### {len(a.sample)} random items", "",
-                  f"`random.Random({SEED}).sample(items, {N_SHOW_45})` over the {len(a.pool)} items sorted by "
+                  f"`random.Random({SEED}).sample(items, {n_show})` over the {len(a.pool)} items sorted by "
                   + ("base scene." if a.tag == "A" else "scene."), ""]  # fmt: skip
         for i, it in enumerate(a.sample, 1):
             c = it.get("case") or it["cases"]["V0"]
@@ -888,6 +1549,30 @@ def render_45(adds: list[Addition]) -> list[str]:
             head = f"##### {a.tag} {i} · {'base ' if a.tag == 'A' else ''}scene {it['scene']} · bridge {bridge}"
             lines += [head + f" (changed: {c['cf_bridge']})", "", *a.card(it), ""]
     return lines
+
+
+def render_qpm(adds: list[Addition]) -> list[str]:
+    lines = ["## 45m, 45q and 45p (UNVERIFIED)", "",
+             "Added for Dan's hand-check (27 Oct ~14:40). UNVERIFIED. Each test's rule counts the 9B, the 27B and Muse, "
+             f"so each model is its own part: 3 tests × 3 models, {N_SHOW} items each, drawn with "
+             f"`random.Random({SEED}).sample(items, {N_SHOW})` over the run's items sorted by scene (the six numbers' "
+             "draw). Each part loads its run's per-item files (cases.jsonl, outcomes.jsonl) itself; its recount is "
+             "compared with the verdict file that predictions/2026-10-26_dan.md cites (Q45.10, Q45.12, Q45.13): counts "
+             "exactly, shares, extra losses and their CIs to 1e-9. Prompts are decoded from the stored token ids with "
+             "each run's own model's tokenizer at its pinned revision, exactly as the model reads them (chat template "
+             "included; ␣ the space token the read appends, after which the answer token is read). In all three tests O "
+             "and S differ only at the bridge token, so S is given as that one token's change. Marks, as the 45p verify "
+             f"pack ({X45P_EXAMPLES}): ⟦bridge:…⟧ the bridge word; ⟦locker:…⟧ each locker sentence's tokens (45q); "
+             "⟦new:…⟧ the new item's token(s) in its locker sentence and ⟦control:…⟧ the control item's (45p); a marked "
+             "token's leading space stays outside its mark, and a mark closes after its last whole token (where a "
+             "sentence's final '.' shares a token with the newline, as Muse's '.\\n', the ⟧ starts the next line). The "
+             "marks are the run's stored positions (cases.jsonl); "
+             "each is re-derived from the decoded tokens (the tokens where O and S differ; the 'The locker of … is ….' "
+             "sentences and the items' names found in the decoded text) and compared, for every item of every run: the "
+             "result is on each card and counted in each part's checks. Each arm's answer is the run's stored top token "
+             "(outcomes.jsonl), decoded; nothing is recomputed, and an answer the files do not hold would show as "
+             "'not stored'.", ""]  # fmt: skip
+    return lines + parts_lines(adds, N_SHOW)
 
 
 # ------------------------------------------------------------------------------------------------------- the pack
@@ -923,11 +1608,13 @@ def commit() -> str:
 
     dirty = git("status", "--porcelain", "--", "scripts/handcheck_pack.py", "src/bridge_jspace/review",
                 "docs/review_views.yaml", X0_RUN, RT_RUN, X8_RUN, "figures/story/data.csv", X45A_RUN,
-                str(Path(X45A_TABLE).parent), *X45B_RUNS.values(), X45D_RUN)  # fmt: skip
+                str(Path(X45A_TABLE).parent), *X45B_RUNS.values(), X45D_RUN, *X45M_RUNS.values(),
+                *X45Q_RUNS.values(), *X45P_RUNS.values(), *(str(Path(p).parent) for p in (X45M_REF, X45Q_REF,
+                                                                                          X45Q_LINK_REF, X45P_REF)))  # fmt: skip
     return git("rev-parse", "--short", "HEAD") + (" (with uncommitted changes)" if dirty else "")
 
 
-def render(nums: list[Number], sha: str, adds: list[Addition] | tuple = ()) -> str:
+def render(nums: list[Number], sha: str, adds: list[Addition] | tuple = (), more: list[Addition] | tuple = ()) -> str:
     t = pins.TARGETS[MODEL]
     lines = ["# Hand-check pack: six Qwen3.5-9B headline numbers", "",
              f"Generated by `uv run python scripts/handcheck_pack.py` at commit {sha}; do not hand-edit (rerun the script). "
@@ -985,6 +1672,7 @@ def render(nums: list[Number], sha: str, adds: list[Addition] | tuple = ()) -> s
             head += f" (changed: {c['cf_bridge']})" if n.no != 5 else f" · write slot {it['x8']['j']} → {it['x8']['k']}"
             lines += [head, "", *n.card(it), ""]
     lines += render_45(list(adds)) if adds else []
+    lines += render_qpm(list(more)) if more else []
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -995,12 +1683,15 @@ def main() -> None:
     adds = additions()
     for a in adds:
         a.sample = draw(a.pool, N_SHOW_45)
-    OUT.write_text(render(nums, commit(), adds))
+    more = additions_qpm()
+    for a in more:
+        a.sample = draw(a.pool)
+    OUT.write_text(render(nums, commit(), adds, more))
     for n in nums:
         for h in n.headline():
             print(f"{n.no}. {h['key']}: recount {h['recount']} | data.csv {h['data']} | match {h['match']}")
         print(f"   all {len(n.checks)} keys of number {n.no} match: {all(c['match'] for c in n.checks)}")
-    for a in adds:
+    for a in (*adds, *more):
         for c in a.checks:
             if c["head"]:
                 print(f"{a.tag}. {c['what']}: recount {c['recount']} | file {c['file']} | match {c['match']}")
