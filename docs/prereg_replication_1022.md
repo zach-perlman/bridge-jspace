@@ -2081,3 +2081,24 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - Alias tables are per relation, built from the candidate lists plus standard forms (adjective and noun forms,
     "Mammalia"-style class names). 50 replies per model are hand-checked against the rule; any change to the tables
     after that is logged.
+
+#### Amendment 58 note 2 (Zach, 2026-10-27 22:40 UTC, before the run): filler tokens and repeats (Redwood's no-CoT tests)
+
+- **Erratum to note 1:** jsuite v2 items use the "chat" framing (tasks_v2.render): one user turn with the passage, the
+  question and NATURAL_CHAT_INSTRUCTION, thinking off, and no "Answer:" prefill. Note 1's prompts are these exact
+  competence prompts; only its description of them was wrong.
+- **What:** scripts/competence_variants.py, unedited accuracy under three prompt variants:
+  - "none": the competence prompt;
+  - "filler300": the question followed by the integers 1..300, then the instruction;
+  - "repeat5": the question written five times.
+- **Reads:** cand2 on the first generated token, and the greedy reply (24 tokens, scored by note 1's rule).
+- **Set:** jsuite_v2_1_test_chat. Words:
+  - never-named start: RM, RA, RN;
+  - reference two-hop: PM, MM;
+  - three-hop: all 8 chains;
+  - numbers: all 12 words.
+- **Models:** Qwen3.6-27B, Qwen3.5-9B, Lightning. Smoke first: 4 items per word on the 27B.
+- **Rule:** descriptive. Reported per word and variant: accuracy with its 95% CI and the change from "none".
+  - Three-hop and number cells are read with the real-composition share (accuracy − guess)/(1 − guess) ≥ 0.7 (Zach, 27 Oct).
+  - Question: does content-free extra computation raise no-CoT competence on never-named two-hop, three-hop and number
+    lookups, as Redwood found for frontier models?
