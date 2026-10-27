@@ -1898,3 +1898,14 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     limit.
   - The excess and limit are computed by fig_neel.dose_readings, the same code as every other model's readings.
 - **Not approved yet:** OLMo would need DeepSeek's cache dropped too, so it is not queued.
+
+### Amendment 56 note 2 (Zach, 2026-10-27 06:24 UTC, before the run): lens-kind check on the 9B, in GPU 0's idle window
+
+- **The confound:** the Qwens are knocked out with published J++ lenses; the Nemotrons, Ministral and Muse with our own
+  fits (32 WikiText prompts).
+- **The run (GPU 0):** the 9B's v2 facts knock-out at L12-16 with our own J++ fit (qwen3.5-9b-ourjpp: the jpp_lens
+  recipe, 32 WikiText prompts; held-out pass@10 0.625 vs 0.391 for the logit lens), all eligible items, paper10 /
+  rotated / logit lens / its rotation, as the 9B's headline.
+- **Reading:** our fit's M − K within 10 of the published lens's (+43) means the lens kind does not drive the
+  magnitude on this model. A larger gap is reported as a lens effect. On v1 the two differed by about 3.
+- **Bolt's pointer job** (waiting) is relaunched to wait for this run too.
