@@ -1,0 +1,162 @@
+{
+ "rule_run": "muse30_jsuite_v2_test_chat_ko_cand2_L23-29_x45r_v1",
+ "our_gap_L26": [
+  0.85,
+  0.68,
+  0.98
+ ],
+ "his_L23_29": {
+  "paper10": {
+   "lossM": 7.2,
+   "lossK": 0.6,
+   "mk": 6.7,
+   "ci": [
+    5,
+    9
+   ]
+  },
+  "paper10_rot": {
+   "lossM": 1.3,
+   "lossK": 0.2,
+   "mk": 1.1,
+   "ci": [
+    0,
+    2
+   ]
+  },
+  "unembed10": {
+   "lossM": 0.6,
+   "lossK": 0.7,
+   "mk": -0.2,
+   "ci": [
+    -1,
+    1
+   ]
+  },
+  "unembed10_rot": {
+   "lossM": 2.6,
+   "lossK": 0.4,
+   "mk": 2.2,
+   "ci": [
+    1,
+    4
+   ]
+  },
+  "paper10_pcasize": {
+   "lossM": 6.5,
+   "lossK": 3.0,
+   "mk": 3.5,
+   "ci": [
+    1,
+    6
+   ]
+  }
+ },
+ "excess_L23_29": [
+  6.8,
+  4.4,
+  9.4
+ ],
+ "not_needed": true,
+ "label": "carried, not needed",
+ "q46_1": "(a)",
+ "descriptive": {
+  "L26": {
+   "paper10": {
+    "lossM": 4.8,
+    "lossK": 0.4,
+    "mk": 4.4,
+    "ci": [
+     3,
+     6
+    ]
+   },
+   "paper10_rot": {
+    "lossM": 0.4,
+    "lossK": 0.0,
+    "mk": 0.4,
+    "ci": [
+     0,
+     1
+    ]
+   },
+   "unembed10": {
+    "lossM": 0.7,
+    "lossK": 0.0,
+    "mk": 0.7,
+    "ci": [
+     0,
+     1
+    ]
+   },
+   "unembed10_rot": {
+    "lossM": 0.4,
+    "lossK": 0.2,
+    "mk": 0.2,
+    "ci": [
+     0,
+     1
+    ]
+   },
+   "paper10_pcasize": {
+    "lossM": 0.6,
+    "lossK": 0.2,
+    "mk": 0.4,
+    "ci": [
+     0,
+     1
+    ]
+   }
+  },
+  "L36_42_size_matched": {
+   "paper10_pcasize": {
+    "lossM": 4.6,
+    "lossK": 0.0,
+    "mk": 4.6,
+    "ci": [
+     3,
+     6
+    ]
+   }
+  },
+  "L36_42_record": {
+   "paper10": {
+    "lossM": 61.7,
+    "lossK": 1.8,
+    "mk": 59.9,
+    "ci": [
+     55,
+     65
+    ]
+   },
+   "paper10_rot": {
+    "lossM": 3.1,
+    "lossK": 0.6,
+    "mk": 2.6,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "unembed10": {
+    "lossM": 35.5,
+    "lossK": 0.9,
+    "mk": 34.6,
+    "ci": [
+     29,
+     40
+    ]
+   },
+   "unembed10_rot": {
+    "lossM": 1.8,
+    "lossK": 0.4,
+    "mk": 1.5,
+    "ci": [
+     0,
+     3
+    ]
+   }
+  }
+ },
+ "note": "opened 27 Oct ~17:55 at Dan's request, before Zach confirmed the use of his knock-out"
+}
