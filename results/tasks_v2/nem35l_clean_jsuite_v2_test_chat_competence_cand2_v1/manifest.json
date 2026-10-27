@@ -1,0 +1,26 @@
+{
+  "run": "nem35l_clean_jsuite_v2_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-27, amendment 54 part C): clean-checkout rerun of Lightning's headline",
+  "set": "jsuite_v2_test_chat",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "git_commit": "775f83d15a5560a968f23d7f761aaeca9380ea27",
+  "git_state": {
+    "head": "775f83d15a5560a968f23d7f761aaeca9380ea27",
+    "dirty_files": [],
+    "untracked_scripts": [],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": null,
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-27T01:34:54Z"
+}

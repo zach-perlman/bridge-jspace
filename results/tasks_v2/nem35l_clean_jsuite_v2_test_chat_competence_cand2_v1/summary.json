@@ -1,0 +1,1747 @@
+{
+  "seconds": 1335,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 179,
+      "whole": 0.827,
+      "all_steps": 0.994,
+      "median_margin": 3.75,
+      "guess": 0.307,
+      "top_wrong": [
+        [
+          "Asia",
+          4
+        ],
+        [
+          "Tur",
+          3
+        ],
+        [
+          "Europe",
+          2
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 179,
+      "whole": 0.816,
+      "all_steps": 0.961,
+      "median_margin": 3.38,
+      "guess": 0.257,
+      "top_wrong": [
+        [
+          "C",
+          3
+        ],
+        [
+          "Asia",
+          2
+        ],
+        [
+          "G",
+          2
+        ]
+      ]
+    },
+    "PK/L0": {
+      "n": 179,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 5.0,
+      "guess": 0.302,
+      "top_wrong": []
+    },
+    "PK/L1": {
+      "n": 179,
+      "whole": 0.983,
+      "all_steps": 0.989,
+      "median_margin": 4.75,
+      "guess": 0.196,
+      "top_wrong": [
+        [
+          "Spanish",
+          1
+        ],
+        [
+          "Spain",
+          1
+        ],
+        [
+          "bird",
+          1
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 179,
+      "whole": 0.983,
+      "all_steps": 0.994,
+      "median_margin": 3.5,
+      "guess": 0.229,
+      "top_wrong": [
+        [
+          "C",
+          1
+        ],
+        [
+          "Spanish",
+          1
+        ],
+        [
+          "Germany",
+          1
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 179,
+      "whole": 0.955,
+      "all_steps": 0.994,
+      "median_margin": 2.88,
+      "guess": 0.123,
+      "top_wrong": [
+        [
+          "German",
+          2
+        ],
+        [
+          "M",
+          1
+        ],
+        [
+          "N",
+          1
+        ]
+      ]
+    },
+    "PA/L0": {
+      "n": 179,
+      "whole": 0.989,
+      "all_steps": 0.994,
+      "median_margin": 3.75,
+      "guess": 0.48,
+      "top_wrong": [
+        [
+          "A",
+          1
+        ],
+        [
+          "Spanish",
+          1
+        ]
+      ]
+    },
+    "PA/L1": {
+      "n": 179,
+      "whole": 0.972,
+      "all_steps": 0.994,
+      "median_margin": 3.0,
+      "guess": 0.274,
+      "top_wrong": [
+        [
+          "L",
+          1
+        ],
+        [
+          "N",
+          1
+        ],
+        [
+          "France",
+          1
+        ]
+      ]
+    },
+    "PN/L0": {
+      "n": 179,
+      "whole": 0.966,
+      "all_steps": 1,
+      "median_margin": 4.12,
+      "guess": 0.291,
+      "top_wrong": [
+        [
+          "South",
+          2
+        ],
+        [
+          "Italian",
+          1
+        ],
+        [
+          "Germany",
+          1
+        ]
+      ]
+    },
+    "PN/L1": {
+      "n": 179,
+      "whole": 0.955,
+      "all_steps": 0.989,
+      "median_margin": 3.38,
+      "guess": 0.156,
+      "top_wrong": [
+        [
+          "Russian",
+          2
+        ],
+        [
+          "Spain",
+          2
+        ],
+        [
+          "South",
+          1
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 179,
+      "whole": 0.754,
+      "all_steps": 0.972,
+      "median_margin": 2.5,
+      "guess": 0.413,
+      "top_wrong": [
+        [
+          "A",
+          6
+        ],
+        [
+          "Asia",
+          3
+        ],
+        [
+          "Europe",
+          3
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 179,
+      "whole": 0.575,
+      "all_steps": 0.955,
+      "median_margin": 1.0,
+      "guess": 0.229,
+      "top_wrong": [
+        [
+          "A",
+          7
+        ],
+        [
+          "Asia",
+          6
+        ],
+        [
+          "Europe",
+          5
+        ]
+      ]
+    },
+    "MK/L0": {
+      "n": 179,
+      "whole": 0.972,
+      "all_steps": 0.983,
+      "median_margin": 4.62,
+      "guess": 0.341,
+      "top_wrong": [
+        [
+          "Asia",
+          1
+        ],
+        [
+          "Tur",
+          1
+        ],
+        [
+          "Finland",
+          1
+        ]
+      ]
+    },
+    "MK/L1": {
+      "n": 179,
+      "whole": 0.95,
+      "all_steps": 0.983,
+      "median_margin": 4.25,
+      "guess": 0.207,
+      "top_wrong": [
+        [
+          "A",
+          1
+        ],
+        [
+          "Europe",
+          1
+        ],
+        [
+          "Japanese",
+          1
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 179,
+      "whole": 0.966,
+      "all_steps": 0.972,
+      "median_margin": 3.88,
+      "guess": 0.022,
+      "top_wrong": [
+        [
+          "South",
+          1
+        ],
+        [
+          "I",
+          1
+        ],
+        [
+          "Den",
+          1
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 179,
+      "whole": 0.955,
+      "all_steps": 0.961,
+      "median_margin": 3.38,
+      "guess": 0.028,
+      "top_wrong": [
+        [
+          "South",
+          1
+        ],
+        [
+          "English",
+          1
+        ],
+        [
+          "Pol",
+          1
+        ]
+      ]
+    },
+    "MA/L0": {
+      "n": 179,
+      "whole": 0.972,
+      "all_steps": 0.978,
+      "median_margin": 4.0,
+      "guess": 0.531,
+      "top_wrong": [
+        [
+          "C",
+          1
+        ],
+        [
+          "I",
+          1
+        ],
+        [
+          "E",
+          1
+        ]
+      ]
+    },
+    "MA/L1": {
+      "n": 179,
+      "whole": 0.95,
+      "all_steps": 0.961,
+      "median_margin": 3.5,
+      "guess": 0.302,
+      "top_wrong": [
+        [
+          "South",
+          1
+        ],
+        [
+          "English",
+          1
+        ],
+        [
+          "U",
+          1
+        ]
+      ]
+    },
+    "MN/L0": {
+      "n": 179,
+      "whole": 0.972,
+      "all_steps": 0.955,
+      "median_margin": 3.88,
+      "guess": 0.117,
+      "top_wrong": [
+        [
+          "C",
+          1
+        ],
+        [
+          "Asia",
+          1
+        ],
+        [
+          "Den",
+          1
+        ]
+      ]
+    },
+    "MN/L1": {
+      "n": 179,
+      "whole": 0.95,
+      "all_steps": 0.972,
+      "median_margin": 3.75,
+      "guess": 0.101,
+      "top_wrong": [
+        [
+          "C",
+          1
+        ],
+        [
+          "Europe",
+          1
+        ],
+        [
+          "English",
+          1
+        ]
+      ]
+    },
+    "TP/L0": {
+      "n": 179,
+      "whole": 0.453,
+      "all_steps": 0.81,
+      "median_margin": -0.38,
+      "guess": 0.302,
+      "top_wrong": [
+        [
+          "Sw",
+          8
+        ],
+        [
+          "South",
+          6
+        ],
+        [
+          "A",
+          6
+        ]
+      ]
+    },
+    "TP/L1": {
+      "n": 179,
+      "whole": 0.436,
+      "all_steps": 0.732,
+      "median_margin": -0.75,
+      "guess": 0.291,
+      "top_wrong": [
+        [
+          "South",
+          7
+        ],
+        [
+          "A",
+          4
+        ],
+        [
+          "Europe",
+          4
+        ]
+      ]
+    },
+    "TK/L0": {
+      "n": 179,
+      "whole": 0.704,
+      "all_steps": 0.832,
+      "median_margin": 1.88,
+      "guess": 0.385,
+      "top_wrong": [
+        [
+          "Spanish",
+          4
+        ],
+        [
+          "G",
+          4
+        ],
+        [
+          "Sw",
+          3
+        ]
+      ]
+    },
+    "TK/L1": {
+      "n": 179,
+      "whole": 0.654,
+      "all_steps": 0.777,
+      "median_margin": 1.88,
+      "guess": 0.385,
+      "top_wrong": [
+        [
+          "Asia",
+          3
+        ],
+        [
+          "Nor",
+          3
+        ],
+        [
+          "Italian",
+          3
+        ]
+      ]
+    },
+    "TM/L0": {
+      "n": 179,
+      "whole": 0.503,
+      "all_steps": 0.872,
+      "median_margin": 0.0,
+      "guess": 0.207,
+      "top_wrong": [
+        [
+          "C",
+          4
+        ],
+        [
+          "A",
+          4
+        ],
+        [
+          "Pol",
+          4
+        ]
+      ]
+    },
+    "TM/L1": {
+      "n": 179,
+      "whole": 0.486,
+      "all_steps": 0.793,
+      "median_margin": -0.75,
+      "guess": 0.207,
+      "top_wrong": [
+        [
+          "South",
+          5
+        ],
+        [
+          "Sw",
+          5
+        ],
+        [
+          "Spain",
+          4
+        ]
+      ]
+    },
+    "TA/L0": {
+      "n": 179,
+      "whole": 0.693,
+      "all_steps": 0.866,
+      "median_margin": 1.12,
+      "guess": 0.38,
+      "top_wrong": [
+        [
+          "Belg",
+          4
+        ],
+        [
+          "India",
+          4
+        ],
+        [
+          "C",
+          3
+        ]
+      ]
+    },
+    "TA/L1": {
+      "n": 179,
+      "whole": 0.659,
+      "all_steps": 0.777,
+      "median_margin": 1.12,
+      "guess": 0.408,
+      "top_wrong": [
+        [
+          "Japan",
+          4
+        ],
+        [
+          "Sw",
+          3
+        ],
+        [
+          "Dan",
+          3
+        ]
+      ]
+    },
+    "TN/L0": {
+      "n": 179,
+      "whole": 0.642,
+      "all_steps": 0.81,
+      "median_margin": 1.0,
+      "guess": 0.385,
+      "top_wrong": [
+        [
+          "South",
+          5
+        ],
+        [
+          "Italian",
+          4
+        ],
+        [
+          "A",
+          3
+        ]
+      ]
+    },
+    "TN/L1": {
+      "n": 179,
+      "whole": 0.682,
+      "all_steps": 0.76,
+      "median_margin": 1.0,
+      "guess": 0.313,
+      "top_wrong": [
+        [
+          "French",
+          4
+        ],
+        [
+          "Spain",
+          4
+        ],
+        [
+          "am",
+          4
+        ]
+      ]
+    },
+    "PPP/L0": {
+      "n": 60,
+      "whole": 0.317,
+      "all_steps": 0.983,
+      "median_margin": -1.12,
+      "guess": 0.233,
+      "top_wrong": [
+        [
+          "South",
+          12
+        ],
+        [
+          "Europe",
+          11
+        ],
+        [
+          "Asia",
+          10
+        ]
+      ]
+    },
+    "PPP/L1": {
+      "n": 58,
+      "whole": 0.293,
+      "all_steps": 0.966,
+      "median_margin": -1.25,
+      "guess": 0.172,
+      "top_wrong": [
+        [
+          "Europe",
+          18
+        ],
+        [
+          "Asia",
+          9
+        ],
+        [
+          "South",
+          7
+        ]
+      ]
+    },
+    "PPM/L0": {
+      "n": 66,
+      "whole": 0.561,
+      "all_steps": 0.985,
+      "median_margin": 0.88,
+      "guess": 0.409,
+      "top_wrong": [
+        [
+          "Europe",
+          11
+        ],
+        [
+          "A",
+          6
+        ],
+        [
+          "South",
+          6
+        ]
+      ]
+    },
+    "PPM/L1": {
+      "n": 65,
+      "whole": 0.492,
+      "all_steps": 0.908,
+      "median_margin": 0.0,
+      "guess": 0.2,
+      "top_wrong": [
+        [
+          "Asia",
+          15
+        ],
+        [
+          "Europe",
+          10
+        ],
+        [
+          "South",
+          5
+        ]
+      ]
+    },
+    "PMM/L0": {
+      "n": 64,
+      "whole": 0.891,
+      "all_steps": 0.969,
+      "median_margin": 4.94,
+      "guess": 0.281,
+      "top_wrong": [
+        [
+          "Asia",
+          3
+        ],
+        [
+          "Europe",
+          2
+        ],
+        [
+          "South",
+          1
+        ]
+      ]
+    },
+    "PMM/L1": {
+      "n": 67,
+      "whole": 0.836,
+      "all_steps": 0.985,
+      "median_margin": 4.12,
+      "guess": 0.194,
+      "top_wrong": [
+        [
+          "Asia",
+          4
+        ],
+        [
+          "Europe",
+          4
+        ],
+        [
+          "South",
+          2
+        ]
+      ]
+    },
+    "MMP/L0": {
+      "n": 64,
+      "whole": 0.328,
+      "all_steps": 0.812,
+      "median_margin": -1.25,
+      "guess": 0.266,
+      "top_wrong": [
+        [
+          "Europe",
+          17
+        ],
+        [
+          "A",
+          9
+        ],
+        [
+          "Asia",
+          9
+        ]
+      ]
+    },
+    "MMP/L1": {
+      "n": 68,
+      "whole": 0.221,
+      "all_steps": 0.765,
+      "median_margin": -1.25,
+      "guess": 0.176,
+      "top_wrong": [
+        [
+          "Europe",
+          23
+        ],
+        [
+          "Asia",
+          13
+        ],
+        [
+          "South",
+          10
+        ]
+      ]
+    },
+    "PMP/L0": {
+      "n": 65,
+      "whole": 0.431,
+      "all_steps": 0.969,
+      "median_margin": -0.75,
+      "guess": 0.262,
+      "top_wrong": [
+        [
+          "Europe",
+          16
+        ],
+        [
+          "Asia",
+          12
+        ],
+        [
+          "A",
+          6
+        ]
+      ]
+    },
+    "PMP/L1": {
+      "n": 61,
+      "whole": 0.328,
+      "all_steps": 0.967,
+      "median_margin": -1.88,
+      "guess": 0.131,
+      "top_wrong": [
+        [
+          "Asia",
+          13
+        ],
+        [
+          "Europe",
+          13
+        ],
+        [
+          "South",
+          8
+        ]
+      ]
+    },
+    "MPP/L0": {
+      "n": 63,
+      "whole": 0.54,
+      "all_steps": 0.952,
+      "median_margin": 0.38,
+      "guess": 0.365,
+      "top_wrong": [
+        [
+          "Asia",
+          10
+        ],
+        [
+          "Europe",
+          7
+        ],
+        [
+          "South",
+          5
+        ]
+      ]
+    },
+    "MPP/L1": {
+      "n": 68,
+      "whole": 0.294,
+      "all_steps": 0.882,
+      "median_margin": -1.56,
+      "guess": 0.147,
+      "top_wrong": [
+        [
+          "Europe",
+          18
+        ],
+        [
+          "Asia",
+          11
+        ],
+        [
+          "A",
+          9
+        ]
+      ]
+    },
+    "MPM/L0": {
+      "n": 60,
+      "whole": 0.333,
+      "all_steps": 0.917,
+      "median_margin": -1.25,
+      "guess": 0.3,
+      "top_wrong": [
+        [
+          "Europe",
+          14
+        ],
+        [
+          "Asia",
+          12
+        ],
+        [
+          "South",
+          6
+        ]
+      ]
+    },
+    "MPM/L1": {
+      "n": 61,
+      "whole": 0.164,
+      "all_steps": 0.951,
+      "median_margin": -2.88,
+      "guess": 0.131,
+      "top_wrong": [
+        [
+          "Europe",
+          26
+        ],
+        [
+          "Asia",
+          12
+        ],
+        [
+          "South",
+          7
+        ]
+      ]
+    },
+    "MMM/L0": {
+      "n": 61,
+      "whole": 0.869,
+      "all_steps": 0.852,
+      "median_margin": 4.75,
+      "guess": 0.213,
+      "top_wrong": [
+        [
+          "Asia",
+          3
+        ],
+        [
+          "South",
+          2
+        ],
+        [
+          "Europe",
+          2
+        ]
+      ]
+    },
+    "MMM/L1": {
+      "n": 56,
+      "whole": 0.875,
+      "all_steps": 0.875,
+      "median_margin": 4.47,
+      "guess": 0.054,
+      "top_wrong": [
+        [
+          "Europe",
+          4
+        ],
+        [
+          "South",
+          2
+        ],
+        [
+          "Asia",
+          1
+        ]
+      ]
+    },
+    "nPR/L0": {
+      "n": 53,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 2.88,
+      "guess": 0,
+      "top_wrong": []
+    },
+    "nPR/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nPL/L0": {
+      "n": 61,
+      "whole": 0.344,
+      "all_steps": 1,
+      "median_margin": -3.56,
+      "guess": 0.049,
+      "top_wrong": [
+        [
+          "L",
+          26
+        ],
+        [
+          "Bob",
+          2
+        ],
+        [
+          "Jon",
+          2
+        ]
+      ]
+    },
+    "nPL/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nPM/L0": {
+      "n": 61,
+      "whole": 0.623,
+      "all_steps": 0.934,
+      "median_margin": 0.5,
+      "guess": 0.115,
+      "top_wrong": [
+        [
+          "Mars",
+          14
+        ],
+        [
+          "Merc",
+          5
+        ],
+        [
+          "Ven",
+          2
+        ]
+      ]
+    },
+    "nPM/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nKL/L0": {
+      "n": 62,
+      "whole": 0.161,
+      "all_steps": 0.935,
+      "median_margin": -2.5,
+      "guess": 0.161,
+      "top_wrong": [
+        [
+          "L",
+          35
+        ],
+        [
+          "Ryan",
+          1
+        ],
+        [
+          "Adam",
+          1
+        ]
+      ]
+    },
+    "nKL/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nKM/L0": {
+      "n": 62,
+      "whole": 0.258,
+      "all_steps": 0.871,
+      "median_margin": -0.53,
+      "guess": 0.065,
+      "top_wrong": [
+        [
+          "Mars",
+          20
+        ],
+        [
+          "October",
+          7
+        ],
+        [
+          "Merc",
+          5
+        ]
+      ]
+    },
+    "nKM/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nKR/L0": {
+      "n": 52,
+      "whole": 0.827,
+      "all_steps": 0.827,
+      "median_margin": 2.06,
+      "guess": 0.288,
+      "top_wrong": [
+        [
+          "9",
+          4
+        ],
+        [
+          "7",
+          3
+        ],
+        [
+          "4",
+          1
+        ]
+      ]
+    },
+    "nKR/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nAR/L0": {
+      "n": 58,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 4.56,
+      "guess": 0.069,
+      "top_wrong": []
+    },
+    "nAR/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nAL/L0": {
+      "n": 60,
+      "whole": 0.067,
+      "all_steps": 1,
+      "median_margin": -4.0,
+      "guess": 0.15,
+      "top_wrong": [
+        [
+          "L",
+          41
+        ],
+        [
+          "Ana",
+          2
+        ],
+        [
+          "Kate",
+          2
+        ]
+      ]
+    },
+    "nAL/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nAM/L0": {
+      "n": 60,
+      "whole": 0.133,
+      "all_steps": 0.967,
+      "median_margin": -1.75,
+      "guess": 0.067,
+      "top_wrong": [
+        [
+          "Mars",
+          15
+        ],
+        [
+          "February",
+          7
+        ],
+        [
+          "January",
+          5
+        ]
+      ]
+    },
+    "nAM/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nMR/L0": {
+      "n": 62,
+      "whole": 1,
+      "all_steps": 1,
+      "median_margin": 2.81,
+      "guess": 0.081,
+      "top_wrong": []
+    },
+    "nMR/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nML/L0": {
+      "n": 56,
+      "whole": 0.232,
+      "all_steps": 0.982,
+      "median_margin": -1.25,
+      "guess": 0.161,
+      "top_wrong": [
+        [
+          "L",
+          25
+        ],
+        [
+          "Jane",
+          4
+        ],
+        [
+          "Tom",
+          3
+        ]
+      ]
+    },
+    "nML/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    },
+    "nMM/L0": {
+      "n": 56,
+      "whole": 0.304,
+      "all_steps": 0.964,
+      "median_margin": -1.06,
+      "guess": 0.071,
+      "top_wrong": [
+        [
+          "Mars",
+          20
+        ],
+        [
+          "Merc",
+          5
+        ],
+        [
+          "Ven",
+          4
+        ]
+      ]
+    },
+    "nMM/L1": {
+      "n": 0,
+      "whole": null,
+      "all_steps": null,
+      "median_margin": null,
+      "guess": null,
+      "top_wrong": []
+    }
+  },
+  "by_domain": {
+    "animals": {
+      "PP": 0.912,
+      "PK": 0.971,
+      "PM": 1,
+      "PA": 1,
+      "PN": 0.912,
+      "MP": 0.794,
+      "MK": 0.941,
+      "MM": 0.941,
+      "MA": 0.941,
+      "MN": 0.882,
+      "TP": 0.412,
+      "TK": 0.529,
+      "TM": 0.559,
+      "TA": 0.588,
+      "TN": 0.412,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "birds": {
+      "PP": null,
+      "PK": null,
+      "PM": null,
+      "PA": null,
+      "PN": null,
+      "MP": null,
+      "MK": null,
+      "MM": null,
+      "MA": null,
+      "MN": null,
+      "TP": null,
+      "TK": null,
+      "TM": null,
+      "TA": null,
+      "TN": null,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": 1,
+      "nPL": 0.35,
+      "nPM": 0.7,
+      "nKL": 0.087,
+      "nKM": 0.174,
+      "nKR": 0.75,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": 1,
+      "nML": 0.174,
+      "nMM": 0.217
+    },
+    "cities": {
+      "PP": 0.885,
+      "PK": 1,
+      "PM": 0.962,
+      "PA": 1,
+      "PN": 0.962,
+      "MP": 0.519,
+      "MK": 0.962,
+      "MM": 0.923,
+      "MA": 0.962,
+      "MN": 0.962,
+      "TP": 0.462,
+      "TK": 0.731,
+      "TM": 0.481,
+      "TA": 0.692,
+      "TN": 0.635,
+      "PPP": 0.328,
+      "PPM": 0.565,
+      "PMM": 0.957,
+      "MMP": 0.356,
+      "PMP": 0.368,
+      "MPP": 0.357,
+      "MPM": 0.176,
+      "MMM": 0.877,
+      "nPR": 1,
+      "nPL": 0.368,
+      "nPM": 0.579,
+      "nKL": 0.238,
+      "nKM": 0.333,
+      "nKR": 1,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": 1,
+      "nML": 0.286,
+      "nMM": 0.286
+    },
+    "coins": {
+      "PP": null,
+      "PK": null,
+      "PM": null,
+      "PA": null,
+      "PN": null,
+      "MP": null,
+      "MK": null,
+      "MM": null,
+      "MA": null,
+      "MN": null,
+      "TP": null,
+      "TK": null,
+      "TM": null,
+      "TA": null,
+      "TN": null,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": 1,
+      "nAL": 0,
+      "nAM": 0.053,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "companies": {
+      "PP": 0.976,
+      "PK": 1,
+      "PM": 0.952,
+      "PA": 0.952,
+      "PN": 0.952,
+      "MP": 0.833,
+      "MK": 0.952,
+      "MM": 0.976,
+      "MA": 1,
+      "MN": 1,
+      "TP": 0.476,
+      "TK": 0.69,
+      "TM": 0.405,
+      "TA": 0.548,
+      "TN": 0.833,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "countries": {
+      "PP": 0.771,
+      "PK": 1,
+      "PM": 0.979,
+      "PA": 0.979,
+      "PN": 0.958,
+      "MP": 0.417,
+      "MK": 0.938,
+      "MM": 0.958,
+      "MA": 0.958,
+      "MN": 0.917,
+      "TP": 0.458,
+      "TK": 0.792,
+      "TM": 0.646,
+      "TA": 0.771,
+      "TN": 0.729,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "dishes": {
+      "PP": 0.789,
+      "PK": 1,
+      "PM": 1,
+      "PA": 1,
+      "PN": 1,
+      "MP": 0.737,
+      "MK": 1,
+      "MM": 0.974,
+      "MA": 0.947,
+      "MN": 1,
+      "TP": 0.658,
+      "TK": 0.868,
+      "TM": 0.737,
+      "TA": 0.895,
+      "TN": 0.868,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "fruits": {
+      "PP": null,
+      "PK": null,
+      "PM": null,
+      "PA": null,
+      "PN": null,
+      "MP": null,
+      "MK": null,
+      "MM": null,
+      "MA": null,
+      "MN": null,
+      "TP": null,
+      "TK": null,
+      "TM": null,
+      "TA": null,
+      "TN": null,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": 1,
+      "nPL": 0.318,
+      "nPM": 0.591,
+      "nKL": 0.167,
+      "nKM": 0.278,
+      "nKR": 0.714,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": 1,
+      "nML": 0.263,
+      "nMM": 0.421
+    },
+    "landmarks": {
+      "PP": 0.786,
+      "PK": 0.976,
+      "PM": 0.976,
+      "PA": 0.976,
+      "PN": 0.976,
+      "MP": 0.762,
+      "MK": 0.976,
+      "MM": 0.976,
+      "MA": 0.952,
+      "MN": 0.976,
+      "TP": 0.286,
+      "TK": 0.571,
+      "TM": 0.429,
+      "TA": 0.619,
+      "TN": 0.5,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "languages": {
+      "PP": 0.775,
+      "PK": 0.975,
+      "PM": 0.975,
+      "PA": 1,
+      "PN": 1,
+      "MP": 0.525,
+      "MK": 0.9,
+      "MM": 0.95,
+      "MA": 0.925,
+      "MN": 0.95,
+      "TP": 0.45,
+      "TK": 0.675,
+      "TM": 0.6,
+      "TA": 0.8,
+      "TN": 0.75,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "people": {
+      "PP": 0.726,
+      "PK": 1,
+      "PM": 0.935,
+      "PA": 0.952,
+      "PN": 0.935,
+      "MP": 0.774,
+      "MK": 1,
+      "MM": 0.984,
+      "MA": 0.984,
+      "MN": 0.984,
+      "TP": 0.387,
+      "TK": 0.581,
+      "TM": 0.242,
+      "TA": 0.548,
+      "TN": 0.581,
+      "PPP": 0.278,
+      "PPM": 0.484,
+      "PMM": 0.758,
+      "MMP": 0.169,
+      "PMP": 0.397,
+      "MPP": 0.475,
+      "MPM": 0.34,
+      "MMM": 0.865,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": null,
+      "nAL": null,
+      "nAM": null,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "postcards": {
+      "PP": null,
+      "PK": null,
+      "PM": null,
+      "PA": null,
+      "PN": null,
+      "MP": null,
+      "MK": null,
+      "MM": null,
+      "MA": null,
+      "MN": null,
+      "TP": null,
+      "TK": null,
+      "TM": null,
+      "TA": null,
+      "TN": null,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": 1,
+      "nAL": 0,
+      "nAM": 0.217,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    },
+    "stamps": {
+      "PP": null,
+      "PK": null,
+      "PM": null,
+      "PA": null,
+      "PN": null,
+      "MP": null,
+      "MK": null,
+      "MM": null,
+      "MA": null,
+      "MN": null,
+      "TP": null,
+      "TK": null,
+      "TM": null,
+      "TA": null,
+      "TN": null,
+      "PPP": null,
+      "PPM": null,
+      "PMM": null,
+      "MMP": null,
+      "PMP": null,
+      "MPP": null,
+      "MPM": null,
+      "MMM": null,
+      "nPR": null,
+      "nPL": null,
+      "nPM": null,
+      "nKL": null,
+      "nKM": null,
+      "nKR": null,
+      "nAR": 1,
+      "nAL": 0.222,
+      "nAM": 0.111,
+      "nMR": null,
+      "nML": null,
+      "nMM": null
+    }
+  },
+  "pick": {}
+}

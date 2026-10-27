@@ -1858,3 +1858,31 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - The swap J-part, neutral donor, own-word split and timeline all use the top 100 J++ directions.
   - Readings as amendment 51: neutral donor >= 2/3 of the same-passage swap means context-free; the no-own-word share
     is read the same way; rotated and logit-lens swaps < 5.
+
+## Amendment 56 (Zach, 2026-10-27 05:00 UTC, before any run below): the night of day 8-9
+
+- **Why (Zach: "the best possible set of next moves ... until around noon"):** the proposal's own question (which
+  intermediates live in J-space; H0) was last tested on the v1 modules and the toy suite. It has never been tested on v2
+  or on a second family. Lightning's clean rerun was reproducible in its headline, not row for row; its cause is open.
+- **A. v2 modules 2 and 3** (amendment 37 B's design, never run), scripts/queues/h200_v2mod_1027.sh: three-hop (8
+  words) and numbers (12 words), per-item eligibility, paper10 / rotated / logit lens / its rotation, cand2 (numbers:
+  digit dictionary), at each model's v2 band.
+  - **Models:** the 27B, the 9B (their v2 test competence covers the modules), and Lightning. Lightning's eligibility
+    comes from its clean-checkout competence run (nem35l_clean_..., 775f83d, all 7,080 items), copied into results/.
+  - **Predictions, as amendments 24 and 25:**
+    - Numbers: a counted (KR) or computed (AR) number reported within 10 of a read one (PR); a recalled one (MR)
+      >= 10 above PR.
+    - Three-hop: the chains with a memory hop whose output is not in the passage (PPM, MPM, PMM, MMM) lose more than
+      PPP; MPP and PMP do not.
+- **B. Lightning determinism check:** its facts knock-out at L27-33 rerun in the main repo at HEAD. Same eligibility
+  (the clean competence), same conditions, batch and QR path as the clean rerun, compared row by row with it.
+  - Identical rows: the clean-rerun differences came from eligibility and batching.
+  - Differing rows: Lightning's kernels are not deterministic at this batch size.
+- **C. Bolt's pointer tests at K = 100** (amendment 55 note 1), after A and B.
+- **D. (Only with Zach's OK; it deletes Bolt's 140 GB cache.)** DeepSeek-V4-Flash at L18-23 through amendment 54's
+  dose grid and readings, plus its mention / question split at the K where its J-specific excess peaks. Then, if time
+  allows, OLMo-3 32B base (Q&A) at L12-20 the same way.
+- **Order:**
+  - GPU 0: (after the 27B swap dose) A on the 27B, then the 9B.
+  - GPU 1: (after Lightning's natural sets) A on Lightning, then B.
+  - Then C on both GPUs; then D if approved.
