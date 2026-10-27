@@ -4,6 +4,8 @@ Draft, 27 Oct; UNVERIFIED; for Dan. Experiments freeze Wed 28 Oct evening; hand 
 
 The joint story is the root [README.md](../../README.md); review records are in [joint_review_notes.md](joint_review_notes.md).
 
+**For Zach (27 Oct ~19:20):** the front page now says "lookup answer" for what it called "stated answer" (your K finals), "remove from the patch" for Dan's tool, and pp for every figure's unit; in scripts/joint_figures_breadth.py only label strings changed (j6 subtitle and x label, j7 subtitle and x label: "points" → "pp", "stated answers" → "lookup answers"); no number moved ([glossary](glossary_joint.md)).
+
 Every claim × model cell that the README needs and that is empty or conflicting in docs/shared/grid.csv (G) or the two reports. Before proposing a run I checked whether Zach's stored results already fill the cell. Two cells are filled from his stored summaries (rows 3 and 4); they need his confirmation, not a run. Source keys as in docs/shared/joint_story_draft.md.
 
 Ranked by how much the result would change the story.

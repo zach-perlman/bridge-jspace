@@ -51,45 +51,37 @@ def breadth(model: str, key: str) -> float:
     return {(r["model"], r["key"]): float(r["value"]) for r in J.read_csv(J.BREADTH)}[(model, key)]
 
 
+def sourced(rows, figure: str, model: str, source_end: str) -> dict:
+    """The one row of a figure and model whose source ends with source_end (labels may be reworded; sources do not)."""
+    (row,) = [r for r in rows if (r["figure"], r["model"]) == (figure, model) and r["source"].endswith(source_end)]
+    return row
+
+
 def test_j1_numbers_match_their_sources(drawn):
     _, rows = drawn
-    assert (
-        value(rows, "j1", "Qwen 27B", "remove everywhere: recalled answers lost (points)")["value"]
-        == breadth("q27", "ko.q27.lostM")
-        == 53.5
-    )
-    assert value(rows, "j1", "Qwen 9B", "remove from the change: recalled answers' extra loss (x 100)")["value"] == 50.0
-    muse = [
-        r
-        for r in rows
-        if r["figure"] == "j1" and r["model"] == "Muse 30B" and "largest control (logit lens)" in r["quantity"]
-    ]
+    assert sourced(rows, "j1", "Qwen 27B", "| ko.q27.lostM")["value"] == breadth("q27", "ko.q27.lostM") == 53.5
+    assert sourced(rows, "j1", "Qwen 9B", "recall extra loss")["value"] == 50.0  # 0.50 in figures/story/data.csv, in pp
     facts = json.loads(
         (J.REPO / "results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json").read_text()
     )["facts"]
-    assert [r["value"] for r in muse] == [facts["unembed10/start=all"]["loss"]["M"]]
+    assert (
+        sourced(rows, "j1", "Muse 30B", "unembed10/start=all loss M")["value"]
+        == facts["unembed10/start=all"]["loss"]["M"]
+    )
 
 
 def test_j2_numbers_match_their_sources(drawn):
     _, rows = drawn
-    q = "{}: {} answer moves (points)"
-    assert value(rows, "j2", "Qwen 9B", q.format("swap the lens part", "recalled"))["value"] == breadth(
-        "q9", "swap.q9.swap"
-    )
-    assert (
-        value(rows, "j2", "Qwen 27B", q.format("swap everything else", "stated"))["value"] == 24.6
-    )  # docs/shared/gaps.md row 3
-    assert value(rows, "j2", "Qwen 27B", q.format("swap the lens part", "stated"))["value"] == 0.9
+    assert sourced(rows, "j2", "Qwen 9B", "| swap.q9.swap")["value"] == breadth("q9", "swap.q9.swap")
+    assert sourced(rows, "j2", "Qwen 27B", "| PK/swap_comp")["value"] == 24.6  # docs/shared/gaps.md row 3
+    assert sourced(rows, "j2", "Qwen 27B", "| PK/swap")["value"] == 0.9
 
 
 def test_j3_numbers_match_their_sources(drawn):
     _, rows = drawn
-    assert value(rows, "j3", "Qwen 9B", "answers by position: without the order signal (share)")["value"] == 0.083
-    assert (
-        value(rows, "j3", "Muse 30B", "answers by position: without a random part (same size) (share)")["value"]
-        == 0.547
-    )
-    assert value(rows, "j3", "Qwen 9B", "the order signal's write dose (x a real change's size)")["value"] == 1.06
+    assert sourced(rows, "j3", "Qwen 9B", "no_alf: position share")["value"] == 8.3  # 0.083 as a share, drawn in %
+    assert sourced(rows, "j3", "Muse 30B", "no_alf_rand: position share")["value"] == 54.7
+    assert sourced(rows, "j3", "Qwen 9B", "dose (s / mean s*), s = 2")["value"] == 1.06
 
 
 def test_grid_front_cells_come_from_the_grid(drawn):
@@ -102,15 +94,12 @@ def test_grid_front_cells_come_from_the_grid(drawn):
 def test_j5_numbers_match_the_muse_depth_score(drawn):
     _, rows = drawn
     sc = json.loads(J.x45r_score().read_text())
-    q = "remove everywhere, {}, {}: recalled minus stated answers lost (points)"
-    rule = value(rows, "j5", "Muse 30B", q.format("layers 23-29", "the lens part"))
-    assert rule["value"] == sc["his_L23_29"]["paper10"]["mk"] == 6.7 and rule["source"].endswith(
-        "his_L23_29.paper10.mk"
+    assert (
+        sourced(rows, "j5", "Muse 30B", "| his_L23_29.paper10.mk")["value"] == sc["his_L23_29"]["paper10"]["mk"] == 6.7
     )
-    late = value(rows, "j5", "Muse 30B", q.format("layers 36-42", "logit lens"))["value"]
+    late = sourced(rows, "j5", "Muse 30B", "| descriptive.L36_42_record.unembed10.mk")["value"]
     assert late == sc["descriptive"]["L36_42_record"]["unembed10"]["mk"] == 34.6
-    ours = value(rows, "j5", "Muse 30B", "remove from the change, layer 26: recalled answers' extra loss (x 100)")
-    assert ours["value"] == 75.0
+    assert sourced(rows, "j5", "Muse 30B", "recall extra loss")["value"] == 75.0
 
 
 def test_example_texts_are_quoted_from_their_sources():

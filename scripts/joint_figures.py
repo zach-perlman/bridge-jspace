@@ -1,13 +1,13 @@
 """joint_figures (agent, 27 Oct; Dan ~15:50): the root README's figures, the joint story of both tracks, in
 scripts/story_style.py's visual language and the joint vocabulary (check_figure_terms.JOINT_RETIRED): "recalled answer"
-(from memory) and "stated answer" (written in the text); "the lens part" (the directions the J++ lens reads at the
-bridge); the tools "remove everywhere" (Zach), "remove from the change" (Dan) and "swap" (Zach); "order signal" (Dan's
+(from memory) and "lookup answer" (written in the text); "the lens part" (the directions the J++ lens reads at the
+bridge); the tools "remove everywhere" (Zach), "remove from the patch" (Dan) and "swap" (Zach); "order signal" (Dan's
 four directions outside the lens); the models Qwen 9B, Qwen 27B, Qwen 122B, Muse 30B, Nemotron Lightning.
 
   figures/shared/j0_setup.png              one bridge, two answers, in Zach's passage and Dan's scene; the three tools
-  figures/shared/j1_recall_needs_lens.png  recalled answers need the lens part, stated answers do not (both tools)
-  figures/shared/j2_swap.png               swapping the lens part moves the recalled answer, not the stated one
-  figures/shared/j3_order_signal.png       the stated answer uses an order signal outside the lens (Dan's scenes)
+  figures/shared/j1_recall_needs_lens.png  recalled answers need the lens part, lookup answers do not (both tools)
+  figures/shared/j2_swap.png               swapping the lens part moves the recalled answer, not the lookup one
+  figures/shared/j3_order_signal.png       the lookup answer uses an order signal outside the lens (Dan's scenes)
   figures/shared/grid_front.png            the README's four findings x five models, from docs/shared/grid.csv
   figures/shared/data.csv                  every plotted number with its source (figures/story/data.csv's columns)
   docs/shared/contact_sheet_joint.png      the five, for one look
@@ -50,21 +50,21 @@ ROWS: list[dict] = []
 MODELS = (("Qwen 9B", "q9", "qwen3.5-9b", "9b"), ("Qwen 27B", "q27", "qwen3.6-27b", "27b"),
           ("Nemotron Lightning", "nl", None, None), ("Muse 30B", "mu", "muse-glimmer-30b", "muse"),
           ("Qwen 122B", "q122", "qwen3.5-122b-a10b", "122b"))  # fmt: skip
-RECALLED, STATED = S.COL["recall"], S.COL["lookup"]  # recalled answers dark grey; stated answers purple (our lookup's)
+RECALLED, LOOKUP = S.COL["recall"], S.COL["lookup"]  # recalled answers dark grey; lookup answers purple
 BRIDGE = "#fde3e3"  # the bridge's highlight (Fig. 0's)
 REMOVED, WRITTEN = "#e3a3a3", "#9cc3e4"  # the tool strip: the lens part removed; another entity's lens part written in
 SWAP_RUNS = {"q9": "qwen35_9b_jswap_v2_v1", "q27": "jswap_v2_v1"}  # Zach's v2 swaps at the band (data.csv swap.*.swap)
 # Zach's Fig. 0 scene (scripts/fig_neel.py f01): the item with the fact stated and the one left to memory
-ZACH_ITEMS = {"stated": "j2:chat:facts:MK-L0-00635", "recalled": "j2:chat:facts:MM-L0-00635"}
+ZACH_ITEMS = {"lookup": "j2:chat:facts:MK-L0-00635", "recalled": "j2:chat:facts:MM-L0-00635"}
 ZACH_SENTENCES = {
-    "stated": "Mozart was Austrian by birth.",
+    "lookup": "Mozart was Austrian by birth.",
     "recalled": "A reader asked a question about Mozart in the letters page.",
 }
 ZACH_DESCRIPTION, ZACH_BRIDGE = "The composer who wrote The Magic Flute", "Mozart"
 # our Fig. 0 (readme_story_figures.f00_setup): the original prompt's three sentences and the two questions
 DAN_SCENE = ("The locker of the frog is 5.", "The locker of the tick is 2.", "Iris picked the frog.")
 DAN_QUESTIONS = (
-    ("Which locker belongs to Iris's pick?", "5", "stated"),
+    ("Which locker belongs to Iris's pick?", "5", "lookup"),
     ("How many legs does Iris's pick have?", "4", "recalled"),
 )
 
@@ -183,20 +183,20 @@ def j0_setup(plt):
     ax.axis("off")
     ax.set_xticks([])
     ax.set_yticks([])
-    S.title(fig, "The same bridge, two answers: stated in the text or recalled",
+    S.title(fig, "The same bridge, two answers: looked up in the text or recalled",
             "Each tool asks whether an answer needs the lens part of the bridge.")  # fmt: skip
     z = zach_texts()
     ans_x, lab_x = 67, 77.5
 
     def answer(y: float, a: str, kind: str) -> None:
-        col = STATED if kind == "stated" else RECALLED
+        col = LOOKUP if kind == "lookup" else RECALLED
         ax.text(ans_x, y, f"→ {a}", fontsize=S.FONT, weight="bold", color=col, va="center")
         ax.text(lab_x + 4, y, f"{kind} answer", fontsize=S.FONT, color=col, va="center")
 
     ax.text(1, 63, "Zach's passages: one sentence differs", fontsize=S.FONT + 1, weight="bold", va="center")
     t = ax.text(3, 58.5, f"Question: {z['question']}", fontsize=S.FONT, va="center")
     highlight(ax, t, ZACH_DESCRIPTION)
-    for y, kind in ((54, "stated"), (49.5, "recalled")):
+    for y, kind in ((54, "lookup"), (49.5, "recalled")):
         t = ax.text(3, y, f"“… {ZACH_SENTENCES[kind]} …”", fontsize=S.FONT, va="center", style="italic")
         highlight(ax, t, ZACH_BRIDGE)
         answer(y, z["answer"], kind)
@@ -209,7 +209,7 @@ def j0_setup(plt):
     record(
         "j0",
         "",
-        "Zach's example (stated / recalled items)",
+        "Zach's example (lookup / recalled items)",
         z["answer"],
         source=f"{ITEMS.relative_to(REPO)} | {', '.join(ZACH_ITEMS.values())}",
     )
@@ -218,7 +218,7 @@ def j0_setup(plt):
     # the tool strip: tokens across, layers up; the bridge's column marked
     ax.plot([1, 99], [26, 26], color="#dddddd", lw=1)
     tools = (("remove everywhere", "Zach: takes out the lens part at every token, over a band of layers", "every"),
-             ("remove from the change", "Dan: the bridge word's change added at one layer, without its lens part", "one"),
+             ("remove from the patch", "Dan: the bridge word's patch from another prompt, added at one layer without its lens part", "one"),
              ("swap", "Zach: another entity's lens part written in at the bridge, over the band", "swap"))  # fmt: skip
     ntok, nlay, bridge_col, band = 7, 4, 4, (1, 2)
     for k, (name, cap, kind) in enumerate(tools):
@@ -248,12 +248,12 @@ def j0_setup(plt):
 
 
 def j1_recall_needs_lens(plt):
-    """Per model, recalled vs stated answers lost under each tool; the larger control as a grey tick on recalled answers;
+    """Per model, recalled vs lookup answers lost under each tool; the larger control as a grey tick on recalled answers;
     hollow = after the data; 'not run' where a tool was not run."""
     zb, dp = breadth(), depth()
     fig = plt.figure(figsize=(S.WIDTH, 5.0))
     axes = (fig.add_axes((0.215, 0.27, 0.35, 0.50)), fig.add_axes((0.625, 0.27, 0.35, 0.50)))
-    S.title(fig, "Recalled answers need the lens part; stated answers do not",
+    S.title(fig, "Recalled answers need the lens part; lookup answers do not",
             "The two tools count losses differently: left, answers lost; right, switches lost beyond\n"
             "a random part. Grey tick: the largest control, on recalled answers.")  # fmt: skip
     ys = {name: -i for i, (name, *_) in enumerate(MODELS)}
@@ -266,9 +266,9 @@ def j1_recall_needs_lens(plt):
                 cname, cv, cpath = ko_control(rc)
                 pts = (num(rc["value"]), num(st["value"]))
                 src = (f"docs/breadth/data.csv | ko.{zm}.lostM", f"docs/breadth/data.csv | ko.{zm}.lostK")
-                record("j1", name, "remove everywhere: recalled answers lost (points)", pts[0], source=src[0])
-                record("j1", name, "remove everywhere: stated answers lost (points)", pts[1], source=src[1])
-                record("j1", name, f"remove everywhere, largest control ({cname}): recalled answers lost (points)", cv,
+                record("j1", name, "remove everywhere: recalled answers lost (pp)", pts[0], source=src[0])
+                record("j1", name, "remove everywhere: lookup answers lost (pp)", pts[1], source=src[1])
+                record("j1", name, f"remove everywhere, largest control ({cname}): recalled answers lost (pp)", cv,
                        source=f"{cpath} | facts {'paper10_rot' if cname == 'rotated' else 'unembed10'}/start=all loss M")  # fmt: skip
             else:
                 if target is None:
@@ -276,7 +276,7 @@ def j1_recall_needs_lens(plt):
                     record(
                         "j1",
                         name,
-                        "remove from the change",
+                        "remove from the patch",
                         "not run",
                         source="docs/shared/grid.csv | depth column '-'",
                     )
@@ -286,15 +286,15 @@ def j1_recall_needs_lens(plt):
                 kind = "fixed"  # our main test, fixed in advance on all four (figures/story/scorecard.csv 'main test')
                 cv = num(dp[("numbers", "", f"rc_droprand_{m}")]["value"])
                 pts = (100 * num(rc["value"]), 100 * num(st["value"]))
-                for label, r, v in (("recalled", rc, pts[0]), ("stated", st, pts[1])):
-                    record("j1", name, f"remove from the change: {label} answers' extra loss (x 100)", round(v, 1),
+                for label, r, v in (("recalled", rc, pts[0]), ("lookup", st, pts[1])):
+                    record("j1", name, f"remove from the patch: {label} answers' extra loss (pp)", round(v, 1),
                            round(100 * num(r["lo"]), 1), round(100 * num(r["hi"]), 1),
                            source=f"figures/story/data.csv | fig01 | {r['quantity']}")  # fmt: skip
-                record("j1", name, "remove from the change, control (a random part): recalled switches lost (%)", cv,
+                record("j1", name, "remove from the patch, control (a random part): recalled switches lost (%)", cv,
                        source=f"figures/story/data.csv | numbers | rc_droprand_{m}")  # fmt: skip
             ax.plot(pts, [y, y], color="#bbbbbb", lw=2.2, zorder=1, solid_capstyle="butt")
             ax.plot([cv], [y], marker="|", ms=15, mew=2.6, color=S.COL["control"], ls="", zorder=2)
-            for v, col in zip(pts, (RECALLED, STATED), strict=True):
+            for v, col in zip(pts, (RECALLED, LOOKUP), strict=True):
                 ax.plot([v], [y], "o", ms=8, mfc=col if kind == "fixed" else "white", mec=col, mew=1.8, zorder=3)
         ax.set_xlim(-15, 100)
         ax.set_ylim(-len(MODELS) + 0.4, 0.6)
@@ -304,26 +304,26 @@ def j1_recall_needs_lens(plt):
         ax.tick_params(axis="y", length=0)
         ax.spines["left"].set_visible(False)
     axes[0].set_title("remove everywhere (Zach)", fontsize=S.FONT + 1, loc="left")
-    axes[1].set_title("remove from the change (Dan)", fontsize=S.FONT + 1, loc="left")
-    axes[0].set_xlabel("answers lost (points)")
-    axes[1].set_xlabel("switches lost beyond a random part (× 100)")
-    hs = [plt.Line2D([], [], marker="o", ls="", color=RECALLED, ms=8), plt.Line2D([], [], marker="o", ls="", color=STATED, ms=8),
+    axes[1].set_title("remove from the patch (Dan)", fontsize=S.FONT + 1, loc="left")
+    axes[0].set_xlabel("answers lost (pp)")
+    axes[1].set_xlabel("switches lost beyond a random part (pp)")
+    hs = [plt.Line2D([], [], marker="o", ls="", color=RECALLED, ms=8), plt.Line2D([], [], marker="o", ls="", color=LOOKUP, ms=8),
           plt.Line2D([], [], marker="|", ls="", color=S.COL["control"], ms=13, mew=2.6)]  # fmt: skip
     sh, sl = S.status_handles(("fixed", "after"))
-    legend_below(fig, hs + sh, ["recalled answer", "stated answer", "largest control", *sl], 0.0, 3)
+    legend_below(fig, hs + sh, ["recalled answer", "lookup answer", "largest control", *sl], 0.0, 3)
     return fig
 
 
 def j2_swap(plt):
-    """Per model, a 2 x 2: which part is swapped (rows) x which answer moves (columns), transfer in points with its 95%
-    interval; the swap of everything else is after the data and awaits Zach's confirmation."""
+    """Per model, a 2 x 2: which part is swapped (rows) x which answer moves (columns), transfer in pp with its 95%
+    interval; the swap of everything else is after the data (confirmed by Zach, docs/shared/zach_reply_2026-10-27.md)."""
     zb = breadth()
     fig = plt.figure(figsize=(S.WIDTH, 6.0))
-    S.title(fig, "Swapping the lens part moves the recalled answer, not the stated one",
-            "Transfer: answers that move to the other entity's, minus a third entity's (points).\n"
+    S.title(fig, "Swapping the lens part moves the recalled answer, not the lookup one",
+            "Transfer: answers that move to the other entity's, minus a third entity's (pp).\n"
             "Zach's swaps, written in at the bridge over his band of layers.")  # fmt: skip
     rows = ("swap the lens part", "swap everything else")
-    cols = (("recalled answer moves", RECALLED), ("stated answer moves", STATED))
+    cols = (("recalled answer moves", RECALLED), ("lookup answer moves", LOOKUP))
     tops = (0.53, 0.24)
     for (name, zm, *_), top in zip([MODELS[0], MODELS[1]], tops, strict=True):
         run = SWAP_RUNS[zm]
@@ -343,52 +343,45 @@ def j2_swap(plt):
             (1, 1): (summ["PK/swap_comp"]["transfer"], *summ["PK/swap_comp"]["ci"], summ["PK/swap_comp"]["n"],
                      f"results/jswap/{run}/summary.json | PK/swap_comp", "after"),
         }  # fmt: skip
-        tk = summ["TK/swap_comp"]
-        record("j2", name, "swap everything else: stated answer moves, bridge tracked (points)", tk["transfer"], tk["ci"][0],
-               tk["ci"][1], tk["n"], source=f"results/jswap/{run}/summary.json | TK/swap_comp")  # fmt: skip
         for c, (ctitle, col) in enumerate(cols):
             ax = fig.add_axes((0.355 + 0.33 * c, top, 0.29, 0.19))
             for i in range(2):
                 v, lo, hi, n, src, kind = cells[(i, c)]
                 bar(ax, -i, v, lo, hi, col, kind)
                 ax.text(max(v, num(hi)) + 3, -i, f"{v:+.1f}", va="center", fontsize=S.FONT, color=col)
-                record("j2", name, f"{rows[i]}: {ctitle} (points)", v, lo, hi, n, source=src)
+                record("j2", name, f"{rows[i]}: {ctitle} (pp)", v, lo, hi, n, source=src)
             ax.set_xlim(-5, 100)
             ax.set_ylim(-1.6, 0.6)
             ax.axvline(0, color="#999999", lw=0.8)
             ax.set_xticks([0, 50, 100])
             ax.tick_params(axis="y", length=0)
             ax.spines["left"].set_visible(False)
-            labels = ["swap the lens part", "swap everything else\n(awaiting Zach's\nconfirmation)"]
+            labels = ["swap the lens part", "swap everything else"]
             ax.set_yticks([0, -1], labels if c == 0 else [])
             if top == tops[0]:
                 ax.set_title(ctitle, fontsize=S.FONT + 1, color=col, loc="left")
             if top == tops[-1]:
-                ax.set_xlabel("points")
+                ax.set_xlabel("answers moved (pp)")
             else:
                 ax.set_xticklabels([])
         fig.text(0.01, top + 0.215, name, fontsize=S.FONT + 1, weight="bold", va="bottom")
-    tk27, tk9 = (json.loads((REPO / "results" / "jswap" / SWAP_RUNS[m] / "summary.json").read_text())["TK/swap_comp"]["transfer"]
-                 for m in ("q27", "q9"))  # fmt: skip
-    fig.text(0.01, 0.015, "Stated answers: the bridge read from the passage. With the bridge tracked instead, everything else\n"
-             f"moves the stated answer {tk27:+.1f} (Qwen 27B) and {tk9:+.1f} (Qwen 9B). Hollow: after the data.",
-             fontsize=S.FONT, color=S.COL["muted"], va="bottom")  # fmt: skip
+    fig.text(0.01, 0.015, "Hollow: after the data.", fontsize=S.FONT, color=S.COL["muted"], va="bottom")
     return fig
 
 
 def j3_order_signal(plt):
-    """Qwen 9B and Muse 30B, scenes where another item moved: answers by the locker's position with the whole change,
+    """Qwen 9B and Muse 30B, scenes where another item moved: answers by the locker's position with the whole patch,
     without the order signal and without a random part of its size; beside it, writes of the order signal at about a
     real change's size against a random vector."""
     dp = depth()
     card = {(r["claim"], r["model"]): r["flag"] for r in read_csv(G.SCORECARD)}
     fig = plt.figure(figsize=(S.WIDTH, 4.9))
-    S.title(fig, "The stated answer uses an order signal the lens does not read",
-            "Dan's scenes where another item moved. Left: stated answers that follow the locker's\n"
+    S.title(fig, "The lookup answer uses an order signal the lens does not read",
+            "Dan's scenes where another item moved. Left: lookup answers that follow the locker's\n"
             "position. Right: writes of the order signal that send it to the target locker.")  # fmt: skip
     pair = [MODELS[0], MODELS[3]]
     axl, axr = fig.add_axes((0.17, 0.30, 0.40, 0.48)), fig.add_axes((0.70, 0.30, 0.27, 0.48))
-    arms = (("whole", "whole change", S.COL["position"]), ("no_alf", "without the order signal", "#f4c48a"),
+    arms = (("whole", "whole patch", S.COL["position"]), ("no_alf", "without the order signal", "#f4c48a"),
             ("no_alf_rand", "without a random part (same size)", S.COL["control"]))  # fmt: skip
     for g, (name, _, target, _m) in enumerate(pair):
         scard = {"Qwen 9B": "Qwen3.5-9B", "Muse 30B": "Muse Glimmer 30B"}[name]
@@ -396,10 +389,11 @@ def j3_order_signal(plt):
         for k, (arm, label, col) in enumerate(arms):
             r = dp[("fig05", target, f"another item moved, {arm}: position share")]
             y = -g * 4.2 - k
-            bar(axl, y, num(r["value"]), r["lo"], r["hi"], col, kind, h=0.8)
-            axl.text(num(r["hi"]) + 0.02, y, f"{num(r['value']):.2f}", va="center", fontsize=S.FONT)
-            record("j3", name, f"answers by position: {label} (share)", round(num(r["value"]), 3), round(num(r["lo"]), 3),
-                   round(num(r["hi"]), 3), r["n"], source=f"figures/story/data.csv | fig05 | {r['quantity']}")  # fmt: skip
+            v, lo, hi = (round(100 * num(r[c]), 1) for c in ("value", "lo", "hi"))  # a share, drawn in %
+            bar(axl, y, v, lo, hi, col, kind, h=0.8)
+            axl.text(hi + 2, y, f"{v:.0f}", va="center", fontsize=S.FONT)
+            record("j3", name, f"answers by position: {label} (%)", v, lo, hi, r["n"],
+                   source=f"figures/story/data.csv | fig05 | {r['quantity']}")  # fmt: skip
         kind_w = "after" if "a" in card[("a write moves the lookup", scard)] else "fixed"
         w = dp[("fig07", target, "lookup target share, mean over locker pairs, s = 2")]
         dose = dp[("fig07", target, "dose (s / mean s*), s = 2")]
@@ -407,40 +401,34 @@ def j3_order_signal(plt):
         rdose = dp[("fig07", target, "dose (s / mean s*), s = 4")]
         for k, (r, col) in enumerate(((w, S.COL["position"]), (rnd, S.COL["control"]))):
             y = -g * 2.6 - k
-            bar(axr, y, num(r["value"]), r["lo"], r["hi"], col, kind_w, h=0.8)
-            axr.text(
-                max(num(r["value"]), num(r["hi"] or 0)) + 0.02,
-                y,
-                f"{num(r['value']):.2f}",
-                va="center",
-                fontsize=S.FONT,
-            )
-        record("j3", name, "writes sending the stated answer to the target locker: order signal (share)", num(w["value"]),
-               source=f"figures/story/data.csv | fig07 | {w['quantity']}")  # fmt: skip
-        record("j3", name, "the order signal's write dose (x a real change's size)", round(num(dose["value"]), 2),
+            v = round(100 * num(r["value"]), 1)
+            lo, hi = (round(100 * num(r[c]), 1) if r[c] != "" else "" for c in ("lo", "hi"))
+            bar(axr, y, v, lo, hi, col, kind_w, h=0.8)
+            axr.text(max(v, hi if hi != "" else v) + 2, y, f"{v:.0f}", va="center", fontsize=S.FONT)
+            what = "order signal" if r is w else "random vector"
+            record("j3", name, f"writes sending the lookup answer to the target locker: {what} (%)", v, lo, hi,
+                   source=f"figures/story/data.csv | fig07 | {r['quantity']}")  # fmt: skip
+        record("j3", name, "the order signal's write dose (times a real patch's size)", round(num(dose["value"]), 2),
                source=f"figures/story/data.csv | fig07 | {dose['quantity']}")  # fmt: skip
-        record("j3", name, "writes sending the stated answer to the target locker: random vector (share)", num(rnd["value"]),
-               rnd["lo"], rnd["hi"], source=f"figures/story/data.csv | fig07 | {rnd['quantity']}")  # fmt: skip
-        record("j3", name, "the random vector's dose (x a real change's size)", round(num(rdose["value"]), 2),
+        record("j3", name, "the random vector's dose (times a real patch's size)", round(num(rdose["value"]), 2),
                source=f"figures/story/data.csv | fig07 | {rdose['quantity']}")  # fmt: skip
     axl.set_yticks([-g * 4.2 - 1 for g in range(2)], [n for n, *_ in pair])
     axr.set_yticks([-g * 2.6 - 0.5 for g in range(2)], [n for n, *_ in pair])
     for ax, lim in ((axl, (-7.9, 0.7)), (axr, (-4.3, 0.7))):
-        ax.set_xlim(0, 1)
+        ax.set_xlim(0, 100)
         ax.set_ylim(*lim)
-        ax.set_xticks([0, 0.5, 1])
-        ax.set_xticklabels(["0", "0.5", "1"])
+        ax.set_xticks([0, 50, 100])
         ax.tick_params(axis="y", length=0)
         ax.spines["left"].set_visible(False)
-    axl.set_xlabel("share of stated answers")
-    axr.set_xlabel("share of writes")
+    axl.set_xlabel("lookup answers by position (%)")
+    axr.set_xlabel("writes reaching the target (%)")
     hs = [Rectangle((0, 0), 1, 1, fc=c, ec=c) for _, _, c in arms]
     hs += [
         Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["position"], lw=1.6),
         Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["control"], lw=1.6),
     ]
     labels = [label for _, label, _ in arms] + [
-        "order signal written,\nabout a real change's size",
+        "order signal written,\nabout a real patch's size",
         "random vector,\nabout twice that size",
     ]
     sh, sl = S.status_handles(("fixed", "after"))
@@ -450,10 +438,10 @@ def j3_order_signal(plt):
 
 # the README's findings: (label, grid rows as (study, grid claim)); finding 4 is derived from rows below it
 FINDINGS = (
-    ("recalled answers need the lens part; stated ones do not", (("depth", G.RECALL), ("breadth", G.RECALL))),
-    ("swapping the lens part moves the recalled answer, not the stated one",
+    ("recalled answers need the lens part; lookup ones do not", (("depth", G.RECALL), ("breadth", G.RECALL))),
+    ("swapping the lens part moves the recalled answer, not the lookup one",
      (("breadth", "another entity's J++ part moves the answer (≥ 20 points)"),)),
-    ("the stated answer uses an order signal outside the lens", (("depth", "the lookup needs it"),)),
+    ("the lookup answer uses an order signal outside the lens", (("depth", "the lookup needs it"),)),
     ("the two methods agree on this model", (("depth", G.RECALL), ("breadth", G.RECALL),
                                               ("breadth", "specific: rotated and logit-lens removals cost < 10"))),
 )  # fmt: skip
@@ -541,8 +529,8 @@ def x45r_score() -> Path:
 
 
 def j5_muse_depth(plt):
-    """Muse 30B: remove everywhere's recalled-minus-stated loss at three layer sets (the lens part and its three controls,
-    the bar of 15 fixed in advance), beside remove from the change at layer 26 (recalled vs stated extra loss)."""
+    """Muse 30B: remove everywhere's recalled-minus-lookup loss at three layer sets (the lens part and its three controls,
+    the bar of 15 fixed in advance), beside remove from the patch at layer 26 (recalled vs lookup extra loss)."""
     path = x45r_score()
     src = str(path.relative_to(REPO))
     sc = json.loads(path.read_text())
@@ -551,9 +539,8 @@ def j5_muse_depth(plt):
     dp = depth()
     fig = plt.figure(figsize=(S.WIDTH, 5.4))
     S.title(fig, "On Muse 30B the lens part is carried at mid depth, needed only late",
-            f"Left: recalled answers lost minus stated answers lost ({n['M']} of each). Right: switches lost\n"
-            "beyond a random part, × 100; the two tools count differently. Opened before Zach confirmed\n"
-            "the use of his tool.")  # fmt: skip
+            f"Left: recalled minus lookup answers lost, pp ({n['M']} of each). Right: switches lost beyond\n"
+            "a random part, pp; the two tools count different things.")  # fmt: skip
     axl, axr = fig.add_axes((0.215, 0.28, 0.47, 0.42)), fig.add_axes((0.745, 0.28, 0.235, 0.42))
     sets = (("layers 23-29", "his_L23_29", sc["his_L23_29"], "fixed"),
             ("layer 26", "descriptive.L26", sc["descriptive"]["L26"], "fixed"),
@@ -561,7 +548,7 @@ def j5_muse_depth(plt):
     marks = (("paper10", "the lens part", "o", RECALLED, 0.0), ("unembed10", "logit lens", "D", S.COL["control"], 0.22),
              ("paper10_rot", "rotated", "s", S.COL["control"], 0.44),
              ("paper10_pcasize", "size-matched", "^", S.COL["control"], 0.66))  # fmt: skip
-    record("j5", "Muse 30B", "remove everywhere: items per answer kind (recalled, stated)", n["M"], n=n["K"],
+    record("j5", "Muse 30B", "remove everywhere: items per answer kind (recalled, lookup)", n["M"], n=n["K"],
            source=f"results/ablate_v2/jsuite2_score/{sc['rule_run']}.json | facts paper10/start=all n")  # fmt: skip
     for i, (label, key, cells, kind) in enumerate(sets):
         y = -i
@@ -579,15 +566,15 @@ def j5_muse_depth(plt):
             size = 9 if cond == "paper10" else 7
             axl.plot([v], [y - dy], marker=marker, ms=size, mfc=face, mec=col if cond == "paper10" else "#8a8a8a",
                      mew=1.6, ls="", zorder=3)  # fmt: skip
-            record("j5", "Muse 30B", f"remove everywhere, {label}, {name}: recalled minus stated answers lost (points)",
+            record("j5", "Muse 30B", f"remove everywhere, {label}, {name}: recalled minus lookup answers lost (pp)",
                    v, lo, hi, n["M"], source=f"{src} | {ckey}.{cond}.mk")  # fmt: skip
         axl.text(cells["paper10"]["ci"][1] + 2.5, y, f"{cells['paper10']['mk']:+.1f}", va="center", fontsize=S.FONT)
     axl.axvline(15, color="#555555", ls="--", lw=1.1, zorder=1)
-    record("j5", "Muse 30B", "remove everywhere: the 'needed' bar (points)", 15.0,
+    record("j5", "Muse 30B", "remove everywhere: the 'needed' bar (pp)", 15.0,
            source="scripts/x45r_score.py | NOT_NEEDED_MK, NOT_NEEDED_EXCESS, CARRIED = 15.0")  # fmt: skip
     axl.set_xlim(-5, 75)
     axl.set_xticks([0, 15, 30, 45, 60, 75])
-    axl.set_xlabel("points")
+    axl.set_xlabel("recalled minus lookup answers lost (pp)")
     axl.set_title("remove everywhere (Zach)", fontsize=S.FONT + 1, loc="left")
     # ours at layer 26, on the left panel's layer-26 row
     q = "main test (two people swap picks): {} extra loss"
@@ -600,19 +587,19 @@ def j5_muse_depth(plt):
     y = -1
     axr.plot(pts, [y, y], color="#bbbbbb", lw=2.2, zorder=1, solid_capstyle="butt")
     axr.plot([tick], [y], marker="|", ms=15, mew=2.6, color=S.COL["control"], ls="", zorder=2)
-    for v, col in zip(pts, (RECALLED, STATED), strict=True):
+    for v, col in zip(pts, (RECALLED, LOOKUP), strict=True):
         axr.plot([v], [y], "o", ms=9, mfc=col, mec=col, mew=1.6, zorder=3)
-    for label, r, v in (("recalled", rc, pts[0]), ("stated", st, pts[1])):
-        record("j5", "Muse 30B", f"remove from the change, layer 26: {label} answers' extra loss (x 100)", round(v, 1),
+    for label, r, v in (("recalled", rc, pts[0]), ("lookup", st, pts[1])):
+        record("j5", "Muse 30B", f"remove from the patch, layer 26: {label} answers' extra loss (pp)", round(v, 1),
                round(100 * num(r["lo"]), 1), round(100 * num(r["hi"]), 1), source=f"figures/story/data.csv | fig01 | {r['quantity']}")  # fmt: skip
-    record("j5", "Muse 30B", "remove from the change, control (a random part): recalled switches lost (%)", tick,
+    record("j5", "Muse 30B", "remove from the patch, control (a random part): recalled switches lost (%)", tick,
            source="figures/story/data.csv | numbers | rc_droprand_muse")  # fmt: skip
-    record("j5", "Muse 30B", "remove from the change, layer 26: gap (recalled minus stated extra loss)", sc["our_gap_L26"][0],
+    record("j5", "Muse 30B", "remove from the patch, layer 26: gap (recalled minus lookup extra loss)", sc["our_gap_L26"][0],
            *sc["our_gap_L26"][1:], source=f"{src} | our_gap_L26")  # fmt: skip
     axr.set_xlim(-20, 100)
     axr.set_xticks([0, 50, 100])
-    axr.set_xlabel("× 100")
-    axr.set_title("remove from the change\n(Dan), layer 26", fontsize=S.FONT + 1, loc="left")
+    axr.set_xlabel("switches lost (pp)")
+    axr.set_title("remove from the patch\n(Dan), layer 26", fontsize=S.FONT + 1, loc="left")
     for ax in (axl, axr):
         ax.set_ylim(-2.9, 0.75)
         ax.axvline(0, color="#999999", lw=0.8, zorder=0)
@@ -622,9 +609,9 @@ def j5_muse_depth(plt):
     axr.set_yticks([])
     hs = [plt.Line2D([], [], marker=m, ls="", ms=8, mfc=c if c == RECALLED else "#cfcfcf", mec=c if c == RECALLED else "#8a8a8a")
           for _, _, m, c, _ in marks]  # fmt: skip
-    hs += [plt.Line2D([], [], marker="o", ls="", color=STATED, ms=8), plt.Line2D([], [], ls="--", color="#555555")]
+    hs += [plt.Line2D([], [], marker="o", ls="", color=LOOKUP, ms=8), plt.Line2D([], [], ls="--", color="#555555")]
     sh, sl = S.status_handles(("fixed", "after"))
-    labels = ["the lens part (left);\nrecalled answer (right)", "logit lens", "rotated", "size-matched", "stated answer",
+    labels = ["the lens part (left);\nrecalled answer (right)", "logit lens", "rotated", "size-matched", "lookup answer",
               "bar fixed in advance (15)"]  # fmt: skip
     legend_below(fig, hs + sh, labels + sl, 0.0, 4)
     return fig

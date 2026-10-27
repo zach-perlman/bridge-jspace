@@ -201,11 +201,11 @@ SWAP_CLAIM = "another entity's J++ part moves the answer (≥ 20 points)"
 FIGURES: dict[str, tuple[str, str, tuple[str, ...], tuple[tuple[str, tuple[tuple[str, str], ...]], ...], str]] = {
     "grid": (
         "Recalled answers need the lens part cleanly on three of nine models",
-        "Dan's tool: remove from the change. Zach's: remove everywhere and swap.\n"
+        "Dan's tool: remove from the patch. Zach's: remove everywhere and swap.\n"
         "Full claims and every cell's source: docs/shared/grid.csv.",
         ("q9", "q27", "q122", "mu", "nl", "ds", "mi", "nb", "ol"),
-        (("1. Recalled vs stated answers", (
-            ("recalled answers need the\nlens part, stated ones not", RECALL),
+        (("1. Recalled vs lookup answers", (
+            ("recalled answers need the\nlens part, lookup ones not", RECALL),
             ("not a margin effect", MARGIN),
             ("beats rotated and logit lens", "specific: rotated and logit-lens removals cost < 10"),
             ("beats a same-size PCA removal", "not variance: PCA directions (same size) cost ≤ 1/3 as much"))),
@@ -220,14 +220,14 @@ FIGURES: dict[str, tuple[str, str, tuple[str, ...], tuple[tuple[str, tuple[tuple
         "Nemotron Bolt's swap: with 100 directions (with 10: +3). DeepSeek's and Ministral's swaps: at mid depth.",
     ),
     "grid_dan": (
-        "An order signal steers stated answers on three of four models",
-        "Dan's own tests (remove from the change, the order signal, writes) on his four models.\n"
+        "An order signal steers lookup answers on three of four models",
+        "Dan's own tests (remove from the patch, the order signal, writes) on his four models.\n"
         "Full claims and every cell's source: docs/shared/grid.csv.",
         ("q9", "q27", "q122", "mu"),
-        (("1. Recalled vs stated answers: more scenes", (
+        (("1. Recalled vs lookup answers: more scenes", (
             ("clean one-pick scenes", "clean one-pick scenes"),
             ("the locker sentence before the pick", "locker before the pick"))),
-         ("3. What stated answers use", (
+         ("3. What lookup answers use", (
             ("never the bridge's value", "never the value"),
             ("removing the order signal stops position answers", "the lookup needs it"),
             ("only the order signal gives position answers", "only it gives position answers"),
@@ -243,7 +243,7 @@ FIGURES: dict[str, tuple[str, str, tuple[str, ...], tuple[tuple[str, tuple[tuple
             ("natural passages", "natural passages"),
             ("without the chat template", "without the chat template"),
             ("never the value, without the chat template", "never the value without the chat template"))),
-         ("Internals of remove from the change", (
+         ("Internals of remove from the patch", (
             ("a cause for Qwen 27B's loss at 100 directions", "a tested cause for the 27B's loss with 100 directions"),
             ("the recalled answer needs only the lens part", "the recall needs only the J++ part, locker after the pick"),
             ("the recalled answer reads the earlier mention", "the recall reads the earlier mention, locker before the pick"),

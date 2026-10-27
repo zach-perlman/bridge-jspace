@@ -1,4 +1,4 @@
-Glossary for the joint README, 27 Oct (Dan ~15:50). The root [README.md](../../README.md) uses only the right-hand terms.
+Glossary for the joint README, 27 Oct (Dan ~15:50; ~19:15: "lookup answer" replaces "stated answer" (stated = lookup), "remove from the patch" replaces "remove from the change", and every joint figure counts in percentage points, pp). The root [README.md](../../README.md) uses only the right-hand terms.
 
 # Joint glossary: the reports' terms and the front page's
 
@@ -9,15 +9,16 @@ The two reports keep their own words: [docs/depth/README.md](../depth/README.md)
 | Term in a report or draft | Where | Meaning | Front page |
 |---|---|---|---|
 | M final, M | breadth | the attribute is never stated, so it must be recalled | recalled answer |
-| K final, K | breadth | the attribute is stated in the passage | stated answer |
-| P, A, N finals | breadth | controls: a new made-up fact stated; the answer word once, on another entity; nothing stated | not on the front page (the stated-answer controls) |
-| PP, PK, PM, TK, TM, MK, MM, … | breadth | start × final: the bridge read (P), tracked (T) or recalled (M), then the final | "stated answer" / "recalled answer" |
-| P→P→M, M→M→P, … | breadth | three-hop chains, one letter per hop's source | three-step chain ending on a recalled / stated answer |
+| K final, K | breadth | the attribute is stated in the passage | lookup answer |
+| P, A, N finals | breadth | controls: a new made-up fact stated; the answer word once, on another entity; nothing stated | not on the front page (the lookup-answer controls) |
+| PP, PK, PM, TK, TM, MK, MM, … | breadth | start × final: the bridge read (P), tracked (T) or recalled (M), then the final | "lookup answer" / "recalled answer" |
+| P→P→M, M→M→P, … | breadth | three-hop chains, one letter per hop's source | three-step chain ending on a recalled / lookup answer |
 | RM − MM | breadth | the bridge never named minus named once in passing | earlier mention |
-| M − K | breadth | recall points lost minus stated-fact points lost | points more on recalled than on stated answers |
+| M − K | breadth | recall points lost minus stated-fact points lost | points more on recalled than on lookup answers |
 | recall | depth | "How many legs does Iris's pick have?" | recalled answer |
-| lookup | depth | "Which locker belongs to Iris's pick?" | stated answer |
-| in-context read | joint drafts | an answer read from the prompt (lookup or K) | stated answer |
+| lookup | depth | "Which locker belongs to Iris's pick?" | lookup answer |
+| stated answer | front page until 27 Oct ~19:15 | an answer written in the text (stated = lookup) | lookup answer |
+| in-context read | joint drafts | an answer read from the prompt (lookup or K) | lookup answer |
 | final | breadth | the last question of a chain | answer |
 
 ## The lens part and the tools
@@ -28,7 +29,8 @@ The two reports keep their own words: [docs/depth/README.md](../depth/README.md)
 | J++ part | depth | the 25 signed-OMP J++ atoms that best rebuild the change | the lens part |
 | entity code | joint drafts | the J-part read as "which entity" | the lens part (it says which entity it is) |
 | knock-out, paper10 | breadth | the top-10 J++ directions projected out at every token of a band | remove everywhere |
-| change-removal, "without the J++ part" | depth | the bridge word's change added at one layer, minus its J++ part | remove from the change |
+| change-removal, "without the J++ part" | depth | the bridge word's change added at one layer, minus its J++ part | remove from the patch |
+| remove from the change, whole change | front page until 27 Oct ~19:15 | Dan's tool; the patch with nothing removed | remove from the patch, whole patch |
 | J-part swap, swap | breadth | another entity's J-part written in | swap |
 | swap_comp, complement | breadth | everything but the J-part swapped | swap of everything but the lens part |
 | paste | breadth | the whole residual written in | not on the front page |
@@ -63,7 +65,7 @@ The two reports keep their own words: [docs/depth/README.md](../depth/README.md)
 | replication, fresh scenes | depth | the rerun on new scenes | replication |
 | routes test | depth | which locker the lookup answers: by identity, position or value | Dan's scenes: "never takes the moved number" |
 | 45r, Q46.1 | predictions | Zach's knock-out on Muse at L23-29 against Dan's L26 gap | pending test: Muse 30B at the same depth |
-| 45s, Q46.2-Q46.3 | predictions | Dan's tests on Lightning at L30 | pending test: Lightning with remove from the change |
+| 45s, Q46.2-Q46.3 | predictions | Dan's tests on Lightning at L30 | pending test: Lightning with remove from the patch |
 | GAP -> … | joint drafts | a cell with no number yet | Pending tests |
 | ° | joint drafts | judged after the data | (after the data) |
 | Qwen3.5-9B | both | | Qwen 9B |

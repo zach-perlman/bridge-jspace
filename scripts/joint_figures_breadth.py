@@ -48,7 +48,7 @@ def j6_datasets(plt):
     fig = plt.figure(figsize=(S.WIDTH, 5.6))
     ax = fig.add_axes((0.31, 0.2, 0.66, 0.6))
     S.title(fig, "Recalled answers need the lens part on every dataset we built",
-            "Remove everywhere: points lost more on recalled than on stated answers.\n"
+            "Remove everywhere: pp lost more on recalled than on lookup answers.\n"
             "Grey tick: the logit lens's own directions removed instead (where it was run).")  # fmt: skip
     off = {"q27": -0.2, "q9": 0.0, "nl": 0.2}
     for i, (label, key, ukey) in enumerate(rows):
@@ -73,7 +73,7 @@ def j6_datasets(plt):
     ax.set_xlim(-10, 75)
     ax.axvline(0, color="#999999", lw=0.8, zorder=0)
     ax.set_xticks([0, 25, 50, 75])
-    ax.set_xlabel("points more on recalled than on stated answers")
+    ax.set_xlabel("pp more on recalled than on lookup answers")
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
     for b in (2.5, 5.5):
@@ -90,8 +90,8 @@ def j7_where(plt):
     zb = J.breadth()
     fig = plt.figure(figsize=(S.WIDTH, 6.8))
     S.title(fig, "Middle layers need the bridge's mention; deeper layers, the question",
-            "Remove everywhere, but only at some tokens: points lost more on recalled than on\n"
-            "stated answers, all bridges. Each model at a middle band and a deeper band of layers.")  # fmt: skip
+            "Remove everywhere, but only at some tokens: pp lost more on recalled than on\n"
+            "lookup answers, all bridges. Each model at a middle band and a deeper band of layers.")  # fmt: skip
     modes = (("every token", S.COL["control"]), ("only in the question", S.COL["position"]),
              ("only at the bridge's mention", S.COL["identity"]))  # fmt: skip
     bands = {"q27": ("L32-40", "L52-60"), "q9": ("L12-16", "L26-29"), "nl": ("L27-33", "L33-39")}
@@ -115,7 +115,7 @@ def j7_where(plt):
             if top != tops[-1]:
                 ax.set_xticklabels([])
             else:
-                ax.set_xlabel("points")
+                ax.set_xlabel("recalled minus lookup lost (pp)")
             head = f"{name}, {depth} {bands[m][c]}" if c == 0 else f"{depth} {bands[m][c]}"
             ax.set_title(head, fontsize=S.FONT + 1, loc="left", color="#222222" if c == 0 else S.COL["muted"], weight="bold" if c == 0 else "normal")
     hs = [plt.Rectangle((0, 0), 1, 1, color=col) for _m, col in modes]

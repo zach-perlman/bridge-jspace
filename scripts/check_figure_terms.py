@@ -9,8 +9,10 @@ and the canonical lines of docs/drafts/readme_v5_captions.md. docs/glossary.md's
 tests/test_readme_build.py; this script checks the retired terms only.
 
 The joint story (Dan, 27 Oct ~15:50) adds JOINT_RETIRED, the words the root README and its figures leave to the two
-reports: M, K, PK, TK, P->P->M, RM - MM, lookup, in-context read, final, J-part, J++ part, entity code, pointer, test ids
-(45r, Q46.1), GAP, °, X0, paper10, s = 2. Checked on the root README.md (its prose, alt texts and captions; HTML
+reports: M, K, PK, TK, P->P->M, RM - MM, in-context read, final, J-part, J++ part, entity code, pointer, test ids
+(45r, Q46.1), GAP, °, X0, paper10, s = 2; since Dan ~19:15 also "stated" (now "lookup answer"), "remove from the
+change" (now "remove from the patch") and "x 100" (every joint figure counts in pp; "lookup" is allowed again).
+Checked on the root README.md (its prose, alt texts and captions; HTML
 comments, code spans and link targets left out) and on the joint figures (figures/shared/: scripts/joint_figures.py's
 five and scripts/shared_grid.py's two grids), whose drawn texts also get RETIRED.
 
@@ -45,7 +47,11 @@ JOINT_RETIRED = {
     "PK / TK": r"\b[PT]K\b",
     "chain code": r"\b[PMTKAN]\s*(?:->|→)\s*[PMTKAN]\b",
     "RM / MM": r"\b(?:RM|MM)\b",
-    "lookup": r"(?i)\blook-?ups?\b",
+    # Dan ~19:15: "lookup answer" replaces "stated answer"; "remove from the patch" replaces "remove from the change";
+    # every joint figure counts in pp, never "x 100"
+    "stated": r"(?i)\bstated\b",
+    "from the change": r"(?i)\bfrom the change\b",
+    "x 100": r"(?<![\w.])[x×]\s?100\b",
     "in-context read": r"(?i)\bin-context read",
     "final": r"(?i)\bfinals?\b",
     "J-part": r"(?i)\bJ-parts?\b",
