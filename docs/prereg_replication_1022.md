@@ -1985,3 +1985,19 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   steps).
   - Readings: a mode's M - K as a share of the all-token +60 (muse30_jsuite_v2_test_chat_ko_cand2_v1);
     question >= 2/3 means the question, bridge >= 2/3 means the mention.
+
+### Amendment 57 note 2 (Zach, 2026-10-27 13:05 UTC, before any run below): Muse not run; clean-checkout reruns instead
+
+- **Muse (note 1) did not run.** Its weights (meta-models/Muse-Glimmer-30B) are no longer cached; only its lens is.
+  - Both jobs stopped at model load and produced no output.
+  - Downloading the weights (about 60 GB, with 35 GB free) needs a cache drop. That needs Zach's OK, so it was not done.
+- **Instead, the last check before calling a result positive:** amendment 57's new results rerun from the clean worktree
+  /workspace/clean_bridge at HEAD, with the same commands. Run names carry "clean_", and each rerun is compared row by
+  row with its run of record, as amendment 50 (`scripts/queues/h200_clean57_1027.sh`).
+  - **GPU 0:** the 27B on jsuite_v2nb: competence on the 16 words, then the numbers and three-hop knock-outs.
+  - **GPU 1:** the 9B's late band L26-29 (all-token, question-only, bridge-only, with the record v2 competence). Then
+    the 9B on jsuite_v2nb's numbers (competence, knock-out).
+  - **Expectation:** row-identical, as the 27B's and 9B's earlier clean reruns were. Any differing row is reported with
+    its count and the rerun's headline.
+- **Lightning is not rerun.** Its earlier clean rerun reproduced the headline but not every row, because its inputs
+  differed (amendment 56 B).
