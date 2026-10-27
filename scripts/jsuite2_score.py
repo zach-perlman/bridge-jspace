@@ -117,6 +117,7 @@ def main(run: str, set_name: str, by_relation: bool, withs: list[str] | None = N
             for r in nr:
                 sel[r["family"].lstrip("n")].append((items[r["id"]].get("scene", r["id"]), r["correct"]))
             cs = [(f"{s}M", f"{s}L") for s in "PKAM"] + [("KR", "PR"), ("AR", "PR"), ("MR", "PR")]
+            cs += [("KM", "PM"), ("AM", "PM"), ("KL", "PL"), ("AL", "PL")]  # amendment 57: computed vs read numbers that key a recall / lookup
             cell = boot(sel, cs, rng)
             out["numbers"][cond] = cell
             print(f"numbers {cond:14s} lost " + " ".join(f"{w} {v:.0f}" for w, v in sorted(cell["loss"].items())) + "  "

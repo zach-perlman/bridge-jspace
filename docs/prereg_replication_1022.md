@@ -1909,3 +1909,58 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
 - **Reading:** our fit's M − K within 10 of the published lens's (+43) means the lens kind does not drive the
   magnitude on this model. A larger gap is reported as a lens effect. On v1 the two differed by about 3.
 - **Bolt's pointer job** (waiting) is relaunched to wait for this run too.
+
+## Amendment 57 (Zach, 2026-10-27 07:50 UTC, before any run below): H0 head-on with a powered numbers set, a second three-hop seed, late-band positions for the 9B and Lightning
+
+- **Why (Zach, 2026-10-27 ~03:45 ET: "What else to queue? U have until around noon"):**
+  - The v2 numbers module (amendment 56 A) settles the report question: a number computed from the passage needs no
+    J++ to be reported. It cannot answer H0 head-on, which is whether a computed number that the model then *uses* to
+    recall something routes through J++. Those cells (KM, AM, and the lookups KL, AL) had 3-35 eligible items per model,
+    because composing two steps is hard.
+  - The three-hop result rests on one data seed per model.
+  - Section 3's "late in depth, the dependence moves to the question" has the 27B, Ministral and the 122B. It has no
+    late band for the 9B or Lightning.
+- **Seen when this was written:**
+  - Amendment 56 A's module results on the 27B, 9B and Lightning (EXPERIMENTS.md).
+  - The dev depth profiles (amendment 42), including Lightning at L42-48: stated facts lose 74 points and recall 71,
+    so M - K is about -2.
+  - The new set's generation counts. No model output on it.
+- **A. A larger numbers set and a second three-hop seed.**
+  - **Set:** jsuite_v2nb, made by `scripts/jsuite_v2.py --name jsuite_v2nb --seed 2701 --numbers-reps 80` at commit
+    3761c39. Only its test split's numbers and three-hop modules are used; its facts module is not.
+  - **Numbers:** 6,709 items, 526-581 per word (v2: about 59). Only the lookup and recall finals: nPL nPM nKL nKM nAL
+    nAM nML nMM. The report words are already powered on v2.
+  - **Three-hop:** 911 items (105-120 per word), a new seed of natural3's chains.
+  - **Procedure, per model:**
+    - competence on those 16 words (`natural_v1.py competence --words ... --read cand2 --hop1 gen`);
+    - then the knock-out as amendment 56 A: paper10 / rotated / logit lens / its rotation, per-item eligibility, cand2;
+      numbers with the digit dictionary;
+    - a smoke of one item per word first; scored by jsuite2_score.
+  - **Models:** the 27B (L32-40), Lightning (L27-33), and the 9B (L12-16, numbers only: its three-hop was unreadable
+    on v2).
+  - **Predictions (numbers), loss = points lost among items right unedited:**
+    1. **H0 head-on.** A number counted or computed from the passage that keys a recall needs no more J++ than a read
+       one: loss(KM) and loss(AM) each within 10 of loss(PM). If either is at least loss(PM) + 15, with its rotated
+       control within 10 of PM's, the computed number itself routes through J++: H0 is false for numbers in that model.
+    2. **Final-hop rule** (amendment 24, prediction 2): SM - SL >= 20 for each start S in P, K, A, M.
+    3. **Computation feeding a lookup** (amendment 24, prediction 3): KL and AL each within 10 of PL.
+    - A word with fewer than 30 eligible items is reported with its n and not read.
+  - **Predictions (three-hop), as amendment 56:** the chains ending in a recall (PPM, MPM, PMM, MMM) lose more than
+    PPP; MPP and PMP do not. This is a replication on a new data seed.
+- **B. Late-band positions for the 9B and Lightning.**
+  - **Band, picked on dev:** the latest dev-profile window (amendment 42's profiles) where stated facts lose at most 10
+    points and J++ M - K is at least 15. That gives the 9B L26-29 (81-91% depth; dev M - K +28, logit lens +22) and
+    Lightning L33-39 (64-75%; dev M - K +50, logit lens +5).
+  - Amendment 37 A's rule (81-94% depth) would put Lightning at L42-48, where the removal breaks stated facts too
+    (dev above), so no position split could be read there. The 9B's pick coincides with the rule.
+  - **Runs:** the all-token knock-out (paper10 / rotated / logit lens / its rotation), and question-only and
+    bridge-mention-only (paper10 / rotated), on jsuite_v2_test_chat, the 15 facts words, each model's record v2 test
+    competence (`scripts/queues/h200_depth_1025.sh`; run names carry the band).
+  - **Readings as amendments 37 A and 41:**
+    - a mode's M - K as a share of the band's all-token M - K, not read if that is below 15;
+    - question >= 2/3: the dependence sits in the question at this depth;
+    - bridge >= 2/3: it sits at the mention.
+- **Order:** after amendment 56 D's DeepSeek chain, which holds both GPUs (`scripts/queues/h200_h0nb_1027.sh`).
+  - GPU 0: the 27B (competence, numbers, three-hop), then the 9B's late band.
+  - GPU 1: Lightning (competence, numbers, three-hop), the 9B's numbers (competence, knock-out), then Lightning's
+    late band.
