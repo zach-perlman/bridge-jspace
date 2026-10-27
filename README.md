@@ -95,7 +95,7 @@ Full lists: [depth report](docs/depth/README.md) <!-- src: docs/depth/README.md 
 ## Pending tests
 
 - **Muse 30B, same depth:** Zach's method over layers 23-29 against Dan's result. <!-- src: predictions/2026-10-27_dan.md | **Q46.1** -->
-- **Nemotron Lightning, Dan's method** at layer 30, inside Zach's band; waits for his lens file. <!-- src: scripts/x45s.py | at L30 (the middle of Zach's pre-registered band L27-33 -->
+- **Nemotron Lightning, Dan's method** at layer 27, the first layer of Zach's band; waits for his lens file. <!-- src: scripts/x45s.py | at L27 (the shallowest layer of Zach's band L27-33 -->
 - **Zach's confirmation** of the swap of everything but the lens part. No test is planned for the order signal on Lightning.
 
 ## Open questions
