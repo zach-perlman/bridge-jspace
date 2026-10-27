@@ -1839,7 +1839,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     - Saturated if within 10.
     - Paste and swap_comp reported beside it.
 
-### Amendment 55 note 1 (Zach, 2026-10-27 01:25 UTC, before any run below): the overnight queue after Bolt
+### Amendment 55 note 1 (Zach, 2026-10-27 01:13 UTC, before any run below): the overnight queue after Bolt
 
 - **F0 (GPU 0, after amendment 54's Bolt chain):** amendment 55 on the 27B: keep-own, then the swap dose (K 10 / 30 / 100).
 - **F1 (GPU 1, same wait):** amendment 55's keep-own on Ministral. Then **Lightning on the natural sets**, its first data
