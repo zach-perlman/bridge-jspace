@@ -208,6 +208,7 @@ Where in the prompt must the removal act?
   | Lightning (L33-39, 64-75%) | {{v|late.nl.all}} | {{v|late.nl.question}} | {{v|late.nl.bridge}} |
   | Ministral (L32-37) | {{v|ko.mi.mk}} | {{v|pos.mi.question}} | {{v|pos.mi.bridge}} |
   | 122B (L39-45) | {{v|ko.q122.mk}} | {{v|pos.q122.question}} | {{v|pos.q122.bridge}} |
+  | Muse (L36-42) | {{v|ko.mu.mk}} | {{v|pos.mu.question}} | {{v|pos.mu.bridge}} |
 
   - The 9B's and Lightning's late bands were picked on dev (amendment 57): the latest window where stated facts still
     lose at most 10. Lightning's is shallower than the 27B's because past 69% depth its removal breaks stated facts too.
@@ -287,8 +288,11 @@ How many directions does the dependence need, and when does the removal stop bei
   | Lightning | {{v|dose.nl.k1}} | {{v|dose.nl.k10}} | {{v|dose.nl.k100}} |
   | Ministral | {{v|dose.mi.k1}} | {{v|dose.mi.k10}} | {{v|dose.mi.k100}} |
   | DeepSeek | {{v|dose.ds.k1}} | {{v|dose.ds.k10}} | {{v|dose.ds.k100}} |
+  | Muse | {{v|dose.mu.k1}} | {{v|dose.mu.k10}} | {{v|dose.mu.k100}} |
 
   The 27B keeps rising to 30 directions ({{v|dose.q27.k30}}).
+  Muse (amendment 57 note 1) is specific at every K: at 10 directions the size-matched control costs
+  {{v|dose.mu.k10.pc}} and the rotated one {{v|dose.mu.k10.rot}}, but the logit lens's own 10 directions cost {{v|dose.mu.k10.u}}.
 - **More directions add damage that is not specific.** Greedy answers hide it: the stated answer usually stays on top
   while losing much of its probability.
   - Lightning: stated facts lose {{a|dose.nl.k100.K}} points by greedy answer at 100 directions, but
@@ -511,8 +515,8 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 ## 10. Next
 
-- OLMo and Muse through the dose grid. Each needs a cache drop (Muse's weights are gone; only its lens is cached), so
-  each needs approval.
+- OLMo through the dose grid. It needs a cache drop, so it needs approval. (Muse's ran on 27 Oct, amendment 57
+  notes 1 and 5.)
 - H0 head-on: a bridge computed from the passage, on v2.
 - Hand-checking.
 

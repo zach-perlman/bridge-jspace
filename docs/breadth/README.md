@@ -35,7 +35,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 6c3de8f0 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at c8d289a2 from the run files.
 
 ## Setup
 
@@ -209,6 +209,7 @@ Where in the prompt must the removal act?
   | Lightning (L33-39, 64-75%) | +62 | +53 | +0 |
   | Ministral (L32-37) | +23 | +24 | 0 |
   | 122B (L39-45) | +48 | +28 | +10 |
+  | Muse (L36-42) | +60 | +59 | +2 |
 
   - The 9B's and Lightning's late bands were picked on dev (amendment 57): the latest window where stated facts still
     lose at most 10. Lightning's is shallower than the 27B's because past 69% depth its removal breaks stated facts too.
@@ -288,8 +289,11 @@ How many directions does the dependence need, and when does the removal stop bei
   | Lightning | +46 | +51 | +54 |
   | Ministral | +21 | +26 | +22 |
   | DeepSeek | +12 | +18 | +29 |
+  | Muse | +69 | +60 | +51 |
 
   The 27B keeps rising to 30 directions (+65).
+  Muse (amendment 57 note 1) is specific at every K: at 10 directions the size-matched control costs
+  +5 and the rotated one +3, but the logit lens's own 10 directions cost +36.
 - **More directions add damage that is not specific.** Greedy answers hide it: the stated answer usually stays on top
   while losing much of its probability.
   - Lightning: stated facts lose 4 points by greedy answer at 100 directions, but
@@ -438,7 +442,7 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
 | Ministral-3-14B (L32-37) | +0.62 nats | +23 [19, 28] | +1 / +4 | 0.06 | +37 | · | · | 0.06 | +3 / +10 (mid depth) | · | · | 10 (3) |
 | Nemotron 3.5 Bolt (L42-53) | +0.20 nats | +6 [3, 9] | +0 / +2 | 1.28 | +6 | · | · | · | +3 / +20; K 100: +41 | 1.01 | · | 3 (3) |
 | OLMo-3-32B base (L12-20) | +0.04 nats | +5 [3, 8] | +2 / +2 | · | +4 | · | · | · | +41 / +53 | · | · | · |
-| Muse Glimmer 30B (L36-42) | +0.94 nats | +60 [55, 65] | +3 / +35 | · | +49 | · | · | · | · | · | · | · |
+| Muse Glimmer 30B (L36-42) | +0.94 nats | +60 [55, 65] | +3 / +35 | 0.09 | +49 | · | · | · | · | · | · | 1 (1) |
 | Qwen3.5-122B (FP8) (L39-45) | +1.26 nats | +48 [44, 54] | +2 / +12 | · | +2 | · | · | · | · | · | · | · |
 
 Size-matched for Bolt: from the dose run (150 items per word), where no stand-alone run exists. Dose column: K\* as
@@ -522,8 +526,8 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 ## 10. Next
 
-- OLMo and Muse through the dose grid. Each needs a cache drop (Muse's weights are gone; only its lens is cached), so
-  each needs approval.
+- OLMo through the dose grid. It needs a cache drop, so it needs approval. (Muse's ran on 27 Oct, amendment 57
+  notes 1 and 5.)
 - H0 head-on: a bridge computed from the passage, on v2.
 - Hand-checking.
 
