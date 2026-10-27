@@ -37,9 +37,12 @@ GROUPS = ("all", "before", "after")
 ARMS = ("whole", "no_part", "no_rand")
 
 
-def group_cells(rows: list[dict], cases: dict[str, dict], layer: int, n_boot: int) -> dict[str, dict]:
-    """Per group (all / before / after): each reader's extra loss and switch rate, and the gap, on paired resamples."""
-    mine = [r for r in rows if r["rendering"] == "chat" and r["layer"] == layer and r["dict"] in ("-", "jpp")
+def group_cells(
+    rows: list[dict], cases: dict[str, dict], layer: int, n_boot: int, rendering: str = "chat"
+) -> dict[str, dict]:
+    """Per group (all / before / after): each reader's extra loss and switch rate, and the gap, on paired resamples
+    (one rendering's rows: chat, or nochat for a run without the chat template)."""
+    mine = [r for r in rows if r["rendering"] == rendering and r["layer"] == layer and r["dict"] in ("-", "jpp")
             and (r["arm"] == "whole" or (r["dict"], r["k"], r["omp"]) == ("jpp", X.K_MAIN, "signed"))]  # fmt: skip
     got = {(r["scene"], r["reader"], r["arm"]): r["switched"] for r in mine}
     done = sorted({r["scene"] for r in mine if r["arm"] == "whole"})

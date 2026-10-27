@@ -269,6 +269,17 @@ def test_every_shown_figure_uses_the_glossary(figure_texts):
     assert not banned(flat), banned(flat)
 
 
+def test_readme_figures_have_no_retired_term(figure_texts):
+    """scripts/check_figure_terms.py's retired terms on the README and supplementary figures (docs/x0_details.md's
+    figures keep their run names as provenance)."""
+    from scripts import check_figure_terms as C
+    from scripts import readme_story_figures as F
+
+    readme = {*F.README_NAMES, *(Path(n).name for n in F.SHEET_MORE if n.startswith("supp/"))}
+    flat = [(name, t) for name, ts in figure_texts.items() if name in readme for t in ts]
+    assert flat and not C.retired(flat), C.retired(flat)
+
+
 def caption_texts() -> list[tuple[str, str]]:
     """Until Tuesday's merge the canonical lines of the captions draft; then README.md's figure alt texts, "*Fig. N.*"
     caption lines and table headers (the line above each |---| row)."""

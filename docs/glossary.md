@@ -39,4 +39,14 @@ Added for the batch-45 figures (27 Oct ~00:30, the README v5 figures; Dan to con
 | 45b's arms (Fig. 3b) | "the bridge-word change"; "copy at the locker sentences: every token" / "the item's tokens only"; "copy at the number or period only" (the changed prompt's states put into the original prompt) | "S patched into O", arm letters (a, c, d) |
 | cell states | "not counted (k switches)": a cell under X0's 30-switch bar that the rule fixed in advance does not count (Fig. 9's 45d panel); "pending" (Fig. 11: ○, a run still queued) | – |
 
+Added for the figures after the overnight queue (27 Oct ~01:05; Dan to confirm):
+
+| Concept | Canonical label | Banned variants |
+|---|---|---|
+| atoms | "25 / 50 / 100 atoms" for the J++ part's size (Fig. 2b, 45k) | "k = 100" on a figure |
+| 45q's arms (Fig. 3b once 45q is in) | "copy at the item's own tokens", "copy at the other locker-sentence tokens", "copy at the number or the period only"; "copy at L without the J++ part" / "without a random part (same size)"; "L" and "L/2" for the layer fixed in advance and half of it | arm codes (li, lr, lv, lf, c_nojpp) |
+| 45p's arms (Fig. 3c or its supplement) | "(1) without the J++ part at the bridge word", "(2) (1), and without it at the earlier mention", "(3) (1), and without a random part (same size) there", "(4) (1), and without it at another item's mention" | a1-a4 |
+| cell states | "not tested" (Fig. 10's 122B wrong pair; Fig. 11's "–": not run or not counted) | – |
+| retired on figures and captions | – | "first-mentioned", "part removed", "ablation", "Q45", run ids (scripts/check_figure_terms.py) |
+
 Typography: arrows are drawn as "→" and "↔" (Dan's "->" and "<->"), the dose as "×". A canonical string may wrap over lines on a figure; it is still the same string.

@@ -106,6 +106,85 @@ fig02,qwen3.5-122b-a10b,random atoms: share of the change,0.13390000000000002,,,
 fig02,muse-glimmer-30b,random atoms: recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,,muse30b_x0_necessity
 fig02,muse-glimmer-30b,random atoms: lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,,muse30b_x0_necessity
 fig02,muse-glimmer-30b,random atoms: share of the change,0.061265,,,,muse30b_x0_necessity
+fig02b,qwen3.6-27b,45k: the 100 atoms' mean cos^2 with the pointer (another item moved),0.02473879,,,300,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.6-27b,45k: the 100 atoms' mean cos^2 with the identity direction (another item moved),0.2940854566666667,,,300,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.6-27b,45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.30666666666666664,0.2592592592592593,0.35714285714285715,,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.6-27b,45k: position answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.11333333333333337,0.06122120874073101,0.16000302114803627,,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.5-9b,45k: the 100 atoms' mean cos^2 with the pointer (another item moved),0.03461620333333333,,,300,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.5-9b,45k: the 100 atoms' mean cos^2 with the identity direction (another item moved),0.43215593333333324,,,300,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.5-9b,45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.0333333333333333,-0.0254794504625971,0.09025270758122744,,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.5-9b,45k: position answers' fall from 25 to 100 atoms beyond the random part (another item moved),-0.17000000000000004,-0.25084774884967087,-0.0977437486223702,,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.6-27b,main test: lookup extra loss without another scene's 100 atoms,-0.0117647058823529,-0.03947368421052644,0.0,200,x0_parts/x0_jppother100_27b
+fig02b,qwen3.5-9b,"(a) main test, 25 atoms: lookup extra loss",-0.01941747572815533,-0.07207207207207211,0.04395604395604402,200,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+fig02b,qwen3.5-9b,"(a) main test, 25 atoms: recall extra loss",0.4974619289340101,0.4108083976833977,0.5714285714285713,200,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+fig02b,qwen3.5-9b,"(a) main test, 50 atoms: lookup extra loss",-0.029126213592232886,-0.10476190476190472,0.04210526315789476,200,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+fig02b,qwen3.5-9b,"(a) main test, 50 atoms: recall extra loss",0.6192893401015228,0.5000000000000001,0.7058823529411764,200,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+fig02b,qwen3.5-9b,"(a) main test, 100 atoms: lookup extra loss",-0.07766990291262132,-0.15384615384615385,-0.009259259259259297,200,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+fig02b,qwen3.5-9b,"(a) main test, 100 atoms: recall extra loss",0.46700507614213194,0.35099047287091906,0.5515733725065718,200,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
+fig02b,qwen3.6-27b,"(a) main test, 25 atoms: lookup extra loss",0.11627906976744184,0.05633802816901401,0.18181818181818188,200,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+fig02b,qwen3.6-27b,"(a) main test, 25 atoms: recall extra loss",0.7651006711409396,0.6879985815602836,0.8275862068965516,200,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+fig02b,qwen3.6-27b,"(a) main test, 50 atoms: lookup extra loss",0.30232558139534893,0.2222222222222222,0.3797468354430379,200,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+fig02b,qwen3.6-27b,"(a) main test, 50 atoms: recall extra loss",0.7986577181208054,0.7203375014815693,0.8666666666666666,200,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+fig02b,qwen3.6-27b,"(a) main test, 100 atoms: lookup extra loss",0.6046511627906976,0.48571428571428577,0.7127659574468085,200,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+fig02b,qwen3.6-27b,"(a) main test, 100 atoms: recall extra loss",0.6711409395973155,0.6013986013986015,0.745225897060569,200,results/x0_necessity/x0_kmatch_27b/outcomes.jsonl
+fig02b,qwen3.5-122b-a10b,"(a) main test, 25 atoms: lookup extra loss",0.0,-0.061855670103092786,0.06382978723404253,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig02b,qwen3.5-122b-a10b,"(a) main test, 25 atoms: recall extra loss",0.3152173913043478,0.2191673801369863,0.41011596081820795,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig02b,qwen3.5-122b-a10b,"(a) main test, 50 atoms: lookup extra loss",-0.022471910112359605,-0.09090909090909094,0.045467607105538016,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig02b,qwen3.5-122b-a10b,"(a) main test, 50 atoms: recall extra loss",0.45108695652173914,0.34848240469208214,0.5380957719410635,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig02b,qwen3.5-122b-a10b,"(a) main test, 100 atoms: lookup extra loss",-0.12359550561797739,-0.2207860560492141,-0.042553191489361764,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig02b,qwen3.5-122b-a10b,"(a) main test, 100 atoms: recall extra loss",0.42934782608695654,0.3178294573643411,0.508695652173913,200,results/x0_necessity/qwen35_122b_x0_necessity_r2/outcomes.jsonl
+fig02b,muse-glimmer-30b,"(a) main test, 25 atoms: lookup extra loss",-0.09999999999999987,-0.1506876494890194,-0.039215686274509776,200,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig02b,muse-glimmer-30b,"(a) main test, 25 atoms: recall extra loss",0.7521367521367521,0.6097420801794226,0.8691606757728252,200,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig02b,muse-glimmer-30b,"(a) main test, 50 atoms: lookup extra loss",-0.014285714285714235,-0.08771929824561397,0.07142857142857151,200,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig02b,muse-glimmer-30b,"(a) main test, 50 atoms: recall extra loss",0.829059829059829,0.680669351073763,0.9594628719628718,200,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig02b,muse-glimmer-30b,"(a) main test, 100 atoms: lookup extra loss",0.0,-0.06153846153846154,0.07352941176470573,200,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig02b,muse-glimmer-30b,"(a) main test, 100 atoms: recall extra loss",0.8461538461538461,0.7058823529411765,0.9933796476648054,200,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig02b,qwen3.5-9b,"(b) another item moved, whole: identity share",0.48,0.4259790139811488,0.5333333333333333,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, whole: position share",0.51,0.4595447389136709,0.5611529144031713,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, whole: original share",0.01,0.0,0.021352313167259787,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, whole: other share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp: identity share",0.35,0.3117283950617284,0.39361702127659576,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp: position share",0.6066666666666667,0.557375743969928,0.6498422712933754,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp: original share",0.043333333333333335,0.024388390540440362,0.06472491909385113,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp: other share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp_rand: identity share",0.4,0.3566666666666667,0.4464956253336118,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp50: identity share",0.29,0.2596128892733564,0.3242323404695418,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp50: position share",0.61,0.561793904879175,0.6525974025974026,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp50: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp50: original share",0.09666666666666666,0.06744785660153546,0.12709173763633644,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp50: other share",0.0033333333333333335,0.0,0.01098901098901099,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp50_rand: identity share",0.34,0.3042071197411003,0.3789494906621392,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp100: identity share",0.11666666666666667,0.0894035110436938,0.14527173150659306,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp100: position share",0.4866666666666667,0.4257415801821146,0.5479876160990712,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp100: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp100: original share",0.3933333333333333,0.34083571179112926,0.44615506329113924,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp100: other share",0.0033333333333333335,0.0,0.011235955056179775,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.5-9b,"(b) another item moved, no_jpp100_rand: identity share",0.2,0.16349624950067318,0.23958416533546326,300,qwen35_9b_x6_routes_x45k
+fig02b,qwen3.6-27b,"(b) another item moved, whole: identity share",0.6566666666666666,0.6028356438579583,0.7104377104377104,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, whole: position share",0.33666666666666667,0.2843442648624945,0.3906810035842294,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, whole: value share",0.0,0.0,0.0,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, whole: original share",0.0033333333333333335,0.0,0.010344827586206896,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, whole: other share",0.0033333333333333335,0.0,0.010676156583629894,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp: identity share",0.44666666666666666,0.41071288625167934,0.4858175481891549,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp: position share",0.4266666666666667,0.38205980066445183,0.46691561729482206,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp: value share",0.0,0.0,0.0,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp: original share",0.12333333333333334,0.08517182361232298,0.16151386095046516,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp: other share",0.0033333333333333335,0.0,0.010676156583629894,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp_rand: identity share",0.7,0.6442298689138577,0.7553191489361702,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp50: identity share",0.29,0.2534246575342466,0.3272058823529412,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp50: position share",0.35,0.3079122490412813,0.3935483870967742,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp50: value share",0.0,0.0,0.0,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp50: original share",0.3566666666666667,0.3024889630798205,0.4103463225034881,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp50: other share",0.0033333333333333335,0.0,0.010601646492744893,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp50_rand: identity share",0.6966666666666667,0.6430769230769231,0.7547905079718206,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100: identity share",0.11666666666666667,0.08201623582864095,0.1536050156739812,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100: position share",0.2,0.15844983265932228,0.24149850951616597,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100: value share",0.0,0.0,0.0,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100: original share",0.68,0.6209150326797386,0.7386798496114564,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100: other share",0.0033333333333333335,0.0,0.011152416356877323,300,x6_routes_x45k_27b
+fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100_rand: identity share",0.6766666666666666,0.625,0.7335769946171407,300,x6_routes_x45k_27b
 fig03,qwen3.5-9b,"lookups switched by the whole change, locker sentence before the pick",0.86,0.7786,0.9147,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 fig03,qwen3.5-9b,"recalls switched by the whole change, locker sentence before the pick",1.0,0.963,1.0,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 fig03,qwen3.5-9b,"lookups switched by the whole change, locker sentence after the pick",0.19,0.1251,0.2778,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -579,27 +658,27 @@ fig09,muse-glimmer-30b,(b) json: lookup switches with the whole change,29,,,89,r
 fig09,muse-glimmer-30b,(b) table: lookup switches with the whole change,79,,,238,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
 fig09,muse-glimmer-30b,(b) table: lookup extra loss without the refit pointer,0.4683544303797469,0.3396066517428845,0.6000000000000001,238,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
 fig09,muse-glimmer-30b,(b) table: lookup extra loss without the pointer fit on simple scenes,0.10126582278481,0.025316455696202552,0.19718309859154926,238,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
-fig10,qwen3.5-9b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.06,0.02,0.1,,x45e_cut_9b
-fig10,qwen3.6-27b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.12,0.08,0.16,,x45e_cut_27b
-fig10,muse-glimmer-30b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.04,0.01,0.07,,x45e_cut_muse
+fig10,qwen3.5-9b,routes test: identity answers cut by identity outside J++ beyond the wrong pair (scenes where the wrong pair reached 0.9 of its share),0.07786885245901637,0.03225436519680376,0.12075517272810138,,results/x6_routes/x45e-size-20261027T000407Z
+fig10,qwen3.6-27b,routes test: identity answers cut by identity outside J++ beyond the wrong pair (scenes where the wrong pair reached 0.9 of its share),0.14418604651162786,0.09322033898305082,0.20571848739495793,,results/x6_routes/x45e-size-20261027T000407Z
+fig10,muse-glimmer-30b,routes test: identity answers cut by identity outside J++ beyond the wrong pair (scenes where the wrong pair reached 0.9 of its share),0.047619047619047616,0.013274336283185861,0.08144796380090497,,results/x6_routes/x45e-size-20261027T000407Z
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.44966442953020136,0.40549595987740317,0.4895123106060607,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.8791946308724832,0.8363636363636363,0.9177236864921103,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,share of the change: J++ part + pointer,0.3314,,,,qwen35_9b_x6_routes_bothoff
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: the part",0.0738255033557047,0.044378698224852076,0.10839160839160844,,qwen35_9b_x6_routes_d1
 fig10,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.3825503355704698,0.33333333333333337,0.4341637010676156,,qwen35_9b_x6_routes_d1
 fig10,qwen3.5-9b,share of the change: + identity outside J++,0.5565,,,,qwen35_9b_x6_routes_d1
-fig10,qwen3.5-9b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.15436241610738255,0.10801200154858692,0.2019875911432203,,qwen35_9b_x6_routes_x45e_dom
-fig10,qwen3.5-9b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.6845637583892619,0.6405682320377737,0.7303762290434057,,qwen35_9b_x6_routes_x45e_dom
-fig10,qwen3.5-9b,share of the change: + wrong pair instead,0.42,,,,qwen35_9b_x6_routes_x45e_dom
+fig10,qwen3.5-9b,"sanity swap, lookups still switching without + wrong pair instead (scenes where it reached 0.9 of identity's share): the part",0.15899581589958156,0.10775696286472147,0.21323774509803928,241,qwen35_9b_x6_routes_x45e_dom
+fig10,qwen3.5-9b,"sanity swap, lookups still switching without + wrong pair instead (scenes where it reached 0.9 of identity's share): a random part of the same size",0.6820083682008369,0.6304326679072916,0.7336070047963348,241,qwen35_9b_x6_routes_x45e_dom
+fig10,qwen3.5-9b,share of the change: + wrong pair instead (scenes where it reached 0.9 of identity's share),0.358,,,,qwen35_9b_x6_routes_x45e_dom
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5272108843537415,0.4784133562715045,0.5746031746031747,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.9353741496598639,0.8973369671349638,0.970150489275477,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,share of the change: J++ part + pointer,0.2606,,,,x6_routes_bothoff_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: the part",0.1774744027303754,0.1333333333333333,0.22311023762094484,,x6_routes_d1_27b
 fig10,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.6689419795221843,0.625,0.7173144876325088,,x6_routes_d1_27b
 fig10,qwen3.6-27b,share of the change: + identity outside J++,0.3504,,,,x6_routes_d1_27b
-fig10,qwen3.6-27b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.3911564625850341,0.3396226415094339,0.4432234432234432,,x6_routes_x45e_27b_dom
-fig10,qwen3.6-27b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.8741496598639457,0.8249154973863145,0.9217398698609879,,x6_routes_x45e_27b_dom
-fig10,qwen3.6-27b,share of the change: + wrong pair instead,0.306,,,,x6_routes_x45e_27b_dom
+fig10,qwen3.6-27b,"sanity swap, lookups still switching without + wrong pair instead (scenes where it reached 0.9 of identity's share): the part",0.38222222222222224,0.3191426537108395,0.44651162790697674,226,x6_routes_x45e_27b_dom
+fig10,qwen3.6-27b,"sanity swap, lookups still switching without + wrong pair instead (scenes where it reached 0.9 of identity's share): a random part of the same size",0.8533333333333333,0.7956521739130435,0.9112149532710281,226,x6_routes_x45e_27b_dom
+fig10,qwen3.6-27b,share of the change: + wrong pair instead (scenes where it reached 0.9 of identity's share),0.3205,,,,x6_routes_x45e_27b_dom
 fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5,0.4486682249075473,0.5476206695212145,,qwen35_122b_x6_routes_bothoff_g75
 fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.85,0.8096774193548387,0.8888888888888888,,qwen35_122b_x6_routes_bothoff_g75
 fig10,qwen3.5-122b-a10b,share of the change: J++ part + pointer,0.369,,,,qwen35_122b_x6_routes_bothoff_g75
@@ -609,12 +688,13 @@ fig10,muse-glimmer-30b,share of the change: J++ part + pointer,0.2503,,,,muse30b
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: the part",0.5224489795918367,0.4672123235647826,0.5833333333333333,,muse30b_x6_routes_d1_r2
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.8163265306122449,0.7566535717890912,0.8787878787878788,,muse30b_x6_routes_d1_r2
 fig10,muse-glimmer-30b,share of the change: + identity outside J++,0.3802,,,,muse30b_x6_routes_d1_r2
-fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.5714285714285714,0.5063277898416398,0.636752615844544,,muse30b_x6_routes_x45e_dom
-fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.9959183673469387,0.9537037037037037,1.039372668876917,,muse30b_x6_routes_x45e_dom
-fig10,muse-glimmer-30b,share of the change: + wrong pair instead,0.3231,,,,muse30b_x6_routes_x45e_dom
+fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pair instead (scenes where it reached 0.9 of identity's share): the part",0.59,0.5251396648044693,0.6567164179104478,237,muse30b_x6_routes_x45e_dom
+fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pair instead (scenes where it reached 0.9 of identity's share): a random part of the same size",1.005,0.9549504278147495,1.0536611591922371,237,muse30b_x6_routes_x45e_dom
+fig10,muse-glimmer-30b,share of the change: + wrong pair instead (scenes where it reached 0.9 of identity's share),0.3132,,,,muse30b_x6_routes_x45e_dom
 fig11,qwen3.5-9b,"routes test without the chat template, another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45i_nochat
 fig11,qwen3.6-27b,"routes test without the chat template, another item moved, whole: value share",0.0,0.0,0.0,300,x6_routes_x45i_nochat_27b
 fig11,qwen3.5-9b,main test,ok,,,,fixed; numbers:contrast_9b
+fig11,qwen3.5-9b,a tested cause for the 27B's loss with 100 atoms,-,,,,fixed
 fig11,qwen3.5-9b,locker before the pick,ok,,,,after the data; numbers:sbo_swap_before_gap_9b
 fig11,qwen3.5-9b,clean one-pick scenes,x,,,,fixed; numbers:x45m_before_gap_9b
 fig11,qwen3.5-9b,logit difference,ok,,,,fixed; numbers:ld_gap_9b
@@ -634,6 +714,7 @@ fig11,qwen3.5-9b,identity outside J++ is specific,~,,,,fixed; numbers:x45e_cut_9
 fig11,qwen3.5-9b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
 fig11,qwen3.5-9b,the link sits in the locker sentences,x,,,,fixed; numbers:x45b_sane_c_9b
 fig11,qwen3.6-27b,main test,~,,,,fixed; numbers:contrast_27b
+fig11,qwen3.6-27b,a tested cause for the 27B's loss with 100 atoms,x,,,,fixed; fig02b:45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved)
 fig11,qwen3.6-27b,locker before the pick,~,,,,after the data; numbers:sbo_swap_before_gap_27b
 fig11,qwen3.6-27b,clean one-pick scenes,ok,,,,fixed; numbers:x45m_before_gap_27b
 fig11,qwen3.6-27b,logit difference,ok,,,,fixed; numbers:ld_gap_27b
@@ -653,6 +734,7 @@ fig11,qwen3.6-27b,identity outside J++ is specific,~,,,,fixed; numbers:x45e_cut_
 fig11,qwen3.6-27b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
 fig11,qwen3.6-27b,the link sits in the locker sentences,x,,,,fixed; numbers:x45b_sane_c_27b
 fig11,qwen3.5-122b-a10b,main test,ok,,,,fixed; numbers:contrast_122b
+fig11,qwen3.5-122b-a10b,a tested cause for the 27B's loss with 100 atoms,-,,,,fixed
 fig11,qwen3.5-122b-a10b,locker before the pick,x,,,,after the data; numbers:sbo_swap_before_gap_122b
 fig11,qwen3.5-122b-a10b,clean one-pick scenes,-,,,,fixed
 fig11,qwen3.5-122b-a10b,logit difference,ok,,,,fixed; numbers:ld_gap_122b
@@ -672,6 +754,7 @@ fig11,qwen3.5-122b-a10b,identity outside J++ is specific,pending,,,,fixed
 fig11,qwen3.5-122b-a10b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
 fig11,qwen3.5-122b-a10b,the link sits in the locker sentences,-,,,,fixed
 fig11,muse-glimmer-30b,main test,ok,,,,fixed; numbers:contrast_muse
+fig11,muse-glimmer-30b,a tested cause for the 27B's loss with 100 atoms,-,,,,fixed
 fig11,muse-glimmer-30b,locker before the pick,ok,,,,after the data; numbers:sbo_swap_before_gap_muse
 fig11,muse-glimmer-30b,clean one-pick scenes,ok,,,,fixed; numbers:x45m_before_gap_muse
 fig11,muse-glimmer-30b,logit difference,ok,,,,fixed; numbers:ld_gap_muse
@@ -1146,6 +1229,39 @@ s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer and
 s10,muse-glimmer-30b,share of the change: the pointer and the J++ part,0.2503,,,,muse30b_x6_routes
 s10,muse-glimmer-30b,"the sanity swap, lookup extra loss without the pointer, the J++ part and identity outside J++",0.29387755102040825,0.2416666666666668,0.3429774687820474,,muse30b_x6_routes_d1_r2
 s10,muse-glimmer-30b,"share of the change: the pointer, the J++ part and identity outside J++",0.3802,,,,muse30b_x6_routes_d1_r2
+s10b,qwen3.5-9b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.06,0.02,0.1,,x45e_cut_9b
+s10b,qwen3.6-27b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.12,0.08,0.16,,x45e_cut_27b
+s10b,muse-glimmer-30b,routes test: identity answers cut by identity outside J++ beyond the wrong pair,0.04,0.01,0.07,,x45e_cut_muse
+s10b,qwen3.5-9b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.44966442953020136,0.40549595987740317,0.4895123106060607,,qwen35_9b_x6_routes_bothoff
+s10b,qwen3.5-9b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.8791946308724832,0.8363636363636363,0.9177236864921103,,qwen35_9b_x6_routes_bothoff
+s10b,qwen3.5-9b,share of the change: J++ part + pointer,0.3314,,,,qwen35_9b_x6_routes_bothoff
+s10b,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: the part",0.0738255033557047,0.044378698224852076,0.10839160839160844,,qwen35_9b_x6_routes_d1
+s10b,qwen3.5-9b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.3825503355704698,0.33333333333333337,0.4341637010676156,,qwen35_9b_x6_routes_d1
+s10b,qwen3.5-9b,share of the change: + identity outside J++,0.5565,,,,qwen35_9b_x6_routes_d1
+s10b,qwen3.5-9b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.15436241610738255,0.10801200154858692,0.2019875911432203,,qwen35_9b_x6_routes_x45e_dom
+s10b,qwen3.5-9b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.6845637583892619,0.6405682320377737,0.7303762290434057,,qwen35_9b_x6_routes_x45e_dom
+s10b,qwen3.5-9b,share of the change: + wrong pair instead,0.42,,,,qwen35_9b_x6_routes_x45e_dom
+s10b,qwen3.6-27b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5272108843537415,0.4784133562715045,0.5746031746031747,,x6_routes_bothoff_27b
+s10b,qwen3.6-27b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.9353741496598639,0.8973369671349638,0.970150489275477,,x6_routes_bothoff_27b
+s10b,qwen3.6-27b,share of the change: J++ part + pointer,0.2606,,,,x6_routes_bothoff_27b
+s10b,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: the part",0.1774744027303754,0.1333333333333333,0.22311023762094484,,x6_routes_d1_27b
+s10b,qwen3.6-27b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.6689419795221843,0.625,0.7173144876325088,,x6_routes_d1_27b
+s10b,qwen3.6-27b,share of the change: + identity outside J++,0.3504,,,,x6_routes_d1_27b
+s10b,qwen3.6-27b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.3911564625850341,0.3396226415094339,0.4432234432234432,,x6_routes_x45e_27b_dom
+s10b,qwen3.6-27b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.8741496598639457,0.8249154973863145,0.9217398698609879,,x6_routes_x45e_27b_dom
+s10b,qwen3.6-27b,share of the change: + wrong pair instead,0.306,,,,x6_routes_x45e_27b_dom
+s10b,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5,0.4486682249075473,0.5476206695212145,,qwen35_122b_x6_routes_bothoff_g75
+s10b,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.85,0.8096774193548387,0.8888888888888888,,qwen35_122b_x6_routes_bothoff_g75
+s10b,qwen3.5-122b-a10b,share of the change: J++ part + pointer,0.369,,,,qwen35_122b_x6_routes_bothoff_g75
+s10b,muse-glimmer-30b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.7391304347826086,0.6816475578995644,0.7947761194029851,,muse30b_x6_routes
+s10b,muse-glimmer-30b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",1.0474308300395256,1.0039058700145915,1.0909090909090908,,muse30b_x6_routes
+s10b,muse-glimmer-30b,share of the change: J++ part + pointer,0.2503,,,,muse30b_x6_routes
+s10b,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: the part",0.5224489795918367,0.4672123235647826,0.5833333333333333,,muse30b_x6_routes_d1_r2
+s10b,muse-glimmer-30b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.8163265306122449,0.7566535717890912,0.8787878787878788,,muse30b_x6_routes_d1_r2
+s10b,muse-glimmer-30b,share of the change: + identity outside J++,0.3802,,,,muse30b_x6_routes_d1_r2
+s10b,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pair instead: the part",0.5714285714285714,0.5063277898416398,0.636752615844544,,muse30b_x6_routes_x45e_dom
+s10b,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pair instead: a random part of the same size",0.9959183673469387,0.9537037037037037,1.039372668876917,,muse30b_x6_routes_x45e_dom
+s10b,muse-glimmer-30b,share of the change: + wrong pair instead,0.3231,,,,muse30b_x6_routes_x45e_dom
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
