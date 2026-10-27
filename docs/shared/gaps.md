@@ -2,7 +2,9 @@ Draft, 27 Oct; UNVERIFIED; for Dan. Experiments freeze Wed 28 Oct evening; hand 
 
 # Gaps in the joint story
 
-Every claim × model cell that docs/shared/joint_README_draft.md needs and that is empty or conflicting in docs/shared/grid.csv (G) or the two reports. Before proposing a run I checked whether Zach's stored results already fill the cell. Two cells are filled from his stored summaries (rows 3 and 4); they need his confirmation, not a run. Source keys as in docs/shared/joint_story_draft.md.
+The joint story is the root [README.md](../../README.md); review records are in [joint_review_notes.md](joint_review_notes.md).
+
+Every claim × model cell that the README needs and that is empty or conflicting in docs/shared/grid.csv (G) or the two reports. Before proposing a run I checked whether Zach's stored results already fill the cell. Two cells are filled from his stored summaries (rows 3 and 4); they need his confirmation, not a run. Source keys as in docs/shared/joint_story_draft.md.
 
 Ranked by how much the result would change the story.
 

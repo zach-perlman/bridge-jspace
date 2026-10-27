@@ -4,6 +4,8 @@
 
 **Where things are.** Batch 45 is fully scored (121 answers, mean Brier 0.32). Q45.12 (45q) and Q45.13 (45p) are both "yes, 3 of 3", right. README v5 is in main as docs/depth/README.md (1,996 words). Night log: the section below.
 
+**The joint story (Dan ~15:30).** The root README.md is now the joint story and the one source of truth: every number carries its source in an HTML comment, checked by tests/test_readme_sources.py. docs/shared/joint_README_draft.md is deleted. The critic's lists are in docs/shared/joint_review_notes.md; gaps, the hand-check item ids and the message to Zach are in docs/shared/gaps.md.
+
 **The merge (Dan's Phase 1, ~11:45-13:45).**
 - Pushed: origin/main = d05f5e56, then cc56ffb0 (the gate's ledger). danorel was fast-forwarded to main. In main, every collision went Zach's way except three:
   - model.py: our BJ_DEVICE_MAP branch sits beside his load_model; it is used only when the variable is set, and is refused with split_gpus.
