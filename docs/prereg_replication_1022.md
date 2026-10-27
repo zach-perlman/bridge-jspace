@@ -1812,3 +1812,29 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - Larger and positive: as the 27B (+18) and the 9B (+12).
 - **Bolt waits for it:** chain C, which is only waiting, is relaunched with this job added to its waits (old log moved
   aside).
+
+## Amendment 55 (Zach, 2026-10-27 01:15 UTC, before any run below): keep-own-word and swap dose on v2, in the GPU gaps
+
+- **Why (Zach: "use both GPUs maximally"):** GPU 1 is idle until Bolt (amendment 54) starts. Two tests are still
+  uneven across models.
+  - **Keep-own-word (C1's second kill test, 10/21):** run only on the toy suite (27B restores 20%, 9B 26%, kill bar 75%),
+    never on v2 or on a non-Qwen model.
+  - **Swap dose:** the J-part swap at K = 30 / 100 exists only for Bolt and Ministral (amendments 52, 53).
+- **Design (scripts/queues/h200_even_1027.sh):** each model at its v2 band, test set, 150 random items per word (seed 0,
+  as amendment 54); normal-equations projection.
+  - **Keep-own:** paper10, paper10_rot, paper10_keepown, paper10_keepown_rot. Keep-own is paper10 with the bridge's own
+    word protected: its surface tokens and every dictionary row with them.
+  - **Swap dose:** jswap at K = 10, 30, 100 on the same sample; memory finals pooled (scripts/jswap_pool.py).
+  - **Order:**
+    - now, GPU 1: Lightning, then the 9B (keep-own, then swaps);
+    - after Bolt: the 27B and Ministral (keep-own), then the 27B's swaps.
+  - An 8-item smoke of the keep-own conditions on v2 runs first.
+- **Readings, fixed now:**
+  - **Keep-own:** restored = 1 − (M − K under paper10_keepown) / (M − K under paper10), on the same items.
+    - ≥ 0.75 kills C1 for that model (the 10/21 bar).
+    - ≤ 0.25: the dependence is not the bridge's own word.
+    - paper10_keepown_rot within 10 of 0.
+  - **Swap dose:**
+    - Grows if the K = 100 transfer is ≥ the K = 10 transfer + 10.
+    - Saturated if within 10.
+    - Paste and swap_comp reported beside it.
