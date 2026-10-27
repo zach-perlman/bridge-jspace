@@ -387,3 +387,81 @@ def test_runs_to_pull_skips_local_and_failed_runs(tmp_path):
     (tmp_path / "_failed" / "x6_routes" / "failed_run").mkdir(parents=True)
     runs = ["./x6_routes/done_run", "./x6_routes/failed_run", "./x6_routes/new_run"]
     assert jobq.runs_to_pull(runs, tmp_path) == ["x6_routes/new_run"]
+
+
+# ---------------------------------------------------------------- targets whose meaning changed at the merge (27 Oct)
+
+OLD_32B = "jobs/d1/qwen3_32b_lens_gate.yaml"  # in scripts/jobq_pre_merge_qwen3_32b.txt
+
+
+def at(path: str, command: str, **over) -> tuple[dict, Path]:
+    return spec(id=Path(path).stem, command=command, **over), jobq.REPO / path
+
+
+def test_a_pre_merge_spec_with_bj_target_qwen3_32b_is_refused_with_the_new_key():
+    s, p = at(OLD_32B, "BJ_TARGET=qwen3-32b uv run python scripts/lens_gate.py run --name qwen3_32b_lens_gate")
+    errors = " | ".join(jobq.validate(s, p))
+    assert "older than the merge" in errors and "qwen3-32b-jlens" in errors and "qwen3_32bj_" in errors
+    assert "6fbc0386" in errors  # what qwen3-32b means now
+    s, p = at(OLD_32B, "true", figures_command="BJ_TARGET='qwen3-32b' uv run python scripts/lens_gate.py figures")
+    assert jobq.renamed_targets(s, p), "figures_command counts too"
+    assert jobq.validate(*at(OLD_32B, "BJ_TARGET=qwen3-32b-jlens python3 lens_gate.py --name qwen3_32bj_g")) == []
+
+
+def test_a_spec_written_after_the_merge_may_use_qwen3_32b():
+    """Since the merge qwen3-32b is Zach's J++: a new spec means it."""
+    assert (
+        jobq.validate(*at("jobs/d1/qwen3_32b_new_v1.yaml", "BJ_TARGET=qwen3-32b python3 x.py --name qwen3_32b_new"))
+        == []
+    )
+
+
+@pytest.mark.parametrize(
+    ("old", "target", "new"),
+    [("muse30b_", "muse-glimmer-30b", "muse30_"), ("qwen36_27b_jlens_", "qwen3.6-27b-jlens", "q27jlens_")],
+)
+def test_a_run_name_with_an_old_prefix_is_refused_with_the_new_key_and_prefix(old, target, new):
+    s, p = at("jobs/c3/x_v1.yaml", f"BJ_TARGET={target} python3 x6_routes.py --name {old}x6_routes")
+    errors = jobq.renamed_targets(s, p)
+    assert len(errors) == 1 and f"BJ_TARGET={target}" in errors[0] and f"run prefix {new}" in errors[0]
+    assert f"{new}x6_routes" in errors[0]
+    # a positional name on that prefix's own target (scripts/x0_necessity.py run <name>)
+    s, p = at("jobs/c3/x_v1.yaml", f"BJ_TARGET={target} python3 x0_necessity.py run {old}x0_single")
+    assert jobq.renamed_targets(s, p)
+    # another target reading an old run is fine (the 27B's x45m reads muse30b_x45m_fresh)
+    s, p = at(
+        "jobs/c3/x_v1.yaml", f"BJ_TARGET=qwen3.6-27b python3 x45m.py --fresh x45m_fresh_27b,{old}x --name x45m_v1"
+    )
+    assert jobq.validate(s, p) == []
+
+
+def test_enqueue_refuses_a_renamed_target_before_any_git_or_box_call(mac):
+    write, _, calls = mac
+    with pytest.raises(SystemExit, match="run prefix muse30_"):
+        jobq.cmd_enqueue([write("m_v1", "BJ_TARGET=muse-glimmer-30b python3 x6_routes.py --name muse30b_x6")])
+    old = write("qwen3_32b_lens_gate", "BJ_TARGET=qwen3-32b python3 lens_gate.py --name qwen3_32b_lens_gate")
+    assert jobq.spec_key(old) == OLD_32B  # REPO is the fixture's folder: the same jobs/<thread>/<id>.yaml
+    with pytest.raises(SystemExit, match="qwen3-32b-jlens"):
+        jobq.cmd_enqueue([old])
+    assert calls == {"ssh": [], "push": 0}
+
+
+def test_the_pre_merge_list_is_our_tree_at_the_merge():
+    """scripts/jobq_pre_merge_qwen3_32b.txt: the specs that set BJ_TARGET=qwen3-32b in a command field in our tree just
+    before the merge (66d4b724, the merge's danorel parent)."""
+    import yaml
+
+    def git(*a: str) -> subprocess.CompletedProcess:
+        return subprocess.run(["git", *a], cwd=jobq.REPO, capture_output=True, text=True, check=False)
+
+    if git("cat-file", "-e", "66d4b724^{commit}").returncode:
+        pytest.skip("commit 66d4b724 not in this clone")
+    paths = [
+        p for p in git("ls-tree", "-r", "--name-only", "66d4b724", "--", "jobs").stdout.split() if p.endswith(".yaml")
+    ]
+    want = set()
+    for p in paths:
+        s = yaml.safe_load(git("show", f"66d4b724:{p}").stdout)
+        if any(isinstance(s.get(k), str) and jobq.QWEN3_32B_RE.search(s[k]) for k in jobq.COMMAND_KEYS):
+            want.add(p)
+    assert jobq.pre_merge_qwen3_32b_specs() == want and OLD_32B in want

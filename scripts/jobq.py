@@ -118,6 +118,66 @@ def validate(spec: Any, path: Path | None = None) -> list[str]:
         elif gpus > 1 and "BJ_DEVICE_MAP=" not in str(spec.get("command", "")):
             # without it the model loads onto the first GPU alone and the others sit idle (bridge_jspace.model)
             errors.append(f"gpus: {gpus} needs a command that splits the model over them (BJ_DEVICE_MAP=auto)")
+    return errors + renamed_targets(spec, path)
+
+
+# ---------------------------------------------------------------- targets whose meaning changed at the merge
+# The merge of danorel into main (27 Oct 2026, merge commit fbedabbb; our side 66d4b724) kept main's pins keys. Two of
+# our specs' names now mean something else: BJ_TARGET=qwen3-32b is Zach's J++ (sha256 6fbc0386), our plain J-lens
+# being qwen3-32b-jlens (prefix qwen3_32bj_); and our run prefixes muse30b_ and qwen36_27b_jlens_ are main's muse30_ and
+# q27jlens_ (pins.check_run_name refuses them). Specs are never edited: validate, and so enqueue, refuses those specs.
+COMMAND_KEYS = ("command", "examples_command", "figures_command")
+QWEN3_32B_RE = re.compile(r"""\bBJ_TARGET=["']?qwen3-32b(?![\w.-])""")  # not qwen3-32b-jlens / -jpp / -jpp32
+# The specs "older than the merge" that set it: those in our tree at 66d4b724 (frozen list; tests/test_jobq.py checks
+# it against that tree). Read only when a spec sets BJ_TARGET=qwen3-32b (validate runs on the Mac, never on the box).
+PRE_MERGE_QWEN3_32B = Path(__file__).with_name("jobq_pre_merge_qwen3_32b.txt")
+RENAMED_PREFIXES = {  # our old run prefix -> (the key that has those runs' target now, its prefix)
+    "muse30b_": ("muse-glimmer-30b", "muse30_"),
+    "qwen36_27b_jlens_": ("qwen3.6-27b-jlens", "q27jlens_"),
+}
+
+
+def pre_merge_qwen3_32b_specs() -> frozenset[str]:
+    lines = PRE_MERGE_QWEN3_32B.read_text().splitlines()
+    return frozenset(line.strip() for line in lines if line.strip() and not line.startswith("#"))
+
+
+def spec_key(path: Path | None) -> str | None:
+    """A spec's path from the repo root (jobs/<thread>/<id>.yaml), as the frozen list names it."""
+    if path is None:
+        return None
+    p = Path(path)
+    try:
+        return (p if p.is_absolute() else Path.cwd() / p).resolve().relative_to(REPO).as_posix()
+    except ValueError:
+        return p.as_posix()
+
+
+def renamed_targets(spec: dict[str, Any], path: Path | None = None) -> list[str]:
+    """Refusals for a spec that names a target whose meaning changed at the merge into main (Dan, 27 Oct ~14:40): a
+    pre-merge spec with BJ_TARGET=qwen3-32b; a run name written with one of our old prefixes (a --name value, or on
+    that prefix's own target any name in the command: some scripts take it positionally). A spec on another target
+    that only reads an old run (the 27B's x45m reads muse30b_x45m_fresh) passes. [] if none."""
+    commands = [spec[k] for k in COMMAND_KEYS if isinstance(spec.get(k), str)]
+    text = " ".join(commands)
+    errors = []
+    key = spec_key(path)
+    if key and QWEN3_32B_RE.search(text) and key in pre_merge_qwen3_32b_specs():
+        errors.append(
+            f"{key} is older than the merge into main (27 Oct), when BJ_TARGET=qwen3-32b was our plain J-lens: it is "
+            "now Zach's J++ (sha256 6fbc0386). Our J-lens is BJ_TARGET=qwen3-32b-jlens (run prefix qwen3_32bj_): "
+            "write a new spec with it; this one is not enqueued"
+        )
+    for old, (target, new) in RENAMED_PREFIXES.items():
+        written = [n for n in run_names(text) if n.startswith(old)]
+        if re.search(rf"\bBJ_TARGET=[\"']?{re.escape(target)}(?![\w.-])", text):
+            written += re.findall(rf"(?<![\w-]){re.escape(old)}[\w.-]*", text)
+        for name in dict.fromkeys(written):
+            errors.append(
+                f"run name {name!r}: the prefix {old} belongs to no target since the merge into main (27 Oct); its "
+                f"target is BJ_TARGET={target}, run prefix {new} (pins.check_run_name). Write a new spec (e.g. "
+                f"{new}{name[len(old) :]}); this one is not enqueued"
+            )
     return errors
 
 

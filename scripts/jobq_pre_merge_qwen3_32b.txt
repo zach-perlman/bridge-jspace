@@ -1,0 +1,57 @@
+# Job specs that set BJ_TARGET=qwen3-32b (in command, examples_command or figures_command) in our tree just before
+# the merge into main: the tree of 66d4b724, the merge's danorel parent (27 Oct 2026). There qwen3-32b was our
+# plain J-lens (sha256 0af5ccf2); since the merge it is Zach's J++ (sha256 6fbc0386). scripts/jobq.py refuses these
+# specs (validate, so enqueue). Generated once; tests/test_jobq.py checks it against that tree. One path per line.
+jobs/d1/qwen3_32b_d1_topics_competence.yaml
+jobs/d1/qwen3_32b_d1_topics_map.yaml
+jobs/d1/qwen3_32b_d1_topics_parts.yaml
+jobs/d1/qwen3_32b_d1_topics_rw.yaml
+jobs/d1/qwen3_32b_lens_gate.yaml
+jobs/d1/qwen3_32b_lens_gate_v2.yaml
+jobs/d2/qwen3_32b_d2_formats.yaml
+jobs/d2/qwen3_32b_d2_late_read_long.yaml
+jobs/d2/qwen3_32b_d2_late_read_long_after.yaml
+jobs/d2/qwen3_32b_d2_late_read_long_r2.yaml
+jobs/d2/qwen3_32b_d2_late_read_long_r2_q.yaml
+jobs/d2/qwen3_32b_d2_late_read_seed2.yaml
+jobs/d2/qwen3_32b_d2_late_read_seed2_after.yaml
+jobs/d2/qwen3_32b_d2_late_read_seed3.yaml
+jobs/d2/qwen3_32b_d2_natural_read.yaml
+jobs/d2/qwen3_32b_d2_parts.yaml
+jobs/d2/qwen3_32b_d2_parts_seed2.yaml
+jobs/d2/qwen3_32b_d2_parts_seed2_animals.yaml
+jobs/d2/qwen3_32b_d2_parts_seed3.yaml
+jobs/d2/qwen3_32b_d2_parts_v2.yaml
+jobs/d2/qwen3_32b_d2_v4_late_read.yaml
+jobs/d2/qwen3_32b_d2_v4_late_read_v2.yaml
+jobs/d2/qwen3_32b_d2_v4_late_read_v2_r2.yaml
+jobs/d3/qwen3_32b_d3v4_competence.yaml
+jobs/d3/qwen3_32b_d3v4_competence_r2.yaml
+jobs/d3/qwen3_32b_d3v4_seed2_competence.yaml
+jobs/d3/qwen3_32b_d3v4_seed2_swap.yaml
+jobs/d3/qwen3_32b_d3v4_seed3_competence.yaml
+jobs/d3/qwen3_32b_d3v4_seed3_swap.yaml
+jobs/d3/qwen3_32b_d3v4_swap.yaml
+jobs/d3/qwen3_32b_d3v4_swap_r2.yaml
+jobs/d3/qwen3_32b_d3v4x_competence.yaml
+jobs/d3/qwen3_32b_d3v4x_competence_r2.yaml
+jobs/d3/qwen3_32b_d3v4x_swap.yaml
+jobs/d3/qwen3_32b_d3v4x_swap_r2.yaml
+jobs/d3/qwen3_32b_d3v4x_swap_r3.yaml
+jobs/d3/qwen3_32b_d3v5_competence.yaml
+jobs/d3/qwen3_32b_d3v5_competence_r2.yaml
+jobs/d3/qwen3_32b_d3v5_competence_r3.yaml
+jobs/d3/qwen3_32b_d3v5_len12_competence.yaml
+jobs/d3/qwen3_32b_d3v5_len12_swap.yaml
+jobs/d3/qwen3_32b_d3v5_len8_competence.yaml
+jobs/d3/qwen3_32b_d3v5_len8_swap.yaml
+jobs/d3/qwen3_32b_d3v5_swap.yaml
+jobs/d3/qwen3_32b_d3v5_swap_r2.yaml
+jobs/d3/qwen3_32b_d3v5_swap_r3.yaml
+jobs/d3/qwen3_32b_d3v6_competence.yaml
+jobs/d3/qwen3_32b_d3v6_competence_r2.yaml
+jobs/d3/qwen3_32b_d3v6_competence_r3.yaml
+jobs/d3/qwen3_32b_d3v6_swap.yaml
+jobs/d3/qwen3_32b_d3v6_swap_r2.yaml
+jobs/d3/qwen3_32b_d3v6_swap_r3.yaml
+jobs/d5/qwen3_32b_competence_chat_v1.yaml
