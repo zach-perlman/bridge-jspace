@@ -380,3 +380,10 @@ def test_box_runs_lists_the_box_results_dirs(tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("JOBQ_ROOT", str(tmp_path))
     assert jobq.main(["box-runs"]) == 0
     assert json.loads(capsys.readouterr().out) == ["tasks_v2/g_competence"]
+
+
+def test_runs_to_pull_skips_local_and_failed_runs(tmp_path):
+    (tmp_path / "x6_routes" / "done_run").mkdir(parents=True)
+    (tmp_path / "_failed" / "x6_routes" / "failed_run").mkdir(parents=True)
+    runs = ["./x6_routes/done_run", "./x6_routes/failed_run", "./x6_routes/new_run"]
+    assert jobq.runs_to_pull(runs, tmp_path) == ["x6_routes/new_run"]

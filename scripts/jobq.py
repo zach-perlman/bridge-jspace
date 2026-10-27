@@ -260,6 +260,13 @@ def ids_on_other_boxes(repo: Path, host: str) -> set[str]:
     return ids
 
 
+def runs_to_pull(runs: list[str], results: Path) -> list[str]:
+    """The box's run dirs (exp/run, as `find .` prints them) not here yet: neither under results/ nor under
+    results/_failed/, where failed runs' partial dirs are moved (Dan, 27 Oct), so a pull does not bring them back."""
+    rel = [r.removeprefix("./") for r in runs]
+    return [r for r in rel if not (results / r).exists() and not (results / "_failed" / r).exists()]
+
+
 def cmd_pull() -> int:
     """Results (never overwriting a local file), the ledger, drafts and logs; the queue's state for the job pages."""
     box = f"{HOST}:{BOX_ROOT}"
@@ -270,7 +277,7 @@ def cmd_pull() -> int:
     # whole run dirs (results/<exp>/<run>) not here yet: a run already pulled keeps its local state, so a figures
     # folder redrawn here is not joined again by the box's original one
     runs = _ssh(f"cd ~/{BOX_ROOT}/results && find . -mindepth 2 -maxdepth 2 -type d").split()
-    new = [r.removeprefix("./") for r in runs if not (REPO / "results" / r.removeprefix("./")).exists()]
+    new = runs_to_pull(runs, REPO / "results")
     if new:
         listing = REPO / "cache" / "jobq" / "pull_runs.txt"
         listing.parent.mkdir(parents=True, exist_ok=True)
