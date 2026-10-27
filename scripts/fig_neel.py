@@ -744,7 +744,7 @@ def f10() -> None:
         style(ax, "both")
         style(bx, "both")
         ax.set_ylim(-5, 80)
-        bx.set_ylim(-3, 62)
+        bx.set_ylim(-3, 88)
         for a_ in (ax, bx):
             a_.set_xlim(0, 40)
             a_.axhline(0, color=AXIS, lw=1)
@@ -769,9 +769,10 @@ def f10() -> None:
             line(bx, "K", INK2, "-", "o")
             line(bx, "sK", INK2, "--", "o", mfc=SURF)
             rd = dose_readings(d)
+            sks = [r["sK"] for r in d if r["sK"] is not None]
             ax.text(0.0, 1.015, f"plateau K* {rd['kstar']} as pre-registered ({rd['cls']});\n"
                                 f"K* {rd['ekstar']} on the J-specific excess ({rd['ecls']});\n"
-                                f"specific by probability only for K < {rd['plim'] or '>300'}",
+                                f"probability limit K {rd['plim'] or '>300'} (stated facts lose {min(sks):.0f}-{max(sks):.0f})",
                     transform=ax.transAxes, fontsize=7.3, color=INK2, va="bottom")  # fmt: skip
         bx.axhline(10, color=AXIS, lw=1, ls=":")
         bx.set_xlabel("residual removed, % (median over the band)", fontsize=8)
@@ -1067,7 +1068,9 @@ def f12() -> None:
           ("good", "mention (mid),\nquestion (late)"))  # fmt: skip
     v2row("Qwen3.5-9B", "Qwen 9B (hybrid)", "qwen35_9b_textloss_top_l12_16_v1", "qwen35_9b_jswap_v2_v1", True, ("good", "toy x3 (one < 30), natural\nx3, natplus, v1, base"),
           ("good", "mention (mid)"))  # fmt: skip
-    v2row("Nemotron-3.5-Lightning", "Nemotron Lightning", "nem35l_textloss_top_v2gate_v1", "nem35l_jswap_v2_v1", True, ("none", "v2 only"), ("pend", "running tonight"))
+    lp = [cell(f"nem35l_{SET}_ko_cand2{m_}_v1", "paper10/start=P") for m_ in ("", "_posbridge", "_posquestion")]
+    lwhere = (("warn", f"read: mention {lp[1][0]:+.0f},\nquestion {lp[2][0]:+.0f} of {lp[0][0]:+.0f}") if all(lp) else ("pend", "running tonight"))
+    v2row("Nemotron-3.5-Lightning", "Nemotron Lightning", "nem35l_textloss_top_v2gate_v1", "nem35l_jswap_v2_v1", True, ("none", "v2 only"), lwhere)
     v2row("DeepSeek-V4-Flash", "DeepSeek V4 Flash", "dsv4f_textloss_top_v2gate_v1", "dsv4f_jswap_v2_L22-27_v1", False, ("none", "v2 only"), ("warn", "question: about half"),
           ("warn", "rising at 30 (dev);\ncache dropped"))  # fmt: skip
     v2row("Ministral-3-14B", "Ministral 14B", "min14_textloss_top_v2gate_v1", "min14_jswap_v2_L20-25_v1", False, ("none", "v2 only"), ("good", "question (late only)"))
