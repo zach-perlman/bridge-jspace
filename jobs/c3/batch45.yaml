@@ -290,39 +290,51 @@ tests:
       model where the base edit switches fewer than 30 recalls is not tested.
     gpu_hours: 0.6
 
-  # added 27 Oct ~14:40 (Dan): DRAFT, not queued; Dan predicts first (Q45.16). Rule and readings fixed before any run.
+  # added 27 Oct ~14:40 (Dan): DRAFT, not queued; Dan predicts first (Q45.16). Rule fixed before any run; Dan's readings
+  # ~15:05 (before any run) replace the agent's first draft (two layer sets, a two-sided "within 10", our side rerun).
   - id: 45r
-    title: Carried, not needed? Our change-removal and Zach's knock-out at the same layers (Muse)
-    status: draft, not queued (enqueue only after Dan's Q45.16 is committed)
+    title: Carried, not needed? Our change-removal and Zach's knock-out at the same depth (Muse)
+    status: >-
+      draft, not queued (enqueue only after Dan's Q45.16 is committed and Zach has confirmed this use of his method;
+      45r runs before 45s if Zach has confirmed, else after it)
     motivating_data: >-
-      Muse, never at the same layers: our change-removal at L26, gap 0.85 [0.68, 0.98] (recall 0.75, lookup -0.10;
-      muse30b_x0_necessity); Zach's v2 knock-out at L36-42, M - K +59.9 [55, 65] with the logit lens at +34.6 [29, 40]
-      (muse30_jsuite_v2_test_chat_ko_cand2_v1). docs/depth/README.md lists the disagreement as a limit.
+      Muse, never at the same depth: our change-removal at L26, gap 0.85 [0.68, 0.98] (recall 0.75, lookup -0.10;
+      muse30b_x0_necessity); Zach's v2 knock-out at L36-42 only, M - K +59.9 [55, 65] with the logit lens at +34.6
+      [29, 40], a J-specific excess of 25.3 (muse30_jsuite_v2_test_chat_ko_cand2_v1). docs/depth/README.md lists the
+      disagreement as a limit.
     design: >-
-      Muse only, both methods at L26 and at L36-42, each on its own items with its own controls. Ours
-      (x45r_x0_muse): the main test (d1_topics_v3, chat, 200 scenes), the bridge word's change whole / without its J++
-      part (25 signed OMP atoms) / without a random part of the same share, both readers, at L26 and at each of L36..L42
-      (X0 patches one layer). His (x45r_ko_l26_muse): the v2 knock-out (paper10) on jsuite_v2_test_chat's facts (2,705
-      prompts) at L26 alone, with paper10_rot, unembed10 (logit lens), unembed10_rot and paper10_pcasize (size-matched);
-      at L36-42 the record run has all but the size-matched one, which x45r_ko_band_muse adds (optional).
+      Muse only. Ours: not rerun; the stored, fixed-in-advance main test at L26 (muse30b_x0_necessity: d1_topics_v3,
+      chat, 200 scenes, the bridge word's change whole / without its J++ part (25 signed OMP atoms) / without a random
+      part of the same share, both readers). His, the rule's run (x45r_ko_l23_29_muse): the v2 knock-out (paper10) on
+      jsuite_v2_test_chat's facts (2,705 prompts) over band L23-29 (7 layers, his band width, around L26), with
+      paper10_rot, unembed10 (logit lens), unembed10_rot and paper10_pcasize (size-matched). Descriptive: the same five
+      conditions at L26 alone (x45r_ko_l26_muse); at L36-42 his record run, plus its size-matched control
+      (x45r_ko_band_muse, optional, queued last, cut first). No run on our side at L36-42. Queue order: L23-29, L26,
+      L36-42 size-matched.
     rule: >-
       "carried, not needed" if our gap >= 0.3 while his M - K < 15 or within 10 of the logit-lens control, at the same
       layers.
+    readings_by_dan: >-
+      ~15:05, before any run: "within 10" is one-sided: J-specific excess = his J++ M - K minus his logit-lens M - K;
+      "not needed" if M - K < 15 or that excess <= 10. "Carried" = our gap at L26. His knock-out at mid depth = band
+      L23-29 (the rule's reading); L26 alone descriptive. L36-42: his record run, descriptive; no runs on our side
+      there. Point estimates decide; CIs go beside them, as in batch 45.
     as_computed: >-
-      Fixed by the agent before any run (Dan may override before the run). (1) Two layer sets, each read on its own:
-      L26, and L36-42. (2) Our gap (muse30_x45r_x0; X0's cells: chat, J++ k = 25 signed, 200 scenes): per layer, the
-      recall's (PM) extra loss minus the lookup's (PP), extra loss = Jdep - Rdep; point estimate decides (EPS 1e-9),
-      paired cluster-bootstrap CI over bridge entities beside it (10,000, seed 0, as x45m.group_cells). A layer counts
-      only if both readers' cells pass X0's bar (S_whole >= 0.30 and >= 30 switches). L26: that cell, "can't tell" if it
-      fails. L36-42: the median gap over the band's layers that pass, "can't tell" if fewer than 4 of 7 pass. (3) His
-      M - K: jsuite2_score.py facts/<condition>/start=all, contrast "M-K" (points lost on the memory final minus on the
-      stated final; items right unedited; starts P, M, T pooled; R excluded), point estimate, its bootstrap (1,000,
-      seed 0) beside it; J++ = paper10, logit-lens control = unembed10, same band. L26 from
-      muse30_jsuite_v2_test_chat_ko_cand2_L26_x45r_v1 (band "L26", one layer); L36-42 from the record run (+59.9 /
-      +34.6). (4) Not needed = M - K(paper10) < 15, or |M - K(paper10) - M - K(unembed10)| <= 10 (two-sided, as
-      written; the signed difference beside). (5) Labels per layer set: "carried, not needed" (our gap >= 0.3 and not
-      needed); "carried and needed" (our gap >= 0.3, M - K >= 15 and more than 10 from the logit lens); "not carried"
-      (our gap < 0.3; his reading beside); "can't tell" (our gap not computable under (2)). Rotated, size-matched and
-      the stated facts' own loss reported beside, not in the rule. At L36-42 his side already reads needed, so that set
-      cannot be "carried, not needed". Scored by hand from the X0 verdict.json and the two jsuite2_score files.
-    gpu_hours: 1.4
+      Fixed by the agent before any run, within Dan's readings. (1) Our gap = muse30b_x0_necessity at L26 (fixed in
+      advance, batch 38; lens sha 90fc5e52, set file sha 364c234b as today; the first 200 of 395 eligible scenes): the
+      recall's (PM) extra loss minus the lookup's (PP), extra loss = Jdep - Rdep: 0.75 - (-0.10) = 0.85, paired
+      cluster-bootstrap CI over bridge entities [0.68, 0.98] (10,000, seed 0, x45m.group_cells, recomputed 27 Oct from
+      outcomes.jsonl); both cells pass X0's bar (S_whole 0.58 / 117 switches, 0.35 / 70). muse30b_x0_necessity_depth
+      reproduces its L26 reads item for item (1,200 of 1,200), so no rerun. (2) His M - K = jsuite2_score.py
+      facts/paper10/start=all, contrast "M-K" of muse30_jsuite_v2_test_chat_ko_cand2_L23-29_x45r_v1 (points lost on the
+      memory final minus on the stated final; items right unedited; starts P, M, T pooled; R excluded), point estimate,
+      its bootstrap CI (1,000, seed 0) beside it. (3) J-specific excess = M - K(paper10) - M - K(unembed10), same run,
+      point estimate; CI beside it from a paired bootstrap over relation:bridge (both conditions on the same draws,
+      10,000, seed 0), computed from rows.jsonl at scoring time. (4) Not needed = M - K < 15, or excess <= 10. (5)
+      Labels: "carried, not needed" (our gap >= 0.3 and not needed); "carried and needed" (our gap >= 0.3, M - K >= 15
+      and excess > 10); "not carried" (our gap < 0.3); "can't tell" (our L26 cell fails X0's bar). With the stored gap
+      only the first two can occur. (6) Reported beside, not in the rule: the rotated and size-matched controls at
+      L23-29 (M - K, size-matched / J++), the stated facts' own loss, L26 alone (same five conditions), the record run
+      at L36-42 (+59.9 / +34.6 / excess 25.3) and its size-matched control if run. Scored by hand from the jsuite2_score
+      files and the stored X0 outcomes.
+    gpu_hours: 3.45  # L23-29 2.1-2.4 (rule), L26 0.53-0.62 (descriptive), L36-42 size-matched 0.50-0.58 (optional); one H100 PCIe

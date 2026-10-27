@@ -1,31 +1,30 @@
 id: x45r_ko_band_muse
-title: "Batch 45r on Muse, Zach's side at his band (DRAFT, not queued; optional, cut first): the size-matched control of his v2 knock-out at L36-42, the one control his record Muse run lacks"
+title: "Batch 45r on Muse, descriptive and optional (DRAFT, not queued; queued last, cut first): the size-matched control of Zach's v2 knock-out at his late band L36-42, the one control his record Muse run lacks; not in the rule"
 thread: C3
 gpus: 1
 mem_gb: 75
 est_gpu_hours: 0.55
 depends_on: []
 command: >-
-  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; unset BJ_GRAM_PROJ; uv run python scripts/ablate_v2.py --name muse30_jsuite_v2_test_chat_ko_cand2_L36-42_pca_x45r_v1 --why "batch 45, test 45r (jobs/c3/batch45.yaml; Q45.16): the size-matched control (paper10_pcasize) of Zach's v2 knock-out at his band L36-42; J++, rotated and logit lens there are in muse30_jsuite_v2_test_chat_ko_cand2_v1" --plan bands --bands 36-42 --conditions paper10_pcasize --tasks jsuite_v2_test_chat --tasks-competence muse30_jsuite_v2_test_chat_competence_cand2_v1 --tasks-words PP PK PM PA PN MP MK MM MA MN TP TK TM TA TN --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 && uv run python scripts/jsuite2_score.py muse30_jsuite_v2_test_chat_ko_cand2_L36-42_pca_x45r_v1 --set jsuite_v2_test_chat
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; unset BJ_GRAM_PROJ; uv run python scripts/ablate_v2.py --name muse30_jsuite_v2_test_chat_ko_cand2_L36-42_pca_x45r_v1 --why "batch 45, test 45r (jobs/c3/batch45.yaml; Q45.16), descriptive and optional: the size-matched control (paper10_pcasize) of Zach's v2 knock-out at his band L36-42; J++, rotated and logit lens there are in muse30_jsuite_v2_test_chat_ko_cand2_v1" --plan bands --bands 36-42 --conditions paper10_pcasize --tasks jsuite_v2_test_chat --tasks-competence muse30_jsuite_v2_test_chat_competence_cand2_v1 --tasks-words PP PK PM PA PN MP MK MM MA MN TP TK TM TA TN --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 && uv run python scripts/jsuite2_score.py muse30_jsuite_v2_test_chat_ko_cand2_L36-42_pca_x45r_v1 --set jsuite_v2_test_chat
 question: >-
-  On Muse at L36-42, how much of Zach's knock-out effect (M - K +59.9) does a removal of the same size along the
-  residual's top principal directions give? Reported beside 45r's rule at L36-42, not in it.
+  Descriptive, beside 45r's rule: on Muse at L36-42, how much of Zach's knock-out effect (M - K +59.9) does a removal
+  of the same size along the residual's top principal directions give?
 why_it_matters: >-
-  Dan's 45r compares the methods with Zach's three controls; the record Muse run at L36-42 has the rotated and
-  logit-lens ones but not the size-matched one (docs/breadth/README.md, Section 7: "·" for Muse). Without it, the band's
-  J++ effect beyond the logit lens (25.3 points) cannot be compared with a same-size removal, as it is on the other
-  models (size-matched / J++: 0.24 on the 27B, 0.17 on the 9B, 0.15 on Lightning).
+  At L36-42 45r reports Zach's record run descriptively (Dan ~15:05): M - K +59.9, logit lens +34.6, J-specific excess
+  25.3. That run has the rotated and logit-lens controls but not the size-matched one (docs/breadth/README.md, Section
+  7: "·" for Muse), so the late band's excess cannot be set against a same-size removal, as on the other models
+  (size-matched / J++: 0.24 on the 27B, 0.17 on the 9B, 0.15 on Lightning).
 hypotheses:
-  Q45.16: "Dan's answer in predictions/2026-10-26_dan.md (Q45.16), one line per layer set; enqueue only after it is committed. This job's number is reported beside the rule, not scored."
+  Q45.16: "Dan's answer in predictions/2026-10-26_dan.md (Q45.16); enqueue only after it is committed. This run is descriptive: not in the rule, not scored."
 decision_rule: >-
-  Fixed in advance (Dan, 27 Oct ~14:40; jobs/c3/batch45.yaml, 45r), verbatim: "'carried, not needed' if our gap >= 0.3
-  while his M - K < 15 or within 10 of the logit-lens control, at the same layers." As computed: see jobs/c3/batch45.yaml
-  45r and x45r_x0_muse (identical text). At L36-42 the rule reads M - K(paper10) and M - K(unembed10) from the record run
-  muse30_jsuite_v2_test_chat_ko_cand2_v1 (+59.9 and +34.6); this job adds paper10_pcasize's M - K (facts/paper10_pcasize/
-  start=all, contrast "M-K") and its ratio to the record's paper10 M - K, reported beside, not in the rule.
+  Not in the rule (Dan ~15:05: L36-42 is his record run, reported descriptively; paper10_pcasize there is optional,
+  queued last, cut first). 45r's rule is in jobs/c3/batch45.yaml (45r) and x45r_ko_l23_29_muse. Reported: this run's
+  jsuite2_score facts/paper10_pcasize/start=all, contrast "M-K", point estimate with its CI beside it, and its ratio to
+  the record run's paper10 M - K (+59.9).
 controls:
 - 'paper10_pcasize: paper10''s size at each position along the residual''s top 256 principal directions at each band layer (64 pinned WikiText rows), as Zach''s amendment 48 note 1'
 - 'the record run''s paper10, paper10_rot, unembed10 and unembed10_rot at the same band and items (not rerun)'
 n: '2,705 prompts: the record run''s items (jsuite_v2_test_chat facts, 15 words, eligibility from muse30_jsuite_v2_test_chat_competence_cand2_v1; rebuilt on CPU 27 Oct: the same 2,705 (word, id) pairs)'
 seeds: [0]
-notes: "DRAFT, NOT QUEUED; optional, cut first (the rule does not read it). Enqueue only after Dan's Q45.16 answer is committed. Mixes runs: the size-matched number comes from our box at this commit, the J++ number it is divided by from Zach's H200 run (25 Oct, befea152), as Zach's own pca runs were separate runs. Alternative (open question for Dan): rerun all five conditions at L36-42 on our box, so both layer sets come from one box and commit and the record's +59.9 / +34.6 is reproduced: ~1.6 h on an H200, 2.1-2.4 h on one H100 PCIe, instead of this job. Overlap: Zach's amendment 57 note 1 pre-registered Muse's dose grid at L36-42 with top10_pcasize on 150 items per word; it did not run (Muse's weights are not cached on his box): coordinate with Zach so the same control is not answered twice. BJ_GRAM_PROJ unset (QR, as the record run). Seed: 0 the scorer's bootstrap (the principal directions are deterministic). Cost: the record run spent 1,110 s per condition at L36-42 on an H200 (4,440 s / 4) and 214 s outside the band: 1,110 + 214 + ~60 s for the principal directions = ~1,385 s = 0.38 h on an H200; x 1.3-1.5 for one H100 PCIe (assumed, not measured) = 0.50-0.58 h."
+notes: "DRAFT, NOT QUEUED; optional, queued last within 45r, cut first. Enqueue only after Dan's Q45.16 answer is committed and Zach has confirmed this use of his method. Mixes runs: the size-matched number comes from our box at this commit, the J++ number it is divided by from Zach's H200 run (25 Oct, befea152), as Zach's own pca runs were separate runs. Overlap: Zach's amendment 57 note 1 pre-registered Muse's dose grid at L36-42 with top10_pcasize on 150 items per word; it did not run (Muse's weights are not cached on his box): ask Zach whether this replaces it. BJ_GRAM_PROJ unset (QR, as the record run). Seed: 0 the scorer's bootstrap (the principal directions are deterministic). Cost: the record run spent 1,110 s per condition at L36-42 on an H200 (4,440 s / 4) and 214 s outside the band: 1,110 + 214 + ~60 s for the principal directions = ~1,385 s = 0.38 h on an H200; x 1.3-1.5 for one H100 PCIe (assumed, not measured) = 0.50-0.58 h."

@@ -1,0 +1,55 @@
+id: x45r_ko_l23_29_muse
+title: "Batch 45r on Muse, the rule's run (DRAFT, not queued; Dan predicts first, Q45.16): Zach's v2 knock-out (top 10 J++ directions removed at every token) at mid depth, band L23-29 (his band width, around our L26), with his controls (rotated, logit lens and its rotation, size-matched), on his v2 facts items"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 2.3
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; unset BJ_GRAM_PROJ; uv run python scripts/ablate_v2.py --name muse30_jsuite_v2_test_chat_ko_cand2_L23-29_x45r_v1 --why "batch 45, test 45r (jobs/c3/batch45.yaml; Q45.16): Zach's v2 knock-out and its controls at mid depth, band L23-29 (7 layers around our L26); the record run's items and settings otherwise" --plan bands --bands 23-29 --conditions paper10 paper10_rot unembed10 unembed10_rot paper10_pcasize --tasks jsuite_v2_test_chat --tasks-competence muse30_jsuite_v2_test_chat_competence_cand2_v1 --tasks-words PP PK PM PA PN MP MK MM MA MN TP TK TM TA TN --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 && uv run python scripts/jsuite2_score.py muse30_jsuite_v2_test_chat_ko_cand2_L23-29_x45r_v1 --set jsuite_v2_test_chat
+question: >-
+  On Muse at mid depth, where our change-removal finds the J++ part carried (gap 0.85 at L26), does Zach's knock-out
+  over a 7-layer band around it (L23-29) find the J++ directions needed: recall answers lost minus stated-fact answers
+  lost (M - K) at least 15, and more than 10 points above what the logit lens's own top 10 cost (the J-specific
+  excess)?
+why_it_matters: >-
+  The two halves disagree on Muse and have never been run at the same depth. Ours, at L26 (fixed in advance):
+  gap 0.85 [0.68, 0.98] (recall 0.75, lookup -0.10; muse30b_x0_necessity, 200 scenes). Zach's, at L36-42 only: M - K
+  +59.9 [55, 65], logit lens +34.6 [29, 40], so a J-specific excess of 25.3 (muse30_jsuite_v2_test_chat_ko_cand2_v1);
+  docs/depth/README.md lists "Zach's knock-out finds the split weak outside Qwen, our change-removal finds it on Muse"
+  as a limit. If at mid depth his knock-out finds J++ not needed while our change-removal finds it carried, "carried"
+  and "needed" are different properties; if it finds it needed there too, the halves agree and the disagreement was
+  about depth. On natplus dev (muse30_natplus_dev_chat_sweep_cand_v1, paper10, cand read), the 7-layer windows L21-27
+  and L24-30 left the memory-final words right in 84-97% of items (unedited 100%; at L36-42: 22-31%).
+hypotheses:
+  Q45.16: "Dan's answer in predictions/2026-10-26_dan.md (Q45.16); enqueue only after it is committed."
+decision_rule: >-
+  Fixed in advance (Dan, 27 Oct ~14:40; jobs/c3/batch45.yaml, 45r), verbatim: "'carried, not needed' if our gap >= 0.3
+  while his M - K < 15 or within 10 of the logit-lens control, at the same layers." Dan's readings (~15:05, before any
+  run): "within 10" is one-sided, on the J-specific excess = his J++ M - K minus his logit-lens M - K; "carried" = our
+  gap at L26; his knock-out at mid depth = band L23-29; point estimates decide, CIs beside them. As computed (fixed by
+  the agent before any run): (1) Our gap = the stored, fixed-in-advance main test at L26 (muse30b_x0_necessity: chat,
+  J++ k = 25 signed, the first 200 of 395 eligible scenes of d1_topics_v3, lens sha 90fc5e52): the recall's (PM) extra
+  loss minus the lookup's (PP), extra loss = Jdep - Rdep = 0.75 - (-0.10) = 0.85, paired cluster-bootstrap CI over
+  bridge entities [0.68, 0.98] (10,000, seed 0, x45m.group_cells; recomputed 27 Oct from outcomes.jsonl). Both cells
+  pass X0's bar (S_whole 0.58 with 117 switches, 0.35 with 70). No new run on our side. (2) His M - K = this run's
+  scripts/jsuite2_score.py facts/paper10/start=all, contrast "M-K" (points lost on the memory final M minus on the
+  stated final K; items Muse gets right unedited; starts P, M, T pooled; R excluded), point estimate, its bootstrap CI
+  (1,000 draws over relation:bridge, seed 0) beside it. (3) J-specific excess = M - K(paper10) - M - K(unembed10), both
+  from this run, point estimate; its CI beside it from a paired bootstrap over relation:bridge (both conditions on the
+  same draws, 10,000, seed 0), computed from rows.jsonl at scoring time. (4) "Not needed" = M - K < 15, or excess <= 10.
+  (5) Labels: "carried, not needed" = our gap >= 0.3 and not needed; "carried and needed" = our gap >= 0.3, M - K >= 15
+  and excess > 10; "not carried" = our gap < 0.3; "can't tell" = our L26 cell fails X0's bar. With the stored gap
+  (0.85, valid), only the first two can occur. (6) Reported beside, not in the rule: paper10_rot, unembed10_rot and
+  paper10_pcasize (M - K, and size-matched / J++), the stated facts' own loss (K), x45r_ko_l26_muse (L26 alone,
+  descriptive), and the record run at L36-42 (+59.9 / +34.6 / excess 25.3, descriptive; x45r_ko_band_muse adds its
+  size-matched control, optional). Scored by hand from jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L23-29_x45r_v1.json.
+controls:
+- 'paper10_rot: the same removal vectors turned by a fixed random rotation (seed 888 + layer, drawn on the CPU)'
+- 'unembed10: paper10''s procedure over the logit lens''s directions (the unit unembedding rows of letter tokens, final-norm gain folded in); the rule''s control (the J-specific excess)'
+- 'unembed10_rot: its rotation'
+- 'paper10_pcasize: paper10''s size at each position along the residual''s top 256 principal directions at each band layer (64 pinned WikiText rows), the size-matched control'
+- 'the stated final K and the other finals P, A, N under every condition (reported)'
+n: '2,705 prompts: jsuite_v2_test_chat facts, 15 start x final words, the items Muse gets right in muse30_jsuite_v2_test_chat_competence_cand2_v1 (540-541 per final at start=all); rebuilt on CPU 27 Oct with the Muse tokenizer: the same 2,705 (word, id) pairs as the record run muse30_jsuite_v2_test_chat_ko_cand2_v1. Our side: 200 scenes (stored).'
+seeds: [888, 0]
+notes: "DRAFT, NOT QUEUED (Dan 27 Oct ~14:40 / ~15:05). Enqueue only after Dan's Q45.16 answer is committed and Zach has confirmed this use of his method (the message in the 45r report); 45r runs before 45s if Zach has confirmed, else after it. Queue order within 45r: this job, then x45r_ko_l26_muse (descriptive), then x45r_ko_band_muse (optional, last, cut first). Our side is not rerun: muse30b_x0_necessity (fixed in advance, batch 38, 82d47e49) has the same lens sha, set file sha (364c234b, unchanged), readers, scenes and arms as a rerun would, and muse30b_x0_necessity_depth (another commit, another arm set) reproduces its L26 reads item for item (1,200 of 1,200 switches and logit differences identical). Settings as Zach's record Muse run (cand2 read, batch 16, exact-length batches, all positions, n 1000 per word, level all) except the band and the added size-matched condition. One band per run: jsuite2_score pools a run's bands. BJ_GRAM_PROJ unset: the QR projection, as the record run. Runs on our box (Muse's weights are cached there, not on Zach's H200). Seeds: 888 + layer the rotation, 0 the bootstraps. Cost: Zach's record run took 4,654 s on an H200 (summary.json): 4,440 s in the band for 4 conditions x 7 layers, so 1,110 s per condition at 7 layers and 214 s outside the band; the removal cost does not depend on depth (muse30_natplus_dev_chat_sweep_cand_v1: 361-371 s per 7-layer window from L0-6 to L42-48). Here: 5 x 1,110 + 214 + ~60 s for the principal directions = ~5,824 s = 1.62 h on an H200; on one H100 PCIe x 1.3-1.5 (assumed from the spec sheets, not measured on this workload) = 2.10-2.43 h; jsuite2_score ~1 min on the CPU. mem_gb 75 as the other 1-GPU Muse jobs (no peak recorded for ablate_v2 on Muse); if it runs out of memory, rerun with --batch 8 and say so."
