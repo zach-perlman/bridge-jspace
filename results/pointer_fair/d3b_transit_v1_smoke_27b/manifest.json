@@ -1,0 +1,123 @@
+{
+  "exp": "pointer_fair",
+  "run": "d3b_transit_v1_smoke_27b",
+  "why": "smoke: the transit sweep alone on pointer_v1, every stage before d3b_transit_v1",
+  "written_utc": "2026-10-21T19:28:07Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "config": {
+    "data": "pointer_v1",
+    "domains": [
+      "animals",
+      "elements"
+    ],
+    "layers": [
+      32,
+      36,
+      40
+    ],
+    "scales": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "n": {
+      "RL": 4,
+      "DL": 4,
+      "RR": 4,
+      "BL": 0
+    },
+    "competence": "d3b_competence_400",
+    "suite": false,
+    "primary_scale": 1.0,
+    "fit_limit": null,
+    "require_correct": true,
+    "arms": [
+      "transit"
+    ],
+    "transit_layers": [
+      28,
+      32,
+      36,
+      40,
+      44,
+      48,
+      52
+    ],
+    "transit_scales": [
+      1.0,
+      4.0
+    ]
+  },
+  "inputs": {
+    "data/pointer_v1/fit/animals_RL_e5f0.json": "097afa9dcc62a33463537ca20aabbf6366fc231fb5e6936140a3efaaf4fd5e1b",
+    "data/pointer_v1/fit/elements_RL_e5f0.json": "0a27d3e58dffb33b46e438d47a785cf7c6c294ab8453779ed524b92a344ed02d",
+    "data/pointer_v1/main/animals_RL_e5f0.json": "efb55d7973056291ecf9e065e1ccdc2f49861826c93358974da84924a19adb1c",
+    "data/pointer_v1/main/animals_DL_e5f0.json": "8d542b0da2ee1b508f87724897fbe5682490aa6adf445b58234172086e896971",
+    "data/pointer_v1/main/animals_RR_e5f0.json": "226862b16a4e7e4fb28b4a771869f2b1e71effcfc651c53a9cb808d7e6b662cb",
+    "data/pointer_v1/main/elements_RL_e5f0.json": "cac4c24734619f43c52e048aa5990c265322aa5a2a834c1552dd81d829a913e4",
+    "data/pointer_v1/main/elements_DL_e5f0.json": "a95099520b18521245be2c5ba8fab8df72a8eca6dee5a4beea741e70a7b5638f",
+    "data/pointer_v1/main/elements_RR_e5f0.json": "2d1d3df5886cbcf7b551d20eca1bf0786da7cd9bf00503fce1fa08a8784698e3",
+    "results/pointer_v1/d3b_competence_400/items.jsonl": "9e10624d871ef7908fa728b93caa29900e3dabb900bd04e5f7483eb0e5aeb4f2"
+  },
+  "entity_split": {
+    "animals": {
+      "fit": [
+        "cat",
+        "chicken",
+        "cow",
+        "duck",
+        "lion",
+        "mouse",
+        "pig",
+        "turkey"
+      ],
+      "held_out": [
+        "bee",
+        "dog",
+        "frog",
+        "goose",
+        "horse",
+        "sheep",
+        "spider",
+        "wolf"
+      ]
+    },
+    "elements": {
+      "fit": [
+        "helium",
+        "hydrogen",
+        "nitrogen"
+      ],
+      "held_out": [
+        "carbon",
+        "lithium",
+        "oxygen"
+      ]
+    }
+  },
+  "ci": {
+    "kind": "entity-cluster bootstrap; Wilson reported next to it"
+  },
+  "seeds": {
+    "split": 0,
+    "shuffle": 1,
+    "sample": 0,
+    "null": 0,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "pointer_fair (D3b, batch 3, \"fair C2\"): at the depth where \"lookups go around the lens\" was measured, does a pointer\ncode steer the lookup where the lens push of the same size does not?\n\nBackground (UNVERIFIED): read_write (EXPERIMENTS rows 32, 37) found that at layers 32-40, on the tokens after the cue,\nthe J-lens reads a recalled bridge used for a lookup (memory \u2192 prompt) 95% of the time, but its push (bridge alt \u2212\nbridge org) switches <= 3% of answers at any size: \"read without write\". d3b_slot_direction_main_27b found that at\nlayer 48 a direction fitted to \"which statement the question asks\" (target minus current statement) does switch 37% of\nmemory \u2192 prompt answers where the lens push does not, but at another depth. This run puts both pushes in read_write's\ncell, at the same sizes, aimed at the SAME answer: bridge alt's own statement digit.\n\nData and fits:\n  pointer_v1 (animals, elements): memory \u2192 prompt (the lookup the claim is about), named \u2192 prompt (the entity named in\n      the question), memory \u2192 memory (the null: nothing is looked up). The pointer direction is fitted on pointer_v1's\n      fit set (memory \u2192 prompt; answered right; queried entity in a seeded half of each pool, as d3b_slot_direction_\n      main_27b), per-token class means of the 5 asked statements at layers 32, 36, 40, at two token groups:\n        after the cue   the question's last token ('?') and everything after it (instruction, template, 'Answer:'):\n                        read_write's cell; the same tokens in every family, so one fit serves all three\n        question words  the question's own tokens, cue included (memory \u2192 prompt only; one fit per topic, since the\n                        cue phrases differ in length between topics)\n  prompt \u2192 prompt (the animal suite, wording A: \"Jack's pet is a cow. ... The cow's locker is 5. ... Which locker\n      belongs to Jack's pet?\"): its own pointer direction, per-token class means of the 3 locker statements on half the\n      eligible scenes (seeded), pushed on the other half, at the tokens after the subject ('?' and after)\nPushes (added at the group's tokens; layers 32, 36, 40 one at a time and all three at once; 0.5, 1, 2, 4 times the\nper-token size of the alt-prompt patch there: pointer_v1's alt prompt, the suite's C prompt):\n  pointer   mean(bridge alt's statement) \u2212 mean(the asked statement), per token\n  lens      the J++ direction v(bridge alt) \u2212 v(bridge org), the same at every token (read_write's push)\n  random    a random direction per token, the pointer push's size;  shuffled: a direction fitted on shuffled labels\n  patch     the alt prompt's hidden states pasted at those tokens (reference, not rescaled)\nBoth the pointer and the lens push predict the same answer: the digit of bridge alt's statement in the org prompt.\nEvery answer is also recorded as the index of the statement whose digit it is (for the overshoot analysis).\nIntervals: an entity-cluster bootstrap (the queried entities resampled within each topic, 2000, seed 0); Wilson as well.\n\n",
+  "decision": "Decision rule (fixed before the 27B run). Deciding cell: memory \u2192 prompt, the tokens after the cue, layers 32, 36 and 40\nat once, 1x the alt-prompt patch's size, topics pooled. \"A pointer code steers the lookup where the lens push of the\nsame size does not, at the lens's depth\" iff (a) the pointer push's rate of answers = bridge alt's statement digit has\nan entity-bootstrap 95% lower bound >= 0.30, and (b) it exceeds both the lens push and the random push by >= 20 points\nwith each paired entity-bootstrap lower bound > 0. Valid only if the shuffled-label direction (memory \u2192 prompt) stays\nat an upper bound <= 0.10 for that digit and the pointer push changes memory \u2192 memory answers with an upper bound\n<= 0.10 (n >= 35 each). Second deciding cell, same rule: memory \u2192 prompt, the question words, layers 32-40 at once, 1x\n(it says whether the pointer also acts at the question words). Reported, not decisive: each layer, each size, per\ntopic, named \u2192 prompt, prompt \u2192 prompt. Secondary, pre-registered (an exploratory post-hoc pattern on\nd3b_slot_direction_main_27b): among the pointer push's answers in the deciding cell that are neither answer org nor the\ntarget, the share on statements BEYOND the target (on the far side from the asked statement) against a uniform choice\namong the off-target statements, and against the shuffled-label direction: \"overshoot\" iff the observed share exceeds\nthe uniform expectation with an entity-bootstrap lower bound > 0.\n"
+}

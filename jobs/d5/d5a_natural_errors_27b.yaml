@@ -1,0 +1,33 @@
+id: d5a_natural_errors_27b
+title: "D5a: when Qwen3.6-27B gets a lookup wrong on its own, do the late heads look at the statement its answer comes from?"
+thread: D5
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  uv run python scripts/d5a_natural_errors.py run --name d5a_natural_errors_smoke_27b --limit 3
+  --why "smoke: 3 items per file; not a result"
+  && uv run python scripts/d5a_natural_errors.py run --name d5a_natural_errors_27b
+  --why "D5a without a patch: on alias_pointer_v1 (main and dev; mostly recalled elements named by their chemical
+  symbol), the late heads' top statement on items the model answers wrong vs right"
+question: >-
+  On unedited prompts the 27B answers wrong (memory -> prompt with chemical symbols, other languages), does layer 51
+  head 22 attend most to the statement the wrong answer is taken from, or to the right (asked) statement?
+why_it_matters: >-
+  d5a_head_pointer's 58% rests on patched prompts, where the alt prompt's query is copied in; natural errors have no
+  patch. If the head marks the statement the answer is fetched from even when it is the wrong one, it is a candidate
+  provenance read-out (the README's AI-safety use); if it marks the right statement, the error happens after it.
+hypotheses:
+  H-fetch: 'on wrong-in-context rows, head on the answered statement (lower bound) > head on the asked statement
+    (upper bound). Prior 0.45'
+  H-bridge: 'the reverse. Prior 0.3'
+decision_rule: >-
+  scripts/d5a_natural_errors.py docstring "Decision rule": layer 51 head 22, rows answered wrong with another
+  statement's digit, all levels and families pooled, Wilson 95%, n >= 35. Heads 59:21 and 59:3 reported.
+controls:
+- 'rows answered right: the head should be on the asked statement'
+- 'answers off the prompt (not a digit of the context) are counted, not judged'
+n: 'every alias_pointer_v1 main and dev item of memory -> prompt and named -> prompt (~2,400); ~180 wrong in context expected from alias_competence_27b'
+seeds: [0]
+notes: '~0.4 GPU-h; one forward per item.'

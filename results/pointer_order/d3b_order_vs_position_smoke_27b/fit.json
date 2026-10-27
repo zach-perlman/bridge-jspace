@@ -1,0 +1,200 @@
+{
+  "folds": [
+    {
+      "fold": 0,
+      "prompts": 17,
+      "scenes": 8,
+      "layers": [
+        {
+          "layer": 40,
+          "n": 17,
+          "per_slot": [
+            2,
+            4,
+            6,
+            5,
+            0
+          ],
+          "decode_cv": 0.6471,
+          "decode_cv_shuffled": 0.2941
+        },
+        {
+          "layer": 42,
+          "n": 17,
+          "per_slot": [
+            2,
+            4,
+            6,
+            5,
+            0
+          ],
+          "decode_cv": 0.5294,
+          "decode_cv_shuffled": 0.2941
+        },
+        {
+          "layer": 44,
+          "n": 17,
+          "per_slot": [
+            2,
+            4,
+            6,
+            5,
+            0
+          ],
+          "decode_cv": 0.4706,
+          "decode_cv_shuffled": 0.2941
+        },
+        {
+          "layer": 46,
+          "n": 17,
+          "per_slot": [
+            2,
+            4,
+            6,
+            5,
+            0
+          ],
+          "decode_cv": 0.4706,
+          "decode_cv_shuffled": 0.2941
+        },
+        {
+          "layer": 48,
+          "n": 17,
+          "per_slot": [
+            2,
+            4,
+            6,
+            5,
+            0
+          ],
+          "decode_cv": 0.4706,
+          "decode_cv_shuffled": 0.3529
+        },
+        {
+          "layer": 50,
+          "n": 17,
+          "per_slot": [
+            2,
+            4,
+            6,
+            5,
+            0
+          ],
+          "decode_cv": 0.5882,
+          "decode_cv_shuffled": 0.3529
+        },
+        {
+          "layer": 52,
+          "n": 17,
+          "per_slot": [
+            2,
+            4,
+            6,
+            5,
+            0
+          ],
+          "decode_cv": 0.5882,
+          "decode_cv_shuffled": 0.3529
+        }
+      ]
+    },
+    {
+      "fold": 1,
+      "prompts": 22,
+      "scenes": 8,
+      "layers": [
+        {
+          "layer": 40,
+          "n": 22,
+          "per_slot": [
+            12,
+            2,
+            2,
+            5,
+            1
+          ],
+          "decode_cv": 0.7273,
+          "decode_cv_shuffled": 0.2727
+        },
+        {
+          "layer": 42,
+          "n": 22,
+          "per_slot": [
+            12,
+            2,
+            2,
+            5,
+            1
+          ],
+          "decode_cv": 0.7273,
+          "decode_cv_shuffled": 0.2727
+        },
+        {
+          "layer": 44,
+          "n": 22,
+          "per_slot": [
+            12,
+            2,
+            2,
+            5,
+            1
+          ],
+          "decode_cv": 0.7727,
+          "decode_cv_shuffled": 0.2273
+        },
+        {
+          "layer": 46,
+          "n": 22,
+          "per_slot": [
+            12,
+            2,
+            2,
+            5,
+            1
+          ],
+          "decode_cv": 0.7273,
+          "decode_cv_shuffled": 0.2273
+        },
+        {
+          "layer": 48,
+          "n": 22,
+          "per_slot": [
+            12,
+            2,
+            2,
+            5,
+            1
+          ],
+          "decode_cv": 0.8182,
+          "decode_cv_shuffled": 0.2727
+        },
+        {
+          "layer": 50,
+          "n": 22,
+          "per_slot": [
+            12,
+            2,
+            2,
+            5,
+            1
+          ],
+          "decode_cv": 0.8182,
+          "decode_cv_shuffled": 0.2727
+        },
+        {
+          "layer": 52,
+          "n": 22,
+          "per_slot": [
+            12,
+            2,
+            2,
+            5,
+            1
+          ],
+          "decode_cv": 0.7727,
+          "decode_cv_shuffled": 0.4545
+        }
+      ]
+    }
+  ]
+}

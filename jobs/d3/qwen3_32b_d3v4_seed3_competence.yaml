@@ -1,0 +1,22 @@
+id: qwen3_32b_d3v4_seed3_competence
+title: "Seed 3 gate: Qwen3-32B on a third draw of pointer_v4's scenes"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/pointer_v4.py manifest --set seed3 --name qwen3_32b_d3v4_seed3_competence
+  --why "seed 3: a third draw of pointer_v4's main design (same 85 entities, wordings and split, seed 845), every alt
+  and control prompt and each step alone; gate for qwen3_32b_d2_parts_seed3"
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_v4.py competence --name qwen3_32b_d3v4_seed3_competence
+question: 'Does Qwen3-32B answer the seed-3 scenes as it answers main''s?'
+why_it_matters: 'Gate for qwen3_32b_d2_parts_seed3 (name vs digit on a third draw).'
+hypotheses:
+  H-gate: 'per topic and family within 5 points of main''s competence (qwen3_32b_d3v4_competence_r2). Prior 0.8 (copied from qwen3_32b_d3v4_seed2_competence)'
+decision_rule: 'pointer_v1''s competence rule (every prompt of an item right = eligible).'
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'pointer_v4 seed3: up to 300 scenes per topic x 3 families'
+seeds: [845]
+notes: "mechanical copy of qwen3_32b_d3v4_seed2_competence (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Only the data set (pointer_v4 seed3), the gate, run names and dependencies change; layers, n and rules as in qwen3_32b_d3v4_seed2_competence. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2), the 27B's third draw (d3v4_seed3_competence_27b / d3v4_seed3_swap_27b)."

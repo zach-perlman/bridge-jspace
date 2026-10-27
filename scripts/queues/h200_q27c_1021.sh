@@ -58,8 +58,8 @@ echo "=== GPU 1 Qwen reruns done $(date -u +%FT%TZ)"
 # out: ~90 min), compared with full2_ko_v1's paper10 on the same items; (3) the copy sweep again with the band paste.
 echo "=== 27B additions $(date -u +%FT%TZ)"
 W2B="--possets question final --tasks full_v8 --tasks-competence full_v8_competence_v1 --tasks-level all"
-BJ_BATCH=64 $PY scripts/write_max.py --name smoke_wm2_copyonly_1021 --why smoke --n 2 --writes copy $W2B --families PP MM \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full2_v2_ceiling --why "$WHY: the paste ceiling for wm2_full2_v2 (its joint copy stacked)" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name smoke_wm2_copyonly_1021 --why smoke --n 2 --writes copy $W2B --families PP MM \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name wm2_full2_v2_ceiling --why "$WHY: the paste ceiling for wm2_full2_v2 (its joint copy stacked)" \
   --n 1000 --writes copy $W2B --families PP PM MP MM CP CM \
   && $PY scripts/c2_graded.py wm2_full2_v2 --ceiling-from wm2_full2_v2_ceiling | tail -8 \
   && $PY scripts/c2_graded.py wm2_full2_v2 --fresh-vs wm2_full2_v1 --ceiling-from wm2_full2_v2_ceiling | tail -4 \
@@ -82,7 +82,7 @@ echo "=== 27B additions done $(date -u +%FT%TZ)"
 echo "=== 27B gap fills $(date -u +%FT%TZ)"
 $PY scripts/removal_textloss.py --name textloss_top_l${MID%-*}_${MID#*-}_v1 --why "$WHY: plain-text loss under the knock-out at every layer of 32-40, as Gemma and Qwen3-32B" \
   --layers $(seq ${MID%-*} ${MID#*-}) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot || echo "=== 27B text loss FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full3_v1_ceiling --why "$WHY: the paste ceiling for the three-step steering (wm2_full3_v1 had none)" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name wm2_full3_v1_ceiling --why "$WHY: the paste ceiling for the three-step steering (wm2_full3_v1 had none)" \
   --n 40 --writes copy --possets question final --tasks full_v8b --tasks-competence full_v8b_competence_v1 --tasks-level all \
   --families PPP PPM PMP MPP MPM MMP --tasks-per-word \
   && $PY scripts/c2_graded.py wm2_full3_v1 --ceiling-from wm2_full3_v1_ceiling > /dev/null || echo "=== 27B three-step ceiling FAILED"

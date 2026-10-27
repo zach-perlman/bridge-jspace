@@ -1,0 +1,47 @@
+{
+  "exp": "x45b_binding",
+  "run": "x45b_sweep_v2_27b",
+  "why": "45b layer sweep (Dan 26 Oct ~21:20; descriptive, after the data): bridge word vs locker sentences at L16-L32 every 2 layers",
+  "written_utc": "2026-10-26T22:33:30Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "ec8f7a9b06ef15fdd31e93c25df66249f7356a70",
+    "dirty": true
+  },
+  "main_run": "x0_necessity_27b_chat",
+  "layer": 32,
+  "sweep_layers": [
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32
+  ],
+  "arms": {
+    "bw<l>": "the bridge-word change, at layer l",
+    "ls<l>": "S patched into O at every locker-sentence token, at layer l",
+    "li<l>": "only the item's tokens inside the locker sentences, at layer l",
+    "lv<l>": "only the value token(s), at layer l",
+    "lf<l>": "only the sentence-final token, at layer l",
+    "none": "O unedited",
+    "S": "S read on S (unedited)"
+  },
+  "roles": "item / value / final tokens of every locker sentence by character overlap (role_positions)",
+  "items_rule": "as the 45b run (x45b_binding.select)",
+  "read": "as the 45b run",
+  "descriptive": "after the data (Dan 26 Oct ~21:20): no rule",
+  "seeds": {
+    "bootstrap": 0
+  }
+}

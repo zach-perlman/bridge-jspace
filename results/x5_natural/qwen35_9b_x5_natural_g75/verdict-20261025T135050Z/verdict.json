@@ -1,0 +1,242 @@
+{
+ "run": "qwen35_9b_x5_natural_g75",
+ "manifest": {
+  "exp": "x5_natural",
+  "run": "qwen35_9b_x5_natural_g75",
+  "written_utc": "2026-10-25T13:42:48Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~00:20; spec jobs/c3/x5_natural.yaml; prediction: batch 31, Q31.6).",
+  "model": {
+   "target": "qwen3.5-9b",
+   "repo": "Qwen/Qwen3.5-9B",
+   "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "f1a3eb9f0fe2a461ec68849898221a22c1a21da7",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "set": "jsuite_v2_1_test_chat",
+  "inputs": {
+   "data/tasks_v2/jsuite_v2_1_test_chat/items.jsonl": "0401091f71a54983e9b94947b31efad503a552d1b36beba3de6f8aa44d47df70"
+  },
+  "layer": 12,
+  "k": 25,
+  "gate": 0.75,
+  "gate_fixed_in_advance": 0.8,
+  "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
+  "rule": "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed",
+  "seeds": {
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "items": 83
+ },
+ "main": {
+  "n": 83,
+  "entities": 56,
+  "excess": {
+   "PP": [
+    0.033333333333333326,
+    -0.07999999999999996,
+    0.14814814814814814
+   ],
+   "PM": [
+    0.5555555555555556,
+    0.45070422535211263,
+    0.6623376623376623
+   ]
+  },
+  "gap": [
+   0.5222222222222223,
+   0.3615331010452961,
+   0.6826929012345679
+  ]
+ },
+ "label": "holds",
+ "subsets": {
+  "relation=animals": {
+   "n": 4,
+   "entities": 4,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.25,
+     0.0,
+     0.75
+    ]
+   },
+   "gap": [
+    0.25,
+    0.0,
+    0.5
+   ]
+  },
+  "relation=cities": {
+   "n": 29,
+   "entities": 17,
+   "excess": {
+    "PP": [
+     0.18181818181818188,
+     0.0,
+     0.41666666666666685
+    ],
+    "PM": [
+     0.5,
+     0.32258064516129026,
+     0.68
+    ]
+   },
+   "gap": [
+    0.3181818181818181,
+    0.0413448275862069,
+    0.6
+   ]
+  },
+  "relation=companies": {
+   "n": 11,
+   "entities": 8,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.5,
+     0.16666666666666663,
+     0.7692307692307693
+    ]
+   },
+   "gap": [
+    0.5,
+    0.16666666666666663,
+    0.7692307692307693
+   ]
+  },
+  "relation=countries": {
+   "n": 21,
+   "entities": 17,
+   "excess": {
+    "PP": [
+     -0.125,
+     -0.4,
+     0.0
+    ],
+    "PM": [
+     0.6666666666666667,
+     0.47058823529411764,
+     0.85
+    ]
+   },
+   "gap": [
+    0.7916666666666667,
+    0.55,
+    1.0634920634920635
+   ]
+  },
+  "relation=languages": {
+   "n": 15,
+   "entities": 12,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.6666666666666667,
+     0.4,
+     0.9285714285714286
+    ]
+   },
+   "gap": [
+    0.6666666666666667,
+    0.4,
+    0.9285714285714286
+   ]
+  },
+  "relation=people": {
+   "n": 3,
+   "entities": 3,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.33333333333333337,
+     0.0,
+     1.0
+    ]
+   },
+   "gap": [
+    0.33333333333333337,
+    0.0,
+    0.6666666666666667
+   ]
+  },
+  "half=A": {
+   "n": 46,
+   "entities": 31,
+   "excess": {
+    "PP": [
+     0.1250000000000001,
+     0.0,
+     0.2857142857142858
+    ],
+    "PM": [
+     0.4772727272727272,
+     0.33333333333333326,
+     0.6222222222222222
+    ]
+   },
+   "gap": [
+    0.35227272727272707,
+    0.14164803220035785,
+    0.5581395348837209
+   ]
+  },
+  "half=B": {
+   "n": 37,
+   "entities": 26,
+   "excess": {
+    "PP": [
+     -0.0714285714285714,
+     -0.25,
+     0.0
+    ],
+    "PM": [
+     0.6486486486486487,
+     0.5128205128205128,
+     0.7894736842105263
+    ]
+   },
+   "gap": [
+    0.7200772200772201,
+    0.5433478513356561,
+    0.9428571428571427
+   ]
+  }
+ },
+ "lure": {
+  "whole": 0.0,
+  "no_part": 0.08433734939759036,
+  "no_rand": 0.0
+ }
+}

@@ -1,0 +1,75 @@
+id: d2_v4_late_read
+title: 'D2 batch 4: is the late attention read the same across 85 entities, 3 topics and 9 wordings? (memory → prompt, named → prompt; memory → memory as the null)'
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.1
+depends_on:
+- d3v4_competence_27b
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_v4_late_read
+  --why "D2 batch 4: the batch-2 late-read grid on pointer_v4 (countries, animals, body parts; 85 queried entities, 3
+  statement x 3 question wordings), memory → prompt, named → prompt, memory → memory; entity-cluster intervals per topic"
+  --dataset pointer_v4 --families RL DL RR --n 100
+  --layers all kind bands --sweep path+random --sweep-dests question final both --absent
+  && uv run python scripts/attn_knockout.py run --name d2_v4_late_read
+  && uv run python scripts/attn_knockout.py summarise --name d2_v4_late_read
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_v4_late_read --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_v4_late_read
+question: 'D2''s strongest claim so far (UNVERIFIED) is that in a lookup the last tokens read the answer''s statement
+  themselves, late (layers 48-63), through attention: memory → prompt keeps 11% with every attention layer blocked at
+  the last tokens and 99% with every DeltaNet layer blocked. It rests on 22 entities (16 animals, 6 elements) and one
+  wording. Does it hold in each of three topics (countries "The Japan file is in drawer 3.", animals "The eagle''s
+  locker is 9.", body parts "The chart on the ear is kept in folder 6."), across 85 queried entities and 9 wordings,
+  for memory → prompt and named → prompt, with memory → memory untouched?'
+why_it_matters: 'Items of one entity are correlated, so batch 2''s 175 prompts are worth about 22 entities. A claim to
+  freeze needs entities and wordings, not more scenes of the same ones: pointer_v4 has 34-36 entities per topic for
+  countries and animals (15 body parts) and 9 wordings each. If the attention read holds in every topic by entity
+  cluster, D2''s claim is general for this scene format; if one topic differs (e.g. body parts, a different object
+  noun and statement length), the claim must be scoped.'
+hypotheses:
+  H_general: 'memory → prompt, the statement giving the answer hidden from the last tokens in every attention layer:
+    <= 20% kept, and in every DeltaNet layer: >= 90% kept, in each of the 3 topics (decided on the entity-cluster
+    bounds; "point" if only the point estimates pass). Prior 0.7 (coordinator); agent: 0.75 on the point estimates,
+    0.45 on the bounds (pointer_v1 animals kept more than elements: 29% vs 8% with layers 48-63 hidden)'
+  H_general_named: 'named → prompt: the same in each topic (batch 2: every attention layer 13%, every DeltaNet layer
+    100%). Prior 0.7'
+  H_late_band_topics: 'memory → prompt, hidden from the last tokens in layers 48-63 only: <= 40% kept in each topic
+    (point estimate; batch 2: 19%). Prior 0.7'
+  H_named_question_topics: 'named → prompt, hidden from the question words in all layers: <= 10% kept in each topic
+    (batch 2: 1%; the name reads its statement early). Prior 0.75'
+  H_null_topics: 'memory → memory: every cell >= 95% in each topic. Prior 0.85'
+  positive_control: 'every lookup family with the statement hidden from everything after it and removed from the
+    DeltaNet recurrence: NEEDED (5 statements: guessing gives ~20%)'
+decision_rule: 'Fixed before the run (scripts/attn_knockout.py GENERAL, TOPIC_SETS, general_claim; the batch-2 rule in
+  the manifest "decision"). Items: pointer_v4 main, topics countries, animals, body (every family passes
+  d3v4_competence_27b''s gate, clean Wilson lower bound >= 0.85), scenes with every competence prompt right in all
+  three families, first 100 per topic by scene id (they cover every queried entity: countries 36, animals 34, body
+  15, and all 9 wordings per topic), unedited read right. H_general per topic: memory → prompt, (statement giving the
+  answer, last tokens, every attention layer) entity-cluster 95% upper bound <= 20% AND (same, every DeltaNet layer)
+  entity-cluster lower bound >= 90% -> holds; both point estimates pass but a bound does not -> "point"; else fails.
+  Over topics: holds if all hold, partly if none fails, else fails. Entity-cluster bootstrap: queried entities
+  resampled within the topic, 4,000 draws, seed 0; the Wilson interval second; n items / k entities / t wordings per
+  cell. The batch-2 cell rule (pooled over topics, item level) is kept for comparison: NEEDED if accuracy drops >= 20
+  points and the paired bootstrap 95% lower bound of acc(off-path statement) - acc(cell) >= 10 points; NOT NEEDED if
+  the Wilson lower bound >= 90%; else PARTIAL. A family whose positive control is not NEEDED is not interpreted. n per
+  cut: 100 per topic (body: 15 entities, so its entity-cluster intervals are the widest).'
+controls:
+- 'a statement of the same kind off the answer''s path (another entity''s statement, same token length, seeded per
+  scene): rules out "any statement-sized hole breaks the answer"'
+- 'a random span of the same length inside the statements; the up to 3 tokens right after the statement (the
+  DeltaNet conv''s reach)'
+- 'memory → memory on the same scenes (the answer is recalled; the statement is not needed)'
+- 'positive control: the statement hidden from everything after it and removed from the DeltaNet recurrence'
+- 'pre-run check (check.json): an empty source leaves the answer read bit-exact; context independence under full
+  blocking; an unedited row in every batch'
+n: '900 org prompts (100 scenes per topic x 3 families; 85 queried entities, 9 wordings per topic)'
+seeds:
+- 0
+notes: 'Rows: 110,700 knocked reads (123 per item: 4 destinations x 4 sources in all layers, 2 x 4 with the statement
+  removed from the recurrence, and 11 layer sets (every attention / DeltaNet layer; bands 0-31, 32-47, 48-63 whole,
+  attention-only, DeltaNet-only) x 3 destinations (question words, last tokens, both) x 3 sources). The batch-2 grid
+  ran at 32.7 reads/s on 77-token prompts; pointer_v4 prompts average 83 tokens: ~30 reads/s -> ~62 min + load and
+  check ~5 min. Figures: the batch-2 set plus "topics" (each family x topic, entity-cluster intervals). Local 0.8B CPU
+  smoke (qwen35_08b_smoke_d2_v4_cpu1, scratchpad, 1 scene per topic, --no-eligibility): every stage ran.
+  Results: results/attn_knockout/d2_v4_late_read/.'

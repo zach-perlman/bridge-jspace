@@ -36,7 +36,7 @@ c1_seed() {  # c1_seed TARGET PREFIX SET RUN MID "BANDS" BATCH
 c2_fresh() {  # c2_fresh TARGET PREFIX BATCH STEER...
   export BJ_TARGET=$1; local p=$2 batch=$3 c=${2}fresh_v8s2_competence_v1 run=${2}wm2_fresh2_v1; shift 3
   comp_parallel 1 "$WHY: $BJ_TARGET on fresh_v8s2" $c:fresh_v8s2 || { echo "=== $BJ_TARGET competence FAILED"; return 1; }
-  run write_max/$run env BJ_BATCH=$batch $PY scripts/write_max.py --name $run --why "$WHY: $BJ_TARGET C2 on a fresh data seed, its full_v8 settings" \
+  run write_max/$run env BJ_SUITE_BATCH=$batch $PY scripts/write_max.py --name $run --why "$WHY: $BJ_TARGET C2 on a fresh data seed, its full_v8 settings" \
     --n 1000 "$@" --tasks fresh_v8s2 --tasks-competence $c --tasks-level all --families PP PM MP MM CP CM \
     && $PY scripts/c2_graded.py $run | tail -3 && $PY scripts/c2_graded.py $run --drop-guessable > /dev/null \
     && $PY scripts/c2_narrow.py $run ${run}_noguess | tail -1 || echo "=== $BJ_TARGET C2 FAILED"

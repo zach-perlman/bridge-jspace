@@ -1,0 +1,52 @@
+{
+  "counts": {
+    "scenes": 600,
+    "cases": {
+      "chat": 600,
+      "raw": 600,
+      "nochat": 600
+    },
+    "dropped": {}
+  },
+  "gate": {
+    "chat": {
+      "cases": 0,
+      "org_accuracy": {},
+      "said_accuracy": {},
+      "cand_accuracy": {},
+      "pass": false,
+      "eligible": 0,
+      "enough": false,
+      "descriptive": true
+    },
+    "raw": {
+      "cases": 0,
+      "org_accuracy": {},
+      "said_accuracy": {},
+      "cand_accuracy": {},
+      "pass": false,
+      "eligible": 0,
+      "enough": false,
+      "descriptive": true
+    },
+    "nochat": {
+      "cases": 600,
+      "org_accuracy": {
+        "PP": 0.9217,
+        "PM": 0.76
+      },
+      "said_accuracy": {
+        "PP": 0.97,
+        "PM": 0.76
+      },
+      "cand_accuracy": {
+        "PP": 0.9617,
+        "PM": 0.8133
+      },
+      "pass": true,
+      "eligible": 310,
+      "enough": true,
+      "descriptive": true
+    }
+  }
+}

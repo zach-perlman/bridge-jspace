@@ -1,0 +1,59 @@
+{
+  "exp": "x0_massmean",
+  "run": "x0_massmean_lf_27b",
+  "written_utc": "2026-10-24T20:01:34Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct ~20:05; layout-free arm ~21:50); not part of X0's rule.",
+  "single": "x0_single_27b_r2",
+  "single_code": {
+    "sha": "03ca856181a32ccf71f64dd5b0d2a46db71f3ce0",
+    "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 32,
+  "items": 70,
+  "subspaces": {
+    "states_run": "x0_probe_v4_27b",
+    "n": 758,
+    "rank": {
+      "A": 4,
+      "V": 8,
+      "AV": 12,
+      "Alf": 4
+    },
+    "layout_groups": {
+      "groups": 31,
+      "items_kept": 758,
+      "singletons_dropped": 0
+    },
+    "A_Alf_overlap": 0.7122102385666326
+  },
+  "mode": "layout_free",
+  "arms": [
+    "whole",
+    "no_A",
+    "no_Alf",
+    "no_A_rand",
+    "no_Alf_rand",
+    "keep_A",
+    "keep_A_rand",
+    "keep_Alf",
+    "keep_Alf_rand"
+  ],
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "6253789db959479b0aa30271846b29c679e8e844",
+    "dirty": true
+  },
+  "items_rule": "single-change items whose org and alt locker sentences both come before the asked pick",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  }
+}

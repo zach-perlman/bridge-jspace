@@ -1,0 +1,50 @@
+{
+  "fits": [
+    {
+      "group": "after",
+      "topic": "all",
+      "n": 42,
+      "per_statement": [
+        10,
+        8,
+        7,
+        10,
+        7
+      ]
+    },
+    {
+      "group": "question",
+      "topic": "animals",
+      "n": 16,
+      "per_statement": [
+        4,
+        4,
+        2,
+        5,
+        1
+      ]
+    },
+    {
+      "group": "question",
+      "topic": "elements",
+      "n": 26,
+      "per_statement": [
+        6,
+        4,
+        5,
+        5,
+        6
+      ]
+    },
+    {
+      "group": "after",
+      "topic": "suite",
+      "n": 8,
+      "per_statement": [
+        6,
+        2,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+id: x0_necessity_27b_chat
+title: "X0, Qwen3.6-27B, chat (decisive): is C3's split real at layer 32, and is it about J++?"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.0
+depends_on: [x0_hw_gate_27b]
+command: >-
+  uv run python scripts/x0_necessity.py run --name x0_necessity_27b_chat --set d1_topics_v3 --renderings chat --why "X0 (jobs/c3/X0.md, amendment 1): the 27B's chat rendering, the decisive arm; bridge word, layers 16-40 every 2, predicted 32"
+figures_command: uv run python scripts/x0_necessity.py figures --name x0_necessity_27b_chat
+question: >-
+  On fresh scenes (d1_topics_v3, seed 24, never read by a model), chat template, at the bridge's word of the 27B: past layer 32 (fixed in advance), does removing the J++-readable part of a stated bridge's change stop hurting lookups (no more than a random part of the same share) while it still hurts recalls? And does W_U, W_E or a random dictionary do the same as J++?
+why_it_matters: >-
+  C3 is post hoc (23 Oct). This is its pre-registered confirmation and the stop rule for X1-X4 on the 27B (brief section 0): a kill means no X1-X4 legs on the 27B.
+hypotheses:
+  H-confirmed: 'lookup excess <= 0.10 and recall Jdep >= 0.30 at layer 32 (chat, J++, top-token read). Prior: Dan''s, predictions/2026-10-24_dan.md Q25.3'
+  H-killed: 'lookup excess >= 0.20 or recall Jdep < 0.20 at layer 32. Prior: Dan''s, Q25.3'
+  H-not-confirmed: 'neither of the above. Prior: Dan''s, Q25.3'
+  H-cant-tell: 'the whole change switches < 30% or < 30 items of either reader at layer 32. Prior: Dan''s, Q25.2'
+  H-token: 'W_E''s lookup excess >= 0.20 (against W_E''s own random part) while J++ leaves the lookup around. Prior: Dan''s, Q25.7'
+decision_rule: >-
+  jobs/c3/X0.md "Decision rule" with amendment 1 (24 Oct, before data), on this run's chat rendering at layer 32: confirmed iff lookup excess <= 0.10 and recall Jdep >= 0.30 (23 Oct); killed iff lookup excess >= 0.20 or recall Jdep < 0.20 (24 Oct); not confirmed otherwise (24 Oct); can't tell if either reader's cell is invalid (S_whole < 0.30 or < 30 items switched; 24 Oct). Point estimates, top-token read; cand read descriptive. Labels around / through / mixed reported beside the rule at every layer and dictionary. The verdict is written by the script (verdict-*/verdict.md) and not opened before Dan's batch-25 answers are committed.
+controls:
+- 'the random part of the same share, per dictionary (no_rand_D, at D''s own share of ||Δ||²)'
+- 'the random Gaussian dictionary at k = 25 (the fitted null, rand_omp)'
+- 'both readers on the identical patch'
+- 'the valid-cell bar on the whole edit (S_whole >= 0.30 and >= 30 items)'
+- 'the competence gate (>= 80% unedited org accuracy under the decisive read, both readers)'
+- 'the asked-first subset (D5, descriptive)'
+n: 'up to 200 eligible scenes of d1_topics_v3 (600 generated), 2 readers each; < 150 eligible = can''t test'
+seeds: [24, 0]
+notes: "Seeds: data 24 (d1_topics_v3), random dictionary 777 + layer and random subspace 888 + layer (CPU), bootstrap 0 (10,000), examples 0. Lens: the 27B's pinned J++ at e166deb5 (sha256 checked on load). Raw rendering of the 27B is its own job (x0_necessity_27b_notemplate), so this decisive arm finishes first. Timing basis: x0_hw_gate_27b, one cell of ~7.8k reads in 7 min on this box's H100; this job ~ 200 x 2 x (13 x 9 + 15) reads ~ 53k plus competence 2.4k reads and generations: ~0.8 h. Dan, 24 Oct: run now, no overnight slot; results not opened until his batch-25 answers are committed."

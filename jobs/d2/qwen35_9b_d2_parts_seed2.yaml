@@ -1,0 +1,25 @@
+id: qwen35_9b_d2_parts_seed2
+title: "Name vs digit on a second draw (Qwen3.5-9B)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.5
+depends_on:
+- qwen35_9b_d3v4_seed2_competence
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py manifest --name qwen35_9b_d2_parts_seed2 --dataset pointer_v4 --set seed2 --families RL DL RR --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence qwen35_9b_d3v4_seed2_competence --why "name vs digit on a second draw (Qwen3.5-9B); analysed by scripts/d2_parts.py" && BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py run --name qwen35_9b_d2_parts_seed2
+figures_command: uv run python scripts/d2_parts.py --name qwen35_9b_d2_parts_seed2
+question: >-
+  Do the last tokens take only the digit from the answer's statement, and the question's tokens its name?
+why_it_matters: >-
+  Findings 3 and 4 on Qwen3.5-9B rest on one draw of scenes; a second draw with the committed rules.
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.8'
+  H-name-q-split: 'holds where testable. Prior 0.5'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged: valid-split first; H-digit-final-split (memory -> prompt) and, where the question is testable, H-name-q-split. Replicates iff every verdict that held on this model's main draw holds here; per topic reported.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: '100 items per family (RL DL RR), seed2'
+seeds: [844]
+notes: "Dan, 2026-10-22 evening: strengthen findings 3-5 on the models whose results were read after the data (critic priority 3): a second draw of scenes, the rules committed for the 27B and Qwen3-32B, unchanged. Not opened before Dan predicts."

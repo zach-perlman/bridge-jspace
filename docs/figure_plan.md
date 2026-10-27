@@ -1,0 +1,95 @@
+# Figure plan
+
+## README v5 (27 Oct, after the overnight queue; draft, UNVERIFIED)
+
+Figure → claim (its title) → status → source. Built by `scripts/readme_story_figures.py` (`figures/story/`, `figures/supp/`, every plotted number in `figures/story/data.csv`; Fig. 11 from `figures/story/scorecard.csv`); `scripts/check_figure_terms.py` checks the retired terms. Status: fixed in advance (filled marks), after the data (open), ° gate lowered to 0.75 after the data.
+
+| Figure | Claim (title) | Status | Source (results/) |
+|---|---|---|---|
+| 0 `fig00_setup` | One prompt, two questions about the same bridge word | schematic | – |
+| 1 `fig01_split` | Recall needs the J++ part of the bridge; the lookup mostly does not | fixed in advance; the locker-before gap column after the data | x0_necessity main runs; x0_composition/split-by-order-* |
+| 1b `fig01b_settings` | In every setting, recall needs the J++ part more than the lookup does | fixed in advance (clean one-pick scenes: 45m); the 9B's natural passages ° | x0_logit_diff, x0_necessity/x45m-*, x0b_generalize, x5_natural |
+| 2 `fig02_specificity` | No other part of the same size costs the recall as much as the J++ part | J++ part and PCA after the data; the other two panels fixed in advance | x0_parts, x0_necessity main runs |
+| 2b `fig02b_k_curve` | Why a bigger J++ part costs the 27B lookup: can't tell | (a) main test after the data; (b) 45k fixed in advance, Q45.9 (d) can't tell; Muse from run r4 (can't tell there too); 'directions' for the J++ part's size | x0_necessity/*kmatch* and main runs; x6_routes/*x45k*, x6_routes/x45k-* |
+| 3 `fig03_order` | Lookups follow the change mostly when the locker sentence comes first | (a) after the data; (b) main test after the data, clean one-pick scenes fixed in advance | x0_necessity main runs; split-by-order-*; x45m-* |
+| 3b `fig03b_layers` | On clean scenes with the locker after the pick, the locker sentences make the link | 45q's rule fixed in advance, holds 3 of 3; the layer sweep after the data: the copy makes the link by L on the Qwens, from about L/2 on Muse | x45b_binding/x45q-*, x45q-link-*, x45q-sweep-* |
+| 3c `fig03c_earlier_mention` | The recall reads the item's earlier mention when its locker came first | 45p fixed in advance, holds 3 of 3; both readers filled, apart by colour | x45p/x45p-* |
+| 4 `fig04_routes_design` | Each route predicts a different locker | schematic | – |
+| 5 `fig05_routes` | The lookup follows identity or position, never the value | fixed in advance; the 122B ° | x6_routes |
+| 6 `fig06_depth` | Position answers appear with depth, once the lookup stops needing the J++ part | candidate, after the data | x0_necessity, x6_routes sweeps |
+| 7 `fig07_writes` | One fixed vector written at the bridge sends the lookup to its locker | writes fixed in advance; the recall's split after the data | x8_write |
+| 8 `fig08_first_locker` | The pointer marks the first locker in a clean layout | after the data | x6_routes/x45a-descriptive-*, x8_write |
+| 9 `fig09_transfer` | The split carries over to other texts; the pointer must be refit for each format | fixed in advance (the 9B's natural passages °); (b) 45d fixed in advance | x0b_generalize, x5_natural, x0b_generalize/*x45d* |
+| 10 `fig10_what_is_left` | J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's | fixed in advance; the 122B ° (identity row; no wrong-pair control: not tested); the wrong pair on the scenes where it reached 0.9 of identity's share (size check, after the data) | x6_routes (bothoff, d1, *x45e_dom*, qwen35_122b_x6_routes_d1_g75), x6_routes/x45e-size-* |
+| 11 `fig11_scorecard` | What held where | per cell ("a": after the data; "–": not tested); no 45b row (a design error, Dan 27 Oct ~11:20) | figures/story/scorecard.csv (its data.csv key column) |
+| s01, s01b, s02, s05, s08, s10 | the supplements of Figs. 1, 1b, 2, 5, 8 and 10 (as before) | as their figures | as their figures |
+| s01c `s01c_no_chat_template` | Without the chat template the split is still there (after the data) | after the data, ° (45i'; Q45.8 stays not tested at gate 0.80) | x0_necessity/*x45i_main_nochat*_g75, x6_routes/*x45i_nochat* |
+| s03b `s03b_layers_45b` | Locker after the pick: what moves the lookup at each layer (the main test's items) | after the data (45b's sweep; a design error: its changed prompt differs after the bridge word) | x45b_binding/*sweep_v2* |
+| s10b `s10b_what_is_left_all_scenes` | Fig. 10 with the wrong pair on every scene | as Fig. 10 (45e as scored) | as Fig. 10 |
+
+## README v4 (Dan, 26 Oct ~16:45; kept for reference)
+
+One figure, one claim, in story order. The title is the claim. The subtitle, one line on the figure, says how to read it. The caption in the README is one short line saying what to look at. All numbers come from `scripts/readme_story_figures.py`, which reads the run files and writes every plotted number to `figures/story/data.csv` (figure rows) next to the README's keys (rows `numbers`). No number is typed by hand.
+
+New file names (`figures/story/figNN_*.png`); the 26 Oct files (`fig0_setup.png` … `fig11_order.png`) are in `figures/archive/` since 27 Oct. Supplementary figures go to `figures/supp/` and are linked from Appendix A.
+
+## Shared visual language (Step 2)
+
+- **Colours.** Lookup purple `#6a4bd6`. Recall dark grey `#3a3a3a`. Identity blue, position orange, value green, unchanged light grey (`#c8c8c8`). Random controls: light grey markers or thin bars.
+- **Status, one encoding everywhere.** Filled = fixed in advance; open = after the data; `°` after the label = rerun with a gate lowered after the data. There are no dashed status lines and no hatching.
+- **Words.**
+  - Lockers are called first / second / third.
+  - The write's strength is the dose, × the size of a real change.
+  - "A random part of the same size" replaces C2, keep-only, J++ size and †.
+- **Models.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B, Muse Glimmer 30B, in that order, everywhere.
+- **Sizes.** 880 px wide (8.8 in at 100 px/in). Fonts ≥ 11 pt. The same x range for the same quantity: extra loss −0.2 to 1, shares 0 to 1.
+- **Numbers on the plot** only where they carry the claim.
+
+## Figures
+
+| # | Claim = title | What to look at = caption | Encodings | data.csv | To supplementary |
+|---|---|---|---|---|---|
+| 0 | One prompt, two questions about the same bridge word | The change comes from a second prompt (Iris picked the tick) and is added at the bridge word. | Sentence boxes; the bridge in red. A second line shows the changed prompt and an arrow to where its difference is added. Lookup purple, recall grey. | none (schematic) | – |
+| 1 | Recall needs the lens-readable part; the lookup mostly does not | Per row, the gap between the purple and grey dots. | Subtitle: "Extra loss: 0 = the reader does not need the J++ part, 1 = every switch needs it. Grey band: not needed (below 0.1)." 4 rows: main test (fixed in advance); the same on the logit difference; varied scenes; natural passages. The gap label sits at the right end of each row. Muse's natural row shows the recall only, with "lookup: too few switches". The 9B's natural row is open + °. | `fig01` rows; `lk_excess_<m>`, `rc_excess_<m>`, `contrast_<m>`, `ld_lk_<m>`, `ld_rc_<m>`, `ld_gap_<m>`, X0b verdict cells, `x0b_c_<m>`, `nat_*_<m>`, `natg75_*_9b` | rows "only the asked person's pick changes" and "matched" → `supp/s01_split_more_scenes.png` |
+| 2 | No other part of the same size costs the recall as much as J++ | J++ is the only row where the recall dot sits far right. | 2×2 panels, one per model, each with its own row labels carrying the share: "J++ (19% of the change)". 4 rows: J++; the layer's main directions at J++'s size; logit-lens directions; random directions. Recall open dot with CI, lookup small purple dot. Subtitle names the scene sets: the first two rows use one-change scenes, the last two the main test. | `fig02` rows; `pcaeq_*` keys | J++ without the word's directions, the word alone, J++ fitted to another scene, input embeddings → `supp/s02_parts_all.png` |
+| 3 | Lookups follow the change mostly when the locker sentence comes first | The bars before vs after the pick, per model. | Purple bars with Wilson CIs, "k of n" labels; grey dots for the recall; x axis "locker before / after the pick". | `fig03` rows; `lk_order_<o>_<m>_k` / `_n` | – |
+| 4 | Each route predicts a different locker | Follow the three arrows: identity, position and the new value point at different lockers. | Original and changed prompt as locker boxes labelled first / second / third locker. The moved sentence is highlighted in the changed prompt. Arrows in route colours run from each route to the locker it predicts (value: the changed prompt's new number). | none (schematic) | – |
+| 5 | The lookup follows identity or position, never the value | Orange shrinks without the pointer and appears with the pointer alone. Only J++ gives nothing. | Stacked bars, 4 rows per model: whole change; without the pointer directions; only the pointer directions; only the J++ part. Under each part's bar, a thin grey bar shows the position share with a random part of the same size. Percent labels only for identity and position ≥ 10. The 122B title carries °. | `fig05` rows; `rt_*`, `rtg_*`, `rtk_*` keys | without J++ and its random part → `supp/s05_routes_all_arms.png` |
+| 6 | Position answers appear with depth, once the lookup stops needing J++ | Orange points rise where the purple line falls below the band. | Subtitle: "Candidate, after the data. Purple shading: layers where the lookup still needs J++ (extra loss ≥ 0.3)." x axis = layer number, no floating ticks. Top: J++ extra loss, points with CIs, no connecting line. Bottom: position share. | `fig06` rows | – |
+| 7 | One fixed vector written at the bridge sends the lookup to its locker | Left: the target share rises past dose 1. Right: what a changed recall names. | Left, one panel per model: x = dose (× a real change's size, per pair s / s\*), vertical line at 1. y = share of lookups to the written locker. Thin lines per locker pair, a thick line for their mean, grey for the random direction. Right: one 100% bar per model for the recall changed under the strongest write: target item / third item / other. | `fig07` rows; `x8_t*`, `x8_rand*`, `x8_sreal_*`, `x8_rc_target_<m>` | the per-pair line styles (solid / dashed) are dropped. The second-vs-third pair is shown in Fig. 8. |
+| 8 | Our pointer directions separate the first-mentioned item from the rest | (a) The loss is large only when the bridge's locker sentence opens the prompt. (c) No variant reaches the 0.5 line. | (a) Lookup's extra loss without the pointer, by group (see the question below). (b) Only the pointer part: position share for moves to or from the first locker vs moves between the second and third (grey: whole change). (c) Neutral-sentence test: the code's shift in positions, B1 and B2 per model, dashed line at 0.5 = "shifted"; the 122B and Muse filled in as they land. (d) The label-free pointer's overlap with ours (mean cos²) per model. | `fig08` rows; `fs_*`, `pm_*`, `x8_order_*`, P_cf reports | – |
+| 9 | The split carries over to other texts; our pointer does not | Black stays near 0 in every row; orange shrinks outside simple scenes. | Subtitle: "Black: the lookup without J++ (the split). Orange: the lookup without our pointer directions, fit on simple scenes and not refit." The 9B natural cell reads "not tested (gate)". | `fig09` rows; `tptr_*` | – |
+| 10 | About half of the lookups still switch with J++ and the pointer removed | Each purple dot against its grey random dot. | One panel. x = models; per model two removals, J++ + pointer and J++ + pointer + identity outside J++, each with its share of the change in the label. Each has a grey dot beside it for a random part of the same size. y = lookups still switching in the sanity swap. The 122B shows "not in this test" for the identity removal. | `fig10` rows; `rtc_left_*`, `rtd_left_*`, `rtd_randleft_*`, `rtd_share_*` | the dotted bars fixed in advance (Q34, Q36, Q40) and the "switches lost" panel → `supp/s10_removed_together_bars.png` |
+| 11 | What held where | One row per claim, in story order. | 11 rows: the split; the split on the logit difference; varied scenes; natural passages; never the value; the pointer is needed; the pointer alone gives position; a write moves the lookup; the recall follows the write; the first-mentioned item, not the position in the text; transfer. Each cell has a symbol (✓ held, ~ partial, ✗ no, – not tested) and a small "a" for after the data. | `fig11` rows | – |
+
+**Changes after Dan's mock-ups (~17:15).**
+- Fig. 1 is the main test alone, with rows = models and the gap with its interval at the right.
+- New Fig. 1b, "In every setting, recall needs J++ more than the lookup does": one panel per setting, with rows = models.
+  - The settings are the logit difference, only the asked person's pick changes, varied scenes and natural passages.
+  - Muse's natural-passage lookup reads "too few (10 of 60)" and its gap "–".
+  - The "matched" rows stay in `supp/s01`.
+- Fig. 2 follows the same layout: one panel per part, with rows = models and the share of the change in each row label.
+
+## Open question for Dan (Fig. 8 a, and the wording "first-mentioned item")
+
+The three groups in the current Fig. 9a are defined by the bridge's locker sentence:
+- (a) it opens the prompt;
+- (b) it is the first locker sentence, but a pick sentence comes before it;
+- (c) another item's locker sentence comes first.
+
+They do not map onto "bridge named first / another item named first / neither". In (b), the pick sentence that opens the prompt names the bridge (or the changed bridge) in 123 of 201 one-change scenes (9B).
+
+Regrouped by which item the first sentence names, the lookup's extra loss without the pointer (CPU, after the data, descriptive; scratchpad `fs_named_split.py`):
+
+| First sentence | 9B | 27B | 122B | Muse |
+|---|---|---|---|---|
+| bridge named first, its locker sentence | 0.66 (n 41) | 0.24 (37) | 0.52 (25) | 0.51 (39) |
+| bridge named first, in a pick sentence | 0.24 (17) | 0.07 (14) | 0.18 (17) | 0.21 (14) |
+| another item named first | 0.11 / 0.60 (9 / 5) | 0.00 (19) | 0.12 / 0.00 (8 / 4) | 0.00 (14) |
+
+So the loss is largest when the bridge's locker sentence opens the prompt. Being named first in a pick sentence counts for much less. Default for Fig. 8a: these three regrouped rows, with the labels above. The claim stays "first-mentioned item" (B shows order, not text position), with the caveat that the first mention counts most as a locker sentence.
+
+## Interpretation notes
+
+- "Figures are regenerated from data.csv only": read here as one script that computes every plotted number from the run files and records it in data.csv as it draws. Recounts from the per-item files are in the verify pack.
+- Fig. 2 mixes scene sets, as now. J++ and the main directions come from the parts runs (only the asked pick changes); logit lens and random come from the main test (two people swap picks). The subtitle says so; the † goes.

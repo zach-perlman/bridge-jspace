@@ -1,0 +1,863 @@
+{
+ "exp": "attn_knockout",
+ "run": "d2_alias_late_read",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "path_breaks",
+   "title": "A path statement blocked, the answer lost",
+   "definition": "source on the family's path, all layers, unedited read right, edited read wrong",
+   "n_total": 2172
+  },
+  {
+   "key": "path_confusion",
+   "title": "Lost to another statement's answer",
+   "definition": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)",
+   "n_total": 3702
+  },
+  {
+   "key": "path_survives",
+   "title": "A path statement blocked from the answer site, the answer kept",
+   "definition": "source on the path, destination final or both, all layers, edited read still right",
+   "n_total": 102
+  },
+  {
+   "key": "control_breaks",
+   "title": "A control span blocked, the answer lost (collateral damage)",
+   "definition": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong",
+   "n_total": 93
+  },
+  {
+   "key": "positive_control",
+   "title": "Path statement invisible to everything after it",
+   "definition": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome",
+   "n_total": 420
+  }
+ ],
+ "examples": [
+  {
+   "group": "path_breaks",
+   "family": "DL-same",
+   "item_id": "elements-DL-e5f0-m0045",
+   "prompt": "<|im_start|>user\nThe helium card is in locker 4. The nitrogen card is in locker 3. The lithium card is in locker 5. The hydrogen card is in locker 7. The oxygen card is in locker 9.\nWhich locker holds the helium card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "source"
+    },
+    {
+     "start": 182,
+     "end": 261,
+     "role": "destination"
+    },
+    {
+     "start": 205,
+     "end": 211,
+     "role": "cue"
+    },
+    {
+     "start": 21,
+     "end": 27,
+     "role": "bridge"
+    },
+    {
+     "start": 205,
+     "end": 211,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup span ('The helium card is in locker 4.') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "4",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "4",
+     "H_relay": "not 4"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0019,
+    "logp_answer_edited": -4.2928,
+    "dlogp": -4.2909,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.958,
+    "answer": "4",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "RL-same",
+   "item_id": "elements-RL-e5f0-m0064",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 4. The lithium card is in locker 3. The carbon card is in locker 5. The nitrogen card is in locker 1. The helium card is in locker 8.\nWhich locker holds the card for the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 149,
+     "end": 181,
+     "role": "source"
+    },
+    {
+     "start": 182,
+     "end": 340,
+     "role": "destination"
+    },
+    {
+     "start": 214,
+     "end": 235,
+     "role": "cue"
+    },
+    {
+     "start": 154,
+     "end": 160,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('The helium card is in locker 8.') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "not 8",
+     "H_relay": "not 8"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0202,
+    "logp_answer_edited": -9.0901,
+    "dlogp": -9.0699,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9649,
+    "answer": "8",
+    "other_answers_in_prompt": [
+     "1",
+     "3",
+     "4",
+     "5"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "DL-same",
+   "item_id": "animals-DL-e5f0-m0021",
+   "prompt": "<|im_start|>user\nThe horse's locker is 9. The cat's locker is 1. The dog's locker is 5. The pig's locker is 7. The duck's locker is 6.\nWhich locker belongs to the duck? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 110,
+     "end": 134,
+     "role": "source"
+    },
+    {
+     "start": 135,
+     "end": 272,
+     "role": "destination"
+    },
+    {
+     "start": 163,
+     "end": 167,
+     "role": "cue"
+    },
+    {
+     "start": 115,
+     "end": 119,
+     "role": "bridge"
+    },
+    {
+     "start": 163,
+     "end": 167,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span (\"The duck's locker is 6.\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "6",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 6",
+     "H_relay": "not 6"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0018,
+    "logp_answer_edited": -4.687,
+    "dlogp": -4.6854,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9882,
+    "answer": "6",
+    "other_answers_in_prompt": [
+     "1",
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_confusion",
+   "family": "DL-xlang",
+   "item_id": "animals-DL-e5f0-xlang-m0003",
+   "prompt": "<|im_start|>user\nDie Ente hat den Spind 3. El pollo tiene la taquilla 8. El gato tiene la taquilla 1. Le cheval a le casier 6. La souris a le casier 5.\nWhich locker belongs to the cat? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 72,
+     "end": 101,
+     "role": "source"
+    },
+    {
+     "start": 228,
+     "end": 288,
+     "role": "destination"
+    },
+    {
+     "start": 180,
+     "end": 183,
+     "role": "cue"
+    },
+    {
+     "start": 180,
+     "end": 183,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('El gato tiene la taquilla 1.') directly at layers attn (16 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "5",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0175,
+    "logp_answer_edited": -3.6155,
+    "dlogp": -3.5981,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "6",
+     "8"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "RL-same",
+   "item_id": "elements-RL-e5f0-m0003",
+   "prompt": "<|im_start|>user\nThe lithium card is in locker 4. The helium card is in locker 3. The carbon card is in locker 1. The oxygen card is in locker 5. The nitrogen card is in locker 6.\nWhich locker holds the card for the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 49,
+     "end": 81,
+     "role": "source"
+    },
+    {
+     "start": 180,
+     "end": 338,
+     "role": "destination"
+    },
+    {
+     "start": 212,
+     "end": 233,
+     "role": "cue"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('The helium card is in locker 3.') directly at layers band32-47 (16 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "4",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0483,
+    "logp_answer_edited": -1.4872,
+    "dlogp": -1.4389,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9679,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "4",
+     "5",
+     "6"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "DL-xlang",
+   "item_id": "animals-DL-e5f0-xlang-m0076",
+   "prompt": "<|im_start|>user\nLe porc a le casier 5. Die Ente hat den Spind 1. Die Kuh hat den Spind 3. El gato tiene la taquilla 6. La souris a le casier 8.\nWhich locker belongs to the duck? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 39,
+     "end": 65,
+     "role": "source"
+    },
+    {
+     "start": 222,
+     "end": 282,
+     "role": "destination"
+    },
+    {
+     "start": 173,
+     "end": 177,
+     "role": "cue"
+    },
+    {
+     "start": 173,
+     "end": 177,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('Die Ente hat den Spind 1.') directly at layers band48-63:attn (4 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "5",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0165,
+    "logp_answer_edited": -4.5448,
+    "dlogp": -4.5284,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "6",
+     "8"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_survives",
+   "family": "DL-xlang",
+   "item_id": "animals-DL-e5f0-xlang-m0020",
+   "prompt": "<|im_start|>user\nDie Ente hat den Spind 8. Le porc a le casier 9. La souris a le casier 1. El gato tiene la taquilla 7. El pollo tiene la taquilla 6.\nWhich locker belongs to the mouse? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 65,
+     "end": 90,
+     "role": "source"
+    },
+    {
+     "start": 150,
+     "end": 288,
+     "role": "destination"
+    },
+    {
+     "start": 178,
+     "end": 183,
+     "role": "cue"
+    },
+    {
+     "start": 178,
+     "end": 183,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('La souris a le casier 1.') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "not 1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0091,
+    "logp_answer_edited": -0.7533,
+    "dlogp": -0.7442,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9857,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "6",
+     "7",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "DL-syn",
+   "item_id": "elements-DL-e5f0-syn-m0072",
+   "prompt": "<|im_start|>user\nThe He card is in locker 4. The C card is in locker 7. The O card is in locker 1. The N card is in locker 9. The Li card is in locker 5.\nWhich locker holds the oxygen card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 71,
+     "end": 98,
+     "role": "source"
+    },
+    {
+     "start": 154,
+     "end": 293,
+     "role": "destination"
+    },
+    {
+     "start": 177,
+     "end": 183,
+     "role": "cue"
+    },
+    {
+     "start": 177,
+     "end": 183,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span ('The O card is in locker 1.') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "not 1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0084,
+    "logp_answer_edited": -1.543,
+    "dlogp": -1.5345,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9827,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "4",
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "DL-same",
+   "item_id": "animals-DL-e5f0-m0074",
+   "prompt": "<|im_start|>user\nThe duck's locker is 7. The pig's locker is 8. The cow's locker is 3. The chicken's locker is 5. The cat's locker is 9.\nWhich locker belongs to the duck? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "source"
+    },
+    {
+     "start": 214,
+     "end": 274,
+     "role": "destination"
+    },
+    {
+     "start": 165,
+     "end": 169,
+     "role": "cue"
+    },
+    {
+     "start": 21,
+     "end": 25,
+     "role": "bridge"
+    },
+    {
+     "start": 165,
+     "end": 169,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span (\"The duck's locker is 7.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H_answer_site": "not 7",
+     "H_relay": "7"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0016,
+    "logp_answer_edited": -0.0561,
+    "dlogp": -0.0545,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9816,
+    "answer": "7",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL-same",
+   "item_id": "elements-RL-e5f0-m0051",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 3. The lithium card is in locker 4. The nitrogen card is in locker 5. The helium card is in locker 9. The oxygen card is in locker 1.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 115,
+     "role": "source"
+    },
+    {
+     "start": 115,
+     "end": 335,
+     "role": "destination"
+    },
+    {
+     "start": 212,
+     "end": 230,
+     "role": "cue"
+    },
+    {
+     "start": 152,
+     "end": 158,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup_off span ('The nitrogen card is in locker 5.') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "9",
+    "expected": {
+     "H_answer_site": "1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.4312,
+    "logp_answer_edited": -1.0365,
+    "dlogp": -0.6053,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.944,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "4",
+     "5",
+     "9"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL-same",
+   "item_id": "elements-RL-e5f0-m0033",
+   "prompt": "<|im_start|>user\nThe helium card is in locker 7. The oxygen card is in locker 5. The nitrogen card is in locker 3. The lithium card is in locker 6. The hydrogen card is in locker 4.\nWhich locker holds the card for the gas fires need? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 111,
+     "end": 144,
+     "role": "source"
+    },
+    {
+     "start": 182,
+     "end": 337,
+     "role": "destination"
+    },
+    {
+     "start": 214,
+     "end": 232,
+     "role": "cue"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the random span (' 3. The lithium card is in locker') directly at layers gdn (48 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "4",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.9183,
+    "logp_answer_edited": -1.2464,
+    "dlogp": -0.3281,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.98,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "3",
+     "4",
+     "6",
+     "7"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL-same",
+   "item_id": "elements-RL-e5f0-m0075",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 3. The nitrogen card is in locker 9. The carbon card is in locker 5. The helium card is in locker 1. The hydrogen card is in locker 4.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 82,
+     "end": 114,
+     "role": "source"
+    },
+    {
+     "start": 282,
+     "end": 342,
+     "role": "destination"
+    },
+    {
+     "start": 213,
+     "end": 237,
+     "role": "cue"
+    },
+    {
+     "start": 53,
+     "end": 61,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup_off span ('The carbon card is in locker 5.') directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "9",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "9",
+     "H_relay": "9"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.5116,
+    "logp_answer_edited": -0.8505,
+    "dlogp": -0.3389,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9893,
+    "answer": "9",
+    "other_answers_in_prompt": [
+     "1",
+     "3",
+     "4",
+     "5"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "positive_control",
+   "family": "DL-same",
+   "item_id": "animals-DL-e5f0-m0075",
+   "prompt": "<|im_start|>user\nThe pig's locker is 9. The chicken's locker is 1. The cow's locker is 7. The mouse's locker is 3. The dog's locker is 8.\nWhich locker belongs to the dog? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 114,
+     "end": 137,
+     "role": "source"
+    },
+    {
+     "start": 137,
+     "end": 274,
+     "role": "destination"
+    },
+    {
+     "start": 166,
+     "end": 169,
+     "role": "cue"
+    },
+    {
+     "start": 119,
+     "end": 122,
+     "role": "bridge"
+    },
+    {
+     "start": 166,
+     "end": 169,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span (\"The dog's locker is 8.\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "8",
+    "edited": "5",
+    "expected": {
+     "H_answer_site": "not 8",
+     "H_relay": "not 8"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0011,
+    "logp_answer_edited": -4.3504,
+    "dlogp": -4.3494,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9885,
+    "answer": "8",
+    "other_answers_in_prompt": [
+     "1",
+     "3",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  },
+  {
+   "group": "positive_control",
+   "family": "RL-same",
+   "item_id": "elements-RL-e5f0-m0010",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The oxygen card is in locker 4. The nitrogen card is in locker 2. The helium card is in locker 9. The lithium card is in locker 7.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "source"
+    },
+    {
+     "start": 48,
+     "end": 340,
+     "role": "destination"
+    },
+    {
+     "start": 212,
+     "end": 235,
+     "role": "cue"
+    },
+    {
+     "start": 21,
+     "end": 27,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span ('The carbon card is in locker 5.') directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "not 5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0051,
+    "logp_answer_edited": -5.6626,
+    "dlogp": -5.6574,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9721,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "2",
+     "4",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  },
+  {
+   "group": "positive_control",
+   "family": "DL-same",
+   "item_id": "animals-DL-e5f0-m0050",
+   "prompt": "<|im_start|>user\nThe horse's locker is 7. The duck's locker is 8. The pig's locker is 3. The mouse's locker is 1. The chicken's locker is 9.\nWhich locker belongs to the mouse? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 88,
+     "end": 113,
+     "role": "source"
+    },
+    {
+     "start": 113,
+     "end": 279,
+     "role": "destination"
+    },
+    {
+     "start": 169,
+     "end": 174,
+     "role": "cue"
+    },
+    {
+     "start": 93,
+     "end": 98,
+     "role": "bridge"
+    },
+    {
+     "start": 169,
+     "end": 174,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span (\"The mouse's locker is 1.\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "not 1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.001,
+    "logp_answer_edited": -0.9889,
+    "dlogp": -0.9877,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.985,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "7",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+id: x0_notemplate_122b
+title: "X0, Qwen3.5-122B, raw text: does the split hold without the chat template? (after the data, descriptive)"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 3.0
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 uv run python scripts/x0_necessity.py run --name qwen35_122b_x0_notemplate --set d1_topics_v3 --renderings raw --why "X0 (jobs/c3/X0.md, amendment 1) as x0_necessity_27b_notemplate, on the 122B: raw rendering (no template, '... Question: ... Answer:', first non-whitespace token read); the 122B's layers, predicted 33. README 'Later': the same tests without the chat template (Dan 26 Oct ~13:05: fill the queue); after the data, descriptive, not scored"
+figures_command: BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_necessity.py figures --name qwen35_122b_x0_notemplate
+question: >-
+  The 122B main test in raw text (as the 27B's and the 9B's raw runs): can the 122B read these prompts (gate), and is the recall-lookup gap at layer 33 as with the chat template?
+why_it_matters: >-
+  The raw rendering exists for the 9B and the 27B only; the 122B and Muse fill the four-model row for "general vs fragile" before the Tue 21:00 claims freeze. A raw gate failure is itself a result ("can't test").
+hypotheses:
+  H-none: 'no prediction batch; after the data, descriptive, not scored'
+decision_rule: >-
+  jobs/c3/X0.md with amendment 1, as x0_necessity_27b_notemplate: gate >= 0.80 unedited org accuracy under the decisive read for both readers, else "can't test"; reported beside chat, chat decides.
+controls:
+- 'the random part of the same share, per dictionary (no_rand_D, at D''s own share of ||Δ||²)'
+- 'the random Gaussian dictionary at k = 25 (the fitted null, rand_omp)'
+- 'both readers on the identical patch'
+- 'the competence gate (>= 80% under the decisive read)'
+n: 'up to 200 eligible scenes of d1_topics_v3 (600 generated), 2 readers each; < 150 eligible = can''t test'
+seeds: [24, 0]
+notes: "Queued last on mats, after batch 44; first in the cut order if late (Dan's cut order covers batch 44 only)."

@@ -1,0 +1,31 @@
+{
+  "exp": "lens_gate",
+  "run": "qwen3_32b_lens_gate",
+  "why": "the lens gate before lens tests on Qwen3-32B: read-only, one clean forward per scene",
+  "model": {
+    "target": "qwen3-32b",
+    "repo": "Qwen/Qwen3-32B",
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jlens",
+    "0af5ccf2e1c251bedc202607a7ca214f3b9f60980bab73d67a3d0b887db213d8"
+  ],
+  "tasks_set": "d1_topics_v2",
+  "data_sha256": "062aac437d8ec6b41f6b352c3ffe3713a09618df30c778f1ccf0f577943bb51e",
+  "n": 60,
+  "layers": [
+    32,
+    36,
+    40
+  ],
+  "window": [
+    32,
+    44
+  ],
+  "gate": "PASS iff at bind_bridge, best over the window's layers, the bridge is in the lens's\ntop 10 on >= 50% of items and X on <= 20% (Wilson intervals reported). Reported, not decisive: top-1, each layer, the\nbridge's word, the context (the old \"92%\"), digits vs words.",
+  "written_utc": "2026-10-22T19:41:48Z"
+}

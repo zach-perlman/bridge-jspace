@@ -1,0 +1,24 @@
+id: x0_hw_gate_27b
+title: "X0 hardware gate (Qwen3.6-27B, 2x H100 box): does the new box reproduce one 23 Oct necessity cell?"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.25
+command: >-
+  uv run python scripts/statement_positions.py parts --name x0_hw_gate_parts_27b --map d1_topics2_map_27b --why "X0 hardware gate: one 23 Oct cell (bridge_word:16) rerun on the 2x H100 box" --lo 16 --sets bridge_word --force bridge_word:16
+  && uv run python scripts/x0_hw_gate.py --new x0_hw_gate_parts_27b --ref d1_necessity_parts_27b_r2 --cell bridge_word:16
+question: >-
+  Does the new box (2x H100 80GB PCIe, x86_64, driver CUDA 12.8) reproduce, read for read, a cell the 23 Oct necessity run (d1_necessity_parts_27b_r2, A100) measured: the bridge's word at layer 16, both readers, the same scenes, map, lens and code path?
+why_it_matters: >-
+  X0 compares its numbers with the 23 Oct ones and is the gate for the week. A hardware or kernel difference that flips reads would be confounded with the effect.
+hypotheses:
+  H-same: 'the reads agree on >= 97% of rows without random draws. Prior: none set (an agreement check, not a claim)'
+  H-differs: 'the agreement is below 97%: X0 does not start; the disagreeing rows are reported'
+decision_rule: >-
+  Fixed 24 Oct before the run (hardware addendum v2: "rerun one 23 Oct cell, item agreement at least 97%"). Rows are matched on item, set, layer, part, source and null flag (scripts/x0_hw_gate.py). The gate covers the rows whose arm draws no random tensor: full, lens2, not_lens2, jspace, not_jspace, jspace_wo_own and not_jspace_matched, non-null, both readers. PASS iff the share of those rows whose read role (b / A / other) matches the 23 Oct row is >= 0.97. Otherwise FAIL: the script exits 3, so the X0 jobs that depend on this one do not start. Arms drawing random tensors (rand_omp, rand_sub, not_rand_sub, the matched pieces, every null; drawn on CUDA in this code) are reported per part, not gated. The median |ld| difference is reported per group.
+controls:
+- 'the reference run itself: the same code path (statement_positions.py, exp04_brew_parts.py, suite_split.py, tasks_v2.py, suite_v1.py and src/bridge_jspace/ have no diff between c2e31c9, the reference run''s commit, and this commit)'
+- 'the random-draw arms reported beside the gate'
+n: '180 scenes x 2 readers (PP, PM) of d1_topics_v2, one cell (bridge_word:16), 7784 rows in the reference'
+seeds: [0]
+notes: "The reference ran on the A100 box at c2e31c9 (dirty tree; the parts code path has no diff since). Inputs are committed: results/statement_positions/d1_topics2_map_27b, results/tasks_v2/d1_topics2_competence_27b, results/statement_positions/d1_necessity_parts_27b_r2. GPU0, first job of the queue (hardware addendum v2). Timing basis: the reference's 8 cells took ~1.3 h on one A100; one cell is ~10 min."

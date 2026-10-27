@@ -1,0 +1,28 @@
+id: qwen35_122b_d4_where_r2
+title: "Where can the lens write a stated bridge? (Qwen3.5-122B, rules v2 and v2.1, fresh scenes)"
+thread: D4
+gpus: 1
+mem_gb: 140
+est_gpu_hours: 2.0
+depends_on:
+- qwen35_122b_lens_gate_v2
+- qwen35_122b_d1_topics2_map_r2
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_precheck.py --gate qwen35_122b_lens_gate_v2 --competence qwen35_122b_d1_topics2_competence --min-topics 0 && BJ_TARGET=qwen3.5-122b-a10b BJ_SUITE_BATCH=16 uv run python scripts/early_push_where.py run --name qwen35_122b_d4_where_smoke --n 1 --scenes fresh --rule v2 --layers 9 12 15 18 21 24 27 30 33 --context-layers 21 24 27 30 33 --v21-min-layer 15 --why "smoke: not a result" && BJ_TARGET=qwen3.5-122b-a10b BJ_SUITE_BATCH=16 uv run python scripts/early_push_where.py run --name qwen35_122b_d4_where --n 100 --scenes fresh --rule v2 --layers 9 12 15 18 21 24 27 30 33 --context-layers 21 24 27 30 33 --v21-min-layer 15 --why "slide 6 on a larger model: the lens push at a stated bridge's sentence, its word and the context"
+figures_command: BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/early_push_where.py analyze --name qwen35_122b_d4_where --rule v2.1 && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/early_push_where.py figures --name qwen35_122b_d4_where
+question: >-
+  Does recall follow a stated bridge written by the lens at its sentence while the lookup does not?
+why_it_matters: >-
+  The J-space claims rest on Qwen3.6-27B; Neel asked for a larger model early. Qwen3.5-122B-A10B has a published J++ and needs no port on an H200.
+hypotheses:
+  H-around: 'holds. Prior 0.45'
+  H-no-cell: 'no valid cell (the lens cannot write it). Prior 0.35'
+  H-where: 'the lookup follows too. Prior 0.05'
+  inconclusive: 'Prior 0.15'
+decision_rule: >-
+  Runs iff the published J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here; Dan, 23 Oct ~00:35, before these runs). scripts/early_push_where.py rule v2 as the main rule (the off-path check before the maximum), and v2.1 reported alongside (the same from layer 15 on, the 27B's 20 scaled by depth; cells below reported); both verdicts shown, a disagreement stated as such: H-around iff prompt -> prompt <= 10% at the decisive cell and the scene-paired BR - BL gap's 2.5th percentile >= 0.20; H-where iff prompt -> prompt >= 30% (lower bound >= 0.20); else inconclusive; no valid cell: H-no-cell.
+controls:
+- 'a random push of the same size; a push toward an animal not in the scene; the text edits; memory -> prompt and memory -> memory off the path'
+n: '100 fresh animal-suite scenes, four families'
+seeds: [0]
+notes: "Dan, 2026-10-22 night: every experiment on Qwen3.5-122B-A10B on 23 Oct, on GPUs brought up for it (FP8 needs compute capability >= 8.9: one H200 per job; on A100s transformers dequantizes to bf16, ~244 GB, which needs a multi-GPU port). The 27B's rules, layers scaled by depth (x 48/64): its answer onset 33 (suite_split), the stated-bridge window [24, 33), the D4 grid 9-33. Lens: the published J++ (neuronpedia, fit on bf16 weights). Not opened before Dan predicts."

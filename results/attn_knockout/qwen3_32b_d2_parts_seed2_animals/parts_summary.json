@@ -1,0 +1,218 @@
+{
+ "run": "qwen3_32b_d2_parts_seed2_animals",
+ "cells": {
+  "RL|lookup|final": {
+   "n": 100,
+   "right": [
+    0.07,
+    0.034318824364064096,
+    0.13749671006529757
+   ],
+   "list": 0.93,
+   "off": 0.0
+  },
+  "RL|lookup|question": {
+   "n": 100,
+   "right": [
+    0.27,
+    0.1926946091766482,
+    0.3643230022623127
+   ],
+   "list": 0.26,
+   "off": 0.47
+  },
+  "RL|lookup_digit|final": {
+   "n": 100,
+   "right": [
+    0.28,
+    0.2013955916759837,
+    0.37488212361345724
+   ],
+   "list": 0.7,
+   "off": 0.02
+  },
+  "RL|lookup_digit|question": {
+   "n": 100,
+   "right": [
+    1.0,
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "RL|lookup_name|final": {
+   "n": 100,
+   "right": [
+    0.99,
+    0.9455124752390653,
+    0.9982326134344526
+   ],
+   "list": 0.01,
+   "off": 0.0
+  },
+  "RL|lookup_name|question": {
+   "n": 100,
+   "right": [
+    0.32,
+    0.2366901081545688,
+    0.4166280225367919
+   ],
+   "list": 0.23,
+   "off": 0.45
+  },
+  "RL|lookup_nodigit|final": {
+   "n": 100,
+   "right": [
+    0.94,
+    0.8752303146877748,
+    0.9722142547333433
+   ],
+   "list": 0.06,
+   "off": 0.0
+  },
+  "RL|lookup_nodigit|question": {
+   "n": 100,
+   "right": [
+    0.27,
+    0.1926946091766482,
+    0.3643230022623127
+   ],
+   "list": 0.25,
+   "off": 0.48
+  },
+  "RL|lookup_noname|final": {
+   "n": 100,
+   "right": [
+    0.06,
+    0.02778574526665662,
+    0.12476968531222507
+   ],
+   "list": 0.93,
+   "off": 0.01
+  },
+  "RL|lookup_noname|question": {
+   "n": 100,
+   "right": [
+    1.0,
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "RL|lookup_off|final": {
+   "n": 100,
+   "right": [
+    1.0,
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "RL|lookup_off|question": {
+   "n": 100,
+   "right": [
+    0.97,
+    0.915479219195973,
+    0.9897456617765851
+   ],
+   "list": 0.03,
+   "off": 0.0
+  },
+  "RL|lookup_off_digit|final": {
+   "n": 100,
+   "right": [
+    1.0,
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "RL|lookup_off_digit|question": {
+   "n": 100,
+   "right": [
+    1.0,
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "RL|lookup_off_name|final": {
+   "n": 100,
+   "right": [
+    1.0,
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "RL|lookup_off_name|question": {
+   "n": 100,
+   "right": [
+    0.98,
+    0.9299868370580063,
+    0.9944981477650318
+   ],
+   "list": 0.02,
+   "off": 0.0
+  },
+  "RL|lookup_off_nodigit|final": {
+   "n": 100,
+   "right": [
+    1.0,
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "RL|lookup_off_nodigit|question": {
+   "n": 100,
+   "right": [
+    0.96,
+    0.9016278276739262,
+    0.984336949448152
+   ],
+   "list": 0.04,
+   "off": 0.0
+  },
+  "RL|lookup_off_noname|final": {
+   "n": 100,
+   "right": [
+    1.0,
+    0.9630051925239981,
+    0.9999999999999999
+   ],
+   "list": 0.0,
+   "off": 0.0
+  },
+  "RL|lookup_off_noname|question": {
+   "n": 100,
+   "right": [
+    0.99,
+    0.9455124752390653,
+    0.9982326134344526
+   ],
+   "list": 0.01,
+   "off": 0.0
+  }
+ },
+ "verdicts": {
+  "RL": {
+   "valid": true,
+   "question_testable": true,
+   "H-name-q": true,
+   "H-digit-q": false,
+   "H-digit-final": true,
+   "H-name-final": false,
+   "valid-split": true,
+   "H-name-q-split": true,
+   "H-digit-final-split": true
+  }
+ }
+}

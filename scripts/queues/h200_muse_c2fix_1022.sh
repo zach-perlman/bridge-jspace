@@ -32,9 +32,9 @@ BJ_TARGET=muse-glimmer-30b-jlens $PY scripts/ablate_v2.py --name muse30j_full2_k
   --bands $(uniq_bands $MID 26-32) --conditions paper10$S paper10${S}_rot $T2 $K \
   && BJ_TARGET=muse-glimmer-30b-jlens $PY scripts/c1_v2.py muse30j_full2_ko_v1 --middle L$MID --set full_v8 --suffix "$S" | tail -2 || echo "=== J-lens C1 FAILED"
 echo "=== C2 $(date -u +%T)"
-BJ_BATCH=32 $PY scripts/write_max.py --name muse30_smoke_wm2_full_1022 --why smoke --n 2 --band 26-28 \
+BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name muse30_smoke_wm2_full_1022 --why smoke --n 2 --band 26-28 \
   --single-step 1 --early 16 --possets question final $W2 || { echo "steering smoke failed: stop"; exit 1; }
-BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
   --n 1000 $STEER $W2 && $PY scripts/c2_graded.py muse30_wm2_full2_v1 | tail -14 \
   && $PY scripts/c2_graded.py muse30_wm2_full2_v1 --drop-guessable > /dev/null \
   && $PY scripts/c2_narrow.py muse30_wm2_full2_v1 muse30_wm2_full2_v1_noguess || echo "=== two-step steering FAILED"
@@ -46,12 +46,12 @@ $PY scripts/copy_sweep.py --name muse30_copy_sweep_full2_v1 --why "$WHY: where t
   --tasks full_v8 --tasks-competence $C2 --families PP PM MP MM --n 40 --step 2 --window 10 || echo "=== copy sweep FAILED"
 AB=$($PY scripts/choose_steer_band.py muse30_copy_sweep_full2_v1) || AB=""
 echo "=== aligned band: ${AB:-none}"
-[ -n "$AB" ] && { BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_aligned_v1 --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" \
+[ -n "$AB" ] && { BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_aligned_v1 --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" \
     --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band ${AB%% *} --single-step 2 --early 13 16 20 $W2 \
     && $PY scripts/c2_graded.py muse30_wm2_full2_aligned_v1 | tail -14 \
     && $PY scripts/c2_graded.py muse30_wm2_full2_aligned_v1 --drop-guessable > /dev/null \
     && $PY scripts/c2_narrow.py muse30_wm2_full2_aligned_v1 muse30_wm2_full2_aligned_v1_noguess || echo "=== aligned steering FAILED"; }
-[ -f results/tasks_v2/$C3/summary.json ] && BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
+[ -f results/tasks_v2/$C3/summary.json ] && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
   && $PY scripts/c2_graded.py muse30_wm2_full3_v1 > /dev/null || echo "=== three-step steering FAILED"
 $PY scripts/cross_model_summary.py > /dev/null || echo "=== cross-model summary FAILED"
 echo "=== Muse C2 recovery done $(date -u +%FT%TZ)"
@@ -59,7 +59,7 @@ echo "=== Muse C2 recovery done $(date -u +%FT%TZ)"
 # like it are now dropped in read_write.tasks_cases (the 27B's and Qwen3-32B's case sets unchanged: 482, 294). Re-run.
 d=results/write_max/muse30_wm2_full2_v1; [ -d $d ] && [ ! -f $d/summary.json ] && mv $d /workspace/runs/archive_cancelled/results/muse30_wm2_full2_v1_iota && echo "archived crashed $d"
 echo "=== C2 rerun $(date -u +%T)"
-BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
   --n 1000 $STEER $W2 && $PY scripts/c2_graded.py muse30_wm2_full2_v1 | tail -14 \
   && $PY scripts/c2_graded.py muse30_wm2_full2_v1 --drop-guessable > /dev/null \
   && $PY scripts/c2_narrow.py muse30_wm2_full2_v1 muse30_wm2_full2_v1_noguess || echo "=== two-step steering FAILED"

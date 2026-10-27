@@ -1,0 +1,25 @@
+id: x45a_muse
+title: "Batch 45a on Muse L26: first mention or first locker? Routes C2 with one sentence before both prompts (V0 none, V1 a pick of the first-locker item, V2 of another locker item, V3 of an item with no locker, V4 a neutral filler)"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.9
+depends_on: [x45_0_indep_9b]
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name muse30b_x6_routes_x45a --conditions C2 --prepend V0,V1,V2,V3,V4 --sealed
+question: >-
+  Is the pointer's first slot "the first locker sentence" or "the first item stated before any other"? When a pick sentence naming an item comes before the lockers, does the pointer part alone still give position answers on moves to or from the first locker?
+why_it_matters: >-
+  The pointer's wording rests on what slot 0 codes (Dan, batch 45). A pick sentence before the lockers separates "first locker" from "first mention": V1-V3 move the first mention, V4 moves only the distance. Muse is the second model family.
+hypotheses:
+  H-batch45: 'Q45.3 (45a) in docs/predictions_batch45.md, committed by Dan before any result is opened'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45a): "First locker stated before any item" if V1, V2 and V3 each cut only-pointer position on first-locker moves to at most half of V0 (paired CI excluding 0) while V4 does not; "Order of lockers, picks ignored" if V1, V2 and V3 stay within 0.10 of V0; otherwise mixed. As computed (x6_routes.first_locker_rule): the lookup's position share with only the pointer part (keep_alf) on the C2 scenes whose pointer move (the O bridge's locker slot -> the S bridge's) involves slot 0, the base scenes every variant has (paired); a variant cuts if its point estimate is <= 0.5 x V0's and the paired cluster-bootstrap 95% CI of V0 minus it has lower bound > 0; within = |variant - V0| <= 0.10 on the point estimates; if both rules hold (possible when V0 <= 0.2) the first is reported and flagged; a variant that misses its gate makes the verdict "not tested". Read beside it (descriptive): without the pointer against its random part; the code's shift beta per variant vs V0 (U U^T (h_v - h_V0) at O's bridge word on mu_j+1 - mu_j), overall and per slot j. Gate as the routes test (O's read accuracy >= 0.80 per reader, per variant). Cluster bootstrap over bridge items, 10,000 resamples, seed 0.
+controls:
+- 'V0: the unchanged routes C2 prompts (a rerun; the same 700 base scenes as muse30b_x6_routes)'
+- 'V4: a neutral sentence of 10-12 tokens (x8_write.FILLERS; 4 of them fit Muse''s tokenizer, checked with the plan stage)'
+- 'every kept or removed part against a random part of the same share of the change (per scene)'
+- 'the recall on the identical patch'
+n: "up to 300 base C2 scenes eligible in every variant (5 variants each)"
+seeds: [2510, 4501, 888, 0]
+notes: "Sealed (--sealed): no verdict runs after the job. After Dan's commit of Q45.3, by hand: uv run python scripts/x6_routes.py verdict --name muse30b_x6_routes_x45a; uv run python scripts/x6_routes.py examples --name muse30b_x6_routes_x45a (CPU). C2 only, so no C0 check. Pointer basis: Alf from muse30b_x0_probe_v4 (not refit)."

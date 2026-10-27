@@ -1,10 +1,11 @@
 """ablate_pilot: the paper's own kind of test, removing the J-space, as a check that does not depend on the copy split
 (Zach, 2026-10-20, cheap experiment before the sprint plan).
 
-At layers 32, 36 and 40 at once, at every position, each residual loses its 25-atom J-space part (signed OMP over the
-frozen J++'s letter-token vectors, the split's J-space part, here of the state itself); the control loses the same
-fit over a random dictionary of the same size (seeded per layer). On unedited-correct items, read at the answer's
-first token (suite_split's read):
+At layers 32, 36 and 40 at once (another target: --layers, each a layer its frozen lens has a map at), at every
+position, each residual loses its 25-atom J-space part (signed OMP over the frozen lens's letter-token vectors: J++ on
+Qwen, the J-lens on OLMo, recorded in the manifest with its layers; the split's J-space part, here of the state itself);
+the control loses the same fit over a random dictionary of the same size (seeded per layer). On unedited-correct
+items, read at the answer's first token (suite_split's read):
   clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the
                                                           prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)
 Reported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.
@@ -176,16 +177,20 @@ def main(
     center: bool = False,
     comp_tool: str | None = None,
     rotated: bool = False,
+    no_random: bool = False,
 ) -> None:
     from bridge_jspace.lens import JLens
     from bridge_jspace.model import load_model
 
+    pins.check_run_name(name)  # the target's prefix; "_raw" iff BJ_FORMAT=raw
+    pins.check_lens_layers(LAYERS)
     out_dir = RESULTS / name
     out_dir.mkdir(parents=True, exist_ok=True)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     manifest = {"run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256], "layers": list(LAYERS),
-                "k_atoms": K_ATOMS, "n_per_family": n, "skip_first": skip_first, "center": center, "rotated": rotated,
+                "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
+                "lens_layers": pins.LENS_LAYERS, "layers": list(LAYERS),
+                "k_atoms": K_ATOMS, "n_per_family": n, "skip_first": skip_first, "center": center, "rotated": rotated, "no_random": no_random,
                 "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = load_model()
@@ -194,15 +199,16 @@ def main(
     letters = model.letter_token_ids()
     jdict = {la: lens.vectors(la, letters) for la in LAYERS}
     rdict = {}
-    for la in LAYERS:
+    for la in LAYERS if not no_random else ():
         g = torch.Generator(device="cuda").manual_seed(777 + la)
         rdict[la] = torch.nn.functional.normalize(torch.randn(jdict[la].shape, device="cuda", generator=g), dim=-1)
     means = layer_means(model, LAYERS) if center else {}
     conditions = {
         "none": {},
         "jspace": {la: Remove(jdict[la], skip_first, means.get(la)) for la in LAYERS},
-        "random": {la: Remove(rdict[la], skip_first, means.get(la)) for la in LAYERS},
     }
+    if not no_random:  # a random dictionary of the same size (dropped on an 80 GB GPU with 3 layers of the 27B: OOM)
+        conditions["random"] = {la: Remove(rdict[la], skip_first, means.get(la)) for la in LAYERS}
     if rotated:  # the J-space removal's size, a random direction
         conditions["rotated"] = {
             la: Rotated(jdict[la], rotation(jdict[la].shape[1], 888 + la), skip_first, means.get(la)) for la in LAYERS
@@ -241,8 +247,10 @@ def main(
             dlp = {c: statistics.mean(r["logp"] - base[r["id"]] for r in v) for c, v in sel.items() if c != "none"}
             summary["families"][f"{fam}/{kind}"] = {"n": len(sel["none"]), "accuracy": acc, "dlogp": dlp}
             rot = f" (rotated {100 * acc['rotated']:.0f}%, {dlp['rotated']:+.2f})" if "rotated" in acc else ""
+            r_acc = f"{100 * acc['random']:.0f}%" if "random" in acc else "-"
+            r_dlp = f"{dlp['random']:+.2f}" if "random" in dlp else "-"
             lines.append(f"| {fam} | {kind} | {len(sel['none'])} | {100 * acc['none']:.0f}% / {100 * acc['jspace']:.0f}% / "
-                         f"{100 * acc['random']:.0f}%{rot} | {dlp['jspace']:+.2f} / {dlp['random']:+.2f} |")  # fmt: skip
+                         f"{r_acc}{rot} | {dlp['jspace']:+.2f} / {r_dlp} |")  # fmt: skip
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
     print((out_dir / "summary.md").read_text())
@@ -263,6 +271,9 @@ if __name__ == "__main__":
     ap.add_argument(
         "--rotated", action="store_true", help="add the control: the J-space removal turned by a random rotation"
     )
+    ap.add_argument(
+        "--no-random", action="store_true", help="drop the random-dictionary control (memory; keep --rotated)"
+    )
     args = ap.parse_args()
     LAYERS = tuple(args.layers)
     main(
@@ -276,4 +287,5 @@ if __name__ == "__main__":
         args.center,
         args.comp_tool,
         args.rotated,
+        args.no_random,
     )

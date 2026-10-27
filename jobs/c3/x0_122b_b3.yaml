@@ -1,0 +1,26 @@
+id: x0_122b_b3
+title: "122B grid b3 (Dan, 25 Oct ~00:20; held-out model): probes at L33 on the 1,500 fresh scenes (address, value, identity; locker-before / after); the probe-direction arms and states on the one-change items; pair test, patched-state readout, first-mention cross-tab"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.8
+depends_on: [x0_122b_b2]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0_probe.py run --name qwen35_122b_x0_probe_v4 --set d1_topics_v4 --layer 33
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0_amnesic.py run --name qwen35_122b_x0_amnesic --single qwen35_122b_x0_single --probe qwen35_122b_x0_probe_v4
+  && BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_probe_patched.py --probe qwen35_122b_x0_probe_v4 --single qwen35_122b_x0_single --states qwen35_122b_x0_amnesic
+  && BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_first_mention.py --single qwen35_122b_x0_single
+question: >-
+  On the 122B at L33: does a linear probe at the bridge word read which sentence holds the bridge's locker (and the locker number, the identity) on fresh scenes, above the layout baseline; does removing the probe's directions change the lookup; and does the readout follow the item's first mention in the duplicate-pick pairs?
+why_it_matters: >-
+  The grid rows "the address at the word outside J++", "the address is a first-mention pointer" and "the lookup needs the probe's pointer" on the held-out model.
+hypotheses:
+  H-address: 'the address probe reads >= 0.90 and >= 0.20 above the layout baseline. Prior: Dan''s Q31.4 (batch 31)'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct ~00:20; the 9B / 27B thresholds). Q31.4's categories on the address probe (locker-before): (a) >= 0.90 and >= 0.20 above the layout baseline; (b) above the layout baseline by 0.05-0.20, or by more but under 0.90; (c) not above the layout baseline by 0.05. Probe-direction removal (x0_amnesic, as on the 9B / 27B): the lookup's excess <= 0.10 -> "the lookup does not need the probe's directions". Pair test, patched-state readout, first-mention cross-tab: descriptive, as on the 9B / 27B. Results stay closed until Dan's batch-31 commit.
+controls:
+- 'the layout and pick-index baselines; entity-held-out folds'
+- 'a random-subspace part at the probe subspace''s share'
+n: '1,500 fresh scenes (d1_topics_v4); the 200 single-change items of qwen35_122b_x0_single'
+seeds: [0]
+notes: "122B on both GPUs; the CPU stages run on the box after the GPU ones."

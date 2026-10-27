@@ -1,0 +1,1810 @@
+{
+ "pools": {
+  "animals": {
+   "entities": 8,
+   "cue_tokens": 2,
+   "recalled": [
+    2,
+    4
+   ],
+   "conditions": {
+    "same": {
+     "statement_tokens": 8,
+     "statement_tokens_at_start": 8,
+     "surface": "the English word",
+     "languages": {
+      "en": 8
+     }
+    },
+    "xlang": {
+     "statement_tokens": 9,
+     "statement_tokens_at_start": 9,
+     "surface": {
+      "dog": "perro",
+      "cat": "gato",
+      "chicken": "pollo",
+      "horse": "cheval",
+      "mouse": "souris",
+      "pig": "porc",
+      "cow": "Kuh",
+      "duck": "Ente"
+     },
+     "languages": {
+      "es": 3,
+      "fr": 3,
+      "de": 2
+     }
+    }
+   }
+  },
+  "elements": {
+   "entities": 6,
+   "cue_tokens": 4,
+   "recalled": [
+    1,
+    2,
+    3,
+    6,
+    7,
+    8
+   ],
+   "conditions": {
+    "same": {
+     "statement_tokens": 9,
+     "statement_tokens_at_start": 9,
+     "surface": "the English word",
+     "languages": {
+      "en": 6
+     }
+    },
+    "syn": {
+     "statement_tokens": 9,
+     "statement_tokens_at_start": 9,
+     "surface": {
+      "hydrogen": "H",
+      "helium": "He",
+      "lithium": "Li",
+      "carbon": "C",
+      "nitrogen": "N",
+      "oxygen": "O"
+     },
+     "languages": {
+      "en": 6
+     }
+    }
+   }
+  }
+ },
+ "files": {
+  "animals_RL_e3f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    59,
+    59.0,
+    59
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 7,
+    "3": 5,
+    "5": 12,
+    "6": 10,
+    "7": 8,
+    "8": 8,
+    "9": 10
+   },
+   "values": {
+    "1": 6,
+    "3": 9,
+    "5": 7,
+    "6": 10,
+    "7": 8,
+    "8": 12,
+    "9": 8
+   },
+   "queries": {
+    "chicken": 17,
+    "duck": 16,
+    "mouse": 7,
+    "dog": 6,
+    "cat": 5,
+    "horse": 3,
+    "cow": 3,
+    "pig": 3
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "animals_DL_e3f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    55,
+    55.0,
+    55
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 7,
+    "3": 5,
+    "5": 12,
+    "6": 10,
+    "7": 8,
+    "8": 8,
+    "9": 10
+   },
+   "values": {
+    "1": 6,
+    "3": 9,
+    "5": 7,
+    "6": 10,
+    "7": 8,
+    "8": 12,
+    "9": 8
+   },
+   "queries": {
+    "chicken": 17,
+    "duck": 16,
+    "mouse": 7,
+    "dog": 6,
+    "cat": 5,
+    "horse": 3,
+    "cow": 3,
+    "pig": 3
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "animals_RR_e3f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    60,
+    60.0,
+    60
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "2": 33,
+    "4": 27
+   },
+   "values": {
+    "2": 27,
+    "4": 33
+   },
+   "queries": {
+    "chicken": 17,
+    "duck": 16,
+    "mouse": 7,
+    "dog": 6,
+    "cat": 5,
+    "horse": 3,
+    "cow": 3,
+    "pig": 3
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "animals_RL_e3f0-xlang": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    62,
+    62.0,
+    62
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 7,
+    "3": 5,
+    "5": 12,
+    "6": 10,
+    "7": 8,
+    "8": 8,
+    "9": 10
+   },
+   "values": {
+    "1": 6,
+    "3": 9,
+    "5": 7,
+    "6": 10,
+    "7": 8,
+    "8": 12,
+    "9": 8
+   },
+   "queries": {
+    "chicken": 17,
+    "duck": 16,
+    "mouse": 7,
+    "dog": 6,
+    "cat": 5,
+    "horse": 3,
+    "cow": 3,
+    "pig": 3
+   },
+   "query_language": {
+    "de": 19,
+    "fr": 13,
+    "es": 28
+   }
+  },
+  "animals_DL_e3f0-xlang": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    58,
+    58.0,
+    58
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 7,
+    "3": 5,
+    "5": 12,
+    "6": 10,
+    "7": 8,
+    "8": 8,
+    "9": 10
+   },
+   "values": {
+    "1": 6,
+    "3": 9,
+    "5": 7,
+    "6": 10,
+    "7": 8,
+    "8": 12,
+    "9": 8
+   },
+   "queries": {
+    "chicken": 17,
+    "duck": 16,
+    "mouse": 7,
+    "dog": 6,
+    "cat": 5,
+    "horse": 3,
+    "cow": 3,
+    "pig": 3
+   },
+   "query_language": {
+    "de": 19,
+    "fr": 13,
+    "es": 28
+   }
+  },
+  "animals_RR_e3f0-xlang": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    63,
+    63.0,
+    63
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "2": 33,
+    "4": 27
+   },
+   "values": {
+    "2": 27,
+    "4": 33
+   },
+   "queries": {
+    "chicken": 17,
+    "duck": 16,
+    "mouse": 7,
+    "dog": 6,
+    "cat": 5,
+    "horse": 3,
+    "cow": 3,
+    "pig": 3
+   },
+   "query_language": {
+    "de": 19,
+    "fr": 13,
+    "es": 28
+   }
+  },
+  "elements_RL_e3f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    62,
+    62.0,
+    62
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 7,
+    "2": 2,
+    "3": 7,
+    "4": 13,
+    "5": 8,
+    "6": 6,
+    "7": 1,
+    "8": 11,
+    "9": 5
+   },
+   "values": {
+    "1": 5,
+    "2": 5,
+    "3": 7,
+    "4": 6,
+    "5": 10,
+    "6": 4,
+    "7": 5,
+    "8": 5,
+    "9": 13
+   },
+   "queries": {
+    "helium": 17,
+    "nitrogen": 13,
+    "carbon": 9,
+    "hydrogen": 8,
+    "lithium": 8,
+    "oxygen": 5
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_DL_e3f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    58,
+    58.0,
+    58
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 7,
+    "2": 2,
+    "3": 7,
+    "4": 13,
+    "5": 8,
+    "6": 6,
+    "7": 1,
+    "8": 11,
+    "9": 5
+   },
+   "values": {
+    "1": 5,
+    "2": 5,
+    "3": 7,
+    "4": 6,
+    "5": 10,
+    "6": 4,
+    "7": 5,
+    "8": 5,
+    "9": 13
+   },
+   "queries": {
+    "helium": 17,
+    "nitrogen": 13,
+    "carbon": 9,
+    "hydrogen": 8,
+    "lithium": 8,
+    "oxygen": 5
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_RR_e3f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    62,
+    62.0,
+    62
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 8,
+    "2": 17,
+    "3": 8,
+    "6": 9,
+    "7": 13,
+    "8": 5
+   },
+   "values": {
+    "1": 6,
+    "2": 11,
+    "3": 13,
+    "6": 11,
+    "7": 7,
+    "8": 12
+   },
+   "queries": {
+    "helium": 17,
+    "nitrogen": 13,
+    "carbon": 9,
+    "hydrogen": 8,
+    "lithium": 8,
+    "oxygen": 5
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_RL_e3f0-syn": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    62,
+    62.0,
+    62
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 7,
+    "2": 2,
+    "3": 7,
+    "4": 13,
+    "5": 8,
+    "6": 6,
+    "7": 1,
+    "8": 11,
+    "9": 5
+   },
+   "values": {
+    "1": 5,
+    "2": 5,
+    "3": 7,
+    "4": 6,
+    "5": 10,
+    "6": 4,
+    "7": 5,
+    "8": 5,
+    "9": 13
+   },
+   "queries": {
+    "helium": 17,
+    "nitrogen": 13,
+    "carbon": 9,
+    "hydrogen": 8,
+    "lithium": 8,
+    "oxygen": 5
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_DL_e3f0-syn": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    58,
+    58.0,
+    58
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 7,
+    "2": 2,
+    "3": 7,
+    "4": 13,
+    "5": 8,
+    "6": 6,
+    "7": 1,
+    "8": 11,
+    "9": 5
+   },
+   "values": {
+    "1": 5,
+    "2": 5,
+    "3": 7,
+    "4": 6,
+    "5": 10,
+    "6": 4,
+    "7": 5,
+    "8": 5,
+    "9": 13
+   },
+   "queries": {
+    "helium": 17,
+    "nitrogen": 13,
+    "carbon": 9,
+    "hydrogen": 8,
+    "lithium": 8,
+    "oxygen": 5
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_RR_e3f0-syn": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    62,
+    62.0,
+    62
+   ],
+   "slots": {
+    "query": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "identity": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    },
+    "position": {
+     "0": 20,
+     "1": 20,
+     "2": 20
+    }
+   },
+   "answers": {
+    "1": 8,
+    "2": 17,
+    "3": 8,
+    "6": 9,
+    "7": 13,
+    "8": 5
+   },
+   "values": {
+    "1": 6,
+    "2": 11,
+    "3": 13,
+    "6": 11,
+    "7": 7,
+    "8": 12
+   },
+   "queries": {
+    "helium": 17,
+    "nitrogen": 13,
+    "carbon": 9,
+    "hydrogen": 8,
+    "lithium": 8,
+    "oxygen": 5
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "animals_RL_e5f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    75,
+    75.0,
+    75
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 14,
+     "1": 13,
+     "2": 7,
+     "3": 10,
+     "4": 16
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 10,
+    "3": 3,
+    "5": 12,
+    "6": 6,
+    "7": 8,
+    "8": 13,
+    "9": 8
+   },
+   "values": {
+    "1": 5,
+    "3": 10,
+    "5": 6,
+    "6": 10,
+    "7": 12,
+    "8": 8,
+    "9": 9
+   },
+   "queries": {
+    "chicken": 25,
+    "duck": 10,
+    "mouse": 8,
+    "horse": 5,
+    "cow": 4,
+    "dog": 4,
+    "pig": 3,
+    "cat": 1
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "animals_DL_e5f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    71,
+    71.0,
+    71
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 14,
+     "1": 13,
+     "2": 7,
+     "3": 10,
+     "4": 16
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 10,
+    "3": 3,
+    "5": 12,
+    "6": 6,
+    "7": 8,
+    "8": 13,
+    "9": 8
+   },
+   "values": {
+    "1": 5,
+    "3": 10,
+    "5": 6,
+    "6": 10,
+    "7": 12,
+    "8": 8,
+    "9": 9
+   },
+   "queries": {
+    "chicken": 25,
+    "duck": 10,
+    "mouse": 8,
+    "horse": 5,
+    "cow": 4,
+    "dog": 4,
+    "pig": 3,
+    "cat": 1
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "animals_RR_e5f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    76,
+    76.0,
+    76
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 14,
+     "1": 13,
+     "2": 7,
+     "3": 10,
+     "4": 16
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "2": 35,
+    "4": 25
+   },
+   "values": {
+    "2": 25,
+    "4": 35
+   },
+   "queries": {
+    "chicken": 25,
+    "duck": 10,
+    "mouse": 8,
+    "horse": 5,
+    "cow": 4,
+    "dog": 4,
+    "pig": 3,
+    "cat": 1
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "animals_RL_e5f0-xlang": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    80,
+    80.0,
+    80
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 14,
+     "1": 13,
+     "2": 7,
+     "3": 10,
+     "4": 16
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 10,
+    "3": 3,
+    "5": 12,
+    "6": 6,
+    "7": 8,
+    "8": 13,
+    "9": 8
+   },
+   "values": {
+    "1": 5,
+    "3": 10,
+    "5": 6,
+    "6": 10,
+    "7": 12,
+    "8": 8,
+    "9": 9
+   },
+   "queries": {
+    "chicken": 25,
+    "duck": 10,
+    "mouse": 8,
+    "horse": 5,
+    "cow": 4,
+    "dog": 4,
+    "pig": 3,
+    "cat": 1
+   },
+   "query_language": {
+    "de": 14,
+    "es": 30,
+    "fr": 16
+   }
+  },
+  "animals_DL_e5f0-xlang": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    76,
+    76.0,
+    76
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 14,
+     "1": 13,
+     "2": 7,
+     "3": 10,
+     "4": 16
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 10,
+    "3": 3,
+    "5": 12,
+    "6": 6,
+    "7": 8,
+    "8": 13,
+    "9": 8
+   },
+   "values": {
+    "1": 5,
+    "3": 10,
+    "5": 6,
+    "6": 10,
+    "7": 12,
+    "8": 8,
+    "9": 9
+   },
+   "queries": {
+    "chicken": 25,
+    "duck": 10,
+    "mouse": 8,
+    "horse": 5,
+    "cow": 4,
+    "dog": 4,
+    "pig": 3,
+    "cat": 1
+   },
+   "query_language": {
+    "de": 14,
+    "es": 30,
+    "fr": 16
+   }
+  },
+  "animals_RR_e5f0-xlang": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 60,
+   "soft_promised": 60,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    81,
+    81.0,
+    81
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 14,
+     "1": 13,
+     "2": 7,
+     "3": 10,
+     "4": 16
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "2": 35,
+    "4": 25
+   },
+   "values": {
+    "2": 25,
+    "4": 35
+   },
+   "queries": {
+    "chicken": 25,
+    "duck": 10,
+    "mouse": 8,
+    "horse": 5,
+    "cow": 4,
+    "dog": 4,
+    "pig": 3,
+    "cat": 1
+   },
+   "query_language": {
+    "de": 14,
+    "es": 30,
+    "fr": 16
+   }
+  },
+  "elements_RL_e5f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    80,
+    80.0,
+    80
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 8,
+     "1": 17,
+     "2": 9,
+     "3": 15,
+     "4": 11
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 4,
+    "2": 4,
+    "3": 3,
+    "4": 7,
+    "5": 12,
+    "6": 5,
+    "7": 4,
+    "8": 9,
+    "9": 12
+   },
+   "values": {
+    "1": 3,
+    "2": 12,
+    "3": 3,
+    "4": 8,
+    "5": 15,
+    "6": 4,
+    "7": 2,
+    "8": 8,
+    "9": 5
+   },
+   "queries": {
+    "nitrogen": 12,
+    "lithium": 11,
+    "oxygen": 11,
+    "hydrogen": 10,
+    "helium": 8,
+    "carbon": 8
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_DL_e5f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    76,
+    76.0,
+    76
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 8,
+     "1": 17,
+     "2": 9,
+     "3": 15,
+     "4": 11
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 4,
+    "2": 4,
+    "3": 3,
+    "4": 7,
+    "5": 12,
+    "6": 5,
+    "7": 4,
+    "8": 9,
+    "9": 12
+   },
+   "values": {
+    "1": 3,
+    "2": 12,
+    "3": 3,
+    "4": 8,
+    "5": 15,
+    "6": 4,
+    "7": 2,
+    "8": 8,
+    "9": 5
+   },
+   "queries": {
+    "nitrogen": 12,
+    "lithium": 11,
+    "oxygen": 11,
+    "hydrogen": 10,
+    "helium": 8,
+    "carbon": 8
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_RR_e5f0": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    80,
+    80.0,
+    80
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 8,
+     "1": 17,
+     "2": 9,
+     "3": 15,
+     "4": 11
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 10,
+    "2": 8,
+    "3": 11,
+    "6": 8,
+    "7": 12,
+    "8": 11
+   },
+   "values": {
+    "1": 8,
+    "2": 7,
+    "3": 12,
+    "6": 11,
+    "7": 15,
+    "8": 7
+   },
+   "queries": {
+    "nitrogen": 12,
+    "lithium": 11,
+    "oxygen": 11,
+    "hydrogen": 10,
+    "helium": 8,
+    "carbon": 8
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_RL_e5f0-syn": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    80,
+    80.0,
+    80
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 8,
+     "1": 17,
+     "2": 9,
+     "3": 15,
+     "4": 11
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 4,
+    "2": 4,
+    "3": 3,
+    "4": 7,
+    "5": 12,
+    "6": 5,
+    "7": 4,
+    "8": 9,
+    "9": 12
+   },
+   "values": {
+    "1": 3,
+    "2": 12,
+    "3": 3,
+    "4": 8,
+    "5": 15,
+    "6": 4,
+    "7": 2,
+    "8": 8,
+    "9": 5
+   },
+   "queries": {
+    "nitrogen": 12,
+    "lithium": 11,
+    "oxygen": 11,
+    "hydrogen": 10,
+    "helium": 8,
+    "carbon": 8
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_DL_e5f0-syn": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    76,
+    76.0,
+    76
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 8,
+     "1": 17,
+     "2": 9,
+     "3": 15,
+     "4": 11
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 4,
+    "2": 4,
+    "3": 3,
+    "4": 7,
+    "5": 12,
+    "6": 5,
+    "7": 4,
+    "8": 9,
+    "9": 12
+   },
+   "values": {
+    "1": 3,
+    "2": 12,
+    "3": 3,
+    "4": 8,
+    "5": 15,
+    "6": 4,
+    "7": 2,
+    "8": 8,
+    "9": 5
+   },
+   "queries": {
+    "nitrogen": 12,
+    "lithium": 11,
+    "oxygen": 11,
+    "hydrogen": 10,
+    "helium": 8,
+    "carbon": 8
+   },
+   "query_language": {
+    "en": 60
+   }
+  },
+  "elements_RR_e5f0-syn": {
+   "n": 60,
+   "spans_decode": 60,
+   "dissoc_aligned": 60,
+   "same_aligned": 60,
+   "redigit_aligned": 60,
+   "statements_text": 60,
+   "permutation": 60,
+   "value_absent": 60,
+   "predictions_distinct": 60,
+   "hard_collision_free": 60,
+   "soft_collision_free": 0,
+   "soft_promised": 0,
+   "same_noop": 60,
+   "redigit_one_change": 60,
+   "unique_prompts": 60,
+   "prompt_tokens(min,median,max)": [
+    80,
+    80.0,
+    80
+   ],
+   "slots": {
+    "query": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    },
+    "identity": {
+     "0": 8,
+     "1": 17,
+     "2": 9,
+     "3": 15,
+     "4": 11
+    },
+    "position": {
+     "0": 12,
+     "1": 12,
+     "2": 12,
+     "3": 12,
+     "4": 12
+    }
+   },
+   "answers": {
+    "1": 10,
+    "2": 8,
+    "3": 11,
+    "6": 8,
+    "7": 12,
+    "8": 11
+   },
+   "values": {
+    "1": 8,
+    "2": 7,
+    "3": 12,
+    "6": 11,
+    "7": 15,
+    "8": 7
+   },
+   "queries": {
+    "nitrogen": 12,
+    "lithium": 11,
+    "oxygen": 11,
+    "hydrogen": 10,
+    "helium": 8,
+    "carbon": 8
+   },
+   "query_language": {
+    "en": 60
+   }
+  }
+ },
+ "paired_conditions": {
+  "groups": 720,
+  "complete": 720,
+  "identical_but_statements": 720,
+  "statements_differ": 720
+ }
+}

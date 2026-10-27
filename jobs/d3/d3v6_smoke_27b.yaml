@@ -1,0 +1,22 @@
+id: d3v6_smoke_27b
+title: "D3 v6 smoke: pointer_swap patches prompts of different lengths aligned from the end (2 scenes per topic)"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v6 --set main --name d3v6_smoke_27b --families RL
+  --n 2 --layers 50 --groups last --no-eligibility
+  --why "smoke: the end-aligned patch path (e5-abs, e5-rel) and the v6 analysis on 2 scenes per topic; not a result"
+  && uv run python scripts/pointer_swap.py run --name d3v6_smoke_27b
+question: 'Does pointer_swap run end to end on pointer_v6 (sources one sentence longer or shorter than the org prompt)?'
+why_it_matters: 'Code path check before d3v6_swap_27b and the OLMo run; no result is read from it.'
+hypotheses:
+  H-runs: 'run, analysis and figures finish; the no-op check is 100%. Prior 0.8'
+decision_rule: 'smoke: passes iff the job exits 0 with outcomes for every layout; not interpreted'
+controls:
+- 'the run''s own no-op and layer-0 checks (the layer-0 check only for same-length layouts)'
+n: '2 scenes per topic x 4 layouts, memory -> prompt'
+seeds: [0]
+notes: 'No competence gate (--no-eligibility): a code check, not a measurement.'

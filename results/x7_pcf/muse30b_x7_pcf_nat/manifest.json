@@ -1,0 +1,34 @@
+{
+  "exp": "x7_pcf",
+  "run": "muse30b_x7_pcf_nat",
+  "written_utc": "2026-10-26T15:08:47Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "619b90697bbb1b5128a31317fa5d9ac9d82c9d19",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "layer": 26,
+  "rank": 4,
+  "pairs_from": "x5_natural's passages: the bridge's first-mention sentence moved within its paragraph, still before the binding sentence, words unchanged (at most 3 moves per passage)",
+  "pcf_run": "muse30b_x7_pcf",
+  "alf_from": "muse30b_x0_probe_v4",
+  "seeds": {
+    "moves": 4301
+  }
+}

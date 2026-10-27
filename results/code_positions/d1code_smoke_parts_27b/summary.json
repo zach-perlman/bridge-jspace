@@ -1,0 +1,1483 @@
+{
+  "cells": {
+    "KL/bind_bridge/primary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "frac": {
+        "means": {
+          "lens2": -0.007549999999999999,
+          "lens2 null": -0.0093,
+          "not_lens2": 0.9907,
+          "not_lens2 null": -0.0093,
+          "jspace": 0.0679,
+          "jspace null": -0.0074,
+          "not_jspace": 0.9597,
+          "not_jspace null": -0.011099999999999999,
+          "lens2_matched": -0.00545,
+          "jspace_matched": 0.00535,
+          "full": 0.9907,
+          "O full": null
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.99825,
+            0.9965,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            -0.0020999999999999994,
+            -0.0077,
+            0.0035000000000000005
+          ],
+          "lens2 - its null": [
+            0.0017499999999999998,
+            0.0,
+            0.0035000000000000005
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            -0.24778409636339913,
+            -0.4154924488763639,
+            -0.10823112757293198
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.8918,
+            0.8221,
+            0.9614999999999999
+          ],
+          "jspace - jspace_matched": [
+            0.06255000000000001,
+            0.0077,
+            0.11739999999999999
+          ],
+          "jspace - its null": [
+            0.0753,
+            0.0154,
+            0.1352
+          ],
+          "not_jspace - its null": [
+            0.9708,
+            0.9609000000000001,
+            0.9806999999999999
+          ],
+          "concentration": [
+            0.31447896832742905,
+            0.038928436641567934,
+            0.5473738383421742
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 1.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 1.0,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 1.0,
+          "O full": null
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "calibration": {
+        "jspace_wo_own": {
+          "mean": 0.035699999999999996,
+          "concentration": [
+            0.19153789856313846,
+            0.02235004881721189,
+            0.3334152403711799
+          ]
+        },
+        "rand_omp": {
+          "mean": -0.00395,
+          "concentration": [
+            -0.04891949226273211,
+            -0.14505970783713454,
+            0.04378916393349302
+          ]
+        }
+      },
+      "verdict": "around",
+      "verdict_strict": "outside",
+      "share_median": {
+        "jspace": 0.21789999999999998,
+        "lens2": 0.03075,
+        "jspace_wo_own": 0.1881,
+        "rand_omp": 0.08149999999999999
+      }
+    },
+    "KL/bind_bridge/secondary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "frac": {
+        "means": {
+          "lens2": -0.007549999999999999,
+          "lens2 null": -0.0093,
+          "not_lens2": 0.9907,
+          "not_lens2 null": -0.0093,
+          "jspace": 0.0679,
+          "jspace null": -0.0074,
+          "not_jspace": 0.9597,
+          "not_jspace null": -0.011099999999999999,
+          "lens2_matched": -0.00545,
+          "jspace_matched": 0.00535,
+          "full": 0.9907,
+          "O full": null
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.99825,
+            0.9965,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            -0.0020999999999999994,
+            -0.0077,
+            0.0035000000000000005
+          ],
+          "lens2 - its null": [
+            0.0017499999999999998,
+            0.0,
+            0.0035000000000000005
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            -0.24778409636339913,
+            -0.4154924488763639,
+            -0.10823112757293198
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.8918,
+            0.8221,
+            0.9614999999999999
+          ],
+          "jspace - jspace_matched": [
+            0.06255000000000001,
+            0.0077,
+            0.11739999999999999
+          ],
+          "jspace - its null": [
+            0.0753,
+            0.0154,
+            0.1352
+          ],
+          "not_jspace - its null": [
+            0.9708,
+            0.9609000000000001,
+            0.9806999999999999
+          ],
+          "concentration": [
+            0.31447896832742905,
+            0.038928436641567934,
+            0.5473738383421742
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 1.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 1.0,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 1.0,
+          "O full": null
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "calibration": {
+        "jspace_wo_own": {
+          "mean": 0.035699999999999996,
+          "concentration": [
+            0.19153789856313846,
+            0.02235004881721189,
+            0.3334152403711799
+          ]
+        },
+        "rand_omp": {
+          "mean": -0.00395,
+          "concentration": [
+            -0.04891949226273211,
+            -0.14505970783713454,
+            0.04378916393349302
+          ]
+        }
+      },
+      "verdict": "around",
+      "verdict_strict": "outside",
+      "share_median": {
+        "jspace": 0.21789999999999998,
+        "lens2": 0.03075,
+        "jspace_wo_own": 0.1881,
+        "rand_omp": 0.08149999999999999
+      }
+    },
+    "KL/context/primary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "frac": {
+        "means": {
+          "lens2": -0.007549999999999999,
+          "lens2 null": -0.0074,
+          "not_lens2": 0.9889,
+          "not_lens2 null": -0.0074,
+          "jspace": 0.06595,
+          "jspace null": -0.0093,
+          "not_jspace": 0.9540500000000001,
+          "not_jspace null": -0.0037,
+          "lens2_matched": -0.007549999999999999,
+          "jspace_matched": 0.00345,
+          "full": 0.99455,
+          "O full": -0.01125
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.99645,
+            0.9929,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            -0.0001499999999999991,
+            -0.0037999999999999996,
+            0.0035000000000000005
+          ],
+          "not_lens2 - its null": [
+            0.9963,
+            0.9962000000000001,
+            0.9964
+          ],
+          "concentration": [
+            -0.3608443279334134,
+            -0.8426180068200768,
+            -0.127666999073705
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.8881000000000001,
+            0.8185,
+            0.9577
+          ],
+          "jspace - jspace_matched": [
+            0.06249999999999999,
+            0.0076,
+            0.11739999999999999
+          ],
+          "jspace - its null": [
+            0.07525,
+            0.0153,
+            0.1352
+          ],
+          "not_jspace - its null": [
+            0.9577500000000001,
+            0.9502,
+            0.9653
+          ],
+          "concentration": [
+            0.3863580516271019,
+            0.029185119214299726,
+            0.6065632989997671
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 1.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 1.0,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 1.0,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "calibration": {
+        "jspace_wo_own": {
+          "mean": 0.035699999999999996,
+          "concentration": [
+            0.23639949660813073,
+            0.03243618266419196,
+            0.36564657402682565
+          ]
+        },
+        "rand_omp": {
+          "mean": -0.0019,
+          "concentration": [
+            -0.023383632552551794,
+            -0.04715074266142119,
+            0.0
+          ]
+        }
+      },
+      "verdict": "around",
+      "verdict_strict": "outside",
+      "share_median": {
+        "jspace": 0.17170000000000002,
+        "lens2": 0.02105,
+        "jspace_wo_own": 0.1519,
+        "rand_omp": 0.0817
+      }
+    },
+    "KL/context/secondary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "frac": {
+        "means": {
+          "lens2": -0.007549999999999999,
+          "lens2 null": -0.0074,
+          "not_lens2": 0.9889,
+          "not_lens2 null": -0.0074,
+          "jspace": 0.06595,
+          "jspace null": -0.0093,
+          "not_jspace": 0.9540500000000001,
+          "not_jspace null": -0.0037,
+          "lens2_matched": -0.007549999999999999,
+          "jspace_matched": 0.00345,
+          "full": 0.99455,
+          "O full": -0.01125
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.99645,
+            0.9929,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            -0.0001499999999999991,
+            -0.0037999999999999996,
+            0.0035000000000000005
+          ],
+          "not_lens2 - its null": [
+            0.9963,
+            0.9962000000000001,
+            0.9964
+          ],
+          "concentration": [
+            -0.3608443279334134,
+            -0.8426180068200768,
+            -0.127666999073705
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.8881000000000001,
+            0.8185,
+            0.9577
+          ],
+          "jspace - jspace_matched": [
+            0.06249999999999999,
+            0.0076,
+            0.11739999999999999
+          ],
+          "jspace - its null": [
+            0.07525,
+            0.0153,
+            0.1352
+          ],
+          "not_jspace - its null": [
+            0.9577500000000001,
+            0.9502,
+            0.9653
+          ],
+          "concentration": [
+            0.3863580516271019,
+            0.029185119214299726,
+            0.6065632989997671
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 1.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 1.0,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 1.0,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "calibration": {
+        "jspace_wo_own": {
+          "mean": 0.035699999999999996,
+          "concentration": [
+            0.23639949660813073,
+            0.03243618266419196,
+            0.36564657402682565
+          ]
+        },
+        "rand_omp": {
+          "mean": -0.0019,
+          "concentration": [
+            -0.023383632552551794,
+            -0.04715074266142119,
+            0.0
+          ]
+        }
+      },
+      "verdict": "around",
+      "verdict_strict": "outside",
+      "share_median": {
+        "jspace": 0.17170000000000002,
+        "lens2": 0.02105,
+        "jspace_wo_own": 0.1519,
+        "rand_omp": 0.0817
+      }
+    },
+    "KR/bind_bridge/primary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "frac": {
+        "means": {
+          "lens2": 0.0575,
+          "lens2 null": 0.00425,
+          "not_lens2": 0.9112,
+          "not_lens2 null": 0.0032,
+          "jspace": 0.15539999999999998,
+          "jspace null": 0.0048,
+          "not_jspace": 0.7706,
+          "not_jspace null": 0.01185,
+          "lens2_matched": 0.0048,
+          "jspace_matched": 0.0184,
+          "full": 0.99485,
+          "O full": null
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.8537,
+            0.8255,
+            0.8819
+          ],
+          "lens2 - lens2_matched": [
+            0.052700000000000004,
+            0.050800000000000005,
+            0.0546
+          ],
+          "lens2 - its null": [
+            0.053250000000000006,
+            0.0516,
+            0.054900000000000004
+          ],
+          "not_lens2 - its null": [
+            0.908,
+            0.871,
+            0.9450000000000001
+          ],
+          "concentration": [
+            1.8791847606286283,
+            1.8078663136737847,
+            1.9649334945586459
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.6152,
+            0.5463,
+            0.6840999999999999
+          ],
+          "jspace - jspace_matched": [
+            0.13699999999999998,
+            0.1366,
+            0.1374
+          ],
+          "jspace - its null": [
+            0.15059999999999998,
+            0.1487,
+            0.1525
+          ],
+          "not_jspace - its null": [
+            0.7587499999999999,
+            0.6768,
+            0.8407
+          ],
+          "concentration": [
+            0.7167188390169468,
+            0.6896005723727293,
+            0.7488194637062767
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 1.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 1.0,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 1.0,
+          "O full": null
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "calibration": {
+        "jspace_wo_own": {
+          "mean": 0.0402,
+          "concentration": [
+            0.21477717162293486,
+            0.21324859630869028,
+            0.21605838211751555
+          ]
+        },
+        "rand_omp": {
+          "mean": 0.0058,
+          "concentration": [
+            0.07153123460690997,
+            0.06660495414914956,
+            0.07664233209800972
+          ]
+        }
+      },
+      "verdict": "around",
+      "verdict_strict": "outside",
+      "share_median": {
+        "jspace": 0.21789999999999998,
+        "lens2": 0.03075,
+        "jspace_wo_own": 0.1881,
+        "rand_omp": 0.08149999999999999
+      }
+    },
+    "KR/bind_bridge/secondary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "frac": {
+        "means": {
+          "lens2": 0.0575,
+          "lens2 null": 0.00425,
+          "not_lens2": 0.9112,
+          "not_lens2 null": 0.0032,
+          "jspace": 0.15539999999999998,
+          "jspace null": 0.0048,
+          "not_jspace": 0.7706,
+          "not_jspace null": 0.01185,
+          "lens2_matched": 0.0048,
+          "jspace_matched": 0.0184,
+          "full": 0.99485,
+          "O full": null
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.8537,
+            0.8255,
+            0.8819
+          ],
+          "lens2 - lens2_matched": [
+            0.052700000000000004,
+            0.050800000000000005,
+            0.0546
+          ],
+          "lens2 - its null": [
+            0.053250000000000006,
+            0.0516,
+            0.054900000000000004
+          ],
+          "not_lens2 - its null": [
+            0.908,
+            0.871,
+            0.9450000000000001
+          ],
+          "concentration": [
+            1.8791847606286283,
+            1.8078663136737847,
+            1.9649334945586459
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.6152,
+            0.5463,
+            0.6840999999999999
+          ],
+          "jspace - jspace_matched": [
+            0.13699999999999998,
+            0.1366,
+            0.1374
+          ],
+          "jspace - its null": [
+            0.15059999999999998,
+            0.1487,
+            0.1525
+          ],
+          "not_jspace - its null": [
+            0.7587499999999999,
+            0.6768,
+            0.8407
+          ],
+          "concentration": [
+            0.7167188390169468,
+            0.6896005723727293,
+            0.7488194637062767
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 1.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 1.0,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 1.0,
+          "O full": null
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "calibration": {
+        "jspace_wo_own": {
+          "mean": 0.0402,
+          "concentration": [
+            0.21477717162293486,
+            0.21324859630869028,
+            0.21605838211751555
+          ]
+        },
+        "rand_omp": {
+          "mean": 0.0058,
+          "concentration": [
+            0.07153123460690997,
+            0.06660495414914956,
+            0.07664233209800972
+          ]
+        }
+      },
+      "verdict": "around",
+      "verdict_strict": "outside",
+      "share_median": {
+        "jspace": 0.21789999999999998,
+        "lens2": 0.03075,
+        "jspace_wo_own": 0.1881,
+        "rand_omp": 0.08149999999999999
+      }
+    },
+    "KR/context/primary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "frac": {
+        "means": {
+          "lens2": 0.054650000000000004,
+          "lens2 null": 0.0044,
+          "not_lens2": 0.90985,
+          "not_lens2 null": -0.0010500000000000002,
+          "jspace": 0.14945,
+          "jspace null": 0.00925,
+          "not_jspace": 0.7721,
+          "not_jspace null": 0.01225,
+          "lens2_matched": 0.0049499999999999995,
+          "jspace_matched": 0.0297,
+          "full": 0.99635,
+          "O full": -0.0012500000000000002
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.8552000000000001,
+            0.8285,
+            0.8819
+          ],
+          "lens2 - lens2_matched": [
+            0.04970000000000001,
+            0.0486,
+            0.0508
+          ],
+          "lens2 - its null": [
+            0.05025,
+            0.0455,
+            0.055
+          ],
+          "not_lens2 - its null": [
+            0.9109,
+            0.874,
+            0.9478
+          ],
+          "concentration": [
+            2.6048431493578454,
+            2.037190555344501,
+            3.783828970930514
+          ],
+          "verdict": "inside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.62265,
+            0.5584,
+            0.6869
+          ],
+          "jspace - jspace_matched": [
+            0.11975,
+            0.1181,
+            0.12140000000000001
+          ],
+          "jspace - its null": [
+            0.1402,
+            0.1335,
+            0.1469
+          ],
+          "not_jspace - its null": [
+            0.75985,
+            0.6859,
+            0.8338
+          ],
+          "concentration": [
+            0.8734033031943448,
+            0.7509697905077136,
+            1.0730308155080317
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 1.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 1.0,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 1.0,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "calibration": {
+        "jspace_wo_own": {
+          "mean": 0.0385,
+          "concentration": [
+            0.25432996770009414,
+            0.25148459379529886,
+            0.2588437424397125
+          ]
+        },
+        "rand_omp": {
+          "mean": 0.00715,
+          "concentration": [
+            0.08783508085219194,
+            0.0757501813658031,
+            0.09966302957378864
+          ]
+        }
+      },
+      "verdict": "inconclusive",
+      "verdict_strict": "outside",
+      "share_median": {
+        "jspace": 0.17170000000000002,
+        "lens2": 0.02105,
+        "jspace_wo_own": 0.1519,
+        "rand_omp": 0.0817
+      }
+    },
+    "KR/context/secondary": {
+      "layers": [
+        32
+      ],
+      "n": 2,
+      "frac": {
+        "means": {
+          "lens2": 0.054650000000000004,
+          "lens2 null": 0.0044,
+          "not_lens2": 0.90985,
+          "not_lens2 null": -0.0010500000000000002,
+          "jspace": 0.14945,
+          "jspace null": 0.00925,
+          "not_jspace": 0.7721,
+          "not_jspace null": 0.01225,
+          "lens2_matched": 0.0049499999999999995,
+          "jspace_matched": 0.0297,
+          "full": 0.99635,
+          "O full": -0.0012500000000000002
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            0.8552000000000001,
+            0.8285,
+            0.8819
+          ],
+          "lens2 - lens2_matched": [
+            0.04970000000000001,
+            0.0486,
+            0.0508
+          ],
+          "lens2 - its null": [
+            0.05025,
+            0.0455,
+            0.055
+          ],
+          "not_lens2 - its null": [
+            0.9109,
+            0.874,
+            0.9478
+          ],
+          "concentration": [
+            2.6048431493578454,
+            2.037190555344501,
+            3.783828970930514
+          ],
+          "verdict": "inside",
+          "verdict_exp09": "both or neither"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            0.62265,
+            0.5584,
+            0.6869
+          ],
+          "jspace - jspace_matched": [
+            0.11975,
+            0.1181,
+            0.12140000000000001
+          ],
+          "jspace - its null": [
+            0.1402,
+            0.1335,
+            0.1469
+          ],
+          "not_jspace - its null": [
+            0.75985,
+            0.6859,
+            0.8338
+          ],
+          "concentration": [
+            0.8734033031943448,
+            0.7509697905077136,
+            1.0730308155080317
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "both or neither"
+        }
+      },
+      "flip": {
+        "means": {
+          "lens2": 0.0,
+          "lens2 null": 0.0,
+          "not_lens2": 1.0,
+          "not_lens2 null": 0.0,
+          "jspace": 0.0,
+          "jspace null": 0.0,
+          "not_jspace": 1.0,
+          "not_jspace null": 0.0,
+          "lens2_matched": 0.0,
+          "jspace_matched": 0.0,
+          "full": 1.0,
+          "O full": 0.0
+        },
+        "lens2": {
+          "not_lens2 - lens2": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "lens2 - lens2_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lens2 - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_lens2 - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        },
+        "jspace": {
+          "not_jspace - jspace": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "jspace - jspace_matched": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "jspace - its null": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "not_jspace - its null": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "concentration": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "verdict": "outside",
+          "verdict_exp09": "outside"
+        }
+      },
+      "calibration": {
+        "jspace_wo_own": {
+          "mean": 0.0385,
+          "concentration": [
+            0.25432996770009414,
+            0.25148459379529886,
+            0.2588437424397125
+          ]
+        },
+        "rand_omp": {
+          "mean": 0.00715,
+          "concentration": [
+            0.08783508085219194,
+            0.0757501813658031,
+            0.09966302957378864
+          ]
+        }
+      },
+      "verdict": "inconclusive",
+      "verdict_strict": "outside",
+      "share_median": {
+        "jspace": 0.17170000000000002,
+        "lens2": 0.02105,
+        "jspace_wo_own": 0.1519,
+        "rand_omp": 0.0817
+      }
+    }
+  },
+  "pairs": {
+    "KR-KL/bind_bridge": {
+      "layers": [
+        32
+      ],
+      "concentration_diff": [
+        0.4022398706895177,
+        0.14222673403055508,
+        0.7098910270647087
+      ],
+      "same_patch_max_share_diff": 0.0
+    },
+    "KR-KL/context": {
+      "layers": [
+        32
+      ],
+      "concentration_diff": [
+        0.4870452515672429,
+        0.1444064915079465,
+        1.043845696293732
+      ],
+      "same_patch_max_share_diff": 0.0
+    }
+  },
+  "chance_share": 0.066,
+  "claims": {
+    "KL": {
+      "statement_verdicts": {
+        "bind_bridge": "around",
+        "context": "around"
+      },
+      "positive_control": {
+        "bind_bridge": "around",
+        "context": "inconclusive"
+      },
+      "jspace_half": "H-around but positive control fails (not interpretable)"
+    }
+  },
+  "seconds": 11
+}

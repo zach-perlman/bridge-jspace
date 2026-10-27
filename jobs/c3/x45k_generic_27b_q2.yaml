@@ -1,0 +1,24 @@
+id: x45k_generic_27b_q2
+title: "Batch 45k, generic fitting on the main test (27B L32, Dan ~22:05): remove the 100 J++ atoms signed OMP picks for another scene's change, refit to this scene's by least squares, against a random part of its share; compared with this scene's own 100 atoms (the kmatch run)"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.15
+depends_on: [x45_0_indep_9b]
+command: >-
+  BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= uv run python scripts/x0_parts.py run --name x0_jppother100_27b --single x0_necessity_27b_chat --parts jpp_other,jpp --other-k 100
+question: >-
+  On the main test's items, where the 27B's lookup extra loss grows to 0.60 at k = 100, do 100 J++ atoms fitted to another scene's change cost the lookup as much (at least 2/3) as the scene's own 100 atoms?
+why_it_matters: >-
+  If any 100 letter-token directions refit to the change take the lookup out, the k = 100 curve is generic fitting, not the lens reading a route; Dan (~22:05) moved this clause of 45k to the main test, where the curve lives.
+hypotheses:
+  H-batch45: 'Q45.9 (45k) in predictions/2026-10-26_dan.md (section Batch 45), committed by Dan before any 45k code or run (8025b808); overrides (Dan ~22:05) committed before any 45k job (1fad1c34)'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45k, override 2, Dan ~22:05): "Generic fitting" is computed on the main test: the 27B's main-test items (x0_necessity_27b_chat: d1_topics_v3, chat, L32, the 200 eligible scenes), jpp_other at k = 100 against its random part, compared with this scene's J++ at k = 100 from the existing kmatch run (results/x0_necessity/x0_kmatch_27b, dict jpp, k 100, omp signed, layer 32; the same 200 scenes); "costs" = the lookup's extra loss (X0's cell: Jdep - Rdep, switches lost without the part minus without its random part, over the whole change's switches); generic if jpp_other's >= 2/3 of J++'s (point estimates; 1e-9 tolerance at the bar). Override 3: if generic holds, it is Q45.9's verdict (unless the 27B routes precondition, override 1, fails). Code: x6_routes.main_test_generic / generic_rule, run by jppk-summary. The partner of each scene: x0_parts.partners, the first scene in a seeded order (seed 0) whose bridge pair shares no bridge with it. Cluster bootstrap over bridge entities, 10,000 resamples, seed 0 (CIs beside the point estimates).
+controls:
+- 'a random-subspace part at the borrowed part''s own share (per scene; the random basis of X0, seed 888 + layer)'
+- 'J++ at k = 25 fitted to the scene itself on the same scenes, as the reference that this path reproduces the main test (its k = 25 lookup extra loss was 0.12)'
+- 'both readers on the identical patch'
+n: 'the 200 main-test scenes of x0_necessity_27b_chat (chat)'
+seeds: [0, 888]
+notes: "Re-queued as _q2 (cancelled before it ran) behind 45n, 45b on Muse and 45m (Dan ~22:35). x0_parts run now takes the main run (its manifest has no alt: written before 24 Oct, its alt is the generator's cf) and --other-k (default 25: earlier runs unchanged). The verdict runs after the job (x0_parts' table: jpp_other at k = 100 and J++ at k = 25, both readers). Estimate: x0_jppother (27B and 9B in parallel, the same parts at k = 25 on 200 one-pick scenes) took 136 s; k = 100 adds two signed-OMP passes of 100 steps. Q45.9 by hand after the routes jobs (CPU): uv run python scripts/x6_routes.py jppk-summary --names x6_routes_x45k_27b,qwen35_9b_x6_routes_x45k[,muse30b_x6_routes_x45k] --generic-run x0_parts/x0_jppother100_27b --kmatch-run x0_necessity/x0_kmatch_27b."

@@ -1,0 +1,1949 @@
+{
+  "primary": {
+    "layer": 48,
+    "scale": 1.0,
+    "slot": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "lens": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "random": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "slot_minus_lens": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "slot_minus_random": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "shuffled": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "rr_slot": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "span_only": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "rest_only": [
+      0.0,
+      0.0,
+      0.2425,
+      12
+    ],
+    "held_out_entities": [
+      0.0,
+      0.0,
+      0.3903,
+      6
+    ],
+    "seen_entities": [
+      0.0,
+      0.0,
+      0.3903,
+      6
+    ],
+    "patch": [
+      0.0833,
+      0.0149,
+      0.3539,
+      12
+    ],
+    "sub4": [
+      0.0833,
+      0.0149,
+      0.3539,
+      12
+    ]
+  },
+  "checks": {
+    "a_lower_bound_ge_0.30": false,
+    "b_20_points_above_lens_and_random": false,
+    "controls_valid": false,
+    "illusion_flag": false,
+    "unedited_answer_org": 1
+  },
+  "verdict": "not shown: the slot direction does not steer the lookup by the rule (controls failed: not interpretable)",
+  "grid": {
+    "RL|slot|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "identity": 1,
+        "context": 1
+      }
+    },
+    "RL|slot|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "context": 1
+      }
+    },
+    "RL|slot|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|slot|46|2.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "position": 1
+      }
+    },
+    "RL|slot|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 11
+      }
+    },
+    "RL|slot|48|2.0": {
+      "position": [
+        0.1667,
+        0.047,
+        0.448,
+        12
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 8
+      }
+    },
+    "RL|slot|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 11
+      }
+    },
+    "RL|slot|50|2.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 10,
+        "position": 1
+      }
+    },
+    "RL|slot|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|slot|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|slot|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 11
+      }
+    },
+    "RL|slot|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 11
+      }
+    },
+    "RL|sub4|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|sub4|44|2.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 9,
+        "position": 1,
+        "context": 2
+      }
+    },
+    "RL|sub4|46|1.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "position": 1,
+        "context": 1
+      }
+    },
+    "RL|sub4|46|2.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "position": 1,
+        "context": 1
+      }
+    },
+    "RL|sub4|48|1.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "position": 1,
+        "none": 9,
+        "identity": 1
+      }
+    },
+    "RL|sub4|48|2.0": {
+      "position": [
+        0.1667,
+        0.047,
+        0.448,
+        12
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RL|sub4|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 10,
+        "identity": 1
+      }
+    },
+    "RL|sub4|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 11
+      }
+    },
+    "RL|sub4|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|sub4|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|sub4|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 9,
+        "recall": 2
+      }
+    },
+    "RL|sub4|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "recall": 1,
+        "none": 11
+      }
+    },
+    "RL|shuffled|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|shuffled|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "recall": 1
+      }
+    },
+    "RL|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|random|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|lens|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "other": 2
+      }
+    },
+    "RL|span|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|span|44|2.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "position": 1
+      }
+    },
+    "RL|span|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|span|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|span|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 10,
+        "identity": 1
+      }
+    },
+    "RL|span|48|2.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 9,
+        "position": 1,
+        "identity": 1
+      }
+    },
+    "RL|span|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 10,
+        "identity": 1
+      }
+    },
+    "RL|span|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "none": 11
+      }
+    },
+    "RL|span|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|span|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|span|window|1.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "context": 1,
+        "position": 1,
+        "none": 10
+      }
+    },
+    "RL|span|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "recall": 1,
+        "none": 11
+      }
+    },
+    "RL|rest|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RL|rest|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|50|2.0": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "position": 1
+      }
+    },
+    "RL|rest|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|rest|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RL|patch|44|None": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "identity": 1,
+        "position": 1
+      }
+    },
+    "RL|patch|46|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RL|patch|48|None": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "position": 1,
+        "identity": 1
+      }
+    },
+    "RL|patch|50|None": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "position": 1,
+        "identity": 1
+      }
+    },
+    "RL|patch|52|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RL|patch|window|None": {
+      "position": [
+        0.0833,
+        0.0149,
+        0.3539,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "identity": 1,
+        "position": 1
+      }
+    },
+    "RR|slot|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|slot|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RR|slot|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "identity": 2
+      }
+    },
+    "RR|shuffled|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|shuffled|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "context": 1,
+        "identity": 1
+      }
+    },
+    "RR|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RR|random|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|random|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|lens|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|lens|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 10,
+        "identity": 2
+      }
+    },
+    "RR|lens|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|lens|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RR|lens|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|lens|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RR|lens|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|lens|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RR|lens|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|lens|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 11,
+        "identity": 1
+      }
+    },
+    "RR|lens|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 12
+      }
+    },
+    "RR|lens|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 7,
+        "other": 5
+      }
+    },
+    "RR|patch|44|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 8,
+        "identity": 4
+      }
+    },
+    "RR|patch|46|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 8,
+        "identity": 4
+      }
+    },
+    "RR|patch|48|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 8,
+        "identity": 4
+      }
+    },
+    "RR|patch|50|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 9,
+        "identity": 3
+      }
+    },
+    "RR|patch|52|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 9,
+        "identity": 3
+      }
+    },
+    "RR|patch|window|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 5
+      }
+    }
+  },
+  "pointer_v4": {
+    "ci": {
+      "kind": "entity_cluster",
+      "cluster": "asked entity",
+      "strata": "domain",
+      "n_boot": 2000,
+      "seed": 0,
+      "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+    },
+    "item_level": {
+      "slot": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "lens": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "random": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "shuffled": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "rr_slot": [
+        0.0,
+        0.0,
+        0.2425,
+        12
+      ],
+      "slot_minus_lens": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "slot_minus_random": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "n_k_t": {
+      "slot": [
+        12,
+        12,
+        11
+      ],
+      "lens": [
+        12,
+        12,
+        11
+      ],
+      "random": [
+        12,
+        12,
+        11
+      ],
+      "shuffled": [
+        12,
+        12,
+        11
+      ],
+      "rr_slot": [
+        12,
+        11,
+        11
+      ]
+    },
+    "per_domain": {
+      "countries": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          4
+        ]
+      },
+      "animals": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          4
+        ]
+      },
+      "body": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "lens": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "random": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          3
+        ]
+      }
+    },
+    "per_cut": {
+      "entity": {
+        "slot": [
+          0.0,
+          0.0,
+          0.6576,
+          2
+        ],
+        "n_k_t": [
+          2,
+          2,
+          2
+        ]
+      },
+      "template": {
+        "slot": [
+          0.0,
+          0.0,
+          0.3903,
+          6
+        ],
+        "n_k_t": [
+          6,
+          6,
+          6
+        ]
+      },
+      "both": {
+        "slot": [
+          0.0,
+          0.0,
+          0.4899,
+          4
+        ],
+        "n_k_t": [
+          4,
+          4,
+          4
+        ]
+      }
+    }
+  },
+  "seconds": 78,
+  "edited_reads": 1752,
+  "n_cases": 24
+}

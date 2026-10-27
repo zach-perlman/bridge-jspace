@@ -1,0 +1,437 @@
+{
+ "run": "muse30b_x0_replicate",
+ "manifest": {
+  "exp": "x0_replicate",
+  "run": "muse30b_x0_replicate",
+  "written_utc": "2026-10-26T02:26:10Z",
+  "note": "Fixed in advance (Dan, 25 Oct morning item 4; spec jobs/c3/x0_replicate.yaml; prediction: batch 31).",
+  "model": {
+   "target": "muse-glimmer-30b",
+   "repo": "meta-models/Muse-Glimmer-30B",
+   "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "bb7ecdf4b3062b01647ad7cd7b0786a90e4cb21f",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+    "Muse-Glimmer-30B_jpp_lens.pt",
+    "68ecd838ad0b13653af7fac985995606f37911dc"
+   ],
+   "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "set": "d1_topics_v5",
+  "inputs": {
+   "data/tasks_v2/d1_topics_v5/items.jsonl": "8bdf3b9c7dc916819631d3ab7554a1bcc750d3d24f9afaebc296c43d5bccb97e"
+  },
+  "layer": 26,
+  "decisive": false,
+  "alt": "single",
+  "items_rule": "chat; org and alt locker sentences both before the asked pick; eligible as in X0; the first N in scene order",
+  "n": {
+   "items": 200,
+   "min": 150
+  },
+  "gate": 0.8,
+  "parts": [
+   [
+    "jpp",
+    25,
+    "signed"
+   ],
+   [
+    "alf",
+    0,
+    "proj"
+   ],
+   [
+    "pca_eq",
+    0,
+    "eq"
+   ]
+  ],
+  "keep": [
+   [
+    "w",
+    0,
+    "lsq"
+   ],
+   [
+    "jwo",
+    25,
+    "signed"
+   ]
+  ],
+  "alf_from": "muse30b_x0_probe_v4",
+  "rule": "holds iff J++: recall excess >= 0.20 with lower CI > 0 and lookup excess <= 0.10; and Alf: lookup excess >= 0.20 with lower CI > 0 and recall excess <= 0.10 or at most half the lookup's (point estimates where no CI is named)",
+  "seeds": {
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0,
+   "pca_held_out": 0
+  },
+  "pca": {
+   "set": "d1_topics_v4",
+   "prompts": 200,
+   "tokens": 20865,
+   "seed": 0,
+   "n": 2000,
+   "variance_share": 0.992808198190467
+  },
+  "items": 200
+ },
+ "rows": [
+  {
+   "part": "jpp",
+   "reader": "PP",
+   "median_share": 0.09794,
+   "n": 200,
+   "entities": 37,
+   "S_whole": [
+    0.935,
+    0.892,
+    0.9616
+   ],
+   "S_no_part": [
+    0.95,
+    0.9104,
+    0.9726
+   ],
+   "S_no_rand": [
+    0.945,
+    0.9042,
+    0.969
+   ],
+   "switched_whole": 187,
+   "valid": true,
+   "Jdep": [
+    -0.016042780748662944,
+    -0.048309178743961345,
+    0.01724137931034475
+   ],
+   "Rdep": [
+    -0.010695187165775222,
+    -0.04145617443868753,
+    0.01653006712022286
+   ],
+   "excess": [
+    -0.005347593582887722,
+    -0.030927835051546504,
+    0.023150839793281607
+   ],
+   "label": "around"
+  },
+  {
+   "part": "jpp",
+   "reader": "PM",
+   "median_share": 0.09794,
+   "n": 200,
+   "entities": 37,
+   "S_whole": [
+    0.595,
+    0.5258,
+    0.6606
+   ],
+   "S_no_part": [
+    0.42,
+    0.3537,
+    0.4893
+   ],
+   "S_no_rand": [
+    0.605,
+    0.5359,
+    0.6702
+   ],
+   "switched_whole": 119,
+   "valid": true,
+   "Jdep": [
+    0.2941176470588235,
+    0.1499999999999999,
+    0.42622950819672134
+   ],
+   "Rdep": [
+    -0.01680672268907557,
+    -0.04761904761904767,
+    0.017241379310344862
+   ],
+   "excess": [
+    0.31092436974789905,
+    0.16000000000000003,
+    0.4513944892473119
+   ],
+   "label": "mixed"
+  },
+  {
+   "part": "alf",
+   "reader": "PP",
+   "median_share": 0.13495000000000001,
+   "n": 200,
+   "entities": 37,
+   "S_whole": [
+    0.935,
+    0.892,
+    0.9616
+   ],
+   "S_no_part": [
+    0.56,
+    0.4907,
+    0.627
+   ],
+   "S_no_rand": [
+    0.945,
+    0.9042,
+    0.969
+   ],
+   "switched_whole": 187,
+   "valid": true,
+   "Jdep": [
+    0.4010695187165775,
+    0.3351947633372214,
+    0.4742857142857142
+   ],
+   "Rdep": [
+    -0.010695187165775222,
+    -0.041451374131467655,
+    0.024246119733924494
+   ],
+   "excess": [
+    0.4117647058823527,
+    0.34355518373923283,
+    0.48750000000000004
+   ],
+   "label": "through"
+  },
+  {
+   "part": "alf",
+   "reader": "PM",
+   "median_share": 0.13495000000000001,
+   "n": 200,
+   "entities": 37,
+   "S_whole": [
+    0.595,
+    0.5258,
+    0.6606
+   ],
+   "S_no_part": [
+    0.55,
+    0.4808,
+    0.6174
+   ],
+   "S_no_rand": [
+    0.595,
+    0.5258,
+    0.6606
+   ],
+   "switched_whole": 119,
+   "valid": true,
+   "Jdep": [
+    0.07563025210084018,
+    -0.010005102040816328,
+    0.18478489221775657
+   ],
+   "Rdep": [
+    0.0,
+    -0.045874195929558326,
+    0.050000000000000044
+   ],
+   "excess": [
+    0.07563025210084018,
+    0.0,
+    0.17272727272727273
+   ],
+   "label": "around"
+  },
+  {
+   "part": "pca_eq",
+   "reader": "PP",
+   "median_share": 0.100135,
+   "n": 200,
+   "entities": 37,
+   "S_whole": [
+    0.935,
+    0.892,
+    0.9616
+   ],
+   "S_no_part": [
+    0.875,
+    0.822,
+    0.9139
+   ],
+   "S_no_rand": [
+    0.94,
+    0.8981,
+    0.9653
+   ],
+   "switched_whole": 187,
+   "valid": true,
+   "Jdep": [
+    0.06417112299465244,
+    0.0,
+    0.13496932515337423
+   ],
+   "Rdep": [
+    -0.0053475935828875,
+    -0.029416115558649605,
+    0.017341040462427793
+   ],
+   "excess": [
+    0.06951871657753994,
+    0.015789473684210575,
+    0.1271676300578033
+   ],
+   "label": "around"
+  },
+  {
+   "part": "pca_eq",
+   "reader": "PM",
+   "median_share": 0.100135,
+   "n": 200,
+   "entities": 37,
+   "S_whole": [
+    0.595,
+    0.5258,
+    0.6606
+   ],
+   "S_no_part": [
+    0.585,
+    0.5157,
+    0.6511
+   ],
+   "S_no_rand": [
+    0.615,
+    0.546,
+    0.6797
+   ],
+   "switched_whole": 119,
+   "valid": true,
+   "Jdep": [
+    0.01680672268907568,
+    -0.06060606060606055,
+    0.09448818897637801
+   ],
+   "Rdep": [
+    -0.03361344537815136,
+    -0.07000438596491212,
+    0.0
+   ],
+   "excess": [
+    0.050420168067227045,
+    -0.03571428571428559,
+    0.13076923076923064
+   ],
+   "label": "around"
+  }
+ ],
+ "rule": {
+  "jpp_clause": true,
+  "pointer_clause": true,
+  "holds": true
+ },
+ "kept": [
+  {
+   "part": "jwo",
+   "reader": "PP",
+   "n": 200,
+   "S": {
+    "whole": 0.935,
+    "keep_part": 0.0,
+    "keep_rand": 0.0
+   },
+   "kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "difference": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "part": "jwo",
+   "reader": "PM",
+   "n": 200,
+   "S": {
+    "whole": 0.595,
+    "keep_part": 0.015,
+    "keep_rand": 0.01
+   },
+   "kept": [
+    0.025210084033613446,
+    0.0,
+    0.05645541692026775
+   ],
+   "rand_kept": [
+    0.016806722689075633,
+    0.0,
+    0.044642857142857144
+   ],
+   "difference": [
+    0.008403361344537813,
+    -0.020003355704697984,
+    0.03896357548701295
+   ]
+  },
+  {
+   "part": "w",
+   "reader": "PP",
+   "n": 200,
+   "S": {
+    "whole": 0.935,
+    "keep_part": 0.0,
+    "keep_rand": 0.0
+   },
+   "kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_kept": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "difference": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "part": "w",
+   "reader": "PM",
+   "n": 200,
+   "S": {
+    "whole": 0.595,
+    "keep_part": 0.015,
+    "keep_rand": 0.005
+   },
+   "kept": [
+    0.025210084033613446,
+    0.0,
+    0.06722689075630253
+   ],
+   "rand_kept": [
+    0.008403361344537816,
+    0.0,
+    0.02912621359223301
+   ],
+   "difference": [
+    0.01680672268907563,
+    0.0,
+    0.04132231404958678
+   ]
+  }
+ ]
+}

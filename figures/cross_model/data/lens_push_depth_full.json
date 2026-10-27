@@ -1,0 +1,3842 @@
+[
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 28.999999999999996,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   21.014706973984147,
+   38.539074940007936
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 28,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 32,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 36,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 40,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 44,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 14.000000000000002,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   8.526265754464905,
+   22.137360383807238
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 84.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   75.57955544110557,
+   89.90479765052628
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 78.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   68.9294652849997,
+   84.9988254963442
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 90.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   82.56326956323346,
+   94.4771458386864
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   96.30051925239981,
+   99.99999999999999
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 28,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   96.30051925239981,
+   99.99999999999999
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 32,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 65.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   55.25426042919796,
+   73.63589534652198
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 36,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 4.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   1.5663050551848017,
+   9.837217232607372
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 40,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 7.000000000000001,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.4318824364064096,
+   13.749671006529757
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 44,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 28,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 32,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 36,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 40,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 44,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 29.0,
+  "what": "lookups switched at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   21.0,
+   38.5
+  ],
+  "n": 100,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 84.0,
+  "what": "recalls switched at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   76.0,
+   90.0
+  ],
+  "n": 100,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched by a random push at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 12,
+   "scale": 4.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 16,
+   "scale": 4.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 20,
+   "scale": 4.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 24,
+   "scale": 4.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 28,
+   "scale": 4.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 32,
+   "scale": 4.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 36,
+   "scale": 4.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 40,
+   "scale": 4.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 44,
+   "scale": 4.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 12,
+   "scale": 4.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 12.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   6.999337365267776,
+   19.812268002908368
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 16,
+   "scale": 4.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 11.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   6.254131955225126,
+   18.631463027903024
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 20,
+   "scale": 4.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 47.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   37.51065198210374,
+   56.71131686275227
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 24,
+   "scale": 4.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 70.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   60.414961567188044,
+   78.10524613377187
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 28,
+   "scale": 4.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 100.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   96.30051925239981,
+   99.99999999999999
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 32,
+   "scale": 4.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 61.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   51.20283616749817,
+   69.98327806802979
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 36,
+   "scale": 4.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.17673865655472645,
+   5.4487524760934605
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 40,
+   "scale": 4.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 3.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   1.0254338223414816,
+   8.452078080402698
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 44,
+   "scale": 4.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 12,
+   "scale": 4.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 16,
+   "scale": 4.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 20,
+   "scale": 4.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 24,
+   "scale": 4.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 28,
+   "scale": 4.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 32,
+   "scale": 4.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 36,
+   "scale": 4.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 40,
+   "scale": 4.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_27b/analysis-v2.1-20261022T202604Z/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 44,
+   "scale": 4.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.7
+  ],
+  "n": 100,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 70.0,
+  "what": "recalls switched at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": [
+   60.0,
+   78.0
+  ],
+  "n": 100,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched by a random push at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "amended rule",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 19.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   12.514653992704261,
+   27.779024070807857
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 28,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 32,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 36,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 40,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 44,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 14.000000000000002,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   8.526265754464905,
+   22.137360383807238
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 79.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   70.01985069803767,
+   85.83445046835422
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 65.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   55.25426042919796,
+   73.63589534652198
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 84.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   75.57955544110557,
+   89.90479765052628
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 98.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   92.99868370580063,
+   99.44981477650317
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 28,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 96.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   90.16278276739263,
+   98.4336949448152
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 32,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 51.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   41.34784047743415,
+   60.578169907613855
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 36,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.17673865655472645,
+   5.4487524760934605
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 40,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 1.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.17673865655472645,
+   5.4487524760934605
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 44,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 28,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 32,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 36,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 40,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/d4_where_fresh_seed2_27b/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 44,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.7
+  ],
+  "n": 100,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 84.0,
+  "what": "recalls switched at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   76.0,
+   90.0
+  ],
+  "n": 100,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched by a random push at the test point",
+  "finding": "f7",
+  "model": "27b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 6,
+   "scale": 4.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 8,
+   "scale": 4.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 10,
+   "scale": 4.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 12,
+   "scale": 4.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 14,
+   "scale": 4.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 16,
+   "scale": 4.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 18,
+   "scale": 4.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 20,
+   "scale": 4.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 22,
+   "scale": 4.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.5501852234968185,
+   7.001316294199365
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 6,
+   "scale": 4.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 3.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   1.0254338223414816,
+   8.452078080402698
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 8,
+   "scale": 4.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 6.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   2.778574526665662,
+   12.476968531222507
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 10,
+   "scale": 4.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 40.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   30.93997461136028,
+   49.79992153815976
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 12,
+   "scale": 4.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 86.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   77.86263961619277,
+   91.4737342455351
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 14,
+   "scale": 4.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 96.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   90.16278276739263,
+   98.4336949448152
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 16,
+   "scale": 4.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 93.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   86.25032899347025,
+   96.5681175635936
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 18,
+   "scale": 4.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 31.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   22.779563206132377,
+   40.62623947795569
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 20,
+   "scale": 4.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 17.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   10.893476059773155,
+   25.548181233642975
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "sentence",
+   "layer": 22,
+   "scale": 4.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 6,
+   "scale": 4.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 8,
+   "scale": 4.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 10,
+   "scale": 4.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 12,
+   "scale": 4.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 14,
+   "scale": 4.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 16,
+   "scale": 4.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 18,
+   "scale": 4.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 20,
+   "scale": 4.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/qwen35_9b_d4_where_fresh_seed2/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "sentence",
+   "layer": 22,
+   "scale": 4.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched at the test point",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   3.7
+  ],
+  "n": 100,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 40.0,
+  "what": "recalls switched at the test point",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": [
+   31.0,
+   50.0
+  ],
+  "n": 100,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched by a random push at the test point",
+  "finding": "f7",
+  "model": "9b",
+  "setting": "main rule, draw 2",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 9,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 15,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 18,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 21,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 6.382978723404255,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   2.9579332197396004,
+   13.23313479223077
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 27,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 30,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 33,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 1.0638297872340425,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.1880347339052478,
+   5.782431816110288
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 9,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 1.0638297872340425,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.1880347339052478,
+   5.782431816110288
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 1.0638297872340425,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.1880347339052478,
+   5.782431816110288
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 15,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 4.25531914893617,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   1.6670278401570267,
+   10.435799587031408
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 18,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 19.148936170212767,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   12.470043241202648,
+   28.25046827945932
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 21,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 25.53191489361702,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   17.799224189785487,
+   35.18600908522227
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 71.27659574468085,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   61.43663617863795,
+   79.44576966918137
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 27,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 74.46808510638297,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   64.81399091477772,
+   82.20077581021451
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 30,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 89.36170212765957,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   81.51427646530539,
+   94.11817435316038
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 33,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 9,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 15,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 18,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 21,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 24,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 27,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 30,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   3.469446951953614e-16,
+   3.926346257624569
+  ],
+  "n": 94,
+  "source": "results/early_push_where/qwen35_122b_d4_where/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 33,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched at the test point",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.9
+  ],
+  "n": 94,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 89.0,
+  "what": "recalls switched at the test point",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   82.0,
+   94.0
+  ],
+  "n": 94,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched by a random push at the test point",
+  "finding": "f7",
+  "model": "122b",
+  "setting": "main rule",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 6,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 8,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 10,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 14,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 18,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "lens",
+   "where": "word",
+   "layer": 22,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 4.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   1.5663050551848017,
+   9.837217232607372
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 6,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 11.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   6.254131955225126,
+   18.631463027903024
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 8,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 53.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   43.28868313724773,
+   62.48934801789626
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 10,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 89.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   81.36853697209699,
+   93.74586804477487
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 51.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   41.34784047743415,
+   60.578169907613855
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 14,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 27.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   19.269460917664823,
+   36.43230022623127
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 5.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   2.154336145631356,
+   11.175196527208817
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 18,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "recalls switched, lens push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BR",
+   "dir": "lens",
+   "where": "word",
+   "layer": 22,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 6,
+   "scale": 8.0,
+   "depth": 18.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 8,
+   "scale": 8.0,
+   "depth": 25.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 10,
+   "scale": 8.0,
+   "depth": 31.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 12,
+   "scale": 8.0,
+   "depth": 37.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 14,
+   "scale": 8.0,
+   "depth": 43.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 16,
+   "scale": 8.0,
+   "depth": 50.0
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 18,
+   "scale": 8.0,
+   "depth": 56.25
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 20,
+   "scale": 8.0,
+   "depth": 62.5
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "randoms switched, random push",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.699480747600191
+  ],
+  "n": 100,
+  "source": "results/early_push_where/olmo3_7b_instruct_jpp_d4_where_raw/summary.json",
+  "extra": {
+   "family": "BL",
+   "dir": "random",
+   "where": "word",
+   "layer": 22,
+   "scale": 8.0,
+   "depth": 68.75
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched at the test point",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   0.0,
+   3.7
+  ],
+  "n": 100,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 51.0,
+  "what": "recalls switched at the test point",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": [
+   41.0,
+   61.0
+  ],
+  "n": 100,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched by a random push at the test point",
+  "finding": "f7",
+  "model": "olmo",
+  "setting": "main rule",
+  "part": "",
+  "ci": null,
+  "n": null,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random"
+  }
+ }
+]

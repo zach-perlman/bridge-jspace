@@ -1,0 +1,376 @@
+{
+  "labels": {
+    "main/countries_RL_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "hop1": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "hop2": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.84399,
+      "read_agrees_with_greedy": 0
+    },
+    "main/countries_DL_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.9170050000000001,
+      "read_agrees_with_greedy": 0
+    },
+    "main/countries_RR_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "hop1": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "hop2": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.24024,
+      "read_agrees_with_greedy": 0
+    },
+    "main/animals_RL_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "hop1": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "hop2": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.8805000000000001,
+      "read_agrees_with_greedy": 0
+    },
+    "main/animals_DL_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.9848600000000001,
+      "read_agrees_with_greedy": 0
+    },
+    "main/animals_RR_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "hop1": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        },
+        "hop2": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.012643429997735661,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.747865,
+      "read_agrees_with_greedy": 0
+    },
+    "main/body_RL_e5f0": {
+      "n": 180,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "hop1": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "hop2": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.42988000000000004,
+      "read_agrees_with_greedy": 0
+    },
+    "main/body_DL_e5f0": {
+      "n": 180,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.748975,
+      "read_agrees_with_greedy": 0
+    },
+    "main/body_RR_e5f0": {
+      "n": 180,
+      "cells": {
+        "clean": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_dissoc": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_same": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "src_redigit": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "hop1": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        },
+        "hop2": {
+          "rate": 0.0,
+          "lo": 0.0,
+          "hi": 0.02089624981505818,
+          "k": 0
+        }
+      },
+      "eligible": 0,
+      "reliable": false,
+      "clean_median_p_answer": 0.44704,
+      "read_agrees_with_greedy": 0
+    }
+  },
+  "seconds_generate": 409,
+  "seconds_read": 286,
+  "seconds": 695
+}

@@ -1,0 +1,33 @@
+id: olmo_hybrid_7b_d3v6_competence
+title: "G3 gate: can Olmo-Hybrid-7B Instruct answer pointer_v6's scenes (extra sentence moved, long statements)?"
+thread: D3
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.25
+depends_on:
+- olmo_hybrid_7b_port_smoke
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo BJ_JUDGE=read uv run python scripts/pointer_v6.py manifest
+  --name olmo_hybrid_7b_d3v6_competence
+  --why "pointer_v6 on Olmo-Hybrid-7B Instruct (chat format, read judge), every layout, alt and control
+  prompt and each step alone"
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo BJ_JUDGE=read uv run python scripts/pointer_v6.py competence
+  --name olmo_hybrid_7b_d3v6_competence
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_v6.py errors --name olmo_hybrid_7b_d3v6_competence
+question: >-
+  Does Olmo-Hybrid-7B Instruct answer pointer_v6's prompts (read judge), and are long statements answered right less
+  often than the same scenes with short ones?
+why_it_matters: >-
+  Gate for olmo_hybrid_7b_d3v6_swap, and Dan's "longer sentences give more errors" on another model. The cells are
+  equal-length and the end alignment holds under the OLMo tokenizer (shared by Olmo-Hybrid) for every scene but 8
+  countries memory -> prompt scenes (data/pointer_v6/check_main_olmo-3-7b-instruct.json), which pointer_swap drops.
+hypotheses:
+  H-gate: 'every topic, family and layout >= 80% right (read judge). Prior 0.65 (copied from olmo3_7b_instruct_d3v6_competence)'
+  H-long-errors (Dan): 'memory -> prompt, pooled: share right, long minus still, upper bound < 0. Prior 0.45 (copied from olmo3_7b_instruct_d3v6_competence)'
+decision_rule: >-
+  As d3v6_competence_27b (pointer_v1's competence rule; pointer_v6.py errors for H-long-errors).
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'all of pointer_v6 main (3,600 items)'
+seeds: [0]
+notes: 'Mechanical copy of olmo3_7b_instruct_d3v6_competence (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. Only the target and run name change. ~0.25 GPU-h.'

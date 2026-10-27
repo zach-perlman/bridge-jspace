@@ -2,12 +2,14 @@
 part B's prompt suite (scripts/suite_v1.py), scored by reading the answer instead of generating it.
 
   map    copy C's (or O's) block output into the clean run at a position group, one layer at a time (every 4th layer
-         on Qwen3.6-27B, every 2nd on Qwen3.5-9B, below the last three blocks): 'question' (the question's tokens after
-         C's changed ones, through the template and 'Answer:'), 'last' (the last token)
-  parts  at each family's question-group window, below the layer where the last token alone already carries the
-         answer: the copy split into its J-space part (25-atom signed OMP over the frozen J++'s letter-token vectors)
-         and the rest, and into its projection on J++'s vectors of the bridge and X and the rest; each part also along
-         a matched-norm random direction (its null)
+         on Qwen3.6-27B, every 2nd on Qwen3.5-9B, below the last three blocks; on a target whose frozen lens has maps
+         only at some layers, those below the last three blocks, so the parts window is made of lens layers: OLMo-3-7B
+         0, 3, ..., 27): 'question' (the question's tokens after C's changed ones, through the template and 'Answer:'),
+         'last' (the last token)
+  parts  at each family's question-group window (lens layers only), below the layer where the last token alone already
+         carries the answer: the copy split into its J-space part (25-atom signed OMP over the frozen lens's
+         letter-token vectors: J++ on Qwen, the J-lens on OLMo) and the rest, and into its projection on the lens's
+         vectors of the bridge and X and the rest; each part also along a matched-norm random direction (its null)
 
 Scoring (Zach, 2026-10-19: a continuous measure next to answer flips): one forward of the edited prompt, with a digit
 answer's space token appended (the greedy reply's first token in every unedited competence prompt), read at the
@@ -45,7 +47,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from bridge_jspace import pins
+from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
@@ -55,17 +57,29 @@ from scripts.exp04_brew_parts import K_ATOMS, AddRows, lens2_part, null_rows, si
 
 EXP = "suite_split"
 RESULTS = pins.RESULTS_DIR / EXP
-MAP_LAYERS = tuple(range(0, pins.N_LAYERS - 3, max(1, pins.N_LAYERS // 16)))
+MAP_LAYERS = (
+    tuple(la for la in pins.LENS_LAYERS if la < pins.N_LAYERS - 3)
+    if pins.LENS_LAYERS is not None
+    else tuple(range(0, pins.N_LAYERS - 3, max(1, pins.N_LAYERS // 16)))
+)
 # exp12 (Qwen3.6-27B): the answer is read at the last word from about layer 44 (exp09's cap); other targets: the map's
 # own answer_formed only.
 # Qwen3.5-122B-A10B: no exp12 either; capped at the 27B's relative depth (44/64 -> 33/48), so its windows stay in the
 # same part of the network (the 9B's runs, uncapped, reached 88% depth).
-ANSWER_ONSET = {"qwen3.6-27b": 44, "qwen3.5-122b-a10b": 33}.get(pins.TARGET, pins.N_LAYERS - 1)
+# Qwen3-32B (22 Oct, for D1 on a second model): 44, as the 27B; same 64 layers, and D3 put its patch window (48-50) and
+# the alt digit's arrival at the last tokens (52) at the 27B's layers (46-50, 52). Dan's 32B J-lens target is
+# "qwen3-32b-jlens" since the merge into main (27 Oct); main's "qwen3-32b" (Zach's J++) keeps the default.
+ANSWER_ONSET = {"qwen3.6-27b": 44, "qwen3.6-27b-jlens": 44, "qwen3.5-122b-a10b": 33, "qwen3-32b-jlens": 44,
+                "qwen3-32b-jpp": 44}.get(
+    pins.TARGET, pins.N_LAYERS - 1
+)  # the 27B read with its plain J-lens (the lens-type control) keeps the 27B's onset
 GROUPS = ("question", "last")
 N_SCENES = 150
 N_VALIDATE = 20
 SAMPLE_SEED, NULL_SEED, BOOT_SEED, N_BOOT = 0, 0, 0, 2000
-BATCH = int(os.environ.get("BJ_BATCH", "128"))  # edited runs per batched call (128 on the B200, 2026-10-20; 64 on the H200); smaller for a model that fills the GPU
+# Edited runs per batched call (128 on the B200, 2026-10-20; 64 on the H200 and H100); smaller for a model that fills
+# the GPU. BJ_SUITE_BATCH only since the merge into main (Dan, 27 Oct): BJ_BATCH no longer reaches it.
+BATCH = int(os.environ.get("BJ_SUITE_BATCH", 128))
 CHANCE_DRAWS = 20
 PARTS = ("lens2", "not_lens2", "jspace", "not_jspace")
 MATCHED = ("lens2_matched", "jspace_matched")
@@ -94,9 +108,20 @@ def matched_rows(part: torch.Tensor, delta: torch.Tensor, generator: torch.Gener
     return norm * (cos * d_hat + (1 - cos**2).sqrt() * r)
 
 
+# Our competence runs named with a prefix main's key no longer has (merge into main, 27 Oct: muse-glimmer-30b's prefix is
+# main's muse30_; ours were muse30b_): by name, so the derived name below does not land on main's prefix.
+COMPETENCE_BY_NAME = {("muse-glimmer-30b", "chat"): "muse30b_competence_chat_v1"}
+
+
 def competence_file(fam: str, wording: str) -> Path:
+    """The competence run deciding eligibility, in the run's prompt format: COMPETENCE's (chat-format) runs, else, for
+    a target without an entry or in raw format, the target's own run <prefix>competence_<format>_v1 (D5's specs), or
+    its run in COMPETENCE_BY_NAME."""
     which = "tiebreak" if fam in S.TIEBREAK else "main"
-    return S.RESULTS / COMPETENCE[pins.TARGET, wording][which] / "items.jsonl"
+    key = (pins.TARGET, wording)
+    run = COMPETENCE[key][which] if chat.FORMAT == "chat" and key in COMPETENCE else None
+    run = run or COMPETENCE_BY_NAME.get((pins.TARGET, chat.FORMAT))
+    return S.RESULTS / (run or f"{pins.RUN_PREFIX}competence_{chat.FORMAT}_v1") / "items.jsonl"
 
 
 def prepare(item: dict, tok) -> dict:
@@ -218,7 +243,7 @@ def manifest_common(name: str, why: str, kind: str, families: list[str], wording
         "eligibility": {f: {"competence": str(p.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(p)} for f, p in comp.items()},
         "sample": f"per scene group, up to {N_SCENES} scenes eligible (every prompt right) in all of the run's families "
         f"of the group, seed {SAMPLE_SEED}; BL/BR/RL/RR and BLR/BRL are scene groups, other families their own",
-        "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled",
+        "format": f"suite_v1's: {chat.format_note()}",
         "groups": {"question": "the question's tokens after C's changed ones, through the end of the prompt (the "
                    "instruction, the template's tokens and 'Answer:' included)", "last": "the last prompt token"},
         "read": "one forward of the edited prompt, a digit answer's space token appended; role of the top token (b: X's "
@@ -234,6 +259,7 @@ def stage_manifest_map(name: str, why: str, families: list[str], n_scenes: int, 
     m = manifest_common(name, why, "map", families, wording)
     m["question"] = "Where, by layer and position group, does each family carry its bridge (lens-free)?"
     m["layers"] = list(MAP_LAYERS)
+    m["lens_layers"] = pins.LENS_LAYERS  # the grid's restriction (null: none), so the parts window has lens maps
     m["n_scenes"] = n_scenes
     m["validation"] = f"8 greedy tokens for every edit of the first {N_VALIDATE} cases per family; agreement of roles"
     m["decision"] = {
@@ -251,6 +277,7 @@ def stage_manifest_map(name: str, why: str, families: list[str], n_scenes: int, 
 
 
 def check_inputs(m: dict) -> None:
+    chat.check_format(m)  # the run renders its prompts in the manifest's format (BJ_FORMAT)
     for f, pin in m["items"].items():
         assert sha256_of(pins.REPO_ROOT / pin["file"]) == pin["sha256"], f"{f} items changed since the manifest"
     for f, pin in m["eligibility"].items():
@@ -382,6 +409,21 @@ def answer_formed(outcomes: list[dict]) -> dict[str, int]:
 CALIBRATION = ("jspace_wo_own", "rand_omp")  # parts with --calibrate (each with its random null)
 
 
+def parts_window(
+    map_summary: dict, families: list[str], cap_override: int | None = None
+) -> tuple[dict[str, int], dict[str, list[int]]]:
+    """Per family, the cap (answer_formed, at most ANSWER_ONSET, or `cap_override`) and the parts window: the map's
+    question-group window below the cap, at layers the frozen lens has a map at."""
+    cap = {f: min(map_summary["answer_formed"].get(f, ANSWER_ONSET), ANSWER_ONSET) for f in families}
+    if cap_override is not None:  # a sensitivity run: the window's upper layer set by hand (the manifest records it)
+        cap = {f: cap_override for f in cap}
+    window = {
+        f: list(pins.on_lens(la for la in map_summary["windows"].get(f, {}).get("question", []) if la < cap[f]))
+        for f in families
+    }
+    return cap, window
+
+
 def stage_manifest_parts(
     name: str, map_run: str, why: str, calibrate: bool = False, cap_override: int | None = None
 ) -> None:
@@ -392,10 +434,7 @@ def stage_manifest_parts(
     map_summary = RESULTS / map_run / "summary.json"
     blob = json.loads(map_summary.read_text())
     families = map_m["families"]
-    cap = {f: min(blob["answer_formed"].get(f, ANSWER_ONSET), ANSWER_ONSET) for f in families}
-    if cap_override is not None:  # a sensitivity run: the window's upper layer set by hand (the manifest records it)
-        cap = {f: cap_override for f in cap}
-    window = {f: [la for la in blob["windows"].get(f, {}).get("question", []) if la < cap[f]] for f in families}
+    cap, window = parts_window(blob, families, cap_override)
     m = manifest_common(name, why, "parts", families, map_m["wording"])
     m["question"] = "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?"
     m["map"] = {
@@ -406,7 +445,8 @@ def stage_manifest_parts(
         "cap_override": cap_override,
     }
     m["sample"] = "the map run's cases (cases.jsonl), not resampled"
-    m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256}
+    m["lens"] = {pins.FROZEN_LENS: list(pins.LENS_SOURCES[pins.FROZEN_LENS]), "sha256": pins.FROZEN_LENS_SHA256,
+                 "layers": pins.LENS_LAYERS}  # fmt: skip
     m["parts"] = {
         "full": "delta = h_C - h_clean at the question group",
         "lens2": "delta's projection on span{v_I, v_X}, the lens's unit vectors of the bridge and X; not_lens2 the rest",
@@ -467,6 +507,7 @@ def stage_run_parts(name: str) -> None:
     window = m["map"]["parts_window"]
     layers = tuple(sorted({la for v in window.values() for la in v}))
     assert layers, "no family has a window"
+    pins.check_lens_layers(layers)
     model = load_model()
     tok = model.tokenizer
     t0 = time.time()

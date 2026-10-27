@@ -1,0 +1,32 @@
+id: olmo3_7b_instruct_d3v4x_competence
+title: "G3 gate: can OLMo-3-7B-Instruct answer pointer_v4x's scenes (filler moved, one statement more / fewer)?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4x.py manifest
+  --name olmo3_7b_instruct_d3v4x_competence
+  --why "G3 on pointer_v4x: does OLMo-3-7B-Instruct (chat format, read judge) answer the filler-moved and one-more /
+  one-fewer scenes, every alt and control prompt and each step alone"
+  && BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4x.py competence
+  --name olmo3_7b_instruct_d3v4x_competence
+question: >-
+  Does OLMo-3-7B-Instruct put the right answer on top in the read the patching uses, for pointer_v4x's main scenes
+  (85 entities, 3 x 3 wordings, 5 statements plus one or two filler sentences), every alt and control prompt and the
+  steps alone?
+why_it_matters: >-
+  Gate for olmo3_7b_instruct_d3v4x_swap: the patching reads only scenes OLMo answers. pointer_v4x's cells are equal in
+  length under OLMo's tokenizer too (2,700 / 2,700 items; 23 countries memory -> prompt scenes are not token-aligned
+  and are dropped by pointer_swap), so the "same place in the text" predictions hold on OLMo.
+hypotheses:
+  H-gate: 'memory -> prompt and named -> prompt are right on >= 80% of items per topic and layout (read judge). Prior 0.7'
+decision_rule: >-
+  pointer_v1's competence rule (every prompt of an item right = eligible); the swap uses eligible scenes only and
+  reports the count. Below 35 eligible scenes per topic and layout a cell is reported, not judged.
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'all of pointer_v4x main: 150 scenes per topic x layout x family (2,700 items)'
+seeds: [0]
+notes: '~0.2 GPU-h on one A100 (7B). Same judge and format as olmo3_7b_instruct_d3v4_competence.'

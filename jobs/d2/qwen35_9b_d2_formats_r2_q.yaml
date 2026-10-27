@@ -1,0 +1,23 @@
+id: qwen35_9b_d2_formats_r2_q
+title: "Late read and name vs digit in prose, tables and JSON (Qwen3.5-9B)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/tasks_v2.py competence --set d2_formats_v1 --name qwen35_9b_d2_formats_competence --why "D2 formats" && BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py manifest --name qwen35_9b_d2_formats --dataset tasks_v2 --tasks-set d2_formats_v1 --competence qwen35_9b_d2_formats_competence --families MP MM PP PM --formats prose table json --n 20 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all kind --sweep path --why "findings 3 and 4 in tables and JSON on a third, fourth and fifth model" && BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py run --name qwen35_9b_d2_formats
+figures_command: uv run python scripts/d2_formats.py --name qwen35_9b_d2_formats
+question: >-
+  Do the late read and the name / digit split hold in tables and JSON tool outputs?
+why_it_matters: >-
+  Findings 3 and 4 in less toy formats on all five models (27B and Qwen3-32B: both hold in all three formats).
+hypotheses:
+  H-all-formats: 'both hold in all three formats. Prior 0.55'
+decision_rule: >-
+  As d2_formats_27b, scored by scripts/d2_formats.py: the committed rules per format.
+controls:
+- 'the off-path row hidden the same way; the off-path row without its name / value; the recall words'
+n: '20 scenes per (word, topic, format) cell where eligible'
+seeds: [0]
+notes: "Requeued as _q (cancelled before it started) to put the Muse Glimmer jobs ahead (Dan, 22 Oct night); the J-lens control moved to P2. Requeued under a new id (cancelled before it started, to keep the queue in priority order). Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

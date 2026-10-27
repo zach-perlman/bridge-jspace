@@ -1,0 +1,48 @@
+{
+  "set": "d1_topics_v2",
+  "n_scenes_per_group_level": 360,
+  "words": [
+    "PP",
+    "PM"
+  ],
+  "domains": [
+    "animals",
+    "elements",
+    "greek"
+  ],
+  "formats": [
+    "prose"
+  ],
+  "levels": {
+    "0": {
+      "entities": 3,
+      "distractors": false,
+      "filler": 0,
+      "paraphrase": false,
+      "hard_cues": false
+    }
+  },
+  "seed": 23,
+  "generator": "scripts/tasks_v2.py make (v8)",
+  "git_commit": "9b4cdc5c461b6c007c3bbeae823d1b70514e8a95",
+  "counterfactuals": true,
+  "n_items": 720,
+  "coverage": {
+    "P2/L0": {
+      "scenes": 360,
+      "dead_combinations": [],
+      "by_domain_format": {
+        "greek/prose": 120,
+        "animals/prose": 120,
+        "elements/prose": 120
+      }
+    }
+  },
+  "three_step_domains": [
+    "animals",
+    "vehicles",
+    "shapes",
+    "elements",
+    "planets"
+  ]
+}

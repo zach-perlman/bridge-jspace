@@ -1,0 +1,63 @@
+id: d2_ko_core_v1
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.1
+depends_on:
+- d2_smoke_27b
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_ko_core_v1
+  --why "D2 core contrast: block question/final positions from the lookup or binding statement (vs off-path, random,
+  trailing spans) at all layers and in 8-layer windows split by attention / DeltaNet; does RL break while RR survives?"
+  --families BL BR RL RR --n 60 --layers all win8k kind --sweep path+random --absent
+  && uv run python scripts/attn_knockout.py run --name d2_ko_core_v1
+  && uv run python scripts/attn_knockout.py summarise --name d2_ko_core_v1
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_ko_core_v1 --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_ko_core_v1
+question: When the question tokens and/or the final template positions cannot read the lookup statement ("The cow's
+  locker is 5.") directly, does RL (recalled bridge -> in-prompt lookup) break while RR (same scenes, recall from
+  memory) survives; which destinations must see it, and in which 8-layer window, through attention or DeltaNet layers?
+why_it_matters: 'C1 (prompt lookups go around the J-space). The lens reads RL''s bridge at 32-40 but cannot write it,
+  and copying C''s question-group residual flips RL 98-100% only at 44-52 (EXPERIMENTS rows 27, 52). If the answer
+  site reads the statement directly and late (H_answer_site), the lookup needs no J-space-written bridge at the
+  question tokens: a concrete "around" route (a pointer/lookback-style read). If instead the question tokens read the
+  statement and relay it (H_relay), the around route runs through the question tokens, where the copy split measured
+  it. RR/BR give the matched contrast: same scenes and statement, no lookup.'
+hypotheses:
+  H_answer_site: 'BL and RL: (lookup, final, all) accuracy <= 40% (NEEDED) and (lookup, question, all) >= 90% (not
+    NEEDED); RR and BR: every lookup cell (question / final / both / after, mode value) >= 95%; the lookup->final
+    window effect sits at or after layer 40: no window below 32 NEEDED, win40-47 or win48-55 NEEDED or PARTIAL. Prior
+    0.5'
+  H_relay: 'BL and RL: (lookup, question, all) NEEDED and (lookup, final, all) not NEEDED. Prior 0.2'
+  H_both_routes: 'neither question nor final alone is NEEDED but both is (redundant routes). Prior 0.3'
+  H_binding: 'BL and BR: (binding, question, all) NEEDED; BR: (binding, final, all) >= 90%. Pointer variant
+    (H_ptr, prior 0.35): BL also needs (binding, final, all) (NEEDED or PARTIAL) while BR does not'
+  H_kind: 'no prior direction: the attention-only and DeltaNet-only halves of the needed windows are reported; the
+    answer-site read is predicted to need the 2 attention layers of its window (>= 2/3 of the window''s accuracy drop)
+    with prior 0.5'
+  positive_control: 'every path source at (after, all, mode absent): accuracy <= 30% (lockers: one of 3 in the prompt;
+    BR binding: legs guessable ~45%, so <= 60% there)'
+decision_rule: 'Fixed before the run (scripts/attn_knockout.py docstring, manifest "decision"). Items: unedited read
+  right. A cell (family, source, destination, layer set, DeltaNet mode) is NEEDED if accuracy drops >= 20 points and
+  the paired bootstrap 95% lower bound of acc(matched control) - acc(cell) is >= 10 points (lookup_off for lookup,
+  binding_off for binding; same destination, layers, mode); NOT NEEDED if the Wilson 95% lower bound of accuracy is
+  >= 90%; otherwise PARTIAL. A family whose path sources fail the positive control is not interpreted. C1a ("RL breaks,
+  RR survives") holds if RL (lookup, both, all) is NEEDED and RR (lookup, both, all) NOT NEEDED. C1b (answer site) /
+  relay as H_answer_site / H_relay above, on BL and RL. Control damage (random, trailing, *_off cells with a >= 20 point
+  drop) is reported next to every NEEDED cell.'
+controls:
+- 'lookup_off / binding_off: another statement of the same kind and token length (seeded per scene): rules out "any
+  statement-sized hole at these positions breaks the answer"'
+- 'random: a seeded contiguous context span of the lookup''s length, overlapping no path statement'
+- 'trailing: the up-to-3 context tokens right after the lookup statement (the DeltaNet conv''s reach): what blocking
+  them alone does'
+- 'RR and BR: the same scenes and statements, answer recalled: rules out damage to the final positions in general'
+- 'positive control: path sources invisible to every later position at every layer, DeltaNet mode absent'
+- 'unedited row in every batch (baseline of that batch); check.json no-op / positive control gate before the run'
+n: '60 scenes per family (BL, BR, RL, RR on the same scenes; the first 60 of suite_split map_A8_v1''s seed-0 sample)'
+seeds:
+- 0
+notes: 'Rows: 74,160 knocked reads (per item: BL 426, BR/RL/RR 270; 36 all-layer cells incl. mode absent, plus 24
+  window sets (8 windows x both / attention-only / DeltaNet-only) + 2 kind sets x 3 destinations x the sweep sources).
+  At an assumed 20 rows/s on the A100 PCIe: 62 min + load/check ~5 min. d2_smoke_27b''s timing.json recalibrates it.
+  n=60: Wilson half-width ~10 points at 80%.'

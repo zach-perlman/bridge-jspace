@@ -1,0 +1,23 @@
+id: t_pointer
+title: "T (batch 42): the pointer directions in the varied scenes and the natural passages, 27B L32 (GPU0); 9B L12 then Muse L26 (GPU1)"
+gpus: 2
+mem_gb: 140
+est_gpu_hours: 2.0
+command: >-
+  uv run python -c "import torch" && { ( { export CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP=; st=0; uv run python scripts/x0b_generalize.py run --name x0b_v2_ptr_27b --set x0b_v2 --no-curve --pointer; s=$?; [ $s -ne 0 ] && st=1; uv run python scripts/x5_natural.py run --name x5_natural_ptr_27b --pointer; s=$?; [ $s -ne 0 ] && st=1; exit $st; } ) & p0=$!; ( { export CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP=; st=0; BJ_TARGET=qwen3.5-9b uv run python scripts/x0b_generalize.py run --name qwen35_9b_x0b_v2_ptr --set x0b_v2 --no-curve --pointer; s=$?; [ $s -ne 0 ] && st=1; BJ_TARGET=qwen3.5-9b uv run python scripts/x5_natural.py run --name qwen35_9b_x5_natural_ptr --pointer; s=$?; [ $s -ne 0 ] && st=1; BJ_TARGET=muse-glimmer-30b uv run python scripts/x0b_generalize.py run --name muse30b_x0b_v2_ptr --set x0b_v2 --no-curve --pointer; s=$?; [ $s -ne 0 ] && st=1; BJ_TARGET=muse-glimmer-30b uv run python scripts/x5_natural.py run --name muse30b_x5_natural_ptr --pointer; s=$?; [ $s -ne 0 ] && st=1; exit $st; } ) & p1=$!; wait $p0; s0=$?; wait $p1; s1=$?; echo "exit GPU0=$s0 GPU1=$s1"; test $s0 -eq 0 -a $s1 -eq 0; }
+thread: C3
+depends_on: [x6_routes_r2]
+question: >-
+  Do the pointer directions, fit on the simple scenes at the layer fixed in advance and not refit, cost the lookup beyond their random part in the varied scenes (every format and level) and in the natural passages?
+why_it_matters: >-
+  The pointer route is shown on simple scenes; T asks whether the same directions carry the lookup's route where the scenes vary in format and level, and in natural text (Dan).
+hypotheses:
+  H-batch42: 'Dan''s batch 42 (Q42.1-Q42.3), predictions/2026-10-26_dan.md, committed before any result is opened'
+decision_rule: >-
+  Fixed in advance (batch 42, ~11:55): the arms without the pointer directions and without a random part of their share (per scene); the lookup's and the recall's extra loss (switches lost minus the random part's), pooled and per format (prose / json / table) in the varied scenes; in the natural passages on the passages where the fact comes first and the lookup switches (n reported). Q42.1 pooled lookup >= 0.20; Q42.2 json and tables >= 0.15; Q42.3 natural passages >= 0.15 with lower CI > 0; each counted over the 9B, the 27B, the 122B and Muse. Gates as in each script (X0b per cell; natural passages 0.80, not lowered). Cluster bootstrap over bridge entities, 10,000 resamples, seed 0.
+controls:
+- 'a random part at the pointer directions'' share, per scene'
+- 'both readers on the identical patch'
+n: 'the eligible scenes of each set (X0b: at most 40 per cell; the natural passages that pass the gate)'
+seeds: [0]
+notes: "Results stay closed until Dan's batch-42 answers are committed. The 9B's natural passages missed the 0.80 gate before (lookup 0.78): not tested if it misses again (no rerun at 0.75 unless Dan asks)."

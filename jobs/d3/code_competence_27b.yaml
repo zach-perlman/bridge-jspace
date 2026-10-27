@@ -1,0 +1,73 @@
+id: code_competence_27b
+title: 'D3 code: can the 27B answer the Python-code lookups (key named, by list position, through variables, from a cue)?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.7
+depends_on: []
+command: >-
+  uv run python scripts/code_pointer_v1.py manifest --set main dev --name code_competence_27b
+  --why "D3 code gate: can the 27B run code_pointer_v1's Python lookups (key named, by list position, through a 2- or
+  3-variable chain, recalled from a cue) and the recall contrast, every alt prompt and each step alone, in chat format?"
+  && uv run python scripts/code_pointer_v1.py competence --name code_competence_27b
+examples_command: uv run python scripts/code_pointer_v1.py examples --name code_competence_27b
+figures_command: uv run python scripts/code_pointer_v1.py figures --name code_competence_27b
+question: >-
+  Can Qwen3.6-27B answer code_pointer_v1's org prompts, the three alt prompts (dissoc, same, redigit) and each step
+  alone, per domain (animals, months), family (named → prompt, list position → prompt, 2-variable chain → prompt,
+  3-variable chain → prompt, memory → prompt, memory → memory) and size (5 dict entries: all 400 scenes per domain;
+  pilot: 3 and 8 entries, 60 scenes per cell, 8 entries for animals only)?
+why_it_matters: >-
+  Gate for the code version of the D3 dissociation patch (pointer_swap on data/code_pointer_v1/). The prose scenes
+  ("The cow's locker is 5.") read as toy; code is where a pointer is literal (a list index, a variable naming a
+  variable, a dict entry), so a "position" verdict there is the cleanest evidence for the pointer account of the
+  "around" route (C2: the first night found the last tokens carrying the statement slot at 44-50 more often than the
+  entity), and an "identity" or "value" verdict in code would bound it. The patching verdicts are interpretable only
+  on items the model answers unedited, every alt prompt and step included; the list-position and variable-chain
+  families and the dict-lookup-from-a-cue wording are untested on the 27B.
+hypotheses:
+  H-code-competent: >-
+    named → prompt, list position → prompt and 2-variable chain → prompt: org prompt >= 95% in both domains at 5
+    entries (suite_v1 CODE, a two-dict lookup: 100%; pointer_v1 named → prompt: 100%); 3-variable chain → prompt >=
+    90%; >= 85% of their items eligible (every prompt right)
+  H-recall-lookup-animals: >-
+    memory → prompt (animals) org-prompt Wilson lower bound >= 0.85 (pointer_v1's animals memory → prompt: 98%);
+    memory → memory >= 95% in both domains (pointer_v1: 100%)
+  H-months-memory-lookup-fails: >-
+    memory → prompt (months) org prompt < 85% (pointer_v1's months memory → prompt: 46% although each step alone was
+    100%): then months enter the patching runs without that family
+  H-more-entries-harder: >-
+    at 8 entries list position → prompt and 3-variable chain → prompt lose >= 5 points against 5 entries (animals); at
+    3 entries every family within 2 points of 5
+  prior: >-
+    Agent prior: H-code-competent 0.8 (most likely failure: 3-variable chain below 90%, or list position on months);
+    H-recall-lookup-animals 0.75 (risk: "What number does lockers store for the animal known for mooing?" answered
+    with the key, as the 0.8B smoke did); H-months-memory-lookup-fails 0.7; H-more-entries-harder 0.5.
+decision_rule: >-
+  A (domain, family) cell enters the code patching runs iff its org-prompt Wilson 95% lower bound >= 0.85 at 5
+  entries (suite_v1's rule; with n = 400 that needs >= 88% right); an item is eligible iff every prompt of it is right
+  (org, dissoc, same, redigit, hop1, hop2). pointer_swap samples scenes eligible in all of a run's families, so a
+  failing family is dropped from that domain's run rather than shrinking the others. The run is valid only if the
+  answer read agrees with the 8-token greedy answer on >= 99% of prompts per cell. Pilot cells (3 and 8 entries) are
+  reported and never gate a run.
+controls:
+- 'each step alone (hop1: the key alone, i.e. names[i], the chain''s last variable, or cue -> key; hop2: the lookup
+  with the key named, or the recalled fact): separates a composition failure from a missing step'
+- 'named → prompt on the same scene (same dict line, same predictions): the reference every other family is read
+  against'
+- 'memory → memory on the same code (same dict, a recall question): competence with the code present but unused'
+- 'answer read vs 8-token greedy: validates the one-forward read the patching runs use'
+n: >-
+  Gate cut = one (domain, family) at 5 entries: n = 400 scenes (12 cuts, 4,800 items); pilot cuts n = 60 (18 cuts,
+  1,080 items, reported only); 33,320 prompts. The later patching runs sample from up to 400 checked scenes per
+  domain, so a per-slot cut (5 slots) keeps n >= 35 for the same-control bound if >= 175 scenes per domain are
+  eligible in all of a run's families.
+seeds: [721, 722]
+notes: >-
+  Greedy, no sampling seeds; item seeds are code_pointer_v1's (5 entries 721, pilot 722). Prompts: 4 per named →
+  prompt item, 6 for the other families (org, 3 alt prompts, 2 steps) = 34 per scene; 2 x 400 x 34 = 27,200 at 5
+  entries, (2 x 60 + 60) x 34 = 6,120 pilot. Time from a measured rate on this box: d3_competence_27b (pointer_v1,
+  17,920 prompts of similar length; 62-123 tokens here) took 1,000 s of generate + read = 17.9 prompts/s, so ~1,860 s
+  + model load ~5 min = ~0.6 h; 0.7 h with margin. The 0.8B smoke (qwen35_08b_smoke_code_comp2, 680 prompts, n = 4
+  per file) ran manifest, competence, examples and figures end to end. Needs scripts/code_pointer_v1.py and
+  data/code_pointer_v1/ (new, uncommitted) on the box.

@@ -1,0 +1,56 @@
+id: d2_alias_late_read
+title: 'D2 batch 2: with the statements in another language (or naming the chemical symbol), do the last tokens still read the answer''s statement late, through attention?'
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on:
+- alias_competence_27b
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_alias_late_read
+  --why "D2 batch 2 (c): the late attention read when the statements name the entity in French/Spanish/German
+  (animals) or by its chemical symbol (elements), against the same scenes in English"
+  --dataset alias_pointer_v1 --families RL DL RR --n 60
+  --layers all kind bands --sweep path+random --sweep-dests final both --absent
+  && uv run python scripts/attn_knockout.py run --name d2_alias_late_read
+  && uv run python scripts/attn_knockout.py summarise --name d2_alias_late_read
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_alias_late_read --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_alias_late_read
+question: When the statement giving the answer names the entity in another language ("Die Kuh hat den Spind 5.") or by
+  its chemical symbol ("The O card is in locker 5."), while the question stays English, do the last tokens before the
+  answer still read that statement themselves, in layers 48-63, through attention, as they do on the same scenes in
+  English?
+why_it_matters: 'If the late read is a match on the recalled word''s token, it should move or weaken when the statement
+  uses another surface form (the token "cow" is not there); if it is a match by meaning, the same late attention read
+  should appear. This decides whether the "around" route is lexical (D3''s pointer question, from the D2 side).'
+hypotheses:
+  H_late_read_english: 'memory → prompt and named → prompt with English statements: late attention read (all-layer <=
+    40% NEEDED, layers 48-63 NEEDED or PARTIAL, layers 0-31 and 32-47 >= 90%, every attention layer NEEDED, every
+    DeltaNet layer >= 90%). Prior 0.65'
+  H_late_read_other_surface: 'the same in the other surface form (French/Spanish/German statements for animals; the
+    chemical symbol for elements). Prior 0.45'
+  H_surface_earlier: 'in the other surface form the statement is also needed in layers 32-47 (middle band NEEDED): a
+    translation or alias step happens before the fetch. Prior 0.25'
+  H_null: 'memory → memory in both forms: every cell >= 95%. Prior 0.85'
+  positive_control: 'every lookup family, both forms, with the statement hidden from everything after it and removed
+    from the DeltaNet recurrence: <= 30%'
+decision_rule: 'As d2_pointer_late_read per family and form. Items: alias_pointer_v1 main; a (domain, form, family) cell
+  enters iff its clean Wilson lower bound in alias_competence_27b is >= 0.85 (English) or >= 0.80 (other forms, the
+  builder''s gate); a domain enters only if both forms do (scenes paired across forms and families); every competence
+  prompt right; first 60 scenes per (domain, form) by scene id; unedited read right. Comparisons between forms are on
+  the same scenes. A family whose positive control is not NEEDED is not interpreted.'
+controls:
+- 'a statement of the same kind off the answer''s path (same token length where one exists; length mismatches are
+  flagged in cases.jsonl, likely in the mixed-language animal scenes)'
+- 'a random span of the same length inside the statements; the up to 3 tokens after the statement'
+- 'memory → memory in both forms (the answer is recalled)'
+- 'the English form of the same scenes: the baseline each other-form cell is compared with'
+- 'positive control and pre-run check as d2_pointer_late_read'
+n: 'up to 60 scenes per (domain, form, family): animals in English and in French/Spanish/German, elements in English and
+  with the chemical symbol; each other form exists in one domain only, so its cells have n <= 60 (>= 35 needed for NOT
+  NEEDED; the builder''s gate admits forms with >= 25 eligible scenes, below 35 cells are read by accuracy)'
+seeds:
+- 0
+notes: 'Rows: <= 64,800 knocked reads (720 items x 90 conditions). ~79-token prompts at the first night''s 33-37 rows/s
+  -> ~32 min + load and check ~4 min. 0.8B smoke (qwen35_08b_smoke_d2_alias_pointer_v1): every stage ran, check.json
+  gates exact (0.0).'

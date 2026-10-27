@@ -1,0 +1,45 @@
+{
+ "run": "qwen35_122b_x8_write_g75",
+ "after_the_data": true,
+ "cases_from": "qwen35_122b_x6_routes_g75",
+ "changed_by_item": {
+  "random|1": {
+   "target": 3,
+   "third": 3,
+   "other": 4
+  },
+  "random|4": {
+   "target": 9,
+   "third": 6,
+   "other": 4
+  },
+  "write|1": {
+   "target": 15,
+   "third": 2,
+   "other": 2
+  },
+  "write|2": {
+   "target": 109,
+   "third": 13,
+   "other": 14
+  },
+  "write|4": {
+   "target": 211,
+   "other": 26,
+   "third": 31
+  }
+ },
+ "same_legs": [
+  94,
+  600
+ ],
+ "s_real": {
+  "0-1": 1.5527963722738067,
+  "0-2": 1.371804654711942,
+  "1-0": 1.5527963722738067,
+  "1-2": 2.758342922899885,
+  "2-0": 1.371804654711942,
+  "2-1": 2.758342922899885
+ },
+ "median_real": 1.4382
+}

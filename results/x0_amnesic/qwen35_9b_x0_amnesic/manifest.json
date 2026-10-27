@@ -1,0 +1,64 @@
+{
+  "exp": "x0_amnesic",
+  "run": "qwen35_9b_x0_amnesic",
+  "written_utc": "2026-10-24T17:26:51Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct ~18:45, item 6); not part of X0's rule.",
+  "single": "qwen35_9b_x0_single_r2",
+  "single_code": {
+    "sha": "03ca856181a32ccf71f64dd5b0d2a46db71f3ce0",
+    "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 12,
+  "items": 200,
+  "probe": {
+    "probe_run": "qwen35_9b_x0_probe_v4",
+    "n": 758,
+    "classes": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "penalty": 0.1,
+    "rank": 4,
+    "cv_accuracy": 0.9683377308707124
+  },
+  "arms": [
+    "whole",
+    "no_probe",
+    "no_rand",
+    "probe_only",
+    "rand_only"
+  ],
+  "k_saved": [
+    25,
+    100
+  ],
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "251db6dc80897c711bd3e436e25c73155d979f95",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "exp": "x45b_binding",
+  "run": "x45b_binding_27b",
+  "why": "batch 45, test 45b (jobs/c3/batch45.yaml): the 27B at L32; (a) the bridge-word change at L, (b) at L/2 and L/4, (c) S patched into O at every locker-sentence token at L, (d) at L/2; S read on S",
+  "written_utc": "2026-10-26T17:49:54Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "4b3062d5bc066dc2c238db2fe69676158ef43ff5",
+    "dirty": true
+  },
+  "spec": "jobs/c3/batch45.yaml (45b)",
+  "inputs": {
+    "jobs/c3/batch45.yaml": "95850645995d6b0888000b8e5cbe95a9e04d3fddc59edace604de376f8e77420",
+    "results/x0_necessity/x0_necessity_27b_chat/manifest.json": "01abe5f1c03addc9a49c1f8fff402a21065bc649202b79a14c9a8ea5746e2e5a",
+    "results/x0_necessity/x0_necessity_27b_chat/cases.jsonl": "60801c7e4c29b9facf6d311cb47df60ef0fccd9cce60338025371da98debf39b",
+    "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl": "43010926899d279596071d6c92f1856e1fd71bdc26a94a824324f6ad382942d5",
+    "results/x0_necessity/x0_necessity_27b_chat/competence.jsonl": "5dd2cd025124f8c17df292bea31dd2dd460d6f07d22b8fc84e4c53327d86ca27"
+  },
+  "main_run": "x0_necessity_27b_chat",
+  "layer": 32,
+  "arm_layers": {
+    "a": 32,
+    "b_half": 16,
+    "b_quarter": 8,
+    "c": 32,
+    "d": 16
+  },
+  "arms": {
+    "none": "O unedited",
+    "a": "the bridge-word change at L",
+    "b_half": "the bridge-word change at L/2",
+    "b_quarter": "the bridge-word change at L/4",
+    "c": "S patched into O at every locker-sentence token, at L",
+    "d": "S patched into O at every locker-sentence token, at L/2",
+    "S": "S read on S (unedited)"
+  },
+  "items_rule": "the main run's items at L (chat) whose org bridge's locker sentence comes after the asked pick (x0_strata); locker sentences aligned token for token, else by sentence; else dropped",
+  "locker_sentences": "every 'The locker of <thing> is <n>.' sentence of the context",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer",
+  "rule": "the reading-order explanation holds if (c) or (d) switches at least half of the lookups that S itself switches, while (a) stays at or below 0.25.",
+  "decisive_reader": "PP",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "note": "batch 45 (Dan 26 Oct ~18:30); results closed until docs/predictions_batch45.md holds Dan's Q45.5"
+}

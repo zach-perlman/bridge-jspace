@@ -1,0 +1,1228 @@
+{
+ "exp": "pointer_fit",
+ "run": "d3b_slot_direction_smoke_27b",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "slot_answer",
+   "title": "slot answer",
+   "definition": "the slot direction gives the answer at the target slot",
+   "n_total": 2
+  },
+  {
+   "key": "kept",
+   "title": "kept",
+   "definition": "the slot direction leaves answer org",
+   "n_total": 5
+  },
+  {
+   "key": "other",
+   "title": "other",
+   "definition": "the slot direction gives another answer",
+   "n_total": 1
+  }
+ ],
+ "examples": [
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0006",
+   "prompt": "<|im_start|>user\nThe duck's locker is 7. The dog's locker is 5. The bee's locker is 1. The cat's locker is 9. The turkey's locker is 8.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 64,
+     "end": 86,
+     "role": "target slot"
+    },
+    {
+     "start": 190,
+     "end": 293,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "position",
+    "p_none": 0.0031,
+    "p_identity": 0.0002,
+    "p_position": 0.9615,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 1, target 3)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0006",
+   "prompt": "<|im_start|>user\nThe duck's locker is 7. The dog's locker is 5. The bee's locker is 1. The cat's locker is 9. The turkey's locker is 8.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 64,
+     "end": 86,
+     "role": "target slot"
+    },
+    {
+     "start": 190,
+     "end": 293,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "5"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9957,
+    "p_identity": 0.0,
+    "p_position": 0.0004,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 1, target 3)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0006",
+   "prompt": "<|im_start|>user\nThe duck's locker is 7. The dog's locker is 5. The bee's locker is 1. The cat's locker is 9. The turkey's locker is 8.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 64,
+     "end": 86,
+     "role": "target slot"
+    },
+    {
+     "start": 190,
+     "end": 293,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9967,
+    "p_identity": 0.0,
+    "p_position": 0.0001,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 1, target 3)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0006",
+   "prompt": "<|im_start|>user\nThe duck's locker is 7. The dog's locker is 5. The bee's locker is 1. The cat's locker is 9. The turkey's locker is 8.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 64,
+     "end": 86,
+     "role": "target slot"
+    },
+    {
+     "start": 190,
+     "end": 293,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9937,
+    "p_identity": 0.0,
+    "p_position": 0.0026,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 1, target 3)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0006",
+   "prompt": "<|im_start|>user\nThe duck's locker is 7. The dog's locker is 5. The bee's locker is 1. The cat's locker is 9. The turkey's locker is 8.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "asked statement"
+    },
+    {
+     "start": 64,
+     "end": 86,
+     "role": "target slot"
+    },
+    {
+     "start": 190,
+     "end": 293,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 48",
+   "answers": {
+    "clean": "7",
+    "edited": "5",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "5"
+    }
+   },
+   "numbers": {
+    "role": "identity",
+    "p_none": 0.0516,
+    "p_identity": 0.9143,
+    "p_position": 0.0004,
+    "p_value": 0.0008
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 1, target 3)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0051",
+   "prompt": "<|im_start|>user\nThe bee's locker is 5. The dog's locker is 3. The duck's locker is 7. The sheep's locker is 8. The turkey's locker is 9.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 63,
+     "end": 86,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 39,
+     "role": "target slot"
+    },
+    {
+     "start": 192,
+     "end": 295,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "position",
+    "p_none": 0.0006,
+    "p_identity": 0.0,
+    "p_position": 0.9963,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0051",
+   "prompt": "<|im_start|>user\nThe bee's locker is 5. The dog's locker is 3. The duck's locker is 7. The sheep's locker is 8. The turkey's locker is 9.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 63,
+     "end": 86,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 39,
+     "role": "target slot"
+    },
+    {
+     "start": 192,
+     "end": 295,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.996,
+    "p_identity": 0.0001,
+    "p_position": 0.0001,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0051",
+   "prompt": "<|im_start|>user\nThe bee's locker is 5. The dog's locker is 3. The duck's locker is 7. The sheep's locker is 8. The turkey's locker is 9.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 63,
+     "end": 86,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 39,
+     "role": "target slot"
+    },
+    {
+     "start": 192,
+     "end": 295,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9971,
+    "p_identity": 0.0,
+    "p_position": 0.0,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0051",
+   "prompt": "<|im_start|>user\nThe bee's locker is 5. The dog's locker is 3. The duck's locker is 7. The sheep's locker is 8. The turkey's locker is 9.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 63,
+     "end": 86,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 39,
+     "role": "target slot"
+    },
+    {
+     "start": 192,
+     "end": 295,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9898,
+    "p_identity": 0.0019,
+    "p_position": 0.0002,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0051",
+   "prompt": "<|im_start|>user\nThe bee's locker is 5. The dog's locker is 3. The duck's locker is 7. The sheep's locker is 8. The turkey's locker is 9.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 63,
+     "end": 86,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 39,
+     "role": "target slot"
+    },
+    {
+     "start": 192,
+     "end": 295,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 48",
+   "answers": {
+    "clean": "7",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "position",
+    "p_none": 0.0018,
+    "p_identity": 0.0001,
+    "p_position": 0.9936,
+    "p_value": 0.0002
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0048",
+   "prompt": "<|im_start|>user\nThe lithium card is in locker 7. The hydrogen card is in locker 8. The carbon card is in locker 1. The helium card is in locker 4. The nitrogen card is in locker 9.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 84,
+     "end": 115,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 49,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9615,
+    "p_identity": 0.0001,
+    "p_position": 0.0329,
+    "p_value": 0.0
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 1)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0048",
+   "prompt": "<|im_start|>user\nThe lithium card is in locker 7. The hydrogen card is in locker 8. The carbon card is in locker 1. The helium card is in locker 4. The nitrogen card is in locker 9.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 84,
+     "end": 115,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 49,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "4"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9965,
+    "p_identity": 0.0002,
+    "p_position": 0.0001,
+    "p_value": 0.0
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 1)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0048",
+   "prompt": "<|im_start|>user\nThe lithium card is in locker 7. The hydrogen card is in locker 8. The carbon card is in locker 1. The helium card is in locker 4. The nitrogen card is in locker 9.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 84,
+     "end": 115,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 49,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9971,
+    "p_identity": 0.0001,
+    "p_position": 0.0,
+    "p_value": 0.0
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 1)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0048",
+   "prompt": "<|im_start|>user\nThe lithium card is in locker 7. The hydrogen card is in locker 8. The carbon card is in locker 1. The helium card is in locker 4. The nitrogen card is in locker 9.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 84,
+     "end": 115,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 49,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9956,
+    "p_identity": 0.0001,
+    "p_position": 0.0,
+    "p_value": 0.0
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 1)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0048",
+   "prompt": "<|im_start|>user\nThe lithium card is in locker 7. The hydrogen card is in locker 8. The carbon card is in locker 1. The helium card is in locker 4. The nitrogen card is in locker 9.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 84,
+     "end": 115,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 49,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 48",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "4"
+    }
+   },
+   "numbers": {
+    "role": "position",
+    "p_none": 0.029,
+    "p_identity": 0.0037,
+    "p_position": 0.9618,
+    "p_value": 0.0002
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 1)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0080",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The hydrogen card is in locker 2. The helium card is in locker 9. The lithium card is in locker 4. The nitrogen card is in locker 7.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 147,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-slot": "4",
+     "H-word": "5"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.7562,
+    "p_identity": 0.0074,
+    "p_position": 0.1912,
+    "p_value": 0.0005
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 4)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0080",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The hydrogen card is in locker 2. The helium card is in locker 9. The lithium card is in locker 4. The nitrogen card is in locker 7.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 147,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "2"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9927,
+    "p_identity": 0.0009,
+    "p_position": 0.0005,
+    "p_value": 0.0
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 4)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0080",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The hydrogen card is in locker 2. The helium card is in locker 9. The lithium card is in locker 4. The nitrogen card is in locker 7.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 147,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "5"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9926,
+    "p_identity": 0.001,
+    "p_position": 0.0008,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 4)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0080",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The hydrogen card is in locker 2. The helium card is in locker 9. The lithium card is in locker 4. The nitrogen card is in locker 7.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 147,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "5"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9406,
+    "p_identity": 0.001,
+    "p_position": 0.0063,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 4)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0080",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 5. The hydrogen card is in locker 2. The helium card is in locker 9. The lithium card is in locker 4. The nitrogen card is in locker 7.\nWhich locker holds the card for the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 115,
+     "end": 147,
+     "role": "target slot"
+    },
+    {
+     "start": 238,
+     "end": 341,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 48",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-slot": "4",
+     "H-word": "2"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.8111,
+    "p_identity": 0.1597,
+    "p_position": 0.004,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 4)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0083",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 8. The helium card is in locker 7. The lithium card is in locker 4. The carbon card is in locker 9. The hydrogen card is in locker 6.\nWhich locker holds the card for the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 148,
+     "end": 181,
+     "role": "asked statement"
+    },
+    {
+     "start": 51,
+     "end": 82,
+     "role": "target slot"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "6"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.8478,
+    "p_identity": 0.0073,
+    "p_position": 0.13,
+    "p_value": 0.0009
+   },
+   "why": "the slot direction leaves answer org (asked statement 5, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0083",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 8. The helium card is in locker 7. The lithium card is in locker 4. The carbon card is in locker 9. The hydrogen card is in locker 6.\nWhich locker holds the card for the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 148,
+     "end": 181,
+     "role": "asked statement"
+    },
+    {
+     "start": 51,
+     "end": 82,
+     "role": "target slot"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-slot": "6",
+     "H-word": "4"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9565,
+    "p_identity": 0.0064,
+    "p_position": 0.0289,
+    "p_value": 0.0006
+   },
+   "why": "the slot direction leaves answer org (asked statement 5, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0083",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 8. The helium card is in locker 7. The lithium card is in locker 4. The carbon card is in locker 9. The hydrogen card is in locker 6.\nWhich locker holds the card for the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 148,
+     "end": 181,
+     "role": "asked statement"
+    },
+    {
+     "start": 51,
+     "end": 82,
+     "role": "target slot"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-slot": "6",
+     "H-word": "6"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9451,
+    "p_identity": 0.0082,
+    "p_position": 0.0366,
+    "p_value": 0.0012
+   },
+   "why": "the slot direction leaves answer org (asked statement 5, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0083",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 8. The helium card is in locker 7. The lithium card is in locker 4. The carbon card is in locker 9. The hydrogen card is in locker 6.\nWhich locker holds the card for the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 148,
+     "end": 181,
+     "role": "asked statement"
+    },
+    {
+     "start": 51,
+     "end": 82,
+     "role": "target slot"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-slot": "6",
+     "H-word": "6"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9395,
+    "p_identity": 0.0118,
+    "p_position": 0.0321,
+    "p_value": 0.0017
+   },
+   "why": "the slot direction leaves answer org (asked statement 5, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0083",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 8. The helium card is in locker 7. The lithium card is in locker 4. The carbon card is in locker 9. The hydrogen card is in locker 6.\nWhich locker holds the card for the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 148,
+     "end": 181,
+     "role": "asked statement"
+    },
+    {
+     "start": 51,
+     "end": 82,
+     "role": "target slot"
+    },
+    {
+     "start": 235,
+     "end": 338,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 48",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "4"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.7983,
+    "p_identity": 0.045,
+    "p_position": 0.1387,
+    "p_value": 0.0008
+   },
+   "why": "the slot direction leaves answer org (asked statement 5, target 2)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0035",
+   "prompt": "<|im_start|>user\nThe chicken's locker is 6. The pig's locker is 3. The spider's locker is 9. The sheep's locker is 5. The dog's locker is 1.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 92,
+     "role": "target slot"
+    },
+    {
+     "start": 195,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "5",
+    "expected": {
+     "H-slot": "9",
+     "H-word": "6"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "p_none": 0.2054,
+    "p_identity": 0.0028,
+    "p_position": 0.1411,
+    "p_value": 0.0004
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0035",
+   "prompt": "<|im_start|>user\nThe chicken's locker is 6. The pig's locker is 3. The spider's locker is 9. The sheep's locker is 5. The dog's locker is 1.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 92,
+     "role": "target slot"
+    },
+    {
+     "start": 195,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-slot": "6",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.997,
+    "p_identity": 0.0,
+    "p_position": 0.0,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0035",
+   "prompt": "<|im_start|>user\nThe chicken's locker is 6. The pig's locker is 3. The spider's locker is 9. The sheep's locker is 5. The dog's locker is 1.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 92,
+     "role": "target slot"
+    },
+    {
+     "start": 195,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-slot": "6",
+     "H-word": "6"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9967,
+    "p_identity": 0.0,
+    "p_position": 0.0,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0035",
+   "prompt": "<|im_start|>user\nThe chicken's locker is 6. The pig's locker is 3. The spider's locker is 9. The sheep's locker is 5. The dog's locker is 1.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 92,
+     "role": "target slot"
+    },
+    {
+     "start": 195,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 48, 1x the patch's size",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "H-slot": "6",
+     "H-word": "6"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9973,
+    "p_identity": 0.0,
+    "p_position": 0.0001,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0035",
+   "prompt": "<|im_start|>user\nThe chicken's locker is 6. The pig's locker is 3. The spider's locker is 9. The sheep's locker is 5. The dog's locker is 1.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 43,
+     "role": "asked statement"
+    },
+    {
+     "start": 67,
+     "end": 92,
+     "role": "target slot"
+    },
+    {
+     "start": 195,
+     "end": 298,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 48",
+   "answers": {
+    "clean": "6",
+    "edited": "5",
+    "expected": {
+     "H-slot": "9",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "p_none": 0.0063,
+    "p_identity": 0.0001,
+    "p_position": 0.0002,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  }
+ ]
+}

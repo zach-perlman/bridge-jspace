@@ -22,14 +22,14 @@ echo "=== start $(date -u +%FT%TZ)"
 echo "=== Muse C2 (current band, scored writes) $(date -u +%T)"
 archive results/write_max/muse30_wm2_full2_v1 fullwrites
 W2M="--tasks full_v8 --tasks-competence muse30_full_v8_competence_v1 --tasks-level all --families $TWO"
-BJ_TARGET=muse-glimmer-30b BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_v1 --why "Zach (2026-10-22): Muse Glimmer 30B, our J++: two-step steering, full pools, joint paste ceiling (scored writes)" \
+BJ_TARGET=muse-glimmer-30b BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_v1 --why "Zach (2026-10-22): Muse Glimmer 30B, our J++: two-step steering, full pools, joint paste ceiling (scored writes)" \
   --n 1000 $TRIM --possets question final --band 23-33 --single-step 2 --early 13 16 20 $W2M \
   && BJ_TARGET=muse-glimmer-30b $PY scripts/c2_graded.py muse30_wm2_full2_v1 | tail -14 \
   && BJ_TARGET=muse-glimmer-30b $PY scripts/c2_graded.py muse30_wm2_full2_v1 --drop-guessable > /dev/null \
   && BJ_TARGET=muse-glimmer-30b $PY scripts/c2_narrow.py muse30_wm2_full2_v1 muse30_wm2_full2_v1_noguess || echo "=== Muse C2 FAILED"
 
 echo "=== Muse late-layer write check $(date -u +%T)"
-BJ_TARGET=muse-glimmer-30b BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_late_v1 --why "Zach (2026-10-22, amendment 5): lens writes at the final position at layers 34-50 (a direct push on the answer?)" \
+BJ_TARGET=muse-glimmer-30b BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_late_v1 --why "Zach (2026-10-22, amendment 5): lens writes at the final position at layers 34-50 (a direct push on the answer?)" \
   --n 1000 --writes lens_add copy --possets final --band 34-50 --single-step 2 --early 13 $W2M || echo "=== Muse late-layer check FAILED"
 python3 - <<'PY2' || echo "=== Muse late-layer table FAILED"
 import collections, json

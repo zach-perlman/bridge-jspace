@@ -1,0 +1,29 @@
+id: olmo_hybrid_7b_port_smoke
+title: "Olmo-Hybrid-7B Instruct: port smoke (hooks, blocking in attention vs DeltaNet layers, greedy; no lens)"
+thread: D2
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  uv run python scripts/prefetch.py configs/models/olmo-hybrid-7b-instruct-dpo.yaml
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/port_smoke.py --name olmo_hybrid_7b_port_smoke
+question: >-
+  Do the residual hooks, greedy decoding and the blocking work on Olmo-Hybrid, in its full-attention layers and in
+  its Gated DeltaNet (linear-attention) layers separately?
+why_it_matters: >-
+  Zach's C1 holds only on the DeltaNet hybrids; Dan's late read is attention-only on the 27B; Olmo-Hybrid vs
+  OLMo-3-7B separates architecture from family. The blocking must reach OlmoHybridGatedDeltaNet (not Qwen's module)
+  before any finding runs on it.
+hypotheses:
+  H-ok: 'every check passes (greedy, residual zero / push, blocking at all / full-attention-only / half the heads /
+    DeltaNet-only layers changes the last logits, an empty destination does not). Prior 0.85'
+decision_rule: >-
+  scripts/port_smoke.py: every check passes, else every Olmo-Hybrid job stops. No lens check (no lens pinned: the
+  target is for lens-free findings only).
+controls:
+- 'the empty destination (must leave the logits unchanged); the same test on the other models; CPU tests on a tiny
+  random OLMo-Hybrid against fp64 references (tests/test_knockout.py)'
+n: '2 prompts'
+seeds: [0]
+notes: "Dan, 23 Oct ~00:30: Olmo-Hybrid-7B (allenai/Olmo-Hybrid-Instruct-DPO-7B @ ec62da5a, the final Olmo Hybrid Instruct) for the lens-free findings only (late read, name vs digit), seed2 rules. The command first fetches the pinned snapshot (~14.9 GB) into the HF cache. Layer kinds from the config: full attention at 3, 7, ..., 31 (no RoPE), Gated DeltaNet elsewhere. The push vector is unseeded random (as on the other models)."

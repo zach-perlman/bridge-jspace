@@ -1,0 +1,34 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 479
+  },
+  "gate": {
+    "C0": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 0.9857142857142858,
+        "PM": 0.94
+      },
+      "pass": true,
+      "eligible": 580
+    },
+    "C1": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 0.9857142857142858,
+        "PM": 0.94
+      },
+      "pass": true,
+      "eligible": 599
+    },
+    "C2": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 0.9857142857142858,
+        "PM": 0.94
+      },
+      "pass": true,
+      "eligible": 578
+    }
+  }
+}

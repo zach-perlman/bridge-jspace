@@ -1,0 +1,34 @@
+{
+  "exp": "x7_pcf",
+  "run": "x7_pcf_27b_nat",
+  "written_utc": "2026-10-26T14:34:03Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "619b90697bbb1b5128a31317fa5d9ac9d82c9d19",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "layer": 32,
+  "rank": 4,
+  "pairs_from": "x5_natural's passages: the bridge's first-mention sentence moved within its paragraph, still before the binding sentence, words unchanged (at most 3 moves per passage)",
+  "pcf_run": "x7_pcf_27b",
+  "alf_from": "x0_probe_v4_27b",
+  "seeds": {
+    "moves": 4301
+  }
+}

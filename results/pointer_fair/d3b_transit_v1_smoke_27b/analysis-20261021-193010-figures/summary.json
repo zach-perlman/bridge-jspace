@@ -1,0 +1,4276 @@
+{
+  "run": "d3b_transit_v1_smoke_27b",
+  "transit": {
+    "layers": [
+      28,
+      32,
+      36,
+      40,
+      44,
+      48,
+      52
+    ],
+    "primary_scale": 1.0,
+    "by_scale": {
+      "1": {
+        "topics": {
+          "animals": {
+            "layers": [
+              {
+                "layer": 28,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 32,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 36,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.25,
+                  0.0,
+                  0.75
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 40,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.25,
+                  0.0,
+                  0.75
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 44,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 48,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": true,
+                "c2": "unclear"
+              },
+              {
+                "layer": 52,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": true,
+                "c2": "unclear"
+              }
+            ],
+            "transit_layers": [
+              48,
+              52
+            ],
+            "c2": "undecided"
+          },
+          "elements": {
+            "layers": [
+              {
+                "layer": 28,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.25,
+                  0.0,
+                  1.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 32,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.3333
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.6994
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.25,
+                  0.0,
+                  1.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 36,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.3333
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.6994
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    0.6667
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    0.85
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.5,
+                  0.0,
+                  1.0
+                ],
+                "transit": true,
+                "c2": "unclear"
+              },
+              {
+                "layer": 40,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    0.6667
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    0.85
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.75,
+                    0.3006,
+                    0.9544
+                  ],
+                  "entity_boot": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.5,
+                  0.0,
+                  1.0
+                ],
+                "transit": true,
+                "c2": "unclear"
+              },
+              {
+                "layer": 44,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    0.6667
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    0.85
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.75,
+                    0.3006,
+                    0.9544
+                  ],
+                  "entity_boot": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": true,
+                "c2": "unclear"
+              },
+              {
+                "layer": 48,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    0.6667
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    0.85
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    1.0,
+                    0.5101,
+                    1.0
+                  ],
+                  "entity_boot": [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "ci": [
+                    1.0,
+                    0.5101,
+                    1.0
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 52,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.3333
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.6994
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.3333,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.15,
+                    1.0
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              }
+            ],
+            "transit_layers": [
+              36,
+              40,
+              44
+            ],
+            "c2": "undecided"
+          }
+        },
+        "flags": {
+          "c2_transit": false,
+          "no_transit": false,
+          "c2_killed": false
+        }
+      },
+      "4": {
+        "topics": {
+          "animals": {
+            "layers": [
+              {
+                "layer": 28,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 32,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.25,
+                  0.0,
+                  0.75
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 36,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 40,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 44,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.75
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 48,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": true,
+                "c2": "unclear"
+              },
+              {
+                "layer": 52,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 4,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": true,
+                "c2": "unclear"
+              }
+            ],
+            "transit_layers": [
+              48,
+              52
+            ],
+            "c2": "undecided"
+          },
+          "elements": {
+            "layers": [
+              {
+                "layer": 28,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.75,
+                    0.3006,
+                    0.9544
+                  ],
+                  "entity_boot": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.25,
+                  0.0,
+                  1.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 32,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    0.6667
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    0.85
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.3333
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.6994
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.25,
+                  0.0,
+                  1.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 36,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    0.6667
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    0.85
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    0.6667
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    0.85
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": true,
+                "c2": "unclear"
+              },
+              {
+                "layer": 40,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.3333
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.6994
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.75,
+                    0.3006,
+                    0.9544
+                  ],
+                  "entity_boot": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  -0.25,
+                  -1.0,
+                  0.0
+                ],
+                "transit": true,
+                "c2": "holds"
+              },
+              {
+                "layer": 44,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.3333
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.6994
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.75,
+                    0.3006,
+                    0.9544
+                  ],
+                  "entity_boot": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.75,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  -0.25,
+                  -1.0,
+                  0.0
+                ],
+                "transit": true,
+                "c2": "holds"
+              },
+              {
+                "layer": 48,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    1.0
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.25,
+                    0.0456,
+                    0.6994
+                  ],
+                  "entity_boot": [
+                    0.25,
+                    0.0,
+                    0.3333
+                  ],
+                  "ci": [
+                    0.25,
+                    0.0,
+                    0.6994
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    1.0,
+                    0.5101,
+                    1.0
+                  ],
+                  "entity_boot": [
+                    1.0,
+                    1.0,
+                    1.0
+                  ],
+                  "ci": [
+                    1.0,
+                    0.5101,
+                    1.0
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              },
+              {
+                "layer": 52,
+                "rl_lens": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_random": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_changed": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rl_copy_target": {
+                  "n": 4,
+                  "k_entities": 3,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_lens": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_random": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ],
+                  "entity_boot": [
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "ci": [
+                    0.0,
+                    0.0,
+                    0.4899
+                  ]
+                },
+                "rr_copy_changed": {
+                  "n": 4,
+                  "k_entities": 2,
+                  "t_wordings": 0,
+                  "wilson": [
+                    0.5,
+                    0.15,
+                    0.85
+                  ],
+                  "entity_boot": [
+                    0.5,
+                    0.3333,
+                    1.0
+                  ],
+                  "ci": [
+                    0.5,
+                    0.15,
+                    1.0
+                  ]
+                },
+                "rl_lens_minus_random": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "transit": false,
+                "c2": null
+              }
+            ],
+            "transit_layers": [
+              36,
+              40,
+              44
+            ],
+            "c2": "undecided"
+          }
+        },
+        "flags": {
+          "c2_transit": false,
+          "no_transit": false,
+          "c2_killed": false
+        }
+      }
+    }
+  },
+  "figures": [
+    "fig4_transit_sweep.png"
+  ]
+}

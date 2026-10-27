@@ -1,0 +1,42 @@
+id: olmo3_7b_instruct_d3b_fit
+title: "D3b on OLMo-3-7B-Instruct: does a learned slot direction steer the lookup where the lens direction does not?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.6
+depends_on:
+- olmo3_7b_instruct_d3v4_competence
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_fit.py run --data pointer_v4 --name olmo3_7b_instruct_d3b_fit_smoke
+  --competence olmo3_7b_instruct_d3v4_competence --fit-limit 20 --n-test 4 --rr-n 4 --collect-layers 18
+  --steer-layers 18 --scales 1.0 --ks 4 --primary-layer 18
+  --why "smoke: pointer_fit on OLMo at a lens layer; not a result"
+  && BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_fit.py run --data pointer_v4 --name olmo3_7b_instruct_d3b_fit
+  --competence olmo3_7b_instruct_d3v4_competence --n-test 150 --rr-n 50 --collect-layers 12 15 18 21
+  --steer-layers 15 18 21 --scales 1.0 2.0 --ks 4 --primary-layer 18
+  --why "D3b on a second model: fit the statement-slot direction on pointer_v4's fit set, steer held-out entities and
+  wordings at OLMo's lens layers around its slot phase (18 primary), against the lens push and a random direction"
+examples_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_fit.py examples --name olmo3_7b_instruct_d3b_fit
+figures_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_fit.py figures --name olmo3_7b_instruct_d3b_fit
+question: >-
+  On OLMo-3-7B-Instruct, does adding a ~4-dimensional direction fitted to "the asked statement is slot j" at the last
+  tokens move the lookup to the target statement, where a lens push of the same size (bridge alt's word minus bridge
+  org's) does not?
+why_it_matters: >-
+  On Qwen3.6-27B the slot direction moves 42% (fresh scenes) / 31% (new entities and wording) and the lens push 0%.
+  The same on OLMo would make "the address can be written, the word cannot" a claim about two architectures.
+hypotheses:
+  H-steer: 'pointer_fit''s rule at layer 18, scale 1: slot-target rate lower bound >= 0.30 and >= 20 points above the
+    lens push and the random direction. Prior 0.35'
+  H-steer-any: 'the slot direction beats the lens push by >= 20 points at any steer layer and scale (reported). Prior 0.55'
+decision_rule: >-
+  pointer_fit's pre-registered rule (docstring "Decision rule"; pointer_v4: entity-cluster intervals) at the primary
+  layer 18 (OLMo's lens is fitted at every third layer, 0-30; 18 is the lens layer inside the slot phase 17-19 seen in
+  olmo3_7b_instruct_d3v4_swap_fn), scale 1. Layers 15 and 21, scale 2 and per topic are reported.
+controls:
+- 'lens push of the same norm (bridge alt minus bridge org, J-lens word directions)'
+- 'random direction of the same norm; shuffled slot labels'
+- 'memory -> memory items (no lookup: the direction should not move them)'
+n: '150 held-out test items (pointer_v4 main, eligible in olmo3_7b_instruct_d3v4_competence), 50 recall items'
+seeds: [0]
+notes: 'The smoke (20 fit items, 4 test items, layer 18) runs first in the same command; ~0.6 GPU-h in all.'

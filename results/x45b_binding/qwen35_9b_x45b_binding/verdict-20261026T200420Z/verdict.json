@@ -1,0 +1,223 @@
+{
+  "run": "qwen35_9b_x45b_binding",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "main_run": "qwen35_9b_x0_necessity",
+  "layer": 12,
+  "arm_layers": {
+    "a": 12,
+    "b_half": 6,
+    "b_quarter": 3,
+    "c": 12,
+    "d": 6
+  },
+  "rule_text": "the reading-order explanation holds if (c) or (d) switches at least half of the lookups that S itself switches, while (a) stays at or below 0.25.",
+  "rule": {
+    "verdict": "holds",
+    "holds": true,
+    "c_at_least_half_of_S": true,
+    "d_at_least_half_of_S": false,
+    "a_at_most_0.25": true
+  },
+  "readers": {
+    "PP": {
+      "n": 100,
+      "entities": 28,
+      "S_switched": 100,
+      "hits": {
+        "none": 1,
+        "a": 20,
+        "b_half": 68,
+        "b_quarter": 93,
+        "c": 66,
+        "d": 12,
+        "S": 100
+      },
+      "rate": {
+        "none": [
+          0.01,
+          0.0,
+          0.030927835051546393
+        ],
+        "a": [
+          0.2,
+          0.1368421052631579,
+          0.2761904761904762
+        ],
+        "b_half": [
+          0.68,
+          0.6037735849056604,
+          0.7708396084337349
+        ],
+        "b_quarter": [
+          0.93,
+          0.9008264462809917,
+          0.9655172413793104
+        ],
+        "c": [
+          0.66,
+          0.532605166572558,
+          0.7623793316831683
+        ],
+        "d": [
+          0.12,
+          0.07207207207207207,
+          0.18181818181818182
+        ],
+        "S": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "hits_of_S": {
+        "c": 66,
+        "d": 12
+      },
+      "of_S": {
+        "c": [
+          0.66,
+          0.532605166572558,
+          0.7623793316831683
+        ],
+        "d": [
+          0.12,
+          0.07207207207207207,
+          0.18181818181818182
+        ]
+      }
+    },
+    "PM": {
+      "n": 100,
+      "entities": 28,
+      "S_switched": 100,
+      "hits": {
+        "none": 0,
+        "a": 97,
+        "b_half": 98,
+        "b_quarter": 99,
+        "c": 1,
+        "d": 0,
+        "S": 100
+      },
+      "rate": {
+        "none": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "a": [
+          0.97,
+          0.9387755102040817,
+          1.0
+        ],
+        "b_half": [
+          0.98,
+          0.9534829384916322,
+          1.0
+        ],
+        "b_quarter": [
+          0.99,
+          0.9652173913043478,
+          1.0
+        ],
+        "c": [
+          0.01,
+          0.0,
+          0.02857142857142857
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "S": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "hits_of_S": {
+        "c": 1,
+        "d": 0
+      },
+      "of_S": {
+        "c": [
+          0.01,
+          0.0,
+          0.02857142857142857
+        ],
+        "d": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "plan": {
+    "main_run": "qwen35_9b_x0_necessity",
+    "layer": 12,
+    "main_items": 200,
+    "locker_after": 100,
+    "dropped": {},
+    "align": {
+      "token": 100
+    },
+    "items": 100,
+    "entities": 28
+  },
+  "checks": {
+    "PP a vs stored whole at L12": {
+      "n": 100,
+      "agree": 99,
+      "rerun": 20,
+      "stored": 19
+    },
+    "PP b_half vs stored whole at L6": {
+      "n": 100,
+      "agree": 99,
+      "rerun": 68,
+      "stored": 67
+    },
+    "PP S vs stored S read": {
+      "n": 100,
+      "agree": 100,
+      "rerun": 100,
+      "stored": 100
+    },
+    "PM a vs stored whole at L12": {
+      "n": 100,
+      "agree": 100,
+      "rerun": 97,
+      "stored": 97
+    },
+    "PM b_half vs stored whole at L6": {
+      "n": 100,
+      "agree": 100,
+      "rerun": 98,
+      "stored": 98
+    },
+    "PM S vs stored S read": {
+      "n": 100,
+      "agree": 100,
+      "rerun": 100,
+      "stored": 100
+    }
+  },
+  "median_delta_norm": {
+    "a": 17.5612,
+    "b_half": 12.30125,
+    "b_quarter": 6.48745,
+    "c": 27.5723,
+    "d": 10.4758
+  },
+  "n_boot": 10000,
+  "seed": 0
+}

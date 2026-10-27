@@ -1,0 +1,67 @@
+{
+ "run": "x0_single_27b_r2",
+ "layer": 32,
+ "note": "Descriptive, added after data (Dan's cross-tab, 24 Oct evening); not part of X0's rule.",
+ "rows": [
+  {
+   "reader": "PP",
+   "first": "locker",
+   "n": 45,
+   "whole": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "without the J++ part": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "reader": "PP",
+   "first": "other pick",
+   "n": 25,
+   "whole": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "without the J++ part": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "reader": "PM",
+   "first": "locker",
+   "n": 45,
+   "whole": [
+    0.6222222222222222,
+    0.5,
+    0.7317073170731707
+   ],
+   "without the J++ part": [
+    0.26666666666666666,
+    0.15211956521739137,
+    0.391304347826087
+   ]
+  },
+  {
+   "reader": "PM",
+   "first": "other pick",
+   "n": 25,
+   "whole": [
+    0.88,
+    0.7142857142857143,
+    1.0
+   ],
+   "without the J++ part": [
+    0.6,
+    0.4,
+    0.8
+   ]
+  }
+ ]
+}

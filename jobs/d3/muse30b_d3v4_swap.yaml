@@ -1,0 +1,24 @@
+id: muse30b_d3v4_swap
+title: "Muse Glimmer 30B: the last-two-token patch by layer (main; the random-patch control)"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.5
+depends_on:
+- muse30b_competence
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name muse30b_d3v4_swap --families RL DL --n 150 --layers 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 --control-stride 1 --groups last --competence muse30b_d3v4_competence --why "slide 4 on Muse: patch outcomes by layer, and the random-patch control" && BJ_TARGET=muse-glimmer-30b uv run python scripts/pointer_swap.py run --name muse30b_d3v4_swap
+figures_command: BJ_TARGET=muse-glimmer-30b uv run python scripts/pointer_swap.py figures --name muse30b_d3v4_swap
+question: >-
+  By layer, where does a patch of the last two tokens move the answer, and does a same-size random patch break Muse?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-stable: 'the random patch breaks <= 30%. Prior 0.6'
+decision_rule: >-
+  pointer_swap's committed rules (the decisive layers: the swept layers before the donor's digit arrives), as on the other models. Random-patch control (the one Gemma fails): if the same-size random patch at the last tokens breaks > 30% of answers, Muse is unstable under interventions and its patching nulls are reported as not interpretable (the runs still go).
+controls:
+- 'as the same test on the other models'
+n: '150 items per family (RL, DL)'
+seeds: [841, 844]
+notes: "Dan, 22 Oct night: Muse Glimmer 30B (Meta) as a sixth model, every experiment, the rules copied unchanged from the other models; layers by the fixed rules or the 27B's scaled by depth (x 52/64). Not opened before Dan's predictions; README and figures only after he opens the results."

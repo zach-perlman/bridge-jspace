@@ -1,0 +1,124 @@
+{
+  "exp": "d5a_natural_errors",
+  "run": "d5a_natural_errors_smoke_27b",
+  "why": "smoke: 3 items per file; not a result",
+  "written_utc": "2026-10-21T22:39:59Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "format": "chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat)",
+  "heads": [
+    "51:22",
+    "59:21",
+    "59:3"
+  ],
+  "sets": [
+    "main",
+    "dev"
+  ],
+  "limit": 3,
+  "items": {
+    "main/animals_RL_e5f0": {
+      "file": "data/alias_pointer_v1/main/animals_RL_e5f0.json",
+      "sha256": "c944e984fbf746f19d9a1155b4250b06e2de09733b7d2a0cc95d5a49917aba0c"
+    },
+    "main/animals_DL_e5f0": {
+      "file": "data/alias_pointer_v1/main/animals_DL_e5f0.json",
+      "sha256": "4834240b6c412fcfcf4ed3f051e329d41d8d5594d5c115a81b262432c60bebb7"
+    },
+    "main/animals_RL_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/main/animals_RL_e5f0-xlang.json",
+      "sha256": "8749da834df910a9b1b144b56ee0e48837c0fcb7f08951af0fdc1e29f8c86cf8"
+    },
+    "main/animals_DL_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/main/animals_DL_e5f0-xlang.json",
+      "sha256": "2f41da15e46b6220d6b794fcbaaf6bb58ac8490885c758e719d83ed7d6416e20"
+    },
+    "main/elements_RL_e5f0": {
+      "file": "data/alias_pointer_v1/main/elements_RL_e5f0.json",
+      "sha256": "aadf371eefc69aaf95d354659b3621dbc1ecfc778ca1ecf87c5be4258253e0d3"
+    },
+    "main/elements_DL_e5f0": {
+      "file": "data/alias_pointer_v1/main/elements_DL_e5f0.json",
+      "sha256": "4e81a1c5334aec4b100359b6d93147b1eeaa27ff29f9c6cfc1990a7900be8319"
+    },
+    "main/elements_RL_e5f0-syn": {
+      "file": "data/alias_pointer_v1/main/elements_RL_e5f0-syn.json",
+      "sha256": "4c9a2e5bf15472fc78633b64f071a31138b688c5a5d8f20aee08fff5dba44eac"
+    },
+    "main/elements_DL_e5f0-syn": {
+      "file": "data/alias_pointer_v1/main/elements_DL_e5f0-syn.json",
+      "sha256": "eaef98467b934a4f7b3dfab59159ef54801a8759399ebac7c8008d6cffb5eafb"
+    },
+    "dev/animals_RL_e3f0": {
+      "file": "data/alias_pointer_v1/dev/animals_RL_e3f0.json",
+      "sha256": "645436e8f904f0300911f245d535f22c974baf6cc23fc8d4f87e75371ae9307f"
+    },
+    "dev/animals_DL_e3f0": {
+      "file": "data/alias_pointer_v1/dev/animals_DL_e3f0.json",
+      "sha256": "0dacfcdb3606eb4b67744a41c2e0d3c917b8a314180bb92fc37f6f844fcc0e72"
+    },
+    "dev/animals_RL_e3f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_RL_e3f0-xlang.json",
+      "sha256": "68a5d89047df85f970766f8c3266984b21165db6f2fbbe69698cf2a16bff320d"
+    },
+    "dev/animals_DL_e3f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_DL_e3f0-xlang.json",
+      "sha256": "34b2caf3cd2ae1bd7b0457670f19b5172f7ca4893d804d9c8897d09171072057"
+    },
+    "dev/elements_RL_e3f0": {
+      "file": "data/alias_pointer_v1/dev/elements_RL_e3f0.json",
+      "sha256": "a8f234220702d0cba5c3726e8f020458a6c27d743aebb9522ae9eb21794edf47"
+    },
+    "dev/elements_DL_e3f0": {
+      "file": "data/alias_pointer_v1/dev/elements_DL_e3f0.json",
+      "sha256": "2327c9be2da59309a2595d59d1be747f984592a9edf30c7d3336d6db56a261d7"
+    },
+    "dev/elements_RL_e3f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_RL_e3f0-syn.json",
+      "sha256": "defff86ced81d6d7012f43945882abf9dfe4b8fb6952d04bb5497244f19fdc75"
+    },
+    "dev/elements_DL_e3f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_DL_e3f0-syn.json",
+      "sha256": "5ca14e8c8bbdbeac48f3073089538a9cf69b13d388d0035cb3e027b4bee64bb8"
+    },
+    "dev/animals_RL_e5f0": {
+      "file": "data/alias_pointer_v1/dev/animals_RL_e5f0.json",
+      "sha256": "b36c22d56ed138642d609cebf37108fb63834d987be0611a502df33d13802c22"
+    },
+    "dev/animals_DL_e5f0": {
+      "file": "data/alias_pointer_v1/dev/animals_DL_e5f0.json",
+      "sha256": "d6a9778b18b2aaa53e85d52943e17cf3c4a771a3d5d1e3ec2687a21a189f1be9"
+    },
+    "dev/animals_RL_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_RL_e5f0-xlang.json",
+      "sha256": "872c256ce3eddd846fb4b7542875b7222c44beaeab682bcbd36a016e9ec5c1e2"
+    },
+    "dev/animals_DL_e5f0-xlang": {
+      "file": "data/alias_pointer_v1/dev/animals_DL_e5f0-xlang.json",
+      "sha256": "a2a4ed629c97336d408cfb0cd4908d9e84ebcc7f8d9e009e1920a7e5d2cbc20e"
+    },
+    "dev/elements_RL_e5f0": {
+      "file": "data/alias_pointer_v1/dev/elements_RL_e5f0.json",
+      "sha256": "d5c2e30587c4c9235ad0957f75f913e82a2b713397475bdc2f4f06094387fdf5"
+    },
+    "dev/elements_DL_e5f0": {
+      "file": "data/alias_pointer_v1/dev/elements_DL_e5f0.json",
+      "sha256": "53656eb1bb8142eaa3d12e146714c3b605d135f06acd186fa03756e379d84981"
+    },
+    "dev/elements_RL_e5f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_RL_e5f0-syn.json",
+      "sha256": "8eff1697bc5a68cc2b85dd726aad4076149b3ba136127f18dbd328bb4e152563"
+    },
+    "dev/elements_DL_e5f0-syn": {
+      "file": "data/alias_pointer_v1/dev/elements_DL_e5f0-syn.json",
+      "sha256": "93e5069e6606a85503cd90386886e944017f2cb8abe89171eec4eb01355d04d2"
+    }
+  },
+  "decision": "(fixed before the run; jobs/d5/d5a_natural_errors_27b.yaml). Primary: layer 51 head 22, rows answered\nwrong with a digit of another statement (\"wrong in context\"), all levels and families pooled; Wilson 95% on rows\n(the asked entity is reported, k entities). n >= 35 needed, else \"too few errors\".\n  H-fetch: the share of wrong-in-context rows where the head's top statement is the answered one has lower bound above\n    the upper bound of the share where it is the right (asked) one.\n  H-bridge: the reverse.\n  Otherwise neither. Control: on rows answered right, the head's top statement is the asked one (d2_lookup_heads: 100%\n  on pointer_v1). The other heads get the same numbers, not a verdict."
+}

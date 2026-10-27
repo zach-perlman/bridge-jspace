@@ -1,0 +1,24 @@
+id: olmo3_7b_prefetch_v1
+thread: D5
+gpus: 1
+est_gpu_hours: 0.0
+mem_gb: 0
+command: uv run python -c "import os; from huggingface_hub import snapshot_download, hf_hub_download; from bridge_jspace
+  import pins; [snapshot_download(pins.TARGETS[t]['repo'], revision=pins.TARGETS[t]['revision']) for t in ('olmo-3-7b-base','olmo-3-7b-sft','olmo-3-7b-dpo','olmo-3-7b-instruct')];
+  [hf_hub_download(r, f, revision=v) for t in ('olmo-3-7b-base','olmo-3-7b-sft','olmo-3-7b-dpo','olmo-3-7b-instruct')
+  for (r, f, v) in pins.TARGETS[t]['lenses'].values()]"
+question: Download the four pinned OLMo-3-7B checkpoints and their lenses into the HF cache (no GPU).
+why_it_matters: Every D5 ladder job loads these with local_files_only (full snapshots required by huggingface_hub
+  1.33).
+hypotheses:
+  H0: all files download and the lenses' sha256 match pins (checked again by JLens on load)
+decision_rule: any failed download or sha mismatch blocks every other D5 job
+controls:
+- sha256 of each lens file vs pins.TARGETS frozen_lens_sha256 (checked on load)
+n: 4 checkpoints, 5 lens files
+seeds:
+- 0
+notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Still needed for the lens stages (read_write, ablate_pilot, suite_split parts): pins picking the frozen lens of each target (jlens) and lens-stage layers restricted to the lens layers (0, 3, ..., 30). Disk:
+  model snapshots in the box''s HF cache (/ephemeral/hf). Disk ~74 GB: base/SFT/Instruct 14.6 GB each, DPO 29.2
+  GB (ships .bin and safetensors; full snapshot needed), lenses 4 x 0.37 GB + neuronpedia base lens 1.04 GB. ~5-15
+  min download.'

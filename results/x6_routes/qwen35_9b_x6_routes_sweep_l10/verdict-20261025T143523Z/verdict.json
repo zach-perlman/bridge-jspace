@@ -1,0 +1,305 @@
+{
+ "run": "qwen35_9b_x6_routes_sweep_l10",
+ "manifest": {
+  "exp": "x6_routes",
+  "run": "qwen35_9b_x6_routes_sweep_l10",
+  "written_utc": "2026-10-25T14:17:44Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+   "target": "qwen3.5-9b",
+   "repo": "Qwen/Qwen3.5-9B",
+   "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "3751c4f65062846bb84d8cd75e53e9311bc3b210",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 10,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+   "C0",
+   "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "alf_from": null,
+  "c0_min": 0.5,
+  "fixed_layer": 12,
+  "c0_reference": {
+   "run": "qwen35_9b_x0_massmean_lf",
+   "lookup_switch": 0.9863013698630136,
+   "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+   "scenes": 2510,
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "items": {
+   "C0": 300,
+   "C2": 300
+  }
+ },
+ "rows": [
+  {
+   "condition": "C0",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "recall_follows_s": [
+     0.9733333333333334,
+     0.949151273723739,
+     0.9935064935064936
+    ]
+   },
+   "used": [],
+   "median_norm": 13.36355
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.08666666666666667,
+     0.05333333333333334,
+     0.1231908874329958
+    ],
+    "other": [
+     0.9133333333333333,
+     0.8768091125670042,
+     0.9466666666666667
+    ],
+    "recall_follows_s": [
+     0.78,
+     0.7071634961013106,
+     0.8527397260273972
+    ]
+   },
+   "used": [],
+   "median_norm": 13.36355
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0033333333333333335,
+     0.0,
+     0.01048951048951049
+    ],
+    "other": [
+     0.9966666666666667,
+     0.9895104895104895,
+     1.0
+    ],
+    "recall_follows_s": [
+     0.9566666666666667,
+     0.9230769230769231,
+     0.9859154929577465
+    ]
+   },
+   "used": [],
+   "median_norm": 13.36355
+  },
+  {
+   "condition": "C2",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.9766666666666667,
+     0.961762400081984,
+     0.9901968767963212
+    ],
+    "position": [
+     0.023333333333333334,
+     0.009803123203678866,
+     0.03823759991801596
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.95,
+     0.9137246148459384,
+     0.9833333333333333
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 13.467500000000001
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.49333333333333335,
+     0.45054851292052656,
+     0.5411392405063291
+    ],
+    "position": [
+     0.06333333333333334,
+     0.038234272875816995,
+     0.08888888888888889
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.44333333333333336,
+     0.3914725233799553,
+     0.49295897764207625
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.48,
+     0.40624759615384615,
+     0.559604352328782
+    ]
+   },
+   "used": [
+    "identity",
+    "original"
+   ],
+   "median_norm": 13.467500000000001
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.8466666666666667,
+     0.8043478260869565,
+     0.8870457930201314
+    ],
+    "position": [
+     0.016666666666666666,
+     0.003246753246753247,
+     0.033444816053511704
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.13333333333333333,
+     0.0966510456287408,
+     0.17253779189796756
+    ],
+    "other": [
+     0.0033333333333333335,
+     0.0,
+     0.010564313442492396
+    ],
+    "recall_follows_s": [
+     0.88,
+     0.8299319727891157,
+     0.9296296296296296
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 13.467500000000001
+  }
+ ],
+ "extra": [],
+ "ctrl": []
+}

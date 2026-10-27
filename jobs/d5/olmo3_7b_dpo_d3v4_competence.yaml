@@ -1,0 +1,22 @@
+id: olmo3_7b_dpo_d3v4_competence
+title: "D5b ladder gate: can OLMo-3-7B-DPO answer pointer_v4's scenes (read judge)?"
+thread: D5
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-dpo BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set main --name olmo3_7b_dpo_d3v4_competence
+  --why "D5b: the statement-slot test on the post-training ladder; pointer_v4's main scenes on OLMo-3-7B-DPO,
+  chat format, read judge (as olmo3_7b_instruct_d3v4_competence)"
+  && BJ_TARGET=olmo-3-7b-dpo BJ_JUDGE=read uv run python scripts/pointer_v4.py competence --name olmo3_7b_dpo_d3v4_competence
+question: 'Does OLMo-3-7B-DPO put the right answer on top in the read, for pointer_v4''s main scenes?'
+why_it_matters: 'Gate for olmo3_7b_dpo_d3v4_swap.'
+hypotheses:
+  H-gate: 'memory -> prompt and named -> prompt >= 80% right per topic (read judge). Prior 0.6'
+decision_rule: 'pointer_v1''s competence rule (read judge).'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'pointer_v4 main (up to 300 scenes per topic x 3 families)'
+seeds: [841]
+notes: '~0.15 GPU-h.'

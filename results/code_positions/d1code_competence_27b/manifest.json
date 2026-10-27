@@ -1,0 +1,25 @@
+{
+  "exp": "code_positions",
+  "run": "d1code_competence_27b",
+  "written_utc": "2026-10-21T19:29:01Z",
+  "why": "D1 in code, gate: the programs (key = \"Japan\"; print(drawers[key]) / the capital of the country stored in key), their alt (key line changed) and off-path (spare line changed) versions and the steps alone",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "items": {
+    "code": {
+      "file": "data/code_positions_v1/items.json",
+      "sha256": "d37dce1a98478c329dc6e2041e53618175e3ac3cc4b42b3d8fc3f431a60935d0"
+    }
+  },
+  "limit": null,
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat)",
+  "prompts": "clean, C (the key line changed), O (the spare line changed), hop1 (the key's value), hop2 (the lookup with the country named / its capital asked directly)",
+  "judge": "suite_v1's greedy judge: digits; the countries / capitals of the items (code_positions.said)",
+  "eligibility": "a scene enters the map iff every prompt of both families is right"
+}

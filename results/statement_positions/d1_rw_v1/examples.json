@@ -1,0 +1,635 @@
+{
+ "exp": "statement_positions",
+ "run": "d1_rw_v1",
+ "kind": "readwrite",
+ "k": 3,
+ "seed": 0,
+ "groups": [
+  {
+   "key": "lens_flips",
+   "title": "Lens direction writes X",
+   "definition": "v_X - v_I at <= 4x the copy's norm makes the top token X's answer",
+   "n_total": 1535
+  },
+  {
+   "key": "copy_flips_lens_not",
+   "title": "The copy flips, the lens direction at 4x does not",
+   "definition": "same case and cell: C's copy gives X's answer, the lens push at 4x does not",
+   "n_total": 250
+  },
+  {
+   "key": "random_changed",
+   "title": "Random direction changed the answer",
+   "definition": "the random direction at the same norms moved the top token off the bridge's answer",
+   "n_total": 591
+  }
+ ],
+ "examples": [
+  {
+   "group": "lens_flips",
+   "family": "B",
+   "item_id": "B-0368",
+   "prompt": "<|im_start|>user\nEmma lives in Russia. Carol lives in France. Nina lives in Greece. What is the capital of the country where Carol lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 39,
+     "end": 61,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge_word"
+    },
+    {
+     "start": 83,
+     "end": 240,
+     "role": "question"
+    },
+    {
+     "start": 181,
+     "end": 240,
+     "role": "final"
+    },
+    {
+     "start": 53,
+     "end": 60,
+     "role": "patched"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "cf_changed"
+    },
+    {
+     "start": 53,
+     "end": 60,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the lens direction v_X - v_I at 2x the copy's per-position norm added at bridge_word (1 tokens), block output of layer 32",
+   "answers": {
+    "clean": " Paris",
+    "edited": " Moscow",
+    "edited_role": "b",
+    "bridge_answer": "Paris",
+    "x_answer": "Moscow",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 10.625,
+    "frac": 1.044,
+    "role": "b",
+    "ld_clean": -13.125,
+    "ld_C": 9.625,
+    "flip": true
+   },
+   "why": "Lens direction writes X: bridge_word, layer 32, read role b"
+  },
+  {
+   "group": "lens_flips",
+   "family": "B",
+   "item_id": "B-0419",
+   "prompt": "<|im_start|>user\nVictor lives in Canada. Sam lives in Germany. Oscar lives in China. What is the capital of the country where Victor lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 242,
+     "role": "question"
+    },
+    {
+     "start": 183,
+     "end": 242,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 40,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 39,
+     "role": "cf_changed"
+    },
+    {
+     "start": 53,
+     "end": 61,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the lens direction v_X - v_I at 2x the copy's per-position norm added at bind_bridge (6 tokens), block output of layer 32",
+   "answers": {
+    "clean": " Ottawa",
+    "edited": " Berlin",
+    "edited_role": "b",
+    "bridge_answer": "Ottawa",
+    "x_answer": "Berlin",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 11.938,
+    "frac": 0.992,
+    "role": "b",
+    "ld_clean": -11.4375,
+    "ld_C": 12.125,
+    "flip": true
+   },
+   "why": "Lens direction writes X: bind_bridge, layer 32, read role b"
+  },
+  {
+   "group": "lens_flips",
+   "family": "BR",
+   "item_id": "BR-0263",
+   "prompt": "<|im_start|>user\nSean's pet is a turkey. Sam's pet is a mouse. Adam's pet is a dog. The mouse's locker is 9. The turkey's locker is 5. The dog's locker is 1.\nHow many legs does Sean's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge_word"
+    },
+    {
+     "start": 109,
+     "end": 134,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 84,
+     "end": 108,
+     "role": "lookup_x"
+    },
+    {
+     "start": 158,
+     "end": 296,
+     "role": "question"
+    },
+    {
+     "start": 237,
+     "end": 296,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 157,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 39,
+     "role": "cf_changed"
+    },
+    {
+     "start": 55,
+     "end": 61,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the lens direction v_X - v_I at 1x the copy's per-position norm added at context (45 tokens), block output of layer 36",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "edited_role": "b",
+    "bridge_answer": "2",
+    "x_answer": "4",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 6.875,
+    "frac": 0.8436,
+    "role": "b",
+    "ld_clean": -4.25,
+    "ld_C": 8.9375,
+    "flip": true
+   },
+   "why": "Lens direction writes X: context, layer 36, read role b"
+  },
+  {
+   "group": "copy_flips_lens_not",
+   "family": "BL",
+   "item_id": "BL-0050",
+   "prompt": "<|im_start|>user\nLeo's pet is a dog. Finn's pet is a cow. Fiona's pet is a spider. The spider's locker is 1. The dog's locker is 5. The cow's locker is 3.\nWhich locker belongs to Leo's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 36,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "bridge_word"
+    },
+    {
+     "start": 109,
+     "end": 131,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 83,
+     "end": 108,
+     "role": "lookup_x"
+    },
+    {
+     "start": 155,
+     "end": 292,
+     "role": "question"
+    },
+    {
+     "start": 233,
+     "end": 292,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 154,
+     "role": "patched"
+    },
+    {
+     "start": 31,
+     "end": 35,
+     "role": "cf_changed"
+    },
+    {
+     "start": 74,
+     "end": 81,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy added at context (45 tokens), block output of layer 32",
+   "answers": {
+    "clean": "5",
+    "edited": "1",
+    "edited_role": "b",
+    "bridge_answer": "5",
+    "x_answer": "1",
+    "expected": {
+     "H-loc": "1",
+     "H-around": "1"
+    }
+   },
+   "numbers": {
+    "ld": 10.938,
+    "frac": 0.9788,
+    "role": "b",
+    "ld_clean": -9.25,
+    "ld_C": 11.375,
+    "flip": true
+   },
+   "why": "The copy flips, the lens direction at 4x does not: context, layer 32, read role b"
+  },
+  {
+   "group": "copy_flips_lens_not",
+   "family": "B",
+   "item_id": "B-0423",
+   "prompt": "<|im_start|>user\nLaura lives in Japan. Kate lives in Greece. Carol lives in Egypt. What is the capital of the country where Kate lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 39,
+     "end": 60,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 53,
+     "end": 59,
+     "role": "bridge_word"
+    },
+    {
+     "start": 82,
+     "end": 238,
+     "role": "question"
+    },
+    {
+     "start": 179,
+     "end": 238,
+     "role": "final"
+    },
+    {
+     "start": 52,
+     "end": 59,
+     "role": "patched"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "cf_changed"
+    },
+    {
+     "start": 52,
+     "end": 59,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy added at bridge_word (1 tokens), block output of layer 40",
+   "answers": {
+    "clean": " Athens",
+    "edited": " Tokyo",
+    "edited_role": "b",
+    "bridge_answer": "Athens",
+    "x_answer": "Tokyo",
+    "expected": {
+     "H-loc": "Tokyo",
+     "H-around": "Tokyo"
+    }
+   },
+   "numbers": {
+    "ld": 0.5,
+    "frac": 0.515,
+    "role": "b",
+    "ld_clean": -12.375,
+    "ld_C": 12.625,
+    "flip": true
+   },
+   "why": "The copy flips, the lens direction at 4x does not: bridge_word, layer 40, read role b"
+  },
+  {
+   "group": "copy_flips_lens_not",
+   "family": "BR",
+   "item_id": "BR-0288",
+   "prompt": "<|im_start|>user\nTom's pet is a cat. Kyle's pet is a wolf. Amy's pet is a spider. The cat's locker is 7. The spider's locker is 9. The wolf's locker is 3.\nHow many legs does Tom's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 36,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "bridge_word"
+    },
+    {
+     "start": 82,
+     "end": 104,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 105,
+     "end": 130,
+     "role": "lookup_x"
+    },
+    {
+     "start": 155,
+     "end": 292,
+     "role": "question"
+    },
+    {
+     "start": 233,
+     "end": 292,
+     "role": "final"
+    },
+    {
+     "start": 31,
+     "end": 35,
+     "role": "patched"
+    },
+    {
+     "start": 31,
+     "end": 35,
+     "role": "cf_changed"
+    },
+    {
+     "start": 73,
+     "end": 80,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy added at bridge_word (1 tokens), block output of layer 32",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "edited_role": "b",
+    "bridge_answer": "4",
+    "x_answer": "8",
+    "expected": {
+     "H-loc": "8",
+     "H-around": "8"
+    }
+   },
+   "numbers": {
+    "ld": 5.375,
+    "frac": 0.76,
+    "role": "b",
+    "ld_clean": -8.875,
+    "ld_C": 9.875,
+    "flip": true
+   },
+   "why": "The copy flips, the lens direction at 4x does not: bridge_word, layer 32, read role b"
+  },
+  {
+   "group": "random_changed",
+   "family": "B",
+   "item_id": "B-0668",
+   "prompt": "<|im_start|>user\nDavid lives in Russia. Laura lives in Egypt. Emma lives in Poland. What is the capital of the country where Laura lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 40,
+     "end": 61,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 55,
+     "end": 60,
+     "role": "bridge_word"
+    },
+    {
+     "start": 83,
+     "end": 240,
+     "role": "question"
+    },
+    {
+     "start": 181,
+     "end": 240,
+     "role": "final"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "patched"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "cf_changed"
+    },
+    {
+     "start": 75,
+     "end": 82,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "a random direction at 8x the copy's per-position norm added at bridge_word (1 tokens), block output of layer 32",
+   "answers": {
+    "clean": " Cairo",
+    "edited": " Moscow",
+    "edited_role": "other",
+    "bridge_answer": "Cairo",
+    "x_answer": "Warsaw",
+    "expected": {
+     "H-loc": "Cairo",
+     "H-around": "Cairo"
+    }
+   },
+   "numbers": {
+    "ld": 7.375,
+    "frac": 0.7509,
+    "role": "other",
+    "ld_clean": -13.25,
+    "ld_C": 14.21875,
+    "flip": false
+   },
+   "why": "Random direction changed the answer: bridge_word, layer 32, read role other"
+  },
+  {
+   "group": "random_changed",
+   "family": "B",
+   "item_id": "B-0411",
+   "prompt": "<|im_start|>user\nOscar lives in Peru. Jack lives in Italy. Tom lives in Australia. What is the capital of the country where Tom lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 59,
+     "end": 82,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge_word"
+    },
+    {
+     "start": 82,
+     "end": 237,
+     "role": "question"
+    },
+    {
+     "start": 178,
+     "end": 237,
+     "role": "final"
+    },
+    {
+     "start": 71,
+     "end": 81,
+     "role": "patched"
+    },
+    {
+     "start": 31,
+     "end": 36,
+     "role": "cf_changed"
+    },
+    {
+     "start": 71,
+     "end": 81,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "a random direction at 16x the copy's per-position norm added at bridge_word (1 tokens), block output of layer 32",
+   "answers": {
+    "clean": " Canberra",
+    "edited": " Rome",
+    "edited_role": "other",
+    "bridge_answer": "Canberra",
+    "x_answer": "Lima",
+    "expected": {
+     "H-loc": "Canberra",
+     "H-around": "Canberra"
+    }
+   },
+   "numbers": {
+    "ld": 7.125,
+    "frac": 0.7963,
+    "role": "other",
+    "ld_clean": -13.03125,
+    "ld_C": 12.28125,
+    "flip": false
+   },
+   "why": "Random direction changed the answer: bridge_word, layer 32, read role other"
+  },
+  {
+   "group": "random_changed",
+   "family": "B",
+   "item_id": "B-0531",
+   "prompt": "<|im_start|>user\nKate lives in France. Frank lives in Russia. Victor lives in Germany. What is the capital of the country where Frank lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 39,
+     "end": 61,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "bridge_word"
+    },
+    {
+     "start": 86,
+     "end": 243,
+     "role": "question"
+    },
+    {
+     "start": 184,
+     "end": 243,
+     "role": "final"
+    },
+    {
+     "start": 53,
+     "end": 60,
+     "role": "patched"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "cf_changed"
+    },
+    {
+     "start": 53,
+     "end": 60,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "a random direction at 8x the copy's per-position norm added at bridge_word (1 tokens), block output of layer 36",
+   "answers": {
+    "clean": " Moscow",
+    "edited": " Berlin",
+    "edited_role": "other",
+    "bridge_answer": "Moscow",
+    "x_answer": "Paris",
+    "expected": {
+     "H-loc": "Moscow",
+     "H-around": "Moscow"
+    }
+   },
+   "numbers": {
+    "ld": -1.625,
+    "frac": 0.3552,
+    "role": "other",
+    "ld_clean": -9.75,
+    "ld_C": 13.125,
+    "flip": false
+   },
+   "why": "Random direction changed the answer: bridge_word, layer 36, read role other"
+  }
+ ]
+}

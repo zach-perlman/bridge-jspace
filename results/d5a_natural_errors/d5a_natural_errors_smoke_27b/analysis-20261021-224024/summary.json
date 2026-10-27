@@ -1,0 +1,112 @@
+{
+  "n_rows": 72,
+  "n_right": 69,
+  "n_wrong_in_context": 3,
+  "n_wrong_off_prompt": 0,
+  "wrong_by_label": {
+    "main/elements_RL_e5f0-syn": 1,
+    "dev/animals_RL_e5f0-xlang": 1,
+    "dev/elements_RL_e5f0-syn": 1
+  },
+  "heads": {
+    "51:22": {
+      "wrong_on_answered": {
+        "k": 2,
+        "n": 3,
+        "rate": [
+          0.6667,
+          0.2077,
+          0.9385
+        ],
+        "entities": 3
+      },
+      "wrong_on_asked": {
+        "k": 1,
+        "n": 3,
+        "rate": [
+          0.3333,
+          0.0615,
+          0.7923
+        ],
+        "entities": 3
+      },
+      "right_on_asked": {
+        "k": 68,
+        "n": 69,
+        "rate": [
+          0.9855,
+          0.9224,
+          0.9974
+        ],
+        "entities": 10
+      },
+      "verdict": "too few errors"
+    },
+    "59:21": {
+      "wrong_on_answered": {
+        "k": 2,
+        "n": 3,
+        "rate": [
+          0.6667,
+          0.2077,
+          0.9385
+        ],
+        "entities": 3
+      },
+      "wrong_on_asked": {
+        "k": 1,
+        "n": 3,
+        "rate": [
+          0.3333,
+          0.0615,
+          0.7923
+        ],
+        "entities": 3
+      },
+      "right_on_asked": {
+        "k": 65,
+        "n": 69,
+        "rate": [
+          0.942,
+          0.8602,
+          0.9772
+        ],
+        "entities": 10
+      },
+      "verdict": "too few errors"
+    },
+    "59:3": {
+      "wrong_on_answered": {
+        "k": 2,
+        "n": 3,
+        "rate": [
+          0.6667,
+          0.2077,
+          0.9385
+        ],
+        "entities": 3
+      },
+      "wrong_on_asked": {
+        "k": 1,
+        "n": 3,
+        "rate": [
+          0.3333,
+          0.0615,
+          0.7923
+        ],
+        "entities": 3
+      },
+      "right_on_asked": {
+        "k": 66,
+        "n": 69,
+        "rate": [
+          0.9565,
+          0.8798,
+          0.9851
+        ],
+        "entities": 10
+      },
+      "verdict": "too few errors"
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "RL|all": {
+    "long": [
+      427,
+      450
+    ],
+    "still": [
+      432,
+      450
+    ],
+    "long_minus_still": [
+      -0.0111,
+      -0.0395,
+      0.0168
+    ],
+    "more_errors_on_long": false
+  },
+  "RL|countries": {
+    "long": [
+      150,
+      150
+    ],
+    "still": [
+      150,
+      150
+    ],
+    "long_minus_still": [
+      0.0,
+      -0.025,
+      0.025
+    ],
+    "more_errors_on_long": false
+  },
+  "RL|animals": {
+    "long": [
+      140,
+      150
+    ],
+    "still": [
+      139,
+      150
+    ],
+    "long_minus_still": [
+      0.0067,
+      -0.0541,
+      0.0678
+    ],
+    "more_errors_on_long": false
+  },
+  "RL|body": {
+    "long": [
+      137,
+      150
+    ],
+    "still": [
+      143,
+      150
+    ],
+    "long_minus_still": [
+      -0.04,
+      -0.1008,
+      0.0184
+    ],
+    "more_errors_on_long": false
+  },
+  "DL|all": {
+    "long": [
+      450,
+      450
+    ],
+    "still": [
+      450,
+      450
+    ],
+    "long_minus_still": [
+      0.0,
+      -0.0085,
+      0.0085
+    ],
+    "more_errors_on_long": false
+  },
+  "DL|countries": {
+    "long": [
+      150,
+      150
+    ],
+    "still": [
+      150,
+      150
+    ],
+    "long_minus_still": [
+      0.0,
+      -0.025,
+      0.025
+    ],
+    "more_errors_on_long": false
+  },
+  "DL|animals": {
+    "long": [
+      150,
+      150
+    ],
+    "still": [
+      150,
+      150
+    ],
+    "long_minus_still": [
+      0.0,
+      -0.025,
+      0.025
+    ],
+    "more_errors_on_long": false
+  },
+  "DL|body": {
+    "long": [
+      150,
+      150
+    ],
+    "still": [
+      150,
+      150
+    ],
+    "long_minus_still": [
+      0.0,
+      -0.025,
+      0.025
+    ],
+    "more_errors_on_long": false
+  }
+}

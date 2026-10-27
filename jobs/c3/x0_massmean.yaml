@@ -1,0 +1,29 @@
+id: x0_massmean
+title: "Mass-mean address (A) and value (V) subspaces, remove vs keep only (Dan ~20:05; descriptive, after data; the last causal test this week): single-change Δ, 27B L32 on GPU0 and 9B L12 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 0.5
+depends_on: [x0_probe_power]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x0_massmean.py run --name x0_massmean_27b --single x0_single_27b_r2 --states x0_probe_v4_27b & p27=$!;
+  CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0_massmean.py run --name qwen35_9b_x0_massmean --single qwen35_9b_x0_single_r2 --states qwen35_9b_x0_probe_v4 & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  With A the mass-mean subspace of the address (class means of the locker sentence's index minus the grand mean, raw activation space, orthonormalised; rank 4) and V that of the value (the locker number; rank 8), both from the fresh scenes' locker-before org states at the bridge's word: on the single-change items whose org and alt locker sentences both come before the pick, does removing AΔ, VΔ or both from the edit cost the lookup more flips than a random part of the same share, while the recall loses no more; and does (A + V)Δ alone flip the lookup more than the random part alone?
+why_it_matters: >-
+  The ridge probe's 4 address directions (1-2% of ||Δ||²) changed no lookup, removed or kept alone. Ridge directions on standardised features weight low-variance dimensions; mass-mean directions are known to be more causal (Marks & Tegmark 2023). This is the last causal test of the address / value reading this week.
+hypotheses:
+  H-address: 'the lookup loses flips under A while the recall does not. Prior: Dan''s, predictions batch 28'
+  H-value: 'the lookup loses flips under V while the recall does not. Prior: Dan''s, batch 28'
+  H-none: 'no arm changes the lookup. Prior: Dan''s, batch 28'
+decision_rule: >-
+  Descriptive, added after data (Dan, 24 Oct ~20:05). Per model and reader: S for whole, no_A, no_V, no_AV (each against X0's rand_sub at its own share, paired excess), keep_AV (against the random part alone at the same share, paired); each subspace's median share of ||Δ||²; cluster bootstrap over bridge entities (10,000 resamples, seed 0); top-token read, both readers on the identical patch. Pre-stated reading (Dan): the lookup loses flips under A (or V) while the recall does not -> "the lookup uses the address (or the value)"; no arm changes the lookup -> "the lookup's channel is not a low-rank linear readout of the address or the value; what it is stays open". Either goes on slide 2 as it comes out. No further variants after it this week. Results not opened or summarized before Dan's batch-28 commit.
+controls:
+- 'a random-subspace part at each subspace''s own share (removal) and the random part alone (keeping)'
+- 'both readers on the identical patch'
+- 'the subspaces fit on fresh scenes (d1_topics_v4), disjoint from the test items (d1_topics_v3)'
+n: 'the single-change items with both locker sentences before the pick (70 on the 27B, 73 on the 9B)'
+seeds: [0]
+notes: "One 2-GPU job, two processes (27B on GPU0, 9B on GPU1). Queue (Dan ~20:05): X0b v2 -> x0_parts -> this -> x0b_parts. Cost: ~70 items x 10 reads x 2 readers per model, ~10 min."

@@ -1,0 +1,25 @@
+id: qwen35_122b_d1_smoke_h100
+title: "Smoke (Qwen3.5-122B on 2x H100): does the model split over two cards reproduce two cells of the one-H200 parts run?"
+thread: D1
+gpus: 2
+mem_gb: 135
+est_gpu_hours: 0.5
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 uv run python scripts/statement_positions.py parts --name qwen35_122b_d1_smoke_h100 --map qwen35_122b_d1_topics2_map --why "H100 smoke: the 122B split over 2x H100 at two cells of qwen35_122b_d1_topics2_parts" --lo 24 --sets bind_bridge context --force bind_bridge:30 context:30
+  && BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_verdict.py --map qwen35_122b_d1_topics2_map --parts qwen35_122b_d1_smoke_h100 --tasks-set d1_topics_v2 --cell bind_bridge:30
+  && BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_verdict.py --map qwen35_122b_d1_topics2_map --parts qwen35_122b_d1_smoke_h100 --tasks-set d1_topics_v2 --cell context:30
+question: >-
+  On the new 2x H100 PCIe 80 GB box, with Qwen3.5-122B-A10B (FP8) split over both cards, do the lens part's lookup switching and the cell verdict at the bridge's sentence and the context at layer 30 match the one-H200 run qwen35_122b_d1_topics2_parts?
+why_it_matters: >-
+  The FP8 122B does not fit one 80 GB card, so every 122B run on this box splits the model over two GPUs. Other hardware and the device split need not give byte-identical numbers; before any new 122B run here (the late cells, A1, A3) the split must reproduce an opened result.
+hypotheses:
+  H-reproduces: 'at both cells the lens part (jspace) switches lookups (PP) within 3 points of the original run (bind_bridge:30 15.6% [11, 22], context:30 19.4% [14, 26]; n=180 each, from results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl) and the cell verdict is the same as the original''s (does not replicate at both). Prior: none set by the agent'
+  H-differs: 'at either cell the lens part''s lookup share moves more than 3 points or the verdict changes: all 122B work on this box stops and Dan is told'
+decision_rule: >-
+  Dan's rule (23 Oct): each cell (bind_bridge:30, context:30), the lens-part lookup share within +-3 points of the original run's and the same verdict, else stop and write to Dan. Lens-part lookup share: the share of PP rows (part jspace, source cf, not null) whose top token is the other bridge's answer (role b), at the cell, pooled over topics, n=180. Verdict: scripts/d1_verdict.py's replication rule at that cell (--cell SET:LAYER: replicates iff the lens part switches <= 0.10 of lookups and the rest >= 0.50 while PM's lens part switches >= 0.30; else does not replicate, or not interpretable), computed the same way on both runs. Both numbers are read from each run's outcomes.jsonl. The same n (180 per family and cell) is required.
+controls:
+- 'the original run qwen35_122b_d1_topics2_parts (one H200, the same 180 scenes per family, map, lens and seeds; its cells bind_bridge and context at layers 24, 27, 30)'
+- 'reported beside the lens part, from both runs: the whole copy, the rest (not_jspace), rand_omp (a 25-atom OMP over a random dictionary), and the recalls (PM) at the same cells'
+n: '180 scenes per family (PP lookups, PM recalls), d1_topics_v2, 2 cells'
+seeds: [0]
+notes: "Dan, 23 Oct ~14:00: smoke before everything on the rented 2x H100 PCIe 80 GB box (sesterce-h100x2). The same scenes, map (qwen35_122b_d1_topics2_map), lens (the published J++, pinned, sha256-checked) and code path as qwen35_122b_d1_topics2_parts (the _r3 command), restricted with --force to the two cells; the null seeds depend on the case index, the set's index in SETS, the layer and the part's index, all unchanged, so the same rows get the same random directions. Differences from the original: the model split over two GPUs (BJ_DEVICE_MAP=auto: accelerate's balanced split, the embedding and the lens on GPU 0), H100 instead of H200 kernels, fewer jobs per case (2 sets instead of 3 at layer 30, so other read batches) and the current code (rand_sub and any part added since, all after the original parts: their seeds unchanged). mem_gb is the total over the job's two GPUs (jobq, 23 Oct). Batch 16 as the original; if it does not fit the split (OOM), a new id with a lower batch, recorded here as a deviation. The run also computes rand_sub at these cells, which the late-cells run (qwen35_122b_d1_late_parts) pre-registers and Dan has not opened: its numbers in this run's summary are not read or reported. No figures stage: statement_positions' figures stage does not draw PP / PM parts runs (KeyError 'PP' on qwen35_122b_d1_topics2_parts, checked 23 Oct); the judgement is the two cells' numbers next to the original's."

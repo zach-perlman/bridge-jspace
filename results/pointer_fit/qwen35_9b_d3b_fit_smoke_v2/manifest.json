@@ -1,0 +1,183 @@
+{
+  "exp": "pointer_fit",
+  "run": "qwen35_9b_d3b_fit_smoke_v2",
+  "why": "smoke: pointer_fit on the 9B with its J++; not a result",
+  "written_utc": "2026-10-23T02:19:32Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "config": {
+    "data": "pointer_v4",
+    "domains": [
+      "countries",
+      "animals",
+      "body"
+    ],
+    "collect_layers": [
+      21
+    ],
+    "steer_layers": [
+      21
+    ],
+    "scales": [
+      1.0
+    ],
+    "ks": [
+      4
+    ],
+    "n_test": 4,
+    "rr_n": 4,
+    "fit_limit": 20,
+    "span_rank": 32,
+    "primary_layer": 21,
+    "primary_scale": 1.0,
+    "competence": "qwen35_9b_d3v4_competence_r2",
+    "require_correct": true
+  },
+  "inputs": {
+    "data/pointer_v4/fit/countries_RL_e5f0.json": "733a2f73d85a7a3efe64f8f4e49ea4735890e92e889cffa14ed1d357391bb4a7",
+    "data/pointer_v4/fit/animals_RL_e5f0.json": "f87a869fa8720907b13d6f592ef1dfad9b1463ba9504fb9639ecc7c9e76e9dfd",
+    "data/pointer_v4/fit/body_RL_e5f0.json": "3db31bed270690eba979803965c82e49565073878d5e5a5aa28c9bf376a39f2c",
+    "data/pointer_v4/main/countries_RL_e5f0.json": "43b59cb01f9d4a39e12b71a9c06ca5965206bcae89d7965dc354e39e86c7174b",
+    "data/pointer_v4/main/countries_RR_e5f0.json": "ab26417b4b6348edb7c2bef5ceafc3900ea4fca5461b2d28aadc5362674f98bd",
+    "data/pointer_v4/main/animals_RL_e5f0.json": "c1138a7f05fdeef384d23828afc7ea168282f8599e8a8a20e73055d5162d667b",
+    "data/pointer_v4/main/animals_RR_e5f0.json": "c5301782c4ebd22a4589c1ff29bc05490b54253944cdf37b52272e02414d0b52",
+    "data/pointer_v4/main/body_RL_e5f0.json": "6e226678ac9e375384cc845ce67f1b9d2b445c1018f9ae5701b983a561ef6b60",
+    "data/pointer_v4/main/body_RR_e5f0.json": "74cce980aee4238fb14706d10244a67ceb5c65bd8886e3b8ffd75979ed87efe3",
+    "data/pointer_v4/split.json": "0abc08041da10ecade5d8949c1c9d45f0d5a8ae515695708a4d69fc91d26f245",
+    "results/pointer_v4/qwen35_9b_d3v4_competence_r2/items.jsonl": "1891cde5daba6494c9bd8fa07b79bf55808117e06eb5f88611269415f53c8340"
+  },
+  "entity_split": {
+    "countries": {
+      "fit": [
+        "Austria",
+        "Belgium",
+        "Canada",
+        "Chile",
+        "China",
+        "Cuba",
+        "Denmark",
+        "Egypt",
+        "Finland",
+        "France",
+        "Greece",
+        "Hungary",
+        "Indonesia",
+        "Iran",
+        "Japan",
+        "Korea",
+        "Norway",
+        "Peru",
+        "Philippines",
+        "Portugal",
+        "Spain",
+        "Sweden",
+        "Syria",
+        "Thailand"
+      ],
+      "held_out": [
+        "Australia",
+        "Germany",
+        "Iraq",
+        "Ireland",
+        "Italy",
+        "Kenya",
+        "Lebanon",
+        "Pakistan",
+        "Poland",
+        "Russia",
+        "Turkey",
+        "Venezuela"
+      ]
+    },
+    "animals": {
+      "fit": [
+        "ant",
+        "bear",
+        "butterfly",
+        "camel",
+        "cat",
+        "chicken",
+        "cow",
+        "crow",
+        "duck",
+        "eagle",
+        "fish",
+        "goose",
+        "horse",
+        "lion",
+        "mosquito",
+        "moth",
+        "mouse",
+        "owl",
+        "pig",
+        "rabbit",
+        "sheep",
+        "spider",
+        "whale"
+      ],
+      "held_out": [
+        "bee",
+        "deer",
+        "dog",
+        "elephant",
+        "frog",
+        "goat",
+        "snake",
+        "tiger",
+        "turkey",
+        "wolf",
+        "worm"
+      ]
+    },
+    "body": {
+      "fit": [
+        "bladder",
+        "brain",
+        "ear",
+        "elbow",
+        "eye",
+        "eyebrow",
+        "forehead",
+        "knee",
+        "skull",
+        "spine",
+        "wrist"
+      ],
+      "held_out": [
+        "ankle",
+        "heart",
+        "liver",
+        "stomach",
+        "tongue"
+      ]
+    }
+  },
+  "ci": {
+    "kind": "entity_cluster",
+    "cluster": "asked entity",
+    "strata": "domain",
+    "n_boot": 2000,
+    "seed": 0,
+    "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+  },
+  "seeds": {
+    "split": 0,
+    "shuffle": 1,
+    "sample": 0,
+    "null": 0,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "pointer_fit (D3b): is there a \"slot\" direction at the last tokens that steers the in-prompt lookup where the lens\npush does not?\n\nBackground (UNVERIFIED; README \"Depth track\", D3, pointer_swap d3_main_ae_27b): in memory \u2192 prompt, patching the alt\nprompt's hidden states into the tokens after the question at layers 44-50 most often gives the answer at the same\nstatement slot (29% vs 9% for bridge alt's own statement), and the lens push (bridge alt \u2212 bridge org) cannot steer\nthere. If the last tokens carry a pointer to a statement slot, a direction fitted to that slot should steer the lookup.\n\nDesign (Qwen3.6-27B; scenes from scripts/pointer_v1.py, 5 statements, animals and elements, the domains that pass the\ncompetence gate):\n  collect  fit set (pointer_v1 `fit`: memory \u2192 prompt only, scenes never used elsewhere): the hidden states at every\n           token after the question (instruction, template, 'Answer:'; the same tokens in every item) at the collect\n           layers, labelled by the asked statement's slot (0-4). Only items the model answers right, and only those whose\n           queried entity is in a seeded half of each domain's pool (the other half is held out)\n  fit      per layer: the slot direction = difference of class means, per token (mean over items asking slot j minus\n           the mean over all items); a rank-k subspace (k = 1, 2, 4, 8, 16) = the top principal directions of those\n           per-token class-mean deviations (the between-class scatter, unwhitened: LDA's whitening by the within-class\n           covariance would upweight low-variance directions, the route to Makelov et al. 2023's illusion); a\n           shuffled-label difference of means (labels permuted, seed 1); the span of real activation differences = the\n           top 32 principal directions of the per-token-centred fit states; slot decodability (nearest class mean,\n           5-fold cross-validation over items)\n  steer    held-out main items (other scenes; memory \u2192 prompt and, as a control, memory \u2192 memory), at each steer layer\n           and all of them at once ('window'), at 0.5-4x the per-token norm of the alt-prompt patch there (the D3 alt\n           prompt: statements reordered, another entity asked; target slot j = the slot the alt prompt asks, current\n           slot a = the asked one): add at every token after the question\n             slot      unit(mean_j \u2212 mean_a) per token x norm\n             sub k     the same difference projected on the rank-k subspace, renormalised\n             shuffled  the shuffled-label difference (control: should do nothing)\n             random    a random direction per token at the same norm (control)\n             lens      the lens push unit(v_bridge alt \u2212 v_bridge org), the same at every token\n             span / rest   the slot vector split into its part inside the span of real activation differences and the\n                       remainder, each added alone at its own norm (illusion control)\n             patch     the alt prompt's hidden states pasted at those tokens (reference; no scaling)\n           read: suite_split's answer read (one forward, a space appended); roles as pointer_swap (none = answer org kept;\n           position = the answer at slot j; identity = bridge alt's statement; value = the alt prompt's own answer)\n  geometry per steer layer: cosine of the slot deviations with the J-lens word directions of every entity of both\n           pools (and a random-vector null); principal angles between the rank-k subspace and the entities' span (and a\n           random-subspace null); the share of each slot deviation inside the J-space (25-atom signed OMP over the\n           lens's letter-token vectors) vs a random dictionary of the same size and a random vector\n",
+  "decision": "Decision rule (fixed before the 27B run): primary cell = memory \u2192 prompt, pooled domains, all held-out items, the slot\ndirection at layer 48 (D3's slot peak), 1x the alt-prompt patch's norm. \"The slot direction steers the lookup where the\nlens push does not\" iff (a) its slot-target rate (role position) has a Wilson 95% lower bound >= 0.30, and (b) it is at\nleast 20 points above both the lens push and the random direction at the same norm (point estimate; the paired\nbootstrap 95% lower bound of each difference also > 0). Valid only if the shuffled-label direction (memory \u2192 prompt)\nand the slot direction on memory \u2192 memory both keep the slot-target rate's Wilson upper bound <= 0.10 (n >= 35 each).\nIllusion flag (reported with the verdict): the out-of-span remainder alone reaches at least half of the full direction's\nrate while the in-span part alone stays below half. Reported, not decisive: every layer and the window, every scale,\nthe rank-k subspaces, the held-out-entity cut (queried entity never queried in the fit), geometry.\n"
+}

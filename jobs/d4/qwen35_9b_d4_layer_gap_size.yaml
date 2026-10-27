@@ -1,0 +1,63 @@
+id: qwen35_9b_d4_layer_gap_size
+title: "Layer gap with the size-matched patch, with and without its lens-readable part, at the stated bridge, every layer 6-22 (Qwen3.5-9B, its second scene set)"
+thread: D4
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.75
+depends_on:
+- qwen35_9b_d4_where
+- qwen35_9b_d4_where_fresh_seed2
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py run --name qwen35_9b_d4_layer_gap_size --n 100
+  --scenes fresh --fresh-seed 2 --exclude-runs qwen35_9b_d4_where --same-scenes qwen35_9b_d4_where_fresh_seed2
+  --rule v2 --patch --embed --gap-rule v2 --patch-dir --patch-dir-perp --gap-bars 3 1 --subsets s w
+  --layers 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 --context-layers 10 --scales 4 8 --v21-min-layer 10
+  --why "the layer gap on Qwen3.5-9B with the size-matched patch, with and without its J-space part (d4_layer_gap_v2_27b and the dose control, layers and bars scaled by depth)"
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/early_push_where.py figures --name qwen35_9b_d4_layer_gap_size
+question: >-
+  Layer by layer on Qwen3.5-9B, at the stated bridge's word: does the full patch keep moving lookups after the lens push
+  stops, and does it still do so when cut to the lens push's size, with and without its lens-readable part?
+why_it_matters: >-
+  On Qwen3.6-27B the full patch at the bridge's word kept moving lookups for 8 layers after the lens push stopped
+  (d4_layer_gap_v2_27b), but the patch was larger than the push. Cut to the push's size, a patch that still outlasts
+  the push carries the bridge in its direction, not its size; without its lens-readable part, a patch that still
+  outlasts the push carries it in a form the lens cannot read. A second model shows whether this is more than one
+  model's.
+hypotheses:
+  H-gap: 'the full patch stops >= 3 layers after the lens push and still switches lookups at the lens push''s stop (Wilson lower bound > 5%)'
+  H-no-gap: 'the full patch stops within 1 layer of the lens push'
+  H-direction: 'the patch cut to the lens push''s size stops >= 3 layers after the lens push and still switches lookups at the lens push''s stop (lower bound > 5%, about 11/100 or more, at 4x or 8x)'
+  H-dose: 'cut to the lens push''s size, it stops within 1 layer of the lens push, or before it'
+  H-direction-without-J-space: 'the same patch without its J-space part stops >= 3 layers after the lens push and still switches lookups at the lens push''s stop'
+  H-dose-without-J-space: 'without its J-space part, it stops within 1 layer of the lens push, or before it'
+  inconclusive: 'for each verdict: a gap of 2 layers, an arm never stopping for good, or no valid cell at the lens push''s stop'
+decision_rule: >-
+  scripts/early_push_where.py (docstring: the layer-gap test v2, the dose control and the size-matched patch without its
+  J-space part, written 22-23 Oct before this run), bars 3 and 1 layers (--gap-bars 3 1: the 27B's 6 and 2 scaled by
+  depth to 32 layers, Dan 23 Oct). Arms at the stated bridge's word (decisive) and sentence (reported), every layer
+  6-22: the lens push (4x, 8x the scene's reference norm), the input-embedding push W_E[X] - W_E[I] at the same norms,
+  the full patch at its own size, patch_dir = the scene's patch (the prompt -> prompt case's C - clean, one per scene
+  for all four families) rescaled to the lens push's norm (4x, 8x), patch_dir_perp = the same with its J-space part
+  removed (statement_positions' parts stage's jspace: the 25-atom signed OMP per position over the lens's letter-token
+  vectors) and rescaled to the lens push's norm (4x, 8x), a random push (4x, 8x). Valid cells: v2's off-path check
+  with each arm's own rows (memory -> prompt and memory -> memory changed <= 10%; for patch_dir and patch_dir_perp the
+  same scene patch, a real check) and the random push at the same layer and scale switching <= 5% of lookups. An arm
+  stops at a layer iff every valid cell there has the Wilson upper bound < 5%; it keeps moving iff some valid cell has
+  the lower bound > 5%; stop = the first grid layer from which it stops at every later layer with a valid cell (for
+  patch_dir and patch_dir_perp, never stopping counts as after the grid). Three verdicts at the word: (1) layer gap:
+  H-gap iff patch_stop - lens_stop >= 3 and the full patch keeps moving at lens_stop; H-no-gap iff <= 1; else
+  inconclusive. (2) size: H-direction iff patch_dir_stop - lens_stop >= 3 and patch_dir keeps moving at lens_stop;
+  H-dose iff <= 1; else inconclusive. (3) the same for patch_dir_perp. Reported, not decisive: the sentence the same
+  way; recalls (prompt -> memory) by layer for every arm; at lens_stop, where patch_dir or patch_dir_perp keeps moving
+  lookups, its recalls against its lookups at its cell with the most lookups switched (Wilson intervals): recalls below
+  lookups -> lookup-specific; otherwise not lookup-specific (for patch_dir_perp: the lens-invisible form moves recalls as
+  much as lookups); the share of the patch's squared norm removed with its J-space part and the patch's norm in units
+  of the 1x lens push (medians over scenes); the embedding push's and the off-scene push's courses; rule v2 on the
+  recall cells; the edits.
+controls:
+- 'a random push at the lens push''s norms (4x, 8x) at the same positions'
+- 'off-path: memory -> prompt and memory -> memory under each arm at the same positions (<= 10% changed for a valid cell)'
+- 'recalls (prompt -> memory) under every arm; the input-embedding push; the off-scene push; the text edits'
+n: '100 fresh scenes, four families: the draw of qwen35_9b_d4_where_fresh_seed2 (seed 2 from a pool of 147, qwen35_9b_d4_where''s scenes left out), Dan''s scene choice (a); asserted equal to its selection.json at run time, and reproduced on the tokenizer before this spec was written'
+seeds: [0, 2]
+notes: "Replaces qwen35_9b_d4_layer_gap_v2 (af24245, held, never run): with its 47 new scenes the stop rule could not fire (0 of n has a Wilson upper bound < 5% only from n = 73). Dan, 23 Oct: scene choice (a), the 100 scenes of the 9B's second set; add patch_dir and patch_dir_perp; layers 6-22; bars 3 and 1. Changed from the held spec besides those: --gap-bars sets the bars in the script, so the printed verdicts are the decisive ones (the held spec had to re-apply 3 / 1 by hand); --subsets s w (the question's subject phrase and the whole context were reported extras of the 27B run, no part of any verdict here). The agent's reading, for Dan to change before the run: 'layers 6-22' as every layer (the 27B's every second layer scaled by depth, so that bars of 3 and 1 layers can be met; every second layer would allow gaps of 0, 2, 4 only); the recall-against-lookup statement (where, which cell, Wilson intervals). Cost: 448 rows per item (17 layers) plus one fp32 letter dictionary (about 4 GB) per scene and layer for the J-space fit: about 0.75 h on one A100 (qwen35_9b_d4_where: 0.39 h for about 390 rows per item); memory about 26 GB (the 9B's D4 runs peaked at 20.8 GB)."

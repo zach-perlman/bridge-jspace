@@ -1,0 +1,35 @@
+{
+  "exp": "x7_pcf",
+  "run": "qwen35_9b_x7_pcf",
+  "written_utc": "2026-10-26T14:12:14Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "619b90697bbb1b5128a31317fa5d9ac9d82c9d19",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 12,
+  "pairs": 1000,
+  "rank": 4,
+  "pca": "centered, over the pairs' bridge-word differences S - O",
+  "alf_from": "qwen35_9b_x0_probe_v4",
+  "seeds": {
+    "pairs": 4301
+  },
+  "note": "Dan 26 Oct ~10:45 / ~11:55; batch 43; descriptive until its answers"
+}

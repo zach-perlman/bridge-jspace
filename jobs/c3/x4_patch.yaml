@@ -1,0 +1,31 @@
+id: x4_patch
+title: "X4 patch test (graded rules): the lookup's extra loss without the J++ part, translated and symbol keys vs verbatim, single-change edit; 27B L32 on GPU0, 9B L12 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 1.0
+depends_on: [x4_probe]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x4_alias.py run --name x4_patch_27b --why "X4 patch test (jobs/c3/X4.md)" & p27=$!;
+  CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x4_alias.py run --name qwen35_9b_x4_patch --why "X4 patch test (jobs/c3/X4.md)" & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  On alias_pointer_v1's scenes in X0's frame, single-change edit (the asked pick becomes an unpicked entity), at the bridge's word, 27B L32 and 9B L12: is the lookup's extra loss without the J++ part (k = 25, against a random part of its share) larger with translated locker statements than with verbatim ones (animals), and with chemical-symbol statements than with verbatim ones (elements, the positive control)?
+why_it_matters: >-
+  If the lookup's independence from J++ needs a verbatim key match, the lookup should start needing the J++ part when the key must be matched by meaning (translated) or by knowledge (symbol).
+hypotheses:
+  H-verbatim: 'D_translated >= 0.20 (needs a verbatim match). Prior: Dan''s, predictions batch 29'
+  H-not: 'D_translated <= 0.10 (does not). Prior: Dan''s, batch 29'
+  H-control: 'D_symbol >= 0.20 (the positive control passes). Prior: Dan''s, batch 29'
+decision_rule: >-
+  jobs/c3/X4.md section 2 (graded rules from the brief): D_translated = lookup excess (translated) - lookup excess (verbatim), animals: >= 0.20 -> the lookup's independence from J++ needs a verbatim match; <= 0.10 -> it does not; else mixed. Positive control D_symbol = excess (symbol) - excess (verbatim), elements: >= 0.20 passes; if it fails, the report says the method may not see a lookup that needs J++. Paired by scene, cluster bootstrap over bridge entities (10,000 resamples, seed 0); per-form gate >= 0.80 per reader; eligibility per reader (X4.md). Results not opened or summarized before Dan's batch-29 commit.
+controls:
+- 'the random part at J++''s own share, per item'
+- 'both readers on the identical patch'
+- 'the verbatim form on the same scenes (paired)'
+- 'the positive control (chemical symbols)'
+- 'the per-form competence gate'
+n: '400 scenes per form; lookup-eligible after the gate; recall-eligible: animals 181 per form (bird <-> mammal), elements 400'
+seeds: [2910, 0]
+notes: "Competence on ~1,600 cases (~20 min on the 27B), then X0's arms at the predicted layer on the eligible items (~10 min). The verdict (D_translated, D_symbol, recall cells) runs on the CPU after the pull."

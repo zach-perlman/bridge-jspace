@@ -1,0 +1,47 @@
+id: d1_parts_v1
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.35
+depends_on:
+- d1_map_v1
+command: >-
+  uv run python scripts/statement_positions.py parts --name d1_parts_v1 --map d1_map_v1
+  --why "D1: at the transit cells (statement positions vs question), is the copy's effect carried by its J-space part?"
+  --lo 32 --sets bind_bridge bridge_word lookup_x context question
+examples_command: uv run python scripts/statement_positions.py examples --name d1_parts_v1
+figures_command: uv run python scripts/statement_positions.py figures --name d1_parts_v1
+question: Where the bridge is in transit at layers 32-40 (d1_map_v1's transit cells), does the J-space part of C's copy
+  carry more of its effect than its share of the copy predicts, at the statement positions as at the question tokens?
+why_it_matters: 'Kills or supports the location-artefact reading of claim C2''s "prompt lookups go around the J-space".
+  At the statements BL and BR receive the identical patch (the context precedes the question), so a BL-BR
+  concentration difference there isolates what the lookup reads from the same representation.'
+hypotheses:
+  H-loc: 'at a BL (or BLR) statement set in transit at 32-40: J-space concentration lower bound > 1.2 and above the
+    random-dictionary null''s upper bound (countries at the question tokens: 2.5-2.9); BR minus BL concentration at
+    the same cells within +-0.3'
+  H-around: 'at every BL statement set in transit at 32-40: concentration upper bound < 1.0 (as at the question tokens:
+    0.3-0.4) with not_jspace - jspace > 0; BR (and countries B) at the same sets > 1.2; BR minus BL > 0.5'
+  prior: 'Prior (Dan''s agent): H-around 0.5, H-loc 0.25, inconclusive / empty cells 0.25. Reasons: the J-space part of
+    the question-token copy never flipped any suite family; the bridge word at its own statement is a token the lens
+    reads easily, which could favour H-loc at bridge_word only.'
+decision_rule: 'Fixed before the run (module docstring). Per family, set, primary window (layers 32/36/40 among the
+  transit cells): inside if the J-space concentration (case bootstrap 95%) lower bound > 1.2 and above rand_omp''s
+  upper bound; around if the upper bound < 1.0 and not_jspace - jspace > 0 (paired bootstrap lower bound); else
+  inconclusive (suite_split''s 2.0 rule reported as verdict_strict). J-space half of D1: H-loc if any BL/BLR statement
+  set is inside; H-around if all are around and the positive control (countries B, else BR) is inside at the same
+  set; around without a passing positive control is not interpretable; no BL statement cell in transit at 32-40 =
+  H-loc''s location premise fails (reported, nothing to split).'
+controls:
+- 'each part along a random direction at the same per-position norms (its null)'
+- 'rand_omp: the same 25-atom OMP over a random dictionary (the fitting null for concentration)'
+- 'jspace_matched / lens2_matched: equal-sized, equally aligned pieces of the copy'
+- 'jspace_wo_own: the J-space part after the bridge''s and X''s own lens vectors are projected out (is it the word?)'
+- 'O''s full copy at the same cell; positive control: countries B (recall-used, lens-writable) at the same sets'
+n: up to 32 per family (d1_map_v1's cases), only families with transit cells
+seeds:
+- 0
+notes: 'Cells depend on the map. Time per cell ~1.1 s on the A100 (16 reads at ~22/s plus three 25-atom OMPs over
+  ~200k letter-token vectors, fp32); expected ~4 cells per bound-family case and ~1 per cue-only case (~800 cells,
+  0.3 h); worst case (5 sets x 3 layers in every case) 1.2 h. One layer''s dictionaries (two [letters, 5120] fp32
+  maps, ~8 GB) at a time next to the 27B (layer-major loop).'

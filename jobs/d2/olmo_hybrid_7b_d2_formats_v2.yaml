@@ -1,0 +1,25 @@
+id: olmo_hybrid_7b_d2_formats_v2
+title: "Late read and name vs digit in prose, tables and JSON, four times the scenes (Olmo-Hybrid-7B Instruct)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.4
+depends_on:
+- olmo_hybrid_7b_port_smoke
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/tasks_v2.py competence --set d2_formats_v2 --name olmo_hybrid_7b_d2_formats_v2_competence --why "D2 formats, four times the scenes" && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py manifest --name olmo_hybrid_7b_d2_formats_v2 --dataset tasks_v2 --tasks-set d2_formats_v2 --competence olmo_hybrid_7b_d2_formats_v2_competence --families MP MM PP PM --formats prose table json --n 80 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all kind --sweep path --why "findings 3 and 4 in tables and JSON on Olmo-Hybrid-7B Instruct, a fresh draw with four times the scenes" && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py run --name olmo_hybrid_7b_d2_formats_v2
+figures_command: uv run python scripts/d2_formats.py --name olmo_hybrid_7b_d2_formats_v2
+question: >-
+  Do the late read and the name / digit split hold in tables and JSON tool outputs, with enough items per format to decide?
+why_it_matters: >-
+  Findings 3 and 4 in less toy formats on the non-Qwen DeltaNet hybrid. olmo_hybrid_7b_d2_formats kept 24 memory -> prompt table items, 14 prose and 14 JSON after the competence filter: too few for the late-read bound (Wilson upper bound <= 0.30) to separate formats. A fresh draw with four times the scenes aims at >= 60 table items.
+hypotheses:
+  H-all-formats: 'both hold in all three formats. Prior 0.55 (copied from olmo_hybrid_7b_d2_formats)'
+decision_rule: >-
+  As d2_formats_27b, scored by scripts/d2_formats.py: the committed rules per format (on a hybrid it reads the late read in the attention layers, with the DeltaNet layers alongside, as for d2_formats_27b). Unchanged from olmo_hybrid_7b_d2_formats.
+controls:
+- 'the off-path row hidden the same way; the off-path row without its name / value; the recall words'
+n: '80 scenes per (word, topic, format) cell where eligible (prompt-start cells hold 80 scenes, memory-start cells 119, elements / JSON 8; Greek has no memory-start scenes, as in d2_formats_v1). Expected after the competence filter, from olmo_hybrid_7b_d2_formats_competence''s per-cell pass rates on d2_formats_v1 (CPU recount reproduces its 24 / 14 / 14): memory -> prompt ~110 table items (76-148 over the pass rate''s Wilson 95% interval), ~62 prose, ~53 JSON; prompt -> prompt ~80 per format'
+seeds: [0, 32]
+notes: >-
+  Mechanical copy of olmo_hybrid_7b_d2_formats (Dan, 23 Oct: more scenes, aiming at n >= 60 table items after the competence filter). Changed: (1) the data set: data/tasks_v2/d2_formats_v2, made by scripts/tasks_v2.py make with the source set's arguments (PP PM MP MM; animals, planets, elements, Greek; prose, table, json; level 0; --counterfactuals) except --n 960 scenes per group and level (240 in d2_formats_v1, x4) and seed 32 (31 there): a fresh draw, because the generator's draw at a larger n is not a superset of the 240 (the digit cap and the group order change the random stream), so seed 31 at n 960 would share an unknown part of its scenes with the first run; seed 32 is used by no tasks_v2 set (22, 23, 31, 41 are); no context is shared with d2_formats_v1 (checked). (2) --n 80 for 20 (x4 with the scenes: every prompt-start scene and, in expectation, every eligible memory-start scene, as --n 20 was on d2_formats_v1); (3) run names. Factor: in olmo_hybrid_7b_d2_formats the memory -> prompt table items passed 24 of 79 scenes (animals 14/26, elements 10/26, planets 0/27), so >= 60 needs ~200 table scenes (x2.5); x4 keeps >= 60 at the pass rate's lower 95% bound. At n 960 the generator gave up on elements / JSON for memory-start scenes after 8 (a combination that yields nothing in 60 draws is dropped; manifest coverage), so JSON's memory -> prompt items are mostly animals, as in the first run (11 of 14). Checked on CPU before commit: tasks_v2.make reproduces d2_formats_v1 byte for byte with the same arguments (tokenizer from its cached files, Qwen3.6-27B's, as for v1); every one of the 3840 items builds an attn_knockout case on OLMo-3-7B-Instruct's tokenizer (the hybrid's own, per the pin; its files are not cached here) and on Qwen3.6-27B's. Seeds: 0 the run's own (as the source), 32 the data set's. GPU-h from the ledger: the source took 0.08 h (competence 127 s for 960 items, the knockout ~160 s); x4 items, ~0.35 h. Not opened before Dan's predictions.

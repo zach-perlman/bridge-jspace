@@ -1,0 +1,44 @@
+{
+  "exp": "x0_probe",
+  "run": "qwen35_122b_x0_probe_v4",
+  "written_utc": "2026-10-24T23:01:45Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule.",
+  "source": null,
+  "source_code": null,
+  "set": "d1_topics_v4",
+  "layer": 33,
+  "x0_items": 0,
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "f66467bb0b1cda85e7e9adba506b97f63604404f",
+    "dirty": true
+  },
+  "position": "the asked person's bridge word, org run, chat",
+  "folds": {
+    "outer": 5,
+    "inner": 4,
+    "penalties": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ]
+  },
+  "seeds": {
+    "bootstrap": 0
+  },
+  "targets": {
+    "answer digit": "answer",
+    "locker sentence": "locker_index",
+    "bridge identity": "entity"
+  }
+}

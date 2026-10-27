@@ -1,0 +1,168 @@
+{
+  "exp": "pointer_v1",
+  "run": "d3_smoke_27b_comp",
+  "written_utc": "2026-10-20T21:28:08Z",
+  "why": "D3 smoke: competence code path on the 27B",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "sets": [
+    "dev"
+  ],
+  "items": {
+    "dev/animals_RL_e3f0": {
+      "file": "data/pointer_v1/dev/animals_RL_e3f0.json",
+      "sha256": "0e83360fe4303693eea64c5ddf41b257a434294bc7a7ef8b5f49f6208ca583fa"
+    },
+    "dev/animals_DL_e3f0": {
+      "file": "data/pointer_v1/dev/animals_DL_e3f0.json",
+      "sha256": "886d6864e31b5dba4e4ed836afef96459bb6922780fd3d4a59a884780bff85de"
+    },
+    "dev/animals_RR_e3f0": {
+      "file": "data/pointer_v1/dev/animals_RR_e3f0.json",
+      "sha256": "229e6e3b7db2a3b8801dba7c6ca079a32dbca8eac602ada2d86722c8714e15f2"
+    },
+    "dev/planets_RL_e3f0": {
+      "file": "data/pointer_v1/dev/planets_RL_e3f0.json",
+      "sha256": "b7dc33b28bcff6e4a717ceef6fdb3ad1fc7a0dde2ca6d8ec331b375a473b37ba"
+    },
+    "dev/planets_DL_e3f0": {
+      "file": "data/pointer_v1/dev/planets_DL_e3f0.json",
+      "sha256": "4b51823297695d84de9e870ec2a4898626d134173af77dca3b948855213114b4"
+    },
+    "dev/planets_RR_e3f0": {
+      "file": "data/pointer_v1/dev/planets_RR_e3f0.json",
+      "sha256": "6e26eeb2578568a0d7bc91bfa96360a5631ab41887f4485a05c437996b7e28ef"
+    },
+    "dev/elements_RL_e3f0": {
+      "file": "data/pointer_v1/dev/elements_RL_e3f0.json",
+      "sha256": "89c53ae0b98de9208d4acb492417d9c2fb37f491837f6b31e26ae95ffe915377"
+    },
+    "dev/elements_DL_e3f0": {
+      "file": "data/pointer_v1/dev/elements_DL_e3f0.json",
+      "sha256": "1ff55e69181779002a58def12c2e4f0852d1a2a31e3ecf28574f4a55d2732cf4"
+    },
+    "dev/elements_RR_e3f0": {
+      "file": "data/pointer_v1/dev/elements_RR_e3f0.json",
+      "sha256": "c16cee2fb4769121695c9391a934195b1b560b5871b99f63d2e50fd34da2dc6f"
+    },
+    "dev/months_RL_e3f0": {
+      "file": "data/pointer_v1/dev/months_RL_e3f0.json",
+      "sha256": "dc894bd6fd56f78bc632552d71c40d52b3512bb82cc18ad09f4eeb91a10e6b3a"
+    },
+    "dev/months_DL_e3f0": {
+      "file": "data/pointer_v1/dev/months_DL_e3f0.json",
+      "sha256": "632ba797089a03e963394c6dcf6d031ec8fbb5480537e829eef1331c39e9e8ed"
+    },
+    "dev/months_RR_e3f0": {
+      "file": "data/pointer_v1/dev/months_RR_e3f0.json",
+      "sha256": "271826b33a42f01fcc15f5ba37806a5b2eef617ec61626064559601cbe480763"
+    },
+    "dev/animals_RL_e5f0": {
+      "file": "data/pointer_v1/dev/animals_RL_e5f0.json",
+      "sha256": "ab5f93a4f4e1c4af85fb504132f83e91e8eabf83b3116ddb75a53105843b1d93"
+    },
+    "dev/animals_DL_e5f0": {
+      "file": "data/pointer_v1/dev/animals_DL_e5f0.json",
+      "sha256": "f841b0efba2844410b7bb5bf9461041fdfc5d7c9ee5e08c3364c8186fc3457da"
+    },
+    "dev/animals_RR_e5f0": {
+      "file": "data/pointer_v1/dev/animals_RR_e5f0.json",
+      "sha256": "15371621eb86d176e4e3b6fc3045bdb4ca99167a20dd789e815df70597835c3d"
+    },
+    "dev/planets_RL_e5f0": {
+      "file": "data/pointer_v1/dev/planets_RL_e5f0.json",
+      "sha256": "47a9bcb6b29643c1aff7ba7da1c5a9bbd3c46b30a64b75dc3df3bb9d6098e40f"
+    },
+    "dev/planets_DL_e5f0": {
+      "file": "data/pointer_v1/dev/planets_DL_e5f0.json",
+      "sha256": "c1b45cdbd1bc9b84a7a013f901a6a1df6610f2c102d9110edabb842a48950477"
+    },
+    "dev/planets_RR_e5f0": {
+      "file": "data/pointer_v1/dev/planets_RR_e5f0.json",
+      "sha256": "92ad21349608fa57e07f25fbdb564146f0f0f8bb03a7cf44ac70a15ad8b56ca4"
+    },
+    "dev/elements_RL_e5f0": {
+      "file": "data/pointer_v1/dev/elements_RL_e5f0.json",
+      "sha256": "d12a9999c1467cd203f2335a11becfea403f0e9cf945cc75d945b72e66e2a3f9"
+    },
+    "dev/elements_DL_e5f0": {
+      "file": "data/pointer_v1/dev/elements_DL_e5f0.json",
+      "sha256": "1fa67c173ae5d147599fa7b4b23643131a828d49297372be90cb6a7fd9e1e65c"
+    },
+    "dev/elements_RR_e5f0": {
+      "file": "data/pointer_v1/dev/elements_RR_e5f0.json",
+      "sha256": "1ed38c7706762f5cea83994b7e99ed4cfd4cf83197f825d606918ba5bcb9ff94"
+    },
+    "dev/months_RL_e5f0": {
+      "file": "data/pointer_v1/dev/months_RL_e5f0.json",
+      "sha256": "ac6309f68b5a7ca094f3be660dc738e93b0064c6c22adbdd1eb90137473aef79"
+    },
+    "dev/months_DL_e5f0": {
+      "file": "data/pointer_v1/dev/months_DL_e5f0.json",
+      "sha256": "7348414c33d9a39436c776c3973df24ea11dcf370a9af4e3225d8c2c0da69dd8"
+    },
+    "dev/months_RR_e5f0": {
+      "file": "data/pointer_v1/dev/months_RR_e5f0.json",
+      "sha256": "36001079dd62ec2e9be526f3dae66580e02683c0c14819d76333330d87144329"
+    },
+    "dev/animals_RL_e5f4": {
+      "file": "data/pointer_v1/dev/animals_RL_e5f4.json",
+      "sha256": "029864000d93c61190cb11069a2fc78b5cfd66e9a67831675ce66a06edae53ac"
+    },
+    "dev/animals_DL_e5f4": {
+      "file": "data/pointer_v1/dev/animals_DL_e5f4.json",
+      "sha256": "3f2603afa4134a237d073cdc0020bb39fea422c63f868f6fb351aa301255feb6"
+    },
+    "dev/animals_RR_e5f4": {
+      "file": "data/pointer_v1/dev/animals_RR_e5f4.json",
+      "sha256": "e1b009eca0bab895048b9d5c7ba3219b769ec132501ce172e415f1f0c6c98662"
+    },
+    "dev/planets_RL_e5f4": {
+      "file": "data/pointer_v1/dev/planets_RL_e5f4.json",
+      "sha256": "415072c821a564e6f9044d2c5ebfb6fedae33d535455fde65f21328fa4f04c85"
+    },
+    "dev/planets_DL_e5f4": {
+      "file": "data/pointer_v1/dev/planets_DL_e5f4.json",
+      "sha256": "12e42b50580e781ef48d634eafc599938412e252a619025452fafbcc213f5856"
+    },
+    "dev/planets_RR_e5f4": {
+      "file": "data/pointer_v1/dev/planets_RR_e5f4.json",
+      "sha256": "0955c9e011ad02b94ca1853ff9f5567f8027b03137f95ca395d3fe553d6bf771"
+    },
+    "dev/elements_RL_e5f4": {
+      "file": "data/pointer_v1/dev/elements_RL_e5f4.json",
+      "sha256": "b7353918471684b99842a5970eddfc8c5a987fd5b92e467a9c318eb808038f61"
+    },
+    "dev/elements_DL_e5f4": {
+      "file": "data/pointer_v1/dev/elements_DL_e5f4.json",
+      "sha256": "5fb5bb9b56d9a44d3a1686644f1675157fd11738285ba997212152095cb32dbd"
+    },
+    "dev/elements_RR_e5f4": {
+      "file": "data/pointer_v1/dev/elements_RR_e5f4.json",
+      "sha256": "9c7b626ab7322bf80bd1236be282f08a6c24e161f6f7bb5d6df2b1abc27b16d4"
+    },
+    "dev/months_RL_e5f4": {
+      "file": "data/pointer_v1/dev/months_RL_e5f4.json",
+      "sha256": "924ce264a96b4c3c8fcb327f11386b21f7c6b8a9b9bb4e41b52f543bb0355c20"
+    },
+    "dev/months_DL_e5f4": {
+      "file": "data/pointer_v1/dev/months_DL_e5f4.json",
+      "sha256": "db399704f6768570c7bb0e842c5cd1ba66c0b0150709b32f106a49a8f02687ae"
+    },
+    "dev/months_RR_e5f4": {
+      "file": "data/pointer_v1/dev/months_RR_e5f4.json",
+      "sha256": "cd8731690b06986248e4cde382f519081738917e4b6bc6f3834a4bde77c56ebc"
+    }
+  },
+  "limit": 2,
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and 'Answer with a single word and nothing else.' in one user turn",
+  "prompts": "base; each source (dissoc, same, redigit) with its own context and question; hop1 (cue -> entity, with the base context) and hop2 (the lookup with the entity named, or the recalled fact) for RL and RR",
+  "judge": "the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words and ordinals for digits; the domain's entities otherwise)",
+  "answer_read": "suite_v1's: one forward with a digit answer's space token appended; p and margin of the answer's first token; whether the read's top token is the greedy answer",
+  "eligibility": "pointer_swap uses items with every prompt right (base, the three sources, the steps alone)"
+}

@@ -1,0 +1,78 @@
+{
+ "run": "qwen36_27b_natural_competence",
+ "items": 718,
+ "seconds": 264,
+ "first_token_right": {
+  "full": [
+   0.7743732590529248,
+   0.7423847380380493,
+   0.8034413822631359
+  ],
+  "alone": [
+   0.786908077994429,
+   0.7554690503930546,
+   0.8152932886020934
+  ],
+  "deleted": [
+   0.013927576601671309,
+   0.007582392673570745,
+   0.025446460193872745
+  ],
+  "swapped": [
+   0.001392757660167131,
+   0.0002458919219694906,
+   0.007846742251511229
+  ]
+ },
+ "greedy_right_full": [
+  0.9832869080779945,
+  0.9710156622033672,
+  0.9904141029971976
+ ],
+ "eligible": 469,
+ "eligibility": "full: first token right and greedy right; alone: first token right (the answer's sentence suffices); deleted: first token wrong (the answer needs that sentence)",
+ "eligibility_funnel": {
+  "built": 718,
+  "eligible": 469,
+  "steps": [
+   {
+    "dropped_by": "the answer's first token is under 3 characters and not its whole first word",
+    "dropped": 86,
+    "left": 632
+   },
+   {
+    "dropped_by": "with the paragraph, the answer's first token is not on top",
+    "dropped": 145,
+    "left": 487
+   },
+   {
+    "dropped_by": "with the paragraph, the greedy answer is wrong",
+    "dropped": 2,
+    "left": 485
+   },
+   {
+    "dropped_by": "the answer's sentence alone is not enough (first token not on top)",
+    "dropped": 6,
+    "left": 479
+   },
+   {
+    "dropped_by": "without the answer's sentence the first token is still on top (answered without it)",
+    "dropped": 10,
+    "left": 469
+   }
+  ],
+  "failing_each_criterion_alone": {
+   "the answer's first token is under 3 characters and not its whole first word": 86,
+   "with the paragraph, the answer's first token is not on top": 162,
+   "with the paragraph, the greedy answer is wrong": 12,
+   "the answer's sentence alone is not enough (first token not on top)": 153,
+   "without the answer's sentence the first token is still on top (answered without it)": 10
+  },
+  "coverage": "Not covered: items whose answer needs a neighbouring sentence (a pronoun's antecedent, a subject named earlier) fail 'the answer's sentence alone' and are dropped, so the verdict is about answers that one sentence gives on its own."
+ },
+ "swapped_right_on_eligible": [
+  0.0021321961620469083,
+  0.000376474500834916,
+  0.011977768442256388
+ ]
+}

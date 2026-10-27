@@ -1,0 +1,23 @@
+id: muse30b_competence_extra
+title: "Muse Glimmer 30B: competence on pointer_v4x, v5, v6 and the animal suite"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.5
+depends_on:
+- muse30b_port_smoke
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v4x.py manifest --name muse30b_d3v4x_competence --why "Muse: pointer_v4x competence" && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v4x.py competence --name muse30b_d3v4x_competence && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v5.py manifest --name muse30b_d3v5_competence --why "Muse: pointer_v5 competence" && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v5.py competence --name muse30b_d3v5_competence && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v6.py manifest --name muse30b_d3v6_competence --why "Muse: pointer_v6 competence" && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v6.py competence --name muse30b_d3v6_competence && BJ_TARGET=muse-glimmer-30b BJ_JUDGE=read uv run python scripts/pointer_v6.py errors --name muse30b_d3v6_competence && BJ_TARGET=muse-glimmer-30b BJ_FORMAT=chat uv run python scripts/suite_v1.py manifest --set main --name muse30b_competence_chat_v1 --why "Muse: the animal suite (for the fresh-scene push)" && BJ_TARGET=muse-glimmer-30b BJ_FORMAT=chat uv run python scripts/suite_v1.py competence --name muse30b_competence_chat_v1
+question: >-
+  Which items of pointer_v4x / v5 / v6 and the animal suite does Muse answer right?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-gate: 'the gates pass. Prior 0.6'
+decision_rule: >-
+  The competence gates as on the other models.
+controls:
+- 'as the same test on the other models'
+n: 'pointer_v4x, v5, v6 main; the suite''s main set'
+seeds: [841, 844]
+notes: "Dan, 22 Oct night: Muse Glimmer 30B (Meta) as a sixth model, every experiment, the rules copied unchanged from the other models; layers by the fixed rules or the 27B's scaled by depth (x 52/64). Not opened before Dan's predictions; README and figures only after he opens the results."

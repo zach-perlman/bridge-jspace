@@ -1,0 +1,48 @@
+id: olmo3_7b_base_abl_rot_raw_v1
+thread: D5
+gpus: 1
+est_gpu_hours: 0.5
+mem_gb: 30
+depends_on:
+- olmo3_7b_base_competence_raw_v1
+command: BJ_TARGET=olmo-3-7b-base BJ_FORMAT=raw uv run python scripts/ablate_pilot.py --name olmo3_7b_base_abl_rot_raw_v1
+  --why "D5b gate G2 + ladder E2 on olmo-3-7b-base (raw)" --n 100 --layers 15 18 21 --comp-main olmo3_7b_base_competence_raw_v1
+  --comp-computed none --countries-build --rotated
+question: In olmo-3-7b-base (raw format), does removing the J-space (25-atom OMP over its own J-lens's letter-token
+  vectors) at layers 15/18/21 break recall chains (BR, RR) but not prompt lookups (BL, RL), while same-size controls
+  leave every family intact?
+why_it_matters: 'Gate G2 (random/same-size removal keeps >= 90%) and the ladder''s primary measure. D5b / claim
+  C2 (memory vs prompt: recall needs the J-space, prompt lookups go around it). If the split is present in the base
+  model, post-training is not what creates it (the ''around'' route is a pretraining mechanism, e.g. binding/lookback
+  pointers); if it first appears at SFT/DPO/RLVR, the split is a property of post-trained chat models. A null on
+  Instruct with a passing gate says the Qwen result does not generalise to OLMo.'
+hypotheses:
+  H_pre: 'split already in base: J-space removal at 15/18/21 leaves BL/RL >= 90% and drops BR/RR by >= 30 points
+    in base AND in Instruct (lookup - recall gap within +-15 points of each other)'
+  H_post: 'split installed by post-training: base gap <= 10 points (lookups and recalls hurt alike, or neither),
+    Instruct gap >= 30; the first checkpoint with gap >= 30 is the stage (prior: SFT, where mhough''s lens comparison
+    puts most of the J-space move)'
+  H_format: 'split is a prompt-format effect: Instruct gap >= 30 in chat but <= 10 in raw'
+  H_none: no checkpoint shows a gap >= 20 in either format (OLMo does not replicate Qwen at 7B)
+  prior: 'Prior (Dan''s agent, before any run): H_pre 0.35, H_post 0.25, H_format 0.1, H_none 0.3 (the 9B wrote
+    recall weakly).'
+decision_rule: 'GATE G2: rotated and random-dictionary removal keep accuracy >= 0.90 on every family/step (items
+  right unedited); else the J-space rows are not interpreted (Gemma''s failure mode). Split measure: gap = mean(BL,
+  RL) - mean(BR, RR) accuracy under J-space removal, clean prompts; ''present'' if the paired-bootstrap 95% CI lower
+  bound >= 20 points, ''absent'' if the upper bound <= 10, else ''inconclusive''. Hypotheses are judged across the
+  ladder''s jobs.'
+controls:
+- 'rotated: the J-space fit turned by a fixed random rotation (exact same norm removed, position by position)'
+- 'random dictionary: same OMP over a random dictionary of the same size'
+- 'hop rows: the last step alone, to separate the step from the chain'
+- 'countries R/B (built now from exp09 eligibility): word answers, a known J-space-heavy family'
+n: 100 per family (BL, BR, RL, RR clean + hop; countries R, B)
+seeds:
+- 777
+- 888
+- 0
+notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Lens port in (2026-10-21): pins.FROZEN_LENS is each OLMo target''s J-lens (key jlens, sha256-checked on load), a lens stage refuses a layer without a lens map before it writes anything, and manifests record the lens key and lens_layers. Disk:
+  model snapshots in the box''s HF cache (/ephemeral/hf). Layers 15/18/21 = 47-66% depth (27B''s 32/36/40 = 50-62%;
+  the lens exists only at every 3rd layer). Time: 27B v1 took 1386 s for 1,400 rows x 3 conditions; 7B ~3x cheaper,
+  +1 condition. No examples_command: ablate_pilot.py has no examples stage yet (none of suite_v1, ablate_pilot,
+  read_write, suite_split has one).'

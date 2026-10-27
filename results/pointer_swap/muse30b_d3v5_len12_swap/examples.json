@@ -1,0 +1,1418 @@
+{
+ "exp": "pointer_swap",
+ "run": "muse30b_d3v5_len12_swap",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group last, layers [36, 38, 40, 42] and the transit window",
+ "groups": [
+  {
+   "key": "other",
+   "title": "other",
+   "definition": "any other answer (a recalled digit, another digit, a word)",
+   "n_total": 449
+  },
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 374
+  },
+  {
+   "key": "none",
+   "title": "none",
+   "definition": "the patch left the base answer",
+   "n_total": 98
+  },
+  {
+   "key": "position",
+   "title": "position",
+   "definition": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+   "n_total": 92
+  },
+  {
+   "key": "context",
+   "title": "context",
+   "definition": "another digit of the base context, predicted by no hypothesis",
+   "n_total": 154
+  },
+  {
+   "key": "identity",
+   "title": "identity",
+   "definition": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
+   "n_total": 73
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 58
+  }
+ ],
+ "examples": [
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "countries-RL-e12-word-0003",
+   "domain": "countries",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The green drawer holds the Chile file. The grey drawer holds the Russia file. The cyan drawer holds the Iran file. The beige drawer holds the Finland file. The brown drawer holds the China file. The gold drawer holds the Norway file. The red drawer holds the Hungary file. The black drawer holds the Austria file. The silver drawer holds the Syria file. The pink drawer holds the Thailand file. The violet drawer holds the Venezuela file. The blue drawer holds the Japan file.\nThe file on the country whose capital is Vienna is in a drawer of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 850,
+     "end": 857,
+     "role": "patched (last)"
+    },
+    {
+     "start": 498,
+     "end": 538,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 264,
+     "end": 302,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 459,
+     "end": 497,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 714,
+     "end": 749,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The black drawer holds the Iran file. The grey drawer holds the Austria file. The beige drawer holds the Finland file. The purple drawer holds the Syria file. The pink drawer holds the Thailand file. The gold drawer holds the Venezuela file. The yellow drawer holds the Russia file. The white drawer holds the Hungary file. The violet drawer holds the Japan file. The green drawer holds the China file. The orange drawer holds the Chile file. The blue drawer holds the Norway file.\nThe file on the country whose capital is Moscow is in a drawer of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 467,
+     "end": 507,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 38 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "black",
+    "edited": "The",
+    "expected": {
+     "none": "black",
+     "identity": "grey",
+     "position": "red",
+     "value": "yellow"
+    },
+    "unedited_read": "black"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0038,
+     "identity": 0.0046,
+     "position": 0.0205,
+     "value": 0.0055
+    },
+    "layer": 38,
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('The')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e12-word-0017",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the tongue is kept in the silver folder. The chart on the liver is kept in the blue folder. The chart on the bladder is kept in the gold folder. The chart on the skull is kept in the yellow folder. The chart on the ear is kept in the white folder. The chart on the spine is kept in the purple folder. The chart on the heart is kept in the black folder. The chart on the stomach is kept in the beige folder. The chart on the eye is kept in the violet folder. The chart on the forehead is kept in the cyan folder. The chart on the wrist is kept in the grey folder. The chart on the elbow is kept in the brown folder.\nThe chart on the body part that pumps blood is in a folder of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 997,
+     "end": 1004,
+     "role": "patched (last)"
+    },
+    {
+     "start": 539,
+     "end": 590,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 436,
+     "end": 485,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 591,
+     "end": 644,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 866,
+     "end": 896,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the heart is kept in the pink folder. The chart on the elbow is kept in the black folder. The chart on the liver is kept in the grey folder. The chart on the stomach is kept in the violet folder. The chart on the spine is kept in the blue folder. The chart on the bladder is kept in the yellow folder. The chart on the skull is kept in the green folder. The chart on the ear is kept in the orange folder. The chart on the wrist is kept in the silver folder. The chart on the eye is kept in the cyan folder. The chart on the tongue is kept in the brown folder. The chart on the forehead is kept in the red folder.\nThe chart on the body part that hears sounds is in a folder of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 592,
+     "end": 642,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 36 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "black",
+    "edited": "The",
+    "expected": {
+     "none": "black",
+     "identity": "white",
+     "position": "beige",
+     "value": "orange"
+    },
+    "unedited_read": "black"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0018,
+     "identity": 0.0984,
+     "position": 0.0,
+     "value": 0.0091
+    },
+    "layer": 36,
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('The')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "countries-RL-e12-word-0117",
+   "domain": "countries",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The file on Finland is kept in the green drawer. The file on Korea is kept in the red drawer. The file on Germany is kept in the yellow drawer. The file on Poland is kept in the brown drawer. The file on Venezuela is kept in the black drawer. The file on Spain is kept in the beige drawer. The file on Italy is kept in the orange drawer. The file on Russia is kept in the silver drawer. The file on Indonesia is kept in the gold drawer. The file on Sweden is kept in the purple drawer. The file on Belgium is kept in the grey drawer. The file on Norway is kept in the blue drawer.\nThe file on the country whose capital is Moscow is in a drawer of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 954,
+     "end": 961,
+     "role": "patched (last)"
+    },
+    {
+     "start": 563,
+     "end": 611,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 711,
+     "end": 758,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 468,
+     "end": 514,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 818,
+     "end": 853,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The file on Norway is kept in the beige drawer. The file on Venezuela is kept in the orange drawer. The file on Indonesia is kept in the cyan drawer. The file on Spain is kept in the violet drawer. The file on Russia is kept in the black drawer. The file on Belgium is kept in the pink drawer. The file on Sweden is kept in the gold drawer. The file on Finland is kept in the purple drawer. The file on Italy is kept in the grey drawer. The file on Germany is kept in the silver drawer. The file on Poland is kept in the white drawer. The file on Korea is kept in the red drawer.\nThe file on the country whose capital is Brussels is in a drawer of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 471,
+     "end": 518,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "silver",
+    "edited": "The",
+    "expected": {
+     "none": "silver",
+     "identity": "grey",
+     "position": "beige",
+     "value": "pink"
+    },
+    "unedited_read": "silver"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0017,
+     "identity": 0.0386,
+     "position": 0.0206,
+     "value": 0.032
+    },
+    "layer": "transit",
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('The')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "body-DL-e12-word-0050",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the eye is kept in the cyan folder. The chart on the spine is kept in the blue folder. The chart on the skull is kept in the yellow folder. The chart on the bladder is kept in the violet folder. The chart on the tongue is kept in the black folder. The chart on the heart is kept in the beige folder. The chart on the knee is kept in the white folder. The chart on the ankle is kept in the brown folder. The chart on the eyebrow is kept in the pink folder. The chart on the ear is kept in the gold folder. The chart on the wrist is kept in the grey folder. The chart on the liver is kept in the purple folder.\nThe chart on the ear is in a folder of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 968,
+     "end": 975,
+     "role": "patched (last)"
+    },
+    {
+     "start": 694,
+     "end": 742,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 486,
+     "end": 537,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 433,
+     "end": 485,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 860,
+     "end": 867,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the ear is kept in the purple folder. The chart on the liver is kept in the violet folder. The chart on the skull is kept in the green folder. The chart on the knee is kept in the beige folder. The chart on the heart is kept in the orange folder. The chart on the eyebrow is kept in the white folder. The chart on the eye is kept in the pink folder. The chart on the bladder is kept in the yellow folder. The chart on the wrist is kept in the brown folder. The chart on the tongue is kept in the silver folder. The chart on the ankle is kept in the black folder. The chart on the spine is kept in the gold folder.\nThe chart on the heart is in a folder of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 432,
+     "end": 484,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 40 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "gold",
+    "edited": "orange",
+    "expected": {
+     "none": "gold",
+     "identity": "beige",
+     "position": "black",
+     "value": "orange"
+    },
+    "unedited_read": "gold"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0125,
+     "identity": 0.2218,
+     "position": 0.0007,
+     "value": 0.3227
+    },
+    "layer": 40,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('orange')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "animals-RL-e12-word-0006",
+   "domain": "animals",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The lion keeps its things in the brown locker. The dog keeps its things in the pink locker. The bear keeps its things in the orange locker. The duck keeps its things in the purple locker. The moth keeps its things in the grey locker. The frog keeps its things in the cyan locker. The mosquito keeps its things in the black locker. The worm keeps its things in the violet locker. The camel keeps its things in the yellow locker. The goat keeps its things in the gold locker. The fish keeps its things in the silver locker. The spider keeps its things in the beige locker.\nWhat colour is the locker of the animal known for croaking? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 924,
+     "end": 931,
+     "role": "patched (last)"
+    },
+    {
+     "start": 459,
+     "end": 504,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 365,
+     "end": 412,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 317,
+     "end": 364,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 825,
+     "end": 854,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The dog keeps its things in the beige locker. The lion keeps its things in the gold locker. The duck keeps its things in the blue locker. The camel keeps its things in the violet locker. The spider keeps its things in the red locker. The fish keeps its things in the white locker. The moth keeps its things in the cyan locker. The bear keeps its things in the grey locker. The goat keeps its things in the silver locker. The frog keeps its things in the pink locker. The worm keeps its things in the brown locker. The mosquito keeps its things in the black locker.\nWhat colour is the locker of the animal known for quacking? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 317,
+     "end": 362,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 40 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "cyan",
+    "edited": "blue",
+    "expected": {
+     "none": "cyan",
+     "identity": "purple",
+     "position": "orange",
+     "value": "blue"
+    },
+    "unedited_read": "cyan"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0007,
+     "identity": 0.0068,
+     "position": 0.0014,
+     "value": 0.4453
+    },
+    "layer": 40,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('blue')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "animals-DL-e12-word-0129",
+   "domain": "animals",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The violet locker belongs to the moth. The yellow locker belongs to the chicken. The red locker belongs to the mouse. The orange locker belongs to the owl. The brown locker belongs to the dog. The cyan locker belongs to the cow. The gold locker belongs to the spider. The silver locker belongs to the butterfly. The pink locker belongs to the turkey. The beige locker belongs to the cat. The green locker belongs to the whale. The purple locker belongs to the camel.\nWhat colour is the locker of the owl? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 798,
+     "end": 805,
+     "role": "patched (last)"
+    },
+    {
+     "start": 343,
+     "end": 380,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 418,
+     "end": 453,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 381,
+     "end": 417,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 721,
+     "end": 728,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The yellow locker belongs to the dog. The black locker belongs to the moth. The violet locker belongs to the mouse. The silver locker belongs to the turkey. The white locker belongs to the cow. The cyan locker belongs to the owl. The gold locker belongs to the butterfly. The green locker belongs to the spider. The purple locker belongs to the chicken. The pink locker belongs to the whale. The orange locker belongs to the camel. The blue locker belongs to the cat.\nWhat colour is the locker of the cow? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 382,
+     "end": 418,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 38 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "orange",
+    "edited": "white",
+    "expected": {
+     "none": "orange",
+     "identity": "cyan",
+     "position": "brown",
+     "value": "white"
+    },
+    "unedited_read": "orange"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0041,
+     "identity": 0.0237,
+     "position": 0.0568,
+     "value": 0.2544
+    },
+    "layer": 38,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('white')"
+  },
+  {
+   "group": "none",
+   "family": "DL",
+   "item_id": "body-DL-e12-word-0004",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The yellow folder holds the ear chart. The violet folder holds the stomach chart. The brown folder holds the heart chart. The cyan folder holds the eyebrow chart. The orange folder holds the tongue chart. The white folder holds the forehead chart. The silver folder holds the spine chart. The purple folder holds the wrist chart. The pink folder holds the bladder chart. The beige folder holds the brain chart. The grey folder holds the eye chart. The red folder holds the skull chart.\nWhich colour is the folder that holds the chart on the bladder? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 843,
+     "end": 850,
+     "role": "patched (last)"
+    },
+    {
+     "start": 555,
+     "end": 595,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 636,
+     "end": 672,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 514,
+     "end": 554,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 762,
+     "end": 773,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The silver folder holds the skull chart. The grey folder holds the brain chart. The violet folder holds the bladder chart. The cyan folder holds the forehead chart. The orange folder holds the eyebrow chart. The black folder holds the wrist chart. The brown folder holds the tongue chart. The blue folder holds the eye chart. The green folder holds the stomach chart. The white folder holds the spine chart. The red folder holds the ear chart. The purple folder holds the heart chart.\nWhich colour is the folder that holds the chart on the eye? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 514,
+     "end": 550,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 38 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "pink",
+    "edited": "pink",
+    "expected": {
+     "none": "pink",
+     "identity": "grey",
+     "position": "purple",
+     "value": "blue"
+    },
+    "unedited_read": "pink"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2649,
+     "identity": 0.0382,
+     "position": 0.0075,
+     "value": 0.1509
+    },
+    "layer": 38,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('pink')"
+  },
+  {
+   "group": "none",
+   "family": "DL",
+   "item_id": "body-DL-e12-word-0134",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The yellow folder holds the skull chart. The gold folder holds the elbow chart. The red folder holds the tongue chart. The grey folder holds the spine chart. The black folder holds the brain chart. The purple folder holds the stomach chart. The pink folder holds the eye chart. The blue folder holds the wrist chart. The green folder holds the ankle chart. The silver folder holds the forehead chart. The violet folder holds the bladder chart. The beige folder holds the knee chart.\nThe chart on the bladder is in a folder of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 833,
+     "end": 840,
+     "role": "patched (last)"
+    },
+    {
+     "start": 626,
+     "end": 668,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 466,
+     "end": 502,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 503,
+     "end": 541,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 721,
+     "end": 732,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The grey folder holds the skull chart. The blue folder holds the spine chart. The beige folder holds the elbow chart. The yellow folder holds the ankle chart. The violet folder holds the knee chart. The red folder holds the brain chart. The silver folder holds the forehead chart. The cyan folder holds the eye chart. The green folder holds the tongue chart. The orange folder holds the stomach chart. The pink folder holds the bladder chart. The black folder holds the wrist chart.\nThe chart on the eye is in a folder of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 506,
+     "end": 542,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 42 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "violet",
+    "edited": "violet",
+    "expected": {
+     "none": "violet",
+     "identity": "pink",
+     "position": "blue",
+     "value": "cyan"
+    },
+    "unedited_read": "violet"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.307,
+     "identity": 0.0028,
+     "position": 0.088,
+     "value": 0.1061
+    },
+    "layer": 42,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('violet')"
+  },
+  {
+   "group": "none",
+   "family": "DL",
+   "item_id": "body-DL-e12-word-0070",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the ear is kept in the black folder. The chart on the liver is kept in the red folder. The chart on the eye is kept in the violet folder. The chart on the ankle is kept in the blue folder. The chart on the wrist is kept in the grey folder. The chart on the spine is kept in the purple folder. The chart on the elbow is kept in the cyan folder. The chart on the eyebrow is kept in the pink folder. The chart on the brain is kept in the yellow folder. The chart on the tongue is kept in the orange folder. The chart on the forehead is kept in the gold folder. The chart on the bladder is kept in the brown folder.\nWhich colour is the folder that holds the chart on the tongue? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 981,
+     "end": 988,
+     "role": "patched (last)"
+    },
+    {
+     "start": 688,
+     "end": 741,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 225,
+     "end": 274,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 796,
+     "end": 849,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 901,
+     "end": 911,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the eye is kept in the green folder. The chart on the elbow is kept in the cyan folder. The chart on the liver is kept in the brown folder. The chart on the spine is kept in the purple folder. The chart on the eyebrow is kept in the pink folder. The chart on the bladder is kept in the beige folder. The chart on the wrist is kept in the gold folder. The chart on the forehead is kept in the red folder. The chart on the ankle is kept in the grey folder. The chart on the brain is kept in the orange folder. The chart on the tongue is kept in the white folder. The chart on the ear is kept in the silver folder.\nWhich colour is the folder that holds the chart on the ear? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 799,
+     "end": 849,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "orange",
+    "edited": "orange",
+    "expected": {
+     "none": "orange",
+     "identity": "black",
+     "position": "brown",
+     "value": "silver"
+    },
+    "unedited_read": "orange"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2216,
+     "identity": 0.0362,
+     "position": 0.0059,
+     "value": 0.1186
+    },
+    "layer": "transit",
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('orange')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "body-RL-e12-word-0021",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the elbow is kept in the green folder. The chart on the eye is kept in the purple folder. The chart on the bladder is kept in the grey folder. The chart on the stomach is kept in the blue folder. The chart on the ear is kept in the beige folder. The chart on the spine is kept in the white folder. The chart on the brain is kept in the violet folder. The chart on the knee is kept in the cyan folder. The chart on the ankle is kept in the gold folder. The chart on the heart is kept in the yellow folder. The chart on the wrist is kept in the black folder. The chart on the forehead is kept in the orange folder.\nWhich colour is the folder that holds the chart on the body part that bends the leg? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 1004,
+     "end": 1011,
+     "role": "patched (last)"
+    },
+    {
+     "start": 589,
+     "end": 638,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 381,
+     "end": 433,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 225,
+     "end": 276,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 902,
+     "end": 934,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the stomach is kept in the pink folder. The chart on the wrist is kept in the purple folder. The chart on the knee is kept in the violet folder. The chart on the elbow is kept in the green folder. The chart on the forehead is kept in the gold folder. The chart on the heart is kept in the blue folder. The chart on the bladder is kept in the beige folder. The chart on the eye is kept in the silver folder. The chart on the brain is kept in the red folder. The chart on the spine is kept in the orange folder. The chart on the ankle is kept in the yellow folder. The chart on the ear is kept in the black folder.\nWhich colour is the folder that holds the chart on the body part that digests food? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 225,
+     "end": 277,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 36 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "cyan",
+    "edited": "green",
+    "expected": {
+     "none": "cyan",
+     "identity": "blue",
+     "position": "green",
+     "value": "pink"
+    },
+    "unedited_read": "cyan"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0018,
+     "identity": 0.0147,
+     "position": 0.3552,
+     "value": 0.0024
+    },
+    "layer": 36,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('green')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "countries-RL-e12-word-0035",
+   "domain": "countries",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The file on France is kept in the green drawer. The file on Turkey is kept in the purple drawer. The file on Canada is kept in the cyan drawer. The file on Germany is kept in the silver drawer. The file on Portugal is kept in the beige drawer. The file on Egypt is kept in the brown drawer. The file on Finland is kept in the red drawer. The file on Syria is kept in the grey drawer. The file on Indonesia is kept in the pink drawer. The file on Austria is kept in the orange drawer. The file on Kenya is kept in the yellow drawer. The file on Poland is kept in the gold drawer.\nWhat colour is the drawer with the file on the country whose capital is Cairo? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 951,
+     "end": 958,
+     "role": "patched (last)"
+    },
+    {
+     "start": 469,
+     "end": 515,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 516,
+     "end": 562,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 225,
+     "end": 272,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 847,
+     "end": 881,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The file on Finland is kept in the blue drawer. The file on Canada is kept in the pink drawer. The file on Syria is kept in the orange drawer. The file on Austria is kept in the violet drawer. The file on Kenya is kept in the red drawer. The file on Germany is kept in the purple drawer. The file on Indonesia is kept in the brown drawer. The file on Egypt is kept in the beige drawer. The file on France is kept in the yellow drawer. The file on Poland is kept in the black drawer. The file on Portugal is kept in the gold drawer. The file on Turkey is kept in the white drawer.\nWhat colour is the drawer with the file on the country whose capital is Helsinki? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 225,
+     "end": 272,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 40 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "brown",
+    "edited": "green",
+    "expected": {
+     "none": "brown",
+     "identity": "red",
+     "position": "green",
+     "value": "blue"
+    },
+    "unedited_read": "brown"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0006,
+     "identity": 0.0003,
+     "position": 0.2528,
+     "value": 0.0104
+    },
+    "layer": 40,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('green')"
+  },
+  {
+   "group": "position",
+   "family": "DL",
+   "item_id": "body-DL-e12-word-0021",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the elbow is kept in the green folder. The chart on the eye is kept in the purple folder. The chart on the bladder is kept in the grey folder. The chart on the stomach is kept in the blue folder. The chart on the ear is kept in the beige folder. The chart on the spine is kept in the white folder. The chart on the brain is kept in the violet folder. The chart on the knee is kept in the cyan folder. The chart on the ankle is kept in the gold folder. The chart on the heart is kept in the yellow folder. The chart on the wrist is kept in the black folder. The chart on the forehead is kept in the orange folder.\nWhich colour is the folder that holds the chart on the knee? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 980,
+     "end": 987,
+     "role": "patched (last)"
+    },
+    {
+     "start": 589,
+     "end": 638,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 381,
+     "end": 433,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 225,
+     "end": 276,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 902,
+     "end": 910,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the stomach is kept in the pink folder. The chart on the wrist is kept in the purple folder. The chart on the knee is kept in the violet folder. The chart on the elbow is kept in the green folder. The chart on the forehead is kept in the gold folder. The chart on the heart is kept in the blue folder. The chart on the bladder is kept in the beige folder. The chart on the eye is kept in the silver folder. The chart on the brain is kept in the red folder. The chart on the spine is kept in the orange folder. The chart on the ankle is kept in the yellow folder. The chart on the ear is kept in the black folder.\nWhich colour is the folder that holds the chart on the stomach? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 225,
+     "end": 277,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 42 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "cyan",
+    "edited": "green",
+    "expected": {
+     "none": "cyan",
+     "identity": "blue",
+     "position": "green",
+     "value": "pink"
+    },
+    "unedited_read": "cyan"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.3206,
+     "identity": 0.004,
+     "position": 0.3206,
+     "value": 0.036
+    },
+    "layer": 42,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('green')"
+  },
+  {
+   "group": "context",
+   "family": "DL",
+   "item_id": "countries-DL-e12-word-0103",
+   "domain": "countries",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The file on Philippines is kept in the grey drawer. The file on Pakistan is kept in the green drawer. The file on Hungary is kept in the violet drawer. The file on Syria is kept in the silver drawer. The file on Poland is kept in the pink drawer. The file on Sweden is kept in the black drawer. The file on Cuba is kept in the orange drawer. The file on Austria is kept in the red drawer. The file on Chile is kept in the yellow drawer. The file on Iran is kept in the brown drawer. The file on China is kept in the purple drawer. The file on Spain is kept in the blue drawer.\nWhich colour is the drawer that holds the file on Hungary? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 929,
+     "end": 936,
+     "role": "patched (last)"
+    },
+    {
+     "start": 327,
+     "end": 376,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 567,
+     "end": 613,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 614,
+     "end": 661,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 852,
+     "end": 859,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The file on Syria is kept in the purple drawer. The file on Iran is kept in the green drawer. The file on Sweden is kept in the blue drawer. The file on China is kept in the black drawer. The file on Spain is kept in the silver drawer. The file on Poland is kept in the red drawer. The file on Hungary is kept in the brown drawer. The file on Pakistan is kept in the cyan drawer. The file on Austria is kept in the beige drawer. The file on Philippines is kept in the grey drawer. The file on Cuba is kept in the orange drawer. The file on Chile is kept in the pink drawer.\nWhich colour is the drawer that holds the file on Austria? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 605,
+     "end": 653,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "violet",
+    "edited": "brown",
+    "expected": {
+     "none": "violet",
+     "identity": "red",
+     "position": "yellow",
+     "value": "beige"
+    },
+    "unedited_read": "violet"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2937,
+     "identity": 0.0004,
+     "position": 0.0009,
+     "value": 0.0241
+    },
+    "layer": "transit",
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('brown')"
+  },
+  {
+   "group": "context",
+   "family": "DL",
+   "item_id": "body-DL-e12-word-0003",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The blue folder holds the bladder chart. The beige folder holds the skull chart. The brown folder holds the liver chart. The orange folder holds the eye chart. The purple folder holds the wrist chart. The grey folder holds the elbow chart. The green folder holds the ankle chart. The black folder holds the brain chart. The pink folder holds the forehead chart. The silver folder holds the tongue chart. The red folder holds the stomach chart. The gold folder holds the ear chart.\nWhat colour is the folder with the chart on the brain? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 829,
+     "end": 836,
+     "role": "patched (last)"
+    },
+    {
+     "start": 505,
+     "end": 544,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 426,
+     "end": 464,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 266,
+     "end": 305,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 750,
+     "end": 759,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The purple folder holds the bladder chart. The cyan folder holds the elbow chart. The pink folder holds the ear chart. The yellow folder holds the liver chart. The brown folder holds the eye chart. The orange folder holds the brain chart. The white folder holds the stomach chart. The silver folder holds the tongue chart. The gold folder holds the wrist chart. The green folder holds the forehead chart. The grey folder holds the ankle chart. The beige folder holds the skull chart.\nWhat colour is the folder with the chart on the elbow? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 268,
+     "end": 306,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 38 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "black",
+    "edited": "blue",
+    "expected": {
+     "none": "black",
+     "identity": "grey",
+     "position": "beige",
+     "value": "cyan"
+    },
+    "unedited_read": "black"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0421,
+     "identity": 0.0018,
+     "position": 0.1887,
+     "value": 0.0037
+    },
+    "layer": 38,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('blue')"
+  },
+  {
+   "group": "context",
+   "family": "DL",
+   "item_id": "countries-DL-e12-word-0081",
+   "domain": "countries",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The file on Portugal is kept in the orange drawer. The file on Greece is kept in the black drawer. The file on Germany is kept in the brown drawer. The file on Ireland is kept in the red drawer. The file on Pakistan is kept in the blue drawer. The file on Indonesia is kept in the purple drawer. The file on China is kept in the white drawer. The file on Italy is kept in the silver drawer. The file on Iran is kept in the grey drawer. The file on Syria is kept in the cyan drawer. The file on Korea is kept in the green drawer. The file on Poland is kept in the beige drawer.\nWhich colour is the drawer that holds the file on Poland? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 928,
+     "end": 935,
+     "role": "patched (last)"
+    },
+    {
+     "start": 754,
+     "end": 801,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 616,
+     "end": 660,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 324,
+     "end": 372,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 852,
+     "end": 858,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The file on China is kept in the cyan drawer. The file on Italy is kept in the yellow drawer. The file on Iran is kept in the pink drawer. The file on Syria is kept in the green drawer. The file on Germany is kept in the purple drawer. The file on Portugal is kept in the brown drawer. The file on Pakistan is kept in the grey drawer. The file on Ireland is kept in the gold drawer. The file on Indonesia is kept in the orange drawer. The file on Greece is kept in the blue drawer. The file on Poland is kept in the beige drawer. The file on Korea is kept in the white drawer.\nWhich colour is the drawer that holds the file on Iran? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 319,
+     "end": 363,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "beige",
+    "edited": "purple",
+    "expected": {
+     "none": "beige",
+     "identity": "grey",
+     "position": "brown",
+     "value": "pink"
+    },
+    "unedited_read": "beige"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0627,
+     "identity": 0.008,
+     "position": 0.0023,
+     "value": 0.0553
+    },
+    "layer": "transit",
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('purple')"
+  },
+  {
+   "group": "identity",
+   "family": "DL",
+   "item_id": "animals-DL-e12-word-0031",
+   "domain": "animals",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The eagle keeps its things in the gold locker. The crow keeps its things in the white locker. The turkey keeps its things in the beige locker. The horse keeps its things in the cyan locker. The camel keeps its things in the orange locker. The spider keeps its things in the purple locker. The wolf keeps its things in the violet locker. The snake keeps its things in the yellow locker. The chicken keeps its things in the blue locker. The goose keeps its things in the grey locker. The dog keeps its things in the green locker. The deer keeps its things in the black locker.\nWhat colour is the locker of the goose? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 908,
+     "end": 915,
+     "role": "patched (last)"
+    },
+    {
+     "start": 660,
+     "end": 706,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 464,
+     "end": 513,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 368,
+     "end": 414,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 829,
+     "end": 838,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chicken keeps its things in the yellow locker. The snake keeps its things in the purple locker. The horse keeps its things in the red locker. The spider keeps its things in the pink locker. The crow keeps its things in the beige locker. The goose keeps its things in the blue locker. The dog keeps its things in the green locker. The turkey keeps its things in the brown locker. The deer keeps its things in the violet locker. The eagle keeps its things in the black locker. The camel keeps its things in the orange locker. The wolf keeps its things in the white locker.\nWhat colour is the locker of the spider? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 371,
+     "end": 418,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "grey",
+    "edited": "purple",
+    "expected": {
+     "none": "grey",
+     "identity": "purple",
+     "position": "cyan",
+     "value": "pink"
+    },
+    "unedited_read": "grey"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0453,
+     "identity": 0.5872,
+     "position": 0.0031,
+     "value": 0.1231
+    },
+    "layer": "transit",
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('purple')"
+  },
+  {
+   "group": "identity",
+   "family": "DL",
+   "item_id": "body-DL-e12-word-0050",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the eye is kept in the cyan folder. The chart on the spine is kept in the blue folder. The chart on the skull is kept in the yellow folder. The chart on the bladder is kept in the violet folder. The chart on the tongue is kept in the black folder. The chart on the heart is kept in the beige folder. The chart on the knee is kept in the white folder. The chart on the ankle is kept in the brown folder. The chart on the eyebrow is kept in the pink folder. The chart on the ear is kept in the gold folder. The chart on the wrist is kept in the grey folder. The chart on the liver is kept in the purple folder.\nThe chart on the ear is in a folder of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 968,
+     "end": 975,
+     "role": "patched (last)"
+    },
+    {
+     "start": 694,
+     "end": 742,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 486,
+     "end": 537,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 433,
+     "end": 485,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 860,
+     "end": 867,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chart on the ear is kept in the purple folder. The chart on the liver is kept in the violet folder. The chart on the skull is kept in the green folder. The chart on the knee is kept in the beige folder. The chart on the heart is kept in the orange folder. The chart on the eyebrow is kept in the white folder. The chart on the eye is kept in the pink folder. The chart on the bladder is kept in the yellow folder. The chart on the wrist is kept in the brown folder. The chart on the tongue is kept in the silver folder. The chart on the ankle is kept in the black folder. The chart on the spine is kept in the gold folder.\nThe chart on the heart is in a folder of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 432,
+     "end": 484,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 38 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "gold",
+    "edited": "beige",
+    "expected": {
+     "none": "gold",
+     "identity": "beige",
+     "position": "black",
+     "value": "orange"
+    },
+    "unedited_read": "gold"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0086,
+     "identity": 0.6384,
+     "position": 0.0004,
+     "value": 0.0462
+    },
+    "layer": 38,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('beige')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "animals-RL-e12-word-0031",
+   "domain": "animals",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The eagle keeps its things in the gold locker. The crow keeps its things in the white locker. The turkey keeps its things in the beige locker. The horse keeps its things in the cyan locker. The camel keeps its things in the orange locker. The spider keeps its things in the purple locker. The wolf keeps its things in the violet locker. The snake keeps its things in the yellow locker. The chicken keeps its things in the blue locker. The goose keeps its things in the grey locker. The dog keeps its things in the green locker. The deer keeps its things in the black locker.\nWhat colour is the locker of the animal known for honking? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 927,
+     "end": 934,
+     "role": "patched (last)"
+    },
+    {
+     "start": 660,
+     "end": 706,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 464,
+     "end": 513,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 368,
+     "end": 414,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 829,
+     "end": 857,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The chicken keeps its things in the yellow locker. The snake keeps its things in the purple locker. The horse keeps its things in the red locker. The spider keeps its things in the pink locker. The crow keeps its things in the beige locker. The goose keeps its things in the blue locker. The dog keeps its things in the green locker. The turkey keeps its things in the brown locker. The deer keeps its things in the violet locker. The eagle keeps its things in the black locker. The camel keeps its things in the orange locker. The wolf keeps its things in the white locker.\nWhat colour is the locker of the animal known for spinning webs? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 371,
+     "end": 418,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 38 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "grey",
+    "edited": "purple",
+    "expected": {
+     "none": "grey",
+     "identity": "purple",
+     "position": "cyan",
+     "value": "pink"
+    },
+    "unedited_read": "grey"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0021,
+     "identity": 0.3248,
+     "position": 0.0008,
+     "value": 0.0172
+    },
+    "layer": 38,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('purple')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "countries-RL-e12-word-0087",
+   "domain": "countries",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The Norway file is in the white drawer. The France file is in the brown drawer. The Belgium file is in the silver drawer. The Egypt file is in the yellow drawer. The Japan file is in the beige drawer. The Hungary file is in the blue drawer. The Sweden file is in the pink drawer. The Venezuela file is in the red drawer. The Australia file is in the black drawer. The Russia file is in the grey drawer. The Philippines file is in the cyan drawer. The Italy file is in the green drawer.\nThe file on the country whose capital is Stockholm is in a drawer of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 862,
+     "end": 869,
+     "role": "patched (last)"
+    },
+    {
+     "start": 466,
+     "end": 504,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 505,
+     "end": 545,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 628,
+     "end": 671,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 723,
+     "end": 761,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The Philippines file is in the blue drawer. The Belgium file is in the white drawer. The Italy file is in the beige drawer. The Sweden file is in the cyan drawer. The Japan file is in the purple drawer. The Hungary file is in the violet drawer. The Norway file is in the red drawer. The France file is in the yellow drawer. The Australia file is in the silver drawer. The Russia file is in the brown drawer. The Venezuela file is in the orange drawer. The Egypt file is in the gold drawer.\nThe file on the country whose capital is Caracas is in a drawer of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 633,
+     "end": 676,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 34 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "pink",
+    "edited": "Sweden",
+    "expected": {
+     "none": "pink",
+     "identity": "red",
+     "position": "cyan",
+     "value": "orange"
+    },
+    "unedited_read": "pink"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2022,
+     "identity": 0.0009,
+     "position": 0.0129,
+     "value": 0.0
+    },
+    "layer": 34,
+    "role": "other"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('Sweden')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "countries-RL-e12-word-0124",
+   "domain": "countries",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The Syria file is in the green drawer. The Norway file is in the yellow drawer. The Pakistan file is in the purple drawer. The Kenya file is in the brown drawer. The Philippines file is in the black drawer. The Denmark file is in the gold drawer. The Portugal file is in the violet drawer. The Turkey file is in the red drawer. The Canada file is in the pink drawer. The Russia file is in the grey drawer. The Thailand file is in the silver drawer. The Japan file is in the orange drawer.\nThe file on the country whose capital is Copenhagen is in a drawer of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 866,
+     "end": 873,
+     "role": "patched (last)"
+    },
+    {
+     "start": 432,
+     "end": 471,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 387,
+     "end": 431,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 592,
+     "end": 630,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 726,
+     "end": 765,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The Syria file is in the pink drawer. The Turkey file is in the silver drawer. The Kenya file is in the yellow drawer. The Thailand file is in the green drawer. The Japan file is in the gold drawer. The Portugal file is in the violet drawer. The Russia file is in the blue drawer. The Canada file is in the cyan drawer. The Denmark file is in the purple drawer. The Philippines file is in the white drawer. The Norway file is in the beige drawer. The Pakistan file is in the grey drawer.\nThe file on the country whose capital is Manila is in a drawer of which colour? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 587,
+     "end": 631,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 34 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "gold",
+    "edited": "brown",
+    "expected": {
+     "none": "gold",
+     "identity": "black",
+     "position": "grey",
+     "value": "white"
+    },
+    "unedited_read": "gold"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0092,
+     "identity": 0.0022,
+     "position": 0.0017,
+     "value": 0.0002
+    },
+    "layer": 34,
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('brown')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "body-RL-e12-word-0114",
+   "domain": "body",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The cyan folder holds the elbow chart. The beige folder holds the spine chart. The yellow folder holds the brain chart. The grey folder holds the eyebrow chart. The brown folder holds the ear chart. The black folder holds the forehead chart. The silver folder holds the liver chart. The purple folder holds the heart chart. The violet folder holds the bladder chart. The gold folder holds the tongue chart. The blue folder holds the eye chart. The green folder holds the skull chart.\nWhich colour is the folder that holds the chart on the body part that stores urine? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "spans": [
+    {
+     "start": 861,
+     "end": 868,
+     "role": "patched (last)"
+    },
+    {
+     "start": 549,
+     "end": 591,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 386,
+     "end": 423,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 345,
+     "end": 385,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 760,
+     "end": 791,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\nCurrent date: 2026-10-23.\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The brown folder holds the eyebrow chart. The violet folder holds the skull chart. The pink folder holds the bladder chart. The orange folder holds the ear chart. The black folder holds the heart chart. The green folder holds the spine chart. The blue folder holds the liver chart. The purple folder holds the elbow chart. The white folder holds the forehead chart. The beige folder holds the brain chart. The silver folder holds the eye chart. The gold folder holds the tongue chart.\nWhich colour is the folder that holds the chart on the body part that hears sounds? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer: ",
+   "source_spans": [
+    {
+     "start": 349,
+     "end": 387,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer mid (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "violet",
+    "edited": "purple",
+    "expected": {
+     "none": "violet",
+     "identity": "brown",
+     "position": "grey",
+     "value": "orange"
+    },
+    "unedited_read": "violet"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1779,
+     "identity": 0.0006,
+     "position": 0.0042,
+     "value": 0.0003
+    },
+    "layer": "mid",
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('purple')"
+  }
+ ]
+}

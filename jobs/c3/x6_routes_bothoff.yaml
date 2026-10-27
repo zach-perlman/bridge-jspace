@@ -1,0 +1,24 @@
+id: x6_routes_bothoff
+title: "x6_routes_bothoff (Dan, 25 Oct ~13:20): C0 and swap 2 without J++, without the pointer directions, without both together, without a random part of the union's share; 27B L32 on GPU0, 9B L12 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 1.0
+depends_on: [x6_routes_r2]
+command: >-
+  uv run python -c "import torch" && { { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_bothoff_27b --conditions C0,C2 --bothoff; } & p27=$!; { CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x6_routes.py run --name qwen35_9b_x6_routes_bothoff --conditions C0,C2 --bothoff; } & p9=$!; wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  In x6_routes' scenes (C0: the one-pick swap; C2: another item, its locker sentence moved), does removing J++ and the pointer directions together cost the lookup more than removing the pointer directions alone, each against a random part of its own share?
+why_it_matters: >-
+  The pointer directions cost the lookup on the 9B and 122B; J++ alone does not. If the two carry the lookup redundantly, only removing both would show it.
+hypotheses:
+  H-redundant: 'Dan''s Q34.1 (batch 34, committed before the results are shown): in C0, the lookup''s extra loss without both is at least 0.15 more than without the pointer directions alone'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct ~13:20): Q34.1 per model, on the point estimate of the lookup's C0 extra loss without the union minus its extra loss without the pointer directions (>= 0.15), with the paired cluster-bootstrap CI reported. Extra loss = Jdep - Rdep as X0, each part against a random part of its own share (the union's random part at the union's share). The union: each item's 25 signed-OMP J++ atoms together with the pointer directions (Alf, fit on the old fresh scenes, not refit), the change projected onto their span by least squares. Swap 2's routes per arm and the recall: descriptive. C0 must reproduce the one-pick lookup switch rate within 0.10 (as x6_routes), else the run stops before its verdict. Gate as x6_routes (0.80).
+controls:
+- 'a random part at each part''s own share (J++, the pointer directions, the union)'
+- 'the recall on the identical patch'
+- 'C0 against the main test''s one-pick rate'
+n: '300 eligible scenes per condition and model (the same scenes as x6_routes_r2: seed 2510)'
+seeds: [2510]
+notes: "One 2-GPU job, two processes. The random parts at J++'s and the pointer directions' shares are kept (each part's extra loss needs its own). Dan's order (plan to the claims freeze): x0_jppother, bothoff, the 122B routes, b7, the 9B natural passages; b7 had already started when the plan came, so it finishes first. The union is orthonormalized by SVD (directions with singular value under 1e-6 of the largest dropped) and its projection removed. Output: C0, the lookup's extra loss per arm; C2, route shares per arm; one figure in F20's style. Results stay closed until Dan's batch-34 answer is committed."

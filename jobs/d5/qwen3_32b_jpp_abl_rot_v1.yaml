@@ -1,0 +1,30 @@
+id: qwen3_32b_jpp_abl_rot_v1
+title: "J-space removal on Qwen3-32B with our J++: does recall break while lookups survive? (finding 1)"
+thread: D5
+gpus: 1
+est_gpu_hours: 1.0
+mem_gb: 75
+depends_on:
+- qwen3_32b_jpp_lens_gate
+- qwen3_32b_competence_chat_v1
+command: >-
+  BJ_TARGET=qwen3-32b-jpp uv run python scripts/d1_precheck.py --gate qwen3_32b_jpp_lens_gate --competence qwen3_32b_d1_topics_competence --tasks-set d1_topics_v1 --min-topics 0
+  && BJ_TARGET=qwen3-32b-jpp BJ_FORMAT=chat BJ_ABL_BATCH=4 uv run python scripts/ablate_pilot.py --name qwen3_32b_jpp_abl_rot_v1
+  --why "finding 1 (J-space removal) on Qwen3-32B with our J++: abl_rot_v1 at the same layers (32 36 40, the same depth)" --n 100 --layers 32 36 40 --comp-main qwen3_32b_competence_chat_v1
+  --comp-computed none --countries-build --rotated --no-random
+question: In Qwen3-32B (chat format), does removing the J-space (25-atom OMP over our J++'s letter-token vectors) at layers 32/36/40 break recall chains (BR, RR) but not prompt lookups (BL, RL), while the same-size rotated removal leaves every family intact?
+why_it_matters: 'Finding 1 (J-space removed: recall 19-22% right, lookup 99%) rests on Qwen3.6-27B alone (ablate_pilot/abl_rot_v1). Qwen3-32B is dense and attention-only; its plain J-lens failed the gate, so the removal was never run there.'
+hypotheses:
+  H_split: 'J-space removal at 32/36/40 leaves BL/RL >= 90% and drops BR/RR by >= 30 points (copied from olmo3_7b_instruct_abl_rot_chat_v1, H_pre, for one model)'
+  H_none: 'no gap >= 20 (copied from olmo3_7b_instruct_abl_rot_chat_v1, H_none)'
+  prior: 'Prior (Dan''s agent, before any run): H_pre 0.35, H_none 0.3 (copied from olmo3_7b_instruct_abl_rot_chat_v1)'
+decision_rule: 'Runs iff our J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). GATE G2: the rotated removal keeps accuracy >= 0.90 on every family/step (items right unedited); else the J-space rows are not interpreted (Gemma''s failure mode). The random-dictionary removal is dropped: it does not fit next to a 27B-size model on an 80 GB GPU (d2_abl_read_*_27b_v2: --no-random, BJ_ABL_BATCH=8; 4 here, the 32B being larger), so G2 reads the rotated control alone. Split measure: gap = mean(BL, RL) - mean(BR, RR) accuracy under J-space removal, clean prompts; ''present'' if the paired-bootstrap 95% CI lower bound >= 20 points, ''absent'' if the upper bound <= 10, else ''inconclusive'' (copied from olmo3_7b_instruct_abl_rot_chat_v1). Layers: the 27B''s 32/36/40 (the same depth, 64 layers; inside our J++''s 16-51). Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach''s for Gemma and Muse; no silent switch.'
+controls:
+- 'rotated: the J-space fit turned by a fixed random rotation (exact same norm removed, position by position)'
+- 'hop rows: the last step alone, to separate the step from the chain'
+- 'countries R/B (built now from exp09 eligibility on this model): word answers, a known J-space-heavy family'
+n: 100 per family (BL, BR, RL, RR clean + hop; countries R, B)
+seeds:
+- 888
+- 0
+notes: "Mechanical copy of olmo3_7b_instruct_abl_rot_chat_v1 (the 27B's ablate_pilot/abl_rot_v1 on a new target; --no-random and a smaller batch as the 27B's own copies on this box, d2_abl_read_*_27b_v2) (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. Cases from qwen3_32b_competence_chat_v1 (lens-free, this commit). Memory: the 27B fitted with --no-random at batch 8; the 32B's weights are ~11 GB larger, so an OOM is possible; then the remedy (a larger GPU, or fewer layers at once) is a design change for Dan. No examples or figures stage: ablate_pilot.py has none, as the source. Waits for the Qwen3-32B J++ pin (target qwen3-32b-jpp)."

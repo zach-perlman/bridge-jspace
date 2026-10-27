@@ -1,0 +1,1828 @@
+{
+ "exp": "pointer_fit",
+ "run": "qwen35_122b_d3b_fit_v2",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "slot_answer",
+   "title": "slot answer",
+   "definition": "the slot direction gives the answer at the target slot",
+   "n_total": 53
+  },
+  {
+   "key": "kept",
+   "title": "kept",
+   "definition": "the slot direction leaves answer org",
+   "n_total": 348
+  },
+  {
+   "key": "other",
+   "title": "other",
+   "definition": "the slot direction gives another answer",
+   "n_total": 17
+  }
+ ],
+ "examples": [
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 41,
+     "role": "target slot"
+    },
+    {
+     "start": 198,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "position",
+    "p_none": 0.4038,
+    "p_identity": 0.0006,
+    "p_position": 0.5875,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 41,
+     "role": "target slot"
+    },
+    {
+     "start": 198,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.997,
+    "p_identity": 0.0002,
+    "p_position": 0.0004,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 41,
+     "role": "target slot"
+    },
+    {
+     "start": 198,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9975,
+    "p_identity": 0.0002,
+    "p_position": 0.0004,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 41,
+     "role": "target slot"
+    },
+    {
+     "start": 198,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.992,
+    "p_identity": 0.0005,
+    "p_position": 0.0015,
+    "p_value": 0.0002
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 41,
+     "role": "target slot"
+    },
+    {
+     "start": 198,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9663,
+    "p_identity": 0.0023,
+    "p_position": 0.0227,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 3, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0180",
+   "prompt": "<|im_start|>user\nThe owl keeps its things in locker 7. The cat keeps its things in locker 5. The tiger keeps its things in locker 3. The snake keeps its things in locker 8. The dog keeps its things in locker 9.\nWhat locker is used by the animal known for barking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 173,
+     "end": 210,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 54,
+     "role": "target slot"
+    },
+    {
+     "start": 263,
+     "end": 366,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "position",
+    "p_none": 0.1805,
+    "p_identity": 0.0006,
+    "p_position": 0.8089,
+    "p_value": 0.0017
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 5, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0180",
+   "prompt": "<|im_start|>user\nThe owl keeps its things in locker 7. The cat keeps its things in locker 5. The tiger keeps its things in locker 3. The snake keeps its things in locker 8. The dog keeps its things in locker 9.\nWhat locker is used by the animal known for barking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 173,
+     "end": 210,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 54,
+     "role": "target slot"
+    },
+    {
+     "start": 263,
+     "end": 366,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "9",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9953,
+    "p_identity": 0.0004,
+    "p_position": 0.0006,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 5, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0180",
+   "prompt": "<|im_start|>user\nThe owl keeps its things in locker 7. The cat keeps its things in locker 5. The tiger keeps its things in locker 3. The snake keeps its things in locker 8. The dog keeps its things in locker 9.\nWhat locker is used by the animal known for barking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 173,
+     "end": 210,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 54,
+     "role": "target slot"
+    },
+    {
+     "start": 263,
+     "end": 366,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "9",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.996,
+    "p_identity": 0.0003,
+    "p_position": 0.0006,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 5, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0180",
+   "prompt": "<|im_start|>user\nThe owl keeps its things in locker 7. The cat keeps its things in locker 5. The tiger keeps its things in locker 3. The snake keeps its things in locker 8. The dog keeps its things in locker 9.\nWhat locker is used by the animal known for barking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 173,
+     "end": 210,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 54,
+     "role": "target slot"
+    },
+    {
+     "start": 263,
+     "end": 366,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "9",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9948,
+    "p_identity": 0.0007,
+    "p_position": 0.0006,
+    "p_value": 0.0004
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 5, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0180",
+   "prompt": "<|im_start|>user\nThe owl keeps its things in locker 7. The cat keeps its things in locker 5. The tiger keeps its things in locker 3. The snake keeps its things in locker 8. The dog keeps its things in locker 9.\nWhat locker is used by the animal known for barking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 173,
+     "end": 210,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 54,
+     "role": "target slot"
+    },
+    {
+     "start": 263,
+     "end": 366,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.7912,
+    "p_identity": 0.0015,
+    "p_position": 0.2,
+    "p_value": 0.0009
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 5, target 1)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0299",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The mosquito keeps its things in locker 5. The crow keeps its things in locker 8. The rabbit keeps its things in locker 3. The cow keeps its things in locker 9.\nWhich locker belongs to the animal known for its long ears? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 138,
+     "end": 178,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 276,
+     "end": 379,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "position",
+    "p_none": 0.0052,
+    "p_identity": 0.0003,
+    "p_position": 0.9917,
+    "p_value": 0.0002
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 4, target 2)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0299",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The mosquito keeps its things in locker 5. The crow keeps its things in locker 8. The rabbit keeps its things in locker 3. The cow keeps its things in locker 9.\nWhich locker belongs to the animal known for its long ears? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 138,
+     "end": 178,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 276,
+     "end": 379,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-slot": "3",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.997,
+    "p_identity": 0.0002,
+    "p_position": 0.0001,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 4, target 2)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0299",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The mosquito keeps its things in locker 5. The crow keeps its things in locker 8. The rabbit keeps its things in locker 3. The cow keeps its things in locker 9.\nWhich locker belongs to the animal known for its long ears? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 138,
+     "end": 178,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 276,
+     "end": 379,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-slot": "3",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9964,
+    "p_identity": 0.0002,
+    "p_position": 0.0001,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 4, target 2)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0299",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The mosquito keeps its things in locker 5. The crow keeps its things in locker 8. The rabbit keeps its things in locker 3. The cow keeps its things in locker 9.\nWhich locker belongs to the animal known for its long ears? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 138,
+     "end": 178,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 276,
+     "end": 379,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-slot": "3",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9928,
+    "p_identity": 0.0004,
+    "p_position": 0.0002,
+    "p_value": 0.0005
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 4, target 2)"
+  },
+  {
+   "group": "slot_answer",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0299",
+   "prompt": "<|im_start|>user\nThe wolf keeps its things in locker 7. The mosquito keeps its things in locker 5. The crow keeps its things in locker 8. The rabbit keeps its things in locker 3. The cow keeps its things in locker 9.\nWhich locker belongs to the animal known for its long ears? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 138,
+     "end": 178,
+     "role": "asked statement"
+    },
+    {
+     "start": 56,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 276,
+     "end": 379,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9781,
+    "p_identity": 0.0018,
+    "p_position": 0.0075,
+    "p_value": 0.0007
+   },
+   "why": "the slot direction gives the answer at the target slot (asked statement 4, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe file on Venezuela is kept in drawer 3. The file on Japan is kept in drawer 4. The file on Turkey is kept in drawer 1. The file on Australia is kept in drawer 6. The file on Canada is kept in drawer 7.\nIn which drawer is the file on the country whose capital is Ankara? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 99,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 60,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 289,
+     "end": 392,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "4",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9709,
+    "p_identity": 0.0074,
+    "p_position": 0.0157,
+    "p_value": 0.001
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe file on Venezuela is kept in drawer 3. The file on Japan is kept in drawer 4. The file on Turkey is kept in drawer 1. The file on Australia is kept in drawer 6. The file on Canada is kept in drawer 7.\nIn which drawer is the file on the country whose capital is Ankara? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 99,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 60,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 289,
+     "end": 392,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9931,
+    "p_identity": 0.0017,
+    "p_position": 0.0006,
+    "p_value": 0.0009
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe file on Venezuela is kept in drawer 3. The file on Japan is kept in drawer 4. The file on Turkey is kept in drawer 1. The file on Australia is kept in drawer 6. The file on Canada is kept in drawer 7.\nIn which drawer is the file on the country whose capital is Ankara? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 99,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 60,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 289,
+     "end": 392,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9933,
+    "p_identity": 0.0016,
+    "p_position": 0.0004,
+    "p_value": 0.0007
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe file on Venezuela is kept in drawer 3. The file on Japan is kept in drawer 4. The file on Turkey is kept in drawer 1. The file on Australia is kept in drawer 6. The file on Canada is kept in drawer 7.\nIn which drawer is the file on the country whose capital is Ankara? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 99,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 60,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 289,
+     "end": 392,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "1"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9927,
+    "p_identity": 0.0025,
+    "p_position": 0.0005,
+    "p_value": 0.0009
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe file on Venezuela is kept in drawer 3. The file on Japan is kept in drawer 4. The file on Turkey is kept in drawer 1. The file on Australia is kept in drawer 6. The file on Canada is kept in drawer 7.\nIn which drawer is the file on the country whose capital is Ankara? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 99,
+     "end": 138,
+     "role": "asked statement"
+    },
+    {
+     "start": 60,
+     "end": 98,
+     "role": "target slot"
+    },
+    {
+     "start": 289,
+     "end": 392,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-slot": "4",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9818,
+    "p_identity": 0.0038,
+    "p_position": 0.0066,
+    "p_value": 0.0015
+   },
+   "why": "the slot direction leaves answer org (asked statement 3, target 2)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0033",
+   "prompt": "<|im_start|>user\nThe China file is in drawer 8. The Finland file is in drawer 7. The Norway file is in drawer 9. The Spain file is in drawer 2. The Cuba file is in drawer 1.\nWhat drawer keeps the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 143,
+     "role": "asked statement"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "2"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9955,
+    "p_identity": 0.0002,
+    "p_position": 0.0008,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction leaves answer org (asked statement 4, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0033",
+   "prompt": "<|im_start|>user\nThe China file is in drawer 8. The Finland file is in drawer 7. The Norway file is in drawer 9. The Spain file is in drawer 2. The Cuba file is in drawer 1.\nWhat drawer keeps the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 143,
+     "role": "asked statement"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-slot": "2",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9925,
+    "p_identity": 0.0004,
+    "p_position": 0.0016,
+    "p_value": 0.0002
+   },
+   "why": "the slot direction leaves answer org (asked statement 4, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0033",
+   "prompt": "<|im_start|>user\nThe China file is in drawer 8. The Finland file is in drawer 7. The Norway file is in drawer 9. The Spain file is in drawer 2. The Cuba file is in drawer 1.\nWhat drawer keeps the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 143,
+     "role": "asked statement"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-slot": "2",
+     "H-word": "2"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9929,
+    "p_identity": 0.0004,
+    "p_position": 0.0014,
+    "p_value": 0.0002
+   },
+   "why": "the slot direction leaves answer org (asked statement 4, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0033",
+   "prompt": "<|im_start|>user\nThe China file is in drawer 8. The Finland file is in drawer 7. The Norway file is in drawer 9. The Spain file is in drawer 2. The Cuba file is in drawer 1.\nWhat drawer keeps the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 143,
+     "role": "asked statement"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-slot": "2",
+     "H-word": "2"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9914,
+    "p_identity": 0.0006,
+    "p_position": 0.002,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction leaves answer org (asked statement 4, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0033",
+   "prompt": "<|im_start|>user\nThe China file is in drawer 8. The Finland file is in drawer 7. The Norway file is in drawer 9. The Spain file is in drawer 2. The Cuba file is in drawer 1.\nWhat drawer keeps the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 143,
+     "role": "asked statement"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-slot": "1",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9916,
+    "p_identity": 0.0004,
+    "p_position": 0.0017,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction leaves answer org (asked statement 4, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0052",
+   "prompt": "<|im_start|>user\nThe Kenya file is in drawer 9. The Spain file is in drawer 8. The Sweden file is in drawer 4. The Cuba file is in drawer 5. The Canada file is in drawer 7.\nIn which drawer is the file on the country whose capital is Nairobi? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 47,
+     "role": "asked statement"
+    },
+    {
+     "start": 141,
+     "end": 172,
+     "role": "target slot"
+    },
+    {
+     "start": 241,
+     "end": 344,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.905,
+    "p_identity": 0.0012,
+    "p_position": 0.0842,
+    "p_value": 0.0019
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0052",
+   "prompt": "<|im_start|>user\nThe Kenya file is in drawer 9. The Spain file is in drawer 8. The Sweden file is in drawer 4. The Cuba file is in drawer 5. The Canada file is in drawer 7.\nIn which drawer is the file on the country whose capital is Nairobi? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 47,
+     "role": "asked statement"
+    },
+    {
+     "start": 141,
+     "end": 172,
+     "role": "target slot"
+    },
+    {
+     "start": 241,
+     "end": 344,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "9",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9803,
+    "p_identity": 0.0016,
+    "p_position": 0.0045,
+    "p_value": 0.0018
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0052",
+   "prompt": "<|im_start|>user\nThe Kenya file is in drawer 9. The Spain file is in drawer 8. The Sweden file is in drawer 4. The Cuba file is in drawer 5. The Canada file is in drawer 7.\nIn which drawer is the file on the country whose capital is Nairobi? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 47,
+     "role": "asked statement"
+    },
+    {
+     "start": 141,
+     "end": 172,
+     "role": "target slot"
+    },
+    {
+     "start": 241,
+     "end": 344,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "9",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9836,
+    "p_identity": 0.0012,
+    "p_position": 0.0035,
+    "p_value": 0.002
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0052",
+   "prompt": "<|im_start|>user\nThe Kenya file is in drawer 9. The Spain file is in drawer 8. The Sweden file is in drawer 4. The Cuba file is in drawer 5. The Canada file is in drawer 7.\nIn which drawer is the file on the country whose capital is Nairobi? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 47,
+     "role": "asked statement"
+    },
+    {
+     "start": 141,
+     "end": 172,
+     "role": "target slot"
+    },
+    {
+     "start": 241,
+     "end": 344,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "9",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9902,
+    "p_identity": 0.0007,
+    "p_position": 0.0022,
+    "p_value": 0.0008
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 5)"
+  },
+  {
+   "group": "kept",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0052",
+   "prompt": "<|im_start|>user\nThe Kenya file is in drawer 9. The Spain file is in drawer 8. The Sweden file is in drawer 4. The Cuba file is in drawer 5. The Canada file is in drawer 7.\nIn which drawer is the file on the country whose capital is Nairobi? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 47,
+     "role": "asked statement"
+    },
+    {
+     "start": 141,
+     "end": 172,
+     "role": "target slot"
+    },
+    {
+     "start": 241,
+     "end": 344,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9821,
+    "p_identity": 0.0012,
+    "p_position": 0.0085,
+    "p_value": 0.0008
+   },
+   "why": "the slot direction leaves answer org (asked statement 1, target 5)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0279",
+   "prompt": "<|im_start|>user\nThe eagle keeps its things in locker 5. The horse keeps its things in locker 6. The worm keeps its things in locker 7. The tiger keeps its things in locker 3. The turkey keeps its things in locker 1.\nIn which locker does the animal known for its talons keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 56,
+     "role": "asked statement"
+    },
+    {
+     "start": 97,
+     "end": 135,
+     "role": "target slot"
+    },
+    {
+     "start": 286,
+     "end": 389,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "5"
+    }
+   },
+   "numbers": {
+    "role": "identity",
+    "p_none": 0.236,
+    "p_identity": 0.4997,
+    "p_position": 0.1115,
+    "p_value": 0.001
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0279",
+   "prompt": "<|im_start|>user\nThe eagle keeps its things in locker 5. The horse keeps its things in locker 6. The worm keeps its things in locker 7. The tiger keeps its things in locker 3. The turkey keeps its things in locker 1.\nIn which locker does the animal known for its talons keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 56,
+     "role": "asked statement"
+    },
+    {
+     "start": 97,
+     "end": 135,
+     "role": "target slot"
+    },
+    {
+     "start": 286,
+     "end": 389,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9373,
+    "p_identity": 0.0321,
+    "p_position": 0.0063,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0279",
+   "prompt": "<|im_start|>user\nThe eagle keeps its things in locker 5. The horse keeps its things in locker 6. The worm keeps its things in locker 7. The tiger keeps its things in locker 3. The turkey keeps its things in locker 1.\nIn which locker does the animal known for its talons keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 56,
+     "role": "asked statement"
+    },
+    {
+     "start": 97,
+     "end": 135,
+     "role": "target slot"
+    },
+    {
+     "start": 286,
+     "end": 389,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "5"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9211,
+    "p_identity": 0.0191,
+    "p_position": 0.0102,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0279",
+   "prompt": "<|im_start|>user\nThe eagle keeps its things in locker 5. The horse keeps its things in locker 6. The worm keeps its things in locker 7. The tiger keeps its things in locker 3. The turkey keeps its things in locker 1.\nIn which locker does the animal known for its talons keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 56,
+     "role": "asked statement"
+    },
+    {
+     "start": 97,
+     "end": 135,
+     "role": "target slot"
+    },
+    {
+     "start": 286,
+     "end": 389,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "5"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9667,
+    "p_identity": 0.0035,
+    "p_position": 0.002,
+    "p_value": 0.0002
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0279",
+   "prompt": "<|im_start|>user\nThe eagle keeps its things in locker 5. The horse keeps its things in locker 6. The worm keeps its things in locker 7. The tiger keeps its things in locker 3. The turkey keeps its things in locker 1.\nIn which locker does the animal known for its talons keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 56,
+     "role": "asked statement"
+    },
+    {
+     "start": 97,
+     "end": 135,
+     "role": "target slot"
+    },
+    {
+     "start": 286,
+     "end": 389,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "3"
+    }
+   },
+   "numbers": {
+    "role": "identity",
+    "p_none": 0.0368,
+    "p_identity": 0.9481,
+    "p_position": 0.0013,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0293",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 7. The spider keeps its things in locker 9. The horse keeps its things in locker 3. The duck keeps its things in locker 5. The bear keeps its things in locker 6.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 137,
+     "end": 175,
+     "role": "target slot"
+    },
+    {
+     "start": 275,
+     "end": 378,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "6",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "p_none": 0.0892,
+    "p_identity": 0.2139,
+    "p_position": 0.101,
+    "p_value": 0.0047
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 4)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0293",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 7. The spider keeps its things in locker 9. The horse keeps its things in locker 3. The duck keeps its things in locker 5. The bear keeps its things in locker 6.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 137,
+     "end": 175,
+     "role": "target slot"
+    },
+    {
+     "start": 275,
+     "end": 378,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.5102,
+    "p_identity": 0.129,
+    "p_position": 0.0475,
+    "p_value": 0.0028
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 4)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0293",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 7. The spider keeps its things in locker 9. The horse keeps its things in locker 3. The duck keeps its things in locker 5. The bear keeps its things in locker 6.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 137,
+     "end": 175,
+     "role": "target slot"
+    },
+    {
+     "start": 275,
+     "end": 378,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.429,
+    "p_identity": 0.1393,
+    "p_position": 0.0512,
+    "p_value": 0.0035
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 4)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0293",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 7. The spider keeps its things in locker 9. The horse keeps its things in locker 3. The duck keeps its things in locker 5. The bear keeps its things in locker 6.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 137,
+     "end": 175,
+     "role": "target slot"
+    },
+    {
+     "start": 275,
+     "end": 378,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-slot": "7",
+     "H-word": "7"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.6712,
+    "p_identity": 0.1029,
+    "p_position": 0.0179,
+    "p_value": 0.0021
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 4)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0293",
+   "prompt": "<|im_start|>user\nThe goat keeps its things in locker 7. The spider keeps its things in locker 9. The horse keeps its things in locker 3. The duck keeps its things in locker 5. The bear keeps its things in locker 6.\nWhat locker is used by the animal known for climbing cliffs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 137,
+     "end": 175,
+     "role": "target slot"
+    },
+    {
+     "start": 275,
+     "end": 378,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "7",
+    "edited": "9",
+    "expected": {
+     "H-slot": "5",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "identity",
+    "p_none": 0.178,
+    "p_identity": 0.4838,
+    "p_position": 0.0655,
+    "p_value": 0.0047
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 4)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0093",
+   "prompt": "<|im_start|>user\nThe liver chart is in folder 8. The tongue chart is in folder 4. The eyebrow chart is in folder 3. The ear chart is in folder 9. The spine chart is in folder 7.\nWhich folder holds the chart on the body part that makes bile? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 115,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "slot direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "8",
+    "edited": "7",
+    "expected": {
+     "H-slot": "3",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "p_none": 0.0244,
+    "p_identity": 0.0018,
+    "p_position": 0.007,
+    "p_value": 0.0012
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0093",
+   "prompt": "<|im_start|>user\nThe liver chart is in folder 8. The tongue chart is in folder 4. The eyebrow chart is in folder 3. The ear chart is in folder 9. The spine chart is in folder 7.\nWhich folder holds the chart on the body part that makes bile? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 115,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-slot": "8",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9952,
+    "p_identity": 0.0002,
+    "p_position": 0.0003,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0093",
+   "prompt": "<|im_start|>user\nThe liver chart is in folder 8. The tongue chart is in folder 4. The eyebrow chart is in folder 3. The ear chart is in folder 9. The spine chart is in folder 7.\nWhich folder holds the chart on the body part that makes bile? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 115,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "random push (same size) at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-slot": "8",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9962,
+    "p_identity": 0.0001,
+    "p_position": 0.0001,
+    "p_value": 0.0
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0093",
+   "prompt": "<|im_start|>user\nThe liver chart is in folder 8. The tongue chart is in folder 4. The eyebrow chart is in folder 3. The ear chart is in folder 9. The spine chart is in folder 7.\nWhich folder holds the chart on the body part that makes bile? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 115,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "shuffled-label direction at layer 38, 1x the patch's size",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-slot": "8",
+     "H-word": "8"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.9953,
+    "p_identity": 0.0002,
+    "p_position": 0.0003,
+    "p_value": 0.0001
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0093",
+   "prompt": "<|im_start|>user\nThe liver chart is in folder 8. The tongue chart is in folder 4. The eyebrow chart is in folder 3. The ear chart is in folder 9. The spine chart is in folder 7.\nWhich folder holds the chart on the body part that makes bile? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 48,
+     "role": "asked statement"
+    },
+    {
+     "start": 82,
+     "end": 115,
+     "role": "target slot"
+    },
+    {
+     "start": 240,
+     "end": 343,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "patch from the alt prompt at layer 38",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-slot": "3",
+     "H-word": "9"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "p_none": 0.6656,
+    "p_identity": 0.3144,
+    "p_position": 0.0015,
+    "p_value": 0.0003
+   },
+   "why": "the slot direction gives another answer (asked statement 1, target 3)"
+  }
+ ]
+}

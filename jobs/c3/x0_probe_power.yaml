@@ -1,0 +1,29 @@
+id: x0_probe_power
+title: "X0 probes, power (Dan's item 7; descriptive, after data): the bridge-word states of 1,500 fresh scenes (d1_topics_v4), 27B L32 on GPU0 and 9B L12 on GPU1, probes refit per stratum"
+thread: C3
+gpus: 2
+mem_gb: 110
+est_gpu_hours: 0.5
+depends_on: [qwen35_122b_x0_hw_gate_r2]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x0_probe.py run --name x0_probe_v4_27b --set d1_topics_v4 --layer 32 & p27=$!;
+  CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0_probe.py run --name qwen35_9b_x0_probe_v4 --set d1_topics_v4 --layer 12 & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+figures_command: >-
+  uv run python scripts/x0_probe.py figures --name x0_probe_v4_27b && BJ_TARGET=qwen3.5-9b uv run python scripts/x0_probe.py figures --name qwen35_9b_x0_probe_v4
+question: >-
+  On 1,500 fresh d1-style scenes (d1_topics_v4: animals / elements / Greek, prose, level 0, seed 2411; no context shared with d1_topics_v3), at the asked person's bridge word in the org run (chat), 27B L32 and 9B L12, split by locker before / after: is (a) the lookup's answer digit linearly decodable above chance once n per stratum is ~750 instead of ~100? (b) and (c) refit alongside.
+why_it_matters: >-
+  On the X0 items, probe (a) was at chance but the positive control (c) reached only 0.67 on the 27B's locker-before items: the probes were data-starved (Dan, ~18:45). With 7x the data, (a) "not detected" becomes a real null or a detection. The states also train the probe-(b) subspace for the amnesic arm (x0_amnesic), on scenes disjoint from its test items.
+hypotheses:
+  H-a: '(a) above chance in locker-before (lower CI of probe - best baseline > 0). Prior: Dan''s, predictions batch 27'
+decision_rule: >-
+  Descriptive, added after data (Dan, 24 Oct ~18:45, item 7). As x0_probe_27b: one-hot ridge, standardized features, penalty by inner 4-fold CV; (a), (b) cross-validated by bridge entity (5 folds), (c) by item; baselines chance, majority, and for (b) pick-index-only and visible-layout-only (agent's additions); 95% CIs from a cluster bootstrap over bridge entities (10,000 resamples, seed 0). Results not opened or summarized before Dan's batch-27 commit.
+controls:
+- 'locker-after scenes (the locker sentence follows the word: (a) and (b) cannot be read from it)'
+- 'the bridge identity probe (positive control)'
+- 'chance, majority, pick-index-only and visible-layout-only baselines, cross-validated'
+n: 'every chat scene of d1_topics_v4 that X0 aligns (up to 1,500; ~750 per stratum)'
+seeds: [2411, 0]
+notes: "One 2-GPU job, two processes (27B on GPU0, 9B on GPU1; BJ_DEVICE_MAP empty: each model whole on its GPU). d1_topics_v4: tasks_v2 make (v8) with d1_topics_v3's settings and seed 2411, generated on the Mac with the cached tokenizer files (the same tokenizer). Cost: 1,500 forwards per model, ~10 min."

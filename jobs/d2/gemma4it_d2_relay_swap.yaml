@@ -1,0 +1,70 @@
+id: gemma4it_d2_relay_swap
+title: "Relay test by digit substitution on Gemma 4 31B-it (first scene set): with the answer's sentence hidden from the last tokens, does the answer follow a new digit in that sentence?"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  BJ_TARGET=gemma-4-31b-it uv run python scripts/relay_swap.py manifest --name gemma4it_d2_relay_swap
+  --from gemma4it_d2_v4_late_read_v3_r2
+  --why "Dan's relay test by digit substitution (23 Oct): the late read's block on the late-read run's own memory ->
+  prompt items, with the answer sentence's digit replaced by a digit not in the list"
+  && BJ_TARGET=gemma-4-31b-it uv run python scripts/relay_swap.py run --name gemma4it_d2_relay_swap
+figures_command: BJ_TARGET=gemma-4-31b-it uv run python scripts/relay_swap.py figures --name gemma4it_d2_relay_swap
+question: >-
+  On Gemma 4 31B-it, when the digit in the sentence that gives the answer is replaced by a digit that is not in the list,
+  and that sentence is hidden from the last tokens exactly as in the late read, does the answer become the new digit more
+  often than it does without the replacement?
+why_it_matters: >-
+  Finding 1: hiding the answer's sentence from the last tokens (the chat-template tokens after the user's text) leaves
+  few answers right on most models, but Gemma 4 31B-it on the first scene set keeps more (23% right). We read that as a
+  relay: the answer reaches the last tokens through other tokens that still see the sentence. A right answer under the
+  block could also be a lucky guess among the listed digits. A digit that appears only in the hidden sentence can reach
+  the answer only through some other route, so the answer following it shows a relay directly.
+hypotheses:
+  H-relay: 'the answer follows the new digit with the sentence hidden from the last tokens: R''s lower bound > 5 points'
+  H-no-relay: 'it does not: R''s lower bound <= 5 points (with the controls passing)'
+decision_rule: >-
+  Fixed 23 Oct before any run (Dan's rule; the agent's proposals marked; scripts/relay_swap.py's docstring states the
+  same and the manifest records it). Items: the late-read run gemma4it_d2_v4_late_read_v3_r2's own memory -> prompt items
+  (attn_knockout.build_pointer_cases with its data set, families, n, competence run and gate, so the same scenes; the
+  run asserts every original prompt equals that run's token for token); an item counts iff its original prompt's
+  unedited read is right (finding 1's rule). Substitution (proposal): pointer_v4's own 'redigit' prompt of the item, the
+  answer's digit replaced by the scene's 'value' digit, which the data generator drew with a fixed seed (set main, seed
+  841 per topic) among the digits not in the list and, under its usual 'soft' policy, not any listed entity's remembered
+  digit; the question unchanged; checked on Gemma's tokenizer for every item: the same token length, only the answer
+  sentence's digit token differs, the new digit nowhere in the original prompt, the old digit nowhere in the
+  substituted one, the new digit's answer token is neither the answer's nor another listed digit's. Block: the answer's
+  sentence hidden from the last tokens in every layer (Gemma has no DeltaNet layer: every layer is attention), exactly
+  finding 1's cell. R = mean over the counted items of 1[substituted prompt answers the new digit] - 1[original prompt
+  answers the new digit], both under the block, with the entity-cluster bootstrap 95% interval (the asked entity
+  resampled within its topic, 4,000 draws, seed 0; finding 1/5's). Relay iff R's lower bound > 5 points, otherwise no
+  relay. Controls, any failure making the verdict 'not interpretable': positive control (proposal), the substituted
+  prompt with nothing hidden answers the new digit on >= 90% of the counted items with the Wilson lower bound >= 85%;
+  off-path control (proposal), the off-path sentence of the same token length hidden from the last tokens instead, the
+  substituted prompt answers the new digit on >= 90% with the Wilson lower bound >= 85%; floor (proposal), the answer's
+  sentence hidden from every token after it in every layer, R's lower bound <= 5 points (no route is left there, so a
+  difference would be a leak of the block). Reported, not decisive: R per topic, R with the item bootstrap, the answers'
+  shares (new digit, old digit, another listed digit, other) in every row kind, and how often the original prompt's
+  blocked and unedited answers equal the late-read run's own rows for the same items (the block reproduces).
+controls:
+- 'positive control: the substituted prompt with nothing hidden (does the model read the new digit at all); proposal: >= 90%, Wilson lower bound >= 85%. The competence run already required this prompt answered right (every prompt of an item right), so it holds by selection on these items; the run checks it with its own read'
+- 'off-path control: the off-path sentence of the same token length hidden from the last tokens instead (both prompts)'
+- 'floor (proposal): the answer''s sentence hidden from every token after it, every layer (both prompts)'
+n: 'the late-read run''s 300 memory -> prompt items (100 per topic: animals, body, countries); all 300 substitutions checked on the Gemma tokenizer (23 Oct, before the run) and every original prompt equal to the late-read run''s; counted: those answered right unedited'
+seeds: [841, 0]
+notes: >-
+  Dan's relay test by digit substitution, 23 Oct; written by the agent, not enqueued. Smallest change: the same items,
+  block, read (the top token at the answer's position) and knock-out code as the late read (scripts/relay_swap.py
+  imports attn_knockout); new: the substituted prompt and 8 rows per item (original and substituted prompt, each with
+  nothing hidden, the answer's sentence hidden from the last tokens, the off-path sentence hidden there instead, the
+  answer's sentence hidden from every later token). The new digit is the data's own 'redigit' digit rather than a new
+  draw because it already satisfies the design (one seeded digit per item, not in the list), its prompts are the ones the
+  competence gate checked, and the eligibility stays exactly the late-read run's; the cost is that the positive control
+  passes by selection. The alternative (a fresh draw per item, random.Random('relay:<scene>') over the digits not in the
+  list) is a one-line change in relay_swap.substitute if Dan prefers it. Cost: 300 items x 8 rows = 2,400 rows of ~85
+  tokens, one forward per item; the late-read run read 160,200 rows at 32 rows/s on one A100 (1.4 h wall with the model
+  load and its smoke); this is about 0.1 h plus the model load and the pre-run check: 0.3 GPU-h budgeted. Inputs already
+  on the box (the late-read run and gemma4it_d3v4_competence_v2_r2); the manifest checks their hashes, so depends_on
+  stays empty (the late-read job's ledger status is 'failed' from its figures stage only, which would block the queue).

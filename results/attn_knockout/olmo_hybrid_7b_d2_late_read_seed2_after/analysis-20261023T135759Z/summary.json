@@ -1,0 +1,753 @@
+{
+  "run": "olmo_hybrid_7b_d2_late_read_seed2_after",
+  "measure": "correct",
+  "items": {
+    "RL": {
+      "items": 100,
+      "unedited_right": 100
+    }
+  },
+  "claims": {
+    "positive_control": {},
+    "late_attention_read": {
+      "RL": {
+        "path": true,
+        "final": {
+          "all": {
+            "acc": 0.05,
+            "verdict": "needed"
+          },
+          "attn": {
+            "acc": 0.07,
+            "verdict": "needed"
+          },
+          "gdn": {
+            "acc": 1.0,
+            "verdict": "not_needed"
+          }
+        },
+        "question_all": {
+          "acc": 0.25,
+          "verdict": "needed"
+        },
+        "late_attention_read": null,
+        "bands": {
+          "early": null,
+          "middle": null,
+          "late": null
+        }
+      }
+    },
+    "C1a_RL_breaks_RR_survives": {
+      "RL": null,
+      "RR": null,
+      "holds": false
+    },
+    "C1b_answer_site_reads_lookup": {
+      "BL": {
+        "final": null,
+        "question": null
+      },
+      "RL": {
+        "final": "needed",
+        "question": "needed"
+      },
+      "BLR": {
+        "final": null,
+        "question": null
+      },
+      "BRL": {
+        "final": null,
+        "question": null
+      }
+    },
+    "C1b_holds": false,
+    "relay_holds": false,
+    "recall_needs_no_locker": {
+      "BR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "RR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      }
+    },
+    "binding_BL_vs_BR": {
+      "BL": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BLR": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      },
+      "BRL": {
+        "question": null,
+        "final": null,
+        "both": null,
+        "after": null
+      }
+    },
+    "bands": {
+      "RL/lookup/question": {
+        "windows_needed": [],
+        "suf_needed": [],
+        "pre_needed": [],
+        "kind_needed": [
+          "attn",
+          "gdn"
+        ],
+        "suf_max_needed": null,
+        "pre_min_needed": null
+      },
+      "RL/lookup/final": {
+        "windows_needed": [],
+        "suf_needed": [],
+        "pre_needed": [],
+        "kind_needed": [
+          "attn"
+        ],
+        "suf_max_needed": null,
+        "pre_min_needed": null
+      },
+      "RL/lookup/both": {
+        "windows_needed": [],
+        "suf_needed": [],
+        "pre_needed": [],
+        "kind_needed": [
+          "attn",
+          "gdn"
+        ],
+        "suf_max_needed": null,
+        "pre_min_needed": null
+      },
+      "RL/lookup/after": {
+        "windows_needed": [],
+        "suf_needed": [],
+        "pre_needed": [],
+        "kind_needed": [
+          "attn"
+        ],
+        "suf_max_needed": null,
+        "pre_min_needed": null
+      }
+    }
+  },
+  "cells": [
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "final",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.05,
+        0.02154336145631356,
+        0.11175196527208817
+      ],
+      "conf": [
+        0.72,
+        0.6251178763865427,
+        0.7986044083240164
+      ],
+      "dlogp": [
+        -5.102301,
+        -5.582136925,
+        -4.6449473999999995
+      ],
+      "deltanet_norm_ratio": 0.987675,
+      "vs_control": [
+        0.95,
+        0.9,
+        0.99
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "question",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.25,
+        0.1754509400372426,
+        0.3430464637007583
+      ],
+      "conf": [
+        0.34,
+        0.25461379497543,
+        0.43722454341689065
+      ],
+      "dlogp": [
+        -3.3379999999999996,
+        -3.7724105,
+        -2.92625225
+      ],
+      "deltanet_norm_ratio": 0.975278,
+      "vs_control": [
+        0.74,
+        0.65,
+        0.8200000000000001
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "after",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.09,
+        0.04807199516388488,
+        0.16226374696643667
+      ],
+      "conf": [
+        0.42,
+        0.327982249185113,
+        0.5179369200110473
+      ],
+      "dlogp": [
+        -3.507658,
+        -3.9120817,
+        -3.1343066750000004
+      ],
+      "deltanet_norm_ratio": 0.979351,
+      "vs_control": [
+        0.76,
+        0.67,
+        0.8400000000000001
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "final",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        1.0,
+        0.9630051925239981,
+        0.9999999999999999
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        -0.016943,
+        -0.041468125,
+        -0.0006068250000000008
+      ],
+      "deltanet_norm_ratio": 0.989137,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "question",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.99,
+        0.9455124752390653,
+        0.9982326134344526
+      ],
+      "conf": [
+        0.01,
+        0.0017673865655472645,
+        0.0544875247609346
+      ],
+      "dlogp": [
+        -0.017941999999999996,
+        -0.05352655,
+        0.005066824999999986
+      ],
+      "deltanet_norm_ratio": 0.975481,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "after",
+      "layers": "all",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.85,
+        0.7671626666784216,
+        0.906940968088377
+      ],
+      "conf": [
+        0.12,
+        0.06999337365267776,
+        0.19812268002908368
+      ],
+      "dlogp": [
+        -0.5589970000000001,
+        -0.8688460499999998,
+        -0.2955238750000001
+      ],
+      "deltanet_norm_ratio": 0.97961,
+      "verdict": "partial"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "question",
+      "layers": "attn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.36,
+        0.2727107459049014,
+        0.45764780018837914
+      ],
+      "conf": [
+        0.4,
+        0.3093997461136028,
+        0.4979992153815976
+      ],
+      "dlogp": [
+        -3.000639,
+        -3.541109825,
+        -2.453827700000001
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.64,
+        0.54,
+        0.73
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "final",
+      "layers": "attn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.07,
+        0.034318824364064096,
+        0.13749671006529757
+      ],
+      "conf": [
+        0.75,
+        0.6569535362992417,
+        0.8245490599627573
+      ],
+      "dlogp": [
+        -4.918784,
+        -5.377081974999999,
+        -4.465299425
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.9299999999999999,
+        0.88,
+        0.97
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "both",
+      "layers": "attn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.05,
+        0.02154336145631356,
+        0.11175196527208817
+      ],
+      "conf": [
+        0.58,
+        0.4820630799889527,
+        0.672017750814887
+      ],
+      "dlogp": [
+        -4.0046859999999995,
+        -4.419316300000001,
+        -3.5866893749999997
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.95,
+        0.9,
+        0.99
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "after",
+      "layers": "attn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.06,
+        0.02778574526665662,
+        0.12476968531222507
+      ],
+      "conf": [
+        0.61,
+        0.5120283616749817,
+        0.699832780680298
+      ],
+      "dlogp": [
+        -4.105391000000001,
+        -4.562825825,
+        -3.675798225
+      ],
+      "deltanet_norm_ratio": null,
+      "vs_control": [
+        0.94,
+        0.89,
+        0.98
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "question",
+      "layers": "attn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        1.0,
+        0.9630051925239981,
+        0.9999999999999999
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        -0.000731,
+        -0.011207199999999999,
+        0.008372324999999986
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "final",
+      "layers": "attn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        1.0,
+        0.9630051925239981,
+        0.9999999999999999
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        -0.000902,
+        -0.00262805,
+        0.0005690999999999995
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "both",
+      "layers": "attn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        1.0,
+        0.9630051925239981,
+        0.9999999999999999
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        0.004137,
+        2.8900000000000133e-05,
+        0.011345099999999999
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "after",
+      "layers": "attn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        1.0,
+        0.9630051925239981,
+        0.9999999999999999
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        -0.0012490000000000003,
+        -0.00991935,
+        0.005326699999999997
+      ],
+      "deltanet_norm_ratio": null,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "question",
+      "layers": "gdn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.73,
+        0.6356769977376873,
+        0.8073053908233518
+      ],
+      "conf": [
+        0.08,
+        0.04109296948581091,
+        0.14998266879403072
+      ],
+      "dlogp": [
+        -1.1216200000000003,
+        -1.5024940250000003,
+        -0.768127875
+      ],
+      "deltanet_norm_ratio": 0.975136,
+      "vs_control": [
+        0.26,
+        0.17999999999999994,
+        0.35
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "final",
+      "layers": "gdn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        1.0,
+        0.9630051925239981,
+        0.9999999999999999
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        -0.004409,
+        -0.010261,
+        -3.087500000000071e-05
+      ],
+      "deltanet_norm_ratio": 0.987952,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "both",
+      "layers": "gdn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.72,
+        0.6251178763865427,
+        0.7986044083240164
+      ],
+      "conf": [
+        0.09,
+        0.04807199516388488,
+        0.16226374696643667
+      ],
+      "dlogp": [
+        -1.1378439999999999,
+        -1.5185872499999997,
+        -0.7838621750000004
+      ],
+      "deltanet_norm_ratio": 0.979167,
+      "vs_control": [
+        0.27,
+        0.18999999999999995,
+        0.36
+      ],
+      "verdict": "needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup",
+      "dest": "after",
+      "layers": "gdn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.65,
+        0.5525426042919797,
+        0.7363589534652197
+      ],
+      "conf": [
+        0.08,
+        0.04109296948581091,
+        0.14998266879403072
+      ],
+      "dlogp": [
+        -1.5052839999999998,
+        -1.9186523000000002,
+        -1.123000725
+      ],
+      "deltanet_norm_ratio": 0.978544,
+      "vs_control": [
+        0.16999999999999993,
+        0.06000000000000005,
+        0.28
+      ],
+      "verdict": "partial"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "question",
+      "layers": "gdn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.99,
+        0.9455124752390653,
+        0.9982326134344526
+      ],
+      "conf": [
+        0.01,
+        0.0017673865655472645,
+        0.0544875247609346
+      ],
+      "dlogp": [
+        -0.020000000000000004,
+        -0.0491512,
+        -0.0003278250000000009
+      ],
+      "deltanet_norm_ratio": 0.975525,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "final",
+      "layers": "gdn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        1.0,
+        0.9630051925239981,
+        0.9999999999999999
+      ],
+      "conf": [
+        0.0,
+        0.0,
+        0.03699480747600191
+      ],
+      "dlogp": [
+        -0.01437,
+        -0.03390900000000001,
+        -0.0007728500000000006
+      ],
+      "deltanet_norm_ratio": 0.989265,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "both",
+      "layers": "gdn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.99,
+        0.9455124752390653,
+        0.9982326134344526
+      ],
+      "conf": [
+        0.01,
+        0.0017673865655472645,
+        0.0544875247609346
+      ],
+      "dlogp": [
+        -0.03374,
+        -0.07640452499999999,
+        -0.0033701500000000053
+      ],
+      "deltanet_norm_ratio": 0.979519,
+      "verdict": "not_needed"
+    },
+    {
+      "family": "RL",
+      "source": "lookup_off",
+      "dest": "after",
+      "layers": "gdn",
+      "mode": "value",
+      "n": 100,
+      "acc": [
+        0.82,
+        0.7333246397578691,
+        0.8829986834574896
+      ],
+      "conf": [
+        0.15,
+        0.09305903191162297,
+        0.23283733332157835
+      ],
+      "dlogp": [
+        -0.761702,
+        -1.1293068,
+        -0.4421892500000002
+      ],
+      "deltanet_norm_ratio": 0.978729,
+      "verdict": "partial"
+    }
+  ]
+}

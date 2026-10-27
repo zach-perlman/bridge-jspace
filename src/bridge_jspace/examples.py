@@ -704,11 +704,13 @@ def export(run_dir: str | Path, root: Path | None = None) -> Path:
 
 
 def export_all(exps: list[str] | None = None, root: Path | None = None) -> list[Path]:
-    """Export the latest examples run of every experiment that has one."""
+    """Export the latest examples run of every experiment that has one, and a page per queued job (job_pages)."""
+    from bridge_jspace.job_pages import export_jobs
     from bridge_jspace.pins import REPO_ROOT
 
     exps = exps or sorted(d.parent.name for d in (REPO_ROOT / "scripts").glob("*/examples.yaml"))
     outs = [export(run, root) for e in exps if (run := latest_examples_run(e)) is not None]
+    outs += export_jobs(root or _examples_root())
     export_index(root)
     return outs
 
@@ -725,10 +727,11 @@ def export_index(root: Path | None = None) -> Path:
             groups = "".join(
                 f"<li>{_esc(g['title'])} <span class='badge'>{g['n_total']}</span></li>" for g in e["groups"]
             )
+            tail = _esc(e["meta"]) if "meta" in e else f"model {_esc(e['model'])}"  # job pages: status and timing
             entries.append(
                 f"<section class='card'><h3><a href='{_esc(exp_dir.name)}/index.html'>{_esc(e['title'])}</a></h3>"
-                f"<p class='meta'><code>{_esc(exp_dir.name)}</code> · {e['n_examples']} examples · model "
-                f"{_esc(e['model'])}</p><ul class='meta'>{groups}</ul></section>"
+                f"<p class='meta'><code>{_esc(exp_dir.name)}</code> · {e['n_examples']} examples · "
+                f"{tail}</p><ul class='meta'>{groups}</ul></section>"
             )
             continue
         run = _from_repo(source["examples_run"])

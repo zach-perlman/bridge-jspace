@@ -1,0 +1,12 @@
+# finding5_confirm / olmo3_7b_instruct_d3v5_len12_swap, layer 20 (e12-word, 12 statements)
+
+**DL (reported): confirms** (A True, B True; n 92)
+- 1st and 2nd: position - identity +78 [+50, +100] points (n 9)
+- 3rd-12th: identity - position +13 [+2, +24] points (n 83)
+- by k: {"1": {"position": 5, "none": 1, "value": 1}, "2": {"position": 2}, "3": {"value": 2, "identity": 2, "context": 4, "position": 3, "none": 1}, "4": {"position": 2, "none": 1, "identity": 3, "context": 4, "value": 1}, "5": {"context": 5, "none": 1, "identity": 2}, "6": {"position": 1, "context": 2, "value": 4, "none": 1, "identity": 1}, "7": {"context": 5, "value": 1, "identity": 2, "position": 1}, "8": {"value": 4, "identity": 2, "context": 1}, "9": {"context": 4, "identity": 4, "none": 1, "value": 1}, "10": {"context": 3, "identity": 1}, "11": {"value": 2, "identity": 1, "context": 1, "position": 1}, "12": {"identity": 3, "position": 2, "none": 1, "context": 2}}
+
+**RL (decisive): confirms** (A True, B True; n 92)
+- 1st and 2nd: position - identity +44 [+12, +75] points (n 9)
+- 3rd-12th: identity - position +18 [+5, +31] points (n 83)
+- by k: {"1": {"context": 2, "position": 3, "none": 1, "other": 1}, "2": {"context": 1, "position": 1}, "3": {"none": 1, "identity": 5, "context": 5, "other": 1}, "4": {"context": 3, "none": 2, "identity": 2, "position": 1, "other": 3}, "5": {"context": 3, "other": 4, "identity": 1}, "6": {"other": 3, "identity": 3, "context": 2, "none": 1}, "7": {"other": 5, "identity": 1, "context": 2, "position": 1}, "8": {"context": 2, "identity": 2, "none": 2, "other": 1}, "9": {"position": 1, "context": 3, "identity": 3, "none": 3}, "10": {"position": 1, "identity": 1, "context": 2}, "11": {"context": 2, "other": 1, "identity": 1, "position": 1}, "12": {"identity": 3, "position": 2, "none": 1, "context": 2}}
+

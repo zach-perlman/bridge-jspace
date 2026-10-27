@@ -1,0 +1,27 @@
+id: qwen3_32b_jpp_d1_topics_parts
+title: "D1 topics (Qwen3-32B, our J++): the lens-readable part vs the rest, at the plain J-lens run's cell"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on:
+- qwen3_32b_jpp_lens_gate
+command: >-
+  BJ_TARGET=qwen3-32b-jpp uv run python scripts/d1_precheck.py --gate qwen3_32b_jpp_lens_gate --competence qwen3_32b_d1_topics_competence --tasks-set d1_topics_v1 --min-topics 0
+  && BJ_TARGET=qwen3-32b-jpp uv run python scripts/statement_positions.py parts --name qwen3_32b_jpp_d1_topics_parts --map qwen3_32b_d1_topics_map --why "D1 on four topics with our J++: the lens-readable part vs the rest at the plain J-lens run's transit cells" --lo 32 --sets bind_bridge bridge_word lookup_x context question
+  && BJ_TARGET=qwen3-32b-jpp uv run python scripts/d1_verdict.py --map qwen3_32b_d1_topics_map --parts qwen3_32b_jpp_d1_topics_parts --tasks-set d1_topics_v1 --cell context:32
+question: >-
+  At the same scenes and the same decisive cell as the plain J-lens run (context, layer 32), with our J++: does the lens-readable part of a stated bridge's change switch lookups (PP), and does it switch recalls (PM, the positive control)?
+why_it_matters: >-
+  The plain J-lens run on this model was not interpretable (its recall control failed, 5%) and its lens did not name the bridge. With J++ the D1 split (finding 2) can be tested on a dense, attention-only model.
+hypotheses:
+  H-replicates: 'the recall control passes and the split replicates. Prior 0.3 (agent''s)'
+  H-not-interpretable: 'the gate or the recall control fails. Prior 0.5 (agent''s)'
+  H-not: 'the control passes, the split does not replicate. Prior 0.2 (agent''s)'
+decision_rule: >-
+  Runs iff our J++ passes gate v1 (scripts/d1_precheck.py; --min-topics 0 because the scene set is the plain J-lens run's, fixed: 30 scenes per topic). The rule of qwen3_32b_d1_topics_parts unchanged, at the cell that run's map rule chose (context, layer 32, fixed here with --cell): the split replicates iff, pooled over the four topics, the lens-readable part alone switches <= 0.10 of lookups and everything else >= 0.50, while PM's lens-readable part switches >= 0.30 (the positive control; without it the run is not interpretable). Per topic reported, not decisive. Primary lens (Dan, 23 Oct ~00:30, fixed before any J++ result): ours, the published recipe on 64 prompts; Zach's fit reported alongside when shared; no silent switch.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary (the fitting null); PM as the positive control on the same scenes; the plain J-lens run (qwen3_32b_d1_topics_parts) reported beside it, labelled "plain J-lens"'
+n: '120 scenes (PP and PM each), four topics (d1_topics_v1, seed 22), the plain J-lens run''s scenes and lens-free map'
+seeds: [22]
+notes: "Dan, 23 Oct ~00:30: every lens result on J++, at the same scenes and cells as the plain J-lens runs. The map (qwen3_32b_d1_topics_map) is lens-free and reused. Not opened before Dan's predictions."

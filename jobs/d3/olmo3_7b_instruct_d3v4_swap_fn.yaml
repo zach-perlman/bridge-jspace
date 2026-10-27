@@ -1,0 +1,50 @@
+id: olmo3_7b_instruct_d3v4_swap_fn
+title: "G3 again, cells placed by function: is there a statement-slot phase in OLMo-3-7B-Instruct before the digit arrives?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.6
+depends_on:
+- olmo3_7b_instruct_d3v4_competence
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main
+  --name olmo3_7b_instruct_d3v4_swap_fn --families RL DL --n 300 --layers 16 17 18 19 20 21 --control-stride 1
+  --groups final last --competence olmo3_7b_instruct_d3v4_competence
+  --why "G3 with cells placed by function (21 Oct, after olmo3_7b_instruct_d3v4_swap): the alt prompt's digit is 0% at
+  layer 16 and >= 76% from layer 22 at the last tokens, so the pointer phase, if any, is at 17-19; every eligible scene"
+  && BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py run --name olmo3_7b_instruct_d3v4_swap_fn
+examples_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py examples --name olmo3_7b_instruct_d3v4_swap_fn
+figures_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py figures --name olmo3_7b_instruct_d3v4_swap_fn
+question: >-
+  On OLMo-3-7B-Instruct, at the layers between "the recalled bridge is formed" and "the fetched digit has arrived" at
+  the last tokens (17-19, placed from olmo3_7b_instruct_d3v4_swap: alt digit 0% at layer 16, 25% at 20, >= 76% from 22),
+  does patching the alt prompt's last two tokens give the digit at the same statement slot more often than bridge alt's
+  statement and the alt prompt's own digit?
+why_it_matters: >-
+  The first OLMo run placed its cells by relative depth (the 27B's 48-50 -> 24-25) and landed after the digit had
+  already arrived, so it could not test the pointer. Post hoc, layer 20 showed slot 32% vs word 20% vs alt digit 25%.
+  This run tests that phase with cells fixed by function before the run: a yes means the statement pointer is not a
+  Qwen3.6-27B property (a second architecture, full attention in every layer); a no means D3 must be stated for Qwen.
+hypotheses:
+  H-slot-phase: 'memory → prompt, last two tokens, at least one of layers 17, 18, 19: verdict "same statement slot"
+    pooled (the slot share''s lower bound above the word''s, the alt digit''s and the random push''s upper bounds; the
+    same-entity control <= 10%), and the same at that layer in >= 2 of the topics with n >= 35. Prior 0.5'
+  H-word: 'the word (bridge alt''s statement) wins at 17-19 (a content code, as the J-lens would suggest). Prior 0.15'
+  H-no-phase: 'mixed or none at every layer 17-19 (slot and digit arrive together; no separable pointer phase). Prior 0.35'
+decision_rule: >-
+  pointer_swap's rule with the pointer_v4 additions (entity-cluster bootstrap widened to Wilson; per topic n items / k
+  entities / t wordings), applied at the last two tokens at layers 17, 18 and 19 for memory → prompt (primary) and
+  named → prompt (reported). "Slot phase in OLMo" iff H-slot-phase holds at >= 1 of the 3 layers; three layers are
+  looked at, so a single-layer pass with its lower bound within 2 points of the competitor's upper bound is reported as
+  "borderline". Layers 16, 20, 21 and the after-question tokens are reported, not decisive.
+controls:
+- 'same entity, statements reshuffled (every hypothesis predicts answer org)'
+- 'random push of the same size at every layer'
+- 'another topic''s prompt of the same size'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks)'
+n: 'every eligible scene, up to 300 per topic (the first run used 150; token-unaligned countries scenes are dropped);
+  memory → prompt and named → prompt'
+seeds: [0]
+notes: >-
+  Same gate (olmo3_7b_instruct_d3v4_competence, read judge) and data as olmo3_7b_instruct_d3v4_swap; only the layers
+  (placed by function) and n differ. ~0.6 GPU-h on one A100 (7B). Results: results/pointer_swap/olmo3_7b_instruct_d3v4_swap_fn/.

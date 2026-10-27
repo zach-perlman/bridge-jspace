@@ -1,0 +1,140 @@
+{
+  "exp": "pointer_swap",
+  "run": "d3_start_or_end_main",
+  "written_utc": "2026-10-21T14:49:36Z",
+  "why": "D3 start or end: alt prompts with one statement more or fewer, so the slot counted from the start, the slot counted from the end and the same token position name three different org statements; animals and elements",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "data": "pointer_v3",
+  "set": "main",
+  "levels": [
+    "e5more",
+    "e5fewer"
+  ],
+  "families": [
+    "RL",
+    "DL"
+  ],
+  "domains": [
+    "animals",
+    "elements"
+  ],
+  "family_roles": [
+    "RL",
+    "DL",
+    "RR"
+  ],
+  "items": {
+    "animals_RL_e5more": {
+      "file": "data/pointer_v3/main/animals_RL_e5more.json",
+      "sha256": "c4bf48c3fb9b4337054991e429e452b520ed9a2cc616a991add6b3bcf9e57216"
+    },
+    "animals_RL_e5fewer": {
+      "file": "data/pointer_v3/main/animals_RL_e5fewer.json",
+      "sha256": "656d1e40069e812da7bddbb1091b744c588d6100cddc0161409405be9389c920"
+    },
+    "animals_DL_e5more": {
+      "file": "data/pointer_v3/main/animals_DL_e5more.json",
+      "sha256": "69e994eea951733733a169a03c83c978e25beb5018ca55eb2e081ea18ed84369"
+    },
+    "animals_DL_e5fewer": {
+      "file": "data/pointer_v3/main/animals_DL_e5fewer.json",
+      "sha256": "09326cf73646c683db074d0e3f57e117da644b6823bb72d488c2155c09f304c2"
+    },
+    "elements_RL_e5more": {
+      "file": "data/pointer_v3/main/elements_RL_e5more.json",
+      "sha256": "6cb061d3ce07a160b3abab5f0cd7bf80a63a3e39b192dbb96f229a8bc152f603"
+    },
+    "elements_RL_e5fewer": {
+      "file": "data/pointer_v3/main/elements_RL_e5fewer.json",
+      "sha256": "0a568c7942c0bfcb3ad7e7029ffceb5417c8f9b769dd612427714beb6c454f08"
+    },
+    "elements_DL_e5more": {
+      "file": "data/pointer_v3/main/elements_DL_e5more.json",
+      "sha256": "b5f692b1e16dca2a158bf219c5af7174de8c216d2b0bf782d4ba4bd159060fc3"
+    },
+    "elements_DL_e5fewer": {
+      "file": "data/pointer_v3/main/elements_DL_e5fewer.json",
+      "sha256": "f5bbd463e7227ab01000396afbe204e89b2e4b08b2d826a280fb3e713f7897d5"
+    }
+  },
+  "competence": "d3_start_or_end_competence_27b",
+  "competence_path": "results/pointer_v3/d3_start_or_end_competence_27b/items.jsonl",
+  "competence_sha256": "1f5d26672f57a06038dda3beb78ff83ce18fbce736c8e0e548875be31adcc685",
+  "n": 120,
+  "layers": [
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56
+  ],
+  "control_stride": 2,
+  "windows": {
+    "early": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "mid": [
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "transit": [
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ]
+  },
+  "groups": [
+    "final",
+    "last"
+  ],
+  "question_max_layer": null,
+  "control_levels": null,
+  "sources": [
+    "dissoc",
+    "same",
+    "rand",
+    "other"
+  ],
+  "sample": "per (domain, base level), up to n scenes eligible (every competence prompt right, keyed by set and item id) in all of the run's families and conditions, seed 0; all of them on the same scenes",
+  "seeds": {
+    "sample": 0,
+    "null": 0,
+    "other": 0
+  },
+  "decision": "(fixed before any run; the job specs in jobs/d3/ repeat it). Per cell (family x group x layer or window\nx source dissoc), pooled over domains, Wilson 95% intervals over items:\n  - interpretable iff the dissoc patch changes the answer (1 - share none: lower bound >= 0.20) and the same control\n    changes it rarely (upper bound <= 0.10); otherwise \"none\" (nothing moves) or \"damage\"\n  - verdict X in {identity, position, value} (RR: identity, position) iff X's lower bound exceeds the upper bounds of\n    the other two and the chance bar: the rand control's upper bound for X at that layer (windows: the max over the\n    window's layers) and the per-digit context rate (upper bound of share context / (N - 3), N = 5 only)\n  - otherwise \"mixed\". Primary: RL, group final, window transit (the suite's 98-100% copy flips at 44-52). H-pointer:\n    position; H-word (or a lexical key): identity; H-value: value. DL is the reference (classic binding retrieval),\n    RR the contrast (a pointer is useless there).\n  - Other datasets name their primary / reference / contrast families in the manifest (code_pointer_v1: memory ->\n    prompt RK / named -> prompt DK / RR)."
+}

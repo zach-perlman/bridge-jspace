@@ -1,0 +1,25 @@
+id: x0_122b_b5
+title: "122B b5 (Dan, 25 Oct ~00:20; held-out model): the locker key in another language or as a chemical symbol at L33, the probe first, then the patch test"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 2.0
+depends_on: [x0_replicate]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x4_alias.py probe --name qwen35_122b_x4_probe --why "X4 on the 122B (b5, Dan 25 Oct ~00:20)"
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x4_alias.py run --name qwen35_122b_x4_patch --why "X4 on the 122B (b5, Dan 25 Oct ~00:20)"
+question: >-
+  On the 122B at L33, does the lookup's independence from the J++ part survive a locker key written in another language (animals), and does the chemical-symbol positive control make the lookup need J++ (elements)?
+why_it_matters: >-
+  The grid rows "a verbatim key needed" and "the symbol control" on the held-out model.
+hypotheses:
+  H-no-verbatim: 'D_translated <= 0.10. Prior: Dan''s Q31.7 (batch 31)'
+decision_rule: >-
+  Fixed in advance (X4.md's graded rules, the 9B / 27B thresholds): D_translated (lookup excess translated minus verbatim, animals) >= 0.20 -> the lookup's independence from J++ needs a verbatim match; <= 0.10 -> it does not; in between: mixed. D_symbol (elements) >= 0.20: the positive control passes; if it fails, the report says that the method may not see a lookup that needs J++. Per-entity D, entities with D > 0, the entity bootstrap flagged unreliable below 10 clusters; the recall per form as a stability check; C only on items eligible for both readers (>= 30). Probe within form and as a transfer: descriptive. Results stay closed until Dan's batch-31 commit.
+controls:
+- 'the verbatim form in the same scenes (paired by scene)'
+- 'a random-subspace part at the J++ part''s share'
+- 'the chemical-symbol positive control'
+n: '400 scenes per form (alias_pointer_v1 main DL items)'
+seeds: [2910]
+notes: "122B on both GPUs. No dependency on b1-b4 or the natural passages; the queue's order runs it after them."

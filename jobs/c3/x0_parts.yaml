@@ -1,0 +1,31 @@
+id: x0_parts
+title: "Word only vs J++ without the word vs a PCA dictionary (Dan's audit item 2; descriptive, after data): single-change Δ, 27B L32 on GPU0 and 9B L12 on GPU1; plus the 9B's J++ atoms table"
+thread: C3
+gpus: 2
+mem_gb: 130
+est_gpu_hours: 0.8
+depends_on: [qwen35_122b_x0_hw_gate_r2]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x0_parts.py run --name x0_parts_27b --single x0_single_27b_r2 & p27=$!;
+  { CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0_parts.py run --name qwen35_9b_x0_parts --single qwen35_9b_x0_single_r2
+  && CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0_atoms.py run --name qwen35_9b_x0_atoms_letters --source qwen35_9b_x0_necessity --layer 12 --n 20 --seed 0 --vocab letters; } & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  On the single-change items (x0_single_27b_r2 at L32, qwen35_9b_x0_single_r2 at L12), both readers: how many flips are lost when Δ loses (w) its least-squares fit on the J++ directions of the org and alt bridge tokens and their one-token surface variants, (jw) its 25-atom J++ part with those variants banned, (pca) its 25-atom part over the top 2,000 principal directions of the layer (200 held-out d1_topics_v4 prompts, every token), and (jpp) X0's J++ part, each against a random part of its own share?
+why_it_matters: >-
+  The J++ part is mostly not the bridge word (the bridge's tokens are in the top 25 atoms of 28 of 40 items, ~12% of the part), so "the bridge's word form" is not shown. This separates the word from J++ beyond the word, and J++ from any direction the layer favours.
+hypotheses:
+  H-word: 'recall''s loss mostly in w. Prior: Dan''s, predictions batch 27'
+  H-beyond: 'recall''s loss mostly in jw, with pca inert. Prior: Dan''s, batch 27'
+  H-geometry: 'pca about as large as jpp for recall. Prior: Dan''s, batch 27'
+decision_rule: >-
+  Descriptive, added after data (Dan's audit, 24 Oct ~19:30, item 2). Per model, reader and part: median share of ||Δ||², S_whole, S_no, S_noRand, Jdep, Rdep, excess (X0's cells; cluster bootstrap over bridge entities, 10,000 resamples, seed 0), top-token read, both readers on the identical patch. Reading (Dan): recall's loss mostly in w -> the word form; mostly in jw with pca inert -> J-space beyond the word; pca about as large as J++ -> "J++-specific" means "aligned with the layer's geometry", and the README must say so. Results not opened or summarized before Dan's batch-27 commit.
+controls:
+- 'a random-subspace part at each part''s own share, per item'
+- 'X0''s J++ part on the same items and run (reference)'
+- 'both readers on the identical patch'
+- 'held-out PCA prompts from a fresh set (d1_topics_v4), disjoint from the test items'
+n: 'the 200 single-change items per model'
+seeds: [0]
+notes: "One 2-GPU job, two processes (27B on GPU0; 9B on GPU1, then the 9B's atoms table, x0_atoms at L12, letters, 20 + 20 items, seed 0). Saves h_org, Δ and every part (fp16) for Dan's item 4 (the probe on h_org + part). Cost: 200 held-out forwards + 400 Δ forwards + 200 x 10 reads x 2 readers per model, and 200 masked J++ OMPs: ~20-30 min per model."

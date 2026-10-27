@@ -1,0 +1,124 @@
+{
+  "exp": "statement_positions",
+  "run": "d1_map_v1",
+  "kind": "map",
+  "written_utc": "2026-10-20T22:49:28Z",
+  "why": "D1: where the lookup reads the bridge, statement positions vs question tokens (position-set x layer copy map)",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "code": {
+    "sha": "96c9ec24b4b7a1f2e06109174a048db290d03db4",
+    "dirty": true
+  },
+  "families": [
+    "BL",
+    "BR",
+    "RL",
+    "RR",
+    "BLR",
+    "BRL",
+    "R",
+    "B"
+  ],
+  "n_per_family": 32,
+  "inputs": {
+    "data/suite_v1/BL.json": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017",
+    "data/suite_v1/BR.json": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb",
+    "data/suite_v1/RL.json": "305f5e5b6679ff83466800cd05c019e62ab4d374dd0d3f916e968c8a733cd045",
+    "data/suite_v1/RR.json": "1cedcc460789ba2fee5c2b6f7a0d2302d2e81a9c73acb7853843f54a807fca07",
+    "data/suite_v1/BLR.json": "147a395905a96f1a5d62fb45894a22cdf610d7af693a5a6a19a6117371722036",
+    "data/suite_v1/BRL.json": "9a53b7b8b659be955facac1923dbec7953d43afd714cb501308390a7da820d83",
+    "results/suite_split/map_A8_v1/cases.jsonl": "b3570104d9f99240f6b3103c0e57648137d017f3fc58044b26281bdc8992d734",
+    "results/control_split/map_v1/cases.jsonl": "d2a6c4cd77ba1db3edfd6f03085c9370540da312a4e205bdc1727cec1c733ca6",
+    "data/bind_recall.json": "bbb1cfa8e95b6a83ec1c6003fc3a05c5c1fba195cff6a5cb7e3ea968dce59029"
+  },
+  "cases": "suite: the first n per family of suite_split/map_A8_v1's cases (read_write's selection; BL/BR/RL/RR and BLR/BRL share scenes); countries: the first n per family of control_split/map_v1's",
+  "sets": "Position sets, per prompt, from character offsets of the generator's own sentences (asserted to tile the context):\n  bind_bridge    the binding statement that states the bridge (bound families: the queried person's)\n  bridge_word    its bridge-entity token(s) alone\n  bind_other     the other persons' binding statements (in B families C also changes X's owner's)\n  lookup_bridge  the bridge's lookup statement (\"The cow's locker is 5.\"; BLR its friend row, BRL its legs row; none\n                 for countries, whose capital is recalled)\n  lookup_x       X's lookup statement (the row C's re-binding points the question to: a copy at the bridge's row\n                 alone cannot redirect the lookup)\n  context        every context token (all statements: the statement route's ceiling)\n  question       suite_split's question group, exactly (the question's tokens after C's changed ones through the end)\n  q_words        question minus final\n  final          the template after the user turn: <|im_end|>, the assistant header, the empty think block, \"Answer:\"\nFor RL, RR and countries R, C changes only the cue in the question, so every statement position precedes C's change:\ncopying C there is an exact no-op (a built-in check). O's change (the lockers / friends / rows / holders of X and Z)\nalso comes after every binding statement in the suite, so O's copy at the binding statements is exactly zero there.",
+  "read": "suite_split's: one forward of the edited clean prompt (a digit's space token appended), the top token's role (b: X's answer, A: the bridge's, other), ld = logit(b) - logit(A), frac = (ld - ld_clean) / (ld_C - ld_clean)",
+  "seeds": {
+    "null": 0,
+    "bootstrap": 0,
+    "random_dictionary": "777 + layer (suite_split's)"
+  },
+  "question": "Where, by position set and layer, does each family carry its bridge (lens-free)?",
+  "layers": [
+    0,
+    8,
+    16,
+    24,
+    28,
+    32,
+    34,
+    36,
+    38,
+    40,
+    44,
+    48,
+    52,
+    60
+  ],
+  "layer_grid": {
+    "coarse": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40,
+      44,
+      48,
+      52,
+      56,
+      60
+    ],
+    "window": [
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ]
+  },
+  "sources": {
+    "cf": "C's block output copied at the set (AddRows of h_C - h_clean)",
+    "off": "O's, the same way, where O's delta is non-zero",
+    "rand": "C's delta with each row replaced by a random direction at that row's norm (null_rows, seed 0 + 1e9 x set index + 1e5 x case index + layer)"
+  },
+  "sanity": {
+    "identity": "AddRows of zero at every position (layers: the first and last map layer): no change",
+    "all0": "C's delta at every position at the first map layer: reproduces C's read",
+    "zero_cells": "cells whose positions all precede the first changed token are verified exactly zero and skipped; for the first 5 cases of each cue-only family the zero C copies at the statements are read anyway (exact no-ops)",
+    "validation": "8 greedy tokens for every edit of the first 10 cases per family"
+  },
+  "decision": {
+    "transit": "C's copy gives X's answer in >= 50% of cases and its Wilson 95% lower bound is above the upper bound of every control's change rate (O where non-zero, rand); zero-delta cases count as unchanged",
+    "handoff": "per family and statement set, the last transit layer; per family, the first layer at which the question set is in transit",
+    "fixed": "before the 27B run (the 0.8B smoke checks the code path only)"
+  }
+}

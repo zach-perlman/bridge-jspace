@@ -1,0 +1,34 @@
+id: qwen35_9b_d3b_fit_v2
+title: "D3b on Qwen3.5-9B with its J++: the slot direction vs a J++ lens push"
+thread: D3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.3
+depends_on:
+- qwen35_9b_lens_gate
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/d1_precheck.py --gate qwen35_9b_lens_gate --competence qwen35_9b_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_fit.py run --data pointer_v4 --name qwen35_9b_d3b_fit_smoke_v2
+  --competence qwen35_9b_d3v4_competence_r2 --fit-limit 20 --n-test 4 --rr-n 4 --collect-layers 21
+  --steer-layers 21 --scales 1.0 --ks 4 --primary-layer 21
+  --why "smoke: pointer_fit on the 9B with its J++; not a result"
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_fit.py run --data pointer_v4 --name qwen35_9b_d3b_fit_v2
+  --competence qwen35_9b_d3v4_competence_r2 --n-test 150 --rr-n 50 --collect-layers 15 18 21 24
+  --steer-layers 18 21 24 --scales 1.0 2.0 --ks 4 --primary-layer 21
+  --why "D3b on the 9B with its J++: olmo3_7b_instruct_jpp_d3b_fit_v2's fit, test items and scales; primary = the 9B's finding-5 layer 21, steer layers +-3 around it (OLMo's spacing; the same depth)"
+examples_command: BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_fit.py examples --name qwen35_9b_d3b_fit_v2
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_fit.py figures --name qwen35_9b_d3b_fit_v2
+question: >-
+  On Qwen3.5-9B, with its J++, does a lens push of the same size (bridge alt's J++ word direction minus bridge org's) move the lookup to the target statement, where the fitted slot direction does?
+why_it_matters: >-
+  Fig D4 (finding 8's lens arm: the fitted slot direction writes the lookup, a lens push of the same size does not) has the 27B (J++) and OLMo; the 9B is the second model whose lens passes the gate and where finding 8 is claimed (README).
+hypotheses:
+  H-lens-null: 'the J++ lens push moves <= 5% of lookups at layer 21, scale 1, like the plain J-lens push. Prior 0.75 (agent''s) (copied from olmo3_7b_instruct_jpp_d3b_fit_v2; layer 18 there)'
+  H-steer: 'pointer_fit''s rule at layer 21, scale 1 (slot-target rate lower bound >= 0.30 and >= 20 points above the lens push and the random direction). Prior 0.1 (agent''s; the plain J-lens run moved 2%) (copied from olmo3_7b_instruct_jpp_d3b_fit_v2; layer 18 there)'
+decision_rule: >-
+  Runs iff the 9B's J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). pointer_fit's pre-registered rule unchanged (docstring "Decision rule"; pointer_v4: entity-cluster intervals) at the primary layer 21 (the 9B's finding-5 layer: finding5_confirm's decisive layer on qwen35_9b_d3v4_swap_r2, the README's finding-5 run), scale 1, with OLMo's cells around it: collect 15 18 21 24, steer 18 21 24 (OLMo: 12 15 18 21 / 15 18 21 around 18; the same depth, 32 layers), layers 18 and 24, scale 2 and per topic reported. Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch (the 9B: its published J++, the only lens it has been run with).
+controls:
+- 'lens push of the same norm (J++ word directions); random direction of the same norm; shuffled slot labels; memory -> memory items (copied from olmo3_7b_instruct_jpp_d3b_fit_v2)'
+n: '150 held-out test items (pointer_v4 main, eligible in qwen35_9b_d3v4_competence_r2), 50 recall items'
+seeds: [0]
+notes: "Mechanical copy of olmo3_7b_instruct_jpp_d3b_fit_v2 (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. Only BJ_TARGET, names, the competence (the 9B's own pointer_v4 main competence, as its finding-5 run) and the layers change."

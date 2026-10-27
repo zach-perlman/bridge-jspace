@@ -1,0 +1,24 @@
+id: qwen35_122b_d1_topics2_rw_r2
+title: "D1 doubled (Qwen3.5-122B): the lens read and write at the transit cells"
+thread: D1
+gpus: 1
+mem_gb: 140
+est_gpu_hours: 0.8
+depends_on:
+- qwen35_122b_d1_topics2_parts_r2
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_precheck.py --gate qwen35_122b_lens_gate_v2 --competence qwen35_122b_d1_topics2_competence --min-topics 0 && BJ_TARGET=qwen3.5-122b-a10b BJ_SUITE_BATCH=16 uv run python scripts/statement_positions.py readwrite --name qwen35_122b_d1_topics2_rw --map qwen35_122b_d1_topics2_map --parts qwen35_122b_d1_topics2_parts --why "D1 on 122B: lens read and write" --lo 24 --sets bind_bridge bridge_word lookup_x context question
+figures_command: BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/statement_positions.py figures --name qwen35_122b_d1_topics2_rw
+question: >-
+  Does the lens name the stated bridge at the transit cells (27B 92%, Qwen3-32B 7.5%)?
+why_it_matters: >-
+  The J-space claims rest on Qwen3.6-27B; Neel asked for a larger model early. Qwen3.5-122B-A10B has a published J++ and needs no port on an H200.
+hypotheses:
+  H-reads: 'the lens''s top word is the stated bridge on >= 50% at the decisive cell. Prior 0.5'
+decision_rule: >-
+  Precheck (Dan, 23 Oct ~00:35, before these runs): the lens stages run only if the model's lens gate v1 passed (qwen35_122b_lens_gate_v2; scripts/d1_precheck.py --min-topics 0: only the gate matters; else the job stops with exit 3 and is logged). scripts/d1_verdict.py's map rule at the 27B's layers scaled by depth (fixed 2026-10-22 before these runs): the decisive cell is PP's statement cell (bind_bridge, bridge_word, context) in transit at the coarse layers in [24, 33) where C's whole copy flips the most lookups (ties: earlier layer, then bind_bridge, bridge_word, context). Replicates iff there the lens-readable part alone switches <= 0.10 of lookups and everything else >= 0.50 while PM's lens-readable part switches >= 0.30 (the lens gate: a failing control means no claim about the lens on this model). Per topic (animals, elements, Greek letters) the same verdict on the topic's rows; a topic counts only if its own control passes. The lens read is reported as the second gate number.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control on the same scenes'
+n: 'as the map'
+seeds: [0]
+notes: "Dan, 2026-10-22 night: every experiment on Qwen3.5-122B-A10B on 23 Oct, on GPUs brought up for it (FP8 needs compute capability >= 8.9: one H200 per job; on A100s transformers dequantizes to bf16, ~244 GB, which needs a multi-GPU port). The 27B's rules, layers scaled by depth (x 48/64): its answer onset 33 (suite_split), the stated-bridge window [24, 33), the D4 grid 9-33. Lens: the published J++ (neuronpedia, fit on bf16 weights). Not opened before Dan predicts."

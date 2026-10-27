@@ -56,6 +56,24 @@ uv run bj-run scripts/exp11_bridge_vs_answer_by_layer/config.yaml \
 Each config's header lists its variants (e.g. exp11 split by the J++ swaps). Defaults follow the shared setup in the
 README: trailing space stripped, part B's v4 labels, bands 32-48 (primary) and 24-40.
 
+## Job queue on the GPU box
+GPU runs can be queued instead of started by hand (`scripts/jobq.py`). A job is a spec, `jobs/<thread>/<id>.yaml`, committed before the run: `command`, `gpus` (1; a job with `gpus: 2` runs on a worker that owns two GPUs, `start-worker --gpus 0,1`, and its command splits the model over them with `BJ_DEVICE_MAP=auto`), `mem_gb` (free GPU memory to wait for, in total over the job's GPUs; default 70 for the 27B), `est_gpu_hours`, `depends_on`, `examples_command`, `figures_command` (required in practice: every experiment ends with figures), and the pre-registration: `question`, `why_it_matters`, `hypotheses` (name -> predicted numbers), `decision_rule`, `controls`, `n`, `seeds`. `make enqueue` refuses a dirty tree, an id already used or a run name (`--name` in the command) already in the box's results/ (`ARGS=--reuse-names` for a command that only reads that run), pushes the commit to a bare repo on the box (not GitHub) and queues the spec.
+```bash
+make queue-worker                      # once per box/GPU: tmux session jobq-gpu0 on the box (GPU=N for others)
+make enqueue JOB=jobs/d2/d2_ko_v1.yaml # or JOB="a.yaml b.yaml"
+make queue-status                      # running (last progress line), pending (why waiting), recent done/failed
+make queue-pull                        # results (new dirs only), results/jobq/{ledger.jsonl,drafts/}, log/jobq/
+make queue-cancel ID=d2_ko_v1          # pending jobs only
+make examples-render                   # job pages: examples/job_<id>/ beside the lens-example pages
+```
+The worker takes jobs first in, first out once their dependencies are done and the GPU has `mem_gb` free (it waits,
+never kills), runs each in a fresh checkout of its commit (earlier jobs' results copied in; `cache/` and `.env` shared
+with `~/bridge-jspace`), and appends to the ledger: queued/started/ended, setup/run/examples time, exit codes, peak GPU
+memory, new results dirs, W&B links. Each finished job gets a draft EXPERIMENTS.md row (`results/jobq/drafts/`) whose
+result and verdict a human writes. A script's `figures` stage writes PNGs into a new `analysis-*/` folder of the run
+(the job page shows the newest such folder's figures). A script's `examples` stage writes `examples.json` (schema in
+`src/bridge_jspace/job_pages.py`), which the job page shows with the pre-registered predictions.
+
 ## Re-analysing a finished run (no GPU)
 Each part A experiment has an `analyze` command that re-aggregates a run's saved ranks with the current code into a
 new `<run>/analysis-<timestamp>[-<kind>]/` (summary.json and, for exp11/exp12, figures; exp12's kinds: `-position-map`,

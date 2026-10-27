@@ -1,0 +1,100 @@
+{
+ "note": "Descriptive, added after data (Dan, 24 Oct ~18:45 items 2-3; audit ~19:30 item 4); not part of X0's rule.",
+ "target": "address",
+ "probe": "qwen35_9b_x0_probe_v4",
+ "single": "qwen35_9b_x0_single_r2",
+ "states": "qwen35_9b_x0_amnesic",
+ "parts": null,
+ "n": 73,
+ "penalty": 0.1,
+ "results": {
+  "org right": [
+   0.9452054794520548,
+   0.8928571428571429,
+   0.9866666666666667
+  ],
+  "alt right": [
+   0.547945205479452,
+   0.4444444444444444,
+   0.647887323943662
+  ],
+  "pair right": [
+   0.5068493150684932,
+   0.4044884054506335,
+   0.6087081459270364
+  ],
+  "same prediction": [
+   0.0273972602739726,
+   0.0,
+   0.07462686567164178
+  ],
+  "alt (org + \u0394): reads the alt's": [
+   0.547945205479452,
+   0.4444444444444444,
+   0.647887323943662
+  ],
+  "alt (org + \u0394): reads the org's": [
+   0.0273972602739726,
+   0.0,
+   0.07462686567164178
+  ],
+  "org + J++ part, k = 25: reads the alt's": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "org + J++ part, k = 25: reads the org's": [
+   0.958904109589041,
+   0.9166666666666666,
+   1.0
+  ],
+  "org + rest, k = 25: reads the alt's": [
+   0.547945205479452,
+   0.44303345388788423,
+   0.6551724137931034
+  ],
+  "org + rest, k = 25: reads the org's": [
+   0.0410958904109589,
+   0.0,
+   0.09836065573770492
+  ],
+  "org + J++ part, k = 100: reads the alt's": [
+   0.0273972602739726,
+   0.0,
+   0.06493506493506493
+  ],
+  "org + J++ part, k = 100: reads the org's": [
+   0.9178082191780822,
+   0.8593694982394366,
+   0.9710144927536232
+  ],
+  "org + rest, k = 100: reads the alt's": [
+   0.4794520547945205,
+   0.3684210526315789,
+   0.6
+  ],
+  "org + rest, k = 100: reads the org's": [
+   0.1232876712328767,
+   0.058823529411764705,
+   0.19718309859154928
+  ],
+  "energy": {
+   "org + J++ part, k = 25": {
+    "share_of_delta": 0.17835708578105777,
+    "share_in_probe_subspace": 0.005081129970846205
+   },
+   "org + rest, k = 25": {
+    "share_of_delta": 0.8216397186785221,
+    "share_in_probe_subspace": 0.9060631563188206
+   },
+   "org + J++ part, k = 100": {
+    "share_of_delta": 0.3681611021613606,
+    "share_in_probe_subspace": 0.03159958697016889
+   },
+   "org + rest, k = 100": {
+    "share_of_delta": 0.6318413427447793,
+    "share_in_probe_subspace": 0.6949685063908775
+   }
+  }
+ }
+}

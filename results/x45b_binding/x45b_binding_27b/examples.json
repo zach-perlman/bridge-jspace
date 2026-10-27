@@ -1,0 +1,982 @@
+{
+ "exp": "x45b_binding",
+ "run": "x45b_binding_27b",
+ "k": 10,
+ "seed": 0,
+ "groups": [
+  {
+   "key": "PP",
+   "title": "lookup",
+   "definition": "the O prompt as the model reads it; ⟦…⟧ / underlined: the bridge word (arms a, b) and the patched locker-sentence tokens (arms c, d)",
+   "n_total": 99
+  },
+  {
+   "key": "PM",
+   "title": "recall (descriptive)",
+   "definition": "the O prompt as the model reads it; ⟦…⟧ / underlined: the bridge word (arms a, b) and the patched locker-sentence tokens (arms c, d)",
+   "n_total": 99
+  }
+ ],
+ "examples": [
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0010",
+   "prompt": "<|im_start|>user\nThe locker of carbon is 7. Adam picked hydrogen. Grace picked oxygen. The locker of oxygen is 3. The locker of hydrogen is 4. Oscar picked carbon.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\n⟦The locker of carbon is 7.⟧ Adam picked hydrogen. Grace picked ⟦oxygen⟧. ⟦The locker of oxygen is 3.⟧ ⟦The locker of hydrogen is 4.⟧ Oscar picked carbon.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 78,
+     "end": 85,
+     "role": "bridge_word"
+    },
+    {
+     "start": 17,
+     "end": 43,
+     "role": "patched_locker"
+    },
+    {
+     "start": 86,
+     "end": 113,
+     "role": "patched_locker"
+    },
+    {
+     "start": 113,
+     "end": 142,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Grace's pick? O's answer 3, S's answer 7",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "switches (S's answer)": "7",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '3' (A); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '7' (b); greedy ' 7'",
+    "b_quarter the bridge-word change at L/4": "top '7' (b); greedy ' 7'",
+    "c S patched into O at every locker-sentence token, at L": "top '3' (A); greedy ' 3'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '3' (A); greedy ' 3'",
+    "S S read on S (unedited)": "top '7' (b); greedy ' 7'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0010",
+   "prompt": "<|im_start|>user\nThe locker of carbon is 7. Adam picked hydrogen. Grace picked oxygen. The locker of oxygen is 3. The locker of hydrogen is 4. Oscar picked carbon.\nWhat is the atomic number of Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\n⟦The locker of carbon is 7.⟧ Adam picked hydrogen. Grace picked ⟦oxygen⟧. ⟦The locker of oxygen is 3.⟧ ⟦The locker of hydrogen is 4.⟧ Oscar picked carbon.\nWhat is the atomic number of Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 78,
+     "end": 85,
+     "role": "bridge_word"
+    },
+    {
+     "start": 17,
+     "end": 43,
+     "role": "patched_locker"
+    },
+    {
+     "start": 86,
+     "end": 113,
+     "role": "patched_locker"
+    },
+    {
+     "start": 113,
+     "end": 142,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Grace's pick? O's answer 8, S's answer 6",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "switches (S's answer)": "6",
+     "stays (O's answer)": "8"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '8' (A); greedy ' 8'",
+    "a the bridge-word change at L": "top '6' (b); greedy ' 6'",
+    "b_half the bridge-word change at L/2": "top '6' (b); greedy ' 6'",
+    "b_quarter the bridge-word change at L/4": "top '6' (b); greedy ' 6'",
+    "c S patched into O at every locker-sentence token, at L": "top '8' (A); greedy ' 8'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '8' (A); greedy ' 8'",
+    "S S read on S (unedited)": "top '6' (b); greedy ' 6'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0080",
+   "prompt": "<|im_start|>user\nLaura picked epsilon. Anna picked delta. Ivy picked eta. The locker of delta is 8. The locker of eta is 6. The locker of epsilon is 1.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nLaura picked epsilon. Anna picked delta. Ivy picked ⟦eta⟧. ⟦The locker of delta is 8.⟧ ⟦The locker of eta is 6.⟧ ⟦The locker of epsilon is 1.⟧\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 72,
+     "role": "bridge_word"
+    },
+    {
+     "start": 73,
+     "end": 99,
+     "role": "patched_locker"
+    },
+    {
+     "start": 99,
+     "end": 123,
+     "role": "patched_locker"
+    },
+    {
+     "start": 123,
+     "end": 151,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Ivy's pick? O's answer 6, S's answer 8",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "switches (S's answer)": "8",
+     "stays (O's answer)": "6"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '6' (A); greedy ' 6'",
+    "a the bridge-word change at L": "top '6' (A); greedy ' 6'",
+    "b_half the bridge-word change at L/2": "top '8' (b); greedy ' 8'",
+    "b_quarter the bridge-word change at L/4": "top '8' (b); greedy ' 8'",
+    "c S patched into O at every locker-sentence token, at L": "top '6' (A); greedy ' 6'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '6' (A); greedy ' 6'",
+    "S S read on S (unedited)": "top '8' (b); greedy ' 8'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0080",
+   "prompt": "<|im_start|>user\nLaura picked epsilon. Anna picked delta. Ivy picked eta. The locker of delta is 8. The locker of eta is 6. The locker of epsilon is 1.\nWhich position in the Greek alphabet does Ivy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nLaura picked epsilon. Anna picked delta. Ivy picked ⟦eta⟧. ⟦The locker of delta is 8.⟧ ⟦The locker of eta is 6.⟧ ⟦The locker of epsilon is 1.⟧\nWhich position in the Greek alphabet does Ivy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 72,
+     "role": "bridge_word"
+    },
+    {
+     "start": 73,
+     "end": 99,
+     "role": "patched_locker"
+    },
+    {
+     "start": 99,
+     "end": 123,
+     "role": "patched_locker"
+    },
+    {
+     "start": 123,
+     "end": 151,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which position in the Greek alphabet does Ivy's pick have? O's answer 7, S's answer 4",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "switches (S's answer)": "4",
+     "stays (O's answer)": "7"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '7' (A); greedy ' 7'",
+    "a the bridge-word change at L": "top '4' (b); greedy ' 4'",
+    "b_half the bridge-word change at L/2": "top '4' (b); greedy ' 4'",
+    "b_quarter the bridge-word change at L/4": "top '4' (b); greedy ' 4'",
+    "c S patched into O at every locker-sentence token, at L": "top '7' (A); greedy ' 7'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '7' (A); greedy ' 7'",
+    "S S read on S (unedited)": "top '4' (b); greedy ' 4'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0089",
+   "prompt": "<|im_start|>user\nFiona picked eta. Owen picked alpha. The locker of alpha is eight. The locker of eta is two. Max picked gamma. The locker of gamma is five.\nWhich locker belongs to Fiona's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nFiona picked ⟦eta⟧. Owen picked alpha. ⟦The locker of alpha is eight.⟧ ⟦The locker of eta is two.⟧ Max picked gamma. ⟦The locker of gamma is five.⟧\nWhich locker belongs to Fiona's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge_word"
+    },
+    {
+     "start": 53,
+     "end": 83,
+     "role": "patched_locker"
+    },
+    {
+     "start": 83,
+     "end": 109,
+     "role": "patched_locker"
+    },
+    {
+     "start": 127,
+     "end": 156,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Fiona's pick? O's answer 2, S's answer 5",
+   "answers": {
+    "clean": "2",
+    "edited": "5",
+    "expected": {
+     "switches (S's answer)": "5",
+     "stays (O's answer)": "2"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '2' (A); greedy ' 2'",
+    "a the bridge-word change at L": "top '2' (A); greedy ' 2'",
+    "b_half the bridge-word change at L/2": "top '2' (A); greedy ' 2'",
+    "b_quarter the bridge-word change at L/4": "top '5' (b); greedy ' 5'",
+    "c S patched into O at every locker-sentence token, at L": "top '5' (b); greedy ' 5'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '2' (A); greedy ' 2'",
+    "S S read on S (unedited)": "top '5' (b); greedy ' 5'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0089",
+   "prompt": "<|im_start|>user\nFiona picked eta. Owen picked alpha. The locker of alpha is eight. The locker of eta is two. Max picked gamma. The locker of gamma is five.\nWhich position in the Greek alphabet does Fiona's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nFiona picked ⟦eta⟧. Owen picked alpha. ⟦The locker of alpha is eight.⟧ ⟦The locker of eta is two.⟧ Max picked gamma. ⟦The locker of gamma is five.⟧\nWhich position in the Greek alphabet does Fiona's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge_word"
+    },
+    {
+     "start": 53,
+     "end": 83,
+     "role": "patched_locker"
+    },
+    {
+     "start": 83,
+     "end": 109,
+     "role": "patched_locker"
+    },
+    {
+     "start": 127,
+     "end": 156,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which position in the Greek alphabet does Fiona's pick have? O's answer 7, S's answer 3",
+   "answers": {
+    "clean": "7",
+    "edited": "5",
+    "expected": {
+     "switches (S's answer)": "3",
+     "stays (O's answer)": "7"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '7' (A); greedy ' 7'",
+    "a the bridge-word change at L": "top '7' (A); greedy ' 7'",
+    "b_half the bridge-word change at L/2": "top '7' (A); greedy ' 7'",
+    "b_quarter the bridge-word change at L/4": "top '3' (b); greedy ' 3'",
+    "c S patched into O at every locker-sentence token, at L": "top '5' (other); greedy ' 5'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '7' (A); greedy ' 7'",
+    "S S read on S (unedited)": "top '3' (b); greedy ' 3'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0106",
+   "prompt": "<|im_start|>user\nWill picked carbon. The locker of helium is 9. Paul picked lithium. Amy picked helium. The locker of carbon is 3. The locker of lithium is 6.\nWhich locker belongs to Paul's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nWill picked carbon. ⟦The locker of helium is 9.⟧ Paul picked ⟦lithium⟧. Amy picked helium. ⟦The locker of carbon is 3.⟧ ⟦The locker of lithium is 6.⟧\nWhich locker belongs to Paul's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 75,
+     "end": 83,
+     "role": "bridge_word"
+    },
+    {
+     "start": 36,
+     "end": 63,
+     "role": "patched_locker"
+    },
+    {
+     "start": 103,
+     "end": 130,
+     "role": "patched_locker"
+    },
+    {
+     "start": 130,
+     "end": 158,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Paul's pick? O's answer 6, S's answer 9",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "switches (S's answer)": "9",
+     "stays (O's answer)": "6"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '6' (A); greedy ' 6'",
+    "a the bridge-word change at L": "top '6' (A); greedy ' 6'",
+    "b_half the bridge-word change at L/2": "top '9' (b); greedy ' 9'",
+    "b_quarter the bridge-word change at L/4": "top '9' (b); greedy ' 9'",
+    "c S patched into O at every locker-sentence token, at L": "top '6' (A); greedy ' 6'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '6' (A); greedy ' 6'",
+    "S S read on S (unedited)": "top '9' (b); greedy ' 9'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0106",
+   "prompt": "<|im_start|>user\nWill picked carbon. The locker of helium is 9. Paul picked lithium. Amy picked helium. The locker of carbon is 3. The locker of lithium is 6.\nWhat is the atomic number of Paul's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nWill picked carbon. ⟦The locker of helium is 9.⟧ Paul picked ⟦lithium⟧. Amy picked helium. ⟦The locker of carbon is 3.⟧ ⟦The locker of lithium is 6.⟧\nWhat is the atomic number of Paul's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 75,
+     "end": 83,
+     "role": "bridge_word"
+    },
+    {
+     "start": 36,
+     "end": 63,
+     "role": "patched_locker"
+    },
+    {
+     "start": 103,
+     "end": 130,
+     "role": "patched_locker"
+    },
+    {
+     "start": 130,
+     "end": 158,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Paul's pick? O's answer 3, S's answer 2",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "switches (S's answer)": "2",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '3' (A); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '2' (b); greedy ' 2'",
+    "b_quarter the bridge-word change at L/4": "top '2' (b); greedy ' 2'",
+    "c S patched into O at every locker-sentence token, at L": "top '3' (A); greedy ' 3'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '3' (A); greedy ' 3'",
+    "S S read on S (unedited)": "top '2' (b); greedy ' 2'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0108",
+   "prompt": "<|im_start|>user\nJames picked the frog. Rose picked the ant. The locker of the frog is 1. The locker of the bear is 3. Frank picked the bear. The locker of the ant is 2.\nWhich locker belongs to James's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nJames picked the ⟦frog⟧. Rose picked the ant. ⟦The locker of the frog is 1.⟧ ⟦The locker of the bear is 3.⟧ Frank picked the bear. ⟦The locker of the ant is 2.⟧\nWhich locker belongs to James's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 38,
+     "role": "bridge_word"
+    },
+    {
+     "start": 60,
+     "end": 89,
+     "role": "patched_locker"
+    },
+    {
+     "start": 89,
+     "end": 118,
+     "role": "patched_locker"
+    },
+    {
+     "start": 141,
+     "end": 169,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to James's pick? O's answer 1, S's answer 2",
+   "answers": {
+    "clean": "1",
+    "edited": "2",
+    "expected": {
+     "switches (S's answer)": "2",
+     "stays (O's answer)": "1"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '1' (A); greedy ' 1'",
+    "a the bridge-word change at L": "top '1' (A); greedy ' 1'",
+    "b_half the bridge-word change at L/2": "top '1' (A); greedy ' 1'",
+    "b_quarter the bridge-word change at L/4": "top '2' (b); greedy ' 2'",
+    "c S patched into O at every locker-sentence token, at L": "top '2' (b); greedy ' 2'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '1' (A); greedy ' 1'",
+    "S S read on S (unedited)": "top '2' (b); greedy ' 2'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0108",
+   "prompt": "<|im_start|>user\nJames picked the frog. Rose picked the ant. The locker of the frog is 1. The locker of the bear is 3. Frank picked the bear. The locker of the ant is 2.\nHow many legs does James's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nJames picked the ⟦frog⟧. Rose picked the ant. ⟦The locker of the frog is 1.⟧ ⟦The locker of the bear is 3.⟧ Frank picked the bear. ⟦The locker of the ant is 2.⟧\nHow many legs does James's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 33,
+     "end": 38,
+     "role": "bridge_word"
+    },
+    {
+     "start": 60,
+     "end": 89,
+     "role": "patched_locker"
+    },
+    {
+     "start": 89,
+     "end": 118,
+     "role": "patched_locker"
+    },
+    {
+     "start": 141,
+     "end": 169,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "How many legs does James's pick have? O's answer 4, S's answer 6",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "switches (S's answer)": "6",
+     "stays (O's answer)": "4"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '4' (A); greedy ' 4'",
+    "a the bridge-word change at L": "top '6' (b); greedy ' 6'",
+    "b_half the bridge-word change at L/2": "top '6' (b); greedy ' 6'",
+    "b_quarter the bridge-word change at L/4": "top '6' (b); greedy ' 6'",
+    "c S patched into O at every locker-sentence token, at L": "top '4' (A); greedy ' 4'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '4' (A); greedy ' 4'",
+    "S S read on S (unedited)": "top '6' (b); greedy ' 6'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0117",
+   "prompt": "<|im_start|>user\nMark picked the beetle. The locker of the dog is six. Lily picked the dog. The locker of the beetle is nine. Victor picked the elephant. The locker of the elephant is one.\nWhich locker belongs to Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nMark picked the beetle. ⟦The locker of the dog is six.⟧ Lily picked the dog. ⟦The locker of the beetle is nine.⟧ Victor picked the ⟦elephant⟧. ⟦The locker of the elephant is one.⟧\nWhich locker belongs to Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 143,
+     "end": 152,
+     "role": "bridge_word"
+    },
+    {
+     "start": 40,
+     "end": 70,
+     "role": "patched_locker"
+    },
+    {
+     "start": 91,
+     "end": 125,
+     "role": "patched_locker"
+    },
+    {
+     "start": 153,
+     "end": 188,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Victor's pick? O's answer 1, S's answer 9",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "switches (S's answer)": "9",
+     "stays (O's answer)": "1"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '1' (A); greedy ' 1'",
+    "a the bridge-word change at L": "top '1' (A); greedy ' 1'",
+    "b_half the bridge-word change at L/2": "top '9' (b); greedy ' 9'",
+    "b_quarter the bridge-word change at L/4": "top '9' (b); greedy ' 9'",
+    "c S patched into O at every locker-sentence token, at L": "top '1' (A); greedy ' 1'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '1' (A); greedy ' 1'",
+    "S S read on S (unedited)": "top '9' (b); greedy ' 9'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0117",
+   "prompt": "<|im_start|>user\nMark picked the beetle. The locker of the dog is six. Lily picked the dog. The locker of the beetle is nine. Victor picked the elephant. The locker of the elephant is one.\nHow many legs does Victor's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nMark picked the beetle. ⟦The locker of the dog is six.⟧ Lily picked the dog. ⟦The locker of the beetle is nine.⟧ Victor picked the ⟦elephant⟧. ⟦The locker of the elephant is one.⟧\nHow many legs does Victor's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 143,
+     "end": 152,
+     "role": "bridge_word"
+    },
+    {
+     "start": 40,
+     "end": 70,
+     "role": "patched_locker"
+    },
+    {
+     "start": 91,
+     "end": 125,
+     "role": "patched_locker"
+    },
+    {
+     "start": 153,
+     "end": 188,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "How many legs does Victor's pick have? O's answer 4, S's answer 6",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "switches (S's answer)": "6",
+     "stays (O's answer)": "4"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '4' (A); greedy ' 4'",
+    "a the bridge-word change at L": "top '6' (b); greedy ' 6'",
+    "b_half the bridge-word change at L/2": "top '6' (b); greedy ' 6'",
+    "b_quarter the bridge-word change at L/4": "top '6' (b); greedy ' 6'",
+    "c S patched into O at every locker-sentence token, at L": "top '4' (A); greedy ' 4'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '4' (A); greedy ' 4'",
+    "S S read on S (unedited)": "top '6' (b); greedy ' 6'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0131",
+   "prompt": "<|im_start|>user\nRyan picked epsilon. The locker of epsilon is 8. The locker of gamma is 9. The locker of theta is 4. Sara picked theta. Beth picked gamma.\nWhich locker belongs to Ryan's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nRyan picked ⟦epsilon⟧. ⟦The locker of epsilon is 8.⟧ ⟦The locker of gamma is 9.⟧ ⟦The locker of theta is 4.⟧ Sara picked theta. Beth picked gamma.\nWhich locker belongs to Ryan's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 36,
+     "role": "bridge_word"
+    },
+    {
+     "start": 37,
+     "end": 65,
+     "role": "patched_locker"
+    },
+    {
+     "start": 65,
+     "end": 91,
+     "role": "patched_locker"
+    },
+    {
+     "start": 91,
+     "end": 117,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Ryan's pick? O's answer 8, S's answer 9",
+   "answers": {
+    "clean": "8",
+    "edited": "9",
+    "expected": {
+     "switches (S's answer)": "9",
+     "stays (O's answer)": "8"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '8' (A); greedy ' 8'",
+    "a the bridge-word change at L": "top '8' (A); greedy ' 8'",
+    "b_half the bridge-word change at L/2": "top '9' (b); greedy ' 9'",
+    "b_quarter the bridge-word change at L/4": "top '9' (b); greedy ' 9'",
+    "c S patched into O at every locker-sentence token, at L": "top '9' (b); greedy ' 9'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '8' (A); greedy ' 8'",
+    "S S read on S (unedited)": "top '9' (b); greedy ' 9'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0131",
+   "prompt": "<|im_start|>user\nRyan picked epsilon. The locker of epsilon is 8. The locker of gamma is 9. The locker of theta is 4. Sara picked theta. Beth picked gamma.\nWhich position in the Greek alphabet does Ryan's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nRyan picked ⟦epsilon⟧. ⟦The locker of epsilon is 8.⟧ ⟦The locker of gamma is 9.⟧ ⟦The locker of theta is 4.⟧ Sara picked theta. Beth picked gamma.\nWhich position in the Greek alphabet does Ryan's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 36,
+     "role": "bridge_word"
+    },
+    {
+     "start": 37,
+     "end": 65,
+     "role": "patched_locker"
+    },
+    {
+     "start": 65,
+     "end": 91,
+     "role": "patched_locker"
+    },
+    {
+     "start": 91,
+     "end": 117,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which position in the Greek alphabet does Ryan's pick have? O's answer 5, S's answer 3",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "switches (S's answer)": "3",
+     "stays (O's answer)": "5"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '5' (A); greedy ' 5'",
+    "a the bridge-word change at L": "top '3' (b); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '3' (b); greedy ' 3'",
+    "b_quarter the bridge-word change at L/4": "top '3' (b); greedy ' 3'",
+    "c S patched into O at every locker-sentence token, at L": "top '5' (A); greedy ' 5'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '5' (A); greedy ' 5'",
+    "S S read on S (unedited)": "top '3' (b); greedy ' 3'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0136",
+   "prompt": "<|im_start|>user\nMia picked hydrogen. The locker of hydrogen is three. The locker of oxygen is six. Amy picked oxygen. The locker of nitrogen is eight. Jack picked nitrogen.\nWhich locker belongs to Mia's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nMia picked ⟦hydrogen⟧. ⟦The locker of hydrogen is three.⟧ ⟦The locker of oxygen is six.⟧ Amy picked oxygen. ⟦The locker of nitrogen is eight.⟧ Jack picked nitrogen.\nWhich locker belongs to Mia's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 27,
+     "end": 36,
+     "role": "bridge_word"
+    },
+    {
+     "start": 37,
+     "end": 70,
+     "role": "patched_locker"
+    },
+    {
+     "start": 70,
+     "end": 99,
+     "role": "patched_locker"
+    },
+    {
+     "start": 118,
+     "end": 151,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Mia's pick? O's answer 3, S's answer 6",
+   "answers": {
+    "clean": "3",
+    "edited": "6",
+    "expected": {
+     "switches (S's answer)": "6",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '3' (A); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '3' (A); greedy ' 3'",
+    "b_quarter the bridge-word change at L/4": "top '6' (b); greedy ' 6'",
+    "c S patched into O at every locker-sentence token, at L": "top '6' (b); greedy ' 6'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '1' (other); greedy ' 1'",
+    "S S read on S (unedited)": "top '6' (b); greedy ' 6'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0136",
+   "prompt": "<|im_start|>user\nMia picked hydrogen. The locker of hydrogen is three. The locker of oxygen is six. Amy picked oxygen. The locker of nitrogen is eight. Jack picked nitrogen.\nWhat is the atomic number of Mia's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nMia picked ⟦hydrogen⟧. ⟦The locker of hydrogen is three.⟧ ⟦The locker of oxygen is six.⟧ Amy picked oxygen. ⟦The locker of nitrogen is eight.⟧ Jack picked nitrogen.\nWhat is the atomic number of Mia's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 27,
+     "end": 36,
+     "role": "bridge_word"
+    },
+    {
+     "start": 37,
+     "end": 70,
+     "role": "patched_locker"
+    },
+    {
+     "start": 70,
+     "end": 99,
+     "role": "patched_locker"
+    },
+    {
+     "start": 118,
+     "end": 151,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Mia's pick? O's answer 1, S's answer 8",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "switches (S's answer)": "8",
+     "stays (O's answer)": "1"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '1' (A); greedy ' 1'",
+    "a the bridge-word change at L": "top '8' (b); greedy ' 8'",
+    "b_half the bridge-word change at L/2": "top '8' (b); greedy ' 8'",
+    "b_quarter the bridge-word change at L/4": "top '8' (b); greedy ' 8'",
+    "c S patched into O at every locker-sentence token, at L": "top '1' (A); greedy ' 1'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '1' (A); greedy ' 1'",
+    "S S read on S (unedited)": "top '8' (b); greedy ' 8'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0142",
+   "prompt": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked nitrogen. The locker of nitrogen is three.\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. ⟦The locker of lithium is eight.⟧ ⟦The locker of oxygen is six.⟧ Owen picked ⟦nitrogen⟧. ⟦The locker of nitrogen is three.⟧\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 129,
+     "end": 138,
+     "role": "bridge_word"
+    },
+    {
+     "start": 56,
+     "end": 88,
+     "role": "patched_locker"
+    },
+    {
+     "start": 88,
+     "end": 117,
+     "role": "patched_locker"
+    },
+    {
+     "start": 139,
+     "end": 172,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Owen's pick? O's answer 3, S's answer 6",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "switches (S's answer)": "6",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '3' (A); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '6' (b); greedy ' 6'",
+    "b_quarter the bridge-word change at L/4": "top '6' (b); greedy ' 6'",
+    "c S patched into O at every locker-sentence token, at L": "top '3' (A); greedy ' 3'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '3' (A); greedy ' 3'",
+    "S S read on S (unedited)": "top '6' (b); greedy ' 6'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0142",
+   "prompt": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked nitrogen. The locker of nitrogen is three.\nWhat is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. ⟦The locker of lithium is eight.⟧ ⟦The locker of oxygen is six.⟧ Owen picked ⟦nitrogen⟧. ⟦The locker of nitrogen is three.⟧\nWhat is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 129,
+     "end": 138,
+     "role": "bridge_word"
+    },
+    {
+     "start": 56,
+     "end": 88,
+     "role": "patched_locker"
+    },
+    {
+     "start": 88,
+     "end": 117,
+     "role": "patched_locker"
+    },
+    {
+     "start": 139,
+     "end": 172,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Owen's pick? O's answer 7, S's answer 8",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "switches (S's answer)": "8",
+     "stays (O's answer)": "7"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '7' (A); greedy ' 7'",
+    "a the bridge-word change at L": "top '8' (b); greedy ' 8'",
+    "b_half the bridge-word change at L/2": "top '8' (b); greedy ' 8'",
+    "b_quarter the bridge-word change at L/4": "top '8' (b); greedy ' 8'",
+    "c S patched into O at every locker-sentence token, at L": "top '7' (A); greedy ' 7'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '7' (A); greedy ' 7'",
+    "S S read on S (unedited)": "top '8' (b); greedy ' 8'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0208",
+   "prompt": "<|im_start|>user\nThe locker of nitrogen is two. The locker of carbon is nine. Victor picked lithium. Eric picked nitrogen. The locker of lithium is six. Eva picked carbon.\nWhich locker belongs to Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\n⟦The locker of nitrogen is two.⟧ ⟦The locker of carbon is nine.⟧ Victor picked ⟦lithium⟧. Eric picked nitrogen. ⟦The locker of lithium is six.⟧ Eva picked carbon.\nWhich locker belongs to Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 91,
+     "end": 99,
+     "role": "bridge_word"
+    },
+    {
+     "start": 17,
+     "end": 47,
+     "role": "patched_locker"
+    },
+    {
+     "start": 47,
+     "end": 77,
+     "role": "patched_locker"
+    },
+    {
+     "start": 122,
+     "end": 152,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Victor's pick? O's answer 6, S's answer 2",
+   "answers": {
+    "clean": "6",
+    "edited": "2",
+    "expected": {
+     "switches (S's answer)": "2",
+     "stays (O's answer)": "6"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '6' (A); greedy ' 6'",
+    "a the bridge-word change at L": "top '2' (b); greedy ' 2'",
+    "b_half the bridge-word change at L/2": "top '2' (b); greedy ' 2'",
+    "b_quarter the bridge-word change at L/4": "top '2' (b); greedy ' 2'",
+    "c S patched into O at every locker-sentence token, at L": "top '2' (b); greedy ' 2'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '6' (A); greedy ' 6'",
+    "S S read on S (unedited)": "top '2' (b); greedy ' 2'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0208",
+   "prompt": "<|im_start|>user\nThe locker of nitrogen is two. The locker of carbon is nine. Victor picked lithium. Eric picked nitrogen. The locker of lithium is six. Eva picked carbon.\nWhat is the atomic number of Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "prompt_marked": "<|im_start|>user\n⟦The locker of nitrogen is two.⟧ ⟦The locker of carbon is nine.⟧ Victor picked ⟦lithium⟧. Eric picked nitrogen. ⟦The locker of lithium is six.⟧ Eva picked carbon.\nWhat is the atomic number of Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 91,
+     "end": 99,
+     "role": "bridge_word"
+    },
+    {
+     "start": 17,
+     "end": 47,
+     "role": "patched_locker"
+    },
+    {
+     "start": 47,
+     "end": 77,
+     "role": "patched_locker"
+    },
+    {
+     "start": 122,
+     "end": 152,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Victor's pick? O's answer 3, S's answer 7",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "switches (S's answer)": "7",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '7' (b); greedy ' 7'",
+    "b_half the bridge-word change at L/2": "top '7' (b); greedy ' 7'",
+    "b_quarter the bridge-word change at L/4": "top '7' (b); greedy ' 7'",
+    "c S patched into O at every locker-sentence token, at L": "top '3' (A); greedy ' 3'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '3' (A); greedy ' 3'",
+    "S S read on S (unedited)": "top '7' (b); greedy ' 7'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  }
+ ]
+}

@@ -1,0 +1,1 @@
+2026-10-23 | jobq muse30b_d3v5_swap (code 2dadb64, NVIDIA A100 80GB PCIe, run 1h01m, total 1h02m; spec jobs/d3/muse30b_d3v5_swap.yaml; results/pointer_swap/muse30b_d3v5_swap) | As pointer_v5 on the other models. | (fill in from results/pointer_swap/muse30b_d3v5_swap) n=150 items per family (RL, DL), seeds=[841, 844]; exit 0 | none | UNVERIFIED; verdict: (human)

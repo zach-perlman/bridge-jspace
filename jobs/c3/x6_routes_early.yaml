@@ -1,0 +1,27 @@
+id: x6_routes_early
+title: "x6_routes at an early layer (Dan, 25 Oct ~02:20): 9B L6 on GPU1, 27B L16 on GPU0, the layers where the lookup's J++ extra loss peaks; without the pointer-direction arms (they exist only at the layers fixed in advance)"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 1.0
+depends_on: [x0_replicate]
+command: >-
+  uv run python -c "import torch" &&
+  { { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_c0_l16_27b --smoke --layer 16 --c0-min 0.5 --no-pointer
+      && CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_l16_27b --layer 16 --c0-min 0.5 --no-pointer; } & p27=$!;
+  { CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x6_routes.py run --name qwen35_9b_x6_routes_c0_l6 --smoke --layer 6 --c0-min 0.5 --no-pointer
+      && CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x6_routes.py run --name qwen35_9b_x6_routes_l6 --layer 6 --c0-min 0.5 --no-pointer; } & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  At the early layer where the lookup's J++ extra loss peaks (F2: 9B L6, 27B L16), which route does the lookup follow in C1 and C2, and does removing the J++ part cut the identity share more there than at the layer fixed in advance?
+why_it_matters: >-
+  Early, the lookup still depends on the J++ part; if that dependence carries the item's identity, removing J++ should cut the identity route there.
+hypotheses:
+  H-early: 'Dan''s Q32.7 and Q32.8 (batch 32, committed before the results are shown)'
+decision_rule: >-
+  As x6_routes (Dan, 25 Oct ~02:20: same conditions, arms and n): a route is used if its share is >= 0.20 with lower CI >= 0.10. The C0 gate is descriptive here: C0's switch rate is reported, and the run stops only if it is below 0.50. Deviation, logged in STATUS.md: no pointer-direction arms, because the pointer directions exist only at the layers fixed in advance (fitting them at L6 / L16 needs a new probe-state run, which is more than a parameter). Results stay closed with the rest of batch 32.
+controls:
+- 'C0 (reported); the recall as a control route; a random part at the J++ part''s share'
+n: '300 eligible scenes per condition and model'
+seeds: [2510]
+notes: "Queued after b6 (Dan ~02:20). The 07:30 cutoff applies to b6 only (Dan: leave b6's rule as is); this job starts when the queue reaches it."

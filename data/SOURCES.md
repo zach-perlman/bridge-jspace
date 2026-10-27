@@ -23,6 +23,7 @@ Provenance, revisions, checksums and licences. What each dataset is and how much
 | `suite_v1_dev/*.json` | Generated for this repo: `scripts/suite_v1.py make --set dev` (seeds 90010-90013); difficulty pilot, dev only | - | see `results/suite_v1/competence_dev_v1/manifest.json` | - |
 | `suite_v1/B1_annotations.json` | Derived: `scripts/suite_v1_b1_annotations.py` over `probe_swap.json` | - | - | - |
 | `entity_prompts_topup.json`, `entity_prompts_more/part*.json` | Written for this repo (rounds 2 and 3, coding agents in Cursor sessions); see each file's `meta` block | - | - | - |
+| `natural_read_v1/items.json` | Derived: `scripts/natural_read.py make` (seed 0) from SQuAD v1.1 dev, [rajpurkar/SQuAD-explorer](https://github.com/rajpurkar/SQuAD-explorer) `dataset/dev-v1.1.json` (raw sha256 `95aa6a52d5d6a735563366753ca50492a658031da74f301ac5238b03966972c9`; not committed: `cache/natural_read/squad/dev-v1.1.json`, URL in `pins.SQUAD_DEV_URL`); one question per paragraph, 718 items (see the file's `meta`) | `240e165ab706d95bd4323653bb92421f446208cf` | `60b8527dc63c2fff3217d40ece1a7f8405a46aa3946f8d7f36f2d475eab21cc9` | CC BY-SA 4.0 |
 
 `probe_swap.json` is the 90 two-hop prompts of the probe-swap experiment in Gurnee et al. (2026),
 [Verbalizable Representations Form a Global Workspace in Language Models](https://transformer-circuits.pub/2026/workspace/index.html).
@@ -30,6 +31,8 @@ It is copied unchanged.
 
 `lens_eval_multihop.json` is the paper's lens-quality eval for two-hop prompts (93 items: `prompt`, `target`,
 `intermediates`; readout at the token before `target`, pass@k over min-over-layers rank). Copied unchanged.
+
+`natural_read_v1/items.json` holds Wikipedia paragraphs, questions and answers from SQuAD v1.1 (Rajpurkar et al. 2016, [SQuAD: 100,000+ Questions for Machine Comprehension of Text](https://arxiv.org/abs/1606.05250)), dev set, distributed under CC BY-SA 4.0 (the site's download note; the site repository's code is MIT). The derived file is under the same licence. The raw file is the one at the pinned commit above; the site's own copy (https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json) had the same sha256 on 2026-10-23. `tests/test_pins.py` rebuilds the items from the raw file when it is cached.
 
 Models and lenses (J-lens, J++) are not stored here; they are downloaded at pinned revisions (see
 `configs/models/*.yaml`). Data files are sha256-checked on load (`src/bridge_jspace/pins.py`).

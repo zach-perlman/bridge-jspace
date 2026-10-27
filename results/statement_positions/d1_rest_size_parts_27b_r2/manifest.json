@@ -1,0 +1,95 @@
+{
+  "exp": "statement_positions",
+  "run": "d1_rest_size_parts_27b_r2",
+  "kind": "parts",
+  "written_utc": "2026-10-23T13:37:55Z",
+  "why": "A2: the rest of a stated bridge's change at the lens part's size",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "47a671a41d1c5b80ae8a73831282ab6a017db58f",
+    "dirty": true
+  },
+  "families": [
+    "PP",
+    "PM"
+  ],
+  "n_per_family": 180,
+  "inputs": {
+    "data/tasks_v2/d1_topics_v2/items.jsonl": "062aac437d8ec6b41f6b352c3ffe3713a09618df30c778f1ccf0f577943bb51e",
+    "results/tasks_v2/d1_topics2_competence_27b/items.jsonl": "781ff83dddf9654673cdeebbbeba312ab4d12f5e1b1872d17be97e00804a4203"
+  },
+  "tasks": {
+    "set": "d1_topics_v2",
+    "competence": "d1_topics2_competence_27b"
+  },
+  "cases": "suite: the first n per family of suite_split/map_A8_v1's cases (read_write's selection; BL/BR/RL/RR and BLR/BRL share scenes); countries: the first n per family of control_split/map_v1's",
+  "sets": "Position sets, per prompt, from character offsets of the generator's own sentences (asserted to tile the context):\n  bind_bridge    the binding statement that states the bridge (bound families: the queried person's)\n  bridge_word    its bridge-entity token(s) alone\n  bind_other     the other persons' binding statements (in B families C also changes X's owner's)\n  lookup_bridge  the bridge's lookup statement (\"The cow's locker is 5.\"; BLR its friend row, BRL its legs row; none\n                 for countries, whose capital is recalled)\n  lookup_x       X's lookup statement (the row C's re-binding points the question to: a copy at the bridge's row\n                 alone cannot redirect the lookup)\n  context        every context token (all statements: the statement route's ceiling)\n  question       suite_split's question group, exactly (the question's tokens after C's changed ones through the end)\n  q_words        question minus final\n  final          the template after the user turn: <|im_end|>, the assistant header, the empty think block, \"Answer:\"\nFor RL, RR and countries R, C changes only the cue in the question, so every statement position precedes C's change:\ncopying C there is an exact no-op (a built-in check). O's change (the lockers / friends / rows / holders of X and Z)\nalso comes after every binding statement in the suite, so O's copy at the binding statements is exactly zero there.",
+  "read": "suite_split's: one forward of the edited clean prompt (a digit's space token appended), the top token's role (b: X's answer, A: the bridge's, other), ld = logit(b) - logit(A), frac = (ld - ld_clean) / (ld_C - ld_clean)",
+  "seeds": {
+    "null": 0,
+    "bootstrap": 0,
+    "random_dictionary": "777 + layer (suite_split's)",
+    "random_subspace": "888 + layer"
+  },
+  "map": {
+    "run": "d1_topics2_map_27b",
+    "summary_sha256": "968d6ddadddb327c01f641d4306da8b91c2fc01720c46a74811159e8b08e755c",
+    "forced": {
+      "context": [
+        32,
+        36
+      ],
+      "bind_bridge": [
+        32
+      ]
+    },
+    "sets": [
+      "bind_bridge",
+      "context"
+    ],
+    "sub_n": null,
+    "layers_from": 32
+  },
+  "cells": {
+    "PP": {
+      "context": [
+        32,
+        36
+      ],
+      "bind_bridge": [
+        32
+      ]
+    },
+    "PM": {
+      "context": [
+        32,
+        36
+      ],
+      "bind_bridge": [
+        32
+      ]
+    }
+  },
+  "question": "Where the copy carries the bridge (transit cells), which part carries it: the J-space or the rest?",
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "parts": "suite_split's parts with --calibrate: full (C), O's full copy, lens2 / not_lens2, jspace / not_jspace, jspace_wo_own, rand_omp (25-atom signed OMP), rand_sub (C's copy projected per row on a random subspace keeping the J-space part's share of the row's squared norm), not_jspace_matched (the rest, each row rescaled to the J-space part's norm), not_rand_sub (C's copy minus rand_sub), each with its random-direction null, lens2_matched and jspace_matched (exp02's matched-alignment pieces)",
+  "windows": {
+    "primary": "layers [32, 44)",
+    "secondary": "layers [32, 44)"
+  },
+  "decision": "Decision rule (fixed before the 27B run; per family, set and window, primary layers decide):\n  J-space verdict (frac): inside if the concentration's lower bound > INSIDE (1.2) and above the random-dictionary\n  null's upper bound; around if its upper bound < OUTSIDE (1.0) and not_jspace - jspace > 0 (paired bootstrap lower\n  bound); else inconclusive. suite_split's own rule (inside above 2.0) is reported as verdict_strict.\n  Lens write: written if at some scale <= 4x the lens direction flips >= 30% and beats the random direction (paired\n  bootstrap lower bound of the flip difference > 0); not written if at every scale (0.5-16x) the difference's upper\n  bound is < 0.10; else inconclusive.\n  H-loc (location artefact) is supported for a lookup-used bound family (BL, BLR) if at a statement set in transit at\n  the primary layers its J-space verdict is inside and the lens writes it there. H-around is supported if at every\n  statement set in transit at the primary layers its J-space verdict is around and the lens does not write it, while\n  the positive control at the same set and layers (countries B, else BR) is inside; without a passing positive control\n  an 'around' result at the statements is not interpretable. No statement set of BL in transit at the primary layers:\n  H-loc's location premise fails at the question-token layers (the secondary layers are reported, not decisive).\n  Paired readers: at statement sets BL and BR (and BLR and BRL) get the identical patch on the same scenes (the context\n  precedes the question), so their concentration difference isolates what the reader uses; reported with a scene\n  bootstrap."
+}

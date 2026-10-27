@@ -1,0 +1,250 @@
+{
+  "labels": {
+    "len12/countries_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.82,
+          "lo": 0.7507753195800668,
+          "hi": 0.8732431513666732,
+          "k": 123
+        },
+        "src_dissoc": {
+          "rate": 0.74,
+          "lo": 0.6644342013432283,
+          "hi": 0.8035796518668268,
+          "k": 111
+        },
+        "src_same": {
+          "rate": 0.8266666666666667,
+          "lo": 0.7581386789428641,
+          "hi": 0.8788801768152663,
+          "k": 124
+        },
+        "src_redigit": {
+          "rate": 0.8266666666666667,
+          "lo": 0.7581386789428641,
+          "hi": 0.8788801768152663,
+          "k": 124
+        },
+        "hop1": {
+          "rate": 0.9133333333333333,
+          "lo": 0.8573705468757646,
+          "hi": 0.9486533114304412,
+          "k": 137
+        },
+        "hop2": {
+          "rate": 0.9866666666666667,
+          "lo": 0.9526921436197238,
+          "hi": 0.9963359476117768,
+          "k": 148
+        }
+      },
+      "eligible": 74,
+      "reliable": false,
+      "clean_median_p_answer": 0.661875,
+      "read_agrees_with_greedy": 0.9344444444444444,
+      "clean_greedy_right": 0.86
+    },
+    "len12/countries_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.9866666666666667,
+          "lo": 0.9526921436197238,
+          "hi": 0.9963359476117768,
+          "k": 148
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        },
+        "src_same": {
+          "rate": 0.9866666666666667,
+          "lo": 0.9526921436197238,
+          "hi": 0.9963359476117768,
+          "k": 148
+        },
+        "src_redigit": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        }
+      },
+      "eligible": 147,
+      "reliable": true,
+      "clean_median_p_answer": 0.9523699999999999,
+      "read_agrees_with_greedy": 1,
+      "clean_greedy_right": 0.9933333333333333
+    },
+    "len12/animals_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.2733333333333333,
+          "lo": 0.20834036087778668,
+          "hi": 0.3496465555349391,
+          "k": 41
+        },
+        "src_dissoc": {
+          "rate": 0.25333333333333335,
+          "lo": 0.190490201872526,
+          "hi": 0.32849556010602865,
+          "k": 38
+        },
+        "src_same": {
+          "rate": 0.25333333333333335,
+          "lo": 0.190490201872526,
+          "hi": 0.32849556010602865,
+          "k": 38
+        },
+        "src_redigit": {
+          "rate": 0.23333333333333334,
+          "lo": 0.17282533850374257,
+          "hi": 0.3071592690406407,
+          "k": 35
+        },
+        "hop1": {
+          "rate": 0.8266666666666667,
+          "lo": 0.7581386789428641,
+          "hi": 0.8788801768152663,
+          "k": 124
+        },
+        "hop2": {
+          "rate": 0.9866666666666667,
+          "lo": 0.9526921436197238,
+          "hi": 0.9963359476117768,
+          "k": 148
+        }
+      },
+      "eligible": 13,
+      "reliable": false,
+      "clean_median_p_answer": 0.00662,
+      "read_agrees_with_greedy": 0.6166666666666667,
+      "clean_greedy_right": 0.2733333333333333
+    },
+    "len12/animals_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.9866666666666667,
+          "lo": 0.9526921436197238,
+          "hi": 0.9963359476117768,
+          "k": 148
+        },
+        "src_dissoc": {
+          "rate": 0.9866666666666667,
+          "lo": 0.9526921436197238,
+          "hi": 0.9963359476117768,
+          "k": 148
+        },
+        "src_same": {
+          "rate": 0.98,
+          "lo": 0.9428523341357583,
+          "hi": 0.9931753722843516,
+          "k": 147
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9750288608542812,
+          "hi": 1.0,
+          "k": 150
+        }
+      },
+      "eligible": 144,
+      "reliable": true,
+      "clean_median_p_answer": 0.96224,
+      "read_agrees_with_greedy": 1,
+      "clean_greedy_right": 1
+    },
+    "len12/body_RL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.47333333333333333,
+          "lo": 0.39509757671394596,
+          "hi": 0.5529008840404923,
+          "k": 71
+        },
+        "src_dissoc": {
+          "rate": 0.44666666666666666,
+          "lo": 0.3694266500084245,
+          "hi": 0.5265702715004521,
+          "k": 67
+        },
+        "src_same": {
+          "rate": 0.44,
+          "lo": 0.3630436095097045,
+          "hi": 0.5199529271877817,
+          "k": 66
+        },
+        "src_redigit": {
+          "rate": 0.44666666666666666,
+          "lo": 0.3694266500084245,
+          "hi": 0.5265702715004521,
+          "k": 67
+        },
+        "hop1": {
+          "rate": 0.6333333333333333,
+          "lo": 0.5537808929385404,
+          "hi": 0.706226803289268,
+          "k": 95
+        },
+        "hop2": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        }
+      },
+      "eligible": 13,
+      "reliable": false,
+      "clean_median_p_answer": 0.200695,
+      "read_agrees_with_greedy": 0.88,
+      "clean_greedy_right": 0.5066666666666667
+    },
+    "len12/body_DL_e12-word": {
+      "n": 150,
+      "cells": {
+        "clean": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9632062470660241,
+          "hi": 0.9988222289768665,
+          "k": 149
+        },
+        "src_dissoc": {
+          "rate": 0.98,
+          "lo": 0.9428523341357583,
+          "hi": 0.9931753722843516,
+          "k": 147
+        },
+        "src_same": {
+          "rate": 0.98,
+          "lo": 0.9428523341357583,
+          "hi": 0.9931753722843516,
+          "k": 147
+        },
+        "src_redigit": {
+          "rate": 0.98,
+          "lo": 0.9428523341357583,
+          "hi": 0.9931753722843516,
+          "k": 147
+        }
+      },
+      "eligible": 140,
+      "reliable": true,
+      "clean_median_p_answer": 0.92395,
+      "read_agrees_with_greedy": 1,
+      "clean_greedy_right": 0.9933333333333333
+    }
+  },
+  "seconds_generate": 77,
+  "seconds_read": 67,
+  "prompt_format": "chat",
+  "judge_mode": "read",
+  "judge": "read judge (BJ_JUDGE=read): a prompt is right iff the top token of one forward (a digit answer's space token appended: pointer_swap's read) is the expected answer's first token; the greedy judge is recorded as correct_greedy, not used",
+  "seconds": 144
+}

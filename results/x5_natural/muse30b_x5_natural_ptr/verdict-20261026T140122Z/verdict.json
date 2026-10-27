@@ -1,0 +1,201 @@
+{
+ "run": "muse30b_x5_natural_ptr",
+ "manifest": {
+  "exp": "x5_natural",
+  "run": "muse30b_x5_natural_ptr",
+  "written_utc": "2026-10-26T13:55:17Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~00:20; spec jobs/c3/x5_natural.yaml; prediction: batch 31, Q31.6).",
+  "model": {
+   "target": "muse-glimmer-30b",
+   "repo": "meta-models/Muse-Glimmer-30B",
+   "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "b3a6f2292fb2865f0ee6dd09afdba6bff4a96509",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+    "Muse-Glimmer-30B_jpp_lens.pt",
+    "68ecd838ad0b13653af7fac985995606f37911dc"
+   ],
+   "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "set": "jsuite_v2_1_test_chat",
+  "inputs": {
+   "data/tasks_v2/jsuite_v2_1_test_chat/items.jsonl": "0401091f71a54983e9b94947b31efad503a552d1b36beba3de6f8aa44d47df70"
+  },
+  "layer": 26,
+  "k": 25,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
+  "rule": "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed",
+  "seeds": {
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "pointer_from": "muse30b_x0_probe_v4",
+  "items": 60
+ },
+ "main": {
+  "n": 60,
+  "entities": 37,
+  "excess": {
+   "PP": [
+    -0.19999999999999996,
+    -0.5454545454545454,
+    0.0
+   ],
+   "PM": [
+    0.7547169811320754,
+    0.6304347826086956,
+    0.8653846153846154
+   ]
+  },
+  "gap": [
+   0.9547169811320754,
+   0.6470588235294117,
+   1.333347902097902
+  ]
+ },
+ "label": "holds",
+ "subsets": {
+  "relation=animals": {
+   "n": 2,
+   "entities": 2,
+   "excess": {
+    "PP": [
+     NaN,
+     NaN,
+     NaN
+    ],
+    "PM": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "gap": [
+    NaN,
+    NaN,
+    NaN
+   ]
+  },
+  "relation=countries": {
+   "n": 22,
+   "entities": 15,
+   "excess": {
+    "PP": [
+     -0.2500000000000001,
+     -1.0,
+     0.0
+    ],
+    "PM": [
+     0.6818181818181819,
+     0.4782608695652174,
+     0.8695652173913043
+    ]
+   },
+   "gap": [
+    0.931818181818182,
+    0.5217391304347826,
+    1.625
+   ]
+  },
+  "relation=languages": {
+   "n": 28,
+   "entities": 18,
+   "excess": {
+    "PP": [
+     -0.20000000000000007,
+     -0.6666666666666667,
+     0.0
+    ],
+    "PM": [
+     0.8333333333333334,
+     0.6666666666666667,
+     0.960038461538461
+    ]
+   },
+   "gap": [
+    1.0333333333333334,
+    0.6923076923076923,
+    1.545541666666665
+   ]
+  },
+  "relation=people": {
+   "n": 8,
+   "entities": 7,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.6666666666666667,
+     0.33333333333333337,
+     1.0
+    ]
+   },
+   "gap": [
+    0.6666666666666667,
+    0.33333333333333337,
+    1.0
+   ]
+  },
+  "half=A": {
+   "n": 29,
+   "entities": 19,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.7692307692307693,
+     0.6086956521739131,
+     0.9130434782608696
+    ]
+   },
+   "gap": [
+    0.7692307692307693,
+    0.6086956521739131,
+    0.9130434782608696
+   ]
+  },
+  "half=B": {
+   "n": 31,
+   "entities": 20,
+   "excess": {
+    "PP": [
+     -0.33333333333333337,
+     -0.8,
+     0.0
+    ],
+    "PM": [
+     0.7407407407407407,
+     0.5454545454545454,
+     0.9047619047619048
+    ]
+   },
+   "gap": [
+    1.074074074074074,
+    0.5625,
+    1.6071428571428572
+   ]
+  }
+ },
+ "lure": {
+  "whole": 0.0,
+  "no_part": 0.1,
+  "no_rand": 0.0
+ }
+}

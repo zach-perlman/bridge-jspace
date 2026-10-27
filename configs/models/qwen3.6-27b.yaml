@@ -4,8 +4,8 @@ revision: 6a9e13bd6fc8f0983b9b99948120bc37f49c13e9
 dtype: bfloat16
 lenses:
   jlens:
-    revision: 9fa267f841d62aa468dab5b9b38c3dc45a82d863
+    revision: e166deb5ad540932100ef803c8c9bcc2a5453694
     filename: qwen3.6-27b/jlens/Salesforce-wikitext/Qwen3.6-27B_jacobian_lens_n1000.pt
   jpp:
-    revision: 9fa267f841d62aa468dab5b9b38c3dc45a82d863
+    revision: e166deb5ad540932100ef803c8c9bcc2a5453694
     filename: qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt

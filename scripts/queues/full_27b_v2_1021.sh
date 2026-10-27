@@ -17,12 +17,12 @@ WORDS="PP PM MP MM CP CM PPP PPM PMP MPP MPM MMP"
 T="--tasks full_v8 --tasks-competence $COMP --tasks-words $WORDS --tasks-level all --tasks-strata core secondary"
 W="--tasks full_v8 --tasks-competence $COMP --tasks-level all --families $WORDS"
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
-BJ_BATCH=64 $PY scripts/write_max.py --name smoke_wm2_full_1021 --why smoke --n 2 --band 34-36 --early 20 \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name smoke_wm2_full_1021 --why smoke --n 2 --band 34-36 --early 20 \
     --possets question final $W \
   && $PY scripts/ablate_v2.py --name smoke_full_ko_1021 --why smoke --plan bands --bands 32-40 \
     --conditions paper10 paper10_rot $T --n 2 --kinds clean step1 --batch 32 || { echo "smokes failed: stop"; exit 1; }
 echo "=== smokes ok $(date -u +%FT%TZ)"
-BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full_v1 --why "$WHY: write_max v2, C2-graded" --n 40 $W \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name wm2_full_v1 --why "$WHY: write_max v2, C2-graded" --n 40 $W \
   && $PY scripts/c2_graded.py wm2_full_v1 || echo "=== steering FAILED"
 echo "=== steering done $(date -u +%FT%TZ)"
 $PY scripts/ablate_v2.py --name full_ko_v1 --why "$WHY: C1, whole question" --plan bands --bands 12-20 20-28 32-40 0-62 \

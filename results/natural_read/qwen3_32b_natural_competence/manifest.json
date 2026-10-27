@@ -1,0 +1,28 @@
+{
+  "exp": "natural_read",
+  "run": "qwen3_32b_natural_competence",
+  "written_utc": "2026-10-23T15:21:42Z",
+  "why": "finding 4 on natural text (Dan, 23 Oct): which SQuAD items the model answers from the paragraph, from the answer's sentence alone, not without it, and not after another article's paragraph",
+  "model": {
+    "target": "qwen3-32b",
+    "repo": "Qwen/Qwen3-32B",
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "items": {
+    "file": "data/natural_read_v1/items.json",
+    "sha256": "60b8527dc63c2fff3217d40ece1a7f8405a46aa3946f8d7f36f2d475eab21cc9"
+  },
+  "format": "chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat); the user turn: paragraph, newline, question, 'Answer with a few words copied from the text and nothing else.'",
+  "prompts": {
+    "full": "the paragraph",
+    "alone": "the answer's sentence alone",
+    "deleted": "the paragraph without the answer's sentence",
+    "swapped": "another article's paragraph (the item's swap_partner)"
+  },
+  "read": "one forward per prompt: right iff the answer's first token (after 'Answer:', with its space) is the top token (suite_v1.read_answers' margin > 0)",
+  "greedy": "full only: 12 new tokens; right iff a gold answer's normalised text (SQuAD's normalisation) is inside the normalised first non-empty line",
+  "eligibility": "full: first token right and greedy right; alone: first token right (the answer's sentence suffices); deleted: first token wrong (the answer needs that sentence)"
+}

@@ -1,0 +1,24 @@
+id: muse30b_lens_gate_v2
+title: "Muse Glimmer 30B: lens gate v1 / v2 (Zach's J++)"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.2
+depends_on:
+- muse30b_port_smoke
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/lens_gate.py --name muse30b_lens_gate_v2 --tasks-set d1_topics_v2 --n 60 --lo 26 --onset 36 --why "Muse: the lens gate; v1 opens D1, v2 informational"
+question: >-
+  Does Muse's J++ name the stated bridge at its sentence (v1) and after its word (v2), at layers 27, 30, 33?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-v1: 'passes. Prior 0.5'
+  H-v2: 'passes. Prior 0.3'
+decision_rule: >-
+  scripts/lens_gate.py v1 / v2 (>= 50% bridge top 10, <= 20% X), window [26, 36) = the 27B's [32, 44) x 52/64; the coarse grid every 3rd layer: 27, 30, 33. v1 opens D1; v2 informational (a failing v2 rewords to the bridge word where it stands).
+controls:
+- 'as the same test on the other models'
+n: '60 PP scenes of d1_topics_v2'
+seeds: [841, 844]
+notes: "Dan, 22 Oct night: Muse Glimmer 30B (Meta) as a sixth model, every experiment, the rules copied unchanged from the other models; layers by the fixed rules or the 27B's scaled by depth (x 52/64). Not opened before Dan's predictions; README and figures only after he opens the results."

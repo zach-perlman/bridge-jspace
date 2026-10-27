@@ -1,0 +1,21 @@
+id: olmo3_7b_instruct_d3v4_seed3_competence
+title: "Seed 3 gate on OLMo-3-7B-Instruct: a third draw of pointer_v4's scenes (read judge)"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set seed3 --name olmo3_7b_instruct_d3v4_seed3_competence
+  --why "seed 3 of the OLMo slot test: pointer_v4's third draw (seed 845), chat format, read judge"
+  && BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4.py competence --name olmo3_7b_instruct_d3v4_seed3_competence
+question: 'Does OLMo-3-7B-Instruct answer the seed-3 scenes as it answers main''s?'
+why_it_matters: 'Gate for olmo3_7b_instruct_d3v4_seed3_swap.'
+hypotheses:
+  H-gate: 'per topic and family within 5 points of olmo3_7b_instruct_d3v4_competence. Prior 0.8 (copied from olmo3_7b_instruct_d3v4_seed2_competence)'
+decision_rule: 'pointer_v1''s competence rule (read judge).'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'pointer_v4 seed3'
+seeds: [845]
+notes: "mechanical copy of olmo3_7b_instruct_d3v4_seed2_competence (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Only the data set (pointer_v4 seed3), the gate, run names and dependencies change; layers, n and rules as in olmo3_7b_instruct_d3v4_seed2_competence. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2), the 27B's third draw (d3v4_seed3_competence_27b / d3v4_seed3_swap_27b)."

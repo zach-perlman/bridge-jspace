@@ -1,0 +1,56 @@
+{
+  "counts": {
+    "scenes": 600,
+    "cases": {
+      "chat": 530,
+      "raw": 530,
+      "nochat": 530
+    },
+    "dropped": {
+      "chat: the bridge is not one token at one position in org and alt": 70,
+      "raw: the bridge is not one token at one position in org and alt": 70,
+      "nochat: the bridge is not one token at one position in org and alt": 70
+    }
+  },
+  "gate": {
+    "chat": {
+      "cases": 530,
+      "org_accuracy": {
+        "PP": 0.966,
+        "PM": 0.8906
+      },
+      "said_accuracy": {
+        "PP": 0.9698,
+        "PM": 0.8925
+      },
+      "cand_accuracy": {
+        "PP": 0.9642,
+        "PM": 0.8849
+      },
+      "pass": true,
+      "eligible": 386,
+      "enough": true,
+      "descriptive": false
+    },
+    "raw": {
+      "cases": 0,
+      "org_accuracy": {},
+      "said_accuracy": {},
+      "cand_accuracy": {},
+      "pass": false,
+      "eligible": 0,
+      "enough": false,
+      "descriptive": false
+    },
+    "nochat": {
+      "cases": 0,
+      "org_accuracy": {},
+      "said_accuracy": {},
+      "cand_accuracy": {},
+      "pass": false,
+      "eligible": 0,
+      "enough": false,
+      "descriptive": false
+    }
+  }
+}

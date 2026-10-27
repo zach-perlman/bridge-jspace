@@ -1,0 +1,23 @@
+id: muse_depth
+title: "Muse depth curve (Dan, 26 Oct ~11:15: Fig. 5 shows Muse on two points only): the main test at L8-L32 every 2 layers, J++ and its random part, after the data, descriptive"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.6
+depends_on: [x6_routes_r2]
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= uv run python scripts/x0_necessity.py run --name muse30b_x0_necessity_depth --set d1_topics_v3 --renderings chat --layers 8 10 12 14 16 18 20 22 24 26 28 30 32 --dicts jpp --curve-dicts jpp --curve-k 50 100 --why "Muse's J++ extra loss by depth for Fig. 5 (Dan 26 Oct ~11:15); after the data, descriptive"
+question: >-
+  On Muse, how do the lookup's and the recall's J++ extra loss change with depth (L8-L32), as Fig. 5 shows for the Qwens?
+why_it_matters: >-
+  The Muse grid ran the main test at three layers fixed in advance (L13 / L26 / L34; L34 gives no valid cell), so Fig. 5's Muse panel has two points and does not show where the split appears with depth.
+hypotheses:
+  H-none: 'none: descriptive, after the data, not scored. The verdict fixed in advance stays the Muse grid''s (L26, muse30b_x0_necessity)'
+decision_rule: >-
+  Descriptive, after the data: the same scenes, gate (0.80) and arms as muse30b_x0_necessity (J++ k = 25 signed and a random part of its share; cluster bootstrap over bridge entities, 10,000 resamples, seed 0); per layer the lookup's and the recall's extra loss, plotted in Fig. 5 where a cell is valid (at least 30 switched).
+controls:
+- 'a random-subspace part at the J++ part''s share, per layer'
+- 'both readers on the identical patch'
+n: 'the 200 main-test scenes per reader (as muse30b_x0_necessity)'
+seeds: [0]
+notes: "One GPU. Layers chosen after seeing L13 / L26 / L34, to match the 27B's depth range (15-62% of the layers, every 2)."

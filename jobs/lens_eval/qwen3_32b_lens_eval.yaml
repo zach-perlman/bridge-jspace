@@ -1,0 +1,36 @@
+id: qwen3_32b_lens_eval
+title: "Lens quality (Qwen3-32B): the published plain J-lens on the J++ recipe's held-out readout evals"
+thread: LENS
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  cd /ephemeral/ext/jpp_lens && UV_CACHE_DIR=/ephemeral/uv-cache HF_HOME=/ephemeral/hf
+  uv run --no-sync python $OLDPWD/scripts/lens_fit/lens_eval.py --name qwen3_32b_lens_eval --model Qwen/Qwen3-32B
+  --lens hf:neuronpedia/jacobian-lens@e166deb5ad540932100ef803c8c9bcc2a5453694:qwen3-32b/jlens/Salesforce-wikitext/Qwen3-32B_jacobian_lens.pt#0af5ccf2e1c251bedc202607a7ca214f3b9f60980bab73d67a3d0b887db213d8
+figures_command: uv run python -m scripts.lens_table figure results/lens_eval/qwen3_32b_lens_eval
+question: >-
+  On the J++ recipe's own held-out readout evals (jpp_lens@93f02cd evaluate, held-out:0, the items Qwen3-32B answers
+  right), what pass@10 does neuronpedia's plain J-lens for Qwen3-32B get, per eval and macro, next to the logit lens on
+  the same items, at the layers it shares with the J++ fits (16-51), at every layer it has (0-62) and at the C1 band
+  (32-40)?
+why_it_matters: >-
+  The plain J-lens is Qwen3-32B's frozen lens (D1, lens gate) and was never scored this way; Zach's 32-prompt J++ and
+  our 64-prompt J++ (H200, running) are, by the same recipe. Without this number the lens table cannot say whether a
+  32B result is a J-lens result or a J++ result, nor compare the 32B's lens with the other models' (lens minus logit).
+hypotheses:
+  H-band: 'agent prior: at the C1 band (32-40) the J-lens beats the logit lens by >= 0.10 macro (the logit lens reads little in the middle layers). Prior 0.6'
+  H-all: 'agent prior: at every layer (0-62) the J-lens is within 0.05 of the logit lens, as the 27B plain J-lens n1000 (.430 vs .433, exp19 fit_v2). Prior 0.5'
+  H-jpp: 'agent prior: the J++ fits beat this J-lens by >= 0.10 macro at 16-51 (on the 27B J++ - J-lens is +0.28 at 0-62); read off the lens table once the fits'' ranks are in. Prior 0.75'
+decision_rule: >-
+  Descriptive: pass@10 per eval and macro, item-weighted, as Zach's cards (scripts/lens_table.py recomputes them from
+  the per-layer ranks, which reproduce the recipe's own pass_at_k.csv). Reported at 16-51, 0-62 and 32-40, with the
+  logit lens on the same items and layers. The J++ rows are comparable only if their item sets equal this run's (the
+  table checks and says so).
+controls:
+- 'the logit lens on the same items and layers (in this run)'
+- 'pooled-lens baseline: n/a for a published J-lens (no fit to pool); the J++ fits score their own pooled lens in their evaluate'
+n: "the recipe's held-out:0 readout items Qwen3-32B answers right (graded once here by scripts/lens_fit/jpp_grade.py; count in the ranks)"
+seeds: [0]
+notes: "Agent, 22 Oct night, for the lens table (scripts/lens_table.py). The recipe's evaluate reads neuronpedia's J layout as it is (load_lens_file -> load_legacy_format_lens; checked on this file on the box), so no conversion. Zach scored his 32-prompt J++ and the logit lens on this model (lens_check), not this J-lens. Not enqueued by the agent."

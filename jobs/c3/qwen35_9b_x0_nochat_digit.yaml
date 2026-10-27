@@ -1,0 +1,27 @@
+id: qwen35_9b_x0_nochat_digit
+title: "X0 amendment 3 (descriptive, after data), Qwen3.5-9B: no chat template, thinking off (nochat), read at the first digit the model writes"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.6
+depends_on: [x0_hw_gate_27b]
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py run --name qwen35_9b_x0_nochat_digit --set d1_topics_v3 --renderings nochat --read digit --descriptive --why "X0 amendment 3 (Dan, 24 Oct ~16:30, after the nothink gate failed on a markdown first token): descriptive no-template arm, read at the first digit token of 8 greedy tokens"
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py figures --name qwen35_9b_x0_nochat_digit
+question: >-
+  With no chat template and thinking off (nochat), the 9B answers in markdown (' **6**', ' **Locker 5**'), so the first-non-whitespace read sees '**' and its gate is 0% (greedy text right: lookup 97%, recall 76%). Read at the first digit token the model writes, on the items each reader gets right: do lookup and recall show the chat pattern (graded contrast) without the chat template?
+why_it_matters: >-
+  Dan asked for the chat vs no-chat comparison on both models; without this arm the no-chat panels are empty on the 9B.
+hypotheses:
+  H-same: 'the graded contrast C at L12 is within the chat value''s CI (0.53 [0.42, 0.61]). Prior: none set (descriptive, after data); Q25.13-Q25.14 are scored on amendment 2''s arm, not this one'
+  H-differs: 'otherwise. Prior: none set'
+decision_rule: >-
+  Descriptive, after data, not part of the X0 rule (amendment 3). The rule's labels and verdict are computed and printed as "descriptive"; the gate is reported but does not stop the run; items are those right under the digit read and in the greedy text, org and alt, both readers (up to 200, any number). Reported beside chat with C = recall excess - lookup excess at L12.
+controls:
+- 'the random part of the same share, per dictionary (no_rand_D, at D''s own share of ||Δ||²)'
+- 'the random Gaussian dictionary at k = 25 (the fitted null, rand_omp)'
+- 'both readers on the identical patch'
+- 'the valid-cell bar on the whole edit (S_whole >= 0.30 and >= 30 items)'
+n: 'up to 200 scenes of d1_topics_v3 right under the digit read, 2 readers each (any number; reported)'
+seeds: [24, 0]
+notes: "Amendment 3 (jobs/c3/X0.md). The digit read: model.generate_batch(..., steps=True) gives every step's logits for 8 greedy tokens with the edit on the prompt; the read is the step whose token is the first digit token; no digit within 8 tokens: step 0 (switches nothing). Chat's read is unchanged. Cost: every arm generates 8 tokens (KV cache): ~0.5 h."

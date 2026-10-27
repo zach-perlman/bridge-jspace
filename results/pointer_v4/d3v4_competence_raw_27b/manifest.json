@@ -1,0 +1,61 @@
+{
+  "exp": "pointer_v4",
+  "run": "d3v4_competence_raw_27b",
+  "written_utc": "2026-10-21T18:07:01Z",
+  "why": "G1 (is the slot answer about the chat template's tokens?): pointer_v4's main scenes in raw format (the same context, question and instruction as plain text ending in Answer:, no template), every prompt and step",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "raw"
+  },
+  "sets": [
+    "main"
+  ],
+  "split": "/ephemeral/jobq/runs/d3v4_competence_raw_27b/code/data/pointer_v4/split.json",
+  "items": {
+    "main/countries_RL_e5f0": {
+      "file": "data/pointer_v4/main/countries_RL_e5f0.json",
+      "sha256": "43b59cb01f9d4a39e12b71a9c06ca5965206bcae89d7965dc354e39e86c7174b"
+    },
+    "main/countries_DL_e5f0": {
+      "file": "data/pointer_v4/main/countries_DL_e5f0.json",
+      "sha256": "b1f7a187078771c7e3a4169641597baed62c062b62370a6d78d27976e9677752"
+    },
+    "main/countries_RR_e5f0": {
+      "file": "data/pointer_v4/main/countries_RR_e5f0.json",
+      "sha256": "ab26417b4b6348edb7c2bef5ceafc3900ea4fca5461b2d28aadc5362674f98bd"
+    },
+    "main/animals_RL_e5f0": {
+      "file": "data/pointer_v4/main/animals_RL_e5f0.json",
+      "sha256": "c1138a7f05fdeef384d23828afc7ea168282f8599e8a8a20e73055d5162d667b"
+    },
+    "main/animals_DL_e5f0": {
+      "file": "data/pointer_v4/main/animals_DL_e5f0.json",
+      "sha256": "b7fc3832311f683edcd336b0f0a99596ab7c0c58b891f9d493c4b434d11c4ac2"
+    },
+    "main/animals_RR_e5f0": {
+      "file": "data/pointer_v4/main/animals_RR_e5f0.json",
+      "sha256": "c5301782c4ebd22a4589c1ff29bc05490b54253944cdf37b52272e02414d0b52"
+    },
+    "main/body_RL_e5f0": {
+      "file": "data/pointer_v4/main/body_RL_e5f0.json",
+      "sha256": "6e226678ac9e375384cc845ce67f1b9d2b445c1018f9ae5701b983a561ef6b60"
+    },
+    "main/body_DL_e5f0": {
+      "file": "data/pointer_v4/main/body_DL_e5f0.json",
+      "sha256": "f1eed22441089d9e03e295f367cfff04fd6a04b8af905cf37ae5451cf19f1136"
+    },
+    "main/body_RR_e5f0": {
+      "file": "data/pointer_v4/main/body_RR_e5f0.json",
+      "sha256": "74cce980aee4238fb14706d10244a67ceb5c65bd8886e3b8ffd75979ed87efe3"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's: raw text: the user content, a newline and 'Answer:', no template (BJ_FORMAT=raw); context, newline, question and instruction as the user turn",
+  "prompts": "base; each source (dissoc, same, redigit); hop1 (cue -> entity, with the base context) and hop2 (the lookup with the entity named, or the recalled fact) for RL and RR",
+  "judge": "pointer_v1's (digits, number words; the domain's entities for hop1)",
+  "eligibility": "pointer_swap and pointer_fit use items with every prompt right"
+}

@@ -1,0 +1,53 @@
+id: d4_layer_gap_perp_27b
+title: "The size-matched patch without its lens-readable part, at the stated bridge's word, every second layer 12-34 (Qwen3.6-27B, the layer-gap scenes)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on:
+- d4_layer_gap_v2_27b
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_layer_gap_perp_27b --n 100 --scenes fresh --fresh-seed 2
+  --exclude-runs d4_where_fresh_27b --same-scenes d4_layer_gap_v2_27b --reuse d4_layer_gap_v2_27b --rule v2
+  --patch-dir-perp --gap-bars 6 2 --subsets s w --layers 12 14 16 18 20 22 24 26 28 30 32 34 --context-layers 20
+  --scales 4 8 --v21-min-layer 20
+  --why "the size-matched patch without its J-space part on the 27B: does the part of the stated bridge's patch outside the lens's read directions, cut to the lens push's size, keep moving lookups after the lens push stops?"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_layer_gap_perp_27b
+question: >-
+  At the stated bridge's word on Qwen3.6-27B, does the patch from the prompt that states the other bridge, with its
+  lens-readable part removed and cut to the lens push's size, keep moving lookups at the layers where the lens push
+  moves none (from layer 20 on)?
+why_it_matters: >-
+  In d4_layer_gap_v2_27b the full patch kept moving lookups until layer 26 while the lens push stopped at 20. If the
+  part of the patch outside the lens's read directions does the same at the lens push's size, the lookup's bridge at
+  the word sits in a form the lens cannot read, and the gap is neither size nor the lens-readable part of the patch.
+  If it stops with the lens push, what outlasts the lens push lies in the lens-readable part or in the patch's size.
+hypotheses:
+  H-direction: 'the patch without its J-space part, at the lens push''s size, stops >= 6 layers after the lens push (lens push stops at 20 -> it stops at 26 or later) and still switches lookups at the lens push''s stop (Wilson lower bound > 5%, about 11/100 or more, at 4x or 8x)'
+  H-dose: 'it stops within 2 layers of the lens push (by layer 22 if the lens push stops at 20), or before it'
+  inconclusive: 'a gap of 3-5 layers, the lens push never stopping for good, or no valid cell at the lens push''s stop'
+decision_rule: >-
+  scripts/early_push_where.py (docstring: the dose control, and the size-matched patch without its J-space part,
+  written 23 Oct before this run), bars 6 and 2 layers (--gap-bars 6 2, the 27B's own). One new arm, patch_dir_perp:
+  the scene's patch (the prompt -> prompt case's C - clean at the stated bridge's word or sentence, one per scene for all
+  four families) with its J-space part removed (statement_positions' parts stage's jspace: the 25-atom signed OMP per
+  position over the frozen J++'s letter-token vectors), rescaled to the lens push's norm at 4x and 8x. The lens push,
+  the random push and the full patch are d4_layer_gap_v2_27b's rows on the same items (--reuse; the same scenes,
+  asserted at run time). Valid cells: v2's off-path check with patch_dir_perp's own rows (memory -> prompt and memory ->
+  memory changed <= 10%; they carry the same scene patch, so the check is a real one) and the random push at the same
+  layer and scale switching <= 5% of lookups. An arm stops at a layer iff every valid cell there has the Wilson upper
+  bound < 5%; it keeps moving iff some valid cell has the lower bound > 5%; stop = the first grid layer from which it
+  stops at every later layer with a valid cell (never stopping counts as after the grid). At the word: H-direction iff
+  perp_stop - lens_stop >= 6 and patch_dir_perp keeps moving at lens_stop; H-dose iff perp_stop - lens_stop <= 2;
+  else inconclusive. Reported, not decisive: the sentence the same way; recalls (prompt -> memory) by layer for every
+  arm; at lens_stop, where patch_dir_perp keeps moving lookups, its recalls against its lookups at its cell with the
+  most lookups switched (Wilson intervals): recalls below lookups -> lookup-specific; otherwise not lookup-specific,
+  i.e. the lens-invisible form moves recalls as much as lookups; the share of the patch's squared norm removed with
+  its J-space part (median over scenes); the full patch's and the lens push's stops (d4_layer_gap_v2_27b's rows).
+controls:
+- 'a random push at the lens push''s norms (4x, 8x), d4_layer_gap_v2_27b''s rows on the same items'
+- 'off-path: memory -> prompt and memory -> memory under the same patch without its J-space part at the same positions (<= 10% changed for a valid cell)'
+- 'recalls (prompt -> memory) under the same push: is what moves lookups lookup-specific?'
+n: '100 fresh scenes, four families: the draw of d4_layer_gap_v2_27b (seed 2 from a pool of 148, none from map_A8_v1 or d4_where_fresh_27b), the scenes the dose run used too; asserted equal to its selection.json at run time, and reproduced on the tokenizer before this spec was written'
+seeds: [0, 2]
+notes: "Dan, 23 Oct: 'for the 27B only _perp' (the size-matched patch itself, patch_dir, is in the dose run, d4_layer_gap_dose_27b, not opened and not read by this run). The lens push's stop is judged on d4_layer_gap_v2_27b's own rows, which this run reads instead of recomputing (--reuse): the run computes only patch_dir_perp's rows, and the analysis checks that the same items are right unedited in both runs. The bars 6 / 2 are the layer-gap rule's own. The agent's proposal, for Dan to change before the run: the recall-against-lookup statement (where, which cell, Wilson intervals). Cost: 48 rows per item plus one fp32 letter dictionary (about 5 GB) per scene and layer for the J-space fit (1,200 dictionaries, the larger share of the time): about 0.5 h on one A100; memory about 70 GB (d4_layer_gap_v2_27b peaked at 62.9 GB)."

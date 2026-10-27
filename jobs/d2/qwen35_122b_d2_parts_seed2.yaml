@@ -1,0 +1,25 @@
+id: qwen35_122b_d2_parts_seed2
+title: "Name vs digit on a second draw (Qwen3.5-122B)"
+thread: D2
+gpus: 1
+mem_gb: 135
+est_gpu_hours: 1.5
+depends_on:
+- qwen35_122b_d3v4_competence
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=4 uv run python scripts/attn_knockout.py manifest --name qwen35_122b_d2_parts_seed2 --dataset pointer_v4 --set seed2 --families RL DL RR --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence qwen35_122b_d3v4_competence --why "name vs digit on a second draw (Qwen3.5-122B); analysed by scripts/d2_parts.py" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=4 uv run python scripts/attn_knockout.py run --name qwen35_122b_d2_parts_seed2
+figures_command: uv run python scripts/d2_parts.py --name qwen35_122b_d2_parts_seed2
+question: >-
+  Do the last tokens take only the digit from the answer's statement, and the question's tokens its name?
+why_it_matters: >-
+  Findings 3 and 4 on Qwen3.5-122B rest on one draw of scenes (qwen35_122b_d2_parts); a second draw with the committed rules.
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.8 (copied from qwen35_9b_d2_parts_seed2)'
+  H-name-q-split: 'holds where testable. Prior 0.5 (copied from qwen35_9b_d2_parts_seed2)'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged: valid-split first; H-digit-final-split (memory -> prompt) and, where the question is testable, H-name-q-split. Replicates iff every verdict that held on this model's main draw (qwen35_122b_d2_parts) holds here; per topic reported.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: '100 items per family (RL DL RR), seed2'
+seeds: [844]
+notes: "mechanical copy of qwen35_9b_d2_parts_seed2 for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (this job uses no lens). Only BJ_TARGET, run names, the gate and the batch change; --layers all, n and rules as the source. Gate: qwen35_122b_d3v4_competence, which was run on pointer_v4 main AND seed2 (--set main seed2; attn_knockout reads one set's rows, keyed '<set>/'), so no separate seed2 competence is run. Memory (Dan, 00:55): FP8 weights ~127 GB of a 143 GB H200, so mem_gb 135 and BJ_BATCH=4 (the queued 122B specs use 16). Data: data/pointer_v4/seed2/ (seed 844)."

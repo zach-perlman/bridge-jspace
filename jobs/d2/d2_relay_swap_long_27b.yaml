@@ -1,0 +1,76 @@
+id: d2_relay_swap_long_27b
+title: "Relay test by digit substitution on Qwen3.6-27B with a long context (~2000 filler tokens): with the answer's sentence hidden from the last tokens, does the answer follow a new digit in that sentence?"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.7
+depends_on: []
+command: >-
+  PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True BJ_BATCH=4 uv run python scripts/relay_swap.py manifest
+  --name d2_relay_swap_long_27b --from d2_late_read_long_27b_r3
+  --why "Dan's relay test by digit substitution (23 Oct): the late read's block on the long-context run's own memory ->
+  prompt items, with the answer sentence's digit replaced by a digit not in the list"
+  && PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True BJ_BATCH=4 uv run python scripts/relay_swap.py run --name d2_relay_swap_long_27b
+figures_command: uv run python scripts/relay_swap.py figures --name d2_relay_swap_long_27b
+question: >-
+  On Qwen3.6-27B with ~2000 filler tokens between the list and the question, when the digit in the sentence that gives
+  the answer is replaced by a digit that is not in the list, and that sentence is hidden from the last tokens exactly as
+  in the late read, does the answer become the new digit more often than it does without the replacement?
+why_it_matters: >-
+  Finding 1: hiding the answer's sentence from the last tokens (the chat-template tokens after the user's text) leaves
+  few answers right on most models, but Qwen3.6-27B with a long context keeps more (26% right). We read that as a relay:
+  the answer reaches the last tokens through other tokens that still see the sentence. A right answer under the block
+  could also be a lucky guess among the listed digits. A digit that appears only in the hidden sentence can reach the
+  answer only through some other route, so the answer following it shows that route directly.
+hypotheses:
+  H-relay: 'the answer follows the new digit with the sentence hidden from the last tokens in every attention layer: R''s lower bound > 5 points'
+  H-no-relay: 'it does not: R''s lower bound <= 5 points (with the controls passing)'
+decision_rule: >-
+  Fixed 23 Oct before any run (Dan's rule; the agent's proposals marked; scripts/relay_swap.py's docstring states the
+  same and the manifest records it). Items: the late-read run d2_late_read_long_27b_r3's own memory -> prompt items
+  (attn_knockout.build_pointer_cases with its data set (long), n, competence run d3v4_long_competence_27b_r3 and gate
+  0.80, so the same scenes; the run asserts every original prompt equals that run's token for token); an item counts iff
+  its original prompt's unedited read is right (finding 1's rule). Substitution (proposal): pointer_v4's own 'redigit'
+  prompt of the item (the long set keeps the same filler in it), the answer's digit replaced by the scene's 'value'
+  digit, which the data generator drew with a fixed seed (set seed2, seed 844 per topic; filler seed 846) among the
+  digits not in the list and, under its usual 'soft' policy, not any listed entity's remembered digit; the question
+  unchanged; checked on the 27B tokenizer for every item: the same token length, only the answer sentence's digit token
+  differs, the new digit nowhere in the original prompt (the filler has no digit), the old digit nowhere in the
+  substituted one, the new digit's answer token is neither the answer's nor another listed digit's. Block: the answer's
+  sentence hidden from the last tokens in every attention layer (DeltaNet layers untouched), exactly finding 1's cell
+  for a hybrid. R = mean over the counted items of 1[substituted prompt answers the new digit] - 1[original prompt
+  answers the new digit], both under the block, with the entity-cluster bootstrap 95% interval (the asked entity
+  resampled within its topic, 4,000 draws, seed 0; finding 1/5's). Relay iff R's lower bound > 5 points, otherwise no
+  relay. Controls, any failure making the verdict 'not interpretable': positive control (proposal), the substituted
+  prompt with nothing hidden answers the new digit on >= 90% of the counted items with the Wilson lower bound >= 85%;
+  off-path control (proposal), the off-path sentence of the same token length hidden from the last tokens in every
+  attention layer instead, the substituted prompt answers the new digit on >= 90% with the Wilson lower bound >= 85%;
+  floor (proposal), the answer's sentence hidden from every token after it in every layer (attention and DeltaNet), R's
+  lower bound <= 5 points (no route is left there, so a difference would be a leak of the block). Reported, not
+  decisive: R with the answer's sentence hidden from the last tokens in every layer, DeltaNet included (proposal; read
+  beside R: the late read leaves the DeltaNet layers' own read of the sentence by the last tokens open, so a relay by R
+  that is gone here may be that read rather than other tokens); R per topic, R with the item bootstrap, the answers'
+  shares (new digit, old digit, another listed digit, other) in every row kind, and how often the original prompt's
+  blocked and unedited answers equal the late-read run's own rows for the same items (the block reproduces).
+controls:
+- 'positive control: the substituted prompt with nothing hidden (does the model read the new digit at all); proposal: >= 90%, Wilson lower bound >= 85%. The competence run already required this prompt answered right (every prompt of an item right), so it holds by selection on these items; the run checks it with its own read'
+- 'off-path control: the off-path sentence of the same token length hidden from the last tokens in every attention layer instead (both prompts)'
+- 'floor (proposal): the answer''s sentence hidden from every token after it, every layer (both prompts)'
+- 'every layer (proposal, reported): the answer''s sentence hidden from the last tokens in every layer, DeltaNet included (both prompts)'
+n: 'the late-read run''s 178 memory -> prompt items (the long set: seed2''s first 60 scenes per topic with ~2000 filler tokens, those right on every competence prompt); all 178 substitutions checked on the 27B tokenizer (23 Oct, before the run) and every original prompt equal to the late-read run''s; counted: those answered right unedited'
+seeds: [844, 846, 0]
+notes: >-
+  Dan's relay test by digit substitution, 23 Oct; written by the agent, not enqueued. Smallest change: the same items,
+  block, read (the top token at the answer's position) and knock-out code as the late read (scripts/relay_swap.py
+  imports attn_knockout); new: the substituted prompt and 10 rows per item (original and substituted prompt, each with
+  nothing hidden, the answer's sentence hidden from the last tokens in every attention layer, the off-path sentence
+  hidden there instead, the answer's sentence hidden from every later token, and the answer's sentence hidden from the
+  last tokens in every layer). The new digit is the data's own 'redigit' digit rather than a new draw because it already
+  satisfies the design (one seeded digit per item, not in the list), its prompts are the ones the competence gate
+  checked, and the eligibility stays exactly the late-read run's; the cost is that the positive control passes by
+  selection. The alternative (a fresh draw per item, random.Random('relay:<scene>') over the digits not in the list) is
+  a one-line change in relay_swap.substitute if Dan prefers it. Cost: 178 items x 10 rows = 1,780 rows of ~2,120 tokens
+  at 4 rows per forward (534 forwards); the late-read run did 979 such forwards in 3,118 s on one A100 (3.2 s each, a
+  similar mix of attention-only and every-layer blocks), so about 0.45 h plus the model load and the pre-run check: 0.7
+  GPU-h budgeted, the same memory settings as the late-read run (peak 65 GB). Inputs already on the box (the late-read run
+  and d3v4_long_competence_27b_r3); the manifest checks their hashes.

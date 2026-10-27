@@ -1,0 +1,94 @@
+{
+  "exp": "x6_routes",
+  "run": "muse30b_x6_routes_x45a",
+  "written_utc": "2026-10-26T19:29:48Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "a597fe1678ec71266848824bc0934792f5705c0e",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "layer": 26,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+    "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "keeponly": false,
+  "identity": false,
+  "alf_from": "muse30b_x0_probe_v4",
+  "c0_min": null,
+  "fixed_layer": 26,
+  "c0_reference": {
+    "run": null,
+    "lookup_switch": null,
+    "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+    "scenes": 2510,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  },
+  "rendering": "chat",
+  "read": "chat (the top token after a space)",
+  "prepend": [
+    "V0",
+    "V1",
+    "V2",
+    "V3",
+    "V4"
+  ],
+  "identity_controls": false,
+  "sealed": true,
+  "prepend_seed": 4501,
+  "filler_tokens": [
+    10,
+    12
+  ],
+  "batch45": "45a",
+  "arms": [
+    "whole",
+    "keep_alf",
+    "keep_alf_rand",
+    "no_alf",
+    "no_alf_rand"
+  ],
+  "fillers": [
+    "The weather stayed mild and quiet for most of the afternoon.",
+    "Everyone agreed that the meeting had gone on far too long.",
+    "Nobody could remember when the hallway lights had last been changed.",
+    "It was later than usual when the cleaning crew finally arrived."
+  ],
+  "items_per_variant": {
+    "V0": 300,
+    "V1": 300,
+    "V2": 300,
+    "V3": 300,
+    "V4": 300
+  },
+  "items": {
+    "C2": 1500
+  }
+}

@@ -1,0 +1,682 @@
+{
+ "exp": "x0b_generalize",
+ "run": "muse30b_x45d",
+ "seed": 0,
+ "k": 10,
+ "groups": [
+  {
+   "key": "lookup",
+   "title": "lookup",
+   "definition": "the lookup reader on the same patch",
+   "n_total": 10
+  },
+  {
+   "key": "recall",
+   "title": "recall",
+   "definition": "the recall reader on the same patch",
+   "n_total": 10
+  }
+ ],
+ "examples": [
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0415",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table lockers:\n| item | locker |\n|---|---|\n| boron | four |\n| carbon | three |\n| lithium | seven |\n\nTable picks:\n| name | pick |\n|---|---|\n| Fiona | lithium |\n| Carl | boron |\n| Mark | carbon |\nWhich locker belongs to Carl's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 365,
+     "end": 371,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 0; the bridge boron -> lithium at layer 26",
+   "answers": {
+    "clean": "4",
+    "edited": "'7', changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "'4', original answer",
+    "the whole change": "'7', changed answer",
+    "without J++": "'7', changed answer",
+    "without a random part (J++'s share)": "'4', original answer",
+    "without U": "'4', original answer",
+    "without a random part (U's share)": "'7', changed answer",
+    "without the refit basis": "'4', original answer",
+    "without a random part (the refit basis's share)": "'7', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0415",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table lockers:\n| item | locker |\n|---|---|\n| boron | four |\n| carbon | three |\n| lithium | seven |\n\nTable picks:\n| name | pick |\n|---|---|\n| Fiona | lithium |\n| Carl | boron |\n| Mark | carbon |\nWhat is the atomic number of Carl's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 365,
+     "end": 371,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 0; the bridge boron -> lithium at layer 26",
+   "answers": {
+    "clean": "5",
+    "edited": "'5', original answer",
+    "expected": {
+     "original": "5",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "'5', original answer",
+    "the whole change": "'5', original answer",
+    "without J++": "'5', original answer",
+    "without a random part (J++'s share)": "'5', original answer",
+    "without U": "'5', original answer",
+    "without a random part (U's share)": "'5', original answer",
+    "without the refit basis": "'5', original answer",
+    "without a random part (the refit basis's share)": "'5', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L1-0647",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the owl is 4. The locker of the butterfly is 8. The locker of the penguin is 7. The locker of the spider is 2. The clock in the hall ran slow. The locker of the camel is 1. The locker of the sheep is 9. The market was busy on Saturday. Leo picked the penguin. Wade picked the sheep. Will picked the butterfly. Nora picked the butterfly. The garden gate needs new paint. Hugo picked the spider. Ben picked the owl. Tom picked the camel. The coffee was too strong. The hallway lights were dim. Nina picked the sheep.\nWhich locker belongs to Will's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 510,
+     "end": 520,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 1; the bridge butterfly -> owl at layer 26",
+   "answers": {
+    "clean": "8",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "8",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'8', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'8', original answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'8', original answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L1-0647",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the owl is 4. The locker of the butterfly is 8. The locker of the penguin is 7. The locker of the spider is 2. The clock in the hall ran slow. The locker of the camel is 1. The locker of the sheep is 9. The market was busy on Saturday. Leo picked the penguin. Wade picked the sheep. Will picked the butterfly. Nora picked the butterfly. The garden gate needs new paint. Hugo picked the spider. Ben picked the owl. Tom picked the camel. The coffee was too strong. The hallway lights were dim. Nina picked the sheep.\nHow many legs does Will's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 510,
+     "end": 520,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 1; the bridge butterfly -> owl at layer 26",
+   "answers": {
+    "clean": "6",
+    "edited": "'6', original answer",
+    "expected": {
+     "original": "6",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "'6', original answer",
+    "the whole change": "'6', original answer",
+    "without J++": "'6', original answer",
+    "without a random part (J++'s share)": "'6', original answer",
+    "without U": "'6', original answer",
+    "without a random part (U's share)": "'4', other",
+    "without the refit basis": "'6', original answer",
+    "without a random part (the refit basis's share)": "'4', other"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L1-0935",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table lockers:\n| item | locker |\n|---|---|\n| dog | 7 |\n| camel | 9 |\n| eagle | 5 |\n| bee | 3 |\n| zebra | 2 |\n| spider | 1 |\n\nTable rooms:\n| room | paint |\n|---|---|\n| porch | blue |\n| balcony | green |\n| loft | blue |\n| studio | yellow |\n| workshop | white |\n\nTable picks:\n| name | pick |\n|---|---|\n| Kyle | spider |\n| Dan | dog |\n| June | dog |\n| Owen | zebra |\n| Emma | bee |\n| Lucy | camel |\n| Julia | eagle |\n| Keith | bee |\nWhich locker belongs to Julia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 602,
+     "end": 608,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 1; the bridge eagle -> dog at layer 26",
+   "answers": {
+    "clean": "5",
+    "edited": "'5', original answer",
+    "expected": {
+     "original": "5",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "'5', original answer",
+    "the whole change": "'5', original answer",
+    "without J++": "'5', original answer",
+    "without a random part (J++'s share)": "'5', original answer",
+    "without U": "'5', original answer",
+    "without a random part (U's share)": "'5', original answer",
+    "without the refit basis": "'5', original answer",
+    "without a random part (the refit basis's share)": "'5', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L1-0935",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table lockers:\n| item | locker |\n|---|---|\n| dog | 7 |\n| camel | 9 |\n| eagle | 5 |\n| bee | 3 |\n| zebra | 2 |\n| spider | 1 |\n\nTable rooms:\n| room | paint |\n|---|---|\n| porch | blue |\n| balcony | green |\n| loft | blue |\n| studio | yellow |\n| workshop | white |\n\nTable picks:\n| name | pick |\n|---|---|\n| Kyle | spider |\n| Dan | dog |\n| June | dog |\n| Owen | zebra |\n| Emma | bee |\n| Lucy | camel |\n| Julia | eagle |\n| Keith | bee |\nHow many legs does Julia's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 602,
+     "end": 608,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 1; the bridge eagle -> dog at layer 26",
+   "answers": {
+    "clean": "2",
+    "edited": "'2', original answer",
+    "expected": {
+     "original": "2",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'2', original answer",
+    "the whole change": "'2', original answer",
+    "without J++": "'2', original answer",
+    "without a random part (J++'s share)": "'2', original answer",
+    "without U": "'2', original answer",
+    "without a random part (U's share)": "'2', original answer",
+    "without the refit basis": "'2', original answer",
+    "without a random part (the refit basis's share)": "'2', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L1-1307",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table picks:\n| name | pick |\n|---|---|\n| Carl | pentagon |\n| David | nonagon |\n| Layla | nonagon |\n| Cole | square |\n| Lucy | square |\n| Noah | hexagon |\n| Laura | heptagon |\n| Adam | octagon |\n\nTable lockers:\n| item | locker |\n|---|---|\n| square | 5 |\n| pentagon | 6 |\n| nonagon | 7 |\n| octagon | 3 |\n| hexagon | 9 |\n| heptagon | 1 |\n\nTable rooms:\n| room | paint |\n|---|---|\n| bedroom | white |\n| nursery | blue |\n| closet | cream |\n| kitchen | grey |\n| den | grey |\nWhich locker belongs to Carl's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 245,
+     "end": 254,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 1; the bridge pentagon -> square at layer 26",
+   "answers": {
+    "clean": "6",
+    "edited": "'6', original answer",
+    "expected": {
+     "original": "6",
+     "changed": "5"
+    }
+   },
+   "numbers": {
+    "unedited": "'6', original answer",
+    "the whole change": "'6', original answer",
+    "without J++": "'6', original answer",
+    "without a random part (J++'s share)": "'6', original answer",
+    "without U": "'6', original answer",
+    "without a random part (U's share)": "'6', original answer",
+    "without the refit basis": "'6', original answer",
+    "without a random part (the refit basis's share)": "'6', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L1-1307",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table picks:\n| name | pick |\n|---|---|\n| Carl | pentagon |\n| David | nonagon |\n| Layla | nonagon |\n| Cole | square |\n| Lucy | square |\n| Noah | hexagon |\n| Laura | heptagon |\n| Adam | octagon |\n\nTable lockers:\n| item | locker |\n|---|---|\n| square | 5 |\n| pentagon | 6 |\n| nonagon | 7 |\n| octagon | 3 |\n| hexagon | 9 |\n| heptagon | 1 |\n\nTable rooms:\n| room | paint |\n|---|---|\n| bedroom | white |\n| nursery | blue |\n| closet | cream |\n| kitchen | grey |\n| den | grey |\nHow many sides does Carl's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 245,
+     "end": 254,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 1; the bridge pentagon -> square at layer 26",
+   "answers": {
+    "clean": "5",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "5",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'5', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'4', changed answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-0001",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked the giraffe. The locker of the frog is 8. James picked the chicken. The market was busy on Saturday. The fence was repaired in spring. The locker of the fox is 3. Beth picked the frog. The new curtains arrived on Monday. The radio played old songs. Mark picked the goose. Simon picked the giraffe. The coffee was too strong. The library closed early. The locker of the horse is 2. Diana picked the camel. Paul picked the cow. Amy picked the fox. The soup needed more salt. The locker of the cow is 9. The locker of the chicken is 1. Eve picked the horse. The locker of the tick is 4. The locker of the goose is 7. The locker of the camel is 6. Edna picked the frog. The garden gate needs new paint. The locker of the giraffe is 5. The park was quiet at dawn. The heater made a strange noise. Sean picked the tick.\nWhat is the locker number of Sean's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 1017,
+     "end": 1022,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge tick -> fox at layer 26",
+   "answers": {
+    "clean": "4",
+    "edited": "'3', changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "'4', original answer",
+    "the whole change": "'3', changed answer",
+    "without J++": "'3', changed answer",
+    "without a random part (J++'s share)": "'3', changed answer",
+    "without U": "'3', changed answer",
+    "without a random part (U's share)": "'3', changed answer",
+    "without the refit basis": "'3', changed answer",
+    "without a random part (the refit basis's share)": "'3', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-0001",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked the giraffe. The locker of the frog is 8. James picked the chicken. The market was busy on Saturday. The fence was repaired in spring. The locker of the fox is 3. Beth picked the frog. The new curtains arrived on Monday. The radio played old songs. Mark picked the goose. Simon picked the giraffe. The coffee was too strong. The library closed early. The locker of the horse is 2. Diana picked the camel. Paul picked the cow. Amy picked the fox. The soup needed more salt. The locker of the cow is 9. The locker of the chicken is 1. Eve picked the horse. The locker of the tick is 4. The locker of the goose is 7. The locker of the camel is 6. Edna picked the frog. The garden gate needs new paint. The locker of the giraffe is 5. The park was quiet at dawn. The heater made a strange noise. Sean picked the tick.\nWhat is the number of legs of Sean's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 1017,
+     "end": 1022,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge tick -> fox at layer 26",
+   "answers": {
+    "clean": "8",
+    "edited": "'4', changed answer",
+    "expected": {
+     "original": "8",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'8', original answer",
+    "the whole change": "'4', changed answer",
+    "without J++": "'4', changed answer",
+    "without a random part (J++'s share)": "'4', changed answer",
+    "without U": "'4', changed answer",
+    "without a random part (U's share)": "'4', changed answer",
+    "without the refit basis": "'4', changed answer",
+    "without a random part (the refit basis's share)": "'4', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-0189",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the hexagon is four. The locker of the square is five. The printer ran out of paper. The locker of the heptagon is three. The locker of the nonagon is seven. The soup needed more salt. The roof leaked during the storm. The street was lined with trees. Sean picked the heptagon. Emma picked the nonagon. The locker of the pentagon is eight. Philip picked the hexagon. Ivan picked the square. The school held a concert. Peter picked the pentagon. The locker of the octagon is one. Dan picked the triangle. The weather was mild all week. The bakery sold out of rolls. The river was calm that morning. The office was cold. The locker of the triangle is six. Grace picked the octagon. Levi picked the triangle. Leo picked the hexagon. The evening was warm and still.\nWhat is the locker number of Peter's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 646,
+     "end": 655,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge pentagon -> triangle at layer 26",
+   "answers": {
+    "clean": "8",
+    "edited": "'8', original answer",
+    "expected": {
+     "original": "8",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "'8', original answer",
+    "the whole change": "'8', original answer",
+    "without J++": "'8', original answer",
+    "without a random part (J++'s share)": "'8', original answer",
+    "without U": "'8', original answer",
+    "without a random part (U's share)": "'8', original answer",
+    "without the refit basis": "'8', original answer",
+    "without a random part (the refit basis's share)": "'8', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-0189",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the hexagon is four. The locker of the square is five. The printer ran out of paper. The locker of the heptagon is three. The locker of the nonagon is seven. The soup needed more salt. The roof leaked during the storm. The street was lined with trees. Sean picked the heptagon. Emma picked the nonagon. The locker of the pentagon is eight. Philip picked the hexagon. Ivan picked the square. The school held a concert. Peter picked the pentagon. The locker of the octagon is one. Dan picked the triangle. The weather was mild all week. The bakery sold out of rolls. The river was calm that morning. The office was cold. The locker of the triangle is six. Grace picked the octagon. Levi picked the triangle. Leo picked the hexagon. The evening was warm and still.\nHow many sides does Peter's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 646,
+     "end": 655,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge pentagon -> triangle at layer 26",
+   "answers": {
+    "clean": "5",
+    "edited": "'5', original answer",
+    "expected": {
+     "original": "5",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "'5', original answer",
+    "the whole change": "'5', original answer",
+    "without J++": "'5', original answer",
+    "without a random part (J++'s share)": "'5', original answer",
+    "without U": "'5', original answer",
+    "without a random part (U's share)": "'5', original answer",
+    "without the refit basis": "'5', original answer",
+    "without a random part (the refit basis's share)": "'5', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-0276",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table rooms:\n| room | paint |\n|---|---|\n| pantry | green |\n| porch | teal |\n| loft | red |\n| attic | green |\n| office | red |\n| foyer | white |\n| laundry | blue |\n| hallway | cream |\n| garage | green |\n| cellar | teal |\n\nTable lockers:\n| item | locker |\n|---|---|\n| guitar | 3 |\n| cello | 2 |\n| viola | 1 |\n| ukulele | 8 |\n| violin | 9 |\n\nTable picks:\n| name | pick |\n|---|---|\n| Laura | viola |\n| Liam | violin |\n| Karen | violin |\n| Lloyd | guitar |\n| Kate | guitar |\n| Carl | cello |\n| James | ukulele |\nWhich locker belongs to Liam's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 602,
+     "end": 609,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 2; the bridge violin -> guitar at layer 26",
+   "answers": {
+    "clean": "9",
+    "edited": "'1', other",
+    "expected": {
+     "original": "9",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "'9', original answer",
+    "the whole change": "'1', other",
+    "without J++": "'1', other",
+    "without a random part (J++'s share)": "'1', other",
+    "without U": "'1', other",
+    "without a random part (U's share)": "'1', other",
+    "without the refit basis": "'9', original answer",
+    "without a random part (the refit basis's share)": "'9', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-0276",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table rooms:\n| room | paint |\n|---|---|\n| pantry | green |\n| porch | teal |\n| loft | red |\n| attic | green |\n| office | red |\n| foyer | white |\n| laundry | blue |\n| hallway | cream |\n| garage | green |\n| cellar | teal |\n\nTable lockers:\n| item | locker |\n|---|---|\n| guitar | 3 |\n| cello | 2 |\n| viola | 1 |\n| ukulele | 8 |\n| violin | 9 |\n\nTable picks:\n| name | pick |\n|---|---|\n| Laura | viola |\n| Liam | violin |\n| Karen | violin |\n| Lloyd | guitar |\n| Kate | guitar |\n| Carl | cello |\n| James | ukulele |\nHow many strings does Liam's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 602,
+     "end": 609,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 2; the bridge violin -> guitar at layer 26",
+   "answers": {
+    "clean": "4",
+    "edited": "'4', original answer",
+    "expected": {
+     "original": "4",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "'4', original answer",
+    "the whole change": "'4', original answer",
+    "without J++": "'4', original answer",
+    "without a random part (J++'s share)": "'4', original answer",
+    "without U": "'4', original answer",
+    "without a random part (U's share)": "'4', original answer",
+    "without the refit basis": "'4', original answer",
+    "without a random part (the refit basis's share)": "'4', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-0677",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table rooms:\n| room | paint |\n|---|---|\n| kitchen | green |\n| bedroom | cream |\n| cellar | blue |\n| laundry | red |\n| loft | cream |\n| attic | cream |\n| pantry | grey |\n| bathroom | yellow |\n| lounge | blue |\n| balcony | cream |\n\nTable lockers:\n| item | locker |\n|---|---|\n| hexagon | one |\n| nonagon | four |\n| pentagon | three |\n| square | two |\n| heptagon | nine |\n| triangle | six |\n| octagon | seven |\n\nTable picks:\n| name | pick |\n|---|---|\n| Leo | pentagon |\n| Diana | nonagon |\n| Lance | octagon |\n| Otto | square |\n| Clara | triangle |\n| Luke | square |\n| Rose | octagon |\n| Ella | heptagon |\n| Oscar | hexagon |\nWhich locker belongs to Oscar's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 809,
+     "end": 817,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 2; the bridge hexagon -> triangle at layer 26",
+   "answers": {
+    "clean": "1",
+    "edited": "'3', other",
+    "expected": {
+     "original": "1",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "'1', original answer",
+    "the whole change": "'3', other",
+    "without J++": "'3', other",
+    "without a random part (J++'s share)": "'3', other",
+    "without U": "'6', changed answer",
+    "without a random part (U's share)": "'6', changed answer",
+    "without the refit basis": "'2', other",
+    "without a random part (the refit basis's share)": "'6', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-0677",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table rooms:\n| room | paint |\n|---|---|\n| kitchen | green |\n| bedroom | cream |\n| cellar | blue |\n| laundry | red |\n| loft | cream |\n| attic | cream |\n| pantry | grey |\n| bathroom | yellow |\n| lounge | blue |\n| balcony | cream |\n\nTable lockers:\n| item | locker |\n|---|---|\n| hexagon | one |\n| nonagon | four |\n| pentagon | three |\n| square | two |\n| heptagon | nine |\n| triangle | six |\n| octagon | seven |\n\nTable picks:\n| name | pick |\n|---|---|\n| Leo | pentagon |\n| Diana | nonagon |\n| Lance | octagon |\n| Otto | square |\n| Clara | triangle |\n| Luke | square |\n| Rose | octagon |\n| Ella | heptagon |\n| Oscar | hexagon |\nWhat is the number of sides of Oscar's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 809,
+     "end": 817,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 2; the bridge hexagon -> triangle at layer 26",
+   "answers": {
+    "clean": "6",
+    "edited": "'3', changed answer",
+    "expected": {
+     "original": "6",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "'6', original answer",
+    "the whole change": "'3', changed answer",
+    "without J++": "'3', changed answer",
+    "without a random part (J++'s share)": "'3', changed answer",
+    "without U": "'3', changed answer",
+    "without a random part (U's share)": "'3', changed answer",
+    "without the refit basis": "'3', changed answer",
+    "without a random part (the refit basis's share)": "'3', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-0774",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of hydrogen is 8. The meeting ran long. The train left on time. The locker of oxygen is 5. The locker of helium is 7. The locker of fluorine is 4. The weather was mild all week. The locker of carbon is 3. Owen picked fluorine. Beth picked boron. The hall smelled of fresh polish. Hugo picked nitrogen. The street was lined with trees. Sara picked carbon. The locker of beryllium is 9. The clock in the hall ran slow. Jack picked hydrogen. The river was calm that morning. The locker of nitrogen is 6. The locker of lithium is 2. Anna picked oxygen. Tom picked beryllium. Mia picked lithium. Marta picked carbon. The locker of boron is 1. The bakery sold out of rolls. Anita picked hydrogen. The bus was late again. The museum had a new exhibit. Maria picked helium.\nWhich locker belongs to Maria's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 966,
+     "end": 973,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge helium -> oxygen at layer 26",
+   "answers": {
+    "clean": "7",
+    "edited": "'5', changed answer",
+    "expected": {
+     "original": "7",
+     "changed": "5"
+    }
+   },
+   "numbers": {
+    "unedited": "'7', original answer",
+    "the whole change": "'5', changed answer",
+    "without J++": "'5', changed answer",
+    "without a random part (J++'s share)": "'5', changed answer",
+    "without U": "'5', changed answer",
+    "without a random part (U's share)": "'5', changed answer",
+    "without the refit basis": "'5', changed answer",
+    "without a random part (the refit basis's share)": "'5', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-0774",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of hydrogen is 8. The meeting ran long. The train left on time. The locker of oxygen is 5. The locker of helium is 7. The locker of fluorine is 4. The weather was mild all week. The locker of carbon is 3. Owen picked fluorine. Beth picked boron. The hall smelled of fresh polish. Hugo picked nitrogen. The street was lined with trees. Sara picked carbon. The locker of beryllium is 9. The clock in the hall ran slow. Jack picked hydrogen. The river was calm that morning. The locker of nitrogen is 6. The locker of lithium is 2. Anna picked oxygen. Tom picked beryllium. Mia picked lithium. Marta picked carbon. The locker of boron is 1. The bakery sold out of rolls. Anita picked hydrogen. The bus was late again. The museum had a new exhibit. Maria picked helium.\nWhich atomic number does Maria's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 966,
+     "end": 973,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "prose, level 2; the bridge helium -> oxygen at layer 26",
+   "answers": {
+    "clean": "2",
+    "edited": "'8', changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "8"
+    }
+   },
+   "numbers": {
+    "unedited": "'2', original answer",
+    "the whole change": "'8', changed answer",
+    "without J++": "'8', changed answer",
+    "without a random part (J++'s share)": "'8', changed answer",
+    "without U": "'8', changed answer",
+    "without a random part (U's share)": "'8', changed answer",
+    "without the refit basis": "'8', changed answer",
+    "without a random part (the refit basis's share)": "'8', changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L2-0949",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table lockers:\n| item | locker |\n|---|---|\n| motorcycle | nine |\n| tricycle | two |\n| car | three |\n| unicycle | eight |\n| bicycle | one |\n\nTable rooms:\n| room | paint |\n|---|---|\n| lounge | grey |\n| pantry | teal |\n| hallway | red |\n| studio | blue |\n| garage | cream |\n| office | cream |\n| balcony | cream |\n| cellar | teal |\n| attic | yellow |\n| foyer | teal |\n\nTable picks:\n| name | pick |\n|---|---|\n| Lisa | bicycle |\n| Olivia | unicycle |\n| Rhea | tricycle |\n| Lily | motorcycle |\n| Mark | tricycle |\n| Ruby | bicycle |\n| Vera | car |\nWhat is the locker number of Ruby's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 713,
+     "end": 721,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 2; the bridge bicycle -> car at layer 26",
+   "answers": {
+    "clean": "1",
+    "edited": "'1', original answer",
+    "expected": {
+     "original": "1",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "'1', original answer",
+    "the whole change": "'1', original answer",
+    "without J++": "'1', original answer",
+    "without a random part (J++'s share)": "'1', original answer",
+    "without U": "'1', original answer",
+    "without a random part (U's share)": "'1', original answer",
+    "without the refit basis": "'1', original answer",
+    "without a random part (the refit basis's share)": "'1', original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L2-0949",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Table lockers:\n| item | locker |\n|---|---|\n| motorcycle | nine |\n| tricycle | two |\n| car | three |\n| unicycle | eight |\n| bicycle | one |\n\nTable rooms:\n| room | paint |\n|---|---|\n| lounge | grey |\n| pantry | teal |\n| hallway | red |\n| studio | blue |\n| garage | cream |\n| office | cream |\n| balcony | cream |\n| cellar | teal |\n| attic | yellow |\n| foyer | teal |\n\nTable picks:\n| name | pick |\n|---|---|\n| Lisa | bicycle |\n| Olivia | unicycle |\n| Rhea | tricycle |\n| Lily | motorcycle |\n| Mark | tricycle |\n| Ruby | bicycle |\n| Vera | car |\nHow many wheels does Ruby's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 713,
+     "end": 721,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "table, level 2; the bridge bicycle -> car at layer 26",
+   "answers": {
+    "clean": "2",
+    "edited": "'2', original answer",
+    "expected": {
+     "original": "2",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "'2', original answer",
+    "the whole change": "'2', original answer",
+    "without J++": "'2', original answer",
+    "without a random part (J++'s share)": "'2', original answer",
+    "without U": "'2', original answer",
+    "without a random part (U's share)": "'2', original answer",
+    "without the refit basis": "'2', original answer",
+    "without a random part (the refit basis's share)": "'2', original answer"
+   },
+   "why": "random item (seed 0)"
+  }
+ ]
+}

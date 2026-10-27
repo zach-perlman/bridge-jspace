@@ -1,0 +1,53 @@
+id: d3v4_competence_raw_27b
+title: "D3 v4 gate, plain text: can the 27B answer the pointer_v4 scenes without its chat template?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.35
+depends_on: []
+command: >-
+  BJ_FORMAT=raw uv run python scripts/pointer_v4.py manifest --set main --name d3v4_competence_raw_27b
+  --why "G1 (is the slot answer about the chat template's tokens?): pointer_v4's main scenes in raw format (the same
+  context, question and instruction as plain text ending in Answer:, no template), every prompt and step"
+  && BJ_FORMAT=raw uv run python scripts/pointer_v4.py competence --name d3v4_competence_raw_27b
+question: >-
+  Can Qwen3.6-27B answer pointer_v4's main scenes (countries, animals, body parts; 3 x 3 wordings) when the prompt is
+  plain text (the statements, a newline, the question and the instruction, a newline and "Answer:"; no chat template),
+  in every family (memory -> prompt, named -> prompt, memory -> memory), every alt prompt and each step alone?
+why_it_matters: >-
+  Gate for d3v4_swap_raw_27b, the G1 test: every D2/D3 result reads the statement at the tokens after the question,
+  which in chat format are mostly the template's ~12 tokens. The raw run removes them; it is read only on scenes the
+  model answers in raw format.
+hypotheses:
+  H-competent: 'clean >= 95% in every topic x family cell (chat: 98-100%); scenes eligible in all three families >= 150
+    per topic (chat: 296 / 297 / 169)'
+  H-format-hurts: 'a chat model without its template drifts: some cell below the gate (clean Wilson lower bound < 0.85)
+    or fewer than 150 eligible scenes in a topic'
+  prior: 'Agent prior: H-competent 0.7 (the OLMo-3-7B-Instruct smoke answered raw prompts as well as chat ones; the
+    27B was 98-100% in chat), H-format-hurts 0.3.'
+decision_rule: >-
+  pointer_v1's gate, unchanged: a (topic, family) cell enters the patching run iff its clean Wilson 95% lower bound
+  >= 0.85; an item is eligible iff every prompt of it is right (org, alt, same, redigit, hop1, hop2); pointer_swap keeps
+  scenes eligible in every family of its run. A topic with fewer than 35 eligible scenes is dropped from the raw run
+  and reported. Report the clean rate per topic x family next to d3v4_competence_27b's (chat) and the read vs greedy
+  agreement.
+controls:
+- 'each step alone (cue -> entity with the context; the lookup with the entity named / the recalled fact)'
+- 'answer read vs 8-token greedy on the digit prompts'
+- 'the same scenes in chat format: d3v4_competence_27b'
+n: 'all main scenes: 300 + 300 + 180 per family (countries, animals, body parts) x 3 families = 2,340 items (~12,500 prompts)'
+seeds: [841]
+notes: >-
+  Format switch: src/bridge_jspace/chat.py (BJ_FORMAT, 2026-10-21); the manifest records model.prompt_format = raw and
+  the competence stage refuses to run in another format. Smoked on Qwen3.5-0.8B (pointer_v4 competence and
+  pointer_swap in raw format) and OLMo-3-7B-Instruct (suite_v1 competence, both formats). Timing: d3v4_competence_27b's
+  size at ~18 prompts/s, raw prompts ~15 tokens shorter: ~12 min + reads + load ~ 0.35 h.
+
+  AMENDMENT 2026-10-21 (after this gate ran, before any raw-format patching result existed; this run is kept as it
+  is): the run gave 0% in every cell because in raw format Qwen3.6-27B opens its greedy reply with a think block
+  ("\n\n<think>..."), so the 8-token greedy judge never reached the answer, while the read put the expected digit on top
+  (p ~0.85-0.98). The rule is amended for raw format (scripts/pointer_v1.py JUDGE_READ, recorded in every raw manifest
+  and summary): a digit prompt is right iff the top token of the one-forward read pointer_swap uses (the digit's space
+  token appended) is the expected digit; a word prompt (the cue -> entity step) iff pointer_v1's greedy judge finds the
+  entity in 4 greedy tokens after the model's own empty think block ("\n\n<think>\n\n</think>\n\n"); the plain greedy
+  judge is kept per prompt as correct_greedy and reported, not used. The amended gate runs as d3v4_competence_raw_27b_v2.

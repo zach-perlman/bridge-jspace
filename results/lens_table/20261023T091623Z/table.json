@@ -1,0 +1,452 @@
+{
+ "zach_ref": "ce12747d8ea8cac284124eb313f9c6676c9c960e",
+ "rows": [
+  {
+   "model": "Qwen3.6-27B",
+   "lens": "published J++",
+   "type": "J++",
+   "source": "neuronpedia/jacobian-lens@e166deb5 (sha256 bbef480b, = 9fa267f8)",
+   "recipe": "jpp_lens recipe (koayon/jpp-lenses), 64 WikiText prompts",
+   "status": "scored",
+   "files": [
+    "results/exp19_fit_data/fit_v2/eval_ranks.csv"
+   ],
+   "layers": "0-62",
+   "items": 328,
+   "per_eval": {
+    "association": 0.5121951219512195,
+    "multihop": 0.9487179487179487,
+    "multilingual": 0.8153846153846154,
+    "poetry": 0.3076923076923077,
+    "typo": 0.987012987012987
+   },
+   "macro": 0.7142005961518156,
+   "d_logit": 0.2809163194529048,
+   "macro_same": 0.7142005961518156,
+   "logit_same": 0.43328427669891084,
+   "macro_all": 0.7142005961518156,
+   "all_layers": "0-62",
+   "band_macro": 0.4963167726582361,
+   "d_logit_band": 0.30413204681497363
+  },
+  {
+   "model": "Qwen3.6-27B",
+   "lens": "published plain J-lens (n1000)",
+   "type": "plain J-lens",
+   "source": "neuronpedia/jacobian-lens@e166deb5 (sha256 1718c8c5, = 9fa267f8)",
+   "recipe": "plain J-lens, 1000 WikiText prompts",
+   "status": "scored",
+   "files": [
+    "results/exp19_fit_data/fit_v2/eval_ranks.csv"
+   ],
+   "layers": "0-62",
+   "items": 328,
+   "per_eval": {
+    "association": 0.15853658536585366,
+    "multihop": 0.6410256410256411,
+    "multilingual": 0.6615384615384615,
+    "poetry": 0.07692307692307693,
+    "typo": 0.6103896103896104
+   },
+   "macro": 0.4296826750485287,
+   "d_logit": -0.003601601650382147,
+   "macro_same": 0.4296826750485287,
+   "logit_same": 0.43328427669891084,
+   "macro_all": 0.4296826750485287,
+   "all_layers": "0-62",
+   "band_macro": 0.2316348691958448,
+   "d_logit_band": 0.03945014335258237
+  },
+  {
+   "model": "Qwen3.6-27B",
+   "lens": "logit lens",
+   "type": "logit lens",
+   "source": "-",
+   "recipe": "-",
+   "status": "scored",
+   "files": [
+    "results/exp19_fit_data/fit_v2/eval_ranks.csv"
+   ],
+   "layers": "0-62",
+   "items": 328,
+   "per_eval": {
+    "association": 0.14634146341463414,
+    "multihop": 0.6923076923076923,
+    "multilingual": 0.5153846153846153,
+    "poetry": 0.046153846153846156,
+    "typo": 0.7662337662337663
+   },
+   "macro": 0.43328427669891084,
+   "macro_all": 0.43328427669891084,
+   "all_layers": "0-62",
+   "band_macro": 0.19218472584326243
+  },
+  {
+   "model": "Qwen3.5-9B",
+   "lens": "published J++",
+   "type": "J++",
+   "source": "neuronpedia/jacobian-lens@e166deb5 (sha256 8cda12f7)",
+   "recipe": "jpp_lens recipe (koayon/jpp-lenses), 64 WikiText prompts",
+   "status": "pending"
+  },
+  {
+   "model": "Qwen3.5-9B",
+   "lens": "logit lens",
+   "type": "logit lens",
+   "source": "-",
+   "recipe": "-",
+   "status": "pending"
+  },
+  {
+   "model": "Qwen3-32B",
+   "lens": "published plain J-lens",
+   "type": "plain J-lens",
+   "source": "neuronpedia/jacobian-lens@e166deb5 (sha256 0af5ccf2)",
+   "recipe": "plain J-lens, 557 WikiText prompts (stopping threshold not reached)",
+   "status": "scored",
+   "files": [
+    "results/lens_eval/qwen3_32b_lens_eval/eval_ranks_g0.csv"
+   ],
+   "layers": "16-51",
+   "items": 301,
+   "per_eval": {
+    "association": 0.175,
+    "multihop": 0.3333333333333333,
+    "multilingual": 0.3090909090909091,
+    "poetry": 0.03571428571428571,
+    "typo": 0.33766233766233766
+   },
+   "macro": 0.23816017316017316,
+   "d_logit": 0.11487012987012986,
+   "macro_same": 0.23816017316017316,
+   "logit_same": 0.1232900432900433,
+   "macro_all": 0.4205952380952381,
+   "all_layers": "0-62",
+   "d_logit_common": 0.07799783549783545,
+   "common_layers": "0-62",
+   "macro_common": 0.4205952380952381,
+   "logit_common": 0.3425974025974026,
+   "band_macro": 0.08198051948051947,
+   "d_logit_band": 0.0283116883116883
+  },
+  {
+   "model": "Qwen3-32B",
+   "lens": "Zach's J++ (32 prompts)",
+   "type": "J++",
+   "source": "Zach's fit (not published)",
+   "recipe": "J++ (jpp_lens@93f02cd), 32 WikiText prompts",
+   "status": "pending"
+  },
+  {
+   "model": "Qwen3-32B",
+   "lens": "our J++ (64 prompts)",
+   "type": "J++",
+   "source": "ours (H200 fit, scripts/lens_fit/h200_fit.py; danorel/Qwen3-32B-jpp-lens@8d43d036, sha256 7d6856b6)",
+   "recipe": "J++ (jpp_lens@93f02cd), 64 WikiText prompts (2 shards x 32), layers 16-51",
+   "status": "scored",
+   "files": [
+    "results/lens_fit/qwen3_32b_jpp64_20261023-095816/eval_ranks.csv"
+   ],
+   "layers": "16-51",
+   "items": 301,
+   "per_eval": {
+    "association": 0.4,
+    "multihop": 0.6363636363636364,
+    "multilingual": 0.6666666666666666,
+    "poetry": 0.10714285714285714,
+    "typo": 0.935064935064935
+   },
+   "macro": 0.549047619047619,
+   "d_logit": 0.4267683574287348,
+   "shared_items": 298,
+   "macro_same": 0.5502605570530099,
+   "logit_same": 0.1234921996242751,
+   "macro_all": 0.549047619047619,
+   "all_layers": "16-51",
+   "band_macro": 0.35038961038961036,
+   "d_logit_band": 0.2967207792207792,
+   "pooled": 0.3148160173160173,
+   "vs_logit": "items differ from the logit lens's run (graded separately: 301 here, 301 there, 298 shared); compared on the shared items"
+  },
+  {
+   "model": "Qwen3-32B",
+   "lens": "logit lens",
+   "type": "logit lens",
+   "source": "-",
+   "recipe": "-",
+   "status": "scored",
+   "files": [
+    "results/lens_eval/qwen3_32b_lens_eval/eval_ranks_g0.csv"
+   ],
+   "layers": "16-51",
+   "items": 301,
+   "per_eval": {
+    "association": 0.025,
+    "multihop": 0.15151515151515152,
+    "multilingual": 0.045454545454545456,
+    "poetry": 0.017857142857142856,
+    "typo": 0.37662337662337664
+   },
+   "macro": 0.1232900432900433,
+   "macro_all": 0.3425974025974026,
+   "all_layers": "0-62",
+   "band_macro": 0.05366883116883117
+  },
+  {
+   "model": "OLMo-3-7B-Instruct",
+   "lens": "mhough plain J-lens",
+   "type": "plain J-lens",
+   "source": "mhough/olmo3-jacobian-lenses@d15b6af0 (sha256 b847dbba)",
+   "recipe": "plain J-lens, 616 WikiText prompts, layers 0-30 every 3rd",
+   "status": "scored",
+   "files": [
+    "results/lens_eval/olmo3_7b_instruct_lens_eval/eval_ranks_g0.csv",
+    "results/lens_eval/olmo3_7b_instruct_lens_eval/eval_ranks_g1.csv"
+   ],
+   "layers": "0-30 every 3rd",
+   "items": 227,
+   "per_eval": {
+    "association": 0.06493506493506493,
+    "multihop": 0.6666666666666666,
+    "multilingual": 0.35833333333333334,
+    "poetry": 0.07317073170731707,
+    "typo": 0.6363636363636364
+   },
+   "macro": 0.35989388660120364,
+   "d_logit": 0.04077341357829162,
+   "macro_same": 0.35989388660120364,
+   "logit_same": 0.319120473022912,
+   "macro_all": 0.35989388660120364,
+   "all_layers": "0-30 every 3rd"
+  },
+  {
+   "model": "OLMo-3-7B-Instruct",
+   "lens": "neuronpedia plain J-lens (base model)",
+   "type": "plain J-lens",
+   "source": "neuronpedia/jacobian-lens@e166deb5 (sha256 0683d972)",
+   "recipe": "plain J-lens fit on Olmo-3-1025-7B (base), 568 WikiText prompts, layers 0-30",
+   "status": "scored",
+   "files": [
+    "results/lens_eval/olmo3_7b_instruct_lens_eval/eval_ranks_g0.csv",
+    "results/lens_eval/olmo3_7b_instruct_lens_eval/eval_ranks_g1.csv"
+   ],
+   "layers": "0-30 every 3rd",
+   "items": 227,
+   "per_eval": {
+    "association": 0.0,
+    "multihop": 0.75,
+    "multilingual": 0.4375,
+    "poetry": 0.0,
+    "typo": 0.45454545454545453
+   },
+   "macro": 0.32840909090909093,
+   "d_logit": 0.009288617886178907,
+   "macro_same": 0.32840909090909093,
+   "logit_same": 0.319120473022912,
+   "macro_all": 0.34889610389610387,
+   "all_layers": "0-30",
+   "d_logit_common": -0.01431237461725271,
+   "common_layers": "0-30",
+   "macro_common": 0.34889610389610387,
+   "logit_common": 0.3632084785133566
+  },
+  {
+   "model": "OLMo-3-7B-Instruct",
+   "lens": "our J++ (64 prompts)",
+   "type": "J++",
+   "source": "ours (jobs/lens_fit/olmo3_7b_instruct_jpp_fit.yaml; danorel/Olmo-3-7B-Instruct-jpp-lens@fd8f1d4e, sha256 6847cfb3)",
+   "recipe": "J++ (jpp_lens@93f02cd), 64 WikiText prompts, layers 0-30",
+   "status": "scored",
+   "files": [
+    "results/lens_fit/olmo3_7b_instruct_jpp_20261023-100523/eval_ranks.csv"
+   ],
+   "layers": "0-30 every 3rd",
+   "items": 227,
+   "per_eval": {
+    "association": 0.07792207792207792,
+    "multihop": 0.8333333333333334,
+    "multilingual": 0.3833333333333333,
+    "poetry": 0.07317073170731707,
+    "typo": 0.961038961038961
+   },
+   "macro": 0.4657596874670045,
+   "d_logit": 0.1466392144440925,
+   "macro_same": 0.4657596874670045,
+   "logit_same": 0.319120473022912,
+   "macro_all": 0.4917632773730335,
+   "all_layers": "0-30",
+   "d_logit_common": 0.1285547988596769,
+   "common_layers": "0-30",
+   "macro_common": 0.4917632773730335,
+   "logit_common": 0.3632084785133566,
+   "pooled": 0.35060025340513146
+  },
+  {
+   "model": "OLMo-3-7B-Instruct",
+   "lens": "logit lens",
+   "type": "logit lens",
+   "source": "-",
+   "recipe": "-",
+   "status": "scored",
+   "files": [
+    "results/lens_eval/olmo3_7b_instruct_lens_eval/eval_ranks_g0.csv",
+    "results/lens_eval/olmo3_7b_instruct_lens_eval/eval_ranks_g1.csv"
+   ],
+   "layers": "0-30 every 3rd",
+   "items": 227,
+   "per_eval": {
+    "association": 0.03896103896103896,
+    "multihop": 0.6666666666666666,
+    "multilingual": 0.45,
+    "poetry": 0.024390243902439025,
+    "typo": 0.4155844155844156
+   },
+   "macro": 0.319120473022912,
+   "macro_all": 0.3632084785133566,
+   "all_layers": "0-30"
+  },
+  {
+   "model": "Gemma 4 31B-it",
+   "lens": "Zach's J++ (every layer)",
+   "type": "J++",
+   "source": "zachperlman20/gemma-4-31B-it-jpp-lens@c3c4340e (sha256 d16d81d8)",
+   "recipe": "J++ (jpp_lens@93f02cd), 64 WikiText prompts, layers 0-58",
+   "status": "scored",
+   "files": [
+    "origin/zach/v8-breadth-1021:results/lens_fit/gemma_it_full/eval_ranks.csv"
+   ],
+   "layers": "0-58",
+   "items": 244,
+   "per_eval": {
+    "association": 0.0975609756097561,
+    "multihop": 0.72,
+    "multilingual": 0.47115384615384615,
+    "poetry": 0.875,
+    "typo": 1.0
+   },
+   "macro": 0.6327429643527205,
+   "d_logit": 0.07310521186130947,
+   "macro_same": 0.6327429643527205,
+   "logit_same": 0.559637752491411,
+   "macro_all": 0.6327429643527205,
+   "all_layers": "0-58",
+   "band_macro": 0.367130722935601,
+   "d_logit_band": 0.3485333203381984,
+   "pooled": 0.5027536000584781,
+   "published_macro": "0.633 (layers 0-58)"
+  },
+  {
+   "model": "Gemma 4 31B-it",
+   "lens": "neuronpedia J++ (base model)",
+   "type": "J++",
+   "source": "neuronpedia/jacobian-lens@e166deb5 (sha256 ef50bc54)",
+   "recipe": "jpp_lens recipe (koayon/jpp-lenses) on google/gemma-4-31B (base), 64 WikiText prompts",
+   "status": "scored",
+   "files": [
+    "results/lens_eval/gemma4it_lens_eval/eval_ranks_g0.csv"
+   ],
+   "layers": "0-58",
+   "items": 244,
+   "per_eval": {
+    "association": 0.18292682926829268,
+    "multihop": 0.68,
+    "multilingual": 0.38461538461538464,
+    "poetry": 0.375,
+    "typo": 0.987012987012987
+   },
+   "macro": 0.5219110401793329,
+   "d_logit": -0.03772671231207814,
+   "macro_same": 0.5219110401793329,
+   "logit_same": 0.559637752491411,
+   "macro_all": 0.5219110401793329,
+   "all_layers": "0-58",
+   "band_macro": 0.11431578177919641,
+   "d_logit_band": 0.09571837918179381
+  },
+  {
+   "model": "Gemma 4 31B-it",
+   "lens": "logit lens",
+   "type": "logit lens",
+   "source": "-",
+   "recipe": "-",
+   "status": "scored",
+   "files": [
+    "results/lens_eval/gemma4it_lens_eval/eval_ranks_g0.csv"
+   ],
+   "layers": "0-58",
+   "items": 244,
+   "per_eval": {
+    "association": 0.5365853658536586,
+    "multihop": 0.74,
+    "multilingual": 0.5865384615384616,
+    "poetry": 0.0,
+    "typo": 0.935064935064935
+   },
+   "macro": 0.559637752491411,
+   "macro_all": 0.559637752491411,
+   "all_layers": "0-58",
+   "band_macro": 0.0185974025974026
+  },
+  {
+   "model": "Muse Glimmer 30B",
+   "lens": "Zach's J++ (every layer)",
+   "type": "J++",
+   "source": "zachperlman20/Muse-Glimmer-30B-jpp-lens@68ecd838 (sha256 90fc5e52)",
+   "recipe": "J++ (jpp_lens@93f02cd + jpp_lens_muse_1022.patch), 32 WikiText prompts, layers 0-50",
+   "status": "published",
+   "files": [
+    "zachperlman20/Muse-Glimmer-30B-jpp-lens@68ecd838 eval/eval_ranks_pass_at_k.csv (item-weighted, layers 0-50)"
+   ],
+   "layers": "0-50",
+   "items": null,
+   "per_eval": {
+    "association": 1.0,
+    "multihop": 1.0,
+    "multilingual": 0.8125,
+    "poetry": 0.9807692307692307,
+    "typo": 1.0
+   },
+   "macro": 0.9586538461538462,
+   "d_logit": 0.2887371887371888,
+   "pooled": 0.8926095509428842
+  },
+  {
+   "model": "Muse Glimmer 30B",
+   "lens": "eyes-ml plain J-lens",
+   "type": "plain J-lens",
+   "source": "eyes-ml/Muse-Glimmer-30B_jacobian-lens@71d8434f",
+   "recipe": "plain J-lens (neuronpedia fit_lens), 900 WikiText prompts (stop rule not reached)",
+   "status": "pending"
+  },
+  {
+   "model": "Muse Glimmer 30B",
+   "lens": "logit lens",
+   "type": "logit lens",
+   "source": "-",
+   "recipe": "-",
+   "status": "published",
+   "files": [
+    "zachperlman20/Muse-Glimmer-30B-jpp-lens@68ecd838 eval/eval_ranks_pass_at_k.csv (item-weighted, layers 0-50)"
+   ],
+   "layers": "0-50",
+   "items": null,
+   "per_eval": {
+    "association": 0.6296296296296297,
+    "multihop": 0.8888888888888888,
+    "multilingual": 0.5148809523809523,
+    "poetry": 0.6538461538461539,
+    "typo": 0.6623376623376623
+   },
+   "macro": 0.6699166574166574,
+   "pooled": null
+  },
+  {
+   "model": "Qwen3.5-122B-A10B (FP8)",
+   "lens": "published J++",
+   "type": "J++",
+   "source": "neuronpedia/jacobian-lens@e166deb5 (sha256 b771e502)",
+   "recipe": "jpp_lens recipe (koayon/jpp-lenses), fit on the bf16 weights",
+   "status": "pending"
+  }
+ ]
+}

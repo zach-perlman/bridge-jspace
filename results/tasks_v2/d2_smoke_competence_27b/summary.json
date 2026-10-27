@@ -1,0 +1,64 @@
+{
+  "seconds": 10,
+  "by_word_level": {
+    "MP/L0": {
+      "n": 8,
+      "whole": 0.875,
+      "all_steps": 1,
+      "median_margin": 3.5,
+      "whole_by_numbers": {
+        "digits": 1,
+        "words": 0.75
+      }
+    },
+    "MM/L0": {
+      "n": 8,
+      "whole": 0.75,
+      "all_steps": 1,
+      "median_margin": 2.69,
+      "whole_by_numbers": {
+        "digits": 0.75,
+        "words": 0.75
+      }
+    },
+    "PP/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 0.875,
+      "median_margin": 5.53,
+      "whole_by_numbers": {
+        "digits": 1,
+        "words": 1
+      }
+    },
+    "PM/L0": {
+      "n": 8,
+      "whole": 1,
+      "all_steps": 0.875,
+      "median_margin": 3.69,
+      "whole_by_numbers": {
+        "digits": 1,
+        "words": 1
+      }
+    }
+  },
+  "by_domain": {
+    "planets": 1,
+    "greek": 0.625,
+    "animals": 1,
+    "elements": 1
+  },
+  "by_format": {
+    "prose": 0.906
+  },
+  "by_numbers": {
+    "digits": 0.944,
+    "words": 0.857
+  },
+  "pick": {
+    "MP": 0,
+    "MM": null,
+    "PP": null,
+    "PM": null
+  }
+}

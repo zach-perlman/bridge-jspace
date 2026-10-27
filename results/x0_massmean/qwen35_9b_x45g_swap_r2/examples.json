@@ -1,0 +1,682 @@
+{
+ "exp": "x0_massmean",
+ "run": "qwen35_9b_x45g_swap_r2",
+ "seed": 0,
+ "k": 10,
+ "groups": [
+  {
+   "key": "lookup",
+   "title": "lookup",
+   "definition": "the lookup reader on the same patch",
+   "n_total": 10
+  },
+  {
+   "key": "recall",
+   "title": "recall",
+   "definition": "the recall reader on the same patch",
+   "n_total": 10
+  }
+ ],
+ "examples": [
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0017",
+   "prompt": "<|im_start|>user\nThe locker of delta is six. Amy picked delta. The locker of iota is two. The locker of gamma is eight. Leo picked iota. Eva picked gamma.\nWhich locker belongs to Leo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 130,
+     "end": 135,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge iota -> delta at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "2",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), other",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0017",
+   "prompt": "<|im_start|>user\nThe locker of delta is six. Amy picked delta. The locker of iota is two. The locker of gamma is eight. Leo picked iota. Eva picked gamma.\nWhich position in the Greek alphabet does Leo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 130,
+     "end": 135,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge iota -> delta at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "9",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "9",
+     "changed": "4"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0096",
+   "prompt": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the spider. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the bee.\nWhich locker belongs to Will's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 165,
+     "end": 169,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge bee -> spider at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "1",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "1",
+     "changed": "5"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0096",
+   "prompt": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the spider. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the bee.\nHow many legs does Will's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 165,
+     "end": 169,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge bee -> spider at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "6",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "6",
+     "changed": "8"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0110",
+   "prompt": "<|im_start|>user\nRuby picked epsilon. The locker of epsilon is seven. Emma picked alpha. The locker of alpha is nine. The locker of iota is two. Anna picked iota.\nWhich locker belongs to Anna's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 156,
+     "end": 161,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge iota -> epsilon at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "2",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0110",
+   "prompt": "<|im_start|>user\nRuby picked epsilon. The locker of epsilon is seven. Emma picked alpha. The locker of alpha is nine. The locker of iota is two. Anna picked iota.\nWhich position in the Greek alphabet does Anna's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 156,
+     "end": 161,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge iota -> epsilon at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "9",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "9",
+     "changed": "5"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0142",
+   "prompt": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked nitrogen. The locker of nitrogen is three.\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 129,
+     "end": 138,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge nitrogen -> oxygen at layer 12; its locker sentence after the pick",
+   "answers": {
+    "clean": "3",
+    "edited": "(not stored), original answer",
+    "expected": {
+     "original": "3",
+     "changed": "6"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), original answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0142",
+   "prompt": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked nitrogen. The locker of nitrogen is three.\nWhat is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 129,
+     "end": 138,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge nitrogen -> oxygen at layer 12; its locker sentence after the pick",
+   "answers": {
+    "clean": "7",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "7",
+     "changed": "8"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0149",
+   "prompt": "<|im_start|>user\nThe locker of iota is 8. The locker of delta is 1. The locker of gamma is 6. Lucy picked delta. Kate picked gamma. Luke picked iota.\nWhich locker belongs to Lucy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 105,
+     "end": 111,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge delta -> iota at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "1",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "1",
+     "changed": "8"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0149",
+   "prompt": "<|im_start|>user\nThe locker of iota is 8. The locker of delta is 1. The locker of gamma is 6. Lucy picked delta. Kate picked gamma. Luke picked iota.\nWhich position in the Greek alphabet does Lucy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 105,
+     "end": 111,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge delta -> iota at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "4",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "9"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0154",
+   "prompt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked oxygen. Max picked helium. The locker of oxygen is five.\nWhich locker belongs to Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 112,
+     "end": 119,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge oxygen -> helium at layer 12; its locker sentence after the pick",
+   "answers": {
+    "clean": "5",
+    "edited": "(not stored), original answer",
+    "expected": {
+     "original": "5",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), original answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), original answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0154",
+   "prompt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked oxygen. Max picked helium. The locker of oxygen is five.\nWhat is the atomic number of Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 112,
+     "end": 119,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge oxygen -> helium at layer 12; its locker sentence after the pick",
+   "answers": {
+    "clean": "8",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "8",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0181",
+   "prompt": "<|im_start|>user\nThe locker of hydrogen is 5. Maria picked hydrogen. Dan picked nitrogen. The locker of helium is 3. The locker of nitrogen is 9. Adam picked helium.\nWhich locker belongs to Adam's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 157,
+     "end": 164,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge helium -> nitrogen at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "3",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "3",
+     "changed": "9"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), changed answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0181",
+   "prompt": "<|im_start|>user\nThe locker of hydrogen is 5. Maria picked hydrogen. Dan picked nitrogen. The locker of helium is 3. The locker of nitrogen is 9. Adam picked helium.\nWhat is the atomic number of Adam's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 157,
+     "end": 164,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge helium -> nitrogen at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "2",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "7"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0184",
+   "prompt": "<|im_start|>user\nThe locker of helium is 9. Peter picked nitrogen. The locker of nitrogen is 3. Victor picked helium. The locker of hydrogen is 5. Luke picked hydrogen.\nWhich locker belongs to Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 109,
+     "end": 116,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge helium -> hydrogen at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "9",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "9",
+     "changed": "5"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), other",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), other",
+    "without a random part (J++'s share)": "(not stored), other",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), other"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0184",
+   "prompt": "<|im_start|>user\nThe locker of helium is 9. Peter picked nitrogen. The locker of nitrogen is 3. Victor picked helium. The locker of hydrogen is 5. Luke picked hydrogen.\nWhat is the atomic number of Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 109,
+     "end": 116,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge helium -> hydrogen at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "2",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "2",
+     "changed": "1"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0193",
+   "prompt": "<|im_start|>user\nThe locker of helium is three. Ivan picked oxygen. The locker of oxygen is nine. Hugo picked helium. Victor picked hydrogen. The locker of hydrogen is eight.\nWhich locker belongs to Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 131,
+     "end": 140,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge hydrogen -> helium at layer 12; its locker sentence after the pick",
+   "answers": {
+    "clean": "8",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "8",
+     "changed": "3"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0193",
+   "prompt": "<|im_start|>user\nThe locker of helium is three. Ivan picked oxygen. The locker of oxygen is nine. Hugo picked helium. Victor picked hydrogen. The locker of hydrogen is eight.\nWhat is the atomic number of Victor's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 131,
+     "end": 140,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge hydrogen -> helium at layer 12; its locker sentence after the pick",
+   "answers": {
+    "clean": "1",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "1",
+     "changed": "2"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), changed answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), changed answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "lookup",
+   "family": "lookup",
+   "item_id": "P2-L0-0290",
+   "prompt": "<|im_start|>user\nSara picked iota. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked epsilon. Noah picked beta.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 123,
+     "end": 131,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge epsilon -> iota at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "4",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "4",
+     "changed": "8"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), original answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), original answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), original answer"
+   },
+   "why": "random item (seed 0)"
+  },
+  {
+   "group": "recall",
+   "family": "recall",
+   "item_id": "P2-L0-0290",
+   "prompt": "<|im_start|>user\nSara picked iota. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked epsilon. Noah picked beta.\nWhich position in the Greek alphabet does Amy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 123,
+     "end": 131,
+     "role": "patch position (the bridge word)"
+    }
+   ],
+   "condition": "the bridge epsilon -> iota at layer 12; its locker sentence before the pick",
+   "answers": {
+    "clean": "5",
+    "edited": "(not stored), changed answer",
+    "expected": {
+     "original": "5",
+     "changed": "9"
+    }
+   },
+   "numbers": {
+    "unedited": "(not stored), original answer",
+    "the whole change": "(not stored), changed answer",
+    "without J++": "(not stored), original answer",
+    "without the pointer U": "(not stored), changed answer",
+    "without J++ and U": "(not stored), original answer",
+    "without a random part (J++'s share)": "(not stored), changed answer",
+    "without a random part (U's share)": "(not stored), changed answer",
+    "without a random part (J++ and U's share)": "(not stored), changed answer"
+   },
+   "why": "random item (seed 0)"
+  }
+ ]
+}

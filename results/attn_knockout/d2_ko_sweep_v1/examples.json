@@ -1,0 +1,883 @@
+{
+ "exp": "attn_knockout",
+ "run": "d2_ko_sweep_v1",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "path_breaks",
+   "title": "A path statement blocked, the answer lost",
+   "definition": "source on the family's path, all layers, unedited read right, edited read wrong",
+   "n_total": 473
+  },
+  {
+   "key": "path_confusion",
+   "title": "Lost to another statement's answer",
+   "definition": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)",
+   "n_total": 1238
+  },
+  {
+   "key": "path_survives",
+   "title": "A path statement blocked from the answer site, the answer kept",
+   "definition": "source on the path, destination final or both, all layers, edited read still right",
+   "n_total": 107
+  },
+  {
+   "key": "control_breaks",
+   "title": "A control span blocked, the answer lost (collateral damage)",
+   "definition": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong",
+   "n_total": 3
+  },
+  {
+   "key": "positive_control",
+   "title": "Path statement invisible to everything after it",
+   "definition": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome",
+   "n_total": 120
+  }
+ ],
+ "examples": [
+  {
+   "group": "path_breaks",
+   "family": "RL",
+   "item_id": "RL-0363",
+   "prompt": "<|im_start|>user\nFiona's pet is a pig. Ivan's pet is a goose. Ivy's pet is a chicken. The goose's locker is 9. The chicken's locker is 7. The pig's locker is 3.\nWhich locker belongs to the animal known for oinking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 137,
+     "end": 160,
+     "role": "source"
+    },
+    {
+     "start": 160,
+     "end": 318,
+     "role": "destination"
+    },
+    {
+     "start": 206,
+     "end": 213,
+     "role": "cue"
+    },
+    {
+     "start": 34,
+     "end": 37,
+     "role": "bridge"
+    },
+    {
+     "start": 142,
+     "end": 145,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span (\"The pig's locker is 3.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "9",
+    "expected": {
+     "H_answer_site": "not 3",
+     "H_relay": "not 3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0023,
+    "logp_answer_edited": -4.2683,
+    "dlogp": -4.266,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.942,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "BL",
+   "item_id": "BL-0037",
+   "prompt": "<|im_start|>user\nLiam's pet is a chicken. Henry's pet is a horse. Eva's pet is a bee. The bee's locker is 7. The chicken's locker is 1. The horse's locker is 5.\nWhich locker belongs to Henry's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 135,
+     "end": 160,
+     "role": "source"
+    },
+    {
+     "start": 241,
+     "end": 301,
+     "role": "destination"
+    },
+    {
+     "start": 185,
+     "end": 190,
+     "role": "cue"
+    },
+    {
+     "start": 59,
+     "end": 64,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 145,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span (\"The horse's locker is 5.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "7",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.002,
+    "logp_answer_edited": -2.6555,
+    "dlogp": -2.6536,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9757,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "1",
+     "7"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "RL",
+   "item_id": "RL-0111",
+   "prompt": "<|im_start|>user\nLeo's pet is a duck. Rose's pet is a cat. Eve's pet is a turkey. The duck's locker is 3. The cat's locker is 1. The turkey's locker is 9.\nWhich locker belongs to the animal known for quacking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 81,
+     "end": 105,
+     "role": "source"
+    },
+    {
+     "start": 253,
+     "end": 313,
+     "role": "destination"
+    },
+    {
+     "start": 200,
+     "end": 208,
+     "role": "cue"
+    },
+    {
+     "start": 32,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 86,
+     "end": 90,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span (\"The duck's locker is 3.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "2",
+    "expected": {
+     "H_answer_site": "not 3",
+     "H_relay": "3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0033,
+    "logp_answer_edited": -4.5888,
+    "dlogp": -4.5855,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9833,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers, unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_confusion",
+   "family": "BR",
+   "item_id": "BR-0075",
+   "prompt": "<|im_start|>user\nKate's pet is a spider. Emma's pet is a wolf. Maria's pet is a chicken. The wolf's locker is 7. The chicken's locker is 9. The spider's locker is 3.\nHow many legs does Maria's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 62,
+     "end": 88,
+     "role": "source"
+    },
+    {
+     "start": 166,
+     "end": 306,
+     "role": "destination"
+    },
+    {
+     "start": 185,
+     "end": 190,
+     "role": "cue"
+    },
+    {
+     "start": 80,
+     "end": 87,
+     "role": "bridge"
+    },
+    {
+     "start": 117,
+     "end": 124,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the binding span (\"Maria's pet is a chicken.\") directly at layers suf24 (40 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "2",
+    "edited": "8",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0126,
+    "logp_answer_edited": -3.2971,
+    "dlogp": -3.2845,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9886,
+    "answer": "2",
+    "other_answers_in_prompt": [
+     "4",
+     "8"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "BL",
+   "item_id": "BL-0020",
+   "prompt": "<|im_start|>user\nBeth's pet is a cow. Lucy's pet is a chicken. Rose's pet is a bee. The chicken's locker is 7. The bee's locker is 9. The cow's locker is 1.\nWhich locker belongs to Beth's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 133,
+     "end": 156,
+     "role": "source"
+    },
+    {
+     "start": 157,
+     "end": 296,
+     "role": "destination"
+    },
+    {
+     "start": 181,
+     "end": 185,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 36,
+     "role": "bridge"
+    },
+    {
+     "start": 138,
+     "end": 141,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the lookup span (\"The cow's locker is 1.\") directly at layers suf40 (24 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.002,
+    "logp_answer_edited": -6.1951,
+    "dlogp": -6.1931,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9653,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "7",
+     "9"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "BL",
+   "item_id": "BL-0310",
+   "prompt": "<|im_start|>user\nEve's pet is a spider. Lucy's pet is a sheep. Hugo's pet is a cow. The cow's locker is 7. The spider's locker is 3. The sheep's locker is 5.\nWhich locker belongs to Hugo's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 83,
+     "end": 106,
+     "role": "source"
+    },
+    {
+     "start": 237,
+     "end": 297,
+     "role": "destination"
+    },
+    {
+     "start": 182,
+     "end": 186,
+     "role": "cue"
+    },
+    {
+     "start": 79,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 88,
+     "end": 91,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span (\"The cow's locker is 7.\") directly at layers suf16 (48 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "7",
+    "edited": "5",
+    "expected": {}
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0024,
+    "logp_answer_edited": -3.457,
+    "dlogp": -3.4546,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9811,
+    "answer": "7",
+    "other_answers_in_prompt": [
+     "3",
+     "5"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_survives",
+   "family": "BR",
+   "item_id": "BR-0263",
+   "prompt": "<|im_start|>user\nSean's pet is a turkey. Sam's pet is a mouse. Adam's pet is a dog. The mouse's locker is 9. The turkey's locker is 5. The dog's locker is 1.\nHow many legs does Sean's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "source"
+    },
+    {
+     "start": 237,
+     "end": 297,
+     "role": "destination"
+    },
+    {
+     "start": 177,
+     "end": 181,
+     "role": "cue"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 119,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the binding span (\"Sean's pet is a turkey.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H_answer_site": "2",
+     "H_relay": "2"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0163,
+    "logp_answer_edited": -0.1367,
+    "dlogp": -0.1205,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9805,
+    "answer": "2",
+    "other_answers_in_prompt": [
+     "4"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "BR",
+   "item_id": "BR-0216",
+   "prompt": "<|im_start|>user\nOwen's pet is a spider. Laura's pet is a cat. Tom's pet is a pig. The cat's locker is 7. The pig's locker is 5. The spider's locker is 1.\nHow many legs does Laura's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 62,
+     "role": "source"
+    },
+    {
+     "start": 235,
+     "end": 295,
+     "role": "destination"
+    },
+    {
+     "start": 174,
+     "end": 179,
+     "role": "cue"
+    },
+    {
+     "start": 58,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 87,
+     "end": 90,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the binding span (\"Laura's pet is a cat.\") directly at layers all (64 layers); DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "4",
+     "H_relay": "4"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0027,
+    "logp_answer_edited": -0.0186,
+    "dlogp": -0.016,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9902,
+    "answer": "4",
+    "other_answers_in_prompt": [
+     "8"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "BL",
+   "item_id": "BL-0050",
+   "prompt": "<|im_start|>user\nLeo's pet is a dog. Finn's pet is a cow. Fiona's pet is a spider. The spider's locker is 1. The dog's locker is 5. The cow's locker is 3.\nWhich locker belongs to Leo's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 36,
+     "role": "source"
+    },
+    {
+     "start": 155,
+     "end": 293,
+     "role": "destination"
+    },
+    {
+     "start": 179,
+     "end": 182,
+     "role": "cue"
+    },
+    {
+     "start": 32,
+     "end": 35,
+     "role": "bridge"
+    },
+    {
+     "start": 113,
+     "end": 116,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question and final positions cannot read the binding span (\"Leo's pet is a dog.\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "not 5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0023,
+    "logp_answer_edited": -1.1276,
+    "dlogp": -1.1251,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9869,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "1",
+     "3"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL",
+   "item_id": "RL-0385",
+   "prompt": "<|im_start|>user\nLily's pet is a goose. Rose's pet is a lion. Owen's pet is a spider. The spider's locker is 1. The goose's locker is 3. The lion's locker is 5.\nWhich locker belongs to the animal known for spinning webs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 111,
+     "end": 123,
+     "role": "source"
+    },
+    {
+     "start": 123,
+     "end": 324,
+     "role": "destination"
+    },
+    {
+     "start": 206,
+     "end": 219,
+     "role": "cue"
+    },
+    {
+     "start": 78,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 90,
+     "end": 96,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the trailing span (\" The goose's\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.004,
+    "logp_answer_edited": -1.3326,
+    "dlogp": -1.3287,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9896,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL",
+   "item_id": "RL-0243",
+   "prompt": "<|im_start|>user\nDiana's pet is a duck. Jack's pet is a turkey. Emma's pet is a pig. The pig's locker is 7. The turkey's locker is 5. The duck's locker is 3.\nWhich locker belongs to the animal known for oinking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 107,
+     "end": 120,
+     "role": "source"
+    },
+    {
+     "start": 120,
+     "end": 315,
+     "role": "destination"
+    },
+    {
+     "start": 203,
+     "end": 210,
+     "role": "cue"
+    },
+    {
+     "start": 80,
+     "end": 83,
+     "role": "bridge"
+    },
+    {
+     "start": 89,
+     "end": 92,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the trailing span (\" The turkey's\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "7",
+    "edited": "5",
+    "expected": {
+     "H_answer_site": "7",
+     "H_relay": "7"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0046,
+    "logp_answer_edited": -0.8556,
+    "dlogp": -0.8508,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9891,
+    "answer": "7",
+    "other_answers_in_prompt": [
+     "3",
+     "5"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "BL",
+   "item_id": "BL-0385",
+   "prompt": "<|im_start|>user\nLily's pet is a goose. Rose's pet is a lion. Owen's pet is a spider. The spider's locker is 1. The goose's locker is 3. The lion's locker is 5.\nWhich locker belongs to Owen's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 111,
+     "end": 123,
+     "role": "source"
+    },
+    {
+     "start": 123,
+     "end": 300,
+     "role": "destination"
+    },
+    {
+     "start": 185,
+     "end": 189,
+     "role": "cue"
+    },
+    {
+     "start": 78,
+     "end": 84,
+     "role": "bridge"
+    },
+    {
+     "start": 90,
+     "end": 96,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the trailing span (\" The goose's\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0082,
+    "logp_answer_edited": -0.8325,
+    "dlogp": -0.8264,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.989,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "positive_control",
+   "family": "BR",
+   "item_id": "BR-0071",
+   "prompt": "<|im_start|>user\nOscar's pet is a lion. Kate's pet is a goose. Amy's pet is a cow. The cow's locker is 7. The lion's locker is 9. The goose's locker is 1.\nHow many legs does Kate's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 39,
+     "end": 62,
+     "role": "source"
+    },
+    {
+     "start": 62,
+     "end": 294,
+     "role": "destination"
+    },
+    {
+     "start": 174,
+     "end": 178,
+     "role": "cue"
+    },
+    {
+     "start": 56,
+     "end": 61,
+     "role": "bridge"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the binding span (\"Kate's pet is a goose.\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "not 2",
+     "H_relay": "not 2"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0018,
+    "logp_answer_edited": -1.8772,
+    "dlogp": -1.8753,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9824,
+    "answer": "2",
+    "other_answers_in_prompt": [
+     "4"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  },
+  {
+   "group": "positive_control",
+   "family": "RL",
+   "item_id": "RL-0159",
+   "prompt": "<|im_start|>user\nFinn's pet is a horse. Beth's pet is a cat. Victor's pet is a bee. The cat's locker is 9. The horse's locker is 1. The bee's locker is 5.\nWhich locker belongs to the animal known for making honey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 131,
+     "end": 154,
+     "role": "source"
+    },
+    {
+     "start": 154,
+     "end": 317,
+     "role": "destination"
+    },
+    {
+     "start": 200,
+     "end": 212,
+     "role": "cue"
+    },
+    {
+     "start": 79,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 136,
+     "end": 139,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span (\"The bee's locker is 5.\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "not 5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0042,
+    "logp_answer_edited": -2.4656,
+    "dlogp": -2.4614,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": 0.9871,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "1",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  },
+  {
+   "group": "positive_control",
+   "family": "RL",
+   "item_id": "RL-0037",
+   "prompt": "<|im_start|>user\nLiam's pet is a chicken. Henry's pet is a horse. Eva's pet is a bee. The bee's locker is 7. The chicken's locker is 1. The horse's locker is 5.\nWhich locker belongs to the animal known for neighing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 135,
+     "end": 160,
+     "role": "source"
+    },
+    {
+     "start": 160,
+     "end": 319,
+     "role": "destination"
+    },
+    {
+     "start": 206,
+     "end": 214,
+     "role": "cue"
+    },
+    {
+     "start": 59,
+     "end": 64,
+     "role": "bridge"
+    },
+    {
+     "start": 140,
+     "end": 145,
+     "role": "bridge"
+    }
+   ],
+   "condition": "every position after it cannot read the lookup span (\"The horse's locker is 5.\") directly at layers all (64 layers); DeltaNet mode absent (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "5",
+    "edited": "2",
+    "expected": {
+     "H_answer_site": "not 5",
+     "H_relay": "not 5"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0033,
+    "logp_answer_edited": -2.6882,
+    "dlogp": -2.6853,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": 0.9872,
+    "answer": "5",
+    "other_answers_in_prompt": [
+     "1",
+     "7"
+    ]
+   },
+   "why": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome"
+  }
+ ]
+}

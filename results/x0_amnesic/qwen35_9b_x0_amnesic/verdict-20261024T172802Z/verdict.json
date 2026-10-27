@@ -1,0 +1,245 @@
+{
+ "run": "qwen35_9b_x0_amnesic",
+ "manifest": {
+  "exp": "x0_amnesic",
+  "run": "qwen35_9b_x0_amnesic",
+  "written_utc": "2026-10-24T17:26:51Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct ~18:45, item 6); not part of X0's rule.",
+  "single": "qwen35_9b_x0_single_r2",
+  "single_code": {
+   "sha": "03ca856181a32ccf71f64dd5b0d2a46db71f3ce0",
+   "dirty": true
+  },
+  "set": "d1_topics_v3",
+  "layer": 12,
+  "items": 200,
+  "probe": {
+   "probe_run": "qwen35_9b_x0_probe_v4",
+   "n": 758,
+   "classes": [
+    0,
+    1,
+    2,
+    3,
+    4
+   ],
+   "penalty": 0.1,
+   "rank": 4,
+   "cv_accuracy": 0.9683377308707124
+  },
+  "arms": [
+   "whole",
+   "no_probe",
+   "no_rand",
+   "probe_only",
+   "rand_only"
+  ],
+  "k_saved": [
+   25,
+   100
+  ],
+  "model": {
+   "target": "qwen3.5-9b",
+   "repo": "Qwen/Qwen3.5-9B",
+   "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "251db6dc80897c711bd3e436e25c73155d979f95",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "seeds": {
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  }
+ },
+ "rows": [
+  {
+   "order": "before",
+   "reader": "PP",
+   "n": 100,
+   "switched_whole": 87,
+   "S": {
+    "whole": 0.87,
+    "no_probe": 0.83,
+    "no_rand": 0.87,
+    "probe_only": 0.0,
+    "rand_only": 0.0
+   },
+   "probe_dep": [
+    0.04597701149425293,
+    0.0,
+    0.09677419354838712
+   ],
+   "rand_dep": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "excess": [
+    0.04597701149425293,
+    0.0,
+    0.09677419354838712
+   ],
+   "probe_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sufficiency_diff": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "median_share": 0.021905
+  },
+  {
+   "order": "before",
+   "reader": "PM",
+   "n": 100,
+   "switched_whole": 98,
+   "S": {
+    "whole": 0.98,
+    "no_probe": 0.97,
+    "no_rand": 0.98,
+    "probe_only": 0.0,
+    "rand_only": 0.0
+   },
+   "probe_dep": [
+    0.010204081632653073,
+    0.0,
+    0.03529411764705881
+   ],
+   "rand_dep": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "excess": [
+    0.010204081632653073,
+    0.0,
+    0.03529411764705881
+   ],
+   "probe_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sufficiency_diff": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "median_share": 0.021905
+  },
+  {
+   "order": "after",
+   "reader": "PP",
+   "n": 100,
+   "switched_whole": 19,
+   "S": {
+    "whole": 0.19,
+    "no_probe": 0.17,
+    "no_rand": 0.19,
+    "probe_only": 0.01,
+    "rand_only": 0.01
+   },
+   "probe_dep": [
+    0.10526315789473684,
+    0.0,
+    0.2777777777777778
+   ],
+   "rand_dep": [
+    0.0,
+    -0.17647058823529416,
+    0.14303571428571185
+   ],
+   "excess": [
+    0.10526315789473684,
+    0.0,
+    0.3076923076923076
+   ],
+   "probe_only": [
+    0.05263157894736842,
+    0.0,
+    0.15789473684210525
+   ],
+   "rand_only": [
+    0.05263157894736842,
+    0.0,
+    0.15789473684210525
+   ],
+   "sufficiency_diff": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "median_share": 0.001
+  },
+  {
+   "order": "after",
+   "reader": "PM",
+   "n": 100,
+   "switched_whole": 93,
+   "S": {
+    "whole": 0.93,
+    "no_probe": 0.93,
+    "no_rand": 0.93,
+    "probe_only": 0.0,
+    "rand_only": 0.0
+   },
+   "probe_dep": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_dep": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "excess": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "probe_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rand_only": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sufficiency_diff": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "median_share": 0.001
+  }
+ ]
+}

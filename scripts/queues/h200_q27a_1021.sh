@@ -22,7 +22,7 @@ $PY scripts/ablate_v2.py --name full3_ko_steps_v2 --why "$WHY: full_v8b three-st
   && $PY scripts/c1_v2.py full3_ko_steps_v2 --middle L32-40 --set full_v8b > /dev/null || echo "=== three-step steps FAILED"
 $PY scripts/copy_sweep.py --name copy_sweep_full2_v1 --why "$WHY: where the question / final positions carry the bridge" \
   --tasks full_v8 --tasks-competence full_v8_competence_v1 --families PP PM MP MM --n 40 || echo "=== copy sweep FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full2_v2 --why "$WHY: two-step steering, full pools, joint copy ceiling" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name wm2_full2_v2 --why "$WHY: two-step steering, full pools, joint copy ceiling" \
   --n 1000 --possets question final --tasks full_v8 --tasks-competence full_v8_competence_v1 --tasks-level all \
   --families PP PM MP MM CP CM \
   && $PY scripts/c2_graded.py wm2_full2_v2 | tail -14 \

@@ -49,7 +49,7 @@ echo "=== aligned-band C2 $(date -u +%T)"
 AB=$($PY scripts/choose_steer_band.py muse30_copy_sweep_full2_v1) || AB=""
 echo "=== aligned band: ${AB:-none}"
 if [ -n "$AB" ]; then
-  BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_aligned_v1 --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" \
+  BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full2_aligned_v1 --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" \
     --n 1000 --possets question final --band ${AB%% *} --single-step 2 --early 13 16 20 $W2 \
     && $PY scripts/c2_graded.py muse30_wm2_full2_aligned_v1 | tail -14 \
     && $PY scripts/c2_graded.py muse30_wm2_full2_aligned_v1 --drop-guessable > /dev/null \
@@ -81,11 +81,11 @@ else
   echo "=== no full_v8b competence: three-step knock-outs skipped"
 fi
 [ -f results/suite_v1/$CS/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 23-33 --single-step 2 --early 13 16 20 --from-competence $CS \
   && $PY scripts/c2_graded.py muse30_wm2_posctrl_v1 | tail -2 || echo "=== positive control FAILED"
 [ -f results/tasks_v2/$C3/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name muse30_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
   && $PY scripts/c2_graded.py muse30_wm2_full3_v1 > /dev/null || echo "=== three-step steering FAILED"
 [ "$MID" != 26-32 ] && { $PY scripts/removal_textloss.py --name muse30_textloss_top_l${MID%-*}_${MID#*-}_v1 \
   --why "$WHY: plain-text loss under the knock-out at the chosen band" --layers $(seq ${MID%-*} ${MID#*-}) \

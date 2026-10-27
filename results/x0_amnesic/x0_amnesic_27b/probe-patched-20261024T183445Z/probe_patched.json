@@ -1,0 +1,174 @@
+{
+ "note": "Descriptive, added after data (Dan, 24 Oct ~18:45 items 2-3; audit ~19:30 item 4); not part of X0's rule.",
+ "target": "address",
+ "probe": "x0_probe_v4_27b",
+ "single": "x0_single_27b_r2",
+ "states": "x0_amnesic_27b",
+ "parts": null,
+ "n": 70,
+ "penalty": 0.01,
+ "results": {
+  "org right": [
+   0.9857142857142858,
+   0.95,
+   1.0
+  ],
+  "alt right": [
+   0.5857142857142857,
+   0.45901639344262296,
+   0.7258119752540875
+  ],
+  "pair right": [
+   0.5714285714285714,
+   0.4431782220943613,
+   0.7101449275362319
+  ],
+  "same prediction": [
+   0.1,
+   0.0410958904109589,
+   0.16393442622950818
+  ],
+  "alt (org + \u0394): reads the alt's": [
+   0.5857142857142857,
+   0.45901639344262296,
+   0.7258119752540875
+  ],
+  "alt (org + \u0394): reads the org's": [
+   0.1,
+   0.0410958904109589,
+   0.16393442622950818
+  ],
+  "org + J++ part, k = 25: reads the alt's": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "org + J++ part, k = 25: reads the org's": [
+   0.9857142857142858,
+   0.95,
+   1.0
+  ],
+  "org + rest, k = 25: reads the alt's": [
+   0.5142857142857142,
+   0.40277326839826844,
+   0.6463593974175034
+  ],
+  "org + rest, k = 25: reads the org's": [
+   0.14285714285714285,
+   0.07894736842105263,
+   0.20967741935483872
+  ],
+  "org + J++ part, k = 100: reads the alt's": [
+   0.04285714285714286,
+   0.0,
+   0.09230769230769231
+  ],
+  "org + J++ part, k = 100: reads the org's": [
+   0.9428571428571428,
+   0.8873239436619719,
+   0.9863013698630136
+  ],
+  "org + rest, k = 100: reads the alt's": [
+   0.5,
+   0.3835405039742939,
+   0.6268656716417911
+  ],
+  "org + rest, k = 100: reads the org's": [
+   0.15714285714285714,
+   0.09090909090909091,
+   0.22388059701492538
+  ],
+  "duplicate_pick_split": {
+   "before": {
+    "n": 53,
+    "alt right": [
+     0.4528301886792453,
+     0.3076923076923077,
+     0.6226415094339622
+    ],
+    "pair right": [
+     0.4528301886792453,
+     0.3076923076923077,
+     0.6226415094339622
+    ],
+    "alt state reads the other pick sentence": [
+     0.33962264150943394,
+     0.19642857142857142,
+     0.46808510638297873
+    ]
+   },
+   "after": {
+    "n": 17,
+    "alt right": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "pair right": [
+     0.9411764705882353,
+     0.8,
+     1.0
+    ],
+    "alt state reads the other pick sentence": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "before, the other pick is the latest earlier mention": {
+    "n": 28,
+    "alt right": [
+     0.6428571428571429,
+     0.45454545454545453,
+     0.8333333333333334
+    ],
+    "pair right": [
+     0.6428571428571429,
+     0.45454545454545453,
+     0.8333333333333334
+    ],
+    "alt state reads the other pick sentence": [
+     0.14285714285714285,
+     0.034482758620689655,
+     0.2727272727272727
+    ]
+   },
+   "before, the alt locker is the latest earlier mention": {
+    "n": 25,
+    "alt right": [
+     0.24,
+     0.1,
+     0.4
+    ],
+    "pair right": [
+     0.24,
+     0.1,
+     0.4
+    ],
+    "alt state reads the other pick sentence": [
+     0.56,
+     0.375,
+     0.7407407407407407
+    ]
+   }
+  },
+  "energy": {
+   "org + J++ part, k = 25": {
+    "share_of_delta": 0.10431352970563498,
+    "share_in_probe_subspace": 0.004675396587031819
+   },
+   "org + rest, k = 25": {
+    "share_of_delta": 0.8956858903611176,
+    "share_in_probe_subspace": 0.9051913148386775
+   },
+   "org + J++ part, k = 100": {
+    "share_of_delta": 0.24165398410505293,
+    "share_in_probe_subspace": 0.02770225830700917
+   },
+   "org + rest, k = 100": {
+    "share_of_delta": 0.7583420495936884,
+    "share_in_probe_subspace": 0.7342745634267027
+   }
+  }
+ }
+}

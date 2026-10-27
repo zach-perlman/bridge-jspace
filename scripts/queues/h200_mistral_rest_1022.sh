@@ -66,13 +66,13 @@ else
   echo "=== no full_v8b competence: three-step knock-outs skipped"
 fi
 [ -f results/suite_v1/$CS/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name mistral24_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name mistral24_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 18-25 --single-step 2 --early 10 13 15 --from-competence $CS \
   && $PY scripts/c2_graded.py mistral24_wm2_posctrl_v1 | tail -2 || echo "=== positive control FAILED"
 $PY scripts/copy_sweep.py --name mistral24_copy_sweep_full2_v1 --why "$WHY: where the question / final positions carry the bridge" \
   --tasks full_v8 --tasks-competence $C2 --families PP PM MP MM --n 40 --step 1 --window 8 || echo "=== copy sweep FAILED"
 [ -f results/tasks_v2/$C3/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name mistral24_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name mistral24_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
   && $PY scripts/c2_graded.py mistral24_wm2_full3_v1 > /dev/null || echo "=== three-step steering FAILED"
 [ "$MID" != 20-25 ] && { $PY scripts/removal_textloss.py --name mistral24_textloss_top_l${MID%-*}_${MID#*-}_v1 \
   --why "$WHY: plain-text loss under the knock-out at the chosen band" --layers $(seq ${MID%-*} ${MID#*-}) \

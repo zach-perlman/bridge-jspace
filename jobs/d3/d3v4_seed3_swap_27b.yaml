@@ -1,0 +1,30 @@
+id: d3v4_seed3_swap_27b
+title: "Finding 5, pre-registered, on a fresh draw (seed 3): order label for the 1st and 2nd statement, identity from the 3rd (Qwen3.6-27B, layer 50)"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on:
+- d3v4_seed3_competence_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed3 --name d3v4_seed3_swap_27b
+  --families RL DL --n 300 --layers 50 --groups last --competence d3v4_seed3_competence_27b
+  --why "finding 5 as a rule fixed in advance (Dan, 22 Oct): the donor's last two tokens copied at layer 50 on a new
+  draw of scenes; scripts/finding5_confirm.py decides"
+  && uv run python scripts/pointer_swap.py run --name d3v4_seed3_swap_27b
+figures_command: uv run python scripts/finding5_confirm.py --run d3v4_seed3_swap_27b --layer 50
+question: >-
+  On scenes never seen, does the copied label pick the same place for the 1st and 2nd asked statement and the
+  donor's entity from the 3rd on?
+why_it_matters: >-
+  Finding 5's split was chosen after the pooled pre-registered test; a confirmation fixed in advance on fresh scenes
+  removes that objection.
+hypotheses:
+  H-confirms: 'A and B hold (1st/2nd: position beats identity; 3rd-5th: identity at least as often as position). Prior 0.8'
+decision_rule: >-
+  scripts/finding5_confirm.py (committed before this run): memory -> prompt, the donor's last two tokens copied at the decisive layer, items split by the place k of the donor's asked statement; A: 1st and 2nd pooled, position - identity with its entity-cluster 95% lower bound > 0; B: 3rd-5th pooled, identity - position >= 0 (point) with its lower bound >= -0.05; confirms iff A and B, partly if one, fails if neither. Per topic and named -> prompt reported, not decisive. Decisive layer: 50, fixed.
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt (pointer_swap''s own)'
+n: 'every eligible scene, up to 300 per topic, memory -> prompt and named -> prompt'
+seeds: [845, 0]
+notes: 'Not opened before Dan predicts (batch 11).'

@@ -1,0 +1,34 @@
+id: olmo3_7b_instruct_jpp_abl_rot_raw_v1
+title: "J-space removal on OLMo-3-7B-Instruct with our J++ (raw): does recall break while lookups survive? (finding 1)"
+thread: D5
+gpus: 1
+est_gpu_hours: 0.4
+mem_gb: 30
+depends_on:
+- olmo3_7b_instruct_jpp_lens_gate
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_precheck.py --gate olmo3_7b_instruct_jpp_lens_gate --competence olmo3_7b_instruct_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/ablate_pilot.py --name olmo3_7b_instruct_jpp_abl_rot_raw_v1
+  --why "finding 1 (J-space removal) on olmo-3-7b-instruct (raw) with our J++: olmo3_7b_instruct_abl_rot_raw_v1's cells, the J-space now J++'s" --n 100 --layers 15 18 21 --comp-main olmo3_7b_instruct_competence_raw_v1
+  --comp-computed none --countries-build --rotated
+question: In olmo-3-7b-instruct (raw format), does removing the J-space (25-atom OMP over our J++'s letter-token vectors) at layers 15/18/21 break recall chains (BR, RR) but not prompt lookups (BL, RL), while same-size controls leave every family intact?
+why_it_matters: 'Every lens result must use J++ (Dan, 23 Oct). The plain J-lens run (olmo3_7b_instruct_abl_rot_raw_v1, README slide 7 "ran, not analysed") removed the plain J-lens''s J-space; this run removes J++''s at the same cells, so finding 1 can be read on a second family with the lens every other model uses.'
+hypotheses:
+  H_pre: 'split already in base: J-space removal at 15/18/21 leaves BL/RL >= 90% and drops BR/RR by >= 30 points in base AND in Instruct (lookup - recall gap within +-15 points of each other) (copied from olmo3_7b_instruct_abl_rot_raw_v1)'
+  H_post: 'split installed by post-training: base gap <= 10 points (lookups and recalls hurt alike, or neither), Instruct gap >= 30; the first checkpoint with gap >= 30 is the stage (copied from olmo3_7b_instruct_abl_rot_raw_v1)'
+  H_format: 'split is a prompt-format effect: Instruct gap >= 30 in chat but <= 10 in raw (copied from olmo3_7b_instruct_abl_rot_raw_v1)'
+  H_none: 'no checkpoint shows a gap >= 20 in either format (OLMo does not replicate Qwen at 7B) (copied from olmo3_7b_instruct_abl_rot_raw_v1)'
+  prior: 'Prior (Dan''s agent, before any run): H_pre 0.35, H_post 0.25, H_format 0.1, H_none 0.3 (the 9B wrote recall weakly) (copied from olmo3_7b_instruct_abl_rot_raw_v1). With J++ on Instruct only, this run reads the Instruct gap; the base / SFT / DPO checkpoints keep their plain J-lens runs.'
+decision_rule: 'Runs iff our J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). GATE G2: rotated and random-dictionary removal keep accuracy >= 0.90 on every family/step (items right unedited); else the J-space rows are not interpreted (Gemma''s failure mode). Split measure: gap = mean(BL, RL) - mean(BR, RR) accuracy under J-space removal, clean prompts; ''present'' if the paired-bootstrap 95% CI lower bound >= 20 points, ''absent'' if the upper bound <= 10, else ''inconclusive'' (copied from olmo3_7b_instruct_abl_rot_raw_v1). The same cells as the plain J-lens run (15/18/21), although J++ has maps at every layer. Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach''s for Gemma and Muse; no silent switch. The plain J-lens run is reported beside it, labelled "plain J-lens".'
+controls:
+- 'rotated: the J-space fit turned by a fixed random rotation (exact same norm removed, position by position)'
+- 'random dictionary: same OMP over a random dictionary of the same size'
+- 'hop rows: the last step alone, to separate the step from the chain'
+- 'countries R/B (built now from exp09 eligibility): word answers, a known J-space-heavy family'
+- 'the plain J-lens run olmo3_7b_instruct_abl_rot_raw_v1, labelled "plain J-lens"'
+n: 100 per family (BL, BR, RL, RR clean + hop; countries R, B)
+seeds:
+- 777
+- 888
+- 0
+notes: "Mechanical copy of olmo3_7b_instruct_abl_rot_raw_v1 (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. Only BJ_TARGET and the name change: the same raw format, competence run (olmo3_7b_instruct_competence_raw_v1, lens-free, same weights), layers and flags. No examples or figures stage: ablate_pilot.py has none, as the source. Waits for the OLMo J++ pin (target olmo-3-7b-instruct-jpp)."

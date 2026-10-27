@@ -1,0 +1,1418 @@
+{
+ "exp": "pointer_swap",
+ "run": "d3v4_swap_raw_27b_v2",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group final, layers [44, 46, 48, 50, 52] and the transit window",
+ "groups": [
+  {
+   "key": "none",
+   "title": "none",
+   "definition": "the patch left the base answer",
+   "n_total": 2682
+  },
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 125
+  },
+  {
+   "key": "identity",
+   "title": "identity",
+   "definition": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
+   "n_total": 187
+  },
+  {
+   "key": "other",
+   "title": "other",
+   "definition": "any other answer (a recalled digit, another digit, a word)",
+   "n_total": 319
+  },
+  {
+   "key": "position",
+   "title": "position",
+   "definition": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+   "n_total": 510
+  },
+  {
+   "key": "context",
+   "title": "context",
+   "definition": "another digit of the base context, predicted by no hypothesis",
+   "n_total": 29
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 14
+  }
+ ],
+ "examples": [
+  {
+   "group": "none",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0228",
+   "domain": "countries",
+   "prompt": "Drawer 5 holds the Lebanon file. Drawer 7 holds the Iran file. Drawer 8 holds the Italy file. Drawer 4 holds the Poland file. Drawer 2 holds the Canada file.\nWhich drawer holds the file on Iran? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 194,
+     "end": 246,
+     "role": "patched (final)"
+    },
+    {
+     "start": 33,
+     "end": 62,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 126,
+     "end": 157,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 63,
+     "end": 93,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 189,
+     "end": 193,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "Drawer 8 holds the Italy file. Drawer 2 holds the Iran file. Drawer 6 holds the Canada file. Drawer 4 holds the Lebanon file. Drawer 5 holds the Poland file.\nWhich drawer holds the file on Canada? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 61,
+     "end": 92,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "none": "7",
+     "identity": "2",
+     "position": "8",
+     "value": "6"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.6261,
+     "identity": 0.0015,
+     "position": 0.1794,
+     "value": 0.0004
+    },
+    "layer": 50,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('7')"
+  },
+  {
+   "group": "none",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0094",
+   "domain": "countries",
+   "prompt": "The Denmark file is in drawer 9. The Korea file is in drawer 2. The Portugal file is in drawer 7. The Peru file is in drawer 8. The Poland file is in drawer 1.\nWhat drawer keeps the file on the country whose capital is Lisbon? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 226,
+     "end": 278,
+     "role": "patched (final)"
+    },
+    {
+     "start": 64,
+     "end": 97,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 98,
+     "end": 127,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 128,
+     "end": 159,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 190,
+     "end": 225,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The Denmark file is in drawer 7. The Korea file is in drawer 9. The Portugal file is in drawer 8. The Poland file is in drawer 1. The Peru file is in drawer 6.\nWhat drawer keeps the file on the country whose capital is Lima? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 130,
+     "end": 159,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "none": "7",
+     "identity": "8",
+     "position": "1",
+     "value": "6"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.758,
+     "identity": 0.0485,
+     "position": 0.0024,
+     "value": 0.0259
+    },
+    "layer": "transit",
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('7')"
+  },
+  {
+   "group": "none",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0154",
+   "domain": "animals",
+   "prompt": "The rabbit's locker is 8. The worm's locker is 7. The cow's locker is 1. The cat's locker is 9. The butterfly's locker is 3.\nWhich locker belongs to the animal known for wriggling underground? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 192,
+     "end": 244,
+     "role": "patched (final)"
+    },
+    {
+     "start": 26,
+     "end": 49,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 96,
+     "end": 124,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 0,
+     "end": 25,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 149,
+     "end": 191,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The butterfly's locker is 5. The rabbit's locker is 8. The worm's locker is 7. The cow's locker is 9. The cat's locker is 2.\nWhich locker belongs to the animal known for its caterpillars? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 0,
+     "end": 28,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "none": "7",
+     "identity": "3",
+     "position": "8",
+     "value": "5"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.4105,
+     "identity": 0.0097,
+     "position": 0.1711,
+     "value": 0.0232
+    },
+    "layer": 52,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('7')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0180",
+   "domain": "animals",
+   "prompt": "The owl keeps its things in locker 7. The cat keeps its things in locker 5. The tiger keeps its things in locker 3. The snake keeps its things in locker 8. The dog keeps its things in locker 9.\nWhat locker is used by the animal known for barking? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 246,
+     "end": 298,
+     "role": "patched (final)"
+    },
+    {
+     "start": 156,
+     "end": 193,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 116,
+     "end": 155,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 0,
+     "end": 37,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 217,
+     "end": 245,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The snake keeps its things in locker 1. The tiger keeps its things in locker 6. The cat keeps its things in locker 5. The dog keeps its things in locker 9. The owl keeps its things in locker 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 0,
+     "end": 39,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "1",
+    "expected": {
+     "none": "9",
+     "identity": "8",
+     "position": "7",
+     "value": "1"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0449,
+     "identity": 0.001,
+     "position": 0.3763,
+     "value": 0.4831
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('1')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0157",
+   "domain": "countries",
+   "prompt": "The Pakistan file is in drawer 7. The Japan file is in drawer 2. The Canada file is in drawer 6. The Finland file is in drawer 4. The Indonesia file is in drawer 5.\nWhich drawer holds the file on Finland? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 204,
+     "end": 256,
+     "role": "patched (final)"
+    },
+    {
+     "start": 97,
+     "end": 129,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 34,
+     "end": 64,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 0,
+     "end": 33,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 196,
+     "end": 203,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The Japan file is in drawer 1. The Indonesia file is in drawer 6. The Finland file is in drawer 7. The Canada file is in drawer 2. The Pakistan file is in drawer 5.\nWhich drawer holds the file on Japan? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 0,
+     "end": 30,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "4",
+    "edited": "1",
+    "expected": {
+     "none": "4",
+     "identity": "2",
+     "position": "7",
+     "value": "1"
+    },
+    "unedited_read": "4"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2757,
+     "identity": 0.002,
+     "position": 0.1672,
+     "value": 0.4546
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('1')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0131",
+   "domain": "animals",
+   "prompt": "The lion's locker is 9. The eagle's locker is 1. The moth's locker is 8. The dog's locker is 7. The camel's locker is 3.\nIn which locker does the animal known for its humps keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 189,
+     "end": 241,
+     "role": "patched (final)"
+    },
+    {
+     "start": 96,
+     "end": 120,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 24,
+     "end": 48,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 49,
+     "end": 72,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 142,
+     "end": 172,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The moth's locker is 8. The camel's locker is 7. The eagle's locker is 5. The dog's locker is 9. The lion's locker is 1.\nIn which locker does the animal known for its talons keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 49,
+     "end": 73,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "5",
+    "expected": {
+     "none": "3",
+     "identity": "1",
+     "position": "8",
+     "value": "5"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2313,
+     "identity": 0.0035,
+     "position": 0.0042,
+     "value": 0.4896
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('5')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0195",
+   "domain": "animals",
+   "prompt": "The duck's locker is 3. The mosquito's locker is 1. The worm's locker is 8. The frog's locker is 7. The goose's locker is 5.\nIn which locker does the animal known for croaking keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 192,
+     "end": 244,
+     "role": "patched (final)"
+    },
+    {
+     "start": 76,
+     "end": 99,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 100,
+     "end": 124,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 52,
+     "end": 75,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 146,
+     "end": 175,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The worm's locker is 5. The frog's locker is 1. The goose's locker is 9. The duck's locker is 3. The mosquito's locker is 8.\nIn which locker does the animal known for honking keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 48,
+     "end": 72,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "5",
+    "expected": {
+     "none": "7",
+     "identity": "5",
+     "position": "8",
+     "value": "9"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.249,
+     "identity": 0.5974,
+     "position": 0.0109,
+     "value": 0.0007
+    },
+    "layer": 48,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('5')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0228",
+   "domain": "animals",
+   "prompt": "The moth's locker is 3. The camel's locker is 9. The rabbit's locker is 1. The spider's locker is 5. The whale's locker is 2.\nWhat locker is used by the animal known for its long ears? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 184,
+     "end": 236,
+     "role": "patched (final)"
+    },
+    {
+     "start": 49,
+     "end": 74,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 101,
+     "end": 125,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 75,
+     "end": 100,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 149,
+     "end": 183,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The moth's locker is 9. The spider's locker is 5. The rabbit's locker is 1. The whale's locker is 7. The camel's locker is 2.\nWhat locker is used by the animal known for spouting water? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 76,
+     "end": 100,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "2",
+    "expected": {
+     "none": "1",
+     "identity": "2",
+     "position": "5",
+     "value": "7"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1043,
+     "identity": 0.6798,
+     "position": 0.0025,
+     "value": 0.0005
+    },
+    "layer": 46,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('2')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0216",
+   "domain": "animals",
+   "prompt": "The whale keeps its things in locker 7. The moth keeps its things in locker 5. The bear keeps its things in locker 8. The rabbit keeps its things in locker 3. The crow keeps its things in locker 1.\nIn which locker does the animal known for spouting water keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 271,
+     "end": 323,
+     "role": "patched (final)"
+    },
+    {
+     "start": 0,
+     "end": 39,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 79,
+     "end": 117,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 159,
+     "end": 197,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 219,
+     "end": 254,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The whale keeps its things in locker 1. The crow keeps its things in locker 7. The rabbit keeps its things in locker 8. The moth keeps its things in locker 5. The bear keeps its things in locker 9.\nIn which locker does the animal known for hibernating keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 159,
+     "end": 197,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "8",
+    "expected": {
+     "none": "7",
+     "identity": "8",
+     "position": "1",
+     "value": "9"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0732,
+     "identity": 0.892,
+     "position": 0.0027,
+     "value": 0.0006
+    },
+    "layer": 48,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('8')"
+  },
+  {
+   "group": "other",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0176",
+   "domain": "countries",
+   "prompt": "Drawer 9 holds the Korea file. Drawer 1 holds the Italy file. Drawer 4 holds the Poland file. Drawer 6 holds the Chile file. Drawer 7 holds the Norway file.\nWhich drawer holds the file on Chile? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 194,
+     "end": 246,
+     "role": "patched (final)"
+    },
+    {
+     "start": 94,
+     "end": 124,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 31,
+     "end": 61,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 0,
+     "end": 30,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 188,
+     "end": 193,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "Drawer 2 holds the Italy file. Drawer 1 holds the Norway file. Drawer 7 holds the Chile file. Drawer 4 holds the Korea file. Drawer 9 holds the Poland file.\nWhich drawer holds the file on Italy? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 0,
+     "end": 30,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "<think>",
+    "expected": {
+     "none": "6",
+     "identity": "1",
+     "position": "9",
+     "value": "2"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.3952,
+     "identity": 0.0016,
+     "position": 0.0882,
+     "value": 0.0004
+    },
+    "layer": 50,
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('<think>')"
+  },
+  {
+   "group": "other",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0055",
+   "domain": "countries",
+   "prompt": "The file on Belgium is kept in drawer 3. The file on Japan is kept in drawer 7. The file on Syria is kept in drawer 5. The file on Peru is kept in drawer 2. The file on Austria is kept in drawer 1.\nWhat drawer keeps the file on Austria? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 236,
+     "end": 288,
+     "role": "patched (final)"
+    },
+    {
+     "start": 157,
+     "end": 197,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 41,
+     "end": 79,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 80,
+     "end": 118,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 228,
+     "end": 235,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The file on Austria is kept in drawer 1. The file on Syria is kept in drawer 5. The file on Japan is kept in drawer 6. The file on Belgium is kept in drawer 7. The file on Peru is kept in drawer 3.\nWhat drawer keeps the file on Japan? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 80,
+     "end": 118,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "<think>",
+    "expected": {
+     "none": "1",
+     "identity": "7",
+     "position": "5",
+     "value": "6"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2914,
+     "identity": 0.065,
+     "position": 0.002,
+     "value": 0.2571
+    },
+    "layer": 52,
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('<think>')"
+  },
+  {
+   "group": "other",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0089",
+   "domain": "countries",
+   "prompt": "Drawer 7 holds the France file. Drawer 9 holds the China file. Drawer 3 holds the Venezuela file. Drawer 6 holds the Kenya file. Drawer 1 holds the Iraq file.\nIn which drawer is the file on the country whose capital is Nairobi? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 227,
+     "end": 279,
+     "role": "patched (final)"
+    },
+    {
+     "start": 98,
+     "end": 128,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 63,
+     "end": 97,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 32,
+     "end": 62,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 190,
+     "end": 226,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "Drawer 6 holds the China file. Drawer 4 holds the Venezuela file. Drawer 3 holds the Kenya file. Drawer 7 holds the France file. Drawer 1 holds the Iraq file.\nIn which drawer is the file on the country whose capital is Caracas? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 31,
+     "end": 65,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "<think>",
+    "expected": {
+     "none": "6",
+     "identity": "3",
+     "position": "9",
+     "value": "4"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2556,
+     "identity": 0.0005,
+     "position": 0.2556,
+     "value": 0.0005
+    },
+    "layer": 48,
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('<think>')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0010",
+   "domain": "countries",
+   "prompt": "Drawer 8 holds the Germany file. Drawer 7 holds the China file. Drawer 5 holds the Belgium file. Drawer 1 holds the Syria file. Drawer 2 holds the Indonesia file.\nWhich drawer holds the file on the country whose capital is Damascus? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 232,
+     "end": 284,
+     "role": "patched (final)"
+    },
+    {
+     "start": 97,
+     "end": 127,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 128,
+     "end": 162,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 0,
+     "end": 32,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 194,
+     "end": 231,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "Drawer 3 holds the Indonesia file. Drawer 2 holds the Syria file. Drawer 5 holds the Belgium file. Drawer 1 holds the Germany file. Drawer 7 holds the China file.\nWhich drawer holds the file on the country whose capital is Jakarta? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 0,
+     "end": 34,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "8",
+    "expected": {
+     "none": "1",
+     "identity": "2",
+     "position": "8",
+     "value": "3"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2252,
+     "identity": 0.0005,
+     "position": 0.5402,
+     "value": 0.0004
+    },
+    "layer": 46,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('8')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0089",
+   "domain": "countries",
+   "prompt": "Drawer 7 holds the France file. Drawer 9 holds the China file. Drawer 3 holds the Venezuela file. Drawer 6 holds the Kenya file. Drawer 1 holds the Iraq file.\nIn which drawer is the file on the country whose capital is Nairobi? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 227,
+     "end": 279,
+     "role": "patched (final)"
+    },
+    {
+     "start": 98,
+     "end": 128,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 63,
+     "end": 97,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 32,
+     "end": 62,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 190,
+     "end": 226,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "Drawer 6 holds the China file. Drawer 4 holds the Venezuela file. Drawer 3 holds the Kenya file. Drawer 7 holds the France file. Drawer 1 holds the Iraq file.\nIn which drawer is the file on the country whose capital is Caracas? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 31,
+     "end": 65,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "9",
+    "expected": {
+     "none": "6",
+     "identity": "3",
+     "position": "9",
+     "value": "4"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0887,
+     "identity": 0.0004,
+     "position": 0.4505,
+     "value": 0.0005
+    },
+    "layer": 46,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('9')"
+  },
+  {
+   "group": "position",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0159",
+   "domain": "animals",
+   "prompt": "The bear keeps its things in locker 1. The chicken keeps its things in locker 3. The pig keeps its things in locker 6. The owl keeps its things in locker 9. The fish keeps its things in locker 8.\nWhat locker is used by the bear? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 228,
+     "end": 280,
+     "role": "patched (final)"
+    },
+    {
+     "start": 0,
+     "end": 38,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 157,
+     "end": 195,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 39,
+     "end": 80,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 219,
+     "end": 227,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The pig keeps its things in locker 6. The fish keeps its things in locker 5. The bear keeps its things in locker 7. The owl keeps its things in locker 3. The chicken keeps its things in locker 9.\nWhat locker is used by the fish? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 38,
+     "end": 76,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "none": "1",
+     "identity": "8",
+     "position": "3",
+     "value": "5"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1977,
+     "identity": 0.0003,
+     "position": 0.782,
+     "value": 0.0002
+    },
+    "layer": 48,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('3')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0156",
+   "domain": "body",
+   "prompt": "Folder 7 holds the heart chart. Folder 9 holds the eyebrow chart. Folder 4 holds the stomach chart. Folder 8 holds the spine chart. Folder 6 holds the bladder chart.\nWhich folder holds the chart on the body part that pumps blood? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 229,
+     "end": 281,
+     "role": "patched (final)"
+    },
+    {
+     "start": 0,
+     "end": 31,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 32,
+     "end": 65,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 100,
+     "end": 131,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 198,
+     "end": 228,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "Folder 5 holds the heart chart. Folder 6 holds the stomach chart. Folder 9 holds the bladder chart. Folder 3 holds the eyebrow chart. Folder 7 holds the spine chart.\nWhich folder holds the chart on the body part above each eye? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 100,
+     "end": 133,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "4",
+    "expected": {
+     "none": "7",
+     "identity": "9",
+     "position": "8",
+     "value": "3"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0341,
+     "identity": 0.0046,
+     "position": 0.0005,
+     "value": 0.0004
+    },
+    "layer": 46,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('4')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0249",
+   "domain": "animals",
+   "prompt": "The owl keeps its things in locker 5. The elephant keeps its things in locker 9. The goose keeps its things in locker 8. The fish keeps its things in locker 3. The bear keeps its things in locker 1.\nIn which locker does the animal known for hooting keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 265,
+     "end": 317,
+     "role": "patched (final)"
+    },
+    {
+     "start": 0,
+     "end": 37,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 38,
+     "end": 80,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 121,
+     "end": 159,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 220,
+     "end": 248,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The goose keeps its things in locker 3. The owl keeps its things in locker 8. The fish keeps its things in locker 1. The elephant keeps its things in locker 6. The bear keeps its things in locker 7.\nIn which locker does the animal known for its trunk keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 117,
+     "end": 159,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "1",
+    "expected": {
+     "none": "5",
+     "identity": "9",
+     "position": "3",
+     "value": "6"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0513,
+     "identity": 0.0048,
+     "position": 0.0006,
+     "value": 0.0004
+    },
+    "layer": 46,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('1')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0023",
+   "domain": "animals",
+   "prompt": "The goat keeps its things in locker 2. The snake keeps its things in locker 1. The tiger keeps its things in locker 7. The bee keeps its things in locker 9. The frog keeps its things in locker 3.\nIn which locker does the animal known for climbing cliffs keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 270,
+     "end": 322,
+     "role": "patched (final)"
+    },
+    {
+     "start": 0,
+     "end": 38,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 39,
+     "end": 78,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 119,
+     "end": 156,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 217,
+     "end": 253,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The frog keeps its things in locker 3. The bee keeps its things in locker 1. The goat keeps its things in locker 7. The snake keeps its things in locker 8. The tiger keeps its things in locker 2.\nIn which locker does the animal known for hissing keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 116,
+     "end": 155,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "2",
+    "edited": "7",
+    "expected": {
+     "none": "2",
+     "identity": "1",
+     "position": "9",
+     "value": "8"
+    },
+    "unedited_read": "2"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.009,
+     "identity": 0.0245,
+     "position": 0.0055,
+     "value": 0.002
+    },
+    "layer": 46,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('7')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0023",
+   "domain": "animals",
+   "prompt": "The goat keeps its things in locker 2. The snake keeps its things in locker 1. The tiger keeps its things in locker 7. The bee keeps its things in locker 9. The frog keeps its things in locker 3.\nIn which locker does the animal known for climbing cliffs keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 270,
+     "end": 322,
+     "role": "patched (final)"
+    },
+    {
+     "start": 0,
+     "end": 38,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 39,
+     "end": 78,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 119,
+     "end": 156,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 217,
+     "end": 253,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The frog keeps its things in locker 3. The bee keeps its things in locker 1. The goat keeps its things in locker 7. The snake keeps its things in locker 8. The tiger keeps its things in locker 2.\nIn which locker does the animal known for hissing keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 116,
+     "end": 155,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "2",
+    "edited": "7",
+    "expected": {
+     "none": "2",
+     "identity": "1",
+     "position": "9",
+     "value": "8"
+    },
+    "unedited_read": "2"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2681,
+     "identity": 0.1117,
+     "position": 0.1117,
+     "value": 0.0038
+    },
+    "layer": 48,
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('7')"
+  },
+  {
+   "group": "same_changed",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0261",
+   "domain": "countries",
+   "prompt": "Drawer 1 holds the Turkey file. Drawer 8 holds the Finland file. Drawer 4 holds the Egypt file. Drawer 3 holds the Russia file. Drawer 7 holds the Philippines file.\nWhat drawer keeps the file on Turkey? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 202,
+     "end": 254,
+     "role": "patched (final)"
+    },
+    {
+     "start": 0,
+     "end": 31,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 128,
+     "end": 164,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 65,
+     "end": 95,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 195,
+     "end": 201,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "Drawer 8 holds the Turkey file. Drawer 4 holds the Russia file. Drawer 5 holds the Philippines file. Drawer 1 holds the Finland file. Drawer 3 holds the Egypt file.\nWhat drawer keeps the file on Philippines? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 64,
+     "end": 100,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "<think>",
+    "expected": {
+     "none": "1",
+     "identity": "7",
+     "position": "4",
+     "value": "5"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.4659,
+     "identity": 0.0002,
+     "position": 0.0007,
+     "value": 0.0004
+    },
+    "layer": 48,
+    "role": "other"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('<think>')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0023",
+   "domain": "animals",
+   "prompt": "The goat keeps its things in locker 2. The snake keeps its things in locker 1. The tiger keeps its things in locker 7. The bee keeps its things in locker 9. The frog keeps its things in locker 3.\nIn which locker does the animal known for climbing cliffs keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "spans": [
+    {
+     "start": 270,
+     "end": 322,
+     "role": "patched (final)"
+    },
+    {
+     "start": 0,
+     "end": 38,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 39,
+     "end": 78,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 119,
+     "end": 156,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 217,
+     "end": 253,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "The frog keeps its things in locker 3. The bee keeps its things in locker 1. The goat keeps its things in locker 7. The snake keeps its things in locker 8. The tiger keeps its things in locker 2.\nIn which locker does the animal known for hissing keep its things? Answer with a single word and nothing else.\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 116,
+     "end": 155,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "2",
+    "edited": "7",
+    "expected": {
+     "none": "2",
+     "identity": "1",
+     "position": "9",
+     "value": "8"
+    },
+    "unedited_read": "2"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2701,
+     "identity": 0.0994,
+     "position": 0.1276,
+     "value": 0.0044
+    },
+    "layer": 46,
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('7')"
+  }
+ ]
+}

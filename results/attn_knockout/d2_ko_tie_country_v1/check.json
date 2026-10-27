@@ -1,0 +1,19 @@
+{
+  "kernel_path": "fla",
+  "noop_empty_source_max_abs": 0.0,
+  "unedited_row_drift_in_knocked_batch_max_abs": 0.21875,
+  "posctl_last_reads_nothing_max_abs": 0.0,
+  "posctl_last_reads_nothing_same_top": true,
+  "posctl_context_erased_absent_max_abs": 0.0,
+  "posctl_context_erased_value_max_abs": 1.03125,
+  "unhooked_rolled_context_max_abs": 7.44921875,
+  "kernel_noop_dispatched_vs_torch_max_abs_over_rms": 0.2001424277110653,
+  "kernel_noop_dispatched_vs_torch_rel_fro": 0.0036833935882896185,
+  "kernel_v0_at_source_dispatched_vs_torch_max_abs_over_rms": 0.20744326066487226,
+  "kernel_v0_at_source_dispatched_vs_torch_rel_fro": 0.003781523322686553,
+  "kernel_layer": 32,
+  "seconds_batch64_plain": 1.5916,
+  "seconds_batch64_all_layers_knocked": 2.2271,
+  "passed": true,
+  "seconds": 13.4
+}

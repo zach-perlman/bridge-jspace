@@ -1,0 +1,100 @@
+{
+  "kept": 493,
+  "of": 520,
+  "layers": [
+    {
+      "layer": 38,
+      "n": 493,
+      "per_slot": [
+        98,
+        92,
+        99,
+        101,
+        103
+      ],
+      "decode_cv": 0.1744,
+      "decode_cv_shuffled": 0.2596,
+      "deviation_norm_median": 1.786,
+      "state_norm_median": 227.16
+    },
+    {
+      "layer": 44,
+      "n": 493,
+      "per_slot": [
+        98,
+        92,
+        99,
+        101,
+        103
+      ],
+      "decode_cv": 0.2718,
+      "decode_cv_shuffled": 0.2576,
+      "deviation_norm_median": 2.572,
+      "state_norm_median": 278.03
+    },
+    {
+      "layer": 50,
+      "n": 493,
+      "per_slot": [
+        98,
+        92,
+        99,
+        101,
+        103
+      ],
+      "decode_cv": 0.7099,
+      "decode_cv_shuffled": 0.2454,
+      "deviation_norm_median": 7.909,
+      "state_norm_median": 409.89
+    },
+    {
+      "layer": 56,
+      "n": 493,
+      "per_slot": [
+        98,
+        92,
+        99,
+        101,
+        103
+      ],
+      "decode_cv": 0.5517,
+      "decode_cv_shuffled": 0.2414,
+      "deviation_norm_median": 21.073,
+      "state_norm_median": 853.34
+    }
+  ],
+  "geometry": [
+    {
+      "layer": 44,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.0357,
+      "max_abs_cos_entity_null": 0.0318,
+      "principal_cos": {
+        "4": {
+          "top": 0.1466,
+          "null_top": 0.1387
+        }
+      },
+      "jspace_share_median": 0.0744,
+      "random_dictionary_share_median": 0.0767,
+      "random_vector_jspace_share_median": 0.0671
+    },
+    {
+      "layer": 50,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.0354,
+      "max_abs_cos_entity_null": 0.0339,
+      "principal_cos": {
+        "4": {
+          "top": 0.148,
+          "null_top": 0.1497
+        }
+      },
+      "jspace_share_median": 0.0697,
+      "random_dictionary_share_median": 0.077,
+      "random_vector_jspace_share_median": 0.0712
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "exp": "pointer_swap",
+  "run": "olmo_hybrid_7b_d3v4_seed2_swap",
+  "written_utc": "2026-10-23T04:05:28Z",
+  "why": "seed 2 of olmo_hybrid_7b_d3v4_swap_fn: the same layers and rule on a new draw of pointer_v4's scenes (Olmo-Hybrid-7B Instruct)",
+  "model": {
+    "target": "olmo-hybrid-7b-instruct-dpo",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "data": "pointer_v4",
+  "set": "seed2",
+  "levels": [
+    "e5f0"
+  ],
+  "families": [
+    "RL",
+    "DL"
+  ],
+  "domains": [
+    "countries",
+    "animals",
+    "body"
+  ],
+  "family_roles": [
+    "RL",
+    "DL",
+    "RR"
+  ],
+  "items": {
+    "countries_RL_e5f0": {
+      "file": "data/pointer_v4/seed2/countries_RL_e5f0.json",
+      "sha256": "ccc6e066f638e6cf25b8d499f2cac68da8b50586a13558a3190184eb0732b792"
+    },
+    "countries_DL_e5f0": {
+      "file": "data/pointer_v4/seed2/countries_DL_e5f0.json",
+      "sha256": "59588b50c2666373fe903ce36891634ae8ca188555b0a2f991c5b045b7897f19"
+    },
+    "animals_RL_e5f0": {
+      "file": "data/pointer_v4/seed2/animals_RL_e5f0.json",
+      "sha256": "25e6a86f3b433ca2d1da461343ec059def25933313505954ae37df7369a8c923"
+    },
+    "animals_DL_e5f0": {
+      "file": "data/pointer_v4/seed2/animals_DL_e5f0.json",
+      "sha256": "224378938717a6f021a70b753ec71ad841cc4cfaa7aaeb1d4e0de002699cd158"
+    },
+    "body_RL_e5f0": {
+      "file": "data/pointer_v4/seed2/body_RL_e5f0.json",
+      "sha256": "4938b086d916dd97659e7d9fe8d0913b4f2bab0e3c8b8ac1d7ea0f8e43a4444b"
+    },
+    "body_DL_e5f0": {
+      "file": "data/pointer_v4/seed2/body_DL_e5f0.json",
+      "sha256": "aa8c5050bd3478bb62be2b6d91b42eb2ac315c5df9738f721b5b5392a81ef93b"
+    }
+  },
+  "ci": {
+    "kind": "entity_cluster",
+    "cluster": "asked entity",
+    "strata": "domain",
+    "n_boot": 2000,
+    "seed": 0,
+    "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+  },
+  "competence": "olmo_hybrid_7b_d3v4_seed2_competence",
+  "competence_path": "results/pointer_v4/olmo_hybrid_7b_d3v4_seed2_competence/items.jsonl",
+  "competence_sha256": "0fe8000d8bab135c30ba62d53a3d919671807d54cea52680bce198d9d42563eb",
+  "n": 300,
+  "layers": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+  ],
+  "control_stride": 1,
+  "windows": {
+    "early": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "mid": [
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "transit": [
+      22,
+      23,
+      24,
+      25,
+      26
+    ]
+  },
+  "groups": [
+    "last"
+  ],
+  "question_max_layer": null,
+  "control_levels": null,
+  "sources": [
+    "dissoc",
+    "same",
+    "rand",
+    "other"
+  ],
+  "primary_layers": null,
+  "sample": "per (domain, base level), up to n scenes eligible (every competence prompt right, keyed by set and item id) in all of the run's families and conditions, seed 0; all of them on the same scenes",
+  "seeds": {
+    "sample": 0,
+    "null": 0,
+    "other": 0
+  },
+  "decision": "(fixed before any run; the job specs in jobs/d3/ repeat it). Per cell (family x group x layer or window\nx source dissoc), pooled over domains, Wilson 95% intervals over items:\n  - interpretable iff the dissoc patch changes the answer (1 - share none: lower bound >= 0.20) and the same control\n    changes it rarely (upper bound <= 0.10); otherwise \"none\" (nothing moves) or \"damage\"\n  - verdict X in {identity, position, value} (RR: identity, position) iff X's lower bound exceeds the upper bounds of\n    the other two and the chance bar: the rand control's upper bound for X at that layer (windows: the max over the\n    window's layers) and the per-digit context rate (upper bound of share context / (N - 3), N = 5 only)\n  - otherwise \"mixed\". Primary: RL, group final, window transit (the suite's 98-100% copy flips at 44-52). H-pointer:\n    position; H-word (or a lexical key): identity; H-value: value. DL is the reference (classic binding retrieval),\n    RR the contrast (a pointer is useless there).\n  - Other datasets name their primary / reference / contrast families in the manifest (code_pointer_v1: memory ->\n    prompt RK / named -> prompt DK / RR)."
+}

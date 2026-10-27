@@ -1,0 +1,484 @@
+{
+ "exp": "pointer_swap",
+ "run": "olmo3_7b_dpo_d3v4_swap",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group last, layers all but 0 and the transit window",
+ "groups": [
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 803
+  },
+  {
+   "key": "other",
+   "title": "other",
+   "definition": "any other answer (a recalled digit, another digit, a word)",
+   "n_total": 1
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 38
+  }
+ ],
+ "examples": [
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0247",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Lebanon is kept in drawer 8. The file on Pakistan is kept in drawer 5. The file on Italy is kept in drawer 1. The file on Poland is kept in drawer 2. The file on Russia is kept in drawer 6.\nWhich drawer holds the file on the country whose capital is Rome? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 520,
+     "end": 521,
+     "role": "patched (last)"
+    },
+    {
+     "start": 253,
+     "end": 291,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 170,
+     "end": 210,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 332,
+     "end": 371,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 403,
+     "end": 436,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Russia is kept in drawer 2. The file on Poland is kept in drawer 8. The file on Pakistan is kept in drawer 1. The file on Italy is kept in drawer 6. The file on Lebanon is kept in drawer 4.\nWhich drawer holds the file on the country whose capital is Beirut? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 331,
+     "end": 371,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "4",
+    "expected": {
+     "none": "1",
+     "identity": "8",
+     "position": "6",
+     "value": "4"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0,
+     "value": 1.0
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('4')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0182",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nDrawer 1 holds the Iraq file. Drawer 5 holds the France file. Drawer 6 holds the Hungary file. Drawer 4 holds the Japan file. Drawer 2 holds the Syria file.\nWhat drawer keeps the file on Japan? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 446,
+     "end": 447,
+     "role": "patched (last)"
+    },
+    {
+     "start": 265,
+     "end": 295,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 296,
+     "end": 326,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 232,
+     "end": 264,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 357,
+     "end": 362,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nDrawer 6 holds the Japan file. Drawer 4 holds the Iraq file. Drawer 7 holds the Syria file. Drawer 5 holds the France file. Drawer 1 holds the Hungary file.\nWhat drawer keeps the file on Syria? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 231,
+     "end": 261,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "4",
+    "edited": "7",
+    "expected": {
+     "none": "4",
+     "identity": "2",
+     "position": "6",
+     "value": "7"
+    },
+    "unedited_read": "4"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0,
+     "value": 0.9894
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('7')"
+  },
+  {
+   "group": "value",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0153",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on France is kept in drawer 2. The file on Germany is kept in drawer 6. The file on Japan is kept in drawer 9. The file on Finland is kept in drawer 7. The file on Korea is kept in drawer 5.\nIn which drawer is the file on the country whose capital is Berlin? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 520,
+     "end": 521,
+     "role": "patched (last)"
+    },
+    {
+     "start": 210,
+     "end": 250,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 290,
+     "end": 330,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 251,
+     "end": 289,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 401,
+     "end": 436,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Germany is kept in drawer 2. The file on Japan is kept in drawer 5. The file on Finland is kept in drawer 1. The file on Korea is kept in drawer 6. The file on France is kept in drawer 7.\nIn which drawer is the file on the country whose capital is Helsinki? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 250,
+     "end": 290,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "1",
+    "expected": {
+     "none": "6",
+     "identity": "7",
+     "position": "9",
+     "value": "1"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0,
+     "value": 1.0
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('1')"
+  },
+  {
+   "group": "other",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0183",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nDrawer 8 holds the Iran file. Drawer 7 holds the Iraq file. Drawer 6 holds the Italy file. Drawer 2 holds the Austria file. Drawer 5 holds the Sweden file.\nIn which drawer is the file on Italy? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 446,
+     "end": 447,
+     "role": "patched (last)"
+    },
+    {
+     "start": 230,
+     "end": 260,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 170,
+     "end": 199,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 294,
+     "end": 325,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 357,
+     "end": 362,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nDrawer 5 holds the Italy file. Drawer 2 holds the Austria file. Drawer 7 holds the Iraq file. Drawer 6 holds the Sweden file. Drawer 1 holds the Iran file.\nIn which drawer is the file on Iran? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 296,
+     "end": 325,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "Drawer",
+    "expected": {
+     "none": "6",
+     "identity": "8",
+     "position": "5",
+     "value": "1"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0,
+     "identity": 0.0,
+     "position": 0.0,
+     "value": 0.4227
+    },
+    "layer": "transit",
+    "role": "other"
+   },
+   "why": "any other answer (a recalled digit, another digit, a word) ('Drawer')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0080",
+   "domain": "animals",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nLocker 8 belongs to the butterfly. Locker 1 belongs to the worm. Locker 3 belongs to the turkey. Locker 9 belongs to the elephant. Locker 7 belongs to the chicken.\nIn which locker does the animal known for its caterpillars keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 492,
+     "end": 493,
+     "role": "patched (last)"
+    },
+    {
+     "start": 170,
+     "end": 204,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 205,
+     "end": 234,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 235,
+     "end": 266,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 355,
+     "end": 392,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nLocker 9 belongs to the chicken. Locker 3 belongs to the elephant. Locker 5 belongs to the worm. Locker 1 belongs to the butterfly. Locker 8 belongs to the turkey.\nIn which locker does the animal known for wriggling underground keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 237,
+     "end": 266,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 18 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "9",
+    "expected": {
+     "none": "8",
+     "identity": "1",
+     "position": "3",
+     "value": "5"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2102,
+     "identity": 0.0007,
+     "position": 0.0004,
+     "value": 0.0002
+    },
+    "layer": 18,
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('9')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0164",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Poland is kept in drawer 5. The file on Philippines is kept in drawer 3. The file on Pakistan is kept in drawer 8. The file on Germany is kept in drawer 1. The file on Thailand is kept in drawer 7.\nWhat drawer keeps the file on the country whose capital is Islamabad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 532,
+     "end": 533,
+     "role": "patched (last)"
+    },
+    {
+     "start": 255,
+     "end": 296,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 297,
+     "end": 337,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 338,
+     "end": 379,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 410,
+     "end": 448,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Pakistan is kept in drawer 1. The file on Philippines is kept in drawer 5. The file on Thailand is kept in drawer 7. The file on Poland is kept in drawer 3. The file on Germany is kept in drawer 2.\nWhat drawer keeps the file on the country whose capital is Berlin? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 339,
+     "end": 379,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 20 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "6",
+    "expected": {
+     "none": "8",
+     "identity": "1",
+     "position": "7",
+     "value": "2"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2295,
+     "identity": 0.0003,
+     "position": 0.0023,
+     "value": 0.0015
+    },
+    "layer": 20,
+    "role": "recall"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('6')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0164",
+   "domain": "countries",
+   "prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Poland is kept in drawer 5. The file on Philippines is kept in drawer 3. The file on Pakistan is kept in drawer 8. The file on Germany is kept in drawer 1. The file on Thailand is kept in drawer 7.\nWhat drawer keeps the file on the country whose capital is Islamabad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "spans": [
+    {
+     "start": 532,
+     "end": 533,
+     "role": "patched (last)"
+    },
+    {
+     "start": 255,
+     "end": 296,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 297,
+     "end": 337,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 338,
+     "end": 379,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 410,
+     "end": 448,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>system\nYou are a helpful function-calling AI assistant. You do not currently have access to any functions. <functions></functions><|im_end|>\n<|im_start|>user\nThe file on Pakistan is kept in drawer 1. The file on Philippines is kept in drawer 5. The file on Thailand is kept in drawer 7. The file on Poland is kept in drawer 3. The file on Germany is kept in drawer 2.\nWhat drawer keeps the file on the country whose capital is Berlin? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 339,
+     "end": 379,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the last tokens replaced by the dissoc source's at layer 19 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "6",
+    "expected": {
+     "none": "8",
+     "identity": "1",
+     "position": "7",
+     "value": "2"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1619,
+     "identity": 0.0003,
+     "position": 0.0019,
+     "value": 0.0016
+    },
+    "layer": 19,
+    "role": "recall"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('6')"
+  }
+ ]
+}

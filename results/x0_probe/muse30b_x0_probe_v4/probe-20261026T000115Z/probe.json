@@ -1,0 +1,368 @@
+{
+ "run": "muse30b_x0_probe_v4",
+ "manifest": {
+  "exp": "x0_probe",
+  "run": "muse30b_x0_probe_v4",
+  "written_utc": "2026-10-25T23:57:47Z",
+  "note": "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule.",
+  "source": null,
+  "source_code": null,
+  "set": "d1_topics_v4",
+  "layer": 26,
+  "x0_items": 0,
+  "model": {
+   "target": "muse-glimmer-30b",
+   "repo": "meta-models/Muse-Glimmer-30B",
+   "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "bb7ecdf4b3062b01647ad7cd7b0786a90e4cb21f",
+   "dirty": true
+  },
+  "position": "the asked person's bridge word, org run, chat",
+  "folds": {
+   "outer": 5,
+   "inner": 4,
+   "penalties": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0
+   ]
+  },
+  "seeds": {
+   "bootstrap": 0
+  },
+  "targets": {
+   "answer digit": "answer",
+   "locker sentence": "locker_index",
+   "bridge identity": "entity"
+  }
+ },
+ "note": "Descriptive, added after data (Dan, 24 Oct evening); not part of X0's rule.",
+ "rows": [
+  {
+   "subset": "all",
+   "stratum": "before",
+   "target": "answer digit",
+   "n": 657,
+   "entities": 44,
+   "classes": 9,
+   "chance": 0.1111,
+   "penalties": [
+    0.001,
+    0.01,
+    0.1,
+    0.001,
+    0.1
+   ],
+   "probe": [
+    0.3257229832572298,
+    0.28137872589129165,
+    0.37209404864443624
+   ],
+   "majority": [
+    0.1202435312024353,
+    0.09198813056379822,
+    0.15151639958064997
+   ],
+   "best_baseline": "majority",
+   "probe_minus_best": [
+    0.2054794520547945,
+    0.16306429913726828,
+    0.24960054462934944
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "before",
+   "target": "locker sentence",
+   "n": 657,
+   "entities": 44,
+   "classes": 5,
+   "chance": 0.2,
+   "penalties": [
+    0.01,
+    0.01,
+    0.01,
+    0.01,
+    0.1
+   ],
+   "probe": [
+    0.9665144596651446,
+    0.9501556455939238,
+    0.980365343893518
+   ],
+   "majority": [
+    0.3378995433789954,
+    0.30668835834060476,
+    0.37057283299464633
+   ],
+   "structure": [
+    0.3470319634703196,
+    0.30373769800937056,
+    0.3845093248104683
+   ],
+   "layout": [
+    0.5266362252663622,
+    0.49382716049382713,
+    0.5561879716816771
+   ],
+   "best_baseline": "layout",
+   "probe_minus_best": [
+    0.4398782343987824,
+    0.4075681287030353,
+    0.47338403041825095
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "before",
+   "target": "bridge identity",
+   "n": 657,
+   "entities": 44,
+   "classes": 44,
+   "chance": 0.0227,
+   "penalties": [
+    0.01,
+    0.01,
+    0.01,
+    0.01,
+    0.01
+   ],
+   "probe": [
+    0.9969558599695586,
+    0.9889903197517539,
+    1.0
+   ],
+   "majority": [
+    0.0776255707762557,
+    0.0,
+    0.23341406536587064
+   ],
+   "best_baseline": "majority",
+   "probe_minus_best": [
+    0.9193302891933028,
+    0.7635534603638666,
+    1.0
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "after",
+   "target": "answer digit",
+   "n": 669,
+   "entities": 44,
+   "classes": 9,
+   "chance": 0.1111,
+   "penalties": [
+    100.0,
+    10.0,
+    100.0,
+    10.0,
+    100.0
+   ],
+   "probe": [
+    0.09865470852017937,
+    0.08075574694243454,
+    0.11446609242548536
+   ],
+   "majority": [
+    0.13602391629297458,
+    0.10737139662027832,
+    0.16246544853079936
+   ],
+   "best_baseline": "majority",
+   "probe_minus_best": [
+    -0.03736920777279522,
+    -0.06266685236768803,
+    -0.011394664986347431
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "after",
+   "target": "locker sentence",
+   "n": 669,
+   "entities": 44,
+   "classes": 5,
+   "chance": 0.2,
+   "penalties": [
+    1.0,
+    10.0,
+    1.0,
+    10.0,
+    10.0
+   ],
+   "probe": [
+    0.34080717488789236,
+    0.3111373419424267,
+    0.3717359491254354
+   ],
+   "majority": [
+    0.3333333333333333,
+    0.304699550933701,
+    0.36532518828674587
+   ],
+   "structure": [
+    0.34977578475336324,
+    0.3123965499834134,
+    0.3855617618139386
+   ],
+   "layout": [
+    0.3153961136023916,
+    0.28079561653599433,
+    0.3494255649952801
+   ],
+   "best_baseline": "structure",
+   "probe_minus_best": [
+    -0.008968609865470878,
+    -0.047919941612396155,
+    0.03672844489364932
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "after",
+   "target": "bridge identity",
+   "n": 669,
+   "entities": 44,
+   "classes": 44,
+   "chance": 0.0227,
+   "penalties": [
+    0.1,
+    0.1,
+    0.1,
+    0.01,
+    0.1
+   ],
+   "probe": [
+    0.9985052316890882,
+    0.9945498495957537,
+    1.0
+   ],
+   "majority": [
+    0.07025411061285501,
+    0.0,
+    0.21559633027522937
+   ],
+   "best_baseline": "majority",
+   "probe_minus_best": [
+    0.9282511210762332,
+    0.7831531803223177,
+    1.0
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "both",
+   "target": "answer digit",
+   "n": 1326,
+   "entities": 44,
+   "classes": 9,
+   "chance": 0.1111,
+   "penalties": [
+    0.1,
+    0.1,
+    0.01,
+    0.1,
+    0.1
+   ],
+   "probe": [
+    0.19984917043740574,
+    0.17987860276495896,
+    0.22175740905489372
+   ],
+   "majority": [
+    0.11463046757164404,
+    0.09471521276877333,
+    0.13235342302058437
+   ],
+   "best_baseline": "majority",
+   "probe_minus_best": [
+    0.0852187028657617,
+    0.06199618871576191,
+    0.11297155562226766
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "both",
+   "target": "locker sentence",
+   "n": 1326,
+   "entities": 44,
+   "classes": 6,
+   "chance": 0.1667,
+   "penalties": [
+    1.0,
+    0.1,
+    0.1,
+    0.1,
+    0.1
+   ],
+   "probe": [
+    0.6259426847662142,
+    0.6059039106476856,
+    0.648036327824181
+   ],
+   "majority": [
+    0.16591251885369532,
+    0.14956807718552687,
+    0.18094443710359406
+   ],
+   "structure": [
+    0.22549019607843138,
+    0.2060371683926798,
+    0.2435003170577045
+   ],
+   "layout": [
+    0.32051282051282054,
+    0.3006322197441114,
+    0.3414458774012519
+   ],
+   "best_baseline": "layout",
+   "probe_minus_best": [
+    0.30542986425339363,
+    0.28269678860858155,
+    0.3302826219558398
+   ]
+  },
+  {
+   "subset": "all",
+   "stratum": "both",
+   "target": "bridge identity",
+   "n": 1326,
+   "entities": 44,
+   "classes": 44,
+   "chance": 0.0227,
+   "penalties": [
+    0.1,
+    0.1,
+    0.01,
+    0.01,
+    0.01
+   ],
+   "probe": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "majority": [
+    0.07390648567119155,
+    0.0,
+    0.22392323900582267
+   ],
+   "best_baseline": "majority",
+   "probe_minus_best": [
+    0.9260935143288085,
+    0.7760767609941772,
+    1.0
+   ]
+  }
+ ]
+}

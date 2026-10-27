@@ -1,0 +1,116 @@
+{
+  "kept": 517,
+  "of": 520,
+  "layers": [
+    {
+      "layer": 28,
+      "n": 517,
+      "per_slot": [
+        102,
+        104,
+        103,
+        104,
+        104
+      ],
+      "decode_cv": 0.2031,
+      "decode_cv_shuffled": 0.1915,
+      "deviation_norm_median": 0.026,
+      "state_norm_median": 3.11
+    },
+    {
+      "layer": 33,
+      "n": 517,
+      "per_slot": [
+        102,
+        104,
+        103,
+        104,
+        104
+      ],
+      "decode_cv": 0.2998,
+      "decode_cv_shuffled": 0.1876,
+      "deviation_norm_median": 0.043,
+      "state_norm_median": 4.37
+    },
+    {
+      "layer": 38,
+      "n": 517,
+      "per_slot": [
+        102,
+        104,
+        103,
+        104,
+        104
+      ],
+      "decode_cv": 0.3849,
+      "decode_cv_shuffled": 0.1915,
+      "deviation_norm_median": 0.075,
+      "state_norm_median": 6.24
+    },
+    {
+      "layer": 43,
+      "n": 517,
+      "per_slot": [
+        102,
+        104,
+        103,
+        104,
+        104
+      ],
+      "decode_cv": 0.4662,
+      "decode_cv_shuffled": 0.2166,
+      "deviation_norm_median": 0.158,
+      "state_norm_median": 7.61
+    }
+  ],
+  "geometry": [
+    {
+      "layer": 33,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.043,
+      "max_abs_cos_entity_null": 0.0412,
+      "principal_cos": {
+        "4": {
+          "top": 0.2072,
+          "null_top": 0.1792
+        }
+      },
+      "jspace_share_median": 0.0897,
+      "random_dictionary_share_median": 0.1344,
+      "random_vector_jspace_share_median": 0.1021
+    },
+    {
+      "layer": 38,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.0401,
+      "max_abs_cos_entity_null": 0.0438,
+      "principal_cos": {
+        "4": {
+          "top": 0.1452,
+          "null_top": 0.177
+        }
+      },
+      "jspace_share_median": 0.094,
+      "random_dictionary_share_median": 0.1341,
+      "random_vector_jspace_share_median": 0.1109
+    },
+    {
+      "layer": 43,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.042,
+      "max_abs_cos_entity_null": 0.043,
+      "principal_cos": {
+        "4": {
+          "top": 0.1782,
+          "null_top": 0.1855
+        }
+      },
+      "jspace_share_median": 0.1,
+      "random_dictionary_share_median": 0.1338,
+      "random_vector_jspace_share_median": 0.1174
+    }
+  ]
+}

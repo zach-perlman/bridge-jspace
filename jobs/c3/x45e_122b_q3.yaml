@@ -1,0 +1,25 @@
+id: x45e_122b_q3
+title: "Batch 45e (b): the identity test on the 122B (routes C0 and C2, D1's identity arms), gate 0.75"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 1.2
+depends_on: [x45_0_indep_9b]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x6_routes.py run --name qwen35_122b_x6_routes_d1_g75 --conditions C0,C2 --identity --gate 0.75 --sealed
+question: >-
+  On the 122B (not in batch 40): without identity outside J++, together with J++ and the pointer, how many lookups still
+  switch in the sanity swap, and does removing identity cut the identity answers in C2?
+why_it_matters: The README's identity cells read "not in this test" on the 122B (Dan ~16:40); 45e (b) fills them.
+hypotheses:
+  H-batch45: 'Q45.7 in docs/predictions_batch45.md (45e; the 122B part is descriptive beside the 3-model rule)'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45e): identity outside J++ is specific if both hold on at least 2 of 3 models
+  (9B, 27B, Muse; jobs x45e_9b / x45e_27b / x45e_muse): removing it together with J++ + pointer leaves at most half of
+  the lookups that the wrong-pair control leaves; in C2 it cuts identity answers at least 0.15 more than the wrong-pair
+  control. The 122B's run (gate 0.75, as its routes runs) is reported beside it.
+controls:
+- 'each part against a random part of its own share'
+n: 'the routes C0 and C2 eligible items (up to 300 each)'
+seeds: [2510, 0]
+notes: "Re-queued as x45e_122b_q3 (Dan ~22:10): x45e_122b_q2 was cancelled before it ran so that 45m and 45k run before the 122B block; command and rule unchanged. Batch 45; the gate 0.75 after the data, as every 122B routes run; results sealed until Dan's predictions are committed."

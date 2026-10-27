@@ -1,0 +1,44 @@
+{
+  "exp": "x7_pcf",
+  "run": "qwen35_9b_x45d_fit",
+  "written_utc": "2026-10-26T17:55:29Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "27d270d6b1e3760764ab726e2f2bc70242fef923",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 12,
+  "set": "x0b_v2",
+  "formats": [
+    "prose",
+    "json",
+    "table"
+  ],
+  "rank": 4,
+  "max_moves": 3,
+  "split": "per format, the aligned varied scenes (x0b_generalize.build_cases) in two halves by bridge item, seed 0: fit (these pairs) and test (the main test, x0b_generalize --pcf-from)",
+  "pairs": "the bridge's locker statement trades places with another item's, both before the asked pick, numbers kept; the bridge one token at the same index in O and S",
+  "pca": "centered, per format, over the pairs' bridge-word differences S - O",
+  "alf_from": "qwen35_9b_x0_probe_v4",
+  "seeds": {
+    "split": 0,
+    "pairs": 4301
+  },
+  "design": "jobs/c3/batch45.yaml, 45d (fixed in advance)"
+}

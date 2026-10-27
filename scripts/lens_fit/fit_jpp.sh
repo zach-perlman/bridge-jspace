@@ -12,9 +12,12 @@ set -euo pipefail
 MODEL=$1 LAYERS=$2 OUT=$3 N=${4:-32} LRP=${5:-rlens}
 # JPP_ROWS (env, default 16): Jacobian rows per backward pass, a batching knob (the same estimator); 2026-10-21: 32 on
 # the B200 where it fits (decided with Zach), 16 as the fallback.
-cd /workspace/ext/jpp_lens
-set -a; . /workspace/bridge-jspace/.env; set +a
-export UV_CACHE_DIR=/workspace/uv-cache
+# Paths (22 Oct night, Dan's A100 box): JPP_DIR (the recipe checkout), BJ_REPO (this repo), UV_CACHE_DIR; Zach's box
+# paths are the defaults.
+JPP_DIR=${JPP_DIR:-/workspace/ext/jpp_lens} BJ_REPO=${BJ_REPO:-/workspace/bridge-jspace}
+cd "$JPP_DIR"
+if [ -f "$BJ_REPO/.env" ]; then set -a; . "$BJ_REPO/.env"; set +a; fi
+export UV_CACHE_DIR=${UV_CACHE_DIR:-/workspace/uv-cache}
 mkdir -p "$OUT"
 C="uv run --no-sync python scripts/jpp_cli.py"
 M="--hf-model-name $MODEL"
@@ -29,7 +32,7 @@ SHARD=$(ls -d "$OUT"/artifacts/*/fit"$N"/shard0of1 | tail -1)
 echo "=== merge $(date -u +%H:%M:%S)"
 $C merge-experts --checkpoint-dirs "$SHARD" --out "$OUT/experts.pt" --pooled-lens-out "$OUT/pooled_lens.pt"
 echo "=== grade $(date -u +%H:%M:%S)"
-uv run --no-sync python /workspace/bridge-jspace/scripts/lens_fit/jpp_grade.py "$MODEL" "$LAYERS" "$OUT/model_correctness.csv"
+uv run --no-sync python "$BJ_REPO/scripts/lens_fit/jpp_grade.py" "$MODEL" "$LAYERS" "$OUT/model_correctness.csv"
 echo "=== fit-weights $(date -u +%H:%M:%S)"
 $C fit-weights $M --layers "$LAYERS" --experts "$OUT/experts.pt" --items fit:0 --correctness-csv "$OUT/model_correctness.csv" \
   --cache-path "$OUT/readout_cache.pt" --out "$OUT/${STEM}_jpp_lens.pt"

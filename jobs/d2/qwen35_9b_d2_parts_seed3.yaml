@@ -1,0 +1,25 @@
+id: qwen35_9b_d2_parts_seed3
+title: "Name vs digit on a third draw (Qwen3.5-9B)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.5
+depends_on:
+- qwen35_9b_d3v4_seed3_competence
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py manifest --name qwen35_9b_d2_parts_seed3 --dataset pointer_v4 --set seed3 --families RL DL RR --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence qwen35_9b_d3v4_seed3_competence --why "name vs digit on a third draw (Qwen3.5-9B); analysed by scripts/d2_parts.py" && BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py run --name qwen35_9b_d2_parts_seed3
+figures_command: uv run python scripts/d2_parts.py --name qwen35_9b_d2_parts_seed3
+question: >-
+  Do the last tokens take only the digit from the answer's statement, and the question's tokens its name?
+why_it_matters: >-
+  Findings 3 and 4 on Qwen3.5-9B rest on two draws of scenes; a third draw with the committed rules.
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.8 (copied from qwen35_9b_d2_parts_seed2)'
+  H-name-q-split: 'holds where testable. Prior 0.5 (copied from qwen35_9b_d2_parts_seed2)'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged: valid-split first; H-digit-final-split (memory -> prompt) and, where the question is testable, H-name-q-split. Replicates iff every verdict that held on this model's main draw holds here; per topic reported.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: '100 items per family (RL DL RR), seed3'
+seeds: [845]
+notes: "mechanical copy of qwen35_9b_d2_parts_seed2 (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Only the data set (pointer_v4 seed3), the gate, run names and dependencies change; layers, n and rules as in qwen35_9b_d2_parts_seed2. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2), the 27B's third draw (d3v4_seed3_competence_27b / d3v4_seed3_swap_27b)."

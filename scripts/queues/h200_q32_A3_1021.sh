@@ -38,21 +38,21 @@ echo "=== start $(date -u +%FT%TZ)"
   --why "$WHY: suite competence (first 150 per family) for the steering positive control, as Gemma's" \
   && $PY scripts/suite_v1.py competence --name $CS > /workspace/scratch/q32_suitecomp.log 2>&1 || echo "=== suite competence FAILED"; }
 touch $MK  # GPU 1's knock-outs wait for this
-BJ_BATCH=32 $PY scripts/write_max.py --name qwen3_32b_smoke_wm2_full_1021 --why smoke --n 2 --band 32-34 \
+BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name qwen3_32b_smoke_wm2_full_1021 --why smoke --n 2 --band 32-34 \
   --single-step 1 --early 24 --possets question final $W2 || { echo "smoke failed: stop"; exit 1; }
 $PY scripts/removal_textloss.py --name qwen3_32b_textloss_top_v1 --why "$WHY: plain-text loss under the knock-out, L32-40" \
   --layers $(seq 32 40) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot || echo "=== text loss FAILED"
 [ -f results/suite_v1/$CS/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 28-40 --single-step 2 --early 16 20 24 --from-competence $CS \
   && $PY scripts/c2_graded.py qwen3_32b_wm2_posctrl_v1 | tail -2 || echo "=== positive control FAILED"
 $PY scripts/copy_sweep.py --name qwen3_32b_copy_sweep_full2_v1 --why "$WHY: where the question / final positions carry the bridge" \
   --tasks full_v8 --tasks-competence $C2 --families PP PM MP MM --n 40 || echo "=== copy sweep FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
   --n 1000 $STEER $W2 && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_v1 | tail -14 \
   && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
 [ -f results/tasks_v2/$C3/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
   && $PY scripts/c2_graded.py qwen3_32b_wm2_full3_v1 > /dev/null || echo "=== three-step steering FAILED"
 LC=/workspace/bridge-jspace/results/lens_check/qwen3-32b
 mkdir -p $LC

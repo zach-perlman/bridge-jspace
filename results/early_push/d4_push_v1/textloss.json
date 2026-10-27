@@ -1,0 +1,60 @@
+{
+  "n_texts": 16,
+  "pairs": [
+    [
+      "chicken",
+      "sheep"
+    ],
+    [
+      "turkey",
+      "cow"
+    ],
+    [
+      "cat",
+      "spider"
+    ],
+    [
+      "cow",
+      "chicken"
+    ]
+  ],
+  "refs": {
+    "16": 2.316,
+    "20": 3.477,
+    "24": 4.316,
+    "28": 5.653
+  },
+  "mean_nll": {
+    "none": 2.3307,
+    "lens/16/x4": 2.36,
+    "random/16/x4": 2.3346,
+    "lens/16/x8": 2.5891,
+    "random/16/x8": 2.3577,
+    "lens/16/x16": 5.3065,
+    "random/16/x16": 2.4952,
+    "lens/20/x4": 2.3527,
+    "random/20/x4": 2.3353,
+    "lens/20/x8": 2.4987,
+    "random/20/x8": 2.3654,
+    "lens/20/x16": 3.3688,
+    "random/20/x16": 2.5345,
+    "lens/24/x4": 2.4007,
+    "random/24/x4": 2.3369,
+    "lens/24/x8": 2.6509,
+    "random/24/x8": 2.3725,
+    "lens/24/x16": 3.4117,
+    "random/24/x16": 2.6688,
+    "lens/28/x4": 2.4167,
+    "random/28/x4": 2.3474,
+    "lens/28/x8": 2.7787,
+    "random/28/x8": 2.4245,
+    "lens/28/x16": 4.4191,
+    "random/28/x16": 2.842,
+    "lens/band/x4": 3.3257,
+    "random/band/x4": 2.3838,
+    "lens/band/x8": 6.7324,
+    "random/band/x8": 2.6544,
+    "lens/band/x16": 10.558,
+    "random/band/x16": 5.2692
+  }
+}

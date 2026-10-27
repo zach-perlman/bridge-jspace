@@ -8,7 +8,7 @@
 set -uo pipefail
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
-export BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16
+export BJ_TARGET=qwen3.5-122b-a10b BJ_SUITE_BATCH=16
 FAILED=0
 step() { echo "=== STEP $1 $(date -u +%H:%M:%S)"; shift; "$@" || { echo "=== FAILED (exit $?)"; FAILED=$((FAILED + 1)); }; }
 PY="uv run --no-sync python"

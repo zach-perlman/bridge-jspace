@@ -1,0 +1,43 @@
+id: d3v4_entity_probe_27b
+title: "D3 v4 entity check: which countries, sports, animals and body parts can the 27B recall from a cue?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  uv run python scripts/pointer_v4.py probe --name d3v4_entity_probe_27b
+  --why "D3 v4 entity probe: per candidate entity (36 countries, 23 sports, 40 animals, 21 body parts), the cue ->
+  entity, entity -> fact and cue -> fact prompts without context; entities right on all three enter pointer_v4"
+question: >-
+  For each candidate entity of pointer_v4 (countries: cue "the country whose capital is Lima", fact the first digit of
+  the dialling code; sports: "the sport played with a puck", players per side; animals: "the animal known for hooting",
+  legs; body parts (backup): "the body part that makes urine", how many a human has), does Qwen3.6-27B answer the cue
+  -> entity, entity -> fact and cue -> fact prompts right, with no context?
+why_it_matters: >-
+  pointer_v4 replaces pointer_v1's 22 entities (whose correlated items made D3b's effective n ~73 of 175) with three
+  topics of >= 16 entities each. Entities are picked by this gate, not by guess: an entity the model cannot recall
+  would put recall failures, not pointer effects, into every scene it appears in.
+hypotheses:
+  H-countries: 'cue -> entity >= 34/36; dialling-code first digit (fact and chain) >= 28/36: countries usable'
+  H-sports: 'cue -> entity >= 18/23; players per side right for the team sports and "1" for most individual sports:
+    >= 16 pass, sports usable; otherwise body parts replace sports'
+  H-animals: 'pointer_v1''s 16 pass (they did in d3_competence_27b); >= 30/40 pass in all'
+  prior: 'Agent prior: countries usable 0.85, sports usable 0.55, animals usable 0.95, body usable 0.8.'
+decision_rule: >-
+  Fixed in scripts/pointer_v4.py (docstring and the run's manifest): an entity enters iff its cue -> entity, entity ->
+  fact and cue -> fact prompts are all right (greedy, 8 tokens, pointer_v1's judge, no context); a domain is usable iff
+  >= 16 of its entities pass; the first three usable domains in the order countries, sports, animals, body are used.
+  The split (a seeded third of each pool and the third wording held out of every fit) is drawn at make from the passing
+  entities only.
+controls:
+- 'three prompts per entity: a fact the model knows only for the named entity fails "chain"; a cue it cannot resolve
+  fails "cue"'
+- 'pointer_v1''s 16 animals, which the 27B answered in d3_competence_27b, as a known-good reference'
+n: '120 candidate entities x 3 prompts = 360 prompts'
+seeds: [843]
+notes: >-
+  After it lands (human step, CPU, ~1 min): `uv run python scripts/pointer_v4.py make --probe d3v4_entity_probe_27b &&
+  uv run python scripts/pointer_v4.py check --set main fit && uv run python scripts/pointer_v4.py verify`, commit
+  data/pointer_v4/ (split.json, main/, fit/, check_*.json), then enqueue d3v4_competence_27b, d3v4_smoke_27b and the two
+  mains. Timing: 360 prompts at ~18/s (d3v2_competence_27b) ~ 20 s + load ~4 min.

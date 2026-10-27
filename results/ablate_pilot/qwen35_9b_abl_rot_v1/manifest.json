@@ -1,0 +1,30 @@
+{
+  "run": "qwen35_9b_abl_rot_v1",
+  "why": "finding 1 (J-space removal) on Qwen3.5-9B with its J++: abl_rot_v1 at the 9B's depth (16 18 20)",
+  "written_utc": "2026-10-23T02:23:30Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jpp",
+    "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  ],
+  "lens_layers": null,
+  "layers": [
+    16,
+    18,
+    20
+  ],
+  "k_atoms": 25,
+  "n_per_family": 100,
+  "skip_first": 0,
+  "center": false,
+  "rotated": true,
+  "no_random": false,
+  "doc": "At layers 32, 36 and 40 at once (another target: --layers, each a layer its frozen lens has a map at), at every\nposition, each residual loses its 25-atom J-space part (signed OMP over the frozen lens's letter-token vectors: J++ on\nQwen, the J-lens on OLMo, recorded in the manifest with its layers; the split's J-space part, here of the state itself);\nthe control loses the same fit over a random dictionary of the same size (seeded per layer). On unedited-correct\nitems, read at the answer's first token (suite_split's read):\n  clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the\n                                                          prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)\nReported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.\nFamilies: BL, BR, RL, RR (suite main set), TYPO, TRANS (computed set), countries R, B (bind_recall, clean only).\nPrediction from the read/write results (not a decision rule): removing the J-space hurts the recall chains more than\nthe lookup chains, beyond what the step alone loses."
+}

@@ -1,0 +1,72 @@
+{
+  "exp": "early_push_where",
+  "run": "olmo3_7b_instruct_jpp_d4_where_raw_smoke",
+  "why": "smoke (5 scenes): the raw path's unedited answers must match the raw competence run; not a result",
+  "written_utc": "2026-10-23T08:38:32Z",
+  "model": {
+    "target": "olmo-3-7b-instruct-jpp",
+    "repo": "allenai/Olmo-3-7B-Instruct",
+    "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "raw"
+  },
+  "lens": [
+    "jpp",
+    "6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451"
+  ],
+  "config": {
+    "n": 5,
+    "families": [
+      "BL",
+      "BR",
+      "RL",
+      "RR"
+    ],
+    "map": "map_A8_v1",
+    "wording": "A",
+    "layers": [
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22
+    ],
+    "scales": [
+      1.0,
+      2.0,
+      4.0,
+      8.0
+    ],
+    "context_layers": [
+      14,
+      16,
+      18,
+      20,
+      22
+    ],
+    "scenes": "fresh",
+    "rule": "v2",
+    "v21_min_layer": 10
+  },
+  "inputs": {
+    "results/suite_split/map_A8_v1/cases.jsonl": "b3570104d9f99240f6b3103c0e57648137d017f3fc58044b26281bdc8992d734",
+    "data/suite_v1/BL.json": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017",
+    "data/suite_v1/BR.json": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb",
+    "data/suite_v1/RL.json": "305f5e5b6679ff83466800cd05c019e62ab4d374dd0d3f916e968c8a733cd045",
+    "data/suite_v1/RR.json": "1cedcc460789ba2fee5c2b6f7a0d2302d2e81a9c73acb7853843f54a807fca07",
+    "results/suite_v1/olmo3_7b_instruct_jpp_competence_raw_v1/items.jsonl": "734fa80a4a22e489bbb8d1c20af57844d5c5ef887808d56f5ecb28ac9a94c05b"
+  },
+  "seeds": {
+    "random": "0 + 1000003 x item index",
+    "offscene": "Random('0:<scene>')",
+    "bootstrap": 0,
+    "fresh_scenes": 1
+  },
+  "design": "early_push_where (D4 v2, 2026-10-22): can the lens write a STATED bridge where it sits?\n\nBackground (UNVERIFIED; README slide 6): at layer 20 on Qwen3.6-27B, a lens push v_X - v_I (8x) on the question's\nsubject phrase switches bridges the model recalls (memory -> prompt 73%, memory -> memory 84%) but not bridges stated in\nthe prompt (prompt -> prompt 1%, prompt -> memory 2%). The stated bridge was pushed at the question, but it sits at its\nown sentence (\"Clara's pet is a cow.\") until layer ~24 and over the whole context until ~44 (statement_positions\nd1_map_n80_v1). The null for stated bridges may only mean that the push missed the bridge.\n\nDesign. Animal suite (wording A), the four families on the same scenes (suite_split map_A8_v1's cases, the first n per\nfamily), Qwen3.6-27B, J++. Push positions of the unedited prompt:\n  b  the question's subject phrase (\"Clara's pet\", \"the animal known for mooing\"): slide 6's own (replication anchor)\n  s  the bridge's owner sentence (\"Clara's pet is a cow.\"): where a stated bridge sits early\n  w  the bridge's word in that sentence (\"cow\")\n  c  the whole context (every sentence), layers 28-44 only: where a stated bridge sits later\nAt each layer of L (12-44, every 4) and scale of S (1, 2, 4, 8), each pushed position gets scale x the scene's reference\nnorm (early_push's: the RMS of C's copy delta over suite_split's question group, pooled over the scene's families), along\n  lens      v_X - v_I (unit J++ vectors at that layer; X = the bridge of the C prompt)\n  random    a random direction at the same per-position norms (one generator per item)\n  offscene  v_Y - v_I, Y an animal not in the scene whose leg count differs from I's and X's (one Y per scene, seeded)\nText edits as early_push (E-name, E-insert, E-head, E-cue, E-unrelated); E-cue is the C prompt, which for prompt -> *\nrebinds the stated sentence to X: the input-edit limit at s. Read: suite_split's (the top token after 'Answer:' and a\nspace): A (unchanged), b (X's answer), y (Y's legs; recall families only), oc (another in-context answer), other.\nFamilies: prompt -> memory (BR) is the positive control (a stated bridge, a recalled answer: D1 found that the\nlens-readable part of a stated bridge's change does the work there, 66%); prompt -> prompt (BL) is the test; memory ->\nprompt and memory -> memory (RL, RR) are off the path at s and w (their bridge comes from the cue) and the replication\nanchor at b. Only items the model answers right unedited count.\n\n",
+  "decision": "Decision rule (fixed 2026-10-22 before the run; the controls agreed with Dan):\n  select   on BR rows only: cells (subset s or w, layer, scale) where the lens push switches BR to X's answer in >= 30%\n           with Wilson lower bound >= 0.20, and the random push switches <= 5%. Primary cell: the selected cell with the\n           highest BR rate (ties: smaller scale, earlier layer, w before s). No selected cell: the lens does not write a\n           stated bridge at its sentence even for recall, and BL is not interpretable there (reported).\n  valid    at the primary cell, the lens push changes <= 10% of RL and of RR answers (off the path), and the random\n           push switches <= 5% of BL.\n  verdict  H-where (the stated null of slide 6 was a location artefact): BL switched >= 30% with lower bound >= 0.20.\n           H-around (consistent with D1: the lookup does not use the lens-writable form of a stated bridge): BL switched\n           <= 10% and the scene-paired bootstrap of BR - BL has its 2.5th percentile >= 0.20. Otherwise inconclusive.\n  reported, not decisive: every cell; c; b at layer 20, 8x against slide 6 (RL 73%, RR 84%, BL 1%, BR 2%); offscene\n           (BR to Y's legs, BL changed); the edits.\n\nRule v2 (fixed 2026-10-22 evening, after d4_where_27b and before the fresh-scene run; config \"rule\": \"v2\"). In\nd4_where_27b the primary cell (w, layer 28, 8x) changed 25% of RR, so the verdict was \"not valid\" while other cells\npassed. v2 moves the validity conditions into the selection: a cell is selected iff it passes v1's selection AND, at\nthat cell, the lens push changes <= 10% of RL and of RR and the random push switches <= 5% of BL. The primary cell is\nthe selected cell with the highest BR rate (v1's ties); the verdicts are v1's. Runs without \"rule\" in their config use\nv1. Fresh scenes (config \"scenes\": \"fresh\"): n scenes sampled (seed FRESH_SEED) from those eligible in all four\nfamilies under suite_split's rule (every competence prompt right) and not in the map run at all.\n\nRule v2.1 (amended 2026-10-22 20:35 +0200, Dan, while d4_where_fresh_27b ran and before any of its results was\nopened): v2 applied to d4_where_27b (already opened) picks the word at layer 16, 8x (recall 90%, lookup 20%:\ninconclusive), while every valid cell at layers 20-36 has lookup 0%; at layer 16 the push moves lookups too (an input\nedit by another name, or the lens writing the lookup early: open). So v2.1 = v2 with the decisive cell chosen among\nvalid cells at layers >= 20 (V21_MIN_LAYER); the valid cells below 20 are reported separately (below_v21). v2.1 was\nwritten knowing the old data, so v2 stays the main rule (revised 20:55): both verdicts are reported, and a\ndisagreement is stated as such. v2.1 is written by `analyze --name N --rule v2.1` into <run>/analysis-v2.1-<stamp>/\n(the run's own summary keeps v2).\n\nLayer-gap test (22 Oct 23:15, the outside review, before the run; `--patch`): at the stated bridge's word (w) and\nsentence (s), every second layer 12-34, the lens push (4x, 8x), a random push (8x) and the full patch of C's residual\nat those positions (its own size; C rebinds the sentence to X). lens_stop = the first grid layer from which the lens\npush (the larger of 4x and 8x) switches <= 5% of prompt -> prompt lookups at that and every later grid layer;\npatch_stop the same for the patch. At w: H-gap (between the two, the lookup's bridge is in the residual at the word but\noutside the lens) iff patch_stop - lens_stop >= 6 layers and the patch switches >= 30% of lookups (Wilson lower bound\n>= 0.20) at lens_stop; H-no-gap iff patch_stop - lens_stop <= 2; else inconclusive. Valid only if the random push\nswitches <= 5% of lookups at every grid layer. Reported: s the same way, the recall (BR) curves, the off-scene push.\nPrior (the review's guess): lens_stop ~18-20, patch_stop ~30; the D1 map's patch at the sentence moves 0% of lookups\nfrom layer 32 on (d1_map_n80_v1), so patch_stop <= 32 is expected.\n\nLayer-gap test v2 (Dan, 22 Oct 23:30, before its run d4_layer_gap_v2_27b; flags --patch --embed --gap-rule v2): a fourth\narm, the input-embedding difference W_E[X] - W_E[I] at the lens push's norms (is the layer-16 effect an input edit?).\nEach arm's valid cells: v2's off-path check with that arm's own rows. An arm STOPS at a layer iff at every valid cell\nof that layer its lookup switch rate has the Wilson upper bound < 5%; it KEEPS MOVING iff the lower bound > 5% at some\nvalid cell; arm_stop = the first grid layer from which it stops at every later layer that has a valid cell. H-gap iff\npatch_stop - lens_stop >= 6 and the patch keeps moving at lens_stop; H-no-gap iff <= 2; else inconclusive. The\nembedding arm's stop and moving layers reported next to the lens's.\n\nLayer-16 test (the night brief's T4, 22 Oct 23:00, before the run; `--embed --subsets w`): at the stated bridge's word,\nlayers 12-24 every second, scales 1/2/4/8, three directions of equal norm: the lens word difference, the input-embedding\ndifference W_E[X] - W_E[I] (an input edit's direction), a random direction. Valid cells: v2's off-path check. At the\nvalid cells of layers 16 and 18, items pooled, per item d_lens = lens - 2 x embed and d_input = embed - 0.5 x lens (1 =\nthe lookup switched to X), entity-cluster bootstrap (the bridge). H_lens iff d_lens's lower bound > 0 (the lens writes\nlookup-relevant information before layer 20). H_input iff d_input's lower bound >= 0 and at layer 20 both pushes\nswitch <= 5% of lookups at every scale (layer 16 is an input edit). No lead iff the lens push switches <= 5% of lookups\nat 16-18. Else inconclusive.\n\n"
+}

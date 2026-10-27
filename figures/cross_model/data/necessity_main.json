@@ -1,0 +1,425 @@
+[
+ {
+  "value": 82.77777777777777,
+  "what": "lookups switched, part full",
+  "finding": "f2",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   76.59200997039709,
+   87.59368031950464
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_parts_27b/outcomes.jsonl",
+  "extra": {
+   "family": "PP",
+   "part": "full",
+   "set": "context",
+   "layer": 32
+  }
+ },
+ {
+  "value": 81.0,
+  "what": "lookups switched, the rest",
+  "finding": "f2",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   74.16043794180396,
+   85.6736801250536
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "rest",
+   "ci_from": "results/d1_verdict/d1_topics2_parts_27b_20261022-204445/verdict.json"
+  }
+ },
+ {
+  "value": 0.6,
+  "what": "lookups switched, lens-readable part",
+  "finding": "f2",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.1,
+   3.1
+  ],
+  "n": 180,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, same-share random part",
+  "finding": "f2",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   2.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random lookups"
+  }
+ },
+ {
+  "value": 77.77777777777779,
+  "what": "recalls switched, part full",
+  "finding": "f2",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   71.15961997536944,
+   83.2350328126829
+  ],
+  "n": 180,
+  "source": "results/statement_positions/d1_topics2_parts_27b/outcomes.jsonl",
+  "extra": {
+   "family": "PM",
+   "part": "full",
+   "set": "context",
+   "layer": 32
+  }
+ },
+ {
+  "value": 27.22222222222222,
+  "what": "recalls switched, the rest",
+  "finding": "f2",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   21.246399571150317,
+   34.149985142646784
+  ],
+  "n": 180,
+  "source": "results/d1_verdict/d1_topics2_parts_27b_20261022-204445/verdict.json",
+  "extra": {
+   "key": "recall.not_jspace"
+  }
+ },
+ {
+  "value": 38.0,
+  "what": "recalls switched, lens-readable part",
+  "finding": "f2",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   32.0,
+   46.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 0.0,
+  "what": "recalls switched, same-share random part",
+  "finding": "f2",
+  "model": "27b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   2.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random recalls"
+  }
+ },
+ {
+  "value": 55.55555555555556,
+  "what": "lookups switched, part full",
+  "finding": "f2",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   48.25551403258598,
+   62.62341652502449
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "family": "PP",
+   "part": "full",
+   "set": "context",
+   "layer": 16
+  }
+ },
+ {
+  "value": 52.0,
+  "what": "lookups switched, the rest",
+  "finding": "f2",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   44.95501125747,
+   59.39656096557419
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "rest",
+   "ci_from": "results/d1_verdict/qwen35_9b_d1_topics2_parts_20261022-185955/verdict.json"
+  }
+ },
+ {
+  "value": 0.6,
+  "what": "lookups switched, lens-readable part",
+  "finding": "f2",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.1,
+   3.1
+  ],
+  "n": 180,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 0.0,
+  "what": "lookups switched, same-share random part",
+  "finding": "f2",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   2.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random lookups"
+  }
+ },
+ {
+  "value": 63.888888888888886,
+  "what": "recalls switched, part full",
+  "finding": "f2",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   56.64927882840125,
+   70.5480475656249
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_9b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "family": "PM",
+   "part": "full",
+   "set": "context",
+   "layer": 16
+  }
+ },
+ {
+  "value": 10.555555555555555,
+  "what": "recalls switched, the rest",
+  "finding": "f2",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   6.86224510893259,
+   15.897347932033112
+  ],
+  "n": 180,
+  "source": "results/d1_verdict/qwen35_9b_d1_topics2_parts_20261022-185955/verdict.json",
+  "extra": {
+   "key": "recall.not_jspace"
+  }
+ },
+ {
+  "value": 56.0,
+  "what": "recalls switched, lens-readable part",
+  "finding": "f2",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   48.0,
+   63.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "recalls switched, same-share random part",
+  "finding": "f2",
+  "model": "9b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   1.0,
+   5.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random recalls"
+  }
+ },
+ {
+  "value": 99.44444444444444,
+  "what": "lookups switched, part full",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   96.92061604403328,
+   99.90186591869987
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "family": "PP",
+   "part": "full",
+   "set": "context",
+   "layer": 24
+  }
+ },
+ {
+  "value": 75.0,
+  "what": "lookups switched, the rest",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   68.1964014563061,
+   80.758786052941
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "rest",
+   "ci_from": "results/d1_verdict/qwen35_122b_d1_topics2_parts_20261023-022547/verdict.json"
+  }
+ },
+ {
+  "value": 29.4,
+  "what": "lookups switched, lens-readable part",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   23.3,
+   36.5
+  ],
+  "n": 180,
+  "source": "grid.csv",
+  "extra": {}
+ },
+ {
+  "value": 1.0,
+  "what": "lookups switched, same-share random part",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   0.0,
+   4.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random lookups"
+  }
+ },
+ {
+  "value": 97.22222222222221,
+  "what": "recalls switched, part full",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   93.6631043591737,
+   98.80780538051525
+  ],
+  "n": 180,
+  "source": "results/statement_positions/qwen35_122b_d1_topics2_parts/outcomes.jsonl",
+  "extra": {
+   "family": "PM",
+   "part": "full",
+   "set": "context",
+   "layer": 24
+  }
+ },
+ {
+  "value": 57.22222222222222,
+  "what": "recalls switched, the rest",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   49.917743380385026,
+   64.22486634450858
+  ],
+  "n": 180,
+  "source": "results/d1_verdict/qwen35_122b_d1_topics2_parts_20261023-022547/verdict.json",
+  "extra": {
+   "key": "recall.not_jspace"
+  }
+ },
+ {
+  "value": 38.0,
+  "what": "recalls switched, lens-readable part",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   31.0,
+   45.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "recall"
+  }
+ },
+ {
+  "value": 2.0,
+  "what": "recalls switched, same-share random part",
+  "finding": "f2",
+  "model": "122b",
+  "setting": "draw 2",
+  "part": "",
+  "ci": [
+   1.0,
+   5.0
+  ],
+  "n": 180,
+  "source": "grid.csv control",
+  "extra": {
+   "control": "random recalls"
+  }
+ }
+]

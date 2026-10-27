@@ -1,0 +1,41 @@
+{
+  "target": "muse-glimmer-30b",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "checks": {
+    "greedy": [
+      true,
+      true
+    ],
+    "residual_zero": [
+      true,
+      true
+    ],
+    "residual_push": [
+      true,
+      true
+    ],
+    "block_all": [
+      true,
+      true
+    ],
+    "block_heads": [
+      true,
+      true
+    ],
+    "block_empty": [
+      true,
+      true
+    ]
+  },
+  "lens_ok": true,
+  "lens_error": null,
+  "all_hooks_ok": true,
+  "seconds": 26
+}

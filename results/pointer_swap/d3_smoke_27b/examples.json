@@ -1,0 +1,957 @@
+{
+ "exp": "pointer_swap",
+ "run": "d3_smoke_27b",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group final, layers [48] and the transit window",
+ "groups": [
+  {
+   "key": "none",
+   "title": "none",
+   "definition": "the patch left the base answer",
+   "n_total": 15
+  },
+  {
+   "key": "position",
+   "title": "position",
+   "definition": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+   "n_total": 1
+  },
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 4
+  },
+  {
+   "key": "identity",
+   "title": "identity",
+   "definition": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
+   "n_total": 2
+  },
+  {
+   "key": "context",
+   "title": "context",
+   "definition": "another digit of the base context, predicted by no hypothesis",
+   "n_total": 2
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 11
+  }
+ ],
+ "examples": [
+  {
+   "group": "none",
+   "family": "RL",
+   "item_id": "planets-RL-e5f0-0056",
+   "domain": "planets",
+   "prompt": "<|im_start|>user\nThe Earth card is in locker 8. The Jupiter card is in locker 9. The Venus card is in locker 6. The Saturn card is in locker 7. The Mars card is in locker 3.\nWhich locker holds the card for the largest planet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 225,
+     "end": 328,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 80,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 111,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 206,
+     "end": 224,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe Saturn card is in locker 3. The Jupiter card is in locker 6. The Mars card is in locker 7. The Earth card is in locker 8. The Venus card is in locker 1.\nWhich locker holds the card for the hottest planet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 143,
+     "end": 173,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "none": "9",
+     "identity": "6",
+     "position": "3",
+     "value": "1"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.5209,
+     "identity": 0.2461,
+     "position": 0.0259,
+     "value": 0.0123
+    },
+    "layer": "transit",
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('9')"
+  },
+  {
+   "group": "none",
+   "family": "RR",
+   "item_id": "elements-RR-e5f0-0024",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 1. The helium card is in locker 4. The oxygen card is in locker 8. The lithium card is in locker 9. The nitrogen card is in locker 5.\nWhat is the atomic number of the phone battery metal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 233,
+     "end": 336,
+     "role": "patched (final)"
+    },
+    {
+     "start": 113,
+     "end": 145,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 49,
+     "end": 80,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 146,
+     "end": 179,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 209,
+     "end": 232,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe oxygen card is in locker 9. The carbon card is in locker 8. The lithium card is in locker 4. The nitrogen card is in locker 1. The helium card is in locker 6.\nWhat is the atomic number of the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 148,
+     "end": 179,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "none": "3",
+     "identity": "2",
+     "position": "7",
+     "value": "2"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.7341,
+     "identity": 0.2383,
+     "position": 0.0003,
+     "value": 0.2383
+    },
+    "layer": "transit",
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('3')"
+  },
+  {
+   "group": "none",
+   "family": "RL",
+   "item_id": "planets-RL-e5f0-0056",
+   "domain": "planets",
+   "prompt": "<|im_start|>user\nThe Earth card is in locker 8. The Jupiter card is in locker 9. The Venus card is in locker 6. The Saturn card is in locker 7. The Mars card is in locker 3.\nWhich locker holds the card for the largest planet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 225,
+     "end": 328,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 80,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 111,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 206,
+     "end": 224,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe Saturn card is in locker 3. The Jupiter card is in locker 6. The Mars card is in locker 7. The Earth card is in locker 8. The Venus card is in locker 1.\nWhich locker holds the card for the hottest planet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 143,
+     "end": 173,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "none": "9",
+     "identity": "6",
+     "position": "3",
+     "value": "1"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.7349,
+     "identity": 0.1277,
+     "position": 0.0222,
+     "value": 0.003
+    },
+    "layer": 48,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('9')"
+  },
+  {
+   "group": "position",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0054",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 9. The bee's locker is 1. The lion's locker is 5. The horse's locker is 7. The wolf's locker is 3.\nWhich locker belongs to the turkey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 174,
+     "end": 277,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 42,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 90,
+     "end": 114,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 43,
+     "end": 65,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 167,
+     "end": 173,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe bee's locker is 1. The horse's locker is 8. The turkey's locker is 9. The lion's locker is 7. The wolf's locker is 5.\nWhich locker belongs to the horse? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "1",
+    "expected": {
+     "none": "9",
+     "identity": "7",
+     "position": "1",
+     "value": "8"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0952,
+     "identity": 0.1778,
+     "position": 0.7033,
+     "value": 0.0003
+    },
+    "layer": 48,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('1')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0054",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 9. The bee's locker is 1. The lion's locker is 5. The horse's locker is 7. The wolf's locker is 3.\nWhich locker belongs to the turkey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 174,
+     "end": 277,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 42,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 90,
+     "end": 114,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 43,
+     "end": 65,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 167,
+     "end": 173,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe bee's locker is 1. The horse's locker is 8. The turkey's locker is 9. The lion's locker is 7. The wolf's locker is 5.\nWhich locker belongs to the horse? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "8",
+    "expected": {
+     "none": "9",
+     "identity": "7",
+     "position": "1",
+     "value": "8"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0466,
+     "identity": 0.0987,
+     "position": 0.0104,
+     "value": 0.8266
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('8')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "elements-DL-e5f0-0024",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe carbon card is in locker 1. The helium card is in locker 4. The oxygen card is in locker 8. The lithium card is in locker 9. The nitrogen card is in locker 5.\nWhich locker holds the lithium card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 216,
+     "end": 319,
+     "role": "patched (final)"
+    },
+    {
+     "start": 113,
+     "end": 145,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 49,
+     "end": 80,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 146,
+     "end": 179,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 203,
+     "end": 210,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe oxygen card is in locker 9. The carbon card is in locker 8. The lithium card is in locker 4. The nitrogen card is in locker 1. The helium card is in locker 6.\nWhich locker holds the helium card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 148,
+     "end": 179,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "6",
+    "expected": {
+     "none": "9",
+     "identity": "4",
+     "position": "5",
+     "value": "6"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0845,
+     "identity": 0.0008,
+     "position": 0.0003,
+     "value": 0.9081
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('6')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "months-DL-e5f0-0048",
+   "domain": "months",
+   "prompt": "<|im_start|>user\nThe September card is in locker 8. The May card is in locker 3. The April card is in locker 6. The July card is in locker 7. The January card is in locker 1.\nWhich locker holds the September card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 213,
+     "end": 316,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 51,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 111,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 52,
+     "end": 80,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 198,
+     "end": 207,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe July card is in locker 7. The April card is in locker 2. The September card is in locker 6. The January card is in locker 3. The May card is in locker 1.\nWhich locker holds the April card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 47,
+     "end": 77,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "2",
+    "expected": {
+     "none": "8",
+     "identity": "6",
+     "position": "3",
+     "value": "2"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0397,
+     "identity": 0.0001,
+     "position": 0.332,
+     "value": 0.6203
+    },
+    "layer": "transit",
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('2')"
+  },
+  {
+   "group": "identity",
+   "family": "RR",
+   "item_id": "animals-RR-e5f0-0054",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 9. The bee's locker is 1. The lion's locker is 5. The horse's locker is 7. The wolf's locker is 3.\nHow many legs does the animal known for gobbling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 193,
+     "end": 296,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 42,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 90,
+     "end": 114,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 43,
+     "end": 65,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 179,
+     "end": 187,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe bee's locker is 1. The horse's locker is 8. The turkey's locker is 9. The lion's locker is 7. The wolf's locker is 5.\nHow many legs does the animal known for neighing have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "none": "2",
+     "identity": "4",
+     "position": "6",
+     "value": "4"
+    },
+    "unedited_read": "2"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.4639,
+     "identity": 0.5256,
+     "position": 0.0001,
+     "value": 0.5256
+    },
+    "layer": "transit",
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('4')"
+  },
+  {
+   "group": "identity",
+   "family": "RR",
+   "item_id": "animals-RR-e5f0-0054",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 9. The bee's locker is 1. The lion's locker is 5. The horse's locker is 7. The wolf's locker is 3.\nHow many legs does the animal known for gobbling have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 193,
+     "end": 296,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 42,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 90,
+     "end": 114,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 43,
+     "end": 65,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 179,
+     "end": 187,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe bee's locker is 1. The horse's locker is 8. The turkey's locker is 9. The lion's locker is 7. The wolf's locker is 5.\nHow many legs does the animal known for neighing have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 40,
+     "end": 64,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "none": "2",
+     "identity": "4",
+     "position": "6",
+     "value": "4"
+    },
+    "unedited_read": "2"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.4027,
+     "identity": 0.5859,
+     "position": 0.0001,
+     "value": 0.5859
+    },
+    "layer": 48,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('4')"
+  },
+  {
+   "group": "context",
+   "family": "RR",
+   "item_id": "planets-RR-e5f0-0056",
+   "domain": "planets",
+   "prompt": "<|im_start|>user\nThe Earth card is in locker 8. The Jupiter card is in locker 9. The Venus card is in locker 6. The Saturn card is in locker 7. The Mars card is in locker 3.\nWhat number is the largest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 230,
+     "end": 333,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 80,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 111,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 189,
+     "end": 207,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe Saturn card is in locker 3. The Jupiter card is in locker 6. The Mars card is in locker 7. The Earth card is in locker 8. The Venus card is in locker 1.\nWhat number is the hottest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 143,
+     "end": 173,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "6",
+    "expected": {
+     "none": "5",
+     "identity": "2",
+     "position": "4",
+     "value": "2"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.122,
+     "identity": 0.0508,
+     "position": 0.0508,
+     "value": 0.0508
+    },
+    "layer": "transit",
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('6')"
+  },
+  {
+   "group": "context",
+   "family": "RR",
+   "item_id": "planets-RR-e5f0-0056",
+   "domain": "planets",
+   "prompt": "<|im_start|>user\nThe Earth card is in locker 8. The Jupiter card is in locker 9. The Venus card is in locker 6. The Saturn card is in locker 7. The Mars card is in locker 3.\nWhat number is the largest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 230,
+     "end": 333,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 80,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 111,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 189,
+     "end": 207,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe Saturn card is in locker 3. The Jupiter card is in locker 6. The Mars card is in locker 7. The Earth card is in locker 8. The Venus card is in locker 1.\nWhat number is the hottest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 143,
+     "end": 173,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "6",
+    "expected": {
+     "none": "5",
+     "identity": "2",
+     "position": "4",
+     "value": "2"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1673,
+     "identity": 0.0423,
+     "position": 0.0698,
+     "value": 0.0423
+    },
+    "layer": 48,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('6')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RR",
+   "item_id": "planets-RR-e5f0-0056",
+   "domain": "planets",
+   "prompt": "<|im_start|>user\nThe Earth card is in locker 8. The Jupiter card is in locker 9. The Venus card is in locker 6. The Saturn card is in locker 7. The Mars card is in locker 3.\nWhat number is the largest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 230,
+     "end": 333,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 80,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 111,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 189,
+     "end": 207,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe Saturn card is in locker 3. The Jupiter card is in locker 6. The Mars card is in locker 7. The Earth card is in locker 8. The Venus card is in locker 1.\nWhat number is the hottest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 143,
+     "end": 173,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer mid (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "9",
+    "expected": {
+     "none": "5",
+     "identity": "2",
+     "position": "4",
+     "value": "2"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2502,
+     "identity": 0.0076,
+     "position": 0.0384,
+     "value": 0.0076
+    },
+    "layer": "mid",
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('9')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RR",
+   "item_id": "planets-RR-e5f0-0056",
+   "domain": "planets",
+   "prompt": "<|im_start|>user\nThe Earth card is in locker 8. The Jupiter card is in locker 9. The Venus card is in locker 6. The Saturn card is in locker 7. The Mars card is in locker 3.\nWhat number is the largest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 230,
+     "end": 333,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 80,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 111,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 189,
+     "end": 207,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe Saturn card is in locker 3. The Jupiter card is in locker 6. The Mars card is in locker 7. The Earth card is in locker 8. The Venus card is in locker 1.\nWhat number is the hottest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 143,
+     "end": 173,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 24 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "9",
+    "expected": {
+     "none": "5",
+     "identity": "2",
+     "position": "4",
+     "value": "2"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1894,
+     "identity": 0.0073,
+     "position": 0.0373,
+     "value": 0.0073
+    },
+    "layer": 24,
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('9')"
+  },
+  {
+   "group": "same_changed",
+   "family": "RR",
+   "item_id": "planets-RR-e5f0-0056",
+   "domain": "planets",
+   "prompt": "<|im_start|>user\nThe Earth card is in locker 8. The Jupiter card is in locker 9. The Venus card is in locker 6. The Saturn card is in locker 7. The Mars card is in locker 3.\nWhat number is the largest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 230,
+     "end": 333,
+     "role": "patched (final)"
+    },
+    {
+     "start": 48,
+     "end": 80,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 111,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 144,
+     "end": 173,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 189,
+     "end": 207,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe Saturn card is in locker 3. The Jupiter card is in locker 6. The Mars card is in locker 7. The Earth card is in locker 8. The Venus card is in locker 1.\nWhat number is the hottest planet in order from the sun? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 143,
+     "end": 173,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer early (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "9",
+    "expected": {
+     "none": "5",
+     "identity": "2",
+     "position": "4",
+     "value": "2"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2217,
+     "identity": 0.0076,
+     "position": 0.0385,
+     "value": 0.0076
+    },
+    "layer": "early",
+    "role": "context"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('9')"
+  }
+ ]
+}

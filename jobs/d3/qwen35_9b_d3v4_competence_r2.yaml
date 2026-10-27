@@ -1,0 +1,22 @@
+id: qwen35_9b_d3v4_competence_r2
+title: "Gate: can Qwen3.5-9B answer pointer_v4's scenes (countries, animals, body parts)?"
+thread: D3
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_v4.py manifest --set main --name qwen35_9b_d3v4_competence_r2
+  --why "a smaller model of the same family (hybrid, 8 attention + 24 DeltaNet layers): pointer_v4's main scenes,
+  chat format, every prompt and step"
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_v4.py competence --name qwen35_9b_d3v4_competence_r2
+question: 'Does Qwen3.5-9B answer pointer_v4''s prompts (every topic and family, alt and control prompts, steps alone)?'
+why_it_matters: 'Gate for qwen35_9b_d3v4_swap_r2 and qwen35_9b_d2_v4_late_read_r2.'
+hypotheses:
+  H-gate: 'memory -> prompt and named -> prompt >= 80% right per topic. Prior 0.6'
+decision_rule: 'pointer_v1''s competence rule (every prompt of an item right = eligible).'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'pointer_v4 main (up to 300 scenes per topic x 3 families)'
+seeds: [841]
+notes: '~0.2 GPU-h.'

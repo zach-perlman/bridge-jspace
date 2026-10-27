@@ -1,0 +1,24 @@
+id: x0_122b_b6
+title: "122B b6 (Dan, 25 Oct ~00:20; held-out model): varied scenes at L33, prose and tables, levels 0-1 only, one-change edit, X0b's pooled rule"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 2.5
+depends_on: [x0_replicate]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0b_generalize.py run --name qwen35_122b_x0b_v2 --set x0b_v2 --formats prose table --levels 0 1 --no-curve --why "X0b on the 122B (b6, Dan 25 Oct ~00:20): prose and tables, levels 0-1, L33"
+question: >-
+  On the 122B at L33, does X0b's pooled rule hold on the varied scenes (7 topics; prose and tables; levels 0-1; the one-change edit)?
+why_it_matters: >-
+  The grid row "varied scenes" on the held-out model.
+hypotheses:
+  H-holds: 'the pooled rule holds. Prior: Dan''s Q31.8 (batch 31)'
+decision_rule: >-
+  Fixed in advance (X0b.md's pooled rule, as run on the 9B / 27B): holds iff lookup excess <= 0.10 (upper CI <= 0.20) and C >= 0.20 (lower CI >= 0.10); fails iff lookup excess >= 0.20 or C's upper CI < 0.10; otherwise mixed; over the cells (domain x format x level) that pass the gate (>= 0.80 unedited org accuracy, both readers), at most 40 eligible scenes per cell. Only prose and tables, levels 0-1 (Dan: to fit the night); no k-curve. Results stay closed until Dan's batch-31 commit.
+controls:
+- 'a random-subspace part at the J++ part''s share'
+- 'both readers on the identical patch'
+- 'the gate per cell'
+n: 'at most 40 eligible scenes in each of the 28 cells (7 domains x 2 formats x 2 levels)'
+seeds: [0]
+notes: "122B on both GPUs. Dropped first if the night runs out (Dan ~00:20: drop b6, then b5)."

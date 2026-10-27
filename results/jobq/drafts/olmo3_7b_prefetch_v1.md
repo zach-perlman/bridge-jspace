@@ -1,0 +1,1 @@
+2026-10-21 | jobq olmo3_7b_prefetch_v1 (code d94c169, NVIDIA A100 80GB PCIe, run 2m, total 2m; spec jobs/d5/olmo3_7b_prefetch_v1.yaml; no results dir) | Download the four pinned OLMo-3-7B checkpoints and their lenses into the HF cache (no GPU). | (fill in from no results dir) n=4 checkpoints, 5 lens files, seeds=[0]; exit 0 | none | UNVERIFIED; verdict: (human)

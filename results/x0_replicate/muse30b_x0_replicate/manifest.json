@@ -1,0 +1,85 @@
+{
+  "exp": "x0_replicate",
+  "run": "muse30b_x0_replicate",
+  "written_utc": "2026-10-26T02:26:10Z",
+  "note": "Fixed in advance (Dan, 25 Oct morning item 4; spec jobs/c3/x0_replicate.yaml; prediction: batch 31).",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "bb7ecdf4b3062b01647ad7cd7b0786a90e4cb21f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "set": "d1_topics_v5",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v5/items.jsonl": "8bdf3b9c7dc916819631d3ab7554a1bcc750d3d24f9afaebc296c43d5bccb97e"
+  },
+  "layer": 26,
+  "decisive": false,
+  "alt": "single",
+  "items_rule": "chat; org and alt locker sentences both before the asked pick; eligible as in X0; the first N in scene order",
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "parts": [
+    [
+      "jpp",
+      25,
+      "signed"
+    ],
+    [
+      "alf",
+      0,
+      "proj"
+    ],
+    [
+      "pca_eq",
+      0,
+      "eq"
+    ]
+  ],
+  "keep": [
+    [
+      "w",
+      0,
+      "lsq"
+    ],
+    [
+      "jwo",
+      25,
+      "signed"
+    ]
+  ],
+  "alf_from": "muse30b_x0_probe_v4",
+  "rule": "holds iff J++: recall excess >= 0.20 with lower CI > 0 and lookup excess <= 0.10; and Alf: lookup excess >= 0.20 with lower CI > 0 and recall excess <= 0.10 or at most half the lookup's (point estimates where no CI is named)",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "pca_held_out": 0
+  },
+  "pca": {
+    "set": "d1_topics_v4",
+    "prompts": 200,
+    "tokens": 20865,
+    "seed": 0,
+    "n": 2000,
+    "variance_share": 0.992808198190467
+  },
+  "items": 200
+}

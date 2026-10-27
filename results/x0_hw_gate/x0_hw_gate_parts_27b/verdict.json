@@ -1,0 +1,146 @@
+{
+  "new": "x0_hw_gate_parts_27b",
+  "ref": "d1_necessity_parts_27b_r2",
+  "cell": "bridge_word:16",
+  "written_utc": "2026-10-24T12:44:51Z",
+  "inputs": {
+    "x0_hw_gate_parts_27b": "abbbcf482a62d9050993a8f94cd8f963e2029cb97a1c31e1d43adbf0c656aed9",
+    "d1_necessity_parts_27b_r2": "9119d63db76ae99e2247deb9ef4de2226714c566a45441d2b60f9aa784c0fbd5"
+  },
+  "shared_rows": 7784,
+  "only_new": 0,
+  "only_ref": 0,
+  "groups": {
+    "gated": {
+      "rows": 2744,
+      "agreement": 0.9898,
+      "median_abs_ld_diff": 0.063
+    },
+    "part full": {
+      "rows": 584,
+      "agreement": 0.9966,
+      "median_abs_ld_diff": 0.062
+    },
+    "part jspace": {
+      "rows": 360,
+      "agreement": 0.9778,
+      "median_abs_ld_diff": 0.125
+    },
+    "part jspace null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part jspace_matched": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.063
+    },
+    "part jspace_wo_own": {
+      "rows": 360,
+      "agreement": 0.9722,
+      "median_abs_ld_diff": 0.125
+    },
+    "part jspace_wo_own null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part lens2": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.063
+    },
+    "part lens2 null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part lens2_matched": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part not_jspace": {
+      "rows": 360,
+      "agreement": 0.9889,
+      "median_abs_ld_diff": 0.125
+    },
+    "part not_jspace null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part not_jspace_matched": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part not_jspace_matched null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part not_lens2": {
+      "rows": 360,
+      "agreement": 0.9889,
+      "median_abs_ld_diff": 0.063
+    },
+    "part not_lens2 null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part not_rand_sub": {
+      "rows": 360,
+      "agreement": 0.9778,
+      "median_abs_ld_diff": 0.126
+    },
+    "part not_rand_sub null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part rand_omp": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.063
+    },
+    "part rand_omp null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "part rand_sub": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.124
+    },
+    "part rand_sub null": {
+      "rows": 360,
+      "agreement": 1.0,
+      "median_abs_ld_diff": 0.062
+    },
+    "random draws (reported)": {
+      "rows": 5040,
+      "agreement": 0.9984,
+      "median_abs_ld_diff": 0.063
+    },
+    "reader PM": {
+      "rows": 3892,
+      "agreement": 0.9961,
+      "median_abs_ld_diff": 0.063
+    },
+    "reader PP": {
+      "rows": 3892,
+      "agreement": 0.9946,
+      "median_abs_ld_diff": 0.063
+    }
+  },
+  "gate": {
+    "rows": 2744,
+    "agreement": 0.9898,
+    "min": 0.97,
+    "pass": true
+  }
+}

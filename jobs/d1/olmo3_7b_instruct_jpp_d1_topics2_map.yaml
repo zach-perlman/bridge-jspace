@@ -1,0 +1,25 @@
+id: olmo3_7b_instruct_jpp_d1_topics2_map
+title: "D1 doubled (OLMo-3-7B-Instruct, our J++): the map on the depth-scaled grid"
+thread: D1
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.5
+depends_on:
+- olmo3_7b_instruct_jpp_lens_gate
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_precheck.py --gate olmo3_7b_instruct_jpp_lens_gate --competence olmo3_7b_instruct_d1_topics2_competence
+  && BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/statement_positions.py map --name olmo3_7b_instruct_jpp_d1_topics2_smoke --families PP PM --n 3 --layers 16 20 --tasks-set d1_topics_v2 --tasks-competence olmo3_7b_instruct_d1_topics2_competence --why "smoke: not a result"
+  && BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/statement_positions.py map --name olmo3_7b_instruct_jpp_d1_topics2_map --families PP PM --n 180 --tasks-set d1_topics_v2 --tasks-competence olmo3_7b_instruct_d1_topics2_competence --why "D1 on OLMo with our J++: the map on the depth-scaled grid"
+question: >-
+  Where is a stated bridge in transit for PP and PM on OLMo-3-7B-Instruct, on the depth-scaled grid (every 2nd layer) that a lens at every layer allows?
+why_it_matters: >-
+  The plain J-lens run stopped: its lens exists only at every 3rd layer, and at those layers (18, 21) the lens-free map had no transit cell in the window. Our J++ has every layer, so the map can use the default grid.
+hypotheses:
+  H-transit: 'a PP statement cell is in transit at 16, 18 or 20. Prior 0.5 (agent''s)'
+decision_rule: >-
+  Runs iff our J++ passes gate v1 and >= 2 topics have >= 30 eligible scenes (scripts/d1_precheck.py). The map is lens-free; the same scenes and competence as olmo3_7b_instruct_d1_topics2_map; only the grid differs (default: every 2nd layer, N/16 as for the 9B; window [16, 22), the 27B's layers scaled by depth, unchanged). Primary lens: ours (Dan, 23 Oct ~00:30); no silent switch.
+controls:
+- 'the plain J-lens map (olmo3_7b_instruct_d1_topics2_map) on the same scenes, reported'
+n: '180 scenes (PP and PM), d1_topics_v2, right on every prompt (olmo3_7b_instruct_d1_topics2_competence)'
+seeds: [0]
+notes: "Dan, 23 Oct ~00:30: every lens result on J++. Not opened before Dan's predictions."

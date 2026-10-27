@@ -1,0 +1,693 @@
+{
+ "exp": "attn_knockout",
+ "run": "qwen3_32b_d2_parts_seed2_animals",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "path_breaks",
+   "title": "A path statement blocked, the answer lost",
+   "definition": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong",
+   "n_total": 166
+  },
+  {
+   "key": "path_confusion",
+   "title": "Lost to another statement's answer",
+   "definition": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)",
+   "n_total": 119
+  },
+  {
+   "key": "path_survives",
+   "title": "A path statement blocked from the answer site, the answer kept",
+   "definition": "source on the path, destination final or both, all layers, edited read still right",
+   "n_total": 7
+  },
+  {
+   "key": "control_breaks",
+   "title": "A control span blocked, the answer lost (collateral damage)",
+   "definition": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong",
+   "n_total": 3
+  },
+  {
+   "key": "positive_control",
+   "title": "Path statement invisible to everything after it",
+   "definition": "source on the path, destination after, all layers, DeltaNet mode absent (no write, erase or decay at S): any outcome",
+   "n_total": 0
+  }
+ ],
+ "examples": [
+  {
+   "group": "path_breaks",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0080",
+   "prompt": "<|im_start|>user\nThe camel's locker is 3. The bear's locker is 9. The butterfly's locker is 5. The mosquito's locker is 8. The crow's locker is 7.\nIn which locker does the animal known for cawing keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 122,
+     "end": 147,
+     "role": "source"
+    },
+    {
+     "start": 147,
+     "end": 256,
+     "role": "destination"
+    },
+    {
+     "start": 168,
+     "end": 195,
+     "role": "cue"
+    },
+    {
+     "start": 127,
+     "end": 131,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup span (\"The crow's locker is 7.\") directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "7",
+    "edited": "4",
+    "expected": {
+     "H_answer_site": "7",
+     "H_relay": "not 7"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0001,
+    "logp_answer_edited": -4.566,
+    "dlogp": -4.5659,
+    "correct": false,
+    "kept": false,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "7",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0086",
+   "prompt": "<|im_start|>user\nLocker 6 belongs to the crow. Locker 3 belongs to the snake. Locker 9 belongs to the frog. Locker 8 belongs to the tiger. Locker 1 belongs to the goose.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 46,
+     "end": 77,
+     "role": "source"
+    },
+    {
+     "start": 266,
+     "end": 326,
+     "role": "destination"
+    },
+    {
+     "start": 193,
+     "end": 221,
+     "role": "cue"
+    },
+    {
+     "start": 71,
+     "end": 76,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('Locker 3 belongs to the snake.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "9",
+    "expected": {
+     "H_answer_site": "not 3",
+     "H_relay": "3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0058,
+    "logp_answer_edited": -10.6486,
+    "dlogp": -10.6428,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "6",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_breaks",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0012",
+   "prompt": "<|im_start|>user\nThe frog's locker is 5. The duck's locker is 8. The lion's locker is 9. The sheep's locker is 3. The bee's locker is 1.\nWhich locker belongs to the animal known for its roar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 64,
+     "end": 88,
+     "role": "source"
+    },
+    {
+     "start": 235,
+     "end": 295,
+     "role": "destination"
+    },
+    {
+     "start": 161,
+     "end": 190,
+     "role": "cue"
+    },
+    {
+     "start": 69,
+     "end": 73,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span (\"The lion's locker is 9.\") directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "9",
+    "edited": "8",
+    "expected": {
+     "H_answer_site": "not 9",
+     "H_relay": "9"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0,
+    "logp_answer_edited": -11.1338,
+    "dlogp": -11.1337,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "9",
+    "other_answers_in_prompt": [
+     "1",
+     "3",
+     "5",
+     "8"
+    ]
+   },
+   "why": "source on the family's path, all layers (heads grid: every attention layer of a range), unedited read right, edited read wrong"
+  },
+  {
+   "group": "path_confusion",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0041",
+   "prompt": "<|im_start|>user\nLocker 7 belongs to the camel. Locker 3 belongs to the eagle. Locker 8 belongs to the bee. Locker 5 belongs to the spider. Locker 1 belongs to the goat.\nWhat locker is used by the animal known for its humps? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 47,
+     "role": "source"
+    },
+    {
+     "start": 268,
+     "end": 328,
+     "role": "destination"
+    },
+    {
+     "start": 193,
+     "end": 223,
+     "role": "cue"
+    },
+    {
+     "start": 41,
+     "end": 46,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('Locker 7 belongs to the camel.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "7",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 7",
+     "H_relay": "7"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0002,
+    "logp_answer_edited": -10.6277,
+    "dlogp": -10.6275,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "7",
+    "other_answers_in_prompt": [
+     "1",
+     "3",
+     "5",
+     "8"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0078",
+   "prompt": "<|im_start|>user\nThe worm keeps its things in locker 7. The bear keeps its things in locker 1. The camel keeps its things in locker 3. The fish keeps its things in locker 9. The butterfly keeps its things in locker 2.\nWhich locker belongs to the animal known for wriggling underground? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "source"
+    },
+    {
+     "start": 329,
+     "end": 389,
+     "role": "destination"
+    },
+    {
+     "start": 242,
+     "end": 284,
+     "role": "cue"
+    },
+    {
+     "start": 21,
+     "end": 25,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The worm keeps its things in locker 7.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "7",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 7",
+     "H_relay": "7"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0227,
+    "logp_answer_edited": -5.7149,
+    "dlogp": -5.6922,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "7",
+    "other_answers_in_prompt": [
+     "1",
+     "2",
+     "3",
+     "9"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_confusion",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0076",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 7. The sheep's locker is 1. The ant's locker is 3. The chicken's locker is 9. The rabbit's locker is 8.\nWhat locker is used by the animal known for its long ears? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 117,
+     "end": 144,
+     "role": "source"
+    },
+    {
+     "start": 144,
+     "end": 246,
+     "role": "destination"
+    },
+    {
+     "start": 167,
+     "end": 201,
+     "role": "cue"
+    },
+    {
+     "start": 122,
+     "end": 128,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup span (\"The rabbit's locker is 8.\") directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "8",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "8",
+     "H_relay": "not 8"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0001,
+    "logp_answer_edited": -3.0775,
+    "dlogp": -3.0773,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "8",
+    "other_answers_in_prompt": [
+     "1",
+     "3",
+     "7",
+     "9"
+    ]
+   },
+   "why": "as path_breaks, and the edited top token is another entity's answer in the same prompt (another locker, legs, capital)"
+  },
+  {
+   "group": "path_survives",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0099",
+   "prompt": "<|im_start|>user\nThe deer keeps its things in locker 1. The goose keeps its things in locker 5. The fish keeps its things in locker 3. The mosquito keeps its things in locker 7. The rabbit keeps its things in locker 9.\nWhich locker belongs to the animal known for its antlers? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "source"
+    },
+    {
+     "start": 320,
+     "end": 380,
+     "role": "destination"
+    },
+    {
+     "start": 243,
+     "end": 275,
+     "role": "cue"
+    },
+    {
+     "start": 21,
+     "end": 25,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The deer keeps its things in locker 1.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H_answer_site": "not 1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0,
+    "logp_answer_edited": -0.0173,
+    "dlogp": -0.0173,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0042",
+   "prompt": "<|im_start|>user\nLocker 7 belongs to the cat. Locker 2 belongs to the mosquito. Locker 8 belongs to the whale. Locker 3 belongs to the ant. Locker 1 belongs to the horse.\nIn which locker does the animal known for its anthills keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 110,
+     "end": 139,
+     "role": "source"
+    },
+    {
+     "start": 286,
+     "end": 346,
+     "role": "destination"
+    },
+    {
+     "start": 192,
+     "end": 225,
+     "role": "cue"
+    },
+    {
+     "start": 135,
+     "end": 138,
+     "role": "bridge"
+    },
+    {
+     "start": 217,
+     "end": 220,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('Locker 3 belongs to the ant.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 3",
+     "H_relay": "3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0025,
+    "logp_answer_edited": -0.0038,
+    "dlogp": -0.0013,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "2",
+     "7",
+     "8"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "path_survives",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0135",
+   "prompt": "<|im_start|>user\nThe frog keeps its things in locker 3. The ant keeps its things in locker 9. The horse keeps its things in locker 5. The spider keeps its things in locker 1. The turkey keeps its things in locker 7.\nWhat locker is used by the animal known for croaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "source"
+    },
+    {
+     "start": 313,
+     "end": 373,
+     "role": "destination"
+    },
+    {
+     "start": 239,
+     "end": 268,
+     "role": "cue"
+    },
+    {
+     "start": 21,
+     "end": 25,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the final template positions cannot read the lookup span ('The frog keeps its things in locker 3.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "not 3",
+     "H_relay": "3"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0003,
+    "logp_answer_edited": -0.0153,
+    "dlogp": -0.0149,
+    "correct": true,
+    "kept": true,
+    "confusion": false,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "3",
+    "other_answers_in_prompt": [
+     "1",
+     "5",
+     "7",
+     "9"
+    ]
+   },
+   "why": "source on the path, destination final or both, all layers, edited read still right"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0050",
+   "prompt": "<|im_start|>user\nLocker 8 belongs to the goat. Locker 6 belongs to the mouse. Locker 1 belongs to the turkey. Locker 5 belongs to the fish. Locker 7 belongs to the sheep.\nWhat locker is used by the animal known for squeaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 46,
+     "role": "source"
+    },
+    {
+     "start": 171,
+     "end": 269,
+     "role": "destination"
+    },
+    {
+     "start": 194,
+     "end": 224,
+     "role": "cue"
+    },
+    {
+     "start": 71,
+     "end": 76,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup_off span ('Locker 8 belongs to the goat.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "6",
+    "edited": "7",
+    "expected": {
+     "H_answer_site": "6",
+     "H_relay": "6"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.5558,
+    "logp_answer_edited": -2.5968,
+    "dlogp": -2.041,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "6",
+    "other_answers_in_prompt": [
+     "1",
+     "5",
+     "7",
+     "8"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0036",
+   "prompt": "<|im_start|>user\nThe dog keeps its things in locker 3. The chicken keeps its things in locker 9. The fish keeps its things in locker 7. The bee keeps its things in locker 1. The butterfly keeps its things in locker 8.\nWhat locker is used by the animal known for making honey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 54,
+     "end": 96,
+     "role": "source"
+    },
+    {
+     "start": 218,
+     "end": 319,
+     "role": "destination"
+    },
+    {
+     "start": 241,
+     "end": 274,
+     "role": "cue"
+    },
+    {
+     "start": 140,
+     "end": 143,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup_off span ('The chicken keeps its things in locker 9.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "H_answer_site": "1",
+     "H_relay": "1"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0875,
+    "logp_answer_edited": -1.7131,
+    "dlogp": -1.6256,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "1",
+    "other_answers_in_prompt": [
+     "3",
+     "7",
+     "8",
+     "9"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  },
+  {
+   "group": "control_breaks",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0092",
+   "prompt": "<|im_start|>user\nThe rabbit keeps its things in locker 3. The sheep keeps its things in locker 1. The butterfly keeps its things in locker 7. The pig keeps its things in locker 2. The worm keeps its things in locker 8.\nIn which locker does the animal known for its caterpillars keep its things? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 141,
+     "end": 179,
+     "role": "source"
+    },
+    {
+     "start": 219,
+     "end": 338,
+     "role": "destination"
+    },
+    {
+     "start": 240,
+     "end": 277,
+     "role": "cue"
+    },
+    {
+     "start": 102,
+     "end": 111,
+     "role": "bridge"
+    }
+   ],
+   "condition": "the question tokens cannot read the lookup_off span ('The pig keeps its things in locker 2.') directly at all 64 layers; DeltaNet mode value (value: the span's values zeroed, its keys/betas/decays kept; absent: the span removed from the recurrence)",
+   "answers": {
+    "clean": "7",
+    "edited": "8",
+    "expected": {
+     "H_answer_site": "7",
+     "H_relay": "7"
+    }
+   },
+   "numbers": {
+    "logp_answer_unedited": -0.0503,
+    "logp_answer_edited": -3.2893,
+    "dlogp": -3.2391,
+    "correct": false,
+    "kept": false,
+    "confusion": true,
+    "deltanet_norm_ratio_at_D": null,
+    "answer": "7",
+    "other_answers_in_prompt": [
+     "1",
+     "2",
+     "3",
+     "8"
+    ]
+   },
+   "why": "source lookup_off, binding_off, random or trailing, any layers, edited read wrong"
+  }
+ ]
+}

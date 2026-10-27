@@ -1,0 +1,1282 @@
+{
+ "exp": "pointer_fair",
+ "run": "d3b_fair_c2_v4_smoke_27b",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "pointer_only",
+   "title": "pointer only",
+   "definition": "the pointer push gives bridge alt's digit, the lens push does not",
+   "n_total": 3
+  },
+  {
+   "key": "both",
+   "title": "both",
+   "definition": "both give it",
+   "n_total": 1
+  },
+  {
+   "key": "neither",
+   "title": "neither",
+   "definition": "neither gives it",
+   "n_total": 7
+  },
+  {
+   "key": "lens_only",
+   "title": "lens only",
+   "definition": "only the lens push gives it",
+   "n_total": 1
+  }
+ ],
+ "examples": [
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0017",
+   "prompt": "<|im_start|>user\nDrawer 2 holds the Iraq file. Drawer 7 holds the Thailand file. Drawer 3 holds the Cuba file. Drawer 5 holds the Indonesia file. Drawer 1 holds the Germany file.\nIn which drawer is the file on the country whose capital is Baghdad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 46,
+     "role": "asked statement"
+    },
+    {
+     "start": 47,
+     "end": 80,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 246,
+     "end": 350,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "2"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 1,
+    "topic": "countries",
+    "held_out": "asked entity held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0017",
+   "prompt": "<|im_start|>user\nDrawer 2 holds the Iraq file. Drawer 7 holds the Thailand file. Drawer 3 holds the Cuba file. Drawer 5 holds the Indonesia file. Drawer 1 holds the Germany file.\nIn which drawer is the file on the country whose capital is Baghdad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 46,
+     "role": "asked statement"
+    },
+    {
+     "start": 47,
+     "end": 80,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 246,
+     "end": 350,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-pointer": "2",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "countries",
+    "held_out": "asked entity held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0017",
+   "prompt": "<|im_start|>user\nDrawer 2 holds the Iraq file. Drawer 7 holds the Thailand file. Drawer 3 holds the Cuba file. Drawer 5 holds the Indonesia file. Drawer 1 holds the Germany file.\nIn which drawer is the file on the country whose capital is Baghdad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 46,
+     "role": "asked statement"
+    },
+    {
+     "start": 47,
+     "end": 80,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 246,
+     "end": 350,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-pointer": "2",
+     "H-lens": "2"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "countries",
+    "held_out": "asked entity held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0017",
+   "prompt": "<|im_start|>user\nDrawer 2 holds the Iraq file. Drawer 7 holds the Thailand file. Drawer 3 holds the Cuba file. Drawer 5 holds the Indonesia file. Drawer 1 holds the Germany file.\nIn which drawer is the file on the country whose capital is Baghdad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 46,
+     "role": "asked statement"
+    },
+    {
+     "start": 47,
+     "end": 80,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 246,
+     "end": 350,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-pointer": "2",
+     "H-lens": "2"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "countries",
+    "held_out": "asked entity held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0138",
+   "prompt": "<|im_start|>user\nThe Canada file is in drawer 7. The Hungary file is in drawer 4. The Spain file is in drawer 2. The Pakistan file is in drawer 8. The China file is in drawer 5.\nWhat drawer keeps the file on the country whose capital is Islamabad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 146,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 246,
+     "end": 350,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "8",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "8"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 0,
+    "topic": "countries",
+    "held_out": "both held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0138",
+   "prompt": "<|im_start|>user\nThe Canada file is in drawer 7. The Hungary file is in drawer 4. The Spain file is in drawer 2. The Pakistan file is in drawer 8. The China file is in drawer 5.\nWhat drawer keeps the file on the country whose capital is Islamabad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 146,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 246,
+     "end": 350,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "8",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "countries",
+    "held_out": "both held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0138",
+   "prompt": "<|im_start|>user\nThe Canada file is in drawer 7. The Hungary file is in drawer 4. The Spain file is in drawer 2. The Pakistan file is in drawer 8. The China file is in drawer 5.\nWhat drawer keeps the file on the country whose capital is Islamabad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 146,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 246,
+     "end": 350,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "8",
+     "H-lens": "8"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "countries",
+    "held_out": "both held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0138",
+   "prompt": "<|im_start|>user\nThe Canada file is in drawer 7. The Hungary file is in drawer 4. The Spain file is in drawer 2. The Pakistan file is in drawer 8. The China file is in drawer 5.\nWhat drawer keeps the file on the country whose capital is Islamabad? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 113,
+     "end": 146,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 246,
+     "end": 350,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "8",
+     "H-lens": "8"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "countries",
+    "held_out": "both held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0275",
+   "prompt": "<|im_start|>user\nThe file on Spain is kept in drawer 7. The file on Pakistan is kept in drawer 6. The file on Syria is kept in drawer 2. The file on Iran is kept in drawer 5. The file on Sweden is kept in drawer 8.\nWhich drawer holds the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 175,
+     "end": 214,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 281,
+     "end": 385,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "8",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 4,
+    "topic": "countries",
+    "held_out": "wording held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0275",
+   "prompt": "<|im_start|>user\nThe file on Spain is kept in drawer 7. The file on Pakistan is kept in drawer 6. The file on Syria is kept in drawer 2. The file on Iran is kept in drawer 5. The file on Sweden is kept in drawer 8.\nWhich drawer holds the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 175,
+     "end": 214,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 281,
+     "end": 385,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "8"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "countries",
+    "held_out": "wording held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0275",
+   "prompt": "<|im_start|>user\nThe file on Spain is kept in drawer 7. The file on Pakistan is kept in drawer 6. The file on Syria is kept in drawer 2. The file on Iran is kept in drawer 5. The file on Sweden is kept in drawer 8.\nWhich drawer holds the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 175,
+     "end": 214,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 281,
+     "end": 385,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "countries",
+    "held_out": "wording held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "pointer_only",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0275",
+   "prompt": "<|im_start|>user\nThe file on Spain is kept in drawer 7. The file on Pakistan is kept in drawer 6. The file on Syria is kept in drawer 2. The file on Iran is kept in drawer 5. The file on Sweden is kept in drawer 8.\nWhich drawer holds the file on the country whose capital is Madrid? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 55,
+     "role": "asked statement"
+    },
+    {
+     "start": 175,
+     "end": 214,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 281,
+     "end": 385,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 0,
+    "topic": "countries",
+    "held_out": "wording held out"
+   },
+   "why": "the pointer push gives bridge alt's digit, the lens push does not"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0153",
+   "prompt": "<|im_start|>user\nThe chart on the skull is kept in folder 8. The chart on the ankle is kept in folder 4. The chart on the forehead is kept in folder 7. The chart on the eyebrow is kept in folder 6. The chart on the liver is kept in folder 5.\nIn which folder is the chart on the body part joining foot and leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 61,
+     "end": 104,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 60,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 308,
+     "end": 412,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "8",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 0,
+    "topic": "body",
+    "held_out": "both held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0153",
+   "prompt": "<|im_start|>user\nThe chart on the skull is kept in folder 8. The chart on the ankle is kept in folder 4. The chart on the forehead is kept in folder 7. The chart on the eyebrow is kept in folder 6. The chart on the liver is kept in folder 5.\nIn which folder is the chart on the body part joining foot and leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 61,
+     "end": 104,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 60,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 308,
+     "end": 412,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "8"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 0,
+    "topic": "body",
+    "held_out": "both held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0153",
+   "prompt": "<|im_start|>user\nThe chart on the skull is kept in folder 8. The chart on the ankle is kept in folder 4. The chart on the forehead is kept in folder 7. The chart on the eyebrow is kept in folder 6. The chart on the liver is kept in folder 5.\nIn which folder is the chart on the body part joining foot and leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 61,
+     "end": 104,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 60,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 308,
+     "end": 412,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "body",
+    "held_out": "both held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "both",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0153",
+   "prompt": "<|im_start|>user\nThe chart on the skull is kept in folder 8. The chart on the ankle is kept in folder 4. The chart on the forehead is kept in folder 7. The chart on the eyebrow is kept in folder 6. The chart on the liver is kept in folder 5.\nIn which folder is the chart on the body part joining foot and leg? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 61,
+     "end": 104,
+     "role": "asked statement"
+    },
+    {
+     "start": 17,
+     "end": 60,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 308,
+     "end": 412,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "body",
+    "held_out": "both held out"
+   },
+   "why": "both give it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0149",
+   "prompt": "<|im_start|>user\nThe file on Indonesia is kept in drawer 6. The file on Greece is kept in drawer 4. The file on Turkey is kept in drawer 5. The file on Egypt is kept in drawer 8. The file on Italy is kept in drawer 1.\nWhich drawer holds the file on the country whose capital is Athens? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 60,
+     "end": 99,
+     "role": "asked statement"
+    },
+    {
+     "start": 100,
+     "end": 139,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 284,
+     "end": 388,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "1",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 4,
+    "topic": "countries",
+    "held_out": "wording held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0149",
+   "prompt": "<|im_start|>user\nThe file on Indonesia is kept in drawer 6. The file on Greece is kept in drawer 4. The file on Turkey is kept in drawer 5. The file on Egypt is kept in drawer 8. The file on Italy is kept in drawer 1.\nWhich drawer holds the file on the country whose capital is Athens? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 60,
+     "end": 99,
+     "role": "asked statement"
+    },
+    {
+     "start": 100,
+     "end": 139,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 284,
+     "end": 388,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "countries",
+    "held_out": "wording held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0149",
+   "prompt": "<|im_start|>user\nThe file on Indonesia is kept in drawer 6. The file on Greece is kept in drawer 4. The file on Turkey is kept in drawer 5. The file on Egypt is kept in drawer 8. The file on Italy is kept in drawer 1.\nWhich drawer holds the file on the country whose capital is Athens? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 60,
+     "end": 99,
+     "role": "asked statement"
+    },
+    {
+     "start": 100,
+     "end": 139,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 284,
+     "end": 388,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "countries",
+    "held_out": "wording held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "countries-RL-e5f0-0149",
+   "prompt": "<|im_start|>user\nThe file on Indonesia is kept in drawer 6. The file on Greece is kept in drawer 4. The file on Turkey is kept in drawer 5. The file on Egypt is kept in drawer 8. The file on Italy is kept in drawer 1.\nWhich drawer holds the file on the country whose capital is Athens? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 60,
+     "end": 99,
+     "role": "asked statement"
+    },
+    {
+     "start": 100,
+     "end": 139,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 284,
+     "end": 388,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 1,
+    "topic": "countries",
+    "held_out": "wording held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 92,
+     "end": 116,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 197,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-pointer": "7",
+     "H-lens": "1"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 92,
+     "end": 116,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 197,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "5",
+    "expected": {
+     "H-pointer": "1",
+     "H-lens": "7"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 0,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 92,
+     "end": 116,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 197,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-pointer": "1",
+     "H-lens": "1"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0104",
+   "prompt": "<|im_start|>user\nThe goose's locker is 5. The horse's locker is 8. The snake's locker is 1. The sheep's locker is 7. The butterfly's locker is 3.\nWhat locker is used by the animal known for hissing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 67,
+     "end": 91,
+     "role": "asked statement"
+    },
+    {
+     "start": 92,
+     "end": 116,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 197,
+     "end": 301,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "H-pointer": "1",
+     "H-lens": "1"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 2,
+    "topic": "animals",
+    "held_out": "both held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0176",
+   "prompt": "<|im_start|>user\nFolder 6 holds the wrist chart. Folder 4 holds the bladder chart. Folder 3 holds the eye chart. Folder 5 holds the ear chart. Folder 9 holds the forehead chart.\nWhat folder keeps the chart on the body part above the eyebrows? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 143,
+     "end": 177,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 142,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 241,
+     "end": 345,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "3",
+    "expected": {
+     "H-pointer": "5",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "context",
+    "answer_statement": 2,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0176",
+   "prompt": "<|im_start|>user\nFolder 6 holds the wrist chart. Folder 4 holds the bladder chart. Folder 3 holds the eye chart. Folder 5 holds the ear chart. Folder 9 holds the forehead chart.\nWhat folder keeps the chart on the body part above the eyebrows? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 143,
+     "end": 177,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 142,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 241,
+     "end": 345,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "5"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 4,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0176",
+   "prompt": "<|im_start|>user\nFolder 6 holds the wrist chart. Folder 4 holds the bladder chart. Folder 3 holds the eye chart. Folder 5 holds the ear chart. Folder 9 holds the forehead chart.\nWhat folder keeps the chart on the body part above the eyebrows? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 143,
+     "end": 177,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 142,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 241,
+     "end": 345,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 4,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "neither",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0176",
+   "prompt": "<|im_start|>user\nFolder 6 holds the wrist chart. Folder 4 holds the bladder chart. Folder 3 holds the eye chart. Folder 5 holds the ear chart. Folder 9 holds the forehead chart.\nWhat folder keeps the chart on the body part above the eyebrows? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 143,
+     "end": 177,
+     "role": "asked statement"
+    },
+    {
+     "start": 113,
+     "end": 142,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 241,
+     "end": 345,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 4,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "neither gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0059",
+   "prompt": "<|im_start|>user\nThe chart on the heart is kept in folder 8. The chart on the spine is kept in folder 7. The chart on the elbow is kept in folder 5. The chart on the eyebrow is kept in folder 4. The chart on the bladder is kept in folder 9.\nIn which folder is the chart on the body part above each eye? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 149,
+     "end": 194,
+     "role": "asked statement"
+    },
+    {
+     "start": 195,
+     "end": 240,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 301,
+     "end": 405,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "pointer push (bridge alt's statement − the asked one), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "9",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0059",
+   "prompt": "<|im_start|>user\nThe chart on the heart is kept in folder 8. The chart on the spine is kept in folder 7. The chart on the elbow is kept in folder 5. The chart on the eyebrow is kept in folder 4. The chart on the bladder is kept in folder 9.\nIn which folder is the chart on the body part above each eye? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 149,
+     "end": 194,
+     "role": "asked statement"
+    },
+    {
+     "start": 195,
+     "end": 240,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 301,
+     "end": 405,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "lens push (bridge alt − bridge org), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "9",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "9"
+    }
+   },
+   "numbers": {
+    "role": "target",
+    "answer_statement": 4,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0059",
+   "prompt": "<|im_start|>user\nThe chart on the heart is kept in folder 8. The chart on the spine is kept in folder 7. The chart on the elbow is kept in folder 5. The chart on the eyebrow is kept in folder 4. The chart on the bladder is kept in folder 9.\nIn which folder is the chart on the body part above each eye? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 149,
+     "end": 194,
+     "role": "asked statement"
+    },
+    {
+     "start": 195,
+     "end": 240,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 301,
+     "end": 405,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: random push (same size), layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  },
+  {
+   "group": "lens_only",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0059",
+   "prompt": "<|im_start|>user\nThe chart on the heart is kept in folder 8. The chart on the spine is kept in folder 7. The chart on the elbow is kept in folder 5. The chart on the eyebrow is kept in folder 4. The chart on the bladder is kept in folder 9.\nIn which folder is the chart on the body part above each eye? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 149,
+     "end": 194,
+     "role": "asked statement"
+    },
+    {
+     "start": 195,
+     "end": 240,
+     "role": "bridge alt's statement"
+    },
+    {
+     "start": 301,
+     "end": 405,
+     "role": "pushed tokens"
+    }
+   ],
+   "condition": "control: shuffled-label direction, layers 32-40, 1x the alt-prompt patch's size",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-pointer": "4",
+     "H-lens": "4"
+    }
+   },
+   "numbers": {
+    "role": "org",
+    "answer_statement": 3,
+    "topic": "body",
+    "held_out": "wording held out"
+   },
+   "why": "only the lens push gives it"
+  }
+ ]
+}

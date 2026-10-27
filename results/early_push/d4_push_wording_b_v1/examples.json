@@ -1,0 +1,5206 @@
+{
+ "exp": "early_push",
+ "run": "d4_push_wording_b_v1",
+ "seed": 0,
+ "k": 3,
+ "groups": [
+  {
+   "key": "both",
+   "title": "both",
+   "definition": "P* and E-insert both give X's answer",
+   "n_total": 166
+  },
+  {
+   "key": "push_only",
+   "title": "push only",
+   "definition": "P* gives X's answer, E-insert does not",
+   "n_total": 11
+  },
+  {
+   "key": "edit_only",
+   "title": "edit only",
+   "definition": "E-insert gives X's answer, P* does not",
+   "n_total": 305
+  },
+  {
+   "key": "neither",
+   "title": "neither",
+   "definition": "neither gives X's answer",
+   "n_total": 118
+  }
+ ],
+ "examples": [
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0122",
+   "prompt": "<|im_start|>user\nOscar lives in Australia. Emma lives in Japan. Paul lives in Poland. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 57,
+     "end": 62,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 85,
+     "end": 247,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": "Canberra",
+     "H-write": "Canberra"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7148,
+    "ld": 11.0,
+    "frac": 0.9713,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Australia)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0122",
+   "prompt": "<|im_start|>user\nOscar lives in Australia. Emma lives in Japan. Paul lives in Poland. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 57,
+     "end": 62,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 108,
+     "end": 143,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": "Canberra",
+     "H-write": "Canberra"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8343,
+    "ld": 10.938,
+    "frac": 0.9661,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Australia)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0122",
+   "prompt": "<|im_start|>user\nOscar lives in Australia. Emma lives in Japan. Paul lives in Poland. What is the capital of Australia? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 57,
+     "end": 62,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 118,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8621,
+    "ld": 12.875,
+    "frac": 1.1279,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Australia)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0122",
+   "prompt": "<|im_start|>user\nOscar lives in Australia. Emma lives in Japan. Paul lives in Poland. What is the capital of the country where Osaka is located, Australia? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 57,
+     "end": 62,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "x"
+    },
+    {
+     "start": 145,
+     "end": 154,
+     "role": "x"
+    },
+    {
+     "start": 143,
+     "end": 154,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": "Canberra",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0048,
+    "p_b": 0.7114,
+    "ld": 5.0,
+    "frac": 0.47,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Australia)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0122",
+   "prompt": "<|im_start|>user\nOscar lives in Australia. Emma lives in Japan. Paul lives in Poland. What is the capital of the country where Brisbane is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 57,
+     "end": 62,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "x"
+    },
+    {
+     "start": 127,
+     "end": 135,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Canberra"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7983,
+    "ld": 11.344,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Australia)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0122",
+   "prompt": "<|im_start|>user\nOscar lives in Australia. Emma lives in Japan. Paul lives in Poland. Someone read a book about Australia. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 57,
+     "end": 62,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "x"
+    },
+    {
+     "start": 112,
+     "end": 121,
+     "role": "x"
+    },
+    {
+     "start": 86,
+     "end": 123,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Tokyo",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.5886,
+    "p_b": 0.0189,
+    "ld": -3.438,
+    "frac": -0.235,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Australia)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0122",
+   "prompt": "<|im_start|>user\nOscar lives in Australia. Emma lives in Japan. Paul lives in Poland. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 57,
+     "end": 62,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 132,
+     "end": 247,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Canberra"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0005,
+    "p_b": 0.8387,
+    "ld": 7.438,
+    "frac": 0.6736,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Australia)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0122",
+   "prompt": "<|im_start|>user\nOscar lives in Australia. Emma lives in Japan. Paul lives in Poland. What is the capital of the country where Osaka is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 57,
+     "end": 62,
+     "role": "bridge"
+    },
+    {
+     "start": 32,
+     "end": 41,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 108,
+     "end": 143,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Tokyo",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": "Canberra",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0003,
+    "p_b": 0.5979,
+    "ld": 7.562,
+    "frac": 0.6841,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Japan -> Australia)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0276",
+   "prompt": "<|im_start|>user\nEmma lives in France. David lives in China. Grace lives in Canada. What is the capital of the country where Calgary is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 83,
+     "end": 247,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Ottawa",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": "Beijing",
+     "H-write": "Beijing"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8911,
+    "ld": 12.906,
+    "frac": 1.1338,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Canada -> China)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0276",
+   "prompt": "<|im_start|>user\nEmma lives in France. David lives in China. Grace lives in Canada. What is the capital of the country where Calgary is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 106,
+     "end": 143,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Ottawa",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": "Beijing",
+     "H-write": "Beijing"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7918,
+    "ld": 10.562,
+    "frac": 1.0185,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Canada -> China)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0276",
+   "prompt": "<|im_start|>user\nEmma lives in France. David lives in China. Grace lives in Canada. What is the capital of China? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Ottawa",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8825,
+    "ld": 13.281,
+    "frac": 1.1523,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Canada -> China)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0276",
+   "prompt": "<|im_start|>user\nEmma lives in France. David lives in China. Grace lives in Canada. What is the capital of the country where Calgary is located, China? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 145,
+     "end": 150,
+     "role": "x"
+    },
+    {
+     "start": 143,
+     "end": 150,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Ottawa",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": "Beijing",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0695,
+    "p_b": 0.453,
+    "ld": 1.875,
+    "frac": 0.5908,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Canada -> China)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0276",
+   "prompt": "<|im_start|>user\nEmma lives in France. David lives in China. Grace lives in Canada. What is the capital of the country where Shanghai is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 125,
+     "end": 133,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Ottawa",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Beijing"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7398,
+    "ld": 10.188,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Canada -> China)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0276",
+   "prompt": "<|im_start|>user\nEmma lives in France. David lives in China. Grace lives in Canada. Someone read a book about China. What is the capital of the country where Calgary is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 110,
+     "end": 115,
+     "role": "x"
+    },
+    {
+     "start": 84,
+     "end": 117,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Ottawa",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.5791,
+    "p_b": 0.0001,
+    "ld": -8.688,
+    "frac": 0.0708,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Canada -> China)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0276",
+   "prompt": "<|im_start|>user\nEmma lives in France. David lives in China. Grace lives in Canada. What is the capital of the country where Calgary is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 132,
+     "end": 247,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Ottawa",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Beijing"
+    }
+   },
+   "numbers": {
+    "p_A": 0.1521,
+    "p_b": 0.4135,
+    "ld": 1.0,
+    "frac": 0.5477,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Canada -> China)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0276",
+   "prompt": "<|im_start|>user\nEmma lives in France. David lives in China. Grace lives in Canada. What is the capital of the country where Calgary is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "x"
+    },
+    {
+     "start": 107,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 106,
+     "end": 143,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Ottawa",
+    "edited": "Beijing",
+    "expected": {
+     "H-inject": "Beijing",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0019,
+    "p_b": 0.376,
+    "ld": 5.312,
+    "frac": 0.76,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Canada -> China)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0323",
+   "prompt": "<|im_start|>user\nSam lives in Spain. Tom lives in Egypt. Oscar lives in Australia. What is the capital of the country where Brisbane is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 82,
+     "end": 247,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": "Madrid",
+     "H-write": "Canberra"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8373,
+    "ld": 13.938,
+    "frac": 1.0975,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Australia -> Spain)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0323",
+   "prompt": "<|im_start|>user\nSam lives in Spain. Tom lives in Egypt. Oscar lives in Australia. What is the capital of the country where Brisbane is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 105,
+     "end": 143,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": "Madrid",
+     "H-write": "Canberra"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.779,
+    "ld": 12.625,
+    "frac": 1.039,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Australia -> Spain)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0323",
+   "prompt": "<|im_start|>user\nSam lives in Spain. Tom lives in Egypt. Oscar lives in Australia. What is the capital of Spain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 111,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 111,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.8784,
+    "ld": 14.312,
+    "frac": 1.1142,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Australia -> Spain)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0323",
+   "prompt": "<|im_start|>user\nSam lives in Spain. Tom lives in Egypt. Oscar lives in Australia. What is the capital of the country where Brisbane is located, Spain? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 145,
+     "end": 150,
+     "role": "x"
+    },
+    {
+     "start": 143,
+     "end": 150,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": "Madrid",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0698,
+    "p_b": 0.4018,
+    "ld": 1.75,
+    "frac": 0.5543,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Australia -> Spain)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0323",
+   "prompt": "<|im_start|>user\nSam lives in Spain. Tom lives in Egypt. Oscar lives in Australia. What is the capital of the country where Bilbao is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 125,
+     "end": 130,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Madrid"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7672,
+    "ld": 11.75,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Australia -> Spain)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0323",
+   "prompt": "<|im_start|>user\nSam lives in Spain. Tom lives in Egypt. Oscar lives in Australia. Someone read a book about Spain. What is the capital of the country where Brisbane is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 83,
+     "end": 116,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7411,
+    "p_b": 0.0001,
+    "ld": -9.062,
+    "frac": 0.0724,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Australia -> Spain)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0323",
+   "prompt": "<|im_start|>user\nSam lives in Spain. Tom lives in Egypt. Oscar lives in Australia. What is the capital of the country where Brisbane is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 132,
+     "end": 247,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Canberra",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Madrid"
+    }
+   },
+   "numbers": {
+    "p_A": 0.5188,
+    "p_b": 0.1312,
+    "ld": -1.375,
+    "frac": 0.415,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Australia -> Spain)"
+  },
+  {
+   "group": "both",
+   "family": "R",
+   "item_id": "R-0323",
+   "prompt": "<|im_start|>user\nSam lives in Spain. Tom lives in Egypt. Oscar lives in Australia. What is the capital of the country where Brisbane is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 72,
+     "end": 81,
+     "role": "bridge"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 143,
+     "role": "cue"
+    },
+    {
+     "start": 105,
+     "end": 143,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Canberra",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": "Madrid",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.4199,
+    "ld": 7.688,
+    "frac": 0.8189,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* and E-insert both give X's answer on this item (Australia -> Spain)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 172,
+     "end": 207,
+     "role": "cue"
+    },
+    {
+     "start": 153,
+     "end": 316,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "H-inject": "8",
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.2368,
+    "p_b": 0.6437,
+    "ld": 1.0,
+    "frac": 0.5539,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 172,
+     "end": 207,
+     "role": "cue"
+    },
+    {
+     "start": 171,
+     "end": 207,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "H-inject": "8",
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.1045,
+    "p_b": 0.875,
+    "ld": 2.125,
+    "frac": 0.6208,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7.\nHow many legs does the cat have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 179,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 179,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9968,
+    "ld": 9.5,
+    "frac": 1.0595,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7.\nHow many legs does the animal famous for spinning webs, the cat, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 213,
+     "end": 216,
+     "role": "x"
+    },
+    {
+     "start": 207,
+     "end": 217,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.4745,
+    "p_b": 0.4187,
+    "ld": -0.125,
+    "frac": 0.487,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7.\nHow many legs does the cat famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 179,
+     "role": "x"
+    },
+    {
+     "start": 176,
+     "end": 179,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "0",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.4494,
+    "p_b": 0.0885,
+    "ld": -1.625,
+    "frac": 0.3978,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7.\nHow many legs does the animal famous for purring have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 194,
+     "end": 201,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0002,
+    "p_b": 0.9921,
+    "ld": 8.5,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7. Someone drew a picture of a cat.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 181,
+     "end": 184,
+     "role": "x"
+    },
+    {
+     "start": 152,
+     "end": 185,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9918,
+    "p_b": 0.0003,
+    "ld": -8.125,
+    "frac": 0.0112,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 172,
+     "end": 207,
+     "role": "cue"
+    },
+    {
+     "start": 207,
+     "end": 316,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 48, scale None, positions r",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9206,
+    "p_b": 0.0667,
+    "ld": -2.625,
+    "frac": 0.3383,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "RR",
+   "item_id": "RR-0360",
+   "prompt": "<|im_start|>user\nLuke owns a cat. Henry owns a chicken. Laura owns a spider. The cat uses locker 9. The chicken uses locker 5. The spider uses locker 7.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 69,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 131,
+     "end": 137,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 81,
+     "end": 84,
+     "role": "x"
+    },
+    {
+     "start": 172,
+     "end": 207,
+     "role": "cue"
+    },
+    {
+     "start": 171,
+     "end": 207,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0123,
+    "p_b": 0.4602,
+    "ld": 3.625,
+    "frac": 0.71,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (spider -> cat)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0048",
+   "prompt": "<|im_start|>user\nKate lives in Canada. David lives in Spain. Rachel lives in Germany. What is the capital of the country where Bilbao is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 144,
+     "role": "cue"
+    },
+    {
+     "start": 85,
+     "end": 248,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7874,
+    "ld": 12.125,
+    "frac": 1.0859,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Spain -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0048",
+   "prompt": "<|im_start|>user\nKate lives in Canada. David lives in Spain. Rachel lives in Germany. What is the capital of the country where Bilbao is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 144,
+     "role": "cue"
+    },
+    {
+     "start": 108,
+     "end": 144,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": "<|im_end|>",
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.6566,
+    "ld": 11.531,
+    "frac": 1.0567,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Spain -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0048",
+   "prompt": "<|im_start|>user\nKate lives in Canada. David lives in Spain. Rachel lives in Germany. What is the capital of Canada? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 115,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 115,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7205,
+    "ld": 12.75,
+    "frac": 1.1166,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Spain -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0048",
+   "prompt": "<|im_start|>user\nKate lives in Canada. David lives in Spain. Rachel lives in Germany. What is the capital of the country where Bilbao is located, Canada? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 146,
+     "end": 152,
+     "role": "x"
+    },
+    {
+     "start": 144,
+     "end": 152,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "Ottawa",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.1131,
+    "p_b": 0.255,
+    "ld": 0.812,
+    "frac": 0.5307,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Spain -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0048",
+   "prompt": "<|im_start|>user\nKate lives in Canada. David lives in Spain. Rachel lives in Germany. What is the capital of the country where Vancouver is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 127,
+     "end": 136,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.5412,
+    "ld": 10.375,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Spain -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0048",
+   "prompt": "<|im_start|>user\nKate lives in Canada. David lives in Spain. Rachel lives in Germany. Someone read a book about Canada. What is the capital of the country where Bilbao is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 112,
+     "end": 118,
+     "role": "x"
+    },
+    {
+     "start": 86,
+     "end": 120,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Madrid",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7738,
+    "p_b": 0.0,
+    "ld": -11.0,
+    "frac": -0.0491,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Spain -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0048",
+   "prompt": "<|im_start|>user\nKate lives in Canada. David lives in Spain. Rachel lives in Germany. What is the capital of the country where Bilbao is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 144,
+     "role": "cue"
+    },
+    {
+     "start": 133,
+     "end": 248,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0592,
+    "p_b": 0.5976,
+    "ld": 2.312,
+    "frac": 0.6043,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Spain -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0048",
+   "prompt": "<|im_start|>user\nKate lives in Canada. David lives in Spain. Rachel lives in Germany. What is the capital of the country where Bilbao is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 54,
+     "end": 59,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 144,
+     "role": "cue"
+    },
+    {
+     "start": 108,
+     "end": 144,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Madrid",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "Ottawa",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0006,
+    "p_b": 0.1474,
+    "ld": 5.5,
+    "frac": 0.7607,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Spain -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0112",
+   "prompt": "<|im_start|>user\nOscar lives in Germany. Tom lives in Canada. Nina lives in Spain. What is the capital of the country where Cologne is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 142,
+     "role": "cue"
+    },
+    {
+     "start": 82,
+     "end": 246,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Berlin",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": "Berlin",
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7203,
+    "ld": 9.75,
+    "frac": 1.0129,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Germany -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0112",
+   "prompt": "<|im_start|>user\nOscar lives in Germany. Tom lives in Canada. Nina lives in Spain. What is the capital of the country where Cologne is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 142,
+     "role": "cue"
+    },
+    {
+     "start": 105,
+     "end": 142,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Berlin",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": "Berlin",
+     "H-write": "Berlin"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.5774,
+    "ld": 10.0,
+    "frac": 1.0259,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Germany -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0112",
+   "prompt": "<|im_start|>user\nOscar lives in Germany. Tom lives in Canada. Nina lives in Spain. What is the capital of Canada? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 112,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 112,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Berlin",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7519,
+    "ld": 11.469,
+    "frac": 1.1019,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Germany -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0112",
+   "prompt": "<|im_start|>user\nOscar lives in Germany. Tom lives in Canada. Nina lives in Spain. What is the capital of the country where Cologne is located, Canada? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 144,
+     "end": 150,
+     "role": "x"
+    },
+    {
+     "start": 142,
+     "end": 150,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Berlin",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": "Ottawa",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.3607,
+    "p_b": 0.1327,
+    "ld": -1.0,
+    "frac": 0.4563,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Germany -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0112",
+   "prompt": "<|im_start|>user\nOscar lives in Germany. Tom lives in Canada. Nina lives in Spain. What is the capital of the country where Edmonton is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 132,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Berlin",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.734,
+    "ld": 9.5,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Germany -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0112",
+   "prompt": "<|im_start|>user\nOscar lives in Germany. Tom lives in Canada. Nina lives in Spain. Someone read a book about Canada. What is the capital of the country where Cologne is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 109,
+     "end": 115,
+     "role": "x"
+    },
+    {
+     "start": 83,
+     "end": 117,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Berlin",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.6764,
+    "p_b": 0.0,
+    "ld": -10.469,
+    "frac": -0.034,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Germany -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0112",
+   "prompt": "<|im_start|>user\nOscar lives in Germany. Tom lives in Canada. Nina lives in Spain. What is the capital of the country where Cologne is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 142,
+     "role": "cue"
+    },
+    {
+     "start": 131,
+     "end": 246,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 36, scale None, positions r",
+   "answers": {
+    "clean": "Berlin",
+    "edited": "Berlin",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.6103,
+    "p_b": 0.0442,
+    "ld": -2.625,
+    "frac": 0.3722,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Germany -> Canada)"
+  },
+  {
+   "group": "push_only",
+   "family": "R",
+   "item_id": "R-0112",
+   "prompt": "<|im_start|>user\nOscar lives in Germany. Tom lives in Canada. Nina lives in Spain. What is the capital of the country where Cologne is located? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 32,
+     "end": 39,
+     "role": "bridge"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "x"
+    },
+    {
+     "start": 106,
+     "end": 142,
+     "role": "cue"
+    },
+    {
+     "start": 105,
+     "end": 142,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Berlin",
+    "edited": "<|im_end|>",
+    "expected": {
+     "H-inject": "Ottawa",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0023,
+    "p_b": 0.1718,
+    "ld": 4.312,
+    "frac": 0.7314,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "P* gives X's answer, E-insert does not on this item (Germany -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a spider. Mia owns a chicken. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9.\nHow many legs does the animal that Mia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 49,
+     "end": 55,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 173,
+     "end": 197,
+     "role": "cue"
+    },
+    {
+     "start": 154,
+     "end": 306,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": "8",
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9821,
+    "p_b": 0.0015,
+    "ld": -6.5,
+    "frac": 0.1197,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a spider. Mia owns a chicken. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9.\nHow many legs does the animal that Mia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 49,
+     "end": 55,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 173,
+     "end": 197,
+     "role": "cue"
+    },
+    {
+     "start": 172,
+     "end": 197,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": "8",
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9829,
+    "p_b": 0.0003,
+    "ld": -8.188,
+    "frac": 0.0246,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a spider. Mia owns a chicken. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9.\nHow many legs does the spider have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 49,
+     "end": 55,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 183,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 183,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9979,
+    "ld": 9.875,
+    "frac": 1.0423,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a spider. Mia owns a chicken. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9.\nHow many legs does the animal that Mia owns, the spider, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 49,
+     "end": 55,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 203,
+     "end": 209,
+     "role": "x"
+    },
+    {
+     "start": 197,
+     "end": 210,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "8",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0168,
+    "p_b": 0.7124,
+    "ld": 3.75,
+    "frac": 0.6972,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a spider. Mia owns a chicken. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9.\nHow many legs does the spider that Mia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 49,
+     "end": 55,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 183,
+     "role": "x"
+    },
+    {
+     "start": 177,
+     "end": 183,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "8",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0014,
+    "p_b": 0.5882,
+    "ld": 6.062,
+    "frac": 0.8275,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a chicken. Mia owns a spider. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9.\nHow many legs does the animal that Mia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 49,
+     "end": 56,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 69,
+     "end": 75,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 49,
+     "end": 75,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9964,
+    "ld": 9.125,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a spider. Mia owns a chicken. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9. Someone drew a picture of a spider.\nHow many legs does the animal that Mia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 49,
+     "end": 55,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 182,
+     "end": 188,
+     "role": "x"
+    },
+    {
+     "start": 153,
+     "end": 189,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9604,
+    "p_b": 0.0019,
+    "ld": -6.25,
+    "frac": 0.1338,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a spider. Mia owns a chicken. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9.\nHow many legs does the animal that Mia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 49,
+     "end": 55,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 173,
+     "end": 197,
+     "role": "cue"
+    },
+    {
+     "start": 154,
+     "end": 306,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 40, scale None, positions r",
+   "answers": {
+    "clean": "2",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.2208,
+    "p_b": 0.7706,
+    "ld": 1.25,
+    "frac": 0.5563,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0250",
+   "prompt": "<|im_start|>user\nLaura owns a lion. Clara owns a spider. Mia owns a chicken. The chicken uses locker 3. The spider uses locker 5. The lion uses locker 9.\nHow many legs does the animal that Mia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 75,
+     "role": "bridge"
+    },
+    {
+     "start": 81,
+     "end": 88,
+     "role": "bridge"
+    },
+    {
+     "start": 49,
+     "end": 55,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 173,
+     "end": 197,
+     "role": "cue"
+    },
+    {
+     "start": 172,
+     "end": 197,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "8",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0485,
+    "p_b": 0.6699,
+    "ld": 2.625,
+    "frac": 0.6338,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (chicken -> spider)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a sheep. Julia owns a wolf. Olivia owns a turkey. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5.\nHow many legs does the animal that Olivia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 74,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 33,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 170,
+     "end": 197,
+     "role": "cue"
+    },
+    {
+     "start": 151,
+     "end": 306,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.8855,
+    "p_b": 0.1058,
+    "ld": -2.125,
+    "frac": 0.1579,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a sheep. Julia owns a wolf. Olivia owns a turkey. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5.\nHow many legs does the animal that Olivia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 74,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 33,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 170,
+     "end": 197,
+     "role": "cue"
+    },
+    {
+     "start": 169,
+     "end": 197,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": "4",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9407,
+    "p_b": 0.0531,
+    "ld": -2.875,
+    "frac": 0.0947,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a sheep. Julia owns a wolf. Olivia owns a turkey. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5.\nHow many legs does the sheep have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 74,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 33,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 174,
+     "end": 179,
+     "role": "x"
+    },
+    {
+     "start": 174,
+     "end": 179,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9979,
+    "ld": 9.75,
+    "frac": 1.1579,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a sheep. Julia owns a wolf. Olivia owns a turkey. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5.\nHow many legs does the animal that Olivia owns, the sheep, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 74,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 33,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 203,
+     "end": 208,
+     "role": "x"
+    },
+    {
+     "start": 197,
+     "end": 209,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0049,
+    "p_b": 0.8213,
+    "ld": 5.125,
+    "frac": 0.7684,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a sheep. Julia owns a wolf. Olivia owns a turkey. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5.\nHow many legs does the sheep that Olivia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 74,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 33,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 174,
+     "end": 179,
+     "role": "x"
+    },
+    {
+     "start": 174,
+     "end": 179,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "0",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0011,
+    "p_b": 0.4356,
+    "ld": 5.938,
+    "frac": 0.8368,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a turkey. Julia owns a wolf. Olivia owns a sheep. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5.\nHow many legs does the animal that Olivia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 34,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 69,
+     "end": 74,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 28,
+     "end": 74,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0004,
+    "p_b": 0.9961,
+    "ld": 7.875,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a sheep. Julia owns a wolf. Olivia owns a turkey. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5. Someone drew a picture of a sheep.\nHow many legs does the animal that Olivia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 74,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 33,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 179,
+     "end": 184,
+     "role": "x"
+    },
+    {
+     "start": 150,
+     "end": 185,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9716,
+    "p_b": 0.0259,
+    "ld": -3.625,
+    "frac": 0.0316,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a sheep. Julia owns a wolf. Olivia owns a turkey. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5.\nHow many legs does the animal that Olivia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 74,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 33,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 170,
+     "end": 197,
+     "role": "cue"
+    },
+    {
+     "start": 151,
+     "end": 306,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 40, scale None, positions r",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.7023,
+    "p_b": 0.2928,
+    "ld": -0.875,
+    "frac": 0.2632,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "BR",
+   "item_id": "BR-0162",
+   "prompt": "<|im_start|>user\nEve owns a sheep. Julia owns a wolf. Olivia owns a turkey. The wolf uses locker 9. The turkey uses locker 1. The sheep uses locker 5.\nHow many legs does the animal that Olivia owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 68,
+     "end": 74,
+     "role": "bridge"
+    },
+    {
+     "start": 104,
+     "end": 110,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 33,
+     "role": "x"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "x"
+    },
+    {
+     "start": 170,
+     "end": 197,
+     "role": "cue"
+    },
+    {
+     "start": 169,
+     "end": 197,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "0",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.005,
+    "p_b": 0.3992,
+    "ld": 4.375,
+    "frac": 0.7053,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (turkey -> sheep)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0665",
+   "prompt": "<|im_start|>user\nEmma lives in Canada. Grace lives in Japan. Sam lives in Russia. What is the capital of the country where Sam lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 74,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 132,
+     "role": "cue"
+    },
+    {
+     "start": 81,
+     "end": 236,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": "Ottawa",
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9593,
+    "p_b": 0.0003,
+    "ld": -8.188,
+    "frac": 0.1649,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0665",
+   "prompt": "<|im_start|>user\nEmma lives in Canada. Grace lives in Japan. Sam lives in Russia. What is the capital of the country where Sam lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 74,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 132,
+     "role": "cue"
+    },
+    {
+     "start": 104,
+     "end": 132,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": "Ottawa",
+     "H-write": "Ottawa"
+    }
+   },
+   "numbers": {
+    "p_A": 0.8705,
+    "p_b": 0.0,
+    "ld": -11.812,
+    "frac": 0.0106,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0665",
+   "prompt": "<|im_start|>user\nEmma lives in Canada. Grace lives in Japan. Sam lives in Russia. What is the capital of Canada? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 74,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 111,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 111,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7116,
+    "ld": 11.75,
+    "frac": 1.0133,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0665",
+   "prompt": "<|im_start|>user\nEmma lives in Canada. Grace lives in Japan. Sam lives in Russia. What is the capital of the country where Sam lives, Canada? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 74,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 134,
+     "end": 140,
+     "role": "x"
+    },
+    {
+     "start": 132,
+     "end": 140,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": "Moscow",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.1544,
+    "p_b": 0.3268,
+    "ld": 0.75,
+    "frac": 0.5452,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0665",
+   "prompt": "<|im_start|>user\nEmma lives in Russia. Grace lives in Japan. Sam lives in Canada. What is the capital of the country where Sam lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 31,
+     "end": 37,
+     "role": "bridge"
+    },
+    {
+     "start": 74,
+     "end": 80,
+     "role": "x"
+    },
+    {
+     "start": 31,
+     "end": 79,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Moscow"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0,
+    "p_b": 0.7209,
+    "ld": 11.438,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0665",
+   "prompt": "<|im_start|>user\nEmma lives in Canada. Grace lives in Japan. Sam lives in Russia. Someone read a book about Canada. What is the capital of the country where Sam lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 74,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 108,
+     "end": 114,
+     "role": "x"
+    },
+    {
+     "start": 82,
+     "end": 116,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7982,
+    "p_b": 0.0,
+    "ld": -10.0,
+    "frac": 0.0878,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0665",
+   "prompt": "<|im_start|>user\nEmma lives in Canada. Grace lives in Japan. Sam lives in Russia. What is the capital of the country where Sam lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 74,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 132,
+     "role": "cue"
+    },
+    {
+     "start": 81,
+     "end": 236,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 40, scale None, positions r",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Ottawa",
+    "expected": {
+     "H-inject": null,
+     "H-write": "Moscow"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0013,
+    "p_b": 0.6888,
+    "ld": 6.25,
+    "frac": 0.7793,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> Canada)"
+  },
+  {
+   "group": "edit_only",
+   "family": "B",
+   "item_id": "B-0665",
+   "prompt": "<|im_start|>user\nEmma lives in Canada. Grace lives in Japan. Sam lives in Russia. What is the capital of the country where Sam lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 74,
+     "end": 80,
+     "role": "bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "x"
+    },
+    {
+     "start": 105,
+     "end": 132,
+     "role": "cue"
+    },
+    {
+     "start": 104,
+     "end": 132,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "Moscow",
+    "edited": "Moscow",
+    "expected": {
+     "H-inject": "Moscow",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.8713,
+    "p_b": 0.0,
+    "ld": -11.812,
+    "frac": 0.0106,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "E-insert gives X's answer, P* does not on this item (Russia -> Canada)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 201,
+     "role": "cue"
+    },
+    {
+     "start": 147,
+     "end": 310,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": "8",
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9547,
+    "p_b": 0.0106,
+    "ld": -4.5,
+    "frac": 0.2381,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 201,
+     "role": "cue"
+    },
+    {
+     "start": 165,
+     "end": 201,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": "8",
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9833,
+    "p_b": 0.0023,
+    "ld": -6.062,
+    "frac": 0.1389,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7.\nHow many legs does the mouse have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 170,
+     "end": 175,
+     "role": "x"
+    },
+    {
+     "start": 170,
+     "end": 175,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0006,
+    "p_b": 0.9946,
+    "ld": 7.5,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7.\nHow many legs does the animal famous for spinning webs, the mouse, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 207,
+     "end": 212,
+     "role": "x"
+    },
+    {
+     "start": 201,
+     "end": 213,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": "8",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.5329,
+    "p_b": 0.2852,
+    "ld": -0.625,
+    "frac": 0.4841,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7.\nHow many legs does the mouse famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 170,
+     "end": 175,
+     "role": "x"
+    },
+    {
+     "start": 170,
+     "end": 175,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": "8",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.6051,
+    "p_b": 0.0022,
+    "ld": -5.625,
+    "frac": 0.1667,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7.\nHow many legs does the animal famous for squeaking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 189,
+     "end": 197,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0005,
+    "p_b": 0.9904,
+    "ld": 7.5,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7. Someone drew a picture of a mouse.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 175,
+     "end": 180,
+     "role": "x"
+    },
+    {
+     "start": 146,
+     "end": 181,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.993,
+    "p_b": 0.0004,
+    "ld": -7.75,
+    "frac": 0.0317,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 201,
+     "role": "cue"
+    },
+    {
+     "start": 201,
+     "end": 310,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 48, scale None, positions r",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "H-inject": null,
+     "H-write": "8"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9688,
+    "p_b": 0.0201,
+    "ld": -3.875,
+    "frac": 0.2778,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "RR",
+   "item_id": "RR-0032",
+   "prompt": "<|im_start|>user\nMia owns a lion. Leo owns a spider. Ruby owns a mouse. The spider uses locker 5. The lion uses locker 1. The mouse uses locker 7.\nHow many legs does the animal famous for spinning webs have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 45,
+     "end": 51,
+     "role": "bridge"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "bridge"
+    },
+    {
+     "start": 65,
+     "end": 70,
+     "role": "x"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 201,
+     "role": "cue"
+    },
+    {
+     "start": 165,
+     "end": 201,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "8",
+    "edited": "0",
+    "expected": {
+     "H-inject": "8",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.1643,
+    "p_b": 0.3478,
+    "ld": 0.75,
+    "frac": 0.5714,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "neither gives X's answer on this item (spider -> mouse)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a duck. Emma owns a cat. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5.\nHow many legs does the animal that Sara owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 162,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 143,
+     "end": 296,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": "6",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9624,
+    "p_b": 0.0094,
+    "ld": -4.625,
+    "frac": -0.0788,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a duck. Emma owns a cat. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5.\nHow many legs does the animal that Sara owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 162,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 161,
+     "end": 187,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": "6",
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9671,
+    "p_b": 0.0292,
+    "ld": -3.5,
+    "frac": 0.0099,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a duck. Emma owns a cat. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5.\nHow many legs does the cat have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 169,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 169,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9977,
+    "ld": 9.5,
+    "frac": 1.0345,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a duck. Emma owns a cat. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5.\nHow many legs does the animal that Sara owns, the cat, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 193,
+     "end": 196,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 197,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "6",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0226,
+    "p_b": 0.2434,
+    "ld": 2.375,
+    "frac": 0.4729,
+    "flip": false,
+    "role": "oc"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a duck. Emma owns a cat. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5.\nHow many legs does the cat that Sara owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 169,
+     "role": "x"
+    },
+    {
+     "start": 166,
+     "end": 169,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "0",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0004,
+    "p_b": 0.4059,
+    "ld": 7.0,
+    "frac": 0.8374,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a cat. Emma owns a duck. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5.\nHow many legs does the animal that Sara owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 46,
+     "end": 50,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 29,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 29,
+     "end": 50,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0001,
+    "p_b": 0.9954,
+    "ld": 9.062,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a duck. Emma owns a cat. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5. Someone drew a picture of a cat.\nHow many legs does the animal that Sara owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 171,
+     "end": 174,
+     "role": "x"
+    },
+    {
+     "start": 142,
+     "end": 175,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9617,
+    "p_b": 0.0329,
+    "ld": -3.375,
+    "frac": 0.0197,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a duck. Emma owns a cat. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5.\nHow many legs does the animal that Sara owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 162,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 143,
+     "end": 296,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 40, scale None, positions r",
+   "answers": {
+    "clean": "2",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": "2"
+    }
+   },
+   "numbers": {
+    "p_A": 0.5577,
+    "p_b": 0.4343,
+    "ld": -0.25,
+    "frac": 0.266,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0260",
+   "prompt": "<|im_start|>user\nSara owns a duck. Emma owns a cat. Carl owns a mouse. The cat uses locker 7. The duck uses locker 3. The mouse uses locker 5.\nHow many legs does the animal that Sara owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 29,
+     "end": 33,
+     "role": "bridge"
+    },
+    {
+     "start": 98,
+     "end": 102,
+     "role": "bridge"
+    },
+    {
+     "start": 47,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 75,
+     "end": 78,
+     "role": "x"
+    },
+    {
+     "start": 162,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 161,
+     "end": 187,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "2",
+    "edited": "0",
+    "expected": {
+     "H-inject": "2",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.003,
+    "p_b": 0.2848,
+    "ld": 4.562,
+    "frac": 0.6453,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "neither gives X's answer on this item (duck -> cat)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a lion. Finn owns a duck. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5.\nHow many legs does the animal that Tom owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 32,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 46,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 163,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 144,
+     "end": 296,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*: push (lens) at layer 24, scale 4.0, positions a",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": "6",
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9961,
+    "p_b": 0.0013,
+    "ld": -6.625,
+    "frac": 0.1362,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a lion. Finn owns a duck. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5.\nHow many legs does the animal that Tom owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 32,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 46,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 163,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 162,
+     "end": 187,
+     "role": "pushed"
+    }
+   ],
+   "condition": "P*_b: push (lens) at layer 24, scale 4.0, positions b",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": "6",
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9963,
+    "p_b": 0.0002,
+    "ld": -8.5,
+    "frac": -0.0047,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a lion. Finn owns a duck. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5.\nHow many legs does the duck have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 32,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 46,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 167,
+     "end": 171,
+     "role": "x"
+    },
+    {
+     "start": 167,
+     "end": 171,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-name: text edit E-name, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0028,
+    "p_b": 0.9957,
+    "ld": 5.875,
+    "frac": 1.0751,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a lion. Finn owns a duck. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5.\nHow many legs does the animal that Tom owns, the duck, have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 32,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 46,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 193,
+     "end": 197,
+     "role": "x"
+    },
+    {
+     "start": 187,
+     "end": 198,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-insert: text edit E-insert, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "6",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.148,
+    "p_b": 0.0045,
+    "ld": -3.5,
+    "frac": 0.3709,
+    "flip": false,
+    "role": "oc"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a lion. Finn owns a duck. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5.\nHow many legs does the duck that Tom owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 32,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 46,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 167,
+     "end": 171,
+     "role": "x"
+    },
+    {
+     "start": 167,
+     "end": 171,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-head: text edit E-head, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "0",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.0116,
+    "p_b": 0.4921,
+    "ld": 3.75,
+    "frac": 0.9155,
+    "flip": false,
+    "role": "other"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a duck. Finn owns a lion. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5.\nHow many legs does the animal that Tom owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 46,
+     "end": 50,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 28,
+     "end": 32,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 28,
+     "end": 50,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-cue: text edit E-cue, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "2",
+    "expected": {
+     "H-inject": null,
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.0076,
+    "p_b": 0.9894,
+    "ld": 4.875,
+    "frac": 1.0,
+    "flip": true,
+    "role": "b"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a lion. Finn owns a duck. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5. Someone drew a picture of a duck.\nHow many legs does the animal that Tom owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 32,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 46,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 172,
+     "end": 176,
+     "role": "x"
+    },
+    {
+     "start": 143,
+     "end": 177,
+     "role": "edit"
+    }
+   ],
+   "condition": "E-unrelated: text edit E-unrelated, then a normal forward",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.9957,
+    "p_b": 0.0003,
+    "ld": -8.062,
+    "frac": 0.0282,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a lion. Finn owns a duck. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5.\nHow many legs does the animal that Tom owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 32,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 46,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 163,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 144,
+     "end": 296,
+     "role": "patched"
+    }
+   ],
+   "condition": "W-copy*: copy (C copy) at layer 40, scale None, positions r",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": null,
+     "H-write": "4"
+    }
+   },
+   "numbers": {
+    "p_A": 0.9671,
+    "p_b": 0.0292,
+    "ld": -3.5,
+    "frac": 0.3709,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  },
+  {
+   "group": "neither",
+   "family": "BR",
+   "item_id": "BR-0324",
+   "prompt": "<|im_start|>user\nTom owns a lion. Finn owns a duck. Ivan owns a mouse. The lion uses locker 7. The mouse uses locker 3. The duck uses locker 5.\nHow many legs does the animal that Tom owns have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 28,
+     "end": 32,
+     "role": "bridge"
+    },
+    {
+     "start": 75,
+     "end": 79,
+     "role": "bridge"
+    },
+    {
+     "start": 46,
+     "end": 50,
+     "role": "x"
+    },
+    {
+     "start": 124,
+     "end": 128,
+     "role": "x"
+    },
+    {
+     "start": 163,
+     "end": 187,
+     "role": "cue"
+    },
+    {
+     "start": 162,
+     "end": 187,
+     "role": "pushed"
+    }
+   ],
+   "condition": "emb*: emb_add (lens) at layer -1, scale 1.0, positions b",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "H-inject": "4",
+     "H-write": null
+    }
+   },
+   "numbers": {
+    "p_A": 0.7212,
+    "p_b": 0.0592,
+    "ld": -2.5,
+    "frac": 0.446,
+    "flip": false,
+    "role": "A"
+   },
+   "why": "neither gives X's answer on this item (lion -> duck)"
+  }
+ ]
+}

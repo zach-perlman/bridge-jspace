@@ -1,0 +1,30 @@
+{
+  "run": "d2_abl_read_58_62_27b_v2",
+  "why": "C2 / pattern 7: the paper's J-space removal (25-atom OMP over J++'s letter-token vectors at every position, answer read as in abl_rot_v1) at layers 58-62, where D2 found the lookup's late read (48-63) and D3 the address (44-50), instead of 32-40; the rotated same-size control (the random dictionary does not fit next to the 27B on an 80 GB GPU)",
+  "written_utc": "2026-10-22T00:06:30Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jpp",
+    "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  ],
+  "lens_layers": null,
+  "layers": [
+    58,
+    60,
+    62
+  ],
+  "k_atoms": 25,
+  "n_per_family": 100,
+  "skip_first": 0,
+  "center": false,
+  "rotated": true,
+  "no_random": true,
+  "doc": "At layers 32, 36 and 40 at once (another target: --layers, each a layer its frozen lens has a map at), at every\nposition, each residual loses its 25-atom J-space part (signed OMP over the frozen lens's letter-token vectors: J++ on\nQwen, the J-lens on OLMo, recorded in the manifest with its layers; the split's J-space part, here of the state itself);\nthe control loses the same fit over a random dictionary of the same size (seeded per layer). On unedited-correct\nitems, read at the answer's first token (suite_split's read):\n  clean   the whole question                      hop     the last step alone (suite_v1's hop2 / hop3: a lookup in the\n                                                          prompt for BL, RL; a recalled fact for BR, RR, TYPO, TRANS)\nReported per family: accuracy (top token = the answer's) and the mean change in the answer token's log-probability.\nFamilies: BL, BR, RL, RR (suite main set), TYPO, TRANS (computed set), countries R, B (bind_recall, clean only).\nPrediction from the read/write results (not a decision rule): removing the J-space hurts the recall chains more than\nthe lookup chains, beyond what the step alone loses."
+}

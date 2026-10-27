@@ -1,0 +1,25 @@
+id: qwen35_9b_d1_topics_competence
+title: "D1 topics, the first draw (Qwen3.5-9B): competence on d1_topics_v1 (PP and PM, four topics)"
+thread: D1
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.05
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/tasks_v2.py competence --set d1_topics_v1 --name qwen35_9b_d1_topics_competence --why "D1 on four topics, the 27B's first draw, on Qwen3.5-9B: which PP / PM scenes the model gets right on every prompt"
+question: >-
+  Which scenes of d1_topics_v1 does Qwen3.5-9B answer right on every prompt (PP, PM, each step, C, O)?
+why_it_matters: >-
+  Finding 2 (a lookup ignores the lens-readable part of a stated bridge) on Qwen3.5-9B rests on one draw of scenes (d1_topics_v2, qwen35_9b_d1_topics2_*); the 27B's first draw (d1_topics_v1, no context shared with v2) is the second. Lens on this model: J++ (neuronpedia, published, target layer 31).
+hypotheses:
+  H-replicates: 'the lens gate passes and the split replicates. Prior 0.35 (copied from qwen35_9b_d1_topics2_map)'
+  H-no-lens: 'the lens gate fails (PM lens part < 30%): no claim about the lens on this model. Prior 0.5 (copied from qwen35_9b_d1_topics2_map)'
+  H-not: 'the gate passes and the split does not replicate. Prior 0.15 (copied from qwen35_9b_d1_topics2_map)'
+decision_rule: >-
+  scripts/d1_verdict.py's replication rule as for qwen35_9b_d1_topics2_parts: d1_topics_map_27b's rule (amended 2026-10-22 17:36 +0200 by Dan) with the 27B's layers scaled by depth x 32/64. The decisive cell is chosen from the lens-free map alone: among PP's statement cells (bind_bridge, bridge_word, context) in transit at the map's coarse-grid layers in [16, 22) (the 27B's [32, 44)), the one where C's whole copy flips the most PP lookups (point estimate; ties: the earlier layer, then bind_bridge, bridge_word, context). At that cell, pooled over the four topics: replicates iff the lens-readable part alone switches <= 0.10 of PP lookups and everything else >= 0.50, while PM's lens-readable part switches >= 0.30 (the positive control); a failing positive control, or no PM parts row at the cell: not interpretable; else does not replicate. Reported, not decisive: per topic (animals, planets, elements, Greek letters; topic_verdicts, a topic counting only if its own control passes), digits vs words, the other transit cells, the nulls; the rw stage's lens read (the lens's top word = the stated bridge) as the second gate number. Grid: d1_verdict.py as committed since 076edbb takes the map's coarse grid, every N/16-th layer (16, 18, 20 on 32 layers); qwen35_9b_d1_topics2_parts's verdict ran before that fix (every 4th: 16, 20); on that run's map both grids give the same cell (context:16).
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary (the fitting null); PM as the positive control on the same scenes'
+n: '120 scenes (PP and PM each), four topics, prose, 3 entities (level 0), scenes right on every prompt'
+seeds: [22]
+notes: >-
+  Mechanical copy of d1_topics_competence_27b (Qwen3.5-9B's second draw of finding 2; the 27B's first draw, d1_topics_v1, is the 9B's second). Changed: the target (BJ_TARGET=qwen3.5-9b), run names, mem_gb (the 9B's D1 runs peaked at 31 GB), the hypotheses (the 9B's own, copied from qwen35_9b_d1_topics2_map) and the decision rule's layers (the 9B's depth-scaled ones, as in qwen35_9b_d1_topics2_*). Same data (data/tasks_v2/d1_topics_v1, scripts/tasks_v2.py make, seed 22; numbers as digits or words per scene; four topics, planets included as in the 27B's first draw: the 9B's draw-2 verdict pooled three topics), same n. GPU-h from the ledger: the 9B's d1_topics_v2 competence took 58 s for 720 items; 480 here. Not opened before Dan's predictions.

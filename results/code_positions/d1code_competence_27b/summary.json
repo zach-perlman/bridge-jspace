@@ -1,0 +1,88 @@
+{
+  "families": {
+    "code": {
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "cf": {
+          "rate": 0.995,
+          "lo": 0.9819547100278873,
+          "hi": 0.9986277757784289,
+          "k": 398
+        },
+        "off": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 398,
+      "all_steps": 398,
+      "clean_given_all_hops": [
+        400,
+        400
+      ],
+      "reliable": true,
+      "clean_median_p_answer": 0.98413,
+      "clean_median_margin": 5.281000000000001,
+      "read_agrees_with_greedy": 1,
+      "hop_accuracy_by_bridge": {
+        "Australia": 1,
+        "Austria": 1,
+        "Belgium": 1,
+        "Canada": 1,
+        "Chile": 1,
+        "China": 1,
+        "Cuba": 1,
+        "Denmark": 1,
+        "Egypt": 1,
+        "Finland": 1,
+        "France": 1,
+        "Germany": 1,
+        "Greece": 1,
+        "Hungary": 1,
+        "Indonesia": 1,
+        "Iran": 1,
+        "Iraq": 1,
+        "Ireland": 1,
+        "Italy": 1,
+        "Japan": 1,
+        "Kenya": 1,
+        "Korea": 1,
+        "Norway": 1,
+        "Pakistan": 1,
+        "Peru": 1,
+        "Philippines": 1,
+        "Poland": 1,
+        "Portugal": 1,
+        "Russia": 1,
+        "Spain": 1,
+        "Sweden": 1,
+        "Syria": 1,
+        "Thailand": 1,
+        "Turkey": 1
+      }
+    }
+  },
+  "seconds_generate": 62,
+  "seconds_read": 57,
+  "seconds": 119
+}

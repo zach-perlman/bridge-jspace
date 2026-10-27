@@ -1,0 +1,23 @@
+id: x6_routes_bothoff_ctrl
+title: "x6_routes_bothoff_ctrl (Dan, 25 Oct ~14:30): the sanity swap without the pointer directions and a random part of J++'s share, beside without the pointer and without the pointer and J++; 27B L32 on GPU0, 9B L12 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 0.6
+depends_on: [x6_routes_bothoff]
+command: >-
+  uv run python -c "import torch" && { { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_bothoff_ctrl_27b --conditions C0 --bothoff --bothoff-ctrl; } & p27=$!; { CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x6_routes.py run --name qwen35_9b_x6_routes_bothoff_ctrl --conditions C0 --bothoff --bothoff-ctrl; } & p9=$!; wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  In the sanity swap (only the asked person's pick changes), does removing the pointer directions together with J++ lose more of the lookup's switches than removing them together with a random part of J++'s share?
+why_it_matters: >-
+  Dan: the bothoff difference (batch 34) may come from removing more of the change once the pointer is gone, not from J++.
+hypotheses:
+  H-jpp: 'Dan''s Q36.1 (batch 36, committed before the results are shown): the lookup''s switches lost with pointer + J++ minus with pointer + random (J++ size) is >= 0.15'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct ~14:30): Q36.1 per model on the point estimate of the lookup's switches lost (share of the whole change's switches, Jdep) without the pointer directions and J++ minus without the pointer directions and a random part of J++'s share, with the paired cluster-bootstrap CI reported (bridge items, 10,000 resamples, seed 0). The random part: per scene, the leading columns of the layer's random basis that keep J++'s share of the change (as the random part elsewhere), joined with the pointer directions and orthonormalized; the projection removed. Also reported: the switches lost without the pointer directions alone, and the recall's. C0 must reproduce the one-pick lookup switch rate within 0.10 (as x6_routes), else the run stops before its verdict. Gate 0.80.
+controls:
+- 'the pointer directions with a random part of J++''s share (the arm itself is the control)'
+- 'the pointer directions alone; the recall on the identical patch'
+n: '300 eligible sanity-swap scenes per model (the same scenes as x6_routes_bothoff: seed 2510)'
+seeds: [2510]
+notes: "One 2-GPU job, two processes; the bothoff arms rerun beside the new one so all three removals share one run. Dan's queue order: this, the layer sweep, x0_122b_b8, the 9B natural passages last. Results stay closed until Dan's batch-36 answer is committed."

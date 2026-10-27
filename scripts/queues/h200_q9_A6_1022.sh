@@ -38,20 +38,20 @@ exec 9>/workspace/scratch/markers/q9_comp.lock; flock 9  # 2026-10-22: GPU 0 and
 flock -u 9
 touch $MK  # GPU 1's knock-outs wait for this
 [ -f results/tasks_v2/$C2/summary.json ] || { echo "no 9B full_v8 competence: stop"; exit 1; }
-BJ_BATCH=32 $PY scripts/write_max.py --name qwen35_9b_smoke_wm2_full_1021 --why smoke --n 2 --band 16-17 \
+BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name qwen35_9b_smoke_wm2_full_1021 --why smoke --n 2 --band 16-17 \
   --single-step 1 --early 12 --possets question final $W2 || { echo "smoke failed: stop"; exit 1; }
 $PY scripts/removal_textloss.py --name qwen35_9b_textloss_top_v1 --why "$WHY: plain-text loss under the knock-out, L16-20" \
   --layers $(seq 16 20) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot || echo "=== text loss FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name qwen35_9b_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen35_9b_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 14-20 --single-step 1 --early 8 10 12 --from-competence $CS \
   && $PY scripts/c2_graded.py qwen35_9b_wm2_posctrl_v1 | tail -2 || echo "=== positive control FAILED"
 $PY scripts/copy_sweep.py --name qwen35_9b_copy_sweep_full2_v1 --why "$WHY: where the question / final positions carry the bridge" \
   --tasks full_v8 --tasks-competence $C2 --families PP PM MP MM --n 40 --step 1 --window 6 || echo "=== copy sweep FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name qwen35_9b_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen35_9b_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
   --n 1000 $STEER $W2 && $PY scripts/c2_graded.py qwen35_9b_wm2_full2_v1 | tail -14 \
   && $PY scripts/c2_graded.py qwen35_9b_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
 [ -f results/tasks_v2/$C3/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name qwen35_9b_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen35_9b_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
   && $PY scripts/c2_graded.py qwen35_9b_wm2_full3_v1 > /dev/null || echo "=== three-step steering FAILED"
 LC=/workspace/bridge-jspace/results/lens_check/qwen3.5-9b
 mkdir -p $LC

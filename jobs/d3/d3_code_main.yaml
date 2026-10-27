@@ -1,0 +1,53 @@
+id: d3_code_main
+title: "D3 in Python code: does the patched query carry the key, the dict entry's position, or the value?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.3
+depends_on:
+- code_competence_27b
+- d3v2_smoke_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data code_pointer_v1 --set main --name d3_code_main --n 100
+  --layers 16 20 24 28 32 36 40 42 44 46 48 50 52 54 56 58 60 --groups question final last --question-max-layer 38
+  --competence code_competence_27b
+  --why "D3 code: pointer_v1's three-way patch on Python dict lookups (key named, by list position, through variables,
+  from a recalled cue) and the recall contrast; animals and months, 5 dict entries"
+  && uv run python scripts/pointer_swap.py run --name d3_code_main
+examples_command: uv run python scripts/pointer_swap.py examples --name d3_code_main
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_code_main
+question: >-
+  In Python dict lookups (lockers = {"cow": 5, ...}), when the alt program's hidden states at the query and the tokens
+  after it are patched into the org program layer by layer, does the org program answer the value of the alt key's
+  entry (answer of bridge alt's statement), the value at the same entry position (answer at the same statement slot), or
+  the alt program's own answer, for each way the key is found (named, list index, 2- and 3-variable chains, recalled
+  from a cue) and for the recall contrast?
+why_it_matters: >-
+  The animal/locker scenes read as toy. Code has literal pointers (an index, a variable naming another), so if the slot
+  answer of the prose runs is a generic positional pointer it should appear here too, most clearly for the key recalled
+  from a cue (memory -> prompt, the family the lens could read but not steer); if code lookups go by the key's identity
+  instead, the slot result is specific to prose statements.
+hypotheses:
+  H-pointer: 'memory -> prompt (cue -> key), after the query, layers 44-52: answer at the same statement slot (entry
+    position) >= 25%, above the alt key''s entry; named -> prompt the same'
+  H-word: 'answer of bridge alt''s statement (the alt key''s entry) >= 25%, entry position <= 10%'
+  H-value: 'the alt program''s own answer dominates from layer ~52 (as in prose)'
+  prior: 'Agent prior: H-pointer 0.45, H-word 0.35, mixed 0.2.'
+decision_rule: >-
+  The pre-registered rule of scripts/pointer_swap.py's docstring, unchanged, with the code families' roles: primary =
+  memory -> prompt (RK), reference = named -> prompt (DK), contrast = memory -> memory (RR); list position and the
+  variable chains are reported with the same rule. Primary cell: memory -> prompt, after the query, window 44-52, pooled
+  over topics. Cuts with n < 35 are reported, not judged.
+controls:
+- 'same key at the same entry, the other entries reshuffled and revalued: every hypothesis predicts answer org'
+- 'random push of the same size; a program of the other topic, same size'
+- 'context digits no hypothesis predicts'
+- 'org program into itself (no-op) and the layer-0 all-position patch (hook checks)'
+n: >-
+  up to 100 scenes per topic (animals, months; eligible in all six families) -> up to 200 per family pooled; per
+  (topic x family) up to 100; slot cuts (first / last: ~20 per topic) are below 35 and reported only
+seeds: [0]
+notes: >-
+  Depends on code_competence_27b (the code gate) and d3v2_smoke_27b (the --data path on the 27B). If months fail the
+  gate in any family, the scene-level eligibility removes months and n halves. ~1,200 cases x ~139 reads -> ~167k reads
+  at 38/s -> ~75 min.

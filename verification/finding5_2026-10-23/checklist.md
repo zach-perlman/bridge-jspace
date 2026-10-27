@@ -1,0 +1,28 @@
+# Finding 5: what to check by hand (30-60 minutes)
+
+Run everything from the repo root. No GPU. Nothing here writes to `results/`.
+
+## Checks
+
+1. **The recompute (5 min).** `uv run python verification/finding5_2026-10-23/recompute.py` (numpy is needed for the bootstrap). Expect "37 model/setting cells ... recomputed, 37 match, 0 mismatch" and 3 "no run" lines; the same with `--grid=20261023T104743Z` (the newer grid; this finding's rows are unchanged there). The script re-derives the layer, k, the shares and the intervals from `outcomes.jsonl` and the item files; it does not read the saved verdicts.
+2. **One cell by hand, shares only (10 min).** Qwen3.6-27B draw 3, `results/pointer_swap/d3v4_seed3_swap_27b/outcomes.jsonl`: rows with `family == "RL"`, `source == "dissoc"`, `group == "last"`, `layer == 50`; k = `slots.position + 1` of the item (`name`) in `data/pointer_v4/seed3/*_RL_e5f0.json`. Expect 310 rows with k = 1-2, where (position - identity) / 310 = +95.5 points, and 456 rows with k = 3-5, where (identity - position) / 456 = +14.5 points. The 15-line snippet in `verification/finding5_label_identity.md`, section 3, does this.
+3. **The worked example (5 min).** `grep '"countries-RL-e5f0-0017"' results/pointer_swap/d3v4_seed3_swap_27b/outcomes.jsonl | grep '"dissoc"' | grep '"last"' | grep '"layer": 50,'`: `top` "4", `role` "position". In `data/pointer_v4/seed3/countries_RL_e5f0.json`, that item's `sources.dissoc.predictions` gives none 2, identity 6, position 4, value 7: four different digits, so the answer names its outcome without ambiguity.
+4. **The layer rule by hand (5 min).** Qwen3.5-9B draw 1: in `results/finding5_confirm/qwen35_9b_d3v4_swap_r2_20261022-203850/verdict.json`, `value_by_layer` gives the donor's-digit share per swept layer with its Wilson interval; layer 21's upper bound is 7.8%, layer 22's is 10.6%, so the rule picks 21. The rule reads only that share, never the split (`pick_layer` in `scripts/finding5_confirm.py`); the recompute re-derives the layer for every cell and matches the grid's.
+5. **Qwen3-32B draw 1, the one failing cell (5 min).** `results/pointer_swap/qwen3_32b_d3v4_swap_r2/` at layer 50 (the rule over its 14 swept layers): 1st-2nd +92 points; 3rd on +2.9 [-5.5, +10.7]: B needs the lower bound at -5 or above and misses by half a point (identity 28%, position 25%, unchanged 28%, another list digit 18%). This run was set up before the rule existed; draws 2 and 3 (set up after) and the lists of 8 and 12 hold (+12 to +20).
+6. **Gemma's random push (5 min).** At layer 40 a random push of the same size changes 98-99% of Gemma's answers (other models 0-17%). Where they go, by script on Gemma's three draws: 83-88% off the list of digits, and position minus identity under the random push is -2 to +2 points (k = 1-2) against +24 to +33 under the donor copy. So generic damage does not make the split, but on Gemma a push of this size is far outside what the model tolerates (README, "Negative or not testable"). Check: rows with `"source": "rand"` at layer 40 in `results/pointer_swap/gemma4it_d3v4_seed2_swap/outcomes.jsonl`.
+7. **The no-change control (2 min).** `source == "same"` (the same entity in the same place, the other sentences reshuffled) should change nothing: 98-100% of answers unchanged at the decisive layer on the 27B draw 3, the 32B draw 1 and Gemma's three draws (checked by script on those five runs only).
+8. **Rule before run (5 min).** `git show -s 6538445` (22 Oct 18:50 +0200) adds `scripts/finding5_confirm.py`. Seven cells ran on specs committed before it and were judged by it afterwards: 27B draws 1-2 (d94c169, d3315bc), 9B, 32B and Gemma draw 1 (0c0c675), OLMo-3 draws 1-2 (dbc3a8d, 80880cd). The other 30 cells were set up after it (README, "Runs", spec commits). The split itself (1st-2nd vs 3rd on) was chosen on the first draws after a pooled pre-registered test came out mixed (README, "Choices made after seeing the data").
+
+## Three dumbest ways this could be wrong
+
+1. **Any edit at the last two tokens pushes answers to the 1st or 2nd sentence.** Partly checked: the same-size random push leaves 83-100% of answers unchanged on seven models and on Gemma sends them off the list (position - identity within 2 points); the reshuffled same-entity donor changes nothing. Not ruled out: a donor from another topic (`source == "other"`) also moves 23-48% of answers to the same place (27B draw 3, 32B draw 1), so part of "position" is an order label that any list carries; that is what the finding says for the 1st-2nd sentence, but it also means the 3rd-on position share (22-25% there) is not entity-specific.
+2. **The outcomes are ambiguous (two outcomes share a digit).** Checked for the examples: the four predicted digits differ; the data design asserts it (`format` text at the top of each `data/pointer_v4/*/*.json`).
+3. **The layer was chosen to make the split look good.** The rule picks the layer from the donor's-digit share alone, and the recompute re-derives the same layer on all 37 cells. Exception: the 27B's layer 50 on draws 1-3 was fixed after its first runs; draw 3 (fresh scenes, set up after the rule) repeats the result there.
+
+## Known deviations
+
+- Seven of 37 cells ran before the rule (check 8); the 27B's layer 50 chosen after its first runs.
+- Qwen3-32B draw 1 fails (B misses its bar by 0.5 points); it holds on the other four 32B cells.
+- Small n at 8 and 12 sentences on OLMo-3 (1st-2nd: 26 and 9 items), Muse (32 and 16) and Olmo-Hybrid (42 and 27); Muse at 12 sentences passes B with +4.6 [+0.0, +10.2].
+- Gemma: the random-push control breaks 98-99% of answers (not part of its spec's rule); no lists of 8 or 12 (no spec).
+- Olmo-Hybrid has no third draw (no spec).

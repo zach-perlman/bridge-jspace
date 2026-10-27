@@ -1,0 +1,30 @@
+# Plain names for queued runs (job id -> what a reader sees). Job pages, reports and README show these; the ids stay
+# as the keys of results/<exp>/<id>/ and the ledger. New job specs carry their own `title:` instead.
+# Families: "where the bridge comes from -> where the answer comes from" (prompt = stated in the prompt, memory =
+# recalled), as in bridge_jspace.plotting.FAMILY_LABEL.
+
+# D1: where in the prompt is the bridge carried? (results/statement_positions/)
+d1_smoke_27b: "D1 test run (4 items per family): the code works on the 27B"
+d1_map_v1: "D1 map: where in the prompt is the bridge carried? (patch from the alt prompt at one place, layer by layer)"
+d1_map_n80_v1: "D1 map, confirmation with more items (80 per family, layers 32-52)"
+d1_parts_v1: "D1 split: where the bridge is carried, is it in the lens-readable part?"
+d1_rw_v1: "D1 lens read and write where the bridge is carried"
+
+# D2: from where, and at which layers, does the answer read each statement? (results/attn_knockout/)
+d2_smoke_27b: "D2 test run: blocking reads works on the 27B"
+d2_ko_core_v1: "D2 main: which positions and layers must read the statement? (two-step families)"
+d2_ko_sweep_v1: "D2 finer: 4-layer windows and 'from layer L on' cuts"
+d2_ko_tie_country_v1: "D2 on three-step families and countries"
+
+# D3: does the question carry the word, a pointer to a statement, or the answer? (results/pointer_swap/)
+d3_smoke_27b: "D3 test run: the patching code works on the 27B"
+d3_competence_27b: "D3 gate: can the model answer the new pointer questions? (4 domains)"
+d3_pilot_27b: "D3 pilot (superseded: too few items for the rule)"
+d3_main_27b: "D3 main, first version (superseded: included domains that failed the gate)"
+d3_pilot_levels_27b: "D3 levels, first version (superseded: too few items for the rule)"
+d3_main_ae_27b: "D3 main: word or pointer? (animals and elements, 100 scenes per family)"
+d3_levels_animals_27b: "D3: 3 vs 5 statements, and filler sentences between them (animals)"
+
+# D4: is an early lens push just typing the word into the question? (results/early_push/)
+d4_smoke_27b: "D4 test run: every condition works on the 27B"
+d4_push_v1: "D4 main: early lens push vs editing the prompt"

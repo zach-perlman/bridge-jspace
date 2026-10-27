@@ -1,0 +1,69 @@
+{
+  "exp": "pointer_v3",
+  "run": "d3_start_or_end_competence_27b",
+  "written_utc": "2026-10-21T14:32:46Z",
+  "why": "D3 start-or-end gate: can the 27B answer pointer_v3's scenes (5 statements and 1-2 filler sentences; the alt prompt has 6 or 4 statements), every alt and control prompt and each step alone, animals and elements?",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "sets": [
+    "main"
+  ],
+  "items": {
+    "main/animals_RL_e5more": {
+      "file": "data/pointer_v3/main/animals_RL_e5more.json",
+      "sha256": "c4bf48c3fb9b4337054991e429e452b520ed9a2cc616a991add6b3bcf9e57216"
+    },
+    "main/animals_RL_e5fewer": {
+      "file": "data/pointer_v3/main/animals_RL_e5fewer.json",
+      "sha256": "656d1e40069e812da7bddbb1091b744c588d6100cddc0161409405be9389c920"
+    },
+    "main/animals_DL_e5more": {
+      "file": "data/pointer_v3/main/animals_DL_e5more.json",
+      "sha256": "69e994eea951733733a169a03c83c978e25beb5018ca55eb2e081ea18ed84369"
+    },
+    "main/animals_DL_e5fewer": {
+      "file": "data/pointer_v3/main/animals_DL_e5fewer.json",
+      "sha256": "09326cf73646c683db074d0e3f57e117da644b6823bb72d488c2155c09f304c2"
+    },
+    "main/animals_RR_e5more": {
+      "file": "data/pointer_v3/main/animals_RR_e5more.json",
+      "sha256": "874962334f5f3e36a9703bdc144ad19f1302e2e9e5a04dbe0ccf6d64346bac00"
+    },
+    "main/animals_RR_e5fewer": {
+      "file": "data/pointer_v3/main/animals_RR_e5fewer.json",
+      "sha256": "e54ee5c983404c433097e23e6ba9b6626314933e33eaff20d95ac8584e52b889"
+    },
+    "main/elements_RL_e5more": {
+      "file": "data/pointer_v3/main/elements_RL_e5more.json",
+      "sha256": "6cb061d3ce07a160b3abab5f0cd7bf80a63a3e39b192dbb96f229a8bc152f603"
+    },
+    "main/elements_RL_e5fewer": {
+      "file": "data/pointer_v3/main/elements_RL_e5fewer.json",
+      "sha256": "0a568c7942c0bfcb3ad7e7029ffceb5417c8f9b769dd612427714beb6c454f08"
+    },
+    "main/elements_DL_e5more": {
+      "file": "data/pointer_v3/main/elements_DL_e5more.json",
+      "sha256": "b5f692b1e16dca2a158bf219c5af7174de8c216d2b0bf782d4ba4bd159060fc3"
+    },
+    "main/elements_DL_e5fewer": {
+      "file": "data/pointer_v3/main/elements_DL_e5fewer.json",
+      "sha256": "f5bbd463e7227ab01000396afbe204e89b2e4b08b2d826a280fb3e713f7897d5"
+    },
+    "main/elements_RR_e5more": {
+      "file": "data/pointer_v3/main/elements_RR_e5more.json",
+      "sha256": "9ba4d0b7b9effd5ab95a3c955cc1b66962582f832fd1554801e4444d958df1c4"
+    },
+    "main/elements_RR_e5fewer": {
+      "file": "data/pointer_v3/main/elements_RR_e5fewer.json",
+      "sha256": "66dcaf9de035453582726ec2cd401919a32507c38fce673561e15b0ea95bf067"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's competence: base, each source, the steps alone; greedy and answer read",
+  "eligibility": "pointer_swap uses items with every prompt right"
+}

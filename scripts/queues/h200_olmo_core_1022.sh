@@ -71,17 +71,17 @@ run ablate_v2/${P}full2_ko_rotseed2_v1 $PY scripts/ablate_v2.py --name ${P}full2
   --why "$WHY: plain-text loss under the knock-out at the chosen band" --layers $(seq ${MID%-*} ${MID#*-}) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot
 # 6. steering
 W2="--tasks full_v8 --tasks-competence $C2 --tasks-level all --families $TWO"
-run write_max/${P}smoke_wm2_full_1022 env BJ_BATCH=32 $PY scripts/write_max.py --name ${P}smoke_wm2_full_1022 --why smoke --n 2 --band 16-17 --single-step 1 --early 12 \
+run write_max/${P}smoke_wm2_full_1022 env BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name ${P}smoke_wm2_full_1022 --why smoke --n 2 --band 16-17 --single-step 1 --early 12 \
   --possets question final $W2 || { echo "steering smoke failed: stop"; exit 1; }
 run copy_sweep/${P}copy_sweep_full2_v1 $PY scripts/copy_sweep.py --name ${P}copy_sweep_full2_v1 --why "$WHY: where the question / final positions carry the bridge" \
   --tasks full_v8 --tasks-competence $C2 --families PP PM MP MM --n 40 --step 1 --window 6 || echo "=== copy sweep FAILED"
-run write_max/${P}wm2_full2_v1 env BJ_BATCH=64 $PY scripts/write_max.py --name ${P}wm2_full2_v1 --why "$WHY: two-step steering, full pools (band 14-20, as the 9B)" \
+run write_max/${P}wm2_full2_v1 env BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name ${P}wm2_full2_v1 --why "$WHY: two-step steering, full pools (band 14-20, as the 9B)" \
   --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band 14-20 --single-step 1 --early 8 10 12 $W2 \
   && $PY scripts/c2_graded.py ${P}wm2_full2_v1 | tail -3 && $PY scripts/c2_graded.py ${P}wm2_full2_v1 --drop-guessable > /dev/null \
   && $PY scripts/c2_narrow.py ${P}wm2_full2_v1 ${P}wm2_full2_v1_noguess | head -1
 AB=$($PY scripts/choose_steer_band.py ${P}copy_sweep_full2_v1) || AB=""
 echo "=== aligned band: ${AB:-none}"
-[ -n "$AB" ] && run write_max/${P}wm2_full2_aligned_v1 env BJ_BATCH=64 $PY scripts/write_max.py --name ${P}wm2_full2_aligned_v1 \
+[ -n "$AB" ] && run write_max/${P}wm2_full2_aligned_v1 env BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name ${P}wm2_full2_aligned_v1 \
   --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add \
   --possets question final --band ${AB%% *} --single-step 1 --early 8 10 12 $W2 \
   && $PY scripts/c2_graded.py ${P}wm2_full2_aligned_v1 | tail -3 && $PY scripts/c2_graded.py ${P}wm2_full2_aligned_v1 --drop-guessable > /dev/null \

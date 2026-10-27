@@ -1,0 +1,234 @@
+{
+ "run": "muse30b_d2_formats",
+ "items": {
+  "json/PM": 5,
+  "json/PP": 5,
+  "prose/MM": 5,
+  "prose/MP": 5,
+  "prose/PM": 6,
+  "prose/PP": 6,
+  "table/PM": 1,
+  "table/PP": 1
+ },
+ "formats": {
+  "json": {
+   "late_MP": {
+    "layers": "all",
+    "lookup": [
+     NaN,
+     NaN,
+     NaN,
+     0
+    ],
+    "off": [
+     NaN,
+     NaN,
+     NaN,
+     0
+    ],
+    "holds": false
+   },
+   "late_PP": {
+    "layers": "all",
+    "lookup": [
+     0.0,
+     -2.7755575615628914e-17,
+     0.43449149475208104,
+     5
+    ],
+    "off": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002,
+     5
+    ],
+    "holds": false
+   },
+   "parts_MP": null,
+   "cells_MP": {}
+  },
+  "prose": {
+   "late_MP": {
+    "layers": "all",
+    "lookup": [
+     0.4,
+     0.1176182311592533,
+     0.769280067791163,
+     5
+    ],
+    "off": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002,
+     5
+    ],
+    "holds": false
+   },
+   "late_PP": {
+    "layers": "all",
+    "lookup": [
+     0.0,
+     0.0,
+     0.3903430336530645,
+     6
+    ],
+    "off": [
+     1.0,
+     0.6096569663469354,
+     0.9999999999999999,
+     6
+    ],
+    "holds": false
+   },
+   "parts_MP": {
+    "valid": true,
+    "question_testable": false,
+    "H-name-q": false,
+    "H-digit-q": false,
+    "H-digit-final": false,
+    "H-name-final": false,
+    "valid-split": true,
+    "H-name-q-split": false,
+    "H-digit-final-split": false
+   },
+   "cells_MP": {
+    "lookup|question": [
+     0.8,
+     0.3755282641185388,
+     0.9637768390302125
+    ],
+    "lookup|final": [
+     0.4,
+     0.1176182311592533,
+     0.769280067791163
+    ],
+    "lookup_name|question": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_name|final": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_digit|question": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_digit|final": [
+     0.6,
+     0.23071993220883708,
+     0.8823817688407467
+    ],
+    "lookup_off|question": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_off|final": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_off_name|question": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_off_name|final": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_off_digit|question": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_off_digit|final": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_nodigit|question": [
+     0.8,
+     0.3755282641185388,
+     0.9637768390302125
+    ],
+    "lookup_nodigit|final": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_noname|question": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_noname|final": [
+     0.4,
+     0.1176182311592533,
+     0.769280067791163
+    ],
+    "lookup_off_nodigit|question": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_off_nodigit|final": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_off_noname|question": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ],
+    "lookup_off_noname|final": [
+     1.0,
+     0.5655085052479191,
+     1.0000000000000002
+    ]
+   }
+  },
+  "table": {
+   "late_MP": {
+    "layers": "all",
+    "lookup": [
+     NaN,
+     NaN,
+     NaN,
+     0
+    ],
+    "off": [
+     NaN,
+     NaN,
+     NaN,
+     0
+    ],
+    "holds": false
+   },
+   "late_PP": {
+    "layers": "all",
+    "lookup": [
+     0.0,
+     0.0,
+     0.7934567085261071,
+     1
+    ],
+    "off": [
+     1.0,
+     0.20654329147389294,
+     1.0,
+     1
+    ],
+    "holds": false
+   },
+   "parts_MP": null,
+   "cells_MP": {}
+  }
+ }
+}

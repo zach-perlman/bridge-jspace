@@ -31,12 +31,12 @@ BANDS="11-19 19-27 30-38 0-58"
 STEER="--possets question final --band 26-38 --single-step 2 --early 15 19 23"
 $PY scripts/ablate_v2.py --name gemma4itf_smoke_full_ko_1021 --why smoke --plan bands --bands 30-38 \
     --conditions paper10 paper10_rot $T2 --n 2 --kinds clean step1 --batch 16 $PAD \
-  && BJ_BATCH=32 $PY scripts/write_max.py --name gemma4itf_smoke_wm2_full_1021 --why smoke --n 2 --band 30-32 \
+  && BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name gemma4itf_smoke_wm2_full_1021 --why smoke --n 2 --band 30-32 \
     --single-step 1 --early 23 --possets question final $W2 || { echo "smokes failed: stop"; exit 1; }
 echo "=== smokes ok $(date -u +%FT%TZ)"
 $PY scripts/removal_textloss.py --name gemma4itf_textloss_top_v1 --why "$WHY: plain-text loss under the knock-out, L30-38" \
   --layers $(seq 30 38) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot || echo "=== text loss FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 26-38 --single-step 2 --early 15 19 23 --from-competence gemma4itb_competence_v1 \
   && $PY scripts/c2_graded.py gemma4itf_wm2_posctrl_v1 > /dev/null || echo "=== positive control FAILED"
 # two-step words (the rules): knock-out alongside steering
@@ -49,7 +49,7 @@ BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY
     --bands 30-38 --conditions paper10 paper10_rot $T2 --n 1000 --kinds step1 step2 --batch 32 $PAD \
     && $PY scripts/c1_v2.py gemma4itf_full2_ko_steps_v1 --middle L30-38 --set full_v8 > /dev/null || echo "=== two-step steps FAILED"
 ) &
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full2_v1 --why "$WHY: two-step, write_max v2, C2-graded" --n 40 \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full2_v1 --why "$WHY: two-step, write_max v2, C2-graded" --n 40 \
   $STEER $W2 && $PY scripts/c2_graded.py gemma4itf_wm2_full2_v1 > /dev/null \
   && $PY scripts/c2_graded.py gemma4itf_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
 wait
@@ -64,7 +64,7 @@ echo "=== two-step done $(date -u +%FT%TZ)"
     --bands 30-38 --conditions paper10 paper10_rot $T3 --n 1000 --kinds step1 step2 step3 --batch 32 $PAD \
     && $PY scripts/c1_v2.py gemma4itf_full3_ko_steps_v1 --middle L30-38 --set full_v8b > /dev/null || echo "=== three-step steps FAILED"
 ) &
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full3_v1 --why "$WHY: three-step, write_max v2" --n 40 \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full3_v1 --why "$WHY: three-step, write_max v2" --n 40 \
   $STEER $W3 && $PY scripts/c2_graded.py gemma4itf_wm2_full3_v1 > /dev/null \
   && $PY scripts/c2_graded.py gemma4itf_wm2_full3_v1 --drop-guessable > /dev/null || echo "=== three-step steering FAILED"
 wait

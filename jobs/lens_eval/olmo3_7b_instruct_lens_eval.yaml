@@ -1,0 +1,37 @@
+id: olmo3_7b_instruct_lens_eval
+title: "Lens quality (OLMo-3-7B-Instruct): both published plain J-lenses on the J++ recipe's held-out readout evals"
+thread: LENS
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  cd /ephemeral/ext/jpp_lens && UV_CACHE_DIR=/ephemeral/uv-cache HF_HOME=/ephemeral/hf
+  uv run --no-sync python $OLDPWD/scripts/lens_fit/lens_eval.py --name olmo3_7b_instruct_lens_eval --model allenai/Olmo-3-7B-Instruct
+  --lens hf:mhough/olmo3-jacobian-lenses@d15b6af0058e89e78d40847c945b6e4dc7fbfe82:lenses/olmo-3-7b-instruct.pt#b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774
+  --lens hf:neuronpedia/jacobian-lens@e166deb5ad540932100ef803c8c9bcc2a5453694:olmo-3-1025-7b/jlens/Salesforce-wikitext/Olmo-3-1025-7B_jacobian_lens.pt#0683d9725bc9c09881c56784ee1371956ad5793b41731ea1213f025757073183
+figures_command: uv run python -m scripts.lens_table figure results/lens_eval/olmo3_7b_instruct_lens_eval
+question: >-
+  On the J++ recipe's own held-out readout evals (jpp_lens@93f02cd evaluate, held-out:0, the items OLMo-3-7B-Instruct
+  answers right), what pass@10 do mhough's plain J-lens (fit on the Instruct model, layers 0-30 every 3rd) and
+  neuronpedia's plain J-lens (fit on the base model, every layer 0-30) get, per eval and macro, next to the logit lens
+  on the same items, at the layers all OLMo lenses share (0-30 every 3rd)?
+why_it_matters: >-
+  OLMo's lens results so far use mhough's plain J-lens; our J++ fit (jobs/lens_fit/olmo3_7b_instruct_jpp_fit.yaml) is
+  coming. Scoring both J-lenses the same way says how much a J++ adds on this model and whether the base-model lens
+  is a fair stand-in, in the units of Zach's cards.
+hypotheses:
+  H-same: 'agent prior: the two J-lenses are within 0.05 macro of each other at 0-30 every 3rd. Prior 0.6'
+  H-logit: 'agent prior: at 0-30 every 3rd both J-lenses beat the logit lens by < 0.05 macro, as the 27B plain J-lens n1000 at every layer (-0.003, exp19 fit_v2). Prior 0.5'
+  H-jpp: 'agent prior: our J++ (its fit''s own evaluate, when it lands) beats both J-lenses by >= 0.10 macro at 0-30 every 3rd. Prior 0.7'
+decision_rule: >-
+  Descriptive: pass@10 per eval and macro, item-weighted, as Zach's cards (scripts/lens_table.py recomputes them from
+  the per-layer ranks, which reproduce the recipe's own pass_at_k.csv). Headline at 0-30 every 3rd (shared by all
+  three OLMo lenses); neuronpedia's lens and the logit lens also at 0-30 (every layer, as the J++ fit). The J++ fit's
+  rows are comparable only if its item set equals this run's (the table checks and says so).
+controls:
+- 'the logit lens on the same items and layers (in this run)'
+- 'pooled-lens baseline: n/a for published J-lenses; the J++ fit scores its own pooled lens in its evaluate'
+n: "the recipe's held-out:0 readout items OLMo-3-7B-Instruct answers right (graded once here by scripts/lens_fit/jpp_grade.py; count in the ranks)"
+seeds: [0]
+notes: "Agent, 22 Oct night, for the lens table (scripts/lens_table.py). Two evaluate calls (one per layer set: neuronpedia's lens and the logit lens at 0-30, mhough's at 0-30 every 3rd), one grading. Both files load in the recipe as they are (checked on the box). Neither lens was scored by Zach. Not enqueued by the agent."

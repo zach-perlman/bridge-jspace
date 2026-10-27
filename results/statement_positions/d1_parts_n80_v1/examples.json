@@ -1,0 +1,645 @@
+{
+ "exp": "statement_positions",
+ "run": "d1_parts_n80_v1",
+ "kind": "parts",
+ "k": 3,
+ "seed": 0,
+ "groups": [
+  {
+   "key": "jspace_flips",
+   "title": "J-space part alone gives X's answer",
+   "definition": "the J-space part of C's copy at a transit cell makes the top token X's answer",
+   "n_total": 811
+  },
+  {
+   "key": "rest_flips_jspace_not",
+   "title": "The rest gives X's answer, the J-space part does not",
+   "definition": "same case and cell: not_jspace flips, jspace keeps the bridge's answer",
+   "n_total": 366
+  },
+  {
+   "key": "full_flips_neither_part",
+   "title": "Only the full copy flips",
+   "definition": "the full copy flips, neither part alone does",
+   "n_total": 1442
+  }
+ ],
+ "examples": [
+  {
+   "group": "jspace_flips",
+   "family": "B",
+   "item_id": "B-0719",
+   "prompt": "<|im_start|>user\nVictor lives in France. Rachel lives in Japan. Paul lives in Egypt. What is the capital of the country where Victor lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 242,
+     "role": "question"
+    },
+    {
+     "start": 183,
+     "end": 242,
+     "role": "final"
+    },
+    {
+     "start": 32,
+     "end": 39,
+     "role": "patched"
+    },
+    {
+     "start": 32,
+     "end": 39,
+     "role": "cf_changed"
+    },
+    {
+     "start": 56,
+     "end": 62,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the J-space part of C's copy added at bridge_word (1 tokens), block output of layer 32",
+   "answers": {
+    "clean": " Paris",
+    "edited": " Tokyo",
+    "edited_role": "b",
+    "bridge_answer": "Paris",
+    "x_answer": "Tokyo",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 9.938,
+    "frac": 0.9888,
+    "role": "b",
+    "ld_clean": -12.125,
+    "ld_C": 10.1875,
+    "flip": true
+   },
+   "why": "J-space part alone gives X's answer: bridge_word, layer 32, read role b"
+  },
+  {
+   "group": "jspace_flips",
+   "family": "B",
+   "item_id": "B-0600",
+   "prompt": "<|im_start|>user\nWill lives in Peru. Jack lives in Greece. Oscar lives in Australia. What is the capital of the country where Oscar lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 59,
+     "end": 84,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 74,
+     "end": 83,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 241,
+     "role": "question"
+    },
+    {
+     "start": 182,
+     "end": 241,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 84,
+     "role": "patched"
+    },
+    {
+     "start": 30,
+     "end": 35,
+     "role": "cf_changed"
+    },
+    {
+     "start": 73,
+     "end": 83,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the J-space part of C's copy added at context (15 tokens), block output of layer 36",
+   "answers": {
+    "clean": " Canberra",
+    "edited": " Lima",
+    "edited_role": "b",
+    "bridge_answer": "Canberra",
+    "x_answer": "Lima",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 7.5,
+    "frac": 0.8099,
+    "role": "b",
+    "ld_clean": -12.46875,
+    "ld_C": 12.1875,
+    "flip": true
+   },
+   "why": "J-space part alone gives X's answer: context, layer 36, read role b"
+  },
+  {
+   "group": "jspace_flips",
+   "family": "B",
+   "item_id": "B-0583",
+   "prompt": "<|im_start|>user\nKate lives in Canada. Tom lives in Russia. Henry lives in Greece. What is the capital of the country where Kate lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 38,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 31,
+     "end": 37,
+     "role": "bridge_word"
+    },
+    {
+     "start": 82,
+     "end": 238,
+     "role": "question"
+    },
+    {
+     "start": 179,
+     "end": 238,
+     "role": "final"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "patched"
+    },
+    {
+     "start": 30,
+     "end": 37,
+     "role": "cf_changed"
+    },
+    {
+     "start": 51,
+     "end": 58,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "the J-space part of C's copy added at bridge_word (1 tokens), block output of layer 32",
+   "answers": {
+    "clean": " Ottawa",
+    "edited": " Moscow",
+    "edited_role": "b",
+    "bridge_answer": "Ottawa",
+    "x_answer": "Moscow",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 10.25,
+    "frac": 0.9195,
+    "role": "b",
+    "ld_clean": -11.875,
+    "ld_C": 12.1875,
+    "flip": true
+   },
+   "why": "J-space part alone gives X's answer: bridge_word, layer 32, read role b"
+  },
+  {
+   "group": "rest_flips_jspace_not",
+   "family": "BL",
+   "item_id": "BL-0352",
+   "prompt": "<|im_start|>user\nFinn's pet is a mouse. Eva's pet is a goose. Zoe's pet is a horse. The mouse's locker is 3. The horse's locker is 7. The goose's locker is 9.\nWhich locker belongs to Zoe's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 62,
+     "end": 83,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 77,
+     "end": 82,
+     "role": "bridge_word"
+    },
+    {
+     "start": 109,
+     "end": 133,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 134,
+     "end": 158,
+     "role": "lookup_x"
+    },
+    {
+     "start": 159,
+     "end": 296,
+     "role": "question"
+    },
+    {
+     "start": 237,
+     "end": 296,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 158,
+     "role": "patched"
+    },
+    {
+     "start": 54,
+     "end": 60,
+     "role": "cf_changed"
+    },
+    {
+     "start": 76,
+     "end": 82,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy minus its J-space part added at context (46 tokens), block output of layer 32",
+   "answers": {
+    "clean": "7",
+    "edited": "9",
+    "edited_role": "b",
+    "bridge_answer": "7",
+    "x_answer": "9",
+    "expected": {
+     "H-loc": null,
+     "H-around": "9"
+    }
+   },
+   "numbers": {
+    "ld": 10.0,
+    "frac": 0.9826,
+    "role": "b",
+    "ld_clean": -7.6875,
+    "ld_C": 10.3125,
+    "flip": true
+   },
+   "why": "The rest gives X's answer, the J-space part does not: context, layer 32, read role b"
+  },
+  {
+   "group": "rest_flips_jspace_not",
+   "family": "BRL",
+   "item_id": "BRL-0288",
+   "prompt": "<|im_start|>user\nBen's pet is a turkey. Leo's pet is a wolf. Finn's pet is a duck. Animals with 4 legs use locker 1. Animals with 2 legs use locker 3. Animals with 8 legs use locker 7. Animals with 6 legs use locker 5.\nWhich locker does Leo's pet use? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 40,
+     "end": 60,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 55,
+     "end": 59,
+     "role": "bridge_word"
+    },
+    {
+     "start": 83,
+     "end": 116,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 117,
+     "end": 150,
+     "role": "lookup_x"
+    },
+    {
+     "start": 219,
+     "end": 354,
+     "role": "question"
+    },
+    {
+     "start": 295,
+     "end": 354,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 218,
+     "role": "patched"
+    },
+    {
+     "start": 54,
+     "end": 59,
+     "role": "cf_changed"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy minus its J-space part added at context (61 tokens), block output of layer 32",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "edited_role": "b",
+    "bridge_answer": "1",
+    "x_answer": "3",
+    "expected": {
+     "H-loc": null,
+     "H-around": null
+    }
+   },
+   "numbers": {
+    "ld": 1.25,
+    "frac": 0.4335,
+    "role": "b",
+    "ld_clean": -4.25,
+    "ld_C": 8.4375,
+    "flip": true
+   },
+   "why": "The rest gives X's answer, the J-space part does not: context, layer 32, read role b"
+  },
+  {
+   "group": "rest_flips_jspace_not",
+   "family": "BL",
+   "item_id": "BL-0144",
+   "prompt": "<|im_start|>user\nTara's pet is a wolf. Eric's pet is a dog. Kyle's pet is a spider. The dog's locker is 9. The spider's locker is 7. The wolf's locker is 3.\nWhich locker belongs to Eric's pet? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 39,
+     "end": 59,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 55,
+     "end": 58,
+     "role": "bridge_word"
+    },
+    {
+     "start": 84,
+     "end": 106,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 107,
+     "end": 132,
+     "role": "lookup_x"
+    },
+    {
+     "start": 157,
+     "end": 295,
+     "role": "question"
+    },
+    {
+     "start": 236,
+     "end": 295,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 156,
+     "role": "patched"
+    },
+    {
+     "start": 54,
+     "end": 58,
+     "role": "cf_changed"
+    },
+    {
+     "start": 75,
+     "end": 82,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's copy minus its J-space part added at context (46 tokens), block output of layer 40",
+   "answers": {
+    "clean": "9",
+    "edited": "7",
+    "edited_role": "b",
+    "bridge_answer": "9",
+    "x_answer": "7",
+    "expected": {
+     "H-loc": null,
+     "H-around": "7"
+    }
+   },
+   "numbers": {
+    "ld": 3.5,
+    "frac": 0.6656,
+    "role": "b",
+    "ld_clean": -9.4375,
+    "ld_C": 10.0,
+    "flip": true
+   },
+   "why": "The rest gives X's answer, the J-space part does not: context, layer 40, read role b"
+  },
+  {
+   "group": "full_flips_neither_part",
+   "family": "B",
+   "item_id": "B-0578",
+   "prompt": "<|im_start|>user\nHenry lives in Canada. Tom lives in Greece. Carol lives in Spain. What is the capital of the country where Carol lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 61,
+     "end": 82,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 76,
+     "end": 81,
+     "role": "bridge_word"
+    },
+    {
+     "start": 82,
+     "end": 239,
+     "role": "question"
+    },
+    {
+     "start": 180,
+     "end": 239,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 82,
+     "role": "patched"
+    },
+    {
+     "start": 52,
+     "end": 59,
+     "role": "cf_changed"
+    },
+    {
+     "start": 75,
+     "end": 81,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's full copy added at context (15 tokens), block output of layer 36",
+   "answers": {
+    "clean": " Madrid",
+    "edited": " Athens",
+    "edited_role": "b",
+    "bridge_answer": "Madrid",
+    "x_answer": "Athens",
+    "expected": {
+     "H-loc": "Athens",
+     "H-around": "Athens"
+    }
+   },
+   "numbers": {
+    "ld": 6.625,
+    "frac": 0.8719,
+    "role": "b",
+    "ld_clean": -8.6875,
+    "ld_C": 8.875,
+    "flip": true
+   },
+   "why": "Only the full copy flips: context, layer 36, read role b"
+  },
+  {
+   "group": "full_flips_neither_part",
+   "family": "BR",
+   "item_id": "BR-0262",
+   "prompt": "<|im_start|>user\nJulia's pet is a sheep. Nina's pet is a turkey. Tara's pet is a spider. The sheep's locker is 3. The spider's locker is 7. The turkey's locker is 1.\nHow many legs does Julia's pet have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 17,
+     "end": 40,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 34,
+     "end": 39,
+     "role": "bridge_word"
+    },
+    {
+     "start": 89,
+     "end": 113,
+     "role": "lookup_bridge"
+    },
+    {
+     "start": 114,
+     "end": 139,
+     "role": "lookup_x"
+    },
+    {
+     "start": 166,
+     "end": 305,
+     "role": "question"
+    },
+    {
+     "start": 246,
+     "end": 305,
+     "role": "final"
+    },
+    {
+     "start": 17,
+     "end": 40,
+     "role": "patched"
+    },
+    {
+     "start": 33,
+     "end": 39,
+     "role": "cf_changed"
+    },
+    {
+     "start": 80,
+     "end": 87,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's full copy added at bind_bridge (8 tokens), block output of layer 36",
+   "answers": {
+    "clean": "4",
+    "edited": "8",
+    "edited_role": "b",
+    "bridge_answer": "4",
+    "x_answer": "8",
+    "expected": {
+     "H-loc": "8",
+     "H-around": "8"
+    }
+   },
+   "numbers": {
+    "ld": 1.125,
+    "frac": 0.5434,
+    "role": "b",
+    "ld_clean": -9.4375,
+    "ld_C": 10.0,
+    "flip": true
+   },
+   "why": "Only the full copy flips: bind_bridge, layer 36, read role b"
+  },
+  {
+   "group": "full_flips_neither_part",
+   "family": "B",
+   "item_id": "B-0712",
+   "prompt": "<|im_start|>user\nDavid lives in Russia. Alice lives in France. Sam lives in Greece. What is the capital of the country where Alice lives? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 40,
+     "end": 62,
+     "role": "bind_bridge"
+    },
+    {
+     "start": 55,
+     "end": 61,
+     "role": "bridge_word"
+    },
+    {
+     "start": 83,
+     "end": 240,
+     "role": "question"
+    },
+    {
+     "start": 181,
+     "end": 240,
+     "role": "final"
+    },
+    {
+     "start": 39,
+     "end": 62,
+     "role": "patched"
+    },
+    {
+     "start": 31,
+     "end": 38,
+     "role": "cf_changed"
+    },
+    {
+     "start": 54,
+     "end": 61,
+     "role": "cf_changed"
+    }
+   ],
+   "condition": "C's full copy added at bind_bridge (5 tokens), block output of layer 32",
+   "answers": {
+    "clean": " Paris",
+    "edited": " Moscow",
+    "edited_role": "b",
+    "bridge_answer": "Paris",
+    "x_answer": "Moscow",
+    "expected": {
+     "H-loc": "Moscow",
+     "H-around": "Moscow"
+    }
+   },
+   "numbers": {
+    "ld": 9.625,
+    "frac": 0.9918,
+    "role": "b",
+    "ld_clean": -12.9375,
+    "ld_C": 9.8125,
+    "flip": true
+   },
+   "why": "Only the full copy flips: bind_bridge, layer 32, read role b"
+  }
+ ]
+}

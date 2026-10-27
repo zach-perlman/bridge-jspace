@@ -1,0 +1,39 @@
+{
+  "patch_layers": [
+    48,
+    50
+  ],
+  "att_layers": [
+    51,
+    55,
+    59
+  ],
+  "lens_layer": 50,
+  "heads": [
+    "51:22",
+    "59:3",
+    "59:1",
+    "55:23",
+    "59:21"
+  ],
+  "counts": {
+    "animals/e5f0": {
+      "eligible_scenes": 297,
+      "sampled": 150
+    },
+    "body/e5f0": {
+      "eligible_scenes": 169,
+      "sampled": 150
+    },
+    "countries/e5f0": {
+      "eligible_scenes": 296,
+      "sampled": 150
+    }
+  },
+  "no_entity_tokens": 0,
+  "self_patch_max_abs": 1.0126953125,
+  "seconds": 707.6,
+  "rows": 17550,
+  "items": 1350,
+  "self_patch_noop": false
+}

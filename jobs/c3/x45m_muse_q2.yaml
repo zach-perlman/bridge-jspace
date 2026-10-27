@@ -1,0 +1,27 @@
+id: x45m_muse_q2
+title: "Batch 45m (Muse L26): the split in a clean one-pick design. An added locker item that nobody picks becomes the asked pick (one token changes, no duplicate); J++ k = 25 signed, both readers, both sentence orders"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.6
+depends_on: [x45_0_indep_9b]
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x0_necessity.py run --name muse30b_x45m_fresh --set d1_topics_v3 --renderings chat --layers 26 --alt fresh --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --n-items 600 --why "Batch 45, test 45m (jobs/c3/batch45.yaml; Q45.10): the clean one-pick design, the asked pick changes from the bridge to an added locker item nobody picks; Muse at L26, J++ k = 25 signed" && uv run python scripts/x45m.py score --runs qwen35_9b_x45m_fresh x45m_fresh_27b muse30b_x45m_fresh
+figures_command: BJ_TARGET=muse-glimmer-30b uv run python scripts/x0_necessity.py figures --name muse30b_x45m_fresh
+question: >-
+  In a clean one-pick design (one locker item that nobody picks is added among the locker sentences of both prompts, and the asked person's pick changes from the bridge to it: one token changes, no duplicate), does the split hold: in locker-before scenes, does the recall need J++ (gap at least 0.3) while the lookup does not (extra loss at most 0.10)?
+why_it_matters: >-
+  In the one-pick runs so far the new bridge is an item another person already picks; when that duplicate pick comes before the asked pick, the recall needs J++ less (Muse gap 0.52 vs 0.87; results/x0_necessity/duplicate-20261026T204558Z). The clean design removes the duplicate, so the one-pick split no longer carries that caveat.
+hypotheses:
+  H-batch45: 'Q45.10 (45m) in predictions/2026-10-26_dan.md (section Batch 45), committed by Dan before any 45m code (ec8f7a9b)'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45m): "The split holds in the clean design" if, on at least 2 of 3 models, in locker-before scenes the gap is at least 0.3 and the lookup's extra loss is at most 0.10; report all scenes and locker-after beside it. As computed (fixed by the agent before any code): locker-before = both the original bridge's and the new item's locker sentences come before the asked pick (x0_strata's 'org / alt locker vs asked pick'), locker-after = both after; mixed scenes go only into "all scenes". Gap = recall's extra loss minus the lookup's (extra loss = X0's Jdep - Rdep), point estimates decide (EPS = 1e-9), cluster-bootstrap CIs over bridge items beside them (10,000, seed 0). A model whose read gate fails is "not tested" and does not count as holding (no 0.75 fallback for 45m). X0's validity bar (S_whole >= 0.30 and >= 30 switches) reported per cell, not in the rule. Scored by scripts/x45m.py score over the 9B, 27B and Muse runs.
+controls:
+- 'the random part of the same share of each scene''s change (X0''s random subspace, 888 + layer)'
+- 'both readers on the identical patch'
+- 'the valid-cell bar (S_whole >= 0.30 and >= 30 switches), per cell, reported'
+- 'the read gate (0.80) on the fresh org prompts, all scenes'
+- 'locker-after and all scenes reported beside locker-before'
+n: 'up to 200 eligible scenes of d1_topics_v3 (X0''s first eligible in scene order), 2 readers each, both sentence orders; plan check: 565 of 600 scenes made (35 dropped: the bridge is not one Muse token in the prompt); the first 200 made: 69 locker-before / 87 locker-after / 44 mixed'
+seeds: [24, 4513, 0, 888]
+notes: "Re-queued as _q2 (cancelled before it ran). Dan ~22:40, before the run: every generated scene (--n-items 600), not the first 200, so the locker-before rule rests on about 200 scenes per model. Batch 45 (Dan ~22:10). Unsealed (Q45.10 committed, ec8f7a9b): X0's own verdict and figures run after the run (descriptive), then x45m.py score over the three 45m runs; a run not yet on this box is 'pending', so the 45m job that ends last writes the full verdict (rerun by hand where all three were pulled: uv run python scripts/x45m.py score --runs qwen35_9b_x45m_fresh x45m_fresh_27b muse30b_x45m_fresh). Run directly, not through scripts/muse_step.sh: 45m has no 0.75 gate fallback. Seeds: 24 the set, 4513 the fresh draws (item, locker digit, slot; x0_necessity.FRESH_SEED), 0 the bootstrap, 888 + layer the random subspace. Cost: one layer, 4 reads per reader per scene (no k curve, no non-negative arm) + competence on 565 scenes; muse30b_x0_single (3 layers, 8 arms + the curve at L26) took 13 min."

@@ -1,0 +1,306 @@
+{
+ "run": "muse30b_x6_routes_l13",
+ "manifest": {
+  "exp": "x6_routes",
+  "run": "muse30b_x6_routes_l13",
+  "written_utc": "2026-10-26T00:45:30Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+   "target": "muse-glimmer-30b",
+   "repo": "meta-models/Muse-Glimmer-30B",
+   "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "bb7ecdf4b3062b01647ad7cd7b0786a90e4cb21f",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+    "Muse-Glimmer-30B_jpp_lens.pt",
+    "68ecd838ad0b13653af7fac985995606f37911dc"
+   ],
+   "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "layer": 13,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+   "C0",
+   "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "keeponly": false,
+  "alf_from": null,
+  "c0_min": 0.5,
+  "fixed_layer": 26,
+  "c0_reference": {
+   "run": null,
+   "lookup_switch": null,
+   "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+   "scenes": 2510,
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "items": {
+   "C0": 300,
+   "C2": 300
+  }
+ },
+ "rows": [
+  {
+   "condition": "C0",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "recall_follows_s": [
+     0.9866666666666667,
+     0.9742115722340328,
+     0.9967532467532467
+    ]
+   },
+   "used": [],
+   "median_norm": 134.0981
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.10666666666666667,
+     0.06545454545454546,
+     0.14671913502971523
+    ],
+    "other": [
+     0.8933333333333333,
+     0.8532808649702848,
+     0.9345454545454546
+    ],
+    "recall_follows_s": [
+     0.8333333333333334,
+     0.7787872083668544,
+     0.8904635048586572
+    ]
+   },
+   "used": [],
+   "median_norm": 134.0981
+  },
+  {
+   "condition": "C0",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "recall_follows_s": [
+     0.9933333333333333,
+     0.9834437086092715,
+     1.0
+    ]
+   },
+   "used": [],
+   "median_norm": 134.0981
+  },
+  {
+   "condition": "C2",
+   "arm": "whole",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.9566666666666667,
+     0.9307221460097818,
+     0.979097436904848
+    ],
+    "position": [
+     0.043333333333333335,
+     0.02090256309515194,
+     0.06927785399021828
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9466666666666667,
+     0.9247648902821317,
+     0.96929950594878
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 135.48635000000002
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.63,
+     0.573134328358209,
+     0.6926070038910506
+    ],
+    "position": [
+     0.11333333333333333,
+     0.07668711656441718,
+     0.15189985239522297
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.25666666666666665,
+     0.20446096654275092,
+     0.30503405916889925
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.5933333333333334,
+     0.5196287215254557,
+     0.6757709533380997
+    ]
+   },
+   "used": [
+    "identity",
+    "original"
+   ],
+   "median_norm": 135.48635000000002
+  },
+  {
+   "condition": "C2",
+   "arm": "no_jpp_rand",
+   "n": 300,
+   "share": {
+    "identity": [
+     0.93,
+     0.901885077186964,
+     0.955719557195572
+    ],
+    "position": [
+     0.02666666666666667,
+     0.010067114093959731,
+     0.045454545454545456
+    ],
+    "value": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "original": [
+     0.043333333333333335,
+     0.023647983613534797,
+     0.06498194945848375
+    ],
+    "other": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "recall_follows_s": [
+     0.9,
+     0.8670480774921581,
+     0.9320754716981132
+    ]
+   },
+   "used": [
+    "identity"
+   ],
+   "median_norm": 135.48635000000002
+  }
+ ],
+ "extra": [],
+ "ctrl": []
+}

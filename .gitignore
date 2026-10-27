@@ -10,6 +10,17 @@ __pycache__/
 *.egg-info/
 *.pt
 *.safetensors
+# generated drafts (scripts/readme_draft.py, run_table.py): regenerate from the grid; README.md is the deliverable
+/drafts/
 # jlens interactive slice pages from examples runs: ~0.5 MB each, regenerate with the examples config
 results/**/slices/
 examples/**/slices/
+# Claude Code: personal settings and their backups; the autonomy window's state and log (.claude/autonomy/)
+.claude/settings.local.json
+.claude/settings.local.json.*
+.claude/autonomy/state.json
+.claude/autonomy/log.txt
+# review dashboard exports (make review-export); review/marks.jsonl, the hand marks, is tracked
+/review/seed-*/
+# failed runs' partial dirs (Dan, 27 Oct): kept locally, not committed; jobq pull skips them
+results/_failed/

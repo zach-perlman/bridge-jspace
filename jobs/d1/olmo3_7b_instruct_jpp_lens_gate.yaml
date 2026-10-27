@@ -1,0 +1,24 @@
+id: olmo3_7b_instruct_jpp_lens_gate
+title: "Lens gate (OLMo-3-7B-Instruct, our J++): does the J++ name a stated bridge at its own sentence?"
+thread: D1
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.05
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/lens_gate.py --name olmo3_7b_instruct_jpp_lens_gate --tasks-set d1_topics_v2 --n 60 --lo 16 --onset 22
+  --why "the lens gate with our J++ before any J++ lens stage on OLMo"
+question: >-
+  With our J++ (every layer, the published recipe on 64 prompts) instead of the community plain J-lens (every 3rd layer), at the bridge's own sentence in the window [16, 22), is the bridge in the lens's top 10 and the other bridge X not?
+why_it_matters: >-
+  Every lens result must use J++ (Dan, 23 Oct). OLMo is the only non-Qwen family with a working lookup mechanism on all findings; a passing J++ gate makes the lens claim testable on another family.
+hypotheses:
+  H-pass-v1: 'gate v1 passes. Prior 0.5 (agent''s)'
+  H-pass-v2: 'gate v2 passes. Prior 0.35 (agent''s)'
+decision_rule: >-
+  scripts/lens_gate.py unchanged (v1 and v2, PASS iff best over the window's coarse layers the bridge is in the top 10 on >= 50% of items and X on <= 20%). The coarse grid is the default depth-scaled one (every 2nd layer on 32 layers: 16, 18, 20 in the window, as the 9B), not the plain J-lens's every-3rd-layer grid, which was set only by that lens's missing layers. Gate v1 opens the J++ lens stages on OLMo; v2 is informational. Primary lens (Dan, 23 Oct ~00:30, fixed before any J++ result): ours, the published recipe on 64 prompts (olmo3_7b_instruct_jpp_fit); Zach's OLMo fit is a robustness check reported alongside when he shares it; if ours fails the gate and his passes, both are reported; no silent switch.
+controls:
+- 'X, the other bridge (the floor); the plain J-lens gate on the same 60 scenes (olmo3_7b_instruct_lens_gate_v2), reported labelled "plain J-lens"'
+n: '60 PP scenes of d1_topics_v2 (the first in scene order)'
+seeds: [23]
+notes: "Dan, 23 Oct ~00:30. Lens: our fit on the A100 (olmo3_7b_instruct_jpp_fit), pinned as target olmo-3-7b-instruct-jpp (local, sha256 in pins). Enqueued only after the pin is committed. Not opened before Dan's predictions."

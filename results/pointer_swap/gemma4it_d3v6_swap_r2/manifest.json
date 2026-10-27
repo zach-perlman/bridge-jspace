@@ -1,0 +1,223 @@
+{
+  "exp": "pointer_swap",
+  "run": "gemma4it_d3v6_swap_r2",
+  "written_utc": "2026-10-22T10:49:49Z",
+  "why": "pointer_v6 on Gemma 4 31B-it: the last-two-token patch over a layer sweep; the decisive layers are the swept layers before the alt digit arrives (pre-registered rule in the spec)",
+  "model": {
+    "target": "gemma-4-31b-it",
+    "repo": "google/gemma-4-31B-it",
+    "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "data": "pointer_v6",
+  "set": "main",
+  "levels": [
+    "e5-still",
+    "e5-abs",
+    "e5-rel",
+    "e5-long"
+  ],
+  "families": [
+    "RL",
+    "DL"
+  ],
+  "domains": [
+    "countries",
+    "animals",
+    "body"
+  ],
+  "family_roles": [
+    "RL",
+    "DL",
+    "RR"
+  ],
+  "items": {
+    "countries_RL_e5-still": {
+      "file": "data/pointer_v6/main/countries_RL_e5-still.json",
+      "sha256": "77deb61c6ea73d814c15b10bf610cf9ec2457d43884cf1bf42096a4c70c836c4"
+    },
+    "countries_RL_e5-abs": {
+      "file": "data/pointer_v6/main/countries_RL_e5-abs.json",
+      "sha256": "16fdaa782437fa5499c4e8e5dc8c3d78c7ae8d410d93a1c27e2a763aa220ade9"
+    },
+    "countries_RL_e5-rel": {
+      "file": "data/pointer_v6/main/countries_RL_e5-rel.json",
+      "sha256": "402af3ac9e46819709c2a3f8cab83b5c10c45d41dccbcd2b39aa62602f799b34"
+    },
+    "countries_RL_e5-long": {
+      "file": "data/pointer_v6/main/countries_RL_e5-long.json",
+      "sha256": "48796b466444c526c4f39475e43e478037d3a6adb5809f0e50c1566032e22c86"
+    },
+    "countries_DL_e5-still": {
+      "file": "data/pointer_v6/main/countries_DL_e5-still.json",
+      "sha256": "1ecf763056f2f057b225f7220c7ba8ccaab62ed5fd8bfaa58f821533ce523c9b"
+    },
+    "countries_DL_e5-abs": {
+      "file": "data/pointer_v6/main/countries_DL_e5-abs.json",
+      "sha256": "2f1ce6e4213d915f7b9ab1f29220736763701399d8010cbaf6272fbf779bcb30"
+    },
+    "countries_DL_e5-rel": {
+      "file": "data/pointer_v6/main/countries_DL_e5-rel.json",
+      "sha256": "341246d95d8aff8df38969b391aeaed4191a90c087c37946af131523d6955643"
+    },
+    "countries_DL_e5-long": {
+      "file": "data/pointer_v6/main/countries_DL_e5-long.json",
+      "sha256": "aabba7ed58057ba949f1f4087df905ed2d2ed4821e630715fc6475d8b90006e2"
+    },
+    "animals_RL_e5-still": {
+      "file": "data/pointer_v6/main/animals_RL_e5-still.json",
+      "sha256": "cd357dbd1541705c0ffc9204c78b8da369ea082f5022068496f740aef28c5d91"
+    },
+    "animals_RL_e5-abs": {
+      "file": "data/pointer_v6/main/animals_RL_e5-abs.json",
+      "sha256": "eabe489e84fd5dfa2b5ebfd249c21699fbbd0d8725692a8f1828b84d7fdfb8a3"
+    },
+    "animals_RL_e5-rel": {
+      "file": "data/pointer_v6/main/animals_RL_e5-rel.json",
+      "sha256": "7764550aa82bce9bdd77fa985d1539bc05fb8961b5213d9af9966f82f61eaa57"
+    },
+    "animals_RL_e5-long": {
+      "file": "data/pointer_v6/main/animals_RL_e5-long.json",
+      "sha256": "20a0c9c2e762d5b08f24d4a2ab77172abf919a107526d7c8651cbcce6a417c65"
+    },
+    "animals_DL_e5-still": {
+      "file": "data/pointer_v6/main/animals_DL_e5-still.json",
+      "sha256": "76b8a71b1a5e1c54604fc33a13bf1c2fe82ee4b86bbf7009239618cb846e54cd"
+    },
+    "animals_DL_e5-abs": {
+      "file": "data/pointer_v6/main/animals_DL_e5-abs.json",
+      "sha256": "2a821f367fad075b5a9d7b2a8f3942150c46916b667da9f8cc189213c7d3aec7"
+    },
+    "animals_DL_e5-rel": {
+      "file": "data/pointer_v6/main/animals_DL_e5-rel.json",
+      "sha256": "0a27ab8a18535fcac231c76520fb0cb3c45946db7a8c81c74fae7cd9b0e9dbbd"
+    },
+    "animals_DL_e5-long": {
+      "file": "data/pointer_v6/main/animals_DL_e5-long.json",
+      "sha256": "ed93e789c283c745e290daa047a657806b613e8ea72c54acf46b5d232075eb64"
+    },
+    "body_RL_e5-still": {
+      "file": "data/pointer_v6/main/body_RL_e5-still.json",
+      "sha256": "d463d2e2de61bc2d3e6de020ac538597b80ca1a23d06804b816e336fed787f78"
+    },
+    "body_RL_e5-abs": {
+      "file": "data/pointer_v6/main/body_RL_e5-abs.json",
+      "sha256": "38aa90a33336656f793c8cd6a98193682b348d6574ce70b206733bd250769a0d"
+    },
+    "body_RL_e5-rel": {
+      "file": "data/pointer_v6/main/body_RL_e5-rel.json",
+      "sha256": "b2536a8123270a383beaf75a2ba27dfc96760f0a797a94ad96447d47e44cbfd9"
+    },
+    "body_RL_e5-long": {
+      "file": "data/pointer_v6/main/body_RL_e5-long.json",
+      "sha256": "a986aa24c65a63b9ee5f12271283b97600212d41bdb67372e9d66df9a04a94dd"
+    },
+    "body_DL_e5-still": {
+      "file": "data/pointer_v6/main/body_DL_e5-still.json",
+      "sha256": "5c7334e0c50f2c6ae7de2d46e4643c9130af18ece0690d950a92a7be6e23d55e"
+    },
+    "body_DL_e5-abs": {
+      "file": "data/pointer_v6/main/body_DL_e5-abs.json",
+      "sha256": "0ef356f81ad1daf84ab0cf70e75e5b9ecc9fe83bb7cc5350d95a3df832bf22de"
+    },
+    "body_DL_e5-rel": {
+      "file": "data/pointer_v6/main/body_DL_e5-rel.json",
+      "sha256": "985d07a43817fc0c4b63e5040cae9d98d364ac2f2418982f98ce975318726ae8"
+    },
+    "body_DL_e5-long": {
+      "file": "data/pointer_v6/main/body_DL_e5-long.json",
+      "sha256": "e5ad9020d3abe9d05a8272b8770e466f4ad911f2103a89b0a8663f66f20710b5"
+    }
+  },
+  "ci": {
+    "kind": "entity_cluster",
+    "cluster": "asked entity",
+    "strata": "domain",
+    "n_boot": 2000,
+    "seed": 0,
+    "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+  },
+  "competence": "gemma4it_d3v6_competence_r2",
+  "competence_path": "results/pointer_v6/gemma4it_d3v6_competence_r2/items.jsonl",
+  "competence_sha256": "a0113039144128c5291b34bc6e3f29a588baeedfde7325313ec73a32bf632f6f",
+  "n": 150,
+  "layers": [
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52
+  ],
+  "control_stride": 1,
+  "windows": {
+    "early": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26
+    ],
+    "mid": [
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38
+    ],
+    "transit": [
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ]
+  },
+  "groups": [
+    "last"
+  ],
+  "question_max_layer": null,
+  "control_levels": null,
+  "sources": [
+    "dissoc",
+    "same",
+    "rand",
+    "other"
+  ],
+  "primary_layers": [
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52
+  ],
+  "sample": "per (domain, base level), up to n scenes eligible (every competence prompt right, keyed by set and item id) in all of the run's families and conditions, seed 0; all of them on the same scenes",
+  "seeds": {
+    "sample": 0,
+    "null": 0,
+    "other": 0
+  },
+  "decision": "(fixed before any run; the job specs in jobs/d3/ repeat it). Per cell (family x group x layer or window\nx source dissoc), pooled over domains, Wilson 95% intervals over items:\n  - interpretable iff the dissoc patch changes the answer (1 - share none: lower bound >= 0.20) and the same control\n    changes it rarely (upper bound <= 0.10); otherwise \"none\" (nothing moves) or \"damage\"\n  - verdict X in {identity, position, value} (RR: identity, position) iff X's lower bound exceeds the upper bounds of\n    the other two and the chance bar: the rand control's upper bound for X at that layer (windows: the max over the\n    window's layers) and the per-digit context rate (upper bound of share context / (N - 3), N = 5 only)\n  - otherwise \"mixed\". Primary: RL, group final, window transit (the suite's 98-100% copy flips at 44-52). H-pointer:\n    position; H-word (or a lexical key): identity; H-value: value. DL is the reference (classic binding retrieval),\n    RR the contrast (a pointer is useless there).\n  - Other datasets name their primary / reference / contrast families in the manifest (code_pointer_v1: memory ->\n    prompt RK / named -> prompt DK / RR)."
+}

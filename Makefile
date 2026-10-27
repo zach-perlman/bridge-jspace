@@ -1,4 +1,4 @@
-.PHONY: install fmt lint typecheck test test-model check run data-report examples-render examples-serve
+.PHONY: install fmt lint typecheck test test-model check run data-report review-serve review-export review-summary examples-render examples-serve enqueue queue-status queue-pull queue-worker queue-cancel queue-stats autonomy autonomy-status autonomy-off
 
 # make run CONFIG=scripts/exp10_lens_sanity/config.yaml ARGS="model=configs/models/qwen3.6-27b.yaml"
 run:                ## experiment in a detached tmux session, log in log/
@@ -29,6 +29,70 @@ check: lint typecheck test
 
 data-report:        ## what data we work with: counts, categories, labels, overlaps (add ARGS=--json)
 	uv run python -m scripts.data_report $(ARGS)
+
+# Job queue on a GPU box (scripts/jobq.py): make enqueue JOB=jobs/d2/d2_ko_v1.yaml (committed tree only).
+# Which box: QUEUE=a100 (default: sesterce-a100x4, 4 GPUs), QUEUE=mats (sesterce-h100x2, 2x H100; rented 23 Oct for the
+# 122B; QUEUE=h100 is the same box) or QUEUE=helper (sesterce-helper, 1x H100 PCIe in CA, rented 26 Oct for T); each box
+# has its own queue and ledger (results/jobq/ledger_<host>.jsonl); queue-stats also takes QUEUE=all.
+# Example: make queue-stats QUEUE=h100
+QUEUE ?= a100
+QUEUE_HOST_a100 := sesterce-a100x4
+QUEUE_HOST_h100 := sesterce-h100x2
+QUEUE_HOST_mats := sesterce-h100x2
+QUEUE_HOST_helper := sesterce-helper
+QUEUE_GPUS_a100 := 4
+QUEUE_GPUS_h100 := 2
+QUEUE_GPUS_mats := 2
+QUEUE_GPUS_helper := 1
+JOBQ = JOBQ_HOST=$(QUEUE_HOST_$(QUEUE)) uv run python -m scripts.jobq
+
+enqueue:            ## queue a job spec (or several: JOB="a.yaml b.yaml") on the GPU box (QUEUE=a100|mats|helper)
+	$(JOBQ) enqueue $(JOB) $(ARGS)
+
+queue-status:       ## running (with progress/ETA), pending, last done/failed jobs and their durations (QUEUE=a100|mats|helper)
+	$(JOBQ) status
+
+queue-pull:         ## results (new dirs only), ledger, EXPERIMENTS.md drafts, logs from the box (QUEUE=a100|mats|helper)
+	$(JOBQ) pull
+
+queue-worker:       ## start the worker for GPU $(GPU) (default 0) in tmux on the box, if not running (QUEUE=a100|mats|helper)
+	$(JOBQ) start-worker --gpu $(or $(GPU),0)
+
+queue-cancel:       ## cancel a pending job: make queue-cancel ID=<job id> (QUEUE=a100|mats|helper)
+	$(JOBQ) cancel $(ID)
+
+queue-archive:      ## move done / failed / cancelled records out of queue-status (the ledger keeps them) (QUEUE=a100|mats|helper)
+	$(JOBQ) archive
+
+queue-stats:        ## counts, GPU-hours used (last 24 h) and left, when the queue drains (QUEUE=a100|mats|helper|all)
+ifeq ($(QUEUE),all)
+	@echo "== a100 ($(QUEUE_HOST_a100))"; JOBQ_HOST=$(QUEUE_HOST_a100) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_a100)
+	@echo "== mats ($(QUEUE_HOST_mats))"; JOBQ_HOST=$(QUEUE_HOST_mats) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_mats) || echo "(mats queue not set up yet or box gone)"
+	@echo "== helper ($(QUEUE_HOST_helper))"; JOBQ_HOST=$(QUEUE_HOST_helper) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_helper) || echo "(helper queue not set up yet or box gone)"
+else
+	$(JOBQ) stats --gpus $(QUEUE_GPUS_$(QUEUE))
+endif
+
+# Claude Code autonomy window (.claude/autonomy/, not part of the experiments; stdlib only): no permission prompts for a
+# while (e.g. overnight); the old limits come back by themselves at the deadline. git push / reset --hard / clean /
+# rm -rf stay denied.
+autonomy:           ## no permission prompts until the deadline: make autonomy HOURS=10 (or UNTIL=11:00)
+	python3 .claude/autonomy/autonomy.py grant $(if $(HOURS),--hours $(HOURS)) $(if $(UNTIL),--until "$(UNTIL)")
+
+autonomy-status:    ## is a window open, until when, watcher and caffeinate alive
+	python3 .claude/autonomy/autonomy.py status
+
+autonomy-off:       ## close the window now (the old limits back)
+	python3 .claude/autonomy/autonomy.py revoke
+
+review-serve:       ## the review dashboard (docs/review_views.yaml) on http://localhost:$(PORT) (SEED=7 PORT=8001; no GPU)
+	uv run python scripts/review.py serve --seed $(or $(SEED),7) --port $(or $(PORT),8001)
+
+review-export:      ## a static sample of every review view under review/seed-<SEED>/ (SEED=0 N=10; no GPU)
+	uv run python scripts/review.py export --seed $(or $(SEED),0) --n $(or $(N),10)
+
+review-summary:     ## docs/review_summary.md: items read by hand per view, flagged, seeds, automatic-check failures
+	uv run python scripts/review.py summary
 
 examples-render:    ## examples/<exp>/ from the latest examples run of each experiment (no GPU)
 	uv run python -m bridge_jspace.examples export

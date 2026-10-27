@@ -1,0 +1,19 @@
+{
+  "run": "qwen3_32b_jpp_d1_formats_competence",
+  "why": "D1 in tables and JSON (Qwen3-32B, our J++): scenes right on every prompt",
+  "set": "d1_formats_v1",
+  "model": {
+    "target": "qwen3-32b-jpp",
+    "repo": "Qwen/Qwen3-32B",
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "git_commit": "193c060c8e943b32fd6b021319a10ee9368c4075",
+  "guess": false,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T09:05:50Z"
+}

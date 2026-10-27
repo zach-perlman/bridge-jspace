@@ -1,0 +1,49 @@
+id: d3_alias_main
+title: "D3 with statements in another language or by symbol: does the slot pointer survive when the word differs?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.9
+depends_on:
+- alias_competence_27b
+- d3v2_smoke_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data alias_pointer_v1 --set main --name d3_alias_main --families RL DL
+  --n 100 --layers 16 20 24 28 32 36 40 42 44 46 48 50 52 54 56 58 60 --groups question final last
+  --question-max-layer 38 --competence alias_competence_27b
+  --why "D3 alias: the three-way patch when the statements name the entity in French/Spanish/German (animals) or by its
+  chemical symbol (elements), on the same scenes as English statements"
+  && uv run python scripts/pointer_swap.py run --name d3_alias_main
+examples_command: uv run python scripts/pointer_swap.py examples --name d3_alias_main
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_alias_main
+question: >-
+  When the org prompt's statements name the entities in another language (animals) or by chemical symbol (elements),
+  does patching the alt prompt's tokens after the question still give the answer at the same statement slot as often
+  as with English statements on the same scenes, while the answer of bridge alt's statement (which now needs a
+  translation to find) drops?
+why_it_matters: >-
+  A word-level route (the bridge's word matched against the statement) must translate first; a positional pointer does
+  not care how the statement spells the entity. If the slot answer keeps its share and the word answer drops, the
+  "around" route is a pointer, not a word the lens cannot steer; if both drop, the slot answer was riding on a lexical
+  match.
+hypotheses:
+  H-pointer-survives: 'memory -> prompt, after the question, window 44-52: answer at the same statement slot in the other
+    language within 15 points of English (Newcombe CI, same topic), answer of bridge alt''s statement lower by > 15'
+  H-lexical: 'the slot answer drops by > 15 points with the other language or symbol'
+  prior: 'Agent prior: H-pointer-survives 0.5, H-lexical 0.3, unclear 0.2.'
+decision_rule: >-
+  The pre-registered rule of scripts/pointer_swap.py's docstring per condition; condition contrasts against English in
+  the same topic (the levels' rule of d3_levels_animals_27b): the difference of each outcome's share with a Newcombe 95%
+  interval; 'same' if it lies within ±0.15, 'differs' if it excludes 0 and exceeds 0.15, else unclear; read only if
+  both conditions' cells are interpretable. Primary: memory -> prompt, after the question, window 44-52.
+controls:
+- 'same entity, statements reshuffled: every hypothesis predicts answer org'
+- 'random push of the same size; a prompt of the other topic, same size'
+- 'English statements on the same scenes (the reference condition)'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks)'
+n: >-
+  up to 100 scenes per topic, each in English and in the alias condition (eligible in both, both families): per (topic x
+  condition x family) up to 100
+seeds: [0]
+notes: >-
+  Depends on alias_competence_27b and d3v2_smoke_27b. ~800 cases x ~139 reads -> ~111k reads at 38/s -> ~50 min.

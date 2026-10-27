@@ -25,7 +25,7 @@ W="--tasks full_v8b --tasks-competence $COMP --tasks-level all --families $WORDS
     --bands 32-40 --conditions paper10 paper10_rot $T --n 1000 --kinds step1 step2 step3 --batch 32 $PAD \
     && $PY scripts/c1_v2.py full3_ko_steps_v1 --middle L32-40 --set full_v8b > /dev/null || echo "=== steps knock-out FAILED"
 ) &
-BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full3_v1 --why "$WHY: write_max v2 (question and final positions)" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name wm2_full3_v1 --why "$WHY: write_max v2 (question and final positions)" \
   --n 40 --possets question final $W \
   && $PY scripts/c2_graded.py wm2_full3_v1 > /dev/null && $PY scripts/c2_graded.py wm2_full3_v1 --drop-guessable > /dev/null \
   || echo "=== steering FAILED"

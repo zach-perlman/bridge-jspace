@@ -1,0 +1,24 @@
+id: gemma4itb_d1_topics2_rw
+title: "D1 doubled (Gemma 4 31B-it): the lens read and write"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.8
+depends_on:
+- gemma4itb_d1_topics2_parts
+command: >-
+  BJ_TARGET=gemma-4-31b-it-baselens uv run python scripts/statement_positions.py readwrite --name gemma4itb_d1_topics2_rw --map gemma4itb_d1_topics2_map --parts gemma4itb_d1_topics2_parts --why "D1 on another family: lens read and write" --lo 30 --sets bind_bridge bridge_word lookup_x context question
+figures_command: BJ_TARGET=gemma-4-31b-it-baselens uv run python scripts/statement_positions.py figures --name gemma4itb_d1_topics2_rw
+question: >-
+  Does a lens push at the transit cell write recall but not the lookup (finding 8)?
+why_it_matters: >-
+  Finding 8 on another family.
+hypotheses:
+  H-recall-only: 'the push writes PM, not PP. Prior 0.3'
+decision_rule: >-
+  scripts/d1_verdict.py's map rule at the 27B's layers scaled by depth [30, 41) (fixed before these runs): the decisive cell is PP's statement cell in transit at the coarse layers in that window with the most C flips. Replicates iff there the lens-readable part alone switches <= 0.10 of lookups and the rest >= 0.50, while PM's lens-readable part switches >= 0.30 (the positive control; failing it, or failing the lens gate, means no claim about the lens on this model). Per topic the same verdict on the topic's rows. The lens write verdicts (written / not written) reported.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary; PM as the positive control on the same scenes; the lens gate'
+n: 'as the map'
+seeds: [0]
+notes: "Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

@@ -38,7 +38,8 @@ TEMPLATE_LENS_FILE = "qwen3.6-27b/template-lens/templates.safetensors"
 TEMPLATE_WORDS_FILE = "qwen3.6-27b/template-lens/template_words.txt"
 # The lens is frozen (Zach, 2026-10-19; README Decisions): part B's runs use the published J++ (neuronpedia/jacobian-lens,
 # JPP_FILE at LENS_REVISION), no further lens fitting or lens comparisons in headline runs. Its file's sha256 is checked
-# on load (lens.py), so a changed upload cannot slip in under the same name.
+# on load (lens.py), so a changed upload cannot slip in under the same name. Another target names its own frozen lens
+# ("frozen_lens" in TARGETS; default "jpp") and sha256 (see below the TARGETS table).
 FROZEN_LENS = "jpp"
 FROZEN_LENS_SHA256 = "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
 LENS_SOURCES = {  # every J-format lens part B can load: name -> (repo, file, revision)
@@ -154,6 +155,34 @@ TARGETS: dict[str, dict[str, Any]] = {
             ),
         },
         "frozen_lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5",
+    },
+    # Dan's "qwen3-32b" (neuronpedia's plain J-lens, sha256 0af5ccf2; D1 on a second model, 22 Oct) is main's
+    # "qwen3-32b-jlens" below since the merge into main (27 Oct 2026); its old runs (qwen3_32b_) are in LEGACY_PREFIXES.
+    # Qwen3-32B with OUR J++ (Dan, 23 Oct): every lens result on J++. Primary lens (Dan, 23 Oct ~00:30, fixed before any
+    # J++ result): ours, the published recipe (safety-research/jpp_lens@93f02cd) on 64 WikiText prompts x 128 tokens (2
+    # shards x 32 on 2x H200, one router, seed 0, merged; the merge checked exact on Qwen3.5-0.8B), skip 16, target = the
+    # last block, rlens LRP, 8 experts, source layers 16-51 only; Zach's 32-prompt fit is reported alongside when shared;
+    # no silent switch. Published: huggingface.co/danorel/Qwen3-32B-jpp-lens (commit 8d43d036, public), fp16 export.
+    # lens_layers: the plain J-lens runs' grid (every 4th layer) inside the fit's 16-51, so the stages read the same cells.
+    # Since the merge into main (27 Oct 2026) its local copy lives under cache/qwen3-32b-jpp/ (this target's cache
+    # folder): main's qwen3-32b (Zach's 32-prompt J++, sha256 6fbc0386) keeps cache/qwen3-32b/lenses/jpp/. Same file.
+    "qwen3-32b-jpp": {
+        "repo": "Qwen/Qwen3-32B",
+        "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+        "n_layers": 64,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "qwen3_32b_jpp_",
+        "frozen_lens": "jpp",
+        "lens_layers": list(range(16, 52, 4)),
+        "lenses": {
+            "jpp": (
+                "local",
+                "cache/qwen3-32b-jpp/lenses/jpp/Qwen3-32B_jpp_lens.pt",
+                "7d6856b60c958ee7a088f4afed3ed39ffbc8b88b69ad5a7a3c7e33290e64e781",
+            ),
+        },
+        "frozen_lens_sha256": "7d6856b60c958ee7a088f4afed3ed39ffbc8b88b69ad5a7a3c7e33290e64e781",
     },
     # Gemma 4 31B-it with neuronpedia's published J++ fit on the BASE model (google/gemma-4-31B; 64 wikitext prompts,
     # target layer 59): no published lens is fit on the instruction-tuned model, and our own (gemma-4-31b-it above) was
@@ -518,6 +547,153 @@ TARGETS: dict[str, dict[str, Any]] = {
         "lenses": {"jlens": (LENS_REPO, LENS_FILE, LENS_REVISION)},
         "frozen_lens_sha256": "1718c8c52dd8a9dad03738d4d625937c1fbba10be325b872ed446c7290fc11e1",
     },
+    # Qwen3.5-0.8B: smoke tests only (same qwen3_5 hybrid architecture as Qwen3.6-27B, 24 layers, full attention at
+    # every 4th), so new part B scripts run end to end on a spare GPU before a 27B run. Never a headline target.
+    "qwen3.5-0.8b": {
+        "repo": "Qwen/Qwen3.5-0.8B",
+        "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+        "n_layers": 24,
+        "norm_gain": "one_plus_weight",
+        "bos": False,
+        "run_prefix": "qwen35_08b_",
+        "lenses": {
+            "jpp": (LENS_REPO, "qwen3.5-0.8b/jpp/Salesforce-wikitext/Qwen3.5-0.8B_jpp_lens.pt", LENS_REVISION),
+        },
+        "frozen_lens_sha256": "39bf7690b7e1d917ccff9c0fd7418abeaa02fe334691edfb7e814ee890b99c06",
+    },
+    # OLMo-3-7B post-training ladder, base -> SFT -> DPO -> Instruct (Dan's D5b, 2026-10-20: does the memory/prompt split
+    # exist before post-training?). Olmo3ForCausalLM, 32 layers, d 4096, untied lm_head; sliding-window attention
+    # (4096) except full attention at 3, 7, ..., 31. Post-sublayer norms (OLMo 2 style: block l outputs h + norm(attn(h)),
+    # then + norm(mlp(.)); no input norms): the block output is the raw residual stream, as the lens hooks it, and the
+    # final norm (Olmo3RMSNorm) scales by weight. One tokenizer for plain text (cl100k-style, 100278 ids); the base
+    # tokenizer has no BOS and no chat template, the post-trained ones name <|endoftext|> as BOS but neither their chat
+    # template nor tokenizer(text) writes it, so no BOS anywhere.
+    # Lenses: mhough/olmo3-jacobian-lenses, plain J-lenses (NOT J++) in jlens's save format (J, source_layers,
+    # n_prompts, d_model; fp16), one per checkpoint, fit with the same recipe on the same 616 wikitext-103 train prompts
+    # (128 tokens, skip 16, target = block 31) at source layers 0, 3, ..., 30 only ("lens_layers"). JLens reads them as
+    # they are (no conversion). Their key is "jlens", named by "frozen_lens": FROZEN_LENS below is this key on these
+    # targets (and its sha256 is checked on load), so a run records the J-lens as "jlens", never as J++; scripts that use
+    # the lens restrict their layers to LENS_LAYERS.
+    "olmo-3-7b-base": {
+        "repo": "allenai/Olmo-3-1025-7B",
+        "revision": "a81bae42db3975be1671e27b9c9a56da1a9f980f",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_base_",
+        "frozen_lens": "jlens",
+        "lens_layers": list(range(0, 31, 3)),
+        "lenses": {
+            "jlens": (
+                "mhough/olmo3-jacobian-lenses",
+                "lenses/olmo-3-1025-7b.pt",
+                "d15b6af0058e89e78d40847c945b6e4dc7fbfe82",
+            ),
+            # neuronpedia's independent fit of the base model at every layer 0-30 (568 wikitext prompts, sha256
+            # 0683d9725bc9c09881c56784ee1371956ad5793b41731ea1213f025757073183): a cross-check, never the ladder's lens
+            "np_jlens": (
+                LENS_REPO,
+                "olmo-3-1025-7b/jlens/Salesforce-wikitext/Olmo-3-1025-7B_jacobian_lens.pt",
+                "e166deb5ad540932100ef803c8c9bcc2a5453694",
+            ),
+        },
+        "frozen_lens_sha256": "afa868bc9b4456fc2827fbc0e7c03e92d51843aea89bb76d273cd3525035602e",
+    },
+    "olmo-3-7b-sft": {
+        "repo": "allenai/Olmo-3-7B-Instruct-SFT",
+        "revision": "e1452fc572d51966ff4aaeb25118b891eb93e549",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_sft_",
+        "frozen_lens": "jlens",
+        "lens_layers": list(range(0, 31, 3)),
+        "lenses": {
+            "jlens": (
+                "mhough/olmo3-jacobian-lenses",
+                "lenses/olmo-3-7b-instruct-sft.pt",
+                "d15b6af0058e89e78d40847c945b6e4dc7fbfe82",
+            ),
+        },
+        "frozen_lens_sha256": "f215ecf21b6558252d936dc37d22a1ceca356ebe29608aab6026965c05052899",
+    },
+    "olmo-3-7b-dpo": {
+        "repo": "allenai/Olmo-3-7B-Instruct-DPO",
+        "revision": "b33130b7de49f0c2553b5c2b3bc8409ff3e627d1",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_dpo_",
+        "frozen_lens": "jlens",
+        "lens_layers": list(range(0, 31, 3)),
+        "lenses": {
+            "jlens": (
+                "mhough/olmo3-jacobian-lenses",
+                "lenses/olmo-3-7b-instruct-dpo.pt",
+                "d15b6af0058e89e78d40847c945b6e4dc7fbfe82",
+            ),
+        },
+        "frozen_lens_sha256": "0b407ba5b0d9efdd4cfce979a2b2e26d33b4b0bfc60a8025f2a4308f02ccd6fb",
+    },
+    "olmo-3-7b-instruct": {
+        "repo": "allenai/Olmo-3-7B-Instruct",
+        "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_instruct_",
+        "frozen_lens": "jlens",
+        "lens_layers": list(range(0, 31, 3)),
+        "lenses": {
+            "jlens": (
+                "mhough/olmo3-jacobian-lenses",
+                "lenses/olmo-3-7b-instruct.pt",
+                "d15b6af0058e89e78d40847c945b6e4dc7fbfe82",
+            ),
+        },
+        "frozen_lens_sha256": "b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774",
+    },
+    # OLMo-3-7B-Instruct with OUR J++ (Dan, 23 Oct: every lens result on J++), every layer 0-30 (no lens_layers: the
+    # depth-scaled grid, every 2nd layer, as the 9B). The published recipe (safety-research/jpp_lens@93f02cd), 64 WikiText
+    # prompts x 128 tokens, one shard on an A100 80GB, router seed 0, skip 16, target = the last block, rlens LRP, 8 experts;
+    # the fp16 export done by hand (the job passed --note positionally). Primary lens (Dan, 23 Oct ~00:30): ours, the
+    # published recipe on 64 prompts; Zach's fit reported alongside when shared; no silent switch. HF:
+    # danorel/Olmo-3-7B-Instruct-jpp-lens @ fd8f1d4e89e32081c722442d784bda70bf15170e. Fit record:
+    # results/lens_fit/olmo3_7b_instruct_jpp_20261023-100523.
+    "olmo-3-7b-instruct-jpp": {
+        "repo": "allenai/Olmo-3-7B-Instruct",
+        "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo3_7b_instruct_jpp_",
+        "frozen_lens": "jpp",
+        "lenses": {
+            "jpp": (
+                "local",
+                "cache/olmo-3-7b-instruct/lenses/jpp/Olmo-3-7B-Instruct_jpp_lens.pt",
+                "6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451",
+            ),
+        },
+        "frozen_lens_sha256": "6847cfb38a14d7cf0049efff80364d051d69ec91998e44177e7fb5b4b9732451",
+    },
+    # Olmo-Hybrid-7B Instruct (Dan, 23 Oct): the non-Qwen DeltaNet hybrid, paired with OLMo-3-7B-Instruct (same family,
+    # tokenizer and chat template; softmax attention in every layer) to separate architecture from family. Lens-free
+    # findings only (late read, name vs digit). The DPO checkpoint is the final Olmo Hybrid Instruct (Ai2 released no
+    # RLVR stage for it; OLMo-3-7B-Instruct is DPO + RLVR). OlmoHybridForCausalLM (transformers >= 5.3), 32 layers, d 3840:
+    # Gated DeltaNet in 24 (OlmoHybridGatedDeltaNet), full attention without RoPE at 3, 7, ..., 31; post-sublayer norms on
+    # attention blocks, input norms on DeltaNet blocks; final norm scales by weight; no BOS (as OLMo-3).
+    # No lens: "lenses" is empty (port_smoke skips its lens check) and no layer has a map (check_lens_layers refuses).
+    "olmo-hybrid-7b-instruct-dpo": {
+        "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+        "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+        "n_layers": 32,
+        "norm_gain": "weight",
+        "bos": False,
+        "run_prefix": "olmo_hybrid_7b_",
+        "lens_layers": [],
+        "lenses": {},
+    },
 }
 # DeepSeek-V4-Flash's chat format, thinking off, as deepseek-ai's encoding/encoding_dsv4.py encode_messages(...,
 # thinking_mode="chat") renders system / user / assistant turns (read from its source and its chat-mode test, not run):
@@ -610,17 +786,48 @@ TARGETS["nemotron-3.5-bolt"] = {
 # one-GPU runs before DeepSeek-V4-Flash (which needs two GPUs) relies on it.
 TARGETS["qwen3.5-9b-split"] = {**TARGETS["qwen3.5-9b"], "split_gpus": 16, "run_prefix": "qwen35_9bsplit_"}
 
+# Run-name prefixes shared by two lenses since danorel was merged into main (27 Oct 2026; main kept every key). Dan's
+# Qwen3-32B J-lens runs were made as his target "qwen3-32b" and named qwen3_32b_, the prefix of main's "qwen3-32b"
+# (Zach's J++). Runs are written once, so the names stay: such a run resolves to its key by the lens sha256 its manifest
+# records (run_target); None, a run that records no lens, resolves to Dan's key (his lens-free runs; the checkpoint is
+# the same under every Qwen3-32B key). New runs take the live prefixes (check_run_name): Dan's J-lens is
+# "qwen3-32b-jlens" (qwen3_32bj_). This is the one overlap of a legacy and a live prefix (tests/test_pins_keys.py).
+LEGACY_PREFIXES: dict[str, dict[str | None, str]] = {
+    "qwen3_32b_": {
+        "0af5ccf2e1c251bedc202607a7ca214f3b9f60980bab73d67a3d0b887db213d8": "qwen3-32b-jlens",  # Dan's runs
+        "6fbc03865ec674a2d2f346b23ea8220a7c7e2b0b3922d1afd1b300f455d3253e": "qwen3-32b",  # Zach's runs
+        None: "qwen3-32b-jlens",
+    },
+}
+
 TARGET = os.environ.get("BJ_TARGET", "qwen3.6-27b")
 assert TARGET in TARGETS, f"BJ_TARGET={TARGET!r}: not one of {sorted(TARGETS)}"
 MODEL_REPO: str = TARGETS[TARGET]["repo"]
 MODEL_REVISION: str = TARGETS[TARGET]["revision"]
 N_LAYERS: int = TARGETS[TARGET]["n_layers"]
 RUN_PREFIX: str = TARGETS[TARGET]["run_prefix"]
+# The layers the target's frozen lens has a map at; None: the layers the scripts use all have one (every pin before the
+# OLMo ladder), so nothing is restricted.
+LENS_LAYERS: list[int] | None = None
 if TARGET != "qwen3.6-27b":
     CACHE_DIR = REPO_ROOT / "cache" / TARGET
     LENS_SOURCES = TARGETS[TARGET]["lenses"]
+    FROZEN_LENS = TARGETS[TARGET].get("frozen_lens", FROZEN_LENS)
     FROZEN_LENS_SHA256 = TARGETS[TARGET].get("frozen_lens_sha256", FROZEN_LENS_SHA256)
-    FROZEN_LENS = TARGETS[TARGET].get("frozen_lens", FROZEN_LENS)  # a target with no J++ freezes its J-lens
+    LENS_LAYERS = TARGETS[TARGET].get("lens_layers")
+
+
+def on_lens(layers) -> tuple[int, ...]:
+    """`layers` that have a map in the target's frozen lens, in order (all of them when LENS_LAYERS is None)."""
+    return tuple(la for la in layers if LENS_LAYERS is None or la in LENS_LAYERS)
+
+
+def check_lens_layers(layers) -> None:
+    """Assert every layer in `layers` has a map in the target's frozen lens (before a run writes anything)."""
+    missing = [la for la in layers if not on_lens((la,))]
+    assert not missing, (
+        f"BJ_TARGET={TARGET}: layers {missing} have no {FROZEN_LENS} map; its lens layers are {LENS_LAYERS}"
+    )
 
 
 def git_state() -> dict[str, Any]:
@@ -640,16 +847,41 @@ def git_state() -> dict[str, Any]:
 
 
 def model_pin() -> dict[str, str]:
-    """The target model as manifests record it."""
-    pin = {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16", "attn": TARGETS[TARGET].get("attn", "sdpa")}
+    """The target model as manifests record it, with the prompt format (chat.FORMAT, BJ_FORMAT) its prompts use."""
+    from bridge_jspace import chat
+
+    pin = {"target": TARGET, "repo": MODEL_REPO, "revision": MODEL_REVISION, "dtype": "bfloat16",
+           "attn": TARGETS[TARGET].get("attn", "sdpa"), "prompt_format": chat.FORMAT}  # fmt: skip
     if TARGETS[TARGET].get("use_kernels"):
         pin["kernels"] = "hub"
     return pin
 
 
+def run_target(name: str, lens_sha256: str | None = None) -> str:
+    """The TARGETS key a run name belongs to: that of the longest live run prefix it starts with ("qwen3.6-27b" when
+    none does), except where LEGACY_PREFIXES lists that prefix: there the lens its manifest records decides
+    (`lens_sha256`; None for a lens-free run). KeyError for a legacy prefix that never had that lens."""
+    live = max(((t["run_prefix"], k) for k, t in TARGETS.items() if t["run_prefix"] and name.startswith(t["run_prefix"])),
+               key=lambda pk: len(pk[0]), default=("", "qwen3.6-27b"))  # fmt: skip
+    legacy = max((p for p in LEGACY_PREFIXES if name.startswith(p)), key=len, default="")
+    if legacy and len(legacy) >= len(live[0]):
+        by_sha = LEGACY_PREFIXES[legacy]
+        if lens_sha256 not in by_sha:
+            raise KeyError(f"{name!r}: run prefix {legacy!r} had no lens with sha256 {lens_sha256!r}")
+        return by_sha[lens_sha256]
+    return live[1]
+
+
 def check_run_name(name: str) -> None:
-    """A run of a non-default target is named with its prefix, so its results never pass for Qwen's."""
+    """A run of a non-default target is named with its prefix, so its results never pass for Qwen's; a raw-format run
+    (BJ_FORMAT=raw) has "_raw" in its name and a chat-format run does not, so the two never pass for each other."""
+    from bridge_jspace import chat
+
     assert name.startswith(RUN_PREFIX), f"BJ_TARGET={TARGET}: run names start with {RUN_PREFIX!r}, got {name!r}"
+    raw = "_raw" in name
+    assert raw == (chat.FORMAT == "raw"), (
+        f"BJ_FORMAT={chat.FORMAT}: run names {'need' if chat.FORMAT == 'raw' else 'must not have'} '_raw', got {name!r}"
+    )
 
 
 # The oracle lens (exp15): a LoRA on Qwen3.6-27B, same repo and revision; run s3d.rl.ddp600.s0 (see its run.json).
@@ -685,6 +917,15 @@ WIKITEXT_FILE = DATA_DIR / "wikitext103_test.json"  # generic text for part B's 
 WIKITEXT_SHA256 = "a6b5b17a576932fbb570a96b0f5b6a65ced408690a2dce749a8c56f980bbcc0f"
 LENS_EVAL_MULTIHOP_FILE = DATA_DIR / "lens_eval_multihop.json"
 LENS_EVAL_MULTIHOP_SHA256 = "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416"
+# SQuAD v1.1 dev (Rajpurkar et al. 2016; CC BY-SA 4.0), the raw upstream file at a pinned commit of the dataset's
+# site repo (the site's own copy has the same sha256). Not committed: downloaded once into cache/ (REPO_ROOT's, not a
+# target's CACHE_DIR); scripts/natural_read.py make derives NATURAL_READ_FILE from it (finding 4 on natural text).
+SQUAD_DEV_URL = ("https://raw.githubusercontent.com/rajpurkar/SQuAD-explorer/240e165ab706d95bd4323653bb92421f446208cf/"
+                 "dataset/dev-v1.1.json")  # fmt: skip
+SQUAD_DEV_FILE = REPO_ROOT / "cache" / "natural_read" / "squad" / "dev-v1.1.json"
+SQUAD_DEV_SHA256 = "95aa6a52d5d6a735563366753ca50492a658031da74f301ac5238b03966972c9"
+NATURAL_READ_FILE = DATA_DIR / "natural_read_v1" / "items.json"  # natural_read.py make: one question per paragraph
+NATURAL_READ_SHA256 = "60b8527dc63c2fff3217d40ece1a7f8405a46aa3946f8d7f36f2d475eab21cc9"
 ENTITY_PROMPTS_FILE = DATA_DIR / "entity_prompts.json"
 ENTITY_PROMPTS_TOPUP_FILE = DATA_DIR / "entity_prompts_topup.json"
 ENTITY_PROMPTS_MORE_DIR = DATA_DIR / "entity_prompts_more"  # round 3: part files, merged in name order
@@ -745,6 +986,10 @@ def wikitext_rows() -> list[str]:
 
 def lens_eval_multihop_items() -> list[dict[str, Any]]:
     return load_pinned_items(LENS_EVAL_MULTIHOP_FILE, LENS_EVAL_MULTIHOP_SHA256)
+
+
+def natural_read_items() -> list[dict[str, Any]]:
+    return load_pinned_items(NATURAL_READ_FILE, NATURAL_READ_SHA256)
 
 
 def sha256_file(path: Path) -> str:

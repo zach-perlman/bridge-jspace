@@ -1,0 +1,24 @@
+id: muse30b_d2_parts
+title: "Muse Glimmer 30B: name vs digit (main)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.8
+depends_on:
+- muse30b_competence
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py manifest --name muse30b_d2_parts --dataset pointer_v4 --set main --families RL DL RR --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence muse30b_d3v4_competence --why "finding 3 on Muse (main)" && BJ_TARGET=muse-glimmer-30b uv run python scripts/attn_knockout.py run --name muse30b_d2_parts
+figures_command: uv run python scripts/d2_parts.py --name muse30b_d2_parts
+question: >-
+  Do the last tokens take only the digit, the question's tokens the name?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.7'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged: valid-split first; H-digit-final-split (memory -> prompt) decisive; H-name-q-split where the question is testable.
+controls:
+- 'as the same test on the other models'
+n: '100 items per family'
+seeds: [841, 844]
+notes: "Dan, 22 Oct night: Muse Glimmer 30B (Meta) as a sixth model, every experiment, the rules copied unchanged from the other models; layers by the fixed rules or the 27B's scaled by depth (x 52/64). Not opened before Dan's predictions; README and figures only after he opens the results."

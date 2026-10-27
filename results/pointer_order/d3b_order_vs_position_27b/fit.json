@@ -1,0 +1,200 @@
+{
+  "folds": [
+    {
+      "fold": 0,
+      "prompts": 367,
+      "scenes": 143,
+      "layers": [
+        {
+          "layer": 40,
+          "n": 367,
+          "per_slot": [
+            114,
+            82,
+            91,
+            54,
+            26
+          ],
+          "decode_cv": 0.4659,
+          "decode_cv_shuffled": 0.1798
+        },
+        {
+          "layer": 42,
+          "n": 367,
+          "per_slot": [
+            114,
+            82,
+            91,
+            54,
+            26
+          ],
+          "decode_cv": 0.455,
+          "decode_cv_shuffled": 0.1826
+        },
+        {
+          "layer": 44,
+          "n": 367,
+          "per_slot": [
+            114,
+            82,
+            91,
+            54,
+            26
+          ],
+          "decode_cv": 0.4823,
+          "decode_cv_shuffled": 0.188
+        },
+        {
+          "layer": 46,
+          "n": 367,
+          "per_slot": [
+            114,
+            82,
+            91,
+            54,
+            26
+          ],
+          "decode_cv": 0.5095,
+          "decode_cv_shuffled": 0.1798
+        },
+        {
+          "layer": 48,
+          "n": 367,
+          "per_slot": [
+            114,
+            82,
+            91,
+            54,
+            26
+          ],
+          "decode_cv": 0.564,
+          "decode_cv_shuffled": 0.1826
+        },
+        {
+          "layer": 50,
+          "n": 367,
+          "per_slot": [
+            114,
+            82,
+            91,
+            54,
+            26
+          ],
+          "decode_cv": 0.6049,
+          "decode_cv_shuffled": 0.1989
+        },
+        {
+          "layer": 52,
+          "n": 367,
+          "per_slot": [
+            114,
+            82,
+            91,
+            54,
+            26
+          ],
+          "decode_cv": 0.5259,
+          "decode_cv_shuffled": 0.1907
+        }
+      ]
+    },
+    {
+      "fold": 1,
+      "prompts": 363,
+      "scenes": 144,
+      "layers": [
+        {
+          "layer": 40,
+          "n": 363,
+          "per_slot": [
+            104,
+            78,
+            99,
+            49,
+            33
+          ],
+          "decode_cv": 0.3444,
+          "decode_cv_shuffled": 0.2094
+        },
+        {
+          "layer": 42,
+          "n": 363,
+          "per_slot": [
+            104,
+            78,
+            99,
+            49,
+            33
+          ],
+          "decode_cv": 0.3747,
+          "decode_cv_shuffled": 0.2094
+        },
+        {
+          "layer": 44,
+          "n": 363,
+          "per_slot": [
+            104,
+            78,
+            99,
+            49,
+            33
+          ],
+          "decode_cv": 0.438,
+          "decode_cv_shuffled": 0.2094
+        },
+        {
+          "layer": 46,
+          "n": 363,
+          "per_slot": [
+            104,
+            78,
+            99,
+            49,
+            33
+          ],
+          "decode_cv": 0.4601,
+          "decode_cv_shuffled": 0.2204
+        },
+        {
+          "layer": 48,
+          "n": 363,
+          "per_slot": [
+            104,
+            78,
+            99,
+            49,
+            33
+          ],
+          "decode_cv": 0.4766,
+          "decode_cv_shuffled": 0.2066
+        },
+        {
+          "layer": 50,
+          "n": 363,
+          "per_slot": [
+            104,
+            78,
+            99,
+            49,
+            33
+          ],
+          "decode_cv": 0.5124,
+          "decode_cv_shuffled": 0.2094
+        },
+        {
+          "layer": 52,
+          "n": 363,
+          "per_slot": [
+            104,
+            78,
+            99,
+            49,
+            33
+          ],
+          "decode_cv": 0.4848,
+          "decode_cv_shuffled": 0.2094
+        }
+      ]
+    }
+  ]
+}

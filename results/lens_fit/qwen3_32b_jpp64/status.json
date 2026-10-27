@@ -1,0 +1,64 @@
+{
+ "model": "Qwen/Qwen3-32B",
+ "layers": "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51",
+ "prompts": 64,
+ "shards": 2,
+ "started": "2026-10-22T21:40:23Z",
+ "steps": [
+  {
+   "step": "router",
+   "seconds": 105,
+   "exit": 0
+  },
+  {
+   "step": "shard0",
+   "rows": 10,
+   "launched_s": 105
+  },
+  {
+   "step": "shard1",
+   "rows": 10,
+   "launched_s": 105
+  },
+  {
+   "step": "shard0",
+   "rows": 10,
+   "seconds": 6862,
+   "exit": 0
+  },
+  {
+   "step": "shard1",
+   "rows": 10,
+   "seconds": 6940,
+   "exit": 0
+  },
+  {
+   "step": "merge",
+   "seconds": 75,
+   "exit": 0
+  },
+  {
+   "step": "grade",
+   "seconds": 60,
+   "exit": 0
+  },
+  {
+   "step": "fit_weights",
+   "seconds": 120,
+   "exit": 0
+  },
+  {
+   "step": "evaluate",
+   "seconds": 75,
+   "exit": 0
+  },
+  {
+   "step": "export",
+   "seconds": 15,
+   "exit": 2
+  }
+ ],
+ "state": "FAIL",
+ "elapsed_s": 7390,
+ "at": "export"
+}

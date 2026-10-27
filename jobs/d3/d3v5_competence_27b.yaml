@@ -1,0 +1,22 @@
+id: d3v5_competence_27b
+title: "D3 v5 gate: can Qwen3.6-27B answer pointer_v5 (colour-word answers, 8-statement lists)?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  uv run python scripts/pointer_v5.py manifest --name d3v5_competence_27b
+  --why "D3 v5 gate: pointer_v5's scenes with digit and colour-word answers, 5 and 8 statements, every alt and control
+  prompt and each step alone"
+  && uv run python scripts/pointer_v5.py competence --name d3v5_competence_27b
+question: 'Does Qwen3.6-27B answer pointer_v5''s prompts (digits and colour words; 5 and 8 statements)?'
+why_it_matters: 'Gate for d3v5_swap_27b; also shows whether 8 statements or colour words cost plain accuracy.'
+hypotheses:
+  H-gate: 'every topic, family and layout >= 85% right on the org prompt (Wilson lower bound). Prior 0.7'
+decision_rule: 'pointer_v1''s competence rule; colour answers judged by the first colour word of the reply''s first line.'
+controls:
+- 'each step alone (the recall and the named lookup) for memory -> prompt'
+n: 'all of pointer_v5 main: 150 scenes per topic and list length x 2 answer kinds x 2 families (3,600 items)'
+seeds: [871]
+notes: '~0.5 GPU-h.'

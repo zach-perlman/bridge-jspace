@@ -1,0 +1,48 @@
+{
+  "exp": "x8_write",
+  "run": "qwen35_9b_x8_write",
+  "written_utc": "2026-10-26T10:55:49Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "2a9a586dca043335c7bdecc21bc850305d3ef8a8",
+    "dirty": true
+  },
+  "layer": 12,
+  "stage": "write",
+  "s": [
+    1,
+    2,
+    4
+  ],
+  "rand_s": [
+    1,
+    4
+  ],
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "mu_from": "qwen35_9b_x0_probe_v4",
+  "seeds": {
+    "scenes": 2510,
+    "random_directions": 4401
+  },
+  "note": "batch 44 (Dan 26 Oct ~13:00); results closed until its answers",
+  "items": 300,
+  "norms": {
+    "step": {
+      "0-1": 4.0998,
+      "0-2": 4.8187,
+      "1-0": 4.0998,
+      "1-2": 2.43,
+      "2-0": 4.8187,
+      "2-1": 2.43
+    },
+    "median_U_UT_delta_C2": 6.5605
+  }
+}

@@ -1,0 +1,32 @@
+id: olmo3_7b_sft_competence_chat_v1
+thread: D5
+gpus: 1
+est_gpu_hours: 0.3
+mem_gb: 25
+command: 'BJ_TARGET=olmo-3-7b-sft BJ_FORMAT=chat uv run python scripts/suite_v1.py manifest --set main --name olmo3_7b_sft_competence_chat_v1
+  --why "D5b gate G1: competence of olmo-3-7b-sft in chat format" && BJ_TARGET=olmo-3-7b-sft BJ_FORMAT=chat uv run
+  python scripts/suite_v1.py competence --name olmo3_7b_sft_competence_chat_v1'
+question: Can olmo-3-7b-sft do the suite's six families in the chat format (the checkpoint's chat template (default
+  system prompt, one user turn) with 'Answer:' prefilled, the suite's convention), item by item and step by step?
+why_it_matters: 'Gate G1 (Zach): a checkpoint counts only if it is competent in the format its runs use. D5b / claim
+  C2 (memory vs prompt: recall needs the J-space, prompt lookups go around it). If the split is present in the base
+  model, post-training is not what creates it (the ''around'' route is a pretraining mechanism, e.g. binding/lookback
+  pointers); if it first appears at SFT/DPO/RLVR, the split is a property of post-trained chat models. A null on
+  Instruct with a passing gate says the Qwen result does not generalise to OLMo.'
+hypotheses:
+  H_competent: clean accuracy >= 80% on BL, BR, RL, RR with >= 150 eligible items each
+  H_format_fail: 'base in raw or post-trained in raw answers with filler (e.g. ''__'', a restated question): clean
+    < 80% from format, not knowledge (hops alone high)'
+decision_rule: GATE G1 passes for this checkpoint and format iff clean accuracy >= 0.80 (point estimate; Wilson
+  CI reported) on each of BL, BR, RL, RR and >= 150 items eligible (clean, C, O right) per family; otherwise no
+  ladder job of this checkpoint/format is interpreted.
+controls:
+- 'each step alone (hop1-hop3): separates knowledge from composition'
+- 'C and O prompts (token-aligned): O must keep the answer, C must change it'
+n: 400 items per family x (clean, C, O, hops), all items
+seeds:
+- 101
+notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Still needed for the lens stages (read_write, ablate_pilot, suite_split parts): pins picking the frozen lens of each target (jlens) and lens-stage layers restricted to the lens layers (0, 3, ..., 30). Disk:
+  model snapshots in the box''s HF cache (/ephemeral/hf). Disk: none new. Time: 9B-scale extrapolation (14.4k prompts,
+  8 greedy tokens, batch 64). No examples_command: suite_v1.py has no examples stage yet (none of suite_v1, ablate_pilot,
+  read_write, suite_split has one).'

@@ -1,0 +1,44 @@
+id: d3v2_competence_27b
+title: "D3 v2 gate: can the 27B answer the new scenes (a filler sentence among the statements; alt answers also in the org prompt)?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  uv run python scripts/pointer_v2.py manifest --set main n3 --name d3v2_competence_27b
+  --why "D3 v2 gate: can the 27B answer pointer_v2's scenes (5 or 3 statements plus one filler sentence of the same
+  length; animals and elements), every alt prompt (offset shift, plain, reflexive), the controls and each step alone?"
+  && uv run python scripts/pointer_v2.py competence --name d3v2_competence_27b
+question: >-
+  Can Qwen3.6-27B answer pointer_v2's org prompts, every alt prompt (filler moved, filler in place, alt answer also in
+  the org prompt), the 'same' and 'redigit' controls and each step alone (cue -> entity; the lookup with the entity
+  named, or the recalled fact), per topic (animals, elements), family (memory -> prompt, named -> prompt, memory ->
+  memory), type and length (5 statements: 180 scenes per topic; 3 statements: 120)?
+why_it_matters: >-
+  Gate for d3v2_offset_reflexive_main and d3v2_n3: the patching verdicts are only read on scenes the model answers
+  unedited in every family and type. The filler sentence and the digit 0 are new to these prompts. It also says how many
+  prompts per cut remain, which decides whether the rule can be applied per slot (it needs 35 per cut).
+hypotheses:
+  H-competent: 'memory -> prompt clean >= 95% for animals (v1: 98%) and >= 90% for elements (v1: 94%); named -> prompt
+    and memory -> memory >= 98%; >= 70% of scenes eligible in all three families and types for elements, >= 85% for
+    animals'
+  H-filler-hurts: 'memory -> prompt drops below 85% (Wilson lower bound) in some topic x type cell, so the filler or the
+    locker digit 0 confuses the lookup; that cell is dropped from the patching runs'
+  prior: 'Agent prior: H-competent 0.75.'
+decision_rule: >-
+  pointer_v1's gate, unchanged: a (topic, family, type) cell enters the patching runs iff its clean Wilson 95% lower
+  bound >= 0.85; an item is eligible iff every prompt of it is right (org, alt, same, redigit, hop1, hop2); pointer_swap
+  then keeps scenes eligible in every family and type of its run. Report answer-read vs greedy agreement (>= 99%) and,
+  per topic x slot class, the number of eligible scenes (the patching runs need >= 35 per cut).
+controls:
+- 'each step alone (cue -> entity; lookup with the entity named / recalled fact): separates composition failures from
+  missing facts'
+- 'answer read vs 8-token greedy: validates the one-forward read the patching runs use'
+n: '5 statements: 180 scenes per topic x 3 families x 3 types (3,240 items); 3 statements: 120 per topic (2,160 items);
+  about 28,600 prompts'
+seeds: [801, 802]
+notes: >-
+  Estimate: d3_competence_27b answered 3,360 items (~17,800 prompts) in 1,023 s on this A100 (17 prompts/s); 28,600
+  prompts -> ~28 min + load. The org prompt, 'same', 'redigit' and the steps are shared by the three types of a scene,
+  so about two thirds of these prompts repeat (kept: the gate reads every item's own prompts).

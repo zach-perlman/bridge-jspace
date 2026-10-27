@@ -1,0 +1,34 @@
+id: qwen35_122b_x0_necessity
+title: "X0, Qwen3.5-122B-A10B (2x H100): is C3's split real at layer 33, and is it about J++? (with the k-curve, the digit arm and the strata)"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 4.0
+depends_on: [qwen35_122b_x0_hw_gate_r2]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto BJ_SUITE_BATCH=16 uv run python scripts/x0_necessity.py run --name qwen35_122b_x0_necessity --set d1_topics_v3 --renderings chat --dicts jpp wu we rand jppall jppdig --curve-dicts jpp jppall --curve-k 50 100 --readout --why "X0 on the 122B (X0.md: layers 30 / 33 / 36 by the rule, predicted 33; 24 and 27 descriptive; Dan 24 Oct): the word, chat, J++ k = 25 with W_U, W_E, random; the k-curve at 33; the digit arm (jppall, jppdig, readout) descriptive"
+  && BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_strata.py --name qwen35_122b_x0_necessity --layer 33 --all-dicts
+  && BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_descriptive.py --name qwen35_122b_x0_necessity
+figures_command: BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/x0_necessity.py figures --name qwen35_122b_x0_necessity
+question: >-
+  On fresh scenes (d1_topics_v3), chat, at the bridge's word of the 122B: past layer 33 (fixed in X0.md), does removing the J++ part of a stated bridge's change stop hurting lookups (no more than a random part of the same share) while it still hurts recalls? Layers 30 and 36 are reported by the same rule, 24 and 27 descriptive; the k-curve at 33; the digit-inclusive dictionary and the digit directions (descriptive); the strata (locker order, upstream change).
+why_it_matters: >-
+  The third model, and the first mixture-of-experts one, for C3's graded contrast and the 27B's lookup result.
+hypotheses:
+  H-confirmed: 'lookup excess <= 0.10 and recall Jdep >= 0.30 at L33. Prior: Dan''s, predictions/2026-10-24_dan.md Q26.9'
+  H-killed: 'lookup excess >= 0.20 or recall Jdep < 0.20 at L33. Prior: Dan''s, Q26.9'
+  H-lookup-k100: 'the lookup at L33 with J++ at k = 100: around / mixed / through. Prior: Dan''s, Q26.10'
+  H-digit: 'the locker-before lookups with jppall at k = 25: through / mixed / around. Prior: Dan''s, Q26.11'
+  H-order: 'lookup flips under the whole edit, locker before vs after. Prior: Dan''s, Q26.12'
+decision_rule: >-
+  jobs/c3/X0.md "Decision rule" (with amendment 1 and D3 as amended) at the 122B's predicted layer 33, the bridge's word, chat, J++ k = 25, top-token read: confirmed iff lookup excess <= 0.10 and recall Jdep >= 0.30; killed iff lookup excess >= 0.20 or recall Jdep < 0.20; not confirmed otherwise; can't tell if either reader's cell is invalid (S_whole < 0.30 or < 30 switched). Layers 30 and 36 reported with the same labels; 24 and 27, the k-curve, the digit arm and the strata are descriptive. Gated by qwen35_122b_x0_hw_gate_r2 (Dan, 24 Oct, before the gate ran): agreement >= 0.97 run as is; 0.90-0.97 run, every 122B number labelled 'hardware drift', the per-cell disagreement reported; < 0.90 the gate exits 3 and this run does not start (stop and diagnose). Not opened before Dan's batch-26 answers (Q26.8-Q26.12) are committed.
+controls:
+- 'the random part of the same share, per dictionary and k'
+- 'the W_U, W_E and random dictionaries at k = 25'
+- 'both readers on the identical patch'
+- 'the valid-cell bar (S_whole >= 0.30 and >= 30 items)'
+- 'the competence gate (>= 80% unedited org accuracy, both readers)'
+- 'the hardware gate (qwen35_122b_x0_hw_gate_r2, with its drift tier)'
+n: 'up to 200 eligible scenes of d1_topics_v3, 2 readers each'
+seeds: [24, 0]
+notes: "Caveats in every report: a J++ fitted on the bf16 weights used on the FP8 model; mixture of experts; 2x H100 PCIe with the model split (BJ_DEVICE_MAP=auto). Seeds as X0 (random dictionary 777 + layer, random subspace 888 + layer, CPU). Cost basis: qwen35_122b_d1_late_parts ran ~49k reads in ~1 h on this kind of box; here competence 600 scenes plus 5 layers x ~10-19 arms x 400 reads (~25-30k reads) and the jppall OMP: ~1.5-2 h wall (4 GPU-h on 2 GPUs). Enqueued only after Dan's batch-26 answers."

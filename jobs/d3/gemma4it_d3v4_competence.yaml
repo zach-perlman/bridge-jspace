@@ -1,0 +1,22 @@
+id: gemma4it_d3v4_competence
+title: "Gate: can Gemma 4 31B-it answer pointer_v4's scenes (read judge)?"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  BJ_TARGET=gemma-4-31b-it BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set main --name gemma4it_d3v4_competence
+  --why "another family (Gemma 4, 60 layers, sliding-window and global attention): pointer_v4's main scenes, chat
+  format, read judge; no lens is used by D2 or D3"
+  && BJ_TARGET=gemma-4-31b-it BJ_JUDGE=read uv run python scripts/pointer_v4.py competence --name gemma4it_d3v4_competence
+question: 'Does Gemma 4 31B-it put the right answer on top in the read, for pointer_v4''s main scenes?'
+why_it_matters: 'Gate for gemma4it_d3v4_swap and gemma4it_d2_v4_late_read: D2 and D3 on a non-Qwen family other than OLMo.'
+hypotheses:
+  H-gate: 'memory -> prompt and named -> prompt >= 80% right per topic (read judge). Prior 0.6'
+decision_rule: 'pointer_v1''s competence rule (read judge). Scenes not token-aligned under Gemma''s tokenizer are dropped by pointer_swap.'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'pointer_v4 main (up to 300 scenes per topic x 3 families)'
+seeds: [841]
+notes: '~0.4 GPU-h (31B).'

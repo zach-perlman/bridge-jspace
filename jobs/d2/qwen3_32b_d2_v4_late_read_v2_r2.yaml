@@ -1,0 +1,36 @@
+id: qwen3_32b_d2_v4_late_read_v2_r2
+title: "D2 on Qwen3-32B: do the last tokens read the answer's statement late, and in which 4-layer band?"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.2
+depends_on:
+- qwen3_32b_d3v4_competence_r2
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py manifest --name qwen3_32b_d2_smoke_v2 --dataset pointer_v4 --families RL RR
+  --n 3 --layers all bands --sweep path --sweep-dests final --competence qwen3_32b_d3v4_competence_r2
+  --why "smoke: attn_knockout on Qwen3-32B; not a result"
+  && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py run --name qwen3_32b_d2_smoke_v2
+  && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py manifest --name qwen3_32b_d2_v4_late_read_v2_r2
+  --why "D2 on another family: d2_v4_late_read's grid on pointer_v4 with 4-layer bands, memory -> prompt, named ->
+  prompt, memory -> memory"
+  --dataset pointer_v4 --families RL DL RR --n 100 --layers all bands band4 --sweep path+random
+  --sweep-dests question final both --competence qwen3_32b_d3v4_competence_r2
+  && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py run --name qwen3_32b_d2_v4_late_read_v2_r2
+  && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py summarise --name qwen3_32b_d2_v4_late_read_v2_r2
+examples_command: BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py examples --name qwen3_32b_d2_v4_late_read_v2_r2 --k 3
+figures_command: BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py figures --name qwen3_32b_d2_v4_late_read_v2_r2
+question: >-
+  On Qwen3-32B, when the answer's statement is hidden from the last tokens, does a lookup in the prompt break
+  while a recall does not, and in which 4-layer band must the statement stay visible?
+why_it_matters: 'Pattern 4 (the late read) on another family; Qwen3-32B is dense: the Qwen family without the hybrid DeltaNet layers.'
+hypotheses:
+  H-late-read: 'statement hidden from the tokens after the question in every layer: memory -> prompt still right upper
+    bound <= 20%, memory -> memory lower bound >= 85%. Prior 0.65'
+  H-band: 'the band whose blocking alone breaks memory -> prompt most lies in the last half of the layers. Prior 0.6'
+decision_rule: 'attn_knockout''s rule as in d2_v4_late_read; primary: memory -> prompt, destination final, all layers, pooled.'
+controls:
+- 'off-path same-length statement hidden; random span; memory -> memory'
+n: '100 items per family, 3 topics'
+seeds: [0]
+notes: '~1.2 GPU-h; the smoke (3 items) runs first in the same command.'

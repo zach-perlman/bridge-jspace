@@ -1,0 +1,15 @@
+{
+  "kernel_path": "fla",
+  "noop_empty_source_max_abs": 0.0,
+  "unedited_row_drift_in_knocked_batch_max_abs": 0.875,
+  "posctl_last_reads_nothing_max_abs": 0.0,
+  "posctl_last_reads_nothing_same_top": true,
+  "posctl_context_erased_absent_max_abs": 0.0,
+  "posctl_context_erased_value_max_abs": 0.0,
+  "unhooked_rolled_context_max_abs": 7.40625,
+  "kernel_layer": null,
+  "seconds_batch4_plain": 2.9272,
+  "seconds_batch4_all_layers_knocked": 3.3967,
+  "passed": true,
+  "seconds": 29.8
+}

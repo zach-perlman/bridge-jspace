@@ -11,10 +11,14 @@ cd /workspace/ext/jpp_lens && uv run --no-sync python /workspace/bridge-jspace/s
   (writes /workspace/bridge-jspace/results/lens_check/summary.md and .json; models without ranks yet are listed as such)
 """
 
+# pandas and lens_evals live in the jpp_lens environment this runs in, not in this project's
+# pyright: reportMissingImports=false
+
 from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 from lens_evals.readout_evals.readout_eval_scoring import pass_at_k_over_layers
@@ -58,7 +62,8 @@ def main() -> None:
             continue
         ranks = pd.concat([pd.read_csv(f) for f in have], ignore_index=True)
         rel = sorted({int(n * k / 8 + 0.5) for k in range(1, 8)} & set(fitted))
-        row, rec = [], {"relative_layers": rel, "band": [band.start, band.stop - 1]}
+        row: list[str] = []
+        rec: dict[str, Any] = {"relative_layers": rel, "band": [band.start, band.stop - 1]}
         for label, layers in (("all", fitted), ("relative7", rel), ("band", band)):
             j, lg = macro10(ranks, jpp, layers), macro10(ranks, "logit", layers)
             rec[label] = {"jpp": j, "logit": lg}

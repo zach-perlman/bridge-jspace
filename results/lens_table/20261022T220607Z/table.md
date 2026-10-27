@@ -1,0 +1,51 @@
+# Lens quality: every lens we use, scored as Zach's cards score his
+
+Held-out readout evals of the J++ recipe (safety-research/jpp_lens@93f02cd, `jpp_cli.py evaluate --items held-out:0`): pass@10 per eval and the macro (mean of the five), item-weighted, best rank over the layers scored, on the items each model answers right. Recomputed here from the per-layer rank files (scripts/lens_table.py). Descriptive, single fits, no CIs; UNVERIFIED.
+
+- Layers scored = the model's comparison set (the layers its lenses share): Qwen3.6-27B 0-62; Qwen3.5-9B 0-30; Qwen3-32B 16-51; OLMo-3-7B-Instruct 0-30 every 3rd; Gemma 4 31B-it 0-58; Muse Glimmer 30B 0-50; Qwen3.5-122B-A10B (FP8) -.
+- C1 band = Zach's lens_check bands (scripts/lens_fit/lens_check.py): Qwen3.6-27B 32-40; Qwen3.5-9B 16-20; Qwen3-32B 32-40; Gemma 4 31B-it 30-38; '-' where none is defined.
+- macro − logit: minus the logit lens on the same items and layers (the item sets differ by model, so across models compare this, not the macro). pooled macro: the recipe's pooled lens of the same fit, the baseline on Zach's cards; n/a for published J++ (no pooled lens is published); '-' for J-lenses and the logit lens.
+- gate v1 / v2: lens gate results, for Dan to fill.
+- Zach's files read from origin/zach/v8-breadth-1021 at ce12747d8ea8cac284124eb313f9c6676c9c960e.
+
+| model | lens | type | source | recipe, prompts | layers scored | items | association | multihop | multilingual | poetry | typo | **macro** | macro − logit | macro, every layer it has | C1 band macro (− logit) | pooled macro | published macro | gate v1 | gate v2 | numbers from |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Qwen3.6-27B | published J++ [1] | J++ | neuronpedia/jacobian-lens@e166deb5 (sha256 bbef480b, = 9fa267f8) | jpp_lens recipe (koayon/jpp-lenses), 64 WikiText prompts | 0-62 | 328 | 0.512 | 0.949 | 0.815 | 0.308 | 0.987 | **0.714** | +0.281 | 0.714 (0-62) | 0.496 (+0.304) | n/a |  |  |  | results/exp19_fit_data/fit_v2/eval_ranks.csv |
+| Qwen3.6-27B | published plain J-lens (n1000) [2] | plain J-lens | neuronpedia/jacobian-lens@e166deb5 (sha256 1718c8c5, = 9fa267f8) | plain J-lens, 1000 WikiText prompts | 0-62 | 328 | 0.159 | 0.641 | 0.662 | 0.077 | 0.610 | **0.430** | -0.004 | 0.430 (0-62) | 0.232 (+0.039) | - |  |  |  | results/exp19_fit_data/fit_v2/eval_ranks.csv |
+| Qwen3.6-27B | logit lens [3] | logit lens | - | - | 0-62 | 328 | 0.146 | 0.692 | 0.515 | 0.046 | 0.766 | **0.433** |  | 0.433 (0-62) | 0.192 | - |  |  |  | results/exp19_fit_data/fit_v2/eval_ranks.csv |
+| Qwen3.5-9B | published J++ [4] | J++ | neuronpedia/jacobian-lens@e166deb5 (sha256 8cda12f7) | jpp_lens recipe (koayon/jpp-lenses), 64 WikiText prompts |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Qwen3.5-9B | logit lens [5] | logit lens | - | - |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Qwen3-32B | published plain J-lens [6] | plain J-lens | neuronpedia/jacobian-lens@e166deb5 (sha256 0af5ccf2) | plain J-lens, 557 WikiText prompts (stopping threshold not reached) |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Qwen3-32B | Zach's J++ (32 prompts) [7] | J++ | Zach's fit (not published) | J++ (jpp_lens@93f02cd), 32 WikiText prompts |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Qwen3-32B | our J++ (64 prompts) [8] | J++ | ours (H200 fit, scripts/lens_fit/h200_fit.py) | J++ (jpp_lens@93f02cd), 64 WikiText prompts (2 shards x 32), layers 16-51 |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Qwen3-32B | logit lens [9] | logit lens | - | - |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| OLMo-3-7B-Instruct | mhough plain J-lens [10] | plain J-lens | mhough/olmo3-jacobian-lenses@d15b6af0 (sha256 b847dbba) | plain J-lens, 616 WikiText prompts, layers 0-30 every 3rd |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| OLMo-3-7B-Instruct | neuronpedia plain J-lens (base model) [11] | plain J-lens | neuronpedia/jacobian-lens@e166deb5 (sha256 0683d972) | plain J-lens fit on Olmo-3-1025-7B (base), 568 WikiText prompts, layers 0-30 |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| OLMo-3-7B-Instruct | our J++ (64 prompts) [12] | J++ | ours (jobs/lens_fit/olmo3_7b_instruct_jpp_fit.yaml) | J++ (jpp_lens@93f02cd), 64 WikiText prompts, layers 0-30 |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| OLMo-3-7B-Instruct | logit lens [13] | logit lens | - | - |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Gemma 4 31B-it | Zach's J++ (every layer) [14] | J++ | zachperlman20/gemma-4-31B-it-jpp-lens@c3c4340e (sha256 d16d81d8) | J++ (jpp_lens@93f02cd), 64 WikiText prompts, layers 0-58 | 0-58 | 244 | 0.098 | 0.720 | 0.471 | 0.875 | 1.000 | **0.633** |  | 0.633 (0-58) | 0.367 | 0.503 | 0.633 (layers 0-58) |  |  | origin/zach/v8-breadth-1021:results/lens_fit/gemma_it_full/eval_ranks.csv |
+| Gemma 4 31B-it | neuronpedia J++ (base model) [15] | J++ | neuronpedia/jacobian-lens@e166deb5 (sha256 ef50bc54) | jpp_lens recipe (koayon/jpp-lenses) on google/gemma-4-31B (base), 64 WikiText prompts |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Gemma 4 31B-it | logit lens [16] | logit lens | - | - |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Muse Glimmer 30B | Zach's J++ (every layer) [17] | J++ | zachperlman20/Muse-Glimmer-30B-jpp-lens@68ecd838 (sha256 90fc5e52) | J++ (jpp_lens@93f02cd + jpp_lens_muse_1022.patch), 32 WikiText prompts, layers 0-50 | 0-50 |  | 1.000 | 1.000 | 0.812 | 0.981 | 1.000 | **0.959** | +0.289 |  | - | 0.893 |  |  |  | zachperlman20/Muse-Glimmer-30B-jpp-lens@68ecd838 eval/eval_ranks_pass_at_k.csv (item-weighted, layers 0-50) |
+| Muse Glimmer 30B | eyes-ml plain J-lens [18] | plain J-lens | eyes-ml/Muse-Glimmer-30B_jacobian-lens@71d8434f | plain J-lens (neuronpedia fit_lens), 900 WikiText prompts (stop rule not reached) |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+| Muse Glimmer 30B | logit lens [19] | logit lens | - | - | 0-50 |  | 0.630 | 0.889 | 0.515 | 0.654 | 0.662 | **0.670** |  |  | - | - |  |  |  | zachperlman20/Muse-Glimmer-30B-jpp-lens@68ecd838 eval/eval_ranks_pass_at_k.csv (item-weighted, layers 0-50) |
+| Qwen3.5-122B-A10B (FP8) | published J++ [20] | J++ | neuronpedia/jacobian-lens@e166deb5 (sha256 b771e502) | jpp_lens recipe (koayon/jpp-lenses), fit on the bf16 weights |  |  |  |  |  |  |  | **pending** |  |  |  |  |  |  |  |  |
+
+[1] Zach's lens_check: J++ - logit at the C1 band +0.30 (Zach, Day 3 plan, as relayed by the coordinator on 22 Oct (not in the committed docs/day3_plan_zach.md)).
+[4] Pending: Zach is scoring it (his lens_check writes results/lens_check/qwen3.5-9b/); no spec written here.
+[5] Pending: with the 9B's J++ (Zach).
+[6] Pending: jobs/lens_eval/qwen3_32b_lens_eval.yaml (not enqueued).
+[7] Zach's lens_check: J++ - logit at the C1 band +0.31 (Zach, Day 3 plan, as relayed by the coordinator on 22 Oct (not in the committed docs/day3_plan_zach.md)). Pending: ranks not on origin/zach/v8-breadth-1021 (his lens_check reads results/lens_fit/qwen3_32b/).
+[8] Pending: fit running on the H200 box: copy ~/work/fit32b/{eval_ranks.csv,eval_ranks_pass_at_k.csv,eval_ranks_stamp.json,model_correctness.csv} to results/lens_fit/qwen3_32b_jpp64/.
+[9] Pending: jobs/lens_eval/qwen3_32b_lens_eval.yaml (not enqueued).
+[10] Pending: jobs/lens_eval/olmo3_7b_instruct_lens_eval.yaml (not enqueued).
+[11] Pending: jobs/lens_eval/olmo3_7b_instruct_lens_eval.yaml (not enqueued).
+[12] Pending: fit not run yet; copy /ephemeral/lens_fit/olmo3_7b_instruct_jpp/{eval_ranks.csv,eval_ranks_pass_at_k.csv,eval_ranks_stamp.json,model_correctness.csv} from the A100 box to results/lens_fit/olmo3_7b_instruct_jpp/.
+[13] Pending: jobs/lens_eval/olmo3_7b_instruct_lens_eval.yaml (not enqueued).
+[14] Scored by Zach before the fp16 export. His lens_check: J++ - logit at the C1 band +0.35 (Zach, Day 3 plan, as relayed by the coordinator on 22 Oct (not in the committed docs/day3_plan_zach.md)).
+[15] Earlier score at layers 24-45 every 3rd only: macro .376 (results/lens_fit/gemma_it_refit/eval_ranks_baselens_pass_at_k.csv). Pending: jobs/lens_eval/gemma4it_lens_eval.yaml (not enqueued).
+[16] Pending: jobs/lens_eval/gemma4it_lens_eval.yaml (not enqueued).
+[17] Readout weights rest on 112 graded-correct items (his card). Card / Hub numbers, not recomputed here (no rank file in this repo).
+[18] Pending: not scored: the recipe's env on the A100 box (transformers 5.14.1) has no muse_glimmer, and Zach's jpp_lens_muse_1022.patch covers the loader and LRP only; Zach is scoring Muse (coordinator).
+[19] Card / Hub numbers, not recomputed here (no rank file in this repo).
+[20] Pending: other box: the FP8 model needs an H200 / B200 (not on the A100 queue).

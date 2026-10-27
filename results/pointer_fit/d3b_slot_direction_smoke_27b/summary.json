@@ -1,0 +1,4530 @@
+{
+  "primary": {
+    "layer": 48,
+    "scale": 1.0,
+    "slot": [
+      0.25,
+      0.0715,
+      0.5907,
+      8
+    ],
+    "lens": [
+      0.0,
+      0.0,
+      0.3244,
+      8
+    ],
+    "random": [
+      0.0,
+      0.0,
+      0.3244,
+      8
+    ],
+    "slot_minus_lens": [
+      0.25,
+      0.0,
+      0.5
+    ],
+    "slot_minus_random": [
+      0.25,
+      0.0,
+      0.5
+    ],
+    "shuffled": [
+      0.0,
+      0.0,
+      0.3244,
+      8
+    ],
+    "rr_slot": [
+      0.0,
+      0.0,
+      0.3244,
+      8
+    ],
+    "span_only": [
+      0.125,
+      0.0224,
+      0.4709,
+      8
+    ],
+    "rest_only": [
+      0.0,
+      0.0,
+      0.3244,
+      8
+    ],
+    "held_out_entities": [
+      0.0,
+      0.0,
+      0.6576,
+      2
+    ],
+    "seen_entities": [
+      0.3333,
+      0.0968,
+      0.7,
+      6
+    ],
+    "patch": [
+      0.25,
+      0.0715,
+      0.5907,
+      8
+    ],
+    "sub1": [
+      0.25,
+      0.0715,
+      0.5907,
+      8
+    ],
+    "sub2": [
+      0.25,
+      0.0715,
+      0.5907,
+      8
+    ],
+    "sub4": [
+      0.375,
+      0.1368,
+      0.6943,
+      8
+    ],
+    "sub8": [
+      0.25,
+      0.0715,
+      0.5907,
+      8
+    ],
+    "sub16": [
+      0.25,
+      0.0715,
+      0.5907,
+      8
+    ]
+  },
+  "checks": {
+    "a_lower_bound_ge_0.30": false,
+    "b_20_points_above_lens_and_random": false,
+    "controls_valid": false,
+    "illusion_flag": false,
+    "unedited_answer_org": 1
+  },
+  "verdict": "not shown: the slot direction does not steer the lookup by the rule (controls failed: not interpretable)",
+  "grid": {
+    "RL|slot|44|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|slot|44|1.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "none": 5,
+        "position": 3
+      }
+    },
+    "RL|slot|44|2.0": {
+      "position": [
+        0.5,
+        0.2152,
+        0.7848,
+        8
+      ],
+      "roles": {
+        "none": 4,
+        "position": 4
+      }
+    },
+    "RL|slot|44|4.0": {
+      "position": [
+        0.5,
+        0.2152,
+        0.7848,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 4,
+        "none": 2
+      }
+    },
+    "RL|slot|46|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|slot|46|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "none": 6
+      }
+    },
+    "RL|slot|46|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 4
+      }
+    },
+    "RL|slot|46|4.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "context": 1,
+        "position": 3,
+        "none": 4
+      }
+    },
+    "RL|slot|48|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|slot|48|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|slot|48|2.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "context": 1,
+        "none": 4
+      }
+    },
+    "RL|slot|48|4.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 4
+      }
+    },
+    "RL|slot|50|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|slot|50|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "none": 6
+      }
+    },
+    "RL|slot|50|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|slot|50|4.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|slot|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|slot|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|slot|52|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|slot|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 2,
+        "context": 1,
+        "value": 1,
+        "none": 4
+      }
+    },
+    "RL|slot|window|0.5": {
+      "position": [
+        0.625,
+        0.3057,
+        0.8632,
+        8
+      ],
+      "roles": {
+        "position": 5,
+        "none": 3
+      }
+    },
+    "RL|slot|window|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "none": 4,
+        "context": 1,
+        "position": 2,
+        "recall": 1
+      }
+    },
+    "RL|slot|window|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 3,
+        "other": 4,
+        "position": 1
+      }
+    },
+    "RL|slot|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 8
+      }
+    },
+    "RL|sub1|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub1|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RL|sub1|44|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub1|44|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "position": 1,
+        "context": 1
+      }
+    },
+    "RL|sub1|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub1|46|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub1|46|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub1|46|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub1|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub1|48|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "none": 6
+      }
+    },
+    "RL|sub1|48|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub1|48|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub1|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub1|50|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub1|50|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub1|50|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub1|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub1|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub1|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "context": 1
+      }
+    },
+    "RL|sub1|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "context": 1
+      }
+    },
+    "RL|sub1|window|0.5": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub1|window|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub1|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 5,
+        "other": 3
+      }
+    },
+    "RL|sub1|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 2,
+        "other": 6
+      }
+    },
+    "RL|sub2|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub2|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub2|44|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub2|44|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub2|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub2|46|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub2|46|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub2|46|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "position": 1,
+        "context": 1
+      }
+    },
+    "RL|sub2|48|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|sub2|48|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub2|48|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 3,
+        "position": 1,
+        "none": 4
+      }
+    },
+    "RL|sub2|48|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 3,
+        "position": 1,
+        "none": 4
+      }
+    },
+    "RL|sub2|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub2|50|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub2|50|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub2|50|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub2|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub2|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub2|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "none": 6
+      }
+    },
+    "RL|sub2|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|sub2|window|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub2|window|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub2|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 5,
+        "other": 2,
+        "context": 1
+      }
+    },
+    "RL|sub2|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 3,
+        "other": 5
+      }
+    },
+    "RL|sub4|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub4|44|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "position": 1,
+        "identity": 1
+      }
+    },
+    "RL|sub4|44|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub4|44|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub4|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub4|46|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub4|46|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 4
+      }
+    },
+    "RL|sub4|46|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 3,
+        "position": 1,
+        "none": 4
+      }
+    },
+    "RL|sub4|48|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|sub4|48|1.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "context": 1,
+        "none": 4
+      }
+    },
+    "RL|sub4|48|2.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "context": 1,
+        "none": 4
+      }
+    },
+    "RL|sub4|48|4.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "identity": 1,
+        "none": 4
+      }
+    },
+    "RL|sub4|50|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|sub4|50|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "identity": 1,
+        "none": 4
+      }
+    },
+    "RL|sub4|50|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub4|50|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub4|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub4|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "none": 6
+      }
+    },
+    "RL|sub4|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|sub4|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 3,
+        "value": 1,
+        "none": 4
+      }
+    },
+    "RL|sub4|window|0.5": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "identity": 1,
+        "none": 4
+      }
+    },
+    "RL|sub4|window|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 5,
+        "context": 1,
+        "position": 1,
+        "identity": 1
+      }
+    },
+    "RL|sub4|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "value": 1,
+        "other": 1
+      }
+    },
+    "RL|sub4|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 8
+      }
+    },
+    "RL|sub8|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub8|44|1.0": {
+      "position": [
+        0.5,
+        0.2152,
+        0.7848,
+        8
+      ],
+      "roles": {
+        "position": 4,
+        "none": 4
+      }
+    },
+    "RL|sub8|44|2.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "none": 5
+      }
+    },
+    "RL|sub8|44|4.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub8|46|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|sub8|46|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "none": 6
+      }
+    },
+    "RL|sub8|46|2.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "context": 1,
+        "position": 3,
+        "none": 4
+      }
+    },
+    "RL|sub8|46|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 1,
+        "none": 5,
+        "position": 1,
+        "identity": 1
+      }
+    },
+    "RL|sub8|48|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|sub8|48|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub8|48|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub8|48|4.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "none": 5
+      }
+    },
+    "RL|sub8|50|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|sub8|50|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub8|50|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub8|50|4.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "none": 5
+      }
+    },
+    "RL|sub8|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub8|52|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|sub8|52|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|sub8|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub8|window|0.5": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub8|window|1.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "none": 5
+      }
+    },
+    "RL|sub8|window|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 2,
+        "other": 2,
+        "none": 3
+      }
+    },
+    "RL|sub8|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 8
+      }
+    },
+    "RL|sub16|44|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub16|44|1.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "none": 5,
+        "position": 3
+      }
+    },
+    "RL|sub16|44|2.0": {
+      "position": [
+        0.5,
+        0.2152,
+        0.7848,
+        8
+      ],
+      "roles": {
+        "none": 4,
+        "position": 4
+      }
+    },
+    "RL|sub16|44|4.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 4
+      }
+    },
+    "RL|sub16|46|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RL|sub16|46|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "none": 6
+      }
+    },
+    "RL|sub16|46|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 4
+      }
+    },
+    "RL|sub16|46|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|sub16|48|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|sub16|48|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub16|48|2.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "context": 1,
+        "none": 4
+      }
+    },
+    "RL|sub16|48|4.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub16|50|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|sub16|50|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub16|50|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 1,
+        "none": 5
+      }
+    },
+    "RL|sub16|50|4.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "none": 5
+      }
+    },
+    "RL|sub16|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub16|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|sub16|52|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|sub16|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 2,
+        "context": 1,
+        "value": 1,
+        "none": 4
+      }
+    },
+    "RL|sub16|window|0.5": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "context": 2,
+        "none": 3
+      }
+    },
+    "RL|sub16|window|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "context": 2,
+        "none": 4
+      }
+    },
+    "RL|sub16|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 1,
+        "context": 1,
+        "other": 3,
+        "value": 1,
+        "none": 2
+      }
+    },
+    "RL|sub16|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 8
+      }
+    },
+    "RL|shuffled|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|46|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "context": 1,
+        "none": 7
+      }
+    },
+    "RL|shuffled|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RL|shuffled|48|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 6,
+        "context": 1
+      }
+    },
+    "RL|shuffled|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RL|shuffled|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|52|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 7
+      }
+    },
+    "RL|shuffled|52|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 2,
+        "none": 5
+      }
+    },
+    "RL|shuffled|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|shuffled|window|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|shuffled|window|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 1,
+        "other": 3,
+        "none": 3
+      }
+    },
+    "RL|shuffled|window|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "context": 1,
+        "other": 5,
+        "none": 1
+      }
+    },
+    "RL|random|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|46|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|random|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "context": 1
+      }
+    },
+    "RL|random|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "other": 1
+      }
+    },
+    "RL|lens|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|46|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|lens|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 3,
+        "other": 5
+      }
+    },
+    "RL|lens|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 8
+      }
+    },
+    "RL|span|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|span|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "context": 1
+      }
+    },
+    "RL|span|44|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "none": 5,
+        "position": 1
+      }
+    },
+    "RL|span|44|4.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 4
+      }
+    },
+    "RL|span|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|span|46|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 1,
+        "none": 6,
+        "position": 1
+      }
+    },
+    "RL|span|46|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|span|46|4.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 4
+      }
+    },
+    "RL|span|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|span|48|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|span|48|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 2,
+        "none": 4
+      }
+    },
+    "RL|span|48|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|span|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|span|50|1.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "position": 2,
+        "none": 6
+      }
+    },
+    "RL|span|50|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|span|50|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "position": 1,
+        "none": 5
+      }
+    },
+    "RL|span|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|span|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|span|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|span|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "recall": 1,
+        "context": 1,
+        "none": 6
+      }
+    },
+    "RL|span|window|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 3,
+        "position": 1,
+        "none": 4
+      }
+    },
+    "RL|span|window|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "context": 3,
+        "position": 1,
+        "none": 4
+      }
+    },
+    "RL|span|window|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 4,
+        "context": 2,
+        "position": 1,
+        "other": 1
+      }
+    },
+    "RL|span|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "context": 2,
+        "other": 4,
+        "none": 2
+      }
+    },
+    "RL|rest|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|44|2.0": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "position": 2
+      }
+    },
+    "RL|rest|44|4.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "none": 4,
+        "identity": 1,
+        "position": 3
+      }
+    },
+    "RL|rest|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|46|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RL|rest|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RL|rest|window|1.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "position": 1,
+        "none": 6,
+        "identity": 1
+      }
+    },
+    "RL|rest|window|2.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "none": 4,
+        "identity": 1
+      }
+    },
+    "RL|rest|window|4.0": {
+      "position": [
+        0.375,
+        0.1368,
+        0.6943,
+        8
+      ],
+      "roles": {
+        "position": 3,
+        "none": 3,
+        "identity": 1,
+        "other": 1
+      }
+    },
+    "RL|patch|44|None": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 4,
+        "context": 1,
+        "position": 1,
+        "identity": 2
+      }
+    },
+    "RL|patch|46|None": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "context": 1,
+        "position": 2,
+        "none": 3
+      }
+    },
+    "RL|patch|48|None": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "context": 1,
+        "position": 2,
+        "none": 3
+      }
+    },
+    "RL|patch|50|None": {
+      "position": [
+        0.25,
+        0.0715,
+        0.5907,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "context": 1,
+        "position": 2,
+        "none": 3
+      }
+    },
+    "RL|patch|52|None": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "value": 3,
+        "none": 4,
+        "position": 1
+      }
+    },
+    "RL|patch|window|None": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "value": 3,
+        "context": 1,
+        "position": 1,
+        "none": 3
+      }
+    },
+    "RR|slot|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|46|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "context": 1
+      }
+    },
+    "RR|slot|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|slot|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "context": 1
+      }
+    },
+    "RR|slot|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "context": 1
+      }
+    },
+    "RR|slot|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 4,
+        "none": 3,
+        "context": 1
+      }
+    },
+    "RR|shuffled|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "identity": 2
+      }
+    },
+    "RR|shuffled|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|46|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "identity": 2
+      }
+    },
+    "RR|shuffled|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "identity": 2
+      }
+    },
+    "RR|shuffled|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RR|shuffled|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|shuffled|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "context": 1,
+        "identity": 1
+      }
+    },
+    "RR|shuffled|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 6,
+        "context": 1,
+        "identity": 1
+      }
+    },
+    "RR|shuffled|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 2,
+        "context": 1,
+        "none": 4,
+        "identity": 1
+      }
+    },
+    "RR|random|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|46|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|46|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|window|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|random|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|44|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|44|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RR|lens|44|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "none": 6
+      }
+    },
+    "RR|lens|44|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "identity": 1,
+        "none": 7
+      }
+    },
+    "RR|lens|46|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|46|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RR|lens|46|2.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "identity": 1,
+        "none": 6,
+        "position": 1
+      }
+    },
+    "RR|lens|46|4.0": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "position": 1
+      }
+    },
+    "RR|lens|48|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|48|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RR|lens|48|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "identity": 1,
+        "none": 7
+      }
+    },
+    "RR|lens|48|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|50|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|50|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|50|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|50|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|52|0.5": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|52|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|52|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|52|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|window|0.5": {
+      "position": [
+        0.125,
+        0.0224,
+        0.4709,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "none": 5,
+        "position": 1
+      }
+    },
+    "RR|lens|window|1.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 8
+      }
+    },
+    "RR|lens|window|2.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 4,
+        "none": 4
+      }
+    },
+    "RR|lens|window|4.0": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "other": 8
+      }
+    },
+    "RR|patch|44|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "none": 7,
+        "identity": 1
+      }
+    },
+    "RR|patch|46|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "none": 6
+      }
+    },
+    "RR|patch|48|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "none": 6
+      }
+    },
+    "RR|patch|50|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "identity": 1,
+        "none": 7
+      }
+    },
+    "RR|patch|52|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "none": 6
+      }
+    },
+    "RR|patch|window|None": {
+      "position": [
+        0.0,
+        0.0,
+        0.3244,
+        8
+      ],
+      "roles": {
+        "identity": 2,
+        "none": 6
+      }
+    }
+  },
+  "seconds": 110,
+  "edited_reads": 2992,
+  "n_cases": 16
+}

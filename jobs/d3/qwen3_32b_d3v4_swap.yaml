@@ -1,0 +1,38 @@
+id: qwen3_32b_d3v4_swap
+title: "D3 on Qwen3-32B: is there a statement-slot phase at the last tokens before the digit arrives?"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.5
+depends_on:
+- qwen3_32b_d3v4_competence
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name qwen3_32b_d3v4_swap_smoke
+  --families RL --n 2 --layers 40 --groups last --no-eligibility --why "smoke: pointer_swap on Qwen3-32B; not a result"
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py run --name qwen3_32b_d3v4_swap_smoke
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name qwen3_32b_d3v4_swap
+  --families RL DL --n 150 --layers 24 28 32 36 40 42 44 46 48 50 52 54 56 60 --control-stride 1 --groups last --competence qwen3_32b_d3v4_competence
+  --why "D3 on another family: the last-two-token patch over layers 24-60 of 64, the slot phase placed by function
+  (before the alt digit arrives)"
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py run --name qwen3_32b_d3v4_swap
+examples_command: BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py examples --name qwen3_32b_d3v4_swap --group last
+figures_command: BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py figures --name qwen3_32b_d3v4_swap
+question: >-
+  On Qwen3-32B, at the layers where the alt prompt's digit has not yet arrived at the last tokens, does patching
+  the alt prompt's last two tokens give the digit of the same statement slot more often than bridge alt's statement and
+  the alt digit, as on Qwen3.6-27B?
+why_it_matters: >-
+  Pattern 5 on a third architecture and a second non-Qwen family (with OLMo). Qwen3-32B's J-lens failed its checks on the
+  old pipeline, but this test uses no lens: it asks only whether the lookup is steered by a statement address.
+hypotheses:
+  H-slot-qwen3-32b: 'at some patched layer whose pooled alt-digit share (memory -> prompt, last two tokens) has upper
+    bound < 10%, the rule''s verdict is "same statement slot" pooled and in >= 2 of 3 topics. Prior 0.45'
+decision_rule: >-
+  As qwen35_9b_d3v4_swap: candidate layers are the patched layers whose pooled alt-digit share has upper bound < 0.10;
+  H-slot-qwen3-32b holds iff at one candidate layer the verdict (pointer_v4 additions) is "same statement slot" pooled and
+  in >= 2 of 3 topics; a pass within 2 points of the bar is borderline (15 layers looked at). Named -> prompt reported.
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt'
+n: '150 scenes per topic eligible in both families; scenes not token-aligned under Qwen3-32B''s tokenizer dropped'
+seeds: [0]
+notes: '~1.5 GPU-h; the smoke (2 scenes, layer 40, no gate) runs first in the same command.'

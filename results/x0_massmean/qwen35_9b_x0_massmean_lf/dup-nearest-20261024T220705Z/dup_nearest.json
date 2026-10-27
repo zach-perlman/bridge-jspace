@@ -1,0 +1,179 @@
+{
+ "note": "Descriptive, added after data (Dan, 25 Oct morning, item 3); not part of X0's rule.",
+ "fresh": "qwen35_9b_x0_probe_v4",
+ "single": "qwen35_9b_x0_single_r2",
+ "states": "qwen35_9b_x0_amnesic",
+ "n": 73,
+ "missing_layout": 0,
+ "splits": {
+  "after": 15,
+  "otherfirst": 30,
+  "lockerfirst": 28
+ },
+ "results": {
+  "A": {
+   "org state: org's locker sentence": {
+    "n": 73,
+    "share": [
+     0.8904109589041096,
+     0.8133333333333334,
+     0.9574543002697032
+    ]
+   },
+   "after: alt's locker sentence": {
+    "n": 15,
+    "share": [
+     0.9333333333333333,
+     0.8125,
+     1.0
+    ]
+   },
+   "after: other pick sentence": {
+    "n": 15,
+    "share": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "after: org's locker sentence": {
+    "n": 15,
+    "share": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "lockerfirst: alt's locker sentence": {
+    "n": 28,
+    "share": [
+     0.8571428571428571,
+     0.72,
+     0.9666666666666667
+    ]
+   },
+   "lockerfirst: other pick sentence": {
+    "n": 28,
+    "share": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "lockerfirst: org's locker sentence": {
+    "n": 28,
+    "share": [
+     0.07142857142857142,
+     0.0,
+     0.17857142857142858
+    ]
+   },
+   "otherfirst: alt's locker sentence": {
+    "n": 30,
+    "share": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "otherfirst: other pick sentence": {
+    "n": 30,
+    "share": [
+     0.8,
+     0.6538461538461539,
+     0.9259259259259259
+    ]
+   },
+   "otherfirst: org's locker sentence": {
+    "n": 30,
+    "share": [
+     0.03333333333333333,
+     0.0,
+     0.12
+    ]
+   }
+  },
+  "Alf": {
+   "org state: org's locker sentence": {
+    "n": 73,
+    "share": [
+     0.6164383561643836,
+     0.4935064935064935,
+     0.7352941176470589
+    ]
+   },
+   "after: alt's locker sentence": {
+    "n": 15,
+    "share": [
+     0.6666666666666666,
+     0.42857142857142855,
+     0.875
+    ]
+   },
+   "after: other pick sentence": {
+    "n": 15,
+    "share": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "after: org's locker sentence": {
+    "n": 15,
+    "share": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "lockerfirst: alt's locker sentence": {
+    "n": 28,
+    "share": [
+     0.6785714285714286,
+     0.48,
+     0.8387096774193549
+    ]
+   },
+   "lockerfirst: other pick sentence": {
+    "n": 28,
+    "share": [
+     0.14285714285714285,
+     0.034482758620689655,
+     0.28
+    ]
+   },
+   "lockerfirst: org's locker sentence": {
+    "n": 28,
+    "share": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "otherfirst: alt's locker sentence": {
+    "n": 30,
+    "share": [
+     0.03333333333333333,
+     0.0,
+     0.09375
+    ]
+   },
+   "otherfirst: other pick sentence": {
+    "n": 30,
+    "share": [
+     0.8333333333333334,
+     0.6785714285714286,
+     0.967741935483871
+    ]
+   },
+   "otherfirst: org's locker sentence": {
+    "n": 30,
+    "share": [
+     0.06666666666666667,
+     0.0,
+     0.15625
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,42 @@
+id: qwen35_9b_d2_late_read_long
+title: "The late read with a long context: ~2000 filler tokens between the list and the question (Qwen3.5-9B)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.4
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_v4.py manifest --set long --name qwen35_9b_d3v4_long_competence
+  --why "the long set (seed2's scenes + ~2000 filler tokens after the list): every prompt and step right?"
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/pointer_v4.py competence --name qwen35_9b_d3v4_long_competence
+  && BJ_TARGET=qwen3.5-9b BJ_BATCH=16 uv run python scripts/attn_knockout.py manifest --name qwen35_9b_d2_late_read_long --dataset pointer_v4 --set long
+  --families RL --n 100 --sources lookup lookup_off --dests final question --layers all kind --sweep path --gate-lo 0.80
+  --competence qwen35_9b_d3v4_long_competence --why "finding 4 with a long context (outside review: the DeltaNet layers may play no part only
+  because the prompts are short): the answer's statement hidden from the last tokens in every attention layer, or in
+  every DeltaNet layer instead, ~2000 tokens after the list"
+  && BJ_TARGET=qwen3.5-9b BJ_BATCH=16 uv run python scripts/attn_knockout.py run --name qwen35_9b_d2_late_read_long
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py summarise --name qwen35_9b_d2_late_read_long
+question: >-
+  With ~2000 tokens of neutral filler between the list and the question, does the lookup still end in a late attention
+  read of the answer's sentence by the last tokens, with the DeltaNet layers still playing no part?
+why_it_matters: >-
+  Finding 4's prompts are ~100 tokens. On the hybrids (Qwen3.6-27B, Qwen3.5-9B) only the attention layers matter, which
+  the outside review calls the obvious boring explanation: with so short a context attention suffices. The long set is
+  seed2's scenes with the same filler in every prompt of a scene, so the comparison with the short run is paired by scene.
+hypotheses:
+  H-late-long: 'the late read replicates and blocking the DeltaNet layers instead keeps >= 90% right. Prior 0.6'
+  H-deltanet-long: 'the late read replicates but blocking the DeltaNet layers now costs > 10 points. Prior 0.2'
+  H-not-late: 'blocking the attention layers leaves > 20% right (another route over long contexts). Prior 0.2'
+decision_rule: >-
+  Fixed 2026-10-22 before this run, the late-read rule of the seed2 runs, unchanged: memory -> prompt, topics pooled,
+  items right unedited. Replicates iff the answer's statement hidden from the last tokens in every attention layer
+  leaves <= 20% right with the Wilson upper bound <= 0.30, the off-path statement hidden there keeps >= 90% (lower
+  bound >= 0.85), and hidden in every DeltaNet layer instead keeps >= 90%. The DeltaNet part decides between
+  H-late-long and H-deltanet-long. Compared with the short run on the same scenes (qwen35_9b_d2_late_read_seed2 (queued)), reported. Competence gate
+  0.80 (declared: ~2000-token prompts may cost a few points; the gate is on every prompt of the scene).
+controls:
+- 'the off-path statement of the same token length hidden the same way; the DeltaNet layers instead of the attention
+  layers; the same scenes without filler (the seed2 run)'
+n: '100 memory -> prompt items (of 180: the first 60 scenes per topic of seed2), right on every prompt'
+seeds: [844, 846]
+notes: "Dan, 2026-10-22 night (critic priority 3 for finding 4). Data: data/pointer_v4/long (scripts/pointer_v4.py make_set --set long; check_long.json: every prompt token-aligned; prompts 2088-2155 tokens). Not opened before Dan predicts."

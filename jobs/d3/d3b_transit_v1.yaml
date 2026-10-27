@@ -1,0 +1,56 @@
+id: d3b_transit_v1
+title: 'D3b "in transit" sweep on the batch-3 scenes (animals, elements): where the word is in transit, can the lens push write the lookup?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.35
+depends_on:
+- d3b_competence_400
+- d3b_fair_c2_v4_smoke_27b
+command: >-
+  uv run python scripts/pointer_fair.py run --name d3b_transit_v1 --arms transit --no-suite
+  --why "Batch 4: C2's kill test with 'in transit' defined first, on the same pointer_v1 items as d3b_fair_c2_27b
+  (animals, elements; the elements cell fired the kill test there): layers 28-52 one at a time, after the cue, 1x and 4x,
+  the lens and random push on memory → prompt and memory → memory, the alt-prompt copy; comparison for d3b_fair_c2_v4"
+examples_command: uv run python scripts/pointer_fair.py examples --name d3b_transit_v1
+figures_command: uv run python scripts/pointer_fair.py figures --name d3b_transit_v1
+question: >-
+  On the batch-3 items (pointer_v1, animals and elements), at which single layers (28-52, tokens after the cue) is the
+  recalled word "in transit" (the lens push no longer changes the recalled fact on memory → memory, while pasting the alt
+  prompt still changes >= 50% of lookups), and does the lens push write the lookup there (C2's kill test)?
+why_it_matters: >-
+  The outside review's kill-test numbers come from these items (elements, after the cue, layers 32-40 at once, 1x: lens
+  30/150 vs random 2/150, with the lens also writing 55/100 recall answers). This run applies the pre-registered
+  transit definition to the same items, so the pointer_v4 verdict (d3b_fair_c2_v4) can be compared with the cell that
+  fired, and elements (6 entities) can be read next to three larger topics.
+hypotheses:
+  H-C2-transit: 'transit layers exist in both topics and C2 holds there'
+  H-no-transit: 'in some topic (elements most likely) the lens still writes the recall at every layer where the copy
+    switches >= 50% of lookups'
+  H-C2-killed: 'in some topic the lens push writes the lookup at >= 3x random (paired lower bound > 0, upper bound
+    >= 10%) at a transit layer'
+  prior: 'Agent prior: H-C2-transit 0.45, H-no-transit 0.35, H-C2-killed 0.2 (two topics instead of three, and elements
+    showed the lens writing both families at 36-40).'
+decision_rule: >-
+  The transit rule in scripts/pointer_fair.py's docstring ("transit sweep"), unchanged, applied per topic at 1x (4x
+  reported): a single layer is in transit iff the memory → memory lens rate (answers = bridge alt's recalled fact) has
+  an upper bound <= 2x the memory → memory random rate's upper bound and the alt-prompt copy changes >= 50% of memory →
+  prompt answers; C2 at a transit layer holds iff the memory → prompt lens rate (answers = bridge alt's statement digit)
+  is < 3x the random rate or its upper bound < 0.10, else killed iff the paired lens − random lower bound > 0, else
+  unclear; topic: not testable / killed / holds / undecided. Intervals: entity-cluster bootstrap 95% (queried entity
+  within its topic) widened to Wilson. With 2 topics, "H-C2-transit" needs both testable and holding. Named → prompt rows
+  are recorded (to keep the batch-3 item sample) and reported only.
+controls:
+- 'random push per token at the lens push''s size, on both families'
+- 'memory → memory items (where the lens writes the recall: the transit definition)'
+- 'alt-prompt copy at the same tokens and layer (does the lookup still read those states?)'
+n: >-
+  The batch-3 items (same gate, seed and sizes, so the same items): memory → prompt 150 per topic (16 animal / 6 element
+  queried entities), named → prompt and memory → memory 100 per topic.
+seeds:
+- 0
+notes: >-
+  Timing: 700 items x 36 edited reads (7 layers x (1 copy + 2 sizes x 2 pushes) + 1 unedited) = ~25k reads at
+  31-37/s ~11-14 min, + load ~4 min, overhead ~3 min: ~0.35 h. Can run in parallel with d3b_fair_c2_v4 on another GPU.
+  The batch-3 kill-test numbers pushed layers 32-40 at once; this sweep pushes one layer at a time. Results:
+  results/pointer_fair/d3b_transit_v1/.

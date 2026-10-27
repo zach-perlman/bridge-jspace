@@ -1,0 +1,24 @@
+id: gemma4it_d2_late_read_seed2
+title: "Late read on a second draw (Gemma 4 31B-it)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on:
+- gemma4it_d3v4_seed2_competence
+command: >-
+  BJ_TARGET=gemma-4-31b-it uv run python scripts/attn_knockout.py manifest --name gemma4it_d2_late_read_seed2 --dataset pointer_v4 --set seed2 --families RL --n 100 --sources lookup lookup_off --dests final question --layers all --sweep path --competence gemma4it_d3v4_seed2_competence --why "finding 4 on a second draw (Gemma 4 31B-it): the answer's statement hidden from the last tokens in every attention layer" && BJ_TARGET=gemma-4-31b-it uv run python scripts/attn_knockout.py run --name gemma4it_d2_late_read_seed2
+figures_command: BJ_TARGET=gemma-4-31b-it uv run python scripts/attn_knockout.py summarise --name gemma4it_d2_late_read_seed2
+question: >-
+  Hidden from the last tokens in every attention layer, does the answer's statement leave the model guessing?
+why_it_matters: >-
+  Findings 3 and 4 on Gemma 4 31B-it rest on one draw of scenes; a second draw with the committed rules.
+hypotheses:
+  H-late: 'replicates. Prior 0.85'
+decision_rule: >-
+  Fixed 2026-10-22 for the 27B and Qwen3-32B, unchanged: memory -> prompt, topics pooled, items right unedited. Replicates iff the answer's statement hidden from the last tokens in every attention layer leaves <= 20% right with the Wilson upper bound <= 0.30, the off-path statement hidden there keeps >= 90% (lower bound >= 0.85).
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: '100 items per family (RL), seed2'
+seeds: [844]
+notes: "Dan, 2026-10-22 evening: strengthen findings 3-5 on the models whose results were read after the data (critic priority 3): a second draw of scenes, the rules committed for the 27B and Qwen3-32B, unchanged. Not opened before Dan predicts."

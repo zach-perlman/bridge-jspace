@@ -1,0 +1,1087 @@
+{
+ "exp": "pointer_swap",
+ "run": "d3_main_ae_27b",
+ "seed": 0,
+ "k": 3,
+ "selection": "source dissoc, group final, layers [44, 46, 48, 50, 52] and the transit window",
+ "groups": [
+  {
+   "key": "position",
+   "title": "position",
+   "definition": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction)",
+   "n_total": 311
+  },
+  {
+   "key": "none",
+   "title": "none",
+   "definition": "the patch left the base answer",
+   "n_total": 1106
+  },
+  {
+   "key": "value",
+   "title": "value",
+   "definition": "the patched base answered the source's own answer, absent from the base context (H-value)",
+   "n_total": 155
+  },
+  {
+   "key": "context",
+   "title": "context",
+   "definition": "another digit of the base context, predicted by no hypothesis",
+   "n_total": 19
+  },
+  {
+   "key": "identity",
+   "title": "identity",
+   "definition": "the patched base answered the base's digit for the source's entity (H-word / lexical key)",
+   "n_total": 209
+  },
+  {
+   "key": "same_changed",
+   "title": "same changed",
+   "definition": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer",
+   "n_total": 1
+  }
+ ],
+ "examples": [
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0088",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 9. The chicken's locker is 1. The bee's locker is 3. The lion's locker is 8. The frog's locker is 7.\nWhich locker belongs to the animal known for its roar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 195,
+     "end": 298,
+     "role": "patched (final)"
+    },
+    {
+     "start": 93,
+     "end": 116,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 17,
+     "end": 42,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 70,
+     "end": 92,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 186,
+     "end": 194,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe lion's locker is 8. The frog's locker is 9. The turkey's locker is 5. The bee's locker is 7. The chicken's locker is 3.\nWhich locker belongs to the animal known for gobbling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 65,
+     "end": 90,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "3",
+    "expected": {
+     "none": "8",
+     "identity": "9",
+     "position": "3",
+     "value": "5"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0336,
+     "identity": 0.0004,
+     "position": 0.8671,
+     "value": 0.0001
+    },
+    "layer": 48,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('3')"
+  },
+  {
+   "group": "position",
+   "family": "DL",
+   "item_id": "elements-DL-e5f0-0039",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe helium card is in locker 1. The nitrogen card is in locker 3. The carbon card is in locker 4. The oxygen card is in locker 5. The lithium card is in locker 9.\nWhich locker holds the helium card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 215,
+     "end": 318,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 115,
+     "end": 146,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 49,
+     "end": 82,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 203,
+     "end": 209,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe helium card is in locker 4. The oxygen card is in locker 6. The lithium card is in locker 3. The nitrogen card is in locker 9. The carbon card is in locker 1.\nWhich locker holds the oxygen card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 49,
+     "end": 80,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "3",
+    "expected": {
+     "none": "1",
+     "identity": "5",
+     "position": "3",
+     "value": "6"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0012,
+     "identity": 0.0012,
+     "position": 0.7699,
+     "value": 0.2206
+    },
+    "layer": 52,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('3')"
+  },
+  {
+   "group": "position",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0040",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 7. The goose's locker is 6. The horse's locker is 5. The spider's locker is 1. The lion's locker is 9.\nWhich locker belongs to the animal known for spinning webs? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 202,
+     "end": 305,
+     "role": "patched (final)"
+    },
+    {
+     "start": 93,
+     "end": 118,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 68,
+     "end": 92,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 17,
+     "end": 42,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 188,
+     "end": 201,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe horse's locker is 3. The turkey's locker is 5. The spider's locker is 7. The goose's locker is 6. The lion's locker is 1.\nWhich locker belongs to the animal known for neighing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 17,
+     "end": 41,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 46 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "none": "1",
+     "identity": "5",
+     "position": "7",
+     "value": "3"
+    },
+    "unedited_read": "1"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.014,
+     "identity": 0.0001,
+     "position": 0.9805,
+     "value": 0.0001
+    },
+    "layer": 46,
+    "role": "position"
+   },
+   "why": "the patched base answered the base's digit at the source's queried slot (H-pointer's prediction) ('7')"
+  },
+  {
+   "group": "none",
+   "family": "DL",
+   "item_id": "elements-DL-e5f0-0051",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe helium card is in locker 6. The carbon card is in locker 8. The nitrogen card is in locker 1. The lithium card is in locker 4. The hydrogen card is in locker 9.\nWhich locker holds the helium card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 217,
+     "end": 320,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 114,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 115,
+     "end": 147,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 205,
+     "end": 211,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe carbon card is in locker 1. The lithium card is in locker 9. The helium card is in locker 6. The nitrogen card is in locker 5. The hydrogen card is in locker 8.\nWhich locker holds the nitrogen card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 114,
+     "end": 147,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer transit (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "6",
+    "expected": {
+     "none": "6",
+     "identity": "1",
+     "position": "4",
+     "value": "5"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.6301,
+     "identity": 0.0048,
+     "position": 0.0664,
+     "value": 0.2627
+    },
+    "layer": "transit",
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('6')"
+  },
+  {
+   "group": "none",
+   "family": "RL",
+   "item_id": "elements-RL-e5f0-0057",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 9. The helium card is in locker 5. The nitrogen card is in locker 1. The lithium card is in locker 4. The carbon card is in locker 8.\nWhich locker holds the card for the party balloon gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 234,
+     "end": 337,
+     "role": "patched (final)"
+    },
+    {
+     "start": 49,
+     "end": 80,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 114,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 115,
+     "end": 147,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 212,
+     "end": 233,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe helium card is in locker 5. The oxygen card is in locker 4. The carbon card is in locker 1. The nitrogen card is in locker 6. The lithium card is in locker 9.\nWhich locker holds the card for the main atmospheric gas? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 113,
+     "end": 146,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "5",
+    "expected": {
+     "none": "5",
+     "identity": "1",
+     "position": "4",
+     "value": "6"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.873,
+     "identity": 0.0264,
+     "position": 0.0011,
+     "value": 0.0339
+    },
+    "layer": 52,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('5')"
+  },
+  {
+   "group": "none",
+   "family": "RR",
+   "item_id": "elements-RR-e5f0-0042",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 5. The hydrogen card is in locker 4. The helium card is in locker 2. The nitrogen card is in locker 6. The lithium card is in locker 9.\nWhat is the atomic number of the phone battery metal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 235,
+     "end": 338,
+     "role": "patched (final)"
+    },
+    {
+     "start": 149,
+     "end": 181,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 49,
+     "end": 82,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 17,
+     "end": 48,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 211,
+     "end": 234,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe hydrogen card is in locker 7. The helium card is in locker 5. The nitrogen card is in locker 6. The lithium card is in locker 2. The oxygen card is in locker 9.\nWhat is the atomic number of the lightest element? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 17,
+     "end": 50,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "none": "3",
+     "identity": "1",
+     "position": "8",
+     "value": "1"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.6675,
+     "identity": 0.3153,
+     "position": 0.0009,
+     "value": 0.3153
+    },
+    "layer": 52,
+    "role": "none"
+   },
+   "why": "the patch left the base answer ('3')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "elements-DL-e5f0-0025",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe nitrogen card is in locker 7. The carbon card is in locker 1. The lithium card is in locker 9. The helium card is in locker 5. The hydrogen card is in locker 8.\nWhich locker holds the helium card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 217,
+     "end": 320,
+     "role": "patched (final)"
+    },
+    {
+     "start": 116,
+     "end": 147,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 51,
+     "end": 82,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 83,
+     "end": 115,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 205,
+     "end": 211,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe hydrogen card is in locker 8. The lithium card is in locker 7. The carbon card is in locker 4. The helium card is in locker 9. The nitrogen card is in locker 1.\nWhich locker holds the carbon card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 84,
+     "end": 115,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "4",
+    "expected": {
+     "none": "5",
+     "identity": "1",
+     "position": "9",
+     "value": "4"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2194,
+     "identity": 0.0004,
+     "position": 0.0035,
+     "value": 0.7659
+    },
+    "layer": 52,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('4')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0000",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe turkey's locker is 5. The mouse's locker is 1. The pig's locker is 9. The wolf's locker is 3. The spider's locker is 7.\nWhich locker belongs to the pig? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 173,
+     "end": 276,
+     "role": "patched (final)"
+    },
+    {
+     "start": 68,
+     "end": 90,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 17,
+     "end": 42,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 115,
+     "end": 140,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 169,
+     "end": 172,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe pig's locker is 5. The mouse's locker is 3. The spider's locker is 9. The wolf's locker is 1. The turkey's locker is 6.\nWhich locker belongs to the turkey? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 115,
+     "end": 140,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "6",
+    "expected": {
+     "none": "9",
+     "identity": "5",
+     "position": "7",
+     "value": "6"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1797,
+     "identity": 0.0004,
+     "position": 0.0089,
+     "value": 0.8053
+    },
+    "layer": 52,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('6')"
+  },
+  {
+   "group": "value",
+   "family": "DL",
+   "item_id": "elements-DL-e5f0-0077",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 3. The lithium card is in locker 8. The helium card is in locker 4. The hydrogen card is in locker 6. The nitrogen card is in locker 5.\nWhich locker holds the nitrogen card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 219,
+     "end": 322,
+     "role": "patched (final)"
+    },
+    {
+     "start": 148,
+     "end": 181,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 82,
+     "end": 113,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 114,
+     "end": 147,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 205,
+     "end": 213,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe nitrogen card is in locker 3. The hydrogen card is in locker 4. The lithium card is in locker 6. The helium card is in locker 9. The oxygen card is in locker 5.\nWhich locker holds the helium card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 118,
+     "end": 149,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "5",
+    "edited": "9",
+    "expected": {
+     "none": "5",
+     "identity": "4",
+     "position": "6",
+     "value": "9"
+    },
+    "unedited_read": "5"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1163,
+     "identity": 0.0042,
+     "position": 0.0005,
+     "value": 0.8593
+    },
+    "layer": 52,
+    "role": "value"
+   },
+   "why": "the patched base answered the source's own answer, absent from the base context (H-value) ('9')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0033",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe frog's locker is 5. The sheep's locker is 8. The bee's locker is 9. The chicken's locker is 7. The pig's locker is 3.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 193,
+     "end": 296,
+     "role": "patched (final)"
+    },
+    {
+     "start": 89,
+     "end": 115,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 41,
+     "end": 65,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 66,
+     "end": 88,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 184,
+     "end": 192,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe pig's locker is 7. The frog's locker is 9. The sheep's locker is 1. The bee's locker is 3. The chicken's locker is 5.\nWhich locker belongs to the animal known for its wool? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 64,
+     "end": 88,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 48 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "3",
+    "expected": {
+     "none": "7",
+     "identity": "8",
+     "position": "9",
+     "value": "1"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0934,
+     "identity": 0.0068,
+     "position": 0.0011,
+     "value": 0.0006
+    },
+    "layer": 48,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('3')"
+  },
+  {
+   "group": "context",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0035",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe chicken's locker is 6. The pig's locker is 3. The spider's locker is 9. The sheep's locker is 5. The dog's locker is 1.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 195,
+     "end": 298,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 43,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 44,
+     "end": 66,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 67,
+     "end": 92,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 186,
+     "end": 194,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe dog's locker is 5. The spider's locker is 3. The pig's locker is 7. The chicken's locker is 6. The sheep's locker is 9.\nWhich locker belongs to the animal known for oinking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 66,
+     "end": 88,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "6",
+    "edited": "5",
+    "expected": {
+     "none": "6",
+     "identity": "3",
+     "position": "9",
+     "value": "7"
+    },
+    "unedited_read": "6"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0258,
+     "identity": 0.0001,
+     "position": 0.0002,
+     "value": 0.0
+    },
+    "layer": 50,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('5')"
+  },
+  {
+   "group": "context",
+   "family": "DL",
+   "item_id": "elements-DL-e5f0-0092",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe hydrogen card is in locker 5. The nitrogen card is in locker 2. The lithium card is in locker 4. The oxygen card is in locker 3. The carbon card is in locker 6.\nWhich locker holds the nitrogen card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 219,
+     "end": 322,
+     "role": "patched (final)"
+    },
+    {
+     "start": 51,
+     "end": 84,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 17,
+     "end": 50,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 118,
+     "end": 149,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 205,
+     "end": 213,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe nitrogen card is in locker 5. The carbon card is in locker 4. The oxygen card is in locker 3. The hydrogen card is in locker 9. The lithium card is in locker 6.\nWhich locker holds the hydrogen card? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 115,
+     "end": 148,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "2",
+    "edited": "6",
+    "expected": {
+     "none": "2",
+     "identity": "5",
+     "position": "3",
+     "value": "9"
+    },
+    "unedited_read": "2"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.2922,
+     "identity": 0.01,
+     "position": 0.005,
+     "value": 0.0005
+    },
+    "layer": 50,
+    "role": "context"
+   },
+   "why": "another digit of the base context, predicted by no hypothesis ('6')"
+  },
+  {
+   "group": "identity",
+   "family": "RL",
+   "item_id": "animals-RL-e5f0-0059",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe dog's locker is 1. The cat's locker is 5. The bee's locker is 7. The chicken's locker is 9. The sheep's locker is 8.\nWhich locker belongs to the animal known for its wool? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 192,
+     "end": 295,
+     "role": "patched (final)"
+    },
+    {
+     "start": 113,
+     "end": 137,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 86,
+     "end": 112,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 63,
+     "end": 85,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 183,
+     "end": 191,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe dog's locker is 5. The cat's locker is 1. The chicken's locker is 3. The sheep's locker is 8. The bee's locker is 7.\nWhich locker belongs to the animal known for clucking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 63,
+     "end": 89,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 44 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "8",
+    "edited": "9",
+    "expected": {
+     "none": "8",
+     "identity": "9",
+     "position": "7",
+     "value": "3"
+    },
+    "unedited_read": "8"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.1168,
+     "identity": 0.8628,
+     "position": 0.0139,
+     "value": 0.0002
+    },
+    "layer": 44,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('9')"
+  },
+  {
+   "group": "identity",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0070",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe bee's locker is 7. The lion's locker is 8. The pig's locker is 9. The goose's locker is 5. The duck's locker is 1.\nWhich locker belongs to the bee? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 168,
+     "end": 271,
+     "role": "patched (final)"
+    },
+    {
+     "start": 17,
+     "end": 39,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 40,
+     "end": 63,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 112,
+     "end": 135,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 164,
+     "end": 167,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe pig's locker is 5. The duck's locker is 7. The goose's locker is 1. The bee's locker is 8. The lion's locker is 3.\nWhich locker belongs to the lion? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 112,
+     "end": 135,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "7",
+    "edited": "8",
+    "expected": {
+     "none": "7",
+     "identity": "8",
+     "position": "1",
+     "value": "3"
+    },
+    "unedited_read": "7"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0016,
+     "identity": 0.9951,
+     "position": 0.0003,
+     "value": 0.0
+    },
+    "layer": 50,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('8')"
+  },
+  {
+   "group": "identity",
+   "family": "RR",
+   "item_id": "elements-RR-e5f0-0071",
+   "domain": "elements",
+   "prompt": "<|im_start|>user\nThe oxygen card is in locker 8. The lithium card is in locker 2. The hydrogen card is in locker 9. The carbon card is in locker 5. The nitrogen card is in locker 4.\nWhat is the atomic number of the phone battery metal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 235,
+     "end": 338,
+     "role": "patched (final)"
+    },
+    {
+     "start": 49,
+     "end": 81,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 116,
+     "end": 147,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 148,
+     "end": 181,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 211,
+     "end": 234,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe nitrogen card is in locker 8. The hydrogen card is in locker 9. The lithium card is in locker 5. The oxygen card is in locker 2. The carbon card is in locker 1.\nWhat is the atomic number of the element in diamonds? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 150,
+     "end": 181,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 52 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "3",
+    "edited": "6",
+    "expected": {
+     "none": "3",
+     "identity": "6",
+     "position": "7",
+     "value": "6"
+    },
+    "unedited_read": "3"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.4437,
+     "identity": 0.5028,
+     "position": 0.0007,
+     "value": 0.5028
+    },
+    "layer": 52,
+    "role": "identity"
+   },
+   "why": "the patched base answered the base's digit for the source's entity (H-word / lexical key) ('6')"
+  },
+  {
+   "group": "same_changed",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0045",
+   "domain": "animals",
+   "prompt": "<|im_start|>user\nThe wolf's locker is 5. The mouse's locker is 3. The bee's locker is 8. The goose's locker is 9. The dog's locker is 1.\nWhich locker belongs to the goose? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "spans": [
+    {
+     "start": 171,
+     "end": 274,
+     "role": "patched (final)"
+    },
+    {
+     "start": 89,
+     "end": 113,
+     "role": "bridge statement (base query, slot a)"
+    },
+    {
+     "start": 17,
+     "end": 40,
+     "role": "identity statement (source's entity in the base)"
+    },
+    {
+     "start": 66,
+     "end": 88,
+     "role": "position statement (base entity at the source's queried slot)"
+    },
+    {
+     "start": 165,
+     "end": 170,
+     "role": "cue"
+    }
+   ],
+   "source_prompt": "<|im_start|>user\nThe bee's locker is 5. The mouse's locker is 1. The wolf's locker is 7. The dog's locker is 9. The goose's locker is 8.\nWhich locker belongs to the wolf? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "source_spans": [
+    {
+     "start": 65,
+     "end": 88,
+     "role": "source's queried statement (slot k)"
+    }
+   ],
+   "condition": "base's residual at the final tokens replaced by the dissoc source's at layer 50 (one forward, answer read after 'Answer:' and a space)",
+   "answers": {
+    "clean": "9",
+    "edited": "8",
+    "expected": {
+     "none": "9",
+     "identity": "5",
+     "position": "8",
+     "value": "7"
+    },
+    "unedited_read": "9"
+   },
+   "numbers": {
+    "p": {
+     "none": 0.0849,
+     "identity": 0.0,
+     "position": 0.9133,
+     "value": 0.0
+    },
+    "layer": 50,
+    "role": "position"
+   },
+   "why": "control: the 'same' source (every hypothesis predicts the base answer) changed the answer ('8')"
+  }
+ ]
+}

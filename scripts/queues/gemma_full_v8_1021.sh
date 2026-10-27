@@ -26,12 +26,12 @@ T="--tasks full_v8 --tasks-competence $COMP --tasks-words $WORDS --tasks-level a
 W="--tasks full_v8 --tasks-competence $COMP --tasks-level all --families $WORDS"
 $PY scripts/ablate_v2.py --name gemma4itf_smoke_full_ko_1021 --why smoke --plan bands --bands 30-38 \
     --conditions paper10 paper10_rot $T --n 2 --kinds clean step1 --batch 16 \
-  && BJ_BATCH=32 $PY scripts/write_max.py --name gemma4itf_smoke_wm2_full_1021 --why smoke --n 2 --band 30-32 \
+  && BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name gemma4itf_smoke_wm2_full_1021 --why smoke --n 2 --band 30-32 \
     --single-step 1 --early 23 --possets question final $W || { echo "smokes failed: stop"; exit 1; }
 echo "=== smokes ok $(date -u +%FT%TZ)"
 $PY scripts/removal_textloss.py --name gemma4itf_textloss_top_v1 --why "$WHY: plain-text loss under the knock-out, the 27B L32-40 depth" \
   --layers $(seq 30 38) --conditions none top5 top5_rot top10 top10_rot || echo "=== text loss FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 26-38 --single-step 2 --early 15 19 23 --from-competence gemma4itb_competence_v1 \
   && $PY scripts/c2_graded.py gemma4itf_wm2_posctrl_v1 || echo "=== positive control FAILED"
 # 2026-10-21 speed-ups (decided with Zach): the knock-out alongside steering; steering skips the all-positions site
@@ -46,7 +46,7 @@ PAD=$([ -f /workspace/scratch/markers/pad_validated ] && echo --pad); echo "=== 
     --plan bands --bands 30-38 --conditions paper10 paper10_rot $T --n 1000 --kinds step1 step2 step3 --batch 32 $PAD \
     && $PY scripts/c1_v2.py gemma4itf_full_ko_steps_v1 --middle L30-38 --set full_v8 > /dev/null || echo "=== steps knock-out FAILED"
 ) &
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full_v1 --why "$WHY: write_max v2, C2-graded (question and final positions)" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full_v1 --why "$WHY: write_max v2, C2-graded (question and final positions)" \
   --n 40 --possets question final --band 26-38 --single-step 2 --early 15 19 23 $W \
   && $PY scripts/c2_graded.py gemma4itf_wm2_full_v1 && $PY scripts/c2_graded.py gemma4itf_wm2_full_v1 --drop-guessable > /dev/null \
   || echo "=== steering FAILED"

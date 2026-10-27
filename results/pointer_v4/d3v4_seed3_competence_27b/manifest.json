@@ -1,0 +1,62 @@
+{
+  "exp": "pointer_v4",
+  "run": "d3v4_seed3_competence_27b",
+  "written_utc": "2026-10-22T16:50:30Z",
+  "why": "seed 3: a third draw of pointer_v4's main design (same 85 entities, wordings and split, seed 845) for the pre-registered confirmation of finding 5; every alt and control prompt and each step alone",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "sets": [
+    "seed3"
+  ],
+  "split": "/ephemeral/jobq/runs/d3v4_seed3_competence_27b/code/data/pointer_v4/split.json",
+  "items": {
+    "seed3/countries_RL_e5f0": {
+      "file": "data/pointer_v4/seed3/countries_RL_e5f0.json",
+      "sha256": "f1925b480046d12583d0ff29f5fa80468a07148ec77823f9c6e5e6c2375f3da2"
+    },
+    "seed3/countries_DL_e5f0": {
+      "file": "data/pointer_v4/seed3/countries_DL_e5f0.json",
+      "sha256": "ac69948384e3cf015d051c8fc2cc50ba3a315c8cde111b8514e7ca99609cfc34"
+    },
+    "seed3/countries_RR_e5f0": {
+      "file": "data/pointer_v4/seed3/countries_RR_e5f0.json",
+      "sha256": "02456619d59f5ecfde895d0b62d4062dc63d8b221770b9f972064b762d8c4659"
+    },
+    "seed3/animals_RL_e5f0": {
+      "file": "data/pointer_v4/seed3/animals_RL_e5f0.json",
+      "sha256": "ef7b6667ce600ddc5f283d853066f3409e4fb3f4d5e804694f0810c17ae1d545"
+    },
+    "seed3/animals_DL_e5f0": {
+      "file": "data/pointer_v4/seed3/animals_DL_e5f0.json",
+      "sha256": "a90a3e29c0381f262dd2772d949abddf73c4ecfa2e623014bc9a08eb5b1ac3bd"
+    },
+    "seed3/animals_RR_e5f0": {
+      "file": "data/pointer_v4/seed3/animals_RR_e5f0.json",
+      "sha256": "3f0a6f658609b881bb3ea112eeee587278acb3511c05c0cf5ce25bf6aa15083c"
+    },
+    "seed3/body_RL_e5f0": {
+      "file": "data/pointer_v4/seed3/body_RL_e5f0.json",
+      "sha256": "383acf5820b36e8de2474defb646c19765c8cbc247c84a4f2b533e85e56db371"
+    },
+    "seed3/body_DL_e5f0": {
+      "file": "data/pointer_v4/seed3/body_DL_e5f0.json",
+      "sha256": "dc5a982ee03fbf29d90d8b1c20f473bb4aa409c5e6c687ffb4b485540d860698"
+    },
+    "seed3/body_RR_e5f0": {
+      "file": "data/pointer_v4/seed3/body_RR_e5f0.json",
+      "sha256": "bd45e15e437ce05527547fdd4ee5df11b32c871637ac3be36d196eb224a765ff"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's: chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat); context, newline, question and instruction as the user turn",
+  "prompts": "base; each source (dissoc, same, redigit); hop1 (cue -> entity, with the base context) and hop2 (the lookup with the entity named, or the recalled fact) for RL and RR",
+  "judge_mode": "greedy",
+  "judge": "pointer_v1's: the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words and ordinals for digits; the domain's entities otherwise) (the domain's entities for hop1)",
+  "eligibility": "pointer_swap and pointer_fit use items with every prompt right"
+}

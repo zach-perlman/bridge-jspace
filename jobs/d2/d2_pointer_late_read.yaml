@@ -1,0 +1,68 @@
+id: d2_pointer_late_read
+title: 'D2 batch 2: do the last tokens read the answer''s statement late, through attention, in new locker scenes? (memory → prompt, named → prompt; memory → memory as the null)'
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.45
+depends_on:
+- d3_competence_27b
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_pointer_late_read
+  --why "D2 batch 2 (a): the late attention read of the answer's statement on pointer_v1's scenes (animals, elements),
+  memory → prompt and named → prompt vs memory → memory"
+  --dataset pointer_v1 --families RL DL RR --domains animals elements --n 100
+  --layers all kind bands --sweep path+random --sweep-dests final both --absent
+  && uv run python scripts/attn_knockout.py run --name d2_pointer_late_read
+  && uv run python scripts/attn_knockout.py summarise --name d2_pointer_late_read
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_pointer_late_read --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_pointer_late_read
+question: On pointer_v1's locker scenes (5 entities, animals and elements), when the last tokens before the answer cannot
+  read the statement giving the answer, does memory → prompt still lose answer org, and does named → prompt (the entity
+  named in the question) too; is the read in layers 48-63 and through attention layers, as on the animal scenes; and
+  does memory → memory stay untouched?
+why_it_matters: 'The first night found, on one animal wording, that the last tokens read the answer''s statement
+  themselves, through attention, in layers 48-63, where the bridge is in transit and the lens cannot write it
+  (d2_ko_core_v1 / d2_ko_sweep_v1, UNVERIFIED). D3''s pointer patching runs on these pointer_v1 scenes, so the read must
+  be shown where D3 measures. named → prompt is the classic binding retrieval (no recall step): if it reads the
+  statement at the same depth, the late read is the lookup itself, not something that waits for a recalled bridge.'
+hypotheses:
+  H_late_read: 'memory → prompt and named → prompt each: the statement giving the answer hidden from the last tokens in
+    all 64 layers keeps answer org <= 40% (NEEDED); hidden only in layers 48-63 <= 60% (NEEDED or PARTIAL); only in
+    0-31 or only in 32-47 >= 90%; in every attention layer <= 40% (NEEDED); in every DeltaNet layer >= 90%. Prior:
+    memory → prompt 0.65 (animal scenes replicate), named → prompt 0.5'
+  H_named_earlier: 'named → prompt already needs the statement in layers 32-47 (middle band NEEDED): with the entity
+    named, the lookup can start earlier. Prior 0.3'
+  H_question_free: 'both lookup families keep >= 90% with the statement hidden from the question words only (animal
+    scenes: 100%). Prior 0.75'
+  H_null: 'memory → memory: every cell >= 95% (animal scenes: 100%). Prior 0.9'
+  positive_control: 'every lookup family with the statement hidden from everything after it and removed from the
+    DeltaNet recurrence: <= 30% (5 lockers in the prompt: guessing gives ~20%)'
+decision_rule: 'Fixed before the run (scripts/attn_knockout.py docstring and manifest "decision"; summary
+  late_attention_read). Items: pointer_v1 main, domains animals and elements (the domains where all three families pass
+  d3_competence_27b''s gate: clean Wilson lower bound >= 0.85; months fails memory → prompt, planets fails memory →
+  memory), scenes with every competence prompt right in all three families, first 100 per domain by scene id, and
+  unedited read right. A cell is NEEDED if accuracy drops >= 20 points and the paired bootstrap 95% lower bound of
+  acc(same-kind off-path statement) - acc(cell) >= 10 points; NOT NEEDED if the Wilson 95% lower bound of accuracy is >=
+  90%; else PARTIAL. "Late attention read" holds for a family iff all-layer NEEDED, every-attention-layer NEEDED,
+  every-DeltaNet-layer accuracy >= 90%, layers 48-63 NEEDED or PARTIAL, and layers 0-31 and 32-47 each >= 90%. A family
+  whose positive control is not NEEDED is not interpreted.'
+controls:
+- 'a statement of the same kind off the answer''s path (another entity''s locker, same token length, seeded per scene):
+  rules out "any statement-sized hole breaks the answer"'
+- 'a random span of the same length inside the statements (never the answer''s statement): rules out "any hole in the
+  context"'
+- 'the up to 3 tokens right after the statement (the DeltaNet conv''s reach): what blocking them alone does'
+- 'memory → memory on the same scenes (the answer is recalled): rules out generic damage to the last tokens'
+- 'positive control: the statement hidden from everything after it and removed from the DeltaNet recurrence'
+- 'pre-run check (check.json): an empty source leaves the answer read bit-exact; context independence under full
+  blocking; an unedited row in every batch'
+n: '175 org prompts per family (animals 96 + elements 79 eligible scenes; every cut per (domain, family) has n >= 79 >=
+  35, so NOT NEEDED is reachable)'
+seeds:
+- 0
+notes: 'Rows: 47,250 knocked reads (90 per item: 4 destinations x 4 sources at all layers, 4 sources x 2 destinations
+  with the statement removed from the recurrence, and 11 layer sets (the three bands 0-31 / 32-47 / 48-63 each whole,
+  attention-only and DeltaNet-only, every attention layer, every DeltaNet layer) x 2 destinations (last tokens, both)
+  x 3 sources (the statement, the off-path control, the random span)). Measured on this A100 (first night): 33-37
+  rows/s at ~80-token prompts (pointer_v1: 78) -> ~23 min + load and check ~4 min. 0.8B smoke
+  (qwen35_08b_smoke_d2_pointer_v1, on the box): every stage ran, check.json gates exact (0.0).'

@@ -1,0 +1,97 @@
+{
+  "exp": "pointer_v4x",
+  "run": "olmo3_7b_sft_d3v4x_competence",
+  "written_utc": "2026-10-21T23:40:09Z",
+  "why": "D5b: pointer_v4x on the SFT checkpoint, chat format, read judge",
+  "model": {
+    "target": "olmo-3-7b-sft",
+    "repo": "allenai/Olmo-3-7B-Instruct-SFT",
+    "revision": "e1452fc572d51966ff4aaeb25118b891eb93e549",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "sets": [
+    "main"
+  ],
+  "items": {
+    "main/countries_RL_e5-off": {
+      "file": "data/pointer_v4x/main/countries_RL_e5-off.json",
+      "sha256": "0b45326498670c28fb8d6e4f0c739f214c57d340d90579c944f0de41346ffba1"
+    },
+    "main/countries_RL_e5more": {
+      "file": "data/pointer_v4x/main/countries_RL_e5more.json",
+      "sha256": "6ba661f2c33e6f09497988e6a0d4c42bae073369e77a8545ad09db87f130dcc9"
+    },
+    "main/countries_RL_e5fewer": {
+      "file": "data/pointer_v4x/main/countries_RL_e5fewer.json",
+      "sha256": "5487e27501c2c1c919e6a00fa124fd7ec5b420a28f9cd011277cbbddca41b574"
+    },
+    "main/countries_DL_e5-off": {
+      "file": "data/pointer_v4x/main/countries_DL_e5-off.json",
+      "sha256": "32cbad3ca82e735661bdc3292df72670034c3d45eea458dc2128e5e9de38a8b6"
+    },
+    "main/countries_DL_e5more": {
+      "file": "data/pointer_v4x/main/countries_DL_e5more.json",
+      "sha256": "e569006dce70cd296ddd819b06e59d9146c5fb6929674486675157609b5327ff"
+    },
+    "main/countries_DL_e5fewer": {
+      "file": "data/pointer_v4x/main/countries_DL_e5fewer.json",
+      "sha256": "4d53065a9b9eb4cf7016d8324cd565b6826488cf84bf9c6286003bc719741b83"
+    },
+    "main/animals_RL_e5-off": {
+      "file": "data/pointer_v4x/main/animals_RL_e5-off.json",
+      "sha256": "f2b9bd8896ca1c2f049286f58a57585f701d919db4aa19ec8d162c1aa8f5ae5a"
+    },
+    "main/animals_RL_e5more": {
+      "file": "data/pointer_v4x/main/animals_RL_e5more.json",
+      "sha256": "9c19ff337d8281c2982308c493b37e338cb1350077b86bb12e80e79877e59cb0"
+    },
+    "main/animals_RL_e5fewer": {
+      "file": "data/pointer_v4x/main/animals_RL_e5fewer.json",
+      "sha256": "9a862e417b2d8fe7d4365aab1b3e4fc701b912de913b46d6a3b272de14acd1a2"
+    },
+    "main/animals_DL_e5-off": {
+      "file": "data/pointer_v4x/main/animals_DL_e5-off.json",
+      "sha256": "d710b766fd2dbd0fd85baae0a45b57c5fdc6ded3cd89e26d80e702351de88171"
+    },
+    "main/animals_DL_e5more": {
+      "file": "data/pointer_v4x/main/animals_DL_e5more.json",
+      "sha256": "1ba9cb55b1b041360b8e5647587be4c0d207abb955090ff58521105e2bc0e006"
+    },
+    "main/animals_DL_e5fewer": {
+      "file": "data/pointer_v4x/main/animals_DL_e5fewer.json",
+      "sha256": "0ad008c7ba6c83dee4b0d98a0a7ee0036e538104862ca46c03772819a34c893f"
+    },
+    "main/body_RL_e5-off": {
+      "file": "data/pointer_v4x/main/body_RL_e5-off.json",
+      "sha256": "78b6877c62e5bf36d8f6f6c9782f2f3e99d8578d8ceb1b975087d16846158663"
+    },
+    "main/body_RL_e5more": {
+      "file": "data/pointer_v4x/main/body_RL_e5more.json",
+      "sha256": "7704874b85d2d06aae72d9e13a9113212ec05b909a6a05bb59794220ce35932d"
+    },
+    "main/body_RL_e5fewer": {
+      "file": "data/pointer_v4x/main/body_RL_e5fewer.json",
+      "sha256": "03b52e17c028eebe71c067b3691a238c5191d112767a9ccda49581e96a68e295"
+    },
+    "main/body_DL_e5-off": {
+      "file": "data/pointer_v4x/main/body_DL_e5-off.json",
+      "sha256": "d0943d1158b530801941589aed757f0e190fa559c825bdbfafc5a84dfa4da015"
+    },
+    "main/body_DL_e5more": {
+      "file": "data/pointer_v4x/main/body_DL_e5more.json",
+      "sha256": "32b88dd4629833c74fc0cb53fc4304de25f5a5fc8b68cb5694a03635c8239ebc"
+    },
+    "main/body_DL_e5fewer": {
+      "file": "data/pointer_v4x/main/body_DL_e5fewer.json",
+      "sha256": "de1531b9d531af2baffe1a7f66b61d482f38f41ffecbbe20ec8644ca6a8fea8c"
+    }
+  },
+  "limit": null,
+  "format": "pointer_v1's: chat template, thinking off, 'Answer:' prefilled (BJ_FORMAT=chat)",
+  "judge_mode": "read",
+  "judge": "pointer_v1's: read judge (BJ_JUDGE=read): a prompt is right iff the top token of one forward (a digit answer's space token appended: pointer_swap's read) is the expected answer's first token; the greedy judge is recorded as correct_greedy, not used",
+  "prompts": "base; each source (dissoc, same, redigit); hop1 and hop2 for memory -> prompt",
+  "eligibility": "pointer_swap uses items with every prompt right"
+}

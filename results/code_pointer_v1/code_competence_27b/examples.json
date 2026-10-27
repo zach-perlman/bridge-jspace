@@ -1,0 +1,3756 @@
+{
+ "exp": "code_pointer_v1",
+ "run": "code_competence_27b",
+ "k": 3,
+ "seed": 0,
+ "k_per": "group and family",
+ "groups": [
+  {
+   "key": "eligible",
+   "title": "Every prompt right",
+   "definition": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs)",
+   "n_total": 4875
+  },
+  {
+   "key": "clean_wrong",
+   "title": "Org prompt wrong",
+   "definition": "the unedited org prompt answered wrong",
+   "n_total": 385
+  },
+  {
+   "key": "source_wrong",
+   "title": "An alt prompt wrong",
+   "definition": "org prompt right, at least one alt prompt wrong (shown: the first wrong one)",
+   "n_total": 437
+  },
+  {
+   "key": "step_wrong",
+   "title": "A step alone wrong",
+   "definition": "org and alt prompts right, a step alone wrong (shown: the first wrong step)",
+   "n_total": 183
+  }
+ ],
+ "examples": [
+  {
+   "group": "eligible",
+   "family": "DK",
+   "family_label": "named → prompt",
+   "item_id": "months-DK-e5f0-0284",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"July\": 0, \"February\": 8, \"May\": 9, \"September\": 7, \"June\": 3}\nprint(lockers[\"February\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: July"
+    },
+    {
+     "start": 49,
+     "end": 62,
+     "role": "entry 1: February = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 64,
+     "end": 72,
+     "role": "entry 2: May = identity entry (slot c)"
+    },
+    {
+     "start": 74,
+     "end": 88,
+     "role": "entry 3: September"
+    },
+    {
+     "start": 90,
+     "end": 99,
+     "role": "entry 4: June = position entry (slot k)"
+    },
+    {
+     "start": 101,
+     "end": 127,
+     "role": "query"
+    },
+    {
+     "start": 101,
+     "end": 165,
+     "role": "question"
+    },
+    {
+     "start": 165,
+     "end": 209,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "expected": {
+     "correct": "8"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99698,
+    "margin": 7.062,
+    "read_top": "8",
+    "continuation": " 8",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '8', expected '8'"
+  },
+  {
+   "group": "eligible",
+   "family": "DK",
+   "family_label": "named → prompt",
+   "item_id": "animals-DK-e5f0-0334",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 8, \"mouse\": 9, \"bee\": 0, \"lion\": 3, \"cat\": 5}\nprint(lockers[\"duck\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: duck = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 49,
+     "end": 59,
+     "role": "entry 1: mouse"
+    },
+    {
+     "start": 61,
+     "end": 69,
+     "role": "entry 2: bee = position entry (slot k)"
+    },
+    {
+     "start": 71,
+     "end": 80,
+     "role": "entry 3: lion"
+    },
+    {
+     "start": 82,
+     "end": 90,
+     "role": "entry 4: cat = identity entry (slot c)"
+    },
+    {
+     "start": 92,
+     "end": 114,
+     "role": "query"
+    },
+    {
+     "start": 92,
+     "end": 152,
+     "role": "question"
+    },
+    {
+     "start": 152,
+     "end": 196,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "expected": {
+     "correct": "8"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99761,
+    "margin": 7.062,
+    "read_top": "8",
+    "continuation": " 8",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '8', expected '8'"
+  },
+  {
+   "group": "eligible",
+   "family": "DK",
+   "family_label": "named → prompt",
+   "item_id": "months-DK-e5f0-0196",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 8, \"September\": 7, \"June\": 2, \"May\": 5, \"January\": 3}\nprint(lockers[\"April\"])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 48,
+     "role": "entry 0: April = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 50,
+     "end": 64,
+     "role": "entry 1: September = identity entry (slot c)"
+    },
+    {
+     "start": 66,
+     "end": 75,
+     "role": "entry 2: June"
+    },
+    {
+     "start": 77,
+     "end": 85,
+     "role": "entry 3: May"
+    },
+    {
+     "start": 87,
+     "end": 99,
+     "role": "entry 4: January = position entry (slot k)"
+    },
+    {
+     "start": 101,
+     "end": 124,
+     "role": "query"
+    },
+    {
+     "start": 101,
+     "end": 162,
+     "role": "question"
+    },
+    {
+     "start": 162,
+     "end": 206,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "expected": {
+     "correct": "8"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99775,
+    "margin": 7.0,
+    "read_top": "8",
+    "continuation": " 8",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '8', expected '8'"
+  },
+  {
+   "group": "eligible",
+   "family": "IX",
+   "family_label": "list position → prompt",
+   "item_id": "months-IX-e5f0-0332",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 9, \"May\": 1, \"July\": 5, \"June\": 3, \"September\": 0}\nnames = [\"May\", \"September\", \"June\", \"April\", \"July\"]\nprint(lockers[names[4]])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 48,
+     "role": "entry 0: April = position entry (slot k)"
+    },
+    {
+     "start": 50,
+     "end": 58,
+     "role": "entry 1: May"
+    },
+    {
+     "start": 60,
+     "end": 69,
+     "role": "entry 2: July = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 71,
+     "end": 80,
+     "role": "entry 3: June = identity entry (slot c)"
+    },
+    {
+     "start": 82,
+     "end": 96,
+     "role": "entry 4: September"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "list item 0"
+    },
+    {
+     "start": 114,
+     "end": 125,
+     "role": "list item 1"
+    },
+    {
+     "start": 127,
+     "end": 133,
+     "role": "list item 2"
+    },
+    {
+     "start": 135,
+     "end": 142,
+     "role": "list item 3"
+    },
+    {
+     "start": 144,
+     "end": 150,
+     "role": "list item 4"
+    },
+    {
+     "start": 152,
+     "end": 176,
+     "role": "query"
+    },
+    {
+     "start": 152,
+     "end": 214,
+     "role": "question"
+    },
+    {
+     "start": 214,
+     "end": 258,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "5"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99053,
+    "margin": 6.25,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '5', expected '5'"
+  },
+  {
+   "group": "eligible",
+   "family": "IX",
+   "family_label": "list position → prompt",
+   "item_id": "animals-IX-e5f0-0370",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"cat\": 5, \"cow\": 0, \"owl\": 1, \"mouse\": 9, \"bee\": 8}\nnames = [\"mouse\", \"owl\", \"cow\", \"bee\", \"cat\"]\nprint(lockers[names[3]])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: cat = position entry (slot k)"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "entry 1: cow"
+    },
+    {
+     "start": 58,
+     "end": 66,
+     "role": "entry 2: owl = identity entry (slot c)"
+    },
+    {
+     "start": 68,
+     "end": 78,
+     "role": "entry 3: mouse"
+    },
+    {
+     "start": 80,
+     "end": 88,
+     "role": "entry 4: bee = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 99,
+     "end": 106,
+     "role": "list item 0"
+    },
+    {
+     "start": 108,
+     "end": 113,
+     "role": "list item 1"
+    },
+    {
+     "start": 115,
+     "end": 120,
+     "role": "list item 2"
+    },
+    {
+     "start": 122,
+     "end": 127,
+     "role": "list item 3"
+    },
+    {
+     "start": 129,
+     "end": 134,
+     "role": "list item 4"
+    },
+    {
+     "start": 136,
+     "end": 160,
+     "role": "query"
+    },
+    {
+     "start": 136,
+     "end": 198,
+     "role": "question"
+    },
+    {
+     "start": 198,
+     "end": 242,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "expected": {
+     "correct": "8"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99315,
+    "margin": 6.125,
+    "read_top": "8",
+    "continuation": " 8",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '8', expected '8'"
+  },
+  {
+   "group": "eligible",
+   "family": "IX",
+   "family_label": "list position → prompt",
+   "item_id": "animals-IX-e3f0-0041",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"bee\": 1, \"duck\": 8, \"wolf\": 9}\nnames = [\"wolf\", \"duck\", \"bee\"]\nprint(lockers[names[2]])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: bee = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 48,
+     "end": 57,
+     "role": "entry 1: duck = position entry (slot k)"
+    },
+    {
+     "start": 59,
+     "end": 68,
+     "role": "entry 2: wolf = identity entry (slot c)"
+    },
+    {
+     "start": 79,
+     "end": 85,
+     "role": "list item 0"
+    },
+    {
+     "start": 87,
+     "end": 93,
+     "role": "list item 1"
+    },
+    {
+     "start": 95,
+     "end": 100,
+     "role": "list item 2"
+    },
+    {
+     "start": 102,
+     "end": 126,
+     "role": "query"
+    },
+    {
+     "start": 102,
+     "end": 164,
+     "role": "question"
+    },
+    {
+     "start": 164,
+     "end": 208,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 3 dict entries)",
+   "answers": {
+    "clean": "1",
+    "edited": null,
+    "expected": {
+     "correct": "1"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.98514,
+    "margin": 5.0,
+    "read_top": "1",
+    "continuation": " 1",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '1', expected '1'"
+  },
+  {
+   "group": "eligible",
+   "family": "CH2",
+   "family_label": "2-variable chain → prompt",
+   "item_id": "animals-CH2-e5f0-0205",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"lion\": 1, \"owl\": 3, \"wolf\": 7, \"bee\": 8, \"cat\": 5}\nb = \"wolf\"\ne = b\nj = \"cat\"\nz = j\nprint(lockers[z])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: lion"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: owl = identity entry (slot c)"
+    },
+    {
+     "start": 59,
+     "end": 68,
+     "role": "entry 2: wolf"
+    },
+    {
+     "start": 70,
+     "end": 78,
+     "role": "entry 3: bee = position entry (slot k)"
+    },
+    {
+     "start": 80,
+     "end": 88,
+     "role": "entry 4: cat = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 90,
+     "end": 100,
+     "role": "chain line 0"
+    },
+    {
+     "start": 101,
+     "end": 106,
+     "role": "chain line 1"
+    },
+    {
+     "start": 107,
+     "end": 116,
+     "role": "chain line 2"
+    },
+    {
+     "start": 117,
+     "end": 122,
+     "role": "chain line 3"
+    },
+    {
+     "start": 123,
+     "end": 140,
+     "role": "query"
+    },
+    {
+     "start": 123,
+     "end": 178,
+     "role": "question"
+    },
+    {
+     "start": 178,
+     "end": 222,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "5"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99677,
+    "margin": 6.75,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '5', expected '5'"
+  },
+  {
+   "group": "eligible",
+   "family": "CH2",
+   "family_label": "2-variable chain → prompt",
+   "item_id": "months-CH2-e3f0-0003",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 2, \"June\": 7, \"January\": 3}\nr = \"January\"\nd = \"April\"\nn = r\nu = d\nprint(lockers[u])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 48,
+     "role": "entry 0: April = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 50,
+     "end": 59,
+     "role": "entry 1: June = identity entry (slot c)"
+    },
+    {
+     "start": 61,
+     "end": 73,
+     "role": "entry 2: January = position entry (slot k)"
+    },
+    {
+     "start": 75,
+     "end": 88,
+     "role": "chain line 0"
+    },
+    {
+     "start": 89,
+     "end": 100,
+     "role": "chain line 1"
+    },
+    {
+     "start": 101,
+     "end": 106,
+     "role": "chain line 2"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "chain line 3"
+    },
+    {
+     "start": 113,
+     "end": 130,
+     "role": "query"
+    },
+    {
+     "start": 113,
+     "end": 168,
+     "role": "question"
+    },
+    {
+     "start": 168,
+     "end": 212,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 3 dict entries)",
+   "answers": {
+    "clean": "2",
+    "edited": null,
+    "expected": {
+     "correct": "2"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99626,
+    "margin": 6.875,
+    "read_top": "2",
+    "continuation": " 2",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '2', expected '2'"
+  },
+  {
+   "group": "eligible",
+   "family": "CH2",
+   "family_label": "2-variable chain → prompt",
+   "item_id": "animals-CH2-e8f0-0037",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"frog\": 0, \"pig\": 9, \"lion\": 7, \"horse\": 3, \"bee\": 5, \"owl\": 6, \"cow\": 8, \"wolf\": 4}\nt = \"pig\"\nf = t\nz = \"cow\"\nv = z\nprint(lockers[v])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: frog"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: pig"
+    },
+    {
+     "start": 59,
+     "end": 68,
+     "role": "entry 2: lion"
+    },
+    {
+     "start": 70,
+     "end": 80,
+     "role": "entry 3: horse"
+    },
+    {
+     "start": 82,
+     "end": 90,
+     "role": "entry 4: bee = identity entry (slot c)"
+    },
+    {
+     "start": 92,
+     "end": 100,
+     "role": "entry 5: owl = position entry (slot k)"
+    },
+    {
+     "start": 102,
+     "end": 110,
+     "role": "entry 6: cow = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 112,
+     "end": 121,
+     "role": "entry 7: wolf"
+    },
+    {
+     "start": 123,
+     "end": 132,
+     "role": "chain line 0"
+    },
+    {
+     "start": 133,
+     "end": 138,
+     "role": "chain line 1"
+    },
+    {
+     "start": 139,
+     "end": 148,
+     "role": "chain line 2"
+    },
+    {
+     "start": 149,
+     "end": 154,
+     "role": "chain line 3"
+    },
+    {
+     "start": 155,
+     "end": 172,
+     "role": "query"
+    },
+    {
+     "start": 155,
+     "end": 210,
+     "role": "question"
+    },
+    {
+     "start": 210,
+     "end": 254,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 8 dict entries)",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "expected": {
+     "correct": "8"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99733,
+    "margin": 7.562,
+    "read_top": "8",
+    "continuation": " 8",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '8', expected '8'"
+  },
+  {
+   "group": "eligible",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "animals-CH3-e5f0-0384",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"cat\": 3, \"horse\": 1, \"mouse\": 5, \"bee\": 9, \"duck\": 7}\ne = \"horse\"\na = \"mouse\"\nj = a\nx = j\nn = e\nr = n\nprint(lockers[x])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: cat"
+    },
+    {
+     "start": 48,
+     "end": 58,
+     "role": "entry 1: horse"
+    },
+    {
+     "start": 60,
+     "end": 70,
+     "role": "entry 2: mouse = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 72,
+     "end": 80,
+     "role": "entry 3: bee = position entry (slot k)"
+    },
+    {
+     "start": 82,
+     "end": 91,
+     "role": "entry 4: duck = identity entry (slot c)"
+    },
+    {
+     "start": 93,
+     "end": 104,
+     "role": "chain line 0"
+    },
+    {
+     "start": 105,
+     "end": 116,
+     "role": "chain line 1"
+    },
+    {
+     "start": 117,
+     "end": 122,
+     "role": "chain line 2"
+    },
+    {
+     "start": 123,
+     "end": 128,
+     "role": "chain line 3"
+    },
+    {
+     "start": 129,
+     "end": 134,
+     "role": "chain line 4"
+    },
+    {
+     "start": 135,
+     "end": 140,
+     "role": "chain line 5"
+    },
+    {
+     "start": 141,
+     "end": 158,
+     "role": "query"
+    },
+    {
+     "start": 141,
+     "end": 196,
+     "role": "question"
+    },
+    {
+     "start": 196,
+     "end": 240,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "5"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99435,
+    "margin": 6.125,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '5', expected '5'"
+  },
+  {
+   "group": "eligible",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "months-CH3-e5f0-0274",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"January\": 0, \"June\": 8, \"July\": 3, \"May\": 4, \"April\": 9}\nh = \"April\"\nx = h\nk = \"January\"\np = k\nt = x\ns = p\nprint(lockers[s])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 50,
+     "role": "entry 0: January = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 52,
+     "end": 61,
+     "role": "entry 1: June"
+    },
+    {
+     "start": 63,
+     "end": 72,
+     "role": "entry 2: July = position entry (slot k)"
+    },
+    {
+     "start": 74,
+     "end": 82,
+     "role": "entry 3: May = identity entry (slot c)"
+    },
+    {
+     "start": 84,
+     "end": 94,
+     "role": "entry 4: April"
+    },
+    {
+     "start": 96,
+     "end": 107,
+     "role": "chain line 0"
+    },
+    {
+     "start": 108,
+     "end": 113,
+     "role": "chain line 1"
+    },
+    {
+     "start": 114,
+     "end": 127,
+     "role": "chain line 2"
+    },
+    {
+     "start": 128,
+     "end": 133,
+     "role": "chain line 3"
+    },
+    {
+     "start": 134,
+     "end": 139,
+     "role": "chain line 4"
+    },
+    {
+     "start": 140,
+     "end": 145,
+     "role": "chain line 5"
+    },
+    {
+     "start": 146,
+     "end": 163,
+     "role": "query"
+    },
+    {
+     "start": 146,
+     "end": 201,
+     "role": "question"
+    },
+    {
+     "start": 201,
+     "end": 245,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "0",
+    "edited": null,
+    "expected": {
+     "correct": "0"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99732,
+    "margin": 7.125,
+    "read_top": "0",
+    "continuation": " 0",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '0', expected '0'"
+  },
+  {
+   "group": "eligible",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "months-CH3-e5f0-0322",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"May\": 9, \"July\": 0, \"January\": 7, \"February\": 8, \"June\": 5}\np = \"June\"\nd = \"July\"\nz = d\ns = p\nr = z\nb = s\nprint(lockers[b])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: May"
+    },
+    {
+     "start": 48,
+     "end": 57,
+     "role": "entry 1: July"
+    },
+    {
+     "start": 59,
+     "end": 71,
+     "role": "entry 2: January = position entry (slot k)"
+    },
+    {
+     "start": 73,
+     "end": 86,
+     "role": "entry 3: February = identity entry (slot c)"
+    },
+    {
+     "start": 88,
+     "end": 97,
+     "role": "entry 4: June = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 99,
+     "end": 109,
+     "role": "chain line 0"
+    },
+    {
+     "start": 110,
+     "end": 120,
+     "role": "chain line 1"
+    },
+    {
+     "start": 121,
+     "end": 126,
+     "role": "chain line 2"
+    },
+    {
+     "start": 127,
+     "end": 132,
+     "role": "chain line 3"
+    },
+    {
+     "start": 133,
+     "end": 138,
+     "role": "chain line 4"
+    },
+    {
+     "start": 139,
+     "end": 144,
+     "role": "chain line 5"
+    },
+    {
+     "start": 145,
+     "end": 162,
+     "role": "query"
+    },
+    {
+     "start": 145,
+     "end": 200,
+     "role": "question"
+    },
+    {
+     "start": 200,
+     "end": 244,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "5"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.98861,
+    "margin": 5.0,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '5', expected '5'"
+  },
+  {
+   "group": "eligible",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "animals-RK-e5f0-0257",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 8, \"cat\": 1, \"cow\": 5, \"frog\": 0, \"bee\": 9}\n```\nWhat number does lockers store for the animal known for croaking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: duck = identity entry (slot c)"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: cat"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "entry 2: cow"
+    },
+    {
+     "start": 69,
+     "end": 78,
+     "role": "entry 3: frog = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 80,
+     "end": 88,
+     "role": "entry 4: bee = position entry (slot k)"
+    },
+    {
+     "start": 150,
+     "end": 158,
+     "role": "query"
+    },
+    {
+     "start": 90,
+     "end": 159,
+     "role": "question"
+    },
+    {
+     "start": 159,
+     "end": 203,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "0",
+    "edited": null,
+    "expected": {
+     "correct": "0"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99196,
+    "margin": 5.875,
+    "read_top": "0",
+    "continuation": " 0",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '0', expected '0'"
+  },
+  {
+   "group": "eligible",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "animals-RK-e8f0-0037",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"frog\": 0, \"pig\": 9, \"lion\": 7, \"horse\": 3, \"bee\": 5, \"owl\": 6, \"cow\": 8, \"wolf\": 4}\n```\nWhat number does lockers store for the animal known for mooing? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: frog"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: pig"
+    },
+    {
+     "start": 59,
+     "end": 68,
+     "role": "entry 2: lion"
+    },
+    {
+     "start": 70,
+     "end": 80,
+     "role": "entry 3: horse"
+    },
+    {
+     "start": 82,
+     "end": 90,
+     "role": "entry 4: bee = identity entry (slot c)"
+    },
+    {
+     "start": 92,
+     "end": 100,
+     "role": "entry 5: owl = position entry (slot k)"
+    },
+    {
+     "start": 102,
+     "end": 110,
+     "role": "entry 6: cow = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 112,
+     "end": 121,
+     "role": "entry 7: wolf"
+    },
+    {
+     "start": 183,
+     "end": 189,
+     "role": "query"
+    },
+    {
+     "start": 123,
+     "end": 190,
+     "role": "question"
+    },
+    {
+     "start": 190,
+     "end": 234,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 8 dict entries)",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "expected": {
+     "correct": "8"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99647,
+    "margin": 6.188,
+    "read_top": "8",
+    "continuation": " 8",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '8', expected '8'"
+  },
+  {
+   "group": "eligible",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "animals-RK-e5f0-0314",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"dog\": 7, \"pig\": 3, \"duck\": 8, \"mouse\": 9, \"bee\": 1}\n```\nWhat number does lockers store for the animal known for oinking? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: dog"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "entry 1: pig = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 58,
+     "end": 67,
+     "role": "entry 2: duck = position entry (slot k)"
+    },
+    {
+     "start": 69,
+     "end": 79,
+     "role": "entry 3: mouse"
+    },
+    {
+     "start": 81,
+     "end": 89,
+     "role": "entry 4: bee = identity entry (slot c)"
+    },
+    {
+     "start": 151,
+     "end": 158,
+     "role": "query"
+    },
+    {
+     "start": 91,
+     "end": 159,
+     "role": "question"
+    },
+    {
+     "start": 159,
+     "end": 203,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "3",
+    "edited": null,
+    "expected": {
+     "correct": "3"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.99555,
+    "margin": 5.812,
+    "read_top": "3",
+    "continuation": " 3",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '3', expected '3'"
+  },
+  {
+   "group": "eligible",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "months-RR-e5f0-0076",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 0, \"May\": 8, \"January\": 2, \"June\": 5, \"September\": 7}\n```\nWhat number is the month of Labor Day in the calendar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 48,
+     "role": "entry 0: April"
+    },
+    {
+     "start": 50,
+     "end": 58,
+     "role": "entry 1: May"
+    },
+    {
+     "start": 60,
+     "end": 72,
+     "role": "entry 2: January = position entry (slot k)"
+    },
+    {
+     "start": 74,
+     "end": 83,
+     "role": "entry 3: June = identity entry (slot c)"
+    },
+    {
+     "start": 85,
+     "end": 99,
+     "role": "entry 4: September = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 120,
+     "end": 142,
+     "role": "query"
+    },
+    {
+     "start": 101,
+     "end": 159,
+     "role": "question"
+    },
+    {
+     "start": 159,
+     "end": 203,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "expected": {
+     "correct": "9"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.5837,
+    "margin": 1.375,
+    "read_top": "9",
+    "continuation": " 9",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '9', expected '9'"
+  },
+  {
+   "group": "eligible",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "animals-RR-e5f0-0130",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"wolf\": 9, \"owl\": 5, \"dog\": 1, \"bee\": 0, \"pig\": 8}\n```\nHow many legs does the animal known for oinking have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: wolf"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: owl = identity entry (slot c)"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "entry 2: dog"
+    },
+    {
+     "start": 69,
+     "end": 77,
+     "role": "entry 3: bee = position entry (slot k)"
+    },
+    {
+     "start": 79,
+     "end": 87,
+     "role": "entry 4: pig = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 133,
+     "end": 140,
+     "role": "query"
+    },
+    {
+     "start": 89,
+     "end": 146,
+     "role": "question"
+    },
+    {
+     "start": 146,
+     "end": 190,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "4",
+    "edited": null,
+    "expected": {
+     "correct": "4"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.54913,
+    "margin": 0.25,
+    "read_top": "4",
+    "continuation": " 4",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '4', expected '4'"
+  },
+  {
+   "group": "eligible",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "months-RR-e3f0-0011",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 9, \"January\": 5, \"July\": 0}\n```\nWhat number is the month of Independence Day in the calendar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 48,
+     "role": "entry 0: April = position entry (slot k)"
+    },
+    {
+     "start": 50,
+     "end": 62,
+     "role": "entry 1: January = identity entry (slot c)"
+    },
+    {
+     "start": 64,
+     "end": 73,
+     "role": "entry 2: July = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 94,
+     "end": 123,
+     "role": "query"
+    },
+    {
+     "start": 75,
+     "end": 140,
+     "role": "question"
+    },
+    {
+     "start": 140,
+     "end": 184,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 3 dict entries)",
+   "answers": {
+    "clean": "7",
+    "edited": null,
+    "expected": {
+     "correct": "7"
+    }
+   },
+   "numbers": {
+    "correct": true,
+    "p_answer": 0.65069,
+    "margin": 1.375,
+    "read_top": "7",
+    "continuation": " 7",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt, the three alt prompts and both steps alone answered right (the item can enter the patching runs); this org prompt was answered '7', expected '7'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "animals-CH3-e5f0-0092",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"lion\": 5, \"owl\": 0, \"bee\": 7, \"mouse\": 9, \"dog\": 8}\nn = \"mouse\"\nf = \"lion\"\ns = f\nj = n\ne = j\nq = s\nprint(lockers[e])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: lion"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: owl = position entry (slot k)"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "entry 2: bee = identity entry (slot c)"
+    },
+    {
+     "start": 69,
+     "end": 79,
+     "role": "entry 3: mouse = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 81,
+     "end": 89,
+     "role": "entry 4: dog"
+    },
+    {
+     "start": 91,
+     "end": 102,
+     "role": "chain line 0"
+    },
+    {
+     "start": 103,
+     "end": 113,
+     "role": "chain line 1"
+    },
+    {
+     "start": 114,
+     "end": 119,
+     "role": "chain line 2"
+    },
+    {
+     "start": 120,
+     "end": 125,
+     "role": "chain line 3"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "chain line 4"
+    },
+    {
+     "start": 132,
+     "end": 137,
+     "role": "chain line 5"
+    },
+    {
+     "start": 138,
+     "end": 155,
+     "role": "query"
+    },
+    {
+     "start": 138,
+     "end": 193,
+     "role": "question"
+    },
+    {
+     "start": 193,
+     "end": 237,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "9"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.16215,
+    "margin": -1.625,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": false,
+     "src_same": true,
+     "src_redigit": false,
+     "hop1": false,
+     "hop2": true
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '5', expected '9'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "animals-CH3-e5f0-0228",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"frog\": 1, \"cat\": 8, \"dog\": 5, \"owl\": 7, \"bee\": 0}\nh = \"dog\"\nv = h\nk = \"owl\"\na = k\nf = a\np = v\nprint(lockers[f])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: frog"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: cat = identity entry (slot c)"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "entry 2: dog"
+    },
+    {
+     "start": 69,
+     "end": 77,
+     "role": "entry 3: owl = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 79,
+     "end": 87,
+     "role": "entry 4: bee = position entry (slot k)"
+    },
+    {
+     "start": 89,
+     "end": 98,
+     "role": "chain line 0"
+    },
+    {
+     "start": 99,
+     "end": 104,
+     "role": "chain line 1"
+    },
+    {
+     "start": 105,
+     "end": 114,
+     "role": "chain line 2"
+    },
+    {
+     "start": 115,
+     "end": 120,
+     "role": "chain line 3"
+    },
+    {
+     "start": 121,
+     "end": 126,
+     "role": "chain line 4"
+    },
+    {
+     "start": 127,
+     "end": 132,
+     "role": "chain line 5"
+    },
+    {
+     "start": 133,
+     "end": 150,
+     "role": "query"
+    },
+    {
+     "start": 133,
+     "end": 188,
+     "role": "question"
+    },
+    {
+     "start": 188,
+     "end": 232,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (animals, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "7"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.05915,
+    "margin": -2.75,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": false,
+     "src_same": false,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '5', expected '7'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "months-CH3-e5f0-0350",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"June\": 3, \"February\": 4, \"July\": 1, \"January\": 7, \"September\": 5}\nw = \"July\"\nv = \"June\"\ny = w\nq = v\nt = q\ne = y\nprint(lockers[t])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: June = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 49,
+     "end": 62,
+     "role": "entry 1: February = position entry (slot k)"
+    },
+    {
+     "start": 64,
+     "end": 73,
+     "role": "entry 2: July"
+    },
+    {
+     "start": 75,
+     "end": 87,
+     "role": "entry 3: January"
+    },
+    {
+     "start": 89,
+     "end": 103,
+     "role": "entry 4: September = identity entry (slot c)"
+    },
+    {
+     "start": 105,
+     "end": 115,
+     "role": "chain line 0"
+    },
+    {
+     "start": 116,
+     "end": 126,
+     "role": "chain line 1"
+    },
+    {
+     "start": 127,
+     "end": 132,
+     "role": "chain line 2"
+    },
+    {
+     "start": 133,
+     "end": 138,
+     "role": "chain line 3"
+    },
+    {
+     "start": 139,
+     "end": 144,
+     "role": "chain line 4"
+    },
+    {
+     "start": 145,
+     "end": 150,
+     "role": "chain line 5"
+    },
+    {
+     "start": 151,
+     "end": 168,
+     "role": "query"
+    },
+    {
+     "start": 151,
+     "end": 206,
+     "role": "question"
+    },
+    {
+     "start": 206,
+     "end": 250,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "1",
+    "edited": null,
+    "expected": {
+     "correct": "3"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.05311,
+    "margin": -2.875,
+    "read_top": "1",
+    "continuation": " 1",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": false,
+     "hop1": false,
+     "hop2": true
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '1', expected '3'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "months-RK-e5f0-0008",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"February\": 7, \"January\": 0, \"June\": 3, \"April\": 4, \"May\": 9}\n```\nWhat number does lockers store for the month of Leap Day? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 51,
+     "role": "entry 0: February = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 53,
+     "end": 65,
+     "role": "entry 1: January = identity entry (slot c)"
+    },
+    {
+     "start": 67,
+     "end": 76,
+     "role": "entry 2: June = position entry (slot k)"
+    },
+    {
+     "start": 78,
+     "end": 88,
+     "role": "entry 3: April"
+    },
+    {
+     "start": 90,
+     "end": 98,
+     "role": "entry 4: May"
+    },
+    {
+     "start": 139,
+     "end": 160,
+     "role": "query"
+    },
+    {
+     "start": 100,
+     "end": 161,
+     "role": "question"
+    },
+    {
+     "start": 161,
+     "end": 205,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "0",
+    "edited": null,
+    "expected": {
+     "correct": "7"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.08091,
+    "margin": -1.25,
+    "read_top": "0",
+    "continuation": " 0",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '0', expected '7'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "months-RK-e5f0-0360",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"September\": 0, \"June\": 5, \"April\": 4, \"February\": 7, \"January\": 8}\n```\nWhat number does lockers store for the month of D-Day? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 52,
+     "role": "entry 0: September = position entry (slot k)"
+    },
+    {
+     "start": 54,
+     "end": 63,
+     "role": "entry 1: June = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 65,
+     "end": 75,
+     "role": "entry 2: April"
+    },
+    {
+     "start": 77,
+     "end": 90,
+     "role": "entry 3: February = identity entry (slot c)"
+    },
+    {
+     "start": 92,
+     "end": 104,
+     "role": "entry 4: January"
+    },
+    {
+     "start": 145,
+     "end": 163,
+     "role": "query"
+    },
+    {
+     "start": 106,
+     "end": 164,
+     "role": "question"
+    },
+    {
+     "start": 164,
+     "end": 208,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "6",
+    "edited": null,
+    "expected": {
+     "correct": "5"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.12489,
+    "margin": -1.125,
+    "read_top": "6",
+    "continuation": " 6",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": false,
+     "src_same": false,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '6', expected '5'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "months-RK-e5f0-0112",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"June\": 8, \"January\": 4, \"July\": 5, \"February\": 6, \"May\": 9}\n```\nWhat number does lockers store for the month of Australia Day? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: June"
+    },
+    {
+     "start": 49,
+     "end": 61,
+     "role": "entry 1: January = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 63,
+     "end": 72,
+     "role": "entry 2: July = identity entry (slot c)"
+    },
+    {
+     "start": 74,
+     "end": 87,
+     "role": "entry 3: February = position entry (slot k)"
+    },
+    {
+     "start": 89,
+     "end": 97,
+     "role": "entry 4: May"
+    },
+    {
+     "start": 138,
+     "end": 164,
+     "role": "query"
+    },
+    {
+     "start": 99,
+     "end": 165,
+     "role": "question"
+    },
+    {
+     "start": 165,
+     "end": 209,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "6",
+    "edited": null,
+    "expected": {
+     "correct": "4"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.17441,
+    "margin": -0.75,
+    "read_top": "6",
+    "continuation": " 6",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '6', expected '4'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "months-RR-e5f0-0171",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"May\": 3, \"January\": 0, \"September\": 5, \"April\": 6, \"February\": 7}\n```\nWhat number is the month of Labor Day in the calendar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: May"
+    },
+    {
+     "start": 48,
+     "end": 60,
+     "role": "entry 1: January = position entry (slot k)"
+    },
+    {
+     "start": 62,
+     "end": 76,
+     "role": "entry 2: September = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 78,
+     "end": 88,
+     "role": "entry 3: April = identity entry (slot c)"
+    },
+    {
+     "start": 90,
+     "end": 103,
+     "role": "entry 4: February"
+    },
+    {
+     "start": 124,
+     "end": 146,
+     "role": "query"
+    },
+    {
+     "start": 105,
+     "end": 163,
+     "role": "question"
+    },
+    {
+     "start": 163,
+     "end": 207,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "9"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.31069,
+    "margin": -0.375,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": false
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '5', expected '9'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "months-RR-e5f0-0348",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"June\": 0, \"February\": 9, \"July\": 1, \"May\": 4, \"September\": 8}\n```\nWhat number is the month of Leap Day in the calendar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: June = position entry (slot k)"
+    },
+    {
+     "start": 49,
+     "end": 62,
+     "role": "entry 1: February = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 64,
+     "end": 73,
+     "role": "entry 2: July = identity entry (slot c)"
+    },
+    {
+     "start": 75,
+     "end": 83,
+     "role": "entry 3: May"
+    },
+    {
+     "start": 85,
+     "end": 99,
+     "role": "entry 4: September"
+    },
+    {
+     "start": 120,
+     "end": 141,
+     "role": "query"
+    },
+    {
+     "start": 101,
+     "end": 158,
+     "role": "question"
+    },
+    {
+     "start": 158,
+     "end": 202,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "expected": {
+     "correct": "2"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.17976,
+    "margin": -0.875,
+    "read_top": "9",
+    "continuation": " 9",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '9', expected '2'"
+  },
+  {
+   "group": "clean_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "months-RR-e5f0-0238",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"January\": 0, \"September\": 7, \"May\": 3, \"April\": 6, \"February\": 9}\n```\nWhat number is the month of Leap Day in the calendar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 50,
+     "role": "entry 0: January = identity entry (slot c)"
+    },
+    {
+     "start": 52,
+     "end": 66,
+     "role": "entry 1: September"
+    },
+    {
+     "start": 68,
+     "end": 76,
+     "role": "entry 2: May = position entry (slot k)"
+    },
+    {
+     "start": 78,
+     "end": 88,
+     "role": "entry 3: April"
+    },
+    {
+     "start": 90,
+     "end": 103,
+     "role": "entry 4: February = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 124,
+     "end": 145,
+     "role": "query"
+    },
+    {
+     "start": 105,
+     "end": 162,
+     "role": "question"
+    },
+    {
+     "start": 162,
+     "end": 206,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: org prompt (months, 5 dict entries)",
+   "answers": {
+    "clean": "9",
+    "edited": null,
+    "expected": {
+     "correct": "2"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.04979,
+    "margin": -2.75,
+    "read_top": "9",
+    "continuation": " 9",
+    "item_prompts_right": {
+     "clean": false,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "the unedited org prompt answered wrong; this org prompt was answered '9', expected '2'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "IX",
+   "family_label": "list position → prompt",
+   "item_id": "animals-IX-e8f0-0034",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"pig\": 5, \"cat\": 3, \"duck\": 7, \"lion\": 8, \"mouse\": 1, \"bee\": 9, \"owl\": 6, \"frog\": 0}\nnames = [\"bee\", \"duck\", \"cat\", \"mouse\", \"frog\", \"owl\", \"pig\", \"lion\"]\nprint(lockers[names[4]])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: pig"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "entry 1: cat"
+    },
+    {
+     "start": 58,
+     "end": 67,
+     "role": "entry 2: duck"
+    },
+    {
+     "start": 69,
+     "end": 78,
+     "role": "entry 3: lion"
+    },
+    {
+     "start": 80,
+     "end": 90,
+     "role": "entry 4: mouse"
+    },
+    {
+     "start": 92,
+     "end": 100,
+     "role": "entry 5: bee"
+    },
+    {
+     "start": 102,
+     "end": 110,
+     "role": "entry 6: owl"
+    },
+    {
+     "start": 112,
+     "end": 121,
+     "role": "entry 7: frog = queried entry"
+    },
+    {
+     "start": 132,
+     "end": 137,
+     "role": "list item 0"
+    },
+    {
+     "start": 139,
+     "end": 145,
+     "role": "list item 1"
+    },
+    {
+     "start": 147,
+     "end": 152,
+     "role": "list item 2"
+    },
+    {
+     "start": 154,
+     "end": 161,
+     "role": "list item 3"
+    },
+    {
+     "start": 163,
+     "end": 169,
+     "role": "list item 4"
+    },
+    {
+     "start": 171,
+     "end": 176,
+     "role": "list item 5"
+    },
+    {
+     "start": 178,
+     "end": 183,
+     "role": "list item 6"
+    },
+    {
+     "start": 185,
+     "end": 191,
+     "role": "list item 7"
+    },
+    {
+     "start": 193,
+     "end": 217,
+     "role": "query"
+    },
+    {
+     "start": 193,
+     "end": 255,
+     "role": "question"
+    },
+    {
+     "start": 255,
+     "end": 299,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: alt prompt (bridge alt at another entry, its own digit) (animals, 8 dict entries)",
+   "answers": {
+    "clean": "6",
+    "edited": null,
+    "expected": {
+     "correct": "0",
+     "if patched into the base: none": "9",
+     "if patched into the base: identity": "3",
+     "if patched into the base: position": "5",
+     "if patched into the base: value": "0"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.28662,
+    "margin": -0.875,
+    "read_top": "6",
+    "continuation": " 6",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": false,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this alt prompt (bridge alt at another entry, its own digit) was answered '6', expected '0'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "animals-CH3-e5f0-0271",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"dog\": 7, \"duck\": 5, \"bee\": 3, \"mouse\": 9, \"cat\": 1}\ns = \"bee\"\nd = s\nk = \"duck\"\ne = d\nv = k\nx = v\nprint(lockers[e])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: dog"
+    },
+    {
+     "start": 48,
+     "end": 57,
+     "role": "entry 1: duck"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "entry 2: bee = queried entry"
+    },
+    {
+     "start": 69,
+     "end": 79,
+     "role": "entry 3: mouse"
+    },
+    {
+     "start": 81,
+     "end": 89,
+     "role": "entry 4: cat"
+    },
+    {
+     "start": 91,
+     "end": 100,
+     "role": "chain line 0"
+    },
+    {
+     "start": 101,
+     "end": 106,
+     "role": "chain line 1"
+    },
+    {
+     "start": 107,
+     "end": 117,
+     "role": "chain line 2"
+    },
+    {
+     "start": 118,
+     "end": 123,
+     "role": "chain line 3"
+    },
+    {
+     "start": 124,
+     "end": 129,
+     "role": "chain line 4"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "chain line 5"
+    },
+    {
+     "start": 136,
+     "end": 153,
+     "role": "query"
+    },
+    {
+     "start": 136,
+     "end": 191,
+     "role": "question"
+    },
+    {
+     "start": 191,
+     "end": 235,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: control prompt (same bridge and digit, the other entries reshuffled) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "3"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.31149,
+    "margin": -0.75,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this control prompt (same bridge and digit, the other entries reshuffled) was answered '5', expected '3'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "animals-CH3-e5f0-0137",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"mouse\": 3, \"duck\": 9, \"wolf\": 0, \"bee\": 7, \"dog\": 8}\nc = \"duck\"\nx = c\nm = x\nb = \"mouse\"\nt = b\nv = t\nprint(lockers[m])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 48,
+     "role": "entry 0: mouse"
+    },
+    {
+     "start": 50,
+     "end": 59,
+     "role": "entry 1: duck = queried entry"
+    },
+    {
+     "start": 61,
+     "end": 70,
+     "role": "entry 2: wolf"
+    },
+    {
+     "start": 72,
+     "end": 80,
+     "role": "entry 3: bee"
+    },
+    {
+     "start": 82,
+     "end": 90,
+     "role": "entry 4: dog"
+    },
+    {
+     "start": 92,
+     "end": 102,
+     "role": "chain line 0"
+    },
+    {
+     "start": 103,
+     "end": 108,
+     "role": "chain line 1"
+    },
+    {
+     "start": 109,
+     "end": 114,
+     "role": "chain line 2"
+    },
+    {
+     "start": 115,
+     "end": 126,
+     "role": "chain line 3"
+    },
+    {
+     "start": 127,
+     "end": 132,
+     "role": "chain line 4"
+    },
+    {
+     "start": 133,
+     "end": 138,
+     "role": "chain line 5"
+    },
+    {
+     "start": 139,
+     "end": 156,
+     "role": "query"
+    },
+    {
+     "start": 139,
+     "end": 194,
+     "role": "question"
+    },
+    {
+     "start": 194,
+     "end": 238,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: alt prompt (bridge alt at another entry, its own digit) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "3",
+    "edited": null,
+    "expected": {
+     "correct": "9",
+     "if patched into the base: none": "5",
+     "if patched into the base: identity": "3",
+     "if patched into the base: position": "8",
+     "if patched into the base: value": "9"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.46634,
+    "margin": -0.125,
+    "read_top": "3",
+    "continuation": " 3",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": false,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this alt prompt (bridge alt at another entry, its own digit) was answered '3', expected '9'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "animals-CH3-e5f0-0095",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 1, \"bee\": 0, \"cow\": 7, \"cat\": 9, \"wolf\": 5}\nd = \"duck\"\nt = \"wolf\"\np = t\nu = d\nr = u\nn = p\nprint(lockers[r])\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: duck = queried entry"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: bee"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "entry 2: cow"
+    },
+    {
+     "start": 69,
+     "end": 77,
+     "role": "entry 3: cat"
+    },
+    {
+     "start": 79,
+     "end": 88,
+     "role": "entry 4: wolf"
+    },
+    {
+     "start": 90,
+     "end": 100,
+     "role": "chain line 0"
+    },
+    {
+     "start": 101,
+     "end": 111,
+     "role": "chain line 1"
+    },
+    {
+     "start": 112,
+     "end": 117,
+     "role": "chain line 2"
+    },
+    {
+     "start": 118,
+     "end": 123,
+     "role": "chain line 3"
+    },
+    {
+     "start": 124,
+     "end": 129,
+     "role": "chain line 4"
+    },
+    {
+     "start": 130,
+     "end": 135,
+     "role": "chain line 5"
+    },
+    {
+     "start": 136,
+     "end": 153,
+     "role": "query"
+    },
+    {
+     "start": 136,
+     "end": 191,
+     "role": "question"
+    },
+    {
+     "start": 191,
+     "end": 235,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: control prompt (same bridge and digit, the other entries reshuffled) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "5",
+    "edited": null,
+    "expected": {
+     "correct": "1"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.33032,
+    "margin": -0.625,
+    "read_top": "5",
+    "continuation": " 5",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this control prompt (same bridge and digit, the other entries reshuffled) was answered '5', expected '1'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "months-RK-e5f0-0188",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"May\": 4, \"September\": 1, \"April\": 2, \"June\": 8, \"July\": 0}\n```\nWhat number does lockers store for the month of D-Day? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: May"
+    },
+    {
+     "start": 48,
+     "end": 62,
+     "role": "entry 1: September"
+    },
+    {
+     "start": 64,
+     "end": 74,
+     "role": "entry 2: April"
+    },
+    {
+     "start": 76,
+     "end": 85,
+     "role": "entry 3: June = queried entry"
+    },
+    {
+     "start": 87,
+     "end": 96,
+     "role": "entry 4: July"
+    },
+    {
+     "start": 137,
+     "end": 155,
+     "role": "query"
+    },
+    {
+     "start": 98,
+     "end": 156,
+     "role": "question"
+    },
+    {
+     "start": 156,
+     "end": 200,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: control prompt (org prompt with the bridge's digit changed) (months, 5 dict entries)",
+   "answers": {
+    "clean": "6",
+    "edited": null,
+    "expected": {
+     "correct": "8"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.12311,
+    "margin": -1.375,
+    "read_top": "6",
+    "continuation": " 6",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this control prompt (org prompt with the bridge's digit changed) was answered '6', expected '8'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "months-RK-e5f0-0287",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"April\": 9, \"June\": 5, \"January\": 0, \"February\": 8, \"July\": 2}\n```\nWhat number does lockers store for the month of D-Day? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 48,
+     "role": "entry 0: April"
+    },
+    {
+     "start": 50,
+     "end": 59,
+     "role": "entry 1: June = queried entry"
+    },
+    {
+     "start": 61,
+     "end": 73,
+     "role": "entry 2: January"
+    },
+    {
+     "start": 75,
+     "end": 88,
+     "role": "entry 3: February"
+    },
+    {
+     "start": 90,
+     "end": 99,
+     "role": "entry 4: July"
+    },
+    {
+     "start": 140,
+     "end": 158,
+     "role": "query"
+    },
+    {
+     "start": 101,
+     "end": 159,
+     "role": "question"
+    },
+    {
+     "start": 159,
+     "end": 203,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: alt prompt (bridge alt at another entry, its own digit) (months, 5 dict entries)",
+   "answers": {
+    "clean": "6",
+    "edited": null,
+    "expected": {
+     "correct": "5",
+     "if patched into the base: none": "2",
+     "if patched into the base: identity": "0",
+     "if patched into the base: position": "7",
+     "if patched into the base: value": "5"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.2853,
+    "margin": -0.125,
+    "read_top": "6",
+    "continuation": " 6",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": false,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this alt prompt (bridge alt at another entry, its own digit) was answered '6', expected '5'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "months-RK-e5f0-0344",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"July\": 8, \"April\": 0, \"February\": 9, \"January\": 6, \"September\": 5}\n```\nWhat number does lockers store for the month of Australia Day? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: July"
+    },
+    {
+     "start": 49,
+     "end": 59,
+     "role": "entry 1: April"
+    },
+    {
+     "start": 61,
+     "end": 74,
+     "role": "entry 2: February"
+    },
+    {
+     "start": 76,
+     "end": 88,
+     "role": "entry 3: January = queried entry"
+    },
+    {
+     "start": 90,
+     "end": 104,
+     "role": "entry 4: September"
+    },
+    {
+     "start": 145,
+     "end": 171,
+     "role": "query"
+    },
+    {
+     "start": 106,
+     "end": 172,
+     "role": "question"
+    },
+    {
+     "start": 172,
+     "end": 216,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: control prompt (same bridge and digit, the other entries reshuffled) (months, 5 dict entries)",
+   "answers": {
+    "clean": "0",
+    "edited": null,
+    "expected": {
+     "correct": "6"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.27182,
+    "margin": 0.0,
+    "read_top": "0",
+    "continuation": " 0",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this control prompt (same bridge and digit, the other entries reshuffled) was answered '0', expected '6'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "animals-RR-e5f0-0064",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"pig\": 5, \"owl\": 1, \"frog\": 8, \"bee\": 7, \"mouse\": 0}\n```\nHow many legs does the animal known for hooting have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: pig"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "entry 1: owl = queried entry"
+    },
+    {
+     "start": 58,
+     "end": 67,
+     "role": "entry 2: frog"
+    },
+    {
+     "start": 69,
+     "end": 77,
+     "role": "entry 3: bee"
+    },
+    {
+     "start": 79,
+     "end": 89,
+     "role": "entry 4: mouse"
+    },
+    {
+     "start": 135,
+     "end": 142,
+     "role": "query"
+    },
+    {
+     "start": 91,
+     "end": 148,
+     "role": "question"
+    },
+    {
+     "start": 148,
+     "end": 192,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: alt prompt (bridge alt at another entry, its own digit) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "1",
+    "edited": null,
+    "expected": {
+     "correct": "2",
+     "if patched into the base: none": "4",
+     "if patched into the base: identity": "2",
+     "if patched into the base: position": "6",
+     "if patched into the base: value": "2"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.3746,
+    "margin": -0.5,
+    "read_top": "1",
+    "continuation": " 1",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": false,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this alt prompt (bridge alt at another entry, its own digit) was answered '1', expected '2'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "animals-RR-e5f0-0268",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"cat\": 5, \"owl\": 8, \"frog\": 1, \"mouse\": 3, \"bee\": 7}\n```\nHow many legs does the animal known for hooting have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: cat"
+    },
+    {
+     "start": 48,
+     "end": 56,
+     "role": "entry 1: owl = queried entry"
+    },
+    {
+     "start": 58,
+     "end": 67,
+     "role": "entry 2: frog"
+    },
+    {
+     "start": 69,
+     "end": 79,
+     "role": "entry 3: mouse"
+    },
+    {
+     "start": 81,
+     "end": 89,
+     "role": "entry 4: bee"
+    },
+    {
+     "start": 135,
+     "end": 142,
+     "role": "query"
+    },
+    {
+     "start": 91,
+     "end": 148,
+     "role": "question"
+    },
+    {
+     "start": 148,
+     "end": 192,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: control prompt (same bridge and digit, the other entries reshuffled) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "expected": {
+     "correct": "2"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.43168,
+    "margin": -0.25,
+    "read_top": "8",
+    "continuation": " 8",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": false,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": false
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this control prompt (same bridge and digit, the other entries reshuffled) was answered '8', expected '2'"
+  },
+  {
+   "group": "source_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "animals-RR-e5f0-0331",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 5, \"cow\": 8, \"cat\": 0, \"dog\": 7, \"bee\": 1}\n```\nHow many legs does the animal known for purring have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: duck"
+    },
+    {
+     "start": 49,
+     "end": 57,
+     "role": "entry 1: cow"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "entry 2: cat = queried entry"
+    },
+    {
+     "start": 69,
+     "end": 77,
+     "role": "entry 3: dog"
+    },
+    {
+     "start": 79,
+     "end": 87,
+     "role": "entry 4: bee"
+    },
+    {
+     "start": 133,
+     "end": 140,
+     "role": "query"
+    },
+    {
+     "start": 89,
+     "end": 146,
+     "role": "question"
+    },
+    {
+     "start": 146,
+     "end": 190,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: alt prompt (bridge alt at another entry, its own digit) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "0",
+    "edited": null,
+    "expected": {
+     "correct": "4",
+     "if patched into the base: none": "6",
+     "if patched into the base: identity": "4",
+     "if patched into the base: position": "2",
+     "if patched into the base: value": "4"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.40377,
+    "margin": -0.375,
+    "read_top": "0",
+    "continuation": " 0",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": false,
+     "src_same": true,
+     "src_redigit": false,
+     "hop1": true,
+     "hop2": true
+    }
+   },
+   "why": "org prompt right, at least one alt prompt wrong (shown: the first wrong one); this alt prompt (bridge alt at another entry, its own digit) was answered '0', expected '4'"
+  },
+  {
+   "group": "step_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "months-CH3-e3f0-0034",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"February\": 3, \"January\": 7, \"May\": 9}\nm = \"January\"\ne = m\nv = \"May\"\nn = v\nh = e\ns = n\nprint(h)\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 51,
+     "role": "entry 0: February = identity entry (slot c)"
+    },
+    {
+     "start": 53,
+     "end": 65,
+     "role": "entry 1: January = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 67,
+     "end": 75,
+     "role": "entry 2: May = position entry (slot k)"
+    },
+    {
+     "start": 77,
+     "end": 90,
+     "role": "chain line 0"
+    },
+    {
+     "start": 91,
+     "end": 96,
+     "role": "chain line 1"
+    },
+    {
+     "start": 97,
+     "end": 106,
+     "role": "chain line 2"
+    },
+    {
+     "start": 107,
+     "end": 112,
+     "role": "chain line 3"
+    },
+    {
+     "start": 113,
+     "end": 118,
+     "role": "chain line 4"
+    },
+    {
+     "start": 119,
+     "end": 124,
+     "role": "chain line 5"
+    },
+    {
+     "start": 125,
+     "end": 171,
+     "role": "question"
+    },
+    {
+     "start": 171,
+     "end": 215,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: step 1 alone (find the key) (months, 3 dict entries)",
+   "answers": {
+    "clean": "May",
+    "edited": null,
+    "expected": {
+     "correct": "January"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.47091,
+    "margin": 0.0,
+    "read_top": "May",
+    "continuation": " May",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": false,
+     "hop2": true
+    }
+   },
+   "why": "org and alt prompts right, a step alone wrong (shown: the first wrong step); this step 1 alone (find the key) was answered 'May', expected 'January'"
+  },
+  {
+   "group": "step_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "animals-CH3-e5f0-0225",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"horse\": 5, \"owl\": 1, \"bee\": 7, \"dog\": 9, \"mouse\": 3}\ne = \"bee\"\nw = e\ns = \"mouse\"\na = s\nc = w\nn = a\nprint(c)\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 48,
+     "role": "entry 0: horse = position entry (slot k)"
+    },
+    {
+     "start": 50,
+     "end": 58,
+     "role": "entry 1: owl = identity entry (slot c)"
+    },
+    {
+     "start": 60,
+     "end": 68,
+     "role": "entry 2: bee = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 70,
+     "end": 78,
+     "role": "entry 3: dog"
+    },
+    {
+     "start": 80,
+     "end": 90,
+     "role": "entry 4: mouse"
+    },
+    {
+     "start": 92,
+     "end": 101,
+     "role": "chain line 0"
+    },
+    {
+     "start": 102,
+     "end": 107,
+     "role": "chain line 1"
+    },
+    {
+     "start": 108,
+     "end": 119,
+     "role": "chain line 2"
+    },
+    {
+     "start": 120,
+     "end": 125,
+     "role": "chain line 3"
+    },
+    {
+     "start": 126,
+     "end": 131,
+     "role": "chain line 4"
+    },
+    {
+     "start": 132,
+     "end": 137,
+     "role": "chain line 5"
+    },
+    {
+     "start": 138,
+     "end": 184,
+     "role": "question"
+    },
+    {
+     "start": 184,
+     "end": 228,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: step 1 alone (find the key) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "mouse",
+    "edited": null,
+    "expected": {
+     "correct": "bee"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.33733,
+    "margin": -0.5,
+    "read_top": "mouse",
+    "continuation": " mouse",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": false,
+     "hop2": true
+    }
+   },
+   "why": "org and alt prompts right, a step alone wrong (shown: the first wrong step); this step 1 alone (find the key) was answered 'mouse', expected 'bee'"
+  },
+  {
+   "group": "step_wrong",
+   "family": "CH3",
+   "family_label": "3-variable chain → prompt",
+   "item_id": "months-CH3-e5f0-0191",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"January\": 6, \"February\": 2, \"September\": 5, \"April\": 3, \"May\": 0}\nf = \"April\"\nq = \"February\"\ns = q\nh = f\nm = s\ne = h\nprint(e)\n```\nWhat does this Python code print? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 50,
+     "role": "entry 0: January = identity entry (slot c)"
+    },
+    {
+     "start": 52,
+     "end": 65,
+     "role": "entry 1: February"
+    },
+    {
+     "start": 67,
+     "end": 81,
+     "role": "entry 2: September = position entry (slot k)"
+    },
+    {
+     "start": 83,
+     "end": 93,
+     "role": "entry 3: April = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 95,
+     "end": 103,
+     "role": "entry 4: May"
+    },
+    {
+     "start": 105,
+     "end": 116,
+     "role": "chain line 0"
+    },
+    {
+     "start": 117,
+     "end": 131,
+     "role": "chain line 1"
+    },
+    {
+     "start": 132,
+     "end": 137,
+     "role": "chain line 2"
+    },
+    {
+     "start": 138,
+     "end": 143,
+     "role": "chain line 3"
+    },
+    {
+     "start": 144,
+     "end": 149,
+     "role": "chain line 4"
+    },
+    {
+     "start": 150,
+     "end": 155,
+     "role": "chain line 5"
+    },
+    {
+     "start": 156,
+     "end": 202,
+     "role": "question"
+    },
+    {
+     "start": 202,
+     "end": 246,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: step 1 alone (find the key) (months, 5 dict entries)",
+   "answers": {
+    "clean": "February",
+    "edited": null,
+    "expected": {
+     "correct": "April"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.36942,
+    "margin": -0.5,
+    "read_top": "February",
+    "continuation": " February",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": false,
+     "hop2": true
+    }
+   },
+   "why": "org and alt prompts right, a step alone wrong (shown: the first wrong step); this step 1 alone (find the key) was answered 'February', expected 'April'"
+  },
+  {
+   "group": "step_wrong",
+   "family": "RK",
+   "family_label": "memory → prompt",
+   "item_id": "animals-RK-e5f0-0168",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"duck\": 7, \"wolf\": 9, \"bee\": 8, \"mouse\": 0, \"dog\": 5}\n```\nWhich animal is known for howling? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 47,
+     "role": "entry 0: duck = identity entry (slot c)"
+    },
+    {
+     "start": 49,
+     "end": 58,
+     "role": "entry 1: wolf = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 60,
+     "end": 68,
+     "role": "entry 2: bee = position entry (slot k)"
+    },
+    {
+     "start": 70,
+     "end": 80,
+     "role": "entry 3: mouse"
+    },
+    {
+     "start": 82,
+     "end": 90,
+     "role": "entry 4: dog"
+    },
+    {
+     "start": 92,
+     "end": 130,
+     "role": "question"
+    },
+    {
+     "start": 130,
+     "end": 174,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: step 1 alone (find the key) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "dog",
+    "edited": null,
+    "expected": {
+     "correct": "wolf"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.18196,
+    "margin": -1.375,
+    "read_top": "dog",
+    "continuation": " dog",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": false,
+     "hop2": true
+    }
+   },
+   "why": "org and alt prompts right, a step alone wrong (shown: the first wrong step); this step 1 alone (find the key) was answered 'dog', expected 'wolf'"
+  },
+  {
+   "group": "step_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "months-RR-e5f0-0290",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"September\": 8, \"July\": 9, \"June\": 2, \"April\": 7, \"May\": 1}\n```\nWhat number is June in the calendar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 52,
+     "role": "entry 0: September"
+    },
+    {
+     "start": 54,
+     "end": 63,
+     "role": "entry 1: July"
+    },
+    {
+     "start": 65,
+     "end": 74,
+     "role": "entry 2: June = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 76,
+     "end": 86,
+     "role": "entry 3: April = position entry (slot k)"
+    },
+    {
+     "start": 88,
+     "end": 96,
+     "role": "entry 4: May = identity entry (slot c)"
+    },
+    {
+     "start": 98,
+     "end": 138,
+     "role": "question"
+    },
+    {
+     "start": 138,
+     "end": 182,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: step 2 alone (look up or recall with the key named) (months, 5 dict entries)",
+   "answers": {
+    "clean": "2",
+    "edited": null,
+    "expected": {
+     "correct": "6"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.40421,
+    "margin": -0.375,
+    "read_top": "2",
+    "continuation": " 2",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": false
+    }
+   },
+   "why": "org and alt prompts right, a step alone wrong (shown: the first wrong step); this step 2 alone (look up or recall with the key named) was answered '2', expected '6'"
+  },
+  {
+   "group": "step_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "months-RR-e5f0-0101",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"February\": 8, \"January\": 0, \"June\": 3, \"May\": 1, \"April\": 9}\n```\nWhat number is May in the calendar? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 51,
+     "role": "entry 0: February"
+    },
+    {
+     "start": 53,
+     "end": 65,
+     "role": "entry 1: January"
+    },
+    {
+     "start": 67,
+     "end": 76,
+     "role": "entry 2: June = identity entry (slot c)"
+    },
+    {
+     "start": 78,
+     "end": 86,
+     "role": "entry 3: May = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 88,
+     "end": 98,
+     "role": "entry 4: April = position entry (slot k)"
+    },
+    {
+     "start": 100,
+     "end": 139,
+     "role": "question"
+    },
+    {
+     "start": 139,
+     "end": 183,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: step 2 alone (look up or recall with the key named) (months, 5 dict entries)",
+   "answers": {
+    "clean": "1",
+    "edited": null,
+    "expected": {
+     "correct": "5"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.46597,
+    "margin": -0.125,
+    "read_top": "1",
+    "continuation": " 1",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": false
+    }
+   },
+   "why": "org and alt prompts right, a step alone wrong (shown: the first wrong step); this step 2 alone (look up or recall with the key named) was answered '1', expected '5'"
+  },
+  {
+   "group": "step_wrong",
+   "family": "RR",
+   "family_label": "memory → memory",
+   "item_id": "animals-RR-e5f0-0258",
+   "prompt": "<|im_start|>user\n```python\nlockers = {\"cat\": 0, \"frog\": 1, \"bee\": 3, \"cow\": 9, \"owl\": 8}\n```\nHow many legs does an owl have? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 38,
+     "end": 46,
+     "role": "entry 0: cat"
+    },
+    {
+     "start": 48,
+     "end": 57,
+     "role": "entry 1: frog = position entry (slot k)"
+    },
+    {
+     "start": 59,
+     "end": 67,
+     "role": "entry 2: bee = identity entry (slot c)"
+    },
+    {
+     "start": 69,
+     "end": 77,
+     "role": "entry 3: cow"
+    },
+    {
+     "start": 79,
+     "end": 87,
+     "role": "entry 4: owl = bridge entry (base query, slot a)"
+    },
+    {
+     "start": 89,
+     "end": 124,
+     "role": "question"
+    },
+    {
+     "start": 124,
+     "end": 168,
+     "role": "tail"
+    }
+   ],
+   "condition": "unedited: step 2 alone (look up or recall with the key named) (animals, 5 dict entries)",
+   "answers": {
+    "clean": "8",
+    "edited": null,
+    "expected": {
+     "correct": "2"
+    }
+   },
+   "numbers": {
+    "correct": false,
+    "p_answer": 0.37347,
+    "margin": -0.5,
+    "read_top": "8",
+    "continuation": " 8",
+    "item_prompts_right": {
+     "clean": true,
+     "src_dissoc": true,
+     "src_same": true,
+     "src_redigit": true,
+     "hop1": true,
+     "hop2": false
+    }
+   },
+   "why": "org and alt prompts right, a step alone wrong (shown: the first wrong step); this step 2 alone (look up or recall with the key named) was answered '8', expected '2'"
+  }
+ ]
+}

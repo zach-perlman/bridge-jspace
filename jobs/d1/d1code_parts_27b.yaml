@@ -1,0 +1,46 @@
+id: d1code_parts_27b
+title: "D1 in code: is the stated key carried by its lens-readable part where the paste switches the answer?"
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.8
+depends_on:
+- d1code_map_27b
+command: >-
+  uv run python scripts/code_positions.py parts --name d1code_parts_27b --map d1code_map_27b
+  --sets bind_bridge bridge_word bind_other context question
+  --why "D1 in code: statement_positions' parts (J-lens split, frozen J++) at d1code_map_27b's transit cells, layers
+  28-40, primary 32-40"
+examples_command: uv run python scripts/code_positions.py examples --name d1code_map_27b
+figures_command: uv run python scripts/code_positions.py figures --name d1code_parts_27b
+question: >-
+  At the cells where pasting the alt program switches the answer, how much of the paste's effect does its
+  lens-readable part (25-atom signed OMP over the frozen J++'s letter-token vectors) carry, relative to its share of
+  the paste's size, for the lookup (stated in code -> prompt) and for the recalled capital (stated in code -> memory)?
+why_it_matters: >-
+  D1's animal-suite result (the lens-readable part of the stated bridge carries ~0.1 of its fair share for the lookup,
+  ~5x for the recall; UNVERIFIED) could be about sentences of an animal story. Code is the cleanest stated bridge: a
+  literal string in a variable. H-D1-code: around for the lookup, inside for the recall, at the key line.
+hypotheses:
+  H-D1-code: 'at the key line, primary layers (32-40), stated in code -> prompt in transit (>= 50% switched) and its
+    J-space verdict "around": concentration upper bound < 1.0 with the rest''s effect above the part''s; stated in code
+    -> memory "inside" there (lower bound > 1.2, above the random dictionary)'
+  H-D1-code-inside: 'the lookup''s concentration lower bound > 1.2 at the key line (the code key is lens-readable)'
+  prior: 'Coordinator''s prior: H-D1-code 0.6.'
+decision_rule: >-
+  statement_positions' decision rule, unchanged (its module docstring; code_positions.py's docstring adds the code
+  reading): per family, set and window, "inside" iff the concentration's lower bound > 1.2 and above the random
+  dictionary null's upper bound; "around" iff its upper bound < 1.0 and the rest minus the J-space part > 0 (paired
+  bootstrap lower bound); else inconclusive. H-D1-code holds iff at the key line (bind_bridge), primary layers, the
+  lookup family is in transit and "around"; interpretable only if the memory family is "inside" at the same set (the
+  positive control). Secondary, reported: the whole program, the key's country, the paired-reader concentration
+  difference (same patch, two questions), the lens push (d1code_readwrite_27b).
+controls:
+- 'random-dictionary OMP of the same size (the fitting null)'
+- 'each part''s random-direction null; matched-size pieces (exp02)'
+- 'the recalled capital on the same programs (positive control: the same patch, the other question)'
+n: '80 programs per family on the map''s transit cells (layers 28, 32, 36, 40 among them)'
+seeds: [0]
+notes: >-
+  Per transit cell 16 reads (full, off, 6 parts x 2, 2 matched); up to 5 sets x 4 layers x 160 cases ~ 51k reads at
+  ~33/s ~ 26 min + the OMP and the lens dictionaries (one layer at a time) ~ 0.8 h.

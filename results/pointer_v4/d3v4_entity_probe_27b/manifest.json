@@ -1,0 +1,18 @@
+{
+  "exp": "pointer_v4",
+  "run": "d3v4_entity_probe_27b",
+  "kind": "entity probe",
+  "why": "D3 v4 entity probe: per candidate entity (36 countries, 23 sports, 40 animals, 21 body parts), the cue -> entity, entity -> fact and cue -> fact prompts without context; entities right on all three enter pointer_v4",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "written_utc": "2026-10-21T15:26:09Z",
+  "n_prompts": 360,
+  "format": "chat template, thinking off, 'Answer:' prefilled; the question and the instruction alone (no context)",
+  "judge": "pointer_v1's: the first digit or number word (or the domain's entity) in the first non-empty line of 8 greedy tokens",
+  "rule": "an entity enters pointer_v4 iff its cue -> entity, entity -> fact and cue -> fact prompts are all right; a domain is usable iff >= 16 entities pass; the first 3 usable domains in the order ['countries', 'sports', 'animals', 'body'] are used"
+}

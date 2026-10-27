@@ -1,0 +1,135 @@
+{
+  "exp": "pointer_swap",
+  "run": "d3_absent_entity_27b_r2",
+  "written_utc": "2026-10-23T14:40:52Z",
+  "why": "Dan's B4 (23 Oct): finding 5's patch (the donor's last two tokens at layer 50) with a donor that asks about an entity absent from the original's list, on every eligible seed-3 scene; scripts/absent_entity.py decides",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "data": "pointer_v4",
+  "set": "seed3",
+  "levels": [
+    "e5f0"
+  ],
+  "families": [
+    "RL",
+    "DL"
+  ],
+  "domains": [
+    "countries",
+    "animals",
+    "body"
+  ],
+  "family_roles": [
+    "RL",
+    "DL",
+    "RR"
+  ],
+  "items": {
+    "countries_RL_e5f0": {
+      "file": "data/pointer_v4/seed3/countries_RL_e5f0.json",
+      "sha256": "f1925b480046d12583d0ff29f5fa80468a07148ec77823f9c6e5e6c2375f3da2"
+    },
+    "countries_DL_e5f0": {
+      "file": "data/pointer_v4/seed3/countries_DL_e5f0.json",
+      "sha256": "ac69948384e3cf015d051c8fc2cc50ba3a315c8cde111b8514e7ca99609cfc34"
+    },
+    "animals_RL_e5f0": {
+      "file": "data/pointer_v4/seed3/animals_RL_e5f0.json",
+      "sha256": "ef7b6667ce600ddc5f283d853066f3409e4fb3f4d5e804694f0810c17ae1d545"
+    },
+    "animals_DL_e5f0": {
+      "file": "data/pointer_v4/seed3/animals_DL_e5f0.json",
+      "sha256": "a90a3e29c0381f262dd2772d949abddf73c4ecfa2e623014bc9a08eb5b1ac3bd"
+    },
+    "body_RL_e5f0": {
+      "file": "data/pointer_v4/seed3/body_RL_e5f0.json",
+      "sha256": "383acf5820b36e8de2474defb646c19765c8cbc247c84a4f2b533e85e56db371"
+    },
+    "body_DL_e5f0": {
+      "file": "data/pointer_v4/seed3/body_DL_e5f0.json",
+      "sha256": "dc5a982ee03fbf29d90d8b1c20f473bb4aa409c5e6c687ffb4b485540d860698"
+    }
+  },
+  "ci": {
+    "kind": "entity_cluster",
+    "cluster": "asked entity",
+    "strata": "domain",
+    "n_boot": 2000,
+    "seed": 0,
+    "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+  },
+  "competence": "d3v4_seed3_competence_27b",
+  "competence_path": "results/pointer_v4/d3v4_seed3_competence_27b/items.jsonl",
+  "competence_sha256": "b50d38d6f07176a523e8a7ddec884dfa9be0e85eacc7f4df379249bce20dbd84",
+  "n": 300,
+  "layers": [
+    50
+  ],
+  "control_stride": 2,
+  "windows": {
+    "early": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28
+    ],
+    "mid": [
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "transit": [
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ]
+  },
+  "groups": [
+    "last"
+  ],
+  "question_max_layer": null,
+  "control_levels": null,
+  "sources": [
+    "dissoc",
+    "same",
+    "rand",
+    "other"
+  ],
+  "primary_layers": null,
+  "sample": "per (domain, base level), up to n scenes eligible (every competence prompt right, keyed by set and item id) in all of the run's families and conditions, seed 0; all of them on the same scenes",
+  "seeds": {
+    "sample": 0,
+    "null": 0,
+    "other": 0
+  },
+  "decision": "(fixed before any run; the job specs in jobs/d3/ repeat it). Per cell (family x group x layer or window\nx source dissoc), pooled over domains, Wilson 95% intervals over items:\n  - interpretable iff the dissoc patch changes the answer (1 - share none: lower bound >= 0.20) and the same control\n    changes it rarely (upper bound <= 0.10); otherwise \"none\" (nothing moves) or \"damage\"\n  - verdict X in {identity, position, value} (RR: identity, position) iff X's lower bound exceeds the upper bounds of\n    the other two and the chance bar: the rand control's upper bound for X at that layer (windows: the max over the\n    window's layers) and the per-digit context rate (upper bound of share context / (N - 3), N = 5 only)\n  - otherwise \"mixed\". Primary: RL, group final, window transit (the suite's 98-100% copy flips at 44-52). H-pointer:\n    position; H-word (or a lexical key): identity; H-value: value. DL is the reference (classic binding retrieval),\n    RR the contrast (a pointer is useless there).\n  - Other datasets name their primary / reference / contrast families in the manifest (code_pointer_v1: memory ->\n    prompt RK / named -> prompt DK / RR).",
+  "donor": "absent",
+  "donor_rule": "(the agent's proposal for Dan's B4, fixed before any run; Dan's decisions of 23 Oct 16:00 folded in:\nevery eligible scene, originals asking their 1st statement in a table of their own, the random push as the bar, the\nordinary donor's D reported beside; jobs/d3/d3_absent_entity_27b_r2.yaml repeats it): memory -> prompt, the donor's\nlast two tokens patched at layer 50 (pointer_swap --donor absent: source dissoc, group last).\n  items     the run's scenes whose original and absent-entity donor are both read right unedited (the original:\n            pointer_v4 seed3's competence run and the run's unedited read; the donor: the run's donor_unedited check)\n  decisive  k_d = 2..5 and an original not asking its 1st statement: order, fallback, unchanged and donor are then four\n            distinct digits. k_d = 1 (order = fallback) is reported, not tested. Originals asking their 1st statement\n            (fallback = unchanged) are left out of the test and reported in a table of their own (the outcomes'\n            shares per k_d = 2..5, the patch and the random push).\n  D         over the decisive items, mean(1[order] - 1[fallback]) with the entity-cluster bootstrap 95% interval\n            (finding5_confirm.diff: the original's asked entity resampled within its topic, 4,000 draws, seed 0)\n  control   the random push of the same size (pointer_swap's rand: a seeded random direction with the patch's\n            per-position norm, added at the same tokens and layer) on the same items: D_rand, the same way\n  verdict   order iff D's lower bound > 0 and > D_rand's upper bound; fallback iff D's upper bound < 0 and < D_rand's\n            lower bound; otherwise neither; not testable without decisive items or without random-push rows\n  reported  every outcome's share per k_d (1-5) and per topic, D per k_d (2-5) and per topic, named -> prompt with the\n            same rule, the same-entity control's change rate, the donor's and the original's unedited reads\n  ordinary  reported, not affecting the verdict (--ordinary RUN: finding 5's own run on the same scenes,\n            d3v4_seed3_swap_27b): the same D for the ordinary donor on the same decisive items, pooled and per k_d,\n            beside the absent-entity D. There the original's 1st statement can be about the ordinary donor's entity\n            (its identity answer); an answer equal to the 1st statement's digit counts as fallback there too, and D is\n            also given without those items.\nSmoke gate (--smoke; exit 0 to go on, exit 3 to stop the job's chain, as check_unedited.py): every sampled item has its\noutcome rows (the patch, the random push, the same-entity control at the layer's last two tokens), a donor record and a\ndonor_unedited check; every original is read right unedited (the competence run says so); the self no-op and layer-0\nhook checks all keep the top token; at least SMOKE_DONOR_MIN of the donors are read right; the verdict (and the ordinary\ndonor's D, if given) computes. The job's command turns any error of the GPU run into exit 3 as well."
+}

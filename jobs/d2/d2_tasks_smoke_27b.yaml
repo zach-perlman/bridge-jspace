@@ -1,0 +1,36 @@
+id: d2_tasks_smoke_27b
+title: "Smoke: D2 on tasks_v2 (Zach's generator), prose, Qwen3.6-27B; not a result"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  uv run python scripts/tasks_v2.py competence --set d2_smoke_v1 --name d2_smoke_competence_27b
+  --why "smoke: which scenes of the D2 smoke set the 27B answers right on every prompt; not a result"
+  && uv run python scripts/attn_knockout.py manifest --name d2_tasks_smoke_27b --dataset tasks_v2 --tasks-set d2_smoke_v1
+  --competence d2_smoke_competence_27b --families MP MM PP PM --formats prose --n 2 --sources lookup lookup_off binding binding_off random lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname
+  --dests question final --layers all --why "smoke: the tasks_v2 adapter end to end (scene facts read from the context,
+  Greek memory scenes without C and O); not a result"
+  && uv run python scripts/attn_knockout.py run --name d2_tasks_smoke_27b
+  && uv run python scripts/attn_knockout.py manifest --name d2_tasks_smoke_cf_27b --dataset tasks_v2 --tasks-set d1_topics_v1
+  --competence d1_topics_competence_27b --families PP PM --formats prose --n 2 --sources lookup lookup_off binding binding_off random lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname
+  --dests question final --layers all --why "smoke: the tasks_v2 adapter on a set made with C and O (scene_facts stored);
+  not a result"
+  && uv run python scripts/attn_knockout.py run --name d2_tasks_smoke_cf_27b
+figures_command: uv run python scripts/d2_parts.py --name d2_tasks_smoke_27b && uv run python scripts/d2_parts.py --name d2_tasks_smoke_cf_27b
+question: >-
+  Does the tasks_v2 D2 path run end to end on the 27B (cases built, pre-run check passed, rows written, d2_parts reads
+  them), on a set without C and O and on one with them?
+why_it_matters: >-
+  The trimmed bank (D2 on tasks_v2, three models) waits for its three conditions; this checks the code before then.
+hypotheses:
+  H-runs: 'both runs pass the pre-run check and write rows for every requested family. Prior 0.85'
+decision_rule: >-
+  Smoke: passes iff both runs exit 0 with rows for every family that had eligible scenes; numbers are not a result and
+  are not read beyond that.
+controls:
+- 'the off-path statement of the same length and its parts; a random span; the unedited prompt (built into the run)'
+n: '2 scenes per topic and family (d2_smoke_v1: 16 scenes, four topics, prose, level 0, no C / O; d1_topics_v1: PP / PM)'
+seeds: [23, 22]
+notes: 'Data: data/tasks_v2/d2_smoke_v1 (tasks_v2.py make --n 8 --words MP MM PP PM --formats prose --levels 0 --seed 23). Dan, 2026-10-22: smoke before the bank; Greek memory scenes without C and O (option (a)).'

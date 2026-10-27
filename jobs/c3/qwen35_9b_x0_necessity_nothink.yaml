@@ -1,0 +1,28 @@
+id: qwen35_9b_x0_necessity_nothink
+title: "X0 amendment 2, Qwen3.5-9B: raw text with the template's empty think block (no roles, no instruction)"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.4
+depends_on: [x0_hw_gate_27b]
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py run --name qwen35_9b_x0_necessity_nothink --set d1_topics_v3 --renderings nothink --why "X0 amendment 2 (jobs/c3/X0.md): raw text plus the chat template's empty think block, no roles, no system tokens, no instruction; bridge word, layers 6-20 every 2, predicted 12"
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py figures --name qwen35_9b_x0_necessity_nothink
+question: >-
+  The 9B's pre-registered raw arm failed its gate (0% under the decisive read: the model opens a think block after 'Answer:' on 99.7% of prompts). With only the template's empty think block added, can the 9B answer (gate), and does it get the chat verdict at layer 12?
+why_it_matters: >-
+  Separates the chat template's roles and instruction from its thinking-off marker on the second model.
+hypotheses:
+  H-gate: 'unedited org accuracy under the decisive read >= 0.80 for both readers. Prior: Dan''s, predictions/2026-10-24_dan.md Q25.13'
+  H-same: 'the 9B''s chat verdict at layer 12. Prior: Dan''s, Q25.14'
+decision_rule: >-
+  Descriptive (amendment 2, declared after the 9B's raw gate was seen and before any nothink data): the rule of jobs/c3/X0.md applied to the nothink rendering at layer 12, reported beside chat; chat decides. Gate >= 0.80 under the decisive read (first non-whitespace token), else "can't test". Not opened before Dan's answers to Q25.13-Q25.14 are committed.
+controls:
+- 'the random part of the same share, per dictionary (no_rand_D, at D''s own share of ||Δ||²)'
+- 'the random Gaussian dictionary at k = 25 (the fitted null, rand_omp)'
+- 'both readers on the identical patch'
+- 'the valid-cell bar on the whole edit (S_whole >= 0.30 and >= 30 items)'
+- 'the competence gate (>= 80% under the decisive read; greedy text and cand accuracy beside it)'
+n: 'up to 200 eligible scenes of d1_topics_v3 (600 generated), 2 readers each; < 150 eligible = can''t test'
+seeds: [24, 0]
+notes: "Seeds as qwen35_9b_x0_necessity. The think block tokenizes as in the chat template (checked on the 9B tokenizer). Timing basis: qwen35_9b_x0_necessity (chat and raw competence, chat necessity) ran ~25 min on this box."

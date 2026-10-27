@@ -1,0 +1,30 @@
+{
+  "exp": "lens_gate",
+  "run": "olmo3_7b_instruct_lens_gate_v2",
+  "why": "the lens gate on another family",
+  "model": {
+    "target": "olmo-3-7b-instruct",
+    "repo": "allenai/Olmo-3-7B-Instruct",
+    "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jlens",
+    "b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774"
+  ],
+  "tasks_set": "d1_topics_v2",
+  "data_sha256": "062aac437d8ec6b41f6b352c3ffe3713a09618df30c778f1ccf0f577943bb51e",
+  "n": 60,
+  "layers": [
+    18,
+    21
+  ],
+  "window": [
+    16,
+    22
+  ],
+  "gate": "PASS iff at bind_bridge, best over the window's layers, the bridge is in the lens's\ntop 10 on >= 50% of items and X on <= 20% (Wilson intervals reported). Reported, not decisive: top-1, each layer, the\nbridge's word, the context (the old \"92%\"), digits vs words.\n\nGate v2 (22 Oct, 23:00, the outside review, before any v2 run). In the first runs the bridge's best rank over its\nsentence sat on the bridge's own word in 166 / 180 (Qwen3.6-27B), 180 / 180 (Qwen3.5-9B) and 157 / 180 (Qwen3-32B)\ncells: the lens decodes the input token where it stands, which shows the lens is not broken, not that it reads the\nbridge as a variable. v2 reads only where the word is not: after_word (the bridge's sentence after its word: in prose\nthe closing period) and context_nomention (the context without any token of a mention of the bridge or of X). PASS iff\nat after_word, best over the window's layers, the bridge is in the lens's top 10 on >= 50% of items and X on <= 20%\n(the same bars). An item without an after_word token does not count. Reported: v1 (bind_bridge), context_nomention,\ntop-1, each layer.",
+  "written_utc": "2026-10-22T20:45:37Z"
+}

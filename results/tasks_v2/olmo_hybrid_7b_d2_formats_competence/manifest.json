@@ -1,0 +1,19 @@
+{
+  "run": "olmo_hybrid_7b_d2_formats_competence",
+  "why": "D2 formats",
+  "set": "d2_formats_v1",
+  "model": {
+    "target": "olmo-hybrid-7b-instruct-dpo",
+    "repo": "allenai/Olmo-Hybrid-Instruct-DPO-7B",
+    "revision": "ec62da5af0106ab4e83a60e07c4796ff358fd204",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "git_commit": "51ff1503a749d7a94d213edcbd0350662663fd42",
+  "guess": false,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T09:10:48Z"
+}

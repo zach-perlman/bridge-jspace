@@ -1,0 +1,19 @@
+{
+  "run": "qwen35_122b_d1_topics2_competence",
+  "why": "D1 on 122B: which scenes are right on every prompt",
+  "set": "d1_topics_v2",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "git_commit": "38eb5d4a8f78281bd16c1b2ad952a399bdd2af39",
+  "guess": false,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-22T23:55:25Z"
+}

@@ -1,0 +1,29 @@
+id: d3v4_swap_topics_repro
+title: "Reproduction: d3v4_swap_topics at layer 50 from the job's clean checkout, same seeds (numbers should match)"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name d3v4_swap_topics_repro
+  --n 300 --layers 50 --groups last --competence d3v4_competence_27b
+  --why "reproduction of d3v4_swap_topics at its headline cell (last two tokens, layer 50; the README's fig. 5) from
+  the queue's clean checkout of this commit, the same sampling seed"
+  && uv run python scripts/pointer_swap.py run --name d3v4_swap_topics_repro
+figures_command: uv run python scripts/pointer_swap.py figures --name d3v4_swap_topics_repro
+question: 'Does the headline cell of d3v4_swap_topics reproduce: the same items and the same outcome per item?'
+why_it_matters: >-
+  The README's pattern 5 rests on this cell (slot 50% vs word 21%). pointer_swap changed since (end-aligned sources,
+  the 'back' role); a rerun of the cell from a clean checkout shows the change left aligned items untouched.
+hypotheses:
+  H-same: 'the same sampled items; per item the same role at layer 50 for >= 98% of items (bf16 noise), and the pooled
+    shares within 1 point. Prior 0.85'
+decision_rule: >-
+  Compare outcomes.jsonl rows (source dissoc and same, group last, layer 50) of d3v4_swap_topics and this run by item:
+  share of items with the same role; pooled shares per role.
+controls:
+- 'the original run d3v4_swap_topics (same sampling, more layers)'
+n: 'as d3v4_swap_topics (every eligible scene, up to 300 per topic)'
+seeds: [0]
+notes: 'Windows (early / mid / transit) are still run by pointer_swap; only layer 50 and the last tokens are compared.'

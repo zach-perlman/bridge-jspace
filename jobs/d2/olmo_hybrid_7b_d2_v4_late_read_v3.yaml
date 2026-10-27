@@ -1,0 +1,47 @@
+id: olmo_hybrid_7b_d2_v4_late_read_v3
+title: "D2 on Olmo-Hybrid-7B Instruct: do the last tokens read the answer's statement late, and in which 4-layer band?"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.6
+depends_on:
+- olmo_hybrid_7b_port_smoke
+- olmo_hybrid_7b_d3v4_competence
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py manifest --name olmo_hybrid_7b_d2_v4_late_read_v3
+  --why "D2 on Olmo-Hybrid-7B Instruct (Gated DeltaNet in 24 of 32 layers, full attention without RoPE at 3, 7, ..., 31):
+  olmo3_7b_instruct_d2_v4_late_read_v3's grid on pointer_v4 with 4-layer bands, plus the attention / DeltaNet sets of
+  this model's own late-read spec; memory -> prompt, named -> prompt, memory -> memory; entity-cluster intervals per topic"
+  --dataset pointer_v4 --families RL DL RR --n 100 --layers all kind bands band4 --sweep path+random
+  --sweep-dests question final both --competence olmo_hybrid_7b_d3v4_competence
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py run --name olmo_hybrid_7b_d2_v4_late_read_v3
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py summarise --name olmo_hybrid_7b_d2_v4_late_read_v3
+examples_command: BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py examples --name olmo_hybrid_7b_d2_v4_late_read_v3 --k 3
+figures_command: BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py figures --name olmo_hybrid_7b_d2_v4_late_read_v3
+question: >-
+  On Olmo-Hybrid-7B Instruct (32 layers: Gated DeltaNet in 24, full attention without RoPE in 8), when the answer's
+  statement is hidden from the last tokens, does a lookup in the prompt (memory -> prompt, named -> prompt) break while
+  a recall (memory -> memory) does not, as on Qwen3.6-27B and OLMo-3-7B? In which 4-layer band must the statement stay
+  visible?
+why_it_matters: >-
+  Finding 4's main draw on Olmo-Hybrid: with OLMo-3-7B-Instruct (same family, attention in every layer) it separates
+  architecture from family; with the Qwen hybrids it says whether "attention, not DeltaNet" holds outside Qwen.
+hypotheses:
+  H-late-read: 'statement hidden from the last tokens in every layer: memory -> prompt still right <= 20% (upper bound)
+    pooled, memory -> memory >= 90% (lower bound). Prior 0.7 (copied from olmo3_7b_instruct_d2_v4_late_read_v3)'
+  H-band: 'the band whose blocking alone breaks memory -> prompt most lies at or after layer 16 (the last third or the
+    4-layer bands 16-27). Prior 0.6 (copied from olmo3_7b_instruct_d2_v4_late_read_v3)'
+decision_rule: >-
+  attn_knockout's rule as in d2_v4_late_read (kept = the unedited answer survives the block; entity-cluster
+  intervals; the off-path same-length control and the random-span control must keep >= 90%). PRIMARY: memory ->
+  prompt, statement hidden from the tokens after the question in all layers, pooled over topics. Bands, topics,
+  named -> prompt and the question words are reported. On this hybrid the same cell with the statement hidden in every
+  attention layer only (attn, 8 of 32) and in every DeltaNet layer instead (gdn, 24 of 32) is reported next to it: the
+  arms that olmo_hybrid_7b_d2_late_read_seed2 (the second draw) decides on.
+controls:
+- 'off-path: another statement of the same length hidden (should keep the answer)'
+- 'random span of the same length hidden'
+- 'memory -> memory: the answer is recalled, so hiding the statement should not matter'
+n: '100 items per family (eligible in olmo_hybrid_7b_d3v4_competence), 3 topics'
+seeds: [0]
+notes: 'Mechanical copy of olmo3_7b_instruct_d2_v4_late_read_v3 (Dan, 23 Oct ~01:30: fill the grid); not opened before Dan''s predictions. Target, run / gate names change; dependency olmo3_7b_instruct_d2_smoke_v3 (OLMo-3''s attn_knockout smoke) replaced by olmo_hybrid_7b_port_smoke. Layer sets: the source''s "all bands band4" plus "kind" (attention vs DeltaNet), the set in this model''s own committed late-read spec (olmo_hybrid_7b_d2_late_read_seed2: --layers all kind) and in the Qwen hybrids'' main draws (qwen35_9b_d2_v4_late_read_r2: all kind bands band4); without it the first and second draws on this model would not share the attention-only arm. The fig_bands tick bug that failed the source''s figures stage (and qwen35_9b_d2_v4_late_read_r2''s) is fixed in the current attn_knockout.py (thirds filtered from the band labels). ~0.6 GPU-h (OLMo-3: 0.13 h; this grid has 20 layer sets vs 12).'

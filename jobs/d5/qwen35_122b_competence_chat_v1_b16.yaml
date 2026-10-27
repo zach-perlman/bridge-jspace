@@ -1,0 +1,23 @@
+id: qwen35_122b_competence_chat_v1_b16
+title: "Animal-suite competence of Qwen3.5-122B in chat format (lens-free; the cases of its finding-1 runs)"
+thread: D5
+gpus: 1
+est_gpu_hours: 0.6
+mem_gb: 135
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_FORMAT=chat BJ_GEN_BATCH=16 uv run python scripts/suite_v1.py manifest --set main --name qwen35_122b_competence_chat_v1 --why "the animal suite on Qwen3.5-122B in chat format: the cases of finding 1 (J-space removal, read / write) with its published J++"
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_FORMAT=chat BJ_GEN_BATCH=16 uv run python scripts/suite_v1.py competence --name qwen35_122b_competence_chat_v1
+question: Can Qwen3.5-122B do the suite's six families in the chat format (the chat template, one user turn, 'Answer:' prefilled, the suite's convention), item by item and step by step?
+why_it_matters: 'Gate G1 (Zach): a model counts only if it is competent in the format its runs use. qwen35_122b_abl_rot_v1 and qwen35_122b_rw_dose_v1 take their cases from it. Lens-free.'
+hypotheses:
+  H_competent: 'clean accuracy >= 80% on BL, BR, RL, RR with >= 150 eligible items each (copied from qwen3_32b_competence_chat_v1)'
+  H_format_fail: 'answers with filler (e.g. ''__'', a restated question): clean < 80% from format, not knowledge (hops alone high) (copied from qwen3_32b_competence_chat_v1)'
+decision_rule: "GATE G1 passes for this model and format iff clean accuracy >= 0.80 (point estimate; Wilson CI reported) on each of BL, BR, RL, RR and >= 150 items eligible (clean, C, O right) per family; otherwise no finding-1 job of this model is interpreted (copied from qwen3_32b_competence_chat_v1). Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B; no silent switch (this job uses no lens)."
+controls:
+- 'each step alone (hop1-hop3): separates knowledge from composition'
+- 'C and O prompts (token-aligned): O must keep the answer, C must change it'
+n: 400 items per family x (clean, C, O, hops), all items
+seeds:
+- 101
+notes: "mechanical copy of qwen3_32b_competence_chat_v1 for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200: the animal-suite competence on the 122B first, as for the 32B); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (this job uses no lens). Only BJ_TARGET, the run name and the batch change. The 122B already has qwen35_122b_competence_v1 (Zach, 20 Oct, chat, the first 150 items per family; suite_split's COMPETENCE entry for this target, which the D4 runs read); this run covers every item, as the 32B's, and is what the finding-1 copies read. No examples or figures stage: suite_v1.py has none, as the source. Memory (Dan, 00:55): FP8 weights ~127 GB of a 143 GB H200, so mem_gb 135 and BJ_GEN_BATCH=16 on the answer reads (suite_v1's generation batch is fixed at 64, as qwen35_122b_competence_v1 ran on one H200 on 20 Oct). Batch 16 for the read-heavy steps (Dan, 23 Oct ~01:20: known to fit on one H200, Oct 20); J-space removal at BJ_ABL_BATCH=8 (Zach's 122B run with the random-dictionary control). Queued as qwen35_122b_competence_chat_v1_b16: qwen35_122b_competence_chat_v1 had been queued at 99783ed (batch 4) and was cancelled before running."

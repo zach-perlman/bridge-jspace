@@ -1,0 +1,68 @@
+id: d3v4_swap_main
+title: "D3 v4: with many more entities and wordings, does the patch still carry bridge alt's statement slot rather than its word or answer?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.1
+depends_on:
+- d3v4_competence_27b
+- d3v4_smoke_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name d3v4_swap_main
+  --n 150 --layers 16 24 32 40 44 46 48 50 52 56 --groups final last --competence d3v4_competence_27b
+  --why "D3 v4 main: D3's word / slot / answer patch on pointer_v4 (three topics of >= 16 probe-passing entities,
+  three wordings), 150 eligible scenes per topic, entity-cluster intervals"
+  && uv run python scripts/pointer_swap.py run --name d3v4_swap_main
+examples_command: uv run python scripts/pointer_swap.py examples --name d3v4_swap_main
+figures_command: uv run python scripts/pointer_swap.py figures --name d3v4_swap_main
+question: >-
+  On pointer_v4 (5 statements; three topics with >= 16 entities each and three statement and question wordings),
+  when the alt prompt's hidden states at the tokens after the question (or the last two tokens) are patched into the
+  org prompt at layers 44-52, does the org prompt answer the digit of bridge alt's statement (its word), the digit at
+  the same statement slot (a pointer), or the alt prompt's own answer, with intervals that resample entities?
+why_it_matters: >-
+  D3's slot answer at 44-52 (memory -> prompt, after the question: same statement slot 29% vs bridge alt's statement 9%,
+  d3_main_ae_27b, UNVERIFIED) rests on 22 entities with one wording; D3b showed items of one entity are correlated, so
+  its intervals were too narrow. If the slot answer holds with ~3x the entities, three wordings and entity-resampled
+  intervals, the pointer reading is not an artefact of a few entities or one sentence frame; if it turns into "mixed"
+  or "word", the README's D3 line must change.
+hypotheses:
+  H-pointer: 'memory -> prompt, after the question, window 44-52, pooled: verdict "same statement slot" (its cluster
+    lower bound above the word''s and the answer''s upper bounds and the random push); same slot 20-35%; in >= 2 of 3
+    topics; named -> prompt shows it too; memory -> memory same slot <= 5%'
+  H-word: 'verdict "bridge alt''s statement" pooled (the word beats the slot once entities and wordings vary)'
+  H-mixed: 'no outcome separates under entity-cluster intervals (pooled verdict "mixed"), or the verdict holds in
+    fewer than 2 of 3 topics (topic-dependent)'
+  H-value: 'the alt prompt''s own answer already wins inside 44-52 (> 30% at layer 50 after the question)'
+  prior: 'Agent prior: H-pointer 0.35, H-mixed 0.35, H-word 0.2, H-value 0.1 (pointer_v2''s offset run, scored by the
+    coordinator: last two tokens, layer 50, same slot 28% vs bridge alt''s statement ~32%, after the question layer 48
+    17% vs 26%, so the slot-over-word margin may not survive).'
+decision_rule: >-
+  Fixed before the run (scripts/pointer_swap.py docstring: "Decision rule" and "pointer_v4 additions"; the manifest
+  records ci = entity_cluster). Per cell (family x patched tokens x layer or window x alt prompt), pooled over topics:
+  interpretable iff the patch changes the answer (lower bound >= 0.20) and the same-entity control changes it rarely
+  (upper bound <= 0.10); the verdict is the outcome among {bridge alt's statement, same statement slot, the alt
+  prompt's own answer} whose lower bound exceeds the others' upper bounds, the random push's upper bound and the
+  per-digit context rate; else "mixed". Every bound is the entity-cluster bootstrap 95% interval (asked entity
+  resampled within each topic, 2000 resamples, seed 0) widened to Wilson where Wilson is wider. Primary: memory ->
+  prompt, after the question, window 44-52. Secondary, reported not decisive: last two tokens, every single layer,
+  per topic (a verdict holding in fewer than 2 of 3 topics is topic-dependent), per slot class, named -> prompt and
+  memory -> memory. Every cut needs n >= 35.
+controls:
+- 'same entity, statements reshuffled (every hypothesis predicts answer org): damage bar'
+- 'random push of the same size per token (layers 16, 32, 44, 48, 52): chance bar for each predicted digit'
+- 'a prompt of another topic, same size: realistic-activation null'
+- 'context digits no hypothesis predicts: per-digit chance'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks; run invalid below 100%)'
+- 'entity-cluster intervals: the effect must hold across entities, not within a few'
+n: >-
+  150 scenes per topic eligible in all three families (seed 0) x 3 topics x 3 families = 1,350 cases; per pooled cell
+  450 items over ~70-100 asked entities and 9 wordings; per topic 150 (>= 35 for every topic and slot cut). If a topic
+  has fewer than 150 eligible scenes, all of them.
+seeds: [0]
+notes: >-
+  Reads per case: 3 checks + 10 layers x 2 sites x 2 (alt, same) + random/other at 5 layers x 2 sites x 2 + 3 windows x
+  2 sites x 2 = 75; 1,350 cases -> ~101k reads at 31-37/s (d3_main_ae_27b: 92,100 in 2,401 s) ~ 50 min + 5 forwards
+  per case (~3 min) + load ~4 min ~ 1.0-1.1 h. The question words are not patched (D3: nothing moves there from layer
+  40 on, and layers 16-36 are not the claim). Figures: one by-layer figure, slots, windows and topics, Data rows with n
+  items / k entities / t wordings.

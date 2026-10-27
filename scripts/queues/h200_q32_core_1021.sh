@@ -57,9 +57,9 @@ $PY scripts/ablate_v2.py --name qwen3_32b_full2_ko_unembed_v1 --why "$WHY: the s
 CS=qwen3_32b_competence_v1
 W2="--tasks full_v8 --tasks-competence $C2 --tasks-level all --families $TWO"
 STEER="--possets question final --band 28-40 --single-step 2 --early 16 20 24"
-BJ_BATCH=32 $PY scripts/write_max.py --name qwen3_32b_smoke_wm2_full_1021 --why smoke --n 2 --band 32-34 \
+BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name qwen3_32b_smoke_wm2_full_1021 --why smoke --n 2 --band 32-34 \
   --single-step 1 --early 24 --possets question final $W2 || { echo "smoke failed: stop"; exit 1; }
-BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
   --n 1000 $STEER $W2 && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_v1 | tail -14 \
   && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
 echo "=== Qwen3-32B core (C1 + C2) done $(date -u +%FT%TZ)"

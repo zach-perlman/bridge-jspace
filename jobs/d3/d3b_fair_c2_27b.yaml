@@ -1,0 +1,61 @@
+id: d3b_fair_c2_27b
+title: 'D3b fair test of C2: where the lens reads the word (layers 32-40), does a pointer push steer the lookup that the lens push cannot?'
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.9
+depends_on:
+- d3b_competence_400
+- d3b_fair_probe_smoke_27b
+command: >-
+  uv run python scripts/pointer_fair.py run --name d3b_fair_c2_27b
+  --why "D3b fair C2 (batch 3): the pointer direction and the lens push at the same size, aimed at the same digit, at read_write's cell (layers 32-40, the tokens after the cue) and at the question words; named → prompt and prompt → prompt as other lookups, memory → memory as the null"
+examples_command: uv run python scripts/pointer_fair.py examples --name d3b_fair_c2_27b
+figures_command: uv run python scripts/pointer_fair.py figures --name d3b_fair_c2_27b
+question: At layers 32-40, on the tokens after the cue (where the J-lens reads the recalled bridge 95% of the time but its
+  push switches <= 3% of memory → prompt answers), does a fitted pointer push toward bridge alt's statement switch the
+  answer to that statement's digit, where the lens push toward bridge alt, of the same size and aimed at the same
+  digit, does not?
+why_it_matters: 'C2 says the lens cannot write a lookup-used bridge where the model carries it. d3b_slot_direction_main_27b
+  showed a pointer code that steers the lookup at layer 48, not at the depth where read-without-write was measured. If
+  the pointer also steers at 32-40 (and the lens push does not), "around the lens" is explained at the very cell C2 was
+  stated for; if it does not, the pointer forms later (44-50) and at 32-40 the lookup is carried by something neither
+  push reaches.'
+hypotheses:
+  H-pointer-at-lens-depth: 'deciding cell (memory → prompt, after the cue, layers 32-40 at once, 1x): pointer push >= 40%
+    to bridge alt''s statement digit (entity-bootstrap lower bound >= 30%), lens push <= 5%, random <= 2%, shuffled
+    labels <= 5%; memory → memory answers changed <= 5%'
+  H-pointer-later-only: 'deciding cell: pointer push < 15% at every size 0.5-2x (D3 found statement-slot answers only at
+    layers 44-50; at 32-40 the last tokens may not carry the pointer yet); the alt-prompt patch there also mostly keeps
+    answer org'
+  H-overshoot: 'secondary: among the pointer push''s off-target answers, more land beyond the target (far side from the
+    asked statement) than a uniform choice predicts, and more than under the shuffled-label direction'
+  prior: 'Agent prior: H-pointer-at-lens-depth 0.3, H-pointer-later-only 0.55, other (both weak, or the lens push also
+    moves the answer when aimed at a statement digit) 0.15; H-overshoot 0.6 if the pointer moves answers at all.'
+decision_rule: 'Fixed in scripts/pointer_fair.py''s docstring and manifest. Deciding cell: memory → prompt, the tokens
+  after the cue (the question''s last token and everything after it: read_write''s cell), layers 32, 36 and 40 at once,
+  1x the alt-prompt patch''s per-token size, topics pooled. Pass iff the pointer push''s rate of answers = bridge alt''s
+  statement digit has an entity-bootstrap 95% lower bound >= 0.30 and exceeds both the lens push and the random push by
+  >= 20 points with each paired entity-bootstrap lower bound > 0. Valid only if the shuffled-label direction stays at an
+  upper bound <= 0.10 and the pointer push changes memory → memory answers with an upper bound <= 0.10 (n >= 35 each).
+  Second deciding cell, same rule: memory → prompt, the question words, layers 32-40 at once, 1x. Reported, not
+  decisive: each layer, each size, per topic, named → prompt, prompt → prompt. Secondary (pre-registered from an
+  exploratory post-hoc pattern): overshoot iff the off-target answers'' share beyond the target exceeds the uniform
+  expectation with an entity-bootstrap lower bound > 0.'
+controls:
+- 'lens push bridge alt − bridge org, same size, aimed at the same digit (the comparison C2 is about)'
+- 'random push per token at the pointer push''s size'
+- 'shuffled-label direction (same fit, statement labels permuted): a direction without statement information'
+- 'memory → memory items: nothing is looked up, so a pointer should change nothing'
+- 'alt-prompt patch at the same tokens and layers (reference)'
+- 'held-out scenes (pointer_v1 main; fit on the fit set) and held-out entities (queried entity outside the fitting half)'
+n: 'memory → prompt: up to 150 per topic (300; d3b_competence_400 gate, ~380 animals and ~300 elements eligible), 22
+  queried entities; named → prompt and memory → memory: 100 per topic; prompt → prompt: 400 animal-suite scenes, 200
+  fit and 200 pushed. Each cut >= 35 items; per topic >= 100 for memory → prompt.'
+seeds:
+- 0
+- 1
+notes: 'Timing: 300 x 137 + 600 x 69 = ~82.5k edited reads at 31-37/s ~37-44 min, + fit collect (400 + 200 forwards) ~1
+  min, load ~4 min, overhead ~5 min: ~0.9 h. "After the cue" = the question''s last token ("?") and the instruction,
+  template and "Answer:" after it: read_write''s question group (its first token is one later for memory → prompt items,
+  read_write starting right after the cue). Results: results/pointer_fair/d3b_fair_c2_27b/.'

@@ -1,0 +1,1417 @@
+{
+  "labels": {
+    "main/animals_DK_e5f0": {
+      "family": "DK",
+      "family_label": "named → prompt",
+      "domain": "animals",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99746,
+      "read_agrees_with_greedy": 1
+    },
+    "main/animals_IX_e5f0": {
+      "family": "IX",
+      "family_label": "list position → prompt",
+      "domain": "animals",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99247,
+      "read_agrees_with_greedy": 1
+    },
+    "main/animals_CH2_e5f0": {
+      "family": "CH2",
+      "family_label": "2-variable chain → prompt",
+      "domain": "animals",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99668,
+      "read_agrees_with_greedy": 1
+    },
+    "main/animals_CH3_e5f0": {
+      "family": "CH3",
+      "family_label": "3-variable chain → prompt",
+      "domain": "animals",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.98,
+          "lo": 0.9610361296222221,
+          "hi": 0.9898317354020845,
+          "k": 392
+        },
+        "src_dissoc": {
+          "rate": 0.975,
+          "lo": 0.9545979351700657,
+          "hi": 0.9863650562602375,
+          "k": 390
+        },
+        "src_same": {
+          "rate": 0.965,
+          "lo": 0.942114344143788,
+          "hi": 0.9790389000985089,
+          "k": 386
+        },
+        "src_redigit": {
+          "rate": 0.9825,
+          "lo": 0.9643224844820973,
+          "hi": 0.9914978173392109,
+          "k": 393
+        },
+        "hop1": {
+          "rate": 0.965,
+          "lo": 0.942114344143788,
+          "hi": 0.9790389000985089,
+          "k": 386
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 371,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.992615,
+      "read_agrees_with_greedy": 0.9991666666666666
+    },
+    "main/animals_RK_e5f0": {
+      "family": "RK",
+      "family_label": "memory → prompt",
+      "domain": "animals",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "src_dissoc": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "src_same": {
+          "rate": 0.9975,
+          "lo": 0.9859763590327523,
+          "hi": 0.9995585635705656,
+          "k": 399
+        },
+        "src_redigit": {
+          "rate": 0.99,
+          "lo": 0.9745730330055918,
+          "hi": 0.9961045792067212,
+          "k": 396
+        },
+        "hop1": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 391,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99483,
+      "read_agrees_with_greedy": 1
+    },
+    "main/animals_RR_e5f0": {
+      "family": "RR",
+      "family_label": "memory → memory",
+      "domain": "animals",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.8475,
+          "lo": 0.8089753764784815,
+          "hi": 0.8794133383047404,
+          "k": 339
+        },
+        "src_dissoc": {
+          "rate": 0.7875,
+          "lo": 0.7447731098540312,
+          "hi": 0.8247571218011523,
+          "k": 315
+        },
+        "src_same": {
+          "rate": 0.83,
+          "lo": 0.7900900795523471,
+          "hi": 0.8636315776518637,
+          "k": 332
+        },
+        "src_redigit": {
+          "rate": 0.8275,
+          "lo": 0.7874038632508435,
+          "hi": 0.8613653571563658,
+          "k": 331
+        },
+        "hop1": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "hop2": {
+          "rate": 0.8525,
+          "lo": 0.8143991454822668,
+          "hi": 0.8838944428949584,
+          "k": 341
+        }
+      },
+      "eligible": 196,
+      "passes_gate": false,
+      "clean_median_p_answer": 0.6973750000000001,
+      "read_agrees_with_greedy": 0.9858333333333333
+    },
+    "main/months_DK_e5f0": {
+      "family": "DK",
+      "family_label": "named → prompt",
+      "domain": "months",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99738,
+      "read_agrees_with_greedy": 1
+    },
+    "main/months_IX_e5f0": {
+      "family": "IX",
+      "family_label": "list position → prompt",
+      "domain": "months",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.991635,
+      "read_agrees_with_greedy": 1
+    },
+    "main/months_CH2_e5f0": {
+      "family": "CH2",
+      "family_label": "2-variable chain → prompt",
+      "domain": "months",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 400,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99641,
+      "read_agrees_with_greedy": 0.9995833333333334
+    },
+    "main/months_CH3_e5f0": {
+      "family": "CH3",
+      "family_label": "3-variable chain → prompt",
+      "domain": "months",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.9825,
+          "lo": 0.9643224844820973,
+          "hi": 0.9914978173392109,
+          "k": 393
+        },
+        "src_dissoc": {
+          "rate": 0.985,
+          "lo": 0.9676649364884468,
+          "hi": 0.993107802129863,
+          "k": 394
+        },
+        "src_same": {
+          "rate": 0.9925,
+          "lo": 0.9781838919722998,
+          "hi": 0.9974461570370148,
+          "k": 397
+        },
+        "src_redigit": {
+          "rate": 0.99,
+          "lo": 0.9745730330055918,
+          "hi": 0.9961045792067212,
+          "k": 396
+        },
+        "hop1": {
+          "rate": 0.9675,
+          "lo": 0.9451953401262605,
+          "hi": 0.9809103409130382,
+          "k": 387
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 379,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99101,
+      "read_agrees_with_greedy": 0.9995833333333334
+    },
+    "main/months_RK_e5f0": {
+      "family": "RK",
+      "family_label": "memory → prompt",
+      "domain": "months",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.6125,
+          "lo": 0.5639018250228361,
+          "hi": 0.6589578308422358,
+          "k": 245
+        },
+        "src_dissoc": {
+          "rate": 0.6475,
+          "lo": 0.5994796194705074,
+          "hi": 0.6927141515525868,
+          "k": 259
+        },
+        "src_same": {
+          "rate": 0.6175,
+          "lo": 0.5689683892522508,
+          "hi": 0.6637961402068244,
+          "k": 247
+        },
+        "src_redigit": {
+          "rate": 0.64,
+          "lo": 0.5918335636186343,
+          "hi": 0.6855028970134551,
+          "k": 256
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        }
+      },
+      "eligible": 111,
+      "passes_gate": false,
+      "clean_median_p_answer": 0.52128,
+      "read_agrees_with_greedy": 0.9379166666666666
+    },
+    "main/months_RR_e5f0": {
+      "family": "RR",
+      "family_label": "memory → memory",
+      "domain": "months",
+      "level": "e5f0",
+      "n": 400,
+      "cells": {
+        "clean": {
+          "rate": 0.7675,
+          "lo": 0.7236764828773743,
+          "hi": 0.8062342544017964,
+          "k": 307
+        },
+        "src_dissoc": {
+          "rate": 0.81,
+          "lo": 0.7686754184345865,
+          "hi": 0.8454267443936117,
+          "k": 324
+        },
+        "src_same": {
+          "rate": 0.755,
+          "lo": 0.7105566038330045,
+          "hi": 0.7945919494611584,
+          "k": 302
+        },
+        "src_redigit": {
+          "rate": 0.795,
+          "lo": 0.7527197602970003,
+          "hi": 0.8316677817491883,
+          "k": 318
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9904873594003194,
+          "hi": 1.0,
+          "k": 400
+        },
+        "hop2": {
+          "rate": 0.415,
+          "lo": 0.36774522964195816,
+          "hi": 0.46387191925998755,
+          "k": 166
+        }
+      },
+      "eligible": 83,
+      "passes_gate": false,
+      "clean_median_p_answer": 0.585135,
+      "read_agrees_with_greedy": 0.9941666666666666
+    },
+    "dev/animals_DK_e3f0": {
+      "family": "DK",
+      "family_label": "named → prompt",
+      "domain": "animals",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99714,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_IX_e3f0": {
+      "family": "IX",
+      "family_label": "list position → prompt",
+      "domain": "animals",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99343,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_CH2_e3f0": {
+      "family": "CH2",
+      "family_label": "2-variable chain → prompt",
+      "domain": "animals",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.9964850000000001,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_CH3_e3f0": {
+      "family": "CH3",
+      "family_label": "3-variable chain → prompt",
+      "domain": "animals",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 0.9666666666666667,
+          "lo": 0.8863601247107462,
+          "hi": 0.9908108735098498,
+          "k": 58
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 58,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.9870049999999999,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_RK_e3f0": {
+      "family": "RK",
+      "family_label": "memory → prompt",
+      "domain": "animals",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.994695,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_RR_e3f0": {
+      "family": "RR",
+      "family_label": "memory → memory",
+      "domain": "animals",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 0.9333333333333333,
+          "lo": 0.8407442010623228,
+          "hi": 0.973771725856802,
+          "k": 56
+        },
+        "src_dissoc": {
+          "rate": 0.9333333333333333,
+          "lo": 0.8407442010623228,
+          "hi": 0.973771725856802,
+          "k": 56
+        },
+        "src_same": {
+          "rate": 0.95,
+          "lo": 0.8629926537490016,
+          "hi": 0.9828508088208587,
+          "k": 57
+        },
+        "src_redigit": {
+          "rate": 0.9166666666666666,
+          "lo": 0.8193083153188752,
+          "hi": 0.9638800759495141,
+          "k": 55
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 0.9333333333333333,
+          "lo": 0.8407442010623228,
+          "hi": 0.973771725856802,
+          "k": 56
+        }
+      },
+      "eligible": 45,
+      "passes_gate": false,
+      "clean_median_p_answer": 0.8665499999999999,
+      "read_agrees_with_greedy": 0.9861111111111112
+    },
+    "dev/months_DK_e3f0": {
+      "family": "DK",
+      "family_label": "named → prompt",
+      "domain": "months",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99692,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/months_IX_e3f0": {
+      "family": "IX",
+      "family_label": "list position → prompt",
+      "domain": "months",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99197,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/months_CH2_e3f0": {
+      "family": "CH2",
+      "family_label": "2-variable chain → prompt",
+      "domain": "months",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.9946999999999999,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/months_CH3_e3f0": {
+      "family": "CH3",
+      "family_label": "3-variable chain → prompt",
+      "domain": "months",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 0.9833333333333333,
+          "lo": 0.9114466177322051,
+          "hi": 0.9970519161391262,
+          "k": 59
+        },
+        "src_same": {
+          "rate": 0.9833333333333333,
+          "lo": 0.9114466177322051,
+          "hi": 0.9970519161391262,
+          "k": 59
+        },
+        "src_redigit": {
+          "rate": 0.9666666666666667,
+          "lo": 0.8863601247107462,
+          "hi": 0.9908108735098498,
+          "k": 58
+        },
+        "hop1": {
+          "rate": 0.9666666666666667,
+          "lo": 0.8863601247107462,
+          "hi": 0.9908108735098498,
+          "k": 58
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 57,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.98878,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/months_RK_e3f0": {
+      "family": "RK",
+      "family_label": "memory → prompt",
+      "domain": "months",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 0.7,
+          "lo": 0.5749105303360957,
+          "hi": 0.801019897472731,
+          "k": 42
+        },
+        "src_dissoc": {
+          "rate": 0.6,
+          "lo": 0.47365824394206846,
+          "hi": 0.714306969962345,
+          "k": 36
+        },
+        "src_same": {
+          "rate": 0.6666666666666666,
+          "lo": 0.540566298666634,
+          "hi": 0.7727090578407216,
+          "k": 40
+        },
+        "src_redigit": {
+          "rate": 0.7333333333333333,
+          "lo": 0.6099104639810865,
+          "hi": 0.8286750351292115,
+          "k": 44
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 20,
+      "passes_gate": false,
+      "clean_median_p_answer": 0.6000449999999999,
+      "read_agrees_with_greedy": 0.9055555555555556
+    },
+    "dev/months_RR_e3f0": {
+      "family": "RR",
+      "family_label": "memory → memory",
+      "domain": "months",
+      "level": "e3f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 0.8666666666666667,
+          "lo": 0.7583460540992789,
+          "hi": 0.9308597302169036,
+          "k": 52
+        },
+        "src_dissoc": {
+          "rate": 0.8666666666666667,
+          "lo": 0.7583460540992789,
+          "hi": 0.9308597302169036,
+          "k": 52
+        },
+        "src_same": {
+          "rate": 0.9,
+          "lo": 0.7985030550748896,
+          "hi": 0.9533578005427642,
+          "k": 54
+        },
+        "src_redigit": {
+          "rate": 0.8166666666666667,
+          "lo": 0.7008000677353371,
+          "hi": 0.8944231096286387,
+          "k": 49
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 0.8666666666666667,
+          "lo": 0.7583460540992789,
+          "hi": 0.9308597302169036,
+          "k": 52
+        }
+      },
+      "eligible": 36,
+      "passes_gate": false,
+      "clean_median_p_answer": 0.76329,
+      "read_agrees_with_greedy": 0.9944444444444445
+    },
+    "dev/animals_DK_e8f0": {
+      "family": "DK",
+      "family_label": "named → prompt",
+      "domain": "animals",
+      "level": "e8f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99791,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_IX_e8f0": {
+      "family": "IX",
+      "family_label": "list position → prompt",
+      "domain": "animals",
+      "level": "e8f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 0.9833333333333333,
+          "lo": 0.9114466177322051,
+          "hi": 0.9970519161391262,
+          "k": 59
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 59,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.98637,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_CH2_e8f0": {
+      "family": "CH2",
+      "family_label": "2-variable chain → prompt",
+      "domain": "animals",
+      "level": "e8f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.996545,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_CH3_e8f0": {
+      "family": "CH3",
+      "family_label": "3-variable chain → prompt",
+      "domain": "animals",
+      "level": "e8f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_same": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 60,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.99306,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_RK_e8f0": {
+      "family": "RK",
+      "family_label": "memory → prompt",
+      "domain": "animals",
+      "level": "e8f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "src_dissoc": {
+          "rate": 0.9833333333333333,
+          "lo": 0.9114466177322051,
+          "hi": 0.9970519161391262,
+          "k": 59
+        },
+        "src_same": {
+          "rate": 0.9833333333333333,
+          "lo": 0.9114466177322051,
+          "hi": 0.9970519161391262,
+          "k": 59
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        }
+      },
+      "eligible": 58,
+      "passes_gate": true,
+      "clean_median_p_answer": 0.995285,
+      "read_agrees_with_greedy": 1
+    },
+    "dev/animals_RR_e8f0": {
+      "family": "RR",
+      "family_label": "memory → memory",
+      "domain": "animals",
+      "level": "e8f0",
+      "n": 60,
+      "cells": {
+        "clean": {
+          "rate": 0.5333333333333333,
+          "lo": 0.40893208671135106,
+          "hi": 0.65372298459012,
+          "k": 32
+        },
+        "src_dissoc": {
+          "rate": 0.65,
+          "lo": 0.5236238380947751,
+          "hi": 0.7583239827618451,
+          "k": 39
+        },
+        "src_same": {
+          "rate": 0.65,
+          "lo": 0.5236238380947751,
+          "hi": 0.7583239827618451,
+          "k": 39
+        },
+        "src_redigit": {
+          "rate": 0.5333333333333333,
+          "lo": 0.40893208671135106,
+          "hi": 0.65372298459012,
+          "k": 32
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9398260695220669,
+          "hi": 0.9999999999999999,
+          "k": 60
+        },
+        "hop2": {
+          "rate": 0.7833333333333333,
+          "lo": 0.6637973165265748,
+          "hi": 0.8687707895359299,
+          "k": 47
+        }
+      },
+      "eligible": 11,
+      "passes_gate": false,
+      "clean_median_p_answer": 0.488975,
+      "read_agrees_with_greedy": 0.9805555555555555
+    }
+  },
+  "seconds_generate": 1050,
+  "seconds_read": 933,
+  "seconds": 1984
+}

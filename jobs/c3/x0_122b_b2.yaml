@@ -1,0 +1,23 @@
+id: x0_122b_b2
+title: "122B grid b2 (Dan, 25 Oct ~00:20; held-out model): parts of the one-change edit at L33: the word only, J++ orthogonal to the word, PCA at J++'s share (200 held-out prompts at L33), J++; keep-only word and word-orthogonal arms"
+thread: C3
+gpus: 2
+mem_gb: 150
+est_gpu_hours: 0.6
+depends_on: [x0_122b_b1]
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_DEVICE_MAP=auto uv run python scripts/x0_parts.py run --name qwen35_122b_x0_parts --single qwen35_122b_x0_single --parts w,jwo,pca_eq,jpp --keep w,jwo
+question: >-
+  On the 122B at L33 with the one-change edit, do the layer's main directions at J++'s share and J++ orthogonal to the word each cost the recall less than half of J++'s extra loss, as on the 9B and 27B; and what do the word part and the word-orthogonal part do when pasted alone?
+why_it_matters: >-
+  The grid rows "the J++ part is the word", "J++ is only the layer's main directions" and "the recall reads the bridge redundantly" on the held-out model.
+hypotheses:
+  H-as-9b-27b: 'both cost the recall less than half of J++''s extra loss. Prior: Dan''s Q31.3 (batch 31)'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct ~00:20; the 9B / 27B thresholds). PCA at J++'s share, Q30.1's branches: recall-specific = lookup excess <= 0.10, recall excess >= 0.20 with lower CI > 0; hurts both = lookup excess >= 0.10 and both readers' lower CI > 0; inert = both readers' upper CI < 0.10. J++ orthogonal to the word: recall excess >= 0.20 -> "recall needs J++ components beyond the word"; <= 0.10 -> "the word and the other J++ components are redundant" (point estimate). Q31.3's categories: each of the two below half of J++'s recall excess (point estimates). Keep-only arms: descriptive. Cluster bootstrap over bridge entities (10,000 resamples, seed 0). Results stay closed until Dan's batch-31 commit.
+controls:
+- 'each part against a random-subspace part of its own share; each kept part against the random part alone'
+- 'both readers on the identical patch'
+n: 'the 200 single-change items of qwen35_122b_x0_single'
+seeds: [0]
+notes: "122B on both GPUs."

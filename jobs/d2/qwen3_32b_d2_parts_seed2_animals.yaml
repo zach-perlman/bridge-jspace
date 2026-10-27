@@ -1,0 +1,35 @@
+id: qwen3_32b_d2_parts_seed2_animals
+title: "Name vs digit on a second draw, animals added post hoc (Qwen3-32B, memory -> prompt)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py manifest --name qwen3_32b_d2_parts_seed2_animals --dataset pointer_v4 --set seed2 --domains animals --families RL --n 100
+  --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence qwen3_32b_d3v4_seed2_competence
+  --gate-lo 0.845
+  --why "post hoc (Dan, 22 Oct, after qwen3_32b_d2_parts_seed2 was opened): animals missed the competence gate by 0.0005 (lower bound 0.8495, gate 0.85); the same test on that topic, reported next to the pre-registered result, not decisive"
+  && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py run --name qwen3_32b_d2_parts_seed2_animals
+examples_command: BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py examples --name qwen3_32b_d2_parts_seed2_animals --k 3
+figures_command: uv run python scripts/d2_parts.py --name qwen3_32b_d2_parts_seed2_animals
+question: >-
+  On the second draw, memory -> prompt, animals (the topic the gate left out by 0.0005): do the question's tokens read
+  the name and the last tokens the digit, as on the other two topics?
+why_it_matters: >-
+  qwen3_32b_d2_parts_seed2 replicated on two topics; animals is the third. The gate's lower bound was 0.8495 against
+  0.85, so the topic is almost certainly as competent as on the first draw (0.861 there).
+hypotheses:
+  H-same: 'the same verdicts as the pooled seed-2 run (H-name-q-split and H-digit-final-split hold on animals alone).
+    Prior 0.7 (on the first draw animals was in the pool; its question-token reliance was 23%, between body parts and
+    countries)'
+decision_rule: >-
+  Post hoc, declared before this run: not decisive. scripts/d2_parts.py's verdicts on animals alone, reported next to
+  qwen3_32b_d2_parts_seed2 (pre-registered, two topics, unchanged), and the three topics pooled labelled post hoc.
+  The gate is lowered to 0.845 for this topic only (a declared exception); every other eligibility rule is unchanged.
+  From now on (fixed 2026-10-22): pointer-set competence gates compare the Wilson lower bound rounded to two decimals.
+controls:
+- 'the same parts of an off-path statement of the same length; the whole statement and the whole off-path statement'
+n: 'up to 100 animals scenes (pointer_v4 seed2), memory -> prompt'
+seeds: [844]
+notes: "Dan, 2026-10-22: include topics that miss the gate by a rounding margin. This run is labelled post hoc wherever it is reported."

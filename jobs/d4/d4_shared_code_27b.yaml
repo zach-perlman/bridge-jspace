@@ -1,0 +1,56 @@
+id: d4_shared_code_27b
+title: "A shared code at the stated bridge's word, with and without its lens-readable part, on held-out scenes, layers 20, 24, 28 (Qwen3.6-27B)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.25
+depends_on:
+- d4_layer_gap_dose_27b
+- d4_layer_gap_perp_27b
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_shared_code_27b --n 100 --scenes fresh --fresh-seed 2
+  --exclude-runs d4_where_fresh_27b --same-scenes d4_layer_gap_v2_27b --rule v2 --shared
+  --patch-dir-run d4_layer_gap_dose_27b --subsets w --layers 20 24 28 --context-layers 20 --scales 4 8
+  --v21-min-layer 20
+  --why "A5: is there one reusable direction at the bridge's word, outside the lens's read directions, that moves lookups on scenes it was not built on?"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_shared_code_27b
+question: >-
+  On Qwen3.6-27B, at the stated bridge's word at layers 20, 24 and 28: does one direction per pair of animals, built on
+  other scenes (the average residual at an animal's word over scenes that state it, minus the same for the scene's own
+  bridge) and stripped of its lens-readable part, switch lookups on scenes it was not built on, where the lens push
+  switches none?
+why_it_matters: >-
+  From layer 20 on, the lens push at the stated bridge's word moves no lookup while the patch of the residual there
+  still does. If the patch's lens-invisible part is a reusable code (one direction per pair of entities, the same on
+  every scene), the lookup reads the bridge from a linear form the lens misses; if only the scene's own patch works,
+  that form is scene-specific and no single direction outside the lens carries it.
+hypotheses:
+  H-shared: 'at some layer of 20, 24, 28, the shared code without its J-space part switches lookups at 8x with Wilson lower bound >= 20% (about 28/100 or more) on held-out scenes, at a valid cell, while the lens push there switches with upper bound <= 5%'
+  H-none: 'at every layer with a valid cell it switches lookups at 8x with upper bound <= 5% (about 0/100), while the size-matched patch (patch_dir, d4_layer_gap_dose_27b) switches lookups with lower bound > 5% at a valid 8x cell of one of those layers: the form is scene-specific, not a reusable linear code'
+  inconclusive: 'anything else (between the bars, no valid cell, or patch_dir moving nowhere there)'
+decision_rule: >-
+  scripts/early_push_where.py's shared-code test (docstring, written 23 Oct before this run; Dan's brief). Training
+  scenes: every scene of the animal suite (wording A, 400 scenes) that this run does not push on, i.e. all but the 100
+  held-out scenes of d4_layer_gap_v2_27b's draw (300). At each layer, the mean residual at an animal's word in its owner
+  sentence over the training scenes that state that animal (the clean prompt; the context comes before the question,
+  so the question does not matter). For a held-out item with bridge I and other bridge X: shared = mean(X) - mean(I);
+  shared_perp = shared without its J-space part (statement_positions' parts stage's jspace, the 25-atom signed OMP over
+  the frozen J++'s letter-token vectors, as patch_dir_perp). Each is pushed at the held-out item's bridge word at the
+  lens push's norm (4x, 8x the scene's reference norm), next to the lens push and a random push at the same norms. A
+  cell is valid as in the layer gap: the arm's own memory -> prompt and memory -> memory rows (the same scene, the same
+  push) changed <= 10%, the random push at that layer and scale switching <= 5% of lookups. At 8x: H-shared iff at
+  some layer a valid shared_perp cell switches lookups with Wilson lower bound >= 20% while the lens push's upper bound
+  there is <= 5%. H-none iff at every layer with a valid shared_perp cell its upper bound is <= 5% and patch_dir (read
+  from d4_layer_gap_dose_27b when this run is judged, the same held-out scenes) switches lookups with lower bound > 5%
+  at a valid 8x cell of one of those layers. Else inconclusive. Reported, not decisive: the same at 4x; shared (its
+  J-space part kept); recalls (prompt -> memory) under every arm; memory -> prompt and memory -> memory; the cosine of
+  shared (and of shared_perp) with the lens push's direction and the share of shared's squared norm in its J-space part
+  (medians over scenes, by layer); the number of training scenes stating each animal.
+controls:
+- 'a random push at the same norms (4x, 8x) at the same word'
+- 'the lens push at the same norms: H-shared needs it to move no lookup where the shared code does'
+- 'off-path: memory -> prompt and memory -> memory under every arm (<= 10% changed for a valid cell)'
+- 'the shared code with its J-space part kept; recalls (prompt -> memory) under every arm'
+n: '100 held-out scenes, four families: the draw of d4_layer_gap_v2_27b (seed 2 from a pool of 148), the dose run''s and the perp run''s scenes (asserted equal at run time); 300 training scenes, the rest of the animal suite'
+seeds: [0, 2]
+notes: "Dan, 23 Oct (A5, stretch). At least 20 training scenes per entity: the existing suite gives at least 40 for every animal the held-out scenes need (sheep and frog 40, spider 97; each scene states three animals, counted once per animal it states), so no new draw was needed; the run asserts >= 20 for every needed animal and writes the training scenes and counts to shared_code.json. The shared code is computed after the held-out draw and before any push; its rows come after every other row and draw no random numbers. H-none reads patch_dir from d4_layer_gap_dose_27b only when this run is analyzed; nobody opened that run for this spec. The agent's choices, for Dan to change before the run: the word's residual is the mean over its tokens (every bridge word is one token in this draw); 'at some layer' for H-shared and 'every layer with a valid cell' for H-none; the off-path rows push the same direction into the memory -> prompt and memory -> memory prompts of the scene, as the lens push's do. Cost: 300 training forwards, three fp32 letter dictionaries, 36 rows per held-out item (the lens, random and off-scene pushes, shared and shared_perp at 3 layers x 2 scales at the word, the edits): about 0.25 h on one A100 after d4_layer_gap_perp_27b; memory about 62 GB."

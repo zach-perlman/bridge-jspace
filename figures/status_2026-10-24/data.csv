@@ -1,0 +1,320 @@
+figure,model,run,layer,reader,quantity,value,lo,hi,n
+f1,qwen3.5-9b,qwen35_9b_x0_necessity,12,PP,"flips lost (points), J++ part removed",11.500000000000005,7.303078183520606,15.261097019657576,200
+f1,qwen3.5-9b,qwen35_9b_x0_necessity,12,PP,"flips lost (points), random part removed",13.0,8.241596638655462,16.94915254237288,200
+f1,qwen3.5-9b,qwen35_9b_x0_necessity,12,PM,"flips lost (points), J++ part removed",52.49999999999999,44.047619047619044,60.234094271824134,200
+f1,qwen3.5-9b,qwen35_9b_x0_necessity,12,PM,"flips lost (points), random part removed",3.500000000000003,1.2820512820512775,6.451612903225811,200
+f1,qwen3.5-9b,qwen35_9b_x0_necessity,12,recall-lookup,graded contrast C (excess),0.5260333575054386,0.42372781210953087,0.614298830454014,
+f1,qwen3.6-27b,x0_necessity_27b_chat,32,PP,"flips lost (points), J++ part removed",7.500000000000001,4.411764705882354,10.752688172043007,200
+f1,qwen3.6-27b,x0_necessity_27b_chat,32,PP,"flips lost (points), random part removed",1.5000000000000013,0.0,3.5175879396984913,200
+f1,qwen3.6-27b,x0_necessity_27b_chat,32,PM,"flips lost (points), J++ part removed",57.49999999999999,48.587570621468934,65.40089387485753,200
+f1,qwen3.6-27b,x0_necessity_27b_chat,32,PM,"flips lost (points), random part removed",2.0000000000000018,-1.2578616352201255,4.869142230748148,200
+f1,qwen3.6-27b,x0_necessity_27b_chat,32,recall-lookup,graded contrast C (excess),0.6004651162790698,0.5025567065985861,0.6918870812495038,
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"flips lost (points), J++ part removed",9.000000000000002,4.672897196261683,14.22018348623853,200
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"flips lost (points), random part removed",9.000000000000002,4.273049645390073,14.59874518166161,200
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"flips lost (points), J++ part removed",36.5,27.450980392156865,45.263157894736835,200
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"flips lost (points), random part removed",7.500000000000007,3.6457806174088994,11.905015197568387,200
+f1,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,recall-lookup,graded contrast C (excess),0.3152173913043478,0.20015931372549006,0.42544360341800097,
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,6,PP,extra loss,0.6163522012578616,0.5294117647058824,0.6951219512195121,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,8,PP,extra loss,0.3700787401574802,0.2950790187522113,0.44852941176470595,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,10,PP,extra loss,0.26086956521739124,0.18811669628501307,0.32999999999999985,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,12,PP,extra loss,-0.02857142857142847,-0.07826086956521738,0.028846153846153855,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,14,PP,extra loss,-0.09890109890109888,-0.15384615384615385,-0.04901362984218081,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,16,PP,extra loss,-0.15555555555555556,-0.275,-0.02857142857142858,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,18,PP,extra loss,-0.4,-0.7777777777777778,-0.09090909090909094,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,20,PP,extra loss,nan,nan,nan,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,6,PM,extra loss,0.8527918781725888,0.789155601999836,0.9066683937823835,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,8,PM,extra loss,0.6717171717171717,0.5663716814159293,0.7708333333333333,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,10,PM,extra loss,0.5909090909090908,0.5070398082942097,0.6619718309859155,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,12,PM,extra loss,0.4974619289340101,0.4108083976833977,0.5714285714285713,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,14,PM,extra loss,0.6250000000000001,0.5341614906832298,0.6945812807881773,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,16,PM,extra loss,0.8306451612903225,0.7142857142857144,0.913907284768212,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,18,PM,extra loss,0.6728971962616822,0.5376310483870966,0.7802197802197802,200
+f2,qwen3.5-9b,qwen35_9b_x0_necessity,20,PM,extra loss,0.5818181818181818,0.40625,0.7547169811320754,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,16,PP,extra loss,0.9265536723163842,0.8888888888888888,0.9644980905619204,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,18,PP,extra loss,0.8202247191011235,0.7581395348837209,0.8765432098765432,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,20,PP,extra loss,0.2767295597484276,0.2058741830065359,0.34751773049645385,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,22,PP,extra loss,0.32258064516129037,0.2532467532467533,0.3951659789947487,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,24,PP,extra loss,0.10204081632653073,0.052631578947368474,0.15168636187524207,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,26,PP,extra loss,0.3857142857142858,0.31538288288288274,0.45341614906832284,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,28,PP,extra loss,0.11764705882352944,0.06034482758620685,0.1785714285714285,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,30,PP,extra loss,0.09734513274336276,0.04807499999999983,0.14814814814814814,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,32,PP,extra loss,0.13953488372093015,0.07608695652173902,0.20481927710843362,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,34,PP,extra loss,0.17105263157894735,0.07042253521126762,0.2727272727272727,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,36,PP,extra loss,0.21052631578947367,0.09677419354838712,0.3421240601503757,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,38,PP,extra loss,0.1515151515151515,0.03703703703703709,0.30434782608695654,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,40,PP,extra loss,0.06249999999999989,-0.13636363636363635,0.36363636363636354,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,16,PM,extra loss,0.9030612244897959,0.8388888888888889,0.9556658040780696,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,18,PM,extra loss,0.8666666666666667,0.8039184661206253,0.9211623367332337,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,20,PM,extra loss,0.360215053763441,0.26950170874214524,0.4578359238480641,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,22,PM,extra loss,0.4402173913043478,0.34462622067572113,0.5327102803738317,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,24,PM,extra loss,0.17391304347826086,0.10059088955737007,0.25,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,26,PM,extra loss,0.6201117318435754,0.5373114480787551,0.6946107784431138,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,28,PM,extra loss,0.5714285714285714,0.4615384615384617,0.6592932509967908,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,30,PM,extra loss,0.6054054054054054,0.5187958176691728,0.676470588235294,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,32,PM,extra loss,0.74,0.6646706586826348,0.8021420586724674,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,34,PM,extra loss,0.7333333333333334,0.6086865942028986,0.8345864661654134,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,36,PM,extra loss,0.7741935483870969,0.6530541383219954,0.896551724137931,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,38,PM,extra loss,0.7419354838709679,0.5975570161545772,0.9047619047619048,200
+f2,qwen3.6-27b,x0_necessity_27b_chat,40,PM,extra loss,0.40000000000000013,0.24242424242424243,0.6000000000000002,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,24,PP,extra loss,0.42168674698795183,0.32351809954751126,0.5027041959086158,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,27,PP,extra loss,0.5620915032679737,0.4672878045043664,0.6405254289215685,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,30,PP,extra loss,0.25984251968503935,0.1788545296167247,0.3307692307692308,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,extra loss,0.0,-0.061855670103092786,0.06382978723404253,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,36,PP,extra loss,-0.016949152542372947,-0.09615384615384603,0.05769230769230782,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,24,PM,extra loss,0.4739583333333335,0.36892859602010597,0.5645988392698917,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,27,PM,extra loss,0.745945945945946,0.6493482264004652,0.8205128205128205,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,30,PM,extra loss,0.4540540540540541,0.35761589403973515,0.5513313123008939,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,extra loss,0.3152173913043478,0.2191673801369863,0.41011596081820795,200
+f2,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,36,PM,extra loss,0.3701298701298702,0.27819247316151346,0.46153846153846156,200
+f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=25",-0.01941747572815533,-0.07207207207207211,0.04395604395604402,200
+f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=50",-0.029126213592232886,-0.10476190476190472,0.04210526315789476,200
+f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=100",-0.07766990291262132,-0.15384615384615385,-0.009259259259259297,200
+f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=200",-0.1747572815533981,-0.24742268041237103,-0.11428571428571432,200
+f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PM,"extra loss, J++ k=25",0.4974619289340101,0.4108083976833977,0.5714285714285713,200
+f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PM,"extra loss, J++ k=50",0.6192893401015228,0.5000000000000001,0.7058823529411764,200
+f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PM,"extra loss, J++ k=100",0.46700507614213194,0.35099047287091906,0.5515733725065718,200
+f3,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PM,"extra loss, J++ k=200",0.18274111675126903,0.10769058295964132,0.25907215505661096,200
+f3,qwen3.6-27b,x0_kmatch_27b,32,PP,"extra loss, J++ k=25",0.11627906976744184,0.05633802816901401,0.18181818181818188,200
+f3,qwen3.6-27b,x0_kmatch_27b,32,PP,"extra loss, J++ k=50",0.30232558139534893,0.2222222222222222,0.3797468354430379,200
+f3,qwen3.6-27b,x0_kmatch_27b,32,PP,"extra loss, J++ k=100",0.6046511627906976,0.48571428571428577,0.7127659574468085,200
+f3,qwen3.6-27b,x0_kmatch_27b,32,PP,"extra loss, J++ k=200",0.5813953488372093,0.4831363812475784,0.6829268292682926,200
+f3,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=25",0.7651006711409396,0.6879985815602836,0.8275862068965516,200
+f3,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=50",0.7986577181208054,0.7203375014815693,0.8666666666666666,200
+f3,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=100",0.6711409395973155,0.6013986013986015,0.745225897060569,200
+f3,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=200",0.4966442953020135,0.41290041260315063,0.5878477742448329,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=25",0.0,-0.061855670103092786,0.06382978723404253,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=50",-0.022471910112359605,-0.09090909090909094,0.045467607105538016,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=100",-0.12359550561797739,-0.2207860560492141,-0.042553191489361764,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=25",0.3152173913043478,0.2191673801369863,0.41011596081820795,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=50",0.45108695652173914,0.34848240469208214,0.5380957719410635,200
+f3,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=100",0.42934782608695654,0.3178294573643411,0.508695652173913,200
+f4,qwen3.5-9b,qwen35_9b_x0_necessity,12,PP,"share flipped by the whole edit, locker before pick",86.0,77.86263961619277,91.4737342455351,100
+f4,qwen3.5-9b,qwen35_9b_x0_necessity,12,PP,"share flipped by the whole edit, locker after pick",19.0,12.514653992704261,27.779024070807857,100
+f4,qwen3.6-27b,x0_necessity_27b_chat,32,PP,"share flipped by the whole edit, locker before pick",76.23762376237624,67.07230292337555,83.48014953824273,101
+f4,qwen3.6-27b,x0_necessity_27b_chat,32,PP,"share flipped by the whole edit, locker after pick",9.090909090909092,4.856521249187528,16.381576952318476,99
+f4,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"share flipped by the whole edit, locker before pick",89.41176470588236,81.0862973602443,94.32882348404489,85
+f4,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"share flipped by the whole edit, locker after pick",11.304347826086957,6.72634370361053,18.384055348573217,115
+f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=25",-0.01941747572815533,-0.07207207207207211,0.04395604395604402,200
+f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=50",-0.029126213592232886,-0.10476190476190472,0.04210526315789476,200
+f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=100",-0.07766990291262132,-0.15384615384615385,-0.009259259259259297,200
+f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PP,"extra loss, J++ k=200",-0.1747572815533981,-0.24742268041237103,-0.11428571428571432,200
+f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PM,"extra loss, J++ k=25",0.4974619289340101,0.4108083976833977,0.5714285714285713,200
+f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PM,"extra loss, J++ k=50",0.6192893401015228,0.5000000000000001,0.7058823529411764,200
+f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PM,"extra loss, J++ k=100",0.46700507614213194,0.35099047287091906,0.5515733725065718,200
+f5,qwen3.5-9b,qwen35_9b_x0_kmatch,12,PM,"extra loss, J++ k=200",0.18274111675126903,0.10769058295964132,0.25907215505661096,200
+f5,qwen3.6-27b,x0_kmatch_27b,32,PP,"extra loss, J++ k=25",0.11627906976744184,0.05633802816901401,0.18181818181818188,200
+f5,qwen3.6-27b,x0_kmatch_27b,32,PP,"extra loss, J++ k=50",0.30232558139534893,0.2222222222222222,0.3797468354430379,200
+f5,qwen3.6-27b,x0_kmatch_27b,32,PP,"extra loss, J++ k=100",0.6046511627906976,0.48571428571428577,0.7127659574468085,200
+f5,qwen3.6-27b,x0_kmatch_27b,32,PP,"extra loss, J++ k=200",0.5813953488372093,0.4831363812475784,0.6829268292682926,200
+f5,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=25",0.7651006711409396,0.6879985815602836,0.8275862068965516,200
+f5,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=50",0.7986577181208054,0.7203375014815693,0.8666666666666666,200
+f5,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=100",0.6711409395973155,0.6013986013986015,0.745225897060569,200
+f5,qwen3.6-27b,x0_kmatch_27b,32,PM,"extra loss, J++ k=200",0.4966442953020135,0.41290041260315063,0.5878477742448329,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=25",0.0,-0.061855670103092786,0.06382978723404253,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=50",-0.022471910112359605,-0.09090909090909094,0.045467607105538016,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, J++ k=100",-0.12359550561797739,-0.2207860560492141,-0.042553191489361764,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=25",0.3152173913043478,0.2191673801369863,0.41011596081820795,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=50",0.45108695652173914,0.34848240469208214,0.5380957719410635,200
+f5,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, J++ k=100",0.42934782608695654,0.3178294573643411,0.508695652173913,200
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jpp k=25, locker before",0.0,-0.043010752688172005,0.04999999999999993,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jpp k=50, locker before",-0.023255813953488413,-0.10170356278104456,0.05555555555555558,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jpp k=100, locker before",-0.09302325581395354,-0.18311296349525732,-0.01041666666666674,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jppall k=25, locker before",-0.023255813953488413,-0.07200180180180187,0.0352941176470587,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jppall k=50, locker before",-0.03488372093023262,-0.11111111111111105,0.03883495145631066,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, jppall k=100, locker before",-0.10465116279069775,-0.18918918918918926,-0.01514037433155095,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PP,"extra loss, digit directions only, locker before",0.0,-0.03157894736842115,0.03260869565217395,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PM,"extra loss, jpp k=25, locker before",0.35,0.2584269662921348,0.4320987654320988,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PM,"extra loss, jpp k=50, locker before",0.53,0.3999999999999999,0.6372549019607843,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PM,"extra loss, jpp k=100, locker before",0.43000000000000005,0.2616742778249788,0.5670103092783505,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PM,"extra loss, jppall k=25, locker before",0.35,0.2584269662921348,0.4320987654320988,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PM,"extra loss, jppall k=50, locker before",0.52,0.4022988505747126,0.616822429906542,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PM,"extra loss, jppall k=100, locker before",0.44999999999999996,0.2989690721649484,0.5808841036414565,100
+f6,qwen3.5-9b,qwen35_9b_x0_digit_r2,12,PM,"extra loss, digit directions only, locker before",0.0,0.0,0.0,100
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PP,"extra loss, jpp k=25, locker before",0.1428571428571429,0.07352941176470595,0.21951219512195108,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PP,"extra loss, jpp k=50, locker before",0.3246753246753247,0.23287671232876717,0.4084507042253521,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PP,"extra loss, jpp k=100, locker before",0.6103896103896104,0.48571428571428577,0.7297297297297297,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PP,"extra loss, jppall k=25, locker before",0.1298701298701299,0.060975609756097504,0.20512820512820507,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PP,"extra loss, jppall k=50, locker before",0.2987012987012987,0.2058823529411764,0.39326303186590533,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PP,"extra loss, jppall k=100, locker before",0.6103896103896104,0.48529411764705865,0.7317073170731708,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PP,"extra loss, digit directions only, locker before",0.0,0.0,0.0,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jpp k=25, locker before",0.6533333333333333,0.5625000000000001,0.7432432432432432,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jpp k=50, locker before",0.8,0.7,0.890909090909091,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jpp k=100, locker before",0.7066666666666667,0.611111111111111,0.7916666666666665,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jppall k=25, locker before",0.6933333333333334,0.6119402985074627,0.7702702702702703,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jppall k=50, locker before",0.7866666666666666,0.6825396825396826,0.8823529411764707,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, jppall k=100, locker before",0.7199999999999999,0.6153846153846154,0.8142857142857142,101
+f6,qwen3.6-27b,x0_digit_27b_r2,32,PM,"extra loss, digit directions only, locker before",0.0,0.0,0.0,101
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jpp k=25, locker before",-0.013157894736842257,-0.08333333333333337,0.05882352941176461,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jpp k=50, locker before",-0.013157894736842146,-0.08045977011494254,0.05882352941176472,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jpp k=100, locker before",-0.10526315789473673,-0.21875,-0.01063549832026876,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jppall k=25, locker before",0.0,-0.08000000000000007,0.08536585365853655,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jppall k=50, locker before",-0.07894736842105254,-0.15625,0.0,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, jppall k=100, locker before",-0.1842105263157895,-0.311708603896104,-0.05555555555555558,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PP,"extra loss, digit directions only, locker before",0.0,0.0,0.0,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jpp k=25, locker before",0.19753086419753085,0.10144468904788113,0.2967075892857143,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jpp k=50, locker before",0.3580246913580247,0.2407407407407407,0.4528301886792452,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jpp k=100, locker before",0.4320987654320989,0.265625,0.5670103092783505,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=25, locker before",0.09876543209876543,0.009898563385750243,0.1898734177215189,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=50, locker before",0.345679012345679,0.20000000000000007,0.4565217391304347,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, jppall k=100, locker before",0.41975308641975306,0.2500000000000001,0.5596330275229358,85
+f6,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,PM,"extra loss, digit directions only, locker before",-0.012345679012345734,-0.045454545454545636,0.0,85
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, answer digit, locker before",0.2704485488126649,0.23641684813179104,0.30677367551616386,758
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, answer digit, locker before",0.1111,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, answer digit, locker after",0.10377358490566038,0.07969863683599243,0.12555066079295155,742
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, answer digit, locker after",0.1347708894878706,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, locker sentence, locker before",0.9683377308707124,0.9563252146517103,0.9795457449279851,758
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, locker sentence, locker before",0.5303430079155673,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, locker sentence, locker after",0.33557951482479786,0.3044057905299309,0.36933366834170855,742
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, locker sentence, locker after",0.3692722371967655,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, bridge identity, locker before",0.9986807387862797,0.9953416149068323,1.0,758
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, bridge identity, locker before",0.06728232189973615,,,
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"probe accuracy, bridge identity, locker after",1.0,1.0,1.0,742
+f7,qwen3.5-9b,qwen35_9b_x0_probe_v4,12,-,"best baseline, bridge identity, locker after",0.06334231805929919,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, answer digit, locker before",0.3997361477572559,0.36042316782157774,0.43950630986147077,758
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, answer digit, locker before",0.1111,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, answer digit, locker after",0.11185983827493262,0.08098134671269965,0.14265555913780398,742
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, answer digit, locker after",0.1347708894878706,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, locker sentence, locker before",0.9894459102902374,0.9817905918057663,0.995907508979035,758
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, locker sentence, locker before",0.5303430079155673,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, locker sentence, locker after",0.33827493261455527,0.3089960886571056,0.36916010086193646,742
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, locker sentence, locker after",0.3692722371967655,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, bridge identity, locker before",0.9986807387862797,0.9953416149068323,1.0,758
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, bridge identity, locker before",0.06728232189973615,,,
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"probe accuracy, bridge identity, locker after",0.9986522911051213,0.9952377161055506,1.0,742
+f7,qwen3.6-27b,x0_probe_v4_27b,32,-,"best baseline, bridge identity, locker after",0.06334231805929919,,,
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,reads the alt's locker sentence: alt (org + Δ),0.547945205479452,0.4444444444444444,0.647887323943662,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.0,0.0,0.0,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.547945205479452,0.44303345388788423,0.6551724137931034,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.0273972602739726,0.0,0.06493506493506493,73
+f8,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.4794520547945205,0.3684210526315789,0.6,73
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,reads the alt's locker sentence: alt (org + Δ),0.5857142857142857,0.45901639344262296,0.7258119752540875,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 25",0.0,0.0,0.0,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 25",0.5142857142857142,0.40277326839826844,0.6463593974175034,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + J++ part, k = 100",0.04285714285714286,0.0,0.09230769230769231,70
+f8,qwen3.6-27b,x0_amnesic_27b,-,-,"reads the alt's locker sentence: org + rest, k = 100",0.5,0.3835405039742939,0.6268656716417911,70
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,alt state points at the new pick's locker sentence: after,1.0,1.0,1.0,15
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,alt state points at the other person's pick sentence: after,0.0,0.0,0.0,15
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the new pick's locker sentence: before, the other pick is the latest earlier mention",0.8571428571428571,0.7037037037037037,0.9666666666666667,28
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the other person's pick sentence: before, the other pick is the latest earlier mention",0.03571428571428571,0.0,0.12,28
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the new pick's locker sentence: before, the alt locker is the latest earlier mention",0.03333333333333333,0.0,0.09375,30
+f9,qwen3.5-9b,qwen35_9b_x0_amnesic,-,-,"alt state points at the other person's pick sentence: before, the alt locker is the latest earlier mention",0.9,0.8,1.0,30
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup lookup switched, the whole edit, first mention: locker",0.9767441860465116,0.9210526315789473,1.0,43
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup lookup switched, without the J++ part, first mention: locker",0.9767441860465116,0.9210526315789473,1.0,43
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup lookup switched, the whole edit, first mention: other pick",1.0,1.0,1.0,30
+f9,qwen3.5-9b,qwen35_9b_x0_single_r2,12,PP,"lookup lookup switched, without the J++ part, first mention: other pick",1.0,1.0,1.0,30
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,alt state points at the new pick's locker sentence: after,1.0,1.0,1.0,17
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,alt state points at the other person's pick sentence: after,0.0,0.0,0.0,17
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state points at the new pick's locker sentence: before, the other pick is the latest earlier mention",0.6428571428571429,0.45454545454545453,0.8333333333333334,28
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state points at the other person's pick sentence: before, the other pick is the latest earlier mention",0.14285714285714285,0.034482758620689655,0.2727272727272727,28
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state points at the new pick's locker sentence: before, the alt locker is the latest earlier mention",0.24,0.1,0.4,25
+f9,qwen3.6-27b,x0_amnesic_27b,-,-,"alt state points at the other person's pick sentence: before, the alt locker is the latest earlier mention",0.56,0.375,0.7407407407407407,25
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, the whole edit, first mention: locker",1.0,1.0,1.0,45
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, without the J++ part, first mention: locker",1.0,1.0,1.0,45
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, the whole edit, first mention: other pick",1.0,1.0,1.0,25
+f9,qwen3.6-27b,x0_single_27b_r2,32,PP,"lookup lookup switched, without the J++ part, first mention: other pick",1.0,1.0,1.0,25
+f10,qwen3.5-9b,qwen35_9b_x0_necessity,12,recall-lookup,"C, edit changes
+two picks",0.5260333575054386,0.42372781210953087,0.614298830454014,
+f10,qwen3.5-9b,qwen35_9b_x0_single_r2,12,recall-lookup,"C, edit changes
+one pick",0.3853600711251606,0.3017726686721099,0.4565331126571755,
+f10,qwen3.6-27b,x0_necessity_27b_chat,32,recall-lookup,"C, edit changes
+two picks",0.6004651162790698,0.5025567065985861,0.6918870812495038,
+f10,qwen3.6-27b,x0_single_27b_r2,32,recall-lookup,"C, edit changes
+one pick",0.556957462148522,0.45171762557731554,0.650708709100594,
+f10,qwen3.5-122b-a10b,qwen35_122b_x0_necessity_r2,33,recall-lookup,"C, edit changes
+two picks",0.3152173913043478,0.20015931372549006,0.42544360341800097,
+f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,the word only (4% of the change),0.0,-0.027027027027027084,0.02941176470588225,
+f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,J++ without the word (19% of the change),-0.01904761904761909,-0.0672268907563025,0.025976849237718768,
+f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,"PCA of the layer (top 2,000) (39% of the change)",0.38095238095238093,0.2936489733508082,0.4750061881188119,
+f11,qwen3.5-9b,qwen35_9b_x0_parts,-,lookup,J++ (19% of the change),-0.00952380952380949,-0.03883495145631066,0.0235294117647058,
+f11,qwen3.5-9b,qwen35_9b_x0_parts,-,recall,the word only (4% of the change),0.020942408376963262,-0.004926108374384122,0.05696284514986561,
+f11,qwen3.5-9b,qwen35_9b_x0_parts,-,recall,J++ without the word (19% of the change),0.3717277486910996,0.3016759776536313,0.43478748294014424,
+f11,qwen3.5-9b,qwen35_9b_x0_parts,-,recall,"PCA of the layer (top 2,000) (39% of the change)",0.47120418848167545,0.3836477987421384,0.5458721136373709,
+f11,qwen3.5-9b,qwen35_9b_x0_parts,-,recall,J++ (19% of the change),0.3612565445026179,0.2909090909090909,0.4205128205128206,
+f11,qwen3.6-27b,x0_parts_27b,-,lookup,the word only (3% of the change),0.0,0.0,0.0,
+f11,qwen3.6-27b,x0_parts_27b,-,lookup,J++ without the word (13% of the change),0.05208333333333326,0.012820512820512886,0.09638554216867468,
+f11,qwen3.6-27b,x0_parts_27b,-,lookup,"PCA of the layer (top 2,000) (34% of the change)",0.375,0.2441860465116279,0.4912318511796732,
+f11,qwen3.6-27b,x0_parts_27b,-,lookup,J++ (14% of the change),0.04166666666666652,0.010101010101010166,0.08045977011494254,
+f11,qwen3.6-27b,x0_parts_27b,-,recall,the word only (3% of the change),0.1586206896551724,0.0821917808219178,0.23376885211562623,
+f11,qwen3.6-27b,x0_parts_27b,-,recall,J++ without the word (13% of the change),0.6275862068965516,0.5275590551181103,0.7050359712230214,
+f11,qwen3.6-27b,x0_parts_27b,-,recall,"PCA of the layer (top 2,000) (34% of the change)",0.43448275862068975,0.3163243502529217,0.5290697674418604,
+f11,qwen3.6-27b,x0_parts_27b,-,recall,J++ (14% of the change),0.6344827586206896,0.5307653061224489,0.7196981760277938,
+f12,qwen3.5-9b,qwen35_9b_x0_massmean,-,lookup,"remove A (address, 15%)",0.3055555555555556,0.180327868852459,0.4415659921473874,
+f12,qwen3.5-9b,qwen35_9b_x0_massmean,-,lookup,remove V (value),0.0,0.0,0.0,
+f12,qwen3.5-9b,qwen35_9b_x0_massmean,-,lookup,remove A + V,0.45833333333333326,0.3472222222222221,0.5753528435035283,
+f12,qwen3.5-9b,qwen35_9b_x0_massmean,-,lookup,keep only A + V (minus random),0.4027777777777778,0.2906976744186046,0.5263335704125175,
+f12,qwen3.5-9b,qwen35_9b_x0_massmean,-,recall,"remove A (address, 15%)",0.11111111111111105,0.04054054054054057,0.19480519480519487,
+f12,qwen3.5-9b,qwen35_9b_x0_massmean,-,recall,remove V (value),0.01388888888888895,0.0,0.045454545454545414,
+f12,qwen3.5-9b,qwen35_9b_x0_massmean,-,recall,remove A + V,0.19444444444444442,0.09836065573770492,0.29850746268656714,
+f12,qwen3.5-9b,qwen35_9b_x0_massmean,-,recall,keep only A + V (minus random),0.1111111111111111,0.044117647058823525,0.189873417721519,
+f12,qwen3.6-27b,x0_massmean_27b,-,lookup,"remove A (address, 16%)",0.042857142857142816,0.0,0.08571428571428574,
+f12,qwen3.6-27b,x0_massmean_27b,-,lookup,remove V (value),-0.014285714285714235,-0.046875,0.0,
+f12,qwen3.6-27b,x0_massmean_27b,-,lookup,remove A + V,0.1428571428571429,0.05714285714285716,0.23882173638847992,
+f12,qwen3.6-27b,x0_massmean_27b,-,lookup,keep only A + V (minus random),0.04285714285714286,0.0,0.09722222222222224,
+f12,qwen3.6-27b,x0_massmean_27b,-,recall,"remove A (address, 16%)",0.10204081632653061,0.0,0.1923076923076923,
+f12,qwen3.6-27b,x0_massmean_27b,-,recall,remove V (value),0.0,-0.08108108108108103,0.08064516129032262,
+f12,qwen3.6-27b,x0_massmean_27b,-,recall,remove A + V,0.20408163265306134,0.06382978723404242,0.37037037037037035,
+f12,qwen3.6-27b,x0_massmean_27b,-,recall,keep only A + V (minus random),-0.020408163265306124,-0.06382978723404255,0.0,
+f13,qwen3.5-9b,qwen35_9b_x0b_v2,-,lookup,"pooled (n = 1,010)",0.008805031446540879,-0.005807854239256629,0.02803776873014404,
+f13,qwen3.5-9b,qwen35_9b_x0b_v2,-,lookup,"prose, locker before (n = 345)",-0.0032573289902279035,-0.020710059171597628,0.01777777777777778,
+f13,qwen3.5-9b,qwen35_9b_x0b_v2,-,lookup,"json, locker before (n = 86)",0.0,-0.05128205128205143,0.05882352941176472,
+f13,qwen3.5-9b,qwen35_9b_x0b_v2,-,lookup,"table, locker before (n = 330)",0.0031347962382444194,-0.017964610347650053,0.020594965675057256,
+f13,qwen3.5-9b,qwen35_9b_x0b_v2,-,recall,"pooled (n = 1,010)",0.2302158273381295,0.14437833246054607,0.3261264744978109,
+f13,qwen3.5-9b,qwen35_9b_x0b_v2,-,recall,"prose, locker before (n = 345)",0.1900584795321637,0.11249999999999993,0.2822299651567943,
+f13,qwen3.5-9b,qwen35_9b_x0b_v2,-,recall,"json, locker before (n = 86)",0.14864864864864868,0.07352941176470584,0.21212121212121204,
+f13,qwen3.5-9b,qwen35_9b_x0b_v2,-,recall,"table, locker before (n = 330)",0.11949685534591192,0.0577574801066022,0.20257339806233315,
+f13,qwen3.6-27b,x0b_v2_27b,-,lookup,"pooled (n = 1,635)",0.083102493074792,0.0630855279832261,0.10440167252936892,
+f13,qwen3.6-27b,x0b_v2_27b,-,lookup,"prose, locker before (n = 548)",0.10930232558139519,0.07234986457457726,0.14795975565113936,
+f13,qwen3.6-27b,x0b_v2_27b,-,lookup,"json, locker before (n = 181)",0.030303030303030165,0.0,0.0573248407643312,
+f13,qwen3.6-27b,x0b_v2_27b,-,lookup,"table, locker before (n = 498)",0.05781584582441113,0.03822905586384552,0.07928416913595539,
+f13,qwen3.6-27b,x0b_v2_27b,-,recall,"pooled (n = 1,635)",0.5553555355535553,0.5,0.610909443068581,
+f13,qwen3.6-27b,x0b_v2_27b,-,recall,"prose, locker before (n = 548)",0.5689655172413793,0.49299496394302406,0.6415108547397134,
+f13,qwen3.6-27b,x0b_v2_27b,-,recall,"json, locker before (n = 181)",0.3910256410256411,0.2631578947368419,0.5172413793103448,
+f13,qwen3.6-27b,x0b_v2_27b,-,recall,"table, locker before (n = 498)",0.4316939890710383,0.34756029202668715,0.5280571303098051,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,the layer's main directions (PCA) (19% of the change),0.08490566037735847,0.01869158878504673,0.15116279069767435,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,J++ without the word's directions (16% of the change),0.0,-0.027027027027027084,0.024590163934426146,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,lookup,J++ (19% of the change),-0.018867924528301883,-0.05434782608695654,0.018691588785046623,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,recall,the layer's main directions (PCA) (19% of the change),0.13089005235602091,0.06321560093739526,0.19209582790091256,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,recall,J++ without the word's directions (16% of the change),0.11518324607329844,0.06040268456375841,0.17727272727272736,
+f14,qwen3.5-9b,qwen35_9b_x0_pcaeq,-,recall,J++ (19% of the change),0.3664921465968587,0.2947976878612717,0.4269022274788093,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,the layer's main directions (PCA) (14% of the change),0.02083333333333326,0.0,0.045454545454545414,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,J++ without the word's directions (11% of the change),0.03125,0.0,0.07317632579995534,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,lookup,J++ (14% of the change),0.05208333333333326,0.012816455696202496,0.09195780399274041,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,the layer's main directions (PCA) (14% of the change),0.15753424657534243,0.07975348981950751,0.2267441860465116,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,J++ without the word's directions (11% of the change),0.1986301369863014,0.09836065573770492,0.29487179487179493,
+f14,qwen3.6-27b,x0_pcaeq_27b,-,recall,J++ (14% of the change),0.6095890410958904,0.5114460770246227,0.6932535787321064,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,lookup,J++ part (19% of the change; n = 200),-0.018867924528301883,-0.05434782608695654,0.018691588785046623,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,lookup,pointer directions (18%; n = 73),0.48611111111111105,0.38235294117647056,0.59375,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,lookup,the layer's main directions (19%; n = 200),0.08490566037735847,0.01869158878504673,0.15116279069767435,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,recall,J++ part (19% of the change; n = 200),0.3664921465968587,0.2947976878612717,0.4269022274788093,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,recall,pointer directions (18%; n = 73),0.12499999999999989,0.05405405405405406,0.2058823529411764,
+f15,qwen3.5-9b,qwen35_9b_x0_pcaeq + qwen35_9b_x0_massmean_lf,-,recall,the layer's main directions (19%; n = 200),0.13089005235602091,0.06321560093739526,0.19209582790091256,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,lookup,J++ part (14% of the change; n = 200),0.05208333333333326,0.012816455696202496,0.09195780399274041,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,lookup,pointer directions (15%; n = 70),0.1428571428571429,0.06779661016949157,0.22222222222222232,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,lookup,the layer's main directions (14%; n = 200),0.02083333333333326,0.0,0.045454545454545414,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,recall,J++ part (14% of the change; n = 200),0.6095890410958904,0.5114460770246227,0.6932535787321064,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,recall,pointer directions (15%; n = 70),0.16326530612244905,0.02127659574468077,0.30612244897959184,
+f15,qwen3.6-27b,x0_pcaeq_27b + x0_massmean_lf_27b,-,recall,the layer's main directions (14%; n = 200),0.15753424657534243,0.07975348981950751,0.2267441860465116,
+f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"animals, verbatim (n = 400)",-0.007499999999999951,-0.01382488479262678,-0.0024937655860348684,
+f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"animals, translated (n = 377)",-0.029569892473118253,-0.05602240896358546,-0.01055408970976257,
+f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"elements, verbatim (n = 398)",-0.020253164556962022,-0.03201970443349755,-0.007692307692307554,
+f16,qwen3.5-9b,qwen35_9b_x4_patch,-,lookup,"elements, chemical symbol (n = 341)",-0.06784660766961659,-0.09241689069569209,-0.04799999999999993,
+f16,qwen3.5-9b,qwen35_9b_x4_patch,-,D,animals,-0.022069892473118302,-0.05134569377990428,-0.0006771214214132959,
+f16,qwen3.5-9b,qwen35_9b_x4_patch,-,D,elements,-0.047593443112654565,-0.07956097790757921,-0.022762235382206675,
+f16,qwen3.6-27b,x4_patch_27b,-,lookup,"animals, verbatim (n = 395)",0.005813953488371881,-0.01194029850746281,0.02586206896551735,
+f16,qwen3.6-27b,x4_patch_27b,-,lookup,"animals, translated (n = 394)",0.016042780748663166,0.0,0.03305785123966942,
+f16,qwen3.6-27b,x4_patch_27b,-,lookup,"elements, verbatim (n = 400)",0.0027173913043478937,-0.008522727272727293,0.013812154696132728,
+f16,qwen3.6-27b,x4_patch_27b,-,lookup,"elements, chemical symbol (n = 374)",0.14920634920634923,0.11038961038961037,0.19269102990033227,
+f16,qwen3.6-27b,x4_patch_27b,-,D,animals,0.010228827260291284,-0.012308760753133712,0.0363258640771946,
+f16,qwen3.6-27b,x4_patch_27b,-,D,elements,0.14648895790200134,0.10404267953511101,0.19269102990033216,
+f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,lookup,the word only (5% of the change),0.006281407035175879,-0.0030737704918033515,0.01931649331352148,
+f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,lookup,J++ without the word (20% of the change),0.01633165829145733,0.003840983904121434,0.03146944945369691,
+f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,lookup,J++ (20% of the change),0.011306532663316604,-0.0030441400304414,0.02898600768676425,
+f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,recall,the word only (5% of the change),0.05138746145940387,0.025660949558378936,0.08903336717298439,
+f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,recall,J++ without the word (20% of the change),0.24152106885919833,0.15976920649492232,0.3351361707539087,
+f17,qwen3.5-9b,qwen35_9b_x0b_parts,-,recall,J++ (20% of the change),0.23432682425488183,0.1475753227367764,0.3312604356496101,
+f17,qwen3.6-27b,x0b_parts_27b,-,lookup,the word only (4% of the change),0.007393715341959317,0.0,0.016393891021272023,
+f17,qwen3.6-27b,x0b_parts_27b,-,lookup,J++ without the word (14% of the change),0.08225508317929775,0.06411255438692119,0.1002008374046568,
+f17,qwen3.6-27b,x0b_parts_27b,-,lookup,J++ (14% of the change),0.08225508317929742,0.06354166666666672,0.10184287099903011,
+f17,qwen3.6-27b,x0b_parts_27b,-,recall,the word only (4% of the change),0.11562782294489615,0.0811313655581499,0.15232476693028263,
+f17,qwen3.6-27b,x0b_parts_27b,-,recall,J++ without the word (14% of the change),0.5474254742547424,0.4916964653074977,0.6037981600608703,
+f17,qwen3.6-27b,x0b_parts_27b,-,recall,J++ (14% of the change),0.5591689250225835,0.501750265690721,0.6155532428625867,

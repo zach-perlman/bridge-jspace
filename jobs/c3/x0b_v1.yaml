@@ -1,0 +1,31 @@
+id: x0b_v1
+title: "X0b (exploratory): X0's lookup / recall contrast on 7 domains x 3 formats x 3 levels, single-change alt (27B on GPU0 and 9B on GPU1, in parallel)"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 3.0
+depends_on: [qwen35_122b_x0_hw_gate_r2]
+command: >-
+  uv run python -c "import torch" &&
+  { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x0b_generalize.py run --name x0b_27b --set x0b_v1 --why "X0b on the 27B (jobs/c3/X0b.md; Dan 24 Oct evening)" & p27=$!;
+  CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x0b_generalize.py run --name qwen35_9b_x0b --set x0b_v1 --why "X0b on the 9B (jobs/c3/X0b.md; Dan 24 Oct evening)" & p9=$!;
+  wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+figures_command: >-
+  uv run python scripts/x0b_generalize.py figures --name x0b_27b && BJ_TARGET=qwen3.5-9b uv run python scripts/x0b_generalize.py figures --name qwen35_9b_x0b
+question: >-
+  On x0b_v1 (7 domains, prose / json / table, levels 0-2, single-change alt built by the harness), at the bridge's word, chat: is the lookup's extra loss without the J++ part (k = 25, vs a random part of its share) at most 0.10 while the recall's J-dependence is at least 0.30, at the 27B's L32 and the 9B's L12, pooled over the cells that pass the gate; and how does it vary by format, level, domain, locker order and number style?
+why_it_matters: >-
+  X0 used one simple scene type (3 domains, prose, level 0). X0b asks whether the contrast, and the 27B's lookup result, hold beyond it.
+hypotheses:
+  H-general: 'pooled lookup excess <= 0.10 and recall Jdep >= 0.30 at the predicted layer. Prior: Dan''s, predictions batch 27'
+  H-moderate: 'pooled lookup excess >= 0.20 on the 27B (the moderate dependence generalizes). Prior: Dan''s, batch 27'
+decision_rule: >-
+  jobs/c3/X0b.md section 2: X0's rule at L32 (27B) and L12 (9B), pooled over eligible items of cells passing the per-cell gate (>= 0.80 unedited org accuracy, both readers), exploratory; labels as X0; strata descriptive. Lookup excess <= 0.10: the 27B's X0 lookup result depends on scene features (or the two-change alt); >= 0.20: the moderate dependence generalizes. Results are not opened or summarized before Dan's batch-27 commit.
+controls:
+- 'the random part at J++''s own share, per item'
+- 'both readers on the identical patch'
+- 'the valid-cell bar (S_whole >= 0.30 and >= 30 switched)'
+- 'the per-cell competence gate'
+n: 'x0b_v1: 2,258 aligned scenes (of 4,410), at most 40 eligible per passing cell; 61 bridge entities'
+seeds: [2410, 0]
+notes: "One 2-GPU job, two processes (27B on GPU0, 9B on GPU1; BJ_DEVICE_MAP empty: each model whole on its GPU), so the box's 2-GPU worker uses both GPUs. Limits (X0b.md section 4): JSON covers animals, Greek and shapes only; 61 entities, not 100. Cost basis: x0_single_27b_r2 (competence 1.3 scenes/s; ~1.7 min per 200 items per layer with 10 arms): 27B ~1.2 h, 9B ~0.5 h."

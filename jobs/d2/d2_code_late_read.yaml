@@ -1,0 +1,57 @@
+id: d2_code_late_read
+title: 'D2 batch 2: in Python code (dict lookups, list positions, variable chains), do the last tokens still read the answer''s dict entry late, through attention?'
+thread: D2
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.65
+depends_on:
+- code_competence_27b
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_code_late_read
+  --why "D2 batch 2 (b): the late attention read of the answer's dict entry in code_pointer_v1 programs (named key, list
+  position, 2- and 3-variable chains, recalled key; recalled fact as the null)"
+  --dataset code_pointer_v1 --families DK IX CH2 CH3 RK RR --domains animals months --n 60
+  --layers all kind bands --sweep path+random --sweep-dests final both --absent
+  && uv run python scripts/attn_knockout.py run --name d2_code_late_read
+  && uv run python scripts/attn_knockout.py summarise --name d2_code_late_read
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_code_late_read --k 3
+figures_command: uv run python scripts/attn_knockout.py figures --name d2_code_late_read
+question: 'In code_pointer_v1''s programs (lockers = {"cow": 5, ...} then a print whose key is named, read from a list
+  position, passed through a 2- or 3-variable chain, or recalled from a cue), when the last tokens before the answer
+  cannot read the dict entry giving the answer, is answer org lost; is the read in layers 48-63 and through attention;
+  and does the recalled-fact family (memory → memory) stay untouched?'
+why_it_matters: 'Tests whether the late attention read found on prose locker scenes is how this model does lookups in
+  general or a property of the "The cow''s locker is 5." wording. In code the pointer is literal (a list index, a
+  variable naming a variable): if the entry is still read late by the last tokens, the "around the J-space" lookup is a
+  generic late fetch; if the chains move it earlier (or into the print line), the depth of the read depends on how the
+  key is found.'
+hypotheses:
+  H_late_read: 'every lookup family (named key, list position, 2-variable chain, 3-variable chain, recalled key): the
+    entry hidden from the last tokens in all 64 layers <= 40% (NEEDED); only in layers 48-63 <= 60% (NEEDED or PARTIAL);
+    only in 0-31 or only in 32-47 >= 90%; in every attention layer <= 40%; in every DeltaNet layer >= 90%. Prior 0.45
+    (the print line may read the entry itself)'
+  H_question_free: 'every lookup family keeps >= 90% with the entry hidden from the question words only (here the
+    question words include the print line, e.g. print(lockers[names[0]])). Prior 0.45'
+  H_chain_earlier: 'the 3-variable chain needs the entry in layers 32-47 already (middle band NEEDED). Prior 0.3'
+  H_null: 'memory → memory (code): every cell >= 95%. Prior 0.85'
+  positive_control: 'every lookup family with the entry hidden from everything after it and removed from the DeltaNet
+    recurrence: <= 30% (5 entries)'
+decision_rule: 'As d2_pointer_late_read (NEEDED / NOT NEEDED / PARTIAL per cell against a same-kind off-path entry;
+  "late attention read" per family by the same five conditions). Items: code_pointer_v1 main, domains animals and
+  months; a (domain, family) cell enters iff its clean Wilson lower bound >= 0.85 in code_competence_27b; scenes with
+  every competence prompt right in all entered families of the domain; first 60 per domain by scene id; unedited read
+  right. A family whose positive control is not NEEDED is not interpreted.'
+controls:
+- 'another dict entry of the same token length off the answer''s path (seeded per scene)'
+- 'a random span of the same length inside the dict line (never the answer''s entry; never the list or chain lines,
+  which are on the path)'
+- 'the up to 3 tokens right after the entry (the DeltaNet conv''s reach)'
+- 'memory → memory (code) on the same programs: the answer is recalled'
+- 'positive control and pre-run check as d2_pointer_late_read'
+n: 'up to 60 programs per (domain, family) after the gate, 120 per family pooled over the two domains (>= 35 per cut
+  if at least 35 scenes per domain are eligible; cells below 35 can not reach NOT NEEDED and are read by accuracy)'
+seeds:
+- 0
+notes: 'Rows: <= 64,800 knocked reads (720 items x 90 conditions, if every family passes the gate). Rate from the
+  first night (33-37 rows/s at ~80 tokens) scaled to code_pointer_v1''s 88-token prompts: ~31 rows/s -> ~35 min + load
+  and check ~4 min. 0.8B smoke (qwen35_08b_smoke_d2_code_pointer_v1): every stage ran, check.json gates exact (0.0).'

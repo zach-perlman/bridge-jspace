@@ -1,0 +1,28 @@
+id: x0_digit_27b
+title: "X0 digit check A (after data), Qwen3.6-27B L32: is the lookup's 'around' the digit that a letter-only J++ cannot remove?"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on: [x0_hw_gate_27b]
+command: >-
+  uv run python scripts/x0_necessity.py run --name x0_digit_27b --set d1_topics_v3 --renderings chat --layers 32 --dicts jpp jppall jppdig --curve-dicts jpp jppall --curve-k 50 100 --readout --why "X0 digit check A (Dan, 24 Oct ~17:00; after data): J++ over the full vocabulary (digits included) at k = 25 / 50 / 100; the digit tokens' J++ directions alone; the J++ readout of the answer digits; split by locker-before / locker-after"
+  && uv run python scripts/x0_strata.py --name x0_digit_27b --layer 32 --all-dicts
+figures_command: uv run python scripts/x0_necessity.py figures --name x0_digit_27b
+question: >-
+  Lookups switch mostly when the locker sentence precedes the pick (27B 76% vs 9%). X0's J++ dictionary is letter-bearing tokens only, so digit tokens are excluded. Hypothesis (Dan): at the bridge's word the lookup reads the answer digit, already bound from the earlier locker sentence, and no letter-only dictionary can remove it. At the 27B's L32, on the X0 items, split by locker-before / locker-after: (a) J++ over the full vocabulary, digits included, at k = 25 / 50 / 100; (b) the J++ directions of the 10 digit tokens alone; (c) the J++ readout's rank of the org and alt answer digits at the bridge's word, org and alt runs.
+why_it_matters: >-
+  If the lookup's "around" is a digit the letter dictionary excludes, X0's lookup result is a dictionary artefact and X1 must be re-scoped before its spec.
+hypotheses:
+  H-digit: 'with digits (a) or the digit directions alone (b), the lookup is "through" in locker-before items. Prior: Dan''s, predictions/2026-10-24_dan.md batch 26'
+  H-not-digit: 'neither (a) nor (b) makes the locker-before lookup "through" beyond what letter-only J++ at the same k does. Prior: Dan''s, batch 26'
+decision_rule: >-
+  Pre-stated reading (Dan, 24 Oct, before the run): if (a) or (b) makes the lookup "through" in locker-before items, the X0 "around" was the excluded digit. "Through" is X0's label (Jdep >= 0.30, excess >= 0.20 with lower bound >= 0.10). Reported beside it, as the reference on the same items: letter-only J++ at the same k (at k = 50 it is already "through" in locker-before items on the k-match run, excess 0.31), so the digits' own contribution is read as excess(jppall) - excess(jpp) at the same k, and (b) alone. Per stratum (locker-before / locker-after) and both readers; strata with < 30 switched are "can't tell". (c) is descriptive: mean rank and share ranked first among the 10 digits, chance 0.10. Descriptive, after data; not part of X0's rule. Not opened before Dan's batch-26 answers are committed.
+controls:
+- 'a random subspace of each part''s own share (no_rand_D), per dictionary and k'
+- 'letter-only J++ at the same k on the same items'
+- 'both readers on the identical patch'
+- 'the valid-cell bar per stratum (S_whole >= 0.30 and >= 30 switched)'
+n: '200 eligible scenes of d1_topics_v3 (the X0 items, recomputed), 2 readers; strata: locker-before ~101, locker-after ~99'
+seeds: [24, 0]
+notes: "jppall = J++ vectors of every non-special token (~248k atoms, ~5 GB on the GPU); jppdig = the 10 digit tokens' J++ vectors, all removed (OMP with k = 10 = the projection, checked to 5e-7). Readout: lens.vectors(L, digits, unit=False) @ h at the bridge's word. Cost: competence ~8 min + 7 dictionary-k pairs x 2 arms x 400 reads: ~0.3 h."

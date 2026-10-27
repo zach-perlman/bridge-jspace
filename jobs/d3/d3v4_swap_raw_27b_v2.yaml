@@ -1,0 +1,65 @@
+id: d3v4_swap_raw_27b_v2
+title: "D3 v4 without the chat template: is the statement-slot answer still there in plain text?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.8
+depends_on:
+- d3v4_competence_raw_27b_v2
+command: >-
+  BJ_FORMAT=raw uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name d3v4_swap_raw_27b_v2
+  --families RL DL --n 150 --layers 16 24 32 40 44 46 48 50 52 56 --groups final last
+  --competence d3v4_competence_raw_27b_v2
+  --why "G1: d3v4_swap_main's patch (word / slot / answer) with the prompts as plain text ending in Answer: (no chat
+  template), memory -> prompt and named -> prompt, entity-cluster intervals, the same cells"
+  && BJ_FORMAT=raw uv run python scripts/pointer_swap.py run --name d3v4_swap_raw_27b_v2
+examples_command: BJ_FORMAT=raw uv run python scripts/pointer_swap.py examples --name d3v4_swap_raw_27b_v2
+figures_command: BJ_FORMAT=raw uv run python scripts/pointer_swap.py figures --name d3v4_swap_raw_27b_v2
+question: >-
+  With the prompts as plain text (no chat template: the statements, the question and the instruction, a newline and
+  "Answer:"), when the alt prompt's hidden states at the last two tokens (":" and the read's space) are patched into
+  the org prompt at layers 48-52, does the org prompt still answer the digit at the same statement slot more often
+  than the digit of bridge alt's statement, as it does in chat format (layer 50: 50% vs 21%, d3v4_swap_main,
+  UNVERIFIED)?
+why_it_matters: >-
+  G1 threat: every D2/D3 result reads the statement at the tokens after the question, which in chat format are mostly
+  the chat template's tokens. If the slot answer needs those tokens, the pointer is a property of the template's
+  positions (where an instruction-tuned model stages its answer), not of reading a statement list; if it survives in
+  plain text, the claim is about the lookup itself. Either way the README's pointer line names the format it holds in.
+hypotheses:
+  H-format-free: 'raw, memory -> prompt, last two tokens, pooled: rule verdict "same statement slot" at layer 50 (or 48
+    or 52); slot 30-55%, word <= 25%; per topic slot > word by point estimate in all three'
+  H-template: 'raw, memory -> prompt, last two tokens, at every one of layers 48, 50 and 52: slot below 15% or within 10
+    points of the word (point estimates)'
+  prior: 'Agent prior: H-format-free 0.6, H-template 0.4 (coordinator''s priors; the last two tokens, ":" and the space,
+    exist in both formats, but in chat they follow the template, in raw the question directly).'
+decision_rule: >-
+  As d3v4_swap_raw_27b (fixed before either raw patching run; this is its rerun after the gate's judge was amended).
+  Per cell, pooled over topics: interpretable iff the patch changes the answer (lower bound >= 0.20) and the
+  same-entity control changes it rarely (upper bound <= 0.10); verdict = the outcome among {bridge alt's statement,
+  same statement slot, the alt prompt's own answer} whose lower bound exceeds the others' upper bounds, the random
+  push's upper bound and the per-digit context rate; else "mixed". Bounds: entity-cluster bootstrap 95% (asked entity
+  within topic, 2000, seed 0) widened to Wilson where wider. Primary: memory -> prompt, last two tokens, layers 48, 50,
+  52 (each reported; H-format-free iff the verdict is "same statement slot" at at least one of them; H-template iff at
+  all three the slot share is < 15% or within 10 points of the word; otherwise unclear). Secondary, reported not
+  decisive: after the question (window 44-52 and layer 48), per topic, per slot class, named -> prompt, and raw minus
+  chat per cell against d3v4_swap_main (different eligible samples: unpaired entity-cluster bootstrap of the
+  difference). A topic with fewer than 35 eligible scenes is dropped and named; if the gate fails for memory -> prompt,
+  G1 is not decidable from this run.
+controls:
+- 'same entity, statements reshuffled (every hypothesis predicts answer org): damage bar'
+- 'random push of the same size per token (layers 16, 32, 44, 48, 52): chance bar'
+- 'a prompt of another topic, same size: realistic-activation null'
+- 'context digits no hypothesis predicts: per-digit chance'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks; run invalid below 100%)'
+- 'the chat-format run d3v4_swap_main: the same cells, layers and controls'
+n: >-
+  up to 150 scenes per topic eligible in memory -> prompt and named -> prompt in raw format (seed 0) x 3 topics x 2
+  families = up to 900 cases; per pooled cell up to 450 items over ~85 entities and 27 wordings
+seeds: [0]
+notes: >-
+  Changed from d3v4_swap_raw_27b (which patched nothing: its gate judged 0 scenes right): the gate is
+  d3v4_competence_raw_27b_v2 (read-based judge) and memory -> memory is left out, so eligibility depends only on the
+  families the G1 test reads (memory -> memory is the contrast; the failed gate's reads put its recalled digit on top in
+  only part of the scenes in raw format, which would empty the sample). Reads per case 75; up to 900 cases ~ 67k reads
+  at 31-37/s ~ 35 min + forwards and load ~ 0.8 h. Same cells, layers and controls as d3v4_swap_main otherwise.

@@ -1,0 +1,23 @@
+id: x45i_routes_27b
+title: "Batch 45i, routes C2 on the 27B L32 without the chat template (X0's no-template prompt, thinking off, X0's digit read): does the lookup still never take the value?"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.8
+depends_on: [x45_0_indep_9b]
+command: >-
+  BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_x45i_nochat_27b --conditions C2 --rendering nochat --sealed
+question: >-
+  Without the chat template, when another item moved (C2), does the lookup still follow identity or position and never the moved item's new value?
+why_it_matters: >-
+  "Never the value" was measured on chat prompts only; the template could shape the read (batch45.yaml, 45i).
+hypotheses:
+  H-batch45: 'Q45.8 (45i) in docs/predictions_batch45.md, committed by Dan before any result is opened (this job: the routes half; the split is the main test''s job)'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45i, and the coordinator's terms for the routes half): "never the value" holds if the value share stays at 0; the identity and position shares reported beside it. As computed (x6_routes.never_value): the lookup's share of value answers under the whole change in C2 is 0 (no scene's top digit is S's new value); the value share under every arm reported (descriptive). The prompt is X0's nochat rendering (no chat template, the template's empty think block before 'Answer:'), read by X0's digit rule (amendment 3: the first digit token among 8 greedy tokens). Gate: X0's 0.80 per reader (O's read accuracy); a missed gate stops the run with gate.json written; no lowered rerun (a missed gate means "not tested (gate)"). Cluster bootstrap over bridge items, 10,000 resamples, seed 0.
+controls:
+- 'the routes arms as in the chat runs: without J++ and without the pointer directions, each against a random part of its share'
+- 'the recall on the identical patch'
+n: "up to 300 eligible C2 scenes"
+seeds: [2510, 888, 0]
+notes: "Sealed (--sealed): no verdict runs after the job. After Dan's commit of Q45.8, by hand: uv run python scripts/x6_routes.py verdict --name x6_routes_x45i_nochat_27b; uv run python scripts/x6_routes.py examples --name x6_routes_x45i_nochat_27b (CPU). Risk (batch45.yaml): on 24 Oct the no-template main test missed its read gate on the 27B (a markdown first token); the digit read is used here."

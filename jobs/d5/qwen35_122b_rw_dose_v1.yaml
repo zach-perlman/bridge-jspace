@@ -1,0 +1,32 @@
+id: qwen35_122b_rw_dose_v1
+title: "Lens read / write dose on Qwen3.5-122B with its J++: does the lens write recall but not lookups? (finding 1)"
+thread: D5
+gpus: 1
+est_gpu_hours: 0.6
+mem_gb: 135
+depends_on:
+- qwen35_122b_lens_gate_v2
+- qwen35_122b_d1_topics2_map_r2
+- qwen35_122b_competence_chat_v1
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_precheck.py --gate qwen35_122b_lens_gate_v2 --competence qwen35_122b_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_FORMAT=chat uv run python scripts/read_write.py --name qwen35_122b_rw_dose_v1
+  --why "finding 1 (lens read / write dose) on Qwen3.5-122B with its published J++: dose_v1 at the 27B's layers scaled by depth (32 36 40 x 48/64 = 24 27 30)" --from-competence qwen35_122b_competence_chat_v1
+  --n 80 --layers 24 27 30 --scales 0.5 1 2 4 8 16
+question: In Qwen3.5-122B (chat), does its J++ read the bridge at the question tokens (top-10) and can the lens direction v_X - v_I write it (flips to X's answer), for countries (positive control) and for RL vs RR?
+why_it_matters: 'Gate G3 (the lens must read AND write countries, which failed on Gemma) and slide 1''s push half (Qwen3.6-27B: RL read 95% but never written; RR written 30-36%; read_write/dose_v1), on the larger model at the 27B''s depth (Zach''s qwen35_122b_rw_v1, 20 Oct, used layers 36 and 39 and 60 map cases).'
+hypotheses:
+  H_gate: 'countries R/B: lens top-10 read >= 70% and lens flips >= 50% at some scale <= 4x with random <= 10% (27B: 95-98% flips at 2-8x) (copied from qwen3_32b_jpp_rw_dose_v1)'
+  H_rw_split: RL read >= 70% but lens flips <= random + 5 points at every scale; RR flips >= 20 points above random at its best scale (copied from qwen3_32b_jpp_rw_dose_v1)
+  H_rw_none: RL and RR alike (both written or neither) (copied from qwen3_32b_jpp_rw_dose_v1)
+decision_rule: Runs iff the 122B's published J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0; only the gate matters here; the first step). GATE G3 passes iff the countries criterion in H_gate holds at layers 24/27/30 (single layer, best scale). read-not-written for RL holds iff H_rw_split; reported with Wilson CIs, n=80 (copied from qwen3_32b_jpp_rw_dose_v1, at the 27B's layers of dose_v1 scaled by depth x 48/64). Primary lens (Dan, 23 Oct ~00:55); neuronpedia's published J++ for Qwen3.5-122B-A10B; no silent switch.
+controls:
+- random direction at the same norm per scale
+- C's full copy (the upper bound of a write)
+- X's rank in the clean readout (read floor)
+- countries as the positive control
+n: 80 per family (BL, BR, RL, RR; countries R, B)
+seeds:
+- 10000*case+layer (random directions)
+- 0
+notes: "mechanical copy of qwen3_32b_jpp_rw_dose_v1 (itself olmo3_7b_instruct_rw_dose_chat_v1, the 27B's read_write/dose_v1 on a new target) for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (frozen, pinned in src/bridge_jspace/pins.py; fit on bf16 weights, run here on FP8). Only BJ_TARGET, the name, the cases (qwen35_122b_competence_chat_v1, lens-free, this batch) and the layers change (the 27B's 32 36 40 x 48/64 = 24 27 30, exact). read_write.py has no batch knob (one case at a time); Zach's qwen35_122b_rw_v1 / _layers_v1 ran on one H200 on 20 Oct. Depends on qwen35_122b_d1_topics2_map_r2 only for the precheck's competence file. No examples or figures stage: read_write.py has none, as the source. Memory (Dan, 00:55): FP8 weights ~127 GB of a 143 GB H200, so mem_gb 135. Batch 16 for the read-heavy steps (Dan, 23 Oct ~01:20: known to fit on one H200, Oct 20); J-space removal at BJ_ABL_BATCH=8 (Zach's 122B run with the random-dictionary control)."

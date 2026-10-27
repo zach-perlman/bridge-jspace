@@ -57,7 +57,7 @@ echo "=== aligned-band C2 $(date -u +%T)"
 AB=$($PY scripts/choose_steer_band.py qwen3_32b_copy_sweep_full2_v1) || AB=""
 echo "=== aligned band: ${AB:-none}"
 if [ -n "$AB" ]; then
-  BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_aligned_v1 --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" \
+  BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_aligned_v1 --why "$WHY: two-step steering at the aligned band ${AB%% *} (scripts/choose_steer_band.py)" \
     --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band ${AB%% *} --single-step 2 --early 16 20 24 $W2 \
     && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_aligned_v1 | tail -14 \
     && $PY scripts/c2_graded.py qwen3_32b_wm2_full2_aligned_v1 --drop-guessable > /dev/null \
@@ -66,7 +66,7 @@ fi
 echo "=== 27B aligned-band C2 $(date -u +%T)"
 AB27=$(BJ_TARGET=qwen3.6-27b $PY scripts/choose_steer_band.py copy_sweep_full2_v2) || AB27=""
 echo "=== 27B aligned band: ${AB27:-none}"
-[ -n "$AB27" ] && { BJ_TARGET=qwen3.6-27b BJ_BATCH=64 $PY scripts/write_max.py --name wm2_full2_aligned_v1 \
+[ -n "$AB27" ] && { BJ_TARGET=qwen3.6-27b BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name wm2_full2_aligned_v1 \
     --why "Zach (2026-10-22): the 27B's two-step steering at the aligned band ${AB27%% *} (scripts/choose_steer_band.py on copy_sweep_full2_v2)" \
     --n 1000 --writes lens_add lens_swap copy early_lens_add early_embed_add --possets question final --band ${AB27%% *} --single-step 2 --early 16 20 24 \
     --tasks full_v8 --tasks-competence full_v8_competence_v1 --tasks-level all --families PP PM MP MM CP CM \
@@ -95,11 +95,11 @@ fi
 $PY scripts/removal_textloss.py --name qwen3_32b_textloss_top_v1 --why "$WHY: plain-text loss under the knock-out, L32-40" \
   --layers $(seq 32 40) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot || echo "=== text loss FAILED"
 [ -f results/suite_v1/$CS/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 28-40 --single-step 2 --early 16 20 24 --from-competence $CS \
   && $PY scripts/c2_graded.py qwen3_32b_wm2_posctrl_v1 | tail -2 || echo "=== positive control FAILED"
 [ -f results/tasks_v2/$C3/summary.json ] \
-  && BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
+  && BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full3_v1 --why "$WHY: three-step steering" --n 40 $STEER $W3 \
   && $PY scripts/c2_graded.py qwen3_32b_wm2_full3_v1 > /dev/null || echo "=== three-step steering FAILED"
 LC=/workspace/bridge-jspace/results/lens_check/qwen3-32b
 mkdir -p $LC

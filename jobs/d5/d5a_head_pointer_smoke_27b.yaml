@@ -1,0 +1,31 @@
+id: d5a_head_pointer_smoke_27b
+title: 'D5a smoke: the head-follows-the-pointer read-out on the 27B, 2 scenes per topic (every stage, the J-lens on CUDA)'
+thread: D5
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  uv run python scripts/d5a_head_pointer.py manifest --name d5a_head_pointer_smoke_27b
+  --why "D5a smoke: the 27B path (bf16, fla kernels, the frozen J-lens at block 50, heads 51:22 ...) on 2 scenes per topic"
+  --n 2 --families RL DL RR --competence d3v4_competence_27b
+  && uv run python scripts/d5a_head_pointer.py run --name d5a_head_pointer_smoke_27b
+  && uv run python scripts/d5a_head_pointer.py summarise --name d5a_head_pointer_smoke_27b
+examples_command: uv run python scripts/d5a_head_pointer.py examples --name d5a_head_pointer_smoke_27b --k 1
+figures_command: uv run python scripts/d5a_head_pointer.py figures --name d5a_head_pointer_smoke_27b
+question: 'Does the D5a read-out run end to end on the 27B (the CUDA loader, the frozen J-lens, the patched forward
+  with attention capture), with the self-patch a no-op?'
+why_it_matters: 'The local smoke ran on the 0.8B on CPU, where the lens is read from its file directly and the DeltaNet
+  kernels are the torch reference; the 27B path differs (bf16, fla kernels, JLens). A failure here costs minutes, not
+  the main run.'
+hypotheses:
+  H_smoke: 'every stage writes its files; check.json self_patch_noop true (max |dlogit| < 0.5 in bf16); no item without
+    single-token entities. Prior 0.85'
+decision_rule: 'Pass iff the job exits 0, check.json self_patch_noop is true and no_entity_tokens is 0; the numbers are
+  not interpreted (n = 2 scenes per topic).'
+controls:
+- 'the self-patch row (the org prompt''s own block output written back) must leave the logits unchanged'
+n: '18 org prompts (2 scenes x 3 topics x 3 families)'
+seeds:
+- 0
+notes: 'Model and lens load ~5 min, the items seconds. Results: results/d5a_head_pointer/d5a_head_pointer_smoke_27b/.'

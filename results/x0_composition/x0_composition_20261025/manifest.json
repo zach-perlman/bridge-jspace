@@ -1,0 +1,23 @@
+{
+  "exp": "x0_composition",
+  "run": "x0_composition_20261025",
+  "written_utc": "2026-10-25T11:57:55Z",
+  "note": "Descriptive, after the data (Dan, 25 Oct plan B1).",
+  "code": {
+    "sha": "6fee883911eef15822c2e22ea7ae840761b1a6d7",
+    "dirty": true
+  },
+  "n_boot": 10000,
+  "inputs": {
+    "qwen3.5-9b": [
+      "x0_necessity/qwen35_9b_x0_necessity",
+      "x0_necessity/qwen35_9b_x0_single_r2",
+      "x0_replicate/qwen35_9b_x0_replicate"
+    ],
+    "qwen3.6-27b": [
+      "x0_necessity/x0_necessity_27b_chat",
+      "x0_necessity/x0_single_27b_r2",
+      "x0_replicate/x0_replicate_27b"
+    ]
+  }
+}

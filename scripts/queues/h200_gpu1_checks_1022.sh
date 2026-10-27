@@ -60,7 +60,7 @@ BJ_TARGET=qwen3-32b-jlens $PY scripts/ablate_v2.py --name qwen3_32bj_full2_ko_v1
 
 echo "=== Qwen3-32B late-layer write check $(date -u +%T)"
 W2Q="--tasks full_v8 --tasks-competence qwen3_32b_full_v8_competence_v1 --tasks-level all --families $TWO"
-BJ_TARGET=qwen3-32b BJ_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_late_v1 --why "Zach (2026-10-22, amendment 3): lens writes at the final position at layers 54-62 (a direct push on the answer?)" \
+BJ_TARGET=qwen3-32b BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name qwen3_32b_wm2_full2_late_v1 --why "Zach (2026-10-22, amendment 3): lens writes at the final position at layers 54-62 (a direct push on the answer?)" \
   --n 1000 --writes lens_add copy --possets final --band 54-62 --single-step 2 --early 16 $W2Q || echo "=== late-layer check FAILED"
 python3 - <<'PY' || echo "=== late-layer table FAILED"
 import collections, json

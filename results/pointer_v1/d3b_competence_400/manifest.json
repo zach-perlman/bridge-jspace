@@ -1,0 +1,72 @@
+{
+  "exp": "pointer_v1",
+  "run": "d3b_competence_400",
+  "written_utc": "2026-10-21T14:17:02Z",
+  "why": "D3b replication gate (batch 3): pointer_v1 main, all 400 scenes per file, so the pointer direction can be tested on scenes the first run never used",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "sets": [
+    "main"
+  ],
+  "items": {
+    "main/animals_RL_e5f0": {
+      "file": "data/pointer_v1/main/animals_RL_e5f0.json",
+      "sha256": "efb55d7973056291ecf9e065e1ccdc2f49861826c93358974da84924a19adb1c"
+    },
+    "main/animals_DL_e5f0": {
+      "file": "data/pointer_v1/main/animals_DL_e5f0.json",
+      "sha256": "8d542b0da2ee1b508f87724897fbe5682490aa6adf445b58234172086e896971"
+    },
+    "main/animals_RR_e5f0": {
+      "file": "data/pointer_v1/main/animals_RR_e5f0.json",
+      "sha256": "226862b16a4e7e4fb28b4a771869f2b1e71effcfc651c53a9cb808d7e6b662cb"
+    },
+    "main/planets_RL_e5f0": {
+      "file": "data/pointer_v1/main/planets_RL_e5f0.json",
+      "sha256": "1972be2202693d7a5202c17e4a6618579a0560c9173f264fb56903ec3fad359c"
+    },
+    "main/planets_DL_e5f0": {
+      "file": "data/pointer_v1/main/planets_DL_e5f0.json",
+      "sha256": "fc5897fe12d4b0927c6ea833a584be128238f05fe219e2bdcbdcb789b33261fa"
+    },
+    "main/planets_RR_e5f0": {
+      "file": "data/pointer_v1/main/planets_RR_e5f0.json",
+      "sha256": "e5fa35321168d94d7574d614b2da5e56f3dd07662700ba46d1a2dc4879e74cef"
+    },
+    "main/elements_RL_e5f0": {
+      "file": "data/pointer_v1/main/elements_RL_e5f0.json",
+      "sha256": "cac4c24734619f43c52e048aa5990c265322aa5a2a834c1552dd81d829a913e4"
+    },
+    "main/elements_DL_e5f0": {
+      "file": "data/pointer_v1/main/elements_DL_e5f0.json",
+      "sha256": "a95099520b18521245be2c5ba8fab8df72a8eca6dee5a4beea741e70a7b5638f"
+    },
+    "main/elements_RR_e5f0": {
+      "file": "data/pointer_v1/main/elements_RR_e5f0.json",
+      "sha256": "2d1d3df5886cbcf7b551d20eca1bf0786da7cd9bf00503fce1fa08a8784698e3"
+    },
+    "main/months_RL_e5f0": {
+      "file": "data/pointer_v1/main/months_RL_e5f0.json",
+      "sha256": "06a63d0b439364daa770999e3ac3fbde4fd6cdc53204a6213bc750947904198b"
+    },
+    "main/months_DL_e5f0": {
+      "file": "data/pointer_v1/main/months_DL_e5f0.json",
+      "sha256": "9008d62a66d0420acee440eee094b2fa8d5955b728df8687e2392830047522fb"
+    },
+    "main/months_RR_e5f0": {
+      "file": "data/pointer_v1/main/months_RR_e5f0.json",
+      "sha256": "1bbd071c63df7b639b2cd09420b94ee1cbcd7a7cc7e1c067694d564666cb115b"
+    }
+  },
+  "limit": 400,
+  "format": "suite_v1's: chat template, thinking off, 'Answer:' prefilled; the context, a newline, the question and 'Answer with a single word and nothing else.' in one user turn",
+  "prompts": "base; each source (dissoc, same, redigit) with its own context and question; hop1 (cue -> entity, with the base context) and hop2 (the lookup with the entity named, or the recalled fact) for RL and RR",
+  "judge": "the first answer of the item's kind in the first non-empty line of 8 greedy tokens (digits, number words and ordinals for digits; the domain's entities otherwise)",
+  "answer_read": "suite_v1's: one forward with a digit answer's space token appended; p and margin of the answer's first token; whether the read's top token is the greedy answer",
+  "eligibility": "pointer_swap uses items with every prompt right (base, the three sources, the steps alone)"
+}

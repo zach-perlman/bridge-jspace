@@ -1,0 +1,26 @@
+id: olmo3_7b_instruct_d3v4_seed2_swap
+title: "Seed 2: does OLMo-3-7B-Instruct's slot test (layers 17-19) give the same answer on a new draw of scenes?"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.3
+depends_on:
+- olmo3_7b_instruct_d3v4_seed2_competence
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed2 --name olmo3_7b_instruct_d3v4_seed2_swap
+  --families RL DL --n 300 --layers 16 17 18 19 20 21 --control-stride 1 --groups last
+  --competence olmo3_7b_instruct_d3v4_seed2_competence
+  --why "seed 2 of olmo3_7b_instruct_d3v4_swap_fn: the same layers and rule on a new draw of pointer_v4's scenes"
+  && BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py run --name olmo3_7b_instruct_d3v4_seed2_swap
+figures_command: BJ_TARGET=olmo-3-7b-instruct uv run python scripts/pointer_swap.py figures --name olmo3_7b_instruct_d3v4_seed2_swap
+question: 'olmo3_7b_instruct_d3v4_swap_fn''s question, on pointer_v4''s seed-2 scenes.'
+why_it_matters: 'The OLMo slot result is close at its layers; a second draw shows whether its verdict is the draw''s.'
+hypotheses:
+  H-same-verdict: 'the pre-registered verdict at layers 17-19 (slot phase or not) is the same as in
+    olmo3_7b_instruct_d3v4_swap_fn. Prior 0.7'
+decision_rule: 'olmo3_7b_instruct_d3v4_swap_fn''s rule (memory -> prompt, last two tokens, layers 17-19, pooled and >= 2 of 3 topics).'
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt'
+n: 'every eligible seed-2 scene, up to 300 per topic'
+seeds: [844, 0]
+notes: '~0.3 GPU-h.'

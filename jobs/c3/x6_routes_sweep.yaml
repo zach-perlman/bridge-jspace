@@ -1,0 +1,24 @@
+id: x6_routes_sweep
+title: "x6_routes at more layers (Dan, 25 Oct; batch 35): another item moved and the sanity swap, arms whole and without J++; 27B L20, L24, L28 on GPU0, 9B L8, L10 on GPU1"
+thread: C3
+gpus: 2
+mem_gb: 120
+est_gpu_hours: 1.5
+depends_on: [x6_routes_early_r2]
+command: >-
+  uv run python -c "import torch" && { { CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_sweep_l20_27b --layer 20 --conditions C0,C2 --c0-min 0.5 --no-pointer && CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_sweep_l24_27b --layer 24 --conditions C0,C2 --c0-min 0.5 --no-pointer && CUDA_VISIBLE_DEVICES=0 BJ_DEVICE_MAP= uv run python scripts/x6_routes.py run --name x6_routes_sweep_l28_27b --layer 28 --conditions C0,C2 --c0-min 0.5 --no-pointer; } & p27=$!; { CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x6_routes.py run --name qwen35_9b_x6_routes_sweep_l8 --layer 8 --conditions C0,C2 --c0-min 0.5 --no-pointer && CUDA_VISIBLE_DEVICES=1 BJ_DEVICE_MAP= BJ_TARGET=qwen3.5-9b uv run python scripts/x6_routes.py run --name qwen35_9b_x6_routes_sweep_l10 --layer 10 --conditions C0,C2 --c0-min 0.5 --no-pointer; } & p9=$!; wait $p27; s27=$?; wait $p9; s9=$?; echo "exit 27B=$s27 9B=$s9"; test $s27 -eq 0 -a $s9 -eq 0; }
+question: >-
+  Between the early layer and the layer fixed in advance, where does the position route appear, and does it appear where the lookup stops needing J++?
+why_it_matters: >-
+  README v2's Fig. 5: the candidate that a pointer outside J++ appears with depth needs more than two layers per model.
+hypotheses:
+  H-depth: 'Dan''s Q35.1 (batch 35, committed before the results are shown): the position share (another item moved, whole change) is < 0.20 at every tested layer where the lookup''s J++ extra loss in F2 is >= 0.30, and >= 0.20 at every tested layer where it is <= 0.15'
+decision_rule: >-
+  Fixed in advance (Dan, 25 Oct): Q35.1 per model over the tested layers (9B 6, 8, 10, 12; 27B 16, 20, 24, 28, 32), on the point estimates; the lookup's J++ extra loss per layer is F2's (the main test, two people swap picks; x0_necessity runs). Layers whose F2 value is between 0.15 and 0.30 are not scored. As x6_routes_early_r2 otherwise: no pointer arms (the pointer directions exist only at the layers fixed in advance); the C0 check descriptive (stop only below 0.50); gate 0.80; route shares with cluster-bootstrap CIs.
+controls:
+- 'a random part at J++''s share'
+- 'the recall as a control route'
+- 'C0 (the sanity swap)'
+n: '300 eligible scenes per condition, layer and model (seed 2510)'
+seeds: [2510]
+notes: "One 2-GPU job, two processes, each runs its layers in turn (a failed layer stops that model's chain). Optional in Dan's README v2 plan; now queued (Dan ~14:30), after x6_routes_bothoff_ctrl. Results stay closed until Dan's batch-35 answer is committed."

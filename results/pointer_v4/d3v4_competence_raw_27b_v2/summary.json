@@ -1,0 +1,387 @@
+{
+  "labels": {
+    "main/countries_RL_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.9833333333333333,
+          "lo": 0.9615840563782944,
+          "hi": 0.9928606279572277,
+          "k": 295
+        },
+        "src_dissoc": {
+          "rate": 0.9766666666666667,
+          "lo": 0.952627445667121,
+          "hi": 0.9886524844017043,
+          "k": 293
+        },
+        "src_same": {
+          "rate": 0.9766666666666667,
+          "lo": 0.952627445667121,
+          "hi": 0.9886524844017043,
+          "k": 293
+        },
+        "src_redigit": {
+          "rate": 0.9766666666666667,
+          "lo": 0.952627445667121,
+          "hi": 0.9886524844017043,
+          "k": 293
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9873565700022643,
+          "hi": 0.9999999999999999,
+          "k": 300
+        },
+        "hop2": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9760219257685385,
+          "hi": 0.9981698899670288,
+          "k": 298
+        }
+      },
+      "eligible": 281,
+      "reliable": true,
+      "clean_median_p_answer": 0.84399,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    },
+    "main/countries_DL_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9760219257685385,
+          "hi": 0.9981698899670288,
+          "k": 298
+        },
+        "src_dissoc": {
+          "rate": 0.99,
+          "lo": 0.9710159953649371,
+          "hi": 0.9965934432372818,
+          "k": 297
+        },
+        "src_same": {
+          "rate": 0.99,
+          "lo": 0.9710159953649371,
+          "hi": 0.9965934432372818,
+          "k": 297
+        },
+        "src_redigit": {
+          "rate": 0.9933333333333333,
+          "lo": 0.9760219257685385,
+          "hi": 0.9981698899670288,
+          "k": 298
+        }
+      },
+      "eligible": 292,
+      "reliable": true,
+      "clean_median_p_answer": 0.9170050000000001,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    },
+    "main/countries_RR_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.15666666666666668,
+          "lo": 0.11990622028482688,
+          "hi": 0.20210893498028493,
+          "k": 47
+        },
+        "src_dissoc": {
+          "rate": 0.20666666666666667,
+          "lo": 0.16469482669421182,
+          "hi": 0.25605598557112647,
+          "k": 62
+        },
+        "src_same": {
+          "rate": 0.18666666666666668,
+          "lo": 0.14663682127589442,
+          "hi": 0.23461972818935325,
+          "k": 56
+        },
+        "src_redigit": {
+          "rate": 0.16666666666666666,
+          "lo": 0.1287647123620242,
+          "hi": 0.21299757430313287,
+          "k": 50
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9873565700022643,
+          "hi": 0.9999999999999999,
+          "k": 300
+        },
+        "hop2": {
+          "rate": 0.31666666666666665,
+          "lo": 0.2666274830211129,
+          "hi": 0.37134177464472345,
+          "k": 95
+        }
+      },
+      "eligible": 11,
+      "reliable": false,
+      "clean_median_p_answer": 0.24024,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    },
+    "main/animals_RL_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.96,
+          "lo": 0.9313951365400219,
+          "hi": 0.9769729078620613,
+          "k": 288
+        },
+        "src_dissoc": {
+          "rate": 0.9666666666666667,
+          "lo": 0.9397375485424309,
+          "hi": 0.9817952501263492,
+          "k": 290
+        },
+        "src_same": {
+          "rate": 0.9666666666666667,
+          "lo": 0.9397375485424309,
+          "hi": 0.9817952501263492,
+          "k": 290
+        },
+        "src_redigit": {
+          "rate": 0.9733333333333334,
+          "lo": 0.9482704597024538,
+          "hi": 0.9864270932330232,
+          "k": 292
+        },
+        "hop1": {
+          "rate": 0.99,
+          "lo": 0.9710159953649371,
+          "hi": 0.9965934432372818,
+          "k": 297
+        },
+        "hop2": {
+          "rate": 1.0,
+          "lo": 0.9873565700022643,
+          "hi": 0.9999999999999999,
+          "k": 300
+        }
+      },
+      "eligible": 269,
+      "reliable": true,
+      "clean_median_p_answer": 0.8805000000000001,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    },
+    "main/animals_DL_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 1.0,
+          "lo": 0.9873565700022643,
+          "hi": 0.9999999999999999,
+          "k": 300
+        },
+        "src_dissoc": {
+          "rate": 1.0,
+          "lo": 0.9873565700022643,
+          "hi": 0.9999999999999999,
+          "k": 300
+        },
+        "src_same": {
+          "rate": 0.9966666666666667,
+          "lo": 0.9813628354450568,
+          "hi": 0.9994113574238592,
+          "k": 299
+        },
+        "src_redigit": {
+          "rate": 1.0,
+          "lo": 0.9873565700022643,
+          "hi": 0.9999999999999999,
+          "k": 300
+        }
+      },
+      "eligible": 299,
+      "reliable": true,
+      "clean_median_p_answer": 0.9848600000000001,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    },
+    "main/animals_RR_e5f0": {
+      "n": 300,
+      "cells": {
+        "clean": {
+          "rate": 0.78,
+          "lo": 0.7297464012422271,
+          "hi": 0.8231732779590409,
+          "k": 234
+        },
+        "src_dissoc": {
+          "rate": 0.7033333333333334,
+          "lo": 0.649335553589633,
+          "hi": 0.7521894515446212,
+          "k": 211
+        },
+        "src_same": {
+          "rate": 0.76,
+          "lo": 0.7085778152541881,
+          "hi": 0.8048476011469895,
+          "k": 228
+        },
+        "src_redigit": {
+          "rate": 0.7666666666666667,
+          "lo": 0.7156176619060443,
+          "hi": 0.8109725087618301,
+          "k": 230
+        },
+        "hop1": {
+          "rate": 0.99,
+          "lo": 0.9710159953649371,
+          "hi": 0.9965934432372818,
+          "k": 297
+        },
+        "hop2": {
+          "rate": 0.84,
+          "lo": 0.7942554091313135,
+          "hi": 0.8771470584702262,
+          "k": 252
+        }
+      },
+      "eligible": 177,
+      "reliable": false,
+      "clean_median_p_answer": 0.747865,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    },
+    "main/body_RL_e5f0": {
+      "n": 180,
+      "cells": {
+        "clean": {
+          "rate": 0.4166666666666667,
+          "lo": 0.3471199999300702,
+          "hi": 0.4896960417057729,
+          "k": 75
+        },
+        "src_dissoc": {
+          "rate": 0.49444444444444446,
+          "lo": 0.4222872271676107,
+          "hi": 0.5668338422747788,
+          "k": 89
+        },
+        "src_same": {
+          "rate": 0.43333333333333335,
+          "lo": 0.36308054508099713,
+          "hi": 0.5063722882276773,
+          "k": 78
+        },
+        "src_redigit": {
+          "rate": 0.3888888888888889,
+          "lo": 0.32070200813682553,
+          "hi": 0.46171938071096524,
+          "k": 70
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9791037501849418,
+          "hi": 1.0,
+          "k": 180
+        },
+        "hop2": {
+          "rate": 0.9555555555555556,
+          "lo": 0.9147621269171728,
+          "hi": 0.9773101788068854,
+          "k": 172
+        }
+      },
+      "eligible": 21,
+      "reliable": false,
+      "clean_median_p_answer": 0.42988000000000004,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    },
+    "main/body_DL_e5f0": {
+      "n": 180,
+      "cells": {
+        "clean": {
+          "rate": 0.9555555555555556,
+          "lo": 0.9147621269171728,
+          "hi": 0.9773101788068854,
+          "k": 172
+        },
+        "src_dissoc": {
+          "rate": 0.9888888888888889,
+          "lo": 0.9603981999780283,
+          "hi": 0.9969476890916927,
+          "k": 178
+        },
+        "src_same": {
+          "rate": 0.95,
+          "lo": 0.9077182120920645,
+          "hi": 0.9734751630743831,
+          "k": 171
+        },
+        "src_redigit": {
+          "rate": 0.9722222222222222,
+          "lo": 0.936631043591737,
+          "hi": 0.9880780538051525,
+          "k": 175
+        }
+      },
+      "eligible": 166,
+      "reliable": true,
+      "clean_median_p_answer": 0.748975,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    },
+    "main/body_RR_e5f0": {
+      "n": 180,
+      "cells": {
+        "clean": {
+          "rate": 0.5,
+          "lo": 0.42772232395985227,
+          "hi": 0.5722776760401478,
+          "k": 90
+        },
+        "src_dissoc": {
+          "rate": 0.5388888888888889,
+          "lo": 0.4660129481786236,
+          "hi": 0.6101395657246497,
+          "k": 97
+        },
+        "src_same": {
+          "rate": 0.4666666666666667,
+          "lo": 0.39524296450687024,
+          "hi": 0.5394834521474671,
+          "k": 84
+        },
+        "src_redigit": {
+          "rate": 0.5,
+          "lo": 0.42772232395985227,
+          "hi": 0.5722776760401478,
+          "k": 90
+        },
+        "hop1": {
+          "rate": 1.0,
+          "lo": 0.9791037501849418,
+          "hi": 1.0,
+          "k": 180
+        },
+        "hop2": {
+          "rate": 0.9833333333333333,
+          "lo": 0.9521509421982017,
+          "hi": 0.9943160163139086,
+          "k": 177
+        }
+      },
+      "eligible": 47,
+      "reliable": false,
+      "clean_median_p_answer": 0.44704,
+      "read_agrees_with_greedy": 0,
+      "clean_greedy_right": 0
+    }
+  },
+  "seconds_generate": 396,
+  "seconds_read": 278,
+  "prompt_format": "raw",
+  "judge": "raw format: a digit prompt is right iff the top token of one forward with the digit's space token appended (pointer_swap's read) is the expected digit; a word prompt (the cue -> entity step, never read by the patching) iff the greedy judge finds the entity in 4 greedy tokens after the model's own empty think block (RAW_WORD_PREFIX, the start of its greedy reply where it does not think); the plain greedy judge is recorded as correct_greedy, not used (amendment 2026-10-21)",
+  "seconds": 717
+}

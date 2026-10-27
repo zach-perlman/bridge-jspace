@@ -1,0 +1,31 @@
+id: qwen3_32b_d2_formats
+title: "Late read and name vs digit in prose, tables and JSON (tasks_v2, Qwen3-32B)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.8
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/tasks_v2.py competence --set d2_formats_v1 --name qwen3_32b_d2_formats_competence --why "D2 on formats: which scenes the model answers right on every prompt" && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py manifest --name qwen3_32b_d2_formats --dataset tasks_v2 --tasks-set d2_formats_v1 --competence qwen3_32b_d2_formats_competence --families MP MM PP PM --formats prose table json --n 20 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --sweep path --why "findings 3 and 4 outside sentence lists (critic, 22 Oct: too toy): the late read and name vs digit on tasks_v2 in prose, tables and tool-output JSON" && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py run --name qwen3_32b_d2_formats
+examples_command: BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py examples --name qwen3_32b_d2_formats --k 3
+figures_command: BJ_TARGET=qwen3-32b uv run python scripts/d2_parts.py --name qwen3_32b_d2_formats && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py summarise --name qwen3_32b_d2_formats
+question: >-
+  Do the late read (finding 4) and the name / digit split (finding 3) hold when the facts are table rows or tool-output
+  JSON objects instead of sentences?
+why_it_matters: >-
+  Findings 3 and 4 rest on lists of short sentences ("The X's locker is N."). The outside review calls this the main
+  "too toy" gap for the mechanism. tasks_v2 (Zach's generator) writes the same scenes as prose, markdown tables or
+  JSON tool outputs; the adapter locates each fact's row, its name and its value in all three.
+hypotheses:
+  H-all-formats: 'both findings hold in prose, table and json. Prior 0.55'
+  H-late-only: 'the late read holds in all three, name vs digit fails in one (a value cell or a JSON field may be read
+    with its key). Prior 0.25'
+  H-format-breaks: 'the late read fails in table or json (the model reads a row earlier, at the question). Prior 0.2'
+decision_rule: >-
+  The committed rules, unchanged, applied per format (prose, table, json; fixed 2026-10-22 evening before these runs), topics pooled, items right unedited. Finding 4 (late read) holds in a format iff for memory -> prompt (MP) the answer's statement hidden from the last tokens in every attention layer leaves <= 20% right with the Wilson upper bound <= 0.30, the off-path statement hidden there keeps >= 90% (lower bound >= 0.85). Finding 3 (name vs digit) holds in a format iff scripts/d2_parts.py's valid-split holds and H-digit-final-split holds for MP (H-name-q-split decisive only where the question is testable). Both findings generalise across formats on this model iff they hold in all three formats. Reported, not decisive: prompt -> prompt (PP), the recall words (MM, PM) as off-path controls, per topic, digits vs words, the question's tokens.
+controls:
+- 'the off-path row or object of the same token length hidden the same way; the off-path row without its name / value;
+  the recall words (MM, PM), whose answer does not come from the hidden row; unedited accuracy'
+n: '20 scenes per (word, topic, format) cell where eligible: four words (MP, MM, PP, PM), four topics, three formats; items right on every prompt (competence)'
+seeds: [31]
+notes: "Dan, 2026-10-22 evening: strengthen findings 3 and 4 on other data (critic priority 2). Data: data/tasks_v2/d2_formats_v1 (scripts/tasks_v2.py make, seed 31, level 0, C and O). Per-format scoring by scripts/d2_formats.py (to be added, applying the rule above). Not opened before Dan predicts."

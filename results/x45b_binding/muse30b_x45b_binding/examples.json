@@ -1,0 +1,982 @@
+{
+ "exp": "x45b_binding",
+ "run": "muse30b_x45b_binding",
+ "k": 10,
+ "seed": 0,
+ "groups": [
+  {
+   "key": "PP",
+   "title": "lookup",
+   "definition": "the O prompt as the model reads it; ⟦…⟧ / underlined: the bridge word (arms a, b) and the patched locker-sentence tokens (arms c, d)",
+   "n_total": 108
+  },
+  {
+   "key": "PM",
+   "title": "recall (descriptive)",
+   "definition": "the O prompt as the model reads it; ⟦…⟧ / underlined: the bridge word (arms a, b) and the patched locker-sentence tokens (arms c, d)",
+   "n_total": 108
+  }
+ ],
+ "examples": [
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0011",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Dan picked gamma. Eric picked alpha. The locker of alpha is eight. Sara picked delta. The locker of gamma is five. The locker of delta is six.\nWhich locker belongs to Sara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Dan picked gamma. Eric picked alpha. ⟦The locker of alpha is eight.⟧ Sara picked ⟦delta⟧. ⟦The locker of gamma is five.⟧ ⟦The locker of delta is six.\n⟧Which locker belongs to Sara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 276,
+     "end": 282,
+     "role": "bridge_word"
+    },
+    {
+     "start": 234,
+     "end": 264,
+     "role": "patched_locker"
+    },
+    {
+     "start": 283,
+     "end": 312,
+     "role": "patched_locker"
+    },
+    {
+     "start": 312,
+     "end": 341,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Sara's pick? O's answer 6, S's answer 5",
+   "answers": {
+    "clean": "6",
+    "edited": "5",
+    "expected": {
+     "switches (S's answer)": "5",
+     "stays (O's answer)": "6"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '6' (A); greedy ' 6'",
+    "a the bridge-word change at L": "top '6' (A); greedy ' 6'",
+    "b_half the bridge-word change at L/2": "top '5' (b); greedy ' 5'",
+    "b_quarter the bridge-word change at L/4": "top '5' (b); greedy ' 5'",
+    "c S patched into O at every locker-sentence token, at L": "top '5' (b); greedy ' 5'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '6' (A); greedy ' 6'",
+    "S S read on S (unedited)": "top '5' (b); greedy ' 5'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0011",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Dan picked gamma. Eric picked alpha. The locker of alpha is eight. Sara picked delta. The locker of gamma is five. The locker of delta is six.\nWhich position in the Greek alphabet does Sara's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Dan picked gamma. Eric picked alpha. ⟦The locker of alpha is eight.⟧ Sara picked ⟦delta⟧. ⟦The locker of gamma is five.⟧ ⟦The locker of delta is six.\n⟧Which position in the Greek alphabet does Sara's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 276,
+     "end": 282,
+     "role": "bridge_word"
+    },
+    {
+     "start": 234,
+     "end": 264,
+     "role": "patched_locker"
+    },
+    {
+     "start": 283,
+     "end": 312,
+     "role": "patched_locker"
+    },
+    {
+     "start": 312,
+     "end": 341,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which position in the Greek alphabet does Sara's pick have? O's answer 4, S's answer 3",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "switches (S's answer)": "3",
+     "stays (O's answer)": "4"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '4' (A); greedy ' 4'",
+    "a the bridge-word change at L": "top '3' (b); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '3' (b); greedy ' 3'",
+    "b_quarter the bridge-word change at L/4": "top '3' (b); greedy ' 3'",
+    "c S patched into O at every locker-sentence token, at L": "top '4' (A); greedy ' 4'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '4' (A); greedy ' 4'",
+    "S S read on S (unedited)": "top '3' (b); greedy ' 3'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0089",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Fiona picked eta. Owen picked alpha. The locker of alpha is eight. The locker of eta is two. Max picked gamma. The locker of gamma is five.\nWhich locker belongs to Fiona's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Fiona picked ⟦eta⟧. Owen picked alpha. ⟦The locker of alpha is eight.⟧ ⟦The locker of eta is two.⟧ Max picked gamma. ⟦The locker of gamma is five.\n⟧Which locker belongs to Fiona's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 210,
+     "end": 214,
+     "role": "bridge_word"
+    },
+    {
+     "start": 234,
+     "end": 264,
+     "role": "patched_locker"
+    },
+    {
+     "start": 264,
+     "end": 290,
+     "role": "patched_locker"
+    },
+    {
+     "start": 308,
+     "end": 338,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Fiona's pick? O's answer 2, S's answer 5",
+   "answers": {
+    "clean": "2",
+    "edited": "5",
+    "expected": {
+     "switches (S's answer)": "5",
+     "stays (O's answer)": "2"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '2' (A); greedy ' 2'",
+    "a the bridge-word change at L": "top '2' (A); greedy ' 2'",
+    "b_half the bridge-word change at L/2": "top '2' (A); greedy ' 2'",
+    "b_quarter the bridge-word change at L/4": "top '2' (A); greedy ' 2'",
+    "c S patched into O at every locker-sentence token, at L": "top '5' (b); greedy ' 5'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '5' (b); greedy ' 5'",
+    "S S read on S (unedited)": "top '5' (b); greedy ' 5'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0089",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Fiona picked eta. Owen picked alpha. The locker of alpha is eight. The locker of eta is two. Max picked gamma. The locker of gamma is five.\nWhich position in the Greek alphabet does Fiona's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Fiona picked ⟦eta⟧. Owen picked alpha. ⟦The locker of alpha is eight.⟧ ⟦The locker of eta is two.⟧ Max picked gamma. ⟦The locker of gamma is five.\n⟧Which position in the Greek alphabet does Fiona's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 210,
+     "end": 214,
+     "role": "bridge_word"
+    },
+    {
+     "start": 234,
+     "end": 264,
+     "role": "patched_locker"
+    },
+    {
+     "start": 264,
+     "end": 290,
+     "role": "patched_locker"
+    },
+    {
+     "start": 308,
+     "end": 338,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which position in the Greek alphabet does Fiona's pick have? O's answer 7, S's answer 3",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "switches (S's answer)": "3",
+     "stays (O's answer)": "7"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '7' (A); greedy ' 7'",
+    "a the bridge-word change at L": "top '7' (A); greedy ' 7'",
+    "b_half the bridge-word change at L/2": "top '7' (A); greedy ' 7'",
+    "b_quarter the bridge-word change at L/4": "top '7' (A); greedy ' 7'",
+    "c S patched into O at every locker-sentence token, at L": "top '7' (A); greedy ' 7'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '7' (A); greedy ' 7'",
+    "S S read on S (unedited)": "top '3' (b); greedy ' 3'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0124",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Tara picked nitrogen. The locker of carbon is four. Adam picked oxygen. The locker of oxygen is three. The locker of nitrogen is five. Noah picked carbon.\nWhich locker belongs to Tara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Tara picked ⟦nitrogen⟧. ⟦The locker of carbon is four.⟧ Adam picked oxygen. ⟦The locker of oxygen is three.⟧ ⟦The locker of nitrogen is five.⟧ Noah picked carbon.\nWhich locker belongs to Tara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 209,
+     "end": 218,
+     "role": "bridge_word"
+    },
+    {
+     "start": 219,
+     "end": 249,
+     "role": "patched_locker"
+    },
+    {
+     "start": 269,
+     "end": 300,
+     "role": "patched_locker"
+    },
+    {
+     "start": 300,
+     "end": 332,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Tara's pick? O's answer 5, S's answer 3",
+   "answers": {
+    "clean": "5",
+    "edited": "3",
+    "expected": {
+     "switches (S's answer)": "3",
+     "stays (O's answer)": "5"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '5' (A); greedy ' 5'",
+    "a the bridge-word change at L": "top '5' (A); greedy ' 5'",
+    "b_half the bridge-word change at L/2": "top '5' (A); greedy ' 5'",
+    "b_quarter the bridge-word change at L/4": "top '3' (b); greedy ' 3'",
+    "c S patched into O at every locker-sentence token, at L": "top '3' (b); greedy ' 3'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '5' (A); greedy ' 5'",
+    "S S read on S (unedited)": "top '3' (b); greedy ' 3'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0124",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Tara picked nitrogen. The locker of carbon is four. Adam picked oxygen. The locker of oxygen is three. The locker of nitrogen is five. Noah picked carbon.\nWhat is the atomic number of Tara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Tara picked ⟦nitrogen⟧. ⟦The locker of carbon is four.⟧ Adam picked oxygen. ⟦The locker of oxygen is three.⟧ ⟦The locker of nitrogen is five.⟧ Noah picked carbon.\nWhat is the atomic number of Tara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 209,
+     "end": 218,
+     "role": "bridge_word"
+    },
+    {
+     "start": 219,
+     "end": 249,
+     "role": "patched_locker"
+    },
+    {
+     "start": 269,
+     "end": 300,
+     "role": "patched_locker"
+    },
+    {
+     "start": 300,
+     "end": 332,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Tara's pick? O's answer 7, S's answer 8",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "switches (S's answer)": "8",
+     "stays (O's answer)": "7"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '7' (A); greedy ' 7'",
+    "a the bridge-word change at L": "top '8' (b); greedy ' 8'",
+    "b_half the bridge-word change at L/2": "top '8' (b); greedy ' 8'",
+    "b_quarter the bridge-word change at L/4": "top '8' (b); greedy ' 8'",
+    "c S patched into O at every locker-sentence token, at L": "top '7' (A); greedy ' 7'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '7' (A); greedy ' 7'",
+    "S S read on S (unedited)": "top '8' (b); greedy ' 8'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0136",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Mia picked hydrogen. The locker of hydrogen is three. The locker of oxygen is six. Amy picked oxygen. The locker of nitrogen is eight. Jack picked nitrogen.\nWhich locker belongs to Mia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Mia picked ⟦hydrogen⟧. ⟦The locker of hydrogen is three.⟧ ⟦The locker of oxygen is six.⟧ Amy picked oxygen. ⟦The locker of nitrogen is eight.⟧ Jack picked nitrogen.\nWhich locker belongs to Mia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 208,
+     "end": 217,
+     "role": "bridge_word"
+    },
+    {
+     "start": 218,
+     "end": 251,
+     "role": "patched_locker"
+    },
+    {
+     "start": 251,
+     "end": 280,
+     "role": "patched_locker"
+    },
+    {
+     "start": 299,
+     "end": 332,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Mia's pick? O's answer 3, S's answer 6",
+   "answers": {
+    "clean": "3",
+    "edited": "6",
+    "expected": {
+     "switches (S's answer)": "6",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '3' (A); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '3' (A); greedy ' 3'",
+    "b_quarter the bridge-word change at L/4": "top '6' (b); greedy ' 6'",
+    "c S patched into O at every locker-sentence token, at L": "top '6' (b); greedy ' 6'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '6' (b); greedy ' 6'",
+    "S S read on S (unedited)": "top '6' (b); greedy ' 6'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0136",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Mia picked hydrogen. The locker of hydrogen is three. The locker of oxygen is six. Amy picked oxygen. The locker of nitrogen is eight. Jack picked nitrogen.\nWhat is the atomic number of Mia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Mia picked ⟦hydrogen⟧. ⟦The locker of hydrogen is three.⟧ ⟦The locker of oxygen is six.⟧ Amy picked oxygen. ⟦The locker of nitrogen is eight.⟧ Jack picked nitrogen.\nWhat is the atomic number of Mia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 208,
+     "end": 217,
+     "role": "bridge_word"
+    },
+    {
+     "start": 218,
+     "end": 251,
+     "role": "patched_locker"
+    },
+    {
+     "start": 251,
+     "end": 280,
+     "role": "patched_locker"
+    },
+    {
+     "start": 299,
+     "end": 332,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Mia's pick? O's answer 1, S's answer 8",
+   "answers": {
+    "clean": "1",
+    "edited": "1",
+    "expected": {
+     "switches (S's answer)": "8",
+     "stays (O's answer)": "1"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '1' (A); greedy ' 1'",
+    "a the bridge-word change at L": "top '8' (b); greedy ' 8'",
+    "b_half the bridge-word change at L/2": "top '8' (b); greedy ' 8'",
+    "b_quarter the bridge-word change at L/4": "top '8' (b); greedy ' 8'",
+    "c S patched into O at every locker-sentence token, at L": "top '1' (A); greedy ' 1'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '1' (A); greedy ' 1'",
+    "S S read on S (unedited)": "top '8' (b); greedy ' 8'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0142",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Amy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked nitrogen. The locker of nitrogen is three.\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Amy picked lithium. Vera picked oxygen. ⟦The locker of lithium is eight.⟧ ⟦The locker of oxygen is six.⟧ Owen picked ⟦nitrogen⟧. ⟦The locker of nitrogen is three.\n⟧Which locker belongs to Owen's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 310,
+     "end": 319,
+     "role": "bridge_word"
+    },
+    {
+     "start": 237,
+     "end": 269,
+     "role": "patched_locker"
+    },
+    {
+     "start": 269,
+     "end": 298,
+     "role": "patched_locker"
+    },
+    {
+     "start": 320,
+     "end": 354,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Owen's pick? O's answer 3, S's answer 6",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "switches (S's answer)": "6",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '3' (A); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '6' (b); greedy ' 6'",
+    "b_quarter the bridge-word change at L/4": "top '6' (b); greedy ' 6'",
+    "c S patched into O at every locker-sentence token, at L": "top '3' (A); greedy ' 3'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '3' (A); greedy ' 3'",
+    "S S read on S (unedited)": "top '6' (b); greedy ' 6'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0142",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Amy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked nitrogen. The locker of nitrogen is three.\nWhat is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Amy picked lithium. Vera picked oxygen. ⟦The locker of lithium is eight.⟧ ⟦The locker of oxygen is six.⟧ Owen picked ⟦nitrogen⟧. ⟦The locker of nitrogen is three.\n⟧What is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 310,
+     "end": 319,
+     "role": "bridge_word"
+    },
+    {
+     "start": 237,
+     "end": 269,
+     "role": "patched_locker"
+    },
+    {
+     "start": 269,
+     "end": 298,
+     "role": "patched_locker"
+    },
+    {
+     "start": 320,
+     "end": 354,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Owen's pick? O's answer 7, S's answer 8",
+   "answers": {
+    "clean": "7",
+    "edited": "7",
+    "expected": {
+     "switches (S's answer)": "8",
+     "stays (O's answer)": "7"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '7' (A); greedy ' 7'",
+    "a the bridge-word change at L": "top '8' (b); greedy ' 8'",
+    "b_half the bridge-word change at L/2": "top '8' (b); greedy ' 8'",
+    "b_quarter the bridge-word change at L/4": "top '8' (b); greedy ' 8'",
+    "c S patched into O at every locker-sentence token, at L": "top '7' (A); greedy ' 7'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '7' (A); greedy ' 7'",
+    "S S read on S (unedited)": "top '8' (b); greedy ' 8'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0165",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Paul picked the sheep. The locker of the sheep is 3. Will picked the deer. The locker of the deer is 7. Zoe picked the chicken. The locker of the chicken is 1.\nWhich locker belongs to Paul's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Paul picked the ⟦sheep⟧. ⟦The locker of the sheep is 3.⟧ Will picked the deer. ⟦The locker of the deer is 7.⟧ Zoe picked the chicken. ⟦The locker of the chicken is 1.\n⟧Which locker belongs to Paul's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 213,
+     "end": 219,
+     "role": "bridge_word"
+    },
+    {
+     "start": 220,
+     "end": 250,
+     "role": "patched_locker"
+    },
+    {
+     "start": 272,
+     "end": 301,
+     "role": "patched_locker"
+    },
+    {
+     "start": 325,
+     "end": 358,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Paul's pick? O's answer 3, S's answer 1",
+   "answers": {
+    "clean": "3",
+    "edited": "1",
+    "expected": {
+     "switches (S's answer)": "1",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '3' (A); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '3' (A); greedy ' 3'",
+    "b_quarter the bridge-word change at L/4": "top '3' (A); greedy ' 3'",
+    "c S patched into O at every locker-sentence token, at L": "top '1' (b); greedy ' 1'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '3' (A); greedy ' 3'",
+    "S S read on S (unedited)": "top '1' (b); greedy ' 1'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0165",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Paul picked the sheep. The locker of the sheep is 3. Will picked the deer. The locker of the deer is 7. Zoe picked the chicken. The locker of the chicken is 1.\nHow many legs does Paul's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Paul picked the ⟦sheep⟧. ⟦The locker of the sheep is 3.⟧ Will picked the deer. ⟦The locker of the deer is 7.⟧ Zoe picked the chicken. ⟦The locker of the chicken is 1.\n⟧How many legs does Paul's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 213,
+     "end": 219,
+     "role": "bridge_word"
+    },
+    {
+     "start": 220,
+     "end": 250,
+     "role": "patched_locker"
+    },
+    {
+     "start": 272,
+     "end": 301,
+     "role": "patched_locker"
+    },
+    {
+     "start": 325,
+     "end": 358,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "How many legs does Paul's pick have? O's answer 4, S's answer 2",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "switches (S's answer)": "2",
+     "stays (O's answer)": "4"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '4' (A); greedy ' 4'",
+    "a the bridge-word change at L": "top '2' (b); greedy ' 2'",
+    "b_half the bridge-word change at L/2": "top '2' (b); greedy ' 2'",
+    "b_quarter the bridge-word change at L/4": "top '4' (A); greedy ' 4'",
+    "c S patched into O at every locker-sentence token, at L": "top '4' (A); greedy ' 4'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '4' (A); greedy ' 4'",
+    "S S read on S (unedited)": "top '2' (b); greedy ' 2'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0173",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Ben picked theta. Hugo picked delta. The locker of delta is 6. The locker of theta is 3. The locker of beta is 4. Carl picked beta.\nWhich locker belongs to Ben's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Ben picked ⟦theta⟧. Hugo picked delta. ⟦The locker of delta is 6.⟧ ⟦The locker of theta is 3.⟧ ⟦The locker of beta is 4.⟧ Carl picked beta.\nWhich locker belongs to Ben's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 208,
+     "end": 214,
+     "role": "bridge_word"
+    },
+    {
+     "start": 234,
+     "end": 260,
+     "role": "patched_locker"
+    },
+    {
+     "start": 260,
+     "end": 286,
+     "role": "patched_locker"
+    },
+    {
+     "start": 286,
+     "end": 311,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Ben's pick? O's answer 3, S's answer 6",
+   "answers": {
+    "clean": "3",
+    "edited": "6",
+    "expected": {
+     "switches (S's answer)": "6",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '3' (A); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '3' (A); greedy ' 3'",
+    "b_quarter the bridge-word change at L/4": "top '6' (b); greedy ' 6'",
+    "c S patched into O at every locker-sentence token, at L": "top '6' (b); greedy ' 6'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '3' (A); greedy ' 3'",
+    "S S read on S (unedited)": "top '6' (b); greedy ' 6'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0173",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Ben picked theta. Hugo picked delta. The locker of delta is 6. The locker of theta is 3. The locker of beta is 4. Carl picked beta.\nWhich position in the Greek alphabet does Ben's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Ben picked ⟦theta⟧. Hugo picked delta. ⟦The locker of delta is 6.⟧ ⟦The locker of theta is 3.⟧ ⟦The locker of beta is 4.⟧ Carl picked beta.\nWhich position in the Greek alphabet does Ben's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 208,
+     "end": 214,
+     "role": "bridge_word"
+    },
+    {
+     "start": 234,
+     "end": 260,
+     "role": "patched_locker"
+    },
+    {
+     "start": 260,
+     "end": 286,
+     "role": "patched_locker"
+    },
+    {
+     "start": 286,
+     "end": 311,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which position in the Greek alphabet does Ben's pick have? O's answer 8, S's answer 4",
+   "answers": {
+    "clean": "19",
+    "edited": "4",
+    "expected": {
+     "switches (S's answer)": "4",
+     "stays (O's answer)": "8"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '19' (other); greedy ' 8'",
+    "a the bridge-word change at L": "top '19' (other); greedy ' 19'",
+    "b_half the bridge-word change at L/2": "top '4' (b); greedy ' 4'",
+    "b_quarter the bridge-word change at L/4": "top '4' (b); greedy ' 4'",
+    "c S patched into O at every locker-sentence token, at L": "top '4' (b); greedy ' 4'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '8' (A); greedy ' 8'",
+    "S S read on S (unedited)": "top '4' (b); greedy ' 4'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0266",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Mia picked eta. The locker of delta is five. Jack picked gamma. The locker of eta is nine. The locker of gamma is two. Henry picked delta.\nWhich locker belongs to Jack's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Mia picked eta. ⟦The locker of delta is five.⟧ Jack picked ⟦gamma⟧. ⟦The locker of eta is nine.⟧ ⟦The locker of gamma is two.⟧ Henry picked delta.\nWhich locker belongs to Jack's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 254,
+     "end": 260,
+     "role": "bridge_word"
+    },
+    {
+     "start": 213,
+     "end": 242,
+     "role": "patched_locker"
+    },
+    {
+     "start": 261,
+     "end": 288,
+     "role": "patched_locker"
+    },
+    {
+     "start": 288,
+     "end": 316,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Jack's pick? O's answer 2, S's answer 5",
+   "answers": {
+    "clean": "2",
+    "edited": "9",
+    "expected": {
+     "switches (S's answer)": "5",
+     "stays (O's answer)": "2"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '2' (A); greedy ' 2'",
+    "a the bridge-word change at L": "top '5' (b); greedy ' 5'",
+    "b_half the bridge-word change at L/2": "top '5' (b); greedy ' 5'",
+    "b_quarter the bridge-word change at L/4": "top '5' (b); greedy ' 5'",
+    "c S patched into O at every locker-sentence token, at L": "top '9' (other); greedy ' 9'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '2' (A); greedy ' 2'",
+    "S S read on S (unedited)": "top '5' (b); greedy ' 5'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0266",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Mia picked eta. The locker of delta is five. Jack picked gamma. The locker of eta is nine. The locker of gamma is two. Henry picked delta.\nWhich position in the Greek alphabet does Jack's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Mia picked eta. ⟦The locker of delta is five.⟧ Jack picked ⟦gamma⟧. ⟦The locker of eta is nine.⟧ ⟦The locker of gamma is two.⟧ Henry picked delta.\nWhich position in the Greek alphabet does Jack's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 254,
+     "end": 260,
+     "role": "bridge_word"
+    },
+    {
+     "start": 213,
+     "end": 242,
+     "role": "patched_locker"
+    },
+    {
+     "start": 261,
+     "end": 288,
+     "role": "patched_locker"
+    },
+    {
+     "start": 288,
+     "end": 316,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which position in the Greek alphabet does Jack's pick have? O's answer 3, S's answer 4",
+   "answers": {
+    "clean": "3",
+    "edited": "3",
+    "expected": {
+     "switches (S's answer)": "4",
+     "stays (O's answer)": "3"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '3' (A); greedy ' 3'",
+    "a the bridge-word change at L": "top '4' (b); greedy ' 4'",
+    "b_half the bridge-word change at L/2": "top '4' (b); greedy ' 4'",
+    "b_quarter the bridge-word change at L/4": "top '4' (b); greedy ' 4'",
+    "c S patched into O at every locker-sentence token, at L": "top '3' (A); greedy ' 3'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '3' (A); greedy ' 3'",
+    "S S read on S (unedited)": "top '4' (b); greedy ' 4'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0274",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of lithium is seven. Julia picked oxygen. The locker of nitrogen is three. James picked lithium. Carl picked nitrogen. The locker of oxygen is one.\nWhich locker belongs to Julia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦The locker of lithium is seven.⟧ Julia picked ⟦oxygen⟧. ⟦The locker of nitrogen is three.⟧ James picked lithium. Carl picked nitrogen. ⟦The locker of oxygen is one.\n⟧Which locker belongs to Julia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 242,
+     "end": 249,
+     "role": "bridge_word"
+    },
+    {
+     "start": 198,
+     "end": 229,
+     "role": "patched_locker"
+    },
+    {
+     "start": 250,
+     "end": 283,
+     "role": "patched_locker"
+    },
+    {
+     "start": 327,
+     "end": 357,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Julia's pick? O's answer 1, S's answer 7",
+   "answers": {
+    "clean": "1",
+    "edited": "7",
+    "expected": {
+     "switches (S's answer)": "7",
+     "stays (O's answer)": "1"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '1' (A); greedy ' 1'",
+    "a the bridge-word change at L": "top '7' (b); greedy ' 7'",
+    "b_half the bridge-word change at L/2": "top '7' (b); greedy ' 7'",
+    "b_quarter the bridge-word change at L/4": "top '7' (b); greedy ' 7'",
+    "c S patched into O at every locker-sentence token, at L": "top '7' (b); greedy ' 7'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '1' (A); greedy ' 1'",
+    "S S read on S (unedited)": "top '7' (b); greedy ' 7'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0274",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of lithium is seven. Julia picked oxygen. The locker of nitrogen is three. James picked lithium. Carl picked nitrogen. The locker of oxygen is one.\nWhat is the atomic number of Julia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦The locker of lithium is seven.⟧ Julia picked ⟦oxygen⟧. ⟦The locker of nitrogen is three.⟧ James picked lithium. Carl picked nitrogen. ⟦The locker of oxygen is one.\n⟧What is the atomic number of Julia's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 242,
+     "end": 249,
+     "role": "bridge_word"
+    },
+    {
+     "start": 198,
+     "end": 229,
+     "role": "patched_locker"
+    },
+    {
+     "start": 250,
+     "end": 283,
+     "role": "patched_locker"
+    },
+    {
+     "start": 327,
+     "end": 357,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "What is the atomic number of Julia's pick? O's answer 8, S's answer 3",
+   "answers": {
+    "clean": "8",
+    "edited": "8",
+    "expected": {
+     "switches (S's answer)": "3",
+     "stays (O's answer)": "8"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '8' (A); greedy ' 8'",
+    "a the bridge-word change at L": "top '3' (b); greedy ' 3'",
+    "b_half the bridge-word change at L/2": "top '3' (b); greedy ' 3'",
+    "b_quarter the bridge-word change at L/4": "top '3' (b); greedy ' 3'",
+    "c S patched into O at every locker-sentence token, at L": "top '8' (A); greedy ' 8'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '8' (A); greedy ' 8'",
+    "S S read on S (unedited)": "top '3' (b); greedy ' 3'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PP",
+   "family": "PP",
+   "item_id": "PP-L0-0284",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked delta. Julia picked beta. Hugo picked epsilon. The locker of epsilon is three. The locker of delta is seven. The locker of beta is four.\nWhich locker belongs to Kyle's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked ⟦delta⟧. Julia picked beta. Hugo picked epsilon. ⟦The locker of epsilon is three.⟧ ⟦The locker of delta is seven.⟧ ⟦The locker of beta is four.\n⟧Which locker belongs to Kyle's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 209,
+     "end": 215,
+     "role": "bridge_word"
+    },
+    {
+     "start": 256,
+     "end": 288,
+     "role": "patched_locker"
+    },
+    {
+     "start": 288,
+     "end": 318,
+     "role": "patched_locker"
+    },
+    {
+     "start": 318,
+     "end": 347,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which locker belongs to Kyle's pick? O's answer 7, S's answer 3",
+   "answers": {
+    "clean": "7",
+    "edited": "3",
+    "expected": {
+     "switches (S's answer)": "3",
+     "stays (O's answer)": "7"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '7' (A); greedy ' 7'",
+    "a the bridge-word change at L": "top '7' (A); greedy ' 7'",
+    "b_half the bridge-word change at L/2": "top '7' (A); greedy ' 7'",
+    "b_quarter the bridge-word change at L/4": "top '3' (b); greedy ' 3'",
+    "c S patched into O at every locker-sentence token, at L": "top '3' (b); greedy ' 3'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '7' (A); greedy ' 7'",
+    "S S read on S (unedited)": "top '3' (b); greedy ' 3'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  },
+  {
+   "group": "PM",
+   "family": "PM",
+   "item_id": "PM-L0-0284",
+   "prompt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked delta. Julia picked beta. Hugo picked epsilon. The locker of epsilon is three. The locker of delta is seven. The locker of beta is four.\nWhich position in the Greek alphabet does Kyle's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "prompt_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked ⟦delta⟧. Julia picked beta. Hugo picked epsilon. ⟦The locker of epsilon is three.⟧ ⟦The locker of delta is seven.⟧ ⟦The locker of beta is four.\n⟧Which position in the Greek alphabet does Kyle's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "spans": [
+    {
+     "start": 209,
+     "end": 215,
+     "role": "bridge_word"
+    },
+    {
+     "start": 256,
+     "end": 288,
+     "role": "patched_locker"
+    },
+    {
+     "start": 288,
+     "end": 318,
+     "role": "patched_locker"
+    },
+    {
+     "start": 318,
+     "end": 347,
+     "role": "patched_locker"
+    }
+   ],
+   "condition": "Which position in the Greek alphabet does Kyle's pick have? O's answer 4, S's answer 5",
+   "answers": {
+    "clean": "4",
+    "edited": "4",
+    "expected": {
+     "switches (S's answer)": "5",
+     "stays (O's answer)": "4"
+    }
+   },
+   "numbers": {
+    "none O unedited": "top '4' (A); greedy ' 4'",
+    "a the bridge-word change at L": "top '4' (A); greedy ' 4'",
+    "b_half the bridge-word change at L/2": "top '4' (A); greedy ' 4'",
+    "b_quarter the bridge-word change at L/4": "top '5' (b); greedy ' 5'",
+    "c S patched into O at every locker-sentence token, at L": "top '4' (A); greedy ' 4'",
+    "d S patched into O at every locker-sentence token, at L/2": "top '4' (A); greedy ' 4'",
+    "S S read on S (unedited)": "top '5' (b); greedy ' 5'"
+   },
+   "why": "edited = arm c (S patched into O at the locker sentences, at L); every arm under numbers"
+  }
+ ]
+}

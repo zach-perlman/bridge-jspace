@@ -1,0 +1,68 @@
+{
+ "countries_RL_e12-word": {
+  "n": 150,
+  "prepare": 150,
+  "predictions": 150,
+  "answer_tokens": 150,
+  "statements": 150,
+  "entities_asked": 36,
+  "max_asked": 5,
+  "wordings": 9,
+  "prompts_unique": 150
+ },
+ "countries_DL_e12-word": {
+  "n": 150,
+  "prepare": 150,
+  "predictions": 150,
+  "answer_tokens": 150,
+  "statements": 150,
+  "entities_asked": 36,
+  "max_asked": 5,
+  "wordings": 9,
+  "prompts_unique": 150
+ },
+ "animals_RL_e12-word": {
+  "n": 150,
+  "prepare": 150,
+  "predictions": 150,
+  "answer_tokens": 150,
+  "statements": 150,
+  "entities_asked": 34,
+  "max_asked": 5,
+  "wordings": 9,
+  "prompts_unique": 150
+ },
+ "animals_DL_e12-word": {
+  "n": 150,
+  "prepare": 150,
+  "predictions": 150,
+  "answer_tokens": 150,
+  "statements": 150,
+  "entities_asked": 34,
+  "max_asked": 5,
+  "wordings": 9,
+  "prompts_unique": 150
+ },
+ "body_RL_e12-word": {
+  "n": 150,
+  "prepare": 150,
+  "predictions": 150,
+  "answer_tokens": 150,
+  "statements": 150,
+  "entities_asked": 15,
+  "max_asked": 10,
+  "wordings": 9,
+  "prompts_unique": 150
+ },
+ "body_DL_e12-word": {
+  "n": 150,
+  "prepare": 150,
+  "predictions": 150,
+  "answer_tokens": 150,
+  "statements": 150,
+  "entities_asked": 15,
+  "max_asked": 10,
+  "wordings": 9,
+  "prompts_unique": 150
+ }
+}

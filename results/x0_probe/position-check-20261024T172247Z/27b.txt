@@ -1,0 +1,11 @@
+qwen3.6-27b x0_probe_27b 600 items
+1. probe index == X0 patch index: 600 of 600 | == single-change patch index: 600 of 600
+2. inside the asked pick sentence, not the locker sentence, token == bridge: 600 of 600 | failures: []
+   locker-before items where the bridge occurs twice in the context: 301 of 301
+3. five random locker-before items (seed 0):
+   P2-L0-0403 | asked: Which locker belongs to Rose's pick? | The locker of nitrogen is nine. Oscar picked helium. Sean picked lithium. The locker of lithium is eight. Rose picked[[ nitrogen]]. The locker of helium is six.
+   P2-L0-0425 | asked: Which locker belongs to Beth's pick? | Mark picked epsilon. Amy picked eta. The locker of eta is 9. The locker of beta is 4. The locker of epsilon is 7. Beth picked[[ beta]].
+   P2-L0-0039 | asked: Which locker belongs to Nina's pick? | Victor picked the rabbit. The locker of the rabbit is 8. The locker of the spider is 2. Fiona picked the bee. The locker of the bee is 9. Nina picked the[[ spider]].
+   P2-L0-0271 | asked: Which locker belongs to Victor's pick? | Oscar picked oxygen. The locker of hydrogen is 8. Rose picked carbon. Victor picked[[ hydrogen]]. The locker of oxygen is 7. The locker of carbon is 9.
+   P2-L0-0509 | asked: Which locker belongs to Kate's pick? | Lucy picked alpha. The locker of alpha is eight. Max picked epsilon. The locker of epsilon is nine. The locker of beta is seven. Kate picked[[ beta]].
+{"fail_1": 0, "fail_1_single": 0, "fail_2": 0}

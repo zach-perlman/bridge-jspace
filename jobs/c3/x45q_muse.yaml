@@ -1,0 +1,41 @@
+id: x45q_muse
+title: "Batch 45q on Muse (L26): where is the link made when the locker comes after the pick, on clean scenes (45m's: only the bridge token differs)? 45b's arms, 45n's link arms and the sweep (L0, 4, ..., 48, 50) in one run; SEALED until Q45.12"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.25
+depends_on: [x45_0_indep_9b, x45e_122b_q4]
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x45b_binding.py q-run --name muse30b_x45q --why "batch 45, test 45q (jobs/c3/batch45.yaml; Q45.12, sealed): 45b's arms, 45n's link arms and the sweep on muse30b_x45m_fresh's locker-after scenes"
+question: >-
+  On clean scenes (45m's: only the bridge token differs) where the locker sentence comes after the pick, is the link
+  made in the locker sentences?
+why_it_matters: >-
+  45b held on the main test's locker-after scenes, but there S also differs after the bridge word (the other swapped
+  pick comes later): Dan's sanity check kept only 36 of 100 items on the 9B and 34 of 99 on the 27B (45n). In 45m's
+  scenes one token changes, so a copy of S's locker-sentence states can only carry what the bridge word made there. If
+  that copy switches at least half of S's lookups while the bridge-word change at L does not, the link is made in the
+  locker sentences.
+hypotheses:
+  Q45.12: "Dan's answer in predictions/2026-10-26_dan.md (Q45.12); the results stay closed until it is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45q): 45b's, unchanged: "the link is made in the locker sentences" if (c) or
+  (d) switches at least half of the lookups S switches while (a) stays at or below 0.25, on at least 2 of 3 models. As
+  computed (batch45.yaml 45q, as_computed): the items are each model's 45m run's scenes (qwen35_9b_x45m_fresh,
+  x45m_fresh_27b, muse30b_x45m_fresh; chat, the layer fixed in advance) whose asked bridge's (org) locker sentence comes
+  after the asked pick (x0_strata), with the locker sentences aligned as 45b does; an item failing the same-length /
+  same-ids-after-the-bridge assert is dropped and counted. Per model the rule reads the lookup, point estimates, as
+  45b's x45b_binding.rule (c or d >= 0.5 of S's switches, a <= 0.25 of the items); holds on the batch if on at least 2
+  of 3. A model with no locker-after items or no S switch is not tested and does not count. The 45n arms and the sweep
+  are reported beside it, not in the rule. The sweep's layers: 0, 4, 8, ... and the last layer; "the rest of the
+  sentence" = the locker-sentence tokens that are not the item's, the number's or the period's. Scored by hand after
+  Q45.12 is committed: x45b_binding.py q-verdict --names qwen35_9b_x45q x45q_27b muse30b_x45q.
+controls:
+- '(a) the bridge-word change at L, (b) at L/2 and L/4: checked against the 45m run''s stored whole arm at L26'
+- 'S read on S: the rule''s reference; checked against the 45m run''s stored S read (competence.jsonl)'
+- 'O unedited (arm none)'
+- 'the copy without each token''s J++ part against the copy without a random part of the same share (45n''s arms at L; X0''s random subspace, seed 888 + layer)'
+- 'the recall read on the identical patches (descriptive)'
+n: '205 items, 39 bridge entities: the locker-after scenes among the 409 eligible scenes of muse30b_x45m_fresh at L26; none dropped, all token-aligned (q-plan, 27 Oct)'
+seeds: [0, 888]
+notes: "SEALED (Dan ~00:30): the job runs q-run only; no verdict, table or examples stage, and the log prints counts only. BJ_TARGET=muse-glimmer-30b reads Muse's own 45m run (muse30b_x45m_fresh). The run reads 205 items x 2 readers x 93 forwards (92 O arms + S), about 38k batched reads; no Muse sweep has run yet, the estimate assumes the 27B's rate. After Dan's Q45.12 is committed, by hand (CPU): x45b_binding.py q-verdict / q-link-table / q-sweep-table --names qwen35_9b_x45q x45q_27b muse30b_x45q, and the verify-pack view: x45b_binding.py examples --name muse30b_x45q. The CPU stages refuse to run before Dan's answer is in the predictions file. Waits for x45e_122b_q4 (the last 122B job): a 1-GPU job started beside the 122B block ran out of memory (x45k_muse_q3)."

@@ -1,0 +1,63 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 357
+  },
+  "gate": {
+    "V0": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 0.9985714285714286,
+        "PM": 0.9971428571428571
+      },
+      "pass": true,
+      "eligible": 693
+    },
+    "V1": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 1.0,
+        "PM": 0.9985714285714286
+      },
+      "pass": true,
+      "eligible": 690
+    },
+    "V2": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 1.0,
+        "PM": 0.9957142857142857
+      },
+      "pass": true,
+      "eligible": 691
+    },
+    "V3": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 1.0,
+        "PM": 0.9885714285714285
+      },
+      "pass": true,
+      "eligible": 687
+    },
+    "V4": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "PP": 0.9985714285714286,
+        "PM": 0.9814285714285714
+      },
+      "pass": true,
+      "eligible": 665
+    },
+    "joint": {
+      "variants": [
+        "V0",
+        "V1",
+        "V2",
+        "V3",
+        "V4"
+      ],
+      "eligible_in_all": 643,
+      "chosen": 300
+    }
+  }
+}

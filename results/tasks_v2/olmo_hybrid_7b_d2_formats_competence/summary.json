@@ -1,0 +1,74 @@
+{
+  "seconds": 127,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 240,
+      "whole": 0.904,
+      "all_steps": 0.988,
+      "median_margin": 6.38,
+      "whole_by_numbers": {
+        "digits": 0.954,
+        "words": 0.863
+      },
+      "cf": 0.921,
+      "off": 0.883
+    },
+    "PM/L0": {
+      "n": 240,
+      "whole": 0.633,
+      "all_steps": 0.792,
+      "median_margin": 2.65,
+      "whole_by_numbers": {
+        "digits": 0.615,
+        "words": 0.649
+      },
+      "cf": 0.6,
+      "off": 0.621
+    },
+    "MP/L0": {
+      "n": 240,
+      "whole": 0.729,
+      "all_steps": 0.963,
+      "median_margin": 3.3,
+      "whole_by_numbers": {
+        "digits": 0.708,
+        "words": 0.75
+      },
+      "cf": 0.65,
+      "off": 0.725
+    },
+    "MM/L0": {
+      "n": 240,
+      "whole": 0.637,
+      "all_steps": 0.742,
+      "median_margin": 2.28,
+      "whole_by_numbers": {
+        "digits": 0.625,
+        "words": 0.65
+      },
+      "cf": 0.617,
+      "off": 0.65
+    }
+  },
+  "by_domain": {
+    "planets": 0.536,
+    "greek": 0.725,
+    "elements": 0.743,
+    "animals": 0.9
+  },
+  "by_format": {
+    "table": 0.752,
+    "prose": 0.725,
+    "json": 0.702
+  },
+  "by_numbers": {
+    "digits": 0.723,
+    "words": 0.729
+  },
+  "pick": {
+    "PP": 0,
+    "PM": null,
+    "MP": null,
+    "MM": null
+  }
+}

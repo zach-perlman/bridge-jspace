@@ -1,0 +1,56 @@
+id: d3_pilot_27b
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.55
+depends_on:
+- d3_competence_27b
+- d3_smoke_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --name d3_pilot_27b --set dev --levels e5f0 --n 15 --layer-step 4
+  --competence d3_competence_27b
+  --why "D3 pilot (dev split): what RL's question / final / last tokens carry by depth: identity, position or value"
+  && uv run python scripts/pointer_swap.py run --name d3_pilot_27b
+examples_command: uv run python scripts/pointer_swap.py examples --name d3_pilot_27b
+question: On dev items (N=5, four domains), patching the dissoc source's residual into the base at the question tokens,
+  the template after the question (final), the last two tokens (last) or question+final, one layer at a time (every 4th
+  layer) and over the early/mid/transit windows, does the base answer move to the identity, position or value
+  prediction, and at which depth?
+why_it_matters: 'Explains the "around" route (C2: the lens reads RL''s bridge but cannot write it). At layers 44-52
+  copying C''s question-token residual flips RL 98-100% while the lens direction flips 0% (EXPERIMENTS rows 27, 52).
+  position => the lookup is steered by a binding/positional pointer the lens cannot express (H-pointer; C2 explained);
+  identity => the bridge''s identity (or a lexical key) in a non-lens code (H-word); value => by 44-52 the answer is
+  already fetched, so read-without-write there is a timing effect, not an "around" code (H-value). Sets the windows for
+  d3_main_27b.'
+hypotheses:
+  H-pointer: 'RL, final (and last) at the transit window 44-52: position >= 50%, identity <= 20%, value <= 20%; RR
+    position <= 10% (identity >= 50%); DL position >= 50%'
+  H-word: 'RL final/last transit: identity >= 50%, position <= 20%'
+  H-value: 'RL final/last transit: value >= 50% (the source''s digit, absent from the base)'
+  H-none: 'RL final transit changes the answer < 20% (would contradict the suite''s copy flips; design mismatch)'
+  prior: 'Agent prior (before any run): question group identity at layers <= 28 under every hypothesis (the cue words
+    are patched); at 44-52 on final/last: value 0.4, position 0.3, identity 0.3. Mixing Mechanisms predicts position
+    mainly for first/last slots and identity (lexical) / reflexive in the middle: reported by slot.'
+decision_rule: 'Fixed before the run (scripts/pointer_swap.py docstring). Per cell (family x group x layer/window,
+  dissoc source, pooled over domains, Wilson 95%): interpretable iff 1 - share(none) has lower bound >= 0.20 and the
+  same control''s change rate has upper bound <= 0.10 (else "none" / "damage"); verdict X in {identity, position,
+  value} (RR: identity, position) iff X''s lower bound exceeds the other two upper bounds and the chance bar (the rand
+  control''s upper bound for X; the per-digit context rate); else "mixed". Primary cell: RL, final, transit. The pilot
+  decides nothing by itself: it fixes the main run''s layer range (the layers where RL final changes >= 20%) and is
+  reported with its n.'
+controls:
+- 'same source (q_s = q_b at the same slot, same digit, rest of the context reshuffled and redigited): every hypothesis
+  predicts the base answer; rules out damage from patching a residual computed on another context'
+- 'rand: seeded random direction at the dissoc patch''s per-position norm: rules out generic disruption picking a
+  context digit (chance bar for identity/position)'
+- 'other: another domain''s item (same family), its residual at the same distance from the prompt end, rescaled to the
+  dissoc norm: realistic-activation null; also probes a domain-general positional code'
+- 'context digits predicted by no hypothesis (N=5: 2 per item): the per-digit chance rate inside the same runs'
+- 'base into base at the middle layer (no-op) and layer-0 all-position patch (reproduces the source): hook checks'
+n: 15 scenes per domain x 4 domains = 60 per family (180 cases), dev e5f0
+seeds: [0]
+notes: 'Reads per case: 3 checks + 16 layers x 4 groups x 2 (dissoc, same) + 8 layers x 4 x 2 (rand, other) + 3 windows
+  x 4 x 2 = 219 -> 39.4k edited reads. Throughput: suite_split map_A8_v1 (27B, faster box) 76.8k reads in 1205 s = 64/s;
+  read_write layers_v1 50k in 571 s = 87/s; the A100 PCIe at ~1/3 of that -> ~22/s -> 30 min + load. Re-size from
+  d3_smoke_27b''s measured rate. Pilot items (dev) are never headline items.'
+figures_command: uv run python scripts/pointer_swap.py figures --name d3_pilot_27b

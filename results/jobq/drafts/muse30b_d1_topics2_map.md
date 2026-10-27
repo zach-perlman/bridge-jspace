@@ -1,0 +1,1 @@
+2026-10-22 | jobq muse30b_d1_topics2_map (code 2dadb64, NVIDIA A100 80GB PCIe, run 0m, total 0m; spec jobs/d1/muse30b_d1_topics2_map.yaml; no results dir) | Where is a stated bridge in transit for PP and PM on Muse? | (fill in from no results dir) n=180 scenes, seeds=[841, 844]; exit 3 | none | UNVERIFIED; verdict: (human)

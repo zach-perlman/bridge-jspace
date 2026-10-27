@@ -28,17 +28,17 @@ STEER="--possets question final --band 26-38 --single-step 2 --early 15 19 23"
 until grep -qs "^EXIT" $R-h200gpu0-*.log; do sleep 120; done
 export CUDA_VISIBLE_DEVICES=0
 echo "=== start $(date -u +%FT%TZ)"
-BJ_BATCH=32 $PY scripts/write_max.py --name gemma4itf_smoke_wm2_full_1021 --why smoke --n 2 --band 30-32 \
+BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name gemma4itf_smoke_wm2_full_1021 --why smoke --n 2 --band 30-32 \
   --single-step 1 --early 23 --possets question final $W2 || { echo "smoke failed: stop"; exit 1; }
 $PY scripts/removal_textloss.py --name gemma4itf_textloss_top_v1 --why "$WHY: plain-text loss under the knock-out, L30-38" \
   --layers $(seq 30 38) --conditions none top1 top1_rot top5 top5_rot top10 top10_rot || echo "=== text loss FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_posctrl_v1 --why "$WHY: positive control (countries, suite M->M)" \
   --n 60 --families RR --band 26-38 --single-step 2 --early 15 19 23 --from-competence gemma4itb_competence_v1 \
   && $PY scripts/c2_graded.py gemma4itf_wm2_posctrl_v1 | tail -2 || echo "=== positive control FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full2_v1 --why "$WHY: two-step, write_max v2, C2-graded" --n 40 \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full2_v1 --why "$WHY: two-step, write_max v2, C2-graded" --n 40 \
   $STEER $W2 && $PY scripts/c2_graded.py gemma4itf_wm2_full2_v1 | tail -2 \
   && $PY scripts/c2_graded.py gemma4itf_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
-BJ_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full3_v1 --why "$WHY: three-step, write_max v2" --n 40 \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name gemma4itf_wm2_full3_v1 --why "$WHY: three-step, write_max v2" --n 40 \
   $STEER $W3 && $PY scripts/c2_graded.py gemma4itf_wm2_full3_v1 > /dev/null \
   && $PY scripts/c2_graded.py gemma4itf_wm2_full3_v1 --drop-guessable > /dev/null || echo "=== three-step steering FAILED"
 echo "=== branch A done $(date -u +%FT%TZ)"

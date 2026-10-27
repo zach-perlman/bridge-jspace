@@ -1,0 +1,74 @@
+{
+ "run": "d3v4_swap_raw_27b",
+ "superseded": null,
+ "levels": [
+  "e5f0"
+ ],
+ "domains": [],
+ "n_per_family": {},
+ "nkt_per_family": {},
+ "ci": {
+  "kind": "entity_cluster",
+  "cluster": "asked entity",
+  "strata": "domain",
+  "n_boot": 2000,
+  "seed": 0,
+  "bounds": "the wider of the cluster bootstrap and the item-level Wilson interval"
+ },
+ "checks": {
+  "unedited_base_answer_read": {
+   "n": 0,
+   "base_answer": 0
+  }
+ },
+ "family_roles": [
+  "RL",
+  "DL",
+  "RR"
+ ],
+ "predicted": {
+  "e5f0": []
+ },
+ "primary": {
+  "e5f0": {
+   "verdict": {},
+   "rates": null
+  }
+ },
+ "ref_contrasts": {},
+ "strongest_layer": {},
+ "level_contrasts": {},
+ "verdicts": {},
+ "rule_unreachable_cells": {
+  "count": 0,
+  "cuts": []
+ },
+ "rates": {},
+ "near_ties": {
+  "n": 0,
+  "within_gap": 0,
+  "gap": 0.1
+ },
+ "example_line": "",
+ "example_lines": {
+  "e5f0": ""
+ },
+ "figures": {
+  "by_layer_e5f0": [
+   "by_layer_e5f0.png",
+   "by_layer_e5f0.svg"
+  ],
+  "slots_final": [
+   "slots_final_e5f0.png",
+   "slots_final_e5f0.svg"
+  ],
+  "slots_last": [
+   "slots_last_e5f0.png",
+   "slots_last_e5f0.svg"
+  ],
+  "windows": [
+   "windows_e5f0.png",
+   "windows_e5f0.svg"
+  ]
+ }
+}

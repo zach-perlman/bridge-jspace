@@ -1,0 +1,23 @@
+id: qwen35_122b_d2_formats
+title: "Late read and name vs digit in prose, tables and JSON (Qwen3.5-122B)"
+thread: D2
+gpus: 1
+mem_gb: 140
+est_gpu_hours: 2.0
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/tasks_v2.py competence --set d2_formats_v1 --name qwen35_122b_d2_formats_competence --why "D2 formats on 122B" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py manifest --name qwen35_122b_d2_formats --dataset tasks_v2 --tasks-set d2_formats_v1 --competence qwen35_122b_d2_formats_competence --families MP MM PP PM --formats prose table json --n 20 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all kind --sweep path --why "findings 3 and 4 in tables and JSON on a larger model" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py run --name qwen35_122b_d2_formats
+figures_command: uv run python scripts/d2_parts.py --name qwen35_122b_d2_formats && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/attn_knockout.py summarise --name qwen35_122b_d2_formats
+question: >-
+  Do the late read and the name / digit split hold in tables and JSON tool outputs?
+why_it_matters: >-
+  The J-space claims rest on Qwen3.6-27B; Neel asked for a larger model early. Qwen3.5-122B-A10B has a published J++ and needs no port on an H200.
+hypotheses:
+  H-all-formats: 'both hold in all three formats. Prior 0.5'
+decision_rule: >-
+  As d2_formats_27b: the committed rules per format (prose, table, json).
+controls:
+- 'the off-path statement of the same token length hidden the same way; the DeltaNet layers instead of the attention layers; unedited accuracy'
+n: '20 scenes per (word, topic, format)'
+seeds: [0]
+notes: "Dan, 2026-10-22 night: every experiment on Qwen3.5-122B-A10B on 23 Oct, on GPUs brought up for it (FP8 needs compute capability >= 8.9: one H200 per job; on A100s transformers dequantizes to bf16, ~244 GB, which needs a multi-GPU port). The 27B's rules, layers scaled by depth (x 48/64): its answer onset 33 (suite_split), the stated-bridge window [24, 33), the D4 grid 9-33. Lens: the published J++ (neuronpedia, fit on bf16 weights). Not opened before Dan predicts."

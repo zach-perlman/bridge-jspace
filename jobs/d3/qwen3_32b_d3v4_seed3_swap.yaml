@@ -1,0 +1,28 @@
+id: qwen3_32b_d3v4_seed3_swap
+title: "Finding 5, pre-registered, on Qwen3-32B's third draw (layers 48-50)"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.6
+depends_on:
+- qwen3_32b_d3v4_seed3_competence
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed3 --name qwen3_32b_d3v4_seed3_swap
+  --families RL DL --n 150 --layers 48 49 50 --control-stride 1 --groups last --competence qwen3_32b_d3v4_seed3_competence
+  --why "finding 5 as a rule fixed in advance (Dan, 22 Oct) on Qwen3-32B's third draw; scripts/finding5_confirm.py decides"
+  && BJ_TARGET=qwen3-32b uv run python scripts/pointer_swap.py run --name qwen3_32b_d3v4_seed3_swap
+figures_command: uv run python scripts/finding5_confirm.py --run qwen3_32b_d3v4_seed3_swap --layers 48 49 50
+question: >-
+  On Qwen3-32B's third draw, does the copied label pick the same place for the 1st and 2nd asked statement and the
+  donor's entity from the 3rd on?
+why_it_matters: 'Finding 5 on fresh scenes of a second model (on the first draw Qwen3-32B tied position and identity from the 3rd on).'
+hypotheses:
+  H-confirms: 'A and B hold. Prior 0.55 (the first draw tied from the 3rd on: B is the open part) (copied from qwen3_32b_d3v4_seed2_swap)'
+decision_rule: >-
+  scripts/finding5_confirm.py (committed before this run): memory -> prompt, the donor's last two tokens copied at the decisive layer, items split by the place k of the donor's asked statement; A: 1st and 2nd pooled, position - identity with its entity-cluster 95% lower bound > 0; B: 3rd-5th pooled, identity - position >= 0 (point) with its lower bound >= -0.05; confirms iff A and B, partly if one, fails if neither. Per topic and named -> prompt reported, not decisive. Decisive layer: the last of 48, 49, 50 whose donor-digit share has its Wilson upper bound < 0.10 (the fixed
+  rule the other models' layers follow), read before the split.
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt (pointer_swap''s own)'
+n: 'every eligible scene, up to 150 per topic, memory -> prompt and named -> prompt'
+seeds: [845, 0]
+notes: "mechanical copy of qwen3_32b_d3v4_seed2_swap (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Only the data set (pointer_v4 seed3), the gate, run names and dependencies change; layers, n and rules as in qwen3_32b_d3v4_seed2_swap. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2), the 27B's third draw (d3v4_seed3_competence_27b / d3v4_seed3_swap_27b)."

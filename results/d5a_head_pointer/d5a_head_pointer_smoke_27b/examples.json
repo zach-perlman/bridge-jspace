@@ -1,0 +1,198 @@
+{
+ "exp": "d5a_head_pointer",
+ "run": "d5a_head_pointer_smoke_27b",
+ "seed": 0,
+ "k": 1,
+ "groups": [
+  {
+   "key": "head_follows",
+   "title": "The answer moved; the head looks at the new statement",
+   "definition": "source dissoc, answer moved to another statement, layer 51, head 22 looks most at it",
+   "n_total": 12
+  },
+  {
+   "key": "head_stays",
+   "title": "The answer moved; the head stays on the asked statement",
+   "definition": "as above, layer 51, head 22 still looks most at the org prompt's asked statement",
+   "n_total": 13
+  },
+  {
+   "key": "lens_follows",
+   "title": "The J-lens names the new answer's entity, the head does not",
+   "definition": "moved rows, lens right, head not",
+   "n_total": 5
+  },
+  {
+   "key": "same_control",
+   "title": "Same-entity patch (control)",
+   "definition": "source same: nothing should move",
+   "n_total": 72
+  }
+ ],
+ "examples": [
+  {
+   "group": "head_follows",
+   "family": "RL",
+   "item_id": "body-RL-e5f0-0010",
+   "prompt": "<|im_start|>user\nThe chart on the forehead is kept in folder 9. The chart on the ear is kept in folder 5. The chart on the knee is kept in folder 6. The chart on the heart is kept in folder 3. The chart on the bladder is kept in folder 4.\nWhat folder keeps the chart on the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 64,
+     "end": 105,
+     "role": "head looks here most"
+    },
+    {
+     "start": 149,
+     "end": 192,
+     "role": "asked statement"
+    }
+   ],
+   "condition": "the last two tokens replaced at layer 50 by the alt prompt's (dissoc; alt question: 'What folder keeps the chart on the body part that hears sounds?')",
+   "why_short": "'... The chart on the heart is kept in folder 3. ... What folder keeps the chart on the body part that pumps blood?' -> answer org 3; after the patch the answer is '5' (word), and layer 51, head 22 looks most at 'The chart on the ear is kept in folder 5.'.",
+   "answers": {
+    "clean": "3",
+    "edited": "5",
+    "expected": {
+     "H_head_follows": "head on statement 1",
+     "H_head_static": "head on statement 3"
+    }
+   },
+   "numbers": {
+    "role": "identity",
+    "outcome": "word",
+    "head_masses": [
+     0.2266,
+     0.3396,
+     0.0543,
+     0.0046,
+     0.052
+    ],
+    "lens_top": 0
+   },
+   "why": "source dissoc, answer moved to another statement, layer 51, head 22 looks most at it"
+  },
+  {
+   "group": "head_stays",
+   "family": "DL",
+   "item_id": "countries-DL-e5f0-0250",
+   "prompt": "<|im_start|>user\nThe Belgium file is in drawer 9. The Italy file is in drawer 2. The Sweden file is in drawer 8. The Venezuela file is in drawer 7. The Portugal file is in drawer 6.\nWhich drawer holds the file on Portugal? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 81,
+     "end": 112,
+     "role": "new answer's statement"
+    },
+    {
+     "start": 148,
+     "end": 181,
+     "role": "head looks here most"
+    }
+   ],
+   "condition": "every token after the question replaced at layer 50 by the alt prompt's (dissoc; alt question: 'Which drawer holds the file on Sweden?')",
+   "why_short": "'... The Portugal file is in drawer 6. ... Which drawer holds the file on Portugal?' -> answer org 6; after the patch the answer is '8' (word), and layer 51, head 22 looks most at 'The Portugal file is in drawer 6.'.",
+   "answers": {
+    "clean": "6",
+    "edited": "8",
+    "expected": {
+     "H_head_follows": "head on statement 2",
+     "H_head_static": "head on statement 4"
+    }
+   },
+   "numbers": {
+    "role": "identity",
+    "outcome": "word",
+    "head_masses": [
+     0.0221,
+     0.0205,
+     0.0131,
+     0.0103,
+     0.69
+    ],
+    "lens_top": 2
+   },
+   "why": "as above, layer 51, head 22 still looks most at the org prompt's asked statement"
+  },
+  {
+   "group": "lens_follows",
+   "family": "RR",
+   "item_id": "body-RR-e5f0-0010",
+   "prompt": "<|im_start|>user\nThe chart on the forehead is kept in folder 9. The chart on the ear is kept in folder 5. The chart on the knee is kept in folder 6. The chart on the heart is kept in folder 3. The chart on the bladder is kept in folder 4.\nA human has how many of the body part that pumps blood? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 17,
+     "end": 63,
+     "role": "head looks here most"
+    },
+    {
+     "start": 64,
+     "end": 105,
+     "role": "new answer's statement"
+    },
+    {
+     "start": 149,
+     "end": 192,
+     "role": "asked statement"
+    }
+   ],
+   "condition": "the last two tokens replaced at layer 50 by the alt prompt's (dissoc; alt question: 'A human has how many of the body part that hears sounds?')",
+   "why_short": "'... The chart on the heart is kept in folder 3. ... A human has how many of the body part that pumps blood?' -> answer org 1; after the patch the answer is '2' (word), and layer 51, head 22 looks most at 'The chart on the forehead is kept in folder 9.'.",
+   "answers": {
+    "clean": "1",
+    "edited": "2",
+    "expected": {
+     "H_head_follows": "head on statement 1",
+     "H_head_static": "head on statement 3"
+    }
+   },
+   "numbers": {
+    "role": "identity",
+    "outcome": "word",
+    "head_masses": [
+     0.0038,
+     0.0026,
+     0.001,
+     0.0002,
+     0.0005
+    ],
+    "lens_top": 1
+   },
+   "why": "moved rows, lens right, head not"
+  },
+  {
+   "group": "same_control",
+   "family": "DL",
+   "item_id": "animals-DL-e5f0-0200",
+   "prompt": "<|im_start|>user\nLocker 1 belongs to the elephant. Locker 3 belongs to the snake. Locker 7 belongs to the spider. Locker 9 belongs to the horse. Locker 5 belongs to the cat.\nWhat locker is used by the horse? Answer with a single word and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "spans": [
+    {
+     "start": 114,
+     "end": 144,
+     "role": "head looks here most"
+    }
+   ],
+   "condition": "every token after the question replaced at layer 48 by the alt prompt's (same; alt question: 'What locker is used by the spider?')",
+   "why_short": "'... Locker 9 belongs to the horse. ... What locker is used by the horse?' -> answer org 9; after the patch the answer is '9' (kept), and layer 51, head 22 looks most at 'Locker 9 belongs to the horse.'.",
+   "answers": {
+    "clean": "9",
+    "edited": "9",
+    "expected": {
+     "H_head_follows": "head on statement 3",
+     "H_head_static": "head on statement 3"
+    }
+   },
+   "numbers": {
+    "role": "none",
+    "outcome": "kept",
+    "head_masses": [
+     0.0054,
+     0.0245,
+     0.0377,
+     0.4194,
+     0.0086
+    ],
+    "lens_top": 4
+   },
+   "why": "source same: nothing should move"
+  }
+ ]
+}

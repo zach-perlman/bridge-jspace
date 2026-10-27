@@ -1,0 +1,22 @@
+id: qwen35_122b_d3v4_competence
+title: "pointer_v4 main competence (Qwen3.5-122B)"
+thread: D3
+gpus: 1
+mem_gb: 140
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/pointer_v4.py manifest --set main seed2 --name qwen35_122b_d3v4_competence --why "pointer_v4 main and seed2 on 122B" && BJ_TARGET=qwen3.5-122b-a10b BJ_BATCH=16 uv run python scripts/pointer_v4.py competence --name qwen35_122b_d3v4_competence
+question: >-
+  Does Qwen3.5-122B answer pointer_v4's prompts (every topic and family, alt and control prompts, steps alone)?
+why_it_matters: >-
+  The J-space claims rest on Qwen3.6-27B; Neel asked for a larger model early. Qwen3.5-122B-A10B has a published J++ and needs no port on an H200.
+hypotheses:
+  H-gate: 'every topic >= 0.85 (rounded). Prior 0.8'
+decision_rule: >-
+  pointer_v4.py's gate, unchanged.
+controls:
+- 'the random patch of the same size; the donor''s digit (value) as the cut-off; unedited accuracy'
+n: 'pointer_v4 main and seed2'
+seeds: [0]
+notes: "Dan, 2026-10-22 night: every experiment on Qwen3.5-122B-A10B on 23 Oct, on GPUs brought up for it (FP8 needs compute capability >= 8.9: one H200 per job; on A100s transformers dequantizes to bf16, ~244 GB, which needs a multi-GPU port). The 27B's rules, layers scaled by depth (x 48/64): its answer onset 33 (suite_split), the stated-bridge window [24, 33), the D4 grid 9-33. Lens: the published J++ (neuronpedia, fit on bf16 weights). Not opened before Dan predicts."

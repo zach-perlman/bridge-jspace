@@ -1,0 +1,39 @@
+{
+  "kept": 59,
+  "of": 60,
+  "layers": [
+    {
+      "layer": 38,
+      "n": 59,
+      "per_slot": [
+        11,
+        12,
+        12,
+        12,
+        12
+      ],
+      "decode_cv": 0.2203,
+      "decode_cv_shuffled": 0.2203,
+      "deviation_norm_median": 0.178,
+      "state_norm_median": 6.27
+    }
+  ],
+  "geometry": [
+    {
+      "layer": 38,
+      "n_vectors": 100,
+      "entities": 86,
+      "max_abs_cos_entity_median": 0.043,
+      "max_abs_cos_entity_null": 0.0438,
+      "principal_cos": {
+        "4": {
+          "top": 0.189,
+          "null_top": 0.177
+        }
+      },
+      "jspace_share_median": 0.1088,
+      "random_dictionary_share_median": 0.1344,
+      "random_vector_jspace_share_median": 0.1109
+    }
+  ]
+}

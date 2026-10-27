@@ -1,0 +1,73 @@
+id: d3v2_offset_reflexive_main
+title: "D3 v2: is the slot the statement's order or its token position, and must the alt answer be in the prompt?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.5
+depends_on:
+- d3v2_competence_27b
+- d3v2_smoke_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v2 --set main --name d3v2_offset_reflexive_main
+  --families RL DL --n 180 --layers 16 20 24 28 32 36 40 42 44 46 48 50 52 54 56 58 60
+  --groups question final last --question-max-layer 38 --control-levels e5-pln --competence d3v2_competence_27b
+  --why "D3 v2 main: offset shift (order slot vs token position) and reflexive (alt answer in the org prompt or not)
+  on the same scenes, 5 statements + 1 filler, animals and elements"
+  && uv run python scripts/pointer_swap.py run --name d3v2_offset_reflexive_main
+examples_command: uv run python scripts/pointer_swap.py examples --name d3v2_offset_reflexive_main
+figures_command: uv run python scripts/pointer_swap.py figures --name d3v2_offset_reflexive_main
+question: >-
+  On 5-statement scenes with one filler sentence of a statement's length, when the alt prompt's hidden states at the
+  tokens after the question (and at the last two tokens) are patched into the org prompt at layers 40-60, does the org
+  prompt answer the digit at the same statement ORDER (answer at the same statement slot) or at the same TOKEN position
+  (answer at the same token position)? And is the late "alt prompt's own answer" more common when that digit is also in
+  the org prompt (a pointer to the answer token) than when it is not (the digit carried as content)?
+why_it_matters: >-
+  The first night found that the tokens after the question carry the statement's slot at layers 44-50 (29% vs 9% for the
+  word), but slot order and token position always coincided, and the alt answer was never in the org prompt. If the slot
+  is an order index, the "around" route is a binding ID in the sense of the binding/lookback literature (positional
+  pointers the word lens cannot express); if it is a token position, it is an attention address, closer to D2's finding
+  that the last tokens read the statement through attention at 48-63. If the alt answer needs to be in the prompt, the
+  late phase is a second pointer (reflexive), not the answer carried as a word: either way the lens could read but not
+  write it.
+hypotheses:
+  H-order: 'memory -> prompt, after the question or last two tokens, at the layer of the slot peak (48-50): answer at the
+    same statement slot >= 25% and answer at the same token position <= 10% (offset-shift scenes); verdict "position"'
+  H-token: 'the same cells: same token position >= 25% and same statement slot <= 10%; verdict "token"'
+  H-both: 'both >= 10% (verdict "mixed"): the pointer is partly positional in tokens, partly in order'
+  H-reflexive: 'last two tokens, layers 52-56: the alt answer share with the digit in the org prompt minus without it >=
+    +10 points (paired lower bound)'
+  H-content: 'the same difference within ±10 points (CI): the digit is carried as content (v1: 98% alt answer at layer 56
+    though the digit was never in the org prompt)'
+  prior: 'Agent prior: H-order 0.55, H-token 0.25, H-both 0.2; H-content 0.75, H-reflexive 0.25.'
+decision_rule: >-
+  Fixed before the run (scripts/pointer_swap.py docstring, "Decision rule" and "pointer_v2 additions"). Per cell (family
+  x patched tokens x layer or window x alt prompt), pooled over topics, Wilson 95%: interpretable iff the patch changes
+  the answer (lower bound >= 0.20) and the 'same' control changes it rarely (upper bound <= 0.10); the verdict is the
+  outcome whose lower bound exceeds the other candidates' upper bounds and the chance bar (the random push's upper bound,
+  the per-digit rate of unpredicted context digits); offset-shift cells have the candidates {answer of bridge alt's
+  statement, answer at the same statement slot, answer at the same token position, the alt prompt's own answer}.
+  Primary cells: memory -> prompt, offset shift, after the question and last two tokens, layers 48 and 50 and the window
+  44-52. Reflexive: per cell, the paired (same scene) difference of the alt-answer share, reflexive minus plain, with a
+  paired bootstrap 95% CI: 'reflexive' if the lower bound > +0.10, 'content' if the CI lies within ±0.10, else unclear;
+  read only where the plain cell is interpretable. Every cut the rule is applied to needs n >= 35; cuts below are
+  reported, not judged. A verdict holding in only one of the two topics is reported as topic-dependent.
+controls:
+- 'same entity, statements reshuffled (the "same" alt prompt): every hypothesis predicts answer org; rules out damage'
+- 'random push of the same size (plain scenes, every 2nd layer of the list): the chance bar for each predicted digit'
+- 'a prompt of the other topic, same size (plain scenes): realistic-activation null'
+- 'context digits no hypothesis predicts: chance inside the same runs'
+- 'plain scenes vs offset-shift scenes on the same org prompts: the slot answer should not move when only the filler moves (if it does, the order/token split is confounded by the filler)'
+- 'org prompt into itself (no-op) and layer-0 all-position patch (reproduces the alt answer): hook checks'
+n: >-
+  up to 180 scenes per topic (all eligible); per (topic x slot class x family x type) about 60 before the gate,
+  expected ~54 (animals) and ~42 (elements) after it if the gate keeps 90% / 70% of scenes; pooled over topics ~96 per
+  slot class and ~290 per family x type. The rule is applied to cuts with n >= 35 only.
+seeds: [0]
+notes: >-
+  Reads per case: 3 checks + question words at 6 layers x 2 alt prompts + after the question and last two tokens at 17
+  layers x 2 x 2 + windows ((2 sites x 3) + 1) x 2 = 97 (offset, reflexive); plain scenes also get the random push and
+  the other-topic patch at every 2nd layer of the list (3 for the question words, 9 for each other site) x 2 = +42,
+  so 139; ~111 on average. ~1,730 cases (288 eligible
+  scenes x 2 families x 3 types) -> ~192k reads; d3_main_ae_27b ran 92,100 reads in 2,401 s (38/s incl. forwards) ->
+  ~85 min + load -> 1.5 h.

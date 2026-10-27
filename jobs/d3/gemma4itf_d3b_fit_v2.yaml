@@ -1,0 +1,35 @@
+id: gemma4itf_d3b_fit_v2
+title: "D3b on Gemma 4 31B-it with Zach's J++: the slot direction vs a J++ lens push"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.8
+depends_on:
+- gemma4itf_lens_gate_v2
+- gemma4itf_d1_topics2_map_q
+command: >-
+  BJ_TARGET=gemma-4-31b-it-full uv run python scripts/d1_precheck.py --gate gemma4itf_lens_gate_v2 --competence gemma4itf_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/pointer_fit.py run --data pointer_v4 --name gemma4itf_d3b_fit_smoke_v2
+  --competence gemma4it_d3v4_competence_v2_r2 --fit-limit 20 --n-test 4 --rr-n 4 --collect-layers 40
+  --steer-layers 40 --scales 1.0 --ks 4 --primary-layer 40
+  --why "smoke: pointer_fit on Gemma with Zach's J++; not a result"
+  && BJ_TARGET=gemma-4-31b-it-full uv run python scripts/pointer_fit.py run --data pointer_v4 --name gemma4itf_d3b_fit_v2
+  --competence gemma4it_d3v4_competence_v2_r2 --n-test 150 --rr-n 50 --collect-layers 28 34 40 46
+  --steer-layers 34 40 46 --scales 1.0 2.0 --ks 4 --primary-layer 40
+  --why "D3b on Gemma with Zach's J++: olmo3_7b_instruct_jpp_d3b_fit_v2's fit, test items and scales; primary = Gemma's finding-5 layer 40, OLMo's spacing scaled by depth (+-6)"
+examples_command: BJ_TARGET=gemma-4-31b-it-full uv run python scripts/pointer_fit.py examples --name gemma4itf_d3b_fit_v2
+figures_command: BJ_TARGET=gemma-4-31b-it-full uv run python scripts/pointer_fit.py figures --name gemma4itf_d3b_fit_v2
+question: >-
+  On Gemma 4 31B-it, with Zach's J++, does a lens push of the same size (bridge alt's J++ word direction minus bridge org's) move the lookup to the target statement, where the fitted slot direction does?
+why_it_matters: >-
+  Fig D4 (finding 8's lens arm) has the 27B and OLMo; Gemma 4 is another family, and its earlier lenses failed their controls, so the lens arm was never run there.
+hypotheses:
+  H-lens-null: 'the J++ lens push moves <= 5% of lookups at layer 40, scale 1, like the plain J-lens push. Prior 0.75 (agent''s) (copied from olmo3_7b_instruct_jpp_d3b_fit_v2; layer 18 there)'
+  H-steer: 'pointer_fit''s rule at layer 40, scale 1 (slot-target rate lower bound >= 0.30 and >= 20 points above the lens push and the random direction). Prior 0.1 (agent''s; the plain J-lens run moved 2%) (copied from olmo3_7b_instruct_jpp_d3b_fit_v2; layer 18 there)'
+decision_rule: >-
+  Runs iff Zach's J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here). pointer_fit's pre-registered rule unchanged (docstring "Decision rule"; pointer_v4: entity-cluster intervals) at the primary layer 40 (Gemma's finding-5 layer: finding5_confirm's decisive layer on gemma4it_d3v4_swap_v2_r2, the README's finding-5 run, and on its second draw), scale 1. OLMo's cells around its primary (collect 12 15 18 21, steer 15 18 21 around 18 on 32 layers) scaled by depth x 60/32 (3 x 60/32 = 5.6, rounded to 6): collect 28 34 40 46, steer 34 40 46. Layers 34 and 46, scale 2 and per topic reported. Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts for Qwen3-32B and OLMo, Zach's for Gemma and Muse; no silent switch.
+controls:
+- 'lens push of the same norm (J++ word directions); random direction of the same norm; shuffled slot labels; memory -> memory items (copied from olmo3_7b_instruct_jpp_d3b_fit_v2)'
+n: '150 held-out test items (pointer_v4 main, eligible in gemma4it_d3v4_competence_v2_r2), 50 recall items'
+seeds: [0]
+notes: "Mechanical copy of olmo3_7b_instruct_jpp_d3b_fit_v2 (Dan, 23 Oct ~01:30: the full J++ lens table); not opened before Dan's predictions. Only BJ_TARGET, names, the competence (Gemma's own pointer_v4 main competence, lens-free, same weights and revision as its finding-5 run) and the layers change. Depends on gemma4itf_d1_topics2_map_q only for the precheck's competence file. Gemma breaks under most interventions (its random patch breaks 85%): the rule's validity checks (shuffled labels and memory -> memory <= 0.10) may fail."

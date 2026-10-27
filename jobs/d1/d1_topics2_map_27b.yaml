@@ -1,0 +1,24 @@
+id: d1_topics2_map_27b
+title: "D1 doubled (Qwen3.6-27B): competence and the map (PP, PM; animals, elements, Greek)"
+thread: D1
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.2
+depends_on: []
+command: >-
+  uv run python scripts/tasks_v2.py competence --set d1_topics_v2 --name d1_topics2_competence_27b --why "D1 doubled: which PP / PM scenes the model gets right on every prompt" && uv run python scripts/statement_positions.py map --name d1_topics2_smoke_27b --families PP PM --n 3 --layers 32 40 --tasks-set d1_topics_v2 --tasks-competence d1_topics2_competence_27b --why "smoke: not a result" && uv run python scripts/statement_positions.py map --name d1_topics2_map_27b --families PP PM --n 180 --tasks-set d1_topics_v2 --tasks-competence d1_topics2_competence_27b --why "D1 doubled (animals, elements, Greek): the map"
+question: >-
+  Where and at which layers is a stated bridge in transit for PP and PM on Qwen3.6-27B (doubled scenes, three topics)?
+why_it_matters: >-
+  D1 (finding 2: a lookup ignores the lens-readable part of a stated bridge) rests on one model; per topic its control passed on animals, elements and Greek with ~30 scenes each, too few for per-topic verdicts. Lens on this model: J++ (neuronpedia, the frozen 27B lens).
+hypotheses:
+  H-replicates: 'pooled replicates and no topic does not replicate. Prior 0.75'
+  H-topic-fails: 'at least one topic does not replicate (its lens part moves > 10% of lookups, or the rest < 50%). Prior 0.1'
+  H-control: 'the pooled control fails (PM lens part < 30%). Prior 0.15'
+decision_rule: >-
+  scripts/d1_verdict.py with --cell context:32 (fixed 2026-10-22 evening, before these runs: the cell d1_topics_map_27b chose by the lens-free rule). At that cell, pooled over the three topics: replicates iff the lens-readable part alone switches <= 0.10 of PP lookups and everything else >= 0.50, while PM's lens-readable part switches >= 0.30 (the positive control); a failing control: not interpretable. Per topic, the same verdict on the topic's own rows (topic_verdicts); a topic counts only if its own control passes. Finding 2 generalises across topics on this model iff the pooled verdict replicates and no topic 'does not replicate'. If the map does not put PP or PM in transit at context:32, the cell has no parts rows and the run is not interpretable. Reported, not decisive: digits vs words, the other transit cells, the nulls.
+controls:
+- 'O (another pair of picks swapped, off the path); a random direction at each row''s norm; a 25-atom OMP over a random dictionary (the fitting null); PM as the positive control on the same scenes'
+n: '180 scenes (PP and PM each; the first 180 eligible in scene order, 60 per topic), animals, elements, Greek letters, prose, 3 entities (level 0), scenes right on every prompt'
+seeds: [23]
+notes: 'Dan, 2026-10-22 evening: double the scenes on animals, elements and Greek (planets dropped: its control failed); D1 on Qwen3.5-9B with its published J++. Data: data/tasks_v2/d1_topics_v2 (scripts/tasks_v2.py make, seed 23; no context shared with d1_topics_v1). Not opened before Dan predicts (batch 12).'

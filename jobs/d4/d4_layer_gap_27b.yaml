@@ -1,0 +1,25 @@
+id: d4_layer_gap_27b
+title: "Lens push vs full patch at the stated bridge, every second layer 12-34 (Qwen3.6-27B, new fresh scenes)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.5
+depends_on: []
+command: >-
+  uv run python scripts/early_push_where.py run --name d4_layer_gap_27b --n 100 --scenes fresh --fresh-seed 2 --exclude-runs d4_where_fresh_27b --rule v2 --patch --layers 12 14 16 18 20 22 24 26 28 30 32 34 --context-layers 20 --scales 4 8 --v21-min-layer 20 --why "the layer-16 lead as a test: where the lens push stops moving lookups at the stated bridge, against the full patch of the residual there"
+figures_command: uv run python scripts/early_push_where.py figures --name d4_layer_gap_27b
+question: >-
+  Layer by layer, does the full residual patch at the stated bridge's word keep moving lookups after the lens push stops?
+why_it_matters: >-
+  On two sets of scenes the lens push at the bridge's word moves 20-30% of lookups at layer 16 and 0% from layer 20. If the full patch of the residual at the same place keeps moving lookups for several layers more, the lookup's bridge is in the residual there but outside the lens: the cleanest form of the project's main claim.
+hypotheses:
+  H-gap: 'patch_stop - lens_stop >= 6 layers, the patch >= 30% at lens_stop. Prior 0.45 (the review: lens ~18-20, patch ~30)'
+  H-no-gap: 'they stop within 2 layers of each other. Prior 0.3'
+  inconclusive: 'Prior 0.25'
+decision_rule: >-
+  scripts/early_push_where.py's layer-gap test (docstring, fixed 22 Oct 23:15 before the run): lens_stop / patch_stop = the first grid layer from which the lens push (max of 4x, 8x) / the full patch switches <= 5% of prompt -> prompt lookups at every later grid layer; at the word: H-gap iff patch_stop - lens_stop >= 6 and the patch switches >= 30% (lower bound >= 0.20) at lens_stop; H-no-gap iff <= 2; else inconclusive; valid only if the random push stays <= 5% at every layer. The sentence reported the same way.
+controls:
+- 'a random push (8x) at the same positions; recall (prompt -> memory) curves; the off-scene push; the text edits'
+n: '100 new fresh scenes (seed 2, none from map_A8_v1 or d4_where_fresh_27b), four families'
+seeds: [0]
+notes: "STOPPED 22 Oct ~23:35 at 39% of its scenes (Dan: a fourth arm and a stop rule with Wilson bounds, in one run); superseded by d4_layer_gap_v2_27b; its partial rows are not used. Dan, 2026-10-22 night (the critic's priorities: the lens claims beyond one model and family first, then the mechanism in less toy settings). Rules fixed before the run."

@@ -1,0 +1,28 @@
+id: olmo_hybrid_7b_d2_late_read_seed3
+title: "Late read on a third draw (Olmo-Hybrid-7B Instruct; attention vs DeltaNet layers)"
+thread: D2
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.05
+depends_on:
+- olmo_hybrid_7b_port_smoke
+- olmo_hybrid_7b_d3v4_seed3_competence
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py manifest --name olmo_hybrid_7b_d2_late_read_seed3 --dataset pointer_v4 --set seed3 --families RL --n 100 --sources lookup lookup_off --dests final question --layers all kind --sweep path --competence olmo_hybrid_7b_d3v4_seed3_competence --why "finding 4 on a third draw (Olmo-Hybrid-7B Instruct): the answer's statement hidden from the last tokens in every attention layer, and in every DeltaNet layer instead" && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py run --name olmo_hybrid_7b_d2_late_read_seed3
+figures_command: BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/attn_knockout.py summarise --name olmo_hybrid_7b_d2_late_read_seed3
+question: >-
+  Hidden from the last tokens in every attention layer, does the answer's statement leave the model guessing, while hidden in every DeltaNet layer instead it does not?
+why_it_matters: >-
+  Finding 4 on Olmo-Hybrid-7B Instruct rests on two draws of scenes (olmo_hybrid_7b_d2_v4_late_read_v3, olmo_hybrid_7b_d2_late_read_seed2); a third draw with the committed rule, as on the other models (*_d2_late_read_seed3).
+hypotheses:
+  H-late-attn: 'the answer''s statement hidden from the last tokens in every attention layer (8 of 32) leaves <= 20% right (Wilson upper bound <= 0.30). Prior 0.75 (copied from olmo_hybrid_7b_d2_late_read_seed2)'
+  H-late-gdn-spared: 'hidden in every DeltaNet layer (24 of 32) instead keeps >= 90% right. Prior 0.55 (copied from olmo_hybrid_7b_d2_late_read_seed2)'
+decision_rule: >-
+  Fixed 2026-10-22 for the 27B and Qwen3-32B, unchanged (olmo_hybrid_7b_d2_late_read_seed2's wording, the Qwen hybrids'): memory -> prompt, topics pooled, items right unedited. Holds iff the answer's statement hidden from the last tokens in every attention layer leaves <= 20% right with the Wilson upper bound <= 0.30, the off-path statement hidden there keeps >= 90% (lower bound >= 0.85), and hidden in every DeltaNet layer instead keeps >= 90% right. Reported next to this model's first two draws.
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+- 'the run''s own pre-run check (attn_knockout run_check): empty-source no-op exact, mode-absent positive control (the last token reads nothing), the DeltaNet kernel against the torch reference'
+n: '100 items per family (RL), seed3'
+seeds: [845]
+notes: >-
+  Mechanical copy of olmo3_7b_instruct_d2_late_read_seed3 for Olmo-Hybrid-7B Instruct, i.e. olmo_hybrid_7b_d2_late_read_seed2 with the seed3 data, as olmo3_7b_instruct_d2_late_read_seed3 is its seed2 with the seed3 data. Changed from olmo_hybrid_7b_d2_late_read_seed2: the data set (pointer_v4 seed3), the gate (olmo_hybrid_7b_d3v4_seed3_competence), run names. Kept: --layers all kind (the attention and DeltaNet arms; layer sets from the config: attn = 3, 7, ..., 31, gdn = the other 24) and the hybrid rule with the DeltaNet arm. Data: data/pointer_v4/seed3/ (data seed 845). GPU-h from the ledger: the seed2 copy took 0.02 h plus 4 s of figures. Not opened before Dan's predictions.

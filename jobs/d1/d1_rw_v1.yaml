@@ -1,0 +1,42 @@
+id: d1_rw_v1
+thread: D1
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.2
+depends_on:
+- d1_map_v1
+- d1_parts_v1
+command: >-
+  uv run python scripts/statement_positions.py readwrite --name d1_rw_v1 --map d1_map_v1 --parts d1_parts_v1
+  --why "D1: at the transit cells, does the J-lens read the bridge and does its direction write it?"
+  --lo 32 --sets bind_bridge bridge_word lookup_x context question
+examples_command: uv run python scripts/statement_positions.py examples --name d1_rw_v1
+figures_command: uv run python scripts/statement_positions.py figures --name d1_rw_v1
+question: At the cells where the bridge is in transit at layers 32-40, does the J-lens read it, and does pushing v_X -
+  v_I (0.5-16x the copy's per-position norm) write X, as it does for countries at the question tokens?
+why_it_matters: 'The lens-write half of D1''s decision. "Read without write" (RL read 95%, written <= 3% at 32-40) is
+  the strongest "around" evidence; if the lookup-used bound bridge is written by the lens where it is stated, the
+  around result is a location artefact (H-loc); if it resists there too, "around" holds wherever the bridge is in
+  transit (H-around).'
+hypotheses:
+  H-loc: 'BL/BLR at a statement set in transit: lens flips >= 30% at <= 4x with random <= 5% (countries at the
+    question tokens: 95-98% at 2-8x)'
+  H-around: 'BL/BLR: lens - random flip difference upper bound < 10 points at every scale 0.5-16x at every statement
+    set in transit; countries B / BR written at the same sets'
+  note_on_read: 'At bridge_word the word is literally there: the lens read is expected high under both hypotheses (not
+    discriminating); X''s read at bind_bridge is the floor'
+decision_rule: 'Fixed before the run (module docstring). Per family, set, primary window: written if at some scale <=
+  4x lens flips >= 30% and the paired-bootstrap lower bound of lens - random flips > 0; not written if at every scale
+  the difference''s upper bound < 0.10; else inconclusive. Combined D1 verdict (summary "claims", with d1_parts_v1):
+  H-loc supported for BL/BLR if a statement set in transit is J-space inside AND written; H-around supported if every
+  statement set in transit is around AND not written AND the positive control is inside; else neither (mixed).'
+controls:
+- 'a random direction per position at the same norms at every scale (rules out a pure norm effect)'
+- 'C''s copy at the same cell (the effect to explain)'
+- 'X''s rank at the same positions (the read''s floor)'
+- 'countries B and BR at the same sets (positive control: written at the question tokens)'
+n: up to 32 per family (d1_map_v1's cases), only families with transit cells
+seeds:
+- 0
+notes: 'Time: 13 reads per cell plus two recording forwards per case; expected ~800 cells -> ~10k reads at ~22/s
+  ~ 0.15 h + load; worst case (15 cells in every case) 0.5 h.'

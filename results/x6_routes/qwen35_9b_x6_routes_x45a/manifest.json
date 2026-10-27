@@ -1,0 +1,94 @@
+{
+  "exp": "x6_routes",
+  "run": "qwen35_9b_x6_routes_x45a",
+  "written_utc": "2026-10-26T18:46:05Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~01:50; spec jobs/c3/x6_routes.yaml; predictions: batch 32).",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "a597fe1678ec71266848824bc0934792f5705c0e",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 12,
+  "seed": 2510,
+  "smoke": false,
+  "conditions": [
+    "C2"
+  ],
+  "n_per_condition": 300,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "bothoff": false,
+  "bothoff_ctrl": false,
+  "keeponly": false,
+  "identity": false,
+  "alf_from": "qwen35_9b_x0_probe_v4",
+  "c0_min": null,
+  "fixed_layer": 12,
+  "c0_reference": {
+    "run": "qwen35_9b_x0_massmean_lf",
+    "lookup_switch": 0.9863013698630136,
+    "tolerance": 0.1
+  },
+  "rule": "a route is used iff its share >= 0.2 with lower CI >= 0.1",
+  "seeds": {
+    "scenes": 2510,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0
+  },
+  "rendering": "chat",
+  "read": "chat (the top token after a space)",
+  "prepend": [
+    "V0",
+    "V1",
+    "V2",
+    "V3",
+    "V4"
+  ],
+  "identity_controls": false,
+  "sealed": true,
+  "prepend_seed": 4501,
+  "filler_tokens": [
+    10,
+    12
+  ],
+  "batch45": "45a",
+  "arms": [
+    "whole",
+    "keep_alf",
+    "keep_alf_rand",
+    "no_alf",
+    "no_alf_rand"
+  ],
+  "fillers": [
+    "The weather stayed mild and quiet for most of the afternoon.",
+    "Everyone agreed that the meeting had gone on far too long.",
+    "Nobody could remember when the hallway lights had last been changed.",
+    "It was later than usual when the cleaning crew finally arrived."
+  ],
+  "items_per_variant": {
+    "V0": 300,
+    "V1": 300,
+    "V2": 300,
+    "V3": 300,
+    "V4": 300
+  },
+  "items": {
+    "C2": 1500
+  }
+}

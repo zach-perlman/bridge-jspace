@@ -1,0 +1,35 @@
+id: olmo3_7b_sft_d3v4_swap
+title: "D5b ladder: is there a statement-slot phase in OLMo-3-7B-SFT at layers 17-19?"
+thread: D5
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.4
+depends_on:
+- olmo3_7b_sft_d3v4_competence
+command: >-
+  BJ_TARGET=olmo-3-7b-sft uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set main --name olmo3_7b_sft_d3v4_swap --families RL DL
+  --n 300 --layers 16 17 18 19 20 21 --control-stride 1 --groups last --competence olmo3_7b_sft_d3v4_competence
+  --why "D5b: olmo3_7b_instruct_d3v4_swap_fn's test (layers placed by function on Instruct) on the SFT
+  checkpoint of the post-training ladder"
+  && BJ_TARGET=olmo-3-7b-sft uv run python scripts/pointer_swap.py run --name olmo3_7b_sft_d3v4_swap
+examples_command: BJ_TARGET=olmo-3-7b-sft uv run python scripts/pointer_swap.py examples --name olmo3_7b_sft_d3v4_swap --group last
+figures_command: BJ_TARGET=olmo-3-7b-sft uv run python scripts/pointer_swap.py figures --name olmo3_7b_sft_d3v4_swap
+question: >-
+  On OLMo-3-7B-SFT, at the layers where Instruct's last tokens carry the statement slot before the digit
+  arrives (17-19), does patching the alt prompt's last two tokens give the digit at the same statement slot more often
+  than bridge alt's statement and the alt digit?
+why_it_matters: >-
+  D5b asks whether the statement address exists before the last post-training stage. Compared with the Instruct run
+  (olmo3_7b_instruct_d3v4_swap_fn) on the same scenes and layers.
+hypotheses:
+  H-slot-phase: 'as olmo3_7b_instruct_d3v4_swap_fn (memory -> prompt, last two tokens, one of layers 17-19: verdict
+    "same statement slot" pooled and in >= 2 of 3 topics). Prior 0.45'
+decision_rule: >-
+  olmo3_7b_instruct_d3v4_swap_fn's rule, layers 17, 18, 19 fixed from the Instruct checkpoint (the same architecture;
+  the digit may arrive at another layer after other training: the alt-digit share per layer is reported, and a layer
+  where it is already >= 50% is reported as "after the digit").
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt'
+n: 'every eligible scene, up to 300 per topic; unaligned countries scenes dropped'
+seeds: [0]
+notes: '~0.4 GPU-h (7B).'

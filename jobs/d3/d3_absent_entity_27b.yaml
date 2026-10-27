@@ -1,0 +1,51 @@
+id: d3_absent_entity_27b
+title: "Finding 5's patch when the donor asks about an entity the original does not list: order label or fallback to the 1st statement? (Qwen3.6-27B, layer 50)"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.2
+depends_on:
+- d3v4_seed3_competence_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed3 --name d3_absent_entity_27b
+  --families RL DL --n 100 --layers 50 --groups last --competence d3v4_seed3_competence_27b --donor absent
+  --why "Dan's B4 (23 Oct): finding 5's patch (the donor's last two tokens at layer 50) with a donor that asks about an
+  entity absent from the original's list; scripts/absent_entity.py decides"
+  && uv run python scripts/pointer_swap.py run --name d3_absent_entity_27b
+figures_command: uv run python scripts/absent_entity.py --run d3_absent_entity_27b --layer 50
+question: >-
+  When the donor prompt asks about an entity that is not in the original prompt's list, and its last two tokens are
+  copied into the original at layer 50, does the original answer with its statement at the donor's asked place (an order
+  label), with its 1st statement (a fallback), or neither?
+why_it_matters: >-
+  Finding 5 read the patch as an order label for the 1st and 2nd asked statement and the bridge's identity from the 3rd
+  on. With the asked entity missing from the original, the identity route has nothing to point to, so what is left of
+  the patch shows whether a place label is carried at every place or only where the identity route is weak.
+hypotheses:
+  H-order: 'pooled over the donor''s asked places 2-5, the original answers with its statement at that place more often than with its 1st statement (the paired difference''s 95% lower bound > 0 and above the random push''s upper bound)'
+  H-fallback: 'the reverse: the 1st statement more often than the asked place (upper bound < 0 and below the random push''s lower bound)'
+  neither: 'anything else'
+decision_rule: >-
+  The agent's proposal for Dan's B4 (scripts/absent_entity.py's docstring, written 23 Oct before this run; Dan to
+  confirm or change before it is enqueued). Items: memory -> prompt, the donor's last two tokens copied at layer 50
+  (pointer_swap --donor absent: source dissoc, group last). Kept: scenes whose original prompt and absent-entity donor
+  are both answered right unedited (the original: the seed-3 competence run and this run's unedited read; the donor:
+  this run's donor_unedited check). Each patched answer is one of: order (the original's digit at the donor's asked
+  place k_d), fallback (the original's 1st statement's digit), unchanged (the original's answer), donor (the donor's own
+  digit, which is not in the original), another digit, no digit. Decisive items: k_d = 2-5 and an original that does
+  not ask its own 1st statement, so the four predicted digits are distinct. k_d = 1 (order and fallback are the same
+  digit) and originals asking their 1st statement (fallback and unchanged are the same digit) are reported, not
+  tested. D = mean over the decisive items of 1[order] - 1[fallback], with the entity-cluster bootstrap 95% interval
+  (finding5_confirm's: the original's asked entity resampled within its topic, 4,000 draws, seed 0). Control: the
+  random push of the same size (pointer_swap's: a seeded random direction with the patch's per-position norm, added at
+  the same two tokens and layer), the same items, the same D. Verdict: order iff D's lower bound > 0 and > the random
+  push's upper bound; fallback iff D's upper bound < 0 and < the random push's lower bound; otherwise neither; not
+  testable without decisive items or random-push rows. Reported, not decisive: every outcome's share per k_d (1-5) and
+  per topic, D per k_d (2-5) and per topic, named -> prompt with the same rule, the same-entity control's change rate,
+  the unedited reads.
+controls:
+- 'random push of the same size at the same two tokens and layer (decisive: the verdict must beat it)'
+- 'same entity, statements reshuffled; another topic''s prompt (pointer_swap''s own, reported)'
+n: '100 scenes per topic (300), drawn with seed 0 from the seed-3 scenes eligible in both families; about 186 of them decisive for memory -> prompt before the donor''s own read is checked (k_d = 2-5: 47 / 44 / 44 / 51); 55 have k_d = 1 and 59 an original asking its 1st statement'
+seeds: [845, 0]
+notes: "Dan's B4, 23 Oct. Data: pointer_v4 seed3's scenes and original prompts unchanged (the scenes of finding 5's confirmation); only the donor changes. The donor is seed3's donor of the same scene (its order, digits and wording) with a new entity in place of the entity it asked, at the same place; the new entity is drawn per scene (random.Random('absent:<scene>')) from the topic's entities not in the original's list whose cue has the same token length as the original's asked entity (memory -> prompt stays token-aligned), the same for both families of a scene; its digit is the donor's old answer, absent from the original's digits. Two animal scenes have no such entity and are left out before the draw (counted in the run's summary). Checked on the tokenizer: all 1,556 rebuilt seed3 items (RL and DL) are token-aligned with their originals. The donor's own unedited read is a check row (donor_unedited) computed from the forward the run already does; the rebuilt donors are written to donors.jsonl. Cost: d3v4_seed3_swap_27b took 1,189 s wall for 766 scenes x 2 families at the same layer and tokens; 300 scenes about 0.15 h, budgeted 0.2 h on one A100. The agent's choices, for Dan to change before the run: 100 scenes per topic (Dan: aim 300 scenes) rather than all 766 eligible; leaving out originals that ask their 1st statement from the test; the random push's interval as the bar."

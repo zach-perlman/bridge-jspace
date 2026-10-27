@@ -1,0 +1,243 @@
+{
+ "run": "qwen35_122b_x5_natural_pcfnat",
+ "manifest": {
+  "exp": "x5_natural",
+  "run": "qwen35_122b_x5_natural_pcfnat",
+  "written_utc": "2026-10-26T13:48:20Z",
+  "note": "Fixed in advance (Dan, 25 Oct ~00:20; spec jobs/c3/x5_natural.yaml; prediction: batch 31, Q31.6).",
+  "model": {
+   "target": "qwen3.5-122b-a10b",
+   "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+   "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+   "dtype": "bfloat16",
+   "attn": "sdpa",
+   "prompt_format": "chat"
+  },
+  "code": {
+   "sha": "619b90697bbb1b5128a31317fa5d9ac9d82c9d19",
+   "dirty": true
+  },
+  "lens": {
+   "name": "jpp",
+   "source": [
+    "neuronpedia/jacobian-lens",
+    "qwen3.5-122b-a10b/jpp/Salesforce-wikitext/Qwen3.5-122B-A10B_jpp_lens.pt",
+    "e166deb5ad540932100ef803c8c9bcc2a5453694"
+   ],
+   "sha256": "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  },
+  "set": "jsuite_v2_1_test_chat",
+  "inputs": {
+   "data/tasks_v2/jsuite_v2_1_test_chat/items.jsonl": "0401091f71a54983e9b94947b31efad503a552d1b36beba3de6f8aa44d47df70"
+  },
+  "layer": 33,
+  "k": 25,
+  "gate": 0.8,
+  "gate_fixed_in_advance": 0.8,
+  "read": "cand2: the top first token (either case) among the relation's answer vocabulary",
+  "rule": "gap >= 0.3 with lower CI >= 0.15 holds; <= 0.1 fails; otherwise mixed",
+  "seeds": {
+   "random_subspace": "888 + layer (CPU)",
+   "bootstrap": 0
+  },
+  "pointer_from": "x7_pcf/qwen35_122b_x7_pcf_nat",
+  "items": 114
+ },
+ "main": {
+  "n": 114,
+  "entities": 68,
+  "excess": {
+   "PP": [
+    -0.07142857142857151,
+    -0.1578947368421053,
+    0.0
+   ],
+   "PM": [
+    0.32380952380952377,
+    0.2329925468274982,
+    0.4137931034482758
+   ]
+  },
+  "gap": [
+   0.3952380952380953,
+   0.2768563310438549,
+   0.5213956735702127
+  ]
+ },
+ "label": "holds",
+ "subsets": {
+  "relation=animals": {
+   "n": 4,
+   "entities": 3,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.5,
+     0.0,
+     2.0
+    ]
+   },
+   "gap": [
+    0.5,
+    0.0,
+    2.0
+   ]
+  },
+  "relation=cities": {
+   "n": 33,
+   "entities": 19,
+   "excess": {
+    "PP": [
+     -0.1578947368421053,
+     -0.33333333333333337,
+     0.0
+    ],
+    "PM": [
+     0.2727272727272727,
+     0.12903225806451613,
+     0.4138649425287345
+    ]
+   },
+   "gap": [
+    0.430622009569378,
+    0.20414673046252008,
+    0.7070725108225108
+   ]
+  },
+  "relation=companies": {
+   "n": 16,
+   "entities": 10,
+   "excess": {
+    "PP": [
+     -0.125,
+     -0.3999999999999999,
+     0.0
+    ],
+    "PM": [
+     0.3571428571428571,
+     0.09999999999999998,
+     0.6153846153846154
+    ]
+   },
+   "gap": [
+    0.4821428571428571,
+    0.20000000000000007,
+    0.75
+   ]
+  },
+  "relation=countries": {
+   "n": 31,
+   "entities": 21,
+   "excess": {
+    "PP": [
+     0.0,
+     -0.1875,
+     0.23076923076923073
+    ],
+    "PM": [
+     0.27586206896551724,
+     0.11538461538461542,
+     0.4444444444444444
+    ]
+   },
+   "gap": [
+    0.27586206896551724,
+    0.0,
+    0.5266562620010894
+   ]
+  },
+  "relation=languages": {
+   "n": 21,
+   "entities": 14,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.4761904761904763,
+     0.25,
+     0.6956521739130435
+    ]
+   },
+   "gap": [
+    0.4761904761904763,
+    0.25,
+    0.6956521739130435
+   ]
+  },
+  "relation=people": {
+   "n": 9,
+   "entities": 8,
+   "excess": {
+    "PP": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "PM": [
+     0.16666666666666674,
+     0.0,
+     0.6
+    ]
+   },
+   "gap": [
+    0.16666666666666674,
+    0.0,
+    0.6
+   ]
+  },
+  "half=A": {
+   "n": 56,
+   "entities": 35,
+   "excess": {
+    "PP": [
+     -0.16666666666666663,
+     -0.3125,
+     -0.04162500000000046
+    ],
+    "PM": [
+     0.27450980392156865,
+     0.14583333333333337,
+     0.41666666666666663
+    ]
+   },
+   "gap": [
+    0.4411764705882353,
+    0.24777762923351135,
+    0.6694040462125568
+   ]
+  },
+  "half=B": {
+   "n": 58,
+   "entities": 34,
+   "excess": {
+    "PP": [
+     0.038461538461538436,
+     0.0,
+     0.1428571428571429
+    ],
+    "PM": [
+     0.37037037037037035,
+     0.2549019607843138,
+     0.4901960784313726
+    ]
+   },
+   "gap": [
+    0.3319088319088319,
+    0.1867525759400509,
+    0.4642857142857143
+   ]
+  }
+ },
+ "lure": {
+  "whole": 0.008771929824561403,
+  "no_part": 0.03508771929824561,
+  "no_rand": 0.008771929824561403
+ }
+}

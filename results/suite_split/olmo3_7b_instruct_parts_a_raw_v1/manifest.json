@@ -1,0 +1,138 @@
+{
+  "exp": "suite_split",
+  "run": "olmo3_7b_instruct_parts_a_raw_v1",
+  "kind": "parts",
+  "written_utc": "2026-10-21T20:23:45Z",
+  "why": "D5b ladder E3 parts on olmo-3-7b-instruct (raw)",
+  "model": {
+    "target": "olmo-3-7b-instruct",
+    "repo": "allenai/Olmo-3-7B-Instruct",
+    "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "raw"
+  },
+  "families": [
+    "BL",
+    "BR",
+    "RL",
+    "RR"
+  ],
+  "wording": "A",
+  "items": {
+    "BL": {
+      "file": "data/suite_v1/BL.json",
+      "sha256": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017"
+    },
+    "BR": {
+      "file": "data/suite_v1/BR.json",
+      "sha256": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb"
+    },
+    "RL": {
+      "file": "data/suite_v1/RL.json",
+      "sha256": "305f5e5b6679ff83466800cd05c019e62ab4d374dd0d3f916e968c8a733cd045"
+    },
+    "RR": {
+      "file": "data/suite_v1/RR.json",
+      "sha256": "1cedcc460789ba2fee5c2b6f7a0d2302d2e81a9c73acb7853843f54a807fca07"
+    }
+  },
+  "eligibility": {
+    "BL": {
+      "competence": "results/suite_v1/olmo3_7b_instruct_competence_raw_v1/items.jsonl",
+      "sha256": "734fa80a4a22e489bbb8d1c20af57844d5c5ef887808d56f5ecb28ac9a94c05b"
+    },
+    "BR": {
+      "competence": "results/suite_v1/olmo3_7b_instruct_competence_raw_v1/items.jsonl",
+      "sha256": "734fa80a4a22e489bbb8d1c20af57844d5c5ef887808d56f5ecb28ac9a94c05b"
+    },
+    "RL": {
+      "competence": "results/suite_v1/olmo3_7b_instruct_competence_raw_v1/items.jsonl",
+      "sha256": "734fa80a4a22e489bbb8d1c20af57844d5c5ef887808d56f5ecb28ac9a94c05b"
+    },
+    "RR": {
+      "competence": "results/suite_v1/olmo3_7b_instruct_competence_raw_v1/items.jsonl",
+      "sha256": "734fa80a4a22e489bbb8d1c20af57844d5c5ef887808d56f5ecb28ac9a94c05b"
+    }
+  },
+  "sample": "the map run's cases (cases.jsonl), not resampled",
+  "format": "suite_v1's: raw text: the user content, a newline and 'Answer:', no template (BJ_FORMAT=raw)",
+  "groups": {
+    "question": "the question's tokens after C's changed ones, through the end of the prompt (the instruction, the template's tokens and 'Answer:' included)",
+    "last": "the last prompt token"
+  },
+  "read": "one forward of the edited prompt, a digit answer's space token appended; role of the top token (b: X's answer, A: the bridge's, other); ld = logit(b) - logit(A); frac = (ld - ld_clean) / (ld_C - ld_clean), ld_clean and ld_C from the unedited clean and C runs",
+  "question": "At each family's window, which part of the copy carries the bridge: its J-space part or the rest?",
+  "map": {
+    "run": "olmo3_7b_instruct_map_a_raw_v1",
+    "summary_sha256": "eb410138a37c38ab7325a8ac60186079b534e3bbafd5b83371396031de44596f",
+    "cap": {
+      "BL": 31,
+      "BR": 31,
+      "RL": 31,
+      "RR": 31
+    },
+    "parts_window": {
+      "BL": [
+        15,
+        18,
+        21,
+        24,
+        27
+      ],
+      "BR": [],
+      "RL": [
+        12,
+        15,
+        18,
+        21,
+        24,
+        27
+      ],
+      "RR": [
+        12
+      ]
+    },
+    "cap_override": null
+  },
+  "lens": {
+    "jlens": [
+      "mhough/olmo3-jacobian-lenses",
+      "lenses/olmo-3-7b-instruct.pt",
+      "d15b6af0058e89e78d40847c945b6e4dc7fbfe82"
+    ],
+    "sha256": "b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774",
+    "layers": [
+      0,
+      3,
+      6,
+      9,
+      12,
+      15,
+      18,
+      21,
+      24,
+      27,
+      30
+    ]
+  },
+  "parts": {
+    "full": "delta = h_C - h_clean at the question group",
+    "lens2": "delta's projection on span{v_I, v_X}, the lens's unit vectors of the bridge and X; not_lens2 the rest",
+    "jspace": "delta's 25-atom signed OMP part over the lens's unit letter-token vectors; not_jspace the rest"
+  },
+  "controls": "each part along a seeded random direction at the same per-position norm (its null); lens2_matched and jspace_matched: per position the part's norm and cosine with delta, the rest a random direction orthogonal to delta (an equal-sized, equally aligned piece of the copy); O's full copy",
+  "decision": {
+    "measures": "primary: frac (the logit difference moved, as a fraction of the way to C); secondary: flips (top token X's answer). Per case, each averaged over the window's layers; paired bootstraps over cases",
+    "parts": "per family and measure: the J-space part's concentration = sum over cases of its effect / sum of (its share of the copy's variance x the full copy's effect), with a case-bootstrap 95% interval (1: it does what its size predicts). Verdict: inside if the lower bound is above 2.0 (it carries at least 2x its share); outside if the upper bound is below 2.0 and not_jspace - jspace is above 0 (paired bootstrap); otherwise inconclusive. The same for lens2 (the bridge's and X's own word vectors). Reported, not decisive: jspace - jspace_matched (an equal-sized, equally aligned piece of the copy) and exp09's rule against the random null (verdict_exp09). Chosen after the smoke runs (8 scenes), before any full run: with the continuous measure, the J-space part beat its random null (2-5 points) and the matched piece (0.3-2 points) in every family while moving the answer about its share of the copy's variance (8-13%), so a significance test alone would call any small piece of the copy 'inside' at n=150",
+    "claim_1": "variables used by a lookup in the prompt are carried outside the J-space: refuted if BL is inside; supported if BL is outside; the other lookup-used families (RL, BLR, NAMES, CODE) reported the same way; BR, RR and BRL (recall-used) are the comparison",
+    "tie_break": "BLR and BRL: 'what uses the bridge decides' if BLR is outside and BRL inside; 'where the answer comes from decides' if BLR is inside and BRL outside; otherwise mixed, reported family by family",
+    "empty_window": "a family with an empty window is not interpreted"
+  },
+  "calibrate": true,
+  "calibration": {
+    "parts": "rand_omp: the same 25-atom signed OMP over a random dictionary (as many unit rows as the letter-token dictionary, seeded per layer), the null for the concentration statistic; jspace_wo_own: the J-space part of delta minus its projection on the bridge's and X's lens vectors (control_split's v3)",
+    "why": "Zach (2026-10-20) asked for 1.2x as the inside threshold; rand_omp says what concentration the fitting procedure alone gives, so a threshold can be set against it",
+    "decision": "fixed before the run: the J-space part is above the fitting null in a family if its concentration's lower bound exceeds rand_omp's upper bound; its effect is the bridge's own words if jspace_wo_own moves the answer less than a quarter as far as jspace"
+  }
+}

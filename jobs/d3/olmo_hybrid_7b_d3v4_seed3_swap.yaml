@@ -1,0 +1,29 @@
+id: olmo_hybrid_7b_d3v4_seed3_swap
+title: "Finding 5, pre-registered, on Olmo-Hybrid-7B Instruct's third draw (seed 3, layers 16-21)"
+thread: D3
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.25
+depends_on:
+- olmo_hybrid_7b_port_smoke
+- olmo_hybrid_7b_d3v4_seed3_competence
+command: >-
+  BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed3 --name olmo_hybrid_7b_d3v4_seed3_swap --families RL DL --n 300 --layers 16 17 18 19 20 21 --control-stride 1 --groups last --competence olmo_hybrid_7b_d3v4_seed3_competence --why "seed 3 of olmo_hybrid_7b_d3v4_swap_fn: the same layers on a third draw of pointer_v4's scenes (Olmo-Hybrid-7B Instruct); finding 5 judged by scripts/finding5_confirm.py at 16-21"
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py run --name olmo_hybrid_7b_d3v4_seed3_swap
+figures_command: >-
+  uv run python scripts/finding5_confirm.py --run olmo_hybrid_7b_d3v4_seed3_swap --layers 16 17 18 19 20 21
+  && BJ_TARGET=olmo-hybrid-7b-instruct-dpo uv run python scripts/pointer_swap.py figures --name olmo_hybrid_7b_d3v4_seed3_swap
+question: >-
+  On scenes never seen, does the copied label pick the same place for the 1st and 2nd asked statement and the donor's entity from the 3rd on (Olmo-Hybrid-7B Instruct)?
+why_it_matters: >-
+  Finding 5 on Olmo-Hybrid-7B Instruct: finding5_confirm's verdicts on its first two draws (olmo_hybrid_7b_d3v4_swap_fn, olmo_hybrid_7b_d3v4_seed2_swap) were computed in their figures stages, under rules written for other models; a third draw with the rule fixed in advance makes it a test, as on the other models (*_d3v4_seed3_swap).
+hypotheses:
+  H-confirms: 'A and B hold (1st/2nd: position beats identity; 3rd-5th: identity at least as often as position). Prior 0.8 (copied from olmo3_7b_instruct_d3v4_seed3_swap)'
+decision_rule: >-
+  scripts/finding5_confirm.py (committed before this run), as d3v4_seed3_swap_27b and olmo3_7b_instruct_d3v4_seed3_swap: memory -> prompt, the donor's last two tokens copied at the decisive layer, items split by the place k of the donor's asked statement; A: 1st and 2nd pooled, position - identity with its entity-cluster 95% lower bound > 0; B: 3rd-5th pooled, identity - position >= 0 (point) with its lower bound >= -0.05; confirms iff A and B, partly if one, fails if neither. Per topic and named -> prompt reported, not decisive. Decisive layer: the last of 16-21 (OLMo's sweep, as finding5_confirm's verdicts on olmo_hybrid_7b_d3v4_swap_fn and olmo_hybrid_7b_d3v4_seed2_swap used) whose donor-digit share has its Wilson upper bound < 0.10, read before the split. The slot-test rule of olmo_hybrid_7b_d3v4_seed2_swap (olmo_hybrid_7b_d3v4_swap_fn's, layers 17-19) is reported by pointer_swap's figures, not decisive.
+controls:
+- 'same entity, statements reshuffled; random push of the same size; another topic''s prompt (pointer_swap''s own)'
+n: 'every eligible seed-3 scene, up to 300 per topic, memory -> prompt and named -> prompt'
+seeds: [845, 0]
+notes: >-
+  Mechanical copy of olmo3_7b_instruct_d3v4_seed3_swap for Olmo-Hybrid-7B Instruct: its command is olmo_hybrid_7b_d3v4_seed2_swap's (layers 16-21, n 300, --control-stride 1, last two tokens) with the seed3 data and its own seed3 gate; the F5 judgement (decisive) is the seed3 specs' (scripts/finding5_confirm.py at OLMo's sweep 16-21), in the figures stage as in olmo_hybrid_7b_d3v4_seed2_swap. Changed: the target, run / gate names and the reference runs; OLMo-3's layers carry over unchanged (both 32 layers), as in this model's first two draws. If finding5_confirm stops with 'no layer ... before the donor's digit arrives', the pointer_swap figures after it have to be run by hand. Data: data/pointer_v4/seed3/ (data seed 845). GPU-h from the ledger: the seed2 copy took 0.18 h plus 14 s of figures. Not opened before Dan's predictions.

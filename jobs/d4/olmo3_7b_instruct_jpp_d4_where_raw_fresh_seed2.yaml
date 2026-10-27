@@ -1,0 +1,32 @@
+id: olmo3_7b_instruct_jpp_d4_where_raw_fresh_seed2
+title: "Where can the lens write a stated bridge? (OLMo-3-7B-Instruct, our J++, raw prompts, a second fresh draw, rules v2 and v2.1)"
+thread: D4
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.3
+depends_on:
+- olmo3_7b_instruct_jpp_lens_gate
+- olmo3_7b_instruct_jpp_d4_where_raw
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct-jpp uv run python scripts/d1_precheck.py --gate olmo3_7b_instruct_jpp_lens_gate --competence olmo3_7b_instruct_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py run --name olmo3_7b_instruct_jpp_d4_where_raw_fresh_seed2_smoke --n 5 --scenes fresh --rule v2 --layers 6 8 10 12 14 16 18 20 22 --context-layers 14 16 18 20 22 --v21-min-layer 10 --fresh-seed 2 --exclude-runs olmo3_7b_instruct_jpp_d4_where_raw --why "smoke (5 scenes): the raw path's unedited answers must match the raw competence run; not a result"
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/check_unedited.py --run olmo3_7b_instruct_jpp_d4_where_raw_fresh_seed2_smoke
+  && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py run --name olmo3_7b_instruct_jpp_d4_where_raw_fresh_seed2 --n 100 --scenes fresh --rule v2 --layers 6 8 10 12 14 16 18 20 22 --context-layers 14 16 18 20 22 --v21-min-layer 10 --fresh-seed 2 --exclude-runs olmo3_7b_instruct_jpp_d4_where_raw --why "F7 replication on OLMo-3-7B-Instruct with our J++, raw prompts: a second fresh draw (seed 2, olmo3_7b_instruct_jpp_d4_where_raw's scenes left out)"
+figures_command: BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py analyze --name olmo3_7b_instruct_jpp_d4_where_raw_fresh_seed2 --rule v2.1 && BJ_TARGET=olmo-3-7b-instruct-jpp BJ_FORMAT=raw uv run python scripts/early_push_where.py figures --name olmo3_7b_instruct_jpp_d4_where_raw_fresh_seed2
+question: >-
+  On OLMo-3-7B-Instruct with our J++, raw prompts, and a second fresh draw of scenes (seed 2, the first draw's scenes left out), does a lens push at a stated bridge's sentence or word switch recalls but not lookups (finding 7)?
+why_it_matters: >-
+  Finding 7 on OLMo-3-7B-Instruct rests on one fresh draw (olmo3_7b_instruct_jpp_d4_where_raw); a second draw with the rules unchanged shows whether its verdict is that draw's, as on the 27B and the 9B (d4_where_fresh_seed2_27b, qwen35_9b_d4_where_fresh_seed2).
+hypotheses:
+  H-around: 'v2.1 (from layer 10 on): recall >= 30%, lookup <= 10%. Prior 0.5 (copied from olmo3_7b_instruct_jpp_d4_where_raw)'
+  H-no-cell: 'no valid cell. Prior 0.3 (copied from olmo3_7b_instruct_jpp_d4_where_raw)'
+  H-where: 'the lookup follows (>= 30%). Prior 0.05 (copied from olmo3_7b_instruct_jpp_d4_where_raw)'
+  inconclusive: 'Prior 0.15 (copied from olmo3_7b_instruct_jpp_d4_where_raw)'
+decision_rule: >-
+  olmo3_7b_instruct_jpp_d4_where_raw's rule, unchanged (Dan, 23 Oct ~00:50, before any OLMo J++ result): first a 5-scene smoke whose unedited answers must all be right, as the raw competence run says they are (scripts/check_unedited.py); if not, the chain stops (exit 3), the cell is skipped and logged. Runs iff our J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0). scripts/early_push_where.py unchanged: rule v2 main, v2.1 alongside, both verdicts shown; the 9B's grid (the same depth): 6-22 every 2nd, context 14-22, v2.1 from layer 10; fresh scenes: suite_split's eligibility on this model in raw format (olmo3_7b_instruct_jpp_competence_raw_v1). Primary lens (Dan, 23 Oct ~00:30): ours on 64 prompts; no silent switch. Second draw (as d4_where_fresh_seed2_27b and qwen35_9b_d4_where_fresh_seed2, Dan 23 Oct ~00:40): --fresh-seed 2 and --exclude-runs olmo3_7b_instruct_jpp_d4_where_raw (the first draw's scenes left out, read from its selection.json), nothing else changed.
+controls:
+- 'a random push of the same size; a push toward an animal not in the scene; the text edits; memory -> prompt and memory -> memory off the path; the first draw beside it'
+n: 'up to 100 fresh animal-suite scenes, four families; the pool left is 71 (171 eligible on this model in raw format and not in map_A8_v1, minus the first draw''s 100), so all 71 are drawn (seed 2 only orders them), before alignment drops (the first draw had none)'
+seeds: [0, 2]
+notes: >-
+  Mechanical copy of olmo3_7b_instruct_jpp_d4_where_raw (finding 7's lens push on OLMo-3-7B-Instruct, a second fresh draw). Changed: run names; --fresh-seed 2 and --exclude-runs olmo3_7b_instruct_jpp_d4_where_raw in the smoke and the run (the seed convention of d4_where_fresh_seed2_27b / qwen35_9b_d4_where_fresh_seed2); the source's two competence steps (suite_v1 manifest + competence, olmo3_7b_instruct_jpp_competence_raw_v1) are dropped: that run exists (written once; a second run under its name would stop on the write-once assert) and suite_split.competence_file finds it by name, so the dependency on the source job replaces them, as d4_where_fresh_seed2_27b depends on its first draw. Kept: the lens-gate precheck, the 5-scene smoke and its check (scripts/check_unedited.py), layers, scales, rules, figures. n is capped by the pool: 71 scenes instead of 100 (fewer scenes give wider intervals; no rule threshold is out of reach at 71). GPU-h from the ledger: the source took 0.36 h (100 scenes, smoke, raw competence), so ~0.25 h for 71 + 5 scenes. Not opened before Dan's predictions.

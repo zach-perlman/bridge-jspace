@@ -102,7 +102,7 @@ git add src/bridge_jspace/pins.py results/lens_fit/gemma_it_full && git -c user.
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" || exit 1
 echo "=== registered $(git log --oneline -1)"
-export BJ_TARGET=gemma-4-31b-it-full BJ_BATCH=64 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export BJ_TARGET=gemma-4-31b-it-full BJ_SUITE_BATCH=64 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 COMP=gemma4itb_competence_v1
 WHY="Zach (2026-10-21): Gemma 4 31B-it with its every-layer J++, at the 27B's relative depths"
 $PY scripts/ablate_v2.py --name gemma4itf_smoke_dose_1021 --why smoke --plan bands --bands 30-38 --conditions top5 top5_rot \

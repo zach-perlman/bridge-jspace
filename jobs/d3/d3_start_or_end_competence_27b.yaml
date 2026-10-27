@@ -1,0 +1,37 @@
+id: d3_start_or_end_competence_27b
+title: "D3 start-or-end gate: can the 27B answer scenes with filler sentences where the alt prompt has one statement more or fewer?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.25
+depends_on: []
+command: >-
+  uv run python scripts/pointer_v3.py manifest --name d3_start_or_end_competence_27b
+  --why "D3 start-or-end gate: can the 27B answer pointer_v3's scenes (5 statements and 1-2 filler sentences; the alt
+  prompt has 6 or 4 statements), every alt and control prompt and each step alone, animals and elements?"
+  && uv run python scripts/pointer_v3.py competence --name d3_start_or_end_competence_27b
+question: >-
+  Can Qwen3.6-27B answer pointer_v3's org prompts (5 statements plus one or two filler sentences of a statement's
+  length), the alt prompts (6 or 4 statements), the same-entity and changed-digit controls and each step alone, per
+  topic (animals, elements), family (memory -> prompt, named -> prompt, memory -> memory) and alt type (one statement
+  more, one fewer)? 120 scenes per topic and type.
+why_it_matters: >-
+  Gate for d3_start_or_end_main: its verdicts are read only on scenes answered unedited in every family; the run needs
+  >= 100 usable scenes per topic (pooled over the two alt types) and >= 35 per cut the rule is applied to.
+hypotheses:
+  H-competent: 'memory -> prompt clean >= 95% for animals and >= 90% for elements (pointer_v2 with one filler: 100% and
+    91%); named -> prompt and memory -> memory >= 98%; usable scenes >= 85% (animals) and >= 65% (elements)'
+  H-two-fillers-hurt: 'memory -> prompt below 85% (Wilson lower bound) where the org prompt has two filler sentences'
+  prior: 'Agent prior: H-competent 0.75.'
+decision_rule: >-
+  pointer_v1's gate, unchanged: a (topic, family, alt type) cell enters the patching run iff its clean Wilson 95% lower
+  bound >= 0.85; an item is eligible iff every prompt of it is right (org, alt, same, redigit, hop1, hop2);
+  pointer_swap keeps scenes eligible in every family of its run. Report read vs greedy agreement on the digit prompts
+  (>= 99%) and the eligible scenes per topic x alt type x slot class.
+controls:
+- 'each step alone (cue -> entity; the lookup with the entity named / the recalled fact)'
+- 'answer read vs 8-token greedy on the digit prompts'
+n: '120 scenes per topic x alt type x 3 families = 1,440 items (about 7,600 prompts)'
+seeds: [821]
+notes: >-
+  d3v2_competence_27b answered ~28,600 prompts in 1,545 s on the A100 (18.5 prompts/s): ~7 min + load.

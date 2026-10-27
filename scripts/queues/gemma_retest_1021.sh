@@ -15,7 +15,7 @@
 set -u
 cd /workspace/bridge-jspace
 set -a; . ./.env; set +a
-export BJ_TARGET=gemma-4-31b-it-refit BJ_BATCH=64 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export BJ_TARGET=gemma-4-31b-it-refit BJ_SUITE_BATCH=64 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 PY="uv run --no-sync python"
 R=/workspace/runs/bridge-cse_01EetL8PM7B9hLWZTfSi7urd
 until grep -q "^EXIT" $R-resume-1021-0052.log && grep -q "^EXIT" $R-wm2ctrlall-1021-0218.log; do sleep 120; done

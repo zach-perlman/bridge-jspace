@@ -1,0 +1,33 @@
+id: qwen35_122b_abl_rot_v1_b16
+title: "J-space removal on Qwen3.5-122B with its J++: does recall break while lookups survive? (finding 1)"
+thread: D5
+gpus: 1
+est_gpu_hours: 1.0
+mem_gb: 135
+depends_on:
+- qwen35_122b_lens_gate_v2
+- qwen35_122b_d1_topics2_map_r2
+- qwen35_122b_competence_chat_v1_b16
+command: >-
+  BJ_TARGET=qwen3.5-122b-a10b uv run python scripts/d1_precheck.py --gate qwen35_122b_lens_gate_v2 --competence qwen35_122b_d1_topics2_competence --min-topics 0
+  && BJ_TARGET=qwen3.5-122b-a10b BJ_FORMAT=chat BJ_ABL_BATCH=8 uv run python scripts/ablate_pilot.py --name qwen35_122b_abl_rot_v1
+  --why "finding 1 (J-space removal) on Qwen3.5-122B with its published J++: abl_rot_v1 at the 27B's layers scaled by depth (32 36 40 x 48/64 = 24 27 30)" --n 100 --layers 24 27 30 --comp-main qwen35_122b_competence_chat_v1
+  --comp-computed none --countries-build --rotated
+question: In Qwen3.5-122B (chat format), does removing the J-space (25-atom OMP over its own J++'s letter-token vectors) at layers 24/27/30 break recall chains (BR, RR) but not prompt lookups (BL, RL), while same-size controls leave every family intact?
+why_it_matters: 'Finding 1 (J-space removed: recall 19-22% right, lookup 99%) rests on Qwen3.6-27B alone (ablate_pilot/abl_rot_v1). On the 122B Zach ran the removal without the rotated control (qwen35_122b_abl_v1, qwen35_122b_abl_depth_v2, 20 Oct); this is the abl_rot setting with the size-matched control, on cases from a full competence run.'
+hypotheses:
+  H_split: 'J-space removal at 24/27/30 leaves BL/RL >= 90% and drops BR/RR by >= 30 points (copied from qwen35_9b_abl_rot_v1)'
+  H_none: 'no gap >= 20 (copied from qwen35_9b_abl_rot_v1)'
+  prior: 'Prior (Dan''s agent, before any run): H_pre 0.35, H_none 0.3 (copied from qwen35_9b_abl_rot_v1)'
+decision_rule: 'Runs iff the 122B''s published J++ passes gate v1 (scripts/d1_precheck.py, --min-topics 0: only the gate matters here; the first step). GATE G2: rotated and random-dictionary removal keep accuracy >= 0.90 on every family/step (items right unedited); else the J-space rows are not interpreted (Gemma''s failure mode). Split measure: gap = mean(BL, RL) - mean(BR, RR) accuracy under J-space removal, clean prompts; ''present'' if the paired-bootstrap 95% CI lower bound >= 20 points, ''absent'' if the upper bound <= 10, else ''inconclusive'' (copied from qwen35_9b_abl_rot_v1). Layers: the 27B''s 32/36/40 x 48/64 = 24/27/30 (exact; the layers of Zach''s qwen35_122b_abl_depth_v2). Primary lens (Dan, 23 Oct ~00:55): neuronpedia''s published J++ for Qwen3.5-122B-A10B; no silent switch.'
+controls:
+- 'rotated: the J-space fit turned by a fixed random rotation (exact same norm removed, position by position)'
+- 'random dictionary: same OMP over a random dictionary of the same size'
+- 'hop rows: the last step alone, to separate the step from the chain'
+- 'countries R/B (built now from exp09 eligibility on this model): word answers, a known J-space-heavy family'
+n: 100 per family (BL, BR, RL, RR clean + hop; countries R, B)
+seeds:
+- 777
+- 888
+- 0
+notes: "mechanical copy of qwen35_9b_abl_rot_v1 for Qwen3.5-122B (Dan, 23 Oct ~00:55: the whole grid on the 2x H200); not opened before Dan's predictions. Primary lens: neuronpedia's published J++ for Qwen3.5-122B-A10B (frozen, pinned in src/bridge_jspace/pins.py; fit on bf16 weights, run here on FP8). Only BJ_TARGET, the name, the cases (qwen35_122b_competence_chat_v1, lens-free, this batch), the batch and the layers change. The random-dictionary control is KEPT, unlike the 32B / Gemma / Muse removal specs (--no-random): on this model it is known to fit, since qwen35_122b_abl_depth_v2 (Zach, 20 Oct; results/ablate_pilot) ran the J-space and random-dictionary removal at these three layers on one H200 to completion at BJ_ABL_BATCH=8 (16 ran out of memory); here 4, and --rotated adds only a [d, d] rotation per layer. If it still runs out of memory, the remedy (--no-random as the 32B's, so G2 reads the rotated control alone) is a design change for Dan. Depends on qwen35_122b_d1_topics2_map_r2 only for the precheck's competence file. No examples or figures stage: ablate_pilot.py has none, as the source. Batch 16 for the read-heavy steps (Dan, 23 Oct ~01:20: known to fit on one H200, Oct 20); J-space removal at BJ_ABL_BATCH=8 (Zach's 122B run with the random-dictionary control). Queued as qwen35_122b_abl_rot_v1_b16: qwen35_122b_abl_rot_v1 had been queued at 99783ed (batch 4) and was cancelled before running."

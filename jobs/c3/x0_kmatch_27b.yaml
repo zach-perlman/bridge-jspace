@@ -1,0 +1,25 @@
+id: x0_kmatch_27b
+title: "X0 descriptive (added after data), Qwen3.6-27B L32: every dictionary at k = 50 / 100 / 200, so each can be compared with J++ at an equal removed share"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.4
+depends_on: [x0_hw_gate_27b]
+command: >-
+  uv run python scripts/x0_necessity.py run --name x0_kmatch_27b --set d1_topics_v3 --renderings chat --layers 32 --curve-dicts jpp we wu rand --curve-k 50 100 200 --why "X0 descriptive, added after data (critic, 24 Oct): every dictionary at k = 50 / 100 / 200 at L32, for equal removed shares"
+figures_command: uv run python scripts/x0_necessity.py figures --name x0_kmatch_27b
+question: >-
+  At L32 on the X0 items (chat), at k = 25 the W_U, W_E and random dictionaries each take ~0.08 of ||Δ||² against J++'s 0.155. With 50, 100 and 200 atoms of each dictionary (J++ too), what does each one's removal cost the lookup and the recall at an equal removed share?
+why_it_matters: >-
+  "Only J++ matters" was shown against same-share random parts per dictionary, not at equal removed share across dictionaries. This puts every dictionary on one share axis.
+hypotheses:
+  H-specific: 'at a removed share equal to J++ k = 25 (0.155), no other dictionary costs the recall an excess >= 0.20. Prior: none set (descriptive, added after data)'
+  H-any: 'some other dictionary at an equal share costs the recall an excess >= 0.20. Prior: none set'
+decision_rule: >-
+  Descriptive, added after data, not part of the X0 rule. Reported: per dictionary and k, the median share of ||Δ||², S_whole, S_noD, S_noRand, the absolute drops, Jdep, Rdep and excess with CIs (scripts/x0_descriptive.py), for both readers; J++ k = 25 and 50 from x0_necessity_27b_chat beside it (the same items if the competence stage reproduces them; checked).
+controls:
+- 'each dictionary''s random part at its own share (no_rand_D)'
+- 'the X0 items and read (same set, same eligibility, same code path)'
+n: '200 eligible scenes of d1_topics_v3, 2 readers each (the X0 items, recomputed)'
+seeds: [24, 0]
+notes: "Seeds as x0_necessity_27b_chat (random dictionary 777 + 32; random subspace 888 + 32). The k = 25 arms of every dictionary and the non-negative J++ arm are rerun too (the code path is the run stage's). Cost: competence ~8 min plus 200 x 2 x ~31 arms at one layer: ~20 min."

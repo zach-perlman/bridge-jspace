@@ -1,0 +1,8498 @@
+{
+ "stamp": "20261023T135208Z",
+ "commit": "d931113",
+ "grid": "results/cross_model/20261023T105852Z",
+ "command": "uv run python scripts/slot_outcomes.py --grid results/cross_model/20261023T105852Z",
+ "definitions": "slot_outcomes: where the last-two-token patch sends the answer, slot by slot (finding 5; Dan's B3, 23 Oct 2026).\n\nFinding 5: two prompts list the same entities in a different order; the donor prompt's last two tokens are copied into\nthe original at one layer (pointer_swap: source dissoc, group last). Every possible answer is a different digit (a\ncolour word in the 12-sentence lists), so the answer shows what the copy pointed to. Each patched answer is sorted into\none of five outcomes, per place k of the donor's asked sentence (k = slots.position + 1, as scripts/finding5_confirm.py):\n  order      the original's sentence at place k (role position)\n  identity   the original's sentence about the donor's entity (role identity)\n  unchanged  the original's own answer (role none)\n  another    any other sentence of the original's list (role context). Its source: \"slot 1\" (the list's first sentence),\n             \"k±1\" (a neighbour of place k that is not slot 1: at k = 2 the neighbour k - 1 is slot 1 and counts there),\n             or \"elsewhere\"; next to each, the expected count if the answer picked uniformly among the N - 3 sentences\n             no other outcome names (the baseline)\n  donor      the donor's own answer, absent from the original's list (role value)\nAnswers off the list (a recalled digit, any other digit or word: roles recall, other_digit, other) are counted apart as\n\"off list\", so the five shares sum to 100% exactly when a slot has none. Diagnostic only (off_case_n): off-list answers\nthat name an outcome when case is ignored (' Red' for 'red'); the outcomes keep pointer_swap's roles, as the grid does.",
+ "families": {
+  "RL": "memory -> prompt (recalled bridge)",
+  "DL": "named -> prompt (named bridge)"
+ },
+ "pooled_setting": "5 sentences, draws pooled",
+ "missing_cells": [
+  "Olmo-Hybrid draw 3: missing (spec olmo_hybrid_7b_d3v4_seed3_swap not run (not in the queue or the ledger))",
+  "Gemma 8 sentences: missing (no spec)",
+  "Gemma 12 sentences: missing (no spec)"
+ ],
+ "runs": [
+  {
+   "model": "27b",
+   "setting": "draw 1",
+   "run": "d3v4_swap_topics",
+   "layer": 50,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL",
+    "RR"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 762,
+    "RL": 762
+   },
+   "outcomes_sha256": "bf0753519044c3a49111c4755d4a8f12e579e9fa90d07dd757788660f01ac72f"
+  },
+  {
+   "model": "27b",
+   "setting": "draw 2",
+   "run": "d3v4_seed2_swap_27b",
+   "layer": 50,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 767,
+    "RL": 767
+   },
+   "outcomes_sha256": "7a8821a2c3fbbce0c7a4add53b7aa353a1585fab24a17307257227ffe6f48faa"
+  },
+  {
+   "model": "27b",
+   "setting": "draw 3",
+   "run": "d3v4_seed3_swap_27b",
+   "layer": 50,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 766,
+    "RL": 766
+   },
+   "outcomes_sha256": "2c4d00f517d5307f86fcb470c5d4b67d02fdbcf666289c11f30bd1a2074496ef"
+  },
+  {
+   "model": "27b",
+   "setting": "8 sentences",
+   "run": "d3v5_len8_swap_27b",
+   "layer": 50,
+   "level": "e8-digit",
+   "sentences": 8,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 419,
+    "RL": 419
+   },
+   "outcomes_sha256": "17a4dfd3a9957a97aa8be6e28a613778acb07f6c6c09a32b67a4c38264fb0196"
+  },
+  {
+   "model": "27b",
+   "setting": "12 sentences",
+   "run": "d3v5_len12_swap_27b",
+   "layer": 52,
+   "level": "e12-word",
+   "sentences": 12,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 413,
+    "RL": 413
+   },
+   "outcomes_sha256": "c5340e3a6325eb8e2edda3c62109d58c0bc9e4e19a3410bbb642a79df9f6eca1"
+  },
+  {
+   "model": "9b",
+   "setting": "draw 1",
+   "run": "qwen35_9b_d3v4_swap_r2",
+   "layer": 21,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 450,
+    "RL": 450
+   },
+   "outcomes_sha256": "5dfeab7f925debba1d9f46834110d6d615f1d34f9796c143a05a871164a8c354"
+  },
+  {
+   "model": "9b",
+   "setting": "draw 2",
+   "run": "qwen35_9b_d3v4_seed2_swap",
+   "layer": 22,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 450,
+    "RL": 450
+   },
+   "outcomes_sha256": "d4904f5dfee13053cc7fd7d2e46be2afb6c0cd412fd6cadca3efc2d7c21507b0"
+  },
+  {
+   "model": "9b",
+   "setting": "draw 3",
+   "run": "qwen35_9b_d3v4_seed3_swap",
+   "layer": 19,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 450,
+    "RL": 450
+   },
+   "outcomes_sha256": "3049b6a4b6e91ac452c39a852ff19fe20bb9508e8fa645a0fe6def791e62d77b"
+  },
+  {
+   "model": "9b",
+   "setting": "8 sentences",
+   "run": "qwen35_9b_d3v5_len8_swap",
+   "layer": 18,
+   "level": "e8-digit",
+   "sentences": 8,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 341,
+    "RL": 341
+   },
+   "outcomes_sha256": "1bc5d3db66565aac6cc6dbea755a514eae3e6f5c0b8573b212c0a71179ad82d5"
+  },
+  {
+   "model": "9b",
+   "setting": "12 sentences",
+   "run": "qwen35_9b_d3v5_len12_swap",
+   "layer": 22,
+   "level": "e12-word",
+   "sentences": 12,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 318,
+    "RL": 318
+   },
+   "outcomes_sha256": "45fa679b346a32546084c5ef2bfa2d67c108fbd9582a2085c6109e04f868f737"
+  },
+  {
+   "model": "olmo_hybrid",
+   "setting": "draw 1",
+   "run": "olmo_hybrid_7b_d3v4_swap_fn",
+   "layer": 18,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 516,
+    "RL": 516
+   },
+   "outcomes_sha256": "9bdb76931bf130ee0be08658ea4691e1f4f3426610e822838f1b7212b9469596"
+  },
+  {
+   "model": "olmo_hybrid",
+   "setting": "draw 2",
+   "run": "olmo_hybrid_7b_d3v4_seed2_swap",
+   "layer": 18,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 526,
+    "RL": 526
+   },
+   "outcomes_sha256": "267e0c798752d2becd0f152f200184660e0fe4b6ff43762c4a2cca9e2d8b854b"
+  },
+  {
+   "model": "olmo_hybrid",
+   "setting": "8 sentences",
+   "run": "olmo_hybrid_7b_d3v5_len8_swap",
+   "layer": 18,
+   "level": "e8-digit",
+   "sentences": 8,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 186,
+    "RL": 186
+   },
+   "outcomes_sha256": "668fa214e9dd3eb47238ac0ce7e7edf1d961869f8269755ede784a686f6d260d"
+  },
+  {
+   "model": "olmo_hybrid",
+   "setting": "12 sentences",
+   "run": "olmo_hybrid_7b_d3v5_len12_swap",
+   "layer": 19,
+   "level": "e12-word",
+   "sentences": 12,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 191,
+    "RL": 191
+   },
+   "outcomes_sha256": "0c1d7d88197ea2e3c49778c0369d8f176c3d30620f1efb30faec290d65bb4439"
+  },
+  {
+   "model": "122b",
+   "setting": "draw 1",
+   "run": "qwen35_122b_d3v4_swap",
+   "layer": 42,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 450,
+    "RL": 450
+   },
+   "outcomes_sha256": "efb8fcd94826b9b6fd75e1fccb9504e4077527ce39e4ee0a87f681d12f049448"
+  },
+  {
+   "model": "122b",
+   "setting": "draw 2",
+   "run": "qwen35_122b_d3v4_seed2_swap",
+   "layer": 42,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 450,
+    "RL": 450
+   },
+   "outcomes_sha256": "e83f70edaa27c80e0a4f0af539dc3f33bca6309a0f56150b8cfca42c6d7ed7e8"
+  },
+  {
+   "model": "122b",
+   "setting": "draw 3",
+   "run": "qwen35_122b_d3v4_seed3_swap",
+   "layer": 42,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 450,
+    "RL": 450
+   },
+   "outcomes_sha256": "d399ddf3ed1de292553d17ab01d02f08cd3f7b7fb7c3b4510ed147d1066be70d"
+  },
+  {
+   "model": "122b",
+   "setting": "8 sentences",
+   "run": "qwen35_122b_d3v5_len8_swap",
+   "layer": 42,
+   "level": "e8-digit",
+   "sentences": 8,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 392,
+    "RL": 392
+   },
+   "outcomes_sha256": "de595953f96793aa26d947c4ae1cbd250e6e6a50a1fc6ce163ac4b1f749e7a76"
+  },
+  {
+   "model": "122b",
+   "setting": "12 sentences",
+   "run": "qwen35_122b_d3v5_len12_swap",
+   "layer": 42,
+   "level": "e12-word",
+   "sentences": 12,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 376,
+    "RL": 376
+   },
+   "outcomes_sha256": "20e6a97e3a34550c9088e9532684b96030f9f90da3d67a97098607530ac76861"
+  },
+  {
+   "model": "32b",
+   "setting": "draw 1",
+   "run": "qwen3_32b_d3v4_swap_r2",
+   "layer": 50,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 450,
+    "RL": 450
+   },
+   "outcomes_sha256": "a579930ac95d7a667c0533e8bc7fbffe1c986ebc85e54760556be042ccd2e8ba"
+  },
+  {
+   "model": "32b",
+   "setting": "draw 2",
+   "run": "qwen3_32b_d3v4_seed2_swap",
+   "layer": 50,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 447,
+    "RL": 447
+   },
+   "outcomes_sha256": "139dd6a5e263c015766690707799875c9cb5f0cd0bdb8210a0ea7dae3c131669"
+  },
+  {
+   "model": "32b",
+   "setting": "draw 3",
+   "run": "qwen3_32b_d3v4_seed3_swap",
+   "layer": 50,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 445,
+    "RL": 445
+   },
+   "outcomes_sha256": "6eed0078bb06d1daf6ce6c564f4c934b6282ef1b5dd12734799b4b84592b8020"
+  },
+  {
+   "model": "32b",
+   "setting": "8 sentences",
+   "run": "qwen3_32b_d3v5_len8_swap",
+   "layer": 50,
+   "level": "e8-digit",
+   "sentences": 8,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 256,
+    "RL": 256
+   },
+   "outcomes_sha256": "65e14c4eb4a502ac4f8c7843d41108ad3fab3dc03167313d369e1cce05fa7db4"
+  },
+  {
+   "model": "32b",
+   "setting": "12 sentences",
+   "run": "qwen3_32b_d3v5_len12_swap",
+   "layer": 52,
+   "level": "e12-word",
+   "sentences": 12,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 269,
+    "RL": 269
+   },
+   "outcomes_sha256": "7e8216a5cca984f617ea1a92b9aae3bccf20d7b780067da8ae33645bb63a6f64"
+  },
+  {
+   "model": "olmo",
+   "setting": "draw 1",
+   "run": "olmo3_7b_instruct_d3v4_swap_fn",
+   "layer": 18,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 412,
+    "RL": 412
+   },
+   "outcomes_sha256": "dba20b596d5077113cccf1d9c6af38c7f50e1da946c367fd5aba15f20eac7830"
+  },
+  {
+   "model": "olmo",
+   "setting": "draw 2",
+   "run": "olmo3_7b_instruct_d3v4_seed2_swap",
+   "layer": 18,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 393,
+    "RL": 393
+   },
+   "outcomes_sha256": "71123bfcee5f21780ccee67a7fbfd40a79f3d0322a855508d769c9e55e81224e"
+  },
+  {
+   "model": "olmo",
+   "setting": "draw 3",
+   "run": "olmo3_7b_instruct_d3v4_seed3_swap",
+   "layer": 18,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 408,
+    "RL": 408
+   },
+   "outcomes_sha256": "b8fd50fc05f27ed8e3953dfdcbd86ace776ed2d0321357e10dbbd9df88ed3202"
+  },
+  {
+   "model": "olmo",
+   "setting": "8 sentences",
+   "run": "olmo3_7b_instruct_d3v5_len8_swap",
+   "layer": 18,
+   "level": "e8-digit",
+   "sentences": 8,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 105,
+    "RL": 105
+   },
+   "outcomes_sha256": "041cb0235637b2a25c0e9b59b0a2d688b741f89d69e2dffdec313024c33abcbf"
+  },
+  {
+   "model": "olmo",
+   "setting": "12 sentences",
+   "run": "olmo3_7b_instruct_d3v5_len12_swap",
+   "layer": 20,
+   "level": "e12-word",
+   "sentences": 12,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 92,
+    "RL": 92
+   },
+   "outcomes_sha256": "71eaf1dc95e3656df3fb948d93aa487f1a7026b7d1f04bd6eed80829a4062266"
+  },
+  {
+   "model": "muse",
+   "setting": "draw 1",
+   "run": "muse30b_d3v4_swap",
+   "layer": 32,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 434,
+    "RL": 434
+   },
+   "outcomes_sha256": "cf2f520834c4f452d8e0932415e8bddf378898a59cb5c2fc6e5e1e4629ed20b7"
+  },
+  {
+   "model": "muse",
+   "setting": "draw 2",
+   "run": "muse30b_d3v4_seed2_swap",
+   "layer": 32,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 440,
+    "RL": 440
+   },
+   "outcomes_sha256": "13cd2833e01edd865f90a47b4a8076fafe165389af0bceef03357c4721642162"
+  },
+  {
+   "model": "muse",
+   "setting": "draw 3",
+   "run": "muse30b_d3v4_seed3_swap",
+   "layer": 32,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 436,
+    "RL": 436
+   },
+   "outcomes_sha256": "229d1873d0e35aee37e4ef5bbd9966dc361c4ee6369e0099cdee10a69af0d5cd"
+  },
+  {
+   "model": "muse",
+   "setting": "8 sentences",
+   "run": "muse30b_d3v5_len8_swap",
+   "layer": 32,
+   "level": "e8-digit",
+   "sentences": 8,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 151,
+    "RL": 151
+   },
+   "outcomes_sha256": "69edf52a2da8876182c727cfddc29d630b44186c8fa74966390728766939f13f"
+  },
+  {
+   "model": "muse",
+   "setting": "12 sentences",
+   "run": "muse30b_d3v5_len12_swap",
+   "layer": 36,
+   "level": "e12-word",
+   "sentences": 12,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 124,
+    "RL": 124
+   },
+   "outcomes_sha256": "f2c0e559398eacf67046e34e55e2262e8384badd30f07eff8ae9eaa79daf9582"
+  },
+  {
+   "model": "gemma",
+   "setting": "draw 1",
+   "run": "gemma4it_d3v4_swap_v2_r2",
+   "layer": 40,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 425,
+    "RL": 425
+   },
+   "outcomes_sha256": "ee18744fb476d8752b607529e0175a7fea1da82e0e78566a55f243d55a9818a2"
+  },
+  {
+   "model": "gemma",
+   "setting": "draw 2",
+   "run": "gemma4it_d3v4_seed2_swap",
+   "layer": 40,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 426,
+    "RL": 426
+   },
+   "outcomes_sha256": "793621ccefaa8f4fb68ff447143b58ae5b67342aedd502712905f461c8d65bff"
+  },
+  {
+   "model": "gemma",
+   "setting": "draw 3",
+   "run": "gemma4it_d3v4_seed3_swap",
+   "layer": 40,
+   "level": null,
+   "sentences": 5,
+   "manifest_families": [
+    "RL",
+    "DL"
+   ],
+   "families": [
+    "DL",
+    "RL"
+   ],
+   "n": {
+    "DL": 432,
+    "RL": 432
+   },
+   "outcomes_sha256": "d47c3c4b2cfabea4d81c4023c4a9e3a72aa932ce70ccca948fe26291ecce4449"
+  }
+ ],
+ "checks_line": "grid n and point value 74/74 parts match; saved verdicts' per-k counts 33/33 match; layer 37/37 match; counts sum to n in 590/590 rows; the five shares sum to 100% in 451/590 rows (the rest: answers off the list); on-list answers whose slot agrees with the role: 28984, not resolvable from the token: 0.",
+ "check_failures": {},
+ "checks": {
+  "grid": [
+   {
+    "model": "27b",
+    "setting": "draw 1",
+    "part": "1st-2nd",
+    "n": 304,
+    "grid_n": 304,
+    "value": 0.9802631578947368,
+    "grid_value": 0.9802631578947368,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "draw 1",
+    "part": "3rd on",
+    "n": 458,
+    "grid_n": 458,
+    "value": 0.1703056768558952,
+    "grid_value": 0.1703056768558952,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "draw 2",
+    "part": "1st-2nd",
+    "n": 307,
+    "grid_n": 307,
+    "value": 0.9446254071661238,
+    "grid_value": 0.9446254071661238,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "draw 2",
+    "part": "3rd on",
+    "n": 460,
+    "grid_n": 460,
+    "value": 0.18478260869565216,
+    "grid_value": 0.18478260869565216,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "draw 3",
+    "part": "1st-2nd",
+    "n": 310,
+    "grid_n": 310,
+    "value": 0.9548387096774194,
+    "grid_value": 0.9548387096774194,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "draw 3",
+    "part": "3rd on",
+    "n": 456,
+    "grid_n": 456,
+    "value": 0.14473684210526316,
+    "grid_value": 0.14473684210526316,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "8 sentences",
+    "part": "1st-2nd",
+    "n": 114,
+    "grid_n": 114,
+    "value": 0.9824561403508771,
+    "grid_value": 0.9824561403508771,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "8 sentences",
+    "part": "3rd on",
+    "n": 305,
+    "grid_n": 305,
+    "value": 0.3180327868852459,
+    "grid_value": 0.3180327868852459,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "12 sentences",
+    "part": "1st-2nd",
+    "n": 61,
+    "grid_n": 61,
+    "value": 0.6885245901639344,
+    "grid_value": 0.6885245901639344,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "12 sentences",
+    "part": "3rd on",
+    "n": 352,
+    "grid_n": 352,
+    "value": 0.18181818181818182,
+    "grid_value": 0.18181818181818182,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 1",
+    "part": "1st-2nd",
+    "n": 176,
+    "grid_n": 176,
+    "value": 0.5170454545454546,
+    "grid_value": 0.5170454545454546,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 1",
+    "part": "3rd on",
+    "n": 274,
+    "grid_n": 274,
+    "value": 0.35036496350364965,
+    "grid_value": 0.35036496350364965,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 2",
+    "part": "1st-2nd",
+    "n": 167,
+    "grid_n": 167,
+    "value": 0.5089820359281437,
+    "grid_value": 0.5089820359281437,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 2",
+    "part": "3rd on",
+    "n": 283,
+    "grid_n": 283,
+    "value": 0.4275618374558304,
+    "grid_value": 0.4275618374558304,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 3",
+    "part": "1st-2nd",
+    "n": 172,
+    "grid_n": 172,
+    "value": 0.5290697674418605,
+    "grid_value": 0.5290697674418605,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 3",
+    "part": "3rd on",
+    "n": 278,
+    "grid_n": 278,
+    "value": 0.4028776978417266,
+    "grid_value": 0.4028776978417266,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "8 sentences",
+    "part": "1st-2nd",
+    "n": 79,
+    "grid_n": 79,
+    "value": 0.5569620253164557,
+    "grid_value": 0.5569620253164557,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "8 sentences",
+    "part": "3rd on",
+    "n": 262,
+    "grid_n": 262,
+    "value": 0.5,
+    "grid_value": 0.5,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "12 sentences",
+    "part": "1st-2nd",
+    "n": 40,
+    "grid_n": 40,
+    "value": 0.575,
+    "grid_value": 0.575,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "12 sentences",
+    "part": "3rd on",
+    "n": 278,
+    "grid_n": 278,
+    "value": 0.3489208633093525,
+    "grid_value": 0.3489208633093525,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 1",
+    "part": "1st-2nd",
+    "n": 210,
+    "grid_n": 210,
+    "value": 0.580952380952381,
+    "grid_value": 0.580952380952381,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 1",
+    "part": "3rd on",
+    "n": 306,
+    "grid_n": 306,
+    "value": 0.30718954248366015,
+    "grid_value": 0.30718954248366015,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 2",
+    "part": "1st-2nd",
+    "n": 209,
+    "grid_n": 209,
+    "value": 0.5215311004784688,
+    "grid_value": 0.5215311004784688,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 2",
+    "part": "3rd on",
+    "n": 317,
+    "grid_n": 317,
+    "value": 0.3470031545741325,
+    "grid_value": 0.3470031545741325,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "8 sentences",
+    "part": "1st-2nd",
+    "n": 42,
+    "grid_n": 42,
+    "value": 0.7857142857142857,
+    "grid_value": 0.7857142857142857,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "8 sentences",
+    "part": "3rd on",
+    "n": 144,
+    "grid_n": 144,
+    "value": 0.3125,
+    "grid_value": 0.3125,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "12 sentences",
+    "part": "1st-2nd",
+    "n": 27,
+    "grid_n": 27,
+    "value": 0.7037037037037037,
+    "grid_value": 0.7037037037037037,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "12 sentences",
+    "part": "3rd on",
+    "n": 164,
+    "grid_n": 164,
+    "value": 0.13414634146341464,
+    "grid_value": 0.13414634146341464,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 1",
+    "part": "1st-2nd",
+    "n": 181,
+    "grid_n": 181,
+    "value": 0.7237569060773481,
+    "grid_value": 0.7237569060773481,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 1",
+    "part": "3rd on",
+    "n": 269,
+    "grid_n": 269,
+    "value": 0.4275092936802974,
+    "grid_value": 0.4275092936802974,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 2",
+    "part": "1st-2nd",
+    "n": 170,
+    "grid_n": 170,
+    "value": 0.6352941176470588,
+    "grid_value": 0.6352941176470588,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 2",
+    "part": "3rd on",
+    "n": 280,
+    "grid_n": 280,
+    "value": 0.4107142857142857,
+    "grid_value": 0.4107142857142857,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 3",
+    "part": "1st-2nd",
+    "n": 180,
+    "grid_n": 180,
+    "value": 0.65,
+    "grid_value": 0.65,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 3",
+    "part": "3rd on",
+    "n": 270,
+    "grid_n": 270,
+    "value": 0.34074074074074073,
+    "grid_value": 0.34074074074074073,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "8 sentences",
+    "part": "1st-2nd",
+    "n": 103,
+    "grid_n": 103,
+    "value": 0.7961165048543689,
+    "grid_value": 0.7961165048543689,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "8 sentences",
+    "part": "3rd on",
+    "n": 289,
+    "grid_n": 289,
+    "value": 0.45674740484429066,
+    "grid_value": 0.45674740484429066,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "12 sentences",
+    "part": "1st-2nd",
+    "n": 57,
+    "grid_n": 57,
+    "value": 0.2982456140350877,
+    "grid_value": 0.2982456140350877,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "12 sentences",
+    "part": "3rd on",
+    "n": 319,
+    "grid_n": 319,
+    "value": 0.23824451410658307,
+    "grid_value": 0.23824451410658307,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 1",
+    "part": "1st-2nd",
+    "n": 178,
+    "grid_n": 178,
+    "value": 0.9213483146067416,
+    "grid_value": 0.9213483146067416,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 1",
+    "part": "3rd on",
+    "n": 272,
+    "grid_n": 272,
+    "value": 0.029411764705882353,
+    "grid_value": 0.029411764705882353,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 2",
+    "part": "1st-2nd",
+    "n": 179,
+    "grid_n": 179,
+    "value": 0.8212290502793296,
+    "grid_value": 0.8212290502793296,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 2",
+    "part": "3rd on",
+    "n": 268,
+    "grid_n": 268,
+    "value": 0.11940298507462686,
+    "grid_value": 0.11940298507462686,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 3",
+    "part": "1st-2nd",
+    "n": 167,
+    "grid_n": 167,
+    "value": 0.8383233532934131,
+    "grid_value": 0.8383233532934131,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 3",
+    "part": "3rd on",
+    "n": 278,
+    "grid_n": 278,
+    "value": 0.11870503597122302,
+    "grid_value": 0.11870503597122302,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "8 sentences",
+    "part": "1st-2nd",
+    "n": 64,
+    "grid_n": 64,
+    "value": 0.828125,
+    "grid_value": 0.828125,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "8 sentences",
+    "part": "3rd on",
+    "n": 192,
+    "grid_n": 192,
+    "value": 0.203125,
+    "grid_value": 0.203125,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "12 sentences",
+    "part": "1st-2nd",
+    "n": 45,
+    "grid_n": 45,
+    "value": 0.7333333333333333,
+    "grid_value": 0.7333333333333333,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "12 sentences",
+    "part": "3rd on",
+    "n": 224,
+    "grid_n": 224,
+    "value": 0.14285714285714285,
+    "grid_value": 0.14285714285714285,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 1",
+    "part": "1st-2nd",
+    "n": 148,
+    "grid_n": 148,
+    "value": 0.42567567567567566,
+    "grid_value": 0.42567567567567566,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 1",
+    "part": "3rd on",
+    "n": 264,
+    "grid_n": 264,
+    "value": 0.25757575757575757,
+    "grid_value": 0.25757575757575757,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 2",
+    "part": "1st-2nd",
+    "n": 150,
+    "grid_n": 150,
+    "value": 0.5066666666666667,
+    "grid_value": 0.5066666666666667,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 2",
+    "part": "3rd on",
+    "n": 243,
+    "grid_n": 243,
+    "value": 0.25925925925925924,
+    "grid_value": 0.25925925925925924,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 3",
+    "part": "1st-2nd",
+    "n": 166,
+    "grid_n": 166,
+    "value": 0.4036144578313253,
+    "grid_value": 0.4036144578313253,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 3",
+    "part": "3rd on",
+    "n": 242,
+    "grid_n": 242,
+    "value": 0.2190082644628099,
+    "grid_value": 0.2190082644628099,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "8 sentences",
+    "part": "1st-2nd",
+    "n": 26,
+    "grid_n": 26,
+    "value": 0.5,
+    "grid_value": 0.5,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "8 sentences",
+    "part": "3rd on",
+    "n": 79,
+    "grid_n": 79,
+    "value": 0.3291139240506329,
+    "grid_value": 0.3291139240506329,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "12 sentences",
+    "part": "1st-2nd",
+    "n": 9,
+    "grid_n": 9,
+    "value": 0.4444444444444444,
+    "grid_value": 0.4444444444444444,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "12 sentences",
+    "part": "3rd on",
+    "n": 83,
+    "grid_n": 83,
+    "value": 0.18072289156626506,
+    "grid_value": 0.18072289156626506,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 1",
+    "part": "1st-2nd",
+    "n": 173,
+    "grid_n": 173,
+    "value": 0.7514450867052023,
+    "grid_value": 0.7514450867052023,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 1",
+    "part": "3rd on",
+    "n": 261,
+    "grid_n": 261,
+    "value": 0.3793103448275862,
+    "grid_value": 0.3793103448275862,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 2",
+    "part": "1st-2nd",
+    "n": 174,
+    "grid_n": 174,
+    "value": 0.7931034482758621,
+    "grid_value": 0.7931034482758621,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 2",
+    "part": "3rd on",
+    "n": 266,
+    "grid_n": 266,
+    "value": 0.30451127819548873,
+    "grid_value": 0.30451127819548873,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 3",
+    "part": "1st-2nd",
+    "n": 168,
+    "grid_n": 168,
+    "value": 0.7619047619047619,
+    "grid_value": 0.7619047619047619,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 3",
+    "part": "3rd on",
+    "n": 268,
+    "grid_n": 268,
+    "value": 0.24253731343283583,
+    "grid_value": 0.24253731343283583,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "8 sentences",
+    "part": "1st-2nd",
+    "n": 32,
+    "grid_n": 32,
+    "value": 0.78125,
+    "grid_value": 0.78125,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "8 sentences",
+    "part": "3rd on",
+    "n": 119,
+    "grid_n": 119,
+    "value": 0.2184873949579832,
+    "grid_value": 0.2184873949579832,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "12 sentences",
+    "part": "1st-2nd",
+    "n": 16,
+    "grid_n": 16,
+    "value": 0.5625,
+    "grid_value": 0.5625,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "12 sentences",
+    "part": "3rd on",
+    "n": 108,
+    "grid_n": 108,
+    "value": 0.046296296296296294,
+    "grid_value": 0.046296296296296294,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 1",
+    "part": "1st-2nd",
+    "n": 171,
+    "grid_n": 171,
+    "value": 0.3333333333333333,
+    "grid_value": 0.3333333333333333,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 1",
+    "part": "3rd on",
+    "n": 254,
+    "grid_n": 254,
+    "value": 0.2952755905511811,
+    "grid_value": 0.2952755905511811,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 2",
+    "part": "1st-2nd",
+    "n": 164,
+    "grid_n": 164,
+    "value": 0.24390243902439024,
+    "grid_value": 0.24390243902439024,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 2",
+    "part": "3rd on",
+    "n": 262,
+    "grid_n": 262,
+    "value": 0.2824427480916031,
+    "grid_value": 0.2824427480916031,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 3",
+    "part": "1st-2nd",
+    "n": 172,
+    "grid_n": 172,
+    "value": 0.313953488372093,
+    "grid_value": 0.313953488372093,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 3",
+    "part": "3rd on",
+    "n": 260,
+    "grid_n": 260,
+    "value": 0.27307692307692305,
+    "grid_value": 0.27307692307692305,
+    "ok": true
+   }
+  ],
+  "verdict": [
+   {
+    "model": "27b",
+    "setting": "draw 3",
+    "verdict": "results/finding5_confirm/d3v4_seed3_swap_27b_20261022-172157/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "8 sentences",
+    "verdict": "results/finding5_confirm/d3v5_len8_swap_27b_e8-digit_20261023-055503/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "12 sentences",
+    "verdict": "results/finding5_confirm/d3v5_len12_swap_27b_e12-word_20261023-054540/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 1",
+    "verdict": "results/finding5_confirm/qwen35_9b_d3v4_swap_r2_20261022-203850/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 2",
+    "verdict": "results/finding5_confirm/qwen35_9b_d3v4_seed2_swap_20261022-191553/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 3",
+    "verdict": "results/finding5_confirm/qwen35_9b_d3v4_seed3_swap_20261023-071911/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "8 sentences",
+    "verdict": "results/finding5_confirm/qwen35_9b_d3v5_len8_swap_e8-digit_20261023-053233/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "12 sentences",
+    "verdict": "results/finding5_confirm/qwen35_9b_d3v5_len12_swap_e12-word_20261023-053329/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 1",
+    "verdict": "results/finding5_confirm/olmo_hybrid_7b_d3v4_swap_fn_20261023-043737/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 2",
+    "verdict": "results/finding5_confirm/olmo_hybrid_7b_d3v4_seed2_swap_20261023-041610/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "8 sentences",
+    "verdict": "results/finding5_confirm/olmo_hybrid_7b_d3v5_len8_swap_e8-digit_20261023-063242/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "12 sentences",
+    "verdict": "results/finding5_confirm/olmo_hybrid_7b_d3v5_len12_swap_e12-word_20261023-064150/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 1",
+    "verdict": "results/finding5_confirm/qwen35_122b_d3v4_swap_20261023-010203/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 2",
+    "verdict": "results/finding5_confirm/qwen35_122b_d3v4_seed2_swap_20261023-025906/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 3",
+    "verdict": "results/finding5_confirm/qwen35_122b_d3v4_seed3_swap_20261023-032645/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "8 sentences",
+    "verdict": "results/finding5_confirm/qwen35_122b_d3v5_len8_swap_e8-digit_20261023-051442/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "12 sentences",
+    "verdict": "results/finding5_confirm/qwen35_122b_d3v5_len12_swap_e12-word_20261023-041808/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 2",
+    "verdict": "results/finding5_confirm/qwen3_32b_d3v4_seed2_swap_20261022-171026/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 3",
+    "verdict": "results/finding5_confirm/qwen3_32b_d3v4_seed3_swap_20261023-071224/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "8 sentences",
+    "verdict": "results/finding5_confirm/qwen3_32b_d3v5_len8_swap_e8-digit_20261023-061917/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "12 sentences",
+    "verdict": "results/finding5_confirm/qwen3_32b_d3v5_len12_swap_e12-word_20261023-061726/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 1",
+    "verdict": "results/finding5_confirm/olmo3_7b_instruct_d3v4_swap_fn_20261022-200354/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 2",
+    "verdict": "results/finding5_confirm/olmo3_7b_instruct_d3v4_seed2_swap_20261022-222827/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 3",
+    "verdict": "results/finding5_confirm/olmo3_7b_instruct_d3v4_seed3_swap_20261023-072419/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "8 sentences",
+    "verdict": "results/finding5_confirm/olmo3_7b_instruct_d3v5_len8_swap_e8-digit_20261023-060403/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "12 sentences",
+    "verdict": "results/finding5_confirm/olmo3_7b_instruct_d3v5_len12_swap_e12-word_20261023-101137/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 2",
+    "verdict": "results/finding5_confirm/muse30b_d3v4_seed2_swap_20261023-012450/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 3",
+    "verdict": "results/finding5_confirm/muse30b_d3v4_seed3_swap_20261023-081705/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "8 sentences",
+    "verdict": "results/finding5_confirm/muse30b_d3v5_len8_swap_e8-digit_20261023-065433/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "12 sentences",
+    "verdict": "results/finding5_confirm/muse30b_d3v5_len12_swap_e12-word_20261023-064324/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 1",
+    "verdict": "results/finding5_confirm/gemma4it_d3v4_swap_v2_r2_20261022-203851/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 2",
+    "verdict": "results/finding5_confirm/gemma4it_d3v4_seed2_swap_20261022-200015/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 3",
+    "verdict": "results/finding5_confirm/gemma4it_d3v4_seed3_swap_20261023-080351/verdict.json",
+    "families": [
+     "DL",
+     "RL"
+    ],
+    "ok": true
+   }
+  ],
+  "layer": [
+   {
+    "model": "27b",
+    "setting": "draw 1",
+    "rule": "fixed 50",
+    "layer": 50,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "draw 2",
+    "rule": "fixed 50",
+    "layer": 50,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "draw 3",
+    "rule": "fixed 50",
+    "layer": 50,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "8 sentences",
+    "rule": "donor-digit rule over [44, 46, 48, 50, 52, 54, 56]",
+    "layer": 50,
+    "ok": true
+   },
+   {
+    "model": "27b",
+    "setting": "12 sentences",
+    "rule": "donor-digit rule over [44, 46, 48, 50, 52, 54, 56]",
+    "layer": 52,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 1",
+    "rule": "donor-digit rule over [12, 14, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30]",
+    "layer": 21,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 2",
+    "rule": "donor-digit rule over [12, 14, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30]",
+    "layer": 22,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "draw 3",
+    "rule": "donor-digit rule over [12, 14, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30]",
+    "layer": 19,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "8 sentences",
+    "rule": "donor-digit rule over [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
+    "layer": 18,
+    "ok": true
+   },
+   {
+    "model": "9b",
+    "setting": "12 sentences",
+    "rule": "donor-digit rule over [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
+    "layer": 22,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 1",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 18,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 2",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 18,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "8 sentences",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 18,
+    "ok": true
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "12 sentences",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 19,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 1",
+    "rule": "donor-digit rule over [24, 26, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 44, 46]",
+    "layer": 42,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 2",
+    "rule": "donor-digit rule over [24, 26, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 44, 46]",
+    "layer": 42,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "draw 3",
+    "rule": "donor-digit rule over [24, 26, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 42, 44, 46]",
+    "layer": 42,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "8 sentences",
+    "rule": "donor-digit rule over [33, 35, 36, 38, 39, 41, 42]",
+    "layer": 42,
+    "ok": true
+   },
+   {
+    "model": "122b",
+    "setting": "12 sentences",
+    "rule": "donor-digit rule over [33, 35, 36, 38, 39, 41, 42]",
+    "layer": 42,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 1",
+    "rule": "donor-digit rule over [24, 28, 32, 36, 40, 42, 44, 46, 48, 50, 52, 54, 56, 60]",
+    "layer": 50,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 2",
+    "rule": "donor-digit rule over [48, 49, 50]",
+    "layer": 50,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "draw 3",
+    "rule": "donor-digit rule over [48, 49, 50]",
+    "layer": 50,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "8 sentences",
+    "rule": "donor-digit rule over [44, 46, 48, 50, 52, 54, 56]",
+    "layer": 50,
+    "ok": true
+   },
+   {
+    "model": "32b",
+    "setting": "12 sentences",
+    "rule": "donor-digit rule over [44, 46, 48, 50, 52, 54, 56]",
+    "layer": 52,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 1",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 18,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 2",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 18,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 3",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 18,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "8 sentences",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 18,
+    "ok": true
+   },
+   {
+    "model": "olmo",
+    "setting": "12 sentences",
+    "rule": "donor-digit rule over [16, 17, 18, 19, 20, 21]",
+    "layer": 20,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 1",
+    "rule": "donor-digit rule over [20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50]",
+    "layer": 32,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 2",
+    "rule": "donor-digit rule over [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48]",
+    "layer": 32,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "draw 3",
+    "rule": "donor-digit rule over [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48]",
+    "layer": 32,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "8 sentences",
+    "rule": "donor-digit rule over [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48]",
+    "layer": 32,
+    "ok": true
+   },
+   {
+    "model": "muse",
+    "setting": "12 sentences",
+    "rule": "donor-digit rule over [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48]",
+    "layer": 36,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 1",
+    "rule": "donor-digit rule over [20, 24, 28, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 56]",
+    "layer": 40,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 2",
+    "rule": "donor-digit rule over [20, 24, 28, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 56]",
+    "layer": 40,
+    "ok": true
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 3",
+    "rule": "donor-digit rule over [20, 24, 28, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 56]",
+    "layer": 40,
+    "ok": true
+   }
+  ],
+  "slots": [
+   {
+    "model": "27b",
+    "setting": "draw 1",
+    "agrees": 1524,
+    "unresolved": 0
+   },
+   {
+    "model": "27b",
+    "setting": "draw 2",
+    "agrees": 1534,
+    "unresolved": 0
+   },
+   {
+    "model": "27b",
+    "setting": "draw 3",
+    "agrees": 1532,
+    "unresolved": 0
+   },
+   {
+    "model": "27b",
+    "setting": "8 sentences",
+    "agrees": 838,
+    "unresolved": 0
+   },
+   {
+    "model": "27b",
+    "setting": "12 sentences",
+    "agrees": 763,
+    "unresolved": 0
+   },
+   {
+    "model": "9b",
+    "setting": "draw 1",
+    "agrees": 852,
+    "unresolved": 0
+   },
+   {
+    "model": "9b",
+    "setting": "draw 2",
+    "agrees": 832,
+    "unresolved": 0
+   },
+   {
+    "model": "9b",
+    "setting": "draw 3",
+    "agrees": 853,
+    "unresolved": 0
+   },
+   {
+    "model": "9b",
+    "setting": "8 sentences",
+    "agrees": 682,
+    "unresolved": 0
+   },
+   {
+    "model": "9b",
+    "setting": "12 sentences",
+    "agrees": 633,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 1",
+    "agrees": 1021,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "draw 2",
+    "agrees": 1044,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "8 sentences",
+    "agrees": 370,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo_hybrid",
+    "setting": "12 sentences",
+    "agrees": 325,
+    "unresolved": 0
+   },
+   {
+    "model": "122b",
+    "setting": "draw 1",
+    "agrees": 900,
+    "unresolved": 0
+   },
+   {
+    "model": "122b",
+    "setting": "draw 2",
+    "agrees": 900,
+    "unresolved": 0
+   },
+   {
+    "model": "122b",
+    "setting": "draw 3",
+    "agrees": 900,
+    "unresolved": 0
+   },
+   {
+    "model": "122b",
+    "setting": "8 sentences",
+    "agrees": 784,
+    "unresolved": 0
+   },
+   {
+    "model": "122b",
+    "setting": "12 sentences",
+    "agrees": 655,
+    "unresolved": 0
+   },
+   {
+    "model": "32b",
+    "setting": "draw 1",
+    "agrees": 899,
+    "unresolved": 0
+   },
+   {
+    "model": "32b",
+    "setting": "draw 2",
+    "agrees": 893,
+    "unresolved": 0
+   },
+   {
+    "model": "32b",
+    "setting": "draw 3",
+    "agrees": 888,
+    "unresolved": 0
+   },
+   {
+    "model": "32b",
+    "setting": "8 sentences",
+    "agrees": 506,
+    "unresolved": 0
+   },
+   {
+    "model": "32b",
+    "setting": "12 sentences",
+    "agrees": 495,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 1",
+    "agrees": 811,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 2",
+    "agrees": 772,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo",
+    "setting": "draw 3",
+    "agrees": 809,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo",
+    "setting": "8 sentences",
+    "agrees": 206,
+    "unresolved": 0
+   },
+   {
+    "model": "olmo",
+    "setting": "12 sentences",
+    "agrees": 149,
+    "unresolved": 0
+   },
+   {
+    "model": "muse",
+    "setting": "draw 1",
+    "agrees": 865,
+    "unresolved": 0
+   },
+   {
+    "model": "muse",
+    "setting": "draw 2",
+    "agrees": 880,
+    "unresolved": 0
+   },
+   {
+    "model": "muse",
+    "setting": "draw 3",
+    "agrees": 871,
+    "unresolved": 0
+   },
+   {
+    "model": "muse",
+    "setting": "8 sentences",
+    "agrees": 301,
+    "unresolved": 0
+   },
+   {
+    "model": "muse",
+    "setting": "12 sentences",
+    "agrees": 131,
+    "unresolved": 0
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 1",
+    "agrees": 850,
+    "unresolved": 0
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 2",
+    "agrees": 852,
+    "unresolved": 0
+   },
+   {
+    "model": "gemma",
+    "setting": "draw 3",
+    "agrees": 864,
+    "unresolved": 0
+   }
+  ],
+  "sum": [
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 84.85
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 89.29
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.78
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 91.49
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 90.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 94.59
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.3
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.06
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.46
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.74
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.5
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.3
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 96.15
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.99
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.99
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.95
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 96.55
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.45
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.06
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.11
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 96.15
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.04
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.94
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.11
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.22
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.65
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.14
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.24
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 94.44
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.71
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 93.75
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 84.62
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.24
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 94.44
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.89
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 65.52
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.71
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.1
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 86.84
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.24
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 91.18
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 82.86
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 93.1
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 90.91
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.46
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 92.86
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 82.76
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.71
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 83.33
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 84.21
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.24
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 94.12
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.57
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 93.1
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 93.94
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 84.62
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.71
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.96
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 96.55
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.83
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.62
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 96.77
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 92.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 91.67
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 96.15
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 93.75
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 87.5
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 93.55
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.83
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 96.15
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.72
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.85
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 95.92
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.73
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.57
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.67
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.83
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.37
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.33
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.91
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.37
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.78
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.8
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.47
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.8
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 88.89
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 94.74
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 90.91
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.71
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 91.67
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 72.73
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 50.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 66.67
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 44.44
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.71
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 80.0
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.86
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "8 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 90.91
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 92.86
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 87.5
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 85.71
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 90.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 72.73
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 40.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 30.77
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 36.36
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 18.18
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 6,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 21.43
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 7,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 25.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 8,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 28.57
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 9,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 23.08
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 10,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 28.57
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 11,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 21.43
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "12 sentences",
+    "k": 12,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 0.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 1",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 2",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "draw 3",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "27b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.66
+   },
+   {
+    "model": "9b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.31
+   },
+   {
+    "model": "9b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.53
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.48
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.69
+   },
+   {
+    "model": "olmo_hybrid",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.62
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "122b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.64
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "32b",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.56
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.77
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 97.75
+   },
+   {
+    "model": "olmo",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.32
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.58
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.12
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.18
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.63
+   },
+   {
+    "model": "olmo",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 98.74
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 99.61
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "muse",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "DL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 1,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 2,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 3,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 4,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   },
+   {
+    "model": "gemma",
+    "family": "RL",
+    "setting": "5 sentences, draws pooled",
+    "k": 5,
+    "counts_sum_to_n": true,
+    "five_sum_pct": 100.0
+   }
+  ]
+ },
+ "another_sources": [
+  {
+   "model": "27b",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 2295,
+   "another_n": 216,
+   "slot 1": {
+    "n": 3,
+    "pct": 1.39,
+    "uniform_pct": 15.05
+   },
+   "k±1": {
+    "n": 142,
+    "pct": 65.74,
+    "uniform_pct": 53.01
+   },
+   "elsewhere": {
+    "n": 71,
+    "pct": 32.87,
+    "uniform_pct": 31.94
+   },
+   "unresolved": 0,
+   "k-1_n": 75,
+   "k+1_n": 67
+  },
+  {
+   "model": "27b",
+   "family": "RL",
+   "setting": "8 sentences",
+   "answers": 419,
+   "another_n": 77,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 13.77
+   },
+   "k±1": {
+    "n": 43,
+    "pct": 55.84,
+    "uniform_pct": 28.83
+   },
+   "elsewhere": {
+    "n": 34,
+    "pct": 44.16,
+    "uniform_pct": 57.4
+   },
+   "unresolved": 0,
+   "k-1_n": 27,
+   "k+1_n": 16
+  },
+  {
+   "model": "27b",
+   "family": "RL",
+   "setting": "12 sentences",
+   "answers": 413,
+   "another_n": 64,
+   "slot 1": {
+    "n": 2,
+    "pct": 3.12,
+    "uniform_pct": 8.47
+   },
+   "k±1": {
+    "n": 19,
+    "pct": 29.69,
+    "uniform_pct": 17.72
+   },
+   "elsewhere": {
+    "n": 43,
+    "pct": 67.19,
+    "uniform_pct": 73.8
+   },
+   "unresolved": 0,
+   "k-1_n": 11,
+   "k+1_n": 8
+  },
+  {
+   "model": "27b",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 2295,
+   "another_n": 82,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 15.24
+   },
+   "k±1": {
+    "n": 55,
+    "pct": 67.07,
+    "uniform_pct": 54.88
+   },
+   "elsewhere": {
+    "n": 27,
+    "pct": 32.93,
+    "uniform_pct": 29.88
+   },
+   "unresolved": 0,
+   "k-1_n": 30,
+   "k+1_n": 25
+  },
+  {
+   "model": "27b",
+   "family": "DL",
+   "setting": "8 sentences",
+   "answers": 419,
+   "another_n": 20,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 15.0
+   },
+   "k±1": {
+    "n": 10,
+    "pct": 50.0,
+    "uniform_pct": 28.0
+   },
+   "elsewhere": {
+    "n": 10,
+    "pct": 50.0,
+    "uniform_pct": 57.0
+   },
+   "unresolved": 0,
+   "k-1_n": 8,
+   "k+1_n": 2
+  },
+  {
+   "model": "27b",
+   "family": "DL",
+   "setting": "12 sentences",
+   "answers": 413,
+   "another_n": 33,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 8.06
+   },
+   "k±1": {
+    "n": 9,
+    "pct": 27.27,
+    "uniform_pct": 18.82
+   },
+   "elsewhere": {
+    "n": 24,
+    "pct": 72.73,
+    "uniform_pct": 73.06
+   },
+   "unresolved": 0,
+   "k-1_n": 6,
+   "k+1_n": 3
+  },
+  {
+   "model": "9b",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1350,
+   "another_n": 98,
+   "slot 1": {
+    "n": 1,
+    "pct": 1.02,
+    "uniform_pct": 12.76
+   },
+   "k±1": {
+    "n": 66,
+    "pct": 67.35,
+    "uniform_pct": 53.57
+   },
+   "elsewhere": {
+    "n": 31,
+    "pct": 31.63,
+    "uniform_pct": 33.67
+   },
+   "unresolved": 0,
+   "k-1_n": 35,
+   "k+1_n": 31
+  },
+  {
+   "model": "9b",
+   "family": "RL",
+   "setting": "8 sentences",
+   "answers": 341,
+   "another_n": 45,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 10.67
+   },
+   "k±1": {
+    "n": 16,
+    "pct": 35.56,
+    "uniform_pct": 24.44
+   },
+   "elsewhere": {
+    "n": 29,
+    "pct": 64.44,
+    "uniform_pct": 64.89
+   },
+   "unresolved": 0,
+   "k-1_n": 10,
+   "k+1_n": 6
+  },
+  {
+   "model": "9b",
+   "family": "RL",
+   "setting": "12 sentences",
+   "answers": 318,
+   "another_n": 68,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 7.69
+   },
+   "k±1": {
+    "n": 10,
+    "pct": 14.71,
+    "uniform_pct": 17.16
+   },
+   "elsewhere": {
+    "n": 58,
+    "pct": 85.29,
+    "uniform_pct": 75.19
+   },
+   "unresolved": 0,
+   "k-1_n": 4,
+   "k+1_n": 6
+  },
+  {
+   "model": "9b",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1350,
+   "another_n": 66,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 18.94
+   },
+   "k±1": {
+    "n": 41,
+    "pct": 62.12,
+    "uniform_pct": 47.73
+   },
+   "elsewhere": {
+    "n": 25,
+    "pct": 37.88,
+    "uniform_pct": 33.33
+   },
+   "unresolved": 0,
+   "k-1_n": 23,
+   "k+1_n": 18
+  },
+  {
+   "model": "9b",
+   "family": "DL",
+   "setting": "8 sentences",
+   "answers": 341,
+   "another_n": 49,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 12.65
+   },
+   "k±1": {
+    "n": 23,
+    "pct": 46.94,
+    "uniform_pct": 27.35
+   },
+   "elsewhere": {
+    "n": 26,
+    "pct": 53.06,
+    "uniform_pct": 60.0
+   },
+   "unresolved": 0,
+   "k-1_n": 12,
+   "k+1_n": 11
+  },
+  {
+   "model": "9b",
+   "family": "DL",
+   "setting": "12 sentences",
+   "answers": 318,
+   "another_n": 77,
+   "slot 1": {
+    "n": 1,
+    "pct": 1.3,
+    "uniform_pct": 8.52
+   },
+   "k±1": {
+    "n": 17,
+    "pct": 22.08,
+    "uniform_pct": 17.61
+   },
+   "elsewhere": {
+    "n": 59,
+    "pct": 76.62,
+    "uniform_pct": 73.9
+   },
+   "unresolved": 0,
+   "k-1_n": 9,
+   "k+1_n": 8
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1042,
+   "another_n": 143,
+   "slot 1": {
+    "n": 28,
+    "pct": 19.58,
+    "uniform_pct": 18.88
+   },
+   "k±1": {
+    "n": 72,
+    "pct": 50.35,
+    "uniform_pct": 47.2
+   },
+   "elsewhere": {
+    "n": 43,
+    "pct": 30.07,
+    "uniform_pct": 33.92
+   },
+   "unresolved": 0,
+   "k-1_n": 35,
+   "k+1_n": 37
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "RL",
+   "setting": "8 sentences",
+   "answers": 186,
+   "another_n": 44,
+   "slot 1": {
+    "n": 4,
+    "pct": 9.09,
+    "uniform_pct": 12.27
+   },
+   "k±1": {
+    "n": 20,
+    "pct": 45.45,
+    "uniform_pct": 27.73
+   },
+   "elsewhere": {
+    "n": 20,
+    "pct": 45.45,
+    "uniform_pct": 60.0
+   },
+   "unresolved": 0,
+   "k-1_n": 13,
+   "k+1_n": 7
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "RL",
+   "setting": "12 sentences",
+   "answers": 191,
+   "another_n": 68,
+   "slot 1": {
+    "n": 5,
+    "pct": 7.35,
+    "uniform_pct": 9.65
+   },
+   "k±1": {
+    "n": 17,
+    "pct": 25.0,
+    "uniform_pct": 16.32
+   },
+   "elsewhere": {
+    "n": 46,
+    "pct": 67.65,
+    "uniform_pct": 74.01
+   },
+   "unresolved": 0,
+   "k-1_n": 8,
+   "k+1_n": 9
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1042,
+   "another_n": 125,
+   "slot 1": {
+    "n": 2,
+    "pct": 1.6,
+    "uniform_pct": 13.2
+   },
+   "k±1": {
+    "n": 83,
+    "pct": 66.4,
+    "uniform_pct": 53.2
+   },
+   "elsewhere": {
+    "n": 40,
+    "pct": 32.0,
+    "uniform_pct": 33.6
+   },
+   "unresolved": 0,
+   "k-1_n": 47,
+   "k+1_n": 36
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "DL",
+   "setting": "8 sentences",
+   "answers": 186,
+   "another_n": 43,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 13.49
+   },
+   "k±1": {
+    "n": 21,
+    "pct": 48.84,
+    "uniform_pct": 29.77
+   },
+   "elsewhere": {
+    "n": 22,
+    "pct": 51.16,
+    "uniform_pct": 56.74
+   },
+   "unresolved": 0,
+   "k-1_n": 12,
+   "k+1_n": 9
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "DL",
+   "setting": "12 sentences",
+   "answers": 191,
+   "another_n": 40,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 9.95
+   },
+   "k±1": {
+    "n": 12,
+    "pct": 30.0,
+    "uniform_pct": 16.93
+   },
+   "elsewhere": {
+    "n": 28,
+    "pct": 70.0,
+    "uniform_pct": 73.05
+   },
+   "unresolved": 0,
+   "k-1_n": 4,
+   "k+1_n": 8
+  },
+  {
+   "model": "122b",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1350,
+   "another_n": 71,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 10.56
+   },
+   "k±1": {
+    "n": 59,
+    "pct": 83.1,
+    "uniform_pct": 65.49
+   },
+   "elsewhere": {
+    "n": 12,
+    "pct": 16.9,
+    "uniform_pct": 23.94
+   },
+   "unresolved": 0,
+   "k-1_n": 27,
+   "k+1_n": 32
+  },
+  {
+   "model": "122b",
+   "family": "RL",
+   "setting": "8 sentences",
+   "answers": 392,
+   "another_n": 57,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 12.28
+   },
+   "k±1": {
+    "n": 29,
+    "pct": 50.88,
+    "uniform_pct": 30.18
+   },
+   "elsewhere": {
+    "n": 28,
+    "pct": 49.12,
+    "uniform_pct": 57.54
+   },
+   "unresolved": 0,
+   "k-1_n": 18,
+   "k+1_n": 11
+  },
+  {
+   "model": "122b",
+   "family": "RL",
+   "setting": "12 sentences",
+   "answers": 376,
+   "another_n": 10,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 6.6
+   },
+   "k±1": {
+    "n": 4,
+    "pct": 40.0,
+    "uniform_pct": 22.1
+   },
+   "elsewhere": {
+    "n": 6,
+    "pct": 60.0,
+    "uniform_pct": 71.2
+   },
+   "unresolved": 0,
+   "k-1_n": 3,
+   "k+1_n": 1
+  },
+  {
+   "model": "122b",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1350,
+   "another_n": 89,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 10.67
+   },
+   "k±1": {
+    "n": 74,
+    "pct": 83.15,
+    "uniform_pct": 61.24
+   },
+   "elsewhere": {
+    "n": 15,
+    "pct": 16.85,
+    "uniform_pct": 28.09
+   },
+   "unresolved": 0,
+   "k-1_n": 37,
+   "k+1_n": 37
+  },
+  {
+   "model": "122b",
+   "family": "DL",
+   "setting": "8 sentences",
+   "answers": 392,
+   "another_n": 65,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 13.23
+   },
+   "k±1": {
+    "n": 35,
+    "pct": 53.85,
+    "uniform_pct": 31.08
+   },
+   "elsewhere": {
+    "n": 30,
+    "pct": 46.15,
+    "uniform_pct": 55.69
+   },
+   "unresolved": 0,
+   "k-1_n": 17,
+   "k+1_n": 18
+  },
+  {
+   "model": "122b",
+   "family": "DL",
+   "setting": "12 sentences",
+   "answers": 376,
+   "another_n": 11,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 8.0
+   },
+   "k±1": {
+    "n": 7,
+    "pct": 63.64,
+    "uniform_pct": 19.09
+   },
+   "elsewhere": {
+    "n": 4,
+    "pct": 36.36,
+    "uniform_pct": 72.82
+   },
+   "unresolved": 0,
+   "k-1_n": 2,
+   "k+1_n": 5
+  },
+  {
+   "model": "32b",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1342,
+   "another_n": 150,
+   "slot 1": {
+    "n": 11,
+    "pct": 7.33,
+    "uniform_pct": 16.0
+   },
+   "k±1": {
+    "n": 92,
+    "pct": 61.33,
+    "uniform_pct": 47.33
+   },
+   "elsewhere": {
+    "n": 47,
+    "pct": 31.33,
+    "uniform_pct": 36.67
+   },
+   "unresolved": 0,
+   "k-1_n": 52,
+   "k+1_n": 40
+  },
+  {
+   "model": "32b",
+   "family": "RL",
+   "setting": "8 sentences",
+   "answers": 256,
+   "another_n": 57,
+   "slot 1": {
+    "n": 2,
+    "pct": 3.51,
+    "uniform_pct": 12.28
+   },
+   "k±1": {
+    "n": 31,
+    "pct": 54.39,
+    "uniform_pct": 28.77
+   },
+   "elsewhere": {
+    "n": 24,
+    "pct": 42.11,
+    "uniform_pct": 58.95
+   },
+   "unresolved": 0,
+   "k-1_n": 21,
+   "k+1_n": 10
+  },
+  {
+   "model": "32b",
+   "family": "RL",
+   "setting": "12 sentences",
+   "answers": 269,
+   "another_n": 102,
+   "slot 1": {
+    "n": 3,
+    "pct": 2.94,
+    "uniform_pct": 9.16
+   },
+   "k±1": {
+    "n": 23,
+    "pct": 22.55,
+    "uniform_pct": 17.43
+   },
+   "elsewhere": {
+    "n": 76,
+    "pct": 74.51,
+    "uniform_pct": 73.41
+   },
+   "unresolved": 0,
+   "k-1_n": 11,
+   "k+1_n": 12
+  },
+  {
+   "model": "32b",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1342,
+   "another_n": 146,
+   "slot 1": {
+    "n": 1,
+    "pct": 0.68,
+    "uniform_pct": 14.38
+   },
+   "k±1": {
+    "n": 107,
+    "pct": 73.29,
+    "uniform_pct": 52.05
+   },
+   "elsewhere": {
+    "n": 38,
+    "pct": 26.03,
+    "uniform_pct": 33.56
+   },
+   "unresolved": 0,
+   "k-1_n": 51,
+   "k+1_n": 56
+  },
+  {
+   "model": "32b",
+   "family": "DL",
+   "setting": "8 sentences",
+   "answers": 256,
+   "another_n": 54,
+   "slot 1": {
+    "n": 1,
+    "pct": 1.85,
+    "uniform_pct": 14.07
+   },
+   "k±1": {
+    "n": 30,
+    "pct": 55.56,
+    "uniform_pct": 29.26
+   },
+   "elsewhere": {
+    "n": 23,
+    "pct": 42.59,
+    "uniform_pct": 56.67
+   },
+   "unresolved": 0,
+   "k-1_n": 20,
+   "k+1_n": 10
+  },
+  {
+   "model": "32b",
+   "family": "DL",
+   "setting": "12 sentences",
+   "answers": 269,
+   "another_n": 78,
+   "slot 1": {
+    "n": 4,
+    "pct": 5.13,
+    "uniform_pct": 9.1
+   },
+   "k±1": {
+    "n": 22,
+    "pct": 28.21,
+    "uniform_pct": 17.37
+   },
+   "elsewhere": {
+    "n": 52,
+    "pct": 66.67,
+    "uniform_pct": 73.49
+   },
+   "unresolved": 0,
+   "k-1_n": 9,
+   "k+1_n": 13
+  },
+  {
+   "model": "olmo",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1213,
+   "another_n": 198,
+   "slot 1": {
+    "n": 9,
+    "pct": 4.55,
+    "uniform_pct": 14.65
+   },
+   "k±1": {
+    "n": 116,
+    "pct": 58.59,
+    "uniform_pct": 46.97
+   },
+   "elsewhere": {
+    "n": 73,
+    "pct": 36.87,
+    "uniform_pct": 38.38
+   },
+   "unresolved": 0,
+   "k-1_n": 47,
+   "k+1_n": 69
+  },
+  {
+   "model": "olmo",
+   "family": "RL",
+   "setting": "8 sentences",
+   "answers": 105,
+   "another_n": 31,
+   "slot 1": {
+    "n": 2,
+    "pct": 6.45,
+    "uniform_pct": 14.84
+   },
+   "k±1": {
+    "n": 12,
+    "pct": 38.71,
+    "uniform_pct": 26.45
+   },
+   "elsewhere": {
+    "n": 17,
+    "pct": 54.84,
+    "uniform_pct": 58.71
+   },
+   "unresolved": 0,
+   "k-1_n": 8,
+   "k+1_n": 4
+  },
+  {
+   "model": "olmo",
+   "family": "RL",
+   "setting": "12 sentences",
+   "answers": 92,
+   "another_n": 29,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 8.76
+   },
+   "k±1": {
+    "n": 4,
+    "pct": 13.79,
+    "uniform_pct": 15.66
+   },
+   "elsewhere": {
+    "n": 25,
+    "pct": 86.21,
+    "uniform_pct": 75.45
+   },
+   "unresolved": 0,
+   "k-1_n": 1,
+   "k+1_n": 3
+  },
+  {
+   "model": "olmo",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1213,
+   "another_n": 172,
+   "slot 1": {
+    "n": 3,
+    "pct": 1.74,
+    "uniform_pct": 15.99
+   },
+   "k±1": {
+    "n": 121,
+    "pct": 70.35,
+    "uniform_pct": 51.16
+   },
+   "elsewhere": {
+    "n": 48,
+    "pct": 27.91,
+    "uniform_pct": 32.85
+   },
+   "unresolved": 0,
+   "k-1_n": 54,
+   "k+1_n": 67
+  },
+  {
+   "model": "olmo",
+   "family": "DL",
+   "setting": "8 sentences",
+   "answers": 105,
+   "another_n": 24,
+   "slot 1": {
+    "n": 1,
+    "pct": 4.17,
+    "uniform_pct": 14.17
+   },
+   "k±1": {
+    "n": 11,
+    "pct": 45.83,
+    "uniform_pct": 27.5
+   },
+   "elsewhere": {
+    "n": 12,
+    "pct": 50.0,
+    "uniform_pct": 58.33
+   },
+   "unresolved": 0,
+   "k-1_n": 10,
+   "k+1_n": 1
+  },
+  {
+   "model": "olmo",
+   "family": "DL",
+   "setting": "12 sentences",
+   "answers": 92,
+   "another_n": 31,
+   "slot 1": {
+    "n": 2,
+    "pct": 6.45,
+    "uniform_pct": 9.97
+   },
+   "k±1": {
+    "n": 6,
+    "pct": 19.35,
+    "uniform_pct": 17.55
+   },
+   "elsewhere": {
+    "n": 23,
+    "pct": 74.19,
+    "uniform_pct": 72.45
+   },
+   "unresolved": 0,
+   "k-1_n": 1,
+   "k+1_n": 5
+  },
+  {
+   "model": "muse",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1310,
+   "another_n": 158,
+   "slot 1": {
+    "n": 18,
+    "pct": 11.39,
+    "uniform_pct": 17.41
+   },
+   "k±1": {
+    "n": 76,
+    "pct": 48.1,
+    "uniform_pct": 45.57
+   },
+   "elsewhere": {
+    "n": 64,
+    "pct": 40.51,
+    "uniform_pct": 37.03
+   },
+   "unresolved": 0,
+   "k-1_n": 47,
+   "k+1_n": 29
+  },
+  {
+   "model": "muse",
+   "family": "RL",
+   "setting": "8 sentences",
+   "answers": 151,
+   "another_n": 37,
+   "slot 1": {
+    "n": 2,
+    "pct": 5.41,
+    "uniform_pct": 12.43
+   },
+   "k±1": {
+    "n": 12,
+    "pct": 32.43,
+    "uniform_pct": 23.78
+   },
+   "elsewhere": {
+    "n": 23,
+    "pct": 62.16,
+    "uniform_pct": 63.78
+   },
+   "unresolved": 0,
+   "k-1_n": 9,
+   "k+1_n": 3
+  },
+  {
+   "model": "muse",
+   "family": "RL",
+   "setting": "12 sentences",
+   "answers": 124,
+   "another_n": 14,
+   "slot 1": {
+    "n": 4,
+    "pct": 28.57,
+    "uniform_pct": 9.43
+   },
+   "k±1": {
+    "n": 3,
+    "pct": 21.43,
+    "uniform_pct": 17.29
+   },
+   "elsewhere": {
+    "n": 7,
+    "pct": 50.0,
+    "uniform_pct": 73.0
+   },
+   "unresolved": 0,
+   "k-1_n": 1,
+   "k+1_n": 2
+  },
+  {
+   "model": "muse",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1310,
+   "another_n": 152,
+   "slot 1": {
+    "n": 9,
+    "pct": 5.92,
+    "uniform_pct": 15.79
+   },
+   "k±1": {
+    "n": 82,
+    "pct": 53.95,
+    "uniform_pct": 47.04
+   },
+   "elsewhere": {
+    "n": 61,
+    "pct": 40.13,
+    "uniform_pct": 37.17
+   },
+   "unresolved": 0,
+   "k-1_n": 50,
+   "k+1_n": 32
+  },
+  {
+   "model": "muse",
+   "family": "DL",
+   "setting": "8 sentences",
+   "answers": 151,
+   "another_n": 30,
+   "slot 1": {
+    "n": 2,
+    "pct": 6.67,
+    "uniform_pct": 11.33
+   },
+   "k±1": {
+    "n": 9,
+    "pct": 30.0,
+    "uniform_pct": 28.0
+   },
+   "elsewhere": {
+    "n": 19,
+    "pct": 63.33,
+    "uniform_pct": 60.67
+   },
+   "unresolved": 0,
+   "k-1_n": 7,
+   "k+1_n": 2
+  },
+  {
+   "model": "muse",
+   "family": "DL",
+   "setting": "12 sentences",
+   "answers": 124,
+   "another_n": 32,
+   "slot 1": {
+    "n": 5,
+    "pct": 15.62,
+    "uniform_pct": 9.69
+   },
+   "k±1": {
+    "n": 5,
+    "pct": 15.62,
+    "uniform_pct": 17.0
+   },
+   "elsewhere": {
+    "n": 22,
+    "pct": 68.75,
+    "uniform_pct": 73.31
+   },
+   "unresolved": 0,
+   "k-1_n": 3,
+   "k+1_n": 2
+  },
+  {
+   "model": "gemma",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1283,
+   "another_n": 26,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 9.62
+   },
+   "k±1": {
+    "n": 18,
+    "pct": 69.23,
+    "uniform_pct": 59.62
+   },
+   "elsewhere": {
+    "n": 8,
+    "pct": 30.77,
+    "uniform_pct": 30.77
+   },
+   "unresolved": 0,
+   "k-1_n": 15,
+   "k+1_n": 3
+  },
+  {
+   "model": "gemma",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "answers": 1283,
+   "another_n": 21,
+   "slot 1": {
+    "n": 0,
+    "pct": 0.0,
+    "uniform_pct": 11.9
+   },
+   "k±1": {
+    "n": 14,
+    "pct": 66.67,
+    "uniform_pct": 57.14
+   },
+   "elsewhere": {
+    "n": 7,
+    "pct": 33.33,
+    "uniform_pct": 30.95
+   },
+   "unresolved": 0,
+   "k-1_n": 11,
+   "k+1_n": 3
+  }
+ ],
+ "off_list": [
+  {
+   "model": "27b",
+   "family": "RL",
+   "setting": "12 sentences",
+   "n": 413,
+   "off_list_n": 5,
+   "off_list_pct": 1.21,
+   "max_pct_at_one_k": 4.26,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 5,
+   "case": 5
+  },
+  {
+   "model": "27b",
+   "family": "DL",
+   "setting": "12 sentences",
+   "n": 413,
+   "off_list_n": 24,
+   "off_list_pct": 5.81,
+   "max_pct_at_one_k": 15.15,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 24,
+   "case": 21
+  },
+  {
+   "model": "9b",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "n": 1350,
+   "off_list_n": 2,
+   "off_list_pct": 0.15,
+   "max_pct_at_one_k": 0.69,
+   "recall": 2,
+   "other_digit": 0,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "9b",
+   "family": "RL",
+   "setting": "12 sentences",
+   "n": 318,
+   "off_list_n": 1,
+   "off_list_pct": 0.31,
+   "max_pct_at_one_k": 2.94,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 1,
+   "case": 1
+  },
+  {
+   "model": "9b",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "n": 1350,
+   "off_list_n": 1,
+   "off_list_pct": 0.07,
+   "max_pct_at_one_k": 0.34,
+   "recall": 1,
+   "other_digit": 0,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "9b",
+   "family": "DL",
+   "setting": "12 sentences",
+   "n": 318,
+   "off_list_n": 2,
+   "off_list_pct": 0.63,
+   "max_pct_at_one_k": 4.55,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 2,
+   "case": 0
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "n": 1042,
+   "off_list_n": 14,
+   "off_list_pct": 1.34,
+   "max_pct_at_one_k": 2.38,
+   "recall": 11,
+   "other_digit": 3,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "RL",
+   "setting": "8 sentences",
+   "n": 186,
+   "off_list_n": 2,
+   "off_list_pct": 1.08,
+   "max_pct_at_one_k": 4.35,
+   "recall": 2,
+   "other_digit": 0,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "RL",
+   "setting": "12 sentences",
+   "n": 191,
+   "off_list_n": 7,
+   "off_list_pct": 3.66,
+   "max_pct_at_one_k": 15.38,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 7,
+   "case": 1
+  },
+  {
+   "model": "olmo_hybrid",
+   "family": "DL",
+   "setting": "12 sentences",
+   "n": 191,
+   "off_list_n": 5,
+   "off_list_pct": 2.62,
+   "max_pct_at_one_k": 14.29,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 5,
+   "case": 0
+  },
+  {
+   "model": "122b",
+   "family": "RL",
+   "setting": "12 sentences",
+   "n": 376,
+   "off_list_n": 47,
+   "off_list_pct": 12.5,
+   "max_pct_at_one_k": 17.24,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 47,
+   "case": 10
+  },
+  {
+   "model": "122b",
+   "family": "DL",
+   "setting": "12 sentences",
+   "n": 376,
+   "off_list_n": 50,
+   "off_list_pct": 13.3,
+   "max_pct_at_one_k": 34.48,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 50,
+   "case": 1
+  },
+  {
+   "model": "32b",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "n": 1342,
+   "off_list_n": 1,
+   "off_list_pct": 0.07,
+   "max_pct_at_one_k": 0.36,
+   "recall": 1,
+   "other_digit": 0,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "32b",
+   "family": "RL",
+   "setting": "8 sentences",
+   "n": 256,
+   "off_list_n": 3,
+   "off_list_pct": 1.17,
+   "max_pct_at_one_k": 4.17,
+   "recall": 3,
+   "other_digit": 0,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "32b",
+   "family": "RL",
+   "setting": "12 sentences",
+   "n": 269,
+   "off_list_n": 11,
+   "off_list_pct": 4.09,
+   "max_pct_at_one_k": 12.5,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 11,
+   "case": 0
+  },
+  {
+   "model": "32b",
+   "family": "DL",
+   "setting": "12 sentences",
+   "n": 269,
+   "off_list_n": 7,
+   "off_list_pct": 2.6,
+   "max_pct_at_one_k": 8.33,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 7,
+   "case": 0
+  },
+  {
+   "model": "olmo",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "n": 1213,
+   "off_list_n": 9,
+   "off_list_pct": 0.74,
+   "max_pct_at_one_k": 1.26,
+   "recall": 4,
+   "other_digit": 2,
+   "other": 3,
+   "case": 0
+  },
+  {
+   "model": "olmo",
+   "family": "RL",
+   "setting": "8 sentences",
+   "n": 105,
+   "off_list_n": 2,
+   "off_list_pct": 1.9,
+   "max_pct_at_one_k": 9.09,
+   "recall": 2,
+   "other_digit": 0,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "olmo",
+   "family": "RL",
+   "setting": "12 sentences",
+   "n": 92,
+   "off_list_n": 19,
+   "off_list_pct": 20.65,
+   "max_pct_at_one_k": 55.56,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 19,
+   "case": 8
+  },
+  {
+   "model": "olmo",
+   "family": "DL",
+   "setting": "5 sentences, draws pooled",
+   "n": 1213,
+   "off_list_n": 14,
+   "off_list_pct": 1.15,
+   "max_pct_at_one_k": 2.25,
+   "recall": 6,
+   "other_digit": 0,
+   "other": 8,
+   "case": 0
+  },
+  {
+   "model": "olmo",
+   "family": "DL",
+   "setting": "8 sentences",
+   "n": 105,
+   "off_list_n": 1,
+   "off_list_pct": 0.95,
+   "max_pct_at_one_k": 11.11,
+   "recall": 1,
+   "other_digit": 0,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "muse",
+   "family": "RL",
+   "setting": "5 sentences, draws pooled",
+   "n": 1310,
+   "off_list_n": 1,
+   "off_list_pct": 0.08,
+   "max_pct_at_one_k": 0.39,
+   "recall": 1,
+   "other_digit": 0,
+   "other": 0,
+   "case": 0
+  },
+  {
+   "model": "muse",
+   "family": "RL",
+   "setting": "12 sentences",
+   "n": 124,
+   "off_list_n": 89,
+   "off_list_pct": 71.77,
+   "max_pct_at_one_k": 100.0,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 89,
+   "case": 0
+  },
+  {
+   "model": "muse",
+   "family": "DL",
+   "setting": "12 sentences",
+   "n": 124,
+   "off_list_n": 5,
+   "off_list_pct": 4.03,
+   "max_pct_at_one_k": 14.29,
+   "recall": 0,
+   "other_digit": 0,
+   "other": 5,
+   "case": 0
+  }
+ ]
+}

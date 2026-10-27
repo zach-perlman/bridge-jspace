@@ -1,0 +1,36 @@
+{
+  "run": "qwen35_122b_rw_dose_v1",
+  "why": "finding 1 (lens read / write dose) on Qwen3.5-122B with its published J++: dose_v1 at the 27B's layers scaled by depth (32 36 40 x 48/64 = 24 27 30)",
+  "written_utc": "2026-10-23T07:54:47Z",
+  "model": {
+    "target": "qwen3.5-122b-a10b",
+    "repo": "Qwen/Qwen3.5-122B-A10B-FP8",
+    "revision": "a099dee70ccfcd8d5dda56aaa0b60cb8ecadabc9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "lens": [
+    "jpp",
+    "b771e50244c81a3f315987ca2b8e88a58f670e3fed934dd21e3bfec4a3c05e53"
+  ],
+  "lens_layers": null,
+  "layers": [
+    24,
+    27,
+    30
+  ],
+  "scales": [
+    0.5,
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0
+  ],
+  "n_per_family": 80,
+  "doc": "On the cases of suite_split's map_A8_v1 (animal suite, wording A) and control_split's map_v1 (countries R, B), at\nQwen3.6-27B's window (layers 32, 36, 40; another target: --layers, each a layer its frozen lens has a map at) on the\nquestion tokens:\n  read   the J-lens readout (the target's frozen lens, pins.FROZEN_LENS: J++ on Qwen, the J-lens on OLMo; recorded in\n         the manifest with its layers) of the clean run: the bridge's best rank among word tokens over the question\n         positions (formatting tokens removed; any single-token surface of the bridge counts), per layer; the same\n         for X (the counterfactual bridge, absent from the clean prompt) as the floor\n  write  add the lens direction v_X - v_I (unit lens vectors of X and the bridge I, their difference rescaled per\n         position to the norm of C's copy delta there, times 1 or 4) at the question tokens, one layer at a time and\n         at all three at once; controls: a random direction at the same norms, and C's full copy itself\nScored by suite_split's answer read (frac of the way to C; flips). n per family: up to 60 cases (the first in each\nmap's case order). Descriptive: no verdict rule; it decides whether read-vs-write enters the sprint plan.",
+  "inputs": {
+    "results/suite_v1/qwen35_122b_competence_chat_v1/items.jsonl": "d411ef88a30c1889bd01987bc24312fafbf2cb15df28d4e8baa8b974e63ba00f"
+  }
+}

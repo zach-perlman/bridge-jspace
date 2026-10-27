@@ -1,0 +1,37 @@
+id: qwen3_32b_d2_parts_v2
+title: "Name vs digit: what do the question's tokens and the last tokens take from the answer's statement? (Qwen3-32B)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py manifest --name qwen3_32b_d2_parts_v2 --dataset pointer_v4 --families RL DL --n 100
+  --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence qwen3_32b_d3v4_competence_r2
+  --why "D2 follow-up (name vs digit): hide only the entity's name or only the digit of the answer's statement (and of an
+  off-path statement) from the question's tokens or from the last tokens, in every layer; analysed by scripts/d2_parts.py"
+  && BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py run --name qwen3_32b_d2_parts_v2
+examples_command: BJ_TARGET=qwen3-32b uv run python scripts/attn_knockout.py examples --name qwen3_32b_d2_parts_v2 --k 3
+figures_command: uv run python scripts/d2_parts.py --name qwen3_32b_d2_parts_v2
+question: >-
+  When only the entity's name, or only the digit, of the answer's statement is hidden from the question's tokens or from
+  the last tokens, how many lookups stay right, and where do the wrong answers go?
+why_it_matters: >-
+  Qwen3-32B: 32% right without the statement at the question's tokens. Hiding the whole statement from the question's tokens breaks lookups on Qwen3-32B, OLMo and Qwen3.5-9B with
+  mostly off-list answers: the question's tokens take something other than the digit choice from the statement,
+  perhaps the name to resolve the bridge. The last tokens should need the digit.
+hypotheses:
+  H-name-q: 'where the question needs the statement at all (whole statement hidden from the question leaves <= 0.70
+    right): hiding the name alone there hurts as much as the whole statement (within 0.15) and the digit alone keeps
+    >= 0.85. Prior 0.55'
+  H-digit-final: 'from the last tokens, hiding the digit alone leaves <= 0.35 right and the name alone >= 0.70. Prior 0.6'
+decision_rule: >-
+  scripts/d2_parts.py (committed before this run): memory -> prompt, topics pooled, items right unedited; valid iff the
+  off-path name and digit controls keep >= 0.90 right at both destinations; question hypotheses testable iff the whole
+  statement hidden from the question leaves <= 0.70 right; H-name-q, H-digit-q, H-digit-final, H-name-final as in its
+  docstring. Error types (another list digit vs off the list) reported for every cell.
+controls:
+- 'the same parts (name, digit) of an off-path statement of the same length; the whole statement and the whole off-path statement'
+n: '100 items per family, 3 topics (pointer_v4)'
+seeds: [0]
+notes: "Qwen3-32B: 32% right without the statement at the question's tokens. v2 adds the statement without its digit (name and the rest) and without its name (digit and the rest), against leaks through the statement's other tokens (outside review, 22 Oct). Not opened before Dan predicts (batch 8)."

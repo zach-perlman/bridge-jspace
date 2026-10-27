@@ -1,0 +1,67 @@
+id: d3v4x_swap_main
+title: "D3 v4x: does the last-token pointer name the statement by its order and from the start, on 85 entities and 9 wordings?"
+thread: D3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.5
+depends_on:
+- d3v4x_competence_27b
+command: >-
+  uv run python scripts/pointer_swap.py manifest --data pointer_v4x --set main --name d3v4x_swap_main
+  --families RL DL --n 150 --layers 44 46 48 50 52 --control-stride 1 --groups final last
+  --competence d3v4x_competence_27b
+  --why "D3 v4x: order vs the same place in the text (filler moved) and from the start vs from the end vs the same place
+  (one statement more / fewer) at the last two tokens, layers 48 and 50 pre-registered, entity-cluster intervals, per
+  topic"
+  && uv run python scripts/pointer_swap.py run --name d3v4x_swap_main
+examples_command: uv run python scripts/pointer_swap.py examples --name d3v4x_swap_main --group last
+figures_command: uv run python scripts/pointer_swap.py figures --name d3v4x_swap_main
+question: >-
+  On pointer_v4's 85 entities and 9 wordings, when the alt prompt's hidden states at the last two tokens are patched
+  into the org prompt at layers 48 and 50, does the org prompt answer the digit of the statement with the same ORDER
+  index rather than the one at the same place in the text (filler moved), and the statement counted FROM THE START
+  rather than from the end or at the same place (one statement more / fewer), pooled and in at least 2 of 3 topics?
+why_it_matters: >-
+  "The pointer is an order index counted from the start" rests on single layers of pointer_v2 / v3 runs with 22
+  entities and one wording, whose pre-registered cells (after the question, layers 44-52 together) read "alt answer"
+  or "mixed" because the digit arrives by layer 52. This run fixes the primary on the cells where the pointer was seen
+  (last two tokens, layers 48 and 50), with ~4x the entities, three wordings, entity-cluster intervals and per-topic
+  replication. If both hold, the D3 line can say how the pointer counts; if order does not beat the text position, the
+  "pointer" may be an address in the token sequence.
+hypotheses:
+  H-order-v4: 'filler moved: the order slot''s lower bound exceeds the same-token-position''s upper bound at layer 48 or
+    50, pooled and in >= 2 of 3 topics (pointer_v2 on 22 entities, last two tokens, layer 50: order 28% [23, 33] vs
+    token position 16% [12, 20], d3v2_offset_reflexive_main, UNVERIFIED)'
+  H-start-v4: 'one more and one fewer: the slot from the start''s lower bound exceeds the upper bounds of the slot from
+    the end and of the same token position at layer 48 or 50, pooled and in >= 2 of 3 topics, in both alt types'
+  H-text-position: 'the same token position beats order (filler moved) or both rivals beat the start: the pointer is an
+    address in the token sequence'
+  prior: 'Coordinator''s priors: H-order-v4 0.6, H-start-v4 0.55.'
+decision_rule: >-
+  Fixed before the run (scripts/pointer_swap.py docstring: "Decision rule", "pointer_v4 additions" and "pointer_v4x
+  additions"; the manifest records ci = entity_cluster). PRIMARY cells: memory -> prompt, the last two tokens, layers
+  48 and 50 (single layers, not the 44-52 window), pooled over topics and per topic (n >= 35 each). Bounds:
+  entity-cluster bootstrap 95% (asked entity resampled within each topic, 2000, seed 0) widened to Wilson where wider.
+  e5-off: "order beats the same place" at a layer iff the order slot's lower bound > the same token position's upper
+  bound; H-order-v4 iff, at layer 48 or 50, true pooled and in >= 2 of 3 topics (same layer). e5more / e5fewer: "from
+  the start beats" iff the slot from the start's lower bound > the upper bounds of the slot from the end and of the
+  same token position; H-start-v4 iff, at layer 48 or 50, true pooled and in >= 2 of 3 topics for both alt types (same
+  layer). The pre-registered rule's verdict (every candidate, same-entity control <= 0.10, random push, context) is
+  reported for the same cells; the window, the tokens after the question, named -> prompt, slot classes and other
+  layers are reported, not decisive. analyze writes the tests to summary.json `v4x` and report.md.
+controls:
+- 'same entity, statements reshuffled, the org prompt''s filler places (every hypothesis predicts answer org): damage bar'
+- 'random push of the same size per token at every layer: chance bar for each predicted digit'
+- 'a prompt of another topic, same size: realistic-activation null'
+- 'context digits no hypothesis predicts: per-digit chance'
+- 'org prompt into itself (no-op) and the layer-0 all-position patch (hook checks; run invalid below 100%)'
+- 'per-topic replication (>= 2 of 3) and entity-cluster intervals: an effect carried by a few entities fails'
+n: >-
+  up to 150 scenes per topic x layout eligible in both families (seed 0) x 3 topics x 3 layouts x 2 families = up to
+  2,700 cases; per pooled primary cell up to 450 items over ~85 entities and 27 wordings, per topic up to 150
+seeds: [0]
+notes: >-
+  Reads per case: 3 checks + 5 layers x 2 sites x 2 (alt, same) + random / other at every layer (5 x 2 x 2) + 3 windows x
+  2 sites x 2 = 55; up to 2,700 cases ~ 149k reads at 31-37/s ~ 70-80 min + 5 forwards per case (~6 min) + load ~4 min
+  ~ 1.5 h. Smoke: Qwen3.5-0.8B on the box (pointer_v4x make / check / verify, competence 2 items per file, pointer_swap
+  run / examples / figures on 1 scene per topic and layout).

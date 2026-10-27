@@ -1,0 +1,71 @@
+{
+ "counts": {
+  "cases": {
+   "animals/same": 400,
+   "animals/xlang": 400,
+   "elements/same": 400,
+   "elements/syn": 400
+  },
+  "recall_answers_differ": {
+   "animals/same": 181,
+   "animals/xlang": 181,
+   "elements/same": 400,
+   "elements/syn": 400
+  },
+  "dropped": {},
+  "entities": {
+   "animals": 8,
+   "elements": 6
+  }
+ },
+ "gate": {
+  "animals/same/PP": {
+   "cases": 400,
+   "org_accuracy": 1.0,
+   "pass": true,
+   "eligible": 400
+  },
+  "animals/same/PM": {
+   "cases": 400,
+   "org_accuracy": 0.985,
+   "pass": true,
+   "eligible": 179
+  },
+  "animals/xlang/PP": {
+   "cases": 400,
+   "org_accuracy": 0.975,
+   "pass": true,
+   "eligible": 377
+  },
+  "animals/xlang/PM": {
+   "cases": 400,
+   "org_accuracy": 1.0,
+   "pass": true,
+   "eligible": 180
+  },
+  "elements/same/PP": {
+   "cases": 400,
+   "org_accuracy": 1.0,
+   "pass": true,
+   "eligible": 398
+  },
+  "elements/same/PM": {
+   "cases": 400,
+   "org_accuracy": 1.0,
+   "pass": true,
+   "eligible": 400
+  },
+  "elements/syn/PP": {
+   "cases": 400,
+   "org_accuracy": 0.9375,
+   "pass": true,
+   "eligible": 341
+  },
+  "elements/syn/PM": {
+   "cases": 400,
+   "org_accuracy": 0.995,
+   "pass": true,
+   "eligible": 395
+  }
+ }
+}

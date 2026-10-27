@@ -1,0 +1,45 @@
+{
+  "exp": "pointer_probe",
+  "run": "d3b_slot_probe_27b",
+  "why": "D3b probe re-analysis (batch 3): read the asked statement from the tokens after the question with the nearest per-statement mean, cross-validated on all 400 fit scenes, layers 40-52, and with the first run's own means on entities it never saw",
+  "written_utc": "2026-10-21T15:20:44Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "config": {
+    "domains": [
+      "animals",
+      "elements"
+    ],
+    "layers": [
+      40,
+      42,
+      44,
+      46,
+      48,
+      50,
+      52
+    ],
+    "primary_layer": 48,
+    "fit_limit": null,
+    "same_means": "d3b_slot_direction_main_27b"
+  },
+  "inputs": {
+    "data/pointer_v1/fit/animals_RL_e5f0.json": "097afa9dcc62a33463537ca20aabbf6366fc231fb5e6936140a3efaaf4fd5e1b",
+    "data/pointer_v1/fit/elements_RL_e5f0.json": "0a27d3e58dffb33b46e438d47a785cf7c6c294ab8453779ed524b92a344ed02d"
+  },
+  "same_means_file": "/ephemeral/jobq/runs/d3b_slot_probe_27b/code/cache/pointer_fit/d3b_slot_direction_main_27b/fits.pt",
+  "same_means_sha256": "2aeed2ab4ff9a348cd3786b900010ab3d65eeb741ad7101240ba13df1fd03a47",
+  "seeds": {
+    "cv": 0,
+    "shuffle": 1,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "pointer_probe (D3b, batch 3): can \"which statement is asked\" be read from the tokens after the question?\n\nBackground (UNVERIFIED): d3b_slot_direction_main_27b fitted per-token class means of the hidden states at the tokens\nafter the question (the pointer direction is the difference of two of them) on 197 fit items, and read the asked\nstatement back with a nearest-class-mean classifier at only 39% [33, 46] at layer 48 (5 statements, chance 20%),\nalthough pushing along the same means steers the lookup (37%). \"Steers but is hardly readable\" may be a small-sample\neffect: 197 items, ~40 per class, 5120 dimensions per token.\n\nDesign: pointer_v1's fit set (memory \u2192 prompt; animals and elements; all 200 scenes per domain, no filter): the hidden\nstates at every token after the question (instruction, template, 'Answer:'), layers 40-52, labelled by the asked\nstatement (1-5); the unedited answer read is recorded (right or wrong). Classifier: the nearest per-token class mean\n(squared distance summed over the tokens), i.e. the means the pointer direction is built from.\n  cv           5-fold cross-validated over items (seed 0): all items, answered-right items, per domain; the same with\n               shuffled labels (seed 1) as the null\n  same means   the class means of d3b_slot_direction_main_27b itself (cache/pointer_fit/<run>/fits.pt, if present),\n               applied to the fit items whose queried entity was held out of that fit (never seen by those means)\n",
+  "decision": "Decision rule (fixed before the run): at layer 48, cross-validated accuracy on all items (n ~ 400): \"readable\" iff its\nWilson 95% lower bound >= 0.60 (the threshold d3b_slot_direction_main_27b's H-slot predicted); \"hardly readable\"\n(the first run's 39% survives) iff its upper bound < 0.60; otherwise in between. Valid only if the shuffled-label null\nstays within 10 points of chance (20%). Per domain, per layer, answered-right only and the same-means check are\nreported, with an entity-cluster bootstrap (queried entities resampled within domain).\n\n"
+}

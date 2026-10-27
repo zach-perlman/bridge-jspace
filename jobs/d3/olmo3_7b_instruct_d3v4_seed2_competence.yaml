@@ -1,0 +1,21 @@
+id: olmo3_7b_instruct_d3v4_seed2_competence
+title: "Seed 2 gate on OLMo-3-7B-Instruct: a second draw of pointer_v4's scenes (read judge)"
+thread: D3
+gpus: 1
+mem_gb: 25
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4.py manifest --set seed2 --name olmo3_7b_instruct_d3v4_seed2_competence
+  --why "seed 2 of the OLMo slot test: pointer_v4's second draw (seed 844), chat format, read judge"
+  && BJ_TARGET=olmo-3-7b-instruct BJ_JUDGE=read uv run python scripts/pointer_v4.py competence --name olmo3_7b_instruct_d3v4_seed2_competence
+question: 'Does OLMo-3-7B-Instruct answer the seed-2 scenes as it answers main''s?'
+why_it_matters: 'Gate for olmo3_7b_instruct_d3v4_seed2_swap.'
+hypotheses:
+  H-gate: 'per topic and family within 5 points of olmo3_7b_instruct_d3v4_competence. Prior 0.8'
+decision_rule: 'pointer_v1''s competence rule (read judge).'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'pointer_v4 seed2'
+seeds: [844]
+notes: '~0.15 GPU-h.'

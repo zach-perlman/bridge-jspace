@@ -1,0 +1,47 @@
+id: d4_push_wording_b_v1
+title: 'D4 replication: does the early lens push act on recalling the bridge, not on the lookup? (wording B, pre-registered)'
+thread: D4
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.5
+depends_on: []
+command: >-
+  uv run python scripts/early_push.py run --name d4_push_wording_b_v1 --wording B --map map_B8_v1 --n 100
+  --why "D4 replication (21 Oct, evening): the post-hoc reading of d4_push_v1 (the early push switches the families
+  whose bridge is recalled, not those whose bridge is stated) as a pre-registered test, on the suite's wording B
+  ('the animal that Peter owns' / 'the animal famous for clucking') and 100 cases per family"
+examples_command: uv run python scripts/early_push.py examples --name d4_push_wording_b_v1
+figures_command: uv run python scripts/early_push.py figures --name d4_push_wording_b_v1
+question: At layers 16-28, does a hard lens push (bridge alt − bridge org, 4-16x) on the subject phrase switch the
+  answers of the families whose bridge is recalled from a cue (memory → prompt, memory → memory) while leaving those
+  whose bridge is stated in the prompt (prompt → prompt, prompt → memory) unchanged, on a second wording?
+why_it_matters: 'd4_push_v1 could not decide "injection vs writing" by its pre-registered tests; its post-hoc reading
+  (layer 20, 8x, subject phrase: memory → prompt 49/60, memory → memory 57/60, prompt → prompt and prompt → memory
+  0/60 until 16x) says the early push acts on the recall step, which goes through the J-space, not on the lookup. That
+  reading bears on Zach''s "REVISES the headline" and is in the README as weak (post hoc, one wording, 60 items). This
+  run turns it into a pre-registered test on new wording and more items.'
+hypotheses:
+  H-recall-step: 'layer 20, 8x, subject phrase (subset b): memory → prompt and memory → memory each switch with Wilson
+    lower bound >= 0.40; prompt → prompt and prompt → memory each with upper bound <= 0.10; the random push at the same
+    norms <= 0.05 everywhere. Prior 0.6 (the post-hoc reading replicates on wording B)'
+  H-lookup-too: 'prompt → prompt switches within 15 points of memory → prompt at the same cell (the push edits the
+    lookup as much as the recall). Prior 0.15'
+  H-weaker: 'the recall families switch, but below the 0.40 bar on wording B (the post-hoc effect depended on wording
+    A). Prior 0.25'
+decision_rule: 'Fixed before the run. Primary cell: layer 20, scale 8, subset b (the subject phrase), every family at
+  n = 100 (suite map_B8_v1, the first 100 cases per family, wording B). "The early push acts on the recall step" iff
+  memory → prompt and memory → memory each have a Wilson 95% lower bound >= 0.40 AND prompt → prompt and prompt →
+  memory each have a Wilson upper bound <= 0.10 AND the random push at the same norms has upper bound <= 0.05 in every
+  family. "Lookup too" iff prompt → prompt is within 15 points of memory → prompt (paired by scene). Else
+  inconclusive. Layers 16/24/28, scales 4/16 and the other subsets are reported, not decisive. The script''s own
+  pre-registered H-inject / H-write tests are reported as in d4_push_v1.'
+controls:
+- 'a random direction at the same per-position norms for every push (rules out any push of that size)'
+- 'the same push on prompt → prompt / prompt → memory, where the bridge is stated, not recalled (the contrast)'
+- 'text edits (E-name, E-insert, E-head, E-cue, E-unrelated) as in d4_push_v1 (what an input edit does)'
+- 'countries R and B (a bridge the lens reads and writes at 44-52)'
+n: 100 per family (BL, BR, RL, RR on the same scenes, wording B; countries R, B 100 each)
+seeds:
+- 0
+notes: 'd4_push_v1 ran 60 per family on wording A. Wording B uses suite_split map_B8_v1''s cases. ~1.5 GPU-h
+  (d4_push_v1 at 60 per family scaled to 100). Results: results/early_push/d4_push_wording_b_v1/.'

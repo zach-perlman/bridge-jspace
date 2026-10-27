@@ -1,0 +1,104 @@
+{
+  "exp": "d5a_head_pointer",
+  "run": "d5a_head_pointer_smoke_27b",
+  "why": "D5a smoke: the 27B path (bf16, fla kernels, the frozen J-lens at block 50, heads 51:22 ...) on 2 scenes per topic",
+  "written_utc": "2026-10-21T19:12:09Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "data": "pointer_v4",
+  "families": [
+    "RL",
+    "DL",
+    "RR"
+  ],
+  "domains": [
+    "countries",
+    "animals",
+    "body"
+  ],
+  "n": 2,
+  "items": {
+    "countries_RL_e5f0": {
+      "file": "data/pointer_v4/main/countries_RL_e5f0.json",
+      "sha256": "43b59cb01f9d4a39e12b71a9c06ca5965206bcae89d7965dc354e39e86c7174b"
+    },
+    "countries_DL_e5f0": {
+      "file": "data/pointer_v4/main/countries_DL_e5f0.json",
+      "sha256": "b1f7a187078771c7e3a4169641597baed62c062b62370a6d78d27976e9677752"
+    },
+    "countries_RR_e5f0": {
+      "file": "data/pointer_v4/main/countries_RR_e5f0.json",
+      "sha256": "ab26417b4b6348edb7c2bef5ceafc3900ea4fca5461b2d28aadc5362674f98bd"
+    },
+    "animals_RL_e5f0": {
+      "file": "data/pointer_v4/main/animals_RL_e5f0.json",
+      "sha256": "c1138a7f05fdeef384d23828afc7ea168282f8599e8a8a20e73055d5162d667b"
+    },
+    "animals_DL_e5f0": {
+      "file": "data/pointer_v4/main/animals_DL_e5f0.json",
+      "sha256": "b7fc3832311f683edcd336b0f0a99596ab7c0c58b891f9d493c4b434d11c4ac2"
+    },
+    "animals_RR_e5f0": {
+      "file": "data/pointer_v4/main/animals_RR_e5f0.json",
+      "sha256": "c5301782c4ebd22a4589c1ff29bc05490b54253944cdf37b52272e02414d0b52"
+    },
+    "body_RL_e5f0": {
+      "file": "data/pointer_v4/main/body_RL_e5f0.json",
+      "sha256": "6e226678ac9e375384cc845ce67f1b9d2b445c1018f9ae5701b983a561ef6b60"
+    },
+    "body_DL_e5f0": {
+      "file": "data/pointer_v4/main/body_DL_e5f0.json",
+      "sha256": "f1eed22441089d9e03e295f367cfff04fd6a04b8af905cf37ae5451cf19f1136"
+    },
+    "body_RR_e5f0": {
+      "file": "data/pointer_v4/main/body_RR_e5f0.json",
+      "sha256": "74cce980aee4238fb14706d10244a67ceb5c65bd8886e3b8ffd75979ed87efe3"
+    }
+  },
+  "competence": "d3v4_competence_27b",
+  "competence_path": "results/pointer_v4/d3v4_competence_27b/items.jsonl",
+  "competence_sha256": "36c19455deb11026606c3362eb7e2b38428aa314bf52f5bafaf296194e3da971",
+  "heads": [
+    "51:22",
+    "59:3",
+    "59:1",
+    "55:23",
+    "59:21"
+  ],
+  "groups": [
+    "last",
+    "final"
+  ],
+  "sources": [
+    "dissoc",
+    "same",
+    "rand"
+  ],
+  "lens": true,
+  "patch_depth_of_64": [
+    48,
+    50
+  ],
+  "sample": "pointer_swap.sample_cases (seed 0): per topic up to n scenes eligible in every family; with n=150 and d3v4_competence_27b the scenes of d3v4_swap_main",
+  "seeds": {
+    "sample": 0,
+    "null": 0,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "decision": "(fixed before the run; job spec jobs/d5/d5a_head_pointer_27b.yaml). Primary cut: memory \u2192 prompt,\nsource dissoc, the four patch settings pooled; unit a row; intervals by entity cluster (queried entity resampled\nwithin topic, 4000 draws, seed 0; stats.cluster_bootstrap), item-level Wilson second; n rows / k entities / t\nwordings per cell; a cut is judged only with >= 35 rows.\n  H-head-follows (layer 51 head 22): on moved rows the head's top statement is the new statement with lower bound\n    >= 60%, AND on unmoved rows (kept) it is the org statement with lower bound >= 80%.\n  H-head-static: on moved rows the head's top statement is the org statement with lower bound >= 60%.\n  Otherwise neither (reported with the shares). The J-lens comparison: on the same moved rows, the share where the\n  lens's top entity's statement is the new statement; paired difference head - lens (entity cluster); the head reads\n  the pointer better than the lens iff its lower bound > 0.\n  Controls: the same-entity patch and the random push should move <= 10% of answers and leave the head on the org\n  statement (>= 80%); memory \u2192 memory: reported (does the head move to the bridge's new statement without a lookup?).\n  The other heads get the same numbers, not a verdict.",
+  "thresholds": {
+    "follow_moved": 0.6,
+    "follow_stay": 0.8,
+    "static_moved": 0.6,
+    "control_moved": 0.1,
+    "min_n": 35,
+    "n_boot": 4000
+  }
+}

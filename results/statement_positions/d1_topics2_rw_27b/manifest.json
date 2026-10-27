@@ -1,0 +1,102 @@
+{
+  "exp": "statement_positions",
+  "run": "d1_topics2_rw_27b",
+  "kind": "readwrite",
+  "written_utc": "2026-10-22T20:45:00Z",
+  "why": "D1 doubled: the lens read and write at the transit cells",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "a786b36e40323529bcc3bff1b1a1195848c8940d",
+    "dirty": true
+  },
+  "families": [
+    "PP",
+    "PM"
+  ],
+  "n_per_family": 180,
+  "inputs": {
+    "data/tasks_v2/d1_topics_v2/items.jsonl": "062aac437d8ec6b41f6b352c3ffe3713a09618df30c778f1ccf0f577943bb51e",
+    "results/tasks_v2/d1_topics2_competence_27b/items.jsonl": "781ff83dddf9654673cdeebbbeba312ab4d12f5e1b1872d17be97e00804a4203"
+  },
+  "tasks": {
+    "set": "d1_topics_v2",
+    "competence": "d1_topics2_competence_27b"
+  },
+  "cases": "suite: the first n per family of suite_split/map_A8_v1's cases (read_write's selection; BL/BR/RL/RR and BLR/BRL share scenes); countries: the first n per family of control_split/map_v1's",
+  "sets": "Position sets, per prompt, from character offsets of the generator's own sentences (asserted to tile the context):\n  bind_bridge    the binding statement that states the bridge (bound families: the queried person's)\n  bridge_word    its bridge-entity token(s) alone\n  bind_other     the other persons' binding statements (in B families C also changes X's owner's)\n  lookup_bridge  the bridge's lookup statement (\"The cow's locker is 5.\"; BLR its friend row, BRL its legs row; none\n                 for countries, whose capital is recalled)\n  lookup_x       X's lookup statement (the row C's re-binding points the question to: a copy at the bridge's row\n                 alone cannot redirect the lookup)\n  context        every context token (all statements: the statement route's ceiling)\n  question       suite_split's question group, exactly (the question's tokens after C's changed ones through the end)\n  q_words        question minus final\n  final          the template after the user turn: <|im_end|>, the assistant header, the empty think block, \"Answer:\"\nFor RL, RR and countries R, C changes only the cue in the question, so every statement position precedes C's change:\ncopying C there is an exact no-op (a built-in check). O's change (the lockers / friends / rows / holders of X and Z)\nalso comes after every binding statement in the suite, so O's copy at the binding statements is exactly zero there.",
+  "read": "J-lens readout of the clean run at the set's positions: the bridge's best rank among word tokens (any single-token surface; formatting tokens removed) over the positions; X's the same (the floor)",
+  "seeds": {
+    "null": 0,
+    "bootstrap": 0,
+    "random_dictionary": "777 + layer (suite_split's)"
+  },
+  "map": {
+    "run": "d1_topics2_map_27b",
+    "summary_sha256": "968d6ddadddb327c01f641d4306da8b91c2fc01720c46a74811159e8b08e755c",
+    "forced": null,
+    "sets": [
+      "bind_bridge",
+      "bridge_word",
+      "lookup_x",
+      "context",
+      "question"
+    ],
+    "sub_n": null,
+    "layers_from": 32
+  },
+  "cells": {
+    "PP": {
+      "context": [
+        32,
+        36,
+        40
+      ]
+    },
+    "PM": {
+      "bind_bridge": [
+        32
+      ],
+      "bridge_word": [
+        32
+      ],
+      "context": [
+        32,
+        36
+      ]
+    }
+  },
+  "question": "At the transit cells, does the J-lens read the bridge, and can its direction write it?",
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "scales": [
+    0.5,
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0
+  ],
+  "write": "v_X - v_I (unit lens vectors), per position scaled to the norm of C's copy there times each scale; control: a random direction per position at the same norm; C's copy itself",
+  "windows": {
+    "primary": "layers [32, 44)",
+    "secondary": "layers [32, 44)"
+  },
+  "decision": "Decision rule (fixed before the 27B run; per family, set and window, primary layers decide):\n  J-space verdict (frac): inside if the concentration's lower bound > INSIDE (1.2) and above the random-dictionary\n  null's upper bound; around if its upper bound < OUTSIDE (1.0) and not_jspace - jspace > 0 (paired bootstrap lower\n  bound); else inconclusive. suite_split's own rule (inside above 2.0) is reported as verdict_strict.\n  Lens write: written if at some scale <= 4x the lens direction flips >= 30% and beats the random direction (paired\n  bootstrap lower bound of the flip difference > 0); not written if at every scale (0.5-16x) the difference's upper\n  bound is < 0.10; else inconclusive.\n  H-loc (location artefact) is supported for a lookup-used bound family (BL, BLR) if at a statement set in transit at\n  the primary layers its J-space verdict is inside and the lens writes it there. H-around is supported if at every\n  statement set in transit at the primary layers its J-space verdict is around and the lens does not write it, while\n  the positive control at the same set and layers (countries B, else BR) is inside; without a passing positive control\n  an 'around' result at the statements is not interpretable. No statement set of BL in transit at the primary layers:\n  H-loc's location premise fails at the question-token layers (the secondary layers are reported, not decisive).\n  Paired readers: at statement sets BL and BR (and BLR and BRL) get the identical patch on the same scenes (the context\n  precedes the question), so their concentration difference isolates what the reader uses; reported with a scene\n  bootstrap.",
+  "parts": {
+    "run": "d1_topics2_parts_27b",
+    "summary_sha256": "d2f182f46292e16734158b4045bc54b8edf1cf91cec1f210679b4994f6a6e0af"
+  }
+}

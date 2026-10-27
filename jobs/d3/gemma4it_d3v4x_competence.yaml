@@ -1,0 +1,22 @@
+id: gemma4it_d3v4x_competence
+title: "Gate: can Gemma 4 31B-it answer pointer_v4x's scenes?"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.35
+depends_on:
+- gemma4it_d3v4_swap_v2
+command: >-
+  BJ_TARGET=gemma-4-31b-it BJ_JUDGE=read uv run python scripts/pointer_v4x.py manifest --name gemma4it_d3v4x_competence
+  --why "pointer_v4x on Gemma 4 31B-it: every alt and control prompt and each step alone"
+  && BJ_TARGET=gemma-4-31b-it BJ_JUDGE=read uv run python scripts/pointer_v4x.py competence --name gemma4it_d3v4x_competence
+question: 'Does Gemma 4 31B-it answer pointer_v4x''s prompts?'
+why_it_matters: 'Gate for gemma4it_d3v4x_swap.'
+hypotheses:
+  H-gate: 'every topic, family and layout >= 80% right. Prior 0.6'
+decision_rule: 'pointer_v1''s competence rule (read judge).'
+controls:
+- 'each step alone for memory -> prompt'
+n: 'all of pointer_v4x main'
+seeds: [0]
+notes: 'Runs after gemma4it_d3v4_swap_v2, so pointer_swap is known to work on this model.'

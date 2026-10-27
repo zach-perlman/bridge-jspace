@@ -1,0 +1,46 @@
+{
+  "seconds": 301,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 360,
+      "whole": 0.989,
+      "all_steps": 0.994,
+      "median_margin": 4.75,
+      "whole_by_numbers": {
+        "digits": 1,
+        "words": 0.977
+      },
+      "cf": 1,
+      "off": 0.989
+    },
+    "PM/L0": {
+      "n": 360,
+      "whole": 0.95,
+      "all_steps": 0.986,
+      "median_margin": 3.88,
+      "whole_by_numbers": {
+        "digits": 0.941,
+        "words": 0.959
+      },
+      "cf": 0.925,
+      "off": 0.939
+    }
+  },
+  "by_domain": {
+    "greek": 0.95,
+    "animals": 0.958,
+    "elements": 1
+  },
+  "by_format": {
+    "table": 0.967,
+    "json": 0.972
+  },
+  "by_numbers": {
+    "digits": 0.971,
+    "words": 0.968
+  },
+  "pick": {
+    "PP": null,
+    "PM": 0
+  }
+}

@@ -1,0 +1,23 @@
+id: gemma4it_d2_parts_v2
+title: "Name vs digit on Gemma 4 31B-it (main draw)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.0
+depends_on: []
+command: >-
+  BJ_TARGET=gemma-4-31b-it uv run python scripts/attn_knockout.py manifest --name gemma4it_d2_parts_v2 --dataset pointer_v4 --families RL DL RR --n 100 --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence gemma4it_d3v4_competence_v2_r2 --why "name vs digit on a fifth model (another family)" && BJ_TARGET=gemma-4-31b-it uv run python scripts/attn_knockout.py run --name gemma4it_d2_parts_v2
+figures_command: uv run python scripts/d2_parts.py --name gemma4it_d2_parts_v2
+question: >-
+  Do Gemma's last tokens take only the digit from the answer's statement?
+why_it_matters: >-
+  Finding 3 holds on four models; Gemma is the fifth family without a run.
+hypotheses:
+  H-digit-final-split: 'holds. Prior 0.7'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged (valid-split first; H-digit-final-split decisive; H-name-q-split where the question is testable).
+controls:
+- 'the off-path statement of the same token length hidden the same way; unedited accuracy; the competence gate (every prompt of the scene right)'
+n: '100 items per family (RL, DL, RR), main draw'
+seeds: [844]
+notes: "Dan, 2026-10-22 evening: strengthen findings 3-5 on the models whose results were read after the data (critic priority 3): a second draw of scenes, the rules committed for the 27B and Qwen3-32B, unchanged. Not opened before Dan predicts."

@@ -1,0 +1,31 @@
+id: d2_parts_seed2_27b
+title: "Name vs digit on a second draw (pointer_v4 seed2, Qwen3.6-27B)"
+thread: D2
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  uv run python scripts/attn_knockout.py manifest --name d2_parts_seed2_27b --dataset pointer_v4 --set seed2 --families RL DL RR --n 100
+  --sources lookup lookup_off lookup_name lookup_digit lookup_off_name lookup_off_digit lookup_nodigit lookup_noname lookup_off_nodigit lookup_off_noname --dests question final --layers all --competence d3v4_seed2_competence_27b
+  --why "name vs digit on a second draw of pointer_v4 (seed2): hide the entity's name, the digit, or the statement without either, of the answer's statement (and of an off-path statement) from the question's tokens or from the last tokens, in every layer; analysed by scripts/d2_parts.py"
+  && uv run python scripts/attn_knockout.py run --name d2_parts_seed2_27b
+examples_command: uv run python scripts/attn_knockout.py examples --name d2_parts_seed2_27b --k 3
+figures_command: uv run python scripts/d2_parts.py --name d2_parts_seed2_27b
+question: >-
+  On new scenes of the same design, do the name / digit verdicts of d2_parts_v2_27b hold again?
+why_it_matters: >-
+  Name vs digit (the question's tokens read the name, the last tokens read the digit) rests on one draw of scenes per
+  model; README claim 6 and the candidate mechanism (query at the last tokens, key at the digit) build on it.
+hypotheses:
+  H-replicates: 'the verdicts that held on main hold on seed2: memory -> prompt H-digit-final-split; named -> prompt H-name-q-split and H-digit-final-split. Prior 0.75'
+decision_rule: >-
+  scripts/d2_parts.py's rule, unchanged (valid-split first: the off-path statement without its name / digit keeps
+  >= 0.90 right at both destinations). Replication (fixed 2026-10-22 before this run): replicates iff every verdict that
+  held on main holds on seed2 (memory -> prompt H-digit-final-split; named -> prompt H-name-q-split and H-digit-final-split); partly if some do; fails if none. Verdicts that failed on main are reported, not
+  decisive. Per topic reported, not decisive.
+controls:
+- 'the same parts of an off-path statement of the same length; the whole statement and the whole off-path statement'
+n: '100 scenes per topic and family, 3 topics (pointer_v4 seed2: same 85 entities, wordings and split as main, seed 844)'
+seeds: [844]
+notes: "Dan, 2026-10-22: name vs digit v2 on seed2 for 27B and 32B. Main run: d2_parts_v2_27b. Not opened before Dan predicts."

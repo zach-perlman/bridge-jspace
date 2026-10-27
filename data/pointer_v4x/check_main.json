@@ -1,0 +1,452 @@
+{
+ "countries_RL_e5-off": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 36,
+  "max_asked": 5,
+  "slot_class": {
+   "first": 50,
+   "last": 50,
+   "middle": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "entity": 22,
+   "both": 29,
+   "template": 53,
+   "neither": 46
+  },
+  "prompts_unique": 150
+ },
+ "countries_RL_e5more": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 36,
+  "max_asked": 5,
+  "slot_class": {
+   "middle": 50,
+   "first": 50,
+   "last": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "entity": 18,
+   "both": 32,
+   "template": 59,
+   "neither": 41
+  },
+  "prompts_unique": 150
+ },
+ "countries_RL_e5fewer": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 36,
+  "max_asked": 5,
+  "slot_class": {
+   "middle": 50,
+   "last": 50,
+   "first": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "both": 30,
+   "template": 55,
+   "neither": 46,
+   "entity": 19
+  },
+  "prompts_unique": 150
+ },
+ "countries_DL_e5-off": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 36,
+  "max_asked": 5,
+  "slot_class": {
+   "first": 50,
+   "last": 50,
+   "middle": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "entity": 22,
+   "both": 29,
+   "template": 53,
+   "neither": 46
+  },
+  "prompts_unique": 150
+ },
+ "countries_DL_e5more": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 36,
+  "max_asked": 5,
+  "slot_class": {
+   "middle": 50,
+   "first": 50,
+   "last": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "entity": 18,
+   "both": 32,
+   "template": 59,
+   "neither": 41
+  },
+  "prompts_unique": 150
+ },
+ "countries_DL_e5fewer": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 36,
+  "max_asked": 5,
+  "slot_class": {
+   "middle": 50,
+   "last": 50,
+   "first": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "both": 30,
+   "template": 55,
+   "neither": 46,
+   "entity": 19
+  },
+  "prompts_unique": 150
+ },
+ "animals_RL_e5-off": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 34,
+  "max_asked": 5,
+  "slot_class": {
+   "first": 50,
+   "last": 50,
+   "middle": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "both": 28,
+   "entity": 19,
+   "neither": 47,
+   "template": 56
+  },
+  "prompts_unique": 150
+ },
+ "animals_RL_e5more": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 34,
+  "max_asked": 5,
+  "slot_class": {
+   "first": 50,
+   "middle": 50,
+   "last": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "template": 52,
+   "entity": 23,
+   "both": 24,
+   "neither": 51
+  },
+  "prompts_unique": 150
+ },
+ "animals_RL_e5fewer": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 34,
+  "max_asked": 5,
+  "slot_class": {
+   "first": 50,
+   "middle": 50,
+   "last": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "both": 28,
+   "entity": 22,
+   "neither": 49,
+   "template": 51
+  },
+  "prompts_unique": 150
+ },
+ "animals_DL_e5-off": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 34,
+  "max_asked": 5,
+  "slot_class": {
+   "first": 50,
+   "last": 50,
+   "middle": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "both": 28,
+   "entity": 19,
+   "neither": 47,
+   "template": 56
+  },
+  "prompts_unique": 150
+ },
+ "animals_DL_e5more": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 34,
+  "max_asked": 5,
+  "slot_class": {
+   "first": 50,
+   "middle": 50,
+   "last": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "template": 52,
+   "entity": 23,
+   "both": 24,
+   "neither": 51
+  },
+  "prompts_unique": 150
+ },
+ "animals_DL_e5fewer": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 34,
+  "max_asked": 5,
+  "slot_class": {
+   "first": 50,
+   "middle": 50,
+   "last": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "both": 28,
+   "entity": 22,
+   "neither": 49,
+   "template": 51
+  },
+  "prompts_unique": 150
+ },
+ "body_RL_e5-off": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 15,
+  "max_asked": 10,
+  "slot_class": {
+   "last": 50,
+   "first": 50,
+   "middle": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "neither": 53,
+   "template": 47,
+   "entity": 18,
+   "both": 32
+  },
+  "prompts_unique": 150
+ },
+ "body_RL_e5more": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 15,
+  "max_asked": 10,
+  "slot_class": {
+   "middle": 50,
+   "last": 50,
+   "first": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "both": 28,
+   "neither": 51,
+   "template": 49,
+   "entity": 22
+  },
+  "prompts_unique": 150
+ },
+ "body_RL_e5fewer": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 15,
+  "max_asked": 10,
+  "slot_class": {
+   "last": 50,
+   "middle": 50,
+   "first": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "template": 60,
+   "both": 22,
+   "neither": 40,
+   "entity": 28
+  },
+  "prompts_unique": 150
+ },
+ "body_DL_e5-off": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 15,
+  "max_asked": 10,
+  "slot_class": {
+   "last": 50,
+   "first": 50,
+   "middle": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "neither": 53,
+   "template": 47,
+   "entity": 18,
+   "both": 32
+  },
+  "prompts_unique": 150
+ },
+ "body_DL_e5more": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 15,
+  "max_asked": 10,
+  "slot_class": {
+   "middle": 50,
+   "last": 50,
+   "first": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "both": 28,
+   "neither": 51,
+   "template": 49,
+   "entity": 22
+  },
+  "prompts_unique": 150
+ },
+ "body_DL_e5fewer": {
+  "n": 150,
+  "equal_cells": 150,
+  "dissoc_aligned": 150,
+  "same_aligned": 150,
+  "redigit_aligned": 150,
+  "pointers": 150,
+  "predictions": 150,
+  "statements": 150,
+  "entities_asked": 15,
+  "max_asked": 10,
+  "slot_class": {
+   "last": 50,
+   "middle": 50,
+   "first": 50
+  },
+  "wordings": 9,
+  "cuts": {
+   "template": 60,
+   "both": 22,
+   "neither": 40,
+   "entity": 28
+  },
+  "prompts_unique": 150
+ }
+}

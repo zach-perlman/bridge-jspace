@@ -1,0 +1,25 @@
+id: muse30b_d3v4_seed3_swap
+title: "Muse Glimmer 30B: finding 5 by the fixed rule (seed3, decisive)"
+thread: D3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.2
+depends_on:
+- muse30b_d3v4_seed3_competence
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/pointer_swap.py manifest --data pointer_v4 --set seed3 --name muse30b_d3v4_seed3_swap --families RL DL --n 150 --layers 26 28 30 32 34 36 38 40 42 44 46 48 --control-stride 1 --groups last --competence muse30b_d3v4_seed3_competence --why "finding 5 on Muse by the fixed rule" && BJ_TARGET=muse-glimmer-30b uv run python scripts/pointer_swap.py run --name muse30b_d3v4_seed3_swap
+figures_command: uv run python scripts/finding5_confirm.py --run muse30b_d3v4_seed3_swap --layers 26 28 30 32 34 36 38 40 42 44 46 48
+question: >-
+  Order label for the 1st and 2nd sentence, the identity for the rest?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-A: 'holds. Prior 0.75 (copied from muse30b_d3v4_seed2_swap)'
+  H-B: 'holds. Prior 0.5 (copied from muse30b_d3v4_seed2_swap)'
+decision_rule: >-
+  scripts/finding5_confirm.py, unchanged: the last sweep layer where the donor's digit's Wilson upper bound < 0.10; A iff position - identity (1st-2nd) lower bound > 0; B iff identity - position (3rd-5th) >= 0, lower bound >= -0.05.
+controls:
+- 'as the same test on the other models'
+n: '150 items per family (RL, DL)'
+seeds: [845]
+notes: "mechanical copy of muse30b_d3v4_seed2_swap (Dan, 23 Oct ~00:40: a 10-hour plan); not opened before Dan's predictions. Only the data set (pointer_v4 seed3), the gate, run names and dependencies change; layers, n and rules as in muse30b_d3v4_seed2_swap. Data: data/pointer_v4/seed3/ (pointer_v4.py make_set --set seed3, data seed 845; check_seed3.json; no prompt shared with main or seed2), the 27B's third draw (d3v4_seed3_competence_27b / d3v4_seed3_swap_27b)."

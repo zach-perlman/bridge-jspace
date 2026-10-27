@@ -1,0 +1,40 @@
+id: olmo3_7b_dpo_rw_dose_chat_v1
+thread: D5
+gpus: 1
+est_gpu_hours: 0.2
+mem_gb: 30
+depends_on:
+- olmo3_7b_dpo_competence_chat_v1
+command: BJ_TARGET=olmo-3-7b-dpo BJ_FORMAT=chat uv run python scripts/read_write.py --name olmo3_7b_dpo_rw_dose_chat_v1
+  --why "D5b gate G3 + ladder E1 on olmo-3-7b-dpo (chat)" --from-competence olmo3_7b_dpo_competence_chat_v1 --n
+  80 --layers 15 18 21 24 --scales 0.5 1 2 4 8 16
+question: In olmo-3-7b-dpo (chat), does its J-lens read the bridge at the question tokens (top-10) and can the lens
+  direction v_X - v_I write it (flips to X's answer), for countries (positive control) and for RL vs RR?
+why_it_matters: 'Gate G3 (the lens must read AND write countries, which failed on Gemma) and the ladder''s second
+  measure (Qwen: RL read 95% but never written; RR written 30-36%). D5b / claim C2 (memory vs prompt: recall needs
+  the J-space, prompt lookups go around it). If the split is present in the base model, post-training is not what
+  creates it (the ''around'' route is a pretraining mechanism, e.g. binding/lookback pointers); if it first appears
+  at SFT/DPO/RLVR, the split is a property of post-trained chat models. A null on Instruct with a passing gate says
+  the Qwen result does not generalise to OLMo.'
+hypotheses:
+  H_gate: 'countries R/B: lens top-10 read >= 70% and lens flips >= 50% at some scale <= 4x with random <= 10% (27B:
+    95-98% flips at 2-8x)'
+  H_rw_split: RL read >= 70% but lens flips <= random + 5 points at every scale; RR flips >= 20 points above random
+    at its best scale
+  H_rw_none: RL and RR alike (both written or neither)
+decision_rule: GATE G3 passes iff the countries criterion in H_gate holds at layers 15/18/21 (single layer, best
+  scale); layer 24 is descriptive only. read-not-written for RL holds iff H_rw_split; reported per checkpoint with
+  Wilson CIs, n=80.
+controls:
+- random direction at the same norm per scale
+- C's full copy (the upper bound of a write)
+- X's rank in the clean readout (read floor)
+- countries as the positive control
+n: 80 per family (BL, BR, RL, RR; countries R, B)
+seeds:
+- 10000*case+layer (random directions)
+- 0
+notes: 'DRAFT for a later night (not enqueued). BJ_FORMAT is in (chat.py, 2026-10-21: raw = the user content, a newline and Answer:, no template; recorded as model.prompt_format in every manifest; raw run names carry _raw) and suite_split reads the competence run of the same format (<prefix>competence_<format>_v1); competence smoked on OLMo-3-7B-Instruct in both formats. Lens port in (2026-10-21): pins.FROZEN_LENS is each OLMo target''s J-lens (key jlens, sha256-checked on load), a lens stage refuses a layer without a lens map before it writes anything, and manifests record the lens key and lens_layers. Disk:
+  model snapshots in the box''s HF cache (/ephemeral/hf). Time: 9B dose (n=320, 3 layers, 6 scales) took 97 s; 4
+  layers here. No examples_command: read_write.py has no examples stage yet (none of suite_v1, ablate_pilot, read_write,
+  suite_split has one).'

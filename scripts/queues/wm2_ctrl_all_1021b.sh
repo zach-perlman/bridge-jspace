@@ -16,6 +16,6 @@ while [ $ok -lt 3 ]; do
   sleep 60
 done
 echo "=== start $(date -u +%FT%TZ); free MiB $(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits)"
-BJ_BATCH=32 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True $PY scripts/write_max.py --name wm2_ctrl_all_v1 \
+BJ_SUITE_BATCH=32 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True $PY scripts/write_max.py --name wm2_ctrl_all_v1 \
   --why "Zach (2026-10-20), Phase 1d: the strongest fair write (write_max v2), tasks_v2 ctrl_v8, all four levels pooled" \
   --n 1000 --tasks ctrl_v8 --tasks-competence ctrl_v8_competence_v1 --tasks-level all

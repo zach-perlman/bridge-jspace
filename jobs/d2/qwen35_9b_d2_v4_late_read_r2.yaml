@@ -1,0 +1,31 @@
+id: qwen35_9b_d2_v4_late_read_r2
+title: "D2 on Qwen3.5-9B: does the lookup read its statement late, through attention and not DeltaNet?"
+thread: D2
+gpus: 1
+mem_gb: 30
+est_gpu_hours: 0.5
+depends_on:
+- qwen35_9b_d3v4_competence_r2
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py manifest --name qwen35_9b_d2_v4_late_read_r2
+  --why "D2 on a smaller model of the same family: d2_v4_late_read's grid on pointer_v4 (attention vs DeltaNet layers,
+  bands), memory -> prompt, named -> prompt, memory -> memory"
+  --dataset pointer_v4 --families RL DL RR --n 100 --layers all kind bands band4 --sweep path+random
+  --sweep-dests question final both --competence qwen35_9b_d3v4_competence_r2
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py run --name qwen35_9b_d2_v4_late_read_r2
+  && BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py summarise --name qwen35_9b_d2_v4_late_read_r2
+examples_command: BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py examples --name qwen35_9b_d2_v4_late_read_r2 --k 3
+figures_command: BJ_TARGET=qwen3.5-9b uv run python scripts/attn_knockout.py figures --name qwen35_9b_d2_v4_late_read_r2
+question: >-
+  On Qwen3.5-9B, when the answer's statement is hidden from the last tokens in every attention layer, does a lookup
+  in the prompt break (as on the 27B: 2-13% kept) while hiding it in every DeltaNet layer changes nothing (27B: 100%)?
+why_it_matters: 'Pattern 4 ("attention, not DeltaNet") at another size of the same hybrid design.'
+hypotheses:
+  H-attn: 'memory -> prompt, statement hidden from the tokens after the question in every attention layer: still
+    right upper bound <= 25%; in every DeltaNet layer: lower bound >= 85%; memory -> memory >= 85% in both. Prior 0.65'
+decision_rule: 'attn_knockout''s rule as in d2_v4_late_read; primary: memory -> prompt, destination final, kinds attn vs gdn, pooled.'
+controls:
+- 'off-path same-length statement hidden; random span; memory -> memory'
+n: '100 items per family, 3 topics'
+seeds: [0]
+notes: '~0.5 GPU-h.'

@@ -1,0 +1,27 @@
+id: x45c_muse
+title: "Batch 45c (muse): second vs third locker: a restricted label-free basis, removed / kept in routes C2, and the write"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.8
+depends_on: [x45_0_indep_9b]
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x7_pcf.py run --name muse30b_x7_pcf12 --moves 1-2 && uv run python scripts/x6_routes.py run --name muse30b_x6_routes_pcf12 --conditions C0,C2 --keeponly --alf-from x7_pcf/muse30b_x7_pcf12 --c0-min 0.5 --sealed && uv run python scripts/x8_write.py run --name muse30b_x8_write12 --pairs 1-2 2-1 --dose-from muse30b_x8_write --s 1 2 3 4 --rand-s 1 4
+question: >-
+  Is there a direction that carries the move between the second and third locker, outside our pointer directions?
+why_it_matters: >-
+  Our pointer directions and P_cf move the lookup only to or from the first locker, yet the whole change also moves it
+  between the second and third (Fig. 8b); 45c looks for that code directly.
+hypotheses:
+  H-batch45: 'Q45.6 in docs/predictions_batch45.md (committed before any result is opened)'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45c): found if, on the routes moves between the second and third locker, removing the basis halves the position share (CI excluding 0) and keeping only it gives at least 0.15 position. Scored after Dan's predictions are committed (sealed until then).
+controls:
+- 'a random part of the same share for the removal and for keep-only'
+- 'a random direction of the same norm for the write'
+n: '1,000 restricted pairs for the fit; the routes C2 items (up to 300) whose move is between the second and third locker'
+seeds: [4301, 2510, 4401, 0]
+notes: >-
+  Basis: P_cf restricted to pairs whose two slots are the second and third (x7_pcf --moves 1-2), the differences
+  projected off U before the PCA (orthogonal to U by construction), rank 2. Doses: s = dose x the pair's s* from the
+  batch-44 x8 run muse30b_x8_write. Results sealed until Dan's predictions are committed.

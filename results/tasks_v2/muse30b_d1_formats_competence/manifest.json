@@ -1,0 +1,19 @@
+{
+  "run": "muse30b_d1_formats_competence",
+  "why": "D1 in tables and JSON (Muse): scenes right on every prompt",
+  "set": "d1_formats_v1",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "git_commit": "c07e7cf83c687958a0b5aba4c885538d80f91a47",
+  "guess": false,
+  "generation": "greedy, 8 new tokens, batched by length",
+  "read": "suite_v1.read_answers: p and logit margin of the answer's first token",
+  "judge": "tasks_v2.judge: the first number / the first thing named in the first line",
+  "written_utc": "2026-10-23T03:47:38Z"
+}

@@ -1,0 +1,158 @@
+{
+ "exp": "lens_eval",
+ "run": "olmo3_7b_instruct_lens_eval",
+ "written_utc": "2026-10-23T04:35:41Z",
+ "host": "shadecloud",
+ "argv": [
+  "/ephemeral/jobq/runs/olmo3_7b_instruct_lens_eval/code/scripts/lens_fit/lens_eval.py",
+  "--name",
+  "olmo3_7b_instruct_lens_eval",
+  "--model",
+  "allenai/Olmo-3-7B-Instruct",
+  "--lens",
+  "hf:mhough/olmo3-jacobian-lenses@d15b6af0058e89e78d40847c945b6e4dc7fbfe82:lenses/olmo-3-7b-instruct.pt#b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774",
+  "--lens",
+  "hf:neuronpedia/jacobian-lens@e166deb5ad540932100ef803c8c9bcc2a5453694:olmo-3-1025-7b/jlens/Salesforce-wikitext/Olmo-3-1025-7B_jacobian_lens.pt#0683d9725bc9c09881c56784ee1371956ad5793b41731ea1213f025757073183"
+ ],
+ "repo_commit": "b3339d0983b5b2315f6392cb23da9aef11004cd8",
+ "model": {
+  "hf_model_name": "allenai/Olmo-3-7B-Instruct",
+  "revision": "the Hub's main at run time (the recipe takes no revision)"
+ },
+ "recipe": {
+  "dir": "/ephemeral/ext/jpp_lens",
+  "commit": "93f02cd6c27db765abb127f20eff656bb5d27340",
+  "dirty": false
+ },
+ "items": "held-out:0 (the recipe's split, fit fraction 0.2), the items the model answers right",
+ "correctness": {
+  "source": "graded by scripts/lens_fit/jpp_grade.py",
+  "sha256": null
+ },
+ "lenses": {
+  "olmo-3-7b-instruct": {
+   "spec": "hf:mhough/olmo3-jacobian-lenses@d15b6af0058e89e78d40847c945b6e4dc7fbfe82:lenses/olmo-3-7b-instruct.pt#b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774",
+   "path": "/ephemeral/hf/hub/models--mhough--olmo3-jacobian-lenses/snapshots/d15b6af0058e89e78d40847c945b6e4dc7fbfe82/lenses/olmo-3-7b-instruct.pt",
+   "sha256": "b847dbba1406dc019adaeec09d971c60574c18dc28f031a93e8b43fa028b2774",
+   "format": "J",
+   "source_layers": [
+    0,
+    3,
+    6,
+    9,
+    12,
+    15,
+    18,
+    21,
+    24,
+    27,
+    30
+   ],
+   "d_model": 4096,
+   "n_prompts": 616
+  },
+  "Olmo-3-1025-7B_jacobian_lens": {
+   "spec": "hf:neuronpedia/jacobian-lens@e166deb5ad540932100ef803c8c9bcc2a5453694:olmo-3-1025-7b/jlens/Salesforce-wikitext/Olmo-3-1025-7B_jacobian_lens.pt#0683d9725bc9c09881c56784ee1371956ad5793b41731ea1213f025757073183",
+   "path": "/ephemeral/hf/hub/models--neuronpedia--jacobian-lens/snapshots/e166deb5ad540932100ef803c8c9bcc2a5453694/olmo-3-1025-7b/jlens/Salesforce-wikitext/Olmo-3-1025-7B_jacobian_lens.pt",
+   "sha256": "0683d9725bc9c09881c56784ee1371956ad5793b41731ea1213f025757073183",
+   "format": "J",
+   "source_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+   ],
+   "d_model": 4096,
+   "n_prompts": 568
+  }
+ },
+ "groups": [
+  {
+   "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+   ],
+   "lenses": [
+    "Olmo-3-1025-7B_jacobian_lens",
+    "logit"
+   ],
+   "out": "eval_ranks_g0.csv"
+  },
+  {
+   "layers": [
+    0,
+    3,
+    6,
+    9,
+    12,
+    15,
+    18,
+    21,
+    24,
+    27,
+    30
+   ],
+   "lenses": [
+    "olmo-3-7b-instruct"
+   ],
+   "out": "eval_ranks_g1.csv"
+  }
+ ],
+ "metric": "pass@10 per eval and macro (mean of the five), item-weighted, best rank over the layers scored"
+}

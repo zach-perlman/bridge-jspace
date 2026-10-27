@@ -1,0 +1,97 @@
+# 45a, descriptive, after the data (Dan 26 Oct ~21:20 / ~21:25)
+
+Not part of the rule (jobs/c3/batch45.yaml). Lookup reads at the layer fixed in advance. UNVERIFIED.
+
+## qwen3.5-9b (L12; qwen35_9b_x6_routes_x45a)
+
+1. The lookup's answer route on the first-locker moves (n = 191 base scenes, the same in every variant): identity / position / value / original / other.
+
+| variant | the whole change | the pointer part only |
+|---|---|---|
+| V0 | 0.54 / 0.46 / 0.00 / 0.00 / 0.00 | 0.03 / 0.45 / 0.00 / 0.51 / 0.01 |
+| V1 | 0.89 / 0.06 / 0.00 / 0.05 / 0.00 | 0.02 / 0.06 / 0.00 / 0.92 / 0.00 |
+| V2 | 0.96 / 0.04 / 0.00 / 0.00 / 0.00 | 0.01 / 0.01 / 0.00 / 0.99 / 0.00 |
+| V3 | 0.85 / 0.12 / 0.00 / 0.03 / 0.00 | 0.00 / 0.02 / 0.00 / 0.97 / 0.01 |
+| V4 | 0.58 / 0.42 / 0.00 / 0.00 / 0.00 | 0.01 / 0.13 / 0.00 / 0.85 / 0.02 |
+
+2. beta, the code's shift vs V0 at O's bridge word (units of mu_j+1 - mu_j; all moves):
+
+| variant | n | beta [CI] |
+|---|---|---|
+| V1 | 300 | 0.32 [0.29, 0.35] |
+| V2 | 300 | 0.35 [0.25, 0.45] |
+| V3 | 300 | 0.69 [0.64, 0.74] |
+| V4 | 300 | 0.15 [0.14, 0.17] |
+
+3. Unedited reads per variant (every generated case): share read right, lookup O / S, recall O / S.
+
+| variant | lookup O | lookup S | recall O | recall S |
+|---|---|---|---|---|
+| V0 | 1.00 (700/700) | 1.00 (700/700) | 0.91 (635/700) | 0.91 (638/700) |
+| V1 | 0.99 (696/700) | 1.00 (699/700) | 0.91 (635/700) | 0.87 (607/700) |
+| V2 | 1.00 (697/700) | 1.00 (699/700) | 0.86 (601/700) | 0.83 (581/700) |
+| V3 | 1.00 (697/700) | 1.00 (698/700) | 0.89 (624/700) | 0.87 (606/700) |
+| V4 | 1.00 (700/700) | 1.00 (699/700) | 0.91 (638/700) | 0.91 (639/700) |
+
+## qwen3.6-27b (L32; x6_routes_x45a_27b)
+
+1. The lookup's answer route on the first-locker moves (n = 200 base scenes, the same in every variant): identity / position / value / original / other.
+
+| variant | the whole change | the pointer part only |
+|---|---|---|
+| V0 | 0.65 / 0.35 / 0.00 / 0.00 / 0.00 | 0.06 / 0.12 / 0.00 / 0.82 / 0.01 |
+| V1 | 0.91 / 0.04 / 0.00 / 0.06 / 0.00 | 0.00 / 0.00 / 0.00 / 1.00 / 0.00 |
+| V2 | 0.90 / 0.03 / 0.00 / 0.07 / 0.00 | 0.00 / 0.00 / 0.00 / 1.00 / 0.00 |
+| V3 | 0.97 / 0.01 / 0.00 / 0.02 / 0.00 | 0.00 / 0.00 / 0.00 / 1.00 / 0.00 |
+| V4 | 0.73 / 0.27 / 0.00 / 0.00 / 0.00 | 0.01 / 0.04 / 0.00 / 0.95 / 0.00 |
+
+2. beta, the code's shift vs V0 at O's bridge word (units of mu_j+1 - mu_j; all moves):
+
+| variant | n | beta [CI] |
+|---|---|---|
+| V1 | 300 | 0.37 [0.34, 0.41] |
+| V2 | 300 | 0.30 [0.22, 0.37] |
+| V3 | 300 | 0.61 [0.56, 0.66] |
+| V4 | 300 | 0.17 [0.15, 0.20] |
+
+3. Unedited reads per variant (every generated case): share read right, lookup O / S, recall O / S.
+
+| variant | lookup O | lookup S | recall O | recall S |
+|---|---|---|---|---|
+| V0 | 1.00 (699/700) | 1.00 (700/700) | 1.00 (698/700) | 1.00 (697/700) |
+| V1 | 1.00 (700/700) | 1.00 (700/700) | 1.00 (699/700) | 0.99 (691/700) |
+| V2 | 1.00 (700/700) | 1.00 (700/700) | 1.00 (697/700) | 0.99 (694/700) |
+| V3 | 1.00 (700/700) | 1.00 (700/700) | 0.99 (692/700) | 0.99 (695/700) |
+| V4 | 1.00 (699/700) | 1.00 (700/700) | 0.98 (687/700) | 0.97 (679/700) |
+
+## muse-glimmer-30b (L26; muse30b_x6_routes_x45a)
+
+1. The lookup's answer route on the first-locker moves (n = 199 base scenes, the same in every variant): identity / position / value / original / other.
+
+| variant | the whole change | the pointer part only |
+|---|---|---|
+| V0 | 0.47 / 0.52 / 0.00 / 0.01 / 0.00 | 0.08 / 0.36 / 0.00 / 0.56 / 0.00 |
+| V1 | 0.50 / 0.34 / 0.00 / 0.16 / 0.00 | 0.03 / 0.18 / 0.00 / 0.79 / 0.00 |
+| V2 | 0.59 / 0.14 / 0.00 / 0.27 / 0.00 | 0.06 / 0.05 / 0.00 / 0.89 / 0.00 |
+| V3 | 0.60 / 0.27 / 0.00 / 0.13 / 0.00 | 0.03 / 0.06 / 0.00 / 0.92 / 0.00 |
+| V4 | 0.46 / 0.54 / 0.00 / 0.01 / 0.00 | 0.11 / 0.35 / 0.00 / 0.54 / 0.00 |
+
+2. beta, the code's shift vs V0 at O's bridge word (units of mu_j+1 - mu_j; all moves):
+
+| variant | n | beta [CI] |
+|---|---|---|
+| V1 | 300 | 0.60 [0.55, 0.65] |
+| V2 | 300 | 0.54 [0.49, 0.59] |
+| V3 | 300 | 0.83 [0.78, 0.87] |
+| V4 | 300 | 0.18 [0.17, 0.20] |
+
+3. Unedited reads per variant (every generated case): share read right, lookup O / S, recall O / S.
+
+| variant | lookup O | lookup S | recall O | recall S |
+|---|---|---|---|---|
+| V0 | 0.99 (690/700) | 0.99 (694/700) | 0.94 (658/700) | 0.91 (637/700) |
+| V1 | 0.99 (693/700) | 0.97 (679/700) | 0.97 (678/700) | 0.94 (659/700) |
+| V2 | 0.99 (696/700) | 0.99 (694/700) | 0.94 (657/700) | 0.95 (662/700) |
+| V3 | 1.00 (698/700) | 0.98 (688/700) | 0.95 (667/700) | 0.94 (656/700) |
+| V4 | 0.94 (659/700) | 1.00 (698/700) | 0.94 (659/700) | 0.93 (651/700) |
+

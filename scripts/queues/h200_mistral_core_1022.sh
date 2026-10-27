@@ -70,9 +70,9 @@ BJ_TARGET=gemma-4-31b-it-solarlens $PY scripts/removal_textloss.py --name gemma4
   --why "$WHY: bridge, does an independent lens also wreck Gemma's plain text? (ours: 7.66 -> 12.95 at top1)" \
   --layers $(seq 30 38) --conditions none top1 top1_rot top10 top10_rot || echo "=== Gemma bridge text loss FAILED"
 echo "=== C2 $(date -u +%T)"
-BJ_BATCH=32 $PY scripts/write_max.py --name mistral24_smoke_wm2_full_1022 --why smoke --n 2 --band 20-22 \
+BJ_SUITE_BATCH=32 $PY scripts/write_max.py --name mistral24_smoke_wm2_full_1022 --why smoke --n 2 --band 20-22 \
   --single-step 1 --early 13 --possets question final $W2 || { echo "steering smoke failed: stop"; exit 1; }
-BJ_BATCH=64 $PY scripts/write_max.py --name mistral24_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
+BJ_SUITE_BATCH=64 $PY scripts/write_max.py --name mistral24_wm2_full2_v1 --why "$WHY: two-step steering, full pools, joint paste ceiling" \
   --n 1000 $STEER $W2 && $PY scripts/c2_graded.py mistral24_wm2_full2_v1 | tail -14 \
   && $PY scripts/c2_graded.py mistral24_wm2_full2_v1 --drop-guessable > /dev/null || echo "=== two-step steering FAILED"
 echo "=== Mistral core (C1 + C2) done $(date -u +%FT%TZ)"

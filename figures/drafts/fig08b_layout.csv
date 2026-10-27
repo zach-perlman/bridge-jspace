@@ -1,0 +1,53 @@
+figure,model,quantity,value,lo,hi,n,source
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, no sentence: identity share",0.5393,0.4672897196261682,0.6149535809018566,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, no sentence: position share",0.4607,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a neutral sentence: identity share",0.5759,0.515622573757764,0.6407766990291263,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a neutral sentence: position share",0.4241,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, beta vs no sentence: a neutral sentence",0.1543,0.1373361116381282,0.17049010054571048,300,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a pick: the first-locker item: identity share",0.8901,0.8470588235294118,0.9310344827586207,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a pick: the first-locker item: position share",0.0628,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a pick: the first-locker item: original share",0.0471,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, beta vs no sentence: a pick: the first-locker item",0.3238,0.28921008107117113,0.35397132000406345,300,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a pick: another locker item: identity share",0.9581,0.9299984076433121,0.9831484213169291,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a pick: another locker item: position share",0.0419,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, beta vs no sentence: a pick: another locker item",0.3515,0.25246518872989976,0.44907633866640684,300,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a pick: an item with no locker: identity share",0.8534,0.8062798394722882,0.8941192032368503,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a pick: an item with no locker: position share",0.1152,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, first-locker moves, whole change, a pick: an item with no locker: original share",0.0314,,,191,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.5-9b,"45a, beta vs no sentence: a pick: an item with no locker",0.6915,0.637789643731962,0.7432233799147882,300,x6_routes/qwen35_9b_x6_routes_x45a
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, no sentence: identity share",0.645,0.5889553510565781,0.6995305164319249,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, no sentence: position share",0.355,,,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a neutral sentence: identity share",0.73,0.6700494923857868,0.7845303867403315,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a neutral sentence: position share",0.27,,,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, beta vs no sentence: a neutral sentence",0.1717,0.14921132191004013,0.19564922852794417,300,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: the first-locker item: identity share",0.905,0.8636363636363636,0.9441860465116279,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: the first-locker item: position share",0.035,,,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: the first-locker item: original share",0.06,,,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, beta vs no sentence: a pick: the first-locker item",0.3743,0.3368836619421569,0.4090360974068972,300,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: another locker item: identity share",0.895,0.845,0.9393939393939394,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: another locker item: position share",0.03,,,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: another locker item: original share",0.075,,,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, beta vs no sentence: a pick: another locker item",0.2963,0.21931914823381762,0.3742357240109108,300,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: an item with no locker: identity share",0.975,0.9556650246305419,0.994286525974026,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: an item with no locker: position share",0.005,,,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, first-locker moves, whole change, a pick: an item with no locker: original share",0.02,,,200,x6_routes/x6_routes_x45a_27b
+fig08b,qwen3.6-27b,"45a, beta vs no sentence: a pick: an item with no locker",0.6091,0.5582851312723156,0.6564896653932168,300,x6_routes/x6_routes_x45a_27b
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, no sentence: identity share",0.4724,0.40217247527030137,0.5418507627872658,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, no sentence: position share",0.5226,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, no sentence: original share",0.005,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a neutral sentence: identity share",0.4573,0.39,0.5210566188197766,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a neutral sentence: position share",0.5377,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a neutral sentence: original share",0.005,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, beta vs no sentence: a neutral sentence",0.1839,0.1666672861203952,0.20105486112092805,300,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: the first-locker item: identity share",0.5025,0.43005181347150256,0.5736863675582399,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: the first-locker item: position share",0.3367,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: the first-locker item: original share",0.1608,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, beta vs no sentence: a pick: the first-locker item",0.6002,0.5508557193409183,0.6489412436980568,300,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: another locker item: identity share",0.593,0.5224719101123596,0.6635975286489132,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: another locker item: position share",0.1357,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: another locker item: original share",0.2714,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, beta vs no sentence: a pick: another locker item",0.5384,0.48597844154762593,0.588581089140626,300,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: an item with no locker: identity share",0.603,0.5329949238578681,0.6791469074765413,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: an item with no locker: position share",0.2714,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, first-locker moves, whole change, a pick: an item with no locker: original share",0.1256,,,199,x6_routes/muse30b_x6_routes_x45a
+fig08b,muse-glimmer-30b,"45a, beta vs no sentence: a pick: an item with no locker",0.8262,0.7795444617299164,0.8738533975801369,300,x6_routes/muse30b_x6_routes_x45a

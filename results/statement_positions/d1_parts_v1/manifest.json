@@ -1,0 +1,140 @@
+{
+  "exp": "statement_positions",
+  "run": "d1_parts_v1",
+  "kind": "parts",
+  "written_utc": "2026-10-20T23:29:17Z",
+  "why": "D1: at the transit cells (statement positions vs question), is the copy's effect carried by its J-space part?",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "code": {
+    "sha": "96c9ec24b4b7a1f2e06109174a048db290d03db4",
+    "dirty": true
+  },
+  "families": [
+    "BL",
+    "BR",
+    "RL",
+    "RR",
+    "BLR",
+    "BRL",
+    "R",
+    "B"
+  ],
+  "n_per_family": 32,
+  "inputs": {
+    "data/suite_v1/BL.json": "1d6bc3264cb78a73cc175f7423923d553a6a1e6201a301a5757d5771cc7cc017",
+    "data/suite_v1/BR.json": "b8aacfe7263aa2a81c0bd0e7b973a2057b61753f7470c22fe1119425facbc7fb",
+    "data/suite_v1/RL.json": "305f5e5b6679ff83466800cd05c019e62ab4d374dd0d3f916e968c8a733cd045",
+    "data/suite_v1/RR.json": "1cedcc460789ba2fee5c2b6f7a0d2302d2e81a9c73acb7853843f54a807fca07",
+    "data/suite_v1/BLR.json": "147a395905a96f1a5d62fb45894a22cdf610d7af693a5a6a19a6117371722036",
+    "data/suite_v1/BRL.json": "9a53b7b8b659be955facac1923dbec7953d43afd714cb501308390a7da820d83",
+    "results/suite_split/map_A8_v1/cases.jsonl": "b3570104d9f99240f6b3103c0e57648137d017f3fc58044b26281bdc8992d734",
+    "results/control_split/map_v1/cases.jsonl": "d2a6c4cd77ba1db3edfd6f03085c9370540da312a4e205bdc1727cec1c733ca6",
+    "data/bind_recall.json": "bbb1cfa8e95b6a83ec1c6003fc3a05c5c1fba195cff6a5cb7e3ea968dce59029"
+  },
+  "cases": "suite: the first n per family of suite_split/map_A8_v1's cases (read_write's selection; BL/BR/RL/RR and BLR/BRL share scenes); countries: the first n per family of control_split/map_v1's",
+  "sets": "Position sets, per prompt, from character offsets of the generator's own sentences (asserted to tile the context):\n  bind_bridge    the binding statement that states the bridge (bound families: the queried person's)\n  bridge_word    its bridge-entity token(s) alone\n  bind_other     the other persons' binding statements (in B families C also changes X's owner's)\n  lookup_bridge  the bridge's lookup statement (\"The cow's locker is 5.\"; BLR its friend row, BRL its legs row; none\n                 for countries, whose capital is recalled)\n  lookup_x       X's lookup statement (the row C's re-binding points the question to: a copy at the bridge's row\n                 alone cannot redirect the lookup)\n  context        every context token (all statements: the statement route's ceiling)\n  question       suite_split's question group, exactly (the question's tokens after C's changed ones through the end)\n  q_words        question minus final\n  final          the template after the user turn: <|im_end|>, the assistant header, the empty think block, \"Answer:\"\nFor RL, RR and countries R, C changes only the cue in the question, so every statement position precedes C's change:\ncopying C there is an exact no-op (a built-in check). O's change (the lockers / friends / rows / holders of X and Z)\nalso comes after every binding statement in the suite, so O's copy at the binding statements is exactly zero there.",
+  "read": "suite_split's: one forward of the edited clean prompt (a digit's space token appended), the top token's role (b: X's answer, A: the bridge's, other), ld = logit(b) - logit(A), frac = (ld - ld_clean) / (ld_C - ld_clean)",
+  "seeds": {
+    "null": 0,
+    "bootstrap": 0,
+    "random_dictionary": "777 + layer (suite_split's)"
+  },
+  "map": {
+    "run": "d1_map_v1",
+    "summary_sha256": "da553453f0ceaf2a0a5bd93225b8dd46bdd4bcc9ada637253bfca93fd7990219",
+    "forced": null,
+    "sets": [
+      "bind_bridge",
+      "bridge_word",
+      "lookup_x",
+      "context",
+      "question"
+    ],
+    "sub_n": null,
+    "layers_from": 32
+  },
+  "cells": {
+    "BL": {
+      "context": [
+        32,
+        36,
+        40
+      ]
+    },
+    "BR": {
+      "bind_bridge": [
+        32
+      ],
+      "bridge_word": [
+        32
+      ],
+      "context": [
+        32,
+        36
+      ]
+    },
+    "RL": {
+      "question": [
+        36,
+        40
+      ]
+    },
+    "RR": {},
+    "BLR": {
+      "context": [
+        32
+      ]
+    },
+    "BRL": {
+      "context": [
+        32
+      ]
+    },
+    "R": {
+      "question": [
+        36,
+        40
+      ]
+    },
+    "B": {
+      "bind_bridge": [
+        32,
+        36,
+        40
+      ],
+      "bridge_word": [
+        32,
+        36,
+        40
+      ],
+      "context": [
+        32,
+        36
+      ],
+      "question": [
+        40
+      ]
+    }
+  },
+  "question": "Where the copy carries the bridge (transit cells), which part carries it: the J-space or the rest?",
+  "lens": {
+    "jpp": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "9fa267f841d62aa468dab5b9b38c3dc45a82d863"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "parts": "suite_split's parts with --calibrate: full (C), O's full copy, lens2 / not_lens2, jspace / not_jspace, jspace_wo_own, rand_omp (25-atom signed OMP), each with its random-direction null, lens2_matched and jspace_matched (exp02's matched-alignment pieces)",
+  "windows": {
+    "primary": "layers [32, 44)",
+    "secondary": "layers [32, 44)"
+  },
+  "decision": "Decision rule (fixed before the 27B run; per family, set and window, primary layers decide):\n  J-space verdict (frac): inside if the concentration's lower bound > INSIDE (1.2) and above the random-dictionary\n  null's upper bound; around if its upper bound < OUTSIDE (1.0) and not_jspace - jspace > 0 (paired bootstrap lower\n  bound); else inconclusive. suite_split's own rule (inside above 2.0) is reported as verdict_strict.\n  Lens write: written if at some scale <= 4x the lens direction flips >= 30% and beats the random direction (paired\n  bootstrap lower bound of the flip difference > 0); not written if at every scale (0.5-16x) the difference's upper\n  bound is < 0.10; else inconclusive.\n  H-loc (location artefact) is supported for a lookup-used bound family (BL, BLR) if at a statement set in transit at\n  the primary layers its J-space verdict is inside and the lens writes it there. H-around is supported if at every\n  statement set in transit at the primary layers its J-space verdict is around and the lens does not write it, while\n  the positive control at the same set and layers (countries B, else BR) is inside; without a passing positive control\n  an 'around' result at the statements is not interpretable. No statement set of BL in transit at the primary layers:\n  H-loc's location premise fails at the question-token layers (the secondary layers are reported, not decisive).\n  Paired readers: at statement sets BL and BR (and BLR and BRL) get the identical patch on the same scenes (the context\n  precedes the question), so their concentration difference isolates what the reader uses; reported with a scene\n  bootstrap."
+}

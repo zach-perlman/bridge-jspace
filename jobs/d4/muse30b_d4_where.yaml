@@ -1,0 +1,28 @@
+id: muse30b_d4_where
+title: "Muse Glimmer 30B: where can the lens write a stated bridge? (fresh scenes, v2 and v2.1)"
+thread: D4
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.5
+depends_on:
+- muse30b_competence_extra
+- muse30b_lens_gate_v2
+command: >-
+  BJ_TARGET=muse-glimmer-30b uv run python scripts/early_push_where.py run --name muse30b_d4_where_smoke --n 1 --scenes fresh --rule v2 --layers 10 13 16 20 23 26 29 33 36 --context-layers 23 26 29 33 36 --v21-min-layer 16 --why "smoke: not a result" && BJ_TARGET=muse-glimmer-30b uv run python scripts/early_push_where.py run --name muse30b_d4_where --n 100 --scenes fresh --rule v2 --layers 10 13 16 20 23 26 29 33 36 --context-layers 23 26 29 33 36 --v21-min-layer 16 --why "finding 7 on Muse"
+figures_command: BJ_TARGET=muse-glimmer-30b uv run python scripts/early_push_where.py analyze --name muse30b_d4_where --rule v2.1 && BJ_TARGET=muse-glimmer-30b uv run python scripts/early_push_where.py figures --name muse30b_d4_where
+question: >-
+  Does recall follow a stated bridge written by the lens at its sentence while the lookup does not?
+why_it_matters: >-
+  A sixth model from another lab (Meta), with every test the other five have, so the cross-model table has no gaps.
+hypotheses:
+  H-around: 'Prior 0.4'
+  H-no-cell: 'Prior 0.4'
+  H-where: 'Prior 0.05'
+  inconclusive: 'Prior 0.15'
+decision_rule: >-
+  scripts/early_push_where.py: rule v2 main, v2.1 reported (boundary 16 = the 27B's 20 x 52/64); grid the 27B's 12-44 x 52/64; both verdicts shown.
+controls:
+- 'as the same test on the other models'
+n: '100 fresh animal-suite scenes eligible on Muse (muse30b_competence_chat_v1), four families'
+seeds: [841, 844]
+notes: "Dan, 22 Oct night: Muse Glimmer 30B (Meta) as a sixth model, every experiment, the rules copied unchanged from the other models; layers by the fixed rules or the 27B's scaled by depth (x 52/64). Not opened before Dan's predictions; README and figures only after he opens the results."

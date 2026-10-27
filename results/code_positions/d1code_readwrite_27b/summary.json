@@ -1,0 +1,1498 @@
+{
+  "cells": {
+    "KL/bind_bridge/primary": {
+      "layers": [
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 0.875,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.8730991666666666,
+          "flips": 0.9875
+        },
+        "lens_x0.5": {
+          "frac": 0.0029375,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": 0.00042791666666666667,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.009501666666666667,
+          "flips": 0
+        },
+        "random_x1": {
+          "frac": 0.00089625,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.04077416666666667,
+          "flips": 0
+        },
+        "random_x2": {
+          "frac": 0.010704166666666667,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.11515708333333333,
+          "flips": 0.020833333333333332
+        },
+        "random_x4": {
+          "frac": 0.08288833333333333,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.23277666666666666,
+          "flips": 0.09166666666666666
+        },
+        "random_x8": {
+          "frac": 0.21762499999999999,
+          "flips": 0.058333333333333334
+        },
+        "lens_x16": {
+          "frac": 0.26399541666666665,
+          "flips": 0.07916666666666666
+        },
+        "random_x16": {
+          "frac": 0.2605545833333333,
+          "flips": 0.09166666666666666
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "not written"
+    },
+    "KL/bind_bridge/secondary": {
+      "layers": [
+        28,
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 0.8875,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.9043575,
+          "flips": 0.990625
+        },
+        "lens_x0.5": {
+          "frac": 0.0029103125,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": 0.00028687499999999997,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.0093,
+          "flips": 0
+        },
+        "random_x1": {
+          "frac": 0.0008896875,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.046985625,
+          "flips": 0
+        },
+        "random_x2": {
+          "frac": 0.00947625,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.1772425,
+          "flips": 0.0875
+        },
+        "random_x4": {
+          "frac": 0.0885896875,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.2912375,
+          "flips": 0.15
+        },
+        "random_x8": {
+          "frac": 0.25284125,
+          "flips": 0.090625
+        },
+        "lens_x16": {
+          "frac": 0.3266271875,
+          "flips": 0.11875
+        },
+        "random_x16": {
+          "frac": 0.315071875,
+          "flips": 0.121875
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "not written"
+    },
+    "KL/bridge_word/primary": {
+      "layers": [
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 0.875,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.8683675,
+          "flips": 0.9875
+        },
+        "lens_x0.5": {
+          "frac": 0.0031175,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": -0.00022416666666666668,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.00976125,
+          "flips": 0
+        },
+        "random_x1": {
+          "frac": 0.00042916666666666667,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.040114583333333335,
+          "flips": 0
+        },
+        "random_x2": {
+          "frac": 0.009485833333333334,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.11108041666666667,
+          "flips": 0.020833333333333332
+        },
+        "random_x4": {
+          "frac": 0.07873333333333334,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.21543375,
+          "flips": 0.06666666666666667
+        },
+        "random_x8": {
+          "frac": 0.21350708333333335,
+          "flips": 0.058333333333333334
+        },
+        "lens_x16": {
+          "frac": 0.24120375,
+          "flips": 0.0625
+        },
+        "random_x16": {
+          "frac": 0.24056375,
+          "flips": 0.06666666666666667
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "not written"
+    },
+    "KL/bridge_word/secondary": {
+      "layers": [
+        28,
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 0.8875,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.90064,
+          "flips": 0.990625
+        },
+        "lens_x0.5": {
+          "frac": 0.003008125,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": -0.00013000000000000004,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.0095778125,
+          "flips": 0
+        },
+        "random_x1": {
+          "frac": 0.000566875,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.0462421875,
+          "flips": 0
+        },
+        "random_x2": {
+          "frac": 0.008664375,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.17199,
+          "flips": 0.084375
+        },
+        "random_x4": {
+          "frac": 0.08462375,
+          "flips": 0.003125
+        },
+        "lens_x8": {
+          "frac": 0.273244375,
+          "flips": 0.11875
+        },
+        "random_x8": {
+          "frac": 0.2509878125,
+          "flips": 0.1
+        },
+        "lens_x16": {
+          "frac": 0.2998284375,
+          "flips": 0.1
+        },
+        "random_x16": {
+          "frac": 0.291935,
+          "flips": 0.10625
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "not written"
+    },
+    "KL/context/primary": {
+      "layers": [
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 1,
+      "x_top10": 1,
+      "write": {
+        "copy": {
+          "frac": 0.8742691666666667,
+          "flips": 0.9875
+        },
+        "lens_x0.5": {
+          "frac": 0.0033479166666666666,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": 0.0005158333333333333,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.009850833333333333,
+          "flips": 0
+        },
+        "random_x1": {
+          "frac": 0.00089125,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.04132541666666666,
+          "flips": 0
+        },
+        "random_x2": {
+          "frac": 0.010420833333333334,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.11507208333333334,
+          "flips": 0.025
+        },
+        "random_x4": {
+          "frac": 0.07921791666666667,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.23041999999999999,
+          "flips": 0.0875
+        },
+        "random_x8": {
+          "frac": 0.22773541666666666,
+          "flips": 0.08333333333333333
+        },
+        "lens_x16": {
+          "frac": 0.2608666666666667,
+          "flips": 0.0875
+        },
+        "random_x16": {
+          "frac": 0.2680458333333333,
+          "flips": 0.08333333333333333
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "not written"
+    },
+    "KL/context/secondary": {
+      "layers": [
+        28,
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 1,
+      "x_top10": 1,
+      "write": {
+        "copy": {
+          "frac": 0.9051978125,
+          "flips": 0.990625
+        },
+        "lens_x0.5": {
+          "frac": 0.0032334375,
+          "flips": 0
+        },
+        "random_x0.5": {
+          "frac": 0.0004621875,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.0096471875,
+          "flips": 0
+        },
+        "random_x1": {
+          "frac": 0.0007134375,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.04788625,
+          "flips": 0
+        },
+        "random_x2": {
+          "frac": 0.00999875,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.1779684375,
+          "flips": 0.090625
+        },
+        "random_x4": {
+          "frac": 0.088064375,
+          "flips": 0
+        },
+        "lens_x8": {
+          "frac": 0.289221875,
+          "flips": 0.14375
+        },
+        "random_x8": {
+          "frac": 0.261155,
+          "flips": 0.09375
+        },
+        "lens_x16": {
+          "frac": 0.3236521875,
+          "flips": 0.128125
+        },
+        "random_x16": {
+          "frac": 0.3197925,
+          "flips": 0.109375
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0,
+          "random_flips": 0.0,
+          "diff": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "verdict": "not written"
+    },
+    "KR/bind_bridge/primary": {
+      "layers": [
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 0.875,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.7611995833333334,
+          "flips": 0.8333333333333334
+        },
+        "lens_x0.5": {
+          "frac": 0.4008116666666667,
+          "flips": 0.3333333333333333
+        },
+        "random_x0.5": {
+          "frac": 0.0018320833333333334,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.6709154166666667,
+          "flips": 0.6125
+        },
+        "random_x1": {
+          "frac": 0.006024166666666666,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.7175783333333333,
+          "flips": 0.6666666666666666
+        },
+        "random_x2": {
+          "frac": 0.046075,
+          "flips": 0.008333333333333333
+        },
+        "lens_x4": {
+          "frac": 0.6062945833333333,
+          "flips": 0.49583333333333335
+        },
+        "random_x4": {
+          "frac": 0.15018166666666666,
+          "flips": 0.09166666666666666
+        },
+        "lens_x8": {
+          "frac": 0.36102208333333335,
+          "flips": 0.17083333333333334
+        },
+        "random_x8": {
+          "frac": 0.28536625,
+          "flips": 0.1625
+        },
+        "lens_x16": {
+          "frac": 0.23723916666666667,
+          "flips": 0.12083333333333333
+        },
+        "random_x16": {
+          "frac": 0.3074191666666667,
+          "flips": 0.15833333333333333
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0875,
+          "random_flips": 0.0,
+          "diff": [
+            0.0875,
+            0.025,
+            0.15
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.25,
+          "random_flips": 0.0,
+          "diff": [
+            0.25,
+            0.1625,
+            0.35
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.4625,
+          "random_flips": 0.0,
+          "diff": [
+            0.4625,
+            0.35,
+            0.575
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.3,
+          "random_flips": 0.0625,
+          "diff": [
+            0.2375,
+            0.15,
+            0.3375
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.1125,
+          "random_flips": 0.1,
+          "diff": [
+            0.012499999999999997,
+            -0.037500000000000006,
+            0.06250000000000001
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0625,
+          "random_flips": 0.1,
+          "diff": [
+            -0.037500000000000006,
+            -0.1,
+            0.025
+          ]
+        }
+      },
+      "verdict": "written"
+    },
+    "KR/bind_bridge/secondary": {
+      "layers": [
+        28,
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 0.8875,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.8182078125,
+          "flips": 0.875
+        },
+        "lens_x0.5": {
+          "frac": 0.3939615625,
+          "flips": 0.31875
+        },
+        "random_x0.5": {
+          "frac": 0.0006125,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.7006984375,
+          "flips": 0.665625
+        },
+        "random_x1": {
+          "frac": 0.00201,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.7959675,
+          "flips": 0.746875
+        },
+        "random_x2": {
+          "frac": 0.0352765625,
+          "flips": 0.00625
+        },
+        "lens_x4": {
+          "frac": 0.710411875,
+          "flips": 0.615625
+        },
+        "random_x4": {
+          "frac": 0.1469746875,
+          "flips": 0.078125
+        },
+        "lens_x8": {
+          "frac": 0.4842246875,
+          "flips": 0.275
+        },
+        "random_x8": {
+          "frac": 0.317250625,
+          "flips": 0.18125
+        },
+        "lens_x16": {
+          "frac": 0.3056115625,
+          "flips": 0.15
+        },
+        "random_x16": {
+          "frac": 0.358231875,
+          "flips": 0.18125
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0875,
+          "random_flips": 0.0,
+          "diff": [
+            0.0875,
+            0.025,
+            0.15
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.25,
+          "random_flips": 0.0,
+          "diff": [
+            0.25,
+            0.1625,
+            0.35
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.4625,
+          "random_flips": 0.0,
+          "diff": [
+            0.4625,
+            0.35,
+            0.575
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.3,
+          "random_flips": 0.0625,
+          "diff": [
+            0.2375,
+            0.15,
+            0.3375
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.1125,
+          "random_flips": 0.1,
+          "diff": [
+            0.012499999999999997,
+            -0.037500000000000006,
+            0.06250000000000001
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0625,
+          "random_flips": 0.1,
+          "diff": [
+            -0.037500000000000006,
+            -0.1,
+            0.025
+          ]
+        }
+      },
+      "verdict": "written"
+    },
+    "KR/bridge_word/primary": {
+      "layers": [
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 0.875,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.7553725,
+          "flips": 0.8208333333333333
+        },
+        "lens_x0.5": {
+          "frac": 0.39823833333333336,
+          "flips": 0.3416666666666667
+        },
+        "random_x0.5": {
+          "frac": 0.0018916666666666667,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.6646358333333333,
+          "flips": 0.5958333333333333
+        },
+        "random_x1": {
+          "frac": 0.00913625,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.70007625,
+          "flips": 0.6458333333333334
+        },
+        "random_x2": {
+          "frac": 0.0394725,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.5596804166666667,
+          "flips": 0.45
+        },
+        "random_x4": {
+          "frac": 0.1576075,
+          "flips": 0.07916666666666666
+        },
+        "lens_x8": {
+          "frac": 0.29154541666666667,
+          "flips": 0.12916666666666668
+        },
+        "random_x8": {
+          "frac": 0.2816354166666667,
+          "flips": 0.14166666666666666
+        },
+        "lens_x16": {
+          "frac": 0.21438041666666666,
+          "flips": 0.12083333333333333
+        },
+        "random_x16": {
+          "frac": 0.2979745833333333,
+          "flips": 0.15416666666666667
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.1,
+          "random_flips": 0.0,
+          "diff": [
+            0.1,
+            0.0375,
+            0.1625
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.2125,
+          "random_flips": 0.0,
+          "diff": [
+            0.2125,
+            0.125,
+            0.3
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.4375,
+          "random_flips": 0.0,
+          "diff": [
+            0.4375,
+            0.325,
+            0.55
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.2625,
+          "random_flips": 0.05,
+          "diff": [
+            0.21250000000000002,
+            0.125,
+            0.30000000000000004
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.075,
+          "random_flips": 0.0875,
+          "diff": [
+            -0.012499999999999997,
+            -0.07500000000000001,
+            0.05
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.075,
+          "random_flips": 0.1,
+          "diff": [
+            -0.02500000000000001,
+            -0.09999999999999999,
+            0.037500000000000006
+          ]
+        }
+      },
+      "verdict": "written"
+    },
+    "KR/bridge_word/secondary": {
+      "layers": [
+        28,
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 0.8875,
+      "x_top10": 0,
+      "write": {
+        "copy": {
+          "frac": 0.8130734375,
+          "flips": 0.865625
+        },
+        "lens_x0.5": {
+          "frac": 0.391346875,
+          "flips": 0.325
+        },
+        "random_x0.5": {
+          "frac": 7.437500000000005e-05,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.6947021875,
+          "flips": 0.65
+        },
+        "random_x1": {
+          "frac": 0.0057209375,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.78029875,
+          "flips": 0.728125
+        },
+        "random_x2": {
+          "frac": 0.0299809375,
+          "flips": 0
+        },
+        "lens_x4": {
+          "frac": 0.6645449999999999,
+          "flips": 0.56875
+        },
+        "random_x4": {
+          "frac": 0.1494534375,
+          "flips": 0.065625
+        },
+        "lens_x8": {
+          "frac": 0.390595625,
+          "flips": 0.1875
+        },
+        "random_x8": {
+          "frac": 0.315859375,
+          "flips": 0.165625
+        },
+        "lens_x16": {
+          "frac": 0.26188125,
+          "flips": 0.15
+        },
+        "random_x16": {
+          "frac": 0.3409034375,
+          "flips": 0.175
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.1,
+          "random_flips": 0.0,
+          "diff": [
+            0.1,
+            0.0375,
+            0.1625
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.2125,
+          "random_flips": 0.0,
+          "diff": [
+            0.2125,
+            0.125,
+            0.3
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.4375,
+          "random_flips": 0.0,
+          "diff": [
+            0.4375,
+            0.325,
+            0.55
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.2625,
+          "random_flips": 0.05,
+          "diff": [
+            0.21250000000000002,
+            0.125,
+            0.30000000000000004
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.075,
+          "random_flips": 0.0875,
+          "diff": [
+            -0.012499999999999997,
+            -0.07500000000000001,
+            0.05
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.075,
+          "random_flips": 0.1,
+          "diff": [
+            -0.02500000000000001,
+            -0.09999999999999999,
+            0.037500000000000006
+          ]
+        }
+      },
+      "verdict": "written"
+    },
+    "KR/context/primary": {
+      "layers": [
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 1,
+      "x_top10": 1,
+      "write": {
+        "copy": {
+          "frac": 0.7637516666666667,
+          "flips": 0.8416666666666667
+        },
+        "lens_x0.5": {
+          "frac": 0.4117120833333333,
+          "flips": 0.3416666666666667
+        },
+        "random_x0.5": {
+          "frac": 0.0019033333333333335,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.6832420833333334,
+          "flips": 0.625
+        },
+        "random_x1": {
+          "frac": 0.011082083333333333,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.7233770833333333,
+          "flips": 0.6708333333333333
+        },
+        "random_x2": {
+          "frac": 0.04009666666666667,
+          "flips": 0.008333333333333333
+        },
+        "lens_x4": {
+          "frac": 0.5890104166666666,
+          "flips": 0.4666666666666667
+        },
+        "random_x4": {
+          "frac": 0.15405375,
+          "flips": 0.09166666666666666
+        },
+        "lens_x8": {
+          "frac": 0.3234004166666667,
+          "flips": 0.12083333333333333
+        },
+        "random_x8": {
+          "frac": 0.28736125,
+          "flips": 0.15833333333333333
+        },
+        "lens_x16": {
+          "frac": 0.19415666666666667,
+          "flips": 0.075
+        },
+        "random_x16": {
+          "frac": 0.30936875,
+          "flips": 0.1625
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0875,
+          "random_flips": 0.0,
+          "diff": [
+            0.0875,
+            0.025,
+            0.15
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.25,
+          "random_flips": 0.0,
+          "diff": [
+            0.25,
+            0.1625,
+            0.35
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.4375,
+          "random_flips": 0.0,
+          "diff": [
+            0.4375,
+            0.325,
+            0.55
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.2375,
+          "random_flips": 0.05,
+          "diff": [
+            0.1875,
+            0.11249999999999999,
+            0.275
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.0375,
+          "random_flips": 0.1125,
+          "diff": [
+            -0.07500000000000001,
+            -0.15,
+            -0.012499999999999997
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0125,
+          "random_flips": 0.1,
+          "diff": [
+            -0.08750000000000001,
+            -0.15,
+            -0.0375
+          ]
+        }
+      },
+      "verdict": "written"
+    },
+    "KR/context/secondary": {
+      "layers": [
+        28,
+        32,
+        36,
+        40
+      ],
+      "n": 80,
+      "read_top10": 1,
+      "read_top1": 1,
+      "x_top10": 1,
+      "write": {
+        "copy": {
+          "frac": 0.8211965625,
+          "flips": 0.88125
+        },
+        "lens_x0.5": {
+          "frac": 0.4052184375,
+          "flips": 0.33125
+        },
+        "random_x0.5": {
+          "frac": 0.00072875,
+          "flips": 0
+        },
+        "lens_x1": {
+          "frac": 0.7157553125,
+          "flips": 0.68125
+        },
+        "random_x1": {
+          "frac": 0.006561875,
+          "flips": 0
+        },
+        "lens_x2": {
+          "frac": 0.80352875,
+          "flips": 0.75
+        },
+        "random_x2": {
+          "frac": 0.03173875,
+          "flips": 0.009375
+        },
+        "lens_x4": {
+          "frac": 0.698951875,
+          "flips": 0.59375
+        },
+        "random_x4": {
+          "frac": 0.1520471875,
+          "flips": 0.08125
+        },
+        "lens_x8": {
+          "frac": 0.454853125,
+          "flips": 0.228125
+        },
+        "random_x8": {
+          "frac": 0.3174625,
+          "flips": 0.178125
+        },
+        "lens_x16": {
+          "frac": 0.2721834375,
+          "flips": 0.115625
+        },
+        "random_x16": {
+          "frac": 0.3614509375,
+          "flips": 0.18125
+        }
+      },
+      "by_scale": {
+        "x0.5": {
+          "lens_flips": 0.0875,
+          "random_flips": 0.0,
+          "diff": [
+            0.0875,
+            0.025,
+            0.15
+          ]
+        },
+        "x1": {
+          "lens_flips": 0.25,
+          "random_flips": 0.0,
+          "diff": [
+            0.25,
+            0.1625,
+            0.35
+          ]
+        },
+        "x2": {
+          "lens_flips": 0.4375,
+          "random_flips": 0.0,
+          "diff": [
+            0.4375,
+            0.325,
+            0.55
+          ]
+        },
+        "x4": {
+          "lens_flips": 0.2375,
+          "random_flips": 0.05,
+          "diff": [
+            0.1875,
+            0.11249999999999999,
+            0.275
+          ]
+        },
+        "x8": {
+          "lens_flips": 0.0375,
+          "random_flips": 0.1125,
+          "diff": [
+            -0.07500000000000001,
+            -0.15,
+            -0.012499999999999997
+          ]
+        },
+        "x16": {
+          "lens_flips": 0.0125,
+          "random_flips": 0.1,
+          "diff": [
+            -0.08750000000000001,
+            -0.15,
+            -0.0375
+          ]
+        }
+      },
+      "verdict": "written"
+    }
+  },
+  "claims": {
+    "KL": {
+      "jspace": {
+        "statement_verdicts": {
+          "bind_bridge": "around",
+          "bridge_word": "around",
+          "context": "around"
+        },
+        "positive_control": {
+          "bind_bridge": "inconclusive",
+          "bridge_word": "inconclusive",
+          "context": "inconclusive"
+        },
+        "jspace_half": "H-around but positive control fails (not interpretable)"
+      },
+      "lens_write": {
+        "bind_bridge": "not written",
+        "bridge_word": "not written",
+        "context": "not written"
+      },
+      "verdict": "neither (mixed)"
+    }
+  },
+  "seconds": 780
+}

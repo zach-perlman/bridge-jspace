@@ -1,0 +1,38 @@
+{
+  "animals/e5f0": {
+    "gate_lower_bounds": {
+      "RL": 0.8629926537490016
+    },
+    "gate": 0.8,
+    "families": [
+      "RL"
+    ],
+    "entered": true,
+    "eligible_scenes": 52,
+    "picked": 52
+  },
+  "body/e5f0": {
+    "gate_lower_bounds": {
+      "RL": 0.9398260695220669
+    },
+    "gate": 0.8,
+    "families": [
+      "RL"
+    ],
+    "entered": true,
+    "eligible_scenes": 57,
+    "picked": 57
+  },
+  "countries/e5f0": {
+    "gate_lower_bounds": {
+      "RL": 0.9114466177322051
+    },
+    "gate": 0.8,
+    "families": [
+      "RL"
+    ],
+    "entered": true,
+    "eligible_scenes": 58,
+    "picked": 58
+  }
+}
