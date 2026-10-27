@@ -1964,3 +1964,40 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - GPU 0: the 27B (competence, numbers, three-hop), then the 9B's late band.
   - GPU 1: Lightning (competence, numbers, three-hop), the 9B's numbers (competence, knock-out), then Lightning's
     late band.
+
+### Amendment 57 note 1 (Zach, 2026-10-27 12:40 UTC, before any run below): Muse through the dose grid and the position split
+
+- **Why:** GPU 1 is free after amendment 57's chain, and GPU 0 will be after the 9B's late band. Of the models still
+  cached, Muse is the only testable one with no dose grid, no size-matched control and no position split (scorecard
+  cells "not run").
+- **Seen when this was written:**
+  - Muse's v2 knock-out at L36-42: M - K +60, rotated +3, logit lens +35.
+  - Its earlier-dataset results (toy 7; natural and natplus mostly shared with the logit lens).
+  - No dose, size-matched or position data for Muse.
+- **A. Dose grid (GPU 1, now).** Amendment 54's grid at L36-42: removal sizes, then the test knock-out at K
+  1/3/10/30/100/300 with rotated, size-matched and logit-lens controls, 150 random items per word (seed 0).
+  - Script: `scripts/queues/h200_dose_muse_1027.sh`, a copy of h200_dose_1026.sh with Muse added to its models.
+  - Readings: amendment 54 and note 1, computed by fig_neel.dose_readings.
+  - Reported beside each: the logit lens at the same K. The question for Muse is whether any K gives a J-specific
+    excess (J++ minus the larger of rotated and size-matched) that the logit lens does not also produce.
+- **B. Position split (GPU 0, after the 9B's late band).** Question-only and bridge-mention-only knock-outs at
+  L36-42 (paper10 / rotated), all eligible items, as amendments 37 A and 41 (`scripts/queues/h200_h0nb_1027.sh` pos
+  steps).
+  - Readings: a mode's M - K as a share of the all-token +60 (muse30_jsuite_v2_test_chat_ko_cand2_v1);
+    question >= 2/3 means the question, bridge >= 2/3 means the mention.
+
+### Amendment 57 note 2 (Zach, 2026-10-27 13:05 UTC, before any run below): Muse not run; clean-checkout reruns instead
+
+- **Muse (note 1) did not run.** Its weights (meta-models/Muse-Glimmer-30B) are no longer cached; only its lens is.
+  - Both jobs stopped at model load and produced no output.
+  - Downloading the weights (about 60 GB, with 35 GB free) needs a cache drop. That needs Zach's OK, so it was not done.
+- **Instead, the last check before calling a result positive:** amendment 57's new results rerun from the clean worktree
+  /workspace/clean_bridge at HEAD, with the same commands. Run names carry "clean_", and each rerun is compared row by
+  row with its run of record, as amendment 50 (`scripts/queues/h200_clean57_1027.sh`).
+  - **GPU 0:** the 27B on jsuite_v2nb: competence on the 16 words, then the numbers and three-hop knock-outs.
+  - **GPU 1:** the 9B's late band L26-29 (all-token, question-only, bridge-only, with the record v2 competence). Then
+    the 9B on jsuite_v2nb's numbers (competence, knock-out).
+  - **Expectation:** row-identical, as the 27B's and 9B's earlier clean reruns were. Any differing row is reported with
+    its count and the rerun's headline.
+- **Lightning is not rerun.** Its earlier clean rerun reproduced the headline but not every row, because its inputs
+  differed (amendment 56 B).

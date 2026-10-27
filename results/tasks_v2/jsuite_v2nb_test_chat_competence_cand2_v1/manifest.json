@@ -1,0 +1,44 @@
+{
+  "run": "jsuite_v2nb_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-27, prereg amendment 57): qwen3.6-27b competence on jsuite_v2nb (nuth words)",
+  "set": "jsuite_v2nb_test_chat",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "git_commit": "d428775627f12d34bf94b82820a4414b4052c95d",
+  "git_state": {
+    "head": "d428775627f12d34bf94b82820a4414b4052c95d",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "nPL",
+    "nPM",
+    "nKL",
+    "nKM",
+    "nAL",
+    "nAM",
+    "nML",
+    "nMM",
+    "PPP",
+    "MPP",
+    "PMP",
+    "PPM",
+    "MPM",
+    "MMP",
+    "PMM",
+    "MMM"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-27T10:31:43Z"
+}

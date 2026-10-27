@@ -330,17 +330,27 @@ def collect_night() -> None:
         for cond in ("paper10", "paper10_rot", "unembed10"):
             for w, v in c["cells"][f"all/{cond}"].items():
                 add(f"nat3.nl.{cond}.{w}", "three hops", "nl", f"natural three-hop excess over PPP, {w}, {cond}", v["excess_over_PPP"], *v["ci"], v["n"], source="results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json")
-    for m, pre in (("q27", ""), ("q9", "qwen35_9b_"), ("nl", "nem35l_")):
-        for mod, run in (("threehop", f"{pre}{SET}_threehop_ko_cand2_v1"), ("numbers", f"{pre}{SET}_numbers_ko_cand2_dd_v1")):
-            s = jl(A2 / "jsuite2_score" / f"{run}.json")
-            if not s:
-                continue
-            for cond in ("paper10", "paper10_rot", "unembed10"):
-                cell = s[mod].get(cond, {})
-                for con, v in cell.get("contrasts", {}).items():
-                    add(f"mod.{m}.{mod}.{cond}.{con}", mod, m, f"v2 {mod} {con} ({cond})", v["diff"], *v["ci"], source=f"results/ablate_v2/jsuite2_score/{run}.json")
-                for w, lo in cell.get("loss", {}).items():
-                    add(f"mod.{m}.{mod}.{cond}.loss.{w}", mod, m, f"v2 {mod} points lost, {w} ({cond})", lo, n=cell["n"].get(w), unit="abs", source=f"results/ablate_v2/jsuite2_score/{run}.json")
+    # v2's modules (amendment 56 A) and jsuite_v2nb's (amendment 57: numbers reps 80, a second three-hop seed)
+    for tag, st in (("mod", SET), ("mod2", "jsuite_v2nb_test_chat")):
+        for m, pre in (("q27", ""), ("q9", "qwen35_9b_"), ("nl", "nem35l_")):
+            for mod, run in (("threehop", f"{pre}{st}_threehop_ko_cand2_v1"), ("numbers", f"{pre}{st}_numbers_ko_cand2_dd_v1")):
+                s = jl(A2 / "jsuite2_score" / f"{run}.json")
+                if not s:
+                    continue
+                for cond in ("paper10", "paper10_rot", "unembed10", "unembed10_rot"):
+                    cell = s[mod].get(cond, {})
+                    for con, v in cell.get("contrasts", {}).items():
+                        add(f"{tag}.{m}.{mod}.{cond}.{con}", mod, m, f"{st} {mod} {con} ({cond})", v["diff"], *v["ci"], source=f"results/ablate_v2/jsuite2_score/{run}.json")
+                    for w, lo in cell.get("loss", {}).items():
+                        add(f"{tag}.{m}.{mod}.{cond}.loss.{w}", mod, m, f"{st} {mod} points lost, {w} ({cond})", lo, n=cell["n"].get(w), unit="abs", source=f"results/ablate_v2/jsuite2_score/{run}.json")
+    # late-band position splits (amendment 57 B), start = all, as the 27B's late band
+    for m, pre, band in (("q9", "qwen35_9b_", "26-29"), ("nl", "nem35l_", "33-39"), ("q27", "", "52-60")):
+        for mode, suf in (("all", ""), ("question", "_posquestion"), ("bridge", "_posbridge")):
+            run = f"{pre}{SET}_ko_cand2_L{band}{suf}_v1"
+            for cond, ck in (("paper10", ""), ("paper10_rot", ".rot"), ("unembed10", ".u")):
+                x = F.cell(run, f"{cond}/start=all")
+                if x:
+                    add(f"late.{m}.{mode}{ck}", "positions", m, f"M - K at L{band}, {mode} ({cond})", x[0], *x[1], source=f"results/ablate_v2/jsuite2_score/{run}.json")
     x = D.mk("qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1")
     if x:
         add("ko.q9oj.mk", "lens kind", "q9", "M - K, 9B with our own J++ fit", x["d"], *x["ci"], x["n"], source="results/ablate_v2/jsuite2_score/qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1.json")

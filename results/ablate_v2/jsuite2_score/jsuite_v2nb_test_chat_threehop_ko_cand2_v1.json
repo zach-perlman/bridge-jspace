@@ -1,0 +1,301 @@
+{
+ "run": "jsuite_v2nb_test_chat_threehop_ko_cand2_v1",
+ "with": [],
+ "set": "jsuite_v2nb_test_chat",
+ "facts": {},
+ "threehop": {
+  "paper10": {
+   "loss": {
+    "PPM": 25.5,
+    "PMP": 12.1,
+    "PMM": 54.8,
+    "MMP": 32.5,
+    "MPM": 42.7,
+    "MPP": 23.5,
+    "PPP": 16.9,
+    "MMM": 55.1
+   },
+   "n": {
+    "PPM": 98,
+    "PMP": 58,
+    "PMM": 115,
+    "MMP": 80,
+    "MPM": 89,
+    "MPP": 68,
+    "PPP": 59,
+    "MMM": 78
+   },
+   "contrasts": {
+    "MMM-PPP": {
+     "diff": 38.2,
+     "ci": [
+      23,
+      52
+     ]
+    },
+    "MMP-PPP": {
+     "diff": 15.6,
+     "ci": [
+      2,
+      29
+     ]
+    },
+    "MPM-PPP": {
+     "diff": 25.7,
+     "ci": [
+      12,
+      41
+     ]
+    },
+    "MPP-PPP": {
+     "diff": 6.6,
+     "ci": [
+      -7,
+      20
+     ]
+    },
+    "PMM-PPP": {
+     "diff": 37.8,
+     "ci": [
+      24,
+      51
+     ]
+    },
+    "PMP-PPP": {
+     "diff": -4.9,
+     "ci": [
+      -18,
+      7
+     ]
+    },
+    "PPM-PPP": {
+     "diff": 8.6,
+     "ci": [
+      -4,
+      23
+     ]
+    }
+   }
+  },
+  "paper10_rot": {
+   "loss": {
+    "PPM": 5.1,
+    "PMP": 12.1,
+    "PMM": 0.9,
+    "MMP": 16.2,
+    "MPM": 9.0,
+    "MPP": 23.5,
+    "PPP": 20.3,
+    "MMM": 0.0
+   },
+   "n": {
+    "PPM": 98,
+    "PMP": 58,
+    "PMM": 115,
+    "MMP": 80,
+    "MPM": 89,
+    "MPP": 68,
+    "PPP": 59,
+    "MMM": 78
+   },
+   "contrasts": {
+    "MMM-PPP": {
+     "diff": -20.3,
+     "ci": [
+      -31,
+      -10
+     ]
+    },
+    "MMP-PPP": {
+     "diff": -4.1,
+     "ci": [
+      -17,
+      9
+     ]
+    },
+    "MPM-PPP": {
+     "diff": -11.4,
+     "ci": [
+      -24,
+      0
+     ]
+    },
+    "MPP-PPP": {
+     "diff": 3.2,
+     "ci": [
+      -11,
+      18
+     ]
+    },
+    "PMM-PPP": {
+     "diff": -19.5,
+     "ci": [
+      -30,
+      -10
+     ]
+    },
+    "PMP-PPP": {
+     "diff": -8.3,
+     "ci": [
+      -21,
+      5
+     ]
+    },
+    "PPM-PPP": {
+     "diff": -15.2,
+     "ci": [
+      -26,
+      -3
+     ]
+    }
+   }
+  },
+  "unembed10": {
+   "loss": {
+    "PPM": 1.0,
+    "PMP": 6.9,
+    "PMM": 0.0,
+    "MMP": 8.8,
+    "MPM": 4.5,
+    "MPP": 13.2,
+    "PPP": 15.3,
+    "MMM": 0.0
+   },
+   "n": {
+    "PPM": 98,
+    "PMP": 58,
+    "PMM": 115,
+    "MMP": 80,
+    "MPM": 89,
+    "MPP": 68,
+    "PPP": 59,
+    "MMM": 78
+   },
+   "contrasts": {
+    "MMM-PPP": {
+     "diff": -15.3,
+     "ci": [
+      -25,
+      -7
+     ]
+    },
+    "MMP-PPP": {
+     "diff": -6.5,
+     "ci": [
+      -18,
+      5
+     ]
+    },
+    "MPM-PPP": {
+     "diff": -10.8,
+     "ci": [
+      -21,
+      -1
+     ]
+    },
+    "MPP-PPP": {
+     "diff": -2.0,
+     "ci": [
+      -14,
+      10
+     ]
+    },
+    "PMM-PPP": {
+     "diff": -15.3,
+     "ci": [
+      -25,
+      -7
+     ]
+    },
+    "PMP-PPP": {
+     "diff": -8.4,
+     "ci": [
+      -20,
+      3
+     ]
+    },
+    "PPM-PPP": {
+     "diff": -14.2,
+     "ci": [
+      -24,
+      -5
+     ]
+    }
+   }
+  },
+  "unembed10_rot": {
+   "loss": {
+    "PPM": 4.1,
+    "PMP": 5.2,
+    "PMM": 0.0,
+    "MMP": 3.7,
+    "MPM": 7.9,
+    "MPP": 14.7,
+    "PPP": 11.9,
+    "MMM": 0.0
+   },
+   "n": {
+    "PPM": 98,
+    "PMP": 58,
+    "PMM": 115,
+    "MMP": 80,
+    "MPM": 89,
+    "MPP": 68,
+    "PPP": 59,
+    "MMM": 78
+   },
+   "contrasts": {
+    "MMM-PPP": {
+     "diff": -11.9,
+     "ci": [
+      -21,
+      -4
+     ]
+    },
+    "MMP-PPP": {
+     "diff": -8.1,
+     "ci": [
+      -18,
+      1
+     ]
+    },
+    "MPM-PPP": {
+     "diff": -4.0,
+     "ci": [
+      -14,
+      5
+     ]
+    },
+    "MPP-PPP": {
+     "diff": 2.8,
+     "ci": [
+      -10,
+      15
+     ]
+    },
+    "PMM-PPP": {
+     "diff": -11.9,
+     "ci": [
+      -21,
+      -4
+     ]
+    },
+    "PMP-PPP": {
+     "diff": -6.7,
+     "ci": [
+      -17,
+      4
+     ]
+    },
+    "PPM-PPP": {
+     "diff": -7.8,
+     "ci": [
+      -17,
+      1
+     ]
+    }
+   }
+  }
+ },
+ "numbers": {}
+}

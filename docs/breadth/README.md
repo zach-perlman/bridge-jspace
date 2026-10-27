@@ -25,14 +25,17 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   - A three-hop chain needs the directions when its last hop is recalled: Lightning loses
     36 to 60 points beyond an all-passage chain.
     When the last hop is read it loses -3 to +2,
-    even if earlier hops were recalled. The 27B shows it on three of the four chains ending in a recall.
+    even if earlier hops were recalled. It holds on a second data seed. The 27B shows it on three of the four chains
+    ending in a recall.
   - Reporting a number computed from the passage by arithmetic costs nothing in all three models; a recalled one costs
     the Qwens +13 and +15.
+  - Using a number to recall something (the month at that position) needs no J++ beyond a lookup in the passage, in
+    any model. The rule is about recalling facts about entities.
 - **For monitoring:** at the entity's mention the lens shows which entity the model will recall from, in every model.
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 7b40686 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at c2657736 from the run files.
 
 ## Setup
 
@@ -181,7 +184,8 @@ Does the split survive everything we could vary?
 
 ## 3. Where: at the bridge's mention at mid depth, in the question late
 
-*Fixed in advance (amendments 30, 36, 37); Lightning's and Bolt's split in amendment 54.*
+*Fixed in advance (amendments 30, 36, 37); Lightning's and Bolt's split in amendment 54; the 9B's and Lightning's late
+bands in amendment 57.*
 
 Where in the prompt must the removal act?
 
@@ -196,13 +200,20 @@ Where in the prompt must the removal act?
   +12, of +31. The two Nemotrons split; the Qwens' read bridges sit at the mention.
 - **A recalled bridge needs them at several places at once.** No single region carries it: on the 27B, mention
   +6 and question +11, of +45.
-- **Late in depth, the dependence moves to the question:**
+- **Late in depth, the dependence moves to the question, in both families.** M − K, all starts:
 
-  | Model (late band) | Question only | Mention only |
-  |---|---|---|
-  | 27B (L52-60) | +47 | +3 |
-  | Ministral | +24 | 0 |
-  | 122B | +28 | +10 |
+  | Model (late band, depth) | All tokens | Question only | Mention only |
+  |---|---|---|---|
+  | 27B (L52-60, 81-94%) | +50 | +47 | +3 |
+  | 9B (L26-29, 81-91%) | +53 | +53 | 0 |
+  | Lightning (L33-39, 64-75%) | +62 | +53 | +0 |
+  | Ministral (L32-37) | +23 | +24 | 0 |
+  | 122B (L39-45) | +48 | +28 | +10 |
+
+  - The 9B's and Lightning's late bands were picked on dev (amendment 57): the latest window where stated facts still
+    lose at most 10. Lightning's is shallower than the 27B's because past 69% depth its removal breaks stated facts too.
+  - At these bands more of the effect is shared with the logit lens: 9B +28, Lightning
+    +23 (mid band: +1, +9).
 
 ![Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late](figures/fig04_where.png)
 *Fig. 4.*
@@ -327,34 +338,39 @@ How many directions does the dependence need, and when does the removal stop bei
 
 ## 6. Beyond two hops: longer chains, and numbers computed from the passage
 
-*Fixed in advance (amendments 21, 24, 25 on the earlier dataset; 56 on v2 and Lightning).*
+*Fixed in advance (amendments 21, 24, 25 on the earlier dataset; 56 on v2 and Lightning; 57 on a second seed and a
+larger numbers set).*
 
 Does the rule hold for longer chains, and for intermediates the model computes from the passage? This is the
 proposal's own question (H0: J-space carries recalled words, not computed variables).
 
 - **A three-hop chain needs J++ when its last hop is recalled.** Points lost beyond the all-passage chain
-  (P → P → P); each letter is one hop's source:
+  (P → P → P); each letter is one hop's source. The second seed is jsuite_v2nb (amendment 57: new chains, same design):
 
-  | Chain | 27B (v2) | Lightning (v2) | Lightning (natural set) |
-  |---|---|---|---|
-  | M → M → M | +32 [17, 46] | +49 [34, 62] | +46 [31, 60] |
-  | P → M → M | +26 [13, 38] | +36 [21, 49] | +46 [34, 59] |
-  | M → P → M | +21 [8, 34] | +55 [31, 76] | +58 [41, 74] |
-  | P → P → M | +8 [-4, 21] | +60 [45, 74] | +52 [43, 62] |
-  | M → M → P | +20 [5, 35] | -2 [-16, 11] | +2 [-7, 12] |
-  | M → P → P | +6 [-8, 19] | -3 [-15, 8] | +6 [-4, 17] |
-  | P → M → P | -8 [-20, 4] | +2 [-12, 15] | -3 [-11, 3] |
+  | Chain | 27B (v2) | 27B (second seed) | Lightning (v2) | Lightning (second seed) | Lightning (natural set) |
+  |---|---|---|---|---|---|
+  | M → M → M | +32 [17, 46] | +38 [23, 52] | +49 [34, 62] | +30 [14, 44] | +46 [31, 60] |
+  | P → M → M | +26 [13, 38] | +38 [24, 51] | +36 [21, 49] | +44 [28, 58] | +46 [34, 59] |
+  | M → P → M | +21 [8, 34] | +26 [12, 41] | +55 [31, 76] | +52 [30, 72] | +58 [41, 74] |
+  | P → P → M | +8 [-4, 21] | +9 [-4, 23] | +60 [45, 74] | +56 [39, 71] | +52 [43, 62] |
+  | M → M → P | +20 [5, 35] | +16 [2, 29] | -2 [-16, 11] | -5 [-21, 12] | +2 [-7, 12] |
+  | M → P → P | +6 [-8, 19] | +7 [-7, 20] | -3 [-15, 8] | -6 [-19, 8] | +6 [-4, 17] |
+  | P → M → P | -8 [-20, 4] | -5 [-18, 7] | +2 [-12, 15] | -4 [-18, 12] | -3 [-11, 3] |
 
   - **Pre-registered:** the four chains ending in a recall lose more than P → P → P; M → P → P and P → M → P do not.
-    Lightning meets all of it, on v2 and on the natural set. The 27B meets it except P → P → M.
+    Lightning meets all of it, on v2, on the second seed and on the natural set. The 27B meets it except P → P → M,
+    on both seeds (+8 [-4, 21] and +9 [-4, 23]).
   - **Not predicted:** the 27B's M → M → P also loses; Lightning's does not.
   - **Controls.**
     - On the 27B, the rotated and logit-lens removals cost no chain more than P → P → P. P → P → P itself loses
       20 points under J++ and 23 rotated,
       so only the excess is read.
-    - In Lightning the controls explain part of two cells. On v2, M → P → M (n
-      22): rotated +29, logit lens
-      +28. On the natural set, P → P → M: logit lens +32.
+    - In Lightning the controls explain part of two cells, on every set. M → P → M: rotated
+      +29 and logit lens +28 on v2 (n
+      22), +28 and
+      +32 on the second seed (n 26).
+      P → P → M: logit lens +32 on the natural set, +26 on
+      the second seed.
   - **The 9B cannot be read.** Its all-passage chain alone loses 46 points (rotated
     33; n 24).
   - **The earlier dataset agrees** (27B, v1): M → M → M +35 [21, 49] and P → M → M +33 [22, 46];
@@ -374,19 +390,41 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
       +5.
     - Rotated and logit-lens controls cost recalled numbers nothing (0 in every
       model).
-  - **Lightning needs J++ when a recalled number feeds another recall** (the month or planet at that position):
-    +47 [23, 72] over a lookup in the passage (n 17 and
-    13). The Qwens' intervals are too wide to say: 27B
-    +4 [-26, 32], 9B +18 [-15, 49].
+  - **A recalled number feeding another recall needs J++ no more than one feeding a lookup.** On the larger set
+    (amendment 57; n 128 to 253 per word), the
+    month or planet at that position minus the locker with that number: 27B -1 [-10, 7], 9B
+    +3 [-8, 13], Lightning +2 [-7, 11].
+    - Amendment 24's final-hop rule for numbers (each start's recall final >= 20 above its lookup final) fails for
+      every start in all three models.
+    - On v2, Lightning's +47 (n 17 and 13) looked
+      like the rule; at ten times the items it does not replicate.
   - **The earlier dataset agrees** (v1): 9B counted +7, computed +1, recalled
     +26 [18, 34]; 27B recalled +15.
+- **H0 head-on: does a number computed from the passage need J++ when it keys a recall?** Points lost, minus the same
+  recall keyed by a number read from the passage (larger set, amendment 57):
+
+  | | 27B | 9B | Lightning |
+  |---|---|---|---|
+  | Counted, then recalled | +1 [-6, 7] | +32 [25, 40] | +31 [22, 39] |
+  | Computed, then recalled | -13 [-18, -7] | +48 [38, 59] | +19 [6, 32] |
+  | Counted / computed, rotated removal | -1 / -11 | +13 / +29 | +13 / +31 |
+  | Counted / computed, logit lens | +3 / 0 | +27 / +28 | +14 / +22 |
+
+  - **Pre-registered:** within 10 of read means the computed number needs no more J++ (H0 holds for numbers). At least
+    15 above, with the rotated control within 10, means it routes through J++ (H0 false).
+  - **The 27B:** no more than a read number. Counted is within 10; computed loses less, outside the band on that side.
+  - **The 9B and Lightning: neither outcome.** Computed chains lose more under J++, but the rotated and logit-lens
+    removals also cost them more (rows 3-4), so the pre-registered "H0 false" condition is not met. Composing a computed
+    number with a recall is fragile under any edit at the band; part of the gap may still be J-specific.
 - **What this says about H0.**
-  - J++ is needed where the last step is a recall, whatever the earlier steps were.
+  - J++ is needed where the last step recalls a fact about an entity, whatever the earlier steps were. It is not
+    needed for a recall keyed by a number (a month or planet at a position).
   - Recalled intermediates followed by a read step lose little in Lightning; the 27B's M → M → P is the exception.
-  - Numbers computed from the passage by arithmetic do not need J++ to be reported.
+  - A number computed from the passage needs no J++ to be reported (all three models), nor, in the 27B, to key a
+    recall. In the 9B and Lightning that last test cannot be read.
   - We have not tested, on v2, a bridge entity that the model computes rather than reads or recalls.
 
-![A three-hop chain needs J++ when its last hop is recalled; a number computed from the passage does not](figures/fig10_beyond.png)
+![A three-hop chain needs J++ when its last hop recalls an entity's fact, on two seeds; a number computed from the passage does not](figures/fig10_beyond.png)
 *Fig. 10.*
 
 ## 7. Every model, every test
@@ -440,6 +478,16 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   - Lightning's numbers: counting costs +12 (predicted within 10), and reporting a
     recalled number +5 (predicted at least +10).
   - The 9B's three-hop chains: unreadable, because the all-passage chain itself breaks.
+  - Numbers on the larger set (amendment 57):
+    - The final-hop rule for numbers (amendment 24): fails for every start in all three models.
+    - Lightning's v2 recall-keyed-by-a-recalled-number result (+47, n
+      13) did not replicate (+2).
+    - H0 head-on: no reading in the 9B and Lightning (controls also cost computed chains more); in the 27B the
+      computed chain loses 13 less than a read one, outside the within-10 band.
+    - Computation feeding a lookup within 10 of a read number (amendment 24): holds on the 9B
+      (+9, +10), not on the 27B
+      (+16, +18) or Lightning
+      (+19, +18).
   - Bolt's "distributed" reading (amendment 52, against the rotated control only) does not survive the size-matched
     control: at 100 directions J++ costs +31 and the same size along the top principal directions
     +24.
@@ -471,11 +519,9 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 ## 10. Next
 
-- Running: amendment 57 (H0 on a larger numbers set, a second three-hop
-  seed, late-band positions for the 9B and Lightning).
+- Running: Muse's dose grid and position split (amendment 57 note 1).
 - OLMo through the dose grid (needs DeepSeek's cache dropped; not approved).
 - H0 head-on: a bridge computed from the passage, on v2.
-- Late-band positions for the 9B and Lightning.
 - Hand-checking.
 
 ## Appendix. Links
