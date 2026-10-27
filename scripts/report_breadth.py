@@ -141,6 +141,10 @@ def collect() -> None:
             sh = set(ra) & set(rb)
             add(f"clean.{m}.rows", "reruns", m, "rows compared (run of record vs clean checkout)", len(sh), unit="count", source=f"clean worktree {new}")
             add(f"clean.{m}.diff", "reruns", m, "rows whose answer differs", sum(ra[x]["correct"] != rb[x]["correct"] for x in sh), unit="count", source=f"clean worktree {new}")
+    c = jl(RES / "checks" / "clean_nem35l_rerun_1027.json")
+    if c:
+        r = c["M-K"]["rerun"]
+        add("clean.nl.mk_rerun", "reruns", "nl", "M - K, Lightning clean-checkout rerun", r["diff"], *r["ci"], source="results/checks/clean_nem35l_rerun_1027.json")
     # ---- 2. other datasets (the Qwens; toy, natural, natplus, v1)
     for m, pre in (("q27", ""), ("q9", "qwen35_9b_")):
         for i, run in enumerate(("full2_ko_v1", "fresh2_ko_v1", "fresh3_ko_v1"), 1):

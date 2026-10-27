@@ -117,10 +117,13 @@ Does the split survive everything we could vary?
   - Renderings: 27B {{v|ko.q27.r2}} and {{v|ko.q27.r3}}; 9B {{v|ko.q9.r2}} and {{v|ko.q9.r3}}; Lightning
     {{v|ko.nl.r2}} and {{v|ko.nl.r3}}.
   - A rendering redraws passages, distractors and wording over the same facts.
-- **A clean checkout reproduces it.** Rerun from a fresh worktree, the knock-out matches row for row:
-  - 27B: {{v|clean.q27.diff}} of {{v|clean.q27.rows}} rows differ;
-  - 9B: {{v|clean.q9.diff}} of {{v|clean.q9.rows}} differ;
-  - Lightning: {{v|clean.nl.diff}} of {{v|clean.nl.rows}} differ.
+- **A clean checkout reproduces it.** Rerun from a fresh worktree:
+  - the 27B's and 9B's knock-outs match row for row ({{v|clean.q27.diff}} of {{v|clean.q27.rows}} and
+    {{v|clean.q9.diff}} of {{v|clean.q9.rows}} rows differ);
+  - Lightning's headline reproduces ({{vci|clean.nl.mk_rerun}} vs {{vci|ko.nl.mk}}) but not row for row:
+    {{v|clean.nl.diff}} of {{v|clean.nl.rows}} rows differ.
+  - The likely cause, unverified, is numerics that depend on which prompts share a batch. Lightning's competence
+    rerun covered more prompts, which shifted a few items' eligibility and batching.
 - **It is not the bridge's own word (the plan's kill test).** Keeping the bridge's own-word directions restores only:
 
   | | Share restored |
@@ -283,7 +286,8 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 - **Hand-checked numbers.** None yet; docs/verify_kit.md recomputes the headline M − K from the per-item rows and lists
   20 random items per model.
-- **Clean-checkout reruns**: row-identical for the 27B and 9B (Section 2).
+- **Clean-checkout reruns**: row-identical for the 27B and 9B; Lightning reproduces its headline, not row for row
+  (Section 2).
 - **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-55. EXPERIMENTS.md has one line per run, with
   its W&B link.
 

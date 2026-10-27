@@ -1,0 +1,38 @@
+{
+ "run_of_record": "nem35l_jsuite_v2_test_chat_ko_cand2_v1",
+ "rerun": "nem35l_clean_jsuite_v2_test_chat_ko_cand2_v1",
+ "rerun_worktree": "/workspace/clean_bridge @ 775f83d",
+ "record_code": "253df77",
+ "ko_rows": {
+  "old": 14200,
+  "new": 14275,
+  "shared": 14075,
+  "correct_differs": 9,
+  "logp_exactly_equal": 13576,
+  "logp_absdiff_p99": 0.07562637329101562,
+  "logp_absdiff_max": 4.834526538848877
+ },
+ "competence_rows": {
+  "old": 21480,
+  "new": 29102,
+  "shared": 21480,
+  "correct_differs": 93
+ },
+ "M-K": {
+  "record": {
+   "diff": 53.1,
+   "ci": [
+    48,
+    59
+   ]
+  },
+  "rerun": {
+   "diff": 52.4,
+   "ci": [
+    47,
+    58
+   ]
+  }
+ },
+ "note": "not row-identical (the 27B and 9B reruns were); likely cause, unverified: batch-composition-dependent numerics in Lightnings hybrid kernels, the records competence having covered 21,480 prompts vs 29,102 here"
+}
