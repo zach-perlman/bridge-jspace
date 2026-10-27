@@ -246,6 +246,14 @@ def collect() -> None:
             v = p.get(f"memory/{c}")
             if v:
                 add(f"swap.{key}.{c}", "swaps", key.split(".")[0], f"transfer, memory finals pooled, {c} ({run})", v["transfer"], *v["ci"], v["n"], source=f"results/jswap/{run}/rows.jsonl")
+    # stated finals under the swaps (Dan's gaps.md row 3, 2026-10-27): the J-part, its complement and the paste on PK / TK
+    for key, run in (("q27", "jswap_v2_v1"), ("q9", "qwen35_9b_jswap_v2_v1"), ("nl", "nem35l_jswap_v2_v1")):
+        s_ = jl(RES / "jswap" / run / "summary.json") or {}
+        for w in ("PK", "TK"):
+            for c, ck in (("swap", "swapK"), ("swap_comp", "comp"), ("paste", "pasteK")):
+                v = s_.get(f"{w}/{c}")
+                if v:
+                    add(f"swap.{key}.{ck}.{w}", "swaps", key, f"transfer on stated final {w}, {c} ({run})", v["transfer"], *v["ci"], v["n"], source=f"results/jswap/{run}/summary.json")
     for m, run in (("q27", "jswap_ans_v2_v1"), ("q9", "qwen35_9b_jswap_ans_v2_v1")):
         s = jl(RES / "jswap" / run / "summary.json") or {}
         for c in ("swap", "swap_noans", "swap_ans", "swap_ans_rot"):
@@ -343,6 +351,13 @@ def collect_night() -> None:
                         add(f"{tag}.{m}.{mod}.{cond}.{con}", mod, m, f"{st} {mod} {con} ({cond})", v["diff"], *v["ci"], source=f"results/ablate_v2/jsuite2_score/{run}.json")
                     for w, lo in cell.get("loss", {}).items():
                         add(f"{tag}.{m}.{mod}.{cond}.loss.{w}", mod, m, f"{st} {mod} points lost, {w} ({cond})", lo, n=cell["n"].get(w), unit="abs", source=f"results/ablate_v2/jsuite2_score/{run}.json")
+    c = jl(RES / "checks" / "clean57_1027.json")
+    if c:
+        cs = c["comparisons"]
+        same = [r for r in cs if r["rows_record"] == r["rows_clean"] == r["shared"] and not any(r["differing"].values()) and r["max_abs_logp_diff"] == 0]
+        add("clean57.n", "reruns", "all", "amendment 57 clean-checkout comparisons", len(cs), unit="count", source="results/checks/clean57_1027.json")
+        add("clean57.same", "reruns", "all", "of them row-identical (every read and log-probability)", len(same), unit="count", source="results/checks/clean57_1027.json")
+        add("clean57.rows", "reruns", "all", "rows and items compared", sum(r["shared"] for r in cs), unit="count", source="results/checks/clean57_1027.json")
     # late-band position splits (amendment 57 B), start = all, as the 27B's late band
     for m, pre, band in (("q9", "qwen35_9b_", "26-29"), ("nl", "nem35l_", "33-39"), ("q27", "", "52-60")):
         for mode, suf in (("all", ""), ("question", "_posquestion"), ("bridge", "_posbridge")):

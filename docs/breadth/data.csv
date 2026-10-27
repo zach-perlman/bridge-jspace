@@ -433,6 +433,24 @@ swap.mi.mid.k100.paste,swaps,mi,"transfer, memory finals pooled, paste (min14_js
 swap.mi.mid.k100.swap_comp,swaps,mi,"transfer, memory finals pooled, swap_comp (min14_jswap_v2_L20-25_k100_v1)",8.5,5.8,11.7,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
 swap.mi.mid.k100.swap_rot,swaps,mi,"transfer, memory finals pooled, swap_rot (min14_jswap_v2_L20-25_k100_v1)",0.1,-0.2,0.3,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
 swap.mi.mid.k100.swap_u,swaps,mi,"transfer, memory finals pooled, swap_u (min14_jswap_v2_L20-25_k100_v1)",0.1,0.0,0.3,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
+swap.q27.swapK.PK,swaps,q27,"transfer on stated final PK, swap (jswap_v2_v1)",0.9,0.0,2.1,338,points,results/jswap/jswap_v2_v1/summary.json
+swap.q27.comp.PK,swaps,q27,"transfer on stated final PK, swap_comp (jswap_v2_v1)",24.6,18.6,31.0,338,points,results/jswap/jswap_v2_v1/summary.json
+swap.q27.pasteK.PK,swaps,q27,"transfer on stated final PK, paste (jswap_v2_v1)",30.2,24.0,36.2,338,points,results/jswap/jswap_v2_v1/summary.json
+swap.q27.swapK.TK,swaps,q27,"transfer on stated final TK, swap (jswap_v2_v1)",0.0,0.0,0.0,227,points,results/jswap/jswap_v2_v1/summary.json
+swap.q27.comp.TK,swaps,q27,"transfer on stated final TK, swap_comp (jswap_v2_v1)",27.3,20.2,34.9,227,points,results/jswap/jswap_v2_v1/summary.json
+swap.q27.pasteK.TK,swaps,q27,"transfer on stated final TK, paste (jswap_v2_v1)",36.6,28.7,43.6,227,points,results/jswap/jswap_v2_v1/summary.json
+swap.q9.swapK.PK,swaps,q9,"transfer on stated final PK, swap (qwen35_9b_jswap_v2_v1)",4.4,2.0,6.8,259,points,results/jswap/qwen35_9b_jswap_v2_v1/summary.json
+swap.q9.comp.PK,swaps,q9,"transfer on stated final PK, swap_comp (qwen35_9b_jswap_v2_v1)",13.9,7.8,20.4,259,points,results/jswap/qwen35_9b_jswap_v2_v1/summary.json
+swap.q9.pasteK.PK,swaps,q9,"transfer on stated final PK, paste (qwen35_9b_jswap_v2_v1)",20.3,14.2,26.9,259,points,results/jswap/qwen35_9b_jswap_v2_v1/summary.json
+swap.q9.swapK.TK,swaps,q9,"transfer on stated final TK, swap (qwen35_9b_jswap_v2_v1)",-1.7,-5.6,0.0,58,points,results/jswap/qwen35_9b_jswap_v2_v1/summary.json
+swap.q9.comp.TK,swaps,q9,"transfer on stated final TK, swap_comp (qwen35_9b_jswap_v2_v1)",1.7,-11.1,13.6,58,points,results/jswap/qwen35_9b_jswap_v2_v1/summary.json
+swap.q9.pasteK.TK,swaps,q9,"transfer on stated final TK, paste (qwen35_9b_jswap_v2_v1)",6.9,-8.2,21.8,58,points,results/jswap/qwen35_9b_jswap_v2_v1/summary.json
+swap.nl.swapK.PK,swaps,nl,"transfer on stated final PK, swap (nem35l_jswap_v2_v1)",0.4,-0.8,1.9,275,points,results/jswap/nem35l_jswap_v2_v1/summary.json
+swap.nl.comp.PK,swaps,nl,"transfer on stated final PK, swap_comp (nem35l_jswap_v2_v1)",-0.4,-1.1,0.0,275,points,results/jswap/nem35l_jswap_v2_v1/summary.json
+swap.nl.pasteK.PK,swaps,nl,"transfer on stated final PK, paste (nem35l_jswap_v2_v1)",-0.4,-1.2,0.0,275,points,results/jswap/nem35l_jswap_v2_v1/summary.json
+swap.nl.swapK.TK,swaps,nl,"transfer on stated final TK, swap (nem35l_jswap_v2_v1)",2.9,0.0,7.5,69,points,results/jswap/nem35l_jswap_v2_v1/summary.json
+swap.nl.comp.TK,swaps,nl,"transfer on stated final TK, swap_comp (nem35l_jswap_v2_v1)",2.9,-1.5,8.6,69,points,results/jswap/nem35l_jswap_v2_v1/summary.json
+swap.nl.pasteK.TK,swaps,nl,"transfer on stated final TK, paste (nem35l_jswap_v2_v1)",2.9,-1.5,8.7,69,points,results/jswap/nem35l_jswap_v2_v1/summary.json
 ans.q27.swap,swaps,q27,"transfer (PM), swap",65.8,58.7,72.8,,points,results/jswap/jswap_ans_v2_v1/summary.json
 ans.q27.swap_noans,swaps,q27,"transfer (PM), swap_noans",65.8,59.2,72.6,,points,results/jswap/jswap_ans_v2_v1/summary.json
 ans.q27.swap_ans,swaps,q27,"transfer (PM), swap_ans",28.9,23.5,34.6,,points,results/jswap/jswap_ans_v2_v1/summary.json
@@ -1619,6 +1637,9 @@ mod2.nl.numbers.unembed10_rot.loss.KL,numbers,nl,"jsuite_v2nb_test_chat numbers 
 mod2.nl.numbers.unembed10_rot.loss.AL,numbers,nl,"jsuite_v2nb_test_chat numbers points lost, AL (unembed10_rot)",17.7,,,62,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2nb_test_chat_numbers_ko_cand2_dd_v1.json
 mod2.nl.numbers.unembed10_rot.loss.KM,numbers,nl,"jsuite_v2nb_test_chat numbers points lost, KM (unembed10_rot)",40.7,,,177,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2nb_test_chat_numbers_ko_cand2_dd_v1.json
 mod2.nl.numbers.unembed10_rot.loss.AM,numbers,nl,"jsuite_v2nb_test_chat numbers points lost, AM (unembed10_rot)",36.9,,,65,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2nb_test_chat_numbers_ko_cand2_dd_v1.json
+clean57.n,reruns,all,amendment 57 clean-checkout comparisons,11.0,,,,count,results/checks/clean57_1027.json
+clean57.same,reruns,all,of them row-identical (every read and log-probability),11.0,,,,count,results/checks/clean57_1027.json
+clean57.rows,reruns,all,rows and items compared,122394.0,,,,count,results/checks/clean57_1027.json
 late.q9.all,positions,q9,"M - K at L26-29, all (paper10)",53.1,48,58,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L26-29_v1.json
 late.q9.all.rot,positions,q9,"M - K at L26-29, all (paper10_rot)",1.2,0,2,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L26-29_v1.json
 late.q9.all.u,positions,q9,"M - K at L26-29, all (unembed10)",27.5,23,32,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L26-29_v1.json
