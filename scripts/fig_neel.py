@@ -927,44 +927,76 @@ def f04() -> None:
 
 
 def f11() -> None:
-    fig = plt.figure(figsize=(16, 6.8))
+    fig = plt.figure(figsize=(16, 7.6))
+    NLC = "#184f95"
+
+    def v2mod(run, mod):
+        s = score(run).get(mod, {})
+        return {c: {k.split("-")[0]: (v["diff"], v["ci"]) for k, v in s.get(c, {}).get("contrasts", {}).items()} | {"_s": s.get(c, {})} for c in ("paper10", "paper10_rot", "unembed10")}
+
+    def nat3(run):
+        c = (load(A2 / "nat3_score" / f"{run}.json") or {}).get("cells", {})
+        return {cond: {w: (v["excess_over_PPP"], v["ci"]) for w, v in c.get(f"all/{cond}", {}).items()} for cond in ("paper10", "paper10_rot", "unembed10")}
+
+    def mark(ax, x, y, ci, col, mk, hollow=False):
+        ax.plot(ci, [y, y], color=col, lw=2, solid_capstyle="round", zorder=2)
+        ax.plot(x, y, mk, ms=6, zorder=3, color=col, mec=col if hollow else SURF, mfc=SURF if hollow else col, mew=1.5)
+        ax.text(ci[1] + 1.5, y, f"{x:+.0f}", va="center", fontsize=7, color=INK2)
+
+    def ticks(ax, d, w, y):
+        for cond, col in (("paper10_rot", ROT), ("unembed10", LOGIT)):
+            if w in d[cond]:
+                ax.plot(d[cond][w][0], y, "|", color=col, ms=8, mew=1.6, zorder=4)
+
     # A: three hops
-    ax = fig.add_axes((0.06, 0.16, 0.26, 0.62))
+    ax = fig.add_axes((0.075, 0.2, 0.235, 0.56))
     style(ax)
-    c = load(A2 / "nat3_score" / "jsuite_v1_threehop_chat_ko_cand2_v1.json")["cells"]["all/paper10"]
     order = ["MMM", "PMM", "MPM", "PPM", "MMP", "MPP", "PMP"]
-    for r, w in enumerate(order):
-        v = c[w]
-        col = J if v["excess_over_PPP"] >= 10 else PASTE
-        ax.barh(r, v["excess_over_PPP"], color=col, height=0.6, hatch=None if v["clean"] else "///", edgecolor=SURF if v["clean"] else col, fill=v["clean"])
-        ax.plot(v["ci"], [r, r], color=INK2, lw=1)
-        ax.text(max(v["ci"][1], 0) + 1, r, f"{v['excess_over_PPP']:+.0f}  (n {v['n']})", va="center", fontsize=7.5, color=INK2)
+    q9 = v2mod("qwen35_9b_" + SET + "_threehop_ko_cand2_v1", "threehop")
+    series = [("Qwen 27B (v2)", J, "o", False, v2mod(SET + "_threehop_ko_cand2_v1", "threehop")),
+              ("Nemotron Lightning (v2)", NLC, "D", False, v2mod("nem35l_" + SET + "_threehop_ko_cand2_v1", "threehop")),
+              ("Nemotron Lightning (natural three-hop set)", NLC, "D", True, nat3("nem35l_nat3_v1_chat_ko_cand2_v1_drop"))]  # fmt: skip
+    for i, (_lab, col, mk, hol, d) in enumerate(series):
+        for r, w in enumerate(order):
+            if w in d["paper10"]:
+                y = r + (i - 1) * 0.26
+                mark(ax, d["paper10"][w][0], y, d["paper10"][w][1], col, mk, hol)
+                ticks(ax, d, w, y)
     ax.set_yticks(range(len(order)), [f"{w[0]} → {w[1]} → {w[2]}" for w in order])
     ax.set_ylim(len(order) - 0.5, -0.6)
-    ax.set_xlim(-15, 60)
+    ax.set_xlim(-25, 90)
     ax.axvline(0, color=AXIS, lw=1)
-    ax.set_xlabel("loss beyond the all-prompt chain (PPP), points")
-    ax.set_title("A   Three hops (27B): which memory hop needs J?")
+    ax.axhline(3.5, color=GRID, lw=1, ls="--")
+    ax.set_xlabel("points lost beyond the all-passage chain (P → P → P)")
+    ax.set_title("A   Three hops: which chains need J++?", y=1.2)
+    hs = [plt.Line2D([], [], ls="", marker=mk, color=col, mfc=SURF if hol else col, mec=col, mew=1.5, ms=7, label=lab) for lab, col, mk, hol, _d in series]
+    hs += [plt.Line2D([], [], ls="", marker="|", color=ROT, ms=8, mew=1.6, label="rotated"), plt.Line2D([], [], ls="", marker="|", color=LOGIT, ms=8, mew=1.6, label="logit lens")]
+    ax.legend(handles=hs, loc="lower left", bbox_to_anchor=(0, 1.0), ncol=2, frameon=False, fontsize=7.5)
     # B: numbers
-    bx = fig.add_axes((0.42, 0.16, 0.22, 0.62))
+    bx = fig.add_axes((0.47, 0.2, 0.2, 0.56))
     style(bx)
-    rows = [("KR-PR", "counted in the passage"), ("AR-PR", "computed by arithmetic"), ("MR-PR", "recalled from memory")]
-    for i, (run, col, mk_, lab) in enumerate((("jsuite_v1_numbers_chat_ko_cand2_pi_v1", J, "o", "Qwen 27B"), ("qwen35_9b_jsuite_v1_numbers_chat_ko_cand2_pi_v1", JL, "s", "Qwen 9B"))):
-        cs = load(A2 / "ctxcomp_score" / f"{run}.json")["cells"]["paper10"]["contrasts"]
-        for r, (k, _l) in enumerate(rows):
-            dot(bx, cs[k]["diff"], r + (i - 0.5) * 0.3, cs[k]["ci"], col, mk_, ms=6, label=lab if r == 0 else None)
+    rows = [("KR", "counted, then reported"), ("AR", "computed by arithmetic,\nthen reported"), ("MR", "recalled, then reported"), ("MM", "recalled, then used to\nrecall (vs to look up)")]
+    nser = [("Qwen 27B", J, "o", v2mod(SET + "_numbers_ko_cand2_dd_v1", "numbers")), ("Qwen 9B", JL, "s", v2mod("qwen35_9b_" + SET + "_numbers_ko_cand2_dd_v1", "numbers")),
+            ("Nemotron Lightning", NLC, "D", v2mod("nem35l_" + SET + "_numbers_ko_cand2_dd_v1", "numbers"))]  # fmt: skip
+    for i, (_lab, col, mk, d) in enumerate(nser):
+        for r, (w, _l) in enumerate(rows):
+            if w in d["paper10"]:
+                y = r + (i - 1) * 0.26
+                mark(bx, d["paper10"][w][0], y, d["paper10"][w][1], col, mk)
+                ticks(bx, d, w, y)
     bx.set_yticks(range(len(rows)), [r[1] for r in rows])
     bx.set_ylim(len(rows) - 0.5, -0.6)
-    bx.set_xlim(-5, 45)
+    bx.set_xlim(-35, 90)
     bx.axvline(0, color=AXIS, lw=1)
-    bx.set_xlabel("loss reporting the number, minus a number\nread from the passage, points")
-    bx.legend(loc="lower right", frameon=False, fontsize=8)
-    bx.set_title("B   Numbers: computed vs recalled")
+    bx.axhline(2.5, color=GRID, lw=1, ls="--")
+    bx.set_xlabel("points lost, minus a number read from the passage\n(last row: minus the same number used in a lookup)")
+    bx.legend(handles=[plt.Line2D([], [], ls="", marker=mk, color=col, ms=7, label=lab) for lab, col, mk, _d in nser], loc="lower left", bbox_to_anchor=(0, 1.0), ncol=3, frameon=False, fontsize=7.5)
+    bx.set_title("B   Numbers: computed vs recalled", y=1.2)
     # C: what the model says instead
-    cx = fig.add_axes((0.74, 0.16, 0.24, 0.62))
+    cx = fig.add_axes((0.775, 0.2, 0.21, 0.56))
     style(cx)
     classes = [("answer", "still right", J), ("lure", "a lure in the passage", LOGIT), ("other_cand", "another valid answer", SIZE), ("other", "something else", PASTE), ("bridge", "the bridge's name", PROBE)]
-    runs = [("Qwen 27B", "natplus_v1_chat_genspot_cand2_v1"), ("Qwen 9B", "qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1"), ("Muse 30B", "muse30_natplus_v1_chat_genspot_cand2_v1")]
+    runs = [("Qwen 27B", "natplus_v1_chat_genspot_cand2_v1"), ("Qwen 9B", "qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1"), ("Lightning", "nem35l_natplus_v1_chat_genspot_cand2_v1"), ("Muse 30B", "muse30_natplus_v1_chat_genspot_cand2_v1")]
     r = 0
     labels = []
     for lab, run in runs:
@@ -984,12 +1016,16 @@ def f11() -> None:
     cx.set_xlim(0, 100)
     cx.set_xlabel("generated replies under the knock-out, %")
     cx.legend(handles=[plt.Rectangle((0, 0), 1, 1, color=c_, label=l) for _k, l, c_ in classes], loc="lower left", bbox_to_anchor=(0, 1.0), ncol=2, frameon=False, fontsize=7.5)
-    cx.set_title("C   What the model says instead (natplus)", y=1.17)
-    top = header(fig, "Beyond two hops: a memory hop needs J-space when its output is not in the prompt; computing in context does not; broken recall gives another answer, not the bridge",
-                 "Earlier datasets (jsuite v1 three-hop and numbers modules; natplus generation spot-check), J++ top-10 removal at each model's band")  # fmt: skip
-    bot = note(fig, "A: each letter is one hop's source (P: stated in the passage, M: recalled). The chains whose loss stands out end in, or pass through, a memory hop whose output never appears in the passage; "
-                    "hatched: the rotated control itself costs > 10 there (read the excess, not the raw loss). Rule found post hoc on the natural three-hop set, then pre-registered here (amendment 25); not yet run on v2 (amendment 37B). "
-                    "B: answers are numbers; the passage either states one, has items to count, has numbers to add, or nothing (recall). C: generated replies (25 per word and relation); the Qwens name the bridge in at most ~5% of them (Muse in half): the entity is still known, its attribute is not.")  # fmt: skip
+    cx.set_title("C   What the model says instead (natplus)", y=1.2)
+    s9 = q9["paper10"]["_s"]
+    r9 = q9["paper10_rot"]["_s"]
+    header(fig, "Beyond two hops: chains ending in a recall need J++; a number computed from the passage does not need it to be reported",
+           "jsuite v2 three-hop and numbers modules (and Lightning's natural three-hop set), J++ top-10 removal at each model's band; ticks: the same removal rotated (green) and the logit lens's top 10 (orange)")  # fmt: skip
+    note(fig, "A: each letter is one hop's source (P: stated in the passage, M: recalled); above the dashed line the last hop is a recall. "
+              f"The 9B is left out: its all-passage chain alone loses {s9['loss']['PPP']:.0f} points (rotated {r9['loss']['PPP']:.0f}; n {s9['n']['PPP']}), so its excess cannot be read. "
+              "Pre-registered (amendment 56): chains ending in a recall lose more than P → P → P; M → P → P and P → M → P do not. "
+              "B: the passage states the number, lists items to count, gives two numbers to add, or says nothing (recall); numbers use the digit dictionary. Pre-registered: counted and computed within 10 of read; recalled at least 10 above. "
+              "C: generated replies; the Qwens and Lightning rarely name the bridge (Muse often does): the entity is still known, its attribute is not.")  # fmt: skip
     save(fig, "F11_beyond")
 
 
@@ -1070,11 +1106,16 @@ def f12() -> None:
           ("good", "mention (mid)"))  # fmt: skip
     lp = [cell(f"nem35l_{SET}_ko_cand2{m_}_v1", "paper10/start=P") for m_ in ("", "_posbridge", "_posquestion")]
     lwhere = (("warn", f"read: mention {lp[1][0]:+.0f},\nquestion {lp[2][0]:+.0f} of {lp[0][0]:+.0f}") if all(lp) else ("pend", "running tonight"))
-    v2row("Nemotron-3.5-Lightning", "Nemotron Lightning", "nem35l_textloss_top_v2gate_v1", "nem35l_jswap_v2_v1", True, ("none", "v2 only"), lwhere)
+    lnp = natplus("nem35l_natplus_v1_chat_ko_cand2_v1")
+    lother = ("good", f"natplus {lnp[0]:+.0f},\nnatural three-hop") if lnp else ("none", "v2 only")
+    v2row("Nemotron-3.5-Lightning", "Nemotron Lightning", "nem35l_textloss_top_v2gate_v1", "nem35l_jswap_v2_v1", True, lother, lwhere)
     v2row("DeepSeek-V4-Flash", "DeepSeek V4 Flash", "dsv4f_textloss_top_v2gate_v1", "dsv4f_jswap_v2_L22-27_v1", False, ("none", "v2 only"), ("warn", "question: about half"),
           ("warn", "rising at 30 (dev);\ncache dropped"))  # fmt: skip
     v2row("Ministral-3-14B", "Ministral 14B", "min14_textloss_top_v2gate_v1", "min14_jswap_v2_L20-25_v1", False, ("none", "v2 only"), ("good", "question (late only)"))
-    v2row("Nemotron-3.5-Bolt", "Nemotron Bolt", "nem35b_textloss_top_v2gate_v1", "nem35b_jswap_v2_k100_v1", False, ("none", "v2 only"), ("pend", "running tonight"))
+    bp = [cell(f"nem35b_{SET}_ko_cand2_L42-53_k100_pos{w}_s150_v1", "top100/start=all") for w in ("bridge", "question")]
+    bd = {r["k"]: r for r in (dose_data("Nemotron-3.5-Bolt", "nem35b_", "L42-53") or [])}
+    bwhere = (("warn", f"K 100: mention {bp[0][0]:+.0f},\nquestion {bp[1][0]:+.0f} of {bd[100]['mk']:+.0f}") if all(bp) and 100 in bd else ("pend", "running"))
+    v2row("Nemotron-3.5-Bolt", "Nemotron Bolt", "nem35b_textloss_top_v2gate_v1", "nem35b_jswap_v2_k100_v1", False, ("none", "v2 only"), bwhere)
     v2row("OLMo-3-32B (base, Q&A)", "OLMo-3 32B base", "olmo32_textloss_top_l20_44_v1", "olmo32_jswap_v2_v1", False, ("bad", "v1 −3"), ("none", "-"), ("none", "-"))
     v2row("Muse-Glimmer-30B", "Muse 30B", "muse30_textloss_top_l36_42_v1", None, False, ("bad", "toy 7; natural/natplus\nmostly logit lens"), ("none", "-"), ("none", "-"))
     v2row("Qwen3.5-122B", "Qwen 122B (FP8)", "qwen35_122b_textloss_L39-45_v1", None, False, ("bad", "toy 9; natural null"), ("good", "question (late only)"), ("none", "-"))

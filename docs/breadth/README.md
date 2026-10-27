@@ -20,11 +20,18 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   - The rest are weak, carry the entity without needing it, share it with the logit lens, or lose it by probability.
   - Bolt, Lightning's larger sibling, depends on its J++ directions little more than on any removal of the same size.
   - Three more models cannot be tested: any lens removal breaks them.
+- **Beyond two hops, what matters is whether the last step is recalled.**
+  - A three-hop chain needs the directions when its last hop is recalled: Lightning loses
+    36 to 60 points beyond an all-passage chain.
+    When the last hop is read it loses -3 to +2,
+    even if earlier hops were recalled. The 27B shows it on three of the four chains ending in a recall.
+  - Reporting a number computed from the passage by arithmetic costs nothing in all three models; a recalled one costs
+    the Qwens +13 and +15.
 - **For monitoring:** at the entity's mention the lens shows which entity the model will recall from, in every model.
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 7fd8153 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 77f8025 from the run files.
 
 ## Setup
 
@@ -52,7 +59,7 @@ as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Bu
 - **The swap.** Replace the J-part (the span of the top-10 J++ directions) of the bridge's last token with another
   entity's (D).
   - **Transfer**: the share answering D's fact minus the share answering a third entity's.
-- **Fixed in advance** = pre-registered in docs/prereg_replication_1022.md (amendments 1-55) before the run.
+- **Fixed in advance** = pre-registered in docs/prereg_replication_1022.md (amendments 1-56) before the run.
   **After the data** = chosen after seeing results. Brackets: 95% bootstrap over bridges.
 
 ## 1. Recall needs the J++ directions; reading the stated fact does not
@@ -85,8 +92,8 @@ Does removing what the lens reads cost recall more than reading?
   | Nothing stated, no lures (N) | 45 |
   | Recall (M) | 54 |
 
-  Under the knock-out, the Qwens rarely name the bridge: 1% and 5% of replies.
-  They still know which entity it is, but not its fact.
+  Under the knock-out, the models rarely name the bridge: 1% (27B), 5% (9B)
+  and 1% (Lightning) of replies. They still know which entity it is, but not its fact.
 - **The other six models are in the grid (Section 7).** All six fail to show it cleanly:
   - DeepSeek and Ministral are weak (+18, +23);
   - Bolt shows little: +6 at 10 directions, and at 100 a same-size removal along the top principal
@@ -97,7 +104,7 @@ Does removing what the lens reads cost recall more than reading?
 
 ## 2. It is not one dataset, relation, rendering or checkout
 
-*Fixed in advance (amendments 6, 11, 14, 20, 23, 29, 33, 35, 38, 50, 55).*
+*Fixed in advance (amendments 6, 11, 14, 20, 23, 29, 33, 35, 38, 50, 55, 56).*
 
 Does the split survive everything we could vary?
 
@@ -120,6 +127,9 @@ Does the split survive everything we could vary?
   | natplus | 0 | -5 |
   | jsuite v1 | -1 | -4 |
 
+- **Lightning on natplus** (amendment 55): +52 [46, 58], with rotated -1 and logit lens
+  +8. Its only other datasets are v2 and the natural three-hop set (Section 6).
+
 ![The Qwens' split on every dataset we built, with the logit lens near zero](figures/fig02_datasets.png)
 *Fig. 2.*
 
@@ -139,8 +149,10 @@ Does the split survive everything we could vary?
     0 of 14100 rows differ);
   - Lightning's headline reproduces (+52 [47, 58] vs +53 [48, 59]) but not row for row:
     9 of 14075 rows differ.
-  - The likely cause, unverified, is numerics that depend on which prompts share a batch. Lightning's competence
-    rerun covered more prompts, which shifted a few items' eligibility and batching.
+  - Lightning is deterministic: rerun at HEAD with the clean rerun's eligibility and batch size, it matches the clean
+    rerun on 14275 of 14275 rows (amendment 56).
+  - So the differences come from inputs, not kernels: the clean competence rerun covered more prompts, which changed a
+    few items' eligibility and which prompts shared a batch. Code changes since the record run are not ruled out.
 - **It is not the bridge's own word (the plan's kill test).** Keeping the bridge's own-word directions restores only:
 
   | | Share restored |
@@ -155,10 +167,13 @@ Does the split survive everything we could vary?
   The kill bar is 0.75.
 - **Rare bridges lose as much as popular ones**, so Neel's narrow-concept prediction is not supported. natplus,
   popular vs rare: 27B +50 vs +56; 9B +39 vs
-  +44.
+  +44; Lightning +48 vs +61.
 - **It is mostly from pretraining.** The 9B base model gives +34 against the instruct model's
   +41 (same Q&A format, same lens).
-- **The lens matters.** On the 27B (v1), the plain J-lens finds +24 against J++'s +50.
+- **The lens matters; who fitted it does not.**
+  - On the 27B (v1), the plain J-lens finds +24 against J++'s +50.
+  - The Qwens use published J++ lenses; the other models use our own fits. On the 9B, our own fit gives
+    +45 [40, 50] against the published lens's +43 [37, 49].
 - **A bridge never named.** Deleting the bridge's one passing mention adds recall loss: +18 [10, 26] (27B),
   +12 [5, 19] (9B) and +4 [-3, 11] (Lightning).
 
@@ -286,25 +301,73 @@ How many directions does the dependence need, and when does the removal stop bei
 
 - **Swapping more directions.**
   - The 9B's swap grows: +64 → +76.
-  - Lightning's is saturated: +46 → +55.
+  - The 27B's and Lightning's are saturated (under the +10 bar): +64 → +71 and
+    +46 → +55.
   - Bolt's carries only at 100: +3 → +41.
   - Ministral's never carries (at mid depth, L20-25): +3 → +5.
 
-## 6. Beyond two hops: recalled and computed intermediates (earlier dataset)
+## 6. Beyond two hops: longer chains, and numbers computed from the passage
 
-*Fixed in advance (amendments 21, 24, 25). The same tests on v2 and on Lightning are running (amendment 56).*
+*Fixed in advance (amendments 21, 24, 25 on the earlier dataset; 56 on v2 and Lightning).*
 
-Does the rule hold for longer chains, and for intermediates the model computes from the passage?
+Does the rule hold for longer chains, and for intermediates the model computes from the passage? This is the
+proposal's own question (H0: J-space carries recalled words, not computed variables).
 
-- **A memory hop needs J-space when its output is not in the passage.** On the 27B (three hops), against the
-  all-passage chain:
-  - chains through or ending in such a hop lose more: MMM +35 [21, 49], PMM +33 [22, 46];
-  - chains whose memory hop's output is stated in the passage do not: MPP -3, PMP -3.
-- **A computed number does not need J-space; a recalled one does.** On the 9B, against a number read from the passage:
-  - a number counted in the passage costs +7, and one computed by arithmetic +1;
-  - a recalled number costs +26 [18, 34] (27B: +15).
+- **A three-hop chain needs J++ when its last hop is recalled.** Points lost beyond the all-passage chain
+  (P → P → P); each letter is one hop's source:
 
-![A memory hop needs J-space when its output is not in the prompt; computing in context does not](figures/fig10_beyond.png)
+  | Chain | 27B (v2) | Lightning (v2) | Lightning (natural set) |
+  |---|---|---|---|
+  | M → M → M | +32 [17, 46] | +49 [34, 62] | +46 [31, 60] |
+  | P → M → M | +26 [13, 38] | +36 [21, 49] | +46 [34, 59] |
+  | M → P → M | +21 [8, 34] | +55 [31, 76] | +58 [41, 74] |
+  | P → P → M | +8 [-4, 21] | +60 [45, 74] | +52 [43, 62] |
+  | M → M → P | +20 [5, 35] | -2 [-16, 11] | +2 [-7, 12] |
+  | M → P → P | +6 [-8, 19] | -3 [-15, 8] | +6 [-4, 17] |
+  | P → M → P | -8 [-20, 4] | +2 [-12, 15] | -3 [-11, 3] |
+
+  - **Pre-registered:** the four chains ending in a recall lose more than P → P → P; M → P → P and P → M → P do not.
+    Lightning meets all of it, on v2 and on the natural set. The 27B meets it except P → P → M.
+  - **Not predicted:** the 27B's M → M → P also loses; Lightning's does not.
+  - **Controls.**
+    - On the 27B, the rotated and logit-lens removals cost no chain more than P → P → P. P → P → P itself loses
+      20 points under J++ and 23 rotated,
+      so only the excess is read.
+    - In Lightning the controls explain part of two cells. On v2, M → P → M (n
+      22): rotated +29, logit lens
+      +28. On the natural set, P → P → M: logit lens +32.
+  - **The 9B cannot be read.** Its all-passage chain alone loses 46 points (rotated
+    33; n 24).
+  - **The earlier dataset agrees** (27B, v1): M → M → M +35 [21, 49] and P → M → M +33 [22, 46];
+    M → P → P -3 and P → M → P -3.
+- **A number computed from the passage does not need J++ to be reported.** Points lost reporting the
+  number, minus a number read from the passage (digit tokens included in the removal):
+
+  | The number is | 27B | 9B | Lightning |
+  |---|---|---|---|
+  | Counted from a list | 0 [0, 0] | +4 [0, 10] | +12 [3, 22] |
+  | Computed by adding or subtracting | 0 [0, 0] | 0 [0, 0] | 0 [0, 0] |
+  | Recalled | +13 [6, 23] | +15 [7, 24] | +5 [0, 11] |
+
+  - **Pre-registered:** counted and computed within 10 of read; recalled at least 10 above.
+    - The Qwens meet all three.
+    - Lightning misses two: counting costs it +12, and reporting a recalled number only
+      +5.
+    - Rotated and logit-lens controls cost recalled numbers nothing (0 in every
+      model).
+  - **Lightning needs J++ when a recalled number feeds another recall** (the month or planet at that position):
+    +47 [23, 72] over a lookup in the passage (n 17 and
+    13). The Qwens' intervals are too wide to say: 27B
+    +4 [-26, 32], 9B +18 [-15, 49].
+  - **The earlier dataset agrees** (v1): 9B counted +7, computed +1, recalled
+    +26 [18, 34]; 27B recalled +15.
+- **What this says about H0.**
+  - J++ is needed where the last step is a recall, whatever the earlier steps were.
+  - Recalled intermediates followed by a read step lose little in Lightning; the 27B's M → M → P is the exception.
+  - Numbers computed from the passage by arithmetic do not need J++ to be reported.
+  - We have not tested, on v2, a bridge entity that the model computes rather than reads or recalls.
+
+![A three-hop chain needs J++ when its last hop is recalled; a number computed from the passage does not](figures/fig10_beyond.png)
 *Fig. 10.*
 
 ## 7. Every model, every test
@@ -353,6 +416,11 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   - The 27B with the plain J-lens: +24, below 30.
   - The never-named bridge, predicted to cost nothing extra: it costs the 27B +18 and the 9B +12.
   - The 122B by probability (+2). Muse's share with the logit lens. Bolt at 10 directions. OLMo.
+  - The 27B's P → P → M three-hop chain: +8 [-4, 21], predicted to lose more than
+    P → P → P.
+  - Lightning's numbers: counting costs +12 (predicted within 10), and reporting a
+    recalled number +5 (predicted at least +10).
+  - The 9B's three-hop chains: unreadable, because the all-passage chain itself breaks.
   - Bolt's "distributed" reading (amendment 52, against the rotated control only) does not survive the size-matched
     control: at 100 directions J++ costs +31 and the same size along the top principal directions
     +24.
@@ -366,7 +434,8 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   - Templated passages over one fact set per dataset; English only.
   - One band per model.
   - Greedy answers with thinking off.
-  - The Qwens use published J++ lenses; the Nemotrons, Ministral and Muse use our own fits.
+  - The Qwens use published J++ lenses; the Nemotrons, Ministral and Muse use our own fits (the same fit on the 9B
+    gives the same effect; Section 2).
   - The removal also costs plain text: +0.30 nats (27B) to +1.67 nats (Lightning).
   - One bootstrap seed.
   - The 122B in FP8.
@@ -376,18 +445,17 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 
 - **Hand-checked numbers.** None yet; docs/verify_kit.md recomputes the headline M − K from the per-item rows and lists
   20 random items per model.
-- **Clean-checkout reruns**: row-identical for the 27B and 9B; Lightning reproduces its headline, not row for row
-  (Section 2).
-- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-55. EXPERIMENTS.md has one line per run, with
+- **Clean-checkout reruns**: row-identical for the 27B and 9B. Lightning reproduces its headline, not row for row; a
+  determinism check traces that to its inputs, not its kernels (Section 2).
+- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-56. EXPERIMENTS.md has one line per run, with
   its W&B link.
 
 ## 10. Next
 
-- DeepSeek and OLMo at matched removal size (their caches must come back).
-- H0 head-on on v2: computed bridges, and the three-hop and numbers modules on v2 and on Lightning.
+- Running: Bolt's pointer tests at 100 directions; then DeepSeek's dose grid and position split.
+- OLMo at matched removal size (needs DeepSeek's cache dropped; not approved).
+- H0 head-on: a bridge computed from the passage, on v2.
 - Late-band positions for the 9B and Lightning.
-- Lightning on the natural datasets (running).
-- Bolt's pointer at 100 directions (running).
 - Hand-checking.
 
 ## Appendix. Links

@@ -761,6 +761,8 @@ dose.nb.limit,dose,nb,"specificity limit as pre-registered (stated facts lose > 
 dose.nb.ekstar,dose,nb,plateau K* on the J-specific excess (note 1),3.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
 dose.nb.plim,dose,nb,probability limit (stated facts lose > 10 by probability),300.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
 swapk.q27.k10,swap dose,q27,"J-part swap transfer, K 10",64.0,57.5,70.4,898,points,results/jswap/jswap_v2_k10_s150_v1/rows.jsonl
+swapk.q27.k30,swap dose,q27,"J-part swap transfer, K 30",68.3,61.5,74.7,898,points,results/jswap/jswap_v2_k30_s150_v1/rows.jsonl
+swapk.q27.k100,swap dose,q27,"J-part swap transfer, K 100",71.2,64.5,77.8,898,points,results/jswap/jswap_v2_k100_s150_v1/rows.jsonl
 swapk.q9.k10,swap dose,q9,"J-part swap transfer, K 10",63.7,58.0,69.7,624,points,results/jswap/qwen35_9b_jswap_v2_k10_s150_v1/rows.jsonl
 swapk.q9.k30,swap dose,q9,"J-part swap transfer, K 30",70.9,65.2,76.6,624,points,results/jswap/qwen35_9b_jswap_v2_k30_s150_v1/rows.jsonl
 swapk.q9.k100,swap dose,q9,"J-part swap transfer, K 100",75.9,70.6,80.8,624,points,results/jswap/qwen35_9b_jswap_v2_k100_s150_v1/rows.jsonl
@@ -795,7 +797,349 @@ gen.q9.PM.bridge,spot-check,q9,PM: replies naming the bridge,5.051,,,99,pct,resu
 gen.q9.PM.right,spot-check,q9,PM: replies still right,46.465,,,99,pct,results/gen_spot/qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1/summary.json
 gen.q9.MM.bridge,spot-check,q9,MM: replies naming the bridge,0.0,,,84,pct,results/gen_spot/qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1/summary.json
 gen.q9.MM.right,spot-check,q9,MM: replies still right,44.048,,,84,pct,results/gen_spot/qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1/summary.json
+gen.nl.PM.bridge,spot-check,nl,PM: replies naming the bridge,1.01,,,99,pct,results/gen_spot/nem35l_natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.nl.PM.right,spot-check,nl,PM: replies still right,43.434,,,99,pct,results/gen_spot/nem35l_natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.nl.MM.bridge,spot-check,nl,MM: replies naming the bridge,11.0,,,100,pct,results/gen_spot/nem35l_natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.nl.MM.right,spot-check,nl,MM: replies still right,44.0,,,100,pct,results/gen_spot/nem35l_natplus_v1_chat_genspot_cand2_v1/summary.json
 gen.mu.PM.bridge,spot-check,mu,PM: replies naming the bridge,52.525,,,99,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
 gen.mu.PM.right,spot-check,mu,PM: replies still right,27.273,,,99,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
 gen.mu.MM.bridge,spot-check,mu,MM: replies naming the bridge,2.353,,,85,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
 gen.mu.MM.right,spot-check,mu,MM: replies still right,29.412,,,85,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
+natplus.nl,datasets,nl,natplus all/all paper10,51.8,46,58,,points,results/ablate_v2/natplus_split/nem35l_natplus_v1_chat_ko_cand2_v1.json
+natplus.nl.u,datasets,nl,natplus all/all unembed10,7.9,5,11,,points,results/ablate_v2/natplus_split/nem35l_natplus_v1_chat_ko_cand2_v1.json
+natplus.nl.rot,datasets,nl,natplus all/all paper10_rot,-1.2,-4,1,,points,results/ablate_v2/natplus_split/nem35l_natplus_v1_chat_ko_cand2_v1.json
+natplus.nl.pop,datasets,nl,natplus popularity/popular paper10,47.5,39,55,,points,results/ablate_v2/natplus_split/nem35l_natplus_v1_chat_ko_cand2_v1.json
+natplus.nl.rare,datasets,nl,natplus popularity/rare paper10,61.4,50,73,,points,results/ablate_v2/natplus_split/nem35l_natplus_v1_chat_ko_cand2_v1.json
+nat3.nl.paper10.PPP,three hops,nl,"natural three-hop excess over PPP, PPP, paper10",0.0,0,0,83,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10.MPP,three hops,nl,"natural three-hop excess over PPP, MPP, paper10",6.1,-4,17,75,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10.PMP,three hops,nl,"natural three-hop excess over PPP, PMP, paper10",-3.1,-11,3,72,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10.PPM,three hops,nl,"natural three-hop excess over PPP, PPM, paper10",52.4,43,62,104,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10.MPM,three hops,nl,"natural three-hop excess over PPP, MPM, paper10",58.2,41,74,52,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10.MMP,three hops,nl,"natural three-hop excess over PPP, MMP, paper10",2.3,-7,12,63,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10.PMM,three hops,nl,"natural three-hop excess over PPP, PMM, paper10",46.4,34,59,181,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10.MMM,three hops,nl,"natural three-hop excess over PPP, MMM, paper10",46.0,31,60,173,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10_rot.PPP,three hops,nl,"natural three-hop excess over PPP, PPP, paper10_rot",0.0,0,0,83,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10_rot.MPP,three hops,nl,"natural three-hop excess over PPP, MPP, paper10_rot",2.2,-6,11,75,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10_rot.PMP,three hops,nl,"natural three-hop excess over PPP, PMP, paper10_rot",-2.9,-9,5,72,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10_rot.PPM,three hops,nl,"natural three-hop excess over PPP, PPM, paper10_rot",13.7,3,26,104,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10_rot.MPM,three hops,nl,"natural three-hop excess over PPP, MPM, paper10_rot",18.5,7,30,52,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10_rot.MMP,three hops,nl,"natural three-hop excess over PPP, MMP, paper10_rot",5.9,-3,15,63,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10_rot.PMM,three hops,nl,"natural three-hop excess over PPP, PMM, paper10_rot",-1.8,-9,6,181,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.paper10_rot.MMM,three hops,nl,"natural three-hop excess over PPP, MMM, paper10_rot",-6.7,-12,-1,173,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.unembed10.PPP,three hops,nl,"natural three-hop excess over PPP, PPP, unembed10",0.0,0,0,83,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.unembed10.MPP,three hops,nl,"natural three-hop excess over PPP, MPP, unembed10",0.9,-7,10,75,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.unembed10.PMP,three hops,nl,"natural three-hop excess over PPP, PMP, unembed10",-4.3,-11,2,72,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.unembed10.PPM,three hops,nl,"natural three-hop excess over PPP, PPM, unembed10",32.0,23,41,104,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.unembed10.MPM,three hops,nl,"natural three-hop excess over PPP, MPM, unembed10",22.3,8,37,52,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.unembed10.MMP,three hops,nl,"natural three-hop excess over PPP, MMP, unembed10",-2.1,-10,5,63,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.unembed10.PMM,three hops,nl,"natural three-hop excess over PPP, PMM, unembed10",8.1,0,17,181,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+nat3.nl.unembed10.MMM,three hops,nl,"natural three-hop excess over PPP, MMM, unembed10",3.1,-7,14,173,points,results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json
+mod.q27.threehop.paper10.MMM-PPP,threehop,q27,v2 threehop MMM-PPP (paper10),31.7,17,46,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.MMP-PPP,threehop,q27,v2 threehop MMP-PPP (paper10),20.5,5,35,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.MPM-PPP,threehop,q27,v2 threehop MPM-PPP (paper10),20.9,8,34,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.MPP-PPP,threehop,q27,v2 threehop MPP-PPP (paper10),5.6,-8,19,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.PMM-PPP,threehop,q27,v2 threehop PMM-PPP (paper10),26.5,13,38,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.PMP-PPP,threehop,q27,v2 threehop PMP-PPP (paper10),-8.2,-20,4,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.PPM-PPP,threehop,q27,v2 threehop PPM-PPP (paper10),8.2,-4,21,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.loss.PPM,threehop,q27,"v2 threehop points lost, PPM (paper10)",28.2,,,103,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.loss.MPM,threehop,q27,"v2 threehop points lost, MPM (paper10)",40.9,,,93,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.loss.PMM,threehop,q27,"v2 threehop points lost, PMM (paper10)",46.5,,,129,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.loss.PMP,threehop,q27,"v2 threehop points lost, PMP (paper10)",11.8,,,68,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.loss.MMP,threehop,q27,"v2 threehop points lost, MMP (paper10)",40.5,,,79,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.loss.PPP,threehop,q27,"v2 threehop points lost, PPP (paper10)",20.0,,,65,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.loss.MMM,threehop,q27,"v2 threehop points lost, MMM (paper10)",51.7,,,89,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10.loss.MPP,threehop,q27,"v2 threehop points lost, MPP (paper10)",25.6,,,78,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.MMM-PPP,threehop,q27,v2 threehop MMM-PPP (paper10_rot),-23.1,-34,-14,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.MMP-PPP,threehop,q27,v2 threehop MMP-PPP (paper10_rot),-1.6,-15,12,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.MPM-PPP,threehop,q27,v2 threehop MPM-PPP (paper10_rot),-8.0,-20,4,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.MPP-PPP,threehop,q27,v2 threehop MPP-PPP (paper10_rot),-5.1,-18,7,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.PMM-PPP,threehop,q27,v2 threehop PMM-PPP (paper10_rot),-21.5,-33,-12,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.PMP-PPP,threehop,q27,v2 threehop PMP-PPP (paper10_rot),-12.8,-26,-1,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.PPM-PPP,threehop,q27,v2 threehop PPM-PPP (paper10_rot),-17.3,-29,-7,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.loss.PPM,threehop,q27,"v2 threehop points lost, PPM (paper10_rot)",5.8,,,103,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.loss.MPM,threehop,q27,"v2 threehop points lost, MPM (paper10_rot)",15.1,,,93,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.loss.PMM,threehop,q27,"v2 threehop points lost, PMM (paper10_rot)",1.6,,,129,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.loss.PMP,threehop,q27,"v2 threehop points lost, PMP (paper10_rot)",10.3,,,68,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.loss.MMP,threehop,q27,"v2 threehop points lost, MMP (paper10_rot)",21.5,,,79,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.loss.PPP,threehop,q27,"v2 threehop points lost, PPP (paper10_rot)",23.1,,,65,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.loss.MMM,threehop,q27,"v2 threehop points lost, MMM (paper10_rot)",0.0,,,89,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.paper10_rot.loss.MPP,threehop,q27,"v2 threehop points lost, MPP (paper10_rot)",17.9,,,78,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.MMM-PPP,threehop,q27,v2 threehop MMM-PPP (unembed10),-15.4,-25,-7,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.MMP-PPP,threehop,q27,v2 threehop MMP-PPP (unembed10),-1.5,-14,10,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.MPM-PPP,threehop,q27,v2 threehop MPM-PPP (unembed10),-11.1,-21,-2,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.MPP-PPP,threehop,q27,v2 threehop MPP-PPP (unembed10),-7.7,-19,2,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.PMM-PPP,threehop,q27,v2 threehop PMM-PPP (unembed10),-15.4,-25,-7,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.PMP-PPP,threehop,q27,v2 threehop PMP-PPP (unembed10),-9.5,-21,1,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.PPM-PPP,threehop,q27,v2 threehop PPM-PPP (unembed10),-11.5,-22,-2,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.loss.PPM,threehop,q27,"v2 threehop points lost, PPM (unembed10)",3.9,,,103,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.loss.MPM,threehop,q27,"v2 threehop points lost, MPM (unembed10)",4.3,,,93,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.loss.PMM,threehop,q27,"v2 threehop points lost, PMM (unembed10)",0.0,,,129,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.loss.PMP,threehop,q27,"v2 threehop points lost, PMP (unembed10)",5.9,,,68,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.loss.MMP,threehop,q27,"v2 threehop points lost, MMP (unembed10)",13.9,,,79,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.loss.PPP,threehop,q27,"v2 threehop points lost, PPP (unembed10)",15.4,,,65,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.loss.MMM,threehop,q27,"v2 threehop points lost, MMM (unembed10)",0.0,,,89,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.threehop.unembed10.loss.MPP,threehop,q27,"v2 threehop points lost, MPP (unembed10)",7.7,,,78,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q27.numbers.paper10.PM-PL,numbers,q27,v2 numbers PM-PL (paper10),-9.9,-36,14,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.KM-KL,numbers,q27,v2 numbers KM-KL (paper10),-40.2,-69,-2,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.AM-AL,numbers,q27,v2 numbers AM-AL (paper10),-77.6,-100,-41,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.MM-ML,numbers,q27,v2 numbers MM-ML (paper10),4.2,-26,32,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.KR-PR,numbers,q27,v2 numbers KR-PR (paper10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.AR-PR,numbers,q27,v2 numbers AR-PR (paper10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.MR-PR,numbers,q27,v2 numbers MR-PR (paper10),13.3,6,23,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.PR,numbers,q27,"v2 numbers points lost, PR (paper10)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.KR,numbers,q27,"v2 numbers points lost, KR (paper10)",0.0,,,52,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.AR,numbers,q27,"v2 numbers points lost, AR (paper10)",0.0,,,58,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.MR,numbers,q27,"v2 numbers points lost, MR (paper10)",13.3,,,60,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.PL,numbers,q27,"v2 numbers points lost, PL (paper10)",44.8,,,29,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.PM,numbers,q27,"v2 numbers points lost, PM (paper10)",34.9,,,43,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.MM,numbers,q27,"v2 numbers points lost, MM (paper10)",50.0,,,24,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.ML,numbers,q27,"v2 numbers points lost, ML (paper10)",45.8,,,24,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.AM,numbers,q27,"v2 numbers points lost, AM (paper10)",5.7,,,35,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.KM,numbers,q27,"v2 numbers points lost, KM (paper10)",18.2,,,33,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.AL,numbers,q27,"v2 numbers points lost, AL (paper10)",83.3,,,6,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10.loss.KL,numbers,q27,"v2 numbers points lost, KL (paper10)",58.3,,,12,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.PM-PL,numbers,q27,v2 numbers PM-PL (paper10_rot),-2.1,-22,18,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.KM-KL,numbers,q27,v2 numbers KM-KL (paper10_rot),-3.8,-36,27,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.AM-AL,numbers,q27,v2 numbers AM-AL (paper10_rot),-44.3,-93,6,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.MM-ML,numbers,q27,v2 numbers MM-ML (paper10_rot),-4.2,-29,25,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.KR-PR,numbers,q27,v2 numbers KR-PR (paper10_rot),3.8,0,10,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.AR-PR,numbers,q27,v2 numbers AR-PR (paper10_rot),0.0,0,0,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.MR-PR,numbers,q27,v2 numbers MR-PR (paper10_rot),0.0,0,0,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.PR,numbers,q27,"v2 numbers points lost, PR (paper10_rot)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.KR,numbers,q27,"v2 numbers points lost, KR (paper10_rot)",3.8,,,52,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.AR,numbers,q27,"v2 numbers points lost, AR (paper10_rot)",0.0,,,58,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.MR,numbers,q27,"v2 numbers points lost, MR (paper10_rot)",0.0,,,60,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.PL,numbers,q27,"v2 numbers points lost, PL (paper10_rot)",20.7,,,29,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.PM,numbers,q27,"v2 numbers points lost, PM (paper10_rot)",18.6,,,43,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.MM,numbers,q27,"v2 numbers points lost, MM (paper10_rot)",20.8,,,24,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.ML,numbers,q27,"v2 numbers points lost, ML (paper10_rot)",25.0,,,24,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.AM,numbers,q27,"v2 numbers points lost, AM (paper10_rot)",5.7,,,35,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.KM,numbers,q27,"v2 numbers points lost, KM (paper10_rot)",21.2,,,33,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.AL,numbers,q27,"v2 numbers points lost, AL (paper10_rot)",50.0,,,6,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.paper10_rot.loss.KL,numbers,q27,"v2 numbers points lost, KL (paper10_rot)",25.0,,,12,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.PM-PL,numbers,q27,v2 numbers PM-PL (unembed10),-10.3,-23,0,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.KM-KL,numbers,q27,v2 numbers KM-KL (unembed10),-21.2,-53,9,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.AM-AL,numbers,q27,v2 numbers AM-AL (unembed10),-27.6,-69,9,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.MM-ML,numbers,q27,v2 numbers MM-ML (unembed10),-16.7,-40,7,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.KR-PR,numbers,q27,v2 numbers KR-PR (unembed10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.AR-PR,numbers,q27,v2 numbers AR-PR (unembed10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.MR-PR,numbers,q27,v2 numbers MR-PR (unembed10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.PR,numbers,q27,"v2 numbers points lost, PR (unembed10)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.KR,numbers,q27,"v2 numbers points lost, KR (unembed10)",0.0,,,52,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.AR,numbers,q27,"v2 numbers points lost, AR (unembed10)",0.0,,,58,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.MR,numbers,q27,"v2 numbers points lost, MR (unembed10)",0.0,,,60,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.PL,numbers,q27,"v2 numbers points lost, PL (unembed10)",10.3,,,29,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.PM,numbers,q27,"v2 numbers points lost, PM (unembed10)",0.0,,,43,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.MM,numbers,q27,"v2 numbers points lost, MM (unembed10)",8.3,,,24,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.ML,numbers,q27,"v2 numbers points lost, ML (unembed10)",25.0,,,24,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.AM,numbers,q27,"v2 numbers points lost, AM (unembed10)",5.7,,,35,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.KM,numbers,q27,"v2 numbers points lost, KM (unembed10)",12.1,,,33,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.AL,numbers,q27,"v2 numbers points lost, AL (unembed10)",33.3,,,6,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q27.numbers.unembed10.loss.KL,numbers,q27,"v2 numbers points lost, KL (unembed10)",33.3,,,12,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.threehop.paper10.MMM-PPP,threehop,q9,v2 threehop MMM-PPP (paper10),-8.6,-31,14,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.MMP-PPP,threehop,q9,v2 threehop MMP-PPP (paper10),-24.8,-48,-1,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.MPM-PPP,threehop,q9,v2 threehop MPM-PPP (paper10),20.8,-5,47,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.MPP-PPP,threehop,q9,v2 threehop MPP-PPP (paper10),-10.1,-33,16,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.PMM-PPP,threehop,q9,v2 threehop PMM-PPP (paper10),-5.2,-27,17,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.PMP-PPP,threehop,q9,v2 threehop PMP-PPP (paper10),-25.8,-49,-3,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.PPM-PPP,threehop,q9,v2 threehop PPM-PPP (paper10),5.0,-19,29,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.loss.PPP,threehop,q9,"v2 threehop points lost, PPP (paper10)",45.8,,,24,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.loss.MPM,threehop,q9,"v2 threehop points lost, MPM (paper10)",66.7,,,33,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.loss.PPM,threehop,q9,"v2 threehop points lost, PPM (paper10)",50.9,,,57,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.loss.PMM,threehop,q9,"v2 threehop points lost, PMM (paper10)",40.7,,,123,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.loss.MMM,threehop,q9,"v2 threehop points lost, MMM (paper10)",37.2,,,86,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.loss.PMP,threehop,q9,"v2 threehop points lost, PMP (paper10)",20.0,,,50,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.loss.MPP,threehop,q9,"v2 threehop points lost, MPP (paper10)",35.7,,,42,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10.loss.MMP,threehop,q9,"v2 threehop points lost, MMP (paper10)",21.1,,,38,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.MMM-PPP,threehop,q9,v2 threehop MMM-PPP (paper10_rot),-31.0,-51,-13,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.MMP-PPP,threehop,q9,v2 threehop MMP-PPP (paper10_rot),-7.0,-32,17,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.MPM-PPP,threehop,q9,v2 threehop MPM-PPP (paper10_rot),-12.1,-36,12,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.MPP-PPP,threehop,q9,v2 threehop MPP-PPP (paper10_rot),-21.4,-44,-1,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.PMM-PPP,threehop,q9,v2 threehop PMM-PPP (paper10_rot),-28.5,-49,-10,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.PMP-PPP,threehop,q9,v2 threehop PMP-PPP (paper10_rot),-15.3,-40,6,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.PPM-PPP,threehop,q9,v2 threehop PPM-PPP (paper10_rot),-5.3,-29,16,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.loss.PPP,threehop,q9,"v2 threehop points lost, PPP (paper10_rot)",33.3,,,24,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.loss.MPM,threehop,q9,"v2 threehop points lost, MPM (paper10_rot)",21.2,,,33,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.loss.PPM,threehop,q9,"v2 threehop points lost, PPM (paper10_rot)",28.1,,,57,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.loss.PMM,threehop,q9,"v2 threehop points lost, PMM (paper10_rot)",4.9,,,123,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.loss.MMM,threehop,q9,"v2 threehop points lost, MMM (paper10_rot)",2.3,,,86,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.loss.PMP,threehop,q9,"v2 threehop points lost, PMP (paper10_rot)",18.0,,,50,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.loss.MPP,threehop,q9,"v2 threehop points lost, MPP (paper10_rot)",11.9,,,42,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.paper10_rot.loss.MMP,threehop,q9,"v2 threehop points lost, MMP (paper10_rot)",26.3,,,38,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.MMM-PPP,threehop,q9,v2 threehop MMM-PPP (unembed10),-12.5,-27,0,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.MMP-PPP,threehop,q9,v2 threehop MMP-PPP (unembed10),-9.9,-24,3,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.MPM-PPP,threehop,q9,v2 threehop MPM-PPP (unembed10),-3.4,-20,13,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.MPP-PPP,threehop,q9,v2 threehop MPP-PPP (unembed10),8.9,-10,27,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.PMM-PPP,threehop,q9,v2 threehop PMM-PPP (unembed10),-10.9,-25,2,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.PMP-PPP,threehop,q9,v2 threehop PMP-PPP (unembed10),-2.5,-19,13,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.PPM-PPP,threehop,q9,v2 threehop PPM-PPP (unembed10),5.0,-12,20,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.loss.PPP,threehop,q9,"v2 threehop points lost, PPP (unembed10)",12.5,,,24,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.loss.MPM,threehop,q9,"v2 threehop points lost, MPM (unembed10)",9.1,,,33,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.loss.PPM,threehop,q9,"v2 threehop points lost, PPM (unembed10)",17.5,,,57,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.loss.PMM,threehop,q9,"v2 threehop points lost, PMM (unembed10)",1.6,,,123,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.loss.MMM,threehop,q9,"v2 threehop points lost, MMM (unembed10)",0.0,,,86,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.loss.PMP,threehop,q9,"v2 threehop points lost, PMP (unembed10)",10.0,,,50,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.loss.MPP,threehop,q9,"v2 threehop points lost, MPP (unembed10)",21.4,,,42,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.threehop.unembed10.loss.MMP,threehop,q9,"v2 threehop points lost, MMP (unembed10)",2.6,,,38,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.q9.numbers.paper10.PM-PL,numbers,q9,v2 numbers PM-PL (paper10),0.0,-37,33,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.KM-KL,numbers,q9,v2 numbers KM-KL (paper10),22.2,-25,67,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.AM-AL,numbers,q9,v2 numbers AM-AL (paper10),66.7,40,90,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.MM-ML,numbers,q9,v2 numbers MM-ML (paper10),18.5,-15,49,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.KR-PR,numbers,q9,v2 numbers KR-PR (paper10),3.9,0,10,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.AR-PR,numbers,q9,v2 numbers AR-PR (paper10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.MR-PR,numbers,q9,v2 numbers MR-PR (paper10),14.8,7,24,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.PR,numbers,q9,"v2 numbers points lost, PR (paper10)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.KR,numbers,q9,"v2 numbers points lost, KR (paper10)",3.9,,,51,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.AR,numbers,q9,"v2 numbers points lost, AR (paper10)",0.0,,,57,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.MR,numbers,q9,"v2 numbers points lost, MR (paper10)",14.8,,,61,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.PL,numbers,q9,"v2 numbers points lost, PL (paper10)",30.0,,,10,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.PM,numbers,q9,"v2 numbers points lost, PM (paper10)",30.0,,,40,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.MM,numbers,q9,"v2 numbers points lost, MM (paper10)",54.2,,,24,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.ML,numbers,q9,"v2 numbers points lost, ML (paper10)",35.7,,,14,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.KL,numbers,q9,"v2 numbers points lost, KL (paper10)",66.7,,,6,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.AM,numbers,q9,"v2 numbers points lost, AM (paper10)",66.7,,,12,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.AL,numbers,q9,"v2 numbers points lost, AL (paper10)",0.0,,,3,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10.loss.KM,numbers,q9,"v2 numbers points lost, KM (paper10)",88.9,,,9,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.PM-PL,numbers,q9,v2 numbers PM-PL (paper10_rot),-17.5,-48,5,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.KM-KL,numbers,q9,v2 numbers KM-KL (paper10_rot),0.0,-51,50,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.AM-AL,numbers,q9,v2 numbers AM-AL (paper10_rot),-25.0,-80,50,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.MM-ML,numbers,q9,v2 numbers MM-ML (paper10_rot),7.7,-23,36,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.KR-PR,numbers,q9,v2 numbers KR-PR (paper10_rot),3.9,0,10,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.AR-PR,numbers,q9,v2 numbers AR-PR (paper10_rot),0.0,0,0,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.MR-PR,numbers,q9,v2 numbers MR-PR (paper10_rot),0.0,0,0,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.PR,numbers,q9,"v2 numbers points lost, PR (paper10_rot)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.KR,numbers,q9,"v2 numbers points lost, KR (paper10_rot)",3.9,,,51,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.AR,numbers,q9,"v2 numbers points lost, AR (paper10_rot)",0.0,,,57,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.MR,numbers,q9,"v2 numbers points lost, MR (paper10_rot)",0.0,,,61,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.PL,numbers,q9,"v2 numbers points lost, PL (paper10_rot)",20.0,,,10,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.PM,numbers,q9,"v2 numbers points lost, PM (paper10_rot)",2.5,,,40,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.MM,numbers,q9,"v2 numbers points lost, MM (paper10_rot)",29.2,,,24,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.ML,numbers,q9,"v2 numbers points lost, ML (paper10_rot)",21.4,,,14,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.KL,numbers,q9,"v2 numbers points lost, KL (paper10_rot)",33.3,,,6,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.AM,numbers,q9,"v2 numbers points lost, AM (paper10_rot)",41.7,,,12,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.AL,numbers,q9,"v2 numbers points lost, AL (paper10_rot)",66.7,,,3,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.paper10_rot.loss.KM,numbers,q9,"v2 numbers points lost, KM (paper10_rot)",33.3,,,9,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.PM-PL,numbers,q9,v2 numbers PM-PL (unembed10),-7.5,-32,7,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.KM-KL,numbers,q9,v2 numbers KM-KL (unembed10),0.0,-55,58,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.AM-AL,numbers,q9,v2 numbers AM-AL (unembed10),-41.7,-93,30,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.MM-ML,numbers,q9,v2 numbers MM-ML (unembed10),5.4,-15,25,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.KR-PR,numbers,q9,v2 numbers KR-PR (unembed10),2.0,0,6,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.AR-PR,numbers,q9,v2 numbers AR-PR (unembed10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.MR-PR,numbers,q9,v2 numbers MR-PR (unembed10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.PR,numbers,q9,"v2 numbers points lost, PR (unembed10)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.KR,numbers,q9,"v2 numbers points lost, KR (unembed10)",2.0,,,51,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.AR,numbers,q9,"v2 numbers points lost, AR (unembed10)",0.0,,,57,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.MR,numbers,q9,"v2 numbers points lost, MR (unembed10)",0.0,,,61,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.PL,numbers,q9,"v2 numbers points lost, PL (unembed10)",10.0,,,10,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.PM,numbers,q9,"v2 numbers points lost, PM (unembed10)",2.5,,,40,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.MM,numbers,q9,"v2 numbers points lost, MM (unembed10)",12.5,,,24,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.ML,numbers,q9,"v2 numbers points lost, ML (unembed10)",7.1,,,14,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.KL,numbers,q9,"v2 numbers points lost, KL (unembed10)",33.3,,,6,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.AM,numbers,q9,"v2 numbers points lost, AM (unembed10)",25.0,,,12,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.AL,numbers,q9,"v2 numbers points lost, AL (unembed10)",66.7,,,3,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.q9.numbers.unembed10.loss.KM,numbers,q9,"v2 numbers points lost, KM (unembed10)",33.3,,,9,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.threehop.paper10.MMM-PPP,threehop,nl,v2 threehop MMM-PPP (paper10),48.6,34,62,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.MMP-PPP,threehop,nl,v2 threehop MMP-PPP (paper10),-1.9,-16,11,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.MPM-PPP,threehop,nl,v2 threehop MPM-PPP (paper10),54.8,31,76,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.MPP-PPP,threehop,nl,v2 threehop MPP-PPP (paper10),-2.7,-15,8,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.PMM-PPP,threehop,nl,v2 threehop PMM-PPP (paper10),35.8,21,49,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.PMP-PPP,threehop,nl,v2 threehop PMP-PPP (paper10),1.8,-12,15,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.PPM-PPP,threehop,nl,v2 threehop PPM-PPP (paper10),59.9,45,74,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.loss.PPM,threehop,nl,"v2 threehop points lost, PPM (paper10)",68.8,,,64,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.loss.PMM,threehop,nl,"v2 threehop points lost, PMM (paper10)",44.6,,,112,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.loss.PMP,threehop,nl,"v2 threehop points lost, PMP (paper10)",10.6,,,47,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.loss.MMP,threehop,nl,"v2 threehop points lost, MMP (paper10)",6.9,,,29,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.loss.MMM,threehop,nl,"v2 threehop points lost, MMM (paper10)",57.4,,,94,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.loss.PPP,threehop,nl,"v2 threehop points lost, PPP (paper10)",8.8,,,34,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.loss.MPP,threehop,nl,"v2 threehop points lost, MPP (paper10)",6.1,,,49,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10.loss.MPM,threehop,nl,"v2 threehop points lost, MPM (paper10)",63.6,,,22,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.MMM-PPP,threehop,nl,v2 threehop MMM-PPP (paper10_rot),-1.9,-9,3,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.MMP-PPP,threehop,nl,v2 threehop MMP-PPP (paper10_rot),14.3,0,30,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.MPM-PPP,threehop,nl,v2 threehop MPM-PPP (paper10_rot),28.9,9,50,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.MPP-PPP,threehop,nl,v2 threehop MPP-PPP (paper10_rot),5.2,-4,16,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.PMM-PPP,threehop,nl,v2 threehop PMM-PPP (paper10_rot),3.3,-5,9,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.PMP-PPP,threehop,nl,v2 threehop PMP-PPP (paper10_rot),16.2,4,30,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.PPM-PPP,threehop,nl,v2 threehop PPM-PPP (paper10_rot),12.7,2,23,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.loss.PPM,threehop,nl,"v2 threehop points lost, PPM (paper10_rot)",15.6,,,64,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.loss.PMM,threehop,nl,"v2 threehop points lost, PMM (paper10_rot)",6.2,,,112,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.loss.PMP,threehop,nl,"v2 threehop points lost, PMP (paper10_rot)",19.1,,,47,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.loss.MMP,threehop,nl,"v2 threehop points lost, MMP (paper10_rot)",17.2,,,29,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.loss.MMM,threehop,nl,"v2 threehop points lost, MMM (paper10_rot)",1.1,,,94,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.loss.PPP,threehop,nl,"v2 threehop points lost, PPP (paper10_rot)",2.9,,,34,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.loss.MPP,threehop,nl,"v2 threehop points lost, MPP (paper10_rot)",8.2,,,49,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.paper10_rot.loss.MPM,threehop,nl,"v2 threehop points lost, MPM (paper10_rot)",31.8,,,22,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.MMM-PPP,threehop,nl,v2 threehop MMM-PPP (unembed10),-9.1,-24,5,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.MMP-PPP,threehop,nl,v2 threehop MMP-PPP (unembed10),-10.8,-26,6,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.MPM-PPP,threehop,nl,v2 threehop MPM-PPP (unembed10),27.8,4,51,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.MPP-PPP,threehop,nl,v2 threehop MPP-PPP (unembed10),-13.6,-26,-1,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.PMM-PPP,threehop,nl,v2 threehop PMM-PPP (unembed10),-0.7,-17,14,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.PMP-PPP,threehop,nl,v2 threehop PMP-PPP (unembed10),-7.0,-23,9,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.PPM-PPP,threehop,nl,v2 threehop PPM-PPP (unembed10),16.7,-1,33,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.loss.PPM,threehop,nl,"v2 threehop points lost, PPM (unembed10)",34.4,,,64,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.loss.PMM,threehop,nl,"v2 threehop points lost, PMM (unembed10)",17.0,,,112,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.loss.PMP,threehop,nl,"v2 threehop points lost, PMP (unembed10)",10.6,,,47,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.loss.MMP,threehop,nl,"v2 threehop points lost, MMP (unembed10)",6.9,,,29,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.loss.MMM,threehop,nl,"v2 threehop points lost, MMM (unembed10)",8.5,,,94,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.loss.PPP,threehop,nl,"v2 threehop points lost, PPP (unembed10)",17.6,,,34,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.loss.MPP,threehop,nl,"v2 threehop points lost, MPP (unembed10)",4.1,,,49,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.threehop.unembed10.loss.MPM,threehop,nl,"v2 threehop points lost, MPM (unembed10)",45.5,,,22,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1.json
+mod.nl.numbers.paper10.PM-PL,numbers,nl,v2 numbers PM-PL (paper10),8.0,-12,28,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.KM-KL,numbers,nl,v2 numbers KM-KL (paper10),27.4,-13,62,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.AM-AL,numbers,nl,v2 numbers AM-AL (paper10),7.1,-56,70,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.MM-ML,numbers,nl,v2 numbers MM-ML (paper10),47.1,23,72,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.KR-PR,numbers,nl,v2 numbers KR-PR (paper10),11.9,3,22,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.AR-PR,numbers,nl,v2 numbers AR-PR (paper10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.MR-PR,numbers,nl,v2 numbers MR-PR (paper10),4.8,0,11,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.PR,numbers,nl,"v2 numbers points lost, PR (paper10)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.MR,numbers,nl,"v2 numbers points lost, MR (paper10)",4.8,,,62,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.PM,numbers,nl,"v2 numbers points lost, PM (paper10)",27.0,,,37,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.MM,numbers,nl,"v2 numbers points lost, MM (paper10)",47.1,,,17,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.PL,numbers,nl,"v2 numbers points lost, PL (paper10)",19.0,,,21,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.KM,numbers,nl,"v2 numbers points lost, KM (paper10)",38.5,,,13,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.AL,numbers,nl,"v2 numbers points lost, AL (paper10)",50.0,,,4,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.ML,numbers,nl,"v2 numbers points lost, ML (paper10)",0.0,,,13,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.KR,numbers,nl,"v2 numbers points lost, KR (paper10)",11.9,,,42,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.AR,numbers,nl,"v2 numbers points lost, AR (paper10)",0.0,,,58,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.KL,numbers,nl,"v2 numbers points lost, KL (paper10)",11.1,,,9,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10.loss.AM,numbers,nl,"v2 numbers points lost, AM (paper10)",57.1,,,7,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.PM-PL,numbers,nl,v2 numbers PM-PL (paper10_rot),-44.3,-67,-20,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.KM-KL,numbers,nl,v2 numbers KM-KL (paper10_rot),-21.4,-71,20,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.AM-AL,numbers,nl,v2 numbers AM-AL (paper10_rot),17.9,-50,75,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.MM-ML,numbers,nl,v2 numbers MM-ML (paper10_rot),-17.2,-46,9,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.KR-PR,numbers,nl,v2 numbers KR-PR (paper10_rot),4.8,0,13,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.AR-PR,numbers,nl,v2 numbers AR-PR (paper10_rot),1.7,0,6,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.MR-PR,numbers,nl,v2 numbers MR-PR (paper10_rot),0.0,0,0,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.PR,numbers,nl,"v2 numbers points lost, PR (paper10_rot)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.MR,numbers,nl,"v2 numbers points lost, MR (paper10_rot)",0.0,,,62,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.PM,numbers,nl,"v2 numbers points lost, PM (paper10_rot)",8.1,,,37,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.MM,numbers,nl,"v2 numbers points lost, MM (paper10_rot)",5.9,,,17,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.PL,numbers,nl,"v2 numbers points lost, PL (paper10_rot)",52.4,,,21,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.KM,numbers,nl,"v2 numbers points lost, KM (paper10_rot)",23.1,,,13,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.AL,numbers,nl,"v2 numbers points lost, AL (paper10_rot)",25.0,,,4,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.ML,numbers,nl,"v2 numbers points lost, ML (paper10_rot)",23.1,,,13,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.KR,numbers,nl,"v2 numbers points lost, KR (paper10_rot)",4.8,,,42,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.AR,numbers,nl,"v2 numbers points lost, AR (paper10_rot)",1.7,,,58,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.KL,numbers,nl,"v2 numbers points lost, KL (paper10_rot)",44.4,,,9,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.paper10_rot.loss.AM,numbers,nl,"v2 numbers points lost, AM (paper10_rot)",42.9,,,7,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.PM-PL,numbers,nl,v2 numbers PM-PL (unembed10),-23.8,-44,-6,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.KM-KL,numbers,nl,v2 numbers KM-KL (unembed10),-2.6,-45,40,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.AM-AL,numbers,nl,v2 numbers AM-AL (unembed10),17.9,-50,75,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.MM-ML,numbers,nl,v2 numbers MM-ML (unembed10),-11.3,-41,16,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.KR-PR,numbers,nl,v2 numbers KR-PR (unembed10),4.8,0,12,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.AR-PR,numbers,nl,v2 numbers AR-PR (unembed10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.MR-PR,numbers,nl,v2 numbers MR-PR (unembed10),0.0,0,0,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.PR,numbers,nl,"v2 numbers points lost, PR (unembed10)",0.0,,,53,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.MR,numbers,nl,"v2 numbers points lost, MR (unembed10)",0.0,,,62,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.PM,numbers,nl,"v2 numbers points lost, PM (unembed10)",0.0,,,37,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.MM,numbers,nl,"v2 numbers points lost, MM (unembed10)",11.8,,,17,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.PL,numbers,nl,"v2 numbers points lost, PL (unembed10)",23.8,,,21,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.KM,numbers,nl,"v2 numbers points lost, KM (unembed10)",30.8,,,13,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.AL,numbers,nl,"v2 numbers points lost, AL (unembed10)",25.0,,,4,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.ML,numbers,nl,"v2 numbers points lost, ML (unembed10)",23.1,,,13,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.KR,numbers,nl,"v2 numbers points lost, KR (unembed10)",4.8,,,42,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.AR,numbers,nl,"v2 numbers points lost, AR (unembed10)",0.0,,,58,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.KL,numbers,nl,"v2 numbers points lost, KL (unembed10)",33.3,,,9,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+mod.nl.numbers.unembed10.loss.AM,numbers,nl,"v2 numbers points lost, AM (unembed10)",42.9,,,7,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_numbers_ko_cand2_dd_v1.json
+ko.q9oj.mk,lens kind,q9,"M - K, 9B with our own J++ fit",44.8,40,50,563,points,results/ablate_v2/jsuite2_score/qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1.json
+det.nl.rows,reruns,nl,determinism check: rows compared with the clean rerun,14275.0,,,,count,results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_detcheck_v1
+det.nl.same,reruns,nl,determinism check: rows with identical log-probability,14275.0,,,,count,results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_detcheck_v1

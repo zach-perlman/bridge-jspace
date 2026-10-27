@@ -300,7 +300,7 @@ def collect() -> None:
             for k in ("KR-PR", "AR-PR", "MR-PR"):
                 v = s["cells"]["paper10"]["contrasts"][k]
                 add(f"num.{m}.{k}", "numbers", m, f"numbers {k}", v["diff"], *v["ci"], source=f"results/ablate_v2/ctxcomp_score/{run}.json")
-    for m, run in (("q27", "natplus_v1_chat_genspot_cand2_v1"), ("q9", "qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1"), ("mu", "muse30_natplus_v1_chat_genspot_cand2_v1")):
+    for m, run in (("q27", "natplus_v1_chat_genspot_cand2_v1"), ("q9", "qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1"), ("nl", "nem35l_natplus_v1_chat_genspot_cand2_v1"), ("mu", "muse30_natplus_v1_chat_genspot_cand2_v1")):
         s = jl(RES / "gen_spot" / run / "summary.json")
         if s:
             for w in ("PM", "MM"):
@@ -308,6 +308,43 @@ def collect() -> None:
                 n = sum(cl.values())
                 add(f"gen.{m}.{w}.bridge", "spot-check", m, f"{w}: replies naming the bridge", 100 * cl.get("bridge", 0) / n, n=n, unit="pct", source=f"results/gen_spot/{run}/summary.json")
                 add(f"gen.{m}.{w}.right", "spot-check", m, f"{w}: replies still right", 100 * cl.get("answer", 0) / n, n=n, unit="pct", source=f"results/gen_spot/{run}/summary.json")
+
+
+def collect_night() -> None:
+    """2026-10-27 night (amendments 55-56): Lightning on the natural sets, the v2 modules, determinism, lens kind."""
+    npr = "nem35l_natplus_v1_chat_ko_cand2_v1"
+    for key, cond, grp in (("", "paper10", "all/all"), (".u", "unembed10", "all/all"), (".rot", "paper10_rot", "all/all"),
+                           (".pop", "paper10", "popularity/popular"), (".rare", "paper10", "popularity/rare")):  # fmt: skip
+        x = F.natplus(npr, cond, grp)
+        if x:
+            add(f"natplus.nl{key}", "datasets", "nl", f"natplus {grp} {cond}", x[0], *(x[1] or (None, None)), source=f"results/ablate_v2/natplus_split/{npr}.json")
+    c = jl(A2 / "nat3_score" / "nem35l_nat3_v1_chat_ko_cand2_v1_drop.json")
+    if c:
+        for cond in ("paper10", "paper10_rot", "unembed10"):
+            for w, v in c["cells"][f"all/{cond}"].items():
+                add(f"nat3.nl.{cond}.{w}", "three hops", "nl", f"natural three-hop excess over PPP, {w}, {cond}", v["excess_over_PPP"], *v["ci"], v["n"], source="results/ablate_v2/nat3_score/nem35l_nat3_v1_chat_ko_cand2_v1_drop.json")
+    for m, pre in (("q27", ""), ("q9", "qwen35_9b_"), ("nl", "nem35l_")):
+        for mod, run in (("threehop", f"{pre}{SET}_threehop_ko_cand2_v1"), ("numbers", f"{pre}{SET}_numbers_ko_cand2_dd_v1")):
+            s = jl(A2 / "jsuite2_score" / f"{run}.json")
+            if not s:
+                continue
+            for cond in ("paper10", "paper10_rot", "unembed10"):
+                cell = s[mod].get(cond, {})
+                for con, v in cell.get("contrasts", {}).items():
+                    add(f"mod.{m}.{mod}.{cond}.{con}", mod, m, f"v2 {mod} {con} ({cond})", v["diff"], *v["ci"], source=f"results/ablate_v2/jsuite2_score/{run}.json")
+                for w, lo in cell.get("loss", {}).items():
+                    add(f"mod.{m}.{mod}.{cond}.loss.{w}", mod, m, f"v2 {mod} points lost, {w} ({cond})", lo, n=cell["n"].get(w), unit="abs", source=f"results/ablate_v2/jsuite2_score/{run}.json")
+    x = D.mk("qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1")
+    if x:
+        add("ko.q9oj.mk", "lens kind", "q9", "M - K, 9B with our own J++ fit", x["d"], *x["ci"], x["n"], source="results/ablate_v2/jsuite2_score/qwen35_9boj_jsuite_v2_test_chat_ko_cand2_v1.json")
+    a, b = A2 / "nem35l_jsuite_v2_test_chat_ko_cand2_detcheck_v1" / "rows.jsonl", CLEAN / "ablate_v2" / "nem35l_clean_jsuite_v2_test_chat_ko_cand2_v1" / "rows.jsonl"
+    if a.exists() and b.exists():
+        k = lambda x: (x["family"], x["id"], x["kind"], x["band"], x["condition"])  # noqa: E731
+        ra = {k(x): x for x in map(json.loads, a.read_text().splitlines())}
+        rb = {k(x): x for x in map(json.loads, b.read_text().splitlines())}
+        sh = set(ra) & set(rb)
+        add("det.nl.rows", "reruns", "nl", "determinism check: rows compared with the clean rerun", len(sh), unit="count", source="results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_detcheck_v1")
+        add("det.nl.same", "reruns", "nl", "determinism check: rows with identical log-probability", sum(ra[x]["logp"] == rb[x]["logp"] for x in sh), unit="count", source="results/ablate_v2/nem35l_jsuite_v2_test_chat_ko_cand2_detcheck_v1")
 
 
 # ---- rendering
@@ -399,6 +436,7 @@ if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     copy_figures()
     collect()
+    collect_night()
     with (OUT / "data.csv").open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=["key", "figure", "model", "quantity", "value", "lo", "hi", "n", "unit", "source"])
         w.writeheader()
