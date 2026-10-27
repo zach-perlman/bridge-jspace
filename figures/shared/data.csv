@@ -1,34 +1,34 @@
 figure,model,quantity,value,lo,hi,n,source
 j0,,Zach's example (lookup / recalled items),Austrian,,,,"data/tasks_v2/jsuite_v2_test_chat/items.jsonl | j2:chat:facts:MK-L0-00635, j2:chat:facts:MM-L0-00635"
 j0,,Dan's example,5 / 4,,,,scripts/readme_story_figures.py | f00_setup
-j1,Qwen 9B,remove everywhere: recalled answers lost (pp),47.6,,,,docs/breadth/data.csv | ko.q9.lostM
-j1,Qwen 9B,remove everywhere: lookup answers lost (pp),5.0,,,,docs/breadth/data.csv | ko.q9.lostK
-j1,Qwen 9B,"remove everywhere, largest control (rotated): recalled answers lost (pp)",2.7,,,,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json | facts paper10_rot/start=all loss M
-j1,Qwen 27B,remove everywhere: recalled answers lost (pp),53.5,,,,docs/breadth/data.csv | ko.q27.lostM
-j1,Qwen 27B,remove everywhere: lookup answers lost (pp),2.6,,,,docs/breadth/data.csv | ko.q27.lostK
-j1,Qwen 27B,"remove everywhere, largest control (rotated): recalled answers lost (pp)",2.9,,,,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json | facts paper10_rot/start=all loss M
-j1,Nemotron Lightning,remove everywhere: recalled answers lost (pp),56.8,,,,docs/breadth/data.csv | ko.nl.lostM
-j1,Nemotron Lightning,remove everywhere: lookup answers lost (pp),3.7,,,,docs/breadth/data.csv | ko.nl.lostK
-j1,Nemotron Lightning,"remove everywhere, largest control (logit lens): recalled answers lost (pp)",9.1,,,,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
-j1,Muse 30B,remove everywhere: recalled answers lost (pp),61.7,,,,docs/breadth/data.csv | ko.mu.lostM
-j1,Muse 30B,remove everywhere: lookup answers lost (pp),1.8,,,,docs/breadth/data.csv | ko.mu.lostK
-j1,Muse 30B,"remove everywhere, largest control (logit lens): recalled answers lost (pp)",35.5,,,,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
-j1,Qwen 122B,remove everywhere: recalled answers lost (pp),49.2,,,,docs/breadth/data.csv | ko.q122.lostM
-j1,Qwen 122B,remove everywhere: lookup answers lost (pp),0.8,,,,docs/breadth/data.csv | ko.q122.lostK
-j1,Qwen 122B,"remove everywhere, largest control (logit lens): recalled answers lost (pp)",12.0,,,,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
-j1,Qwen 9B,remove from the patch: recalled answers' extra loss (pp),50.0,41.0,57.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
-j1,Qwen 9B,remove from the patch: lookup answers' extra loss (pp),-3.0,-8.0,3.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
-j1,Qwen 9B,"remove from the patch, control (a random part): recalled switches lost (%)",3.5,,,,figures/story/data.csv | numbers | rc_droprand_9b
-j1,Qwen 27B,remove from the patch: recalled answers' extra loss (pp),74.0,66.0,80.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
-j1,Qwen 27B,remove from the patch: lookup answers' extra loss (pp),14.0,8.0,20.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
-j1,Qwen 27B,"remove from the patch, control (a random part): recalled switches lost (%)",2.0,,,,figures/story/data.csv | numbers | rc_droprand_27b
+j1,Qwen 9B,remove everywhere: recalled answers that turn wrong (pp),47.6,,,,docs/breadth/data.csv | ko.q9.lostM
+j1,Qwen 9B,remove everywhere: lookup answers that turn wrong (pp),5.0,,,,docs/breadth/data.csv | ko.q9.lostK
+j1,Qwen 9B,"remove everywhere, largest control (rotated): recalled answers that turn wrong (pp)",2.7,,,,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json | facts paper10_rot/start=all loss M
+j1,Qwen 27B,remove everywhere: recalled answers that turn wrong (pp),53.5,,,,docs/breadth/data.csv | ko.q27.lostM
+j1,Qwen 27B,remove everywhere: lookup answers that turn wrong (pp),2.6,,,,docs/breadth/data.csv | ko.q27.lostK
+j1,Qwen 27B,"remove everywhere, largest control (rotated): recalled answers that turn wrong (pp)",2.9,,,,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json | facts paper10_rot/start=all loss M
+j1,Nemotron Lightning,remove everywhere: recalled answers that turn wrong (pp),56.8,,,,docs/breadth/data.csv | ko.nl.lostM
+j1,Nemotron Lightning,remove everywhere: lookup answers that turn wrong (pp),3.7,,,,docs/breadth/data.csv | ko.nl.lostK
+j1,Nemotron Lightning,"remove everywhere, largest control (logit lens): recalled answers that turn wrong (pp)",9.1,,,,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
+j1,Muse 30B,remove everywhere: recalled answers that turn wrong (pp),61.7,,,,docs/breadth/data.csv | ko.mu.lostM
+j1,Muse 30B,remove everywhere: lookup answers that turn wrong (pp),1.8,,,,docs/breadth/data.csv | ko.mu.lostK
+j1,Muse 30B,"remove everywhere, largest control (logit lens): recalled answers that turn wrong (pp)",35.5,,,,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
+j1,Qwen 122B,remove everywhere: recalled answers that turn wrong (pp),49.2,,,,docs/breadth/data.csv | ko.q122.lostM
+j1,Qwen 122B,remove everywhere: lookup answers that turn wrong (pp),0.8,,,,docs/breadth/data.csv | ko.q122.lostK
+j1,Qwen 122B,"remove everywhere, largest control (logit lens): recalled answers that turn wrong (pp)",12.0,,,,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
+j1,Qwen 9B,remove from the patch: share of the recalled answers' switches lost beyond a random part (%),50.0,41.0,57.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j1,Qwen 9B,remove from the patch: share of the lookup answers' switches lost beyond a random part (%),-3.0,-8.0,3.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j1,Qwen 9B,"remove from the patch, control (a random part): share of the recalled answers' switches lost (%)",3.5,,,,figures/story/data.csv | numbers | rc_droprand_9b
+j1,Qwen 27B,remove from the patch: share of the recalled answers' switches lost beyond a random part (%),74.0,66.0,80.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j1,Qwen 27B,remove from the patch: share of the lookup answers' switches lost beyond a random part (%),14.0,8.0,20.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j1,Qwen 27B,"remove from the patch, control (a random part): share of the recalled answers' switches lost (%)",2.0,,,,figures/story/data.csv | numbers | rc_droprand_27b
 j1,Nemotron Lightning,remove from the patch,not run,,,,docs/shared/grid.csv | depth column '-'
-j1,Muse 30B,remove from the patch: recalled answers' extra loss (pp),75.0,61.0,87.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
-j1,Muse 30B,remove from the patch: lookup answers' extra loss (pp),-10.0,-15.0,-4.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
-j1,Muse 30B,"remove from the patch, control (a random part): recalled switches lost (%)",-2.0,,,,figures/story/data.csv | numbers | rc_droprand_muse
-j1,Qwen 122B,remove from the patch: recalled answers' extra loss (pp),32.0,22.0,41.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
-j1,Qwen 122B,remove from the patch: lookup answers' extra loss (pp),0.0,-6.0,6.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
-j1,Qwen 122B,"remove from the patch, control (a random part): recalled switches lost (%)",7.5,,,,figures/story/data.csv | numbers | rc_droprand_122b
+j1,Muse 30B,remove from the patch: share of the recalled answers' switches lost beyond a random part (%),75.0,61.0,87.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j1,Muse 30B,remove from the patch: share of the lookup answers' switches lost beyond a random part (%),-10.0,-15.0,-4.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j1,Muse 30B,"remove from the patch, control (a random part): share of the recalled answers' switches lost (%)",-2.0,,,,figures/story/data.csv | numbers | rc_droprand_muse
+j1,Qwen 122B,remove from the patch: share of the recalled answers' switches lost beyond a random part (%),32.0,22.0,41.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j1,Qwen 122B,remove from the patch: share of the lookup answers' switches lost beyond a random part (%),0.0,-6.0,6.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j1,Qwen 122B,"remove from the patch, control (a random part): share of the recalled answers' switches lost (%)",7.5,,,,figures/story/data.csv | numbers | rc_droprand_122b
 j2,Qwen 9B,swap the lens part: recalled answer moves (pp),63.9,58.2,69.3,950,docs/breadth/data.csv | swap.q9.swap
 j2,Qwen 9B,swap everything else: recalled answer moves (pp),14.0,10.3,17.8,950,"results/jswap/qwen35_9b_jswap_v2_v1/rows.jsonl | memory finals pooled (results_digest.pooled), swap_comp"
 j2,Qwen 9B,swap the lens part: lookup answer moves (pp),4.4,2.0,6.8,259,results/jswap/qwen35_9b_jswap_v2_v1/summary.json | PK/swap
@@ -77,20 +77,12 @@ grid_front,Qwen 122B,finding 2 (breadth),-,,,,docs/shared/grid.csv | another ent
 grid_front,Qwen 122B,finding 3 (depth),ok a,,,,docs/shared/grid.csv | the lookup needs it
 grid_front,Qwen 122B,finding 4 (both),x a,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
 j5,Muse 30B,"remove everywhere: items per answer kind (recalled, lookup)",541,,,541,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L23-29_x45r_v1.json | facts paper10/start=all n
-j5,Muse 30B,"remove everywhere, layers 23-29, the lens part: recalled minus lookup answers lost (pp)",6.7,5,9,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10.mk
+j5,Muse 30B,"remove everywhere, layers 23-29, lens part: recalled minus lookup answers lost (pp)",6.7,5,9,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10.mk
 j5,Muse 30B,"remove everywhere, layers 23-29, logit lens: recalled minus lookup answers lost (pp)",-0.2,-1,1,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.unembed10.mk
-j5,Muse 30B,"remove everywhere, layers 23-29, rotated: recalled minus lookup answers lost (pp)",1.1,0,2,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10_rot.mk
-j5,Muse 30B,"remove everywhere, layers 23-29, size-matched: recalled minus lookup answers lost (pp)",3.5,1,6,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10_pcasize.mk
-j5,Muse 30B,"remove everywhere, layer 26, the lens part: recalled minus lookup answers lost (pp)",4.4,3,6,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.paper10.mk
+j5,Muse 30B,"remove everywhere, layer 26, lens part: recalled minus lookup answers lost (pp)",4.4,3,6,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.paper10.mk
 j5,Muse 30B,"remove everywhere, layer 26, logit lens: recalled minus lookup answers lost (pp)",0.7,0,1,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.unembed10.mk
-j5,Muse 30B,"remove everywhere, layer 26, rotated: recalled minus lookup answers lost (pp)",0.4,0,1,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.paper10_rot.mk
-j5,Muse 30B,"remove everywhere, layer 26, size-matched: recalled minus lookup answers lost (pp)",0.4,0,1,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.paper10_pcasize.mk
-j5,Muse 30B,"remove everywhere, layers 36-42, the lens part: recalled minus lookup answers lost (pp)",59.9,55,65,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_record.paper10.mk
+j5,Muse 30B,"remove everywhere, layers 36-42, lens part: recalled minus lookup answers lost (pp)",59.9,55,65,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_record.paper10.mk
 j5,Muse 30B,"remove everywhere, layers 36-42, logit lens: recalled minus lookup answers lost (pp)",34.6,29,40,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_record.unembed10.mk
-j5,Muse 30B,"remove everywhere, layers 36-42, rotated: recalled minus lookup answers lost (pp)",2.6,1,4,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_record.paper10_rot.mk
-j5,Muse 30B,"remove everywhere, layers 36-42, size-matched: recalled minus lookup answers lost (pp)",4.6,3,6,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_size_matched.paper10_pcasize.mk
+j5,Muse 30B,"remove everywhere: rotated and size-matched controls, the largest (pp)",4.6,,,,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_size_matched.paper10_pcasize.mk
 j5,Muse 30B,remove everywhere: the 'needed' bar (pp),15.0,,,,"scripts/x45r_score.py | NOT_NEEDED_MK, NOT_NEEDED_EXCESS, CARRIED = 15.0"
-j5,Muse 30B,"remove from the patch, layer 26: recalled answers' extra loss (pp)",75.0,61.0,87.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
-j5,Muse 30B,"remove from the patch, layer 26: lookup answers' extra loss (pp)",-10.0,-15.0,-4.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
-j5,Muse 30B,"remove from the patch, control (a random part): recalled switches lost (%)",-2.0,,,,figures/story/data.csv | numbers | rc_droprand_muse
-j5,Muse 30B,"remove from the patch, layer 26: gap (recalled minus lookup extra loss)",0.85,0.68,0.98,,results/x45r/score-20261027T165540Z/x45r.json | our_gap_L26
+j5,Muse 30B,"remove from the patch, layer 26: gap (share of the patch's switches, %)",85,68,98,,figures/story/data.csv | numbers | contrast_muse

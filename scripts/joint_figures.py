@@ -251,11 +251,11 @@ def j1_recall_needs_lens(plt):
     """Per model, recalled vs lookup answers lost under each tool; the larger control as a grey tick on recalled answers;
     hollow = after the data; 'not run' where a tool was not run."""
     zb, dp = breadth(), depth()
-    fig = plt.figure(figsize=(S.WIDTH, 5.0))
-    axes = (fig.add_axes((0.215, 0.27, 0.35, 0.50)), fig.add_axes((0.625, 0.27, 0.35, 0.50)))
+    fig = plt.figure(figsize=(S.WIDTH, 5.4))
+    axes = (fig.add_axes((0.215, 0.31, 0.35, 0.50)), fig.add_axes((0.625, 0.31, 0.35, 0.50)))
     S.title(fig, "Recalled answers need the lens part; lookup answers do not",
-            "The two tools count losses differently: left, answers lost; right, switches lost beyond\n"
-            "a random part. Grey tick: the largest control, on recalled answers.")  # fmt: skip
+            "Left: answers that turn wrong; right: patch switches no longer going through. "
+            "Compare patterns, not numbers.")  # fmt: skip
     ys = {name: -i for i, (name, *_) in enumerate(MODELS)}
     for ax, panel in zip(axes, ("everywhere", "change"), strict=True):
         for name, zm, target, m in MODELS:
@@ -265,10 +265,11 @@ def j1_recall_needs_lens(plt):
                 kind = "after" if zm in G.AFTER_V2_KNOCKOUT else "fixed"
                 cname, cv, cpath = ko_control(rc)
                 pts = (num(rc["value"]), num(st["value"]))
+                cis: tuple = (None, None)  # Zach's per-answer-kind losses carry no interval in data.csv
                 src = (f"docs/breadth/data.csv | ko.{zm}.lostM", f"docs/breadth/data.csv | ko.{zm}.lostK")
-                record("j1", name, "remove everywhere: recalled answers lost (pp)", pts[0], source=src[0])
-                record("j1", name, "remove everywhere: lookup answers lost (pp)", pts[1], source=src[1])
-                record("j1", name, f"remove everywhere, largest control ({cname}): recalled answers lost (pp)", cv,
+                record("j1", name, "remove everywhere: recalled answers that turn wrong (pp)", pts[0], source=src[0])
+                record("j1", name, "remove everywhere: lookup answers that turn wrong (pp)", pts[1], source=src[1])
+                record("j1", name, f"remove everywhere, largest control ({cname}): recalled answers that turn wrong (pp)", cv,
                        source=f"{cpath} | facts {'paper10_rot' if cname == 'rotated' else 'unembed10'}/start=all loss M")  # fmt: skip
             else:
                 if target is None:
@@ -286,16 +287,19 @@ def j1_recall_needs_lens(plt):
                 kind = "fixed"  # our main test, fixed in advance on all four (figures/story/scorecard.csv 'main test')
                 cv = num(dp[("numbers", "", f"rc_droprand_{m}")]["value"])
                 pts = (100 * num(rc["value"]), 100 * num(st["value"]))
+                cis = tuple((100 * num(r["lo"]), 100 * num(r["hi"])) for r in (rc, st))
                 for label, r, v in (("recalled", rc, pts[0]), ("lookup", st, pts[1])):
-                    record("j1", name, f"remove from the patch: {label} answers' extra loss (pp)", round(v, 1),
+                    record("j1", name, f"remove from the patch: share of the {label} answers' switches lost beyond a random part (%)", round(v, 1),
                            round(100 * num(r["lo"]), 1), round(100 * num(r["hi"]), 1),
                            source=f"figures/story/data.csv | fig01 | {r['quantity']}")  # fmt: skip
-                record("j1", name, "remove from the patch, control (a random part): recalled switches lost (%)", cv,
+                record("j1", name, "remove from the patch, control (a random part): share of the recalled answers' switches lost (%)", cv,
                        source=f"figures/story/data.csv | numbers | rc_droprand_{m}")  # fmt: skip
             ax.plot(pts, [y, y], color="#bbbbbb", lw=2.2, zorder=1, solid_capstyle="butt")
             ax.plot([cv], [y], marker="|", ms=15, mew=2.6, color=S.COL["control"], ls="", zorder=2)
-            for v, col in zip(pts, (RECALLED, LOOKUP), strict=True):
-                ax.plot([v], [y], "o", ms=8, mfc=col if kind == "fixed" else "white", mec=col, mew=1.8, zorder=3)
+            for v, ci, col in zip(pts, cis, (RECALLED, LOOKUP), strict=True):
+                if ci is not None:  # the 95% interval
+                    ax.plot(ci, [y, y], color=col, lw=1.6, zorder=3, solid_capstyle="butt")
+                ax.plot([v], [y], "o", ms=8, mfc=col if kind == "fixed" else "white", mec=col, mew=1.8, zorder=4)
         ax.set_xlim(-15, 100)
         ax.set_ylim(-len(MODELS) + 0.4, 0.6)
         ax.axvline(0, color="#999999", lw=0.8, zorder=0)
@@ -305,12 +309,13 @@ def j1_recall_needs_lens(plt):
         ax.spines["left"].set_visible(False)
     axes[0].set_title("remove everywhere (Zach)", fontsize=S.FONT + 1, loc="left")
     axes[1].set_title("remove from the patch (Dan)", fontsize=S.FONT + 1, loc="left")
-    axes[0].set_xlabel("answers lost (pp)")
-    axes[1].set_xlabel("switches lost beyond a random part (pp)")
+    axes[0].set_xlabel("answers that turn wrong (pp)")
+    axes[1].set_xlabel("share of the patch's switches lost,\nbeyond a random part (%)")
     hs = [plt.Line2D([], [], marker="o", ls="", color=RECALLED, ms=8), plt.Line2D([], [], marker="o", ls="", color=LOOKUP, ms=8),
-          plt.Line2D([], [], marker="|", ls="", color=S.COL["control"], ms=13, mew=2.6)]  # fmt: skip
-    sh, sl = S.status_handles(("fixed", "after"))
-    legend_below(fig, hs + sh, ["recalled answer", "lookup answer", "largest control", *sl], 0.0, 3)
+          plt.Line2D([], [], marker="|", ls="", color=S.COL["control"], ms=13, mew=2.6),
+          plt.Line2D([], [], marker="o", ls="", mfc="white", mec=RECALLED, mew=1.6, ms=8)]  # fmt: skip
+    labels = ["recalled answer", "lookup answer", "largest control", "hollow: after the data"]
+    legend_below(fig, hs, labels, 0.0, 2)
     return fig
 
 
@@ -404,7 +409,7 @@ def j3_order_signal(plt):
             v = round(100 * num(r["value"]), 1)
             lo, hi = (round(100 * num(r[c]), 1) if r[c] != "" else "" for c in ("lo", "hi"))
             bar(axr, y, v, lo, hi, col, kind_w, h=0.8)
-            axr.text(max(v, hi if hi != "" else v) + 2, y, f"{v:.0f}", va="center", fontsize=S.FONT)
+            axr.text((hi if isinstance(hi, float) and hi > v else v) + 2, y, f"{v:.0f}", va="center", fontsize=S.FONT)
             what = "order signal" if r is w else "random vector"
             record("j3", name, f"writes sending the lookup answer to the target locker: {what} (%)", v, lo, hi,
                    source=f"figures/story/data.csv | fig07 | {r['quantity']}")  # fmt: skip
@@ -529,91 +534,73 @@ def x45r_score() -> Path:
 
 
 def j5_muse_depth(plt):
-    """Muse 30B: remove everywhere's recalled-minus-lookup loss at three layer sets (the lens part and its three controls,
-    the bar of 15 fixed in advance), beside remove from the patch at layer 26 (recalled vs lookup extra loss)."""
+    """Muse 30B, Zach's tool only (Dan ~19:50): recalled minus lookup answers lost (pp) at layers 23-29, layer 26 and
+    layers 36-42, each with its 95% interval and one grey tick for the logit lens's own directions; the bar of 15 fixed
+    in advance; layers 36-42 hollow (after the data). Our layer-26 result in one text line, no second axis. Kept as a
+    file for the call and slides; not on the README."""
     path = x45r_score()
     src = str(path.relative_to(REPO))
     sc = json.loads(path.read_text())
     rule = json.loads((REPO / "results/ablate_v2/jsuite2_score" / f"{sc['rule_run']}.json").read_text())
     n = rule["facts"]["paper10/start=all"]["n"]
-    dp = depth()
-    fig = plt.figure(figsize=(S.WIDTH, 5.4))
-    S.title(fig, "On Muse 30B the lens part is carried at mid depth, needed only late",
-            f"Left: recalled minus lookup answers lost, pp ({n['M']} of each). Right: switches lost beyond\n"
-            "a random part, pp; the two tools count different things.")  # fmt: skip
-    axl, axr = fig.add_axes((0.215, 0.28, 0.47, 0.42)), fig.add_axes((0.745, 0.28, 0.235, 0.42))
     sets = (("layers 23-29", "his_L23_29", sc["his_L23_29"], "fixed"),
             ("layer 26", "descriptive.L26", sc["descriptive"]["L26"], "fixed"),
             ("layers 36-42", "descriptive.L36_42_record", sc["descriptive"]["L36_42_record"], "after"))  # fmt: skip
-    marks = (("paper10", "the lens part", "o", RECALLED, 0.0), ("unembed10", "logit lens", "D", S.COL["control"], 0.22),
-             ("paper10_rot", "rotated", "s", S.COL["control"], 0.44),
-             ("paper10_pcasize", "size-matched", "^", S.COL["control"], 0.66))  # fmt: skip
+    # the largest rotated or size-matched control over the three layer sets, named in the subtitle with its key
+    others = [(c["paper10_rot"]["mk"], f"{key}.paper10_rot.mk") for _, key, c, _ in sets]
+    others += [(sc["his_L23_29"]["paper10_pcasize"]["mk"], "his_L23_29.paper10_pcasize.mk"),
+               (sc["descriptive"]["L26"]["paper10_pcasize"]["mk"], "descriptive.L26.paper10_pcasize.mk"),
+               (sc["descriptive"]["L36_42_size_matched"]["paper10_pcasize"]["mk"],
+                "descriptive.L36_42_size_matched.paper10_pcasize.mk")]  # fmt: skip
+    worst, worst_key = max(others)
+    fig = plt.figure(figsize=(S.WIDTH, 4.6))
+    S.title(fig, "Muse 30B: lens-part removal hurts only late; logit lens does over half",
+            f"Remove everywhere, {n['M']} items each; rotated and size-matched controls ≤ {worst:.1f} pp")  # fmt: skip
+    ax = fig.add_axes((0.17, 0.33, 0.79, 0.47))
     record("j5", "Muse 30B", "remove everywhere: items per answer kind (recalled, lookup)", n["M"], n=n["K"],
            source=f"results/ablate_v2/jsuite2_score/{sc['rule_run']}.json | facts paper10/start=all n")  # fmt: skip
     for i, (label, key, cells, kind) in enumerate(sets):
         y = -i
-        for cond, name, marker, col, dy in marks:
-            cell, ckind, ckey = cells.get(cond), kind, key
-            if cell is None and cond == "paper10_pcasize" and key.endswith("record"):  # run with 45r, beside the record
-                cell = sc["descriptive"]["L36_42_size_matched"]["paper10_pcasize"]
-                ckind, ckey = "fixed", "descriptive.L36_42_size_matched"
-            if cell is None:
-                continue
-            v, (lo, hi) = cell["mk"], cell["ci"]
-            if cond == "paper10":
-                axl.plot([lo, hi], [y - dy, y - dy], color=col, lw=1.6, zorder=2)
-            face = col if ckind == "fixed" else "white"
-            size = 9 if cond == "paper10" else 7
-            axl.plot([v], [y - dy], marker=marker, ms=size, mfc=face, mec=col if cond == "paper10" else "#8a8a8a",
-                     mew=1.6, ls="", zorder=3)  # fmt: skip
-            record("j5", "Muse 30B", f"remove everywhere, {label}, {name}: recalled minus lookup answers lost (pp)",
-                   v, lo, hi, n["M"], source=f"{src} | {ckey}.{cond}.mk")  # fmt: skip
-        axl.text(cells["paper10"]["ci"][1] + 2.5, y, f"{cells['paper10']['mk']:+.1f}", va="center", fontsize=S.FONT)
-    axl.axvline(15, color="#555555", ls="--", lw=1.1, zorder=1)
+        lens, u = cells["paper10"], cells["unembed10"]
+        ax.plot(lens["ci"], [y, y], color=RECALLED, lw=1.8, zorder=2)
+        ax.plot(
+            [lens["mk"]], [y], "o", ms=10, mfc=RECALLED if kind == "fixed" else "white", mec=RECALLED, mew=1.8, zorder=3
+        )
+        ax.plot(u["ci"], [y - 0.16, y - 0.16], color=S.COL["control"], lw=1.6, zorder=2)  # its 95% interval
+        ax.plot([u["mk"]], [y - 0.16], marker="|", ms=13, mew=2.6, color=S.COL["control"], ls="", zorder=2)
+        ax.text(lens["mk"], y + 0.3, f"{lens['mk']:+.1f}", ha="center", va="center", fontsize=S.FONT + 1)
+        if u["mk"] > 10:  # where the logit lens costs something, its value beside it
+            ax.text(u["ci"][1] + 1.5, y - 0.16, f"{u['mk']:+.1f}", va="center", fontsize=S.FONT, color="#777777")
+        for cond, v in (("paper10", lens), ("unembed10", u)):
+            record("j5", "Muse 30B", f"remove everywhere, {label}, {'lens part' if cond == 'paper10' else 'logit lens'}: "
+                   "recalled minus lookup answers lost (pp)", v["mk"], v["ci"][0], v["ci"][1], n["M"],
+                   source=f"{src} | {key}.{cond}.mk")  # fmt: skip
+    record("j5", "Muse 30B", "remove everywhere: rotated and size-matched controls, the largest (pp)", worst,
+           source=f"{src} | {worst_key}")  # fmt: skip
+    ax.axvline(15, color="#555555", ls="--", lw=1.2, zorder=1)
+    ax.text(15.8, 0.52, "bar fixed in advance", fontsize=S.FONT, color=S.COL["muted"], va="center")
     record("j5", "Muse 30B", "remove everywhere: the 'needed' bar (pp)", 15.0,
            source="scripts/x45r_score.py | NOT_NEEDED_MK, NOT_NEEDED_EXCESS, CARRIED = 15.0")  # fmt: skip
-    axl.set_xlim(-5, 75)
-    axl.set_xticks([0, 15, 30, 45, 60, 75])
-    axl.set_xlabel("recalled minus lookup answers lost (pp)")
-    axl.set_title("remove everywhere (Zach)", fontsize=S.FONT + 1, loc="left")
-    # ours at layer 26, on the left panel's layer-26 row
-    q = "main test (two people swap picks): {} extra loss"
-    rc, st = (
-        dp[("fig01", "muse-glimmer-30b", q.format("recall"))],
-        dp[("fig01", "muse-glimmer-30b", q.format("lookup"))],
-    )
-    pts = (100 * num(rc["value"]), 100 * num(st["value"]))
-    tick = num(dp[("numbers", "", "rc_droprand_muse")]["value"])
-    y = -1
-    axr.plot(pts, [y, y], color="#bbbbbb", lw=2.2, zorder=1, solid_capstyle="butt")
-    axr.plot([tick], [y], marker="|", ms=15, mew=2.6, color=S.COL["control"], ls="", zorder=2)
-    for v, col in zip(pts, (RECALLED, LOOKUP), strict=True):
-        axr.plot([v], [y], "o", ms=9, mfc=col, mec=col, mew=1.6, zorder=3)
-    for label, r, v in (("recalled", rc, pts[0]), ("lookup", st, pts[1])):
-        record("j5", "Muse 30B", f"remove from the patch, layer 26: {label} answers' extra loss (pp)", round(v, 1),
-               round(100 * num(r["lo"]), 1), round(100 * num(r["hi"]), 1), source=f"figures/story/data.csv | fig01 | {r['quantity']}")  # fmt: skip
-    record("j5", "Muse 30B", "remove from the patch, control (a random part): recalled switches lost (%)", tick,
-           source="figures/story/data.csv | numbers | rc_droprand_muse")  # fmt: skip
-    record("j5", "Muse 30B", "remove from the patch, layer 26: gap (recalled minus lookup extra loss)", sc["our_gap_L26"][0],
-           *sc["our_gap_L26"][1:], source=f"{src} | our_gap_L26")  # fmt: skip
-    axr.set_xlim(-20, 100)
-    axr.set_xticks([0, 50, 100])
-    axr.set_xlabel("switches lost (pp)")
-    axr.set_title("remove from the patch\n(Dan), layer 26", fontsize=S.FONT + 1, loc="left")
-    for ax in (axl, axr):
-        ax.set_ylim(-2.9, 0.75)
-        ax.axvline(0, color="#999999", lw=0.8, zorder=0)
-        ax.tick_params(axis="y", length=0)
-        ax.spines["left"].set_visible(False)
-    axl.set_yticks([-i - 0.33 for i in range(len(sets))], [s[0] for s in sets])
-    axr.set_yticks([])
-    hs = [plt.Line2D([], [], marker=m, ls="", ms=8, mfc=c if c == RECALLED else "#cfcfcf", mec=c if c == RECALLED else "#8a8a8a")
-          for _, _, m, c, _ in marks]  # fmt: skip
-    hs += [plt.Line2D([], [], marker="o", ls="", color=LOOKUP, ms=8), plt.Line2D([], [], ls="--", color="#555555")]
-    sh, sl = S.status_handles(("fixed", "after"))
-    labels = ["the lens part (left);\nrecalled answer (right)", "logit lens", "rotated", "size-matched", "lookup answer",
-              "bar fixed in advance (15)"]  # fmt: skip
-    legend_below(fig, hs + sh, labels + sl, 0.0, 4)
+    ax.set_xlim(-5, 75)
+    ax.set_ylim(-2.5, 0.7)
+    ax.set_xticks([0, 15, 30, 45, 60, 75])
+    ax.set_yticks([-i for i in range(len(sets))], [s[0] for s in sets])
+    ax.axvline(0, color="#999999", lw=0.8, zorder=0)
+    ax.tick_params(axis="y", length=0)
+    ax.spines["left"].set_visible(False)
+    ax.set_xlabel("recalled minus lookup answers that turn wrong (pp)")
+    gap = depth()[("numbers", "", "contrast_muse")]
+    g = S.parse(gap["value"])
+    assert g is not None
+    fig.text(0.01, 0.025, f"Dan's patch at layer 26: the lens part carries the answer ({100 * g[0]:.0f}% of the patch's "
+             "switches); a different measure.", fontsize=S.FONT, va="bottom")  # fmt: skip
+    record("j5", "Muse 30B", "remove from the patch, layer 26: gap (share of the patch's switches, %)", round(100 * g[0]),
+           round(100 * g[1]), round(100 * g[2]), source="figures/story/data.csv | numbers | contrast_muse")  # fmt: skip
+    hs = [plt.Line2D([], [], marker="o", ls="", color=RECALLED, ms=9),
+          plt.Line2D([], [], marker="|", ls="", color=S.COL["control"], ms=14, mew=2.6),
+          plt.Line2D([], [], marker="o", ls="", mfc="white", mec=RECALLED, mew=1.6, ms=9)]  # fmt: skip
+    labels = ["lens part taken out", "logit lens's own directions taken out", "hollow: after the data"]
+    legend_below(fig, hs, labels, 0.075, 2)
     return fig
 
 

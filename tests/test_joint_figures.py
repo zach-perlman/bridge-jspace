@@ -99,7 +99,8 @@ def test_j5_numbers_match_the_muse_depth_score(drawn):
     )
     late = sourced(rows, "j5", "Muse 30B", "| descriptive.L36_42_record.unembed10.mk")["value"]
     assert late == sc["descriptive"]["L36_42_record"]["unembed10"]["mk"] == 34.6
-    assert sourced(rows, "j5", "Muse 30B", "recall extra loss")["value"] == 75.0
+    assert sourced(rows, "j5", "Muse 30B", "| contrast_muse")["value"] == 85  # 0.85 [0.68, 0.98] of the switches, in %
+    assert sourced(rows, "j5", "Muse 30B", "paper10_pcasize.mk")["value"] == 4.6  # the largest other control
 
 
 def test_example_texts_are_quoted_from_their_sources():
