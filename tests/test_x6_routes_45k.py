@@ -446,3 +446,18 @@ def test_orthonormal_spans_the_columns_and_keeps_the_device():
     assert torch.allclose(q.T @ q, torch.eye(2, dtype=torch.float64), atol=1e-10)
     assert torch.allclose(q @ (q.T @ a.double()), a.double(), atol=1e-10)  # spans every column
     assert R.orthonormal(torch.zeros(4, 2)).shape == (4, 0)
+
+
+def test_warm_cusolver_is_a_no_op_without_cuda(monkeypatch):
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    calls = []
+    monkeypatch.setattr(torch.linalg, "lstsq", lambda *a, **k: calls.append("lstsq"))
+    R.warm_cusolver()
+    assert calls == []
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="needs a GPU")
+def test_warm_cusolver_leaves_linalg_working_on_the_gpu():
+    R.warm_cusolver()
+    a = torch.randn(64, 8, device="cuda", dtype=torch.float64)
+    assert torch.allclose(torch.linalg.lstsq(a, a).solution, torch.eye(8, device="cuda", dtype=torch.float64), atol=1e-8)
