@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from bridge_jspace import pins
 from bridge_jspace.data import load_items, sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 
 OUTS = {
     "core": pins.RESULTS_DIR / "exp02_swaps" / "gate_debug",
@@ -124,6 +124,7 @@ def stage_run_centred() -> None:
 
     out = OUTS["centred"]
     manifest = json.loads((out / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out / "summary.json").exists(), "results are write-once"
     assert sha256_of(probes_path()) == manifest["inputs"]["probes"]["sha256"]
     assert sha256_of(probes_path(WHITENED_TAG)) == manifest["inputs"]["whitened_probes"]["sha256"]
@@ -197,6 +198,7 @@ def stage_run_presence() -> None:
 
     out = OUTS["presence"]
     manifest = json.loads((out / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out / "summary.json").exists(), "results are write-once"
     assert sha256_of(probes_path()) == manifest["inputs"]["probes"]["sha256"]
     entities = torch.load(probes_path(), map_location="cpu", weights_only=True)["entities"]
@@ -257,6 +259,7 @@ def stage_run() -> None:
     from bridge_jspace.model import load_model
 
     manifest = json.loads((OUT / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (OUT / "summary.json").exists(), "results are write-once"
     assert sha256_of(probes_path()) == manifest["inputs"]["probes"]["sha256"]
     blob = torch.load(probes_path(), map_location="cpu", weights_only=True)

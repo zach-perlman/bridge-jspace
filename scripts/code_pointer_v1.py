@@ -98,7 +98,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from scripts import pointer_v1 as PV
 from scripts import suite_v1 as S
 
@@ -892,6 +892,7 @@ def stage_competence(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     for f, pin in manifest["items"].items():
         assert sha256_of(pins.REPO_ROOT / pin["file"]) == pin["sha256"], f"{f} changed since the manifest"

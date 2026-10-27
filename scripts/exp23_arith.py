@@ -40,7 +40,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp03_brew_swaps import write_jsonl
@@ -182,6 +182,7 @@ def stage_run(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     assert sha256_of(DATA) == manifest["items"]["sha256"], "items changed since the manifest"
     items = json.loads(DATA.read_text())["items"]

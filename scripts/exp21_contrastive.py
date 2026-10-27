@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp01_probes import K_ATOMS, PROBE_LAYERS, decompose
 from scripts.exp03_brew_swaps import answer_colour
@@ -149,6 +149,7 @@ def stage_run(tag: str) -> None:
 
     out_dir, cache_dir = RESULTS / tag, CACHE / tag
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     family = manifest["family"]
     rows = fit_prompts(family)

@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import load_items, sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts.exp02_swaps import Probes, condition_atoms, prepare, swap
 from scripts.exp03_brew_swaps import (
@@ -232,6 +232,7 @@ def stage_run(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
     assert sha256_of(SIGMA_FILE) == manifest["sigma"]["sha256"], "Σ changed since the manifest"
     model = load_model()

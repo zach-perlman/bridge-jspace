@@ -68,7 +68,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # for exp13's judg
 from bridge_jspace import chat, pins
 from bridge_jspace.clamp import SwapClamp, near_parallel
 from bridge_jspace.data import load_items, sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp13_greedy_answers.experiment import ends_sentence, judge
@@ -498,6 +498,7 @@ def stage_run(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     kind = manifest["kind"]
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
     probes_path = pins.REPO_ROOT / manifest["probes"]["file"]

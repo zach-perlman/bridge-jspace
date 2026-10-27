@@ -62,7 +62,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 
 DATA = pins.DATA_DIR / "suite_v1"
 RESULTS = pins.RESULTS_DIR / "suite_v1"
@@ -950,6 +950,7 @@ def stage_competence(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     chat.check_format(manifest)  # prompts rendered in the manifest's format (BJ_FORMAT)
     for f, pin in manifest["items"].items():

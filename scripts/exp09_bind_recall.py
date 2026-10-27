@@ -51,7 +51,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts.exp03_brew_swaps import answer_colour, write_jsonl
@@ -396,6 +396,7 @@ def stage_run_map(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
     item_set = manifest["items"].get("set", "bind_recall")
     file, sha, _, families, answers = ITEM_SETS[item_set]
@@ -547,6 +548,7 @@ def stage_run_parts(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
     map_summary = RESULTS / manifest["map"]["run"] / "summary.json"
     assert sha256_of(map_summary) == manifest["map"]["summary_sha256"], "the map changed since the manifest"
@@ -796,6 +798,7 @@ def stage_run_swaps(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
     probes_file = pins.REPO_ROOT / manifest["probes"]["file"]  # PROBES unless the manifest names other probes
     assert sha256_of(probes_file) == manifest["probes"]["sha256"], "probes.pt changed since the manifest"

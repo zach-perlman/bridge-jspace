@@ -53,7 +53,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from bridge_jspace import pins
 from bridge_jspace.clamp import SwapClamp, near_parallel
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 
 EXP = "exp03_brew_swaps"
@@ -366,6 +366,7 @@ def stage_run(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} already has results; results are write-once"
     item_file, _, load_items = ITEM_SETS[manifest["items"].get("set", "bank")]
     assert sha256_of(item_file) == manifest["items"]["sha256"], "brew items changed since the manifest"

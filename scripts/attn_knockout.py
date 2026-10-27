@@ -108,7 +108,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.knockout import FULL, LINEAR, kernel_path, knock_out, layer_kinds, reference_chunk_rule
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import bootstrap_mean, cluster_bootstrap, paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from bridge_jspace.utils import progress
@@ -1267,6 +1267,7 @@ def load_target() -> Any:
 def stage_run(name: str) -> None:
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(m)
     assert not (out_dir / "rows.jsonl").exists(), f"{out_dir} has results; runs are written once"
     for rel, sha in m["inputs"].items():
         assert sha256_of(pins.REPO_ROOT / rel) == sha, f"{rel} changed since the manifest"

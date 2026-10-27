@@ -72,7 +72,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from scripts import attn_knockout as A
 from scripts import suite_v1 as S
@@ -228,6 +228,7 @@ def stage_run(name: str) -> None:
 
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(m)
     assert not (out_dir / "rows.jsonl").exists(), f"{out_dir} has results; runs are written once"
     for rel, sha in m["inputs"].items():
         assert sha256_of(pins.REPO_ROOT / rel) == sha, f"{rel} changed since the manifest"

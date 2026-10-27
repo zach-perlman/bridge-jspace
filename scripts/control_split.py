@@ -44,7 +44,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from scripts import exp09_bind_recall as E
 from scripts import suite_split as P
 from scripts import suite_v1 as S
@@ -148,6 +148,7 @@ def stage_run_map(name: str) -> None:
 
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(m)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} has results; runs are written once"
     assert sha256_of(pins.REPO_ROOT / m["items"]["file"]) == m["items"]["sha256"], "items changed"
     model = load_model()
@@ -256,6 +257,7 @@ def stage_run_parts(name: str) -> None:
 
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(m)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} has results; runs are written once"
     map_dir = RESULTS / m["map"]["run"]
     assert sha256_of(map_dir / "summary.json") == m["map"]["summary_sha256"], "the map changed since the manifest"

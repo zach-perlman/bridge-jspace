@@ -54,7 +54,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import wilson
 from bridge_jspace.tokens import raw_encoding
 from bridge_jspace.utils import git_state
@@ -316,6 +316,7 @@ def stage_run(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     for t, pin in manifest["tasks"].items():
         assert sha256_of(pins.REPO_ROOT / pin["file"]) == pin["sha256"], t

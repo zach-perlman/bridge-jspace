@@ -46,7 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 
 EXP = "natural_read"
 RESULTS = pins.RESULTS_DIR / EXP
@@ -373,6 +373,7 @@ def stage_competence(name: str) -> None:
 
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(m)
     assert not (out_dir / "items.jsonl").exists(), f"{out_dir} has results; runs are written once"
     chat.check_format(m)
     assert sha256_of(pins.REPO_ROOT / m["items"]["file"]) == m["items"]["sha256"], "items changed since the manifest"

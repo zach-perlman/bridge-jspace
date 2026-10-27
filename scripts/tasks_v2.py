@@ -861,9 +861,13 @@ def make(name: str, n: int, words: list[str], domains: list[str], formats: list[
             assert got == n, f"{group} at L{level}: {got} of {n} scenes (dead: {sorted(dead)})"
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     (out / "items.jsonl").write_text("".join(json.dumps(it) + "\n" for it in items))
+    # C and O are token-aligned under the target's tokenizer (load_tokenizer: BJ_TARGET's checkpoint), so such a set
+    # depends on the target; a set without them does not (None)
+    target = None if tok is None else {"key": pins.TARGET, "tokenizer_repo": pins.MODEL_REPO,
+                                       "tokenizer_revision": pins.MODEL_REVISION}  # fmt: skip
     meta = {"set": name, "n_scenes_per_group_level": n, "words": words, "domains": domains, "formats": formats,
             "levels": {k: LEVELS[k] for k in levels}, "seed": seed, "generator": "scripts/tasks_v2.py make (v8)",
-            "git_commit": commit, "counterfactuals": counterfactuals, "n_items": len(items), "coverage": coverage,
+            "git_commit": commit, "counterfactuals": counterfactuals, "target": target, "n_items": len(items), "coverage": coverage,
             "three_step_domains": list(three_step_domains or THREE_STEP_DOMAINS), "locker_before": locker_before}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(meta, indent=2) + "\n")
     print("wrote", out / "items.jsonl", len(items), "items")

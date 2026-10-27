@@ -49,7 +49,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import paired_bootstrap_diff, wilson
 from bridge_jspace.tokens import raw_encoding
 from scripts import suite_v1 as S
@@ -292,6 +292,7 @@ def stage_run_map(name: str) -> None:
 
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(m)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} has results; runs are written once"
     check_inputs(m)
     model = load_model()
@@ -502,6 +503,7 @@ def stage_run_parts(name: str) -> None:
 
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(m)
     assert not (out_dir / "outcomes.jsonl").exists(), f"{out_dir} has results; runs are written once"
     check_inputs(m)
     map_dir = RESULTS / m["map"]["run"]

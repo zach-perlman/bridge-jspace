@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import wilson
 from scripts.exp03_brew_swaps import write_jsonl
 from scripts.exp07_step_code import CODE_FILE, COLOURS, WINDOW, tokenized
@@ -137,6 +137,7 @@ def stage_run(name: str) -> None:
 
     out_dir = RESULTS / name
     manifest = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(manifest)
     assert not (out_dir / "summary.json").exists(), f"{out_dir} has results; runs are written once"
     assert sha256_of(EXP20 / "items.jsonl") == manifest["labels"]["items_sha256"], "exp20's items changed"
     assert sha256_of(CODE_FILE) == manifest["code"]["sha256"], "exp07's code changed"

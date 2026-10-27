@@ -75,7 +75,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_jspace import chat, pins
 from bridge_jspace.data import sha256_of
 from bridge_jspace.knockout import FULL, capture_attention, decoder_layers, layer_kind
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import cluster_bootstrap, paired_bootstrap_diff, wilson
 from scripts import pointer_swap as PS
 from scripts import pointer_v4 as PV4
@@ -310,6 +310,7 @@ def stage_run(name: str) -> None:
 
     out_dir = RESULTS / name
     m = json.loads((out_dir / "manifest.json").read_text())
+    check_switches(m)
     assert not (out_dir / "rows.jsonl").exists(), f"{out_dir} has results; runs are written once"
     chat.check_format(m)
     for pin in m["items"].values():

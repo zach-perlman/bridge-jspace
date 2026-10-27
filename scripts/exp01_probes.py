@@ -43,7 +43,7 @@ from bridge_jspace.data import (
     more_prompt_files,
     sha256_of,
 )
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import check_switches, switches
 from bridge_jspace.stats import ledoit_wolf
 
 EXP = "exp01_probes"
@@ -180,6 +180,7 @@ def stage_manifest_topup() -> None:
     topped_up = json.loads(pins.ENTITY_PROMPTS_TOPUP_FILE.read_text())["entities"]
     assert sorted(topped_up) == sorted(short), f"top-up entities {sorted(topped_up)} != short entities {short}"
     manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["switches"] = switches()
     manifest["data"]["entity_prompts_topup"] = {
         "file": "data/entity_prompts_topup.json",
         "sha256": sha256_of(pins.ENTITY_PROMPTS_TOPUP_FILE),
@@ -206,6 +207,7 @@ def stage_manifest_whiten() -> None:
     assert not path.exists(), f"{path} exists; manifests are written once"
     manifest = json.loads(manifest_path("topup").read_text())
     manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["switches"] = switches()
     manifest["probe"] = (
         "(pooled within-entity covariance of the kept prompts' residuals, Ledoit-Wolf shrinkage, per "
         "layer)^-1 @ (mean final-token residual over kept prompts - mean over entities), rescaled to "
@@ -239,6 +241,7 @@ def stage_manifest_more() -> None:
         if (r["entity"], r["prompt"]) not in current
     ]
     manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["switches"] = switches()
     manifest["data"]["entity_prompts"]["sha256"] = sha256_of(pins.ENTITY_PROMPTS_FILE)
     manifest["data"]["entity_prompts_more"] = more_files_pinned()
     manifest["more"] = {
@@ -267,6 +270,7 @@ def stage_manifest_more_jpp() -> None:
     assert not path.exists(), f"{path} exists; manifests are written once"
     manifest = json.loads(manifest_path("more").read_text())
     manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["switches"] = switches()
     manifest["data"]["entity_prompts_more"] = more_files_pinned()
     manifest["lens"]["file"] = pins.JPP_FILE
     manifest["lens"]["vector"] = manifest["lens"]["vector"].replace("J_l", "J++_l")
@@ -291,6 +295,7 @@ def stage_manifest_more_jpp_chat(variant: str = "more_jpp_chat") -> None:
     manifest = json.loads(manifest_path("more_jpp").read_text())
     manifest.pop("reproduces", None)
     manifest["written_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    manifest["switches"] = switches()
     manifest["variant"] = variant
     manifest["data"]["entity_prompts"]["sha256"] = sha256_of(pins.ENTITY_PROMPTS_FILE)
     manifest["data"]["entity_prompts_topup"]["sha256"] = sha256_of(pins.ENTITY_PROMPTS_TOPUP_FILE)
@@ -387,6 +392,7 @@ def stage_manifest_all(variant: str) -> None:
         "variant": variant,
         "question": "Build a bridge probe per entity and measure how much of it the lens dictionary explains.",
         "model": pins.model_pin(),
+        "switches": switches(),
         "lens": {
             "name": lens,
             "source": list(pins.LENS_SOURCES[lens]),
@@ -451,6 +457,7 @@ def stage_run(tag: str, variant: str) -> None:
     v = VARIANTS[variant]
     whiten = v["whiten"]
     manifest = json.loads(manifest_path(variant).read_text())
+    check_switches(manifest)
     assert manifest["data"]["entity_prompts"]["sha256"] == sha256_of(pins.ENTITY_PROMPTS_FILE), (
         "entity_prompts.json changed since the manifest"
     )
@@ -653,6 +660,7 @@ def stage_manifest_redecompose(tag: str, source: str, lens: str, deviation: str 
         "exp": EXP,
         "kind": "redecompose",
         "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "switches": switches(),
         "question": f"Run {source}'s probes, decomposed over the {lens} dictionary instead of its own lens.",
         "probes_from": {"run": source, "file": str(probes.relative_to(pins.REPO_ROOT)), "sha256": sha256_of(probes)},
         "lens": {"name": lens, "source": list(pins.LENS_SOURCES[lens])},
@@ -680,6 +688,7 @@ def stage_redecompose(tag: str) -> None:
     from bridge_jspace.model import load_model
 
     manifest = json.loads(redecompose_manifest_path(tag).read_text())
+    check_switches(manifest)
     source = manifest["probes_from"]
     probes_path = pins.REPO_ROOT / source["file"]
     assert sha256_of(probes_path) == source["sha256"], "the source probes changed since the manifest"
