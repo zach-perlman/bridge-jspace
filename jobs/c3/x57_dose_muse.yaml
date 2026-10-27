@@ -1,0 +1,35 @@
+id: x57_dose_muse
+title: "DO NOT ENQUEUE: running on Zach's box since 27 Oct 18:08 UTC (amendment 57 note 5). Zach's amendment 57 note 1 on Muse (approved by Zach 27 Oct, note 4): amendment 54's dose grid at L36-42, removing the top K J++ directions for K 1-300 with rotated, size-matched and logit-lens controls"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 2.0
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= BJ_GRAM_PROJ=1; uv run python scripts/removal_size.py --name muse30_removal_size_L36-42_dose54_v1 --why "Zach (2026-10-27, prereg amendment 57 notes 1 and 4; design of amendment 54): Muse removal sizes at L36-42, K 1 3 10 30 100 300" --layers 36 37 38 39 40 41 42 --ks 1 3 10 30 100 300 --pca
+  && uv run python scripts/ablate_v2.py --name muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1 --why "Zach (2026-10-27, prereg amendment 57 notes 1 and 4; design of amendment 54): Muse test knock-out, dose grid K 1 3 10 30 100 300 with rotated, size-matched and logit-lens controls" --plan bands --bands 36-42 --tasks jsuite_v2_test_chat --tasks-competence muse30_jsuite_v2_test_chat_competence_cand2_v1 --tasks-words PP PK PM PA PN MP MK MM MA MN TP TK TM TA TN --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 --conditions top1 top1_rot top3 top3_rot top10 top10_rot top10_pcasize unembed10 top30 top30_rot top30_pcasize unembed30 top100 top100_rot top100_pcasize unembed100 top300 top300_rot top300_pcasize unembed300 --sample-per-word 150 --sample-seed 0
+  && uv run python scripts/jsuite2_score.py muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1 --set jsuite_v2_test_chat
+  && uv run python scripts/soft_score.py muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1 --set jsuite_v2_test_chat
+question: >-
+  On Muse at its v2 band L36-42, does any number of removed J++ directions give a J-specific effect (J++ M - K above
+  both a rotated removal and a same-size removal along the residual's top principal directions) that the logit lens's
+  own top K does not also give?
+why_it_matters: >-
+  Muse's v2 knock-out (M - K +60) is mostly shared with the logit lens (+35) at K = 10 (docs/breadth/README.md,
+  section 1). Every other testable model has the dose grid (section 5): the 27B, 9B, Lightning and Ministral, and Bolt
+  and DeepSeek, which turned out weak at every dose. Muse is the one testable model still without it, and the only
+  model whose specificity question is the logit lens rather than the removal's size.
+hypotheses:
+  A57n1: "No prediction beyond amendment 54's readings (descriptive, as for every model's dose grid): plateau K* = the smallest K reaching 90% of the largest J++ M - K below the specificity limit (stated facts lose > 10 greedy, or size-matched > half of J++); note 1's excess and probability readings beside it; the logit lens at the same K reported beside each."
+decision_rule: >-
+  Amendment 54 and its note 1, computed by scripts/fig_neel.py dose_data / dose_readings (the same code as every
+  model's grid): the specificity limit, plateau K* as pre-registered and on the J-specific excess (J++ minus the larger
+  of rotated and size-matched), and the probability limit. Added for Muse (amendment 57 note 1): at each K, J++ M - K
+  minus the logit lens's M - K at the same K, reported beside the excess.
+controls:
+- 'topK_rot: the same removal rotated to a random direction, every K'
+- 'topK_pcasize: the same size along the residual''s top 256 principal directions, K >= 10'
+- 'unembedK: the logit lens''s own top K, K >= 10'
+n: '150 random items per word (seed 0) of the 15 facts words of jsuite_v2_test_chat, among the items muse30_jsuite_v2_test_chat_competence_cand2_v1 makes eligible (the record run''s 2,705 prompts)'
+seeds: [0]
+notes: "DO NOT ENQUEUE (Zach, 27 Oct ~14:00 ET: Muse runs on his own box, amendment 57 note 5; DeepSeek's cache was dropped to fit it). Zach's amendment 57 note 1 (docs/prereg_replication_1022.md), moved to this queue by note 4 because Muse's weights are not cached on Zach's box; approved by Zach 27 Oct ~11:40 ET. Run names as on Zach's box, so scripts/fig_neel.py and scripts/report_breadth.py pick the results up unchanged (Muse is added to fig_neel's DOSE54 list when the run lands). BJ_GRAM_PROJ=1 as every model's dose run (scripts/queues/h200_dose_1026.sh). Hardware: this queue's H100; the record Muse run was on Zach's H200; every comparison here is within this run. Overlaps x45r_ko_band_muse (paper10_pcasize at L36-42 on all items): both reported. Cost: the 27B's dose grid took as long as its full knock-out (6,974 s vs 6,917 s on an H200), Muse's full knock-out 4,654 s, so ~1.3 h on an H200; x 1.3-1.5 for one H100 (assumed) = 1.7-2.0 h. Figures: drawn on Zach's side (scripts/fig_neel.py F10) after a queue-pull."

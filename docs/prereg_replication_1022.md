@@ -2001,3 +2001,49 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     its count and the rerun's headline.
 - **Lightning is not rerun.** Its earlier clean rerun reproduced the headline but not every row, because its inputs
   differed (amendment 56 B).
+
+### Amendment 57 note 3 (Zach, 2026-10-27 14:19 UTC, before any run below): Lightning's late band from the clean checkout
+
+- **Seen when this was written:** note 2's 9B reruns, all row-identical to their runs of record (late band L26-29:
+  14,100 / 8,460 / 8,460 rows; jsuite_v2nb competence 17,872 items and numbers 6,545 rows; every log-probability
+  equal). The 27B's reruns are still running.
+- **Run (GPU 1, free until about 16:00 UTC):** Lightning's late band L33-39 (all-token, question-only, bridge-only;
+  its record v2 competence) from the clean worktree, still at 9722621. It is not moved while GPU 0's reruns use it.
+  `scripts/queues/h200_clean57_1027.sh` late step, compared row by row.
+- **Expectation:** row-identical. Amendment 56 B's determinism check gave identical rows for Lightning when the
+  eligibility and batching were the same, and here they are.
+
+### Amendment 57 note 4 (Zach, 2026-10-27 17:17 UTC, before any run below): Muse's runs move to Dan's queue
+
+- **Approval (Zach, 2026-10-27 ~11:40 ET):** "Go ahead and also queue muse". This answers Dan's docs/shared/gaps.md:
+  - his 45r runs may use this knock-out on Muse;
+  - note 1's Muse runs may go on his queue.
+- **Where:** Muse's weights are cached on Dan's box, not on ours. Note 1's two runs become job specs in his framework
+  (jobs/c3/x57_dose_muse.yaml and jobs/c3/x57_pos_muse.yaml) with unchanged designs, run names and readings.
+  - **Dose grid:** amendment 54's grid at L36-42, 150 per word (seed 0), BJ_GRAM_PROJ=1 as every other model's dose
+    run. Then jsuite2_score and soft_score.
+  - **Position split:** question-only and bridge-only at L36-42 (paper10 / rotated), all eligible items, QR projection
+    as the record run.
+- **What changes:** the hardware. These run on an H100, while the record Muse run (M − K +60) ran on our H200.
+  - Each dose run compares its own conditions within itself, so the hardware change does not touch those comparisons.
+  - The position shares divide by the record run's +60; a cross-hardware difference of a few rows would move a share
+    by about 0.01.
+- **Overlap:** Dan's x45r_ko_band_muse (the size-matched control at L36-42 on all items) ran already. The dose grid's
+  top10_pcasize on 150 items per word is reported beside it; neither replaces the other.
+
+### Amendment 57 note 5 (Zach, 2026-10-27 18:06 UTC, before any run below): Muse on our box after all
+
+- **Why (Zach, 2026-10-27 ~14:00 ET):** "can you queue muse here? ... Just do the work on our box and stuff."
+  - Note 1's Muse runs come back to our box.
+  - The specs on Dan's queue (note 4) are marked do-not-enqueue on main, so the work is not done twice.
+- **Space:** Muse's weights (meta-models/Muse-Glimmer-30B at pins.py's revision, 59.6 GB) need room; the box has
+  33 GB free.
+  - DeepSeek-V4-Flash's cache (149 GB) is dropped. Its pre-registered runs are all done and logged (amendment 56 D),
+    and it can be re-downloaded.
+  - It is dropped with /workspace/scratch/cache_drop.py, the tool used for Bolt, which deletes only the files no other
+    model references.
+- **Runs:** as note 1, unchanged, after a smoke on the largest K.
+  - GPU 1: the dose grid at L36-42 (scripts/queues/h200_dose_muse_1027.sh dose:muse30).
+  - GPU 0: question-only and bridge-only at L36-42 (scripts/queues/h200_h0nb_1027.sh pos steps).
+  - Both use the record run's H200, so note 4's hardware caveat no longer applies.
+- **Readings:** note 1's.
