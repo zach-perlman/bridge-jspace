@@ -535,8 +535,103 @@ def grid_front(plt):
     return fig
 
 
+def x45r_score() -> Path:
+    """The latest score of the Muse depth test (scripts/x45r_score.py)."""
+    return sorted((REPO / "results" / "x45r").glob("score-*/x45r.json"))[-1]
+
+
+def j5_muse_depth(plt):
+    """Muse 30B: remove everywhere's recalled-minus-stated loss at three layer sets (the lens part and its three controls,
+    the bar of 15 fixed in advance), beside remove from the change at layer 26 (recalled vs stated extra loss)."""
+    path = x45r_score()
+    src = str(path.relative_to(REPO))
+    sc = json.loads(path.read_text())
+    rule = json.loads((REPO / "results/ablate_v2/jsuite2_score" / f"{sc['rule_run']}.json").read_text())
+    n = rule["facts"]["paper10/start=all"]["n"]
+    dp = depth()
+    fig = plt.figure(figsize=(S.WIDTH, 5.4))
+    S.title(fig, "On Muse 30B the lens part is carried at mid depth, needed only late",
+            f"Left: recalled answers lost minus stated answers lost ({n['M']} of each). Right: switches lost\n"
+            "beyond a random part, × 100; the two tools count differently. Opened before Zach confirmed\n"
+            "the use of his tool.")  # fmt: skip
+    axl, axr = fig.add_axes((0.215, 0.28, 0.47, 0.42)), fig.add_axes((0.745, 0.28, 0.235, 0.42))
+    sets = (("layers 23-29", "his_L23_29", sc["his_L23_29"], "fixed"),
+            ("layer 26", "descriptive.L26", sc["descriptive"]["L26"], "fixed"),
+            ("layers 36-42", "descriptive.L36_42_record", sc["descriptive"]["L36_42_record"], "after"))  # fmt: skip
+    marks = (("paper10", "the lens part", "o", RECALLED, 0.0), ("unembed10", "logit lens", "D", S.COL["control"], 0.22),
+             ("paper10_rot", "rotated", "s", S.COL["control"], 0.44),
+             ("paper10_pcasize", "size-matched", "^", S.COL["control"], 0.66))  # fmt: skip
+    record("j5", "Muse 30B", "remove everywhere: items per answer kind (recalled, stated)", n["M"], n=n["K"],
+           source=f"results/ablate_v2/jsuite2_score/{sc['rule_run']}.json | facts paper10/start=all n")  # fmt: skip
+    for i, (label, key, cells, kind) in enumerate(sets):
+        y = -i
+        for cond, name, marker, col, dy in marks:
+            cell, ckind, ckey = cells.get(cond), kind, key
+            if cell is None and cond == "paper10_pcasize" and key.endswith("record"):  # run with 45r, beside the record
+                cell = sc["descriptive"]["L36_42_size_matched"]["paper10_pcasize"]
+                ckind, ckey = "fixed", "descriptive.L36_42_size_matched"
+            if cell is None:
+                continue
+            v, (lo, hi) = cell["mk"], cell["ci"]
+            if cond == "paper10":
+                axl.plot([lo, hi], [y - dy, y - dy], color=col, lw=1.6, zorder=2)
+            face = col if ckind == "fixed" else "white"
+            size = 9 if cond == "paper10" else 7
+            axl.plot([v], [y - dy], marker=marker, ms=size, mfc=face, mec=col if cond == "paper10" else "#8a8a8a",
+                     mew=1.6, ls="", zorder=3)  # fmt: skip
+            record("j5", "Muse 30B", f"remove everywhere, {label}, {name}: recalled minus stated answers lost (points)",
+                   v, lo, hi, n["M"], source=f"{src} | {ckey}.{cond}.mk")  # fmt: skip
+        axl.text(cells["paper10"]["ci"][1] + 2.5, y, f"{cells['paper10']['mk']:+.1f}", va="center", fontsize=S.FONT)
+    axl.axvline(15, color="#555555", ls="--", lw=1.1, zorder=1)
+    record("j5", "Muse 30B", "remove everywhere: the 'needed' bar (points)", 15.0,
+           source="scripts/x45r_score.py | NOT_NEEDED_MK, NOT_NEEDED_EXCESS, CARRIED = 15.0")  # fmt: skip
+    axl.set_xlim(-5, 75)
+    axl.set_xticks([0, 15, 30, 45, 60, 75])
+    axl.set_xlabel("points")
+    axl.set_title("remove everywhere (Zach)", fontsize=S.FONT + 1, loc="left")
+    # ours at layer 26, on the left panel's layer-26 row
+    q = "main test (two people swap picks): {} extra loss"
+    rc, st = (
+        dp[("fig01", "muse-glimmer-30b", q.format("recall"))],
+        dp[("fig01", "muse-glimmer-30b", q.format("lookup"))],
+    )
+    pts = (100 * num(rc["value"]), 100 * num(st["value"]))
+    tick = num(dp[("numbers", "", "rc_droprand_muse")]["value"])
+    y = -1
+    axr.plot(pts, [y, y], color="#bbbbbb", lw=2.2, zorder=1, solid_capstyle="butt")
+    axr.plot([tick], [y], marker="|", ms=15, mew=2.6, color=S.COL["control"], ls="", zorder=2)
+    for v, col in zip(pts, (RECALLED, STATED), strict=True):
+        axr.plot([v], [y], "o", ms=9, mfc=col, mec=col, mew=1.6, zorder=3)
+    for label, r, v in (("recalled", rc, pts[0]), ("stated", st, pts[1])):
+        record("j5", "Muse 30B", f"remove from the change, layer 26: {label} answers' extra loss (x 100)", round(v, 1),
+               round(100 * num(r["lo"]), 1), round(100 * num(r["hi"]), 1), source=f"figures/story/data.csv | fig01 | {r['quantity']}")  # fmt: skip
+    record("j5", "Muse 30B", "remove from the change, control (a random part): recalled switches lost (%)", tick,
+           source="figures/story/data.csv | numbers | rc_droprand_muse")  # fmt: skip
+    record("j5", "Muse 30B", "remove from the change, layer 26: gap (recalled minus stated extra loss)", sc["our_gap_L26"][0],
+           *sc["our_gap_L26"][1:], source=f"{src} | our_gap_L26")  # fmt: skip
+    axr.set_xlim(-20, 100)
+    axr.set_xticks([0, 50, 100])
+    axr.set_xlabel("× 100")
+    axr.set_title("remove from the change\n(Dan), layer 26", fontsize=S.FONT + 1, loc="left")
+    for ax in (axl, axr):
+        ax.set_ylim(-2.9, 0.75)
+        ax.axvline(0, color="#999999", lw=0.8, zorder=0)
+        ax.tick_params(axis="y", length=0)
+        ax.spines["left"].set_visible(False)
+    axl.set_yticks([-i - 0.33 for i in range(len(sets))], [s[0] for s in sets])
+    axr.set_yticks([])
+    hs = [plt.Line2D([], [], marker=m, ls="", ms=8, mfc=c if c == RECALLED else "#cfcfcf", mec=c if c == RECALLED else "#8a8a8a")
+          for _, _, m, c, _ in marks]  # fmt: skip
+    hs += [plt.Line2D([], [], marker="o", ls="", color=STATED, ms=8), plt.Line2D([], [], ls="--", color="#555555")]
+    sh, sl = S.status_handles(("fixed", "after"))
+    labels = ["the lens part (left);\nrecalled answer (right)", "logit lens", "rotated", "size-matched", "stated answer",
+              "bar fixed in advance (15)"]  # fmt: skip
+    legend_below(fig, hs + sh, labels + sl, 0.0, 4)
+    return fig
+
+
 FIGURES = (("j0_setup", j0_setup), ("j1_recall_needs_lens", j1_recall_needs_lens), ("j2_swap", j2_swap),
-           ("j3_order_signal", j3_order_signal), ("grid_front", grid_front))  # fmt: skip
+           ("j3_order_signal", j3_order_signal), ("grid_front", grid_front), ("j5_muse_depth", j5_muse_depth))  # fmt: skip
 
 
 def save(fig, name: str) -> None:

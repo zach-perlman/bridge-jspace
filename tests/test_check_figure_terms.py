@@ -84,6 +84,7 @@ def test_the_joint_figures_draw_no_retired_term():
         "j2_swap",
         "j3_order_signal",
         "grid_front",
+        "j5_muse_depth",
         "grid",
         "grid_dan",
     }

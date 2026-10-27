@@ -99,6 +99,20 @@ def test_grid_front_cells_come_from_the_grid(drawn):
     assert value(rows, "grid_front", "Nemotron Lightning", "finding 3 (depth)")["value"] == "-"
 
 
+def test_j5_numbers_match_the_muse_depth_score(drawn):
+    _, rows = drawn
+    sc = json.loads(J.x45r_score().read_text())
+    q = "remove everywhere, {}, {}: recalled minus stated answers lost (points)"
+    rule = value(rows, "j5", "Muse 30B", q.format("layers 23-29", "the lens part"))
+    assert rule["value"] == sc["his_L23_29"]["paper10"]["mk"] == 6.7 and rule["source"].endswith(
+        "his_L23_29.paper10.mk"
+    )
+    late = value(rows, "j5", "Muse 30B", q.format("layers 36-42", "logit lens"))["value"]
+    assert late == sc["descriptive"]["L36_42_record"]["unembed10"]["mk"] == 34.6
+    ours = value(rows, "j5", "Muse 30B", "remove from the change, layer 26: recalled answers' extra loss (x 100)")
+    assert ours["value"] == 75.0
+
+
 def test_example_texts_are_quoted_from_their_sources():
     src = (J.REPO / "scripts" / "readme_story_figures.py").read_text()
     assert all(s in src for s in (*J.DAN_SCENE[:2], "Iris picked the ", *(q for q, _, _ in J.DAN_QUESTIONS)))

@@ -78,3 +78,21 @@ grid_front,Qwen 122B,finding 1 (breadth),ok a,,,,docs/shared/grid.csv | recall n
 grid_front,Qwen 122B,finding 2 (breadth),-,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
 grid_front,Qwen 122B,finding 3 (depth),ok a,,,,docs/shared/grid.csv | the lookup needs it
 grid_front,Qwen 122B,finding 4 (both),x a,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
+j5,Muse 30B,"remove everywhere: items per answer kind (recalled, stated)",541,,,541,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L23-29_x45r_v1.json | facts paper10/start=all n
+j5,Muse 30B,"remove everywhere, layers 23-29, the lens part: recalled minus stated answers lost (points)",6.7,5,9,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10.mk
+j5,Muse 30B,"remove everywhere, layers 23-29, logit lens: recalled minus stated answers lost (points)",-0.2,-1,1,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.unembed10.mk
+j5,Muse 30B,"remove everywhere, layers 23-29, rotated: recalled minus stated answers lost (points)",1.1,0,2,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10_rot.mk
+j5,Muse 30B,"remove everywhere, layers 23-29, size-matched: recalled minus stated answers lost (points)",3.5,1,6,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10_pcasize.mk
+j5,Muse 30B,"remove everywhere, layer 26, the lens part: recalled minus stated answers lost (points)",4.4,3,6,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.paper10.mk
+j5,Muse 30B,"remove everywhere, layer 26, logit lens: recalled minus stated answers lost (points)",0.7,0,1,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.unembed10.mk
+j5,Muse 30B,"remove everywhere, layer 26, rotated: recalled minus stated answers lost (points)",0.4,0,1,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.paper10_rot.mk
+j5,Muse 30B,"remove everywhere, layer 26, size-matched: recalled minus stated answers lost (points)",0.4,0,1,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L26.paper10_pcasize.mk
+j5,Muse 30B,"remove everywhere, layers 36-42, the lens part: recalled minus stated answers lost (points)",59.9,55,65,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_record.paper10.mk
+j5,Muse 30B,"remove everywhere, layers 36-42, logit lens: recalled minus stated answers lost (points)",34.6,29,40,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_record.unembed10.mk
+j5,Muse 30B,"remove everywhere, layers 36-42, rotated: recalled minus stated answers lost (points)",2.6,1,4,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_record.paper10_rot.mk
+j5,Muse 30B,"remove everywhere, layers 36-42, size-matched: recalled minus stated answers lost (points)",4.6,3,6,541,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_size_matched.paper10_pcasize.mk
+j5,Muse 30B,remove everywhere: the 'needed' bar (points),15.0,,,,"scripts/x45r_score.py | NOT_NEEDED_MK, NOT_NEEDED_EXCESS, CARRIED = 15.0"
+j5,Muse 30B,"remove from the change, layer 26: recalled answers' extra loss (x 100)",75.0,61.0,87.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j5,Muse 30B,"remove from the change, layer 26: stated answers' extra loss (x 100)",-10.0,-15.0,-4.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j5,Muse 30B,"remove from the change, control (a random part): recalled switches lost (%)",-2.0,,,,figures/story/data.csv | numbers | rc_droprand_muse
+j5,Muse 30B,"remove from the change, layer 26: gap (recalled minus stated extra loss)",0.85,0.68,0.98,,results/x45r/score-20261027T165540Z/x45r.json | our_gap_L26

@@ -68,7 +68,12 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 ## Where it breaks
 
-- **Muse 30B.** Remove from the change, at a middle layer, is specific to the lens: the logit lens's directions cost nothing. <!-- src: figures/story/data.csv | J++ part: recall extra loss; logit-lens directions: recall extra loss --> Remove everywhere, deeper (layers 36-42), shares more than half of its effect with the logit lens (after the data), and barely moved Muse on Zach's earlier puzzles. <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk --> <!-- src: EXPERIMENTS.md | l.169 --> <!-- src: EXPERIMENTS.md | l.87 --> The pending test runs Zach's method at Dan's depth: does Muse need the lens part, or only carry it?
+- **Muse 30B carries the lens part at a middle layer but needs it only deep.** <!-- src: results/x45r/score-20261027T165540Z/x45r.json | label -->
+  - At layer 26 remove from the change finds it carried (gap 0.85 [0.68, 0.98]) and specific to the lens: the logit lens's directions cost nothing. Over layers 23-29 remove everywhere costs recalled answers only 6.7 [5, 9] points more than stated ones, 6.8 beyond the logit lens's directions; the bar fixed in advance was 15. <!-- src: results/x45r/score-20261027T165540Z/x45r.json | our_gap_L26; his_L23_29; excess_L23_29 --> <!-- src: figures/story/data.csv | J++ part: recall extra loss; logit-lens directions: recall extra loss --> <!-- src: results/x45r/score-20261027T165540Z/x45r.md | not needed if M - K < 15 -->
+  - Deeper, over layers 36-42, it costs 59.9, but more than half is shared with the logit lens (after the data); Zach's earlier puzzles barely moved Muse. The result was opened before Zach confirmed this use of his tool. <!-- src: results/x45r/score-20261027T165540Z/x45r.json | descriptive; note --> <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk --> <!-- src: EXPERIMENTS.md | l.169 --> <!-- src: EXPERIMENTS.md | l.87 -->
+
+  ![Muse 30B carries the lens part at a middle layer and needs it only deep](figures/shared/j5_muse_depth.png)
+
 - **Qwen 122B.** Ours is not specific against a same-size removal; Zach's vanishes when scored by probability (after the data). Neither of us claims it. <!-- src: figures/story/data.csv | J++ part: recall extra loss; PCA directions (same size): recall extra loss --> <!-- src: docs/breadth/data.csv | ko.q122.soft --> <!-- src: EXPERIMENTS.md | l.167; l.169 -->
 
 ## What we learned about methods
@@ -94,7 +99,6 @@ Full lists: [depth report](docs/depth/README.md) <!-- src: docs/depth/README.md 
 
 ## Pending tests
 
-- **Muse 30B, same depth:** Zach's method over layers 23-29 against Dan's result. <!-- src: predictions/2026-10-27_dan.md | **Q46.1** -->
 - **Nemotron Lightning, Dan's method** at layer 27, the first layer of Zach's band; waits for his lens file. <!-- src: scripts/x45s.py | at L27 (the shallowest layer of Zach's band L27-33 -->
 - **Zach's confirmation** of the swap of everything but the lens part. No test is planned for the order signal on Lightning.
 
