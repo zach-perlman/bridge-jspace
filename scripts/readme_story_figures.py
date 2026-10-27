@@ -808,16 +808,16 @@ KCURVE_RUNS = {"9b": "qwen35_9b_x0_kmatch", "27b": "x0_kmatch_27b", "122b": "qwe
                "muse": "muse30b_x0_necessity"}  # fmt: skip
 X45K_RUNS = {"9b": "qwen35_9b_x6_routes_x45k", "27b": "x6_routes_x45k_27b", "muse": "muse30b_x6_routes_x45k_r4"}
 KS = (25, 50, 100)
-K_ARMS = (("whole", None, "whole change"), ("no_jpp", "no_jpp_rand", "without the J++ part:\n25 atoms"),
-          ("no_jpp50", "no_jpp50_rand", "50 atoms"), ("no_jpp100", "no_jpp100_rand", "100 atoms"))  # fmt: skip
+K_ARMS = (("whole", None, "whole change"), ("no_jpp", "no_jpp_rand", "without the J++ part:\n25 directions"),
+          ("no_jpp50", "no_jpp50_rand", "50 directions"), ("no_jpp100", "no_jpp100_rand", "100 directions"))  # fmt: skip
 
 
 def f02b_k(plt) -> None:
     """45k, the 27B's k-curve. (a) Per model, the lookup's and the recall's extra loss without the J++ part at 25, 50 and
-    100 atoms, main test (after the data). (b) Per model, 45k's routes test (another item moved, fixed in advance): the
+    100 directions, main test (after the data). (b) Per model, 45k's routes test (another item moved, fixed in advance): the
     lookup's identity / position / original answers under the whole change and without the J++ part at 25 / 50 / 100
-    atoms (stacked, as Fig. 5), a thin grey bar under each for the identity answers without a random part (same size).
-    The 100 atoms' overlap with the pointer and the identity direction, and the generic-fitting control, in the
+    directions (stacked, as Fig. 5), a thin grey bar under each for the identity answers without a random part (same size).
+    The 100 directions' overlap with the pointer and the identity direction, and the generic-fitting control, in the
     subtitle; the title states Q45.9's scored label (results/x6_routes/x45k-*)."""
     x45k = latest(pins.RESULTS_DIR / "x6_routes", "x45k-*/x45k.json")
     assert x45k is not None, "no 45k summary in results/x6_routes"
@@ -839,26 +839,28 @@ def f02b_k(plt) -> None:
     S.title(fig, "Why a bigger J++ part costs the 27B lookup: can't tell",
             "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
             "(same size). Three causes, fixed in advance; none holds on the 27B. The lens reads identity: from\n"
-            f"25 to 100 atoms identity answers fall {minus(d27['identity'][0])} beyond the random part, but position "
-            f"answers fall\n{minus(d27['position'][0])} too (bar: under 0.1). The lens reads the pointer: the 100 atoms "
+            f"25 to 100 directions identity answers fall {minus(d27['identity'][0])} beyond the random part, but position "
+            f"answers fall\n{minus(d27['position'][0])} too (bar: under 0.1). The lens reads the pointer: the 100 directions "
             f"overlap it little (mean\ncos² {minus(geo[t27]['U']['mean'])}; with identity, the two items' mean "
-            f"difference, {minus(geo[t27]['id']['mean'])}). Any 100 atoms would do: another\n"
+            f"difference, {minus(geo[t27]['id']['mean'])}). Any 100 directions would do: another\n"
             f"scene's cost the 27B lookup {minus(other[0])} [{minus(other[1])}, {minus(other[2])}] in the main test.")  # fmt: skip
     for t in (t27, t9):
         for what in ("U", "id"):
-            S.record("fig02b", t, f"45k: the 100 atoms' mean cos^2 with the {'pointer' if what == 'U' else 'identity direction'}"
+            S.record("fig02b", t, f"45k: the 100 directions' mean cos^2 with the {'pointer' if what == 'U' else 'identity direction'}"
                      " (another item moved)", geo[t][what]["mean"], n=geo[t][what]["n"], source=src_k)  # fmt: skip
         for rt in ("identity", "position"):
-            S.record("fig02b", t, f"45k: {rt} answers' fall from 25 to 100 atoms beyond the random part (another item "
+            S.record("fig02b", t, f"45k: {rt} answers' fall from 25 to 100 directions beyond the random part (another item "
                      "moved)", *flags[t]["d"][rt], source=src_k)  # fmt: skip
-    S.record("fig02b", t27, "main test: lookup extra loss without another scene's 100 atoms", *other,
+    S.record("fig02b", t27, "main test: lookup extra loss without another scene's 100 directions", *other,
              n=q["generic"]["n"][0], source=q["generic"]["generic_run"])  # fmt: skip
     head = dict(fontsize=S.FONT, weight="bold", va="top")
-    fig.text(0.01, at(1.95), "(a) Main test, after the data: extra loss without the J++ part, by atoms removed", **head)
+    fig.text(
+        0.01, at(1.95), "(a) Main test, after the data: extra loss without the J++ part, by directions removed", **head
+    )
     open_dot = dict(marker="o", ls="", mfc="white", mew=1.6, ms=7)
     legend(fig, [plt.Line2D([], [], mec=S.COL["lookup"], **open_dot), plt.Line2D([], [], mec=S.COL["recall"], **open_dot)],
            ["lookup", "recall"], at(2.2))  # fmt: skip
-    grid_a = fig.add_gridspec(1, 4, left=0.13, right=0.985, top=at(3.05), bottom=at(4.75), wspace=0.12)
+    grid_a = fig.add_gridspec(1, 4, left=0.17, right=0.985, top=at(3.05), bottom=at(4.75), wspace=0.12)
     for j, (target, m, _) in enumerate(S.MODELS):
         ax = fig.add_subplot(grid_a[0, j])
         S.extra_axis(ax)
@@ -876,14 +878,14 @@ def f02b_k(plt) -> None:
             for w, c in ((X.LOOKUP, lk), (X.RECALL, rc)):
                 col = S.COL["lookup"] if w == X.LOOKUP else S.COL["recall"]
                 S.dot(ax, 0, -i, tuple(c["excess"]), col, "after", size=8)
-                S.record("fig02b", target, f"(a) main test, {k} atoms: {'lookup' if w == X.LOOKUP else 'recall'} extra "
+                S.record("fig02b", target, f"(a) main test, {k} directions: {'lookup' if w == X.LOOKUP else 'recall'} extra "
                          "loss", *c["excess"], n=c["n"], source=f"results/x0_necessity/{KCURVE_RUNS[m]}/outcomes.jsonl")  # fmt: skip
         ax.set_ylim(-len(KS) + 0.45, 0.55)
-        ax.set_yticks([-i for i in range(len(KS))], [f"{k} atoms" for k in KS] if j == 0 else [])
+        ax.set_yticks([-i for i in range(len(KS))], [f"{k} directions" for k in KS] if j == 0 else [])
         ax.tick_params(axis="y", length=0)
         ax.grid(axis="x", color="#eeeeee")
 
-    fig.text(0.01, at(5.65), "(b) Routes test (another item moved), fixed in advance: lookup answers by atoms removed",
+    fig.text(0.01, at(5.65), "(b) Routes test (another item moved), fixed in advance: lookup answers by directions removed",
              **head)  # fmt: skip
     hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[r]) for r in ("identity", "position", "original")]
     hs.append(plt.Line2D([], [], color=S.COL["control"], lw=4))
@@ -1149,22 +1151,39 @@ def f03b_layers(plt, supp: bool = False) -> None:
 # ---- after the overnight queue (Dan 27 Oct ~01:05): drawn once LANDED names the scored result folders --------------
 Q_MODELS = (("qwen3.5-9b", "9b"), ("qwen3.6-27b", "27b"), ("muse-glimmer-30b", "muse"))  # 45q, 45p: no 122B run
 Q_LINES = (("bw", "the bridge-word change", "#222222", "-", "o"),
-           ("li", "copy at the item's own tokens", S.COL["lookup"], "-", "o"),
-           ("lr", "copy at the other locker-sentence tokens", S.COL["lookup"], "--", "s"))  # fmt: skip
+           ("ls", "copy at every locker-sentence token", S.COL["lookup"], "-", "o"),
+           ("li", "copy at the item's own tokens", S.COL["lookup"], "--", "s"),
+           ("lr", "copy at the other locker-sentence tokens", S.COL["lookup"], ":", "^"))  # fmt: skip
+MADE_BY_L, MADE_BY_HALF = (
+    0.5,
+    0.4,
+)  # the copy "makes the link" at a layer: at least half of the switches (about, at L/2)
+
+
+def made_by(lk: dict) -> str:
+    """Where the full copy makes the link on one model (the rule's arms, lookups switched): 'L/2' if the copy at L/2
+    already switches about half (>= 0.4), 'L' if the copy at L switches at least half, else 'not'."""
+    return "L/2" if lk["rate"]["d"][0] >= MADE_BY_HALF else "L" if lk["rate"]["c"][0] >= MADE_BY_L else "not"
 
 
 def rel(path: Path) -> str:
     return str(path.relative_to(pins.REPO_ROOT)) if path.is_relative_to(pins.REPO_ROOT) else str(path)
 
 
+def model_list(keys: list[str]) -> str:
+    names = [SHORT[m] for m in keys]
+    return "the Qwens" if set(keys) == {"9b", "27b"} else " and ".join(names)
+
+
 def f03b_q(plt, verdict_dir: Path, link_dir: Path, sweep_dir: Path, title: str | None = None) -> None:
     """45q (results/x45b_binding/x45q-*, x45q-link-*, x45q-sweep-*): clean locker-after scenes, one panel per model
     (9B, 27B, Muse). The lookup's switch rate by layer (the sweep, after the data, open marks): the bridge-word change,
-    the copy of the changed prompt's states at the item's own tokens and at the other locker-sentence tokens, the number
-    and the period as one grey style; dotted lines at L/2 and L. At L (fixed in advance, filled): the rule's arms, the
-    bridge-word change (a) and the copy at every locker-sentence token (c), from the verdict (Muse's sweep, every 4th
-    layer, has no point at its L); beside them 45n's two diamonds, the copy without each token's J++ part and without a
-    random part (same size). The subtitle: the rule's numbers, its verdict and n."""
+    the copy of the changed prompt's states at every locker-sentence token, at the item's own tokens and at the other
+    locker-sentence tokens, the number and the period as one grey style; dotted lines at L/2 and L. The rule's arms
+    (fixed in advance, filled), from the verdict: at L the bridge-word change (a) and the copy (c), at L/2 the copy (d)
+    (Muse's sweep, every 4th layer, has no point at its L or L/2); beside L, 45n's two diamonds, the copy without each
+    token's J++ part and without a random part (same size). The subtitle: where the copy makes the link (made_by), the
+    rule, its verdict and n."""
     v = json.loads((verdict_dir / "x45q.json").read_text())
     link = json.loads((link_dir / "link.json").read_text())["runs"]
     sweep = json.loads((sweep_dir / "sweep.json").read_text())["runs"]
@@ -1172,24 +1191,26 @@ def f03b_q(plt, verdict_dir: Path, link_dir: Path, sweep_dir: Path, title: str |
     label = v["verdict"]["label"]
     held, tested = v["verdict"]["models_holding"], v["verdict"]["models_tested"]
     ns = " / ".join(str(by[t]["sanity"]["pass"]) if t in by else "–" for t, _ in Q_MODELS)
-
-    def rule_pt(t: str, key: str, arm: str) -> str:
-        r = by.get(t, {}).get("readers", {}).get(X.LOOKUP)
-        return f"{r[key][arm][0]:.2f}" if r and r[key][arm][0] is not None else "–"
-
-    c_of_s = " / ".join(rule_pt(t, "of_S", "c") for t, _ in Q_MODELS)
-    a_rate = " / ".join(rule_pt(t, "rate", "a") for t, _ in Q_MODELS)
+    where = {m: made_by(by[t]["readers"][X.LOOKUP]) for t, m in Q_MODELS if "readers" in by.get(t, {})}
+    by_l, by_half = [m for m, w in where.items() if w == "L"], [m for m, w in where.items() if w == "L/2"]
+    claim = ", ".join(p for p in (f"by L on {model_list(by_l)}" if by_l else "",
+                                  f"from about L/2 on {model_list(by_half)}" if by_half else "") if p)  # fmt: skip
     default = {"holds": "On clean scenes with the locker after the pick, the locker sentences make the link",
                "does not hold": "Locker after the pick: the copy into the locker sentences falls short"}  # fmt: skip
-    fig, axes = plt.subplots(1, len(Q_MODELS), figsize=(S.WIDTH, 6.9), sharey=True)
-    fig.subplots_adjust(left=0.09, right=0.985, top=0.52, bottom=0.10, wspace=0.10)
+    h = 7.9
+    fig, axes = plt.subplots(1, len(Q_MODELS), figsize=(S.WIDTH, h), sharey=True)
+    fig.subplots_adjust(left=0.09, right=0.985, top=1 - 3.3 / h, bottom=0.10, wspace=0.10)
     S.title(fig, title or default.get(label, "Locker after the pick: where the link is made"),
-            "Clean one-pick scenes, locker after the pick, only the bridge token differs (n = "
-            f"{ns} items on the\n9B / 27B / Muse). Lookups switched (%), 95% intervals. The sweep: after the data. Rule, "
-            "fixed in\nadvance: the copy at L (or L/2) switches at least half of the changed prompt's switches while "
-            f"the\nbridge-word change at L stays at or below 0.25, on 2 of 3 models: {label}, {held} of {tested}. Copy "
-            f"at L:\n{c_of_s} of the changed prompt's switches; bridge-word change at L: {a_rate} of the items.",
-            limit=86)  # fmt: skip
+            textwrap.fill(f"Clean one-pick scenes, locker after the pick, only the bridge token differs (n = {ns} items "
+                          "on the 9B / 27B / Muse). Lookups switched (%), 95% intervals; the sweep after the data, the "
+                          "rule's arms (filled) fixed in advance. The copy into the locker sentences rises from near 0: "
+                          f"they make the link {claim}. Rule: the copy at L (or L/2) switches at least half of the "
+                          "changed prompt's switches while the bridge-word change at L stays at or below 0.25, on 2 of 3 "
+                          f"models: {label}, {held} of {tested}.", 96), limit=86)  # fmt: skip
+    for t, m in Q_MODELS:
+        if m in where:
+            S.record("fig03b", t, "45q: where the copy makes the link (L/2: copy at L/2 >= 0.4; L: copy at L >= 0.5)",
+                     where[m], source=rel(verdict_dir / "x45q.json"))  # fmt: skip
     grey = "#9a9a9a"
     for ax, (target, m) in zip(axes, Q_MODELS, strict=True):
         ax.set_title(name_of(m), fontsize=S.FONT, weight="bold")
@@ -1206,10 +1227,12 @@ def f03b_q(plt, verdict_dir: Path, link_dir: Path, sweep_dir: Path, title: str |
         cells = sorted(sweep[run]["cells"][X.LOOKUP], key=lambda c: c["layer"])
         layers = [c["layer"] for c in cells]
         for arm, name, col, ls, mk in Q_LINES:
-            ax.plot(layers, [100 * c[arm][0] for c in cells], color=col, ls=ls, lw=1.8, zorder=2)
+            ax.plot(
+                layers, [100 * c[arm][0] for c in cells], color=col, ls=ls, lw=2.2 if arm == "ls" else 1.6, zorder=2
+            )
             for c in cells:
-                ax.plot([c["layer"]] * 2, [100 * c[arm][1], 100 * c[arm][2]], color=col, lw=1.2, alpha=0.8, zorder=2)
-                ax.plot([c["layer"]], [100 * c[arm][0]], mk, ms=6, mfc="white", mec=col, mew=1.5, zorder=3)
+                ax.plot([c["layer"]] * 2, [100 * c[arm][1], 100 * c[arm][2]], color=col, lw=1.0, alpha=0.7, zorder=2)
+                ax.plot([c["layer"]], [100 * c[arm][0]], mk, ms=5.5, mfc="white", mec=col, mew=1.4, zorder=3)
                 S.record("fig03b", target, f"45q, layer {c['layer']}: {name} (lookups switched)", *c[arm], n=c["n"],
                          source=rel(sweep_dir / "sweep.json"))  # fmt: skip
         for arm in ("lv", "lf"):
@@ -1222,11 +1245,12 @@ def f03b_q(plt, verdict_dir: Path, link_dir: Path, sweep_dir: Path, title: str |
             ax.axvline(x, color="#555555", ls=":", lw=1.2, zorder=0)
             ax.text(x - 0.6, 103, txt, ha="right", va="top", color="#555555")
         lk = mod["readers"][X.LOOKUP]
-        for arm, col, what in (("a", "#222222", "the bridge-word change at L"),
-                               ("c", S.COL["lookup"], "copy at L, every locker-sentence token")):  # fmt: skip
+        for arm, x, col, what in (("a", la, "#222222", "the bridge-word change at L"),
+                                  ("c", la, S.COL["lookup"], "copy at L, every locker-sentence token"),
+                                  ("d", half, S.COL["lookup"], "copy at L/2, every locker-sentence token")):  # fmt: skip
             r = lk["rate"][arm]
-            ax.plot([la] * 2, [100 * r[1], 100 * r[2]], color=col, lw=1.6, zorder=5)
-            ax.plot([la], [100 * r[0]], "o", ms=8, color=col, zorder=6)
+            ax.plot([x] * 2, [100 * r[1], 100 * r[2]], color=col, lw=1.6, zorder=5)
+            ax.plot([x], [100 * r[0]], "o", ms=8, color=col, zorder=6)
             S.record("fig03b", target, f"45q, the rule's arm {arm}: {what} (lookups switched)", *r, n=lk["n"],
                      source=rel(verdict_dir / "x45q.json"))  # fmt: skip
         S.record("fig03b", target, "45q, the rule: copy at L's share of the changed prompt's lookup switches",
@@ -1247,16 +1271,16 @@ def f03b_q(plt, verdict_dir: Path, link_dir: Path, sweep_dir: Path, title: str |
             "fig03b", target, "45q: the rule holds", int(bool(mod.get("holds"))), source=rel(verdict_dir / "x45q.json")
         )
     axes[0].set_ylabel("lookups switched (%)")
-    hs = [plt.Line2D([], [], color=col, ls=ls, marker=mk, mfc="white", mec=col, mew=1.5, ms=6, lw=1.8)
-          for _, _, col, ls, mk in Q_LINES]  # fmt: skip
+    hs = [plt.Line2D([], [], color=col, ls=ls, marker=mk, mfc="white", mec=col, mew=1.4, ms=5.5,
+                     lw=2.2 if arm == "ls" else 1.6) for arm, _, col, ls, mk in Q_LINES]  # fmt: skip
     hs += [plt.Line2D([], [], color=grey, lw=2.0), plt.Line2D([], [], marker="o", ls="", color="#222222", ms=8),
            plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8),
            plt.Line2D([], [], marker="D", ls="", color=S.COL["lookup"], ms=7),
            plt.Line2D([], [], marker="D", ls="", color=grey, ms=7)]  # fmt: skip
-    labels = [a[1] for a in Q_LINES] + ["copy at the number or the period only", "at L: the bridge-word change",
-                                        "at L: copy at every locker-sentence token", "copy at L without the J++ part",
+    labels = [a[1] for a in Q_LINES] + ["copy at the number or the period only", "rule, at L: the bridge-word change",
+                                        "rule, at L and L/2: the copy", "copy at L without the J++ part",
                                         "copy at L without a random part (same size)"]  # fmt: skip
-    legend(fig, hs, labels, 0.735, ncol=2)
+    legend(fig, hs, labels, 1 - 1.62 / h, ncol=2)
     S.save(fig, "fig03b_layers")
 
 
@@ -1269,7 +1293,7 @@ P_ROWS = (("a1", "(1) without the J++ part\nat the bridge word"),
 def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     """45p (results/x45p/x45p-*, fixed in advance): clean one-pick scenes whose new item's locker sentence comes before
     the asked pick; one panel per model, one row per arm (Fig. 2's style): the recall's switches lost against arm (1),
-    with 95% intervals (filled), the lookup's as small open points; arm (1)'s own switches as text. Story Fig. 3c if the
+    and the lookup's, with 95% intervals (both filled, apart by colour); arm (1)'s own switches as text. Story Fig. 3c if the
     rule holds, else figures/supp/s03c (titled with the null). Returns the saved name."""
     v = json.loads((verdict_dir / "x45p.json").read_text())
     by = {m["target"]: m for m in v["models"]}
@@ -1284,7 +1308,7 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     )
     S.title(fig, title or default,
             "Clean one-pick scenes, the new item's locker before the pick (n = "
-            f"{ns} on the 9B / 27B / Muse).\nSwitches lost (%): 1 − recalls switched under the arm / under (1). Rule, "
+            f"{ns} on the 9B / 27B / Muse).\nSwitches lost (%): 1 − switches under the arm / under (1), 95% intervals. Rule, "
             "fixed in advance:\n(2) loses at least 0.2 more than (3) and 0.15 more than (4), on 2 of 3 models:\n"
             f"{label}, {v['verdict']['models_holding']} of {v['verdict']['models']}.", limit=86)  # fmt: skip
     src = rel(verdict_dir / "x45p.json")
@@ -1308,18 +1332,19 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
             r = rc["loss"][arm]
             if r[0] is None or r[0] != r[0]:  # nan: (1) switches no recall
                 continue
-            S.dot(ax, 0, -i, tuple(100 * x for x in r), S.COL["recall"], "fixed", size=8)
+            # both readers fixed in advance: filled, told apart by colour only (Dan 27 Oct ~11:20)
+            S.dot(ax, 0, -i + 0.15, tuple(100 * x for x in r), S.COL["recall"], "fixed", size=8)
             q = lk["loss"][arm]
             if q[0] == q[0]:
-                ax.plot([100 * q[0]], [-i - 0.25], "o", ms=5, mfc="white", mec=S.COL["lookup"], mew=1.4, zorder=3)
+                S.dot(ax, 0, -i - 0.15, tuple(100 * x for x in q), S.COL["lookup"], "fixed", size=8)
                 S.record("fig03c", target, f"45p, {arm}: lookup switches lost against (1)", *q, n=lk["n"], source=src)
             S.record("fig03c", target, f"45p, {arm}: recall switches lost against (1)", *r, n=rc["n"], source=src)
         S.record("fig03c", target, "45p: the rule holds", int(bool(mod.get("holds"))), source=src)
     axes[0].set_yticks([-i for i in range(len(P_ROWS))], [r[1] for r in P_ROWS])
     fig.supxlabel("switches lost (%)", x=0.62, y=0.01, fontsize=S.FONT)
     legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=8),
-                 plt.Line2D([], [], marker="o", ls="", mfc="white", mec=S.COL["lookup"], mew=1.4, ms=5)],
-           ["recall (95% interval)", "lookup"], 0.73)  # fmt: skip
+                 plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8)],
+           ["recall", "lookup"], 0.73)  # fmt: skip
     name = "fig03c_earlier_mention" if holds else "s03c_earlier_mention"
     S.save(fig, name, supp=not holds)
     return name
@@ -1937,9 +1962,14 @@ def f09_transfer(plt) -> None:
     def at(inch: float) -> float:  # inches from the top -> figure fraction
         return 1 - inch / h
 
-    S.title(fig, "The split carries over to other texts; the pointer does not",
+    found = {m: (x45d_verdict(m)[0] or {}).get("verdict", {}).get("outcome") for _, m, _ in S.MODELS}
+    found_on = [SHORT[m] for m, o in found.items() if o == "pointer elsewhere"]
+    not_on = [SHORT[m] for m, o in found.items() if o is not None and o != "pointer elsewhere"]
+    # Dan 27 Oct ~11:20: the title and the subtitle's refit line
+    S.title(fig, "The split carries over to other texts; the pointer must be refit for each format",
             "The lookup's extra loss (0-1): switches lost without the part, minus those lost without a random\n"
-            "part (same size).")  # fmt: skip
+            f"part (same size); refit pointer found on {' and '.join(found_on)}, not {' and '.join(not_on)}.",
+            limit=86)  # fmt: skip
     head = dict(fontsize=S.FONT, weight="bold", va="top")
     fig.text(0.01, at(0.95), "(a) The pointer fit on simple scenes, not refit", **head)
     black = "#222222"
@@ -2249,16 +2279,8 @@ def scorecard_rows() -> list[dict]:
     swap = {r["model"]: r["clauses"]["b"] for r in g45["runs"].values() if r["scene_set"] == "two people swap"}
     only_jpp = {m: ("pending" if t not in swap else "ok" if swap[t] else "x", "") for t, m, _ in S.MODELS}
     assert {m: c for m, (c, _) in only_jpp.items()} == {"9b": "ok", "27b": "ok", "122b": "ok", "muse": "ok"}
-    link = {}
-    for m in keys:
-        run = {"9b": "qwen35_9b_x45b_binding", "27b": "x45b_binding_27b", "muse": "muse30b_x45b_binding"}.get(m)
-        found = [p for p in sorted((pins.RESULTS_DIR / "x45b_binding" / run).glob("verdict-*/verdict.json"))
-                 if json.loads(p.read_text()).get("sanity")] if run else []  # fmt: skip
-        link[m] = (
-            "-" if not found else "ok" if json.loads(found[-1].read_text())["sanity"]["rule"]["holds"] else "x",
-            "",
-        )
-    assert {m: c for m, (c, _) in link.items()} == {"9b": "x", "27b": "x", "122b": "-", "muse": "x"}, link
+    # 45b (the main test's locker-after items) is no longer a row (Dan 27 Oct ~11:20): a design error, the changed
+    # prompt differs after the bridge word there; 45q on the clean scenes is the row
     # 45k (fixed in advance; Q45.9 scored on the 27B): none of the three tested causes holds -> x on the 27B; the 9B
     # is its control and Muse is reported, not counted (Fig. 2b): not tested in this row
     x45k = latest(pins.RESULTS_DIR / "x6_routes", "x45k-*/x45k.json") or {}
@@ -2289,8 +2311,8 @@ def scorecard_rows() -> list[dict]:
     nat_key = {"9b": "numbers:natg75_gap_9b", "muse": "numbers:nat_lk_whole_sw_muse"}
     spec = (  # group, claim (the figure's row label), cells (model key -> (cell, flag)), data.csv key per model
         ("Split", "main test", main, lambda m: f"numbers:contrast_{m}"),
-        ("Split", "a tested cause for the 27B's loss with 100 atoms", k_cause,
-         lambda m: "fig02b:45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved)"),
+        ("Split", "a tested cause for the 27B's loss with 100 directions", k_cause,
+         lambda m: "fig02b:45k: identity answers' fall from 25 to 100 directions beyond the random part (another item moved)"),
         ("Split", "locker before the pick", before, lambda m: f"numbers:sbo_swap_before_gap_{m}"),
         ("Split", "clean one-pick scenes", clean, lambda m: f"numbers:x45m_before_gap_{m}"),
         ("Split", "logit difference", v4["The split on the logit difference"], lambda m: f"numbers:ld_gap_{m}"),
@@ -2320,7 +2342,6 @@ def scorecard_rows() -> list[dict]:
          lambda m: "fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"),
         ("Limits", "the recall reads the earlier mention, locker before the pick", earlier,
          lambda m: f"numbers:x45p_d23_{m}"),
-        ("Limits", "the link sits in the locker sentences, main test", link, lambda m: f"numbers:x45b_sane_c_{m}"),
         ("Limits", "the link sits in the locker sentences, clean one-pick scenes", link_clean,
          lambda m: f"numbers:x45q_c_{m}"),
     )  # fmt: skip

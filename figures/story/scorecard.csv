@@ -3,10 +3,10 @@ main test,Qwen3.5-9B,ok,,numbers:contrast_9b
 main test,Qwen3.6-27B,~,,numbers:contrast_27b
 main test,Qwen3.5-122B,ok,,numbers:contrast_122b
 main test,Muse Glimmer 30B,ok,,numbers:contrast_muse
-a tested cause for the 27B's loss with 100 atoms,Qwen3.5-9B,-,,
-a tested cause for the 27B's loss with 100 atoms,Qwen3.6-27B,x,,fig02b:45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved)
-a tested cause for the 27B's loss with 100 atoms,Qwen3.5-122B,-,,
-a tested cause for the 27B's loss with 100 atoms,Muse Glimmer 30B,-,,
+a tested cause for the 27B's loss with 100 directions,Qwen3.5-9B,-,,
+a tested cause for the 27B's loss with 100 directions,Qwen3.6-27B,x,,fig02b:45k: identity answers' fall from 25 to 100 directions beyond the random part (another item moved)
+a tested cause for the 27B's loss with 100 directions,Qwen3.5-122B,-,,
+a tested cause for the 27B's loss with 100 directions,Muse Glimmer 30B,-,,
 locker before the pick,Qwen3.5-9B,ok,a,numbers:sbo_swap_before_gap_9b
 locker before the pick,Qwen3.6-27B,~,a,numbers:sbo_swap_before_gap_27b
 locker before the pick,Qwen3.5-122B,x,a,numbers:sbo_swap_before_gap_122b
@@ -83,10 +83,6 @@ identity outside J++ is specific,Muse Glimmer 30B,x,,numbers:x45e_cut_muse
 "the recall reads the earlier mention, locker before the pick",Qwen3.6-27B,ok,,numbers:x45p_d23_27b
 "the recall reads the earlier mention, locker before the pick",Qwen3.5-122B,-,,
 "the recall reads the earlier mention, locker before the pick",Muse Glimmer 30B,ok,,numbers:x45p_d23_muse
-"the link sits in the locker sentences, main test",Qwen3.5-9B,x,,numbers:x45b_sane_c_9b
-"the link sits in the locker sentences, main test",Qwen3.6-27B,x,,numbers:x45b_sane_c_27b
-"the link sits in the locker sentences, main test",Qwen3.5-122B,-,,
-"the link sits in the locker sentences, main test",Muse Glimmer 30B,x,,numbers:x45b_sane_c_muse
 "the link sits in the locker sentences, clean one-pick scenes",Qwen3.5-9B,ok,,numbers:x45q_c_9b
 "the link sits in the locker sentences, clean one-pick scenes",Qwen3.6-27B,ok,,numbers:x45q_c_27b
 "the link sits in the locker sentences, clean one-pick scenes",Qwen3.5-122B,-,,
