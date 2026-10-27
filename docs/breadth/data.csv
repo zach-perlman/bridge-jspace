@@ -471,6 +471,13 @@ ptr.nl.rel_read,pointer,nl,relations read (swap >= 10),7.0,,,,count,results/jswa
 ptr.nl.lookup,pointer,nl,first layer where the lens reads X's attribute on >= 50% (answer position),32.0,,,,layer,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
 probe.nl.swap,probe,nl,J++ swap on probe-valid relations,62.4,,,,points,results/probe_ceiling/nem35l_probe_ceiling_L27-33_v1/summary.json
 probe.nl.probe,probe,nl,probe-subspace swap,2.2,,,,points,results/probe_ceiling/nem35l_probe_ceiling_L27-33_v1/summary.json
+ptr.nb.swap,pointer,nb,"J-part swap, same passage",41.3,34.9,47.7,698,points,results/jswap/nem35b_jswap_pointer_v2_k100_s150_v1/summary.json
+ptr.nb.neutral,pointer,nb,neutral-sentence donor / same-passage swap,1.012,,,,ratio,results/jswap/nem35b_jswap_pointer_v2_k100_s150_v1/summary.json
+ptr.nb.noown,pointer,nb,without own-word directions / swap,0.429,,,,ratio,results/jswap/nem35b_jswap_pointer_v2_k100_s150_v1/summary.json
+ptr.nb.rot,pointer,nb,"neutral donor, rotated",-0.3,,,,points,results/jswap/nem35b_jswap_pointer_v2_k100_s150_v1/summary.json
+ptr.nb.rel_held,pointer,nb,relations where the neutral donor keeps >= 2/3,6.0,,,,count,results/jswap/nem35b_jswap_pointer_v2_k100_s150_v1/summary.json
+ptr.nb.rel_read,pointer,nb,relations read (swap >= 10),6.0,,,,count,results/jswap/nem35b_jswap_pointer_v2_k100_s150_v1/summary.json
+ptr.nb.lookup,pointer,nb,first layer where the lens reads X's attribute on >= 50% (answer position),69.0,,,,layer,results/jswap/nem35b_jswap_pointer_v2_k100_s150_v1/summary.json
 dose.q27.k1,dose,q27,"M - K, J++ top 1",34.5,29,40,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
 dose.q27.k1.rot,dose,q27,rot at K 1,2.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
 dose.q27.k1.smk,dose,q27,smk at K 1,34.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json

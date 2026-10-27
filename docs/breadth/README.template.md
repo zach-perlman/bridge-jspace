@@ -58,7 +58,7 @@ as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Bu
 - **The swap.** Replace the J-part (the span of the top-10 J++ directions) of the bridge's last token with another
   entity's (D).
   - **Transfer**: the share answering D's fact minus the share answering a third entity's.
-- **Fixed in advance** = pre-registered in docs/prereg_replication_1022.md (amendments 1-56) before the run.
+- **Fixed in advance** = pre-registered in docs/prereg_replication_1022.md (amendments 1-57) before the run.
   **After the data** = chosen after seeing results. Brackets: 95% bootstrap over bridges.
 
 ## 1. Recall needs the J++ directions; reading the stated fact does not
@@ -206,7 +206,7 @@ Where in the prompt must the removal act?
 
 ## 4. What the directions carry at the mention: which entity it is
 
-*Fixed in advance (amendments 32, 34, 38A, 47, 48, 51).*
+*Fixed in advance (amendments 32, 34, 38A, 47, 48, 51, 55 note 1).*
 
 If the mention's J-part is swapped for another entity's, does the answer follow, and what is being moved?
 
@@ -227,9 +227,12 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   - From one neutral sentence about D ("A reader asked a question about D in the letters page"), the J-part moves the
     answer {{v|ptr.q27.neutral}}, {{v|ptr.q9.neutral}} and {{v|ptr.nl.neutral}} times as much as from D's own passage.
     It holds on {{v|ptr.q27.rel_held}} of {{v|ptr.q27.rel_read}} relations on the 27B.
+  - Bolt, with 100 directions (amendment 55 note 1): {{v|ptr.nb.neutral}}, on {{v|ptr.nb.rel_held}} of
+    {{v|ptr.nb.rel_read}} relations.
   - From a passage on another relation it moves {{v|xrel.q27}} / {{v|xrel.q9}} / {{v|xrel.nl}} as much.
-- **It is more than the name.** Without the entity's own-word directions, the swap keeps {{v|ptr.q27.noown}} /
-  {{v|ptr.q9.noown}} / {{v|ptr.nl.noown}}. Lightning's pointer is the most name-like.
+- **In the Qwens it is more than the name; in the Nemotrons, less so.** Without the entity's own-word directions, the
+  swap keeps {{v|ptr.q27.noown}} / {{v|ptr.q9.noown}} / {{v|ptr.nl.noown}}. Bolt's keeps {{v|ptr.nb.noown}}, below the
+  2/3 bar: its pointer is mostly the name's own directions.
 - **Decodable is not carried.** A supervised probe reads the fact at the mention about as well as J++. Swapping the
   probe's subspace moves {{v|probe.q27.probe}} / {{v|probe.q9.probe}} / {{v|probe.nl.probe}}, against J++'s
   {{v|probe.q27.swap}} / {{v|probe.q9.swap}} / {{v|probe.nl.swap}}.
@@ -292,8 +295,8 @@ How many directions does the dependence need, and when does the removal stop bei
     ({{v|dose.nl.k10.share}}) and give {{v|dose.nl.k10}}.
   - The pre-registered limit stops Bolt's readings at K {{v|dose.nb.limit}}, where the size-matched control already
     exceeds half the J++ effect; below it the effect is about 0 ({{v|dose.nb.k3}} at 3).
-  - Its J-part swap still carries the entity at 100 directions (Section 4): Bolt's mention holds the entity in J-space,
-    but its recall does not depend on those directions more than on any same-size removal.
+  - Its J-part swap still carries the entity at 100 directions, as a context-free pointer (Section 4). Bolt's mention
+    holds the entity in J-space, but its recall does not depend on those directions more than on any same-size removal.
 
 ![The J-specific part sits in the first 1-30 directions; in Bolt a same-size removal costs about as much](figures/fig09_dose.png)
 *Fig. 9.*
@@ -436,12 +439,13 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   20 random items per model.
 - **Clean-checkout reruns**: row-identical for the 27B and 9B. Lightning reproduces its headline, not row for row; a
   determinism check traces that to its inputs, not its kernels (Section 2).
-- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-56. EXPERIMENTS.md has one line per run, with
+- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-57. EXPERIMENTS.md has one line per run, with
   its W&B link.
 
 ## 10. Next
 
-- Running: Bolt's pointer tests at 100 directions; then DeepSeek's dose grid and position split.
+- Running: DeepSeek's dose grid and position split; then amendment 57 (H0 on a larger numbers set, a second three-hop
+  seed, late-band positions for the 9B and Lightning).
 - OLMo at matched removal size (needs DeepSeek's cache dropped; not approved).
 - H0 head-on: a bridge computed from the passage, on v2.
 - Late-band positions for the 9B and Lightning.

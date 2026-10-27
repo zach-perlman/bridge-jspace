@@ -31,7 +31,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 77f8025 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 14eeb14 from the run files.
 
 ## Setup
 
@@ -59,7 +59,7 @@ as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Bu
 - **The swap.** Replace the J-part (the span of the top-10 J++ directions) of the bridge's last token with another
   entity's (D).
   - **Transfer**: the share answering D's fact minus the share answering a third entity's.
-- **Fixed in advance** = pre-registered in docs/prereg_replication_1022.md (amendments 1-56) before the run.
+- **Fixed in advance** = pre-registered in docs/prereg_replication_1022.md (amendments 1-57) before the run.
   **After the data** = chosen after seeing results. Brackets: 95% bootstrap over bridges.
 
 ## 1. Recall needs the J++ directions; reading the stated fact does not
@@ -207,7 +207,7 @@ Where in the prompt must the removal act?
 
 ## 4. What the directions carry at the mention: which entity it is
 
-*Fixed in advance (amendments 32, 34, 38A, 47, 48, 51).*
+*Fixed in advance (amendments 32, 34, 38A, 47, 48, 51, 55 note 1).*
 
 If the mention's J-part is swapped for another entity's, does the answer follow, and what is being moved?
 
@@ -228,9 +228,12 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   - From one neutral sentence about D ("A reader asked a question about D in the letters page"), the J-part moves the
     answer 1.09, 1.10 and 1.01 times as much as from D's own passage.
     It holds on 8 of 8 relations on the 27B.
+  - Bolt, with 100 directions (amendment 55 note 1): 1.01, on 6 of
+    6 relations.
   - From a passage on another relation it moves 0.99 / 0.99 / 0.98 as much.
-- **It is more than the name.** Without the entity's own-word directions, the swap keeps 0.84 /
-  0.83 / 0.62. Lightning's pointer is the most name-like.
+- **In the Qwens it is more than the name; in the Nemotrons, less so.** Without the entity's own-word directions, the
+  swap keeps 0.84 / 0.83 / 0.62. Bolt's keeps 0.43, below the
+  2/3 bar: its pointer is mostly the name's own directions.
 - **Decodable is not carried.** A supervised probe reads the fact at the mention about as well as J++. Swapping the
   probe's subspace moves +8 / +6 / +2, against J++'s
   +75 / +80 / +62.
@@ -293,8 +296,8 @@ How many directions does the dependence need, and when does the removal stop bei
     (18%) and give +51.
   - The pre-registered limit stops Bolt's readings at K 10, where the size-matched control already
     exceeds half the J++ effect; below it the effect is about 0 (+2 at 3).
-  - Its J-part swap still carries the entity at 100 directions (Section 4): Bolt's mention holds the entity in J-space,
-    but its recall does not depend on those directions more than on any same-size removal.
+  - Its J-part swap still carries the entity at 100 directions, as a context-free pointer (Section 4). Bolt's mention
+    holds the entity in J-space, but its recall does not depend on those directions more than on any same-size removal.
 
 ![The J-specific part sits in the first 1-30 directions; in Bolt a same-size removal costs about as much](figures/fig09_dose.png)
 *Fig. 9.*
@@ -379,7 +382,7 @@ proposal's own question (H0: J-space carries recalled words, not computed variab
 | Nemotron 3.5 Lightning (L27-33) | +1.67 nats | +53 [48, 59] | +4 / +9 | 0.15 | +44 | +49, +50 | 9 of 14075 differ | 0.22 | +45 / +14 | 1.01 | +62 / +2 | 300 (1) |
 | DeepSeek-V4-Flash (L18-23) | +1.68 nats | +18 [14, 22] | +5 / +2 | 0.49 | +21 | · | · | · | +10 / +19 (mid depth) | · | · | · |
 | Ministral-3-14B (L32-37) | +0.62 nats | +23 [19, 28] | +1 / +4 | 0.06 | +37 | · | · | 0.06 | +3 / +10 (mid depth) | · | · | 10 (3) |
-| Nemotron 3.5 Bolt (L42-53) | +0.20 nats | +6 [3, 9] | +0 / +2 | 1.28 | +6 | · | · | · | +3 / +20; K 100: +41 | · | · | 3 (3) |
+| Nemotron 3.5 Bolt (L42-53) | +0.20 nats | +6 [3, 9] | +0 / +2 | 1.28 | +6 | · | · | · | +3 / +20; K 100: +41 | 1.01 | · | 3 (3) |
 | OLMo-3-32B base (L12-20) | +0.04 nats | +5 [3, 8] | +2 / +2 | · | +4 | · | · | · | +41 / +53 | · | · | · |
 | Muse Glimmer 30B (L36-42) | +0.94 nats | +60 [55, 65] | +3 / +35 | · | +49 | · | · | · | · | · | · | · |
 | Qwen3.5-122B (FP8) (L39-45) | +1.26 nats | +48 [44, 54] | +2 / +12 | · | +2 | · | · | · | · | · | · | · |
@@ -447,12 +450,13 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   20 random items per model.
 - **Clean-checkout reruns**: row-identical for the 27B and 9B. Lightning reproduces its headline, not row for row; a
   determinism check traces that to its inputs, not its kernels (Section 2).
-- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-56. EXPERIMENTS.md has one line per run, with
+- **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-57. EXPERIMENTS.md has one line per run, with
   its W&B link.
 
 ## 10. Next
 
-- Running: Bolt's pointer tests at 100 directions; then DeepSeek's dose grid and position split.
+- Running: DeepSeek's dose grid and position split; then amendment 57 (H0 on a larger numbers set, a second three-hop
+  seed, late-band positions for the 9B and Lightning).
 - OLMo at matched removal size (needs DeepSeek's cache dropped; not approved).
 - H0 head-on: a bridge computed from the passage, on v2.
 - Late-band positions for the 9B and Lightning.

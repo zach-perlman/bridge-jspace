@@ -1,4 +1,4 @@
-# Results digest (generated 2026-10-26 22:37 UTC by scripts/results_digest.py)
+# Results digest (generated 2026-10-27 08:11 UTC by scripts/results_digest.py)
 
 Every number is read from results/ (jsuite2_score, soft_score, jswap and probe_ceiling summaries). M - K: points lost on
 memory finals minus stated-fact finals under the top-10 J++ removal at the band, start all, 95% bootstrap over bridges.
@@ -43,6 +43,7 @@ position where the lens reads X's answer (unedited) / D's answer (neutral-donor 
 | Qwen3.6-27B | 898 | +64 [58, 70] | +70 (1.09) | -1 / +0 | +68 | 8 of 8 | +44 (0.69) | +54 (0.84) | X from L50; D (neutral donor) from L56 |
 | Qwen3.5-9B | 624 | +64 [58, 70] | +70 (1.10) | +1 / -0 | +55 | 8 of 8 | +46 (0.73) | +52 (0.83) | X from L23; D (neutral donor) from L24 |
 | Nemotron-3.5-Lightning | 654 | +46 [40, 52] | +46 (1.01) | -0 / +1 | +44 | 7 of 7 | +32 (0.69) | +28 (0.62) | X from L32; D (neutral donor) peaks 45% |
+| Nemotron-3.5-Bolt | 698 | +41 [35, 48] | +42 (1.01) | -0 / +2 | +28 | 6 of 6 | +34 (0.83) | +18 (0.43) | X from L69; D (neutral donor) peaks 44% |
 
 ## Removal size at the knock-out band (median share of the residual norm removed, top 10)
 
