@@ -1,0 +1,1070 @@
+{
+ "run": "nem35l_natplus_v1_chat_ko_cand2_v1",
+ "set": "natplus_v1_chat",
+ "cells": {
+  "all/all/paper10": {
+   "loss": {
+    "PP": 2.0,
+    "MP": 2.5,
+    "PM": 63.1,
+    "MM": 45.0
+   },
+   "gap": 51.8,
+   "gap_ci": [
+    46,
+    58
+   ],
+   "n": {
+    "PP": 301,
+    "MP": 325,
+    "PM": 301,
+    "MM": 329
+   }
+  },
+  "all/all/paper10_rot": {
+   "loss": {
+    "PP": 5.0,
+    "MP": 4.6,
+    "PM": 5.6,
+    "MM": 1.5
+   },
+   "gap": -1.2,
+   "gap_ci": [
+    -4,
+    1
+   ],
+   "n": {
+    "PP": 301,
+    "MP": 325,
+    "PM": 301,
+    "MM": 329
+   }
+  },
+  "all/all/unembed10": {
+   "loss": {
+    "PP": 3.0,
+    "MP": 2.5,
+    "PM": 14.3,
+    "MM": 7.0
+   },
+   "gap": 7.9,
+   "gap_ci": [
+    5,
+    11
+   ],
+   "n": {
+    "PP": 301,
+    "MP": 325,
+    "PM": 301,
+    "MM": 329
+   }
+  },
+  "all/all/unembed10_rot": {
+   "loss": {
+    "PP": 3.3,
+    "MP": 3.7,
+    "PM": 8.6,
+    "MM": 3.6
+   },
+   "gap": 2.6,
+   "gap_ci": [
+    0,
+    5
+   ],
+   "n": {
+    "PP": 301,
+    "MP": 325,
+    "PM": 301,
+    "MM": 329
+   }
+  },
+  "popularity/popular/paper10": {
+   "loss": {
+    "PP": 3.0,
+    "MP": 3.0,
+    "PM": 58.9,
+    "MM": 42.1
+   },
+   "gap": 47.5,
+   "gap_ci": [
+    39,
+    55
+   ],
+   "n": {
+    "PP": 201,
+    "MP": 232,
+    "PM": 202,
+    "MM": 235
+   }
+  },
+  "popularity/popular/paper10_rot": {
+   "loss": {
+    "PP": 4.0,
+    "MP": 5.2,
+    "PM": 5.9,
+    "MM": 0.9
+   },
+   "gap": -1.2,
+   "gap_ci": [
+    -4,
+    2
+   ],
+   "n": {
+    "PP": 201,
+    "MP": 232,
+    "PM": 202,
+    "MM": 235
+   }
+  },
+  "popularity/popular/unembed10": {
+   "loss": {
+    "PP": 2.5,
+    "MP": 2.2,
+    "PM": 15.3,
+    "MM": 5.1
+   },
+   "gap": 7.9,
+   "gap_ci": [
+    4,
+    12
+   ],
+   "n": {
+    "PP": 201,
+    "MP": 232,
+    "PM": 202,
+    "MM": 235
+   }
+  },
+  "popularity/popular/unembed10_rot": {
+   "loss": {
+    "PP": 3.5,
+    "MP": 3.4,
+    "PM": 7.4,
+    "MM": 3.4
+   },
+   "gap": 1.9,
+   "gap_ci": [
+    -1,
+    5
+   ],
+   "n": {
+    "PP": 201,
+    "MP": 232,
+    "PM": 202,
+    "MM": 235
+   }
+  },
+  "popularity/rare/paper10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 1.1,
+    "PM": 71.7,
+    "MM": 52.1
+   },
+   "gap": 61.4,
+   "gap_ci": [
+    50,
+    73
+   ],
+   "n": {
+    "PP": 100,
+    "MP": 93,
+    "PM": 99,
+    "MM": 94
+   }
+  },
+  "popularity/rare/paper10_rot": {
+   "loss": {
+    "PP": 7.0,
+    "MP": 3.2,
+    "PM": 5.1,
+    "MM": 3.2
+   },
+   "gap": -1.0,
+   "gap_ci": [
+    -5,
+    3
+   ],
+   "n": {
+    "PP": 100,
+    "MP": 93,
+    "PM": 99,
+    "MM": 94
+   }
+  },
+  "popularity/rare/unembed10": {
+   "loss": {
+    "PP": 4.0,
+    "MP": 3.2,
+    "PM": 12.1,
+    "MM": 11.7
+   },
+   "gap": 8.3,
+   "gap_ci": [
+    2,
+    15
+   ],
+   "n": {
+    "PP": 100,
+    "MP": 93,
+    "PM": 99,
+    "MM": 94
+   }
+  },
+  "popularity/rare/unembed10_rot": {
+   "loss": {
+    "PP": 3.0,
+    "MP": 4.3,
+    "PM": 11.1,
+    "MM": 4.3
+   },
+   "gap": 4.0,
+   "gap_ci": [
+    -1,
+    9
+   ],
+   "n": {
+    "PP": 100,
+    "MP": 93,
+    "PM": 99,
+    "MM": 94
+   }
+  },
+  "relation/animals/paper10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 0.0,
+    "PM": 47.9,
+    "MM": 29.0
+   },
+   "gap": 38.5,
+   "gap_ci": [
+    23,
+    55
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 31,
+    "PM": 48,
+    "MM": 31
+   }
+  },
+  "relation/animals/paper10_rot": {
+   "loss": {
+    "PP": 4.2,
+    "MP": 0.0,
+    "PM": 6.2,
+    "MM": 3.2
+   },
+   "gap": 2.7,
+   "gap_ci": [
+    -3,
+    9
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 31,
+    "PM": 48,
+    "MM": 31
+   }
+  },
+  "relation/animals/unembed10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 0.0,
+    "PM": 16.7,
+    "MM": 25.8
+   },
+   "gap": 21.2,
+   "gap_ci": [
+    10,
+    35
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 31,
+    "PM": 48,
+    "MM": 31
+   }
+  },
+  "relation/animals/unembed10_rot": {
+   "loss": {
+    "PP": 2.1,
+    "MP": 0.0,
+    "PM": 6.2,
+    "MM": 3.2
+   },
+   "gap": 3.7,
+   "gap_ci": [
+    -1,
+    9
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 31,
+    "PM": 48,
+    "MM": 31
+   }
+  },
+  "relation/cities/paper10": {
+   "loss": {
+    "PP": 2.6,
+    "MP": 5.3,
+    "PM": 72.7,
+    "MM": 49.4
+   },
+   "gap": 57.1,
+   "gap_ci": [
+    45,
+    69
+   ],
+   "n": {
+    "PP": 76,
+    "MP": 76,
+    "PM": 77,
+    "MM": 77
+   }
+  },
+  "relation/cities/paper10_rot": {
+   "loss": {
+    "PP": 9.2,
+    "MP": 5.3,
+    "PM": 2.6,
+    "MM": 0.0
+   },
+   "gap": -5.9,
+   "gap_ci": [
+    -11,
+    -1
+   ],
+   "n": {
+    "PP": 76,
+    "MP": 76,
+    "PM": 77,
+    "MM": 77
+   }
+  },
+  "relation/cities/unembed10": {
+   "loss": {
+    "PP": 5.3,
+    "MP": 2.6,
+    "PM": 5.2,
+    "MM": 1.3
+   },
+   "gap": -0.7,
+   "gap_ci": [
+    -5,
+    4
+   ],
+   "n": {
+    "PP": 76,
+    "MP": 76,
+    "PM": 77,
+    "MM": 77
+   }
+  },
+  "relation/cities/unembed10_rot": {
+   "loss": {
+    "PP": 3.9,
+    "MP": 5.3,
+    "PM": 5.2,
+    "MM": 1.3
+   },
+   "gap": -1.4,
+   "gap_ci": [
+    -6,
+    3
+   ],
+   "n": {
+    "PP": 76,
+    "MP": 76,
+    "PM": 77,
+    "MM": 77
+   }
+  },
+  "relation/countries/paper10": {
+   "loss": {
+    "PP": 1.2,
+    "MP": 3.4,
+    "PM": 62.7,
+    "MM": 47.3
+   },
+   "gap": 52.7,
+   "gap_ci": [
+    41,
+    63
+   ],
+   "n": {
+    "PP": 83,
+    "MP": 89,
+    "PM": 83,
+    "MM": 91
+   }
+  },
+  "relation/countries/paper10_rot": {
+   "loss": {
+    "PP": 2.4,
+    "MP": 6.7,
+    "PM": 6.0,
+    "MM": 1.1
+   },
+   "gap": -1.0,
+   "gap_ci": [
+    -5,
+    3
+   ],
+   "n": {
+    "PP": 83,
+    "MP": 89,
+    "PM": 83,
+    "MM": 91
+   }
+  },
+  "relation/countries/unembed10": {
+   "loss": {
+    "PP": 1.2,
+    "MP": 4.5,
+    "PM": 22.9,
+    "MM": 8.8
+   },
+   "gap": 13.0,
+   "gap_ci": [
+    7,
+    20
+   ],
+   "n": {
+    "PP": 83,
+    "MP": 89,
+    "PM": 83,
+    "MM": 91
+   }
+  },
+  "relation/countries/unembed10_rot": {
+   "loss": {
+    "PP": 3.6,
+    "MP": 5.6,
+    "PM": 7.2,
+    "MM": 1.1
+   },
+   "gap": -0.5,
+   "gap_ci": [
+    -5,
+    3
+   ],
+   "n": {
+    "PP": 83,
+    "MP": 89,
+    "PM": 83,
+    "MM": 91
+   }
+  },
+  "relation/people/paper10": {
+   "loss": {
+    "PP": 3.2,
+    "MP": 0.8,
+    "PM": 63.4,
+    "MM": 44.6
+   },
+   "gap": 52.0,
+   "gap_ci": [
+    40,
+    63
+   ],
+   "n": {
+    "PP": 94,
+    "MP": 129,
+    "PM": 93,
+    "MM": 130
+   }
+  },
+  "relation/people/paper10_rot": {
+   "loss": {
+    "PP": 4.3,
+    "MP": 3.9,
+    "PM": 7.5,
+    "MM": 2.3
+   },
+   "gap": 0.9,
+   "gap_ci": [
+    -3,
+    5
+   ],
+   "n": {
+    "PP": 94,
+    "MP": 129,
+    "PM": 93,
+    "MM": 130
+   }
+  },
+  "relation/people/unembed10": {
+   "loss": {
+    "PP": 4.3,
+    "MP": 1.6,
+    "PM": 12.9,
+    "MM": 4.6
+   },
+   "gap": 5.9,
+   "gap_ci": [
+    1,
+    10
+   ],
+   "n": {
+    "PP": 94,
+    "MP": 129,
+    "PM": 93,
+    "MM": 130
+   }
+  },
+  "relation/people/unembed10_rot": {
+   "loss": {
+    "PP": 3.2,
+    "MP": 2.3,
+    "PM": 14.0,
+    "MM": 6.9
+   },
+   "gap": 7.7,
+   "gap_ci": [
+    2,
+    13
+   ],
+   "n": {
+    "PP": 94,
+    "MP": 129,
+    "PM": 93,
+    "MM": 130
+   }
+  },
+  "relation_popularity/animals/popular/paper10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 0.0,
+    "PM": 47.9,
+    "MM": 29.0
+   },
+   "gap": 38.5,
+   "gap_ci": [
+    23,
+    55
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 31,
+    "PM": 48,
+    "MM": 31
+   }
+  },
+  "relation_popularity/animals/popular/paper10_rot": {
+   "loss": {
+    "PP": 4.2,
+    "MP": 0.0,
+    "PM": 6.2,
+    "MM": 3.2
+   },
+   "gap": 2.7,
+   "gap_ci": [
+    -3,
+    9
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 31,
+    "PM": 48,
+    "MM": 31
+   }
+  },
+  "relation_popularity/animals/popular/unembed10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 0.0,
+    "PM": 16.7,
+    "MM": 25.8
+   },
+   "gap": 21.2,
+   "gap_ci": [
+    10,
+    35
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 31,
+    "PM": 48,
+    "MM": 31
+   }
+  },
+  "relation_popularity/animals/popular/unembed10_rot": {
+   "loss": {
+    "PP": 2.1,
+    "MP": 0.0,
+    "PM": 6.2,
+    "MM": 3.2
+   },
+   "gap": 3.7,
+   "gap_ci": [
+    -1,
+    10
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 31,
+    "PM": 48,
+    "MM": 31
+   }
+  },
+  "relation_popularity/cities/popular/paper10": {
+   "loss": {
+    "PP": 4.2,
+    "MP": 7.1,
+    "PM": 63.3,
+    "MM": 50.9
+   },
+   "gap": 51.4,
+   "gap_ci": [
+    35,
+    65
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 56,
+    "PM": 49,
+    "MM": 57
+   }
+  },
+  "relation_popularity/cities/popular/paper10_rot": {
+   "loss": {
+    "PP": 8.3,
+    "MP": 7.1,
+    "PM": 0.0,
+    "MM": 0.0
+   },
+   "gap": -7.7,
+   "gap_ci": [
+    -14,
+    -3
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 56,
+    "PM": 49,
+    "MM": 57
+   }
+  },
+  "relation_popularity/cities/popular/unembed10": {
+   "loss": {
+    "PP": 6.2,
+    "MP": 3.6,
+    "PM": 4.1,
+    "MM": 0.0
+   },
+   "gap": -2.9,
+   "gap_ci": [
+    -9,
+    4
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 56,
+    "PM": 49,
+    "MM": 57
+   }
+  },
+  "relation_popularity/cities/popular/unembed10_rot": {
+   "loss": {
+    "PP": 4.2,
+    "MP": 5.4,
+    "PM": 4.1,
+    "MM": 1.8
+   },
+   "gap": -1.8,
+   "gap_ci": [
+    -7,
+    3
+   ],
+   "n": {
+    "PP": 48,
+    "MP": 56,
+    "PM": 49,
+    "MM": 57
+   }
+  },
+  "relation_popularity/cities/rare/paper10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 0.0,
+    "PM": 89.3,
+    "MM": 45.0
+   },
+   "gap": 67.1,
+   "gap_ci": [
+    50,
+    86
+   ],
+   "n": {
+    "PP": 28,
+    "MP": 20,
+    "PM": 28,
+    "MM": 20
+   }
+  },
+  "relation_popularity/cities/rare/paper10_rot": {
+   "loss": {
+    "PP": 10.7,
+    "MP": 0.0,
+    "PM": 7.1,
+    "MM": 0.0
+   },
+   "gap": -1.8,
+   "gap_ci": [
+    -10,
+    5
+   ],
+   "n": {
+    "PP": 28,
+    "MP": 20,
+    "PM": 28,
+    "MM": 20
+   }
+  },
+  "relation_popularity/cities/rare/unembed10": {
+   "loss": {
+    "PP": 3.6,
+    "MP": 0.0,
+    "PM": 7.1,
+    "MM": 5.0
+   },
+   "gap": 4.3,
+   "gap_ci": [
+    -3,
+    14
+   ],
+   "n": {
+    "PP": 28,
+    "MP": 20,
+    "PM": 28,
+    "MM": 20
+   }
+  },
+  "relation_popularity/cities/rare/unembed10_rot": {
+   "loss": {
+    "PP": 3.6,
+    "MP": 5.0,
+    "PM": 7.1,
+    "MM": 0.0
+   },
+   "gap": -0.7,
+   "gap_ci": [
+    -10,
+    6
+   ],
+   "n": {
+    "PP": 28,
+    "MP": 20,
+    "PM": 28,
+    "MM": 20
+   }
+  },
+  "relation_popularity/countries/popular/paper10": {
+   "loss": {
+    "PP": 1.9,
+    "MP": 3.3,
+    "PM": 62.3,
+    "MM": 48.4
+   },
+   "gap": 52.7,
+   "gap_ci": [
+    40,
+    66
+   ],
+   "n": {
+    "PP": 53,
+    "MP": 60,
+    "PM": 53,
+    "MM": 62
+   }
+  },
+  "relation_popularity/countries/popular/paper10_rot": {
+   "loss": {
+    "PP": 1.9,
+    "MP": 8.3,
+    "PM": 5.7,
+    "MM": 1.6
+   },
+   "gap": -1.5,
+   "gap_ci": [
+    -7,
+    4
+   ],
+   "n": {
+    "PP": 53,
+    "MP": 60,
+    "PM": 53,
+    "MM": 62
+   }
+  },
+  "relation_popularity/countries/popular/unembed10": {
+   "loss": {
+    "PP": 1.9,
+    "MP": 5.0,
+    "PM": 22.6,
+    "MM": 6.5
+   },
+   "gap": 11.1,
+   "gap_ci": [
+    3,
+    20
+   ],
+   "n": {
+    "PP": 53,
+    "MP": 60,
+    "PM": 53,
+    "MM": 62
+   }
+  },
+  "relation_popularity/countries/popular/unembed10_rot": {
+   "loss": {
+    "PP": 3.8,
+    "MP": 6.7,
+    "PM": 5.7,
+    "MM": 1.6
+   },
+   "gap": -1.6,
+   "gap_ci": [
+    -7,
+    3
+   ],
+   "n": {
+    "PP": 53,
+    "MP": 60,
+    "PM": 53,
+    "MM": 62
+   }
+  },
+  "relation_popularity/countries/rare/paper10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 3.4,
+    "PM": 63.3,
+    "MM": 44.8
+   },
+   "gap": 52.4,
+   "gap_ci": [
+    34,
+    70
+   ],
+   "n": {
+    "PP": 30,
+    "MP": 29,
+    "PM": 30,
+    "MM": 29
+   }
+  },
+  "relation_popularity/countries/rare/paper10_rot": {
+   "loss": {
+    "PP": 3.3,
+    "MP": 3.4,
+    "PM": 6.7,
+    "MM": 0.0
+   },
+   "gap": -0.1,
+   "gap_ci": [
+    -8,
+    6
+   ],
+   "n": {
+    "PP": 30,
+    "MP": 29,
+    "PM": 30,
+    "MM": 29
+   }
+  },
+  "relation_popularity/countries/rare/unembed10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 3.4,
+    "PM": 23.3,
+    "MM": 13.8
+   },
+   "gap": 16.8,
+   "gap_ci": [
+    8,
+    26
+   ],
+   "n": {
+    "PP": 30,
+    "MP": 29,
+    "PM": 30,
+    "MM": 29
+   }
+  },
+  "relation_popularity/countries/rare/unembed10_rot": {
+   "loss": {
+    "PP": 3.3,
+    "MP": 3.4,
+    "PM": 10.0,
+    "MM": 0.0
+   },
+   "gap": 1.6,
+   "gap_ci": [
+    -6,
+    9
+   ],
+   "n": {
+    "PP": 30,
+    "MP": 29,
+    "PM": 30,
+    "MM": 29
+   }
+  },
+  "relation_popularity/people/popular/paper10": {
+   "loss": {
+    "PP": 5.8,
+    "MP": 1.2,
+    "PM": 61.5,
+    "MM": 36.5
+   },
+   "gap": 45.5,
+   "gap_ci": [
+    30,
+    60
+   ],
+   "n": {
+    "PP": 52,
+    "MP": 85,
+    "PM": 52,
+    "MM": 85
+   }
+  },
+  "relation_popularity/people/popular/paper10_rot": {
+   "loss": {
+    "PP": 1.9,
+    "MP": 3.5,
+    "PM": 11.5,
+    "MM": 0.0
+   },
+   "gap": 3.0,
+   "gap_ci": [
+    -2,
+    9
+   ],
+   "n": {
+    "PP": 52,
+    "MP": 85,
+    "PM": 52,
+    "MM": 85
+   }
+  },
+  "relation_popularity/people/popular/unembed10": {
+   "loss": {
+    "PP": 1.9,
+    "MP": 0.0,
+    "PM": 17.3,
+    "MM": 0.0
+   },
+   "gap": 7.7,
+   "gap_ci": [
+    3,
+    13
+   ],
+   "n": {
+    "PP": 52,
+    "MP": 85,
+    "PM": 52,
+    "MM": 85
+   }
+  },
+  "relation_popularity/people/popular/unembed10_rot": {
+   "loss": {
+    "PP": 3.8,
+    "MP": 1.2,
+    "PM": 13.5,
+    "MM": 5.9
+   },
+   "gap": 7.2,
+   "gap_ci": [
+    0,
+    15
+   ],
+   "n": {
+    "PP": 52,
+    "MP": 85,
+    "PM": 52,
+    "MM": 85
+   }
+  },
+  "relation_popularity/people/rare/paper10": {
+   "loss": {
+    "PP": 0.0,
+    "MP": 0.0,
+    "PM": 65.9,
+    "MM": 60.0
+   },
+   "gap": 62.9,
+   "gap_ci": [
+    43,
+    82
+   ],
+   "n": {
+    "PP": 42,
+    "MP": 44,
+    "PM": 41,
+    "MM": 45
+   }
+  },
+  "relation_popularity/people/rare/paper10_rot": {
+   "loss": {
+    "PP": 7.1,
+    "MP": 4.5,
+    "PM": 2.4,
+    "MM": 6.7
+   },
+   "gap": -1.3,
+   "gap_ci": [
+    -8,
+    5
+   ],
+   "n": {
+    "PP": 42,
+    "MP": 44,
+    "PM": 41,
+    "MM": 45
+   }
+  },
+  "relation_popularity/people/rare/unembed10": {
+   "loss": {
+    "PP": 7.1,
+    "MP": 4.5,
+    "PM": 7.3,
+    "MM": 13.3
+   },
+   "gap": 4.5,
+   "gap_ci": [
+    -5,
+    15
+   ],
+   "n": {
+    "PP": 42,
+    "MP": 44,
+    "PM": 41,
+    "MM": 45
+   }
+  },
+  "relation_popularity/people/rare/unembed10_rot": {
+   "loss": {
+    "PP": 2.4,
+    "MP": 4.5,
+    "PM": 14.6,
+    "MM": 8.9
+   },
+   "gap": 8.3,
+   "gap_ci": [
+    1,
+    17
+   ],
+   "n": {
+    "PP": 42,
+    "MP": 44,
+    "PM": 41,
+    "MM": 45
+   }
+  }
+ }
+}

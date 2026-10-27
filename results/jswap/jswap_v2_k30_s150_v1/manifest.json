@@ -1,0 +1,29 @@
+{
+  "run": "jswap_v2_k30_s150_v1",
+  "why": "Zach (2026-10-27, prereg amendment 55): qwen3.6-27b J-part swap with K 30 at L32-40",
+  "target": "qwen3.6-27b",
+  "band": "32-40",
+  "set": "jsuite_v2_test_chat",
+  "competence": "jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "remove",
+    "swap_rot",
+    "swap_u",
+    "swap_comp",
+    "paste"
+  ],
+  "k": 30,
+  "git_commit": "d65e40ce9ac509f0beb9e0c4b9b7158eb1dd7445",
+  "git_state": {
+    "head": "d65e40ce9ac509f0beb9e0c4b9b7158eb1dd7445",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "sample_per_word": 150,
+  "sample_seed": 0
+}

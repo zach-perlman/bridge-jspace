@@ -1,0 +1,32 @@
+{
+  "run": "nem35l_natplus_v1_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-27, prereg amendment 55 note 1; recipe of amendment 20): cand2 read, nemotron-3.5-lightning on natplus_v1_chat",
+  "set": "natplus_v1_chat",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "git_commit": "dd7a0efdd868f75d122b0d0125dd942b54e3c27b",
+  "git_state": {
+    "head": "dd7a0efdd868f75d122b0d0125dd942b54e3c27b",
+    "dirty_files": [
+      "docs/breadth/README.template.md",
+      "scripts/fig_neel.py",
+      "scripts/report_breadth.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": "ca1b0a695b0a91fae43adc160aca26aabbe842ec8d5d70be2330f0e7b2648e57"
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "read",
+  "words": null,
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-27T04:40:49Z"
+}

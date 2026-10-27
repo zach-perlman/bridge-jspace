@@ -1,0 +1,301 @@
+{
+ "run": "nem35l_jsuite_v2_test_chat_threehop_ko_cand2_v1",
+ "with": [],
+ "set": "jsuite_v2_test_chat",
+ "facts": {},
+ "threehop": {
+  "paper10": {
+   "loss": {
+    "PPM": 68.8,
+    "PMM": 44.6,
+    "PMP": 10.6,
+    "MMP": 6.9,
+    "MMM": 57.4,
+    "PPP": 8.8,
+    "MPP": 6.1,
+    "MPM": 63.6
+   },
+   "n": {
+    "PPM": 64,
+    "PMM": 112,
+    "PMP": 47,
+    "MMP": 29,
+    "MMM": 94,
+    "PPP": 34,
+    "MPP": 49,
+    "MPM": 22
+   },
+   "contrasts": {
+    "MMM-PPP": {
+     "diff": 48.6,
+     "ci": [
+      34,
+      62
+     ]
+    },
+    "MMP-PPP": {
+     "diff": -1.9,
+     "ci": [
+      -16,
+      11
+     ]
+    },
+    "MPM-PPP": {
+     "diff": 54.8,
+     "ci": [
+      31,
+      76
+     ]
+    },
+    "MPP-PPP": {
+     "diff": -2.7,
+     "ci": [
+      -15,
+      8
+     ]
+    },
+    "PMM-PPP": {
+     "diff": 35.8,
+     "ci": [
+      21,
+      49
+     ]
+    },
+    "PMP-PPP": {
+     "diff": 1.8,
+     "ci": [
+      -12,
+      15
+     ]
+    },
+    "PPM-PPP": {
+     "diff": 59.9,
+     "ci": [
+      45,
+      74
+     ]
+    }
+   }
+  },
+  "paper10_rot": {
+   "loss": {
+    "PPM": 15.6,
+    "PMM": 6.2,
+    "PMP": 19.1,
+    "MMP": 17.2,
+    "MMM": 1.1,
+    "PPP": 2.9,
+    "MPP": 8.2,
+    "MPM": 31.8
+   },
+   "n": {
+    "PPM": 64,
+    "PMM": 112,
+    "PMP": 47,
+    "MMP": 29,
+    "MMM": 94,
+    "PPP": 34,
+    "MPP": 49,
+    "MPM": 22
+   },
+   "contrasts": {
+    "MMM-PPP": {
+     "diff": -1.9,
+     "ci": [
+      -9,
+      3
+     ]
+    },
+    "MMP-PPP": {
+     "diff": 14.3,
+     "ci": [
+      0,
+      30
+     ]
+    },
+    "MPM-PPP": {
+     "diff": 28.9,
+     "ci": [
+      9,
+      50
+     ]
+    },
+    "MPP-PPP": {
+     "diff": 5.2,
+     "ci": [
+      -4,
+      16
+     ]
+    },
+    "PMM-PPP": {
+     "diff": 3.3,
+     "ci": [
+      -5,
+      9
+     ]
+    },
+    "PMP-PPP": {
+     "diff": 16.2,
+     "ci": [
+      4,
+      30
+     ]
+    },
+    "PPM-PPP": {
+     "diff": 12.7,
+     "ci": [
+      2,
+      23
+     ]
+    }
+   }
+  },
+  "unembed10": {
+   "loss": {
+    "PPM": 34.4,
+    "PMM": 17.0,
+    "PMP": 10.6,
+    "MMP": 6.9,
+    "MMM": 8.5,
+    "PPP": 17.6,
+    "MPP": 4.1,
+    "MPM": 45.5
+   },
+   "n": {
+    "PPM": 64,
+    "PMM": 112,
+    "PMP": 47,
+    "MMP": 29,
+    "MMM": 94,
+    "PPP": 34,
+    "MPP": 49,
+    "MPM": 22
+   },
+   "contrasts": {
+    "MMM-PPP": {
+     "diff": -9.1,
+     "ci": [
+      -24,
+      5
+     ]
+    },
+    "MMP-PPP": {
+     "diff": -10.8,
+     "ci": [
+      -26,
+      6
+     ]
+    },
+    "MPM-PPP": {
+     "diff": 27.8,
+     "ci": [
+      4,
+      51
+     ]
+    },
+    "MPP-PPP": {
+     "diff": -13.6,
+     "ci": [
+      -26,
+      -1
+     ]
+    },
+    "PMM-PPP": {
+     "diff": -0.7,
+     "ci": [
+      -17,
+      14
+     ]
+    },
+    "PMP-PPP": {
+     "diff": -7.0,
+     "ci": [
+      -23,
+      9
+     ]
+    },
+    "PPM-PPP": {
+     "diff": 16.7,
+     "ci": [
+      -1,
+      33
+     ]
+    }
+   }
+  },
+  "unembed10_rot": {
+   "loss": {
+    "PPM": 9.4,
+    "PMM": 4.5,
+    "PMP": 8.5,
+    "MMP": 10.3,
+    "MMM": 0.0,
+    "PPP": 8.8,
+    "MPP": 4.1,
+    "MPM": 13.6
+   },
+   "n": {
+    "PPM": 64,
+    "PMM": 112,
+    "PMP": 47,
+    "MMP": 29,
+    "MMM": 94,
+    "PPP": 34,
+    "MPP": 49,
+    "MPM": 22
+   },
+   "contrasts": {
+    "MMM-PPP": {
+     "diff": -8.8,
+     "ci": [
+      -20,
+      0
+     ]
+    },
+    "MMP-PPP": {
+     "diff": 1.5,
+     "ci": [
+      -14,
+      17
+     ]
+    },
+    "MPM-PPP": {
+     "diff": 4.8,
+     "ci": [
+      -12,
+      23
+     ]
+    },
+    "MPP-PPP": {
+     "diff": -4.7,
+     "ci": [
+      -17,
+      6
+     ]
+    },
+    "PMM-PPP": {
+     "diff": -4.4,
+     "ci": [
+      -16,
+      5
+     ]
+    },
+    "PMP-PPP": {
+     "diff": -0.3,
+     "ci": [
+      -14,
+      12
+     ]
+    },
+    "PPM-PPP": {
+     "diff": 0.6,
+     "ci": [
+      -12,
+      12
+     ]
+    }
+   }
+  }
+ },
+ "numbers": {}
+}

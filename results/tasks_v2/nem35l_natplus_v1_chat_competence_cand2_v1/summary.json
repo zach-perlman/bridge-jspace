@@ -1,0 +1,200 @@
+{
+  "seconds": 277,
+  "by_word_level": {
+    "PP/L0": {
+      "n": 292,
+      "whole": 0.836,
+      "all_steps": 0.983,
+      "median_margin": 3.38,
+      "guess": 0.421,
+      "top_wrong": [
+        [
+          "A",
+          10
+        ],
+        [
+          "South",
+          7
+        ],
+        [
+          "Asia",
+          4
+        ]
+      ]
+    },
+    "PP/L1": {
+      "n": 292,
+      "whole": 0.856,
+      "all_steps": 0.976,
+      "median_margin": 3.25,
+      "guess": 0.236,
+      "top_wrong": [
+        [
+          "Asia",
+          4
+        ],
+        [
+          "Finn",
+          4
+        ],
+        [
+          "Europe",
+          3
+        ]
+      ]
+    },
+    "PM/L0": {
+      "n": 292,
+      "whole": 0.877,
+      "all_steps": 0.918,
+      "median_margin": 2.75,
+      "guess": 0.188,
+      "top_wrong": [
+        [
+          "A",
+          5
+        ],
+        [
+          "Dan",
+          5
+        ],
+        [
+          "Sw",
+          3
+        ]
+      ]
+    },
+    "PM/L1": {
+      "n": 292,
+      "whole": 0.781,
+      "all_steps": 0.812,
+      "median_margin": 1.31,
+      "guess": 0.092,
+      "top_wrong": [
+        [
+          "German",
+          7
+        ],
+        [
+          "Russian",
+          5
+        ],
+        [
+          "Sw",
+          5
+        ]
+      ]
+    },
+    "MP/L0": {
+      "n": 292,
+      "whole": 0.788,
+      "all_steps": 0.969,
+      "median_margin": 2.62,
+      "guess": 0.373,
+      "top_wrong": [
+        [
+          "South",
+          12
+        ],
+        [
+          "Asia",
+          8
+        ],
+        [
+          "Europe",
+          8
+        ]
+      ]
+    },
+    "MP/L1": {
+      "n": 292,
+      "whole": 0.726,
+      "all_steps": 0.962,
+      "median_margin": 1.25,
+      "guess": 0.274,
+      "top_wrong": [
+        [
+          "Europe",
+          15
+        ],
+        [
+          "Asia",
+          8
+        ],
+        [
+          "South",
+          8
+        ]
+      ]
+    },
+    "MM/L0": {
+      "n": 292,
+      "whole": 0.89,
+      "all_steps": 0.918,
+      "median_margin": 3.75,
+      "guess": 0.123,
+      "top_wrong": [
+        [
+          "M",
+          4
+        ],
+        [
+          "D",
+          3
+        ],
+        [
+          "Belg",
+          3
+        ]
+      ]
+    },
+    "MM/L1": {
+      "n": 292,
+      "whole": 0.897,
+      "all_steps": 0.925,
+      "median_margin": 3.62,
+      "guess": 0.123,
+      "top_wrong": [
+        [
+          "D",
+          3
+        ],
+        [
+          "Spain",
+          3
+        ],
+        [
+          "M",
+          3
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "animals": {
+      "PP": 0.875,
+      "PM": 0.972,
+      "MP": 0.917,
+      "MM": 0.667
+    },
+    "cities": {
+      "PP": 0.886,
+      "PM": 0.721,
+      "MP": 0.7,
+      "MM": 0.857
+    },
+    "countries": {
+      "PP": 0.793,
+      "PM": 0.918,
+      "MP": 0.647,
+      "MM": 0.973
+    },
+    "people": {
+      "PP": 0.856,
+      "PM": 0.766,
+      "MP": 0.846,
+      "MM": 0.931
+    }
+  },
+  "pick": {}
+}
