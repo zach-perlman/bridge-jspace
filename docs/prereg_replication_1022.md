@@ -1887,7 +1887,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - GPU 1: (after Lightning's natural sets) A on Lightning, then B.
   - Then C on both GPUs; then D if approved.
 
-### Amendment 56 note 1 (Zach, 2026-10-27 05:00 UTC, before D runs): D approved
+### Amendment 56 note 1 (Zach, 2026-10-27 05:01 UTC, before D runs): D approved
 
 - **Approval:** Zach, 2026-10-27 ~01:00 ET: "Yes you can delete bolts cache after."
 - **The chain:** scripts/queues/h200_ds_1027.sh.
