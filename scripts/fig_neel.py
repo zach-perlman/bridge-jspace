@@ -734,60 +734,68 @@ def dose_readings(d: list[dict]) -> dict:
 
 
 def f10() -> None:
-    fig = plt.figure(figsize=(17, 7.6))
-    axes = [fig.add_axes((0.045 + i * 0.205, 0.2, 0.17, 0.55)) for i in range(4)]
-    pending, table = [], []
-    for m, pre, band in DOSE54:
+    fig = plt.figure(figsize=(17, 9.4))
+    n = len(DOSE54)
+    w, gap, x0 = 0.168, 0.022, 0.06
+    top_ax = [fig.add_axes((x0 + i * (w + gap), 0.43, w, 0.33)) for i in range(n)]
+    bot_ax = [fig.add_axes((x0 + i * (w + gap), 0.12, w, 0.2)) for i in range(n)]
+    for i, (m, pre, band) in enumerate(DOSE54):
+        ax, bx = top_ax[i], bot_ax[i]
+        style(ax, "both")
+        style(bx, "both")
+        ax.set_ylim(-5, 80)
+        bx.set_ylim(-3, 62)
+        for a_ in (ax, bx):
+            a_.set_xlim(0, 40)
+            a_.axhline(0, color=AXIS, lw=1)
+        ax.set_title(f"{SHORT[m]}  ({band})", fontsize=10, y=1.13)
         d = dose_data(m, pre, band)
         if not d:
-            pending.append(SHORT[m])
-            continue
-        x = [r["share"] for r in d]
-        col, mk_ = DCOL[m], DMK[m]
-        kw = dict(color=col, lw=2, marker=mk_, ms=6, mec=SURF, mew=1.2)
-        axes[0].plot(x, [r["mk"] for r in d], "-", label=SHORT[m], **kw)
-        pcx = [(r["share"], r["pc"]) for r in d if r["pc"] is not None]
-        axes[0].plot([a for a, _ in pcx], [b for _, b in pcx], ":", color=col, lw=1.3, marker=mk_, ms=4, mfc=SURF, mec=col)
-        for r in d:
-            if r["k"] in (1, 10, 100, 300):
-                axes[0].annotate(f"{r['k']}", (r["share"], r["mk"]), xytext=(3, 4), textcoords="offset points", fontsize=6.5, color=MUTED)
-        ex = [(r["share"], r["exc"]) for r in d if r["exc"] is not None]
-        axes[1].plot([a for a, _ in ex], [b for _, b in ex], "-", **kw)
-        sm = [(r["share"], r["smk"]) for r in d if r["smk"] is not None]
-        axes[2].plot([a for a, _ in sm], [b for _, b in sm], "-", **kw)
-        axes[3].plot(x, [r["K"] for r in d], "-", **kw)
-        sk = [(r["share"], r["sK"]) for r in d if r["sK"] is not None]
-        axes[3].plot([a for a, _ in sk], [b for _, b in sk], "--", color=col, lw=1.6, marker=mk_, ms=4, mfc=SURF, mec=col)
-        rd = dose_readings(d)
-        table.append((SHORT[m], rd))
-    for ax in axes:
-        style(ax, "both")
-        ax.set_xlabel("share of the residual removed\n(J++ top K, median over the band)")
-        ax.axhline(0, color=AXIS, lw=1)
-    axes[0].set_title("A   M − K, greedy\n(dotted: same norm, top principal directions)", fontsize=9.5)
-    axes[1].set_title("B   J-specific excess\n(J++ minus max(rotated, size-matched))", fontsize=9.5)
-    axes[2].set_title("C   M − K by probability", fontsize=9.5)
-    axes[3].set_title("D   Stated facts lost\n(solid: greedy; dashed: by probability)", fontsize=9.5)
-    axes[3].axhline(10, color=AXIS, lw=1, ls="--")
-    axes[3].text(0.02, 0.6, "limit: 10 points", transform=axes[3].get_yaxis_transform(), fontsize=7, color=MUTED)
-    axes[0].legend(loc="upper left", frameon=False, fontsize=7.5)
-    ty = 0.86
-    fig.text(0.865, ty, "Readings", fontsize=9.5, fontweight="bold")
-    ty -= 0.035
-    fig.text(0.865, ty, "K* as pre-registered / on the excess;\nprobability limit (note 1)", fontsize=7.5, color=MUTED, va="top")
-    ty -= 0.07
-    for lab, rd in table:
-        fig.text(0.865, ty, lab, fontsize=8.5, fontweight="bold", va="top")
-        fig.text(0.865, ty - 0.028, f"K* {rd['kstar']} ({rd['cls']}) / {rd['ekstar']} ({rd['ecls']})\nprob. limit: K {rd['plim'] or '> 300'}", fontsize=7.5, color=INK2, va="top")
-        ty -= 0.085
-    for lab in pending:
-        fig.text(0.865, ty, f"{lab}: running", fontsize=8, color=MUTED, va="top")
-        ty -= 0.03
-    top = header(fig, "How much J-space: the J-specific part of the dependence is there from the first few directions; more directions mostly add damage that is not specific",
-                 "Amendment 54: K = 1, 3, 10, 30, 100, 300 J++ directions at each model's band; test set, 150 random items per word (seed 0); numbers at points are K")  # fmt: skip
-    note(fig, "Pre-registered (amendment 54): specificity limit = smallest K where stated facts lose > 10 points (greedy) or the size-matched control exceeds half the J++ M − K; plateau K* = smallest K reaching 90% of the largest "
-              "J++ M − K under the limit (<= 10 concentrated, >= 100 distributed). Note 1 (written after Lightning's grid, before the others): the same plateau rule on the J-specific excess, and a limit by probability "
-              "(stated facts lose > 10 points of answer probability): greedy accuracy hides that large removals also drain the stated answer's probability. "
+            ax.text(20, 38, "running tonight", ha="center", fontsize=9, color=MUTED)
+            bx.text(20, 30, "running tonight", ha="center", fontsize=9, color=MUTED)
+        else:
+            x = [r["share"] for r in d]
+            ser = lambda key: [(r["share"], r[key]) for r in d if r.get(key) is not None]  # noqa: E731
+            def line(axx, key, col, ls, mk_, mfc=None, lw=2):
+                pts = ser(key)
+                axx.plot([p_[0] for p_ in pts], [p_[1] for p_ in pts], ls=ls, color=col, lw=lw, marker=mk_, ms=5, mfc=mfc or col, mec=col if mfc else SURF, mew=1.2)
+            line(ax, "mk", J, "-", "o")
+            line(ax, "smk", J, "--", "o", mfc=SURF)
+            line(ax, "pc", SIZE, "-", "^", lw=1.6)
+            line(ax, "rot", ROT, "-", "D", lw=1.6)
+            line(ax, "u", LOGIT, "-", "s", lw=1.6)
+            for r in d:
+                ax.annotate(f"{r['k']}", (r["share"], r["mk"]), xytext=(0, 6), textcoords="offset points", fontsize=6.5, color=INK2, ha="center")
+            line(bx, "K", INK2, "-", "o")
+            line(bx, "sK", INK2, "--", "o", mfc=SURF)
+            rd = dose_readings(d)
+            ax.text(0.0, 1.015, f"plateau K* {rd['kstar']} as pre-registered ({rd['cls']});\n"
+                                f"K* {rd['ekstar']} on the J-specific excess ({rd['ecls']});\n"
+                                f"specific by probability only for K < {rd['plim'] or '>300'}",
+                    transform=ax.transAxes, fontsize=7.3, color=INK2, va="bottom")  # fmt: skip
+        bx.axhline(10, color=AXIS, lw=1, ls=":")
+        bx.set_xlabel("residual removed, % (median over the band)", fontsize=8)
+        if i == 0:
+            ax.set_ylabel("recall minus stated-fact loss (M − K),\npoints", fontsize=9)
+            bx.set_ylabel("stated facts lost,\npoints", fontsize=9)
+            bx.text(1, 11, "10-point limit", fontsize=7, color=MUTED)
+        else:
+            ax.set_yticklabels([])
+            bx.set_yticklabels([])
+    h1 = [plt.Line2D([], [], color=J, lw=2, marker="o", ms=5, mec=SURF, label="J++ top K, greedy"),
+          plt.Line2D([], [], color=J, lw=2, ls="--", marker="o", ms=5, mfc=SURF, mec=J, label="J++ top K, by probability"),
+          plt.Line2D([], [], color=ROT, lw=1.6, marker="D", ms=5, mec=SURF, label="same norm, random direction"),
+          plt.Line2D([], [], color=SIZE, lw=1.6, marker="^", ms=5, mec=SURF, label="same norm, top principal directions"),
+          plt.Line2D([], [], color=LOGIT, lw=1.6, marker="s", ms=5, mec=SURF, label="logit lens, top K")]  # fmt: skip
+    fig.legend(handles=h1, loc="upper left", bbox_to_anchor=(0.055, 0.905), ncol=5, frameon=False, fontsize=8.5, title="Top row (numbers at points: K directions)", title_fontsize=8.5, alignment="left")
+    h2 = [plt.Line2D([], [], color=INK2, lw=2, marker="o", ms=5, mec=SURF, label="greedy (top answer wrong)"),
+          plt.Line2D([], [], color=INK2, lw=2, ls="--", marker="o", ms=5, mfc=SURF, mec=INK2, label="by probability (answer probability lost)")]  # fmt: skip
+    fig.legend(handles=h2, loc="upper left", bbox_to_anchor=(0.055, 0.38), ncol=2, frameon=False, fontsize=8.5, title="Bottom row: stated facts lost", title_fontsize=8.5, alignment="left")
+    header(fig, "How much J-space: J++ directions against controls of the same size, from 1 to 300 directions (amendment 54)",
+           "Each model at its band; test set, 150 random items per word (seed 0). The gap between the blue line and the others is the J-specific part")  # fmt: skip
+    note(fig, "Readings (amendment 54, as pre-registered): plateau K* = smallest K reaching 90% of the largest J++ M − K below the specificity limit (stated facts lose > 10 greedy, or the size-matched control exceeds half "
+              "the J++ M − K); <= 10 concentrated, >= 100 distributed. Note 1 (written after Lightning, before the others): the same rule on the J-specific excess (J++ minus the larger of the random-direction and "
+              "size-matched controls), and specificity judged by probability, since greedy accuracy hides that large removals also drain the stated answer's probability. "
               "The per-word sample draws M and K items from partly different scenes: noise, not bias.")  # fmt: skip
     save(fig, "F10_dose")
 
