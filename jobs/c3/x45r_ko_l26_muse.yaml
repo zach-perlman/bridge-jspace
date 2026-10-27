@@ -1,12 +1,12 @@
 id: x45r_ko_l26_muse
-title: "Batch 45r on Muse, descriptive (DRAFT, not queued; Dan predicts first, Q45.16): Zach's v2 knock-out at L26 alone, our change-removal's layer, with his controls (rotated, logit lens and its rotation, size-matched), on his v2 facts items; not in the rule"
+title: "Batch 45r on Muse, descriptive (DRAFT, not queued; Dan predicts first, Q46.1): Zach's v2 knock-out at L26 alone, our change-removal's layer, with his controls (rotated, logit lens and its rotation, size-matched), on his v2 facts items; not in the rule"
 thread: C3
 gpus: 1
 mem_gb: 75
 est_gpu_hours: 0.6
 depends_on: []
 command: >-
-  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; unset BJ_GRAM_PROJ; uv run python scripts/ablate_v2.py --name muse30_jsuite_v2_test_chat_ko_cand2_L26_x45r_v1 --why "batch 45, test 45r (jobs/c3/batch45.yaml; Q45.16), descriptive: Zach's v2 knock-out and its controls at L26 alone, our change-removal's layer; the record run's items and settings otherwise" --plan bands --bands 26 --conditions paper10 paper10_rot unembed10 unembed10_rot paper10_pcasize --tasks jsuite_v2_test_chat --tasks-competence muse30_jsuite_v2_test_chat_competence_cand2_v1 --tasks-words PP PK PM PA PN MP MK MM MA MN TP TK TM TA TN --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 && uv run python scripts/jsuite2_score.py muse30_jsuite_v2_test_chat_ko_cand2_L26_x45r_v1 --set jsuite_v2_test_chat
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; unset BJ_GRAM_PROJ; uv run python scripts/ablate_v2.py --name muse30_jsuite_v2_test_chat_ko_cand2_L26_x45r_v1 --why "batch 45, test 45r (jobs/c3/batch45.yaml; Q46.1), descriptive: Zach's v2 knock-out and its controls at L26 alone, our change-removal's layer; the record run's items and settings otherwise" --plan bands --bands 26 --conditions paper10 paper10_rot unembed10 unembed10_rot paper10_pcasize --tasks jsuite_v2_test_chat --tasks-competence muse30_jsuite_v2_test_chat_competence_cand2_v1 --tasks-words PP PK PM PA PN MP MK MM MA MN TP TK TM TA TN --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2 && uv run python scripts/jsuite2_score.py muse30_jsuite_v2_test_chat_ko_cand2_L26_x45r_v1 --set jsuite_v2_test_chat
 question: >-
   Descriptive, beside 45r's rule: on Muse, what does Zach's knock-out cost at L26 alone, the one layer our
   change-removal edits (M - K, the logit lens's M - K and the J-specific excess, with the rotated and size-matched
@@ -16,7 +16,7 @@ why_it_matters: >-
   the closest match to our single-layer edit; set beside the band, it shows how much of the band's effect one layer
   gives (a seventh of the edits).
 hypotheses:
-  Q45.16: "Dan's answer in predictions/2026-10-26_dan.md (Q45.16); enqueue only after it is committed. This run is descriptive: not in the rule, not scored."
+  Q46.1: "Dan's answer in predictions/2026-10-27_dan.md (Q46.1); enqueue only after it is committed. This run is descriptive: not in the rule, not scored."
 decision_rule: >-
   Not in the rule (Dan ~15:05: L26 alone is descriptive). 45r's rule is in jobs/c3/batch45.yaml (45r) and
   x45r_ko_l23_29_muse. Reported from this run's jsuite2_score file, facts/<condition>/start=all, contrast "M-K", point
@@ -31,4 +31,4 @@ controls:
 - 'the stated final K and the other finals P, A, N under every condition (reported)'
 n: '2,705 prompts: the record run''s items (jsuite_v2_test_chat facts, 15 words, eligibility from muse30_jsuite_v2_test_chat_competence_cand2_v1; rebuilt on CPU 27 Oct: the same 2,705 (word, id) pairs)'
 seeds: [888, 0]
-notes: "DRAFT, NOT QUEUED. Descriptive (Dan ~15:05). Queue order within 45r: after x45r_ko_l23_29_muse, before x45r_ko_band_muse; enqueue only after Dan's Q45.16 answer is committed and Zach has confirmed this use of his method. Settings as x45r_ko_l23_29_muse except the band (one layer). BJ_GRAM_PROJ unset (QR, as the record run). Seeds: 888 + layer the rotation, 0 the bootstraps. Cost: Zach's record run took 1,110 s per condition at 7 layers on an H200 and 214 s outside the band. Split from Muse's own muse30_full2_ko_v1 (620 prompts, 2 conditions; L10-16 481 s, L0-50 3,224 s): per condition 240 s at 7 layers and 1,612 s at 51, so 31.2 s per layer and 22 s of forward; x 2,705 / 620 = 4.36: 136 s per layer and 96 s of forward per condition (the record's 1,110 s at 7 layers implies ~145 s per layer). Here: 5 conditions x (96 + 145) s + 214 s + ~60 s for the principal directions = ~1,480 s = 0.41 h on an H200; on one H100 PCIe x 1.3-1.5 (assumed, not measured) = 0.53-0.62 h."
+notes: "DRAFT, NOT QUEUED. Descriptive (Dan ~15:05). Queue order within 45r: after x45r_ko_l23_29_muse, before x45r_ko_band_muse; enqueue only after Dan's Q46.1 answer is committed and Zach has confirmed this use of his method. Settings as x45r_ko_l23_29_muse except the band (one layer). BJ_GRAM_PROJ unset (QR, as the record run). Seeds: 888 + layer the rotation, 0 the bootstraps. Cost: Zach's record run took 1,110 s per condition at 7 layers on an H200 and 214 s outside the band. Split from Muse's own muse30_full2_ko_v1 (620 prompts, 2 conditions; L10-16 481 s, L0-50 3,224 s): per condition 240 s at 7 layers and 1,612 s at 51, so 31.2 s per layer and 22 s of forward; x 2,705 / 620 = 4.36: 136 s per layer and 96 s of forward per condition (the record's 1,110 s at 7 layers implies ~145 s per layer). Here: 5 conditions x (96 + 145) s + 214 s + ~60 s for the principal directions = ~1,480 s = 0.41 h on an H200; on one H100 PCIe x 1.3-1.5 (assumed, not measured) = 0.53-0.62 h."
