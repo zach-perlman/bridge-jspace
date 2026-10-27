@@ -141,7 +141,8 @@ def built_country_prompts(model, tok, fams: list[str], n: int) -> list[dict]:
 
 
 def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n: int, kinds: list[str],
-                  level: str = "pick", strata: tuple[str, ...] = ("core",), per_word: bool = False) -> list[dict]:  # fmt: skip
+                  level: str = "pick", strata: tuple[str, ...] = ("core",), per_word: bool = False,
+                  scene_words: list[str] | None = None) -> list[dict]:  # fmt: skip
     """tasks_v2 items of the compared words (--tasks-words) from scenes the model gets right on them throughout, at
     one level for the comparison (tasks_v2.eligible), first n per word; the whole question ('clean') and each step
     alone ('stepN'), each with its own instruction, read as the suite reads them (a digit after 'Answer: ')."""
@@ -149,7 +150,7 @@ def tasks_prompts(tok, set_name: str, comp_run: str, words: list[str] | None, n:
 
     assert words, "--tasks-words: name the compared words (they set the level and the eligibility)"
     out = []
-    for it in T.eligible(set_name, comp_run, words, n, level, strata=tuple(strata), per_word=per_word):
+    for it in T.eligible(set_name, comp_run, words, n, level, strata=tuple(strata), per_word=per_word, scene_words=scene_words):
         parts = [("clean", it["question"], it["answer"], it["kind"])]
         parts += [(f"step{i}", st["question"], st["answer"], st["kind"]) for i, st in enumerate(it["steps"], 1)]
         for kind, q, a, k in parts:
@@ -391,7 +392,7 @@ def main(args) -> None:
                 "git_commit": commit, "git_state": pins.git_state(), "model": pins.model_pin(), "lens": [pins.FROZEN_LENS, pins.FROZEN_LENS_SHA256],
                 "plan": args.plan, "bands": [label(b) for b in bands], "conditions": args.conditions,
                 "families": args.families, "kinds": args.kinds, "skip": args.skip, "wording": args.wording, "n_per_family": args.n, "batch": args.batch,
-                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "read": args.read, "sample_per_word": args.sample_per_word, "sample_seed": args.sample_seed, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
+                "tf32": not args.no_tf32, "workspace_start": args.workspace, "positions": args.positions, "pad": args.pad, "competence": args.competence, "countries_build": args.countries_build, "tasks": [args.tasks, args.tasks_competence, args.tasks_words, args.tasks_level, args.tasks_strata], "tasks_per_word": args.tasks_per_word, "tasks_scene_words": args.tasks_scene_words, "read": args.read, "sample_per_word": args.sample_per_word, "sample_seed": args.sample_seed, "dict_digits": args.dict_digits, "wide": WIDE, "seed_offset": args.seed_offset, "seeds": {"rotation": f"{SEED_ROT + args.seed_offset}+layer", "rotated_dictionary": f"{SEED_DICT + args.seed_offset}+layer",
                 "gauss": f"{SEED_GAUSS}+layer"}, "own_cos": OWN_COS, "doc": (__doc__ or "").split("\n\n")[1]}  # fmt: skip
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 
@@ -416,6 +417,7 @@ def main(args) -> None:
             args.tasks_level,
             args.tasks_strata,
             args.tasks_per_word,
+            args.tasks_scene_words,
         )
         if args.sample_per_word:  # 2026-10-26 (amendment 49): a seeded random subset of each word's items, not the first n
             import random
@@ -680,6 +682,8 @@ if __name__ == "__main__":
         "--tasks-strata", nargs="+", default=["core"], help="tasks_v2 strata (core, secondary: planets 3-step)"
     )
     ap.add_argument("--tasks-per-word", action="store_true", help="tasks_v2: judge each item on its own (three-step)")
+    ap.add_argument("--tasks-scene-words", nargs="*", default=None,
+                    help="amendment 58 note 4 (v3): a scene passes when its items of these words are right; the compared words are kept on it")
     ap.add_argument("--workspace", type=int, default=None, help="depth plan: first layer of the workspace range")
     ap.add_argument("--positions", default="all", choices=["all", "context", "question", "final", "bridge"],
                     help="where to remove: every position, only before the question (the facts), only from the "

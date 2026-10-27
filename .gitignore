@@ -13,3 +13,6 @@ __pycache__/
 # jlens interactive slice pages from examples runs: ~0.5 MB each, regenerate with the examples config
 results/**/slices/
 examples/**/slices/
+
+# jsuite v3 items stay out of the public repo (Redwood asks multi-hop sets not be posted); rebuild: scripts/jsuite_v3.py --name jsuite_v3 --seed 3001
+data/tasks_v2/jsuite_v3*_test_chat/

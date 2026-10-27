@@ -909,8 +909,11 @@ def judge(text: str, answer: str, kind: str) -> bool:
 
 def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str = "pick", max_chance: float = 0.5,
              fmt_class: str | None = None, strata: tuple[str, ...] = ("core",),
-             domains: list[str] | None = None, per_word: bool = False) -> list[dict]:  # fmt: skip
-    """The items a downstream run compares: from scenes whose items of the compared words the competence run got right
+             domains: list[str] | None = None, per_word: bool = False,
+             scene_words: list[str] | None = None) -> list[dict]:  # fmt: skip
+    """(Amendment 58 note 4, v3: with scene_words, a scene passes when its items of those words (and their steps) are right;
+    the compared words' items are then kept on that scene whatever their own correctness. Without it, unchanged.)
+    The items a downstream run compares: from scenes whose items of the compared words the competence run got right
     on every prompt (whole, each step, C and O; the guess prompt excluded), at one level for the whole comparison
     (level "pick": the hardest level where every compared word scores >= 85% whole; "all"; or a level number; Zach,
     2026-10-20: per compared words), the first n per word in file order. Each item gets "guessable": whether the model
@@ -933,7 +936,7 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
     items = [
         it
         for it in load(set_name)
-        if it["word"] in words
+        if (it["word"] in words or it["word"] in (scene_words or []))
         and stratum(it) in strata
         and (fmt_class is None or format_class(it) == fmt_class)
         and (it["domain"] in domains if domains else len(it["word"]) == 2 or it["domain"] in THREE_STEP_DOMAINS
@@ -958,6 +961,8 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
         want = None if level == "all" else int(level)
     scene_ok: dict[str, bool] = collections.defaultdict(lambda: True)
     for it in items:
+        if scene_words and it["word"] not in scene_words:
+            continue
         scene_ok[it["scene"]] &= bool(ok.get(it["id"])) and all(ok[it["id"]]) and it["scene"] not in bridge_free
 
     def item_ok(it: dict) -> bool:
@@ -965,6 +970,8 @@ def eligible(set_name: str, comp_run: str, words: list[str], n: int, level: str 
 
     out, got = [], collections.Counter()
     for it in items:
+        if it["word"] not in words:
+            continue
         passes = item_ok(it) if per_word else scene_ok[it["scene"]]
         if got[it["word"]] >= n or not passes or (want is not None and it["level"] != want):
             continue

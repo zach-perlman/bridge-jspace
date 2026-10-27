@@ -2127,3 +2127,64 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     2 of 3 models. The "entity pointer" framing is then revised.
   - Otherwise the effect is not mostly the removal of the candidate answers' directions.
   - ansU is reported beside ansJ as the logit lens's version.
+
+#### Amendment 58 note 4 (Zach, 2026-10-27 23:35 UTC, before any v3 run): jsuite v3
+
+Note 3's v2 answer-only runs were cancelled before they started (Zach, 27 Oct, ~23:00 UTC); the test moves to v3.
+
+- **Why:** the 27 Oct audit and Neel's feedback.
+  - v2's described starts leak the answer through their cues.
+  - Small answer sets: the commonest answer covered up to 42% of items.
+  - Guessing by elimination.
+  - The stated fact always agreed with memory.
+  - The reading side was single-step.
+- **Set:** data/tasks_v2/jsuite_v3_test_chat, built by scripts/jsuite_v3.py (seed 3001) from data/v3_bridges.json (scripts/v3_bridges_src.py).
+  - **Bridges:** written by hand, with the 5 uncertain facts replaced and the rest checked by the author.
+  - **Relations and bridges:** 234 bridges in 5 relations: people → nationality (63), cities → country (51), companies → country (40), landmarks → country (40), films → director (40).
+  - **Answer balance:** no answer covers more than 5% of its relation (20+ answers per relation).
+  - **Descriptions:** none names a place, nationality, language, people, food or answer-language title, or the answer.
+  - **Excluded:** answers whose first tokens collide under any of the 5 tested tokenizers. They were swapped for other bridges.
+  - **Not public:** the generated items stay out of the public repo (Redwood's request); the generator, tables and seed rebuild them exactly.
+- **Starts:** P (made-up person), M (described, named once in passing), W (two passing mentions), R (never named), T (tracked),
+  X (computed list position), Q / J (P as table / JSON), Y (counterfactual-bridge pairs of P level 1).
+- **Finals:** P, K, M, A, N (as v2), plus:
+  - H (hard read through a made-up anchor);
+  - C, D, E, F (conflict: plain / attributed frame × neutral / "According to the notes" question; near or far counterfactual);
+  - G (attributed, true).
+- **Levels:**
+  - 1 (3 entities, 2 filler sentences);
+  - 2 (6 entities, 6 filler sentences);
+  - 3 (12 entities, 20 filler sentences, the bridge's sentences in the first third).
+- **Matrix:** scripts/jsuite_v3.py MATRIX; two renderings (rep 0 is run; rep 1 is held for replication).
+- **Audit:** scripts/audit_v3.py, before any run; results/dataset_audit/jsuite_v3/. Every check passes:
+  - absence and presence of the answer per final;
+  - never-named;
+  - the two-mention distractor;
+  - the question never names the bridge or the answer;
+  - conflict values;
+  - counterfactual pairs identical except the bridge;
+  - the computed position;
+  - ids;
+  - anchors;
+  - first-token uniqueness for Qwen 27B, 9B, Lightning, Muse and Ministral.
+- **Competence (rep 0; Qwen3.6-27B, Qwen3.5-9B, Lightning):**
+  - (a) natural_v1 competence (whole, each hop alone, guess) on every K and M word (eligibility), plus RM;
+  - (b) competence_variants "none" (cand2 and the greedy reply) on every word and the skip-the-bridge probes.
+- **Eligibility (Zach, V4):** a scene counts if its K and M items (R: its M item) and each hop alone are right. Its
+  other finals are scored on that scene, whatever their own correctness. Implemented as tasks_v2.eligible's optional
+  scene_words, so existing runs are unchanged.
+- **Knock-out matrix (rep 0, each model at its band):** paper10, paper10_rot, unembed10, paper10_pcasize, all words.
+  - **Readings, fixed now:**
+    - **Headline:** M − K ≥ 10 points with rotated ≤ 10, in at least 2 of 3 models. Primary on start P; the other starts reported.
+    - **Hard read:** H's points lost under paper10 within 10 of paper10_rot, where H is difficulty-matched to M (unedited
+      accuracy and median margin within M's range for that model). Otherwise "recall vs read" becomes "anything hard".
+    - **Level 3:** the same rule for K and H at level 3.
+    - **Conflict:** paper10 raises the share of answers giving the passage's (counterfactual) value by ≥ 10 points more
+      than paper10_rot and paper10_pcasize, in at least 2 of 3 models. G vs K is reported as the attribution control.
+    - **W vs M:** the guess-prompt accuracy on W, expected below M's (elimination removed); M − K reported on W.
+    - **Y:** the share of Y items answered with the alternative bridge's value (counterfactual consistency, competence),
+      against chance and the commonest answer.
+    - **X:** read only where the real-composition share is ≥ 0.7.
+    - **Formats (Q, J):** M − K and H as for P.
+- **Ports to v3** (swap and pointer, answer-only removal, keep-own, position split, readout) and later tests (SOCRATES,
+  monitoring) each get their own note before they run.
