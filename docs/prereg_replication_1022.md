@@ -2102,3 +2102,28 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - Three-hop and number cells are read with the real-composition share (accuracy − guess)/(1 − guess) ≥ 0.7 (Zach, 27 Oct).
   - Question: does content-free extra computation raise no-CoT competence on never-named two-hop, three-hop and number
     lookups, as Redwood found for frontier models?
+
+#### Amendment 58 note 3 (Zach, 2026-10-27 23:05 UTC, before the run): answer-only removal
+
+- **Why:** to test whether the headline is just the deletion of an answer that is linearly decodable at the bridge.
+  The J++ lens reads the fact at the bridge's mention in most items, so the lens part could act by removing the
+  answer's own directions rather than the entity pointer.
+- **Conditions:** new in scripts/ablate_v2.py: ansJ, ansJ_rot, ansU and ansU_rot.
+  - At every token and every layer of the model's band, remove the projection onto the span of the item's candidate
+    answers' unit directions: the first tokens of every answer of its relation, both cases (cands2).
+  - The span is the same at every position.
+  - ansJ uses the J++ lens vectors at that layer; ansU uses the logit lens's (unembedding) directions.
+  - "_rot" turns the removal vector by the same fixed random rotation as paper10_rot.
+  - The rank is the number of candidate tokens in the dictionary, about 10-70 depending on the relation.
+- **Items and models:** jsuite_v2_test_chat facts, all 15 words. Each model at its headline band, with the headline
+  competence run and eligibility:
+  - Qwen3.6-27B, L32-40;
+  - Qwen3.5-9B, L12-16;
+  - Lightning, L27-33.
+  - paper10 is not rerun: its stored run on the same items is the comparison.
+  - Smoke first: 4 items per word on the 9B.
+- **Readings (M - K, bootstrap over bridges, as the headline):**
+  - "Answer deletion explains most of it" if ansJ's M - K ≥ 0.5 × paper10's stored M - K, with ansJ_rot ≤ 10, in at least
+    2 of 3 models. The "entity pointer" framing is then revised.
+  - Otherwise the effect is not mostly the removal of the candidate answers' directions.
+  - ansU is reported beside ansJ as the logit lens's version.

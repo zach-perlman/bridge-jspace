@@ -70,7 +70,8 @@ COMPETENCE = {  # the 27B's competence runs per suite family (eligibility: every
     "TBL": "competence_tool_v1", "TBR": "competence_tool_v1",
 }  # fmt: skip
 CONDITIONS = ("omp25", "omp25_rot", "omp25_rdict", "paper10", "paper10_rot", "paper10_rdict", "keep_own",
-              "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10", "paper10_pcasize")  # fmt: skip
+              "skip_subject", "gauss", "unembed10", "unembed10_rot", "pca10", "paper10_pcasize",
+              "ansJ", "ansJ_rot", "ansU", "ansU_rot")  # fmt: skip  # ans*: amendment 58 note 3
 SEED_ROT, SEED_DICT, SEED_GAUSS = 888, 999, 777  # + layer (888 and 777 as ablate_pilot)
 
 
@@ -341,6 +342,32 @@ def conditions_for(band: tuple[int, ...], conditions: list[str]) -> list[str]:
     return [c for c in conditions if len(band) <= WIDE or top_k(c) is not None]
 
 
+def answer_span_edit(D, rows: list[torch.Tensor], outside: list[list[int]], rotation: torch.Tensor | None = None):
+    """Amendment 58 note 3 (Zach, 2026-10-27): at every edited position of batch row b, remove the projection onto the
+    span of D's unit vectors for rows[b] (the item's candidate answers' first tokens, both cases: its cands2), the
+    same span at every position; with rotation, the removal vector is turned by it (the same-size control).
+    Positions in outside[b] are unchanged."""
+    bases = []
+    for r in rows:
+        A = D.atoms(r).double()  # [k, d]
+        Q, _ = torch.linalg.qr(A.T)  # [d, k], orthonormal columns spanning the candidates' directions
+        bases.append(Q)
+
+    def edit(h: torch.Tensor) -> torch.Tensor:
+        out = h.float().clone()
+        for b, Q in enumerate(bases):
+            x = out[b].double()
+            r = (x @ Q) @ Q.T
+            if outside[b]:
+                r[torch.tensor(outside[b], device=h.device)] = 0
+            if rotation is not None:
+                r = r @ rotation.double().T
+            out[b] = (x - r).float()
+        return out
+
+    return edit
+
+
 def label(band: tuple[int, ...]) -> str:
     contiguous = band == tuple(range(band[0], band[-1] + 1))
     return f"L{band[0]}-{band[-1]}" if contiguous and len(band) > 1 else "L" + ",".join(map(str, band))
@@ -433,7 +460,7 @@ def main(args) -> None:
     rot = {la: rotation(wg.shape[1], SEED_ROT + args.seed_offset + la) for la in layers}
     rdict = {la: RotatedDictionary(dic[la], rotation(wg.shape[1], SEED_DICT + args.seed_offset + la)) for la in layers}
     unembed = None  # the logit lens's directions: the same dictionary with J = identity, one for every layer
-    if any(c.startswith("unembed") for c in args.conditions):
+    if any(c.startswith("unembed") or c.startswith("ansU") for c in args.conditions):
         unembed = LensDictionary(wg, torch.eye(wg.shape[1], device="cuda"))
     pca = {}  # 2026-10-25 (TA note, variance control): the residual's top principal directions at each layer, +/- each
     if any("pca" in c for c in args.conditions):  # paper10_pcasize (amendment 48 note 1): paper10's size, along these
@@ -492,6 +519,15 @@ def main(args) -> None:
                 for cond in conditions_for(band, args.conditions):
                     edits = {}
                     for la in band:
+                        if cond.startswith("ans"):  # amendment 58 note 3: the candidate answers' directions only
+                            cand_rows = []
+                            for p in chunk:
+                                rr = row_of[torch.tensor(p["cands2"], device="cuda")]
+                                cand_rows.append(rr[rr >= 0].unique())
+                            edits[la] = answer_span_edit(unembed if cond.startswith("ansU") else dic[la], cand_rows,
+                                                         [p["outside"] for p in chunk],
+                                                         rotation=rot[la] if cond.endswith("_rot") else None)
+                            continue
                         if cond.startswith("pca"):  # the variance control: no protected atoms (they index token rows)
                             rs = [RowSettings(skip=p["outside"]) for p in chunk]
                         elif top_k(cond) is not None and "keepown" in cond:  # C1's kill test under paper10 (2026-10-21)
