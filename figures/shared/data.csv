@@ -86,3 +86,43 @@ j5,Muse 30B,"remove everywhere, layers 36-42, logit lens: recalled minus lookup 
 j5,Muse 30B,"remove everywhere: rotated and size-matched controls, the largest (pp)",4.6,,,,results/x45r/score-20261027T165540Z/x45r.json | descriptive.L36_42_size_matched.paper10_pcasize.mk
 j5,Muse 30B,remove everywhere: the 'needed' bar (pp),15.0,,,,"scripts/x45r_score.py | NOT_NEEDED_MK, NOT_NEEDED_EXCESS, CARRIED = 15.0"
 j5,Muse 30B,"remove from the patch, layer 26: gap (share of the patch's switches, %)",85,68,98,,figures/story/data.csv | numbers | contrast_muse
+j4,Qwen 9B,number of layers,32,,,,src/bridge_jspace/pins.py | TARGETS qwen3.5-9b n_layers
+j4,Qwen 27B,number of layers,64,,,,src/bridge_jspace/pins.py | TARGETS qwen3.6-27b n_layers
+j4,Nemotron Lightning,number of layers,52,,,,src/bridge_jspace/pins.py | TARGETS nemotron-3.5-lightning n_layers
+j4,Muse 30B,number of layers,52,,,,src/bridge_jspace/pins.py | TARGETS muse-glimmer-30b n_layers
+j4,Qwen 122B,number of layers,48,,,,src/bridge_jspace/pins.py | TARGETS qwen3.5-122b-a10b n_layers
+j4,Qwen 9B,"remove everywhere, layers 12-16: recalled minus lookup answers lost (pp)",42.6,37,49,,docs/breadth/data.csv | ko.q9.mk; ko.q9.rot; ko.q9.u
+j4,Qwen 9B,"remove everywhere, layers 12-16: largest control (rotated) (pp)",1.8,,,,docs/breadth/data.csv | ko.q9.mk; ko.q9.rot; ko.q9.u
+j4,Qwen 9B,"remove everywhere, layers 12-16: share shared with the logit lens",0.03,,,,docs/breadth/data.csv | ko.q9.mk; ko.q9.rot; ko.q9.u
+j4,Qwen 27B,"remove everywhere, layers 32-40: recalled minus lookup answers lost (pp)",50.9,46,55,,docs/breadth/data.csv | ko.q27.mk; ko.q27.rot; ko.q27.u
+j4,Qwen 27B,"remove everywhere, layers 32-40: largest control (rotated) (pp)",2.7,,,,docs/breadth/data.csv | ko.q27.mk; ko.q27.rot; ko.q27.u
+j4,Qwen 27B,"remove everywhere, layers 32-40: share shared with the logit lens",0.04,,,,docs/breadth/data.csv | ko.q27.mk; ko.q27.rot; ko.q27.u
+j4,Nemotron Lightning,"remove everywhere, layers 27-33: recalled minus lookup answers lost (pp)",53.1,48,59,,docs/breadth/data.csv | ko.nl.mk; ko.nl.rot; ko.nl.u
+j4,Nemotron Lightning,"remove everywhere, layers 27-33: largest control (logit lens) (pp)",8.7,,,,docs/breadth/data.csv | ko.nl.mk; ko.nl.rot; ko.nl.u
+j4,Nemotron Lightning,"remove everywhere, layers 27-33: share shared with the logit lens",0.16,,,,docs/breadth/data.csv | ko.nl.mk; ko.nl.rot; ko.nl.u
+j4,Muse 30B,"remove everywhere, layers 36-42: recalled minus lookup answers lost (pp)",59.9,55,65,,docs/breadth/data.csv | ko.mu.mk; ko.mu.rot; ko.mu.u
+j4,Muse 30B,"remove everywhere, layers 36-42: largest control (logit lens) (pp)",34.6,,,,docs/breadth/data.csv | ko.mu.mk; ko.mu.rot; ko.mu.u
+j4,Muse 30B,"remove everywhere, layers 36-42: share shared with the logit lens",0.58,,,,docs/breadth/data.csv | ko.mu.mk; ko.mu.rot; ko.mu.u
+j4,Qwen 122B,"remove everywhere, layers 39-45: recalled minus lookup answers lost (pp)",48.5,44,54,,docs/breadth/data.csv | ko.q122.mk; ko.q122.rot; ko.q122.u
+j4,Qwen 122B,"remove everywhere, layers 39-45: largest control (logit lens) (pp)",11.8,,,,docs/breadth/data.csv | ko.q122.mk; ko.q122.rot; ko.q122.u
+j4,Qwen 122B,"remove everywhere, layers 39-45: share shared with the logit lens",0.24,,,,docs/breadth/data.csv | ko.q122.mk; ko.q122.rot; ko.q122.u
+j4,Qwen 9B,"remove everywhere, layers 26-29: recalled minus lookup answers lost (pp)",53.1,48,58,,docs/breadth/data.csv | late.q9.all; late.q9.all.rot; late.q9.all.u
+j4,Qwen 9B,"remove everywhere, layers 26-29: largest control (logit lens) (pp)",27.5,,,,docs/breadth/data.csv | late.q9.all; late.q9.all.rot; late.q9.all.u
+j4,Qwen 9B,"remove everywhere, layers 26-29: share shared with the logit lens",0.52,,,,docs/breadth/data.csv | late.q9.all; late.q9.all.rot; late.q9.all.u
+j4,Qwen 27B,"remove everywhere, layers 52-60: recalled minus lookup answers lost (pp)",50.0,45,55,,docs/breadth/data.csv | late.q27.all; late.q27.all.rot; late.q27.all.u
+j4,Qwen 27B,"remove everywhere, layers 52-60: largest control (logit lens) (pp)",9.5,,,,docs/breadth/data.csv | late.q27.all; late.q27.all.rot; late.q27.all.u
+j4,Qwen 27B,"remove everywhere, layers 52-60: share shared with the logit lens",0.19,,,,docs/breadth/data.csv | late.q27.all; late.q27.all.rot; late.q27.all.u
+j4,Nemotron Lightning,"remove everywhere, layers 33-39: recalled minus lookup answers lost (pp)",61.6,57,67,,docs/breadth/data.csv | late.nl.all; late.nl.all.rot; late.nl.all.u
+j4,Nemotron Lightning,"remove everywhere, layers 33-39: largest control (logit lens) (pp)",22.9,,,,docs/breadth/data.csv | late.nl.all; late.nl.all.rot; late.nl.all.u
+j4,Nemotron Lightning,"remove everywhere, layers 33-39: share shared with the logit lens",0.37,,,,docs/breadth/data.csv | late.nl.all; late.nl.all.rot; late.nl.all.u
+j4,Muse 30B,"remove everywhere, layers 23-29: recalled minus lookup answers lost (pp)",6.7,5,9,,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10.mk; his_L23_29.paper10_rot.mk; his_L23_29.unembed10.mk
+j4,Muse 30B,"remove everywhere, layers 23-29: largest control (rotated) (pp)",1.1,,,,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10.mk; his_L23_29.paper10_rot.mk; his_L23_29.unembed10.mk
+j4,Muse 30B,"remove everywhere, layers 23-29: share shared with the logit lens",-0.03,,,,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10.mk; his_L23_29.paper10_rot.mk; his_L23_29.unembed10.mk
+j4,Qwen 9B,"remove from the patch, layer 12: gap (% of the patch's switches)",53,42,61,,figures/story/data.csv | numbers | contrast_9b
+j4,Qwen 9B,remove from the patch: its layer,12,,,,"predictions/2026-10-26_dan.md | (9B L12, 27B L32, 122B L33, Muse L26)"
+j4,Qwen 27B,"remove from the patch, layer 32: gap (% of the patch's switches)",60,50,69,,figures/story/data.csv | numbers | contrast_27b
+j4,Qwen 27B,remove from the patch: its layer,32,,,,"predictions/2026-10-26_dan.md | (9B L12, 27B L32, 122B L33, Muse L26)"
+j4,Muse 30B,"remove from the patch, layer 26: gap (% of the patch's switches)",85,68,98,,figures/story/data.csv | numbers | contrast_muse
+j4,Muse 30B,remove from the patch: its layer,26,,,,"predictions/2026-10-26_dan.md | (9B L12, 27B L32, 122B L33, Muse L26)"
+j4,Qwen 122B,"remove from the patch, layer 33: gap (% of the patch's switches)",32,20,43,,figures/story/data.csv | numbers | contrast_122b
+j4,Qwen 122B,remove from the patch: its layer,33,,,,"predictions/2026-10-26_dan.md | (9B L12, 27B L32, 122B L33, Muse L26)"

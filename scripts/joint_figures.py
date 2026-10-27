@@ -588,6 +588,112 @@ def x45r_score() -> Path:
     return sorted((REPO / "results" / "x45r").glob("score-*/x45r.json"))[-1]
 
 
+def j4_depth_map(plt):
+    """P2 (Dan ~19:20; a file for the call doc, not on the README): per model, where each tool looked, on relative depth
+    (layer / last layer). Zach's remove everywhere as a band over its layers, labelled with recalled minus lookup answers
+    lost (pp) and, in grey, its largest control (rotated or logit lens); filled = fixed in advance, hollow = after the
+    data, hatched = more than half of it shared with the logit lens. Dan's remove from the patch as a dot at its layer,
+    labelled with its gap (% of the patch's switches). 'not run' where a tool has no run. Layer counts from pins.py."""
+    from bridge_jspace import pins
+
+    zb, dp = breadth(), depth()
+    sc = json.loads(x45r_score().read_text())
+    src45 = str(x45r_score().relative_to(REPO))
+    target = {"q9": "qwen3.5-9b", "q27": "qwen3.6-27b", "nl": "nemotron-3.5-lightning", "mu": "muse-glimmer-30b",
+              "q122": "qwen3.5-122b-a10b"}  # fmt: skip
+    # Zach's bands: (model, first, last, value, lo, hi, largest control (name, value), shared share, kind, source)
+    after = set(G.AFTER_V2_KNOCKOUT)
+    bands = []
+    for m, (a, b) in {"q9": (12, 16), "q27": (32, 40), "nl": (27, 33), "mu": (36, 42), "q122": (39, 45)}.items():
+        k, rot, u = zb[(m, f"ko.{m}.mk")], zb[(m, f"ko.{m}.rot")], zb[(m, f"ko.{m}.u")]
+        bands.append((m, a, b, num(k["value"]), k["lo"], k["hi"], max(("rotated", num(rot["value"])),
+                      ("logit lens", num(u["value"])), key=lambda t: t[1]), num(u["value"]) / num(k["value"]),
+                      "after" if m in after else "fixed", f"docs/breadth/data.csv | ko.{m}.mk; ko.{m}.rot; ko.{m}.u"))  # fmt: skip
+    for m, (a, b) in {"q9": (26, 29), "q27": (52, 60), "nl": (33, 39)}.items():
+        k, rot, u = zb[(m, f"late.{m}.all")], zb[(m, f"late.{m}.all.rot")], zb[(m, f"late.{m}.all.u")]
+        assert f"L{a}-{b}" in k["quantity"], k["quantity"]
+        bands.append((m, a, b, num(k["value"]), k["lo"], k["hi"], max(("rotated", num(rot["value"])),
+                      ("logit lens", num(u["value"])), key=lambda t: t[1]), num(u["value"]) / num(k["value"]), "fixed",
+                      f"docs/breadth/data.csv | late.{m}.all; late.{m}.all.rot; late.{m}.all.u"))  # fmt: skip
+    r = sc["his_L23_29"]
+    assert "L23-29" in sc["rule_run"]
+    bands.append(("mu", 23, 29, r["paper10"]["mk"], r["paper10"]["ci"][0], r["paper10"]["ci"][1],
+                  max(("rotated", r["paper10_rot"]["mk"]), ("logit lens", r["unembed10"]["mk"]), key=lambda t: t[1]),
+                  r["unembed10"]["mk"] / r["paper10"]["mk"], "fixed",
+                  f"{src45} | his_L23_29.paper10.mk; his_L23_29.paper10_rot.mk; his_L23_29.unembed10.mk"))  # fmt: skip
+    # Dan's dots: the main test's layer per model (predictions/2026-10-26_dan.md) and its gap
+    dan_layer = {"q9": 12, "q27": 32, "q122": 33, "mu": 26}
+    fig = plt.figure(figsize=(S.WIDTH, 5.6))
+    S.title(fig, "Qwen 9B and Qwen 27B: tools agree at mid depth; Muse splits",
+            "Muse: the lens part carries the answer at mid depth; removing it only hurts late.")  # fmt: skip
+    ax = fig.add_axes((0.25, 0.22, 0.72, 0.60))
+    names = {zm: name for name, zm, *_ in MODELS}
+    ys = {zm: -i for i, (_n, zm, *_) in enumerate(MODELS)}
+    labels = []
+    for zm in ys:
+        n = pins.TARGETS[target[zm]]["n_layers"]
+        labels.append(f"{names[zm]}\n({n} layers)")
+        record(
+            "j4", names[zm], "number of layers", n, source=f"src/bridge_jspace/pins.py | TARGETS {target[zm]} n_layers"
+        )
+    for m, a, b, v, lo, hi, (cname, cv), shared, kind, src in bands:
+        n = pins.TARGETS[target[m]]["n_layers"]
+        x0, x1 = a / (n - 1), b / (n - 1)
+        # a band that touches an earlier band of the same model (Lightning's 27-33 and 33-39) sits a step lower, its
+        # label below it
+        below = any(mm == m and aa < a <= bb for mm, aa, bb, *_ in bands)
+        y = ys[m] + (-0.12 if below else 0.14)
+        face = RECALLED if kind == "fixed" else "white"
+        ax.add_patch(Rectangle((x0, y - 0.12), x1 - x0, 0.24, fc=face, ec=RECALLED, lw=1.4, zorder=2))
+        if shared > 0.5:  # the hatch takes the edge colour: white lines on a filled band, dark on a hollow one
+            ax.add_patch(Rectangle((x0, y - 0.12), x1 - x0, 0.24, fc="none", ec="white" if kind == "fixed" else RECALLED,
+                                   lw=0, hatch="////", zorder=2.5))  # fmt: skip
+        if below:  # beside the lower band, clear of the next row's labels
+            t = ax.text(x1 + 0.012, y, f"{v:+.1f}", ha="left", va="center", fontsize=S.FONT)
+        else:
+            t = ax.text((x0 + x1) / 2, y + 0.2, f"{v:+.1f}", ha="center", va="bottom", fontsize=S.FONT)
+        ax.annotate(f"({cv:.1f})", xy=(1, 0), xycoords=t, xytext=(4, 0), textcoords="offset points", ha="left",
+                    va="bottom", fontsize=S.FONT, color="#8a8a8a")  # fmt: skip
+        record("j4", names[m], f"remove everywhere, layers {a}-{b}: recalled minus lookup answers lost (pp)", v,
+               lo, hi, source=src)  # fmt: skip
+        record("j4", names[m], f"remove everywhere, layers {a}-{b}: largest control ({cname}) (pp)", cv, source=src)
+        record("j4", names[m], f"remove everywhere, layers {a}-{b}: share shared with the logit lens", round(shared, 2),
+               source=src)  # fmt: skip
+    for zm, y in ys.items():
+        if zm not in dan_layer:
+            ax.text(0.02, y - 0.22, "remove from the patch: not run", ha="left", va="center", fontsize=S.FONT,
+                    color=S.COL["muted"])  # fmt: skip
+            continue
+        n = pins.TARGETS[target[zm]]["n_layers"]
+        x = dan_layer[zm] / (n - 1)
+        g = S.parse(dp[("numbers", "", f"contrast_{dict((z, s) for _n, z, _t, s in MODELS)[zm]}")]["value"])
+        assert g is not None
+        ax.plot([x], [y - 0.22], "o", ms=9, color=LOOKUP, zorder=3)
+        ax.text(x + 0.02, y - 0.22, f"{100 * g[0]:.0f}%", va="center", fontsize=S.FONT, color=LOOKUP)
+        key = f"contrast_{dict((z, s) for _n, z, _t, s in MODELS)[zm]}"
+        record("j4", names[zm], f"remove from the patch, layer {dan_layer[zm]}: gap (% of the patch's switches)",
+               round(100 * g[0]), round(100 * g[1]), round(100 * g[2]), source=f"figures/story/data.csv | numbers | {key}")  # fmt: skip
+        record("j4", names[zm], "remove from the patch: its layer", dan_layer[zm],
+               source="predictions/2026-10-26_dan.md | (9B L12, 27B L32, 122B L33, Muse L26)")  # fmt: skip
+    ax.set_xlim(0, 1)
+    ax.set_ylim(-len(MODELS) + 0.45, 0.65)
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 1])
+    ax.set_xticklabels(["0", "0.25", "0.5", "0.75", "1"])
+    ax.set_yticks(list(ys.values()), labels)
+    ax.tick_params(axis="y", length=0)
+    ax.spines["left"].set_visible(False)
+    ax.set_xlabel("relative depth (layer / last layer)")
+    for y in ys.values():
+        ax.axhline(y - 0.5, color="#eeeeee", lw=0.8, zorder=0)
+    hs = [Rectangle((0, 0), 1, 1, fc=RECALLED, ec=RECALLED), Rectangle((0, 0), 1, 1, fc="white", ec=RECALLED, lw=1.4),
+          Rectangle((0, 0), 1, 1, fc="white", ec=RECALLED, lw=1.4, hatch="////"),
+          plt.Line2D([], [], marker="o", ls="", color=LOOKUP, ms=9)]  # fmt: skip
+    labels_l = ["remove everywhere (pp; grey: largest control)", "the same, after the data",
+                "more than half shared with the logit lens", "remove from the patch (% of the patch's switches)"]  # fmt: skip
+    legend_below(fig, hs, labels_l, 0.0, 2)
+    return fig
+
+
 def j5_muse_depth(plt):
     """Muse 30B, Zach's tool only (Dan ~19:50): recalled minus lookup answers lost (pp) at layers 23-29, layer 26 and
     layers 36-42, each with its 95% interval and one grey tick for the logit lens's own directions; the bar of 15 fixed
@@ -660,7 +766,7 @@ def j5_muse_depth(plt):
 
 
 FIGURES = (("j0_setup", j0_setup), ("j1_recall_needs_lens", j1_recall_needs_lens), ("j2_swap", j2_swap),
-           ("j3_order_signal", j3_order_signal), ("grid_front", grid_front), ("j5_muse_depth", j5_muse_depth))  # fmt: skip
+           ("j3_order_signal", j3_order_signal), ("grid_front", grid_front), ("j5_muse_depth", j5_muse_depth), ("j4_depth_map", j4_depth_map))  # fmt: skip
 
 
 def save(fig, name: str) -> None:
