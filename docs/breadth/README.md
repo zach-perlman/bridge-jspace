@@ -35,7 +35,7 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 9da1a0c6 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 6c3de8f0 from the run files.
 
 ## Setup
 

@@ -246,6 +246,14 @@ def collect() -> None:
             v = p.get(f"memory/{c}")
             if v:
                 add(f"swap.{key}.{c}", "swaps", key.split(".")[0], f"transfer, memory finals pooled, {c} ({run})", v["transfer"], *v["ci"], v["n"], source=f"results/jswap/{run}/rows.jsonl")
+    # stated finals under the swaps (Dan's gaps.md row 3, 2026-10-27): the J-part, its complement and the paste on PK / TK
+    for key, run in (("q27", "jswap_v2_v1"), ("q9", "qwen35_9b_jswap_v2_v1"), ("nl", "nem35l_jswap_v2_v1")):
+        s_ = jl(RES / "jswap" / run / "summary.json") or {}
+        for w in ("PK", "TK"):
+            for c, ck in (("swap", "swapK"), ("swap_comp", "comp"), ("paste", "pasteK")):
+                v = s_.get(f"{w}/{c}")
+                if v:
+                    add(f"swap.{key}.{ck}.{w}", "swaps", key, f"transfer on stated final {w}, {c} ({run})", v["transfer"], *v["ci"], v["n"], source=f"results/jswap/{run}/summary.json")
     for m, run in (("q27", "jswap_ans_v2_v1"), ("q9", "qwen35_9b_jswap_ans_v2_v1")):
         s = jl(RES / "jswap" / run / "summary.json") or {}
         for c in ("swap", "swap_noans", "swap_ans", "swap_ans_rot"):
