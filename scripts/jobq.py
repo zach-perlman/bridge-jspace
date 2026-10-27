@@ -118,7 +118,15 @@ def validate(spec: Any, path: Path | None = None) -> list[str]:
         elif gpus > 1 and "BJ_DEVICE_MAP=" not in str(spec.get("command", "")):
             # without it the model loads onto the first GPU alone and the others sit idle (bridge_jspace.model)
             errors.append(f"gpus: {gpus} needs a command that splits the model over them (BJ_DEVICE_MAP=auto)")
+    text = " ".join(spec[k] for k in COMMAND_KEYS if isinstance(spec.get(k), str))
+    errors += [f"placeholder {p} in the command: replace it with the value before enqueue"
+               for p in dict.fromkeys(PLACEHOLDER_RE.findall(text))]  # fmt: skip
     return errors + renamed_targets(spec, path)
+
+
+# A value a draft spec waits for, written as <WHAT>_FROM_<WHO> (45s: BJ_MAMBA_SSM_REVISION=REVISION_FROM_ZACH): validate,
+# and so enqueue, refuses the spec until it is replaced.
+PLACEHOLDER_RE = re.compile(r"\b[A-Z][A-Z0-9_]*_FROM_[A-Z]+\b")
 
 
 # ---------------------------------------------------------------- targets whose meaning changed at the merge

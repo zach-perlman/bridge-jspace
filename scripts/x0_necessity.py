@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
 from bridge_jspace.data import sha256_of
-from bridge_jspace.run_switches import switches
+from bridge_jspace.run_switches import loaded_hub_kernels, switches
 from bridge_jspace.stats import wilson
 
 EXP = "x0_necessity"
@@ -65,7 +65,13 @@ THROUGH_JDEP, THROUGH_EXCESS, THROUGH_LO = 0.30, 0.20, 0.10
 CONFIRM_LOOKUP_EXCESS, CONFIRM_RECALL_JDEP = 0.10, 0.30
 KILL_LOOKUP_EXCESS, KILL_RECALL_JDEP = 0.20, 0.20
 H_TOKEN_EXCESS = 0.20
-PREDICTED = {"qwen3.6-27b": 32, "qwen3.5-9b": 12, "qwen3.5-122b-a10b": 33, "muse-glimmer-30b": 26}  # Muse: 50% depth
+PREDICTED = {
+    "qwen3.6-27b": 32,
+    "qwen3.5-9b": 12,
+    "qwen3.5-122b-a10b": 33,
+    "muse-glimmer-30b": 26,  # Muse: 50% depth
+    "nemotron-3.5-lightning": 30,  # 45s (Dan, 27 Oct ~15:00): the middle of Zach's pre-registered band L27-33
+}
 
 
 # ---- cells (CPU) --------------------------------------------------------------------------------------------------
@@ -181,6 +187,7 @@ LAYERS = {
     "qwen3.5-9b": tuple(range(6, 21, 2)),
     "qwen3.5-122b-a10b": (24, 27, 30, 33, 36),
     "muse-glimmer-30b": (13, 26, 34),  # 25 / 50 / 65% depth, fixed before any Muse result (Dan, 25 Oct ~23:00)
+    "nemotron-3.5-lightning": (30,),  # 45s: one layer, no sweep (Dan, 27 Oct ~15:00)
 }  # 122B: 30 / 33 / 36 by X0.md, 24 and 27 descriptive (Dan)
 # BJ_GATE: a lowered, descriptive readers' gate after the data (Dan: 0.75 for the gate-lowered reruns and batch 38's
 # fallback); every script reads X.GATE, and a run's manifest records the value it used
@@ -625,6 +632,21 @@ def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predi
                     f.writelines(json.dumps(r) + "\n" for r in part_rows)
 
 
+def order_record() -> dict:
+    """How items and rows are ordered and batched, as every manifest records it (45s, Dan 27 Oct ~15:00: Lightning's
+    numerics depend on batch composition, and its runs are deterministic at fixed eligibility and batching)."""
+    from scripts import suite_split as P
+
+    return {"scenes": "sorted by scene id (build_cases); the eligible ones in that order, the first N_ITEMS kept; the "
+                      "kept ids in gate.json 'order'",
+            "competence": "per scene, reader and rendering: org and alt generated together (one batch of 2 rows), "
+                          "then each one's read alone (a batch of 1)",
+            "delta": "per scene: one unbatched forward of org and of alt",
+            "reads": f"per scene, reader and layer: the unedited row, then the arms in their fixed order (whole; per "
+                     f"dictionary, k, fit: no_part, no_rand), in batches of at most {P.BATCH} rows (BJ_SUITE_BATCH)",
+            "batch": P.BATCH}  # fmt: skip
+
+
 def lens_record() -> dict:
     """The main arm's lens as every manifest and report records it; asserts it is the target's pinned J++."""
     assert pins.FROZEN_LENS == "jpp", f"{pins.TARGET}: the frozen lens is {pins.FROZEN_LENS!r}, not J++"
@@ -659,6 +681,7 @@ def stage_run(
                   "mode": READ, "digit": f"amendment 3: the step of the first digit token in {GEN_TOKENS} greedy tokens "
                                          "(non-chat renderings, when mode is digit)"},
          "descriptive": DESCRIPTIVE, "alt": ALT, "curve_all_layers": CURVE_ALL, "readout": READOUT, "nonneg_arm": NONNEG,
+         "order": order_record(),
          **({"fresh": {"seed": FRESH_SEED, "design": "jobs/c3/batch45.yaml, 45m", "draws": "x0_necessity.fresh_pair"}}
             if ALT == "fresh" else {}),
          "seeds": {"random_dictionary": f"{RAND_DICT_SEED} + layer (CPU)", "random_subspace": f"{SUBSPACE_SEED} + layer (CPU)",
@@ -682,7 +705,10 @@ def stage_run(
     gate, eligible = gate_and_eligible(cases, comp)
     write_jsonl(out / "competence.jsonl", comp)
     write_jsonl(out / "cases.jsonl", [{k: v for k, v in c.items() if k != "space"} for c in cases])
-    (out / "gate.json").write_text(json.dumps({"counts": counts, "gate": gate}, indent=2) + "\n")
+    order = {rend: [c["scene"] for c in eligible[rend]] for rend in renderings}  # the scenes read, in read order
+    kernels = loaded_hub_kernels()  # after the competence forwards: the hub kernels the run loaded ({} without any)
+    (out / "gate.json").write_text(json.dumps({"counts": counts, "gate": gate, "order": order, "hub_kernels": kernels},
+                                              indent=2) + "\n")  # fmt: skip
     print(json.dumps(gate, indent=2), flush=True)
     for rend in renderings:
         if eligible[rend]:

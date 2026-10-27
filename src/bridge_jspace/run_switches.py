@@ -18,7 +18,9 @@ run) checks the run step's switches against the manifest's (check_switches).
 from __future__ import annotations
 
 import os
+import re
 import sys
+from collections.abc import Iterable
 from typing import Any
 
 from bridge_jspace import pins
@@ -55,6 +57,27 @@ def env_switches() -> dict[str, str | None]:
 def switches() -> dict[str, Any]:
     """{"target", every BJ_ variable (env_switches), "lens_sha256"} for this process (see the module docstring)."""
     return {"target": pins.TARGET, **env_switches(), "lens_sha256": frozen_lens_sha256()}
+
+
+# A hub kernel's module file in the HF cache: <cache>/kernels--<org>--<name>/snapshots/<commit>/... (the kernels
+# package 0.16's repo_type "kernel"; a models-- folder, a kernel cached as a model repo, is accepted too)
+HUB_KERNEL_PATH = re.compile(r"(?:kernels|models)--([^/\\]+)--([^/\\]+)[/\\]snapshots[/\\]([0-9a-f]{40})[/\\]")
+
+
+def hub_kernels(files: Iterable[str]) -> dict[str, list[str]]:
+    """Repo -> the sorted commits of the HF-hub kernel modules among `files` (module file paths), read from the paths."""
+    found: dict[str, set[str]] = {}
+    for f in files:
+        if m := HUB_KERNEL_PATH.search(str(f)):
+            found.setdefault(f"{m[1]}/{m[2]}", set()).add(m[3])
+    return {repo: sorted(commits) for repo, commits in sorted(found.items())}
+
+
+def loaded_hub_kernels() -> dict[str, list[str]]:
+    """The HF-hub kernels this process has imported so far (45s, 27 Oct: transformers resolves Lightning's mamba-ssm by
+    major version at load time, so the commit is read from what was loaded). Call it after a forward: some kernels load
+    at their first call."""
+    return hub_kernels(f for mod in list(sys.modules.values()) if isinstance(f := getattr(mod, "__file__", None), str))
 
 
 def warn(message: str) -> None:
