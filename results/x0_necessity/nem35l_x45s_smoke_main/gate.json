@@ -1,0 +1,82 @@
+{
+  "counts": {
+    "scenes": 600,
+    "cases": {
+      "chat": 516,
+      "raw": 516,
+      "nochat": 516
+    },
+    "dropped": {
+      "chat: the bridge is not one token at one position in org and alt": 84,
+      "raw: the bridge is not one token at one position in org and alt": 84,
+      "nochat: the bridge is not one token at one position in org and alt": 84
+    }
+  },
+  "gate": {
+    "chat": {
+      "cases": 516,
+      "org_accuracy": {
+        "PP": 0.9574,
+        "PM": 0.8159
+      },
+      "said_accuracy": {
+        "PP": 0.9574,
+        "PM": 0.8178
+      },
+      "cand_accuracy": {
+        "PP": 0.9554,
+        "PM": 0.814
+      },
+      "pass": true,
+      "eligible": 315,
+      "enough": true,
+      "descriptive": false
+    },
+    "raw": {
+      "cases": 0,
+      "org_accuracy": {},
+      "said_accuracy": {},
+      "cand_accuracy": {},
+      "pass": false,
+      "eligible": 0,
+      "enough": false,
+      "descriptive": false
+    },
+    "nochat": {
+      "cases": 0,
+      "org_accuracy": {},
+      "said_accuracy": {},
+      "cand_accuracy": {},
+      "pass": false,
+      "eligible": 0,
+      "enough": false,
+      "descriptive": false
+    }
+  },
+  "order": {
+    "chat": [
+      "P2-L0-0000",
+      "P2-L0-0002",
+      "P2-L0-0003",
+      "P2-L0-0009",
+      "P2-L0-0011",
+      "P2-L0-0014",
+      "P2-L0-0019",
+      "P2-L0-0022"
+    ]
+  },
+  "hub_kernels": {
+    "kernels-community/activation": [
+      "f678872a2586b69e1b04dc11e86b7d51037f457b"
+    ],
+    "kernels-community/liger-kernels": [
+      "d38583f406e1ac2b7dfc0215da0135dca2243bea"
+    ],
+    "kernels-community/mamba-ssm": [
+      "28017f36635a6b94d911333812beeed5dd901ac0"
+    ],
+    "kernels-community/rotary": [
+      "fa4d2fdda507f0a6ff4b2ad55011c8a17a87c56c"
+    ]
+  }
+}

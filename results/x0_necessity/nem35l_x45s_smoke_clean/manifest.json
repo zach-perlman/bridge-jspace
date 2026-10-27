@@ -1,0 +1,97 @@
+{
+  "exp": "x0_necessity",
+  "run": "nem35l_x45s_smoke_clean",
+  "why": "45s smoke: the clean one-pick design (45m) end to end on 8 scenes at L27, and its read gate on all scenes",
+  "written_utc": "2026-10-27T18:01:08Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_MAMBA_SSM_REVISION": "28017f36635a6b94d911333812beeed5dd901ac0",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "sha": "bb641e98b4233d5c24fd47096151647c6f700876",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "515ccc97e15ed9719d542fcbd2b1903a77dac981899a7947bed80404fa5e5113"
+  },
+  "layers": [
+    27
+  ],
+  "predicted": 27,
+  "renderings": [
+    "chat"
+  ],
+  "dicts": [
+    "jpp"
+  ],
+  "k": 25,
+  "k_of": {},
+  "k_curve": {
+    "dicts": [
+      "jpp"
+    ],
+    "k": []
+  },
+  "n": {
+    "items": 8,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+    "mode": "first",
+    "digit": "amendment 3: the step of the first digit token in 8 greedy tokens (non-chat renderings, when mode is digit)"
+  },
+  "descriptive": false,
+  "alt": "fresh",
+  "curve_all_layers": false,
+  "readout": false,
+  "nonneg_arm": false,
+  "order": {
+    "scenes": "sorted by scene id (build_cases); the eligible ones in that order, the first N_ITEMS kept; the kept ids in gate.json 'order'",
+    "competence": "per scene, reader and rendering: org and alt generated together (one batch of 2 rows), then each one's read alone (a batch of 1)",
+    "delta": "per scene: one unbatched forward of org and of alt",
+    "reads": "per scene, reader and layer: the unedited row, then the arms in their fixed order (whole; per dictionary, k, fit: no_part, no_rand), in batches of at most 16 rows (BJ_SUITE_BATCH)",
+    "batch": 16
+  },
+  "fresh": {
+    "seed": 4513,
+    "design": "jobs/c3/batch45.yaml, 45m",
+    "draws": "x0_necessity.fresh_pair"
+  },
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}

@@ -1,0 +1,173 @@
+{
+  "run": "nem35l_x45s_smoke",
+  "started_utc": "2026-10-27T17:55:33Z",
+  "kernel_nll": {
+    "nll_kernels": 2.6999,
+    "nll_torch": 2.6995,
+    "diff": 0.00037,
+    "top1_agreement": 0.9696,
+    "positions": 3648,
+    "pass": true
+  },
+  "hub_kernels": {
+    "kernels-community/activation": [
+      "f678872a2586b69e1b04dc11e86b7d51037f457b"
+    ],
+    "kernels-community/liger-kernels": [
+      "d38583f406e1ac2b7dfc0215da0135dca2243bea"
+    ],
+    "kernels-community/mamba-ssm": [
+      "28017f36635a6b94d911333812beeed5dd901ac0"
+    ],
+    "kernels-community/rotary": [
+      "fa4d2fdda507f0a6ff4b2ad55011c8a17a87c56c"
+    ]
+  },
+  "kernel_revision": {
+    "pass": true,
+    "loaded": [
+      "28017f36635a6b94d911333812beeed5dd901ac0"
+    ],
+    "expected": "28017f36635a6b94d911333812beeed5dd901ac0",
+    "why": "the loaded commit is the expected one"
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44",
+    "has_layer": true,
+    "layers": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50
+    ]
+  },
+  "designs": {
+    "main": {
+      "counts": {
+        "scenes": 600,
+        "cases": {
+          "chat": 516
+        },
+        "dropped": {
+          "chat: the bridge is not one token at one position in org and alt": 84
+        },
+        "one_token_answers": {
+          "PP": 516,
+          "PM": 516
+        },
+        "enough": true
+      },
+      "mechanics": {
+        "rows": 16,
+        "noop_exact": 16,
+        "noop_max": 0.0,
+        "write_max_rel": 0.0,
+        "unedited_right": 13,
+        "s_right": 13,
+        "whole_switched": 4,
+        "whole_switched_where_s_right": 2,
+        "alone_vs_batch_max": 0.59375,
+        "alone_vs_batch_same_top": 15,
+        "lens_top10_org": 8,
+        "lens_top10_alt": 8,
+        "scenes": 8,
+        "pass": true
+      }
+    },
+    "clean": {
+      "counts": {
+        "scenes": 600,
+        "cases": {
+          "chat": 559
+        },
+        "dropped": {
+          "chat: the bridge is not one token at one position in org and alt": 41
+        },
+        "one_token_answers": {
+          "PP": 559,
+          "PM": 559
+        },
+        "enough": true
+      },
+      "mechanics": {
+        "rows": 16,
+        "noop_exact": 16,
+        "noop_max": 0.0,
+        "write_max_rel": 0.0,
+        "unedited_right": 14,
+        "s_right": 10,
+        "whole_switched": 4,
+        "whole_switched_where_s_right": 3,
+        "alone_vs_batch_max": 1.203125,
+        "alone_vs_batch_same_top": 16,
+        "lens_top10_org": 8,
+        "lens_top10_alt": 8,
+        "scenes": 8,
+        "pass": true
+      }
+    }
+  },
+  "stop_checks": {
+    "kernel revision": true,
+    "kernel vs torch NLL": true,
+    "lens map at the layer": true,
+    "main: scenes": true,
+    "clean: scenes": true,
+    "main: no-op and write": true,
+    "clean: no-op and write": true
+  },
+  "pass": true
+}
