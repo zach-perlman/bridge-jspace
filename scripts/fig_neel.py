@@ -928,21 +928,21 @@ def f04() -> None:
 
 
 def f11() -> None:
-    fig = plt.figure(figsize=(16, 7.6))
+    fig = plt.figure(figsize=(16, 8.4))
     NLC = "#184f95"
 
-    def v2mod(run, mod):
+    def v2mod(run, mod):  # contrast name ("MMM-PPP", "KM-PM") -> (diff, ci), per condition
         s = score(run).get(mod, {})
-        return {c: {k.split("-")[0]: (v["diff"], v["ci"]) for k, v in s.get(c, {}).get("contrasts", {}).items()} | {"_s": s.get(c, {})} for c in ("paper10", "paper10_rot", "unembed10")}
+        return {c: {k: (v["diff"], v["ci"]) for k, v in s.get(c, {}).get("contrasts", {}).items()} | {"_s": s.get(c, {})} for c in ("paper10", "paper10_rot", "unembed10")}
 
     def nat3(run):
         c = (load(A2 / "nat3_score" / f"{run}.json") or {}).get("cells", {})
-        return {cond: {w: (v["excess_over_PPP"], v["ci"]) for w, v in c.get(f"all/{cond}", {}).items()} for cond in ("paper10", "paper10_rot", "unembed10")}
+        return {cond: {f"{w}-PPP": (v["excess_over_PPP"], v["ci"]) for w, v in c.get(f"all/{cond}", {}).items()} for cond in ("paper10", "paper10_rot", "unembed10")}
 
-    def mark(ax, x, y, ci, col, mk, hollow=False):
-        ax.plot(ci, [y, y], color=col, lw=2, solid_capstyle="round", zorder=2)
-        ax.plot(x, y, mk, ms=6, zorder=3, color=col, mec=col if hollow else SURF, mfc=SURF if hollow else col, mew=1.5)
-        ax.text(ci[1] + 1.5, y, f"{x:+.0f}", va="center", fontsize=7, color=INK2)
+    def mark(ax, x, y, ci, col, mk, hollow=False, ms=6, fs=7):
+        ax.plot(ci, [y, y], color=col, lw=2 if ms >= 6 else 1.6, solid_capstyle="round", zorder=2)
+        ax.plot(x, y, mk, ms=ms, zorder=3, color=col, mec=col if hollow else SURF, mfc=SURF if hollow else col, mew=1.5)
+        ax.text(ci[1] + 1.5, y, f"{x:+.0f}", va="center", fontsize=fs, color=INK2)
 
     def ticks(ax, d, w, y):
         for cond, col in (("paper10_rot", ROT), ("unembed10", LOGIT)):
@@ -950,19 +950,23 @@ def f11() -> None:
                 ax.plot(d[cond][w][0], y, "|", color=col, ms=8, mew=1.6, zorder=4)
 
     # A: three hops
-    ax = fig.add_axes((0.075, 0.2, 0.235, 0.56))
+    ax = fig.add_axes((0.075, 0.17, 0.235, 0.59))
     style(ax)
     order = ["MMM", "PMM", "MPM", "PPM", "MMP", "MPP", "PMP"]
     q9 = v2mod("qwen35_9b_" + SET + "_threehop_ko_cand2_v1", "threehop")
+    NB = "jsuite_v2nb_test_chat"
     series = [("Qwen 27B (v2)", J, "o", False, v2mod(SET + "_threehop_ko_cand2_v1", "threehop")),
+              ("Qwen 27B (second data seed)", J, "o", True, v2mod(NB + "_threehop_ko_cand2_v1", "threehop")),
               ("Nemotron Lightning (v2)", NLC, "D", False, v2mod("nem35l_" + SET + "_threehop_ko_cand2_v1", "threehop")),
-              ("Nemotron Lightning (natural three-hop set)", NLC, "D", True, nat3("nem35l_nat3_v1_chat_ko_cand2_v1_drop"))]  # fmt: skip
+              ("Nemotron Lightning (second data seed)", NLC, "D", True, v2mod("nem35l_" + NB + "_threehop_ko_cand2_v1", "threehop")),
+              ("Nemotron Lightning (natural three-hop set)", NLC, "^", False, nat3("nem35l_nat3_v1_chat_ko_cand2_v1_drop"))]  # fmt: skip
     for i, (_lab, col, mk, hol, d) in enumerate(series):
         for r, w in enumerate(order):
-            if w in d["paper10"]:
-                y = r + (i - 1) * 0.26
-                mark(ax, d["paper10"][w][0], y, d["paper10"][w][1], col, mk, hol)
-                ticks(ax, d, w, y)
+            c = f"{w}-PPP"
+            if c in d["paper10"]:
+                y = r + (i - 2) * 0.17
+                mark(ax, d["paper10"][c][0], y, d["paper10"][c][1], col, mk, hol, ms=5, fs=6.5)
+                ticks(ax, d, c, y)
     ax.set_yticks(range(len(order)), [f"{w[0]} → {w[1]} → {w[2]}" for w in order])
     ax.set_ylim(len(order) - 0.5, -0.6)
     ax.set_xlim(-25, 90)
@@ -972,29 +976,32 @@ def f11() -> None:
     ax.set_title("A   Three hops: which chains need J++?", y=1.2)
     hs = [plt.Line2D([], [], ls="", marker=mk, color=col, mfc=SURF if hol else col, mec=col, mew=1.5, ms=7, label=lab) for lab, col, mk, hol, _d in series]
     hs += [plt.Line2D([], [], ls="", marker="|", color=ROT, ms=8, mew=1.6, label="rotated"), plt.Line2D([], [], ls="", marker="|", color=LOGIT, ms=8, mew=1.6, label="logit lens")]
-    ax.legend(handles=hs, loc="lower left", bbox_to_anchor=(0, 1.0), ncol=2, frameon=False, fontsize=7.5)
+    ax.legend(handles=hs, loc="lower left", bbox_to_anchor=(0, 1.0), ncol=2, frameon=False, fontsize=7)
     # B: numbers
-    bx = fig.add_axes((0.47, 0.2, 0.2, 0.56))
+    bx = fig.add_axes((0.47, 0.17, 0.2, 0.59))
     style(bx)
-    rows = [("KR", "counted, then reported"), ("AR", "computed by arithmetic,\nthen reported"), ("MR", "recalled, then reported"), ("MM", "recalled, then used to\nrecall (vs to look up)")]
-    nser = [("Qwen 27B", J, "o", v2mod(SET + "_numbers_ko_cand2_dd_v1", "numbers")), ("Qwen 9B", JL, "s", v2mod("qwen35_9b_" + SET + "_numbers_ko_cand2_dd_v1", "numbers")),
-            ("Nemotron Lightning", NLC, "D", v2mod("nem35l_" + SET + "_numbers_ko_cand2_dd_v1", "numbers"))]  # fmt: skip
-    for i, (_lab, col, mk, d) in enumerate(nser):
-        for r, (w, _l) in enumerate(rows):
-            if w in d["paper10"]:
+    # report rows: v2 (n ~50-60 per word); use rows: jsuite_v2nb (amendment 57, n 60-362 per word)
+    rows = [("KR-PR", "v2", "counted, then reported"), ("AR-PR", "v2", "computed by arithmetic,\nthen reported"), ("MR-PR", "v2", "recalled, then reported"),
+            ("KM-PM", "nb", "counted, then used\nto recall"), ("AM-PM", "nb", "computed, then used\nto recall"), ("MM-ML", "nb", "recalled, then used to\nrecall (vs to look up)")]  # fmt: skip
+    nser = [("Qwen 27B", J, "o", ""), ("Qwen 9B", JL, "s", "qwen35_9b_"), ("Nemotron Lightning", NLC, "D", "nem35l_")]
+    for i, (_lab, col, mk, pre) in enumerate(nser):
+        ds_ = {"v2": v2mod(pre + SET + "_numbers_ko_cand2_dd_v1", "numbers"), "nb": v2mod(pre + NB + "_numbers_ko_cand2_dd_v1", "numbers")}
+        for r, (c, st, _l) in enumerate(rows):
+            d = ds_[st]
+            if c in d["paper10"]:
                 y = r + (i - 1) * 0.26
-                mark(bx, d["paper10"][w][0], y, d["paper10"][w][1], col, mk)
-                ticks(bx, d, w, y)
-    bx.set_yticks(range(len(rows)), [r[1] for r in rows])
+                mark(bx, d["paper10"][c][0], y, d["paper10"][c][1], col, mk)
+                ticks(bx, d, c, y)
+    bx.set_yticks(range(len(rows)), [r[2] for r in rows])
     bx.set_ylim(len(rows) - 0.5, -0.6)
-    bx.set_xlim(-35, 90)
+    bx.set_xlim(-25, 75)
     bx.axvline(0, color=AXIS, lw=1)
     bx.axhline(2.5, color=GRID, lw=1, ls="--")
-    bx.set_xlabel("points lost, minus a number read from the passage\n(last row: minus the same number used in a lookup)")
+    bx.set_xlabel("points lost, minus the same final with a number read\nfrom the passage (last row: minus the number used in a lookup)")
     bx.legend(handles=[plt.Line2D([], [], ls="", marker=mk, color=col, ms=7, label=lab) for lab, col, mk, _d in nser], loc="lower left", bbox_to_anchor=(0, 1.0), ncol=3, frameon=False, fontsize=7.5)
-    bx.set_title("B   Numbers: computed vs recalled", y=1.2)
+    bx.set_title("B   Numbers: computed vs read vs recalled", y=1.2)
     # C: what the model says instead
-    cx = fig.add_axes((0.775, 0.2, 0.21, 0.56))
+    cx = fig.add_axes((0.775, 0.17, 0.21, 0.59))
     style(cx)
     classes = [("answer", "still right", J), ("lure", "a lure in the passage", LOGIT), ("other_cand", "another valid answer", SIZE), ("other", "something else", PASTE), ("bridge", "the bridge's name", PROBE)]
     runs = [("Qwen 27B", "natplus_v1_chat_genspot_cand2_v1"), ("Qwen 9B", "qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1"), ("Lightning", "nem35l_natplus_v1_chat_genspot_cand2_v1"), ("Muse 30B", "muse30_natplus_v1_chat_genspot_cand2_v1")]
@@ -1020,12 +1027,13 @@ def f11() -> None:
     cx.set_title("C   What the model says instead (natplus)", y=1.2)
     s9 = q9["paper10"]["_s"]
     r9 = q9["paper10_rot"]["_s"]
-    header(fig, "Beyond two hops: chains ending in a recall need J++; a number computed from the passage does not need it to be reported",
-           "jsuite v2 three-hop and numbers modules (and Lightning's natural three-hop set), J++ top-10 removal at each model's band; ticks: the same removal rotated (green) and the logit lens's top 10 (orange)")  # fmt: skip
+    header(fig, "Beyond two hops: chains ending in an entity recall need J++ (two data seeds); a number computed from the passage does not need it to be reported",
+           "jsuite v2's three-hop and numbers modules, a second data seed with a larger numbers set (jsuite_v2nb), Lightning's natural three-hop set; J++ top-10 removal at each model's band; ticks: rotated (green), logit lens (orange)")  # fmt: skip
     note(fig, "A: each letter is one hop's source (P: stated in the passage, M: recalled); above the dashed line the last hop is a recall. "
               f"The 9B is left out: its all-passage chain alone loses {s9['loss']['PPP']:.0f} points (rotated {r9['loss']['PPP']:.0f}; n {s9['n']['PPP']}), so its excess cannot be read. "
               "Pre-registered (amendment 56): chains ending in a recall lose more than P → P → P; M → P → P and P → M → P do not. "
-              "B: the passage states the number, lists items to count, gives two numbers to add, or says nothing (recall); numbers use the digit dictionary. Pre-registered: counted and computed within 10 of read; recalled at least 10 above. "
+              "B: the passage states the number, lists items to count, gives two numbers to add, or says nothing (recall); numbers use the digit dictionary. Above the dashed line: v2 (pre-registered: counted and computed within 10 of read, recalled at least 10 above). "
+              "Below: the larger set (amendment 57; H0: computed within 10 of read), where in the 9B and Lightning the controls also cost computed chains 13-31 more, so the pre-registered H0-false condition is not met. "
               "C: generated replies; the Qwens and Lightning rarely name the bridge (Muse often does): the entity is still known, its attribute is not.")  # fmt: skip
     save(fig, "F11_beyond")
 
