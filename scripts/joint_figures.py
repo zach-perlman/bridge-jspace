@@ -765,8 +765,76 @@ def j5_muse_depth(plt):
     return fig
 
 
+def j8_routes(plt):
+    """Dan ~20:30, from Fig. 5's data (figures/story/data.csv fig05; the routes test, scenes where the patch moves
+    another item): per model one stacked bar of the lookup answers under the whole patch, by route: identity (blue),
+    position (orange), the original or another answer (light grey), and the number, labelled 0%; a dark grey tick where
+    the position answers end without the order signal. Hollow = after the data (Qwen 122B, its gate lowered)."""
+    dp = depth()
+    card = {(r["claim"], r["model"]): r["flag"] for r in read_csv(G.SCORECARD)}
+    scard = {"9b": "Qwen3.5-9B", "27b": "Qwen3.6-27B", "muse": "Muse Glimmer 30B", "122b": "Qwen3.5-122B"}
+    models = [t for t in MODELS if t[2] is not None]  # Qwen 9B, Qwen 27B, Muse 30B, Qwen 122B
+    tick_col = "#4d4d4d"
+    segs = (("identity", "identity", S.COL["identity"]), ("position", "position", S.COL["position"]),
+            ("original", "the original answer or another", S.COL["original"]))  # fmt: skip
+    fig = plt.figure(figsize=(S.WIDTH, 4.3))
+    ax = fig.add_axes((0.17, 0.30, 0.71, 0.50))
+    ns = set()
+    for i, (name, _zm, target, m) in enumerate(models):
+        y = -i
+        q = "another item moved, {}: {} share"
+        get = lambda arm, route, t=target, qq=q: dp[("fig05", t, qq.format(arm, route))]  # noqa: E731
+        kind = "after" if "a" in card[("never the value", scard[m])] else "fixed"
+        shares = {
+            route: 100 * num(get("whole", route)["value"])
+            for route in ("identity", "position", "value", "original", "other")
+        }
+        left = 0.0
+        x_tick = shares["identity"] + 100 * num(get("no_alf", "position")["value"])
+        for key, label, col in segs:
+            v = shares[key] + (shares["other"] if key == "original" else 0.0)  # 'other' (at most 0.3%) joins 'original'
+            face = col if kind == "fixed" else "white"
+            ax.barh([y], [v], left=left, height=0.62, color=face, edgecolor=col, lw=1.6, zorder=2)
+            if v >= 6:  # the position share sits right of the tick, clear of it
+                xc = (x_tick + left + v) / 2 if key == "position" else left + v / 2
+                ax.text(xc, y, f"{v:.0f}%", ha="center", va="center", fontsize=S.FONT,
+                        color="white" if kind == "fixed" and key != "original" else "#222222", zorder=3)  # fmt: skip
+            src = f"figures/story/data.csv | fig05 | {q.format('whole', key)}"
+            if key == "original":
+                src += f"; {q.format('whole', 'other')} (summed)"
+            record("j8", name, f"lookup answers by route, whole patch: {label} (%)", round(v, 1),
+                   n=get("whole", "identity")["n"], source=src)  # fmt: skip
+            left += v
+        ax.text(101.5, y, f"number: {shares['value']:.0f}%", va="center", fontsize=S.FONT, color="#222222")
+        record("j8", name, "lookup answers by route, whole patch: the number (%)", round(shares["value"], 1),
+               source=f"figures/story/data.csv | fig05 | {q.format('whole', 'value')}")  # fmt: skip
+        pos_without = 100 * num(get("no_alf", "position")["value"])
+        x = shares["identity"] + pos_without  # where the orange segment would end without the order signal
+        ax.plot([x, x], [y - 0.42, y + 0.42], color=tick_col, lw=2.6, zorder=4, solid_capstyle="butt")
+        record("j8", name, "position answers without the order signal (%)", round(pos_without, 1),
+               source=f"figures/story/data.csv | fig05 | {q.format('no_alf', 'position')}")  # fmt: skip
+        ns.add(get("whole", "identity")["n"])
+    S.title(fig, "Lookup answers follow identity or position, never the number",
+            f"Locker scenes where the patch moves another item; the number = the moved number; {'/'.join(sorted(ns))} "
+            "scenes each")  # fmt: skip
+    ax.set_xlim(0, 100)
+    ax.set_ylim(-len(models) + 0.45, 0.55)
+    ax.set_xticks([0, 25, 50, 75, 100])
+    ax.set_yticks([-i for i in range(len(models))], [name for name, *_ in models])
+    ax.tick_params(axis="y", length=0)
+    ax.spines["left"].set_visible(False)
+    ax.set_xlabel("% of lookup answers under the whole patch")
+    hs = [Rectangle((0, 0), 1, 1, fc=c, ec=c) for _k, _l, c in segs]
+    hs += [plt.Line2D([], [], color=tick_col, lw=2.6), Rectangle((0, 0), 1, 1, fc="white", ec="#555555", lw=1.6)]
+    labels = ["by identity", "by position", "the original answer or another", "where 'by position' ends without the order signal",
+              "hollow: after the data"]  # fmt: skip
+    legend_below(fig, hs, labels, 0.0, 3)
+    return fig
+
+
 FIGURES = (("j0_setup", j0_setup), ("j1_recall_needs_lens", j1_recall_needs_lens), ("j2_swap", j2_swap),
-           ("j3_order_signal", j3_order_signal), ("grid_front", grid_front), ("j5_muse_depth", j5_muse_depth), ("j4_depth_map", j4_depth_map))  # fmt: skip
+           ("j3_order_signal", j3_order_signal), ("grid_front", grid_front), ("j5_muse_depth", j5_muse_depth), ("j4_depth_map", j4_depth_map),
+           ("j8_routes", j8_routes))  # fmt: skip
 
 
 def save(fig, name: str) -> None:

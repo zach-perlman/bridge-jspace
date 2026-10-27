@@ -105,6 +105,20 @@ def test_j5_numbers_match_the_muse_depth_score(drawn):
     assert sourced(rows, "j5", "Muse 30B", "paper10_pcasize.mk")["value"] == 4.6  # the largest other control
 
 
+def test_j8_numbers_match_their_sources(drawn):
+    _, rows = drawn
+    by = {(r["model"], r["quantity"]): r for r in rows if r["figure"] == "j8"}
+    q = "lookup answers by route, whole patch: {} (%)"
+    assert by[("Qwen 9B", q.format("identity"))]["value"] == 48.0  # fig05: 0.48
+    assert by[("Muse 30B", q.format("position"))]["value"] == 54.3  # fig05: 0.5433
+    assert all(
+        by[(m, q.format("the number"))]["value"] == 0.0 for m in ("Qwen 9B", "Qwen 27B", "Muse 30B", "Qwen 122B")
+    )
+    for m in ("Qwen 9B", "Qwen 27B", "Muse 30B", "Qwen 122B"):  # each bar sums to 100%
+        total = sum(by[(m, q.format(k))]["value"] for k in ("identity", "position", "the original answer or another"))
+        assert abs(total - 100) < 0.2, (m, total)
+
+
 def test_example_texts_are_quoted_from_their_sources():
     src = (J.REPO / "scripts" / "readme_story_figures.py").read_text()
     assert all(s in src for s in (*J.DAN_SCENE[:2], "Iris picked the ", *(q for q, _, _ in J.DAN_QUESTIONS)))
