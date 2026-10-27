@@ -77,7 +77,8 @@ ROUTES_MORE = {"rte": {"9b": "qwen35_9b_x6_routes_l6", "27b": "x6_routes_l16_27b
                "rtk": {"9b": "qwen35_9b_x6_routes_keeponly", "27b": "x6_routes_keeponly_27b",
                        "122b": "qwen35_122b_x6_routes_keeponly_g75", "muse": "muse30b_x6_routes"},
                # D1 (batch 40): the identity direction, with the pointer and J++
-               "rtd": {"9b": "qwen35_9b_x6_routes_d1", "27b": "x6_routes_d1_27b", "muse": "muse30b_x6_routes_d1_r2"}}  # fmt: skip
+               "rtd": {"9b": "qwen35_9b_x6_routes_d1", "27b": "x6_routes_d1_27b", "muse": "muse30b_x6_routes_d1_r2",
+                       "122b": "qwen35_122b_x6_routes_d1_g75"}}  # fmt: skip
 NATURAL_G75 = {"9b": "qwen35_9b_x5_natural_g75"}
 ORDER = "org locker vs asked pick"
 
@@ -195,6 +196,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     tier0_numbers(num)
     x45c_numbers(num)
     batch45_numbers(num)
+    overnight_numbers(num)
     t_pointer_numbers(num)
     first_sentence_numbers(num)
     ld_numbers(num)
@@ -723,6 +725,105 @@ def batch45_numbers(num: Numbers) -> None:
 
 
 X45C_WRITES = {"9b": "qwen35_9b_x8_write12", "27b": "x8_write12_27b", "muse": "muse30b_x8_write12"}
+
+
+X45I_G75 = {"9b": "qwen35_9b_x45i_main_nochat_g75", "27b": "x45i_main_nochat_27b_g75"}
+
+
+def target_key(target: str) -> str | None:
+    return next((k for k, (t, *_) in MODELS.items() if t == target), None)
+
+
+def overnight_numbers(num: Numbers) -> None:
+    """The tests scored after the overnight queue (Dan 27 Oct ~01:05; all UNVERIFIED):
+    45q (fixed in advance; results/x45b_binding/x45q-*): x45q_c_<m> (the copy at L's share of S's lookup switches),
+    x45q_a_<m> (the bridge-word change at L, over the items), x45q_n_<m> (items passing the sanity check), x45q_held;
+    45p (fixed in advance; results/x45p/x45p-*): x45p_d23_<m>, x45p_d24_<m> (the recall's loss_2 - loss_3 / - loss_4),
+    x45p_n_<m>, x45p_held, x45p_lkmax (the largest lookup loss, any model and arm);
+    45i' (after the data, gate 0.75; the no-template main test): x45ig_<gap|lk|rc>_<m>, x45ig_before_gap_<m>,
+    x45ig_before_n_<m>;
+    the 45e size check (results/x6_routes/x45e-size-*, matched scenes): x45em_left_<idout|wrong>_<m>, x45em_cut_<m>,
+    x45em_n_<m> (C0 scenes);
+    45k (results/x6_routes/x45k-*): x45k_label, x45k_c0_100_27b, x45k_d_<identity|position>_27b, x45k_other_27b,
+    x45k_cos2_<U|id>_27b."""
+    root = pins.RESULTS_DIR
+    found = sorted((root / "x45b_binding").glob("x45q-*/x45q.json"))
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        blob = json.loads(found[-1].read_text())
+        for mod in blob["models"]:
+            m = target_key(mod.get("model", ""))
+            if m is None or "readers" not in mod:
+                continue
+            lk = mod["readers"][X.LOOKUP]
+            num.add(f"x45q_c_{m}", ci(lk["of_S"]["c"]), src)
+            num.add(f"x45q_a_{m}", ci(lk["rate"]["a"]), src)
+            num.add(f"x45q_n_{m}", str(mod["sanity"]["pass"]), src)
+        v = blob["verdict"]
+        num.add("x45q_held", f"{v['models_holding']} of {v['models']}", src)
+    found = sorted((root / "x45p").glob("x45p-*/x45p.json"))
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        blob = json.loads(found[-1].read_text())
+        lk_losses = []
+        for mod in blob["models"]:
+            m = target_key(mod["target"])
+            if m is None or "readers" not in mod:
+                continue
+            rc = mod["readers"]["recall"]
+            num.add(f"x45p_d23_{m}", ci(rc["diff"]["2-3"]), src)
+            num.add(f"x45p_d24_{m}", ci(rc["diff"]["2-4"]), src)
+            num.add(f"x45p_n_{m}", str(rc["n"]), src)
+            lk_losses += [v[0] for v in mod["readers"]["lookup"]["loss"].values() if v[0] == v[0]]
+        v = blob["verdict"]
+        num.add("x45p_held", f"{v['models_holding']} of {v['models']}", src)
+        if lk_losses:
+            num.add("x45p_lkmax", f2(max(lk_losses, key=abs)), src)
+    from scripts import x0_split_by_order as SO
+
+    for m, run in X45I_G75.items():
+        src_dir = X.RESULTS / run
+        if not (src_dir / "outcomes.jsonl").exists():
+            continue
+        src = str((src_dir / "outcomes.jsonl").relative_to(pins.REPO_ROOT))
+        cases = {c["scene"]: c for c in X.read_jsonl(src_dir / "cases.jsonl") if c["rendering"] == "nochat"}
+        cells = SO.group_cells(X.read_jsonl(src_dir / "outcomes.jsonl"), cases, X.PREDICTED[MODELS[m][0]], X.N_BOOT,
+                               "nochat")  # fmt: skip
+        num.add(f"x45ig_gap_{m}", ci(cells["all"]["gap"]), src)
+        num.add(f"x45ig_lk_{m}", ci(cells["all"]["lookup"]), src)
+        num.add(f"x45ig_rc_{m}", ci(cells["all"]["recall"]), src)
+        if "before" in cells:
+            num.add(f"x45ig_before_gap_{m}", ci(cells["before"]["gap"]), src)
+            num.add(f"x45ig_before_n_{m}", str(cells["before"]["n"]), src)
+    found = sorted((root / "x6_routes").glob("x45e-size-*/size.json"))
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        for target, r in json.loads(found[-1].read_text())["models"].items():
+            m = target_key(target)
+            f = r["matched"]
+            if m is None or not f.get("c0"):
+                continue
+            num.add(f"x45em_left_idout_{m}", f2(f["c0"]["left"]["no_jppalfidout"][0]), src)
+            num.add(f"x45em_left_wrong_{m}", f2(f["c0"]["left"]["no_jppalfwrong"][0]), src)
+            num.add(f"x45em_n_{m}", str(f["c0"]["n"]), src)
+            if f.get("c2"):
+                num.add(f"x45em_cut_{m}", ci(f["c2"]["idout_vs_wrong"]), src)
+    found = sorted((root / "x6_routes").glob("x45k-*/x45k.json"))
+    if found:
+        src = str(found[-1].relative_to(pins.REPO_ROOT))
+        blob = json.loads(found[-1].read_text())
+        q = blob["q45_9"]
+        num.add("x45k_label", "; ".join(q["outcome"]), src)
+        flags = {blob["runs"][run]: f for run, f in blob["flags"].items()}
+        f27 = flags.get("qwen3.6-27b")
+        if f27:
+            num.add("x45k_c0_100_27b", ci(f27["c0_loss"]["jpp100"]["excess"]), src)
+            for rt in ("identity", "position"):
+                num.add(f"x45k_d_{rt}_27b", ci(f27["d"][rt]), src)
+            for what in ("U", "id"):
+                num.add(f"x45k_cos2_{what}_27b", f2(f27["geometry"]["C2"]["jpp100"][what]["mean"]), src)
+        if q.get("generic"):
+            num.add("x45k_other_27b", ci(q["generic"]["jpp_other100"]), src)
 
 
 def x45c_numbers(num: Numbers) -> None:

@@ -1,8 +1,37 @@
-# Figure plan for README v4 (Dan, 26 Oct ~16:45)
+# Figure plan
+
+## README v5 (27 Oct, after the overnight queue; draft, UNVERIFIED)
+
+Figure → claim (its title) → status → source. Built by `scripts/readme_story_figures.py` (`figures/story/`, `figures/supp/`, every plotted number in `figures/story/data.csv`; Fig. 11 from `figures/story/scorecard.csv`); `scripts/check_figure_terms.py` checks the retired terms. Status: fixed in advance (filled marks), after the data (open), ° gate lowered to 0.75 after the data.
+
+| Figure | Claim (title) | Status | Source (results/) |
+|---|---|---|---|
+| 0 `fig00_setup` | One prompt, two questions about the same bridge word | schematic | – |
+| 1 `fig01_split` | Recall needs the J++ part of the bridge; the lookup mostly does not | fixed in advance; the locker-before gap column after the data | x0_necessity main runs; x0_composition/split-by-order-* |
+| 1b `fig01b_settings` | In every setting, recall needs the J++ part more than the lookup does | fixed in advance (clean one-pick scenes: 45m); the 9B's natural passages ° | x0_logit_diff, x0_necessity/x45m-*, x0b_generalize, x5_natural |
+| 2 `fig02_specificity` | No other part of the same size costs the recall as much as the J++ part | J++ part and PCA after the data; the other two panels fixed in advance | x0_parts, x0_necessity main runs |
+| 2b `fig02b_k_curve` | Why a bigger J++ part costs the 27B lookup: can't tell | (a) main test after the data; (b) 45k fixed in advance, Q45.9 (d) can't tell; Muse's run pending | x0_necessity/*kmatch* and main runs; x6_routes/*x45k*, x6_routes/x45k-* |
+| 3 `fig03_order` | Lookups follow the change mostly when the locker sentence comes first | (a) after the data; (b) main test after the data, clean one-pick scenes fixed in advance | x0_necessity main runs; split-by-order-*; x45m-* |
+| 3b `fig03b_layers` | On clean scenes with the locker after the pick, the locker sentences make the link | 45q's rule fixed in advance, holds 3 of 3; the layer sweep after the data | x45b_binding/x45q-*, x45q-link-*, x45q-sweep-* |
+| 3c `fig03c_earlier_mention` | The recall reads the item's earlier mention when its locker came first | 45p fixed in advance, holds 3 of 3 | x45p/x45p-* |
+| 4 `fig04_routes_design` | Each route predicts a different locker | schematic | – |
+| 5 `fig05_routes` | The lookup follows identity or position, never the value | fixed in advance; the 122B ° | x6_routes |
+| 6 `fig06_depth` | Position answers appear with depth, once the lookup stops needing the J++ part | candidate, after the data | x0_necessity, x6_routes sweeps |
+| 7 `fig07_writes` | One fixed vector written at the bridge sends the lookup to its locker | writes fixed in advance; the recall's split after the data | x8_write |
+| 8 `fig08_first_locker` | The pointer marks the first locker in a clean layout | after the data | x6_routes/x45a-descriptive-*, x8_write |
+| 9 `fig09_transfer` | The split carries over to other texts; the pointer does not | fixed in advance (the 9B's natural passages °); (b) 45d fixed in advance | x0b_generalize, x5_natural, x0b_generalize/*x45d* |
+| 10 `fig10_what_is_left` | J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's | fixed in advance; the 122B ° (identity row; no wrong-pair control: not tested); the wrong pair on the scenes where it reached 0.9 of identity's share (size check, after the data) | x6_routes (bothoff, d1, *x45e_dom*, qwen35_122b_x6_routes_d1_g75), x6_routes/x45e-size-* |
+| 11 `fig11_scorecard` | What held where | per cell ("a": after the data; "–": not tested) | figures/story/scorecard.csv (its data.csv key column) |
+| s01, s01b, s02, s05, s08, s10 | the supplements of Figs. 1, 1b, 2, 5, 8 and 10 (as before) | as their figures | as their figures |
+| s01c `s01c_no_chat_template` | Without the chat template the split is still there (after the data) | after the data, ° (45i'; Q45.8 stays not tested at gate 0.80) | x0_necessity/*x45i_main_nochat*_g75, x6_routes/*x45i_nochat* |
+| s03b `s03b_layers_45b` | Locker after the pick: what moves the lookup at each layer (the main test's items) | after the data (45b's sweep) | x45b_binding/*sweep_v2* |
+| s10b `s10b_what_is_left_all_scenes` | Fig. 10 with the wrong pair on every scene | as Fig. 10 (45e as scored) | as Fig. 10 |
+
+## README v4 (Dan, 26 Oct ~16:45; kept for reference)
 
 One figure, one claim, in story order. The title is the claim. The subtitle, one line on the figure, says how to read it. The caption in the README is one short line saying what to look at. All numbers come from `scripts/readme_story_figures.py`, which reads the run files and writes every plotted number to `figures/story/data.csv` (figure rows) next to the README's keys (rows `numbers`). No number is typed by hand.
 
-New file names (`figures/story/figNN_*.png`) leave the 26 Oct files (`fig0_setup.png` … `fig11_order.png`) in place, untouched until Friday. Supplementary figures go to `figures/supp/` and are linked from Appendix A.
+New file names (`figures/story/figNN_*.png`); the 26 Oct files (`fig0_setup.png` … `fig11_order.png`) are in `figures/archive/` since 27 Oct. Supplementary figures go to `figures/supp/` and are linked from Appendix A.
 
 ## Shared visual language (Step 2)
 

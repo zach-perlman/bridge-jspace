@@ -44,7 +44,7 @@ Added for the figures after the overnight queue (27 Oct ~01:05; Dan to confirm):
 | Concept | Canonical label | Banned variants |
 |---|---|---|
 | atoms | "25 / 50 / 100 atoms" for the J++ part's size (Fig. 2b, 45k) | "k = 100" on a figure |
-| 45q's arms (Fig. 3b once 45q is in) | "copy at the item's own tokens", "copy at the other locker-sentence tokens", "copy at the number or the period only"; "copy at L without the J++ part" / "without a random part (same size)"; "L" and "L/2" for the layer fixed in advance and half of it | arm codes (li, lr, lv, lf, c_nojpp) |
+| 45q's arms (Fig. 3b once 45q is in) | "copy at the item's own tokens", "copy at the other locker-sentence tokens", "copy at the number or the period only"; "copy at L without the J++ part" / "without a random part (same size)"; the rule's arms "at L: the bridge-word change" / "at L: copy at every locker-sentence token"; "L" and "L/2" for the layer fixed in advance and half of it | arm codes (li, lr, lv, lf, c_nojpp) |
 | 45p's arms (Fig. 3c or its supplement) | "(1) without the J++ part at the bridge word", "(2) (1), and without it at the earlier mention", "(3) (1), and without a random part (same size) there", "(4) (1), and without it at another item's mention" | a1-a4 |
 | cell states | "not tested" (Fig. 10's 122B wrong pair; Fig. 11's "–": not run or not counted) | – |
 | retired on figures and captions | – | "first-mentioned", "part removed", "ablation", "Q45", run ids (scripts/check_figure_terms.py) |

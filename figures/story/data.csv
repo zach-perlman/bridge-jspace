@@ -236,71 +236,313 @@ fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: recall extr
 fig03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,236,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.8478260869565217,0.7339449541284403,0.933884297520661,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 fig03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
-fig03b,qwen3.5-9b,layer 6: the bridge-word change (lookups switched),0.9166666666666666,0.8,1.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 8: the bridge-word change (lookups switched),0.5277777777777778,0.3333333333333333,0.7241379310344828,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 10: the bridge-word change (lookups switched),0.3611111111111111,0.20454545454545456,0.5365853658536586,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 12: the bridge-word change (lookups switched),0.2777777777777778,0.16279069767441862,0.4,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 6: copy at the locker sentences: every token (lookups switched),0.027777777777777776,0.0,0.09090909090909091,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 8: copy at the locker sentences: every token (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 10: copy at the locker sentences: every token (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 12: copy at the locker sentences: every token (lookups switched),0.3888888888888889,0.25806451612903225,0.5263157894736842,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 6: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 8: copy at the locker sentences: the item's tokens only (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 10: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 12: copy at the locker sentences: the item's tokens only (lookups switched),0.2777777777777778,0.15785361842105267,0.40625,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 6: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 6: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 8: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 8: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 10: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 10: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 12: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.5-9b,layer 12: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
-fig03b,qwen3.6-27b,layer 16: the bridge-word change (lookups switched),0.9411764705882353,0.8611111111111112,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 18: the bridge-word change (lookups switched),0.9411764705882353,0.8611111111111112,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 20: the bridge-word change (lookups switched),0.9117647058823529,0.8108108108108109,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 22: the bridge-word change (lookups switched),0.8823529411764706,0.7837837837837838,0.9696969696969697,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 24: the bridge-word change (lookups switched),0.8235294117647058,0.6944444444444444,0.9354838709677419,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 26: the bridge-word change (lookups switched),0.7352941176470589,0.5813953488372093,0.875,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 28: the bridge-word change (lookups switched),0.5,0.36585365853658536,0.6428571428571429,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 30: the bridge-word change (lookups switched),0.4411764705882353,0.3,0.5882352941176471,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 32: the bridge-word change (lookups switched),0.08823529411764706,0.0,0.19444444444444445,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 16: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 18: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 20: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 22: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 24: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 26: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 28: copy at the locker sentences: every token (lookups switched),0.29411764705882354,0.15625,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 30: copy at the locker sentences: every token (lookups switched),0.3235294117647059,0.18518518518518517,0.4418604651162791,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 32: copy at the locker sentences: every token (lookups switched),0.35294117647058826,0.21212121212121213,0.475,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 16: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 18: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 20: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 22: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 24: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 26: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 28: copy at the locker sentences: the item's tokens only (lookups switched),0.29411764705882354,0.15625,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 30: copy at the locker sentences: the item's tokens only (lookups switched),0.29411764705882354,0.15384615384615385,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 32: copy at the locker sentences: the item's tokens only (lookups switched),0.2647058823529412,0.13793103448275862,0.38235294117647056,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 16: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 16: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 18: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 18: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 20: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 20: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 22: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 22: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 24: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 24: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 26: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 26: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 28: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 28: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 30: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 30: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 32: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
-fig03b,qwen3.6-27b,layer 32: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 0: the bridge-word change (lookups switched)",0.9950248756218906,0.9852216748768473,1.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 4: the bridge-word change (lookups switched)",0.9303482587064676,0.900497512437811,0.9580846161080979,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 8: the bridge-word change (lookups switched)",0.3582089552238806,0.29743589743589743,0.41624365482233505,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 12: the bridge-word change (lookups switched)",0.1691542288557214,0.12,0.22275074696064287,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 16: the bridge-word change (lookups switched)",0.024875621890547265,0.005154639175257732,0.04724642407864694,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 20: the bridge-word change (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 24: the bridge-word change (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 28: the bridge-word change (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 30: the bridge-word change (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 0: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 4: copy at the item's own tokens (lookups switched)",0.029850746268656716,0.00819672131147541,0.056179775280898875,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 8: copy at the item's own tokens (lookups switched)",0.4079601990049751,0.35294117647058826,0.45731912391993873,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 12: copy at the item's own tokens (lookups switched)",0.4228855721393035,0.3493928093325684,0.48770741703318665,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 16: copy at the item's own tokens (lookups switched)",0.04975124378109453,0.014634146341463415,0.08866995073891626,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 20: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 24: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 28: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 30: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 0: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 4: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 8: copy at the other locker-sentence tokens (lookups switched)",0.004975124378109453,0.0,0.01714347026364193,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 12: copy at the other locker-sentence tokens (lookups switched)",0.009950248756218905,0.0,0.02577319587628866,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 16: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 20: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 24: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 28: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 30: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 0: copy at the number only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 4: copy at the number only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 8: copy at the number only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 12: copy at the number only (lookups switched)",0.004975124378109453,0.0,0.01714347026364193,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 16: copy at the number only (lookups switched)",0.1044776119402985,0.06315789473684211,0.1416326388768223,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 20: copy at the number only (lookups switched)",0.17412935323383086,0.12568306010928962,0.2153846153846154,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 24: copy at the number only (lookups switched)",0.014925373134328358,0.0,0.038461538461538464,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 28: copy at the number only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 30: copy at the number only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 0: copy at the period only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 4: copy at the period only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 8: copy at the period only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 12: copy at the period only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 16: copy at the period only (lookups switched)",0.004975124378109453,0.0,0.01714347026364193,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 20: copy at the period only (lookups switched)",0.009950248756218905,0.0,0.026490066225165563,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 24: copy at the period only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 28: copy at the period only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, layer 30: copy at the period only (lookups switched)",0.0,0.0,0.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.5-9b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.1691542288557214,0.12,0.22275074696064287,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,qwen3.5-9b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.6965174129353234,0.6542540763571287,0.7351602685581244,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,qwen3.5-9b,"45q, the rule: copy at L's share of the changed prompt's lookup switches",0.6965174129353234,0.6542540763571287,0.7351602685581244,201,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,qwen3.5-9b,"45q, copy at L without the J++ part (lookups switched)",0.6169154228855721,0.5732477413852837,0.6566265060240963,201,results/x45b_binding/x45q-link-20261027T005346Z/link.json
+fig03b,qwen3.5-9b,"45q, copy at L without a random part (same size) (lookups switched)",0.6169154228855721,0.5782601301390121,0.6508889695210449,201,results/x45b_binding/x45q-link-20261027T005346Z/link.json
+fig03b,qwen3.5-9b,45q: the rule holds,1,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,qwen3.6-27b,"45q, layer 0: the bridge-word change (lookups switched)",0.9965277777777778,0.9887632536793797,1.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 4: the bridge-word change (lookups switched)",0.9965277777777778,0.9887632536793797,1.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 8: the bridge-word change (lookups switched)",0.9826388888888888,0.9675511435467188,0.9962966379663797,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 12: the bridge-word change (lookups switched)",0.9479166666666666,0.9235880398671097,0.9706959706959707,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 16: the bridge-word change (lookups switched)",0.9270833333333334,0.8973384030418251,0.9551026949241235,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 20: the bridge-word change (lookups switched)",0.7083333333333334,0.647226033270451,0.77,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 24: the bridge-word change (lookups switched)",0.5659722222222222,0.49283564403854574,0.6388960481099655,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 28: the bridge-word change (lookups switched)",0.13194444444444445,0.09324614781776902,0.17479674796747968,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 32: the bridge-word change (lookups switched)",0.013888888888888888,0.003367003367003367,0.027131782945736434,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 36: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 40: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 44: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 48: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 52: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 56: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 60: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 62: the bridge-word change (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 0: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 4: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 8: copy at the item's own tokens (lookups switched)",0.006944444444444444,0.0,0.015528352589064456,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 12: copy at the item's own tokens (lookups switched)",0.034722222222222224,0.007434944237918215,0.06513441162155077,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 16: copy at the item's own tokens (lookups switched)",0.041666666666666664,0.01238390092879257,0.07692307692307693,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 20: copy at the item's own tokens (lookups switched)",0.16319444444444445,0.11070110701107011,0.21428571428571427,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 24: copy at the item's own tokens (lookups switched)",0.2152777777777778,0.16014205800944342,0.267658850443237,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 28: copy at the item's own tokens (lookups switched)",0.7430555555555556,0.68975055512151,0.7937753219142364,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 32: copy at the item's own tokens (lookups switched)",0.5694444444444444,0.5047604120017913,0.6272401433691757,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 36: copy at the item's own tokens (lookups switched)",0.09722222222222222,0.0642570281124498,0.1292783859971155,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 40: copy at the item's own tokens (lookups switched)",0.04861111111111111,0.025830258302583026,0.0711864406779661,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 44: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 48: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 52: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 56: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 60: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 62: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 0: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 4: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 8: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 12: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 16: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 20: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 24: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 28: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 32: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 36: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 40: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 44: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 48: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 52: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 56: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 60: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 62: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 0: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 4: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 8: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 12: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 16: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 20: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 24: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 28: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 32: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 36: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 40: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 44: copy at the number only (lookups switched)",0.041666666666666664,0.02255427895581651,0.06402439024390244,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 48: copy at the number only (lookups switched)",0.18055555555555555,0.13522891218620758,0.2260536398467433,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 52: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 56: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 60: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 62: copy at the number only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 0: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 4: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 8: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 12: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 16: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 20: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 24: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 28: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 32: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 36: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 40: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 44: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 48: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 52: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 56: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 60: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, layer 62: copy at the period only (lookups switched)",0.0,0.0,0.0,288,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,qwen3.6-27b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.013888888888888888,0.003367003367003367,0.027131782945736434,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,qwen3.6-27b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7430555555555556,0.6848249027237354,0.7985611510791367,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,qwen3.6-27b,"45q, the rule: copy at L's share of the changed prompt's lookup switches",0.7430555555555556,0.6848249027237354,0.7985611510791367,288,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,qwen3.6-27b,"45q, copy at L without the J++ part (lookups switched)",0.6736111111111112,0.6203380272715687,0.7227736224709427,288,results/x45b_binding/x45q-link-20261027T005346Z/link.json
+fig03b,qwen3.6-27b,"45q, copy at L without a random part (same size) (lookups switched)",0.6944444444444444,0.64,0.7441123564411235,288,results/x45b_binding/x45q-link-20261027T005346Z/link.json
+fig03b,qwen3.6-27b,45q: the rule holds,1,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,muse-glimmer-30b,"45q, layer 0: the bridge-word change (lookups switched)",1.0,1.0,1.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 4: the bridge-word change (lookups switched)",0.9365853658536586,0.8936170212765957,0.9701492537313433,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 8: the bridge-word change (lookups switched)",0.8048780487804879,0.7521358543417367,0.851063829787234,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 12: the bridge-word change (lookups switched)",0.3463414634146341,0.28435902797137813,0.4103791185581526,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 16: the bridge-word change (lookups switched)",0.13170731707317074,0.08461442786069652,0.18674864292334167,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 20: the bridge-word change (lookups switched)",0.1073170731707317,0.0674829392706969,0.1567594064652888,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 24: the bridge-word change (lookups switched)",0.014634146341463415,0.0,0.03056768558951965,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 28: the bridge-word change (lookups switched)",0.004878048780487805,0.0,0.018072289156626505,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 32: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 36: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 40: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 44: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 48: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 50: the bridge-word change (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 0: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 4: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 8: copy at the item's own tokens (lookups switched)",0.1902439024390244,0.12574850299401197,0.24644549763033174,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 12: copy at the item's own tokens (lookups switched)",0.3804878048780488,0.3018867924528302,0.45108695652173914,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 16: copy at the item's own tokens (lookups switched)",0.6390243902439025,0.5818164535084687,0.6968360071301247,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 20: copy at the item's own tokens (lookups switched)",0.5317073170731708,0.4539401476251605,0.6160438702965145,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 24: copy at the item's own tokens (lookups switched)",0.17073170731707318,0.1144063887672775,0.23728813559322035,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 28: copy at the item's own tokens (lookups switched)",0.04878048780487805,0.021126017709633328,0.07920943008935037,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 32: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 36: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 40: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 44: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 48: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 50: copy at the item's own tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 0: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 4: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 8: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 12: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 16: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 20: copy at the other locker-sentence tokens (lookups switched)",0.00975609756097561,0.0,0.021739130434782608,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 24: copy at the other locker-sentence tokens (lookups switched)",0.00975609756097561,0.0,0.021739130434782608,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 28: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 32: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 36: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 40: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 44: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 48: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 50: copy at the other locker-sentence tokens (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 0: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 4: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 8: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 12: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 16: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 20: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 24: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 28: copy at the number only (lookups switched)",0.014634146341463415,0.0,0.03314917127071823,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 32: copy at the number only (lookups switched)",0.1951219512195122,0.14169956140350878,0.25698723064644846,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 36: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 40: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 44: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 48: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 50: copy at the number only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 0: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 4: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 8: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 12: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 16: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 20: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 24: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 28: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 32: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 36: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 40: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 44: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 48: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, layer 50: copy at the period only (lookups switched)",0.0,0.0,0.0,205,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
+fig03b,muse-glimmer-30b,"45q, the rule's arm a: the bridge-word change at L (lookups switched)",0.00975609756097561,0.0,0.025,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,muse-glimmer-30b,"45q, the rule's arm c: copy at L, every locker-sentence token (lookups switched)",0.7560975609756098,0.6979166666666666,0.807909604519774,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,muse-glimmer-30b,"45q, the rule: copy at L's share of the changed prompt's lookup switches",0.7560975609756098,0.6979166666666666,0.807909604519774,205,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+fig03b,muse-glimmer-30b,"45q, copy at L without the J++ part (lookups switched)",0.7024390243902439,0.6381313692792292,0.764102564102564,205,results/x45b_binding/x45q-link-20261027T005346Z/link.json
+fig03b,muse-glimmer-30b,"45q, copy at L without a random part (same size) (lookups switched)",0.7024390243902439,0.641858729607775,0.7596596494593234,205,results/x45b_binding/x45q-link-20261027T005346Z/link.json
+fig03b,muse-glimmer-30b,45q: the rule holds,1,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+s03b,qwen3.5-9b,layer 6: the bridge-word change (lookups switched),0.9166666666666666,0.8,1.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 8: the bridge-word change (lookups switched),0.5277777777777778,0.3333333333333333,0.7241379310344828,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 10: the bridge-word change (lookups switched),0.3611111111111111,0.20454545454545456,0.5365853658536586,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 12: the bridge-word change (lookups switched),0.2777777777777778,0.16279069767441862,0.4,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 6: copy at the locker sentences: every token (lookups switched),0.027777777777777776,0.0,0.09090909090909091,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 8: copy at the locker sentences: every token (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 10: copy at the locker sentences: every token (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 12: copy at the locker sentences: every token (lookups switched),0.3888888888888889,0.25806451612903225,0.5263157894736842,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 6: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 8: copy at the locker sentences: the item's tokens only (lookups switched),0.05555555555555555,0.0,0.13157894736842105,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 10: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 12: copy at the locker sentences: the item's tokens only (lookups switched),0.2777777777777778,0.15785361842105267,0.40625,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 6: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 6: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 8: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 8: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 10: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 10: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 12: copy at the number only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.5-9b,layer 12: copy at the period only (lookups switched),0.0,0.0,0.0,36,results/x45b_binding/qwen35_9b_x45b_sweep_v2/sweep-20261026T223405Z/sweep.json
+s03b,qwen3.6-27b,layer 16: the bridge-word change (lookups switched),0.9411764705882353,0.8611111111111112,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 18: the bridge-word change (lookups switched),0.9411764705882353,0.8611111111111112,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 20: the bridge-word change (lookups switched),0.9117647058823529,0.8108108108108109,1.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 22: the bridge-word change (lookups switched),0.8823529411764706,0.7837837837837838,0.9696969696969697,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 24: the bridge-word change (lookups switched),0.8235294117647058,0.6944444444444444,0.9354838709677419,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 26: the bridge-word change (lookups switched),0.7352941176470589,0.5813953488372093,0.875,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 28: the bridge-word change (lookups switched),0.5,0.36585365853658536,0.6428571428571429,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 30: the bridge-word change (lookups switched),0.4411764705882353,0.3,0.5882352941176471,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 32: the bridge-word change (lookups switched),0.08823529411764706,0.0,0.19444444444444445,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 16: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 18: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 20: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 22: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 24: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 26: copy at the locker sentences: every token (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 28: copy at the locker sentences: every token (lookups switched),0.29411764705882354,0.15625,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 30: copy at the locker sentences: every token (lookups switched),0.3235294117647059,0.18518518518518517,0.4418604651162791,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 32: copy at the locker sentences: every token (lookups switched),0.35294117647058826,0.21212121212121213,0.475,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 16: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 18: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 20: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 22: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 24: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 26: copy at the locker sentences: the item's tokens only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 28: copy at the locker sentences: the item's tokens only (lookups switched),0.29411764705882354,0.15625,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 30: copy at the locker sentences: the item's tokens only (lookups switched),0.29411764705882354,0.15384615384615385,0.41025641025641024,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 32: copy at the locker sentences: the item's tokens only (lookups switched),0.2647058823529412,0.13793103448275862,0.38235294117647056,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 16: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 16: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 18: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 18: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 20: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 20: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 22: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 22: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 24: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 24: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 26: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 26: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 28: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 28: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 30: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 30: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 32: copy at the number only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+s03b,qwen3.6-27b,layer 32: copy at the period only (lookups switched),0.0,0.0,0.0,34,results/x45b_binding/x45b_sweep_v2_27b/sweep-20261026T223731Z/sweep.json
+fig03c,qwen3.5-9b,"45p, (1): recalls switched",137,,,186,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.5-9b,"45p, a2: lookup switches lost against (1)",0.005952380952380931,0.0,0.020547945205479423,186,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.5-9b,"45p, a2: recall switches lost against (1)",0.25547445255474455,0.17525585070358937,0.34862918711329205,186,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.5-9b,"45p, a3: lookup switches lost against (1)",0.0,0.0,0.0,186,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.5-9b,"45p, a3: recall switches lost against (1)",0.007299270072992692,-0.025316455696202667,0.04065040650406504,186,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.5-9b,"45p, a4: lookup switches lost against (1)",0.005952380952380931,0.0,0.020512820512820443,186,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.5-9b,"45p, a4: recall switches lost against (1)",-0.007299270072992803,-0.03571428571428559,0.015748031496063075,186,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.5-9b,45p: the rule holds,1,,,,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.6-27b,"45p, (1): recalls switched",75,,,254,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.6-27b,"45p, a2: lookup switches lost against (1)",0.005050505050505083,0.0,0.016483516483516536,254,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.6-27b,"45p, a2: recall switches lost against (1)",0.4933333333333333,0.3837169480726345,0.6363636363636365,254,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.6-27b,"45p, a3: lookup switches lost against (1)",0.005050505050505083,0.0,0.016483516483516536,254,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.6-27b,"45p, a3: recall switches lost against (1)",0.07999999999999996,0.01333333333333342,0.16666666666666674,254,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.6-27b,"45p, a4: lookup switches lost against (1)",-0.005050505050504972,-0.016949152542372836,0.0,254,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.6-27b,"45p, a4: recall switches lost against (1)",0.0,-0.05882352941176472,0.05555555555555558,254,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,qwen3.6-27b,45p: the rule holds,1,,,,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,muse-glimmer-30b,"45p, (1): recalls switched",55,,,178,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,muse-glimmer-30b,"45p, a2: lookup switches lost against (1)",0.0,0.0,0.0,178,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,muse-glimmer-30b,"45p, a2: recall switches lost against (1)",0.509090909090909,0.338976216511755,0.6714285714285715,178,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,muse-glimmer-30b,"45p, a3: lookup switches lost against (1)",0.0,0.0,0.0,178,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,muse-glimmer-30b,"45p, a3: recall switches lost against (1)",0.09090909090909094,-0.0625,0.18918918918918926,178,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,muse-glimmer-30b,"45p, a4: lookup switches lost against (1)",0.0,0.0,0.0,178,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,muse-glimmer-30b,"45p, a4: recall switches lost against (1)",0.018181818181818188,-0.05265507518797006,0.06666666666666654,178,results/x45p/x45p-20261027T012017Z/x45p.json
+fig03c,muse-glimmer-30b,45p: the rule holds,1,,,,results/x45p/x45p-20261027T012017Z/x45p.json
 fig05,qwen3.5-9b,"another item moved, whole: identity share",0.48,0.4259790139811488,0.5333333333333333,300,qwen35_9b_x6_routes
 fig05,qwen3.5-9b,"another item moved, whole: position share",0.51,0.4595447389136709,0.5611529144031713,300,qwen35_9b_x6_routes
 fig05,qwen3.5-9b,"another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes
@@ -682,6 +924,9 @@ fig10,qwen3.6-27b,share of the change: + wrong pair instead (scenes where it rea
 fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5,0.4486682249075473,0.5476206695212145,,qwen35_122b_x6_routes_bothoff_g75
 fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.85,0.8096774193548387,0.8888888888888888,,qwen35_122b_x6_routes_bothoff_g75
 fig10,qwen3.5-122b-a10b,share of the change: J++ part + pointer,0.369,,,,qwen35_122b_x6_routes_bothoff_g75
+fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without + identity outside J++: the part",0.21666666666666667,0.1643823642111314,0.27221048465320596,,qwen35_122b_x6_routes_d1_g75
+fig10,qwen3.5-122b-a10b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.41333333333333333,0.36170212765957444,0.46274671852211957,,qwen35_122b_x6_routes_d1_g75
+fig10,qwen3.5-122b-a10b,share of the change: + identity outside J++,0.6042,,,,qwen35_122b_x6_routes_d1_g75
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.7391304347826086,0.6816475578995644,0.7947761194029851,,muse30b_x6_routes
 fig10,muse-glimmer-30b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",1.0474308300395256,1.0039058700145915,1.0909090909090908,,muse30b_x6_routes
 fig10,muse-glimmer-30b,share of the change: J++ part + pointer,0.2503,,,,muse30b_x6_routes
@@ -700,6 +945,7 @@ fig11,qwen3.5-9b,clean one-pick scenes,x,,,,fixed; numbers:x45m_before_gap_9b
 fig11,qwen3.5-9b,logit difference,ok,,,,fixed; numbers:ld_gap_9b
 fig11,qwen3.5-9b,varied scenes,ok,,,,fixed; numbers:x0b_c_9b
 fig11,qwen3.5-9b,natural passages,ok,,,,after the data; numbers:natg75_gap_9b
+fig11,qwen3.5-9b,without the chat template,ok,,,,after the data; numbers:x45ig_gap_9b
 fig11,qwen3.5-9b,never the value,ok,,,,"fixed; fig05:another item moved, whole: value share"
 fig11,qwen3.5-9b,never the value without the chat template,ok,,,,"after the data; fig11:routes test without the chat template, another item moved, whole: value share"
 fig11,qwen3.5-9b,the lookup needs it,ok,,,,"fixed; fig05:another item moved, no_alf: position share"
@@ -712,7 +958,9 @@ fig11,qwen3.5-9b,refit per format,ok,,,,fixed; fig09:(b) prose: lookup extra los
 fig11,qwen3.5-9b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_9b
 fig11,qwen3.5-9b,identity outside J++ is specific,~,,,,fixed; numbers:x45e_cut_9b
 fig11,qwen3.5-9b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-fig11,qwen3.5-9b,the link sits in the locker sentences,x,,,,fixed; numbers:x45b_sane_c_9b
+fig11,qwen3.5-9b,"the recall reads the earlier mention, locker before the pick",ok,,,,fixed; numbers:x45p_d23_9b
+fig11,qwen3.5-9b,"the link sits in the locker sentences, main test",x,,,,fixed; numbers:x45b_sane_c_9b
+fig11,qwen3.5-9b,"the link sits in the locker sentences, clean one-pick scenes",ok,,,,fixed; numbers:x45q_c_9b
 fig11,qwen3.6-27b,main test,~,,,,fixed; numbers:contrast_27b
 fig11,qwen3.6-27b,a tested cause for the 27B's loss with 100 atoms,x,,,,fixed; fig02b:45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved)
 fig11,qwen3.6-27b,locker before the pick,~,,,,after the data; numbers:sbo_swap_before_gap_27b
@@ -720,6 +968,7 @@ fig11,qwen3.6-27b,clean one-pick scenes,ok,,,,fixed; numbers:x45m_before_gap_27b
 fig11,qwen3.6-27b,logit difference,ok,,,,fixed; numbers:ld_gap_27b
 fig11,qwen3.6-27b,varied scenes,ok,,,,fixed; numbers:x0b_c_27b
 fig11,qwen3.6-27b,natural passages,~,,,,fixed; numbers:nat_gap_27b
+fig11,qwen3.6-27b,without the chat template,~,,,,after the data; numbers:x45ig_gap_27b
 fig11,qwen3.6-27b,never the value,ok,,,,"fixed; fig05:another item moved, whole: value share"
 fig11,qwen3.6-27b,never the value without the chat template,ok,,,,"after the data; fig11:routes test without the chat template, another item moved, whole: value share"
 fig11,qwen3.6-27b,the lookup needs it,~,,,,"after the data; fig05:another item moved, no_alf: position share"
@@ -732,7 +981,9 @@ fig11,qwen3.6-27b,refit per format,x,,,,fixed; fig09:(b) prose: lookup extra los
 fig11,qwen3.6-27b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_27b
 fig11,qwen3.6-27b,identity outside J++ is specific,~,,,,fixed; numbers:x45e_cut_27b
 fig11,qwen3.6-27b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-fig11,qwen3.6-27b,the link sits in the locker sentences,x,,,,fixed; numbers:x45b_sane_c_27b
+fig11,qwen3.6-27b,"the recall reads the earlier mention, locker before the pick",ok,,,,fixed; numbers:x45p_d23_27b
+fig11,qwen3.6-27b,"the link sits in the locker sentences, main test",x,,,,fixed; numbers:x45b_sane_c_27b
+fig11,qwen3.6-27b,"the link sits in the locker sentences, clean one-pick scenes",ok,,,,fixed; numbers:x45q_c_27b
 fig11,qwen3.5-122b-a10b,main test,ok,,,,fixed; numbers:contrast_122b
 fig11,qwen3.5-122b-a10b,a tested cause for the 27B's loss with 100 atoms,-,,,,fixed
 fig11,qwen3.5-122b-a10b,locker before the pick,x,,,,after the data; numbers:sbo_swap_before_gap_122b
@@ -740,6 +991,7 @@ fig11,qwen3.5-122b-a10b,clean one-pick scenes,-,,,,fixed
 fig11,qwen3.5-122b-a10b,logit difference,ok,,,,fixed; numbers:ld_gap_122b
 fig11,qwen3.5-122b-a10b,varied scenes,~,,,,fixed; numbers:x0b_c_122b
 fig11,qwen3.5-122b-a10b,natural passages,ok,,,,fixed; numbers:nat_gap_122b
+fig11,qwen3.5-122b-a10b,without the chat template,-,,,,fixed
 fig11,qwen3.5-122b-a10b,never the value,ok,,,,"after the data; fig05:another item moved, whole: value share"
 fig11,qwen3.5-122b-a10b,never the value without the chat template,-,,,,fixed
 fig11,qwen3.5-122b-a10b,the lookup needs it,ok,,,,"after the data; fig05:another item moved, no_alf: position share"
@@ -750,9 +1002,11 @@ fig11,qwen3.5-122b-a10b,"counts mentions, not text position",ok,,,,after the dat
 fig11,qwen3.5-122b-a10b,a pick sentence first moves the lookup to identity,-,,,,fixed
 fig11,qwen3.5-122b-a10b,refit per format,-,,,,fixed
 fig11,qwen3.5-122b-a10b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_122b
-fig11,qwen3.5-122b-a10b,identity outside J++ is specific,pending,,,,fixed
+fig11,qwen3.5-122b-a10b,identity outside J++ is specific,-,,,,fixed
 fig11,qwen3.5-122b-a10b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-fig11,qwen3.5-122b-a10b,the link sits in the locker sentences,-,,,,fixed
+fig11,qwen3.5-122b-a10b,"the recall reads the earlier mention, locker before the pick",-,,,,fixed
+fig11,qwen3.5-122b-a10b,"the link sits in the locker sentences, main test",-,,,,fixed
+fig11,qwen3.5-122b-a10b,"the link sits in the locker sentences, clean one-pick scenes",-,,,,fixed
 fig11,muse-glimmer-30b,main test,ok,,,,fixed; numbers:contrast_muse
 fig11,muse-glimmer-30b,a tested cause for the 27B's loss with 100 atoms,-,,,,fixed
 fig11,muse-glimmer-30b,locker before the pick,ok,,,,after the data; numbers:sbo_swap_before_gap_muse
@@ -760,6 +1014,7 @@ fig11,muse-glimmer-30b,clean one-pick scenes,ok,,,,fixed; numbers:x45m_before_ga
 fig11,muse-glimmer-30b,logit difference,ok,,,,fixed; numbers:ld_gap_muse
 fig11,muse-glimmer-30b,varied scenes,ok,,,,fixed; numbers:x0b_c_muse
 fig11,muse-glimmer-30b,natural passages,-,,,,fixed; numbers:nat_lk_whole_sw_muse
+fig11,muse-glimmer-30b,without the chat template,-,,,,fixed
 fig11,muse-glimmer-30b,never the value,ok,,,,"fixed; fig05:another item moved, whole: value share"
 fig11,muse-glimmer-30b,never the value without the chat template,-,,,,fixed
 fig11,muse-glimmer-30b,the lookup needs it,ok,,,,"fixed; fig05:another item moved, no_alf: position share"
@@ -772,7 +1027,9 @@ fig11,muse-glimmer-30b,refit per format,ok,,,,fixed; fig09:(b) prose: lookup ext
 fig11,muse-glimmer-30b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_muse
 fig11,muse-glimmer-30b,identity outside J++ is specific,x,,,,fixed; numbers:x45e_cut_muse
 fig11,muse-glimmer-30b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-fig11,muse-glimmer-30b,the link sits in the locker sentences,x,,,,fixed; numbers:x45b_sane_c_muse
+fig11,muse-glimmer-30b,"the recall reads the earlier mention, locker before the pick",ok,,,,fixed; numbers:x45p_d23_muse
+fig11,muse-glimmer-30b,"the link sits in the locker sentences, main test",x,,,,fixed; numbers:x45b_sane_c_muse
+fig11,muse-glimmer-30b,"the link sits in the locker sentences, clean one-pick scenes",ok,,,,fixed; numbers:x45q_c_muse
 s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): gap,0.53,,,,contrast_9b
@@ -859,6 +1116,18 @@ s01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): recall extr
 s01b,muse-glimmer-30b,one-pick scenes (only the asked pick changes): gap,0.67,0.53,0.8,,single_contrast_muse
 s01b,qwen3.5-9b,"one-pick scenes, the other person's pick of the new bridge before the asked pick: gap",0.15474747474747474,0.07159126652240853,0.24205808080808078,105,results/x0_necessity/duplicate-20261026T204558Z/duplicate.json
 s01b,qwen3.5-9b,"one-pick scenes, the other person's pick of the new bridge after the asked pick: gap",0.6409537166900421,0.5230681818181818,0.7442511620631088,95,results/x0_necessity/duplicate-20261026T204558Z/duplicate.json
+s01c,qwen3.5-9b,"main test, all scenes, chat template: gap",0.5260333575054386,0.42372781210953087,0.614298830454014,200,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s01c,qwen3.5-9b,"main test, locker before the pick, chat template: gap",0.33837209302325577,0.23457808678322295,0.43191503216932614,100,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s01c,qwen3.5-9b,"routes test, another item moved, whole change, chat template: value answers",0,,,300,qwen35_9b_x6_routes
+s01c,qwen3.5-9b,"main test, all scenes, without the chat template: gap",0.5209692451071762,0.39129375052986465,0.6207253856616116,200,results/x0_necessity/qwen35_9b_x45i_main_nochat_g75/outcomes.jsonl
+s01c,qwen3.5-9b,"main test, locker before the pick, without the chat template: gap",0.40113636363636374,0.2528270196152865,0.5365789919604588,103,results/x0_necessity/qwen35_9b_x45i_main_nochat_g75/outcomes.jsonl
+s01c,qwen3.5-9b,"routes test, another item moved, whole change, without the chat template: value answers",0,,,300,qwen35_9b_x6_routes_x45i_nochat
+s01c,qwen3.6-27b,"main test, all scenes, chat template: gap",0.6004651162790698,0.5025567065985861,0.6918870812495038,200,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s01c,qwen3.6-27b,"main test, locker before the pick, chat template: gap",0.5238095238095237,0.3969281475748195,0.6534142681237493,101,results/x0_composition/split-by-order-20261026T173323Z/split.json
+s01c,qwen3.6-27b,"routes test, another item moved, whole change, chat template: value answers",0,,,300,x6_routes_27b
+s01c,qwen3.6-27b,"main test, all scenes, without the chat template: gap",0.6175848431895521,0.4887920109936614,0.7377452766976875,200,results/x0_necessity/x45i_main_nochat_27b_g75/outcomes.jsonl
+s01c,qwen3.6-27b,"main test, locker before the pick, without the chat template: gap",0.5370705244122966,0.3770381787363423,0.6817296115166996,101,results/x0_necessity/x45i_main_nochat_27b_g75/outcomes.jsonl
+s01c,qwen3.6-27b,"routes test, another item moved, whole change, without the chat template: value answers",0,,,300,x6_routes_x45i_nochat_27b
 s02,qwen3.5-9b,J++ part: recall extra loss,0.3664921465968587,0.2947976878612717,0.4269022274788093,,qwen35_9b_x0_pcaeq
 s02,qwen3.5-9b,J++ part: lookup extra loss,-0.018867924528301883,-0.05434782608695654,0.018691588785046623,,qwen35_9b_x0_pcaeq
 s02,qwen3.5-9b,J++ part: share of the change,0.18579,,,,qwen35_9b_x0_pcaeq
@@ -1253,6 +1522,9 @@ s10b,qwen3.6-27b,share of the change: + wrong pair instead,0.306,,,,x6_routes_x4
 s10b,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.5,0.4486682249075473,0.5476206695212145,,qwen35_122b_x6_routes_bothoff_g75
 s10b,qwen3.5-122b-a10b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",0.85,0.8096774193548387,0.8888888888888888,,qwen35_122b_x6_routes_bothoff_g75
 s10b,qwen3.5-122b-a10b,share of the change: J++ part + pointer,0.369,,,,qwen35_122b_x6_routes_bothoff_g75
+s10b,qwen3.5-122b-a10b,"sanity swap, lookups still switching without + identity outside J++: the part",0.21666666666666667,0.1643823642111314,0.27221048465320596,,qwen35_122b_x6_routes_d1_g75
+s10b,qwen3.5-122b-a10b,"sanity swap, lookups still switching without + identity outside J++: a random part of the same size",0.41333333333333333,0.36170212765957444,0.46274671852211957,,qwen35_122b_x6_routes_d1_g75
+s10b,qwen3.5-122b-a10b,share of the change: + identity outside J++,0.6042,,,,qwen35_122b_x6_routes_d1_g75
 s10b,muse-glimmer-30b,"sanity swap, lookups still switching without J++ part + pointer: the part",0.7391304347826086,0.6816475578995644,0.7947761194029851,,muse30b_x6_routes
 s10b,muse-glimmer-30b,"sanity swap, lookups still switching without J++ part + pointer: a random part of the same size",1.0474308300395256,1.0039058700145915,1.0909090909090908,,muse30b_x6_routes
 s10b,muse-glimmer-30b,share of the change: J++ part + pointer,0.2503,,,,muse30b_x6_routes
@@ -5227,6 +5499,251 @@ numbers,,rtd_ex_C2_jpp+alf+idout_rc_muse,"0.40 [0.28, 0.53]",,,,results/x6_route
 numbers,,rtd_left_C2_jpp+alf+idout_rc_muse,"0.16 [0.08, 0.25]",,,,results/x6_routes/muse30b_x6_routes_d1_r2/verdict-20261026T112446Z/verdict.json
 numbers,,rtd_randleft_C2_jpp+alf+idout_rc_muse,"0.56 [0.46, 0.67]",,,,results/x6_routes/muse30b_x6_routes_d1_r2/verdict-20261026T112446Z/verdict.json
 numbers,,rtd_c0_muse,0.84,,,,results/x6_routes/muse30b_x6_routes_d1_r2/c0_check.json
+numbers,,rtd_C0_whole_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_whole_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_whole_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_whole_original_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_whole_recall_follows_s_122b,"0.92 [0.87, 0.96]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_original_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_recall_follows_s_122b,"0.80 [0.74, 0.88]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_rand_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_rand_original_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jpp_rand_recall_follows_s_122b,"0.86 [0.79, 0.93]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_original_122b,"0.24 [0.20, 0.29]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_recall_follows_s_122b,"0.75 [0.67, 0.84]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_rand_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_rand_original_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alf_rand_recall_follows_s_122b,"0.87 [0.81, 0.93]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_original_122b,"0.11 [0.07, 0.15]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_recall_follows_s_122b,"0.54 [0.46, 0.63]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_rand_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_rand_original_122b,"0.20 [0.16, 0.24]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_id_rand_recall_follows_s_122b,"0.65 [0.57, 0.74]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_original_122b,"0.00 [0.00, 0.01]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_recall_follows_s_122b,"0.79 [0.71, 0.87]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_rand_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_rand_original_122b,"0.01 [0.00, 0.03]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idout_rand_recall_follows_s_122b,"0.86 [0.80, 0.92]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_original_122b,"0.54 [0.49, 0.59]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_recall_follows_s_122b,"0.43 [0.35, 0.52]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_rand_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_rand_original_122b,"0.18 [0.14, 0.23]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_alfidout_rand_recall_follows_s_122b,"0.68 [0.60, 0.77]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_original_122b,"0.78 [0.73, 0.84]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_recall_follows_s_122b,"0.21 [0.16, 0.27]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_rand_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_rand_original_122b,"0.59 [0.54, 0.64]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_jppalfidout_rand_recall_follows_s_122b,"0.40 [0.35, 0.46]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_original_122b,"0.92 [0.87, 0.95]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_recall_follows_s_122b,"0.35 [0.25, 0.46]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_rand_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_rand_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_rand_original_122b,"0.84 [0.78, 0.89]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_keep_id_rand_recall_follows_s_122b,"0.20 [0.12, 0.29]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idsub_identity_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idsub_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idsub_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idsub_original_122b,"0.69 [0.65, 0.74]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C0_no_idsub_recall_follows_s_122b,"0.25 [0.18, 0.33]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_whole_identity_122b,"0.61 [0.56, 0.66]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_whole_position_122b,"0.38 [0.33, 0.44]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_whole_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_whole_original_122b,"0.01 [0.00, 0.02]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_whole_recall_follows_s_122b,"0.79 [0.73, 0.86]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_identity_122b,"0.51 [0.47, 0.56]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_position_122b,"0.47 [0.42, 0.52]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_original_122b,"0.02 [0.00, 0.04]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_recall_follows_s_122b,"0.60 [0.52, 0.68]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_rand_identity_122b,"0.59 [0.54, 0.64]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_rand_position_122b,"0.35 [0.30, 0.39]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_rand_original_122b,"0.07 [0.04, 0.09]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jpp_rand_recall_follows_s_122b,"0.70 [0.63, 0.79]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_identity_122b,"0.59 [0.53, 0.65]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_position_122b,"0.06 [0.03, 0.08]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_original_122b,"0.35 [0.30, 0.41]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_recall_follows_s_122b,"0.67 [0.60, 0.77]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_rand_identity_122b,"0.62 [0.58, 0.67]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_rand_position_122b,"0.35 [0.30, 0.40]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_rand_original_122b,"0.03 [0.01, 0.04]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alf_rand_recall_follows_s_122b,"0.74 [0.66, 0.82]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_identity_122b,"0.33 [0.27, 0.38]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_position_122b,"0.47 [0.41, 0.53]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_original_122b,"0.21 [0.16, 0.26]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_recall_follows_s_122b,"0.34 [0.28, 0.42]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_rand_identity_122b,"0.48 [0.42, 0.53]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_rand_position_122b,"0.15 [0.11, 0.20]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_rand_original_122b,"0.37 [0.32, 0.42]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_id_rand_recall_follows_s_122b,"0.52 [0.46, 0.60]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_identity_122b,"0.46 [0.41, 0.50]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_position_122b,"0.50 [0.46, 0.55]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_original_122b,"0.04 [0.01, 0.07]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_recall_follows_s_122b,"0.59 [0.51, 0.68]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_rand_identity_122b,"0.59 [0.54, 0.64]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_rand_position_122b,"0.35 [0.30, 0.40]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_rand_original_122b,"0.06 [0.03, 0.08]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idout_rand_recall_follows_s_122b,"0.72 [0.65, 0.80]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_identity_122b,"0.28 [0.24, 0.33]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_position_122b,"0.05 [0.03, 0.07]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_original_122b,"0.67 [0.63, 0.72]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_recall_follows_s_122b,"0.36 [0.27, 0.46]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_rand_identity_122b,"0.46 [0.41, 0.51]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_rand_position_122b,"0.15 [0.11, 0.19]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_rand_original_122b,"0.39 [0.34, 0.45]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_alfidout_rand_recall_follows_s_122b,"0.53 [0.45, 0.61]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_identity_122b,"0.13 [0.09, 0.17]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_position_122b,"0.02 [0.01, 0.04]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_original_122b,"0.85 [0.80, 0.90]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_recall_follows_s_122b,"0.15 [0.10, 0.20]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_rand_identity_122b,"0.35 [0.30, 0.39]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_rand_position_122b,"0.04 [0.02, 0.07]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_rand_original_122b,"0.61 [0.56, 0.66]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_jppalfidout_rand_recall_follows_s_122b,"0.33 [0.28, 0.39]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_identity_122b,"0.10 [0.06, 0.15]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_position_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_original_122b,"0.90 [0.85, 0.94]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_recall_follows_s_122b,"0.35 [0.25, 0.46]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_rand_identity_122b,"0.02 [0.00, 0.04]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_rand_position_122b,"0.03 [0.01, 0.06]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_rand_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_rand_original_122b,"0.95 [0.92, 0.98]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_keep_id_rand_recall_follows_s_122b,"0.12 [0.07, 0.19]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idsub_identity_122b,"0.19 [0.15, 0.23]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idsub_position_122b,"0.04 [0.02, 0.06]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idsub_value_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idsub_original_122b,"0.78 [0.73, 0.82]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_C2_no_idsub_recall_follows_s_122b,"0.15 [0.10, 0.20]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_jpp_lk_122b,"0.00 [0.00, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_jpp_lk_122b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_jpp_lk_122b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C0_jpp_122b,22%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_alf_lk_122b,"0.25 [0.21, 0.29]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_alf_lk_122b,"0.75 [0.71, 0.79]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_alf_lk_122b,"1.00 [1.00, 1.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C0_alf_122b,14%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_id_lk_122b,"−0.09 [−0.14, −0.04]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_id_lk_122b,"0.89 [0.85, 0.93]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_id_lk_122b,"0.80 [0.76, 0.84]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C0_id_122b,32%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_idout_lk_122b,"−0.01 [−0.03, 0.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_idout_lk_122b,"1.00 [0.99, 1.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_idout_lk_122b,"0.99 [0.97, 1.00]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C0_idout_122b,14%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_alf+idout_lk_122b,"0.36 [0.30, 0.42]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_alf+idout_lk_122b,"0.46 [0.41, 0.51]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_alf+idout_lk_122b,"0.82 [0.77, 0.86]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C0_alf+idout_122b,37%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_jpp+alf+idout_lk_122b,"0.20 [0.14, 0.26]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_jpp+alf+idout_lk_122b,"0.22 [0.16, 0.27]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_jpp+alf+idout_lk_122b,"0.41 [0.36, 0.46]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C0_jpp+alf+idout_122b,60%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_jpp_rc_122b,"0.06 [0.02, 0.10]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_jpp_rc_122b,"0.88 [0.83, 0.92]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_jpp_rc_122b,"0.94 [0.90, 0.98]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_alf_rc_122b,"0.13 [0.07, 0.18]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_alf_rc_122b,"0.82 [0.76, 0.89]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_alf_rc_122b,"0.95 [0.92, 0.98]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_id_rc_122b,"0.12 [0.07, 0.17]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_id_rc_122b,"0.59 [0.52, 0.67]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_id_rc_122b,"0.71 [0.65, 0.78]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_idout_rc_122b,"0.08 [0.03, 0.13]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_idout_rc_122b,"0.86 [0.80, 0.92]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_idout_rc_122b,"0.94 [0.91, 0.97]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_alf+idout_rc_122b,"0.28 [0.22, 0.34]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_alf+idout_rc_122b,"0.47 [0.39, 0.56]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_alf+idout_rc_122b,"0.74 [0.68, 0.81]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C0_jpp+alf+idout_rc_122b,"0.21 [0.16, 0.27]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C0_jpp+alf+idout_rc_122b,"0.23 [0.17, 0.29]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C0_jpp+alf+idout_rc_122b,"0.44 [0.38, 0.50]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_jpp_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_jpp_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_jpp_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C2_jpp_122b,22%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_alf_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_alf_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_alf_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C2_alf_122b,14%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_id_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_id_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_id_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C2_id_122b,30%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C2_idout_122b,14%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_alf+idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_alf+idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_alf+idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C2_alf+idout_122b,35%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_jpp+alf+idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_jpp+alf+idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_jpp+alf+idout_lk_122b,"nan [nan, nan]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_share_C2_jpp+alf+idout_122b,59%,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_jpp_rc_122b,"0.13 [0.08, 0.19]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_jpp_rc_122b,"0.76 [0.69, 0.82]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_jpp_rc_122b,"0.89 [0.84, 0.94]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_alf_rc_122b,"0.08 [0.00, 0.14]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_alf_rc_122b,"0.85 [0.77, 0.94]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_alf_rc_122b,"0.93 [0.89, 0.97]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_id_rc_122b,"0.23 [0.17, 0.28]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_id_rc_122b,"0.43 [0.35, 0.52]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_id_rc_122b,"0.66 [0.60, 0.73]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_idout_rc_122b,"0.16 [0.10, 0.24]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_idout_rc_122b,"0.75 [0.66, 0.83]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_idout_rc_122b,"0.91 [0.86, 0.96]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_alf+idout_rc_122b,"0.21 [0.15, 0.28]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_alf+idout_rc_122b,"0.45 [0.35, 0.56]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_alf+idout_rc_122b,"0.66 [0.59, 0.75]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_ex_C2_jpp+alf+idout_rc_122b,"0.24 [0.19, 0.28]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_left_C2_jpp+alf+idout_rc_122b,"0.18 [0.13, 0.24]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_randleft_C2_jpp+alf+idout_rc_122b,"0.42 [0.36, 0.48]",,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/verdict-20261027T003134Z/verdict.json
+numbers,,rtd_c0_122b,1.00,,,,results/x6_routes/qwen35_122b_x6_routes_d1_g75/c0_check.json
 numbers,,rt_c0gate_lk_122b,1.000,,,,results/x6_routes/qwen35_122b_x6_routes_c0/gate.json
 numbers,,rt_c0gate_rc_122b,0.797,,,,results/x6_routes/qwen35_122b_x6_routes_c0/gate.json
 numbers,,rt_c0gate_eligible_122b,479 of 700,,,,results/x6_routes/qwen35_122b_x6_routes_c0/gate.json
@@ -6188,6 +6705,56 @@ numbers,,x45d_table_muse,"0.47 [0.34, 0.60]",,,,results/x0b_generalize/muse30b_x
 numbers,,x45i_value_9b,0 of 300,,,,results/x6_routes/qwen35_9b_x6_routes_x45i_nochat/verdict-20261026T221938Z/verdict.json
 numbers,,x45i_value_27b,0 of 300,,,,results/x6_routes/x6_routes_x45i_nochat_27b/verdict-20261026T221939Z/verdict.json
 numbers,,indep_agree_9b,20 of 20,,,,results/indep_check/qwen35_9b_x45_indep/summary.json
+numbers,,x45q_c_9b,"0.70 [0.65, 0.74]",,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_a_9b,"0.17 [0.12, 0.22]",,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_n_9b,201,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_c_27b,"0.74 [0.68, 0.80]",,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_a_27b,"0.01 [0.00, 0.03]",,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_n_27b,288,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_c_muse,"0.76 [0.70, 0.81]",,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_a_muse,"0.01 [0.00, 0.03]",,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_n_muse,205,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45q_held,3 of 3,,,,results/x45b_binding/x45q-20261027T005345Z/x45q.json
+numbers,,x45p_d23_9b,"0.25 [0.16, 0.34]",,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_d24_9b,"0.26 [0.18, 0.35]",,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_n_9b,186,,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_d23_27b,"0.41 [0.32, 0.53]",,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_d24_27b,"0.49 [0.38, 0.64]",,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_n_27b,254,,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_d23_muse,"0.42 [0.26, 0.63]",,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_d24_muse,"0.49 [0.31, 0.69]",,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_n_muse,178,,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_held,3 of 3,,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45p_lkmax,0.01,,,,results/x45p/x45p-20261027T012017Z/x45p.json
+numbers,,x45ig_gap_9b,"0.52 [0.39, 0.62]",,,,results/x0_necessity/qwen35_9b_x45i_main_nochat_g75/outcomes.jsonl
+numbers,,x45ig_lk_9b,"−0.03 [−0.08, 0.02]",,,,results/x0_necessity/qwen35_9b_x45i_main_nochat_g75/outcomes.jsonl
+numbers,,x45ig_rc_9b,"0.49 [0.38, 0.57]",,,,results/x0_necessity/qwen35_9b_x45i_main_nochat_g75/outcomes.jsonl
+numbers,,x45ig_before_gap_9b,"0.40 [0.25, 0.54]",,,,results/x0_necessity/qwen35_9b_x45i_main_nochat_g75/outcomes.jsonl
+numbers,,x45ig_before_n_9b,103,,,,results/x0_necessity/qwen35_9b_x45i_main_nochat_g75/outcomes.jsonl
+numbers,,x45ig_gap_27b,"0.62 [0.49, 0.74]",,,,results/x0_necessity/x45i_main_nochat_27b_g75/outcomes.jsonl
+numbers,,x45ig_lk_27b,"0.17 [0.10, 0.24]",,,,results/x0_necessity/x45i_main_nochat_27b_g75/outcomes.jsonl
+numbers,,x45ig_rc_27b,"0.79 [0.70, 0.86]",,,,results/x0_necessity/x45i_main_nochat_27b_g75/outcomes.jsonl
+numbers,,x45ig_before_gap_27b,"0.54 [0.38, 0.68]",,,,results/x0_necessity/x45i_main_nochat_27b_g75/outcomes.jsonl
+numbers,,x45ig_before_n_27b,101,,,,results/x0_necessity/x45i_main_nochat_27b_g75/outcomes.jsonl
+numbers,,x45em_left_idout_9b,0.06,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_left_wrong_9b,0.16,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_n_9b,241,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_cut_9b,"0.08 [0.03, 0.12]",,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_left_idout_27b,0.18,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_left_wrong_27b,0.38,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_n_27b,226,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_cut_27b,"0.14 [0.09, 0.21]",,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_left_idout_muse,0.54,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_left_wrong_muse,0.59,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_n_muse,237,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45em_cut_muse,"0.05 [0.01, 0.08]",,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
+numbers,,x45k_label,(d) can't tell,,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
+numbers,,x45k_c0_100_27b,"0.37 [0.30, 0.44]",,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
+numbers,,x45k_d_identity_27b,"0.31 [0.26, 0.36]",,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
+numbers,,x45k_d_position_27b,"0.11 [0.06, 0.16]",,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
+numbers,,x45k_cos2_U_27b,0.02,,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
+numbers,,x45k_cos2_id_27b,0.29,,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
+numbers,,x45k_other_27b,"−0.01 [−0.04, 0.00]",,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
 numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_natural_9b,not tested (gate),,,,results/t_pointer/verdict-20261026T140221Z/verdict.json

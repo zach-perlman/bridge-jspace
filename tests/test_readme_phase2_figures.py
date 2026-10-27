@@ -108,7 +108,7 @@ def test_fig3b_45q_on_planted_runs(tmp_path, monkeypatch, saved, plants, label):
     F.f03b_q(S.setup(), v_dir, l_dir, s_dir)
     fig = saved["fig03b_layers"]
     check(fig)
-    assert not fig["supp"] and "Locker after the pick" in fig["title"]
+    assert not fig["supp"] and "locker after the pick" in fig["title"].lower()
     assert ("not run" in fig["texts"]) == (None in plants)
     rows = [r for r in S.ROWS if r["figure"] == "fig03b"]
     assert {r["model"] for r in rows} == {t for (t, _), h in zip(F.Q_MODELS, plants, strict=True) if h is not None}
