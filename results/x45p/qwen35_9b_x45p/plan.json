@@ -1,0 +1,20 @@
+{
+  "run_45m": "qwen35_9b_x45m_fresh",
+  "layer": 12,
+  "items_at_L": 417,
+  "alt locker vs asked pick": {
+    "before": 186,
+    "after": 231
+  },
+  "dropped": {},
+  "items": 186,
+  "entities": 42,
+  "tokens": {
+    "new 1, control 1": 186
+  },
+  "control": {
+    "before the new item, before the asked pick": 83,
+    "after the new item, before the asked pick": 99,
+    "after the new item, after the asked pick": 4
+  }
+}

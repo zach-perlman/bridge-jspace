@@ -10,7 +10,7 @@
 - **The pointer is narrow:** it marks the first locker in a clean layout; naming an item first moves the lookup to identity. About half of the route around the lens is unexplained.
 - **For monitoring:** a lens on the bridge word shows which item is there, not where the model will read its answer.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 27 Oct 2026. Unverified until hand-checked (Section 7). Built at c24d1bae from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 27 Oct 2026. Unverified until hand-checked (Section 7). Built at 99f1fbb9 from the run files.
 
 ## Setup
 
@@ -144,7 +144,7 @@
 - **Independent reimplementation:** code written from scratch reproduces the 9B's main test on 20 of 20 random items, every arm.
 - **Same tokens after the bridge word:** this check caught the reading-order test, whose two prompts mostly differed there (Section 2).
 - **Raw examples:** `make review-serve`, random items per claim (fixed seed).
-- **Predictions:** committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.32 over 119 answers, batch 45 included, worse than always answering 50%.
+- **Predictions:** committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.32 over 121 answers, batch 45 included, worse than always answering 50%.
 
 ## 8. Related work and what is new
 

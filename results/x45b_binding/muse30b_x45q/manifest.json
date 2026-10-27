@@ -1,0 +1,94 @@
+{
+  "exp": "x45b_binding",
+  "run": "muse30b_x45q",
+  "why": "batch 45, test 45q (jobs/c3/batch45.yaml; Q45.12, sealed): 45b's arms, 45n's link arms and the sweep on muse30b_x45m_fresh's locker-after scenes",
+  "written_utc": "2026-10-27T00:36:01Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "db0c458088e6bf169ac2d5d4ae8d57196aa393fb",
+    "dirty": true
+  },
+  "test": "45q",
+  "spec": "jobs/c3/batch45.yaml (45q)",
+  "question": "Q45.12",
+  "inputs": {
+    "jobs/c3/batch45.yaml": "c20af9f6fa20e9f600d2fadc92251fcd9349817a1a18f04bcd25f9e429f16518",
+    "results/x0_necessity/muse30b_x45m_fresh/manifest.json": "7c84136846d3096b0834029e4fdb96ea9931df984339b366856011c88096bfce",
+    "results/x0_necessity/muse30b_x45m_fresh/cases.jsonl": "7e6e3d7ef073a8744d6cf93de4da66fdb300aea681186c7045ade68da0c77a9e",
+    "results/x0_necessity/muse30b_x45m_fresh/outcomes.jsonl": "728ce3523579c47d1dcc4f3444db91c218c236791445502677fe4f1042c827fe",
+    "results/x0_necessity/muse30b_x45m_fresh/competence.jsonl": "263ee278a9d71797e2d716a6f1d929ea480933113e6aa7fbfa63760e46a080ce"
+  },
+  "source": "45m",
+  "main_run": "muse30b_x45m_fresh",
+  "layer": 26,
+  "arm_layers": {
+    "a": 26,
+    "b_half": 13,
+    "b_quarter": 6,
+    "c": 26,
+    "d": 13
+  },
+  "sweep_layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    50
+  ],
+  "last_layer": "n_layers - 2 = 50 (q_sweep_layers)",
+  "arms": {
+    "none": "O unedited",
+    "a": "the bridge-word change at L",
+    "b_half": "the bridge-word change at L/2",
+    "b_quarter": "the bridge-word change at L/4",
+    "c": "S patched into O at every locker-sentence token, at L",
+    "d": "S patched into O at every locker-sentence token, at L/2",
+    "c_nojpp": "the same copy without each token's J++ part (signed OMP, k = 25)",
+    "c_norand": "the same copy without a random part of each token's J++ share",
+    "bw<l>": "the bridge-word change, at layer l",
+    "ls<l>": "S patched into O at every locker-sentence token, at layer l",
+    "li<l>": "only the item's tokens inside the locker sentences, at layer l",
+    "lr<l>": "only the rest of each locker sentence (not the item, the value or the final token), at layer l",
+    "lv<l>": "only the value token(s), at layer l",
+    "lf<l>": "only the sentence-final token, at layer l",
+    "S": "S read on S (unedited)"
+  },
+  "families": {
+    "45b": "45b's arms (rule)",
+    "45n": "45n's link arms at L (reported, not in the rule)",
+    "sweep": "the sweep (descriptive)",
+    "-": "O unedited / S read on S"
+  },
+  "k": 25,
+  "omp": "signed",
+  "random_part": "X0's random subspace, seed 888 + layer, at each token's J++ share",
+  "roles": "item / rest / value / final tokens of every locker sentence by character overlap (role_positions, rest=True); rest = the tokens overlapping none of the other three",
+  "items_rule": "muse30b_x45m_fresh's scenes at L (chat) whose org bridge's locker sentence comes after the asked pick (x0_strata); locker sentences aligned as 45b; same_after_bridge asserted, failures dropped and counted (x45b_binding.select, source 45m)",
+  "locker_sentences": "every 'The locker of <thing> is <n>.' sentence of the context, the added one included",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer",
+  "rule": "45b's, unchanged: \"the link is made in the locker sentences\" if (c) or (d) switches at least half of the lookups S switches while (a) stays at or below 0.25, on at least 2 of 3 models.",
+  "decisive_reader": "PP",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer"
+  },
+  "n_boot": 10000,
+  "sealed": "results closed until predictions/2026-10-26_dan.md holds Dan's Q45.12; the job runs q-run only"
+}
