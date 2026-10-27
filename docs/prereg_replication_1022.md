@@ -2047,3 +2047,37 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - GPU 0: question-only and bridge-only at L36-42 (scripts/queues/h200_h0nb_1027.sh pos steps).
   - Both use the record run's H200, so note 4's hardware caveat no longer applies.
 - **Readings:** note 1's.
+
+### Amendment 58 (Zach, 2026-10-27 22:05 UTC, before any run below): how good is each model, actually
+
+- **Why:** at the 27 Oct drop-in, Neel doubted that open models can do three-hop recall and asked how good each model
+  really is at our tasks, with shortcuts ruled out. A read-only audit of the stored competence runs (27 Oct) found:
+  - three-hop chains with a read hop near chance for most models;
+  - all-memory chains high through shortcuts;
+  - number lookups near chance.
+- **Plan (agreed with Zach, 27 Oct; each part gets its own note before it runs):**
+  - a competence card per model and task;
+  - the headline re-scored on clean subsets (CPU);
+  - the knock-out on the never-named start;
+  - a difficulty-matched hard read;
+  - a capitals relation whose commonest answer is under 5%;
+  - filler tokens and repeats;
+  - later: knowledge conflict, an external shortcut-free two-hop set, a computed-entity bridge.
+- **Changes to earlier claims, fixed now:**
+  - Three-hop becomes a secondary analysis on Qwen 27B only, and only if it passes the competence bar of note 2.
+  - The H0 numbers test is reported as inconclusive, except reporting a computed number where competence is high.
+
+#### Amendment 58 note 1 (Zach, 2026-10-27 22:05 UTC, before the run): raw greedy replies to every item
+
+- **What:** scripts/greedy_all.py. The model's greedy reply (up to 24 new tokens, unedited) to every item's whole question
+  in jsuite_v2_test_chat: 5,370 fact, 1,007 three-hop and 703 number items, eligible or not.
+  - Prompts are exactly the competence and knock-out prompts (tasks_v2.render: thinking off, "Answer:" prefilled).
+  - Prompts of one length are batched without padding.
+- **Models:** Qwen3.6-27B, Qwen3.5-9B, Nemotron 3.5 Lightning (smoke: 8 items per word on the 9B first).
+- **Rule:** descriptive; raw text only. Scoring is note 2's, fixed before any reply is scored:
+  - Strip one leading fixed phrase ("The answer is", "It is", "It's"), then whitespace and punctuation.
+  - The reply is right if it then starts with the answer or one of its aliases (case-insensitive, accents folded).
+  - Any other text before the answer, including reasoning, counts as wrong (Redwood's rule).
+  - Alias tables are per relation, built from the candidate lists plus standard forms (adjective and noun forms,
+    "Mammalia"-style class names). 50 replies per model are hand-checked against the rule; any change to the tables
+    after that is logged.
