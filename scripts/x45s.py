@@ -1,6 +1,6 @@
 """x45s (test 45s; Dan 27 Oct ~15:00; jobs/c3/x45s_*.yaml; Q46.2 and Q46.3 in predictions/2026-10-27_dan.md, batch 46):
 our main test (two people swap) and 45m's clean one-pick design on NVIDIA Nemotron 3.5 Lightning, with Zach's pinned J++,
-at L30 (the middle of Zach's pre-registered band L27-33; one layer, no sweep). Arms whole / without the J++ part (signed
+at L27 (the shallowest layer of Zach's band L27-33 (Dan 27 Oct ~15:55, fixed before any run and before his answers: the stated answer's switch rate falls with depth, Muse 8 of 200 at L30, and X0 needs 30%); one layer, no sweep). Arms whole / without the J++ part (signed
 OMP, k = 25) / without a random part of the same share, both readers. The two runs are x0_necessity's own (sealed: no
 verdict in the job); this script holds what comes before them (the smoke) and after them (the sealed verdict).
 

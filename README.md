@@ -38,9 +38,9 @@ A two-hop question about a bridge entity ("the composer who wrote The Magic Flut
   - **Change-removal** (ours): the bridge token's change is added at one layer, minus its 25-direction J++ part. *Does the change travel through J++?* <!-- src: docs/depth/README.md | the 25 lens directions that best rebuild the change -->
   - **J-part swap** (his): the mention's top-10 J++ span is replaced by another entity's. *Sufficient?* <!-- src: docs/breadth/README.md | Replace the J-part (the span of the top-10 J++ directions) -->
 - **Sites.**
-  - Ours: one token at one layer: 9B L12, 27B L32, 122B L33, Muse L26 <!-- src: predictions/2026-10-26_dan.md | (9B L12, 27B L32, 122B L33, Muse L26) -->; Lightning L30 for 45s <!-- src: scripts/x45s.py | at L30 (the middle of Zach's pre-registered band L27-33 -->.
+  - Ours: one token at one layer: 9B L12, 27B L32, 122B L33, Muse L26 <!-- src: predictions/2026-10-26_dan.md | (9B L12, 27B L32, 122B L33, Muse L26) -->; Lightning L27 for 45s <!-- src: scripts/x45s.py | at L27 (the shallowest layer of Zach's band L27-33 -->.
   - His: every token over a band: 9B L12-16, 27B L32-40, Lightning L27-33, Muse L36-42, 122B L39-45 <!-- src: docs/breadth/README.md | Qwen3.5-9B (L12-16); Qwen3.6-27B (L32-40); Nemotron 3.5 Lightning (L27-33); Muse Glimmer 30B (L36-42); Qwen3.5-122B (FP8) (L39-45) -->.
-  - The layers overlap on the 9B and 27B, and L30 is inside Lightning's band.
+  - The layers overlap on the 9B and 27B, and L27 is the first layer of Lightning's band.
 - **Words.** **Entity code** = his J-part (inside J++; which entity). **Order pointer** = ours (4 directions outside J++; which locker sentence) <!-- src: docs/depth/README.md | four directions separating the positions -->.
 
 ## Claim 1. Answers that must come from memory need the lens-readable part; answers in the prompt do not

@@ -1,4 +1,4 @@
-"""45s (Lightning at L30): the smoke's checks on fakes, the sealed verdict on planted runs, the hub-kernel record, the
+"""45s (Lightning at L27): the smoke's checks on fakes, the sealed verdict on planted runs, the hub-kernel record, the
 placeholder refusal in jobq, and the three job specs' commands."""
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ OTHER = "0" * 40
 
 
 def test_lightning_has_its_layer_fixed_and_one_layer_only():
-    assert X.PREDICTED[Z.TARGET] == 30 == Z.LAYER and X.LAYERS[Z.TARGET] == (30,)
+    assert X.PREDICTED[Z.TARGET] == 27 == Z.LAYER and X.LAYERS[Z.TARGET] == (27,)
     assert Z.TARGET in pins.TARGETS and pins.TARGETS[Z.TARGET]["run_prefix"] == "nem35l_"
 
 
@@ -171,7 +171,7 @@ QUESTION = {X.LOOKUP: "Which locker belongs to Iris's pick?", X.RECALL: "How man
 
 
 def plant(root, run: str, alt: str, recall_lost: int, n: int = 20, gate_pass: bool = True) -> None:
-    """A fake Lightning run at L30: n scenes with the locker before the pick and n after; in each group the recall
+    """A fake Lightning run at L27: n scenes with the locker before the pick and n after; in each group the recall
     loses the switch without J++ in its first `recall_lost` scenes (p_alt and ld drop with it), the lookup never; the
     random part keeps everything."""
     src = root / run
@@ -343,11 +343,11 @@ def parsed(args: list[str], monkeypatch) -> dict:
 
 
 @pytest.mark.parametrize("job", SPECS)
-def test_each_spec_validates_but_for_the_kernel_placeholder(job):
+def test_each_spec_validates_with_the_pinned_kernel_revision(job):
     s = load(job)
     errors = jobq.validate(s, pins.REPO_ROOT / "jobs" / "c3" / f"{job}.yaml")
-    assert errors == (["placeholder REVISION_FROM_ZACH in the command: replace it with the value before enqueue"]
-                      if job == "x45s_smoke_lightning" else [])  # fmt: skip
+    assert errors == []  # the smoke's mamba-ssm revision is pins.py's 28017f36 (Dan ~16:00: we do not wait for Zach)
+    assert "REVISION_FROM_ZACH" not in s["command"]
     assert "BJ_TARGET=nemotron-3.5-lightning" in s["command"] and "BJ_SUITE_BATCH=16" in s["command"]
     assert all(n.startswith("nem35l_") for n in jobq.NAME_RE.findall(s["command"]))
     if job != "x45s_smoke_lightning":
@@ -358,7 +358,7 @@ def test_each_spec_validates_but_for_the_kernel_placeholder(job):
 def test_the_runs_are_sealed_one_layer_jpp_only(job, alt, n, monkeypatch):
     (args,) = x0_args(load(job)["command"])
     seen = parsed(args, monkeypatch)
-    assert seen["alt"] == alt and seen["n"] == n and seen["layers"] == (30,) and seen["predicted"] == 30
+    assert seen["alt"] == alt and seen["n"] == n and seen["layers"] == (27,) and seen["predicted"] == 27
     assert seen["dicts"] == ("jpp",) and seen["curve"] == () and not seen["nonneg"] and seen["rends"] == ["chat"]
     assert seen["set"] == Z.SET and seen["name"].startswith("nem35l_x45s_")
 
@@ -366,6 +366,6 @@ def test_the_runs_are_sealed_one_layer_jpp_only(job, alt, n, monkeypatch):
 def test_the_smoke_runs_both_designs_on_eight_scenes(monkeypatch):
     command = load("x45s_smoke_lightning")["command"]
     calls = [parsed(args, monkeypatch) for args in x0_args(command)]
-    assert [c["alt"] for c in calls] == ["cf", "fresh"] and all(c["n"] == 8 and c["layers"] == (30,) for c in calls)
+    assert [c["alt"] for c in calls] == ["cf", "fresh"] and all(c["n"] == 8 and c["layers"] == (27,) for c in calls)
     assert "BJ_NO_KERNELS=1 uv run python scripts/kernel_nll.py" in command and "x45s.py smoke-gates" in command
     assert command.index("smoke-manifest") < command.index("kernel_nll.py") < command.index("x45s.py smoke --name")

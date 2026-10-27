@@ -1,5 +1,5 @@
 id: x45s_b_lightning
-title: "45s-b on Nemotron-3.5-Lightning, the clean one-pick design (DRAFT, not queued; Dan predicts first, Q46.3): an added locker item that nobody picks becomes the asked pick (45m's design and generator); the bridge word's change at L30, whole / without its J++ part (k = 25, signed) / without a random part of the same share, both readers; sealed"
+title: "45s-b on Nemotron-3.5-Lightning, the clean one-pick design (DRAFT, not queued; Dan predicts first, Q46.3): an added locker item that nobody picks becomes the asked pick (45m's design and generator); the bridge word's change at L27, whole / without its J++ part (k = 25, signed) / without a random part of the same share, both readers; sealed"
 thread: C3
 gpus: 1
 mem_gb: 78
@@ -7,11 +7,11 @@ est_gpu_hours: 0.25
 depends_on: [x45s_smoke_lightning]
 command: >-
   export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16;
-  uv run python scripts/x0_necessity.py run --name nem35l_x45s_clean --set d1_topics_v3 --renderings chat --layers 30 --alt fresh --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --n-items 600 --sealed --why "45s-b (Dan 27 Oct ~15:00; Q46.3): 45m's clean one-pick design on Lightning, the asked pick changes from the bridge to an added locker item nobody picks, the bridge word at L30, J++ k = 25 signed vs a random part of its share; every eligible scene; sealed"
+  uv run python scripts/x0_necessity.py run --name nem35l_x45s_clean --set d1_topics_v3 --renderings chat --layers 27 --alt fresh --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --n-items 600 --sealed --why "45s-b (Dan 27 Oct ~15:00; Q46.3): 45m's clean one-pick design on Lightning, the asked pick changes from the bridge to an added locker item nobody picks, the bridge word at L27, J++ k = 25 signed vs a random part of its share; every eligible scene; sealed"
 question: >-
   In the clean one-pick design (one locker item that nobody picks is added among the locker sentences of both prompts,
   and the asked person's pick changes from the bridge to it: one token changes, no duplicate), on
-  Nemotron-3.5-Lightning at L30 (fixed in advance): does the split hold in locker-before scenes, the recall needing the
+  Nemotron-3.5-Lightning at L27 (fixed in advance): does the split hold in locker-before scenes, the recall needing the
   J++ part (gap at least 0.3) while the lookup does not (extra loss at most 0.10)?
 why_it_matters: >-
   45m held on the 27B (gap 0.53 [0.42, 0.62]) and Muse (0.38 [0.23, 0.54]) and missed on the 9B (0.23 [0.14, 0.31]);
@@ -33,7 +33,7 @@ decision_rule: >-
   clause decides, i.e. 45s-b holds on Lightning iff, in locker-before scenes, the gap is at least 0.3 and the lookup's
   extra loss at most 0.10 (scripts/x45m.py model_result / holds, EPS 1e-9); Lightning is not added to 45m's 2-of-3
   count, which stays the 9B's, 27B's and Muse's (holds). Extra loss = X0's Jdep - Rdep, the random part X0's random
-  subspace at the J++ part's share (seed 888 + 30); the read gate as 45m's (0.80, both readers, all scenes, >= 150
+  subspace at the J++ part's share (seed 888 + 27); the read gate as 45m's (0.80, both readers, all scenes, >= 150
   eligible; no 0.75 rerun); no switches in locker-before scenes is "not tested". Sealed: no verdict in the job;
   scripts/x45s.py verdict (by hand, after Q46.3 is committed) writes the per-model check and beside it, not in the rule:
   locker-after and all scenes, the gap's logit-difference (x0_logit_diff) and probability (x0_prob_and_shares) versions
@@ -48,4 +48,4 @@ controls:
 - 'the smoke (x45s_smoke_lightning): kernels, lens, no-op patch, write at the bridge word'
 n: 'every eligible scene of d1_topics_v3 (--n-items 600, as 45m after Dan''s change before its run; < 150 eligible = not tested), 2 readers each, both sentence orders; tokenizer check 27 Oct: 559 of 600 scenes made (41 dropped: the bridge is not one token at one position): 198 locker-before / 229 locker-after / 132 mixed, before the read gate'
 seeds: [24, 4513, 0, 888]
-notes: "DRAFT, NOT QUEUED (Dan 27 Oct ~15:00). Enqueue only after Dan's Q46.3 answer is committed and x45s_smoke_lightning has passed (it needs Zach's lens file and mamba-ssm revision). Verdict by hand after Q46.3 is committed: BJ_TARGET=nemotron-3.5-lightning uv run python scripts/x45s.py verdict --main nem35l_x45s_main --clean nem35l_x45s_clean --smoke nem35l_x45s_smoke (refuses until Q46.2 and Q46.3 hold Dan's committed answers). Points for Dan: the per-model clause of 45m's rule decides on Lightning alone (above); n is every eligible scene, as 45m (45s-a takes the first 200, as the main test); BJ_SUITE_BATCH=16 (Zach's Lightning value; any value >= 4 gives the same 4-row read batches). Layer L30: a Mamba block at 58% depth; on Muse at the same depth the bridge word's change still switched recalls (0.41) but few lookups (0.04, main test; muse30b_x0_necessity_depth). In the clean design the lookup switches mostly when the locker comes first (87-99% vs 0-5% on the other three models), so the locker-before cells carry the rule. Seeds: 24 the set, 4513 the clean design's draws (item, locker digit, slot; x0_necessity.FRESH_SEED), 0 the bootstrap and examples, 888 + layer the random subspace. Cost (timing ledger, sesterce-h100x2, H100 PCIe; the 45r spec's linear model from Muse: 4.1e-6 h per read, 0.198 h fixed for the load and competence on ~550 scenes): at most 559 scenes x 2 readers x 4 reads = 4,472 reads; 0.198 + 4,472 x 4.1e-6 = 0.22 h at Muse's speed, est 0.25 (Zach's same-task runs: Lightning 0.42-0.55x Muse's time per row)."
+notes: "DRAFT, NOT QUEUED (Dan 27 Oct ~15:00). Enqueue only after Dan's Q46.3 answer is committed and x45s_smoke_lightning has passed (it needs Zach's lens file and mamba-ssm revision). Verdict by hand after Q46.3 is committed: BJ_TARGET=nemotron-3.5-lightning uv run python scripts/x45s.py verdict --main nem35l_x45s_main --clean nem35l_x45s_clean --smoke nem35l_x45s_smoke (refuses until Q46.2 and Q46.3 hold Dan's committed answers). Points for Dan: the per-model clause of 45m's rule decides on Lightning alone (above); n is every eligible scene, as 45m (45s-a takes the first 200, as the main test); BJ_SUITE_BATCH=16 (Zach's Lightning value; any value >= 4 gives the same 4-row read batches). Layer L27: a Mamba block at 58% depth; on Muse at the same depth the bridge word's change still switched recalls (0.41) but few lookups (0.04, main test; muse30b_x0_necessity_depth). In the clean design the lookup switches mostly when the locker comes first (87-99% vs 0-5% on the other three models), so the locker-before cells carry the rule. Seeds: 24 the set, 4513 the clean design's draws (item, locker digit, slot; x0_necessity.FRESH_SEED), 0 the bootstrap and examples, 888 + layer the random subspace. Cost (timing ledger, sesterce-h100x2, H100 PCIe; the 45r spec's linear model from Muse: 4.1e-6 h per read, 0.198 h fixed for the load and competence on ~550 scenes): at most 559 scenes x 2 readers x 4 reads = 4,472 reads; 0.198 + 4,472 x 4.1e-6 = 0.22 h at Muse's speed, est 0.25 (Zach's same-task runs: Lightning 0.42-0.55x Muse's time per row)."

@@ -62,7 +62,7 @@ What to check per item:
 > 2. **Passing-mention localisation: please confirm the token set.** We read your Z pos.*.M.bridge cells (27B +5.8 of +45.3, 9B +10.1 of +30.4, Lightning +1.4 of +37.4) as "knock-out at the passing mention only", since on the recalled start the passing sentence is the bridge's only mention. Is that what `posbridge` covers for start M? If not, the cell we need is the knock-out at the passing mention only, on the 27B and Lightning (MM items).
 > 3. **45r (Muse) and 45s (Lightning).**
 >    - 45r (Q46.1) runs your v2 knock-out on Muse at L23-29 with all your controls, against our stored L26 gap, on our box: your box has no Muse weights (amendment 57 note 1). Is that a faithful use of your knock-out? Dan queues it only after your OK.
->    - 45s (Q46.2-Q46.3) runs our main test and clean design on Lightning at L30, inside your L27-33. It needs your Lightning J++ lens file (path and sha) on our box by Wed morning to land before the freeze (Wed 28 Oct evening).
+>    - 45s (Q46.2-Q46.3) runs our main test and clean design on Lightning at L27, the shallowest layer of your L27-33. It needs your Lightning J++ lens file (path and sha) on our box by Wed morning to land before the freeze (Wed 28 Oct evening).
 >    - OK to add your Muse position split / dose specs to our queue after 45r if there is time?
 > 4. **Thursday cross hand check, 10 random items each (seed 0, sorted pool, random.Random(0).sample).**
 >    - You check ours: 27B main test (x0_necessity_27b_chat, L32) scenes P2-L0-0102, P2-L0-0204, P2-L0-0111, P2-L0-0010, P2-L0-0069, P2-L0-0136, P2-L0-0130, P2-L0-0107, P2-L0-0080, P2-L0-0128 (cards as in docs/handcheck_pack.md).

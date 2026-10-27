@@ -70,7 +70,7 @@ PREDICTED = {
     "qwen3.5-9b": 12,
     "qwen3.5-122b-a10b": 33,
     "muse-glimmer-30b": 26,  # Muse: 50% depth
-    "nemotron-3.5-lightning": 30,  # 45s (Dan, 27 Oct ~15:00): the middle of Zach's pre-registered band L27-33
+    "nemotron-3.5-lightning": 27,  # 45s: the shallowest layer of Zach's band L27-33 (Dan 27 Oct ~15:55, fixed before any run and before his answers: the stated answer's switch rate falls with depth, Muse 8 of 200 at L30, and X0 needs 30%)
 }
 
 
@@ -187,7 +187,7 @@ LAYERS = {
     "qwen3.5-9b": tuple(range(6, 21, 2)),
     "qwen3.5-122b-a10b": (24, 27, 30, 33, 36),
     "muse-glimmer-30b": (13, 26, 34),  # 25 / 50 / 65% depth, fixed before any Muse result (Dan, 25 Oct ~23:00)
-    "nemotron-3.5-lightning": (30,),  # 45s: one layer, no sweep (Dan, 27 Oct ~15:00)
+    "nemotron-3.5-lightning": (27,),  # 45s: one layer, no sweep (Dan, 27 Oct ~15:00; L27 since ~15:55)
 }  # 122B: 30 / 33 / 36 by X0.md, 24 and 27 descriptive (Dan)
 # BJ_GATE: a lowered, descriptive readers' gate after the data (Dan: 0.75 for the gate-lowered reruns and batch 38's
 # fallback); every script reads X.GATE, and a run's manifest records the value it used
