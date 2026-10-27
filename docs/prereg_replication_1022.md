@@ -1813,7 +1813,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
 - **Bolt waits for it:** chain C, which is only waiting, is relaunched with this job added to its waits (old log moved
   aside).
 
-## Amendment 55 (Zach, 2026-10-27 01:15 UTC, before any run below): keep-own-word and swap dose on v2, in the GPU gaps
+## Amendment 55 (Zach, 2026-10-27 01:11 UTC, before any run below): keep-own-word and swap dose on v2, in the GPU gaps
 
 - **Why (Zach: "use both GPUs maximally"):** GPU 1 is idle until Bolt (amendment 54) starts. Two tests are still
   uneven across models.
