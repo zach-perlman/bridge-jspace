@@ -410,7 +410,7 @@ def j3_order_signal(plt):
     fig = plt.figure(figsize=(S.WIDTH, 4.8))
     axl, axr = fig.add_axes((0.33, 0.25, 0.30, 0.45)), fig.add_axes((0.68, 0.25, 0.29, 0.45))
     S.title(fig, "Lookup answers' position effect belongs to these four directions, not any four",
-            "Locker scenes where the patch moves the bridge item's locker to another position; 95% intervals.",
+            "Locker scenes where the change moves the bridge item's locker to another position; 95% intervals.",
             limit=80)  # fmt: skip
     pair = [MODELS[0], MODELS[3]]
     ticks, labels = [], []
@@ -437,11 +437,11 @@ def j3_order_signal(plt):
                 va="center",
                 fontsize=S.FONT,
             )
-            record("j3", name, f"answers by position lost when {what} is removed from the patch (pp)", round(v, 1),
+            record("j3", name, f"answers by position lost when {what} is removed from the change (pp)", round(v, 1),
                    round(lo, 1), round(hi, 1), n, source=f"figures/story/data.csv | fig05 | another item moved, whole: "
                    f"position share; another item moved, {arm}: position share (difference; paired 95% interval over "
                    f"scenes from results/x6_routes/{run}/outcomes.jsonl, 10,000 draws, seed 0)")  # fmt: skip
-        record("j3", name, "answers by position with the whole patch (%)", round(whole, 1), n=n,
+        record("j3", name, "answers by position with the whole change (%)", round(whole, 1), n=n,
                source="figures/story/data.csv | fig05 | another item moved, whole: position share")  # fmt: skip
         ticks.append(y0 - 0.5)
         labels.append(f"{name}, {whole:.0f}% of\nanswers by position")
@@ -451,7 +451,7 @@ def j3_order_signal(plt):
             ("4", "the random vector"),
         ):  # 'twice as large' on the figure
             dose = dp[("fig07", target, f"dose (s / mean s*), s = {s}")]
-            record("j3", name, f"{what}: size in units of a real patch's", round(num(dose["value"]), 2),
+            record("j3", name, f"{what}: size in units of a real change's", round(num(dose["value"]), 2),
                    source=f"figures/story/data.csv | fig07 | {dose['quantity']}")  # fmt: skip
         w = dp[("fig07", target, "lookup target share, mean over locker pairs, s = 2")]
         rnd = dp[("fig07", target, "lookup target share, random direction, s = 4")]
@@ -802,11 +802,11 @@ def j8_routes(plt):
             src = f"figures/story/data.csv | fig05 | {q.format('whole', key)}"
             if key == "original":
                 src += f"; {q.format('whole', 'other')} (summed)"
-            record("j8", name, f"lookup answers by route, whole patch: {label} (%)", round(v, 1),
+            record("j8", name, f"lookup answers by route, whole change: {label} (%)", round(v, 1),
                    n=get("whole", "identity")["n"], source=src)  # fmt: skip
             left += v
         ax.text(101.5, y, f"number: {shares['value']:.0f}%", va="center", fontsize=S.FONT, color="#222222")
-        record("j8", name, "lookup answers by route, whole patch: the number (%)", round(shares["value"], 1),
+        record("j8", name, "lookup answers by route, whole change: the number (%)", round(shares["value"], 1),
                source=f"figures/story/data.csv | fig05 | {q.format('whole', 'value')}")  # fmt: skip
         pos_without = 100 * num(get("no_alf", "position")["value"])
         x = shares["identity"] + pos_without  # where the orange segment would end without the order signal
@@ -815,7 +815,7 @@ def j8_routes(plt):
                source=f"figures/story/data.csv | fig05 | {q.format('no_alf', 'position')}")  # fmt: skip
         ns.add(get("whole", "identity")["n"])
     S.title(fig, "Lookup answers follow identity or position, never the number",
-            f"Locker scenes where the patch moves another item; the number = the moved number; {'/'.join(sorted(ns))} "
+            f"Locker scenes where the change moves another item; the number = the moved number; {'/'.join(sorted(ns))} "
             "scenes each")  # fmt: skip
     ax.set_xlim(0, 100)
     ax.set_ylim(-len(models) + 0.45, 0.55)
@@ -823,7 +823,7 @@ def j8_routes(plt):
     ax.set_yticks([-i for i in range(len(models))], [name for name, *_ in models])
     ax.tick_params(axis="y", length=0)
     ax.spines["left"].set_visible(False)
-    ax.set_xlabel("% of lookup answers under the whole patch")
+    ax.set_xlabel("% of lookup answers under the whole change")
     hs = [Rectangle((0, 0), 1, 1, fc=c, ec=c) for _k, _l, c in segs]
     hs += [plt.Line2D([], [], color=tick_col, lw=2.6), Rectangle((0, 0), 1, 1, fc="white", ec="#555555", lw=1.6)]
     labels = ["by identity", "by position", "the original answer or another", "where 'by position' ends without the order signal",
@@ -833,67 +833,67 @@ def j8_routes(plt):
 
 
 def j9_link(plt):
-    """Dan ~20:30, from Fig. 3b's and Fig. 3c's data (45q and 45p, both fixed in advance, holding on 3 of 3 models).
-    Left: the share of the lookup's switches carried at the model's layer L by copying the patched states into the locker
-    sentences, against the patch at the bridge word. Right: at the item's earlier mention (locker sentence before the
-    pick), the switches lost when the lens part is also taken out there, against a random part there and the lens part at
-    another item's mention; recalled answers dark, the lookup purple. Shares in %, 95% intervals."""
+    """Dan ~20:30 / ~21:00 (his depth terms: the change, the changed prompt, switches), from Fig. 3b's and Fig. 3c's data
+    (45q and 45p, both fixed in advance, holding on 3 of 3 models). Top: the share of the lookup's switches carried at
+    the main test's layer by the change at the locker sentences, against the change at the bridge word. Bottom: at the
+    item's earlier mention (locker sentence before the pick), the switches lost when the lens part is also taken out
+    there, against a random part there and the lens part at another item's mention; recalled dark, lookup purple,
+    controls grey. Shares in %, 95% intervals; bars labelled directly on the first model, no legend."""
     dp = depth()
-    light, pale = "#b9a6ee", "#dedede"
+    light, pale = "#b9a6ee", "#cfcfcf"
     models = [t for t in MODELS if t[3] in ("9b", "27b", "muse")]  # Qwen 9B, Qwen 27B, Muse 30B
-    fig = plt.figure(figsize=(S.WIDTH, 7.0))
-    axl, axr = fig.add_axes((0.16, 0.26, 0.33, 0.52)), fig.add_axes((0.60, 0.26, 0.37, 0.52))
+    fig = plt.figure(figsize=(S.WIDTH, 7.4))
+    axt, axb = fig.add_axes((0.17, 0.60, 0.80, 0.25)), fig.add_axes((0.17, 0.09, 0.80, 0.40))
     q45 = "45q, the rule's arm {}"
-    left_bars = (("c: copy at L, every locker-sentence token (lookups switched)", "copy into the locker sentences", LOOKUP),
-                 ("a: the bridge-word change at L (lookups switched)", "patch at the bridge word", light))  # fmt: skip
-    right_bars = (("a2", "recall", "recalled: lens part taken out there", RECALLED),
-                  ("a2", "lookup", "lookup: lens part taken out there", LOOKUP),
-                  ("a3", "recall", "recalled: random part there", S.COL["control"]),
-                  ("a4", "recall", "recalled: lens part at another item's mention", pale))  # fmt: skip
+    top_bars = (("c: copy at L, every locker-sentence token (lookups switched)", "the change at the locker sentences", LOOKUP),
+                ("a: the bridge-word change at L (lookups switched)", "the change at the bridge word", light))  # fmt: skip
+    bottom_bars = (("a2", "recall", "recalled: lens part taken out there", RECALLED),
+                   ("a2", "lookup", "lookup: lens part taken out there", LOOKUP),
+                   ("a3", "recall", "recalled: a random part there", S.COL["control"]),
+                   ("a4", "recall", "recalled: lens part at another item's mention", pale))  # fmt: skip
     ns = []
 
-    def draw_bar(ax, y, r, col, h):
+    def draw_bar(ax, y, r, col, h, desc):
         v, lo, hi = (round(100 * num(r[c]), 1) for c in ("value", "lo", "hi"))
         ax.barh([y], [v], height=h, color=col, edgecolor=col, zorder=2)
         ax.plot([lo, hi], [y, y], color="#bdbdbd" if col == RECALLED else "#333333", lw=1.3, zorder=3)
-        ax.text(max(v, hi, 0) + 1.5, y, f"{round(v) + 0:.0f}", va="center", fontsize=S.FONT)
+        inside = bool(desc) and v > 45  # a long bar carries its label inside, in white
+        ax.text(max(v, hi, 0) + 1.5, y, f"{round(v) + 0:.0f}" + (f"   {desc}" if desc and not inside else ""),
+                va="center", fontsize=S.FONT, color="#222222")  # fmt: skip
+        if inside:
+            ax.text(1.5, y, desc, va="center", fontsize=S.FONT, color="white", zorder=4)
         return v, lo, hi
 
     for g, (name, _zm, target, _m) in enumerate(models):
         assert target is not None
-        y0 = -g * 2.0
-        for k, (arm, label, col) in enumerate(left_bars):
+        for k, (arm, label, col) in enumerate(top_bars):
             r = dp[("fig03b", target, q45.format(arm))]
-            v, lo, hi = draw_bar(axl, y0 + 0.25 - 0.5 * k, r, col, 0.42)
-            record("j9", name, f"lookup switches carried at layer L: {label} (%)", v, lo, hi, r["n"],
+            v, lo, hi = draw_bar(axt, -g * 1.25 + 0.21 - 0.42 * k, r, col, 0.38, label if g == 0 else "")
+            record("j9", name, f"lookup switches carried at the main test's layer: {label} (%)", v, lo, hi, r["n"],
                    source=f"figures/story/data.csv | fig03b | {r['quantity']}")  # fmt: skip
             ns.append(int(r["n"]))
-        for k, (arm, reader, label, col) in enumerate(right_bars):
+        for k, (arm, reader, label, col) in enumerate(bottom_bars):
             r = dp[("fig03c", target, f"45p, {arm}: {reader} switches lost against (1)")]
-            v, lo, hi = draw_bar(axr, y0 + 0.57 - 0.38 * k, r, col, 0.3)
+            v, lo, hi = draw_bar(axb, -g * 1.9 + 0.6 - 0.4 * k, r, col, 0.34, label if g == 0 else "")
             record("j9", name, f"switches lost at the item's earlier mention, {label} (%)", v, lo, hi, r["n"],
                    source=f"figures/story/data.csv | fig03c | {r['quantity']}")  # fmt: skip
             ns.append(int(r["n"]))
     S.title(fig, "Lookups link at the locker sentences; recalls read the earlier mention",
             f"Clean one-pick scenes; both tests fixed in advance; {min(ns)}-{max(ns)} scenes per model; 95% intervals")  # fmt: skip
-    ys = [-g * 2.0 for g in range(len(models))]
-    axl.set_yticks(ys, [name for name, *_ in models])
-    axr.set_yticks([])
-    for ax in (axl, axr):
+    axt.set_yticks([-g * 1.25 for g in range(len(models))], [name for name, *_ in models])
+    axb.set_yticks([-g * 1.9 for g in range(len(models))], [name for name, *_ in models])
+    axt.set_ylim(-len(models) * 1.25 + 0.6, 0.55)
+    axb.set_ylim(-len(models) * 1.9 + 1.1, 0.95)
+    for ax in (axt, axb):
         ax.set_xlim(-8, 100)
-        ax.set_ylim(-len(models) * 2.0 + 1.25, 0.95)
-        ax.set_xticks([0, 50, 100])
+        ax.set_xticks([0, 25, 50, 75, 100])
         ax.axvline(0, color="#999999", lw=0.8, zorder=1)
         ax.tick_params(axis="y", length=0)
         ax.spines["left"].set_visible(False)
-    axl.set_title("where the lookup's link is made,\nat the main test's layer", fontsize=S.FONT + 1, loc="left")
-    axr.set_title("what the recall reads at the item's\nearlier mention", fontsize=S.FONT + 1, loc="left")
-    axl.set_xlabel("% of the lookup's switches carried")
-    axr.set_xlabel("% of switches lost there")
-    hs = [Rectangle((0, 0), 1, 1, fc=c, ec=c) for _a, _l, c in left_bars]
-    hs += [Rectangle((0, 0), 1, 1, fc=c, ec=c) for _a, _r, _l, c in right_bars]
-    labels = [f"left: {lab}" for _a, lab, _c in left_bars] + [f"right: {lab}" for _a, _r, lab, _c in right_bars]
-    legend_below(fig, hs, labels, 0.0, 2)
+    axt.set_title("where the lookup's link is made, at the main test's layer", fontsize=S.FONT + 1, loc="left")
+    axb.set_title("what the recall reads at the item's earlier mention", fontsize=S.FONT + 1, loc="left")
+    axt.set_xlabel("% of the lookup's switches carried")
+    axb.set_xlabel("% of switches lost there")
     return fig
 
 

@@ -81,8 +81,8 @@ def test_j3_numbers_match_their_sources(drawn):
     _, rows = drawn
     lost = {(r["model"], r["quantity"]): r["value"] for r in rows if r["figure"] == "j3"}
     # whole patch 51.0% minus 8.3% without the order signal (fig05), recomputed per scene from outcomes.jsonl
-    assert lost[("Qwen 9B", "answers by position lost when the order signal is removed from the patch (pp)")] == 42.7
-    assert lost[("Muse 30B", "answers by position lost when a random part is removed from the patch (pp)")] == -0.3
+    assert lost[("Qwen 9B", "answers by position lost when the order signal is removed from the change (pp)")] == 42.7
+    assert lost[("Muse 30B", "answers by position lost when a random part is removed from the change (pp)")] == -0.3
     assert sourced(rows, "j3", "Qwen 9B", "dose (s / mean s*), s = 2")["value"] == 1.06
 
 
@@ -108,7 +108,7 @@ def test_j5_numbers_match_the_muse_depth_score(drawn):
 def test_j8_numbers_match_their_sources(drawn):
     _, rows = drawn
     by = {(r["model"], r["quantity"]): r for r in rows if r["figure"] == "j8"}
-    q = "lookup answers by route, whole patch: {} (%)"
+    q = "lookup answers by route, whole change: {} (%)"
     assert by[("Qwen 9B", q.format("identity"))]["value"] == 48.0  # fig05: 0.48
     assert by[("Muse 30B", q.format("position"))]["value"] == 54.3  # fig05: 0.5433
     assert all(
@@ -122,12 +122,12 @@ def test_j8_numbers_match_their_sources(drawn):
 def test_j9_numbers_match_their_sources(drawn):
     _, rows = drawn
     by = {(r["model"], r["quantity"]): r for r in rows if r["figure"] == "j9"}
-    carried = "lookup switches carried at layer L: {} (%)"
-    assert by[("Qwen 9B", carried.format("copy into the locker sentences"))]["value"] == 69.7  # fig03b arm c 0.6965
-    assert by[("Qwen 27B", carried.format("patch at the bridge word"))]["value"] == 1.4  # fig03b arm a 0.0139
+    carried = "lookup switches carried at the main test's layer: {} (%)"
+    assert by[("Qwen 9B", carried.format("the change at the locker sentences"))]["value"] == 69.7  # fig03b arm c 0.6965
+    assert by[("Qwen 27B", carried.format("the change at the bridge word"))]["value"] == 1.4  # fig03b arm a 0.0139
     lost = "switches lost at the item's earlier mention, {} (%)"
     assert by[("Muse 30B", lost.format("recalled: lens part taken out there"))]["value"] == 50.9  # fig03c a2 0.5091
-    assert by[("Qwen 27B", lost.format("recalled: random part there"))]["value"] == 8.0  # fig03c a3 0.08
+    assert by[("Qwen 27B", lost.format("recalled: a random part there"))]["value"] == 8.0  # fig03c a3 0.08
 
 
 def test_example_texts_are_quoted_from_their_sources():
