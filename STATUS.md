@@ -25,7 +25,7 @@
   - Zach's report_breadth output is byte-identical to main's.
 - Known issue: `gemma-4-31b-it` has no frozen_lens_sha256 in pins, so FROZEN_LENS_SHA256 falls back to the 27B's sha (bbef480b; its lens is 0b092e93). switches() records the right one. To fix in pins.py with Zach.
 
-**In flight (Dan ~14:40; each on its own branch off main, merged into pm-2026-10-27 for Dan to push).**
+**In flight (Dan ~14:40; agents work in their own worktrees, and each result lands on danorel).**
 1. This STATUS / handoff.
 2. A jobq guard against spec targets whose meaning changed in the merge.
 3. Two-stage scripts check switches; manifests record every BJ_* variable; the tasks_v2 --counterfactuals manifest records its target.
@@ -33,7 +33,7 @@
 5. A joint grid with Zach (docs/shared/grid.csv, figures/shared/grid.png).
 6. A draft spec 45r (Muse: our change removal vs Zach's v2 knock-out at L26 and L36-42); not queued, Dan predicts first.
 
-Workflow: we work on danorel (or short branches off main) and sync with main daily. Dan pushes.
+Workflow (Dan ~15:10): one branch, danorel. Its commits are merged into main bit by bit when ready (fetch and merge origin/main first, then Dan pushes danorel and danorel:main). Agents' temporary branches never reach Dan.
 
 # Results matrix, 26 Oct ~04:30 (agent). All numbers UNVERIFIED
 
