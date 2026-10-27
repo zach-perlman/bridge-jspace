@@ -1,0 +1,64 @@
+{
+  "exp": "x45p",
+  "run": "muse30b_x45p",
+  "why": "batch 45, test 45p (jobs/c3/batch45.yaml; Q45.13): on 45m's scenes whose new item's locker sentence comes before the asked pick, the bridge-word change without its J++ part, plus the new item's token in its locker sentence without its own J++ part, against a random part of the same share and against another locker item's token; sealed",
+  "written_utc": "2026-10-27T01:16:57Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "sha": "db0c458088e6bf169ac2d5d4ae8d57196aa393fb",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "zachperlman20/Muse-Glimmer-30B-jpp-lens",
+      "Muse-Glimmer-30B_jpp_lens.pt",
+      "68ecd838ad0b13653af7fac985995606f37911dc"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "test": "45p",
+  "spec": "jobs/c3/batch45.yaml (45p)",
+  "question": "Q45.13 (predictions/2026-10-26_dan.md)",
+  "inputs": {
+    "jobs/c3/batch45.yaml": "c20af9f6fa20e9f600d2fadc92251fcd9349817a1a18f04bcd25f9e429f16518",
+    "results/x0_necessity/muse30b_x45m_fresh/manifest.json": "7c84136846d3096b0834029e4fdb96ea9931df984339b366856011c88096bfce",
+    "results/x0_necessity/muse30b_x45m_fresh/cases.jsonl": "7e6e3d7ef073a8744d6cf93de4da66fdb300aea681186c7045ade68da0c77a9e",
+    "results/x0_necessity/muse30b_x45m_fresh/outcomes.jsonl": "728ce3523579c47d1dcc4f3444db91c218c236791445502677fe4f1042c827fe"
+  },
+  "run_45m": "muse30b_x45m_fresh",
+  "layer": 26,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change at the bridge word (45m's whole arm, rerun)",
+    "a1": "(1) the base edit: the whole change minus its J++ part (k = 25, signed), at the bridge word",
+    "a2": "(2) the base edit, and the new item's token(s) in its locker sentence without their own J++ part",
+    "a3": "(3) the base edit, and the same tokens without a random part of the same share",
+    "a4": "(4) the base edit, and the control item's token(s) without their own J++ part",
+    "o2": "O alone with (2)'s item edit (no base edit)"
+  },
+  "k": 25,
+  "omp": "signed",
+  "random_part": "X0's random subspace, seed 888 + layer, at each token's J++ share of ||h||^2",
+  "items_rule": "the 45m run's items at L (chat) whose new item's (alt) locker sentence comes before the asked pick (x0_strata); O and S the same but for the bridge word; a control locker item; every patched token exactly its item's name; else dropped and counted",
+  "positions": "the tokens overlapping the item's name inside its locker sentence (character offsets of the rendered prompt); control: the first locker sentence in context order whose item is neither the bridge nor the new item",
+  "h": "O's clean state at L (an edit at L changes only its own positions' states at L)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = top token is S's answer; right = top token is O's",
+  "rule": "the recall reads the earlier mention if the recall's switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15 (loss_k = 1 - S_k / S_1, point estimates), on at least 2 of 3 models; a model whose base edit switches fewer than 30 recalls is not tested",
+  "decisive_reader": "PM",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer",
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-26_dan.md holds Dan's Q45.13 answer"
+}
