@@ -1,0 +1,45 @@
+{
+  "run": "nem35b_jswap_pointer_v2_k100_s150_v1",
+  "why": "Zach (2026-10-27, prereg amendment 55 note 1): Bolt pointer tests at K 100, L42-53",
+  "target": "nemotron-3.5-bolt",
+  "model": {
+    "target": "nemotron-3.5-bolt",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-BF16",
+    "revision": "e09a4cedb1787db1760375ee5539f222cae0c672",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "lens": "jpp",
+  "band": "42-53",
+  "set": "jsuite_v2_test_chat",
+  "competence": "nem35b_jsuite_v2_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "swap_neutral",
+    "swap_neutral_rot",
+    "swap_neutral_u",
+    "paste_neutral",
+    "swap_own",
+    "swap_noown"
+  ],
+  "timeline": [
+    "none",
+    "swap",
+    "swap_neutral"
+  ],
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "own_cos": 0.5,
+  "k": 100,
+  "git_commit": "5e32ad7483407fe4b30fb7dd9a0a4d538c089069",
+  "git_state": {
+    "head": "5e32ad7483407fe4b30fb7dd9a0a4d538c089069",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "sample_per_word": 150,
+  "seed": "random.Random(item id), as jswap"
+}
