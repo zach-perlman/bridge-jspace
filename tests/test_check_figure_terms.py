@@ -94,6 +94,7 @@ def test_the_joint_figures_draw_no_retired_term():
         "j5_muse_depth",
         "j4_depth_map",
         "j8_routes",
+        "j9_link",
         "grid",
         "grid_dan",
     }

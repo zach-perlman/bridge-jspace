@@ -119,6 +119,17 @@ def test_j8_numbers_match_their_sources(drawn):
         assert abs(total - 100) < 0.2, (m, total)
 
 
+def test_j9_numbers_match_their_sources(drawn):
+    _, rows = drawn
+    by = {(r["model"], r["quantity"]): r for r in rows if r["figure"] == "j9"}
+    carried = "lookup switches carried at layer L: {} (%)"
+    assert by[("Qwen 9B", carried.format("copy into the locker sentences"))]["value"] == 69.7  # fig03b arm c 0.6965
+    assert by[("Qwen 27B", carried.format("patch at the bridge word"))]["value"] == 1.4  # fig03b arm a 0.0139
+    lost = "switches lost at the item's earlier mention, {} (%)"
+    assert by[("Muse 30B", lost.format("recalled: lens part taken out there"))]["value"] == 50.9  # fig03c a2 0.5091
+    assert by[("Qwen 27B", lost.format("recalled: random part there"))]["value"] == 8.0  # fig03c a3 0.08
+
+
 def test_example_texts_are_quoted_from_their_sources():
     src = (J.REPO / "scripts" / "readme_story_figures.py").read_text()
     assert all(s in src for s in (*J.DAN_SCENE[:2], "Iris picked the ", *(q for q, _, _ in J.DAN_QUESTIONS)))

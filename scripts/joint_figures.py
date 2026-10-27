@@ -832,9 +832,74 @@ def j8_routes(plt):
     return fig
 
 
+def j9_link(plt):
+    """Dan ~20:30, from Fig. 3b's and Fig. 3c's data (45q and 45p, both fixed in advance, holding on 3 of 3 models).
+    Left: the share of the lookup's switches carried at the model's layer L by copying the patched states into the locker
+    sentences, against the patch at the bridge word. Right: at the item's earlier mention (locker sentence before the
+    pick), the switches lost when the lens part is also taken out there, against a random part there and the lens part at
+    another item's mention; recalled answers dark, the lookup purple. Shares in %, 95% intervals."""
+    dp = depth()
+    light, pale = "#b9a6ee", "#dedede"
+    models = [t for t in MODELS if t[3] in ("9b", "27b", "muse")]  # Qwen 9B, Qwen 27B, Muse 30B
+    fig = plt.figure(figsize=(S.WIDTH, 7.0))
+    axl, axr = fig.add_axes((0.16, 0.26, 0.33, 0.52)), fig.add_axes((0.60, 0.26, 0.37, 0.52))
+    q45 = "45q, the rule's arm {}"
+    left_bars = (("c: copy at L, every locker-sentence token (lookups switched)", "copy into the locker sentences", LOOKUP),
+                 ("a: the bridge-word change at L (lookups switched)", "patch at the bridge word", light))  # fmt: skip
+    right_bars = (("a2", "recall", "recalled: lens part taken out there", RECALLED),
+                  ("a2", "lookup", "lookup: lens part taken out there", LOOKUP),
+                  ("a3", "recall", "recalled: random part there", S.COL["control"]),
+                  ("a4", "recall", "recalled: lens part at another item's mention", pale))  # fmt: skip
+    ns = []
+
+    def draw_bar(ax, y, r, col, h):
+        v, lo, hi = (round(100 * num(r[c]), 1) for c in ("value", "lo", "hi"))
+        ax.barh([y], [v], height=h, color=col, edgecolor=col, zorder=2)
+        ax.plot([lo, hi], [y, y], color="#bdbdbd" if col == RECALLED else "#333333", lw=1.3, zorder=3)
+        ax.text(max(v, hi, 0) + 1.5, y, f"{round(v) + 0:.0f}", va="center", fontsize=S.FONT)
+        return v, lo, hi
+
+    for g, (name, _zm, target, _m) in enumerate(models):
+        assert target is not None
+        y0 = -g * 2.0
+        for k, (arm, label, col) in enumerate(left_bars):
+            r = dp[("fig03b", target, q45.format(arm))]
+            v, lo, hi = draw_bar(axl, y0 + 0.25 - 0.5 * k, r, col, 0.42)
+            record("j9", name, f"lookup switches carried at layer L: {label} (%)", v, lo, hi, r["n"],
+                   source=f"figures/story/data.csv | fig03b | {r['quantity']}")  # fmt: skip
+            ns.append(int(r["n"]))
+        for k, (arm, reader, label, col) in enumerate(right_bars):
+            r = dp[("fig03c", target, f"45p, {arm}: {reader} switches lost against (1)")]
+            v, lo, hi = draw_bar(axr, y0 + 0.57 - 0.38 * k, r, col, 0.3)
+            record("j9", name, f"switches lost at the item's earlier mention, {label} (%)", v, lo, hi, r["n"],
+                   source=f"figures/story/data.csv | fig03c | {r['quantity']}")  # fmt: skip
+            ns.append(int(r["n"]))
+    S.title(fig, "Lookups link at the locker sentences; recalls read the earlier mention",
+            f"Clean one-pick scenes; both tests fixed in advance; {min(ns)}-{max(ns)} scenes per model; 95% intervals")  # fmt: skip
+    ys = [-g * 2.0 for g in range(len(models))]
+    axl.set_yticks(ys, [name for name, *_ in models])
+    axr.set_yticks([])
+    for ax in (axl, axr):
+        ax.set_xlim(-8, 100)
+        ax.set_ylim(-len(models) * 2.0 + 1.25, 0.95)
+        ax.set_xticks([0, 50, 100])
+        ax.axvline(0, color="#999999", lw=0.8, zorder=1)
+        ax.tick_params(axis="y", length=0)
+        ax.spines["left"].set_visible(False)
+    axl.set_title("where the lookup's link is made,\nat the main test's layer", fontsize=S.FONT + 1, loc="left")
+    axr.set_title("what the recall reads at the item's\nearlier mention", fontsize=S.FONT + 1, loc="left")
+    axl.set_xlabel("% of the lookup's switches carried")
+    axr.set_xlabel("% of switches lost there")
+    hs = [Rectangle((0, 0), 1, 1, fc=c, ec=c) for _a, _l, c in left_bars]
+    hs += [Rectangle((0, 0), 1, 1, fc=c, ec=c) for _a, _r, _l, c in right_bars]
+    labels = [f"left: {lab}" for _a, lab, _c in left_bars] + [f"right: {lab}" for _a, _r, lab, _c in right_bars]
+    legend_below(fig, hs, labels, 0.0, 2)
+    return fig
+
+
 FIGURES = (("j0_setup", j0_setup), ("j1_recall_needs_lens", j1_recall_needs_lens), ("j2_swap", j2_swap),
            ("j3_order_signal", j3_order_signal), ("grid_front", grid_front), ("j5_muse_depth", j5_muse_depth), ("j4_depth_map", j4_depth_map),
-           ("j8_routes", j8_routes))  # fmt: skip
+           ("j8_routes", j8_routes), ("j9_link", j9_link))  # fmt: skip
 
 
 def save(fig, name: str) -> None:
