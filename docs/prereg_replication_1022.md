@@ -2001,3 +2001,14 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     its count and the rerun's headline.
 - **Lightning is not rerun.** Its earlier clean rerun reproduced the headline but not every row, because its inputs
   differed (amendment 56 B).
+
+### Amendment 57 note 3 (Zach, 2026-10-27 14:19 UTC, before any run below): Lightning's late band from the clean checkout
+
+- **Seen when this was written:** note 2's 9B reruns, all row-identical to their runs of record (late band L26-29:
+  14,100 / 8,460 / 8,460 rows; jsuite_v2nb competence 17,872 items and numbers 6,545 rows; every log-probability
+  equal). The 27B's reruns are still running.
+- **Run (GPU 1, free until about 16:00 UTC):** Lightning's late band L33-39 (all-token, question-only, bridge-only;
+  its record v2 competence) from the clean worktree, still at 9722621. It is not moved while GPU 0's reruns use it.
+  `scripts/queues/h200_clean57_1027.sh` late step, compared row by row.
+- **Expectation:** row-identical. Amendment 56 B's determinism check gave identical rows for Lightning when the
+  eligibility and batching were the same, and here they are.
