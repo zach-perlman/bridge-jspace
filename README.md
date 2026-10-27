@@ -138,7 +138,7 @@ Full lists: [depth report](docs/depth/README.md) <!-- src: docs/depth/README.md 
 ## Pending tests
 
 - **Nemotron Lightning, Dan's method** at layer 27, the first layer of Zach's band; his lens file is now [public](https://huggingface.co/zachperlman20/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-jpp-lens). No test is planned for the order signal on Lightning. <!-- src: scripts/x45s.py | at L27 (the shallowest layer of Zach's band L27-33 -->
-- **Muse 30B, Zach's tools** at layers 36-42: how many directions it needs, and whether the question or the mention carries it (queued on Dan's box). <!-- src: jobs/c3/x57_dose_muse.yaml | dose grid at L36-42 --> <!-- src: jobs/c3/x57_pos_muse.yaml | question-only and bridge-mention-only -->
+- **Muse 30B, Zach's tools** at layers 36-42: how many directions it needs, and whether the question or the mention carries it (running on Zach's box). <!-- src: jobs/c3/x57_dose_muse.yaml | dose grid at L36-42 --> <!-- src: jobs/c3/x57_pos_muse.yaml | question-only and bridge-mention-only -->
 
 ## Open questions
 

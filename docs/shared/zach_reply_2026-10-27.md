@@ -52,8 +52,8 @@ is case-insensitive, at a word start, with any suffix (scripts/ablate_v2.py, `br
 
   - The lens was fit, and every Lightning run made, at the model revision a9904d2 with the HF-hub kernels pinned in
     pins.py; your 28017f36 is that pin.
-- **Muse: queue it.** Zach's Muse runs (amendment 57 notes 1 and 4) are written as job specs in this framework. Both
-  pass `jobq validate`:
+- **Muse: update (27 Oct, 18:08 UTC): do not enqueue these. Muse now runs on Zach's own box (amendment 57 note 5).**
+  Zach's Muse runs (amendment 57 notes 1 and 4) were written as job specs in this framework. Both pass `jobq validate`:
   - `jobs/c3/x57_dose_muse.yaml`: amendment 54's dose grid at L36-42, about 2.0 GPU-h on an H100.
   - `jobs/c3/x57_pos_muse.yaml`: question-only and bridge-only at L36-42, about 0.6 GPU-h.
   - Their run names match Zach's other runs, so his scripts pick up the results unchanged. The order relative to 45r
