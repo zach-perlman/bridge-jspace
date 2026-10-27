@@ -21,6 +21,7 @@ import ast
 import collections
 import fnmatch
 import json
+import os
 import re
 import subprocess
 import sys
@@ -30,7 +31,8 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "docs" / "inventory.md"
-# scripts that write what the README shows: README.md, docs/x0_numbers.json + docs/x0_details.md, figures/story/
+README_PAGE = REPO / "docs" / "depth" / "README.md"  # the built README (the root README.md is an index since the merge)
+# scripts that write what the README shows: the page, docs/x0_numbers.json + docs/x0_details.md, figures/story/
 README_CHAIN = ("scripts/readme_build.py", "scripts/x0_details.py", "scripts/readme_story_figures.py")
 REVIEW_TOOLS = ("scripts/review.py", "scripts/inventory.py")
 LEGACY_NAME = re.compile(
@@ -169,9 +171,18 @@ def producers(current_runs: set[str], modules: dict[str, str]) -> dict[str, set[
     return out
 
 
+def readme_links(page: Path = README_PAGE) -> set[str]:
+    """The README's local link targets under docs/ and figures/, as paths from the repo root (the built page sits in
+    docs/depth/ since the merge into main, so its links are relative to that folder)."""
+    base = page.parent.relative_to(REPO)
+    links = re.findall(r"\]\(([^)\s]+\.\w+)\)", page.read_text())
+    rel = {os.path.normpath(base / t) for t in links if not re.match(r"[a-z][a-z0-9+.-]*:", t) and t[0] not in "#/"}
+    return {Path(r).as_posix() for r in rel if r.startswith(("docs/", "figures/"))}
+
+
 def readme_writers(files: list[str]) -> dict[str, set[str]]:
     """Script -> the README link targets (docs/, figures/) it names: by full path, else by the file's name."""
-    targets = set(re.findall(r"\]\(((?:docs|figures)/[^)\s]+\.\w+)\)", (REPO / "README.md").read_text()))
+    targets = readme_links()
     texts = {f: (REPO / f).read_text(errors="ignore") for f in files if f.endswith(".py") and f not in REVIEW_TOOLS}
     out: dict[str, set[str]] = collections.defaultdict(set)
     for t in targets:

@@ -4,7 +4,7 @@ Fails (exit 1, one line per hit) when a retired term appears in a text the READM
 "first-mentioned", "part removed", "ablation", "Q45" (question numbers belong to predictions/, not figures) and run
 ids (a snake_case name such as qwen35_9b_x6_routes, or a UTC stamp such as 20261026T224602Z). The figures are
 scripts/readme_story_figures.py's README and supplementary figures, rendered from the run files with savefig caught (no
-file is written); the captions are the figure alt texts and "*Fig. N.*" lines of README.md and docs/README.template.md
+file is written); the captions are the figure alt texts and "*Fig. N.*" lines of docs/depth/README.md and the template
 and the canonical lines of docs/drafts/readme_v5_captions.md. docs/glossary.md's word list is checked by
 tests/test_readme_build.py; this script checks the retired terms only.
 
@@ -30,7 +30,7 @@ RETIRED = {
     "run id": r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b",
     "run stamp": r"\b\d{8}T\d{6}Z\b",
 }
-CAPTION_FILES = (REPO / "README.md", REPO / "docs" / "README.template.md")
+CAPTION_FILES = (REPO / "docs" / "depth" / "README.md", REPO / "docs" / "README.template.md")
 CAPTIONS_DRAFT = REPO / "docs" / "drafts" / "readme_v5_captions.md"
 
 
@@ -47,7 +47,7 @@ def caption_texts() -> list[tuple[str, str]]:
         if not path.exists():
             continue
         text = re.sub(r"<!--.*?-->", "", path.read_text(), flags=re.S)
-        out += [(f"{path.name}: alt text", a) for a in re.findall(r"!\[([^\]]*)\]\(figures/", text)]
+        out += [(f"{path.name}: alt text", a) for a in re.findall(r"!\[([^\]]*)\]\((?:\.\./)*figures/", text)]
         out += [(f"{path.name}: caption", line) for line in text.splitlines() if re.match(r"\*Fig\. \w+\.\*", line)]
     if CAPTIONS_DRAFT.exists():
         out += [(CAPTIONS_DRAFT.name, line.split(": ", 1)[1]) for line in CAPTIONS_DRAFT.read_text().splitlines()

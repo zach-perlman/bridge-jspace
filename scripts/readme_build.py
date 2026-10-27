@@ -1,4 +1,5 @@
-"""readme_build: README.md rendered from docs/README.template.md and the cross-model grid, and RUNS.md from the runs.
+"""readme_build: docs/depth/README.md rendered from docs/README.template.md and the cross-model grid, and RUNS.md from
+the runs. Since the merge into main (27 Oct) the root README.md is a hand-written index of docs/depth/ and docs/breadth/.
 
 The prose is hand-written in the template; every result number comes from grid.csv through a marker, so the README
 never carries a typed result. A number quoted from elsewhere (Zach's plan) goes through {{q|...}} and is labelled
@@ -20,8 +21,8 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{grid}}                     the grid folder
   {{head}}                     the commit the README is built at
 
-uv run python scripts/readme_build.py [--grid DIR] [--runs]   # writes README.md (and RUNS.md with --runs)
-uv run python scripts/readme_build.py --out docs/depth/README.md   # the same page elsewhere, its links rewritten
+uv run python scripts/readme_build.py [--grid DIR] [--runs]   # writes docs/depth/README.md (and RUNS.md with --runs)
+uv run python scripts/readme_build.py --out OTHER.md   # the same page elsewhere, its links rewritten to resolve there
 """
 
 from __future__ import annotations
@@ -44,6 +45,7 @@ from scripts import run_table as RT
 
 REPO = G.REPO
 TEMPLATE = REPO / "docs" / "README.template.md"
+PAGE = REPO / "docs" / "depth" / "README.md"  # the built page (the root README.md is an index since the merge)
 ORDER = ("27b", "9b", "olmo_hybrid", "122b", "32b", "olmo", "muse", "gemma")  # hybrids first, then attention-only
 NAME = {"27b": "Qwen3.6-27B", "9b": "Qwen3.5-9B", "olmo_hybrid": "Olmo-Hybrid-7B", "122b": "Qwen3.5-122B",
         "32b": "Qwen3-32B", "olmo": "OLMo-3-7B", "muse": "Muse 30B", "gemma": "Gemma 4 31B"}  # fmt: skip
@@ -296,8 +298,8 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--grid", default=None, help="override the grid pinned in the template")
     ap.add_argument("--runs", action="store_true", help="also write RUNS.md (the runs behind every grid cell)")
-    ap.add_argument("--out", default="README.md", help="where to write the page, relative to the repo root; its "
-                    "relative links are rewritten to resolve from there (e.g. docs/depth/README.md)")  # fmt: skip
+    ap.add_argument("--out", default=str(PAGE.relative_to(REPO)), help="where to write the page, relative to the repo "
+                    "root (default docs/depth/README.md); its relative links are rewritten to resolve from there")  # fmt: skip
     a = ap.parse_args(argv)
     text = TEMPLATE.read_text()
     grid = Path(a.grid).resolve() if a.grid else pinned_grid(text)

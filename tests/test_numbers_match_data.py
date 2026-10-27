@@ -65,7 +65,8 @@ def check(text: str) -> list[str]:
 
 
 def test_readme_numbers_are_in_data_csv():
-    assert not (bad := check((REPO / "README.md").read_text())), bad
+    """docs/depth/README.md: the built page (the root README.md is an index since the merge into main, 27 Oct)."""
+    assert not (bad := check((REPO / "docs" / "depth" / "README.md").read_text())), bad
 
 
 def test_status_current_block_numbers_are_in_data_csv():

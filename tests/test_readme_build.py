@@ -1,4 +1,5 @@
-"""readme_build: markers render from a synthetic grid; README.md is the rendered template; the template types no result."""
+"""readme_build: markers render from a synthetic grid; docs/depth/README.md is the rendered template (its links relinked
+to resolve from docs/depth/); the template types no result."""
 
 from __future__ import annotations
 
@@ -90,15 +91,21 @@ def test_point_marker_drops_the_interval():
 # ---------------------------------------------------------------- the repo's README
 
 
-def test_readme_is_the_rendered_template():
+def rendered_at_root() -> str:
+    """The page as rendered from the template with links from the repo root (before relink), at the commit the built
+    page names; skips where the pinned grid is not in results/."""
     text = B.TEMPLATE.read_text()
     grid = B.pinned_grid(text)
     if not (grid / "grid.csv").exists():
         pytest.skip("the pinned grid is not in results/")
-    readme = (B.REPO / "README.md").read_text()
-    head = re.search(r"Built at (\w+) from", readme)
-    assert head, "README has no 'Built at <commit>' line"
-    assert readme == B.render(text, B.Book(grid, head=head.group(1))), "README.md differs: run scripts/readme_build.py"
+    head = re.search(r"Built at (\w+) from", B.PAGE.read_text())
+    assert head, "docs/depth/README.md has no 'Built at <commit>' line"
+    return B.render(text, B.Book(grid, head=head.group(1)))
+
+
+def test_readme_is_the_rendered_template():
+    expected = B.relink(rendered_at_root(), B.PAGE)
+    assert B.PAGE.read_text() == expected, "docs/depth/README.md differs: run scripts/readme_build.py"
 
 
 ALLOWED = re.compile(r"(≤|≥|at least|at most|under|over)\s*\d+%")
@@ -120,7 +127,7 @@ CODES = re.compile(
 
 
 def body_text() -> str:
-    return (B.REPO / "README.md").read_text().split("## Appendix A")[0]
+    return B.PAGE.read_text().split("## Appendix A")[0]
 
 
 def body_words(text: str) -> int:
@@ -136,7 +143,7 @@ def test_readme_body_fits_the_word_budget():
 def test_readme_body_has_no_internal_codes():
     """No internal run codes or banned terms on the page (Dan, 25 Oct; the appendix that mapped sections to runs was
     removed on 26 Oct)."""
-    body = re.sub(r"<!--.*?-->", "", (B.REPO / "README.md").read_text(), flags=re.S)
+    body = re.sub(r"<!--.*?-->", "", B.PAGE.read_text(), flags=re.S)
     assert not CODES.findall(body), CODES.findall(body)
 
 
@@ -286,9 +293,9 @@ def caption_texts() -> list[tuple[str, str]]:
     if not CHECK_README:
         lines = CAPTIONS_DRAFT.read_text().splitlines()
         return [("readme_v5_captions.md", line.split(": ", 1)[1]) for line in lines if line.startswith("- canonical ")]
-    text = re.sub(r"<!--.*?-->", "", (B.REPO / "README.md").read_text(), flags=re.S)
+    text = re.sub(r"<!--.*?-->", "", B.PAGE.read_text(), flags=re.S)
     lines = text.splitlines()
-    alts = [("alt text", a) for a in re.findall(r"!\[([^\]]*)\]\(figures/", text)]
+    alts = [("alt text", a) for a in re.findall(r"!\[([^\]]*)\]\((?:\.\./)*figures/", text)]
     captions = [("caption", line) for line in lines if re.match(r"\*Fig\. \w+\.\*", line)]
     headers = [
         ("table header", lines[i - 1]) for i, line in enumerate(lines) if i and re.fullmatch(r"\|(?:-+\|)+", line)
@@ -303,8 +310,8 @@ def test_readme_captions_use_the_glossary():
 
 
 def test_relink_from_a_subfolder_resolves_every_local_link():
-    text = (B.REPO / "README.md").read_text()
-    out = B.REPO / "docs" / "depth" / "README.md"
+    text = rendered_at_root()
+    out = B.PAGE
     moved = B.relink(text, out)
     targets = [m.group(2) for m in B.LINK_TARGET.finditer(moved)]
     local = [t for t in targets if not re.match(r"[a-z][a-z0-9+.-]*:", t) and not t.startswith(("#", "/"))]
