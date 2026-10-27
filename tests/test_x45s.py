@@ -1,9 +1,11 @@
-"""45s (Lightning at L30): the smoke's checks on fakes, the sealed verdict on planted runs, the hub-kernel record and the
-placeholder refusal in jobq."""
+"""45s (Lightning at L30): the smoke's checks on fakes, the sealed verdict on planted runs, the hub-kernel record, the
+placeholder refusal in jobq, and the three job specs' commands."""
 
 from __future__ import annotations
 
 import json
+import shlex
+import sys
 
 import pytest
 import torch
@@ -247,6 +249,8 @@ def test_answers_need_each_questions_own_dan_line():
     text = ("**Q46.2** main?\n- (a) confirmed;\n\nRule: jobs/c3/x45s_a_lightning.yaml\n\nDan: (a) · 60%\n\n"
             "**Q46.3** clean?\n- (a) yes;\n\nDan:\n")  # fmt: skip
     assert Z.answers_in(text) == {"main": "(a) · 60%", "clean": ""}
+    mention = "The verdict reads **Q46.2** / **Q46.3**, each with one Dan line.\n\n"  # not a block: not at a line start
+    assert Z.answers_in(mention + text) == {"main": "(a) · 60%", "clean": ""}
 
 
 class FakeTok:
@@ -289,3 +293,79 @@ def test_validate_refuses_a_placeholder_until_it_is_replaced():
     assert errors == ["placeholder REVISION_FROM_ZACH in the command: replace it with the value before enqueue"]
     assert jobq.validate(spec(f"export BJ_MAMBA_SSM_REVISION={SHA}; python3 x.py --name nem35l_t")) == []
     assert jobq.validate(spec("BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 python3 x.py --name nem35l_t")) == []
+
+
+# ---- the three specs ----------------------------------------------------------------------------------------------
+
+SPECS = ("x45s_smoke_lightning", "x45s_a_lightning", "x45s_b_lightning")
+
+
+def load(job: str) -> dict:
+    import yaml
+
+    return yaml.safe_load((pins.REPO_ROOT / "jobs" / "c3" / f"{job}.yaml").read_text())
+
+
+def x0_args(command: str) -> list[list[str]]:
+    """The argument lists of every x0_necessity.py call in a command (its parts joined by &&; a ';' may sit inside a
+    quoted --why, so each part is split whole)."""
+    out = []
+    for part in command.split("&&"):
+        words = shlex.split(part)
+        if "scripts/x0_necessity.py" in words:
+            out.append(words[words.index("scripts/x0_necessity.py") + 1 :])
+    return out
+
+
+def parsed(args: list[str], monkeypatch) -> dict:
+    for name in (
+        "CURVE_DICTS",
+        "K_CURVE",
+        "READ",
+        "DESCRIPTIVE",
+        "ALT",
+        "CURVE_ALL",
+        "DICTS",
+        "READOUT",
+        "NONNEG",
+        "N_ITEMS",
+    ):
+        monkeypatch.setattr(X, name, getattr(X, name))  # main() sets them; restored after the test
+    seen: dict = {}
+    monkeypatch.setattr(X, "stage_run", lambda name, why, set_name, layers, predicted, rends: seen.update(
+        name=name, set=set_name, layers=layers, predicted=predicted, rends=rends, alt=X.ALT, dicts=X.DICTS,
+        curve=X.K_CURVE, nonneg=X.NONNEG, n=X.N_ITEMS))  # fmt: skip
+    monkeypatch.setattr(X, "write_verdict", lambda *a, **k: pytest.fail("a 45s run must be sealed"))
+    monkeypatch.setattr(pins, "TARGET", Z.TARGET)  # the command's BJ_TARGET (asserted on the spec text)
+    monkeypatch.setattr(sys, "argv", ["x0_necessity.py", *args])
+    X.main()
+    return seen
+
+
+@pytest.mark.parametrize("job", SPECS)
+def test_each_spec_validates_but_for_the_kernel_placeholder(job):
+    s = load(job)
+    errors = jobq.validate(s, pins.REPO_ROOT / "jobs" / "c3" / f"{job}.yaml")
+    assert errors == (["placeholder REVISION_FROM_ZACH in the command: replace it with the value before enqueue"]
+                      if job == "x45s_smoke_lightning" else [])  # fmt: skip
+    assert "BJ_TARGET=nemotron-3.5-lightning" in s["command"] and "BJ_SUITE_BATCH=16" in s["command"]
+    assert all(n.startswith("nem35l_") for n in jobq.NAME_RE.findall(s["command"]))
+    if job != "x45s_smoke_lightning":
+        assert s["depends_on"] == ["x45s_smoke_lightning"]
+
+
+@pytest.mark.parametrize(("job", "alt", "n"), [("x45s_a_lightning", "cf", 200), ("x45s_b_lightning", "fresh", 600)])
+def test_the_runs_are_sealed_one_layer_jpp_only(job, alt, n, monkeypatch):
+    (args,) = x0_args(load(job)["command"])
+    seen = parsed(args, monkeypatch)
+    assert seen["alt"] == alt and seen["n"] == n and seen["layers"] == (30,) and seen["predicted"] == 30
+    assert seen["dicts"] == ("jpp",) and seen["curve"] == () and not seen["nonneg"] and seen["rends"] == ["chat"]
+    assert seen["set"] == Z.SET and seen["name"].startswith("nem35l_x45s_")
+
+
+def test_the_smoke_runs_both_designs_on_eight_scenes(monkeypatch):
+    command = load("x45s_smoke_lightning")["command"]
+    calls = [parsed(args, monkeypatch) for args in x0_args(command)]
+    assert [c["alt"] for c in calls] == ["cf", "fresh"] and all(c["n"] == 8 and c["layers"] == (30,) for c in calls)
+    assert "BJ_NO_KERNELS=1 uv run python scripts/kernel_nll.py" in command and "x45s.py smoke-gates" in command
+    assert command.index("smoke-manifest") < command.index("kernel_nll.py") < command.index("x45s.py smoke --name")

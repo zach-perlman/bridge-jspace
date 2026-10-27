@@ -131,10 +131,12 @@ def dan_answers(rev: str = "HEAD") -> dict[str, str]:
 
 
 def answers_in(text: str) -> dict[str, str]:
-    """Per design, the 'Dan:' line of its question's block in a predictions file's text ('' where none)."""
+    """Per design, the 'Dan:' line of its question's block in a predictions file's text ('' where none): the block
+    starts at the line that begins with its bold id (a mention elsewhere does not count) and ends at the next one."""
     out = {}
     for design, q in QUESTIONS.items():
-        block = text.split(f"**{q}**", 1)[1].split("\n**Q", 1)[0] if f"**{q}**" in text else ""
+        start = re.search(rf"^\*\*{re.escape(q)}\*\*", text, re.M)
+        block = text[start.end() :].split("\n**Q", 1)[0] if start else ""
         m = re.search(r"^Dan:(.*)$", block, re.M)
         out[design] = m.group(1).strip() if m else ""
     return out
