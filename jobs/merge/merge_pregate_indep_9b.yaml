@@ -1,0 +1,27 @@
+id: merge_pregate_indep_9b
+title: "Merge pre-gate (code of merge e00bc032), Batch 45.0 rerun: an independent check of the main test (9B, L12, 20 random items), written from scratch"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  uv run python scripts/indep_check.py --name qwen35_9b_x45_indep_pregate --n 20 --layer 12 --device cuda
+question: >-
+  Does an implementation written from scratch (plain transformers + torch hooks, its own signed OMP over the published
+  J++ file, no import from the project's package) reproduce the main test's item-level answers?
+why_it_matters: >-
+  Every number rests on the project's patching code; a second implementation that agrees item by item is the check that
+  it computes what it claims. Every batch-45 job depends on this one.
+hypotheses:
+  check: 'not a prediction (Dan ~18:25: a code check, reported as soon as it lands)'
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch45.yaml, 45.0): PASS if at least 19 of 20 items agree on every arm (whole, no J++, no
+  random part; both readers' roles b / A / other); the script exits non-zero on FAIL, which blocks every dependent job.
+  On FAIL (Dan ~18:25): find which side is wrong (up to 45 min); a bug in indep_check.py is fixed and rerun; a bug in
+  the project's patching code pauses the batch-45 queue and is written up.
+controls:
+- 'the unedited reads against the stored ones'
+n: '20 main-test items (random.Random(0).sample over the 200 with all arms)'
+seeds: [0, 900]
+notes: "Merge pre-gate (Dan 27 Oct ~12:20, parallel to the main-wins redo): the first merge commit e00bc032, to catch runtime breakage early; the gate proper reruns on the final merge commit. The random part keeps the project's seed convention (888 + layer), so that arm is comparable item by item."

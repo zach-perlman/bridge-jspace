@@ -1,0 +1,23 @@
+id: merge_gate_9b_main
+title: "Merge gate (code of the merge commit fbedabbb): the 9B main-test cell (L12, chat) rerun, against the stored qwen35_9b_x0_necessity"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b uv run python scripts/x0_necessity.py run --name qwen35_9b_x0_main_gate --set d1_topics_v3 --renderings chat --layers 12 --why "merge pre-gate (Dan 27 Oct ~11:45 step 5): the 9B main-test cell from the merged code, compared row by row with qwen35_9b_x0_necessity at L12 chat"
+question: >-
+  Does the merged code reproduce the stored 9B main-test cell (L12, chat) item by item?
+why_it_matters: >-
+  The merge changes model.py, pins.py, tokens.py and tasks_v2.py; the main test must not move.
+hypotheses:
+  check: "not a prediction: a code check"
+decision_rule: >-
+  Identical if every shared (scene, reader, arm, dict, k, omp) row at L12 chat has the same switched, role and
+  cand_switched as the stored run (logit differences reported as the largest absolute difference).
+controls:
+- "the stored run qwen35_9b_x0_necessity (code 502b920f)"
+n: "the stored run's 200 items at L12, chat"
+seeds: [0]
+notes: "The gate proper (Dan ~11:45 step 5) on the main-wins merge commit fbedabbb. Compared by hand (CPU) with a row-by-row script."
