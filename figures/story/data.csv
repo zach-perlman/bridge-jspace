@@ -106,14 +106,14 @@ fig02,qwen3.5-122b-a10b,random atoms: share of the change,0.13390000000000002,,,
 fig02,muse-glimmer-30b,random atoms: recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,,muse30b_x0_necessity
 fig02,muse-glimmer-30b,random atoms: lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,,muse30b_x0_necessity
 fig02,muse-glimmer-30b,random atoms: share of the change,0.061265,,,,muse30b_x0_necessity
-fig02b,qwen3.6-27b,45k: the 100 atoms' mean cos^2 with the pointer (another item moved),0.02473879,,,300,results/x6_routes/x45k-20261026T232915Z
-fig02b,qwen3.6-27b,45k: the 100 atoms' mean cos^2 with the identity direction (another item moved),0.2940854566666667,,,300,results/x6_routes/x45k-20261026T232915Z
-fig02b,qwen3.6-27b,45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.30666666666666664,0.2592592592592593,0.35714285714285715,,results/x6_routes/x45k-20261026T232915Z
-fig02b,qwen3.6-27b,45k: position answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.11333333333333337,0.06122120874073101,0.16000302114803627,,results/x6_routes/x45k-20261026T232915Z
-fig02b,qwen3.5-9b,45k: the 100 atoms' mean cos^2 with the pointer (another item moved),0.03461620333333333,,,300,results/x6_routes/x45k-20261026T232915Z
-fig02b,qwen3.5-9b,45k: the 100 atoms' mean cos^2 with the identity direction (another item moved),0.43215593333333324,,,300,results/x6_routes/x45k-20261026T232915Z
-fig02b,qwen3.5-9b,45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.0333333333333333,-0.0254794504625971,0.09025270758122744,,results/x6_routes/x45k-20261026T232915Z
-fig02b,qwen3.5-9b,45k: position answers' fall from 25 to 100 atoms beyond the random part (another item moved),-0.17000000000000004,-0.25084774884967087,-0.0977437486223702,,results/x6_routes/x45k-20261026T232915Z
+fig02b,qwen3.6-27b,45k: the 100 atoms' mean cos^2 with the pointer (another item moved),0.02473879,,,300,results/x6_routes/x45k-20261027T020103Z
+fig02b,qwen3.6-27b,45k: the 100 atoms' mean cos^2 with the identity direction (another item moved),0.2940854566666667,,,300,results/x6_routes/x45k-20261027T020103Z
+fig02b,qwen3.6-27b,45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.30666666666666664,0.2592592592592593,0.35714285714285715,,results/x6_routes/x45k-20261027T020103Z
+fig02b,qwen3.6-27b,45k: position answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.11333333333333337,0.06122120874073101,0.16000302114803627,,results/x6_routes/x45k-20261027T020103Z
+fig02b,qwen3.5-9b,45k: the 100 atoms' mean cos^2 with the pointer (another item moved),0.03461620333333333,,,300,results/x6_routes/x45k-20261027T020103Z
+fig02b,qwen3.5-9b,45k: the 100 atoms' mean cos^2 with the identity direction (another item moved),0.43215593333333324,,,300,results/x6_routes/x45k-20261027T020103Z
+fig02b,qwen3.5-9b,45k: identity answers' fall from 25 to 100 atoms beyond the random part (another item moved),0.0333333333333333,-0.0254794504625971,0.09025270758122744,,results/x6_routes/x45k-20261027T020103Z
+fig02b,qwen3.5-9b,45k: position answers' fall from 25 to 100 atoms beyond the random part (another item moved),-0.17000000000000004,-0.25084774884967087,-0.0977437486223702,,results/x6_routes/x45k-20261027T020103Z
 fig02b,qwen3.6-27b,main test: lookup extra loss without another scene's 100 atoms,-0.0117647058823529,-0.03947368421052644,0.0,200,x0_parts/x0_jppother100_27b
 fig02b,qwen3.5-9b,"(a) main test, 25 atoms: lookup extra loss",-0.01941747572815533,-0.07207207207207211,0.04395604395604402,200,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
 fig02b,qwen3.5-9b,"(a) main test, 25 atoms: recall extra loss",0.4974619289340101,0.4108083976833977,0.5714285714285713,200,results/x0_necessity/qwen35_9b_x0_kmatch/outcomes.jsonl
@@ -185,6 +185,29 @@ fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100: value share",0.0,0.0,0.0,
 fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100: original share",0.68,0.6209150326797386,0.7386798496114564,300,x6_routes_x45k_27b
 fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100: other share",0.0033333333333333335,0.0,0.011152416356877323,300,x6_routes_x45k_27b
 fig02b,qwen3.6-27b,"(b) another item moved, no_jpp100_rand: identity share",0.6766666666666666,0.625,0.7335769946171407,300,x6_routes_x45k_27b
+fig02b,muse-glimmer-30b,"(b) another item moved, whole: identity share",0.43666666666666665,0.38460960960960966,0.48837401181978657,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, whole: position share",0.5433333333333333,0.49195879635933265,0.5962148086423427,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, whole: value share",0.0,0.0,0.0,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, whole: original share",0.02,0.004365867029622489,0.038063107595979556,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, whole: other share",0.0,0.0,0.0,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp: identity share",0.39666666666666667,0.34493398079441295,0.44554455445544555,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp: position share",0.5633333333333334,0.5125,0.6185597095751936,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp: value share",0.0,0.0,0.0,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp: original share",0.04,0.018725716685918305,0.060932992394440055,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp: other share",0.0,0.0,0.0,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp_rand: identity share",0.4,0.3489914779585727,0.45222929936305734,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp50: identity share",0.38,0.3344048886886354,0.42611827994188056,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp50: position share",0.5633333333333334,0.5176056338028169,0.6114655061112068,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp50: value share",0.0,0.0,0.0,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp50: original share",0.056666666666666664,0.033846153846153845,0.07744107744107744,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp50: other share",0.0,0.0,0.0,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp50_rand: identity share",0.3933333333333333,0.3448275862068966,0.443334142394822,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp100: identity share",0.36,0.3140786764925262,0.4080267558528428,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp100: position share",0.5133333333333333,0.45333217993079583,0.5724144023394663,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp100: value share",0.0,0.0,0.0,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp100: original share",0.12666666666666668,0.08945621964206862,0.16352201257861634,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp100: other share",0.0,0.0,0.0,300,muse30b_x6_routes_x45k_r4
+fig02b,muse-glimmer-30b,"(b) another item moved, no_jpp100_rand: identity share",0.37666666666666665,0.3333333333333333,0.42229943165186845,300,muse30b_x6_routes_x45k_r4
 fig03,qwen3.5-9b,"lookups switched by the whole change, locker sentence before the pick",0.86,0.7786,0.9147,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 fig03,qwen3.5-9b,"recalls switched by the whole change, locker sentence before the pick",1.0,0.963,1.0,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 fig03,qwen3.5-9b,"lookups switched by the whole change, locker sentence after the pick",0.19,0.1251,0.2778,100,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
@@ -6748,13 +6771,13 @@ numbers,,x45em_left_idout_muse,0.54,,,,results/x6_routes/x45e-size-20261027T0004
 numbers,,x45em_left_wrong_muse,0.59,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
 numbers,,x45em_n_muse,237,,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
 numbers,,x45em_cut_muse,"0.05 [0.01, 0.08]",,,,results/x6_routes/x45e-size-20261027T000407Z/size.json
-numbers,,x45k_label,(d) can't tell,,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
-numbers,,x45k_c0_100_27b,"0.37 [0.30, 0.44]",,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
-numbers,,x45k_d_identity_27b,"0.31 [0.26, 0.36]",,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
-numbers,,x45k_d_position_27b,"0.11 [0.06, 0.16]",,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
-numbers,,x45k_cos2_U_27b,0.02,,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
-numbers,,x45k_cos2_id_27b,0.29,,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
-numbers,,x45k_other_27b,"−0.01 [−0.04, 0.00]",,,,results/x6_routes/x45k-20261026T232915Z/x45k.json
+numbers,,x45k_label,(d) can't tell,,,,results/x6_routes/x45k-20261027T020103Z/x45k.json
+numbers,,x45k_c0_100_27b,"0.37 [0.30, 0.44]",,,,results/x6_routes/x45k-20261027T020103Z/x45k.json
+numbers,,x45k_d_identity_27b,"0.31 [0.26, 0.36]",,,,results/x6_routes/x45k-20261027T020103Z/x45k.json
+numbers,,x45k_d_position_27b,"0.11 [0.06, 0.16]",,,,results/x6_routes/x45k-20261027T020103Z/x45k.json
+numbers,,x45k_cos2_U_27b,0.02,,,,results/x6_routes/x45k-20261027T020103Z/x45k.json
+numbers,,x45k_cos2_id_27b,0.29,,,,results/x6_routes/x45k-20261027T020103Z/x45k.json
+numbers,,x45k_other_27b,"−0.01 [−0.04, 0.00]",,,,results/x6_routes/x45k-20261027T020103Z/x45k.json
 numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_natural_9b,not tested (gate),,,,results/t_pointer/verdict-20261026T140221Z/verdict.json

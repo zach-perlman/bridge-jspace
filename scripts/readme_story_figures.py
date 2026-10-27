@@ -803,10 +803,10 @@ def f02_specificity(plt) -> None:
 
 
 # Fig. 2b (45k, Dan 27 Oct ~01:05): (a) the main test's k-curve (the k-match runs on the 9B and 27B, the main runs'
-# k arms on the 122B and Muse; after the data), (b) 45k's routes runs (fixed in advance; Muse's r3 once it is in)
+# k arms on the 122B and Muse; after the data), (b) 45k's routes runs (fixed in advance; Muse: run r4, the rerun that landed)
 KCURVE_RUNS = {"9b": "qwen35_9b_x0_kmatch", "27b": "x0_kmatch_27b", "122b": "qwen35_122b_x0_necessity_r2",
                "muse": "muse30b_x0_necessity"}  # fmt: skip
-X45K_RUNS = {"9b": "qwen35_9b_x6_routes_x45k", "27b": "x6_routes_x45k_27b", "muse": "muse30b_x6_routes_x45k_r3"}
+X45K_RUNS = {"9b": "qwen35_9b_x6_routes_x45k", "27b": "x6_routes_x45k_27b", "muse": "muse30b_x6_routes_x45k_r4"}
 KS = (25, 50, 100)
 K_ARMS = (("whole", None, "whole change"), ("no_jpp", "no_jpp_rand", "without the J++ part:\n25 atoms"),
           ("no_jpp50", "no_jpp50_rand", "50 atoms"), ("no_jpp100", "no_jpp100_rand", "100 atoms"))  # fmt: skip
