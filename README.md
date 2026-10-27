@@ -56,13 +56,16 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 **In Dan's locker scenes the lookup answer follows the item's identity or its position, never the number; position comes from an order signal, four directions outside the lens (Qwen 9B, Muse 30B).** <!-- src: docs/depth/README.md | four directions separating the positions -->
 
-- **Routes test** (fixed in advance, 4 models): another item's locker sentence moves and takes a new number, so identity, position and number predict different lockers. No answer follows the number; Qwen 27B leans on identity (66%), Qwen 9B and Muse 30B on position (51%, 54%). The lens part added alone gives no identity answers. <!-- src: figures/story/data.csv | another item moved, whole: value share; another item moved, whole: identity share; another item moved, whole: position share --> <!-- src: figures/story/data.csv | another item moved, keep_jpp: identity share -->
+- **Routes test** (fixed in advance, 4 models): another item's locker sentence moves and takes a new number, so identity, position and number predict different lockers. No answer follows the number; Qwen 27B leans on identity (66%), Qwen 9B and Muse 30B on position (51%, 54%). The lens part added alone gives no identity answers. <!-- src: figures/story/data.csv | another item moved, whole: value share; another item moved, whole: identity share; another item moved, whole: position share --> <!-- src: figures/story/data.csv | another item moved, keep_jpp: identity share --> So even the identity route runs mostly outside the lens part, but against a wrong-pair direction of the same size it is only partly specific: on the Qwens, not on Muse (fixed in advance). <!-- src: docs/depth/README.md | so even the identity route runs mostly outside J++ --> <!-- src: docs/depth/README.md | partly specific on the Qwens, not on Muse -->
+
+![Lookup answers follow identity or position, never the number](figures/shared/j8_routes.png)
+
 - **A simple probe reads the order signal** at the bridge in 0.92-0.99 of scenes; the lens does not. <!-- src: docs/depth/README.md | 0.92-0.99 of scenes (layout alone: 0.53) --> <!-- src: docs/depth/README.md | A probe reads the pointer, the lens does not -->
 - **Removing it from the patch** leaves Qwen 9B answering by position in 0.08 of scenes and halves Muse 30B's; a random part does not (after the data; repeated in advance). <!-- src: figures/story/data.csv | another item moved, no_alf: position share; another item moved, no_alf_rand: position share -->
 - **Writing it in** sends the lookup answer to the written locker in about half of the writes (after the data). <!-- src: docs/x0_details.md | The pointer: removed, added alone, written -->
 - **A strong write also moves the recalled answer** to the item at the written position (about 4 in 5 on the Qwens, after the data): the signal points at an item's mention, not at a number. <!-- src: docs/depth/README.md | about four in five recalls a strong write changes name the item at the target position -->
 
-![Lookup answers follow identity or position, never the number](figures/shared/j8_routes.png)
+![Removing the order signal stops answers by position; a random part does not](figures/shared/j3_order_signal.png)
 
 **How sure.**
 - Medium for the order signal, on Qwen 9B and Muse 30B, in simple scenes.
