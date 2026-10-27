@@ -1,0 +1,20 @@
+{
+  "run": "qwen35_9b_greedy_all_smoke1027",
+  "why": "Zach (2026-10-27, prereg amendment 58 note 1): smoke",
+  "written_utc": "2026-10-27T22:09:08Z",
+  "git_commit": "a20e7454be7862306860219e106c4df0dd4d1a45",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa"
+  },
+  "set": "jsuite_v2_test_chat",
+  "n_items": 280,
+  "max_new_tokens": 24,
+  "batch": 32,
+  "limit": 8,
+  "greedy": true,
+  "doc": "greedy_all (Zach, 2026-10-27, prereg amendment 58 note 1): the model's raw greedy reply to every item's whole\nquestion, unedited. The competence and knock-out runs read only whether the answer's first token outranks the\nrelation's other answers (cand2). This records what the model actually writes, for every item (eligible or not), so\nfree-generation accuracy, answer form and any reasoning before the answer can be scored later (note 2's rule, CPU).\nPrompts are built exactly as ablate_v2.tasks_prompts builds the whole question (tasks_v2.render, thinking off,\n\"Answer:\" prefilled, a space after it for digit answers). Greedy, --max-new tokens, prompts of one length batched\ntogether (no padding: the hybrid models' recurrent layers would see pad tokens). Descriptive, no rule.\nWrites results/greedy_all/NAME/{manifest.json, rows.jsonl, summary.json}."
+}
