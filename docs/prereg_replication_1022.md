@@ -1886,3 +1886,15 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - GPU 0: (after the 27B swap dose) A on the 27B, then the 9B.
   - GPU 1: (after Lightning's natural sets) A on Lightning, then B.
   - Then C on both GPUs; then D if approved.
+
+### Amendment 56 note 1 (Zach, 2026-10-27 05:00 UTC, before D runs): D approved
+
+- **Approval:** Zach, 2026-10-27 ~01:00 ET: "Yes you can delete bolts cache after."
+- **The chain:** scripts/queues/h200_ds_1027.sh.
+  - It waits for Bolt's pointer test and drops Bolt's cache (/workspace/scratch/cache_drop.py) only if that test
+    finished; otherwise it stops and keeps the cache.
+  - It then downloads DeepSeek-V4-Flash at its pinned revision, runs amendment 54's dose grid at L18-23 (150 per word,
+    seed 0), and runs the mention / question split at the K with the largest J-specific excess below the specificity
+    limit.
+  - The excess and limit are computed by fig_neel.dose_readings, the same code as every other model's readings.
+- **Not approved yet:** OLMo would need DeepSeek's cache dropped too, so it is not queued.
