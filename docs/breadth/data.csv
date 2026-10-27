@@ -1,0 +1,800 @@
+key,figure,model,quantity,value,lo,hi,n,unit,source
+ko.q27.mk,knockout,q27,"M - K, J++ top 10",50.9,46,55,892,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.klost,knockout,q27,stated facts (K) lost,2.6,,,,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rot,knockout,q27,"M - K, paper10_rot",2.7,1,4,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.u,knockout,q27,"M - K, unembed10",1.9,1,3,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.pc,knockout,q27,"M - K, same norm along top principal directions",12.4,10,15,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_pca_v1.json
+ko.q27.pcr,knockout,q27,size-matched / J++ M - K,0.244,,,,ratio,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_pca_v1.json
+ko.q27.soft,knockout,q27,M - K by probability,50.3,47,54,,points,results/ablate_v2/soft_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.r2,knockout,q27,"M - K, rendering 2",49.3,43,56,,points,results/ablate_v2/jsuite2_score/jsuite_v2r2_test_chat_ko_cand2_s150_v1.json
+ko.q27.r3,knockout,q27,"M - K, rendering 3",50.2,44,56,,points,results/ablate_v2/jsuite2_score/jsuite_v2r3_test_chat_ko_cand2_s150_v1.json
+ko.q27.lostK,knockout,q27,"points lost, final K",2.6,,,,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.lostP,knockout,q27,"points lost, final P",9.1,,,,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.lostA,knockout,q27,"points lost, final A",30.2,,,,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.lostN,knockout,q27,"points lost, final N",45.4,,,,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.lostM,knockout,q27,"points lost, final M",53.5,,,,abs,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.startP,knockout,q27,"M - K, start P",50.6,45,56,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.startT,knockout,q27,"M - K, start T",59.5,53,67,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.startM,knockout,q27,"M - K, start M",45.3,39,52,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rel.countries,knockout,q27,"M - K, relation countries",39.5,30,49,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rel.languages,knockout,q27,"M - K, relation languages",36.0,25,47,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rel.people,knockout,q27,"M - K, relation people",69.0,62,76,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rel.cities,knockout,q27,"M - K, relation cities",38.3,28,49,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rel.companies,knockout,q27,"M - K, relation companies",57.1,45,71,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rel.landmarks,knockout,q27,"M - K, relation landmarks",54.5,41,69,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rel.dishes,knockout,q27,"M - K, relation dishes",72.0,59,83,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.rel.animals,knockout,q27,"M - K, relation animals",43.9,28,62,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.halfA,knockout,q27,"M - K, test half A",55.6,50,61,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q27.halfB,knockout,q27,"M - K, test half B",45.6,39,53,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+r.q27,never named,q27,RM - MM (bridge never named minus named once),17.6,10,26,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1+jsuite_v2_1_test_chat_R_ko_cand2_v1.json
+ko.q9.mk,knockout,q9,"M - K, J++ top 10",42.6,37,49,563,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.klost,knockout,q9,stated facts (K) lost,5.0,,,,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rot,knockout,q9,"M - K, paper10_rot",1.8,1,3,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.u,knockout,q9,"M - K, unembed10",1.4,0,3,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.pc,knockout,q9,"M - K, same norm along top principal directions",7.3,5,10,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_pca_v1.json
+ko.q9.pcr,knockout,q9,size-matched / J++ M - K,0.171,,,,ratio,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_pca_v1.json
+ko.q9.soft,knockout,q9,M - K by probability,35.3,31,40,,points,results/ablate_v2/soft_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.r2,knockout,q9,"M - K, rendering 2",42.1,37,48,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2r2_test_chat_ko_cand2_v1.json
+ko.q9.r3,knockout,q9,"M - K, rendering 3",42.8,37,48,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2r3_test_chat_ko_cand2_v1.json
+ko.q9.lostK,knockout,q9,"points lost, final K",5.0,,,,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.lostP,knockout,q9,"points lost, final P",14.6,,,,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.lostA,knockout,q9,"points lost, final A",30.5,,,,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.lostN,knockout,q9,"points lost, final N",41.5,,,,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.lostM,knockout,q9,"points lost, final M",47.6,,,,abs,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.startP,knockout,q9,"M - K, start P",50.4,43,57,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.startT,knockout,q9,"M - K, start T",60.3,44,75,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.startM,knockout,q9,"M - K, start M",30.4,24,38,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rel.countries,knockout,q9,"M - K, relation countries",42.9,28,60,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rel.languages,knockout,q9,"M - K, relation languages",33.8,21,49,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rel.people,knockout,q9,"M - K, relation people",50.1,37,64,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rel.cities,knockout,q9,"M - K, relation cities",47.4,34,61,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rel.companies,knockout,q9,"M - K, relation companies",58.5,45,73,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rel.landmarks,knockout,q9,"M - K, relation landmarks",27.3,13,42,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rel.dishes,knockout,q9,"M - K, relation dishes",50.0,36,65,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.rel.animals,knockout,q9,"M - K, relation animals",14.3,0,36,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.halfA,knockout,q9,"M - K, test half A",41.5,34,49,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q9.halfB,knockout,q9,"M - K, test half B",43.9,36,52,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+r.q9,never named,q9,RM - MM (bridge never named minus named once),11.6,5,19,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1+qwen35_9b_jsuite_v2_1_test_chat_R_ko_cand2_v1.json
+ko.nl.mk,knockout,nl,"M - K, J++ top 10",53.1,48,59,563,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.klost,knockout,nl,stated facts (K) lost,3.7,,,,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rot,knockout,nl,"M - K, paper10_rot",3.6,2,6,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.u,knockout,nl,"M - K, unembed10",8.7,6,11,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.pc,knockout,nl,"M - K, same norm along top principal directions",8.2,6,11,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_pca_v1.json
+ko.nl.pcr,knockout,nl,size-matched / J++ M - K,0.154,,,,ratio,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_pca_v1.json
+ko.nl.soft,knockout,nl,M - K by probability,44.1,40,48,,points,results/ablate_v2/soft_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.r2,knockout,nl,"M - K, rendering 2",48.9,43,55,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2r2_test_chat_ko_cand2_s150_v1.json
+ko.nl.r3,knockout,nl,"M - K, rendering 3",50.3,44,57,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2r3_test_chat_ko_cand2_s150_v1.json
+ko.nl.lostK,knockout,nl,"points lost, final K",3.7,,,,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.lostP,knockout,nl,"points lost, final P",4.6,,,,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.lostA,knockout,nl,"points lost, final A",41.9,,,,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.lostN,knockout,nl,"points lost, final N",53.5,,,,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.lostM,knockout,nl,"points lost, final M",56.8,,,,abs,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.startP,knockout,nl,"M - K, start P",60.4,54,67,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.startT,knockout,nl,"M - K, start T",75.9,65,86,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.startM,knockout,nl,"M - K, start M",37.4,30,45,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rel.countries,knockout,nl,"M - K, relation countries",66.7,52,80,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rel.languages,knockout,nl,"M - K, relation languages",61.0,44,77,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rel.people,knockout,nl,"M - K, relation people",40.8,30,52,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rel.cities,knockout,nl,"M - K, relation cities",61.3,43,78,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rel.companies,knockout,nl,"M - K, relation companies",59.5,42,75,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rel.landmarks,knockout,nl,"M - K, relation landmarks",57.1,42,72,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rel.dishes,knockout,nl,"M - K, relation dishes",60.3,49,73,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.rel.animals,knockout,nl,"M - K, relation animals",18.3,9,29,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.halfA,knockout,nl,"M - K, test half A",51.7,45,59,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nl.halfB,knockout,nl,"M - K, test half B",54.7,47,63,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+r.nl,never named,nl,RM - MM (bridge never named minus named once),4.0,-3,11,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1+nem35l_jsuite_v2_1_test_chat_R_ko_cand2_v1.json
+ko.ds.mk,knockout,ds,"M - K, J++ top 10",17.9,14,22,504,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.klost,knockout,ds,stated facts (K) lost,2.4,,,,abs,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rot,knockout,ds,"M - K, paper10_rot",5.0,3,7,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.u,knockout,ds,"M - K, unembed10",1.6,0,3,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.pc,knockout,ds,"M - K, same norm along top principal directions",8.7,5,13,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_pca_v1.json
+ko.ds.pcr,knockout,ds,size-matched / J++ M - K,0.486,,,,ratio,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_pca_v1.json
+ko.ds.soft,knockout,ds,M - K by probability,21.2,18,25,,points,results/ablate_v2/soft_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.lostK,knockout,ds,"points lost, final K",2.4,,,,abs,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.lostP,knockout,ds,"points lost, final P",9.0,,,,abs,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.lostA,knockout,ds,"points lost, final A",6.9,,,,abs,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.lostN,knockout,ds,"points lost, final N",6.2,,,,abs,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.lostM,knockout,ds,"points lost, final M",20.2,,,,abs,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.startP,knockout,ds,"M - K, start P",25.3,20,31,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.startT,knockout,ds,"M - K, start T",71.4,50,92,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.startM,knockout,ds,"M - K, start M",7.1,3,12,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rel.countries,knockout,ds,"M - K, relation countries",31.9,17,45,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rel.languages,knockout,ds,"M - K, relation languages",22.7,13,34,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rel.people,knockout,ds,"M - K, relation people",15.5,8,23,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rel.cities,knockout,ds,"M - K, relation cities",25.7,15,36,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rel.companies,knockout,ds,"M - K, relation companies",11.9,4,21,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rel.landmarks,knockout,ds,"M - K, relation landmarks",-2.9,-9,3,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rel.dishes,knockout,ds,"M - K, relation dishes",30.9,16,45,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.rel.animals,knockout,ds,"M - K, relation animals",12.2,0,24,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.halfA,knockout,ds,"M - K, test half A",16.3,11,22,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.ds.halfB,knockout,ds,"M - K, test half B",19.4,13,25,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_v1.json
+ko.mi.mk,knockout,mi,"M - K, J++ top 10",23.3,19,28,645,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.klost,knockout,mi,stated facts (K) lost,1.9,,,,abs,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rot,knockout,mi,"M - K, paper10_rot",0.6,0,1,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.u,knockout,mi,"M - K, unembed10",3.6,2,5,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.pc,knockout,mi,"M - K, same norm along top principal directions",1.4,0,2,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_pca_v1.json
+ko.mi.pcr,knockout,mi,size-matched / J++ M - K,0.06,,,,ratio,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_pca_v1.json
+ko.mi.soft,knockout,mi,M - K by probability,37.1,34,41,,points,results/ablate_v2/soft_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.lostK,knockout,mi,"points lost, final K",1.9,,,,abs,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.lostP,knockout,mi,"points lost, final P",10.4,,,,abs,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.lostA,knockout,mi,"points lost, final A",12.2,,,,abs,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.lostN,knockout,mi,"points lost, final N",18.4,,,,abs,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.lostM,knockout,mi,"points lost, final M",25.1,,,,abs,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.startP,knockout,mi,"M - K, start P",16.9,12,22,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.startT,knockout,mi,"M - K, start T",44.2,37,52,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.startM,knockout,mi,"M - K, start M",20.3,14,27,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rel.countries,knockout,mi,"M - K, relation countries",65.7,47,80,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rel.languages,knockout,mi,"M - K, relation languages",20.5,12,30,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rel.people,knockout,mi,"M - K, relation people",18.9,11,29,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rel.cities,knockout,mi,"M - K, relation cities",13.7,4,26,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rel.companies,knockout,mi,"M - K, relation companies",10.5,4,17,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rel.landmarks,knockout,mi,"M - K, relation landmarks",10.1,0,24,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rel.dishes,knockout,mi,"M - K, relation dishes",18.8,12,26,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.rel.animals,knockout,mi,"M - K, relation animals",48.0,29,68,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.halfA,knockout,mi,"M - K, test half A",23.7,18,31,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mi.halfB,knockout,mi,"M - K, test half B",22.7,16,30,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1.json
+r.mi,never named,mi,RM - MM (bridge never named minus named once),13.5,6,21,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_v1+min14_jsuite_v2_1_test_chat_R_ko_cand2_v1.json
+ko.nb.mk,knockout,nb,"M - K, J++ top 10",6.0,3,9,383,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.klost,knockout,nb,stated facts (K) lost,0.5,,,,abs,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rot,knockout,nb,"M - K, paper10_rot",0.5,0,1,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.u,knockout,nb,"M - K, unembed10",2.4,1,4,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.soft,knockout,nb,M - K by probability,6.0,4,8,,points,results/ablate_v2/soft_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.lostK,knockout,nb,"points lost, final K",0.5,,,,abs,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.lostP,knockout,nb,"points lost, final P",0.8,,,,abs,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.lostA,knockout,nb,"points lost, final A",2.6,,,,abs,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.lostN,knockout,nb,"points lost, final N",2.6,,,,abs,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.lostM,knockout,nb,"points lost, final M",6.5,,,,abs,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.startP,knockout,nb,"M - K, start P",3.3,-1,8,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.startT,knockout,nb,"M - K, start T",16.9,10,25,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.startM,knockout,nb,"M - K, start M",2.7,0,6,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rel.countries,knockout,nb,"M - K, relation countries",5.6,0,12,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rel.languages,knockout,nb,"M - K, relation languages",0.0,0,0,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rel.people,knockout,nb,"M - K, relation people",13.7,4,26,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rel.cities,knockout,nb,"M - K, relation cities",8.3,2,16,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rel.companies,knockout,nb,"M - K, relation companies",-0.1,-8,8,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rel.landmarks,knockout,nb,"M - K, relation landmarks",0.0,0,0,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rel.dishes,knockout,nb,"M - K, relation dishes",20.0,6,35,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.rel.animals,knockout,nb,"M - K, relation animals",3.1,0,10,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.halfA,knockout,nb,"M - K, test half A",3.9,1,7,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.nb.halfB,knockout,nb,"M - K, test half B",8.5,4,14,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.ol.mk,knockout,ol,"M - K, J++ top 10",5.4,3,8,467,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.klost,knockout,ol,stated facts (K) lost,0.0,,,,abs,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rot,knockout,ol,"M - K, paper10_rot",1.7,1,3,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.u,knockout,ol,"M - K, unembed10",1.7,1,3,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.soft,knockout,ol,M - K by probability,4.2,3,5,,points,results/ablate_v2/soft_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.lostK,knockout,ol,"points lost, final K",0.0,,,,abs,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.lostP,knockout,ol,"points lost, final P",4.5,,,,abs,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.lostA,knockout,ol,"points lost, final A",1.3,,,,abs,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.lostN,knockout,ol,"points lost, final N",3.4,,,,abs,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.lostM,knockout,ol,"points lost, final M",5.4,,,,abs,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.startP,knockout,ol,"M - K, start P",7.0,4,11,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.startT,knockout,ol,"M - K, start T",16.7,4,33,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.startM,knockout,ol,"M - K, start M",2.3,0,5,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rel.countries,knockout,ol,"M - K, relation countries",4.8,0,11,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rel.languages,knockout,ol,"M - K, relation languages",7.8,2,15,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rel.people,knockout,ol,"M - K, relation people",3.9,0,9,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rel.cities,knockout,ol,"M - K, relation cities",5.9,1,11,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rel.companies,knockout,ol,"M - K, relation companies",3.3,0,8,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rel.landmarks,knockout,ol,"M - K, relation landmarks",1.8,0,6,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rel.dishes,knockout,ol,"M - K, relation dishes",12.5,3,22,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.rel.animals,knockout,ol,"M - K, relation animals",5.7,0,19,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.halfA,knockout,ol,"M - K, test half A",6.5,4,10,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.ol.halfB,knockout,ol,"M - K, test half B",4.1,2,7,,points,results/ablate_v2/jsuite2_score/olmo32_jsuite_v2_test_qa_ko_cand2_L12-20_v1.json
+ko.mu.mk,knockout,mu,"M - K, J++ top 10",59.9,55,65,541,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.klost,knockout,mu,stated facts (K) lost,1.8,,,,abs,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rot,knockout,mu,"M - K, paper10_rot",2.6,1,4,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.u,knockout,mu,"M - K, unembed10",34.6,29,40,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.soft,knockout,mu,M - K by probability,49.4,46,53,,points,results/ablate_v2/soft_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.lostK,knockout,mu,"points lost, final K",1.8,,,,abs,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.lostP,knockout,mu,"points lost, final P",3.1,,,,abs,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.lostA,knockout,mu,"points lost, final A",23.7,,,,abs,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.lostN,knockout,mu,"points lost, final N",51.2,,,,abs,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.lostM,knockout,mu,"points lost, final M",61.7,,,,abs,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.startP,knockout,mu,"M - K, start P",57.8,51,64,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.startT,knockout,mu,"M - K, start T",78.9,61,93,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.startM,knockout,mu,"M - K, start M",59.1,53,65,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rel.countries,knockout,mu,"M - K, relation countries",61.1,43,76,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rel.languages,knockout,mu,"M - K, relation languages",59.7,40,77,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rel.people,knockout,mu,"M - K, relation people",76.9,68,86,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rel.cities,knockout,mu,"M - K, relation cities",53.8,40,68,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rel.companies,knockout,mu,"M - K, relation companies",57.7,45,70,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rel.landmarks,knockout,mu,"M - K, relation landmarks",51.5,37,65,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rel.dishes,knockout,mu,"M - K, relation dishes",63.6,51,76,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.rel.animals,knockout,mu,"M - K, relation animals",52.4,35,72,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.halfA,knockout,mu,"M - K, test half A",62.2,55,69,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.mu.halfB,knockout,mu,"M - K, test half B",57.3,50,65,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json
+r.mu,never named,mu,RM - MM (bridge never named minus named once),10.1,2,18,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1+muse30_jsuite_v2_1_test_chat_R_ko_cand2_v1.json
+ko.q122.mk,knockout,q122,"M - K, J++ top 10",48.5,44,54,778,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.klost,knockout,q122,stated facts (K) lost,0.8,,,,abs,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rot,knockout,q122,"M - K, paper10_rot",2.1,1,3,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.u,knockout,q122,"M - K, unembed10",11.8,9,15,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.soft,knockout,q122,M - K by probability,1.7,0,4,,points,results/ablate_v2/soft_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.lostK,knockout,q122,"points lost, final K",0.8,,,,abs,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.lostP,knockout,q122,"points lost, final P",11.3,,,,abs,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.lostA,knockout,q122,"points lost, final A",24.6,,,,abs,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.lostN,knockout,q122,"points lost, final N",37.0,,,,abs,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.lostM,knockout,q122,"points lost, final M",49.2,,,,abs,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.startP,knockout,q122,"M - K, start P",52.3,47,58,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.startT,knockout,q122,"M - K, start T",59.0,51,67,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.startM,knockout,q122,"M - K, start M",39.0,33,45,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rel.countries,knockout,q122,"M - K, relation countries",46.5,36,57,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rel.languages,knockout,q122,"M - K, relation languages",50.0,34,67,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rel.people,knockout,q122,"M - K, relation people",51.5,40,63,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rel.cities,knockout,q122,"M - K, relation cities",43.5,28,57,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rel.companies,knockout,q122,"M - K, relation companies",47.6,35,60,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rel.landmarks,knockout,q122,"M - K, relation landmarks",42.7,27,60,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rel.dishes,knockout,q122,"M - K, relation dishes",63.5,53,74,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.rel.animals,knockout,q122,"M - K, relation animals",42.5,26,59,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.halfA,knockout,q122,"M - K, test half A",49.3,43,56,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+ko.q122.halfB,knockout,q122,"M - K, test half B",47.5,41,54,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json
+r.q122,never named,q122,RM - MM (bridge never named minus named once),1.7,-5,8,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1+qwen35_122b_jsuite_v2_1_test_chat_R_ko_cand2_v1.json
+size.q27,knockout,q27,"share of the residual norm removed, J++ top 10",15.875,,,,pct,results/removal_size/removal_size_pca_L32-40_v1/summary.json
+size.q9,knockout,q9,"share of the residual norm removed, J++ top 10",12.717,,,,pct,results/removal_size/qwen35_9b_removal_size_pca_L12-16_v1/summary.json
+size.ds,knockout,ds,"share of the residual norm removed, J++ top 10",14.394,,,,pct,results/removal_size/dsv4f_removal_size_pca_L18-23_v1/summary.json
+size.mi,knockout,mi,"share of the residual norm removed, J++ top 10",19.622,,,,pct,results/removal_size/min14_removal_size_pca_L32-37_v1/summary.json
+size.nl,knockout,nl,"share of the residual norm removed, J++ top 10",17.699,,,,pct,results/removal_size/nem35l_removal_size_pca_L27-33_v1/summary.json
+size.nb,knockout,nb,"share of the residual norm removed, J++ top 10",5.642,,,,pct,results/removal_size/nem35b_removal_size_L42-53_v1/summary.json
+text.q27,gate,q27,plain-text loss added by the top-10 removal,0.305,,,,nats,results/removal_textloss/textloss_top_l32_40_v1/summary.json
+text.q27.rot,gate,q27,"plain-text loss added, rotated",0.074,,,,nats,results/removal_textloss/textloss_top_l32_40_v1/summary.json
+text.q9,gate,q9,plain-text loss added by the top-10 removal,0.455,,,,nats,results/removal_textloss/qwen35_9b_textloss_top_l12_16_v1/summary.json
+text.q9.rot,gate,q9,"plain-text loss added, rotated",0.025,,,,nats,results/removal_textloss/qwen35_9b_textloss_top_l12_16_v1/summary.json
+text.nl,gate,nl,plain-text loss added by the top-10 removal,1.674,,,,nats,results/removal_textloss/nem35l_textloss_top_v2gate_v1/summary.json
+text.nl.rot,gate,nl,"plain-text loss added, rotated",0.302,,,,nats,results/removal_textloss/nem35l_textloss_top_v2gate_v1/summary.json
+text.ds,gate,ds,plain-text loss added by the top-10 removal,1.681,,,,nats,results/removal_textloss/dsv4f_textloss_top_v2gate_v1/summary.json
+text.ds.rot,gate,ds,"plain-text loss added, rotated",0.594,,,,nats,results/removal_textloss/dsv4f_textloss_top_v2gate_v1/summary.json
+text.mi,gate,mi,plain-text loss added by the top-10 removal,0.625,,,,nats,results/removal_textloss/min14_textloss_top_v2gate_v1/summary.json
+text.mi.rot,gate,mi,"plain-text loss added, rotated",0.19,,,,nats,results/removal_textloss/min14_textloss_top_v2gate_v1/summary.json
+text.nb,gate,nb,plain-text loss added by the top-10 removal,0.198,,,,nats,results/removal_textloss/nem35b_textloss_top_v2gate_v1/summary.json
+text.nb.rot,gate,nb,"plain-text loss added, rotated",0.043,,,,nats,results/removal_textloss/nem35b_textloss_top_v2gate_v1/summary.json
+text.ol,gate,ol,plain-text loss added by the top-10 removal,0.037,,,,nats,results/removal_textloss/olmo32_textloss_top_l20_44_v1/summary.json
+text.ol.rot,gate,ol,"plain-text loss added, rotated",0.059,,,,nats,results/removal_textloss/olmo32_textloss_top_l20_44_v1/summary.json
+text.mu,gate,mu,plain-text loss added by the top-10 removal,0.942,,,,nats,results/removal_textloss/muse30_textloss_top_l36_42_v1/summary.json
+text.mu.rot,gate,mu,"plain-text loss added, rotated",0.085,,,,nats,results/removal_textloss/muse30_textloss_top_l36_42_v1/summary.json
+text.q122,gate,q122,plain-text loss added by the top-10 removal,1.261,,,,nats,results/removal_textloss/qwen35_122b_textloss_L39-45_v1/summary.json
+text.q122.rot,gate,q122,"plain-text loss added, rotated",0.081,,,,nats,results/removal_textloss/qwen35_122b_textloss_L39-45_v1/summary.json
+text.q32,gate,q32,plain-text loss added by the top-10 removal,0.897,,,,nats,results/removal_textloss/qwen3_32b_textloss_top_l44_52_v1/summary.json
+text.q32.rot,gate,q32,"plain-text loss added, rotated",0.08,,,,nats,results/removal_textloss/qwen3_32b_textloss_top_l44_52_v1/summary.json
+text.oh7,gate,oh7,plain-text loss added by the top-10 removal,-0.074,,,,nats,results/removal_textloss/olmoh7_textloss_top_l4_8_v1/summary.json
+text.oh7.rot,gate,oh7,"plain-text loss added, rotated",-0.007,,,,nats,results/removal_textloss/olmoh7_textloss_top_l4_8_v1/summary.json
+text.o7,gate,o7,plain-text loss added by the top-10 removal,0.223,,,,nats,results/removal_textloss/olmo3d7_textloss_top_l10_14_v1/summary.json
+text.o7.rot,gate,o7,"plain-text loss added, rotated",0.006,,,,nats,results/removal_textloss/olmo3d7_textloss_top_l10_14_v1/summary.json
+text.gemma,gate,gemma,plain-text loss added by the top-10 removal,9.252,,,,nats,results/removal_textloss/gemma4itf_sink_textloss_v1/summary.json
+text.gemma.rot,gate,gemma,"plain-text loss added, rotated",0.011,,,,nats,results/removal_textloss/gemma4itf_sink_textloss_v1/summary.json
+text.gptoss,gate,gptoss,plain-text loss added by the top-10 removal,4.726,,,,nats,results/removal_textloss/gptoss20_textloss_top_v1/summary.json
+text.gptoss.rot,gate,gptoss,"plain-text loss added, rotated",-0.043,,,,nats,results/removal_textloss/gptoss20_textloss_top_v1/summary.json
+text.kol,gate,kol,plain-text loss added by the top-10 removal,6.36,,,,nats,results/removal_textloss/kol1_textloss_top_l15_35_v1/summary.json
+text.kol.rot,gate,kol,"plain-text loss added, rotated",1.165,,,,nats,results/removal_textloss/kol1_textloss_top_l15_35_v1/summary.json
+clean.q27.rows,reruns,q27,rows compared (run of record vs clean checkout),22325.0,,,,count,clean worktree clean_jsuite_v2_test_chat_ko_cand2_v1
+clean.q27.diff,reruns,q27,rows whose answer differs,0.0,,,,count,clean worktree clean_jsuite_v2_test_chat_ko_cand2_v1
+clean.q9.rows,reruns,q9,rows compared (run of record vs clean checkout),14100.0,,,,count,clean worktree qwen35_9b_clean_jsuite_v2_test_chat_ko_cand2_v1
+clean.q9.diff,reruns,q9,rows whose answer differs,0.0,,,,count,clean worktree qwen35_9b_clean_jsuite_v2_test_chat_ko_cand2_v1
+clean.nl.rows,reruns,nl,rows compared (run of record vs clean checkout),14075.0,,,,count,clean worktree nem35l_clean_jsuite_v2_test_chat_ko_cand2_v1
+clean.nl.diff,reruns,nl,rows whose answer differs,9.0,,,,count,clean worktree nem35l_clean_jsuite_v2_test_chat_ko_cand2_v1
+clean.nl.mk_rerun,reruns,nl,"M - K, Lightning clean-checkout rerun",52.4,47,58,,points,results/checks/clean_nem35l_rerun_1027.json
+toy.q27.s1,datasets,q27,"toy puzzles, data seed 1: memory minus prompt finals",36.236,,,,points,results/ablate_v2/c1_v2/full2_ko_v1.json
+toy.q27.s2,datasets,q27,"toy puzzles, data seed 2: memory minus prompt finals",34.068,,,,points,results/ablate_v2/c1_v2/fresh2_ko_v1.json
+toy.q27.s3,datasets,q27,"toy puzzles, data seed 3: memory minus prompt finals",40.015,,,,points,results/ablate_v2/c1_v2/fresh3_ko_v1.json
+toy.q27.u,datasets,q27,"toy puzzles, logit lens",0.0,,,,points,results/ablate_v2/c1_specificity/full2_ko_unembed_v1.json
+nat.q27.s1,datasets,q27,"natural fact chains, seed 1",51.26,,,,points,results/ablate_v2/c1_v2/natural_v1_chat_ko_v1.json
+nat.q27.s2,datasets,q27,"natural fact chains, seed 2",44.099,,,,points,results/ablate_v2/c1_v2/natural_v2_chat_ko_v1.json
+nat.q27.s3,datasets,q27,"natural fact chains, seed 3",42.462,,,,points,results/ablate_v2/c1_v2/natural_v3_chat_ko_v1.json
+nat.q27.u,datasets,q27,"natural fact chains, logit lens",0.03,,,,points,results/ablate_v2/c1_specificity/natural_v1_chat_ko_unembed_v1.json
+natplus.q27,datasets,q27,natplus all/all paper10,52.1,47,58,,points,results/ablate_v2/natplus_split/natplus_v1_chat_ko_cand2_v1.json
+natplus.q27.u,datasets,q27,natplus all/all unembed10,0.4,-1,1,,points,results/ablate_v2/natplus_split/natplus_v1_chat_ko_cand2_v1.json
+natplus.q27.pop,datasets,q27,natplus popularity/popular paper10,50.4,44,57,,points,results/ablate_v2/natplus_split/natplus_v1_chat_ko_cand2_v1.json
+natplus.q27.rare,datasets,q27,natplus popularity/rare paper10,55.6,48,63,,points,results/ablate_v2/natplus_split/natplus_v1_chat_ko_cand2_v1.json
+v1.q27,datasets,q27,"jsuite v1 M - P (jsuite_v1_facts_test_chat_ko_cand2_v1, paper10)",50.2,43,57,,points,results/ablate_v2/jsuite_score/jsuite_v1_facts_test_chat_ko_cand2_v1.json
+v1.q27.u,datasets,q27,"jsuite v1 M - P (jsuite_v1_facts_test_chat_ko_cand2_v1, unembed10)",-1.1,-2,0,,points,results/ablate_v2/jsuite_score/jsuite_v1_facts_test_chat_ko_cand2_v1.json
+v1.q27.s2,datasets,q27,"jsuite v1 M - P (jsuite_v1_facts_s2_test_chat_ko_cand2_v1, paper10)",50.9,43,58,,points,results/ablate_v2/jsuite_score/jsuite_v1_facts_s2_test_chat_ko_cand2_v1.json
+v1.q27.prefill,datasets,q27,"jsuite v1 M - P (jsuite_v1_facts_test_prefill_ko_cand2_v1, paper10)",48.3,40,57,,points,results/ablate_v2/jsuite_score/jsuite_v1_facts_test_prefill_ko_cand2_v1.json
+toy.q9.s1,datasets,q9,"toy puzzles, data seed 1: memory minus prompt finals",38.157,,,,points,results/ablate_v2/c1_v2/qwen35_9b_full2_ko_v1.json
+toy.q9.s2,datasets,q9,"toy puzzles, data seed 2: memory minus prompt finals",22.822,,,,points,results/ablate_v2/c1_v2/qwen35_9b_fresh2_ko_v1.json
+toy.q9.s3,datasets,q9,"toy puzzles, data seed 3: memory minus prompt finals",30.882,,,,points,results/ablate_v2/c1_v2/qwen35_9b_fresh3_ko_v1.json
+toy.q9.u,datasets,q9,"toy puzzles, logit lens",-3.391,,,,points,results/ablate_v2/c1_specificity/qwen35_9b_full2_ko_unembed_v1.json
+nat.q9.s1,datasets,q9,"natural fact chains, seed 1",36.889,,,,points,results/ablate_v2/c1_v2/qwen35_9b_natural_v1_chat_ko_v1.json
+nat.q9.s2,datasets,q9,"natural fact chains, seed 2",37.956,,,,points,results/ablate_v2/c1_v2/qwen35_9b_natural_v2_chat_ko_v1.json
+nat.q9.s3,datasets,q9,"natural fact chains, seed 3",37.032,,,,points,results/ablate_v2/c1_v2/qwen35_9b_natural_v3_chat_ko_v1.json
+nat.q9.u,datasets,q9,"natural fact chains, logit lens",-4.524,,,,points,results/ablate_v2/c1_specificity/qwen35_9b_natural_v1_chat_ko_unembed_v1.json
+natplus.q9,datasets,q9,natplus all/all paper10,40.4,34,47,,points,results/ablate_v2/natplus_split/qwen35_9b_natplus_v1_chat_ko_cand2_v1.json
+natplus.q9.u,datasets,q9,natplus all/all unembed10,-5.0,-7,-3,,points,results/ablate_v2/natplus_split/qwen35_9b_natplus_v1_chat_ko_cand2_v1.json
+natplus.q9.pop,datasets,q9,natplus popularity/popular paper10,38.7,31,46,,points,results/ablate_v2/natplus_split/qwen35_9b_natplus_v1_chat_ko_cand2_v1.json
+natplus.q9.rare,datasets,q9,natplus popularity/rare paper10,43.9,32,55,,points,results/ablate_v2/natplus_split/qwen35_9b_natplus_v1_chat_ko_cand2_v1.json
+v1.q9,datasets,q9,"jsuite v1 M - P (qwen35_9b_jsuite_v1_facts_test_chat_ko_cand2_v1, paper10)",42.3,34,50,,points,results/ablate_v2/jsuite_score/qwen35_9b_jsuite_v1_facts_test_chat_ko_cand2_v1.json
+v1.q9.u,datasets,q9,"jsuite v1 M - P (qwen35_9b_jsuite_v1_facts_test_chat_ko_cand2_v1, unembed10)",-4.0,-7,-1,,points,results/ablate_v2/jsuite_score/qwen35_9b_jsuite_v1_facts_test_chat_ko_cand2_v1.json
+v1.q9.s2,datasets,q9,"jsuite v1 M - P (qwen35_9b_jsuite_v1_facts_s2_test_chat_ko_cand2_v1, paper10)",43.5,35,52,,points,results/ablate_v2/jsuite_score/qwen35_9b_jsuite_v1_facts_s2_test_chat_ko_cand2_v1.json
+v1.q9.prefill,datasets,q9,"jsuite v1 M - P (qwen35_9b_jsuite_v1_facts_test_prefill_ko_cand2_v1, paper10)",39.2,30,49,,points,results/ablate_v2/jsuite_score/qwen35_9b_jsuite_v1_facts_test_prefill_ko_cand2_v1.json
+v1.q9.qa,datasets,q9,jsuite v1 M - P (qwen35_9b_jsuite_v1_facts_test_qa_ko_cand2_v1),37.7,29,47,,points,results/ablate_v2/jsuite_score/qwen35_9b_jsuite_v1_facts_test_qa_ko_cand2_v1.json
+v1.q9base.qa,datasets,q9base,jsuite v1 M - P (qwen35_9bb_jsuite_v1_facts_test_qa_ko_cand2_v1),33.7,25,43,,points,results/ablate_v2/jsuite_score/qwen35_9bb_jsuite_v1_facts_test_qa_ko_cand2_v1.json
+v1.q9inst.qa,datasets,q9inst,jsuite v1 M - P (qwen35_9boj_jsuite_v1_facts_test_qa_ko_cand2_v1),41.2,33,49,,points,results/ablate_v2/jsuite_score/qwen35_9boj_jsuite_v1_facts_test_qa_ko_cand2_v1.json
+v1.q27.jlens,datasets,q27,jsuite v1 M - P (q27jlens_jsuite_v1_facts_test_chat_ko_cand2_v1),23.9,18,30,,points,results/ablate_v2/jsuite_score/q27jlens_jsuite_v1_facts_test_chat_ko_cand2_v1.json
+ko.q9base.mk,datasets,q9base,"M - K, 9B base model (Q&A)",35.1,30,40,518,points,results/ablate_v2/jsuite2_score/qwen35_9bb_jsuite_v2_test_qa_ko_cand2_v1.json
+old.q32.qwen3_32b_full2_ko_v1,datasets,q32,gap on qwen3_32b_full2_ko_v1,21.631,,,,points,results/ablate_v2/c1_v2/qwen3_32b_full2_ko_v1.json
+old.q32.qwen3_32b_fresh2_ko_v1,datasets,q32,gap on qwen3_32b_fresh2_ko_v1,17.157,,,,points,results/ablate_v2/c1_v2/qwen3_32b_fresh2_ko_v1.json
+old.mu.muse30_full2_ko_v1,datasets,mu,gap on muse30_full2_ko_v1,7.14,,,,points,results/ablate_v2/c1_v2/muse30_full2_ko_v1.json
+old.oh7.olmoh7_big2_ko_v1,datasets,oh7,gap on olmoh7_big2_ko_v1,1.367,,,,points,results/ablate_v2/c1_v2/olmoh7_big2_ko_v1.json
+old.o7.olmo3d7_big2_ko_v1,datasets,o7,gap on olmo3d7_big2_ko_v1,3.762,,,,points,results/ablate_v2/c1_v2/olmo3d7_big2_ko_v1.json
+old.q122.qwen35_122b_full2_ko_v1,datasets,q122,gap on qwen35_122b_full2_ko_v1,9.294,,,,points,results/ablate_v2/c1_v2/qwen35_122b_full2_ko_v1.json
+old.oh7.olmoh7_natural_v1_chat_ko_v1,datasets,oh7,gap on olmoh7_natural_v1_chat_ko_v1,0.915,,,,points,results/ablate_v2/c1_v2/olmoh7_natural_v1_chat_ko_v1.json
+old.o7.olmo3d7_natural_v1_chat_ko_v1,datasets,o7,gap on olmo3d7_natural_v1_chat_ko_v1,16.978,,,,points,results/ablate_v2/c1_v2/olmo3d7_natural_v1_chat_ko_v1.json
+keepown.toy.q27,keep-own,q27,toy: share of the loss restored by keeping the own word,0.197,,,,ratio,results/ablate_v2/c1_v2/full2_ko_keepown_v1.json
+keepown.toy.q9,keep-own,q9,toy: share of the loss restored by keeping the own word,0.258,,,,ratio,results/ablate_v2/c1_v2/qwen35_9b_full2_ko_keepown_v1.json
+keepown.toy.q32,keep-own,q32,toy: share of the loss restored by keeping the own word,-0.1,,,,ratio,results/ablate_v2/c1_v2/qwen3_32b_full2_ko_keepown_v1.json
+keepown.q27.mk,keep-own,q27,"M - K, paper10 (keep-own run)",51.9,46,58,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_keepown_s150_v1.json
+keepown.q27.mkk,keep-own,q27,"M - K, own word kept",48.8,43,55,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_keepown_s150_v1.json
+keepown.q27,keep-own,q27,share restored by keeping the own word,0.06,,,,ratio,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_keepown_s150_v1.json
+keepown.q9.mk,keep-own,q9,"M - K, paper10 (keep-own run)",44.0,38,51,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_keepown_s150_v1.json
+keepown.q9.mkk,keep-own,q9,"M - K, own word kept",36.7,31,43,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_keepown_s150_v1.json
+keepown.q9,keep-own,q9,share restored by keeping the own word,0.166,,,,ratio,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_keepown_s150_v1.json
+keepown.nl.mk,keep-own,nl,"M - K, paper10 (keep-own run)",51.2,45,57,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_keepown_s150_v1.json
+keepown.nl.mkk,keep-own,nl,"M - K, own word kept",40.1,34,46,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_keepown_s150_v1.json
+keepown.nl,keep-own,nl,share restored by keeping the own word,0.217,,,,ratio,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_keepown_s150_v1.json
+keepown.mi.mk,keep-own,mi,"M - K, paper10 (keep-own run)",26.4,22,31,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_keepown_s150_v1.json
+keepown.mi.mkk,keep-own,mi,"M - K, own word kept",24.8,20,30,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_keepown_s150_v1.json
+keepown.mi,keep-own,mi,share restored by keeping the own word,0.061,,,,ratio,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_keepown_s150_v1.json
+pos.q27.P.all,positions,q27,"M - K, start P, every token",50.6,45,56,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q27.P.bridge,positions,q27,"M - K, start P, posbridge",38.2,33,44,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q27.P.context,positions,q27,"M - K, start P, poscontext",34.0,28,40,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q27.P.question,positions,q27,"M - K, start P, posquestion",5.3,3,8,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q27.T.all,positions,q27,"M - K, start T, every token",59.5,53,67,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q27.T.bridge,positions,q27,"M - K, start T, posbridge",51.5,45,59,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q27.T.context,positions,q27,"M - K, start T, poscontext",44.9,38,52,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q27.T.question,positions,q27,"M - K, start T, posquestion",18.5,12,25,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q27.M.all,positions,q27,"M - K, start M, every token",45.3,39,52,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q27.M.bridge,positions,q27,"M - K, start M, posbridge",5.8,3,9,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q27.M.context,positions,q27,"M - K, start M, poscontext",5.5,3,8,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q27.M.question,positions,q27,"M - K, start M, posquestion",10.7,7,15,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q27.all.all,positions,q27,"M - K, start all, every token",50.9,46,55,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q27.all.bridge,positions,q27,"M - K, start all, posbridge",29.7,26,33,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q27.all.context,positions,q27,"M - K, start all, poscontext",26.3,22,30,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q27.all.question,positions,q27,"M - K, start all, posquestion",10.7,8,13,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q9.P.all,positions,q9,"M - K, start P, every token",50.4,43,57,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q9.P.bridge,positions,q9,"M - K, start P, posbridge",47.7,41,55,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q9.P.context,positions,q9,"M - K, start P, poscontext",46.1,39,53,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q9.P.question,positions,q9,"M - K, start P, posquestion",4.3,2,7,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q9.T.all,positions,q9,"M - K, start T, every token",60.3,44,75,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q9.T.bridge,positions,q9,"M - K, start T, posbridge",70.7,57,82,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q9.T.context,positions,q9,"M - K, start T, poscontext",58.6,44,73,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q9.T.question,positions,q9,"M - K, start T, posquestion",17.2,7,27,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q9.M.all,positions,q9,"M - K, start M, every token",30.4,24,38,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q9.M.bridge,positions,q9,"M - K, start M, posbridge",10.1,6,15,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q9.M.context,positions,q9,"M - K, start M, poscontext",8.9,5,13,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q9.M.question,positions,q9,"M - K, start M, posquestion",5.7,3,9,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q9.all.all,positions,q9,"M - K, start all, every token",42.6,37,49,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.q9.all.bridge,positions,q9,"M - K, start all, posbridge",33.6,29,38,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q9.all.context,positions,q9,"M - K, start all, poscontext",31.1,27,36,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.q9.all.question,positions,q9,"M - K, start all, posquestion",6.2,4,8,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.nl.P.all,positions,nl,"M - K, start P, every token",60.4,54,67,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.nl.P.bridge,positions,nl,"M - K, start P, posbridge",28.0,22,34,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.nl.P.context,positions,nl,"M - K, start P, poscontext",21.5,16,27,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.nl.P.question,positions,nl,"M - K, start P, posquestion",21.1,16,27,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.nl.T.all,positions,nl,"M - K, start T, every token",75.9,65,86,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.nl.T.bridge,positions,nl,"M - K, start T, posbridge",48.5,36,62,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.nl.T.context,positions,nl,"M - K, start T, poscontext",59.1,47,72,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.nl.T.question,positions,nl,"M - K, start T, posquestion",48.5,36,61,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.nl.M.all,positions,nl,"M - K, start M, every token",37.4,30,45,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.nl.M.bridge,positions,nl,"M - K, start M, posbridge",1.4,0,3,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.nl.M.context,positions,nl,"M - K, start M, poscontext",0.9,0,2,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.nl.M.question,positions,nl,"M - K, start M, posquestion",17.1,12,22,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.nl.all.all,positions,nl,"M - K, start all, every token",53.1,48,59,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json
+pos.nl.all.bridge,positions,nl,"M - K, start all, posbridge",19.9,16,24,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.nl.all.context,positions,nl,"M - K, start all, poscontext",17.8,14,21,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_poscontext_v1.json
+pos.nl.all.question,positions,nl,"M - K, start all, posquestion",22.7,18,27,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.q27late.bridge,positions,q27late,M - K at jsuite_v2_test_chat_ko_cand2_L52-60_posbridge_v1,2.9,2,4,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L52-60_posbridge_v1.json
+pos.q27late.question,positions,q27late,M - K at jsuite_v2_test_chat_ko_cand2_L52-60_posquestion_v1,47.1,43,52,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L52-60_posquestion_v1.json
+pos.mi.bridge,positions,mi,M - K at min14_jsuite_v2_test_chat_ko_cand2_L32-37_posbridge_v1,0.0,0,0,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_posbridge_v1.json
+pos.mi.question,positions,mi,M - K at min14_jsuite_v2_test_chat_ko_cand2_L32-37_posquestion_v1,24.0,20,29,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_posquestion_v1.json
+pos.q122.bridge,positions,q122,M - K at qwen35_122b_jsuite_v2_test_chat_ko_cand2_posbridge_v1,10.0,8,13,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
+pos.q122.question,positions,q122,M - K at qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1,28.3,24,33,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
+pos.ds.question,positions,ds,M - K at dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_posquestion_v1,8.3,6,11,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_posquestion_v1.json
+pos.nb.bridge,positions,nb,M - K at nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posbridge_s150_v1,17.8,13,22,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posbridge_s150_v1.json
+pos.nb.question,positions,nb,M - K at nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posquestion_s150_v1,11.5,8,15,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posquestion_s150_v1.json
+swap.q27.swap,swaps,q27,"transfer, memory finals pooled, swap (jswap_v2_v1)",63.0,57.1,68.9,1696,points,results/jswap/jswap_v2_v1/rows.jsonl
+swap.q27.paste,swaps,q27,"transfer, memory finals pooled, paste (jswap_v2_v1)",62.2,57.1,67.1,1696,points,results/jswap/jswap_v2_v1/rows.jsonl
+swap.q27.swap_comp,swaps,q27,"transfer, memory finals pooled, swap_comp (jswap_v2_v1)",38.4,33.8,43.1,1696,points,results/jswap/jswap_v2_v1/rows.jsonl
+swap.q27.swap_rot,swaps,q27,"transfer, memory finals pooled, swap_rot (jswap_v2_v1)",-0.2,-0.5,0.1,1696,points,results/jswap/jswap_v2_v1/rows.jsonl
+swap.q27.swap_u,swaps,q27,"transfer, memory finals pooled, swap_u (jswap_v2_v1)",0.0,0.0,0.0,1696,points,results/jswap/jswap_v2_v1/rows.jsonl
+swap.q9.swap,swaps,q9,"transfer, memory finals pooled, swap (qwen35_9b_jswap_v2_v1)",63.9,58.2,69.3,950,points,results/jswap/qwen35_9b_jswap_v2_v1/rows.jsonl
+swap.q9.paste,swaps,q9,"transfer, memory finals pooled, paste (qwen35_9b_jswap_v2_v1)",42.1,36.7,47.6,950,points,results/jswap/qwen35_9b_jswap_v2_v1/rows.jsonl
+swap.q9.swap_comp,swaps,q9,"transfer, memory finals pooled, swap_comp (qwen35_9b_jswap_v2_v1)",14.0,10.3,17.8,950,points,results/jswap/qwen35_9b_jswap_v2_v1/rows.jsonl
+swap.q9.swap_rot,swaps,q9,"transfer, memory finals pooled, swap_rot (qwen35_9b_jswap_v2_v1)",-0.3,-0.8,0.1,950,points,results/jswap/qwen35_9b_jswap_v2_v1/rows.jsonl
+swap.q9.swap_u,swaps,q9,"transfer, memory finals pooled, swap_u (qwen35_9b_jswap_v2_v1)",0.0,-0.3,0.2,950,points,results/jswap/qwen35_9b_jswap_v2_v1/rows.jsonl
+swap.nl.swap,swaps,nl,"transfer, memory finals pooled, swap (nem35l_jswap_v2_v1)",44.8,39.3,50.0,1030,points,results/jswap/nem35l_jswap_v2_v1/rows.jsonl
+swap.nl.paste,swaps,nl,"transfer, memory finals pooled, paste (nem35l_jswap_v2_v1)",13.8,9.8,18.0,1030,points,results/jswap/nem35l_jswap_v2_v1/rows.jsonl
+swap.nl.swap_comp,swaps,nl,"transfer, memory finals pooled, swap_comp (nem35l_jswap_v2_v1)",5.6,2.5,9.2,1030,points,results/jswap/nem35l_jswap_v2_v1/rows.jsonl
+swap.nl.swap_rot,swaps,nl,"transfer, memory finals pooled, swap_rot (nem35l_jswap_v2_v1)",-0.6,-1.3,0.1,1030,points,results/jswap/nem35l_jswap_v2_v1/rows.jsonl
+swap.nl.swap_u,swaps,nl,"transfer, memory finals pooled, swap_u (nem35l_jswap_v2_v1)",1.3,0.4,2.3,1030,points,results/jswap/nem35l_jswap_v2_v1/rows.jsonl
+swap.ol.swap,swaps,ol,"transfer, memory finals pooled, swap (olmo32_jswap_v2_v1)",41.4,35.5,47.1,753,points,results/jswap/olmo32_jswap_v2_v1/rows.jsonl
+swap.ol.paste,swaps,ol,"transfer, memory finals pooled, paste (olmo32_jswap_v2_v1)",53.1,46.6,58.9,753,points,results/jswap/olmo32_jswap_v2_v1/rows.jsonl
+swap.ol.swap_comp,swaps,ol,"transfer, memory finals pooled, swap_comp (olmo32_jswap_v2_v1)",51.4,45.4,57.2,753,points,results/jswap/olmo32_jswap_v2_v1/rows.jsonl
+swap.ol.swap_rot,swaps,ol,"transfer, memory finals pooled, swap_rot (olmo32_jswap_v2_v1)",0.1,-0.3,0.7,753,points,results/jswap/olmo32_jswap_v2_v1/rows.jsonl
+swap.ol.swap_u,swaps,ol,"transfer, memory finals pooled, swap_u (olmo32_jswap_v2_v1)",0.1,-0.3,0.6,753,points,results/jswap/olmo32_jswap_v2_v1/rows.jsonl
+swap.nb.swap,swaps,nb,"transfer, memory finals pooled, swap (nem35b_jswap_v2_v1)",2.8,1.2,4.5,698,points,results/jswap/nem35b_jswap_v2_v1/rows.jsonl
+swap.nb.paste,swaps,nb,"transfer, memory finals pooled, paste (nem35b_jswap_v2_v1)",19.5,14.1,25.3,698,points,results/jswap/nem35b_jswap_v2_v1/rows.jsonl
+swap.nb.swap_comp,swaps,nb,"transfer, memory finals pooled, swap_comp (nem35b_jswap_v2_v1)",19.4,14.2,24.7,698,points,results/jswap/nem35b_jswap_v2_v1/rows.jsonl
+swap.nb.swap_rot,swaps,nb,"transfer, memory finals pooled, swap_rot (nem35b_jswap_v2_v1)",0.0,-0.4,0.4,698,points,results/jswap/nem35b_jswap_v2_v1/rows.jsonl
+swap.nb.swap_u,swaps,nb,"transfer, memory finals pooled, swap_u (nem35b_jswap_v2_v1)",0.6,-0.2,1.4,698,points,results/jswap/nem35b_jswap_v2_v1/rows.jsonl
+swap.nb.k100.swap,swaps,nb,"transfer, memory finals pooled, swap (nem35b_jswap_v2_k100_v1)",41.3,34.9,47.7,698,points,results/jswap/nem35b_jswap_v2_k100_v1/rows.jsonl
+swap.nb.k100.paste,swaps,nb,"transfer, memory finals pooled, paste (nem35b_jswap_v2_k100_v1)",19.5,14.1,25.3,698,points,results/jswap/nem35b_jswap_v2_k100_v1/rows.jsonl
+swap.nb.k100.swap_comp,swaps,nb,"transfer, memory finals pooled, swap_comp (nem35b_jswap_v2_k100_v1)",18.5,13.3,24.0,698,points,results/jswap/nem35b_jswap_v2_k100_v1/rows.jsonl
+swap.nb.k100.swap_rot,swaps,nb,"transfer, memory finals pooled, swap_rot (nem35b_jswap_v2_k100_v1)",-0.6,-1.4,0.2,698,points,results/jswap/nem35b_jswap_v2_k100_v1/rows.jsonl
+swap.nb.k100.swap_u,swaps,nb,"transfer, memory finals pooled, swap_u (nem35b_jswap_v2_k100_v1)",1.3,0.3,2.4,698,points,results/jswap/nem35b_jswap_v2_k100_v1/rows.jsonl
+swap.ds.mid.swap,swaps,ds,"transfer, memory finals pooled, swap (dsv4f_jswap_v2_L22-27_v1)",10.2,7.5,13.4,784,points,results/jswap/dsv4f_jswap_v2_L22-27_v1/rows.jsonl
+swap.ds.mid.paste,swaps,ds,"transfer, memory finals pooled, paste (dsv4f_jswap_v2_L22-27_v1)",18.7,14.5,23.8,784,points,results/jswap/dsv4f_jswap_v2_L22-27_v1/rows.jsonl
+swap.ds.mid.swap_comp,swaps,ds,"transfer, memory finals pooled, swap_comp (dsv4f_jswap_v2_L22-27_v1)",15.1,10.7,19.6,784,points,results/jswap/dsv4f_jswap_v2_L22-27_v1/rows.jsonl
+swap.ds.mid.swap_rot,swaps,ds,"transfer, memory finals pooled, swap_rot (dsv4f_jswap_v2_L22-27_v1)",0.8,0.3,1.4,784,points,results/jswap/dsv4f_jswap_v2_L22-27_v1/rows.jsonl
+swap.ds.mid.swap_u,swaps,ds,"transfer, memory finals pooled, swap_u (dsv4f_jswap_v2_L22-27_v1)",3.8,2.2,5.5,784,points,results/jswap/dsv4f_jswap_v2_L22-27_v1/rows.jsonl
+swap.mi.mid.swap,swaps,mi,"transfer, memory finals pooled, swap (min14_jswap_v2_L20-25_v1)",2.6,1.6,3.7,1212,points,results/jswap/min14_jswap_v2_L20-25_v1/rows.jsonl
+swap.mi.mid.paste,swaps,mi,"transfer, memory finals pooled, paste (min14_jswap_v2_L20-25_v1)",9.5,6.7,12.6,1212,points,results/jswap/min14_jswap_v2_L20-25_v1/rows.jsonl
+swap.mi.mid.swap_comp,swaps,mi,"transfer, memory finals pooled, swap_comp (min14_jswap_v2_L20-25_v1)",8.4,5.6,11.5,1212,points,results/jswap/min14_jswap_v2_L20-25_v1/rows.jsonl
+swap.mi.mid.swap_rot,swaps,mi,"transfer, memory finals pooled, swap_rot (min14_jswap_v2_L20-25_v1)",0.1,0.0,0.3,1212,points,results/jswap/min14_jswap_v2_L20-25_v1/rows.jsonl
+swap.mi.mid.swap_u,swaps,mi,"transfer, memory finals pooled, swap_u (min14_jswap_v2_L20-25_v1)",0.0,0.0,0.0,1212,points,results/jswap/min14_jswap_v2_L20-25_v1/rows.jsonl
+swap.mi.mid.k100.swap,swaps,mi,"transfer, memory finals pooled, swap (min14_jswap_v2_L20-25_k100_v1)",4.9,3.3,6.5,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
+swap.mi.mid.k100.paste,swaps,mi,"transfer, memory finals pooled, paste (min14_jswap_v2_L20-25_k100_v1)",9.5,6.7,12.6,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
+swap.mi.mid.k100.swap_comp,swaps,mi,"transfer, memory finals pooled, swap_comp (min14_jswap_v2_L20-25_k100_v1)",8.5,5.8,11.7,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
+swap.mi.mid.k100.swap_rot,swaps,mi,"transfer, memory finals pooled, swap_rot (min14_jswap_v2_L20-25_k100_v1)",0.1,-0.2,0.3,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
+swap.mi.mid.k100.swap_u,swaps,mi,"transfer, memory finals pooled, swap_u (min14_jswap_v2_L20-25_k100_v1)",0.1,0.0,0.3,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
+ans.q27.swap,swaps,q27,"transfer (PM), swap",65.8,58.7,72.8,,points,results/jswap/jswap_ans_v2_v1/summary.json
+ans.q27.swap_noans,swaps,q27,"transfer (PM), swap_noans",65.8,59.2,72.6,,points,results/jswap/jswap_ans_v2_v1/summary.json
+ans.q27.swap_ans,swaps,q27,"transfer (PM), swap_ans",28.9,23.5,34.6,,points,results/jswap/jswap_ans_v2_v1/summary.json
+ans.q27.swap_ans_rot,swaps,q27,"transfer (PM), swap_ans_rot",0.0,0.0,0.0,,points,results/jswap/jswap_ans_v2_v1/summary.json
+ans.q9.swap,swaps,q9,"transfer (PM), swap",69.2,62.0,75.7,,points,results/jswap/qwen35_9b_jswap_ans_v2_v1/summary.json
+ans.q9.swap_noans,swaps,q9,"transfer (PM), swap_noans",70.0,63.0,76.9,,points,results/jswap/qwen35_9b_jswap_ans_v2_v1/summary.json
+ans.q9.swap_ans,swaps,q9,"transfer (PM), swap_ans",24.0,18.4,30.1,,points,results/jswap/qwen35_9b_jswap_ans_v2_v1/summary.json
+ans.q9.swap_ans_rot,swaps,q9,"transfer (PM), swap_ans_rot",0.0,0.0,0.0,,points,results/jswap/qwen35_9b_jswap_ans_v2_v1/summary.json
+xrel.q27,pointer,q27,cross-relation / same-relation donor,0.991,,,,ratio,results/jswap/jswap_xrel_v2_v1/summary.json
+ptr.q27.swap,pointer,q27,"J-part swap, same passage",64.0,57.5,70.4,898,points,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.neutral,pointer,q27,neutral-sentence donor / same-passage swap,1.094,,,,ratio,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.noown,pointer,q27,without own-word directions / swap,0.842,,,,ratio,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.rot,pointer,q27,"neutral donor, rotated",-0.8,,,,points,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.rel_held,pointer,q27,relations where the neutral donor keeps >= 2/3,8.0,,,,count,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.rel_read,pointer,q27,relations read (swap >= 10),8.0,,,,count,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+ptr.q27.lookup,pointer,q27,first layer where the lens reads X's attribute on >= 50% (answer position),50.0,,,,layer,results/jswap/jswap_pointer_v2_s150_v1/summary.json
+probe.q27.swap,probe,q27,J++ swap on probe-valid relations,74.8,,,,points,results/probe_ceiling/probe_ceiling_L32-40_v1/summary.json
+probe.q27.probe,probe,q27,probe-subspace swap,8.3,,,,points,results/probe_ceiling/probe_ceiling_L32-40_v1/summary.json
+xrel.q9,pointer,q9,cross-relation / same-relation donor,0.988,,,,ratio,results/jswap/qwen35_9b_jswap_xrel_v2_v1/summary.json
+ptr.q9.swap,pointer,q9,"J-part swap, same passage",63.5,57.8,69.6,624,points,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+ptr.q9.neutral,pointer,q9,neutral-sentence donor / same-passage swap,1.099,,,,ratio,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+ptr.q9.noown,pointer,q9,without own-word directions / swap,0.827,,,,ratio,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+ptr.q9.rot,pointer,q9,"neutral donor, rotated",0.7,,,,points,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+ptr.q9.rel_held,pointer,q9,relations where the neutral donor keeps >= 2/3,8.0,,,,count,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+ptr.q9.rel_read,pointer,q9,relations read (swap >= 10),8.0,,,,count,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+ptr.q9.lookup,pointer,q9,first layer where the lens reads X's attribute on >= 50% (answer position),23.0,,,,layer,results/jswap/qwen35_9b_jswap_pointer_v2_s150_v1/summary.json
+probe.q9.swap,probe,q9,J++ swap on probe-valid relations,79.5,,,,points,results/probe_ceiling/qwen35_9b_probe_ceiling_L12-16_v1/summary.json
+probe.q9.probe,probe,q9,probe-subspace swap,5.5,,,,points,results/probe_ceiling/qwen35_9b_probe_ceiling_L12-16_v1/summary.json
+xrel.nl,pointer,nl,cross-relation / same-relation donor,0.984,,,,ratio,results/jswap/nem35l_jswap_xrel_v2_v1/summary.json
+ptr.nl.swap,pointer,nl,"J-part swap, same passage",45.8,39.6,51.6,654,points,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.nl.neutral,pointer,nl,neutral-sentence donor / same-passage swap,1.007,,,,ratio,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.nl.noown,pointer,nl,without own-word directions / swap,0.622,,,,ratio,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.nl.rot,pointer,nl,"neutral donor, rotated",-0.5,,,,points,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.nl.rel_held,pointer,nl,relations where the neutral donor keeps >= 2/3,7.0,,,,count,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.nl.rel_read,pointer,nl,relations read (swap >= 10),7.0,,,,count,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+ptr.nl.lookup,pointer,nl,first layer where the lens reads X's attribute on >= 50% (answer position),32.0,,,,layer,results/jswap/nem35l_jswap_pointer_v2_s150_v1/summary.json
+probe.nl.swap,probe,nl,J++ swap on probe-valid relations,62.4,,,,points,results/probe_ceiling/nem35l_probe_ceiling_L27-33_v1/summary.json
+probe.nl.probe,probe,nl,probe-subspace swap,2.2,,,,points,results/probe_ceiling/nem35l_probe_ceiling_L27-33_v1/summary.json
+dose.q27.k1,dose,q27,"M - K, J++ top 1",34.5,29,40,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k1.rot,dose,q27,rot at K 1,2.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k1.smk,dose,q27,smk at K 1,34.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k1.K,dose,q27,K at K 1,0.4,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k1.sK,dose,q27,sK at K 1,1.3,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k1.exc,dose,q27,exc at K 1,32.5,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k1.share,dose,q27,residual share removed at K 1,10.352,,,,pct,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k3,dose,q27,"M - K, J++ top 3",43.4,38,49,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k3.rot,dose,q27,rot at K 3,3.1,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k3.smk,dose,q27,smk at K 3,42.9,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k3.K,dose,q27,K at K 3,0.9,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k3.sK,dose,q27,sK at K 3,2.6,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k3.exc,dose,q27,exc at K 3,40.3,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k3.share,dose,q27,residual share removed at K 3,13.063,,,,pct,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10,dose,q27,"M - K, J++ top 10",51.9,46,58,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.rot,dose,q27,rot at K 10,3.1,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.pc,dose,q27,pc at K 10,13.4,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.u,dose,q27,u at K 10,2.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.smk,dose,q27,smk at K 10,50.1,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.spc,dose,q27,spc at K 10,8.7,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.K,dose,q27,K at K 10,2.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.sK,dose,q27,sK at K 10,6.4,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.exc,dose,q27,exc at K 10,38.5,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k10.share,dose,q27,residual share removed at K 10,15.875,,,,pct,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30,dose,q27,"M - K, J++ top 30",65.3,59,71,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.rot,dose,q27,rot at K 30,4.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.pc,dose,q27,pc at K 30,15.8,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.u,dose,q27,u at K 30,2.2,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.smk,dose,q27,smk at K 30,55.1,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.spc,dose,q27,spc at K 30,8.1,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.K,dose,q27,K at K 30,6.9,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.sK,dose,q27,sK at K 30,15.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.exc,dose,q27,exc at K 30,49.5,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k30.share,dose,q27,residual share removed at K 30,18.5,,,,pct,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100,dose,q27,"M - K, J++ top 100",65.3,60,70,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.rot,dose,q27,rot at K 100,6.2,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.pc,dose,q27,pc at K 100,23.6,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.u,dose,q27,u at K 100,3.6,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.smk,dose,q27,smk at K 100,40.7,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.spc,dose,q27,spc at K 100,18.9,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.K,dose,q27,K at K 100,20.0,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.sK,dose,q27,sK at K 100,37.9,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.exc,dose,q27,exc at K 100,41.7,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k100.share,dose,q27,residual share removed at K 100,22.315,,,,pct,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300,dose,q27,"M - K, J++ top 300",34.5,29,40,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.rot,dose,q27,rot at K 300,11.6,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.pc,dose,q27,pc at K 300,44.3,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.u,dose,q27,u at K 300,5.8,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.smk,dose,q27,smk at K 300,3.6,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.spc,dose,q27,spc at K 300,30.4,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.K,dose,q27,K at K 300,56.3,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.sK,dose,q27,sK at K 300,79.6,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.exc,dose,q27,exc at K 300,-9.8,,,,points,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.k300.share,dose,q27,residual share removed at K 300,28.008,,,,pct,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.kstar,dose,q27,plateau K* as pre-registered,30.0,,,,K,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.limit,dose,q27,"specificity limit as pre-registered (stated facts lose > 10, or size-matched > half of J++)",100.0,,,,K,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.ekstar,dose,q27,plateau K* on the J-specific excess (note 1),30.0,,,,K,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q27.plim,dose,q27,probability limit (stated facts lose > 10 by probability),30.0,,,,K,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_L32-40_dose54_s150_v1.json
+dose.q9.k1,dose,q9,"M - K, J++ top 1",33.9,28,40,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k1.rot,dose,q9,rot at K 1,3.1,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k1.smk,dose,q9,smk at K 1,27.6,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k1.K,dose,q9,K at K 1,3.1,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k1.sK,dose,q9,sK at K 1,5.9,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k1.exc,dose,q9,exc at K 1,30.8,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k1.share,dose,q9,residual share removed at K 1,8.939,,,,pct,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k3,dose,q9,"M - K, J++ top 3",37.5,32,44,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k3.rot,dose,q9,rot at K 3,3.1,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k3.smk,dose,q9,smk at K 3,31.6,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k3.K,dose,q9,K at K 3,5.0,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k3.sK,dose,q9,sK at K 3,7.8,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k3.exc,dose,q9,exc at K 3,34.4,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k3.share,dose,q9,residual share removed at K 3,10.886,,,,pct,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10,dose,q9,"M - K, J++ top 10",44.0,37,50,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.rot,dose,q9,rot at K 10,2.8,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.pc,dose,q9,pc at K 10,9.0,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.u,dose,q9,u at K 10,1.7,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.smk,dose,q9,smk at K 10,33.2,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.spc,dose,q9,spc at K 10,8.9,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.K,dose,q9,K at K 10,5.6,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.sK,dose,q9,sK at K 10,12.6,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.exc,dose,q9,exc at K 10,35.0,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k10.share,dose,q9,residual share removed at K 10,12.717,,,,pct,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30,dose,q9,"M - K, J++ top 30",46.5,40,52,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.rot,dose,q9,rot at K 30,4.5,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.pc,dose,q9,pc at K 30,11.2,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.u,dose,q9,u at K 30,2.2,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.smk,dose,q9,smk at K 30,33.4,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.spc,dose,q9,spc at K 30,10.9,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.K,dose,q9,K at K 30,6.7,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.sK,dose,q9,sK at K 30,21.9,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.exc,dose,q9,exc at K 30,35.3,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k30.share,dose,q9,residual share removed at K 30,15.166,,,,pct,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100,dose,q9,"M - K, J++ top 100",51.8,46,58,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.rot,dose,q9,rot at K 100,9.2,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.pc,dose,q9,pc at K 100,14.0,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.u,dose,q9,u at K 100,4.2,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.smk,dose,q9,smk at K 100,34.3,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.spc,dose,q9,spc at K 100,5.8,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.K,dose,q9,K at K 100,10.3,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.sK,dose,q9,sK at K 100,27.2,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.exc,dose,q9,exc at K 100,37.8,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k100.share,dose,q9,residual share removed at K 100,18.801,,,,pct,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300,dose,q9,"M - K, J++ top 300",40.4,34,47,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.rot,dose,q9,rot at K 300,15.7,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.pc,dose,q9,pc at K 300,20.0,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.u,dose,q9,u at K 300,5.0,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.smk,dose,q9,smk at K 300,16.7,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.spc,dose,q9,spc at K 300,-3.5,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.K,dose,q9,K at K 300,27.9,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.sK,dose,q9,sK at K 300,51.4,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.exc,dose,q9,exc at K 300,20.4,,,,points,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.k300.share,dose,q9,residual share removed at K 300,24.792,,,,pct,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.kstar,dose,q9,plateau K* as pre-registered,10.0,,,,K,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.limit,dose,q9,"specificity limit as pre-registered (stated facts lose > 10, or size-matched > half of J++)",100.0,,,,K,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.ekstar,dose,q9,plateau K* on the J-specific excess (note 1),3.0,,,,K,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.q9.plim,dose,q9,probability limit (stated facts lose > 10 by probability),10.0,,,,K,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_L12-16_dose54_s150_v1.json
+dose.nl.k1,dose,nl,"M - K, J++ top 1",46.1,40,53,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k1.rot,dose,nl,rot at K 1,3.0,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k1.smk,dose,nl,smk at K 1,37.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k1.K,dose,nl,K at K 1,1.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k1.sK,dose,nl,sK at K 1,8.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k1.exc,dose,nl,exc at K 1,43.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k1.share,dose,nl,residual share removed at K 1,11.529,,,,pct,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k3,dose,nl,"M - K, J++ top 3",49.6,44,56,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k3.rot,dose,nl,rot at K 3,2.5,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k3.smk,dose,nl,smk at K 3,40.5,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k3.K,dose,nl,K at K 3,4.6,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k3.sK,dose,nl,sK at K 3,9.6,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k3.exc,dose,nl,exc at K 3,47.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k3.share,dose,nl,residual share removed at K 3,14.222,,,,pct,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10,dose,nl,"M - K, J++ top 10",51.2,45,58,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.rot,dose,nl,rot at K 10,4.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.pc,dose,nl,pc at K 10,7.9,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.u,dose,nl,u at K 10,10.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.smk,dose,nl,smk at K 10,43.5,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.spc,dose,nl,spc at K 10,5.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.K,dose,nl,K at K 10,4.6,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.sK,dose,nl,sK at K 10,9.6,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.exc,dose,nl,exc at K 10,43.3,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k10.share,dose,nl,residual share removed at K 10,17.699,,,,pct,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30,dose,nl,"M - K, J++ top 30",53.7,48,60,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.rot,dose,nl,rot at K 30,5.2,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.pc,dose,nl,pc at K 30,8.7,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.u,dose,nl,u at K 30,11.4,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.smk,dose,nl,smk at K 30,31.4,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.spc,dose,nl,spc at K 30,7.7,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.K,dose,nl,K at K 30,2.2,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.sK,dose,nl,sK at K 30,28.7,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.exc,dose,nl,exc at K 30,45.0,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k30.share,dose,nl,residual share removed at K 30,21.526,,,,pct,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100,dose,nl,"M - K, J++ top 100",54.5,48,60,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.rot,dose,nl,rot at K 100,8.4,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.pc,dose,nl,pc at K 100,15.0,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.u,dose,nl,u at K 100,13.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.smk,dose,nl,smk at K 100,17.5,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.spc,dose,nl,spc at K 100,16.3,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.K,dose,nl,K at K 100,3.8,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.sK,dose,nl,sK at K 100,49.6,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.exc,dose,nl,exc at K 100,39.5,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k100.share,dose,nl,residual share removed at K 100,27.285,,,,pct,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300,dose,nl,"M - K, J++ top 300",68.9,64,74,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.rot,dose,nl,rot at K 300,18.3,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.pc,dose,nl,pc at K 300,30.3,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.u,dose,nl,u at K 300,14.2,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.smk,dose,nl,smk at K 300,18.1,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.spc,dose,nl,spc at K 300,20.3,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.K,dose,nl,K at K 300,4.6,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.sK,dose,nl,sK at K 300,56.4,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.exc,dose,nl,exc at K 300,38.6,,,,points,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.k300.share,dose,nl,residual share removed at K 300,35.833,,,,pct,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.kstar,dose,nl,plateau K* as pre-registered,300.0,,,,K,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.ekstar,dose,nl,plateau K* on the J-specific excess (note 1),1.0,,,,K,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.nl.plim,dose,nl,probability limit (stated facts lose > 10 by probability),30.0,,,,K,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_L27-33_dose54_s150_v1.json
+dose.mi.k1,dose,mi,"M - K, J++ top 1",20.7,17,25,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k1.rot,dose,mi,rot at K 1,0.5,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k1.smk,dose,mi,smk at K 1,24.3,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k1.K,dose,mi,K at K 1,1.9,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k1.sK,dose,mi,sK at K 1,10.7,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k1.exc,dose,mi,exc at K 1,20.2,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k1.share,dose,mi,residual share removed at K 1,12.019,,,,pct,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k3,dose,mi,"M - K, J++ top 3",24.8,20,29,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k3.rot,dose,mi,rot at K 3,1.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k3.smk,dose,mi,smk at K 3,33.5,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k3.K,dose,mi,K at K 3,1.9,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k3.sK,dose,mi,sK at K 3,12.5,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k3.exc,dose,mi,exc at K 3,23.8,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k3.share,dose,mi,residual share removed at K 3,15.842,,,,pct,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10,dose,mi,"M - K, J++ top 10",26.4,21,31,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.rot,dose,mi,rot at K 10,1.2,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.pc,dose,mi,pc at K 10,1.9,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.u,dose,mi,u at K 10,4.3,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.smk,dose,mi,smk at K 10,39.2,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.spc,dose,mi,spc at K 10,0.1,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.K,dose,mi,K at K 10,2.1,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.sK,dose,mi,sK at K 10,14.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.exc,dose,mi,exc at K 10,24.5,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k10.share,dose,mi,residual share removed at K 10,19.622,,,,pct,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30,dose,mi,"M - K, J++ top 30",28.3,23,34,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.rot,dose,mi,rot at K 30,1.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.pc,dose,mi,pc at K 30,1.9,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.u,dose,mi,u at K 30,4.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.smk,dose,mi,smk at K 30,40.2,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.spc,dose,mi,spc at K 30,0.6,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.K,dose,mi,K at K 30,0.7,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.sK,dose,mi,sK at K 30,12.1,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.exc,dose,mi,exc at K 30,26.4,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k30.share,dose,mi,residual share removed at K 30,22.3,,,,pct,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100,dose,mi,"M - K, J++ top 100",21.9,17,27,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.rot,dose,mi,rot at K 100,1.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.pc,dose,mi,pc at K 100,1.9,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.u,dose,mi,u at K 100,4.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.smk,dose,mi,smk at K 100,37.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.spc,dose,mi,spc at K 100,2.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.K,dose,mi,K at K 100,1.2,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.sK,dose,mi,sK at K 100,10.2,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.exc,dose,mi,exc at K 100,20.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k100.share,dose,mi,residual share removed at K 100,24.691,,,,pct,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300,dose,mi,"M - K, J++ top 300",19.3,15,24,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.rot,dose,mi,rot at K 300,1.2,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.pc,dose,mi,pc at K 300,3.3,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.u,dose,mi,u at K 300,5.5,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.smk,dose,mi,smk at K 300,35.3,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.spc,dose,mi,spc at K 300,2.5,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.K,dose,mi,K at K 300,1.2,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.sK,dose,mi,sK at K 300,13.1,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.exc,dose,mi,exc at K 300,16.0,,,,points,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.k300.share,dose,mi,residual share removed at K 300,28.822,,,,pct,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.kstar,dose,mi,plateau K* as pre-registered,10.0,,,,K,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.ekstar,dose,mi,plateau K* on the J-specific excess (note 1),3.0,,,,K,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.mi.plim,dose,mi,probability limit (stated facts lose > 10 by probability),1.0,,,,K,results/ablate_v2/jsuite2_score/min14_jsuite_v2_test_chat_ko_cand2_L32-37_dose54_s150_v1.json
+dose.nb.k1,dose,nb,"M - K, J++ top 1",0.0,0,0,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k1.rot,dose,nb,rot at K 1,0.0,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k1.smk,dose,nb,smk at K 1,-0.1,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k1.K,dose,nb,K at K 1,0.0,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k1.sK,dose,nb,sK at K 1,0.1,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k1.exc,dose,nb,exc at K 1,0.0,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k1.share,dose,nb,residual share removed at K 1,1.896,,,,pct,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k3,dose,nb,"M - K, J++ top 3",1.8,1,3,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k3.rot,dose,nb,rot at K 3,0.5,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k3.smk,dose,nb,smk at K 3,2.4,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k3.K,dose,nb,K at K 3,0.0,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k3.sK,dose,nb,sK at K 3,-0.1,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k3.exc,dose,nb,exc at K 3,1.3,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k3.share,dose,nb,residual share removed at K 3,2.967,,,,pct,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10,dose,nb,"M - K, J++ top 10",5.7,3,8,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.rot,dose,nb,rot at K 10,0.5,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.pc,dose,nb,pc at K 10,7.3,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.u,dose,nb,u at K 10,2.4,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.smk,dose,nb,smk at K 10,5.9,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.spc,dose,nb,spc at K 10,5.1,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.K,dose,nb,K at K 10,0.3,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.sK,dose,nb,sK at K 10,0.6,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.exc,dose,nb,exc at K 10,-1.6,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k10.share,dose,nb,residual share removed at K 10,5.642,,,,pct,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30,dose,nb,"M - K, J++ top 30",14.1,10,18,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.rot,dose,nb,rot at K 30,0.8,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.pc,dose,nb,pc at K 30,17.0,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.u,dose,nb,u at K 30,2.6,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.smk,dose,nb,smk at K 30,13.8,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.spc,dose,nb,spc at K 30,14.1,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.K,dose,nb,K at K 30,0.3,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.sK,dose,nb,sK at K 30,2.0,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.exc,dose,nb,exc at K 30,-2.9,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k30.share,dose,nb,residual share removed at K 30,9.981,,,,pct,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100,dose,nb,"M - K, J++ top 100",31.3,26,37,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.rot,dose,nb,rot at K 100,6.8,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.pc,dose,nb,pc at K 100,24.0,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.u,dose,nb,u at K 100,2.4,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.smk,dose,nb,smk at K 100,33.2,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.spc,dose,nb,spc at K 100,18.5,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.K,dose,nb,K at K 100,2.1,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.sK,dose,nb,sK at K 100,7.0,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.exc,dose,nb,exc at K 100,7.3,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k100.share,dose,nb,residual share removed at K 100,18.466,,,,pct,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300,dose,nb,"M - K, J++ top 300",21.8,17,27,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.rot,dose,nb,rot at K 300,21.4,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.pc,dose,nb,pc at K 300,26.2,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.u,dose,nb,u at K 300,2.6,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.smk,dose,nb,smk at K 300,-4.7,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.spc,dose,nb,spc at K 300,14.3,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.K,dose,nb,K at K 300,70.1,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.sK,dose,nb,sK at K 300,91.3,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.exc,dose,nb,exc at K 300,-4.4,,,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.k300.share,dose,nb,residual share removed at K 300,30.468,,,,pct,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+ko.nb.pcr,knockout,nb,"size-matched / J++ M - K at K 10 (dose run, 150 per word)",1.281,,,,ratio,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.kstar,dose,nb,plateau K* as pre-registered,3.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.limit,dose,nb,"specificity limit as pre-registered (stated facts lose > 10, or size-matched > half of J++)",10.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.ekstar,dose,nb,plateau K* on the J-specific excess (note 1),3.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+dose.nb.plim,dose,nb,probability limit (stated facts lose > 10 by probability),300.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+swapk.q9.k10,swap dose,q9,"J-part swap transfer, K 10",63.7,58.0,69.7,624,points,results/jswap/qwen35_9b_jswap_v2_k10_s150_v1/rows.jsonl
+swapk.q9.k30,swap dose,q9,"J-part swap transfer, K 30",70.9,65.2,76.6,624,points,results/jswap/qwen35_9b_jswap_v2_k30_s150_v1/rows.jsonl
+swapk.q9.k100,swap dose,q9,"J-part swap transfer, K 100",75.9,70.6,80.8,624,points,results/jswap/qwen35_9b_jswap_v2_k100_s150_v1/rows.jsonl
+swapk.nl.k10,swap dose,nl,"J-part swap transfer, K 10",45.8,39.6,51.6,654,points,results/jswap/nem35l_jswap_v2_k10_s150_v1/rows.jsonl
+swapk.nl.k30,swap dose,nl,"J-part swap transfer, K 30",49.1,42.6,55.0,654,points,results/jswap/nem35l_jswap_v2_k30_s150_v1/rows.jsonl
+swapk.nl.k100,swap dose,nl,"J-part swap transfer, K 100",55.3,49.2,61.1,654,points,results/jswap/nem35l_jswap_v2_k100_s150_v1/rows.jsonl
+swapk.nb.k10,swap dose,nb,"J-part swap transfer, K 10",2.8,1.2,4.5,698,points,results/jswap/nem35b_jswap_v2_v1/rows.jsonl
+swapk.nb.k30,swap dose,nb,"J-part swap transfer, K 30",10.0,7.1,13.0,698,points,results/jswap/nem35b_jswap_v2_k30_v1/rows.jsonl
+swapk.nb.k100,swap dose,nb,"J-part swap transfer, K 100",41.3,34.9,47.7,698,points,results/jswap/nem35b_jswap_v2_k100_v1/rows.jsonl
+swapk.mi.k10,swap dose,mi,"J-part swap transfer, K 10",2.6,1.6,3.7,1212,points,results/jswap/min14_jswap_v2_L20-25_v1/rows.jsonl
+swapk.mi.k30,swap dose,mi,"J-part swap transfer, K 30",3.5,2.3,4.9,1212,points,results/jswap/min14_jswap_v2_L20-25_k30_v1/rows.jsonl
+swapk.mi.k100,swap dose,mi,"J-part swap transfer, K 100",4.9,3.3,6.5,1212,points,results/jswap/min14_jswap_v2_L20-25_k100_v1/rows.jsonl
+hop3.q27.PPP,three hops,q27,"excess over PPP, PPP",0.0,0,0,123,points,results/ablate_v2/nat3_score/jsuite_v1_threehop_chat_ko_cand2_v1.json
+hop3.q27.MPP,three hops,q27,"excess over PPP, MPP",-3.0,-11,6,116,points,results/ablate_v2/nat3_score/jsuite_v1_threehop_chat_ko_cand2_v1.json
+hop3.q27.PMP,three hops,q27,"excess over PPP, PMP",-3.2,-12,5,133,points,results/ablate_v2/nat3_score/jsuite_v1_threehop_chat_ko_cand2_v1.json
+hop3.q27.PPM,three hops,q27,"excess over PPP, PPM",12.9,2,23,181,points,results/ablate_v2/nat3_score/jsuite_v1_threehop_chat_ko_cand2_v1.json
+hop3.q27.MPM,three hops,q27,"excess over PPP, MPM",24.5,16,33,168,points,results/ablate_v2/nat3_score/jsuite_v1_threehop_chat_ko_cand2_v1.json
+hop3.q27.MMP,three hops,q27,"excess over PPP, MMP",10.9,-1,24,128,points,results/ablate_v2/nat3_score/jsuite_v1_threehop_chat_ko_cand2_v1.json
+hop3.q27.PMM,three hops,q27,"excess over PPP, PMM",33.2,22,46,205,points,results/ablate_v2/nat3_score/jsuite_v1_threehop_chat_ko_cand2_v1.json
+hop3.q27.MMM,three hops,q27,"excess over PPP, MMM",35.1,21,49,156,points,results/ablate_v2/nat3_score/jsuite_v1_threehop_chat_ko_cand2_v1.json
+num.q27.KR-PR,numbers,q27,numbers KR-PR,0.0,0,0,,points,results/ablate_v2/ctxcomp_score/jsuite_v1_numbers_chat_ko_cand2_pi_v1.json
+num.q27.AR-PR,numbers,q27,numbers AR-PR,0.0,0,0,,points,results/ablate_v2/ctxcomp_score/jsuite_v1_numbers_chat_ko_cand2_pi_v1.json
+num.q27.MR-PR,numbers,q27,numbers MR-PR,15.2,9,21,,points,results/ablate_v2/ctxcomp_score/jsuite_v1_numbers_chat_ko_cand2_pi_v1.json
+num.q9.KR-PR,numbers,q9,numbers KR-PR,7.3,3,13,,points,results/ablate_v2/ctxcomp_score/qwen35_9b_jsuite_v1_numbers_chat_ko_cand2_pi_v1.json
+num.q9.AR-PR,numbers,q9,numbers AR-PR,0.9,0,3,,points,results/ablate_v2/ctxcomp_score/qwen35_9b_jsuite_v1_numbers_chat_ko_cand2_pi_v1.json
+num.q9.MR-PR,numbers,q9,numbers MR-PR,25.5,18,34,,points,results/ablate_v2/ctxcomp_score/qwen35_9b_jsuite_v1_numbers_chat_ko_cand2_pi_v1.json
+gen.q27.PM.bridge,spot-check,q27,PM: replies naming the bridge,1.0,,,100,pct,results/gen_spot/natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.q27.PM.right,spot-check,q27,PM: replies still right,43.0,,,100,pct,results/gen_spot/natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.q27.MM.bridge,spot-check,q27,MM: replies naming the bridge,0.0,,,92,pct,results/gen_spot/natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.q27.MM.right,spot-check,q27,MM: replies still right,38.043,,,92,pct,results/gen_spot/natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.q9.PM.bridge,spot-check,q9,PM: replies naming the bridge,5.051,,,99,pct,results/gen_spot/qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1/summary.json
+gen.q9.PM.right,spot-check,q9,PM: replies still right,46.465,,,99,pct,results/gen_spot/qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1/summary.json
+gen.q9.MM.bridge,spot-check,q9,MM: replies naming the bridge,0.0,,,84,pct,results/gen_spot/qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1/summary.json
+gen.q9.MM.right,spot-check,q9,MM: replies still right,44.048,,,84,pct,results/gen_spot/qwen35_9b_natplus_v1_chat_genspot_cand2_strat_v1/summary.json
+gen.mu.PM.bridge,spot-check,mu,PM: replies naming the bridge,52.525,,,99,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.mu.PM.right,spot-check,mu,PM: replies still right,27.273,,,99,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.mu.MM.bridge,spot-check,mu,MM: replies naming the bridge,2.353,,,85,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json
+gen.mu.MM.right,spot-check,mu,MM: replies still right,29.412,,,85,pct,results/gen_spot/muse30_natplus_v1_chat_genspot_cand2_v1/summary.json

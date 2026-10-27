@@ -16,8 +16,8 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   the fact there does not carry it.
 - **Across models it is graded.**
   - Of nine models we could test, three show it strongly.
-  - The rest are weak, need far more directions, carry it without needing it, share it with the logit lens, or lose it
-    by probability.
+  - The rest are weak, carry the entity without needing it, share it with the logit lens, or lose it by probability.
+  - Bolt, Lightning's larger sibling, depends on its J++ directions little more than on any removal of the same size.
   - Three more models cannot be tested: any lens removal breaks them.
 - **For monitoring:** at the entity's mention the lens shows which entity the model will recall from, in every model.
   Whether the model depends on those directions is a separate, model-specific question.
@@ -81,7 +81,8 @@ Does removing what the lens reads cost recall more than reading?
   They still know which entity it is, but not its fact.
 - **The other six models are in the grid (Section 6).** All six fail to show it cleanly:
   - DeepSeek and Ministral are weak ({{v|ko.ds.mk}}, {{v|ko.mi.mk}});
-  - Bolt needs many more directions ({{v|ko.nb.mk}} at 10);
+  - Bolt shows little: {{v|ko.nb.mk}} at 10 directions, and at 100 a same-size removal along the top principal
+    directions costs nearly as much as J++ ({{v|dose.nb.k100.pc}} vs {{v|dose.nb.k100}});
   - OLMo does not need it ({{v|ko.ol.mk}});
   - Muse shares more than half of it with the logit lens ({{v|ko.mu.u}} of {{v|ko.mu.mk}});
   - the 122B loses it by probability ({{v|ko.q122.soft}} vs {{v|ko.q122.mk}}).
@@ -158,6 +159,8 @@ Where in the prompt must the removal act?
 - **Lightning needs them at both the mention and the question.** Mention {{v|pos.nl.P.bridge}} and question
   {{v|pos.nl.P.question}}, of {{v|pos.nl.P.all}}. Its lookup happens inside its band (Section 4); the Qwens' happens
   after theirs.
+- **Bolt splits the same way as Lightning**, with 100 directions: mention {{v|pos.nb.bridge}} and question
+  {{v|pos.nb.question}}, of {{v|dose.nb.k100}}. The two Nemotrons split; the Qwens' read bridges sit at the mention.
 - **A recalled bridge needs them at several places at once.** No single region carries it: on the 27B, mention
   {{v|pos.q27.M.bridge}} and question {{v|pos.q27.M.question}}, of {{v|pos.q27.M.all}}.
 - **Late in depth, the dependence moves to the question:**
@@ -227,10 +230,22 @@ How many directions does the dependence need, and when does the removal stop bei
     {{a|dose.nl.k100.sK}} by probability.
   - The plateau rule as pre-registered calls Lightning distributed (K\* {{v|dose.nl.kstar}}). On the J-specific excess
     it is concentrated (K\* {{v|dose.nl.ekstar}}).
-- **Bolt is the exception:** its effect is spread over about 100 directions.
-  - M − K is {{v|dose.nb.k10}} at 10 and {{v|dose.nb.k100}} at 100.
+- **Bolt is weak, not spread out.** Its J++ effect grows with the number of directions, but a removal of the same
+  size along the residual's top principal directions costs about as much:
+
+  | Directions | J++ | Same size, top principal directions |
+  |---|---|---|
+  | 10 | {{v|dose.nb.k10}} | {{v|dose.nb.k10.pc}} |
+  | 30 | {{v|dose.nb.k30}} | {{v|dose.nb.k30.pc}} |
+  | 100 | {{v|dose.nb.k100}} | {{v|dose.nb.k100.pc}} |
+
+  - By probability, J++ keeps an edge only at 100 directions: {{v|dose.nb.k100.smk}} vs {{v|dose.nb.k100.spc}}.
   - Bolt's 100 directions remove {{v|dose.nb.k100.share}} of the residual. Lightning's top 10 remove about the same
     ({{v|dose.nl.k10.share}}) and give {{v|dose.nl.k10}}.
+  - The pre-registered limit stops Bolt's readings at K {{v|dose.nb.limit}}, where the size-matched control already
+    exceeds half the J++ effect; below it the effect is about 0 ({{v|dose.nb.k3}} at 3).
+  - Its J-part swap still carries the entity at 100 directions (Section 4): Bolt's mention holds the entity in J-space,
+    but its recall does not depend on those directions more than on any same-size removal.
 - **Swapping more directions.**
   - The 9B's swap grows: {{v|swapk.q9.k10}} → {{v|swapk.q9.k100}}.
   - Lightning's is saturated: {{v|swapk.nl.k10}} → {{v|swapk.nl.k100}}.
@@ -240,6 +255,10 @@ How many directions does the dependence need, and when does the removal stop bei
 ## 6. Every model, every test
 
 {{grid}}
+
+Size-matched for Bolt: from the dose run (150 items per word), where no stand-alone run exists. Dose column: K\* as
+pre-registered (on the J-specific excess). Bolt's readings stop at its specificity limit (K {{v|dose.nb.limit}}), so its
+K\* covers only 1-3 directions, where its effect is about 0.
 
 Untestable: removing the top 10 lens directions adds more plain text loss than the 2-nat bar:
 
@@ -266,6 +285,9 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   - The 27B with the plain J-lens: {{v|v1.q27.jlens}}, below 30.
   - The never-named bridge, predicted to cost nothing extra: it costs the 27B {{v|r.q27}} and the 9B {{v|r.q9}}.
   - The 122B by probability ({{v|ko.q122.soft}}). Muse's share with the logit lens. Bolt at 10 directions. OLMo.
+  - Bolt's "distributed" reading (amendment 52, against the rotated control only) does not survive the size-matched
+    control: at 100 directions J++ costs {{v|dose.nb.k100}} and the same size along the top principal directions
+    {{v|dose.nb.k100.pc}}.
 - **Design errors.**
   - **A fixed number of directions is not a fixed dose.** The top 10 remove 6% of the residual in Bolt and 13-20%
     elsewhere.

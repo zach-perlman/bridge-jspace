@@ -712,7 +712,7 @@ def dose_data(m: str, pre: str, band: str) -> list[dict] | None:
         so = soft.get(f"top{k}", {})
         out.append({"k": k, "share": med(f"jlens_top{k}"), "mk": c["contrasts"]["M-K"]["diff"], "ci": c["contrasts"]["M-K"]["ci"],
                     "K": c["loss"]["K"], "rot": g(f"top{k}_rot"), "pc": g(f"top{k}_pcasize"), "u": g(f"unembed{k}"),
-                    "smk": so.get("soft_M-K"), "sK": so.get("soft", {}).get("K")})  # fmt: skip
+                    "smk": so.get("soft_M-K"), "sK": so.get("soft", {}).get("K"), "spc": soft.get(f"top{k}_pcasize", {}).get("soft_M-K")})  # fmt: skip
         r = out[-1]
         ctrl = [v for v in (r["rot"], r["pc"]) if v is not None]
         r["exc"] = r["mk"] - max(ctrl) if ctrl else None
@@ -744,7 +744,7 @@ def f10() -> None:
         style(ax, "both")
         style(bx, "both")
         ax.set_ylim(-5, 80)
-        bx.set_ylim(-3, 88)
+        bx.set_ylim(-3, 96)
         for a_ in (ax, bx):
             a_.set_xlim(0, 40)
             a_.axhline(0, color=AXIS, lw=1)
@@ -770,7 +770,7 @@ def f10() -> None:
             line(bx, "sK", INK2, "--", "o", mfc=SURF)
             rd = dose_readings(d)
             sks = [r["sK"] for r in d if r["sK"] is not None]
-            ax.text(0.0, 1.015, f"plateau K* {rd['kstar']} as pre-registered ({rd['cls']});\n"
+            ax.text(0.0, 1.015, f"plateau K* {rd['kstar']} as pre-registered ({rd['cls']}; limit K {rd['limit'] or '>300'});\n"
                                 f"K* {rd['ekstar']} on the J-specific excess ({rd['ecls']});\n"
                                 f"probability limit K {rd['plim'] or '>300'} (stated facts lose {min(sks):.0f}-{max(sks):.0f})",
                     transform=ax.transAxes, fontsize=7.3, color=INK2, va="bottom")  # fmt: skip
@@ -792,7 +792,7 @@ def f10() -> None:
     h2 = [plt.Line2D([], [], color=INK2, lw=2, marker="o", ms=5, mec=SURF, label="greedy (top answer wrong)"),
           plt.Line2D([], [], color=INK2, lw=2, ls="--", marker="o", ms=5, mfc=SURF, mec=INK2, label="by probability (answer probability lost)")]  # fmt: skip
     fig.legend(handles=h2, loc="upper left", bbox_to_anchor=(0.055, 0.38), ncol=2, frameon=False, fontsize=8.5, title="Bottom row: stated facts lost", title_fontsize=8.5, alignment="left")
-    header(fig, "How much J-space: J++ directions against controls of the same size, from 1 to 300 directions (amendment 54)",
+    header(fig, "How much J-space: the J-specific part sits in the first 1-30 directions; past that, and in Bolt throughout, same-size removals cost about as much",
            "Each model at its band; test set, 150 random items per word (seed 0). The gap between the blue line and the others is the J-specific part")  # fmt: skip
     note(fig, "Readings (amendment 54, as pre-registered): plateau K* = smallest K reaching 90% of the largest J++ M − K below the specificity limit (stated facts lose > 10 greedy, or the size-matched control exceeds half "
               "the J++ M − K); <= 10 concentrated, >= 100 distributed. Note 1 (written after Lightning, before the others): the same rule on the J-specific excess (J++ minus the larger of the random-direction and "

@@ -265,12 +265,17 @@ def collect() -> None:
         for r in d:
             k = r["k"]
             add(f"dose.{m}.k{k}", "dose", m, f"M - K, J++ top {k}", r["mk"], *r["ci"], source=src)
-            for q in ("rot", "pc", "u", "smk", "K", "sK", "exc"):
+            for q in ("rot", "pc", "u", "smk", "spc", "K", "sK", "exc"):
                 if r[q] is not None:
                     add(f"dose.{m}.k{k}.{q}", "dose", m, f"{q} at K {k}", r[q], source=src)
             add(f"dose.{m}.k{k}.share", "dose", m, f"residual share removed at K {k}", r["share"], unit="pct", source=src)
+        r10 = next((r for r in d if r["k"] == 10), None)
+        if r10 and r10["pc"] is not None and f"ko.{m}.pcr" not in {x["key"] for x in ROWS}:  # no stand-alone size-matched run (Bolt): the dose run's K 10
+            add(f"ko.{m}.pcr", "knockout", m, "size-matched / J++ M - K at K 10 (dose run, 150 per word)", r10["pc"] / r10["mk"], unit="ratio", source=src)
         rd = F.dose_readings(d)
         add(f"dose.{m}.kstar", "dose", m, "plateau K* as pre-registered", rd["kstar"], unit="K", source=src)
+        if rd["limit"]:
+            add(f"dose.{m}.limit", "dose", m, "specificity limit as pre-registered (stated facts lose > 10, or size-matched > half of J++)", rd["limit"], unit="K", source=src)
         add(f"dose.{m}.ekstar", "dose", m, "plateau K* on the J-specific excess (note 1)", rd["ekstar"], unit="K", source=src)
         if rd["plim"]:
             add(f"dose.{m}.plim", "dose", m, "probability limit (stated facts lose > 10 by probability)", rd["plim"], unit="K", source=src)
