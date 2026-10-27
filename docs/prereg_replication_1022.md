@@ -1899,7 +1899,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - The excess and limit are computed by fig_neel.dose_readings, the same code as every other model's readings.
 - **Not approved yet:** OLMo would need DeepSeek's cache dropped too, so it is not queued.
 
-### Amendment 56 note 2 (Zach, 2026-10-27 06:24 UTC, before the run): lens-kind check on the 9B, in GPU 0's idle window
+### Amendment 56 note 2 (Zach, 2026-10-27 06:23 UTC, committed as the run started): lens-kind check on the 9B, in GPU 0's idle window
 
 - **The confound:** the Qwens are knocked out with published J++ lenses; the Nemotrons, Ministral and Muse with our own
   fits (32 WikiText prompts).
