@@ -10,7 +10,7 @@
 - **The pointer we found is narrow:** it mostly separates the first-mentioned item from the rest and explains little outside simple scenes. About half of the lookup's route around the lens is still open.
 - **For monitoring:** a lens on the bridge word shows which item the model is using, but not where in the context the model will read its answer from.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at cebb4361 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 26 Oct 2026. All numbers unverified until hand-checked (Section 7). Built at fab226aa from the run files.
 
 ## Setup
 
@@ -155,7 +155,7 @@ How far does the pointer we found reach?
 
 - **Hand-checked numbers.** None yet ([docs/review_summary.md](docs/review_summary.md)); [docs/verify_pack.md](docs/verify_pack.md) recounts each claim's numbers from the per-item files.
 - **Raw examples.** `make review-serve`: random items per claim (fixed seed), as the model saw them.
-- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.32 over 119 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
+- **Predictions.** Committed before results are opened, then scored ([predictions/](predictions/README.md)): mean Brier 0.32 over 120 answers, worse than always answering 50%; the mechanistic questions were mostly wrong.
 - **Inventory.** [docs/inventory.md](docs/inventory.md): pre-pivot experiments are kept and labelled legacy.
 
 ## 8. Related work and what is new
