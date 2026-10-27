@@ -2030,3 +2030,20 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     by about 0.01.
 - **Overlap:** Dan's x45r_ko_band_muse (the size-matched control at L36-42 on all items) ran already. The dose grid's
   top10_pcasize on 150 items per word is reported beside it; neither replaces the other.
+
+### Amendment 57 note 5 (Zach, 2026-10-27 18:06 UTC, before any run below): Muse on our box after all
+
+- **Why (Zach, 2026-10-27 ~14:00 ET):** "can you queue muse here? ... Just do the work on our box and stuff."
+  - Note 1's Muse runs come back to our box.
+  - The specs on Dan's queue (note 4) are marked do-not-enqueue on main, so the work is not done twice.
+- **Space:** Muse's weights (meta-models/Muse-Glimmer-30B at pins.py's revision, 59.6 GB) need room; the box has
+  33 GB free.
+  - DeepSeek-V4-Flash's cache (149 GB) is dropped. Its pre-registered runs are all done and logged (amendment 56 D),
+    and it can be re-downloaded.
+  - It is dropped with /workspace/scratch/cache_drop.py, the tool used for Bolt, which deletes only the files no other
+    model references.
+- **Runs:** as note 1, unchanged, after a smoke on the largest K.
+  - GPU 1: the dose grid at L36-42 (scripts/queues/h200_dose_muse_1027.sh dose:muse30).
+  - GPU 0: question-only and bridge-only at L36-42 (scripts/queues/h200_h0nb_1027.sh pos steps).
+  - Both use the record run's H200, so note 4's hardware caveat no longer applies.
+- **Readings:** note 1's.
