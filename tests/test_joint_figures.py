@@ -79,8 +79,10 @@ def test_j2_numbers_match_their_sources(drawn):
 
 def test_j3_numbers_match_their_sources(drawn):
     _, rows = drawn
-    assert sourced(rows, "j3", "Qwen 9B", "no_alf: position share")["value"] == 8.3  # 0.083 as a share, drawn in %
-    assert sourced(rows, "j3", "Muse 30B", "no_alf_rand: position share")["value"] == 54.7
+    lost = {(r["model"], r["quantity"]): r["value"] for r in rows if r["figure"] == "j3"}
+    # whole patch 51.0% minus 8.3% without the order signal (fig05), recomputed per scene from outcomes.jsonl
+    assert lost[("Qwen 9B", "answers by position lost when the order signal is removed from the patch (pp)")] == 42.7
+    assert lost[("Muse 30B", "answers by position lost when a random part is removed from the patch (pp)")] == -0.3
     assert sourced(rows, "j3", "Qwen 9B", "dose (s / mean s*), s = 2")["value"] == 1.06
 
 

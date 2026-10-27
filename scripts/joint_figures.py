@@ -374,69 +374,119 @@ def j2_swap(plt):
     return fig
 
 
+def position_drop(run: str, arm: str, n_boot: int = 10_000, seed: int = 0) -> tuple[float, float, float, int, float]:
+    """The routes test (condition C2: the patch moves the bridge item's locker; lookup reader PP): the share of answers by
+    position with the whole patch minus that without `arm`'s part, in pp, with a paired bootstrap 95% interval over
+    scenes (seed 0); also the whole patch's share (%). Recomputed from outcomes.jsonl; the shares match fig05's rows."""
+    import numpy as np
+
+    pos: dict[str, dict[str, int]] = {}
+    for line in (REPO / "results" / "x6_routes" / run / "outcomes.jsonl").read_text().splitlines():
+        r = json.loads(line)
+        if r["condition"] == "C2" and r["reader"] == "PP" and r["arm"] in ("whole", arm):
+            pos.setdefault(r["scene"], {})[r["arm"]] = int(r["route"] == "position")
+    scenes = sorted(s for s, v in pos.items() if len(v) == 2)
+    d = np.array([pos[s]["whole"] - pos[s][arm] for s in scenes], dtype=float)
+    rng = np.random.default_rng(seed)
+    boot = d[rng.integers(0, len(d), size=(n_boot, len(d)))].mean(axis=1)
+    whole = 100 * float(np.mean([pos[s]["whole"] for s in scenes]))
+    return (
+        100 * float(d.mean()),
+        100 * float(np.percentile(boot, 2.5)),
+        100 * float(np.percentile(boot, 97.5)),
+        len(d),
+        whole,
+    )
+
+
 def j3_order_signal(plt):
-    """Qwen 9B and Muse 30B, Dan's scenes where another item moved: lookup answers that follow the locker's position with
-    the whole patch, without the order signal and without a random part of its size (%); beside it, the order signal
-    pointed at another locker (written at about a real patch's size) against a random vector (%)."""
+    """One message (Dan ~20:00): the effect belongs to these four directions, not to any four. Per model two bars, orange
+    = the order signal, grey = the random control. Left: answers by position lost when the part is removed from the
+    patch (pp, whole patch minus without it, paired 95% interval over scenes). Right: answers sent to the chosen locker
+    when the order signal is written (%), against a random vector twice as large (the only random dose near it)."""
     dp = depth()
     card = {(r["claim"], r["model"]): r["flag"] for r in read_csv(G.SCORECARD)}
-    fig = plt.figure(figsize=(S.WIDTH, 5.0))
+    orange, grey = S.COL["position"], S.COL["control"]
+    fig = plt.figure(figsize=(S.WIDTH, 4.8))
+    axl, axr = fig.add_axes((0.33, 0.25, 0.30, 0.45)), fig.add_axes((0.68, 0.25, 0.29, 0.45))
+    S.title(fig, "Lookup answers' position effect belongs to these four directions, not any four",
+            "Locker scenes where the patch moves the bridge item's locker to another position; 95% intervals.",
+            limit=80)  # fmt: skip
     pair = [MODELS[0], MODELS[3]]
-    axl, axr = fig.add_axes((0.17, 0.34, 0.41, 0.43)), fig.add_axes((0.70, 0.34, 0.27, 0.43))
-    light = "#b9a6ee"  # the lookup purple, lighter: the patch without the order signal
-    arms = (("whole", "whole patch", LOOKUP), ("no_alf", "without the order signal", light),
-            ("no_alf_rand", "without a random part (same size)", S.COL["control"]))  # fmt: skip
-    ns = set()
+    ticks, labels = [], []
     for g, (name, _, target, _m) in enumerate(pair):
         scard = {"Qwen 9B": "Qwen3.5-9B", "Muse 30B": "Muse Glimmer 30B"}[name]
-        kind = "after" if "a" in card[("the lookup needs it", scard)] else "fixed"
-        for k, (arm, label, col) in enumerate(arms):
-            r = dp[("fig05", target, f"another item moved, {arm}: position share")]
-            y = -g * 4.2 - k
-            v, lo, hi = (round(100 * num(r[c]), 1) for c in ("value", "lo", "hi"))  # a share, drawn in %
-            bar(axl, y, v, lo, hi, col, kind, h=0.8)
-            axl.text(hi + 2, y, f"{v:.0f}", va="center", fontsize=S.FONT)
-            record("j3", name, f"answers by position: {label} (%)", v, lo, hi, r["n"],
-                   source=f"figures/story/data.csv | fig05 | {r['quantity']}")  # fmt: skip
-            ns.add(r["n"])
-        kind_w = "after" if "a" in card[("a write moves the lookup", scard)] else "fixed"
+        run = dp[("fig05", target, "another item moved, whole: position share")]["source"]
+        y0 = -g * 2.6
+        for k, (arm, col, what) in enumerate(
+            (("no_alf", orange, "the order signal"), ("no_alf_rand", grey, "a random part"))
+        ):
+            v, lo, hi, n, whole = position_drop(run, arm)
+            shares = [
+                num(dp[("fig05", target, f"another item moved, {a}: position share")]["value"]) for a in ("whole", arm)
+            ]
+            assert abs(100 * (shares[0] - shares[1]) - v) < 1e-6, (run, arm)  # the same scenes as fig05's rows
+            flag = card[("the lookup needs it", scard)]
+            axl.barh([y0 - k], [v], height=0.8, color=col, zorder=2)
+            axl.plot([lo, hi], [y0 - k, y0 - k], color="#333333", lw=1.4, zorder=3)
+            axl.text(
+                max(v, hi) + 1.5,
+                y0 - k,
+                (f"{round(v)} of {round(whole)}" if arm == "no_alf" else f"{round(v) + 0:.0f}")
+                + (" a" if "a" in flag else ""),
+                va="center",
+                fontsize=S.FONT,
+            )
+            record("j3", name, f"answers by position lost when {what} is removed from the patch (pp)", round(v, 1),
+                   round(lo, 1), round(hi, 1), n, source=f"figures/story/data.csv | fig05 | another item moved, whole: "
+                   f"position share; another item moved, {arm}: position share (difference; paired 95% interval over "
+                   f"scenes from results/x6_routes/{run}/outcomes.jsonl, 10,000 draws, seed 0)")  # fmt: skip
+        record("j3", name, "answers by position with the whole patch (%)", round(whole, 1), n=n,
+               source="figures/story/data.csv | fig05 | another item moved, whole: position share")  # fmt: skip
+        ticks.append(y0 - 0.5)
+        labels.append(f"{name}, {whole:.0f}% of\nanswers by position")
+        flag_w = card[("a write moves the lookup", scard)]
+        for s, what in (
+            ("2", "the order signal's write"),
+            ("4", "the random vector"),
+        ):  # 'twice as large' on the figure
+            dose = dp[("fig07", target, f"dose (s / mean s*), s = {s}")]
+            record("j3", name, f"{what}: size in units of a real patch's", round(num(dose["value"]), 2),
+                   source=f"figures/story/data.csv | fig07 | {dose['quantity']}")  # fmt: skip
         w = dp[("fig07", target, "lookup target share, mean over locker pairs, s = 2")]
-        dose = dp[("fig07", target, "dose (s / mean s*), s = 2")]
         rnd = dp[("fig07", target, "lookup target share, random direction, s = 4")]
-        rdose = dp[("fig07", target, "dose (s / mean s*), s = 4")]
-        for k, (r, col) in enumerate(((w, LOOKUP), (rnd, S.COL["control"]))):
-            y = -g * 2.6 - k
+        for k, (r, col, what) in enumerate(((w, orange, "order signal"), (rnd, grey, "random vector, twice as large"))):
             v = round(100 * num(r["value"]), 1)
-            lo, hi = (round(100 * num(r[c]), 1) if r[c] != "" else "" for c in ("lo", "hi"))
-            bar(axr, y, v, lo, hi, col, kind_w, h=0.8)
-            axr.text((hi if isinstance(hi, float) and hi > v else v) + 2, y, f"{v:.0f}", va="center", fontsize=S.FONT)
-            what = "order signal" if r is w else "random vector"
-            record("j3", name, f"writes sending the lookup answer to the target locker: {what} (%)", v, lo, hi,
+            lo, hi = (round(100 * num(r[c]), 1) if r[c] != "" else None for c in ("lo", "hi"))
+            axr.barh([y0 - k], [v], height=0.8, color=col, zorder=2)
+            if lo is not None and hi is not None:
+                axr.plot([lo, hi], [y0 - k, y0 - k], color="#333333", lw=1.4, zorder=3)
+            top = max(v, hi if hi is not None else v)
+            axr.text(
+                top + 1.5,
+                y0 - k,
+                f"{round(v) + 0:.0f}%" + (" a" if "a" in flag_w else ""),
+                va="center",
+                fontsize=S.FONT,
+            )
+            record("j3", name, f"answers sent to the chosen locker when written: {what} (%)", v,
+                   "" if lo is None else lo, "" if hi is None else hi,
                    source=f"figures/story/data.csv | fig07 | {r['quantity']}")  # fmt: skip
-        record("j3", name, "the order signal's write dose (times a real patch's size)", round(num(dose["value"]), 2),
-               source=f"figures/story/data.csv | fig07 | {dose['quantity']}")  # fmt: skip
-        record("j3", name, "the random vector's dose (times a real patch's size)", round(num(rdose["value"]), 2),
-               source=f"figures/story/data.csv | fig07 | {rdose['quantity']}")  # fmt: skip
-    S.title(fig, "The lookup answer uses an order signal the lens does not read",
-            f"Dan's locker scenes where another item moved; {'/'.join(sorted(ns))} scenes per model (left)")  # fmt: skip
-    axl.set_yticks([-g * 4.2 - 1 for g in range(2)], [n for n, *_ in pair])
-    axr.set_yticks([-g * 2.6 - 0.5 for g in range(2)], [n for n, *_ in pair])
-    for ax, lim in ((axl, (-7.9, 0.7)), (axr, (-4.3, 0.7))):
-        ax.set_xlim(0, 100)
-        ax.set_ylim(*lim)
-        ax.set_xticks([0, 50, 100])
+    for ax in (axl, axr):
+        ax.set_xlim(-8, 62)
+        ax.set_ylim(-4.2, 0.7)
+        ax.axvline(0, color="#999999", lw=0.8, zorder=1)
+        ax.set_xticks([0, 20, 40, 60])
         ax.tick_params(axis="y", length=0)
         ax.spines["left"].set_visible(False)
-    axl.set_title("lookup answers that follow position", fontsize=S.FONT + 1, loc="left")
-    axr.set_title("order signal pointed\nat another locker", fontsize=S.FONT + 1, loc="left")
-    axl.set_xlabel("% of lookup answers")
-    axr.set_xlabel("% of writes that reach it")
-    hs = [Rectangle((0, 0), 1, 1, fc=LOOKUP, ec=LOOKUP), Rectangle((0, 0), 1, 1, fc=light, ec=light),
-          Rectangle((0, 0), 1, 1, fc=S.COL["control"], ec=S.COL["control"]),
-          Rectangle((0, 0), 1, 1, fc="white", ec=RECALLED, lw=1.6)]  # fmt: skip
-    labels = ["whole patch; order signal written", "without the order signal", "random part or vector",
-              "hollow: after the data"]  # fmt: skip
-    legend_below(fig, hs, labels, 0.0, 2)
+    axl.set_yticks(ticks, labels)
+    axr.set_yticks([])
+    axl.set_title("position answers lost\nwhen removed (pp)", fontsize=S.FONT + 1, loc="left")
+    axr.set_title("answers sent to the chosen\nlocker when written (%)", fontsize=S.FONT + 1, loc="left")
+    hs = [Rectangle((0, 0), 1, 1, fc=orange, ec=orange), Rectangle((0, 0), 1, 1, fc=grey, ec=grey)]
+    legend_below(fig, hs, ["order signal (4 directions)", "random control of the same size"], 0.06, 2)
+    fig.text(0.01, 0.02, "Right: the random vector is twice as large as the write. a: after the data.", fontsize=S.FONT,
+             color=S.COL["muted"], va="bottom")  # fmt: skip
     return fig
 
 
