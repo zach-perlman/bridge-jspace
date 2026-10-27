@@ -10,7 +10,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 - **Recalled answers need the lens part; lookup answers do not.** Both of our methods find this on Qwen 9B and Qwen 27B; on Nemotron Lightning one method has been run.
 - **The lens part says which entity it is.** Write in another entity's lens part and the model recalls that entity's facts, while lookup answers stay put.
 - **Lookup answers use something the lens cannot see.** In our scenes they partly use an order signal outside the lens; much of that route is unexplained.
-- **Two models do not fit cleanly.** On Muse 30B the lens part is carried at a middle layer but needed only deep, where its removal is less specific; on Qwen 122B each method has a failed control.
+- **Two models do not fit cleanly.** On Muse 30B the two tools disagree and look at different depths; on Qwen 122B each method has a failed control.
 
 ## The setup
 
@@ -96,7 +96,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 - **Middle layers** (all bridges): the mention alone costs Qwen 27B 29.7 of 50.9 points and Qwen 9B 33.6 of 42.6; the question alone 10.7 and 6.2. Lightning needs both: mention 19.9, question 22.7, of 53.1. <!-- src: docs/breadth/data.csv | pos.q27.all.bridge; pos.q27.all.all; pos.q9.all.bridge; pos.q9.all.all --> <!-- src: docs/breadth/data.csv | pos.q27.all.question; pos.q9.all.question --> <!-- src: docs/breadth/data.csv | pos.nl.all.bridge; pos.nl.all.question; pos.nl.all.all -->
 - **Deeper layers:** the question alone costs 47.1 of 50.0 (Qwen 27B), 52.6 of 53.1 (Qwen 9B) and 52.6 of 61.6 (Lightning); the mention alone 2.9, 0.2 and 0.5. Ministral 14B, tested only deep, agrees (24.0 of 23.3); Qwen 122B is split (question 28.3, mention 10.0, of 48.5). <!-- src: docs/breadth/data.csv | late.q27.question; late.q27.all; late.q9.question; late.q9.all; late.nl.question; late.nl.all --> <!-- src: docs/breadth/data.csv | late.q27.bridge; late.q9.bridge; late.nl.bridge --> <!-- src: docs/breadth/data.csv | pos.mi.question; ko.mi.mk; pos.q122.question; pos.q122.bridge; ko.q122.mk -->
 - **Deeper, more is shared with the logit lens's directions:** 27.5 (Qwen 9B) and 22.9 (Lightning), against 1.4 and 8.7 at middle layers. <!-- src: docs/breadth/data.csv | late.q9.all.u; late.nl.all.u; ko.q9.u; ko.nl.u -->
-- This is the pattern Muse 30B shows (Where it breaks): carried at a middle layer, needed only deep. Zach's split on Muse is queued to test it. <!-- src: jobs/c3/x57_pos_muse.yaml | question-only and bridge-mention-only -->
+- The same split on Muse 30B is queued (Where it breaks). <!-- src: jobs/c3/x57_pos_muse.yaml | question-only and bridge-mention-only -->
 
 ![Middle layers need the bridge's mention; deeper layers, the question](figures/shared/j7_where.png)
 
@@ -106,12 +106,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 ## Where it breaks
 
-- **Muse 30B carries the lens part at a middle layer but needs it only deep.** <!-- src: results/x45r/score-20261027T165540Z/x45r.json | label -->
-  - At layer 26 remove from the patch finds it carried (gap 0.85 [0.68, 0.98]) and specific to the lens: the logit lens's directions cost nothing. Over layers 23-29 remove everywhere costs recalled answers only 6.7 [5, 9] points more than lookup ones, 6.8 beyond the logit lens's directions; the bar fixed in advance was 15. <!-- src: results/x45r/score-20261027T165540Z/x45r.json | our_gap_L26; his_L23_29; excess_L23_29 --> <!-- src: figures/story/data.csv | J++ part: recall extra loss; logit-lens directions: recall extra loss --> <!-- src: results/x45r/score-20261027T165540Z/x45r.md | not needed if M - K < 15 -->
-  - Deeper, over layers 36-42, it costs 59.9, but more than half is shared with the logit lens (after the data); Zach's earlier puzzles barely moved Muse. The result was opened before Zach confirmed this use of his tool; he has confirmed it since. <!-- src: results/x45r/score-20261027T165540Z/x45r.json | descriptive; note --> <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk --> <!-- src: EXPERIMENTS.md | l.169 --> <!-- src: EXPERIMENTS.md | l.87 --> <!-- src: docs/shared/zach_reply_2026-10-27.md | a faithful use of the v2 knock-out -->
-
-  ![Muse 30B carries the lens part at a middle layer and needs it only deep](figures/shared/j5_muse_depth.png)
-
+- **Muse 30B.** The two tools disagree here, and they look at different depths. Remove from the patch, at a middle layer, is specific to the lens: the logit lens's directions cost nothing. <!-- src: figures/story/data.csv | J++ part: recall extra loss; logit-lens directions: recall extra loss --> Remove everywhere, deeper (layers 36-42), shares more than half of its effect with the logit lens (after the data), and barely moved Muse on Zach's earlier puzzles. <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk --> <!-- src: EXPERIMENTS.md | l.169 --> <!-- src: EXPERIMENTS.md | l.87 -->
 - **Qwen 122B.** Ours is not specific against a same-size removal; Zach's vanishes when scored by probability (after the data). Neither of us claims it. <!-- src: figures/story/data.csv | J++ part: recall extra loss; PCA directions (same size): recall extra loss --> <!-- src: docs/breadth/data.csv | ko.q122.soft --> <!-- src: EXPERIMENTS.md | l.167; l.169 -->
 
 ## What we learned about methods
