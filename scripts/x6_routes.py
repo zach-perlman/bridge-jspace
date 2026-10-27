@@ -551,6 +551,21 @@ def control_parts(
     }
 
 
+def warm_cusolver() -> None:
+    """Create the cuSOLVER handle on the home GPU before the model and its reads fill it. cusolverDnCreate allocates
+    outside PyTorch's caching allocator, so a first linalg call on a full GPU fails with CUSOLVER_STATUS_INTERNAL_ERROR
+    (Muse 45k: x45k_muse_q2 in an SVD, x45k_muse_q4 in x0_parts.other_part's lstsq); PyTorch keeps the handle for the
+    rest of the process. A no-op without CUDA."""
+    import torch
+
+    if not torch.cuda.is_available():
+        return
+    a = torch.eye(2, device="cuda", dtype=torch.float64)
+    torch.linalg.lstsq(a, a)
+    torch.linalg.svd(a)
+    torch.cuda.synchronize()
+
+
 def orthonormal(a):
     """An orthonormal basis (double) of the columns of a ([d, m]; a vector [d] is one column), [d, 0] if a is zero."""
     import torch
@@ -726,6 +741,7 @@ def stage_run(
                                  "||P_span(atoms) u||^2 / ||u||^2 (u = mu_alt - mu_org, x0_massmean.entity_means; None "
                                  "where an entity has no class mean, the scene kept)"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
+    warm_cusolver()
     model = load_model()
     tok = model.tokenizer
     cases, dropped = scenes(tok, N_GEN, rendering=rendering)
