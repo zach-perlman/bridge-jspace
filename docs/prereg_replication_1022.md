@@ -1797,3 +1797,18 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     are also given only for K below it.
   - **Lightning under both:** the excess is 43 / 48 / 43 / 45 / 39 / 39, so the excess K\* = 1 (concentrated). Its
     probability limit is K 30.
+
+### Amendment 54 note 2 (Zach, 2026-10-27 00:50 UTC, before the run): Lightning's never-named bridge (R start), on the idle GPU
+
+- **Gap:** the R start (amendment 35 note 1) was run for the 27B, 9B, 9B base, Ministral, Muse and the 122B, not for
+  Lightning (the "not run" cell in the figure set's F05).
+- **Run:** GPU 1 is idle from 00:45 until Bolt starts. scripts/queues/h200_v21r_1024.sh, step
+  r:nemotron-3.5-lightning:nem35l_:27-33:16:
+  - R-item competence;
+  - the knock-out on RM RA RN at L27-33 with Lightning's v2 conditions (paper10 / rotated / logit lens / its rotation);
+  - jsuite2_score of its v2 knock-out with the R run.
+- **Reading, as amendment 35:** RM − MM, RA − MA and RN − MN, with 95% bootstrap over bridges.
+  - Within 10 of 0: removing the bridge's one mention costs no extra recall loss.
+  - Larger and positive: as the 27B (+18) and the 9B (+12).
+- **Bolt waits for it:** chain C, which is only waiting, is relaunched with this job added to its waits (old log moved
+  aside).
