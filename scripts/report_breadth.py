@@ -379,8 +379,25 @@ def render() -> None:
     print(f"README.md: {text.count(chr(10))} lines, {len(ROWS)} numbers in data.csv")
 
 
+FIGS = {"F01_dataset": "fig00_dataset", "F03_needed": "fig01_needed", "F04_settings": "fig02_datasets", "F05_robust": "fig03_robust",
+        "F06_where": "fig04_where", "F07_carries": "fig05_carries", "F08_pointer": "fig06_pointer", "F09_lookup": "fig07_lookup",
+        "F02_readable": "fig08_readable", "F10_dose": "fig09_dose", "F11_beyond": "fig10_beyond", "F12_scorecard": "fig11_scorecard"}  # fmt: skip
+
+
+def copy_figures() -> None:
+    """The figure set (scripts/fig_neel.py, rendered into /workspace/scratch/neel_figures) under the README's names."""
+    import shutil
+
+    (OUT / "figures").mkdir(exist_ok=True)
+    for src, dst in FIGS.items():
+        f = F.OUT / f"{src}.png"
+        if f.exists():
+            shutil.copyfile(f, OUT / "figures" / f"{dst}.png")
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
+    copy_figures()
     collect()
     with (OUT / "data.csv").open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=["key", "figure", "model", "quantity", "value", "lo", "hi", "n", "unit", "source"])

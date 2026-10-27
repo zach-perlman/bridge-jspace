@@ -760,6 +760,7 @@ dose.nb.kstar,dose,nb,plateau K* as pre-registered,3.0,,,,K,results/ablate_v2/js
 dose.nb.limit,dose,nb,"specificity limit as pre-registered (stated facts lose > 10, or size-matched > half of J++)",10.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
 dose.nb.ekstar,dose,nb,plateau K* on the J-specific excess (note 1),3.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
 dose.nb.plim,dose,nb,probability limit (stated facts lose > 10 by probability),300.0,,,,K,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_dose54_s150_v1.json
+swapk.q27.k10,swap dose,q27,"J-part swap transfer, K 10",64.0,57.5,70.4,898,points,results/jswap/jswap_v2_k10_s150_v1/rows.jsonl
 swapk.q9.k10,swap dose,q9,"J-part swap transfer, K 10",63.7,58.0,69.7,624,points,results/jswap/qwen35_9b_jswap_v2_k10_s150_v1/rows.jsonl
 swapk.q9.k30,swap dose,q9,"J-part swap transfer, K 30",70.9,65.2,76.6,624,points,results/jswap/qwen35_9b_jswap_v2_k30_s150_v1/rows.jsonl
 swapk.q9.k100,swap dose,q9,"J-part swap transfer, K 100",75.9,70.6,80.8,624,points,results/jswap/qwen35_9b_jswap_v2_k100_s150_v1/rows.jsonl

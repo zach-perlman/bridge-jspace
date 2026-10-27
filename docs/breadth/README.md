@@ -24,9 +24,12 @@ entity, does that depend on whether the final fact is recalled or stated, and in
   Whether the model depends on those directions is a separate, model-specific question.
 
 **Status.** This is Zach's half (breadth): nine models on our dataset jsuite v2, plus the Qwens on every earlier dataset,
-as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 8). Built at 58874c2 from the run files.
+as of 27 Oct 2026. All numbers are unverified until hand-checked (Section 9). Built at 7fd8153 from the run files.
 
 ## Setup
+
+![One passage, five finals: the same question with the bridge's fact stated or left to memory](figures/fig00_dataset.png)
+*Fig. 0.*
 
 - **The question.** "The composer who wrote The Magic Flute was of which nationality?" The bridge (Mozart) is:
   - read from the passage (**P**);
@@ -61,6 +64,10 @@ Does removing what the lens reads cost recall more than reading?
 - **Three models, two families.**
   - M − K is +51 [46, 55] (27B), +43 [37, 49] (9B) and +53 [48, 59] (Lightning).
   - Stated facts lose 3, 5 and 4 points.
+
+![Removing 10 J++ directions breaks recalled facts, not stated ones, in three models from two families](figures/fig01_needed.png)
+*Fig. 1.*
+
 - **It is specific to the lens's directions.**
   - Rotated: +3 / +2 / +4.
   - Logit lens: +2 / +1 / +9.
@@ -80,7 +87,7 @@ Does removing what the lens reads cost recall more than reading?
 
   Under the knock-out, the Qwens rarely name the bridge: 1% and 5% of replies.
   They still know which entity it is, but not its fact.
-- **The other six models are in the grid (Section 6).** All six fail to show it cleanly:
+- **The other six models are in the grid (Section 7).** All six fail to show it cleanly:
   - DeepSeek and Ministral are weak (+18, +23);
   - Bolt shows little: +6 at 10 directions, and at 100 a same-size removal along the top principal
     directions costs nearly as much as J++ (+24 vs +31);
@@ -112,6 +119,10 @@ Does the split survive everything we could vary?
   | Natural fact chains | 0 | -5 |
   | natplus | 0 | -5 |
   | jsuite v1 | -1 | -4 |
+
+![The Qwens' split on every dataset we built, with the logit lens near zero](figures/fig02_datasets.png)
+*Fig. 2.*
+
 - **Every relation.**
   - On the 27B, M − K runs from +36 (languages) to +72 (dishes).
   - Animals is the weakest everywhere (6 answers): 9B +14 [0, 36], Lightning +18 [9, 29].
@@ -119,6 +130,10 @@ Does the split survive everything we could vary?
   - Renderings: 27B +49 and +50; 9B +42 and +43; Lightning
     +49 and +50.
   - A rendering redraws passages, distractors and wording over the same facts.
+
+![The split holds on every relation, every start, both test halves, three renderings and by probability](figures/fig03_robust.png)
+*Fig. 3.*
+
 - **A clean checkout reproduces it.** Rerun from a fresh worktree:
   - the 27B's and 9B's knock-outs match row for row (0 of 22325 and
     0 of 14100 rows differ);
@@ -172,6 +187,9 @@ Where in the prompt must the removal act?
   | Ministral | +24 | 0 |
   | 122B | +28 | +10 |
 
+![Depth and position: the mention at mid depth in the Qwens, mention and question in Lightning, the question late](figures/fig04_where.png)
+*Fig. 4.*
+
 ## 4. What the directions carry at the mention: which entity it is
 
 *Fixed in advance (amendments 32, 34, 38A, 47, 48, 51).*
@@ -187,6 +205,10 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
   - Without D's answer direction, the swap is unchanged: +66 vs +66 (27B) and
     +70 vs +69 (9B), on the PM final.
   - The answer direction alone moves +29.
+
+![A swapped J-part moves the answer to the other entity; it is not the answer token](figures/fig05_carries.png)
+*Fig. 5.*
+
 - **It is a pointer, whatever context it came from.**
   - From one neutral sentence about D ("A reader asked a question about D in the letters page"), the J-part moves the
     answer 1.09, 1.10 and 1.01 times as much as from D's own passage.
@@ -197,15 +219,26 @@ If the mention's J-part is swapped for another entity's, does the answer follow,
 - **Decodable is not carried.** A supervised probe reads the fact at the mention about as well as J++. Swapping the
   probe's subspace moves +8 / +6 / +2, against J++'s
   +75 / +80 / +62.
+
+![A J-part from one neutral sentence carries as much as one from the passage; a probe's subspace carries almost nothing](figures/fig06_pointer.png)
+*Fig. 6.*
+
 - **The fact is looked up later.** At the answer position, the lens first reads X's fact on half the items at:
   - layer 50 on the 27B (band ends at L40);
   - layer 23 on the 9B (L16);
   - layer 32 on Lightning (L33).
   For a swapped entity it reads D's fact at the same layers.
+
+![The fact appears at the answer position only after the band, for a swapped entity as for the original](figures/fig07_lookup.png)
+*Fig. 7.*
+
 - **Readable, carried and needed come apart.**
   - OLMo carries the entity (swap +41), but the knock-out costs only +5.
   - Ministral's lens reads the fact at mid depth, but its J-part carries only +3, and
     +5 with 100 directions.
+
+![The lens reads the fact at the mention in every model; readable is not the same as needed](figures/fig08_readable.png)
+*Fig. 8.*
 
 ## 5. How much J-space
 
@@ -247,13 +280,34 @@ How many directions does the dependence need, and when does the removal stop bei
     exceeds half the J++ effect; below it the effect is about 0 (+2 at 3).
   - Its J-part swap still carries the entity at 100 directions (Section 4): Bolt's mention holds the entity in J-space,
     but its recall does not depend on those directions more than on any same-size removal.
+
+![The J-specific part sits in the first 1-30 directions; in Bolt a same-size removal costs about as much](figures/fig09_dose.png)
+*Fig. 9.*
+
 - **Swapping more directions.**
   - The 9B's swap grows: +64 → +76.
   - Lightning's is saturated: +46 → +55.
   - Bolt's carries only at 100: +3 → +41.
   - Ministral's never carries (at mid depth, L20-25): +3 → +5.
 
-## 6. Every model, every test
+## 6. Beyond two hops: recalled and computed intermediates (earlier dataset)
+
+*Fixed in advance (amendments 21, 24, 25). The same tests on v2 and on Lightning are running (amendment 56).*
+
+Does the rule hold for longer chains, and for intermediates the model computes from the passage?
+
+- **A memory hop needs J-space when its output is not in the passage.** On the 27B (three hops), against the
+  all-passage chain:
+  - chains through or ending in such a hop lose more: MMM +35 [21, 49], PMM +33 [22, 46];
+  - chains whose memory hop's output is stated in the passage do not: MPP -3, PMP -3.
+- **A computed number does not need J-space; a recalled one does.** On the 9B, against a number read from the passage:
+  - a number counted in the passage costs +7, and one computed by arithmetic +1;
+  - a recalled number costs +26 [18, 34] (27B: +15).
+
+![A memory hop needs J-space when its output is not in the prompt; computing in context does not](figures/fig10_beyond.png)
+*Fig. 10.*
+
+## 7. Every model, every test
 
 | Model | plain-text cost | M − K (top 10) | rotated / logit lens | size-matched (share) | by probability | renderings | clean rerun | keep-own restores | J-part swap / paste | neutral donor | probe swap (J++ / probe) | dose: K* (excess) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -271,6 +325,9 @@ Size-matched for Bolt: from the dose run (150 items per word), where no stand-al
 pre-registered (on the J-specific excess). Bolt's readings stop at its specificity limit (K 10), so its
 K\* covers only 1-3 directions, where its effect is about 0.
 
+![Every model we tried against every test; the gaps are what is left](figures/fig11_scorecard.png)
+*Fig. 11.*
+
 Untestable: removing the top 10 lens directions adds more plain text loss than the 2-nat bar:
 
 | Model | Plain-text loss added |
@@ -287,7 +344,7 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 | Olmo-Hybrid 7B | +1 |
 | Olmo-3 7B | +4 |
 
-## 7. What did not hold
+## 8. What did not hold
 
 - **Failed when fixed in advance.**
   - The 9B's second toy data seed: +23, below the 30-point bar; pooled over seeds it passed.
@@ -315,7 +372,7 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
   - The 122B in FP8.
   - The dose and swap-dose runs use 150 random items per word.
 
-## 8. How we checked
+## 9. How we checked
 
 - **Hand-checked numbers.** None yet; docs/verify_kit.md recomputes the headline M − K from the per-item rows and lists
   20 random items per model.
@@ -324,7 +381,7 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 - **Pre-registration**: docs/prereg_replication_1022.md, amendments 1-55. EXPERIMENTS.md has one line per run, with
   its W&B link.
 
-## 9. Next
+## 10. Next
 
 - DeepSeek and OLMo at matched removal size (their caches must come back).
 - H0 head-on on v2: computed bridges, and the three-hop and numbers modules on v2 and on Lightning.
@@ -336,4 +393,5 @@ Three more models stopped on the earlier datasets, below the 30-point bar:
 ## Appendix. Links
 
 Every number on this page comes from [docs/breadth/data.csv](data.csv), each row with its source file;
-scripts/report_breadth.py builds it and this page.
+scripts/report_breadth.py builds it and this page. The figures ([figures/](figures/)) are drawn by scripts/fig_neel.py from
+the same result files; they will be redrawn with the shared plot style after the code merge.
