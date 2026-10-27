@@ -32,6 +32,7 @@ NAMES = [
     r"\b\d{1,2} Oct\b",  # dates
     r"\bQwen\d\.\d\b",
     r"\bH0\b",  # Zach's hypothesis name
+    r"\bFinding \d\b",  # a section of the README itself
 ]
 
 
@@ -126,4 +127,5 @@ def test_checks_catch_failures():
     assert unresolved("| a <!-- src: docs/breadth/data.csv \\| ko.q27.nosuchkey --> | 1 |")
     assert missing_paths("![a](figures/nope.png)")
     assert unsourced_lines("- the gap is 0.53 on the 27B")
-    assert not unsourced_lines("- the 27B at L32 (45r, Q46.1, 27 Oct)")
+    assert not unsourced_lines("- the 27B at L32 (45r, Q46.1, 27 Oct; Finding 2)")
+    assert unsourced_lines("- Finding 2 moves the stated answer by 24.6 points")
