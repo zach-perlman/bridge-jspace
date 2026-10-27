@@ -1,12 +1,12 @@
 id: x45r_x0_muse
-title: "Batch 45r on Muse, our side (DRAFT, not queued; Dan predicts first, Q45.14): the main test's bridge-word change, whole / without its J++ part / without a random part of the same share, both readers, at L26 (the layer fixed in advance) and at each of L36-42 (Zach's knock-out band)"
+title: "Batch 45r on Muse, our side (DRAFT, not queued; Dan predicts first, Q45.16): the main test's bridge-word change, whole / without its J++ part / without a random part of the same share, both readers, at L26 (the layer fixed in advance) and at each of L36-42 (Zach's knock-out band)"
 thread: C3
 gpus: 1
 mem_gb: 70
 est_gpu_hours: 0.25
 depends_on: []
 command: >-
-  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x0_necessity.py run --name muse30_x45r_x0 --set d1_topics_v3 --renderings chat --layers 26 36 37 38 39 40 41 42 --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --why "batch 45, test 45r (jobs/c3/batch45.yaml; Q45.14): our change-removal at L26 and at each layer of Zach's knock-out band L36-42, J++ k = 25 signed; compared with x45r_ko_l26_muse / x45r_ko_band_muse at the same layers"
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x0_necessity.py run --name muse30_x45r_x0 --set d1_topics_v3 --renderings chat --layers 26 36 37 38 39 40 41 42 --dicts jpp --curve-dicts jpp --curve-k --no-nonneg --why "batch 45, test 45r (jobs/c3/batch45.yaml; Q45.16): our change-removal at L26 and at each layer of Zach's knock-out band L36-42, J++ k = 25 signed; compared with x45r_ko_l26_muse / x45r_ko_band_muse at the same layers"
 figures_command: BJ_TARGET=muse-glimmer-30b uv run python scripts/x0_necessity.py figures --name muse30_x45r_x0
 question: >-
   On Muse, at the same layers as Zach's knock-out (L26 and L36-42), does our change-removal find the J++ part carried
@@ -21,7 +21,7 @@ why_it_matters: >-
   "needed" (removing lens directions everywhere breaks recall more than lookup) are different properties; if they agree
   at the same layers, the disagreement was about depth.
 hypotheses:
-  Q45.14: "Dan's answer in predictions/2026-10-26_dan.md (Q45.14), one line per layer set; enqueue only after it is committed."
+  Q45.16: "Dan's answer in predictions/2026-10-26_dan.md (Q45.16), one line per layer set; enqueue only after it is committed."
 decision_rule: >-
   Fixed in advance (Dan, 27 Oct ~14:40; jobs/c3/batch45.yaml, 45r), verbatim: "'carried, not needed' if our gap >= 0.3
   while his M - K < 15 or within 10 of the logit-lens control, at the same layers." As computed (fixed by the agent
@@ -54,4 +54,4 @@ controls:
 - 'the logit lens (W_U) as a part at L26 is in the stored run (recall extra loss 0.01): not rerun'
 n: '200 main-test scenes (d1_topics_v3, chat: the first 200 of 395 eligible in scene order, as muse30b_x0_necessity; plan check 27 Oct: 530 of 600 scenes made, 70 dropped because the bridge is not one token), 2 readers, 8 layers'
 seeds: [24, 0, 888]
-notes: "DRAFT, NOT QUEUED (Dan 27 Oct ~14:40): enqueue only after Dan's Q45.14 answer is committed; then unsealed (X0's verdict and figures run after the run). Run name muse30_ (pins.check_run_name refuses the old muse30b_ prefix since the merge). Why per layer at L36-42: Zach's knock-out edits the band at once, but X0 patches the bridge word's change at one layer; a band version of it needs new code (set the bridge word's state at every band layer to the org state plus the change without its J++ part; adding the change at each layer would count it several times), so this draft reads each layer and takes the median. Expected risk, from the stored runs: past L28 the change at the bridge word stops switching the lookup (S_whole 0.27 at L28, 0.04 at L30, 0.00 at L32 and L34) and the recall fades (0.49 / 0.41 / 0.32 / 0.10 at L28 / 30 / 32 / 34; muse30b_x0_necessity[_depth]), so L36-42 will most likely be \"can't tell\" on our side. Seeds: 24 the set, 0 the bootstrap and examples, 888 + layer the random subspace. Cost (timing ledger, sesterce-h100x2, H100 PCIe): muse_depth (13 layers, 23,200 reads, competence on 530 scenes) ran 0.293 h; x45m_muse_q2 (1 layer, 3,272 reads, 565 scenes) 0.211 h; linear in reads: (0.293 - 0.211) / (23,200 - 3,272) = 4.1e-6 h per read, fixed part 0.211 - 3,272 x 4.1e-6 = 0.198 h. This run: 8 layers x 4 reads x 200 scenes x 2 readers = 12,800 reads, so 0.198 + 12,800 x 4.1e-6 = 0.25 h."
+notes: "DRAFT, NOT QUEUED (Dan 27 Oct ~14:40): enqueue only after Dan's Q45.16 answer is committed; then unsealed (X0's verdict and figures run after the run). Run name muse30_ (pins.check_run_name refuses the old muse30b_ prefix since the merge). Why per layer at L36-42: Zach's knock-out edits the band at once, but X0 patches the bridge word's change at one layer; a band version of it needs new code (set the bridge word's state at every band layer to the org state plus the change without its J++ part; adding the change at each layer would count it several times), so this draft reads each layer and takes the median. Expected risk, from the stored runs: past L28 the change at the bridge word stops switching the lookup (S_whole 0.27 at L28, 0.04 at L30, 0.00 at L32 and L34) and the recall fades (0.49 / 0.41 / 0.32 / 0.10 at L28 / 30 / 32 / 34; muse30b_x0_necessity[_depth]), so L36-42 will most likely be \"can't tell\" on our side. Seeds: 24 the set, 0 the bootstrap and examples, 888 + layer the random subspace. Cost (timing ledger, sesterce-h100x2, H100 PCIe): muse_depth (13 layers, 23,200 reads, competence on 530 scenes) ran 0.293 h; x45m_muse_q2 (1 layer, 3,272 reads, 565 scenes) 0.211 h; linear in reads: (0.293 - 0.211) / (23,200 - 3,272) = 4.1e-6 h per read, fixed part 0.211 - 3,272 x 4.1e-6 = 0.198 h. This run: 8 layers x 4 reads x 200 scenes x 2 readers = 12,800 reads, so 0.198 + 12,800 x 4.1e-6 = 0.25 h."
