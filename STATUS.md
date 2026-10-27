@@ -1,3 +1,40 @@
+# 27 Oct: merged into main; to the freeze (Wed 28 Oct evening) and the hand check (Thu 29 Oct) (agent). All numbers UNVERIFIED
+
+**Dates (Dan, 27 Oct ~14:40).** Experiments freeze Wed 28 Oct evening, not Tue 21:00 as written in earlier notes. The hand check is Thu 29 Oct. The box (mats, 2x H100) is kept until Thu 12:00.
+
+**Where things are.** Batch 45 is fully scored (121 answers, mean Brier 0.32). Q45.12 (45q) and Q45.13 (45p) are both "yes, 3 of 3", right. README v5 is in main as docs/depth/README.md (1,996 words). Night log: the section below.
+
+**The merge (Dan's Phase 1, ~11:45-13:45).**
+- Pushed: origin/main = d05f5e56, then cc56ffb0 (the gate's ledger). danorel was fast-forwarded to main. In main, every collision went Zach's way except three:
+  - model.py: our BJ_DEVICE_MAP branch sits beside his load_model; it is used only when the variable is set, and is refused with split_gpus.
+  - Our 32B J-lens key.
+  - The suite batch.
+- Pins:
+  - `qwen3-32b` is Zach's J++ (sha 6fbc0386).
+  - Our J-lens is `qwen3-32b-jlens`, prefix `qwen3_32bj_` (Zach's existing entry, same lens 0af5ccf2). Our J++ is `qwen3-32b-jpp`, lens now under cache/qwen3-32b-jpp/.
+  - Old `qwen3_32b_` runs resolve through pins.LEGACY_PREFIXES by lens sha.
+  - Muse is `muse30_`, its lens a local file (copied on our box to cache/muse-glimmer-30b/lenses/jpp/, sha 90fc5e52). The 27B J-lens is `q27jlens_`.
+  - pins.check_run_name refuses the old prefixes `muse30b_` and `qwen36_27b_jlens_`. Our 76 Muse, 4 27B-J-lens and 53 `BJ_TARGET=qwen3-32b` specs would need new names or keys before any rerun (the specs are not edited).
+- Batch: `suite_split.BATCH = BJ_SUITE_BATCH or 128`; BJ_BATCH no longer reaches it. This also sets the x0_necessity / statement_positions / early_push batches. Our box's .env sets BJ_SUITE_BATCH=64; 26 of our 122B specs now set BJ_SUITE_BATCH=16.
+- Manifests: every run manifest records `switches` (target, BJ_DEVICE_MAP, BJ_SUITE_BATCH, lens sha) via bridge_jspace.run_switches, guarded by a test.
+- Docs: readme_build writes docs/depth/README.md; the root README indexes docs/depth and Zach's docs/breadth.
+- Gate:
+  - 45.0 PASS 20/20.
+  - The 9B main-test cell (L12, chat) is identical to qwen35_9b_x0_necessity (9600 of 9600 rows) on e00bc032, fbedabbb and f2b78fdc.
+  - make test: 1324 passed, only the two known test_figs_lens failures.
+  - Zach's report_breadth output is byte-identical to main's.
+- Known issue: `gemma-4-31b-it` has no frozen_lens_sha256 in pins, so FROZEN_LENS_SHA256 falls back to the 27B's sha (bbef480b; its lens is 0b092e93). switches() records the right one. To fix in pins.py with Zach.
+
+**In flight (Dan ~14:40; each on its own branch off main, merged into pm-2026-10-27 for Dan to push).**
+1. This STATUS / handoff.
+2. A jobq guard against spec targets whose meaning changed in the merge.
+3. Two-stage scripts check switches; manifests record every BJ_* variable; the tasks_v2 --counterfactuals manifest records its target.
+4. The hand-check pack adds 45q, 45p and 45m.
+5. A joint grid with Zach (docs/shared/grid.csv, figures/shared/grid.png).
+6. A draft spec 45r (Muse: our change removal vs Zach's v2 knock-out at L26 and L36-42); not queued, Dan predicts first.
+
+Workflow: we work on danorel (or short branches off main) and sync with main daily. Dan pushes.
+
 # Results matrix, 26 Oct ~04:30 (agent). All numbers UNVERIFIED
 
 Every cell from docs/x0_numbers.json (in figures/story/data.csv). Lookup / recall = the two readers; extra loss and gap as in the README. 122B routes runs are after the data (gate 0.75), and so are its fresh scenes (x0_122b_b11; the run fixed in advance stopped at its gate). Muse Glimmer 30B (held out, another family; L26 fixed in advance): batch 38's rules as for the Qwens, every gate passed at 0.80 on the first try, except its routes at L34 (the sanity swap moved the lookup in no scene: not tested); its labels are my reading of the fixed rules, not yet scored against Q38.
