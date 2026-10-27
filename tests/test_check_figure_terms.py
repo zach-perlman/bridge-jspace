@@ -42,3 +42,47 @@ def test_caption_texts_read_alt_texts_fig_lines_and_the_draft(tmp_path, monkeypa
 
 def test_the_repo_captions_have_no_retired_term():
     assert not C.retired(C.caption_texts()), C.retired(C.caption_texts())
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["M − K +51", "the K final", "M-K", "PK +24.6", "TK", "P->P->M", "P→P→M", "RM − MM", "the lookup", "Lookups",
+     "an in-context read", "J-part swap", "the J++ part", "entity code", "the order pointer", "45r", "x45r", "Q46.1",
+     "GAP -> 45s", "0.30°", "X0 not confirmed", "paper10_rot", "s = 2", "s=4", "his finals"],
+)  # fmt: skip
+def test_the_joint_matcher_catches_each_retired_term(text):
+    assert C.joint_retired([("example", text)]), text
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["recalled answer", "stated answer", "the lens part", "remove everywhere", "remove from the change",
+     "swap the lens part", "order signal", "Qwen 9B", "Qwen 27B", "Qwen 122B", "Muse 30B", "Nemotron Lightning",
+     "after the data", "Iris picked the frog.", "Which locker belongs to Iris's pick?", "Mozart was Austrian by birth.",
+     "The composer who wrote The Magic Flute was of which nationality?", "answers lost (points)",
+     "switches lost beyond a random part (× 100)", "about a real change's size", "Kyoto", "Mozart's", "+13.8, below 20"],
+)  # fmt: skip
+def test_the_joint_matcher_passes_the_joint_vocabulary(text):
+    assert not C.joint_retired([("example", text)]), C.joint_retired([("example", text)])
+
+
+def test_root_readme_texts_drop_comments_code_spans_and_link_targets(tmp_path, monkeypatch):
+    readme = tmp_path / "README.md"
+    readme.write_text("# Title\n<!-- src: docs/breadth/data.csv | ko.q9.mk; M − K -->\nRun `scripts/x0_details.py` here.\n"
+                      "[gaps](docs/shared/gaps_45r.md) and ![The lookup](figures/shared/j1.png)\nThe recalled answer.\n")  # fmt: skip
+    monkeypatch.setattr(C, "ROOT_README", readme)
+    texts = C.root_readme_texts()
+    assert [t for _, t in texts] == ["# Title", "Run  here.", "[gaps]() and ![The lookup]()", "The recalled answer."]
+    assert [term for *_, term in C.joint_retired(texts)] == ["lookup"]
+
+
+def test_the_joint_figures_draw_no_retired_term():
+    texts = C.joint_figure_texts()
+    assert {where for where, _ in texts} == {
+        "j0_setup",
+        "j1_recall_needs_lens",
+        "j2_swap",
+        "j3_order_signal",
+        "grid_front",
+    }
+    assert not C.retired(texts) and not C.joint_retired(texts), C.retired(texts) + C.joint_retired(texts)

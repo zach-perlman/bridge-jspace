@@ -1,0 +1,80 @@
+figure,model,quantity,value,lo,hi,n,source
+j0,,Zach's example (stated / recalled items),Austrian,,,,"data/tasks_v2/jsuite_v2_test_chat/items.jsonl | j2:chat:facts:MK-L0-00635, j2:chat:facts:MM-L0-00635"
+j0,,Dan's example,5 / 4,,,,scripts/readme_story_figures.py | f00_setup
+j1,Qwen 9B,remove everywhere: recalled answers lost (points),47.6,,,,docs/breadth/data.csv | ko.q9.lostM
+j1,Qwen 9B,remove everywhere: stated answers lost (points),5.0,,,,docs/breadth/data.csv | ko.q9.lostK
+j1,Qwen 9B,"remove everywhere, largest control (rotated): recalled answers lost (points)",2.7,,,,results/ablate_v2/jsuite2_score/qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1.json | facts paper10_rot/start=all loss M
+j1,Qwen 27B,remove everywhere: recalled answers lost (points),53.5,,,,docs/breadth/data.csv | ko.q27.lostM
+j1,Qwen 27B,remove everywhere: stated answers lost (points),2.6,,,,docs/breadth/data.csv | ko.q27.lostK
+j1,Qwen 27B,"remove everywhere, largest control (rotated): recalled answers lost (points)",2.9,,,,results/ablate_v2/jsuite2_score/jsuite_v2_test_chat_ko_cand2_v1.json | facts paper10_rot/start=all loss M
+j1,Nemotron Lightning,remove everywhere: recalled answers lost (points),56.8,,,,docs/breadth/data.csv | ko.nl.lostM
+j1,Nemotron Lightning,remove everywhere: stated answers lost (points),3.7,,,,docs/breadth/data.csv | ko.nl.lostK
+j1,Nemotron Lightning,"remove everywhere, largest control (logit lens): recalled answers lost (points)",9.1,,,,results/ablate_v2/jsuite2_score/nem35l_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
+j1,Muse 30B,remove everywhere: recalled answers lost (points),61.7,,,,docs/breadth/data.csv | ko.mu.lostM
+j1,Muse 30B,remove everywhere: stated answers lost (points),1.8,,,,docs/breadth/data.csv | ko.mu.lostK
+j1,Muse 30B,"remove everywhere, largest control (logit lens): recalled answers lost (points)",35.5,,,,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
+j1,Qwen 122B,remove everywhere: recalled answers lost (points),49.2,,,,docs/breadth/data.csv | ko.q122.lostM
+j1,Qwen 122B,remove everywhere: stated answers lost (points),0.8,,,,docs/breadth/data.csv | ko.q122.lostK
+j1,Qwen 122B,"remove everywhere, largest control (logit lens): recalled answers lost (points)",12.0,,,,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_v1.json | facts unembed10/start=all loss M
+j1,Qwen 9B,remove from the change: recalled answers' extra loss (x 100),50.0,41.0,57.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j1,Qwen 9B,remove from the change: stated answers' extra loss (x 100),-3.0,-8.0,3.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j1,Qwen 9B,"remove from the change, control (a random part): recalled switches lost (%)",3.5,,,,figures/story/data.csv | numbers | rc_droprand_9b
+j1,Qwen 27B,remove from the change: recalled answers' extra loss (x 100),74.0,66.0,80.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j1,Qwen 27B,remove from the change: stated answers' extra loss (x 100),14.0,8.0,20.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j1,Qwen 27B,"remove from the change, control (a random part): recalled switches lost (%)",2.0,,,,figures/story/data.csv | numbers | rc_droprand_27b
+j1,Nemotron Lightning,remove from the change,not run,,,,docs/shared/grid.csv | depth column '-'
+j1,Muse 30B,remove from the change: recalled answers' extra loss (x 100),75.0,61.0,87.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j1,Muse 30B,remove from the change: stated answers' extra loss (x 100),-10.0,-15.0,-4.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j1,Muse 30B,"remove from the change, control (a random part): recalled switches lost (%)",-2.0,,,,figures/story/data.csv | numbers | rc_droprand_muse
+j1,Qwen 122B,remove from the change: recalled answers' extra loss (x 100),32.0,22.0,41.0,,figures/story/data.csv | fig01 | main test (two people swap picks): recall extra loss
+j1,Qwen 122B,remove from the change: stated answers' extra loss (x 100),0.0,-6.0,6.0,,figures/story/data.csv | fig01 | main test (two people swap picks): lookup extra loss
+j1,Qwen 122B,"remove from the change, control (a random part): recalled switches lost (%)",7.5,,,,figures/story/data.csv | numbers | rc_droprand_122b
+j2,Qwen 9B,"swap everything else: stated answer moves, bridge tracked (points)",1.7,-11.1,13.6,58,results/jswap/qwen35_9b_jswap_v2_v1/summary.json | TK/swap_comp
+j2,Qwen 9B,swap the lens part: recalled answer moves (points),63.9,58.2,69.3,950,docs/breadth/data.csv | swap.q9.swap
+j2,Qwen 9B,swap everything else: recalled answer moves (points),14.0,10.3,17.8,950,"results/jswap/qwen35_9b_jswap_v2_v1/rows.jsonl | memory finals pooled (results_digest.pooled), swap_comp"
+j2,Qwen 9B,swap the lens part: stated answer moves (points),4.4,2.0,6.8,259,results/jswap/qwen35_9b_jswap_v2_v1/summary.json | PK/swap
+j2,Qwen 9B,swap everything else: stated answer moves (points),13.9,7.8,20.4,259,results/jswap/qwen35_9b_jswap_v2_v1/summary.json | PK/swap_comp
+j2,Qwen 27B,"swap everything else: stated answer moves, bridge tracked (points)",27.3,20.2,34.9,227,results/jswap/jswap_v2_v1/summary.json | TK/swap_comp
+j2,Qwen 27B,swap the lens part: recalled answer moves (points),63.0,57.1,68.9,1696,docs/breadth/data.csv | swap.q27.swap
+j2,Qwen 27B,swap everything else: recalled answer moves (points),38.4,33.8,43.1,1696,"results/jswap/jswap_v2_v1/rows.jsonl | memory finals pooled (results_digest.pooled), swap_comp"
+j2,Qwen 27B,swap the lens part: stated answer moves (points),0.9,0.0,2.1,338,results/jswap/jswap_v2_v1/summary.json | PK/swap
+j2,Qwen 27B,swap everything else: stated answer moves (points),24.6,18.6,31.0,338,results/jswap/jswap_v2_v1/summary.json | PK/swap_comp
+j3,Qwen 9B,answers by position: whole change (share),0.51,0.46,0.561,300,"figures/story/data.csv | fig05 | another item moved, whole: position share"
+j3,Qwen 9B,answers by position: without the order signal (share),0.083,0.051,0.117,300,"figures/story/data.csv | fig05 | another item moved, no_alf: position share"
+j3,Qwen 9B,answers by position: without a random part (same size) (share),0.543,0.488,0.594,300,"figures/story/data.csv | fig05 | another item moved, no_alf_rand: position share"
+j3,Qwen 9B,writes sending the stated answer to the target locker: order signal (share),0.4633,,,,"figures/story/data.csv | fig07 | lookup target share, mean over locker pairs, s = 2"
+j3,Qwen 9B,the order signal's write dose (x a real change's size),1.06,,,,"figures/story/data.csv | fig07 | dose (s / mean s*), s = 2"
+j3,Qwen 9B,writes sending the stated answer to the target locker: random vector (share),0.0,0.0,0.0,,"figures/story/data.csv | fig07 | lookup target share, random direction, s = 4"
+j3,Qwen 9B,the random vector's dose (x a real change's size),2.12,,,,"figures/story/data.csv | fig07 | dose (s / mean s*), s = 4"
+j3,Muse 30B,answers by position: whole change (share),0.543,0.492,0.596,300,"figures/story/data.csv | fig05 | another item moved, whole: position share"
+j3,Muse 30B,answers by position: without the order signal (share),0.273,0.229,0.322,300,"figures/story/data.csv | fig05 | another item moved, no_alf: position share"
+j3,Muse 30B,answers by position: without a random part (same size) (share),0.547,0.498,0.597,300,"figures/story/data.csv | fig05 | another item moved, no_alf_rand: position share"
+j3,Muse 30B,writes sending the stated answer to the target locker: order signal (share),0.5158,,,,"figures/story/data.csv | fig07 | lookup target share, mean over locker pairs, s = 2"
+j3,Muse 30B,the order signal's write dose (x a real change's size),1.25,,,,"figures/story/data.csv | fig07 | dose (s / mean s*), s = 2"
+j3,Muse 30B,writes sending the stated answer to the target locker: random vector (share),0.006666666666666667,0.0,0.01584507042253521,,"figures/story/data.csv | fig07 | lookup target share, random direction, s = 4"
+j3,Muse 30B,the random vector's dose (x a real change's size),2.5,,,,"figures/story/data.csv | fig07 | dose (s / mean s*), s = 4"
+grid_front,Qwen 9B,finding 1 (depth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 9B,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 9B,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Qwen 9B,finding 3 (depth),ok,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Qwen 9B,finding 4 (both),ok,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
+grid_front,Qwen 27B,finding 1 (depth),~,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 27B,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 27B,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Qwen 27B,finding 3 (depth),~ a,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Qwen 27B,finding 4 (both),~,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
+grid_front,Nemotron Lightning,finding 1 (depth),-,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Nemotron Lightning,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Nemotron Lightning,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Nemotron Lightning,finding 3 (depth),-,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Nemotron Lightning,finding 4 (both),-,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
+grid_front,Muse 30B,finding 1 (depth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Muse 30B,finding 1 (breadth),ok a,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Muse 30B,finding 2 (breadth),-,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Muse 30B,finding 3 (depth),ok,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Muse 30B,finding 4 (both),x a,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
+grid_front,Qwen 122B,finding 1 (depth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 122B,finding 1 (breadth),ok a,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 122B,finding 2 (breadth),-,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Qwen 122B,finding 3 (depth),ok a,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Qwen 122B,finding 4 (both),x a,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row

@@ -8,6 +8,13 @@ file is written); the captions are the figure alt texts and "*Fig. N.*" lines of
 and the canonical lines of docs/drafts/readme_v5_captions.md. docs/glossary.md's word list is checked by
 tests/test_readme_build.py; this script checks the retired terms only.
 
+The joint story (Dan, 27 Oct ~15:50) adds JOINT_RETIRED, the words the root README and its figures leave to the two
+reports: M, K, PK, TK, P->P->M, RM - MM, lookup, in-context read, final, J-part, J++ part, entity code, pointer, test ids
+(45r, Q46.1), GAP, °, X0, paper10, s = 2. Checked on the root README.md (its prose, alt texts and captions; HTML
+comments, code spans and link targets left out) and on the joint figures (scripts/joint_figures.py, figures/shared/),
+whose drawn texts also get RETIRED. figures/shared/grid.png, the appendix's full grid, keeps each report's own claim
+words and is not in the joint scope.
+
 uv run python scripts/check_figure_terms.py
 """
 
@@ -32,11 +39,70 @@ RETIRED = {
 }
 CAPTION_FILES = (REPO / "docs" / "depth" / "README.md", REPO / "docs" / "README.template.md")
 CAPTIONS_DRAFT = REPO / "docs" / "drafts" / "readme_v5_captions.md"
+ROOT_README = REPO / "README.md"
+JOINT_RETIRED = {
+    # a lone capital M or K (the two reports' final codes), also inside "M − K" / "M-K"
+    "M / K": r"(?<![\w'’.])[MK](?![\w'’])",
+    "PK / TK": r"\b[PT]K\b",
+    "chain code": r"\b[PMTKAN]\s*(?:->|→)\s*[PMTKAN]\b",
+    "RM / MM": r"\b(?:RM|MM)\b",
+    "lookup": r"(?i)\blook-?ups?\b",
+    "in-context read": r"(?i)\bin-context read",
+    "final": r"(?i)\bfinals?\b",
+    "J-part": r"(?i)\bJ-parts?\b",
+    "J++ part": r"J\+\+ parts?\b",
+    "entity code": r"(?i)\bentity codes?\b",
+    "pointer": r"(?i)\bpointers?\b",
+    "test id": r"\bx?\d{2}[a-z]\b|\bQ\d+(?:\.\d+)?\b",
+    "GAP": r"\bGAP\b",
+    "degree sign": r"°",
+    "X0": r"(?i)\bx0\b",
+    "paper10": r"(?i)\bpaper10",
+    "s = n": r"(?<![\w'’])s\s*=\s*\d",
+}
 
 
 def retired(texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
     """(where, text, term) for each text holding a retired term."""
     return [(where, text, term) for where, text in texts for term, rx in RETIRED.items() if re.search(rx, text)]
+
+
+def joint_retired(texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
+    """(where, text, term) for each text holding a term the joint story retires."""
+    return [(where, text, term) for where, text in texts for term, rx in JOINT_RETIRED.items() if re.search(rx, text)]
+
+
+def root_readme_texts() -> list[tuple[str, str]]:
+    """The root README's lines as a reader sees them: HTML comments (the source keys), code spans and link targets
+    left out, link texts and alt texts kept."""
+    if not ROOT_README.exists():
+        return []
+    text = re.sub(r"<!--.*?-->", "", ROOT_README.read_text(), flags=re.S)
+    text = re.sub(r"`[^`]*`", "", text)
+    text = re.sub(r"(\]\()[^)]*\)", r"\1)", text)  # [text](target) -> [text]()
+    return [(f"{ROOT_README.name} l.{i}", line.strip()) for i, line in enumerate(text.splitlines(), 1) if line.strip()]
+
+
+def joint_figure_texts() -> list[tuple[str, str]]:
+    """Every text the joint figures draw, by figure (drawn, not saved)."""
+    import matplotlib
+    from matplotlib.text import Text
+
+    from scripts import joint_figures as J
+    from scripts import story_style as S
+
+    texts: list[tuple[str, str]] = []
+    saved = list(J.ROWS)
+    with matplotlib.rc_context():
+        plt = S.setup()
+        try:
+            for name, draw in J.FIGURES:
+                fig = draw(plt)
+                texts += [(name, t.get_text()) for t in fig.findobj(Text) if t.get_text().strip()]
+                plt.close(fig)
+        finally:
+            J.ROWS[:] = saved
+    return texts
 
 
 def caption_texts() -> list[tuple[str, str]]:
@@ -86,11 +152,14 @@ def figure_texts() -> list[tuple[str, str]]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    hits = retired(caption_texts() + figure_texts())
-    for where, text, term in hits:
+    joint = joint_figure_texts()
+    hits = retired(caption_texts() + figure_texts() + joint)
+    joint_hits = joint_retired(joint + root_readme_texts())
+    for where, text, term in hits + joint_hits:
         print(f"{where}: {term!r} in {text!r}")
-    print(f"check_figure_terms: {len(hits)} retired term(s)")
-    return 1 if hits else 0
+    print(f"check_figure_terms: {len(hits)} retired term(s); {len(joint_hits)} joint-story term(s) "
+          f"(root README and figures/shared/)")  # fmt: skip
+    return 1 if hits or joint_hits else 0
 
 
 if __name__ == "__main__":
