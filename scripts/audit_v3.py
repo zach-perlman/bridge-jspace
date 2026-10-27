@@ -29,6 +29,9 @@ def has(text: str, w: str) -> bool:
 
 def main(name: str) -> None:
     rows = [json.loads(line) for line in (ROOT / "data/tasks_v2" / f"{name}_test_chat" / "items.jsonl").open()]
+    r1 = ROOT / "data/tasks_v2" / f"{name}r1_test_chat" / "items.jsonl"  # the second rendering, split off after the build
+    if r1.exists():
+        rows += [json.loads(line) for line in r1.open()]
     facts = [r for r in rows if r.get("module") == "facts"]
     probes = [r for r in rows if r.get("module") == "probes"]
     bridges = json.loads((ROOT / "data/v3_bridges.json").read_text())
@@ -162,7 +165,7 @@ def main(name: str) -> None:
           "| check | violations | of | expected | pass |", "|---|---|---|---|---|"]
     md += [f"| {c['check']} | {c['violations']} | {c['of']} | {c['expect']} | {'yes' if c['pass'] else 'NO'} |" for c in checks]
     (out_dir / "audit.md").write_text("\n".join(md) + "\n")
-    figure(out_dir / "overview.png", words, shares, v2_shares, lengths, keypos, conflict_mix, checks, summary)
+    figure(out_dir / "overview.png", words, shares, v2_shares, lengths, keypos, summary["conflict_mix"], checks, summary)
     print("\n".join(md))
 
 
@@ -179,7 +182,7 @@ def figure(path, words, shares, v2_shares, lengths, keypos, conflict_mix, checks
                  f"5 relations, {s['n_probes']} skip-the-bridge probes", x=0.02, ha="left", fontsize=14, fontweight="bold")
 
     # (a) the design matrix
-    ax = fig.add_axes((0.04, 0.53, 0.30, 0.37))
+    ax = fig.add_axes((0.10, 0.53, 0.25, 0.37))
     import numpy as np
 
     grid = np.zeros((len(STARTS), len(FINALS)))
@@ -224,7 +227,7 @@ def figure(path, words, shares, v2_shares, lengths, keypos, conflict_mix, checks
     ax.set_title("(c) Passage length by level and final", loc="left", fontweight="bold")
 
     # (d) where the bridge first appears
-    ax = fig.add_axes((0.04, 0.08, 0.22, 0.30))
+    ax = fig.add_axes((0.07, 0.08, 0.20, 0.30))
     ax.boxplot([keypos[lv] for lv in sorted(keypos)], tick_labels=[f"L{lv}" for lv in sorted(keypos)], showfliers=False,
                medianprops={"color": blue})
     ax.axhline(1 / 3, color=grey, ls=":", lw=1)
