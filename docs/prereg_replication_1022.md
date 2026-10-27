@@ -1910,7 +1910,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   magnitude on this model. A larger gap is reported as a lens effect. On v1 the two differed by about 3.
 - **Bolt's pointer job** (waiting) is relaunched to wait for this run too.
 
-## Amendment 57 (Zach, 2026-10-27 07:50 UTC, before any run below): H0 head-on with a powered numbers set, a second three-hop seed, late-band positions for the 9B and Lightning
+## Amendment 57 (Zach, 2026-10-27 07:49 UTC, before any run below): H0 head-on with a powered numbers set, a second three-hop seed, late-band positions for the 9B and Lightning
 
 - **Why (Zach, 2026-10-27 ~03:45 ET: "What else to queue? U have until around noon"):**
   - The v2 numbers module (amendment 56 A) settles the report question: a number computed from the passage needs no
