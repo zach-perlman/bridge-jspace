@@ -94,6 +94,15 @@ BREADTH_RULES: tuple[tuple[str, str, Callable[[str], list[str]], Callable[..., s
 )  # fmt: skip
 
 
+# EXPERIMENTS.md l.167 / l.169: the v2 knock-outs on the 122B and Muse were not pre-registered
+AFTER_V2_KNOCKOUT = ("q122", "mu")
+
+
+def breadth_flag(flag: str, m: str, keys: list[str]) -> str:
+    """The rule's flag, or 'a' where the cell reads a v2 knock-out that was run after the data."""
+    return "a" if flag == "a" or (m in AFTER_V2_KNOCKOUT and any(k.startswith("ko.") for k in keys)) else flag
+
+
 def read_csv(path: Path) -> list[dict]:
     with path.open() as f:
         return list(csv.DictReader(f))
@@ -152,7 +161,7 @@ def build() -> list[dict]:
             row = {"group": group, "claim": claim, "model": header, "study": "breadth", "cell": "-", "flag": "",
                    "source": "docs/breadth/data.csv", "source row": column, "model key": m, "key": "", "value": ""}  # fmt: skip
             if len(got) == len(keys):  # a rule is graded only where data.csv holds every key it reads
-                row.update(cell=verdict(*[float(r["value"]) for r in got]), flag=flag, key="; ".join(keys),
+                row.update(cell=verdict(*[float(r["value"]) for r in got]), flag=breadth_flag(flag, m, keys), key="; ".join(keys),
                            value="; ".join(breadth_value(r) for r in got))  # fmt: skip
             out.append(row)
         return out

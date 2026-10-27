@@ -86,7 +86,8 @@ def test_breadth_cells_resolve_to_their_data_csv_keys(grid):
             assert (r["flag"], r["key"]) == ("", "") and not all((r["model key"], k) in data for k in keys), r
             continue
         assert r["key"].split("; ") == keys, r
-        assert r["cell"] == verdict(*[data[(r["model key"], k)] for k in keys]) and r["flag"] == flag, r
+        assert r["cell"] == verdict(*[data[(r["model key"], k)] for k in keys]), r
+        assert r["flag"] == G.breadth_flag(flag, r["model key"], keys), r
         graded += 1
     assert graded == 63  # 10 rules x 9 models, less the 27 cells data.csv has no key for
 
