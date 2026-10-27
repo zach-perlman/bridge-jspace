@@ -100,7 +100,7 @@ def probe(run: str | None) -> tuple[str, str]:
 
 # pointer tests (amendment 51): model -> jswap_pointer run
 POINTER = [("Qwen3.6-27B", "jswap_pointer_v2_s150_v1"), ("Qwen3.5-9B", "qwen35_9b_jswap_pointer_v2_s150_v1"),
-           ("Nemotron-3.5-Lightning", "nem35l_jswap_pointer_v2_s150_v1")]  # fmt: skip
+           ("Nemotron-3.5-Lightning", "nem35l_jswap_pointer_v2_s150_v1"), ("Nemotron-3.5-Bolt", "nem35b_jswap_pointer_v2_k100_s150_v1")]  # fmt: skip
 # removal size at the knock-out band (median share of the residual norm removed): model -> removal_size run
 SIZE = [("Qwen3.6-27B", "removal_size_pca_L32-40_v1"), ("Qwen3.5-9B", "qwen35_9b_removal_size_pca_L12-16_v1"),
         ("DeepSeek-V4-Flash", "dsv4f_removal_size_pca_L18-23_v1"), ("Ministral-3-14B", "min14_removal_size_pca_L32-37_v1"),

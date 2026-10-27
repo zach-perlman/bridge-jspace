@@ -67,6 +67,28 @@ def ko_run(m):
     return D.MODELS[[x[0] for x in D.MODELS].index(M[m][1])]
 
 
+def pointer_keys(m: str) -> None:
+    """Amendment 51's pointer tests (Bolt's at K 100, amendment 55 note 1)."""
+    run = dict(D.POINTER).get(M[m][1])
+    s = jl(RES / "jswap" / run / "summary.json") if run else None
+    if s:
+        t = lambda c: s[f"memory/{c}"]["transfer"]  # noqa: E731
+        src = f"results/jswap/{dict(D.POINTER)[M[m][1]]}/summary.json"
+        add(f"ptr.{m}.swap", "pointer", m, "J-part swap, same passage", t("swap"), *s["memory/swap"]["ci"], s["memory/swap"]["n"], source=src)
+        add(f"ptr.{m}.neutral", "pointer", m, "neutral-sentence donor / same-passage swap", t("swap_neutral") / t("swap"), unit="ratio", source=src)
+        add(f"ptr.{m}.noown", "pointer", m, "without own-word directions / swap", t("swap_noown") / t("swap"), unit="ratio", source=src)
+        add(f"ptr.{m}.rot", "pointer", m, "neutral donor, rotated", t("swap_neutral_rot"), source=src)
+        rels = sorted({k.split("/")[0][len("memory_"):] for k in s if k.startswith("memory_")})
+        read = [r for r in rels if (s.get(f"memory_{r}/swap", {}).get("transfer") or 0) >= 10]
+        held = [r for r in read if s[f"memory_{r}/swap_neutral"]["transfer"] >= 2 / 3 * s[f"memory_{r}/swap"]["transfer"]]
+        add(f"ptr.{m}.rel_held", "pointer", m, "relations where the neutral donor keeps >= 2/3", len(held), unit="count", source=src)
+        add(f"ptr.{m}.rel_read", "pointer", m, "relations read (swap >= 10)", len(read), unit="count", source=src)
+        tl = s["timeline_memory"]
+        lays = sorted({int(x.split("/L")[1]) for x in tl})
+        fx = next((la for la in lays if tl[f"none/L{la}"]["kept"] >= 50), None)
+        add(f"ptr.{m}.lookup", "pointer", m, "first layer where the lens reads X's attribute on >= 50% (answer position)", fx, unit="layer", source=src)
+
+
 def collect() -> None:
     # ---- 1. knock-out at K = 10 (test)
     for m in V2:
@@ -235,29 +257,14 @@ def collect() -> None:
         s = jl(RES / "jswap" / xr / "summary.json")
         if s:
             add(f"xrel.{m}", "pointer", m, "cross-relation / same-relation donor", s["memory/swap_xrel"]["transfer"] / s["memory/swap_srel"]["transfer"], unit="ratio", source=f"results/jswap/{xr}/summary.json")
-        s = jl(RES / "jswap" / dict(D.POINTER)[M[m][1]] / "summary.json")
-        if s:
-            t = lambda c: s[f"memory/{c}"]["transfer"]  # noqa: E731
-            src = f"results/jswap/{dict(D.POINTER)[M[m][1]]}/summary.json"
-            add(f"ptr.{m}.swap", "pointer", m, "J-part swap, same passage", t("swap"), *s["memory/swap"]["ci"], s["memory/swap"]["n"], source=src)
-            add(f"ptr.{m}.neutral", "pointer", m, "neutral-sentence donor / same-passage swap", t("swap_neutral") / t("swap"), unit="ratio", source=src)
-            add(f"ptr.{m}.noown", "pointer", m, "without own-word directions / swap", t("swap_noown") / t("swap"), unit="ratio", source=src)
-            add(f"ptr.{m}.rot", "pointer", m, "neutral donor, rotated", t("swap_neutral_rot"), source=src)
-            rels = sorted({k.split("/")[0][len("memory_"):] for k in s if k.startswith("memory_")})
-            read = [r for r in rels if (s.get(f"memory_{r}/swap", {}).get("transfer") or 0) >= 10]
-            held = [r for r in read if s[f"memory_{r}/swap_neutral"]["transfer"] >= 2 / 3 * s[f"memory_{r}/swap"]["transfer"]]
-            add(f"ptr.{m}.rel_held", "pointer", m, "relations where the neutral donor keeps >= 2/3", len(held), unit="count", source=src)
-            add(f"ptr.{m}.rel_read", "pointer", m, "relations read (swap >= 10)", len(read), unit="count", source=src)
-            tl = s["timeline_memory"]
-            lays = sorted({int(x.split("/L")[1]) for x in tl})
-            fx = next((la for la in lays if tl[f"none/L{la}"]["kept"] >= 50), None)
-            add(f"ptr.{m}.lookup", "pointer", m, "first layer where the lens reads X's attribute on >= 50% (answer position)", fx, unit="layer", source=src)
+        pointer_keys(m)
         s = jl(RES / "probe_ceiling" / pr / "summary.json")
         if s and "memory_valid/swap" in s:
             add(f"probe.{m}.swap", "probe", m, "J++ swap on probe-valid relations", s["memory_valid/swap"]["transfer"], source=f"results/probe_ceiling/{pr}/summary.json")
             add(f"probe.{m}.probe", "probe", m, "probe-subspace swap", s["memory_valid/swap_probe"]["transfer"], source=f"results/probe_ceiling/{pr}/summary.json")
+    pointer_keys("nb")
     # ---- 5. dose (amendment 54) and swap dose (amendment 55)
-    for (mm, pre, band), m in zip(F.DOSE54, ("q27", "q9", "nl", "mi", "nb"), strict=True):
+    for (mm, pre, band), m in zip(F.DOSE54, ("q27", "q9", "nl", "mi", "nb", "ds"), strict=True):
         d = F.dose_data(mm, pre, band)
         if not d:
             continue

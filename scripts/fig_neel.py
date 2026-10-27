@@ -689,9 +689,9 @@ def f09() -> None:
 # ---------------------------------------------------------------------------------------------------------------- F10
 
 DOSE54 = [("Qwen3.6-27B", "", "L32-40"), ("Qwen3.5-9B", "qwen35_9b_", "L12-16"), ("Nemotron-3.5-Lightning", "nem35l_", "L27-33"),
-          ("Ministral-3-14B", "min14_", "L32-37"), ("Nemotron-3.5-Bolt", "nem35b_", "L42-53")]  # fmt: skip
+          ("Ministral-3-14B", "min14_", "L32-37"), ("Nemotron-3.5-Bolt", "nem35b_", "L42-53"), ("DeepSeek-V4-Flash", "dsv4f_", "L18-23")]  # fmt: skip
 KS = [1, 3, 10, 30, 100, 300]
-DCOL = {"Qwen3.6-27B": J, "Qwen3.5-9B": JL, "Nemotron-3.5-Lightning": "#184f95", "Ministral-3-14B": LOGIT, "Nemotron-3.5-Bolt": PROBE}
+DCOL = {"Qwen3.6-27B": J, "Qwen3.5-9B": JL, "Nemotron-3.5-Lightning": "#184f95", "Ministral-3-14B": LOGIT, "Nemotron-3.5-Bolt": PROBE, "DeepSeek-V4-Flash": COMP}
 DMK = {"Qwen3.6-27B": "o", "Qwen3.5-9B": "s", "Nemotron-3.5-Lightning": "D", "Ministral-3-14B": "^", "Nemotron-3.5-Bolt": "v"}
 
 
@@ -734,9 +734,10 @@ def dose_readings(d: list[dict]) -> dict:
 
 
 def f10() -> None:
-    fig = plt.figure(figsize=(17, 9.4))
     n = len(DOSE54)
-    w, gap, x0 = 0.168, 0.022, 0.06
+    fig = plt.figure(figsize=(3.4 * n, 9.4))
+    gap, x0 = 0.11 / n, 0.06
+    w = (0.928 - (n - 1) * gap) / n
     top_ax = [fig.add_axes((x0 + i * (w + gap), 0.43, w, 0.33)) for i in range(n)]
     bot_ax = [fig.add_axes((x0 + i * (w + gap), 0.12, w, 0.2)) for i in range(n)]
     for i, (m, pre, band) in enumerate(DOSE54):
@@ -751,8 +752,8 @@ def f10() -> None:
         ax.set_title(f"{SHORT[m]}  ({band})", fontsize=10, y=1.13)
         d = dose_data(m, pre, band)
         if not d:
-            ax.text(20, 38, "running tonight", ha="center", fontsize=9, color=MUTED)
-            bx.text(20, 30, "running tonight", ha="center", fontsize=9, color=MUTED)
+            ax.text(20, 38, "running", ha="center", fontsize=9, color=MUTED)
+            bx.text(20, 30, "running", ha="center", fontsize=9, color=MUTED)
         else:
             x = [r["share"] for r in d]
             ser = lambda key: [(r["share"], r[key]) for r in d if r.get(key) is not None]  # noqa: E731
@@ -1115,7 +1116,8 @@ def f12() -> None:
     bp = [cell(f"nem35b_{SET}_ko_cand2_L42-53_k100_pos{w}_s150_v1", "top100/start=all") for w in ("bridge", "question")]
     bd = {r["k"]: r for r in (dose_data("Nemotron-3.5-Bolt", "nem35b_", "L42-53") or [])}
     bwhere = (("warn", f"K 100: mention {bp[0][0]:+.0f},\nquestion {bp[1][0]:+.0f} of {bd[100]['mk']:+.0f}") if all(bp) and 100 in bd else ("pend", "running"))
-    v2row("Nemotron-3.5-Bolt", "Nemotron Bolt", "nem35b_textloss_top_v2gate_v1", "nem35b_jswap_v2_k100_v1", False, ("none", "v2 only"), bwhere)
+    v2row("Nemotron-3.5-Bolt", "Nemotron Bolt", "nem35b_textloss_top_v2gate_v1", "nem35b_jswap_v2_k100_v1",
+          (RES / "jswap" / dict(D.POINTER)["Nemotron-3.5-Bolt"] / "summary.json").exists(), ("none", "v2 only"), bwhere)  # fmt: skip
     v2row("OLMo-3-32B (base, Q&A)", "OLMo-3 32B base", "olmo32_textloss_top_l20_44_v1", "olmo32_jswap_v2_v1", False, ("bad", "v1 −3"), ("none", "-"), ("none", "-"))
     v2row("Muse-Glimmer-30B", "Muse 30B", "muse30_textloss_top_l36_42_v1", None, False, ("bad", "toy 7; natural/natplus\nmostly logit lens"), ("none", "-"), ("none", "-"))
     v2row("Qwen3.5-122B", "Qwen 122B (FP8)", "qwen35_122b_textloss_L39-45_v1", None, False, ("bad", "toy 9; natural null"), ("good", "question (late only)"), ("none", "-"))
