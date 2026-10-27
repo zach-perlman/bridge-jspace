@@ -113,4 +113,10 @@ Full lists: [depth report](docs/depth/README.md) <!-- src: docs/depth/README.md 
 
 ## Appendix: the full grid
 
-![Every claim against every model, both tracks](figures/shared/grid.png)
+Claims graded on all nine models (both tracks; Zach's tests):
+
+![Claims graded on all nine models, both tracks](figures/shared/grid.png)
+
+Dan's own tests on his four models:
+
+![Dan's tests on his four models](figures/shared/grid_dan.png)
