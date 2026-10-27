@@ -10,7 +10,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 - **Recalled answers need the lens part; stated answers do not.** Both of our methods find this on Qwen 9B and Qwen 27B; on Nemotron Lightning one method has been run.
 - **The lens part says which entity it is.** Write in another entity's lens part and the model recalls that entity's facts, while stated answers stay put.
 - **Stated answers use something the lens cannot see.** In our scenes they partly use an order signal outside the lens; much of that route is unexplained.
-- **Two models do not fit cleanly.** On Muse 30B our methods disagree, and on Qwen 122B each has a failed control. A pending test compares the methods on Muse.
+- **Two models do not fit cleanly.** On Muse 30B the lens part is carried at a middle layer but needed only deep, where its removal is less specific; on Qwen 122B each method has a failed control.
 
 ## The setup
 
