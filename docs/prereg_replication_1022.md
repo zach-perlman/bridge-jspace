@@ -1859,7 +1859,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - Readings as amendment 51: neutral donor >= 2/3 of the same-passage swap means context-free; the no-own-word share
     is read the same way; rotated and logit-lens swaps < 5.
 
-## Amendment 56 (Zach, 2026-10-27 05:00 UTC, before any run below): the night of day 8-9
+## Amendment 56 (Zach, 2026-10-27 04:51 UTC, before any run below): the night of day 8-9
 
 - **Why (Zach: "the best possible set of next moves ... until around noon"):** the proposal's own question (which
   intermediates live in J-space; H0) was last tested on the v1 modules and the toy suite. It has never been tested on v2
