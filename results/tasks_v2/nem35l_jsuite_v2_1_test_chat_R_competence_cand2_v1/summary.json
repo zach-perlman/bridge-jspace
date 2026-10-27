@@ -1,0 +1,174 @@
+{
+  "seconds": 439,
+  "by_word_level": {
+    "RM/L0": {
+      "n": 179,
+      "whole": 0.883,
+      "all_steps": 0.844,
+      "median_margin": 3.38,
+      "guess": 0.011,
+      "top_wrong": [
+        [
+          "South",
+          2
+        ],
+        [
+          "C",
+          2
+        ],
+        [
+          "Spain",
+          2
+        ]
+      ]
+    },
+    "RM/L1": {
+      "n": 179,
+      "whole": 0.866,
+      "all_steps": 0.832,
+      "median_margin": 3.0,
+      "guess": 0.011,
+      "top_wrong": [
+        [
+          "France",
+          3
+        ],
+        [
+          "G",
+          2
+        ],
+        [
+          "Japan",
+          2
+        ]
+      ]
+    },
+    "RA/L0": {
+      "n": 179,
+      "whole": 0.905,
+      "all_steps": 0.832,
+      "median_margin": 3.62,
+      "guess": 0.408,
+      "top_wrong": [
+        [
+          "D",
+          2
+        ],
+        [
+          "France",
+          2
+        ],
+        [
+          "Spain",
+          2
+        ]
+      ]
+    },
+    "RA/L1": {
+      "n": 179,
+      "whole": 0.888,
+      "all_steps": 0.838,
+      "median_margin": 3.12,
+      "guess": 0.162,
+      "top_wrong": [
+        [
+          "V",
+          2
+        ],
+        [
+          "Europe",
+          1
+        ],
+        [
+          "I",
+          1
+        ]
+      ]
+    },
+    "RN/L0": {
+      "n": 179,
+      "whole": 0.883,
+      "all_steps": 0.86,
+      "median_margin": 3.75,
+      "guess": 0.011,
+      "top_wrong": [
+        [
+          "France",
+          3
+        ],
+        [
+          "Europe",
+          2
+        ],
+        [
+          "D",
+          2
+        ]
+      ]
+    },
+    "RN/L1": {
+      "n": 179,
+      "whole": 0.877,
+      "all_steps": 0.816,
+      "median_margin": 3.25,
+      "guess": 0.022,
+      "top_wrong": [
+        [
+          "French",
+          2
+        ],
+        [
+          "Spain",
+          2
+        ],
+        [
+          "South",
+          2
+        ]
+      ]
+    }
+  },
+  "by_domain": {
+    "animals": {
+      "RM": 0.765,
+      "RA": 0.824,
+      "RN": 0.765
+    },
+    "cities": {
+      "RM": 0.923,
+      "RA": 0.962,
+      "RN": 0.885
+    },
+    "companies": {
+      "RM": 0.81,
+      "RA": 0.857,
+      "RN": 0.833
+    },
+    "countries": {
+      "RM": 0.896,
+      "RA": 0.917,
+      "RN": 0.875
+    },
+    "dishes": {
+      "RM": 0.868,
+      "RA": 0.895,
+      "RN": 0.921
+    },
+    "landmarks": {
+      "RM": 0.881,
+      "RA": 0.881,
+      "RN": 0.881
+    },
+    "languages": {
+      "RM": 0.9,
+      "RA": 0.9,
+      "RN": 0.925
+    },
+    "people": {
+      "RM": 0.903,
+      "RA": 0.903,
+      "RN": 0.919
+    }
+  },
+  "pick": {}
+}

@@ -1,0 +1,32 @@
+{
+  "run": "nem35l_jsuite_v2_1_test_chat_R_competence_cand2_v1",
+  "why": "Zach (2026-10-24, prereg amendment 35 note 1): nemotron-3.5-lightning, R items of jsuite_v2_1_test_chat",
+  "set": "jsuite_v2_1_test_chat",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "git_commit": "f45fd83e57527a068019c03a3c3527138617049d",
+  "git_state": {
+    "head": "f45fd83e57527a068019c03a3c3527138617049d",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "RM",
+    "RA",
+    "RN"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-27T00:46:00Z"
+}
