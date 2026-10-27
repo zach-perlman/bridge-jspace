@@ -72,7 +72,7 @@ def main(a) -> None:
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(),
                                                        "lens": pins.FROZEN_LENS, "band": a.band, "set": a.set, "competence": a.competence,
                                                        "conditions": CONDS, "timeline": TIMELINE, "neutral": NEUTRAL, "own_cos": OWN_COS,
-                                                       "k": 10, "git_commit": commit, "git_state": pins.git_state(), "limit": a.limit,
+                                                       "k": a.k, "git_commit": commit, "git_state": pins.git_state(), "limit": a.limit,
                                                        "sample_per_word": a.sample_per_word, "seed": "random.Random(item id), as jswap"}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
@@ -242,17 +242,17 @@ def main(a) -> None:
                                     if rows_.numel() == 0:
                                         return torch.zeros_like(v)
                                     at = dic[la].atoms(rows_[None])[0]  # [n, d]
-                                    top = (at @ v).topk(min(10, rows_.numel())).indices
+                                    top = (at @ v).topk(min(a.k, rows_.numel())).indices
                                     return span_proj(at[top], v)
                                 new[m] = hx[m] - own_part(hx[m], ox) + own_part(hd[m], od)
                             else:  # jswap's swap with the own-word rows (and the answer's protected rows) never chosen
                                 p_ = prot[int(bi[m])]
                                 gx = [(torch.zeros(1, dtype=torch.long, device="cuda"), torch.cat([p_, ox]))]
                                 gd = [(torch.zeros(1, dtype=torch.long, device="cuda"), torch.cat([p_, od]))]
-                                new[m] = hx[m] - top_span_removal(dic[la], hx[m : m + 1], 10, protected=gx)[0] + top_span_removal(dic[la], hd[m : m + 1], 10, protected=gd)[0]
+                                new[m] = hx[m] - top_span_removal(dic[la], hx[m : m + 1], a.k, protected=gx)[0] + top_span_removal(dic[la], hd[m : m + 1], a.k, protected=gd)[0]
                     else:
                         D = unembed if cond == "swap_neutral_u" else dic[la]
-                        rx, rd = top_span_removal(D, hx, 10, protected=groups), top_span_removal(D, hd, 10, protected=groups)
+                        rx, rd = top_span_removal(D, hx, a.k, protected=groups), top_span_removal(D, hd, a.k, protected=groups)
                         new = hx + (rd - rx) @ rot[la].T if cond == "swap_neutral_rot" else hx - rx + rd
                     h = h.clone()
                     h[bi, xi] = new.to(h.dtype)
@@ -306,4 +306,5 @@ if __name__ == "__main__":
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0, help="first N jobs per word (a smoke)")
     ap.add_argument("--sample-per-word", type=int, default=0, help="a seeded random N jobs per word (0: all)")
+    ap.add_argument("--k", type=int, default=10, help="size of the swapped J-part (2026-10-27, amendment 55 note 1; default 10)")
     main(ap.parse_args())

@@ -1838,3 +1838,23 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
     - Grows if the K = 100 transfer is ≥ the K = 10 transfer + 10.
     - Saturated if within 10.
     - Paste and swap_comp reported beside it.
+
+### Amendment 55 note 1 (Zach, 2026-10-27 01:25 UTC, before any run below): the overnight queue after Bolt
+
+- **F0 (GPU 0, after amendment 54's Bolt chain):** amendment 55 on the 27B: keep-own, then the swap dose (K 10 / 30 / 100).
+- **F1 (GPU 1, same wait):** amendment 55's keep-own on Ministral. Then **Lightning on the natural sets**, its first data
+  outside jsuite v2, with the 10/23 recipes (scripts/queues/h200_natlight_1027.sh, a relabelled copy of
+  h200_fix_1023.sh):
+  - natplus_v1_chat: cand2 competence, knock-out at L27-33 (paper10 / rotated / logit lens / its rotation), c1_v2,
+    c1_specificity, natplus_split.
+    - Reading as amendments 14 and 20: the gap replicates if >= 30 with rotated within 10 and logit lens < 10.
+    - Popular vs rare reported.
+  - nat3_v1_chat (natural three-hop chains): per-word eligibility, nat3_score.
+    - Reading: amendment 25's rule (a memory hop needs J-space when its output is not in the prompt) on Lightning's
+      excess over PPP. The 27B's pattern is the comparison.
+  - gen_spot on natplus (25 per word and relation): what Lightning says under the knock-out.
+- **G (both GPUs, after F0 and F1): Bolt's pointer tests at K = 100.** scripts/jswap_pointer.py, now with --k
+  (default 10, unchanged), at L42-53, 150 per word, as amendment 51.
+  - The swap J-part, neutral donor, own-word split and timeline all use the top 100 J++ directions.
+  - Readings as amendment 51: neutral donor >= 2/3 of the same-passage swap means context-free; the no-own-word share
+    is read the same way; rotated and logit-lens swaps < 5.
