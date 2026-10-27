@@ -386,6 +386,8 @@ pos.mi.question,positions,mi,M - K at min14_jsuite_v2_test_chat_ko_cand2_L32-37_
 pos.q122.bridge,positions,q122,M - K at qwen35_122b_jsuite_v2_test_chat_ko_cand2_posbridge_v1,10.0,8,13,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_posbridge_v1.json
 pos.q122.question,positions,q122,M - K at qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1,28.3,24,33,,points,results/ablate_v2/jsuite2_score/qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1.json
 pos.ds.question,positions,ds,M - K at dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_posquestion_v1,8.3,6,11,,points,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_posquestion_v1.json
+pos.mu.bridge,positions,mu,M - K at muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posbridge_v1,1.8,1,3,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posbridge_v1.json
+pos.mu.question,positions,mu,M - K at muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1,59.3,54,65,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1.json
 pos.nb.bridge,positions,nb,M - K at nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posbridge_s150_v1,17.8,13,22,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posbridge_s150_v1.json
 pos.nb.question,positions,nb,M - K at nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posquestion_s150_v1,11.5,8,15,,points,results/ablate_v2/jsuite2_score/nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posquestion_s150_v1.json
 swap.q27.swap,swaps,q27,"transfer, memory finals pooled, swap (jswap_v2_v1)",63.0,57.1,68.9,1696,points,results/jswap/jswap_v2_v1/rows.jsonl
@@ -843,6 +845,64 @@ dose.ds.kstar,dose,ds,plateau K* as pre-registered,1.0,,,,K,results/ablate_v2/js
 dose.ds.limit,dose,ds,"specificity limit as pre-registered (stated facts lose > 10, or size-matched > half of J++)",10.0,,,,K,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_dose54_s150_v1.json
 dose.ds.ekstar,dose,ds,plateau K* on the J-specific excess (note 1),1.0,,,,K,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_dose54_s150_v1.json
 dose.ds.plim,dose,ds,probability limit (stated facts lose > 10 by probability),30.0,,,,K,results/ablate_v2/jsuite2_score/dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_dose54_s150_v1.json
+dose.mu.k1,dose,mu,"M - K, J++ top 1",68.6,63,74,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k1.rot,dose,mu,rot at K 1,1.8,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k1.smk,dose,mu,smk at K 1,38.0,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k1.K,dose,mu,K at K 1,2.4,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k1.sK,dose,mu,sK at K 1,17.6,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k1.exc,dose,mu,exc at K 1,66.8,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k1.share,dose,mu,residual share removed at K 1,13.186,,,,pct,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k3,dose,mu,"M - K, J++ top 3",65.7,60,72,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k3.rot,dose,mu,rot at K 3,2.4,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k3.smk,dose,mu,smk at K 3,43.0,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k3.K,dose,mu,K at K 3,3.0,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k3.sK,dose,mu,sK at K 3,13.1,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k3.exc,dose,mu,exc at K 3,63.3,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k3.share,dose,mu,residual share removed at K 3,16.965,,,,pct,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10,dose,mu,"M - K, J++ top 10",60.4,54,66,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.rot,dose,mu,rot at K 10,3.3,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.pc,dose,mu,pc at K 10,5.3,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.u,dose,mu,u at K 10,35.5,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.smk,dose,mu,smk at K 10,47.5,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.spc,dose,mu,spc at K 10,9.6,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.K,dose,mu,K at K 10,2.4,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.sK,dose,mu,sK at K 10,8.2,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.exc,dose,mu,exc at K 10,55.1,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k10.share,dose,mu,residual share removed at K 10,20.782,,,,pct,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30,dose,mu,"M - K, J++ top 30",52.7,46,59,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.rot,dose,mu,rot at K 30,3.8,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.pc,dose,mu,pc at K 30,6.5,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.u,dose,mu,u at K 30,32.0,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.smk,dose,mu,smk at K 30,49.5,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.spc,dose,mu,spc at K 30,10.9,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.K,dose,mu,K at K 30,2.7,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.sK,dose,mu,sK at K 30,5.6,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.exc,dose,mu,exc at K 30,46.2,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k30.share,dose,mu,residual share removed at K 30,23.673,,,,pct,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100,dose,mu,"M - K, J++ top 100",51.2,45,58,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.rot,dose,mu,rot at K 100,3.3,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.pc,dose,mu,pc at K 100,5.9,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.u,dose,mu,u at K 100,33.4,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.smk,dose,mu,smk at K 100,48.7,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.spc,dose,mu,spc at K 100,12.2,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.K,dose,mu,K at K 100,2.7,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.sK,dose,mu,sK at K 100,4.4,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.exc,dose,mu,exc at K 100,45.3,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k100.share,dose,mu,residual share removed at K 100,26.441,,,,pct,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300,dose,mu,"M - K, J++ top 300",58.6,52,65,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.rot,dose,mu,rot at K 300,4.7,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.pc,dose,mu,pc at K 300,6.5,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.u,dose,mu,u at K 300,37.9,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.smk,dose,mu,smk at K 300,48.0,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.spc,dose,mu,spc at K 300,15.7,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.K,dose,mu,K at K 300,3.3,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.sK,dose,mu,sK at K 300,6.6,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.exc,dose,mu,exc at K 300,52.1,,,,points,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.k300.share,dose,mu,residual share removed at K 300,29.931,,,,pct,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+ko.mu.pcr,knockout,mu,"size-matched / J++ M - K at K 10 (dose run, 150 per word)",0.088,,,,ratio,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.kstar,dose,mu,plateau K* as pre-registered,1.0,,,,K,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.ekstar,dose,mu,plateau K* on the J-specific excess (note 1),1.0,,,,K,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
+dose.mu.plim,dose,mu,probability limit (stated facts lose > 10 by probability),1.0,,,,K,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L36-42_dose54_s150_v1.json
 swapk.q27.k10,swap dose,q27,"J-part swap transfer, K 10",64.0,57.5,70.4,898,points,results/jswap/jswap_v2_k10_s150_v1/rows.jsonl
 swapk.q27.k30,swap dose,q27,"J-part swap transfer, K 30",68.3,61.5,74.7,898,points,results/jswap/jswap_v2_k30_s150_v1/rows.jsonl
 swapk.q27.k100,swap dose,q27,"J-part swap transfer, K 100",71.2,64.5,77.8,898,points,results/jswap/jswap_v2_k100_s150_v1/rows.jsonl

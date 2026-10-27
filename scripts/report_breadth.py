@@ -232,6 +232,7 @@ def collect() -> None:
                      ("pos.mi.bridge", "min14_jsuite_v2_test_chat_ko_cand2_L32-37_posbridge_v1"), ("pos.mi.question", "min14_jsuite_v2_test_chat_ko_cand2_L32-37_posquestion_v1"),
                      ("pos.q122.bridge", "qwen35_122b_jsuite_v2_test_chat_ko_cand2_posbridge_v1"), ("pos.q122.question", "qwen35_122b_jsuite_v2_test_chat_ko_cand2_posquestion_v1"),
                      ("pos.ds.question", "dsv4f_jsuite_v2_test_chat_ko_cand2_L18-23_posquestion_v1"),
+                     ("pos.mu.bridge", "muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posbridge_v1"), ("pos.mu.question", "muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1"),
                      ("pos.nb.bridge", "nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posbridge_s150_v1"), ("pos.nb.question", "nem35b_jsuite_v2_test_chat_ko_cand2_L42-53_k100_posquestion_s150_v1")):  # fmt: skip
         cond = "top100" if key.startswith("pos.nb") else "paper10"
         x = F.cell(run, f"{cond}/start=all")
@@ -272,7 +273,7 @@ def collect() -> None:
             add(f"probe.{m}.probe", "probe", m, "probe-subspace swap", s["memory_valid/swap_probe"]["transfer"], source=f"results/probe_ceiling/{pr}/summary.json")
     pointer_keys("nb")
     # ---- 5. dose (amendment 54) and swap dose (amendment 55)
-    for (mm, pre, band), m in zip(F.DOSE54, ("q27", "q9", "nl", "mi", "nb", "ds"), strict=True):
+    for (mm, pre, band), m in zip(F.DOSE54, ("q27", "q9", "nl", "mi", "nb", "ds", "mu"), strict=True):
         d = F.dose_data(mm, pre, band)
         if not d:
             continue
