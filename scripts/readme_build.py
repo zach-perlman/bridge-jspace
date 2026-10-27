@@ -21,12 +21,14 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{head}}                     the commit the README is built at
 
 uv run python scripts/readme_build.py [--grid DIR] [--runs]   # writes README.md (and RUNS.md with --runs)
+uv run python scripts/readme_build.py --out docs/depth/README.md   # the same page elsewhere, its links rewritten
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -270,16 +272,40 @@ def pinned_grid(template: str) -> Path:
     return REPO / m.group(1)
 
 
+LINK_TARGET = re.compile(r"(\]\(|(?:src|href)=\")([^)\"\s]+)")
+
+
+def relink(text: str, out: Path) -> str:
+    """The rendered page's relative link and image targets, written from the repo root, rewritten to resolve from out's
+    folder (docs/depth/README.md: figures/story/x.png -> ../../figures/story/x.png); URLs, anchors and absolute paths
+    stay. A no-op for the root README.md."""
+    base = out.resolve().parent
+
+    def fix(m: re.Match) -> str:
+        target = m.group(2)
+        if re.match(r"[a-z][a-z0-9+.-]*:", target) or target.startswith(("#", "/")):
+            return m.group(0)
+        path, sep, frag = target.partition("#")
+        rel = Path(os.path.relpath(REPO / path, base)).as_posix() + ("/" if path.endswith("/") else "")
+        return m.group(1) + rel + sep + frag
+
+    return LINK_TARGET.sub(fix, text)
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--grid", default=None, help="override the grid pinned in the template")
     ap.add_argument("--runs", action="store_true", help="also write RUNS.md (the runs behind every grid cell)")
+    ap.add_argument("--out", default="README.md", help="where to write the page, relative to the repo root; its "
+                    "relative links are rewritten to resolve from there (e.g. docs/depth/README.md)")  # fmt: skip
     a = ap.parse_args(argv)
     text = TEMPLATE.read_text()
     grid = Path(a.grid).resolve() if a.grid else pinned_grid(text)
-    readme = render(text, Book(grid))
-    (REPO / "README.md").write_text(readme)
-    print(f"README.md: {len(readme.splitlines())} lines from {grid.relative_to(REPO)}")
+    out = REPO / a.out
+    readme = relink(render(text, Book(grid)), out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(readme)
+    print(f"{out.relative_to(REPO)}: {len(readme.splitlines())} lines from {grid.relative_to(REPO)}")
     if a.runs:
         (REPO / "RUNS.md").write_text(RT.build(grid))
         print("RUNS.md written")

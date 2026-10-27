@@ -300,3 +300,21 @@ def test_readme_captions_use_the_glossary():
     texts = caption_texts()
     assert texts, "no captions found"
     assert not banned(texts), banned(texts)
+
+
+def test_relink_from_a_subfolder_resolves_every_local_link():
+    text = (B.REPO / "README.md").read_text()
+    out = B.REPO / "docs" / "depth" / "README.md"
+    moved = B.relink(text, out)
+    targets = [m.group(2) for m in B.LINK_TARGET.finditer(moved)]
+    local = [t for t in targets if not re.match(r"[a-z][a-z0-9+.-]*:", t) and not t.startswith(("#", "/"))]
+    assert local and all(t.startswith("../") for t in local)
+    assert all((out.parent / t.partition("#")[0]).resolve().exists() for t in local)
+
+
+def test_relink_keeps_the_root_readme_and_urls():
+    text = '![a](figures/story/x.png) [b](docs/y.md#z) [c](https://e.org/p) [d](#sec) <img src="figures/w.png">'
+    assert B.relink(text, B.REPO / "README.md") == text
+    moved = B.relink(text, B.REPO / "docs" / "depth" / "README.md")
+    assert moved == ("![a](../../figures/story/x.png) [b](../y.md#z) [c](https://e.org/p) [d](#sec) "
+                     "<img src=\"../../figures/w.png\">")  # fmt: skip
