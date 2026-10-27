@@ -1,0 +1,31 @@
+id: x57_pos_muse
+title: "Zach's amendment 57 note 1 on Muse (approved by Zach 27 Oct, note 4): where the knock-out acts at L36-42, question-only and bridge-mention-only"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; unset BJ_GRAM_PROJ; uv run python scripts/ablate_v2.py --name muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1 --why "Zach (2026-10-27, prereg amendment 57 notes 1 and 4): Muse knock-out at L36-42 only at the question positions" --plan bands --bands 36-42 --positions question --conditions paper10 paper10_rot --tasks jsuite_v2_test_chat --tasks-competence muse30_jsuite_v2_test_chat_competence_cand2_v1 --tasks-words PP PK PM PA PN MP MK MM MA MN TP TK TM TA TN --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2
+  && uv run python scripts/jsuite2_score.py muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posquestion_v1 --set jsuite_v2_test_chat
+  && uv run python scripts/ablate_v2.py --name muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posbridge_v1 --why "Zach (2026-10-27, prereg amendment 57 notes 1 and 4): Muse knock-out at L36-42 only at the bridge's mentions" --plan bands --bands 36-42 --positions bridge --conditions paper10 paper10_rot --tasks jsuite_v2_test_chat --tasks-competence muse30_jsuite_v2_test_chat_competence_cand2_v1 --tasks-words PP PK PM PA PN MP MK MM MA MN TP TK TM TA TN --tasks-level all --n 1000 --kinds clean --batch 16 --read cand2
+  && uv run python scripts/jsuite2_score.py muse30_jsuite_v2_test_chat_ko_cand2_L36-42_posbridge_v1 --set jsuite_v2_test_chat
+question: >-
+  On Muse at L36-42, does its knock-out effect (M - K +60) need the removal at the question or at the bridge's mention?
+why_it_matters: >-
+  Every other model with a v2 effect has its position split (docs/breadth/README.md, section 3): at mid depth the
+  Qwens need the mention, and late in depth the question takes over, now in both families (the 27B, 9B and Lightning
+  at late bands, Ministral, the 122B). L36-42 is 69-81% of Muse's 52 layers, near Lightning's late band (64-75%), so the
+  depth reading predicts the question.
+hypotheses:
+  A57n1: "Descriptive (amendments 37 A and 41's readings): question-only >= 2/3 of the all-token M - K means the dependence sits in the question at this depth; bridge-only >= 2/3 means the mention. Expected from the other models' late bands: question."
+decision_rule: >-
+  Per start (P, M, T, all): the mode's M - K (jsuite2_score facts/paper10, contrast M-K) as a share of the record run's
+  all-token M - K at L36-42 (muse30_jsuite_v2_test_chat_ko_cand2_v1, +60); not read if the all-token M - K is below 15.
+  Question >= 2/3: the question; bridge >= 2/3: the mention.
+controls:
+- 'paper10_rot: the same removal rotated, at the same positions'
+- 'the record run''s all-token paper10, paper10_rot, unembed10 and unembed10_rot at L36-42 (not rerun)'
+n: 'all eligible items: the record run''s 2,705 prompts (jsuite_v2_test_chat facts, 15 words, eligibility from muse30_jsuite_v2_test_chat_competence_cand2_v1)'
+seeds: [0]
+notes: "Zach's amendment 57 note 1, moved to this queue by note 4 (Muse's weights are not cached on Zach's box); approved by Zach 27 Oct ~11:40 ET. Run names and commands as Zach's other position splits (scripts/queues/h200_depth_1025.sh): QR projection (BJ_GRAM_PROJ unset), batch 16. --positions bridge edits every token overlapping a mention of the bridge's word; on the recalled start that is the one passing mention (docs/shared/zach_reply_2026-10-27.md, item 2). Hardware: this queue's H100; the share's denominator is the record run on Zach's H200. Cost: the 27B's question-only run took 0.15 of its full knock-out's time (1,029 s vs 6,917 s); Muse's full run 4,654 s, so ~0.2 h each on an H200, x 1.3-1.5 for one H100 (assumed) = ~0.6 h for both. Figures: Zach's side (docs/breadth section 3 table)."
