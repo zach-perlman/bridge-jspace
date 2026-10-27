@@ -65,7 +65,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 - **Writing it in** sends the lookup answer to the written locker in about half of the writes (after the data). <!-- src: docs/x0_details.md | The pointer: removed, added alone, written -->
 - **A strong write also moves the recalled answer** to the item at the written position (about 4 in 5 on the Qwens, after the data): the signal points at an item's mention, not at a number. <!-- src: docs/depth/README.md | about four in five recalls a strong write changes name the item at the target position -->
 
-![Removing the order signal stops answers by position; a random part does not](figures/shared/j3_order_signal.png)
+![The position effect belongs to these four directions, not any four](figures/shared/j3_order_signal.png)
 
 **How sure.**
 - Medium for the order signal, on Qwen 9B and Muse 30B, in simple scenes.
@@ -82,7 +82,7 @@ Dan; both parts fixed in advance, 3 of 3 models. <!-- src: predictions/2026-10-2
 - **Locker first:** the recalled answer reads the lens part at the item's earlier mention. Removing it there costs 25-49% more switches than a random part or another item's mention; the lookup does not move. <!-- src: docs/depth/README.md | 0.25-0.42 more switches than a random part, 0.26-0.49 more than at another item -->
 - Zach's mention-only removal agrees from another angle: at middle layers the recalled answer needs the lens part at the bridge's mention (Finding 5).
 
-![Where the link is made follows the order of mentions](figures/shared/j9_link.png)
+![Lookups link at the locker sentences; recalls read the earlier mention](figures/shared/j9_link.png)
 
 ## Finding 4. It holds across datasets and in two families; across models it is graded
 
