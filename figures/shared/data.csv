@@ -52,29 +52,29 @@ j3,Muse 30B,writes sending the lookup answer to the target locker: random vector
 j3,Muse 30B,the order signal's write dose (times a real patch's size),1.25,,,,"figures/story/data.csv | fig07 | dose (s / mean s*), s = 2"
 j3,Muse 30B,the random vector's dose (times a real patch's size),2.5,,,,"figures/story/data.csv | fig07 | dose (s / mean s*), s = 4"
 grid_front,Qwen 9B,finding 1 (depth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
-grid_front,Qwen 9B,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
-grid_front,Qwen 9B,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
-grid_front,Qwen 9B,finding 3 (depth),ok,,,,docs/shared/grid.csv | the lookup needs it
-grid_front,Qwen 9B,finding 4 (both),ok,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
 grid_front,Qwen 27B,finding 1 (depth),~,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
-grid_front,Qwen 27B,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
-grid_front,Qwen 27B,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
-grid_front,Qwen 27B,finding 3 (depth),~ a,,,,docs/shared/grid.csv | the lookup needs it
-grid_front,Qwen 27B,finding 4 (both),~,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
 grid_front,Nemotron Lightning,finding 1 (depth),-,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
-grid_front,Nemotron Lightning,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
-grid_front,Nemotron Lightning,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
-grid_front,Nemotron Lightning,finding 3 (depth),-,,,,docs/shared/grid.csv | the lookup needs it
-grid_front,Nemotron Lightning,finding 4 (both),-,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
 grid_front,Muse 30B,finding 1 (depth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
-grid_front,Muse 30B,finding 1 (breadth),ok a,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
-grid_front,Muse 30B,finding 2 (breadth),-,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
-grid_front,Muse 30B,finding 3 (depth),ok,,,,docs/shared/grid.csv | the lookup needs it
-grid_front,Muse 30B,finding 4 (both),x a,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
 grid_front,Qwen 122B,finding 1 (depth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 9B,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 27B,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Nemotron Lightning,finding 1 (breadth),ok,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Muse 30B,finding 1 (breadth),ok a,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
 grid_front,Qwen 122B,finding 1 (breadth),ok a,,,,docs/shared/grid.csv | recall needs the J++ part; reading the prompt does not
+grid_front,Qwen 9B,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Qwen 27B,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Nemotron Lightning,finding 2 (breadth),ok,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Muse 30B,finding 2 (breadth),-,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
 grid_front,Qwen 122B,finding 2 (breadth),-,,,,docs/shared/grid.csv | another entity's J++ part moves the answer (≥ 20 points)
+grid_front,Qwen 9B,finding 3 (depth),ok,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Qwen 27B,finding 3 (depth),~ a,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Nemotron Lightning,finding 3 (depth),-,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Muse 30B,finding 3 (depth),ok,,,,docs/shared/grid.csv | the lookup needs it
 grid_front,Qwen 122B,finding 3 (depth),ok a,,,,docs/shared/grid.csv | the lookup needs it
+grid_front,Qwen 9B,finding 4 (both),ok,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
+grid_front,Qwen 27B,finding 4 (both),~,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
+grid_front,Nemotron Lightning,finding 4 (both),-,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
+grid_front,Muse 30B,finding 4 (both),x a,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
 grid_front,Qwen 122B,finding 4 (both),x a,,,,derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row
 j5,Muse 30B,"remove everywhere: items per answer kind (recalled, lookup)",541,,,541,results/ablate_v2/jsuite2_score/muse30_jsuite_v2_test_chat_ko_cand2_L23-29_x45r_v1.json | facts paper10/start=all n
 j5,Muse 30B,"remove everywhere, layers 23-29, lens part: recalled minus lookup answers lost (pp)",6.7,5,9,541,results/x45r/score-20261027T165540Z/x45r.json | his_L23_29.paper10.mk

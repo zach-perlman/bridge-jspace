@@ -200,10 +200,9 @@ SWAP_CLAIM = "another entity's J++ part moves the answer (≥ 20 points)"
 # figure -> (title, subtitle, model codes, groups of (group title, ((short label, grid.csv claim), ...)), footnote)
 FIGURES: dict[str, tuple[str, str, tuple[str, ...], tuple[tuple[str, tuple[tuple[str, str], ...]], ...], str]] = {
     "grid": (
-        "Recalled answers need the lens part cleanly on three of nine models",
-        "Dan's tool: remove from the patch. Zach's: remove everywhere and swap.\n"
-        "Full claims and every cell's source: docs/shared/grid.csv.",
-        ("q9", "q27", "q122", "mu", "nl", "ds", "mi", "nb", "ol"),
+        "Only Qwen 9B, Qwen 27B and Nemotron Lightning pass every Zach check",
+        "Dan's tool: remove from the patch. Zach's: remove everywhere and swap.",
+        ("q9", "q27", "nl", "mu", "q122", "ds", "mi", "nb", "ol"),
         (("1. Recalled vs lookup answers", (
             ("recalled answers need the\nlens part, lookup ones not", RECALL),
             ("not a margin effect", MARGIN),
@@ -221,9 +220,8 @@ FIGURES: dict[str, tuple[str, str, tuple[str, ...], tuple[tuple[str, tuple[tuple
     ),
     "grid_dan": (
         "An order signal steers lookup answers on three of four models",
-        "Dan's own tests (remove from the patch, the order signal, writes) on his four models.\n"
-        "Full claims and every cell's source: docs/shared/grid.csv.",
-        ("q9", "q27", "q122", "mu"),
+        "Dan's own tests on his four models: remove from the patch, the order signal, writes.",
+        ("q9", "q27", "mu", "q122"),
         (("1. Recalled vs lookup answers: more scenes", (
             ("clean one-pick scenes", "clean one-pick scenes"),
             ("the locker sentence before the pick", "locker before the pick"))),

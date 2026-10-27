@@ -4,7 +4,7 @@ Draft, 27 Oct; UNVERIFIED; for Dan. Experiments freeze Wed 28 Oct evening; hand 
 
 The joint story is the root [README.md](../../README.md); review records are in [joint_review_notes.md](joint_review_notes.md).
 
-**For Zach (27 Oct ~19:20):** the front page now says "lookup answer" for what it called "stated answer" (your K finals), "remove from the patch" for Dan's tool, and pp for every figure's unit; in scripts/joint_figures_breadth.py only label strings changed (j6 subtitle and x label, j7 subtitle and x label: "points" → "pp", "stated answers" → "lookup answers"); no number moved ([glossary](glossary_joint.md)).
+**For Zach (27 Oct ~19:20):** the front page now says "lookup answer" for what it called "stated answer" (your K finals), "remove from the patch" for Dan's tool, and pp for every figure's unit; in scripts/joint_figures_breadth.py only label strings changed (j6 subtitle and x label, j7 subtitle and x label: "points" → "pp", "stated answers" → "lookup answers"); no number moved ([glossary](glossary_joint.md)). Later (~19:50, plotting only, no number moved): j6 rows grouped by model in the order Qwen 9B, Qwen 27B, Lightning, one dark dot per dataset; j7 two panels (middle, deeper) instead of six, "every token" dark, layer bands written as "layers 12-16"; titles and subtitles one line in the front page's words.
 
 Every claim × model cell that the README needs and that is empty or conflicting in docs/shared/grid.csv (G) or the two reports. Before proposing a run I checked whether Zach's stored results already fill the cell. Two cells are filled from his stored summaries (rows 3 and 4); they need his confirmation, not a run. Source keys as in docs/shared/joint_story_draft.md.
 

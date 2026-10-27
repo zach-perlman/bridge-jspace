@@ -163,8 +163,9 @@ def bar(ax, y: float, v: float, lo, hi, color: str, kind: str = "fixed", h: floa
     """A horizontal bar with its 95% interval; filled = fixed in advance, open = after the data (story_style's code)."""
     face = color if kind == "fixed" else "white"
     ax.barh([y], [v], height=h, color=face, edgecolor=color, lw=1.6, zorder=2)
-    if lo not in (None, ""):
-        ax.plot([num(lo), num(hi)], [y, y], color="#333333", lw=1.2, zorder=3)
+    if lo not in (None, ""):  # light on a dark bar, dark elsewhere, so the interval shows on every bar
+        whisker = "#bdbdbd" if face == RECALLED else "#333333"
+        ax.plot([num(lo), num(hi)], [y, y], color=whisker, lw=1.4, zorder=3)
 
 
 def legend_below(fig, handles, labels, y: float, ncol: int) -> None:
@@ -173,57 +174,53 @@ def legend_below(fig, handles, labels, y: float, ncol: int) -> None:
 
 
 def j0_setup(plt):
-    """Zach's passage (one sentence differs) and Dan's scene (two questions), the bridge highlighted, each answer named;
-    below, the three tools as token x layer sketches."""
+    """Zach's fact passages (one sentence differs) and Dan's locker scene (two questions), the bridge highlighted, each
+    answer named; below, the three tools as token x layer sketches with a key."""
     # drawn at the PNG's dpi, so highlight() measures the words as they will be rasterised
-    fig = plt.figure(figsize=(S.WIDTH, 7.6), dpi=200)
-    ax = fig.add_axes((0, 0, 1, 0.885))
+    fig = plt.figure(figsize=(S.WIDTH, 8.0), dpi=200)
+    ax = fig.add_axes((0, 0, 1, 0.89))
     ax.set_xlim(0, 100)
-    ax.set_ylim(0, 66)
+    ax.set_ylim(0, 70)
     ax.axis("off")
     ax.set_xticks([])
     ax.set_yticks([])
-    S.title(fig, "The same bridge, two answers: looked up in the text or recalled",
-            "Each tool asks whether an answer needs the lens part of the bridge.")  # fmt: skip
+    S.title(fig, "One question, two kinds of answer: looked up or recalled",
+            "Each tool tests whether an answer needs the lens part: what a lens reads at the bridge.")  # fmt: skip
     z = zach_texts()
-    ans_x, lab_x = 67, 77.5
+    ans_x, lab_x = 67, 81.5
 
     def answer(y: float, a: str, kind: str) -> None:
         col = LOOKUP if kind == "lookup" else RECALLED
         ax.text(ans_x, y, f"→ {a}", fontsize=S.FONT, weight="bold", color=col, va="center")
-        ax.text(lab_x + 4, y, f"{kind} answer", fontsize=S.FONT, color=col, va="center")
+        ax.text(lab_x, y, f"{kind} answer", fontsize=S.FONT, color=col, va="center")
 
-    ax.text(1, 63, "Zach's passages: one sentence differs", fontsize=S.FONT + 1, weight="bold", va="center")
-    t = ax.text(3, 58.5, f"Question: {z['question']}", fontsize=S.FONT, va="center")
+    ax.text(1, 67, "Fact passages (Zach): one sentence differs", fontsize=S.FONT + 1, weight="bold", va="center")
+    t = ax.text(3, 62.5, f"Question: {z['question']}", fontsize=S.FONT, va="center")
     highlight(ax, t, ZACH_DESCRIPTION)
-    for y, kind in ((54, "lookup"), (49.5, "recalled")):
+    for y, kind in ((58, "lookup"), (53.5, "recalled")):
         t = ax.text(3, y, f"“… {ZACH_SENTENCES[kind]} …”", fontsize=S.FONT, va="center", style="italic")
         highlight(ax, t, ZACH_BRIDGE)
         answer(y, z["answer"], kind)
-    ax.text(1, 43, "Dan's scene: two questions", fontsize=S.FONT + 1, weight="bold", va="center")
-    t = ax.text(3, 38.5, "“" + " ".join(DAN_SCENE) + "”", fontsize=S.FONT, va="center", style="italic")
+    ax.text(1, 47, "Locker scene (Dan): two questions", fontsize=S.FONT + 1, weight="bold", va="center")
+    t = ax.text(3, 42.5, "“" + " ".join(DAN_SCENE) + "”", fontsize=S.FONT, va="center", style="italic")
     highlight(ax, t, "frog")
-    for y, (q, a, kind) in zip((34, 29.5), DAN_QUESTIONS, strict=True):
+    for y, (q, a, kind) in zip((38, 33.5), DAN_QUESTIONS, strict=True):
         ax.text(3, y, q, fontsize=S.FONT, va="center")
         answer(y, a, kind)
-    record(
-        "j0",
-        "",
-        "Zach's example (lookup / recalled items)",
-        z["answer"],
-        source=f"{ITEMS.relative_to(REPO)} | {', '.join(ZACH_ITEMS.values())}",
-    )
+    record("j0", "", "Zach's example (lookup / recalled items)", z["answer"],
+           source=f"{ITEMS.relative_to(REPO)} | {', '.join(ZACH_ITEMS.values())}")  # fmt: skip
     record("j0", "", "Dan's example", "5 / 4", source="scripts/readme_story_figures.py | f00_setup")
 
-    # the tool strip: tokens across, layers up; the bridge's column marked
-    ax.plot([1, 99], [26, 26], color="#dddddd", lw=1)
+    # the tool strip: tokens across, layers up; the bridge's column marked; a key below
+    ax.plot([1, 99], [30, 30], color="#dddddd", lw=1)
     tools = (("remove everywhere", "Zach: takes out the lens part at every token, over a band of layers", "every"),
-             ("remove from the patch", "Dan: the bridge word's patch from another prompt, added at one layer without its lens part", "one"),
-             ("swap", "Zach: another entity's lens part written in at the bridge, over the band", "swap"))  # fmt: skip
+             ("remove from the patch", "Dan: patches the bridge word in from another prompt at one layer, without its "
+              "lens part", "one"),
+             ("swap", "Zach: writes another entity's lens part in at the bridge, over the band", "swap"))  # fmt: skip
     ntok, nlay, bridge_col, band = 7, 4, 4, (1, 2)
     for k, (name, cap, kind) in enumerate(tools):
         x0 = 2 + 33 * k
-        ax.text(x0, 23.2, name, fontsize=S.FONT + 1, weight="bold", va="center")
+        ax.text(x0, 27.2, name, fontsize=S.FONT + 1, weight="bold", va="center")
         cw, ch = 3.4, 2.0
         for i in range(ntok):
             for j in range(nlay):
@@ -231,19 +228,16 @@ def j0_setup(plt):
                 written = kind == "swap" and i == bridge_col and j in band
                 fc = REMOVED if removed else WRITTEN if written else "white"
                 ax.add_patch(
-                    Rectangle((x0 + 2 + i * cw, 12.6 + j * ch), cw * 0.86, ch * 0.8, fc=fc, ec="#9a9a9a", lw=0.8)
+                    Rectangle((x0 + 2 + i * cw, 16.6 + j * ch), cw * 0.86, ch * 0.8, fc=fc, ec="#9a9a9a", lw=0.8)
                 )
-        ax.text(
-            x0 + 2 + bridge_col * cw + cw * 0.43,
-            12.0,
-            "bridge",
-            fontsize=S.FONT,
-            ha="center",
-            va="top",
-            color=S.COL["muted"],
-        )
-        ax.text(x0, 16.6, "layers", fontsize=S.FONT, rotation=90, ha="center", va="center", color=S.COL["muted"])
-        ax.text(x0, 4.6, textwrap.fill(cap, 34), fontsize=S.FONT, va="center", linespacing=1.15)
+        ax.text(x0 + 2 + bridge_col * cw + cw * 0.43, 16.0, "bridge", fontsize=S.FONT, ha="center", va="top",
+                color=S.COL["muted"])  # fmt: skip
+        ax.text(x0, 20.6, "layers", fontsize=S.FONT, rotation=90, ha="center", va="center", color=S.COL["muted"])
+        ax.text(x0, 8.8, textwrap.fill(cap, 34), fontsize=S.FONT, va="center", linespacing=1.15)
+    for x, fc, text in ((2, REMOVED, "lens part taken out"), (30, WRITTEN, "another entity's lens part written in")):
+        ax.add_patch(Rectangle((x, 1.2), 2.2, 1.6, fc=fc, ec="#9a9a9a", lw=0.8))
+        ax.text(x + 3.2, 2.0, text, fontsize=S.FONT, va="center")
+    ax.text(72, 2.0, "columns: tokens", fontsize=S.FONT, va="center", color=S.COL["muted"])
     return fig
 
 
@@ -320,17 +314,16 @@ def j1_recall_needs_lens(plt):
 
 
 def j2_swap(plt):
-    """Per model, a 2 x 2: which part is swapped (rows) x which answer moves (columns), transfer in pp with its 95%
-    interval; the swap of everything else is after the data (confirmed by Zach, docs/shared/zach_reply_2026-10-27.md)."""
+    """Two panels (which answer moves) with rows per model (Qwen 9B, Qwen 27B): the lens part swapped, everything else
+    swapped; answers that switch to the other entity beyond switches to an unrelated one (pp), with 95% intervals. The
+    swap of everything else is after the data (hollow), confirmed by Zach (docs/shared/zach_reply_2026-10-27.md)."""
     zb = breadth()
-    fig = plt.figure(figsize=(S.WIDTH, 6.0))
-    S.title(fig, "Swapping the lens part moves the recalled answer, not the lookup one",
-            "Transfer: answers that move to the other entity's, minus a third entity's (pp).\n"
-            "Zach's swaps, written in at the bridge over his band of layers.")  # fmt: skip
-    rows = ("swap the lens part", "swap everything else")
+    fig = plt.figure(figsize=(S.WIDTH, 4.8))
+    axes = (fig.add_axes((0.30, 0.26, 0.31, 0.53)), fig.add_axes((0.665, 0.26, 0.31, 0.53)))
     cols = (("recalled answer moves", RECALLED), ("lookup answer moves", LOOKUP))
-    tops = (0.53, 0.24)
-    for (name, zm, *_), top in zip([MODELS[0], MODELS[1]], tops, strict=True):
+    rows = ("swap the lens part", "swap everything else")
+    ns, ticks, labels, heads = [], [], [], []
+    for g, (name, zm, *_) in enumerate([MODELS[0], MODELS[1]]):
         run = SWAP_RUNS[zm]
         summ = json.loads((REPO / "results" / "jswap" / run / "summary.json").read_text())
         pooled = RD.pooled(run)
@@ -348,46 +341,52 @@ def j2_swap(plt):
             (1, 1): (summ["PK/swap_comp"]["transfer"], *summ["PK/swap_comp"]["ci"], summ["PK/swap_comp"]["n"],
                      f"results/jswap/{run}/summary.json | PK/swap_comp", "after"),
         }  # fmt: skip
+        y0 = -g * 2.9
+        heads.append((name, y0 + 0.85))
+        for i in range(2):
+            ticks.append(y0 - i)
+            labels.append(rows[i])
         for c, (ctitle, col) in enumerate(cols):
-            ax = fig.add_axes((0.355 + 0.33 * c, top, 0.29, 0.19))
             for i in range(2):
                 v, lo, hi, n, src, kind = cells[(i, c)]
-                bar(ax, -i, v, lo, hi, col, kind)
-                ax.text(max(v, num(hi)) + 3, -i, f"{v:+.1f}", va="center", fontsize=S.FONT, color=col)
+                bar(axes[c], y0 - i, v, lo, hi, col, kind, h=0.7)
+                axes[c].text(max(v, num(hi)) + 3, y0 - i, f"{v:+.1f}", va="center", fontsize=S.FONT, color=col)
                 record("j2", name, f"{rows[i]}: {ctitle} (pp)", v, lo, hi, n, source=src)
-            ax.set_xlim(-5, 100)
-            ax.set_ylim(-1.6, 0.6)
-            ax.axvline(0, color="#999999", lw=0.8)
-            ax.set_xticks([0, 50, 100])
-            ax.tick_params(axis="y", length=0)
-            ax.spines["left"].set_visible(False)
-            labels = ["swap the lens part", "swap everything else"]
-            ax.set_yticks([0, -1], labels if c == 0 else [])
-            if top == tops[0]:
-                ax.set_title(ctitle, fontsize=S.FONT + 1, color=col, loc="left")
-            if top == tops[-1]:
-                ax.set_xlabel("answers moved (pp)")
-            else:
-                ax.set_xticklabels([])
-        fig.text(0.01, top + 0.215, name, fontsize=S.FONT + 1, weight="bold", va="bottom")
-    fig.text(0.01, 0.015, "Hollow: after the data.", fontsize=S.FONT, color=S.COL["muted"], va="bottom")
+                ns.append(int(n))
+    S.title(fig, "Swapping the lens part moves the recalled answer, not the lookup one",
+            "Answers that switch to the other entity, beyond switches to an unrelated one (pp); "
+            f"n {min(ns)}-{max(ns):,} per bar")  # fmt: skip
+    tr = F.blend(fig, axes[0])
+    for name, y in heads:
+        axes[0].text(0.01, y, name, transform=tr, fontsize=S.FONT + 1, weight="bold", va="center")
+    for c, ax in enumerate(axes):
+        ax.set_xlim(-5, 100)
+        ax.set_ylim(-4.45, 1.25)
+        ax.axvline(0, color="#999999", lw=0.8)
+        ax.set_xticks([0, 50, 100])
+        ax.set_yticks(ticks, labels if c == 0 else [])
+        ax.tick_params(axis="y", length=0)
+        ax.spines["left"].set_visible(False)
+        ax.set_title(cols[c][0], fontsize=S.FONT + 1, color=cols[c][1], loc="left")
+        ax.set_xlabel("answers that switch (pp)")
+    hs = [Rectangle((0, 0), 1, 1, fc=RECALLED, ec=RECALLED), Rectangle((0, 0), 1, 1, fc="white", ec=RECALLED, lw=1.6)]
+    legend_below(fig, hs, ["fixed in advance", "hollow: after the data"], 0.0, 2)
     return fig
 
 
 def j3_order_signal(plt):
-    """Qwen 9B and Muse 30B, scenes where another item moved: answers by the locker's position with the whole patch,
-    without the order signal and without a random part of its size; beside it, writes of the order signal at about a
-    real change's size against a random vector."""
+    """Qwen 9B and Muse 30B, Dan's scenes where another item moved: lookup answers that follow the locker's position with
+    the whole patch, without the order signal and without a random part of its size (%); beside it, the order signal
+    pointed at another locker (written at about a real patch's size) against a random vector (%)."""
     dp = depth()
     card = {(r["claim"], r["model"]): r["flag"] for r in read_csv(G.SCORECARD)}
-    fig = plt.figure(figsize=(S.WIDTH, 4.9))
-    S.title(fig, "The lookup answer uses an order signal the lens does not read",
-            "Dan's scenes where another item moved. Left: lookup answers that follow the locker's\n"
-            "position. Right: writes of the order signal that send it to the target locker.")  # fmt: skip
+    fig = plt.figure(figsize=(S.WIDTH, 5.0))
     pair = [MODELS[0], MODELS[3]]
-    axl, axr = fig.add_axes((0.17, 0.30, 0.40, 0.48)), fig.add_axes((0.70, 0.30, 0.27, 0.48))
-    arms = (("whole", "whole patch", S.COL["position"]), ("no_alf", "without the order signal", "#f4c48a"),
+    axl, axr = fig.add_axes((0.17, 0.34, 0.41, 0.43)), fig.add_axes((0.70, 0.34, 0.27, 0.43))
+    light = "#b9a6ee"  # the lookup purple, lighter: the patch without the order signal
+    arms = (("whole", "whole patch", LOOKUP), ("no_alf", "without the order signal", light),
             ("no_alf_rand", "without a random part (same size)", S.COL["control"]))  # fmt: skip
+    ns = set()
     for g, (name, _, target, _m) in enumerate(pair):
         scard = {"Qwen 9B": "Qwen3.5-9B", "Muse 30B": "Muse Glimmer 30B"}[name]
         kind = "after" if "a" in card[("the lookup needs it", scard)] else "fixed"
@@ -399,12 +398,13 @@ def j3_order_signal(plt):
             axl.text(hi + 2, y, f"{v:.0f}", va="center", fontsize=S.FONT)
             record("j3", name, f"answers by position: {label} (%)", v, lo, hi, r["n"],
                    source=f"figures/story/data.csv | fig05 | {r['quantity']}")  # fmt: skip
+            ns.add(r["n"])
         kind_w = "after" if "a" in card[("a write moves the lookup", scard)] else "fixed"
         w = dp[("fig07", target, "lookup target share, mean over locker pairs, s = 2")]
         dose = dp[("fig07", target, "dose (s / mean s*), s = 2")]
         rnd = dp[("fig07", target, "lookup target share, random direction, s = 4")]
         rdose = dp[("fig07", target, "dose (s / mean s*), s = 4")]
-        for k, (r, col) in enumerate(((w, S.COL["position"]), (rnd, S.COL["control"]))):
+        for k, (r, col) in enumerate(((w, LOOKUP), (rnd, S.COL["control"]))):
             y = -g * 2.6 - k
             v = round(100 * num(r["value"]), 1)
             lo, hi = (round(100 * num(r[c]), 1) if r[c] != "" else "" for c in ("lo", "hi"))
@@ -417,6 +417,8 @@ def j3_order_signal(plt):
                source=f"figures/story/data.csv | fig07 | {dose['quantity']}")  # fmt: skip
         record("j3", name, "the random vector's dose (times a real patch's size)", round(num(rdose["value"]), 2),
                source=f"figures/story/data.csv | fig07 | {rdose['quantity']}")  # fmt: skip
+    S.title(fig, "The lookup answer uses an order signal the lens does not read",
+            f"Dan's locker scenes where another item moved; {'/'.join(sorted(ns))} scenes per model (left)")  # fmt: skip
     axl.set_yticks([-g * 4.2 - 1 for g in range(2)], [n for n, *_ in pair])
     axr.set_yticks([-g * 2.6 - 0.5 for g in range(2)], [n for n, *_ in pair])
     for ax, lim in ((axl, (-7.9, 0.7)), (axr, (-4.3, 0.7))):
@@ -425,19 +427,16 @@ def j3_order_signal(plt):
         ax.set_xticks([0, 50, 100])
         ax.tick_params(axis="y", length=0)
         ax.spines["left"].set_visible(False)
-    axl.set_xlabel("lookup answers by position (%)")
-    axr.set_xlabel("writes reaching the target (%)")
-    hs = [Rectangle((0, 0), 1, 1, fc=c, ec=c) for _, _, c in arms]
-    hs += [
-        Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["position"], lw=1.6),
-        Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["control"], lw=1.6),
-    ]
-    labels = [label for _, label, _ in arms] + [
-        "order signal written,\nabout a real patch's size",
-        "random vector,\nabout twice that size",
-    ]
-    sh, sl = S.status_handles(("fixed", "after"))
-    legend_below(fig, hs + sh, labels + sl, 0.0, 3)
+    axl.set_title("lookup answers that follow position", fontsize=S.FONT + 1, loc="left")
+    axr.set_title("order signal pointed\nat another locker", fontsize=S.FONT + 1, loc="left")
+    axl.set_xlabel("% of lookup answers")
+    axr.set_xlabel("% of writes that reach it")
+    hs = [Rectangle((0, 0), 1, 1, fc=LOOKUP, ec=LOOKUP), Rectangle((0, 0), 1, 1, fc=light, ec=light),
+          Rectangle((0, 0), 1, 1, fc=S.COL["control"], ec=S.COL["control"]),
+          Rectangle((0, 0), 1, 1, fc="white", ec=RECALLED, lw=1.6)]  # fmt: skip
+    labels = ["whole patch; order signal written", "without the order signal", "random part or vector",
+              "hollow: after the data"]  # fmt: skip
+    legend_below(fig, hs, labels, 0.0, 2)
     return fig
 
 
@@ -483,48 +482,54 @@ def front_cells() -> dict[tuple[int, str], list[dict]]:
 
 
 def grid_front(plt):
-    """The README's four findings x five models in Fig. 11's symbols; finding 1 split (Dan | Zach)."""
+    """The README's four findings x five models in the full grid's cells (shared_grid: a coloured cell per grade with Fig.
+    11's symbol inside, a corner mark for after the data); finding 1 as two strips, Dan's tool above Zach's."""
     cells = front_cells()
-    fig = plt.figure(figsize=(S.WIDTH, 5.3))
-    ax = fig.add_axes((0.40, 0.25, 0.59, 0.45))
-    S.title(fig, "The methods agree on the Qwen 9B and split on Muse 30B and Qwen 122B",
-            "✓ held   ~ partial   ✗ no   – not tested   a: after the data\n"
-            "Row 1: two marks per cell, Dan's tool (left) and Zach's (right).")  # fmt: skip
     names = [n for n, *_ in MODELS]
+    labels = ("recalled answers need the lens part", "swapping it moves the recalled answer",
+              "lookup answers use an order signal", "both tools hold, controls included")  # fmt: skip
+    strips = [len(cells[(i, names[0])]) for i in range(len(FINDINGS))]
+    strip_in, top_in, bottom_in = 0.40, 1.95, 0.62
+    h = top_in + strip_in * sum(strips) + bottom_in
+    fig = plt.figure(figsize=(S.WIDTH, h))
+    ax = fig.add_axes((0.40, bottom_in / h, 0.58, strip_in * sum(strips) / h))
+    S.title(fig, "Findings hold on Qwen 9B; Muse 30B and Qwen 122B fail controls",
+            "Each finding graded per model; row 1 shows each tool (Dan above, Zach below)")  # fmt: skip
+    G.legend_strip(fig, 0.5 + 0.2 + 0.05, h)
+    ax.set_xlim(-0.5, len(names) - 0.5)
+    ax.set_ylim(sum(strips), 0)
+    ax.axis("off")
+    ax.set_xticks([])
+    ax.set_yticks([])
     for j, name in enumerate(names):
-        ax.text(j, -0.6, name.replace("Nemotron ", "Nemotron\n"), ha="center", va="bottom", fontsize=S.FONT, weight="bold",
-                linespacing=1.0)  # fmt: skip
-        for i in range(len(FINDINGS)):
-            marks = cells[(i, name)]
-            xs = (j,) if len(marks) == 1 else (j - 0.2, j + 0.16)
-            size = S.FONT + 5 if len(marks) == 1 else S.FONT + 3
-            if len(marks) == 2:
-                ax.plot([j - 0.02, j - 0.02], [i - 0.32, i + 0.32], color="#c8c8c8", lw=0.9)
-            for x, r in zip(xs, marks, strict=True):
+        ax.text(j, -0.15, name.replace("Nemotron ", "Nemotron\n"), ha="center", va="bottom", fontsize=S.FONT,
+                weight="bold", linespacing=1.0)  # fmt: skip
+    tr = F.blend(fig, ax)
+    y = 0.0
+    for i, label in enumerate(labels):
+        if i % 2 == 0:
+            ax.add_patch(plt.Rectangle((-20.5, y), len(names) + 20, strips[i], fc="#f7f7f7", ec="none", zorder=0,
+                                       clip_on=False))  # fmt: skip
+        ax.text(0.01, y + strips[i] / 2, f"{i + 1}. {label}", transform=tr, fontsize=S.FONT, va="center")
+        for t in range(strips[i]):
+            yc = y + t + 0.5
+            if strips[i] == 2:
+                ax.text(-0.56, yc, "Dan" if t == 0 else "Zach", ha="right", va="center", fontsize=S.FONT,
+                        color=S.COL["muted"])  # fmt: skip
+            for j, name in enumerate(names):
+                r = cells[(i, name)][t]
+                ax.add_patch(G.plt_rect((j - 0.45, yc - 0.42), 0.9, 0.84, G.FILL[r["cell"]]))
                 sym, col = F.CELL_SYMBOL[r["cell"]]
-                ax.text(x, i, sym, ha="center", va="center", fontsize=size, color=col, weight="bold")
-                if r["flag"]:
-                    ax.annotate(r["flag"], (x, i), xytext=(size * 0.42 + 3, 3), textcoords="offset points", ha="left",
-                                va="center", fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
+                ax.text(j, yc, sym, ha="center", va="center", fontsize=S.FONT + 1, color=col, weight="bold")
+                if "a" in r["flag"]:
+                    G.corner(ax, j + 0.45, yc - 0.42, 0.22, -0.34)
                 record("grid_front", name, f"finding {i + 1} ({r['study']})", r["cell"] + (f" {r['flag']}" if r["flag"] else ""),
                        source=f"docs/shared/grid.csv | {r['claim']}" if r["claim"] != "derived" else
                        "derived (joint_figures.agree) from docs/shared/grid.csv: both studies' recall rows and breadth's 'specific' row")  # fmt: skip
-    for i in range(0, len(FINDINGS), 2):
-        ax.axhspan(i - 0.5, i + 0.5, color="#f6f6f6", lw=0, zorder=0)
-    ax.set_xlim(-0.5, len(names) - 0.5)
-    ax.set_ylim(len(FINDINGS) - 0.5, -0.5)
-    ax.set_yticks(
-        range(len(FINDINGS)), [textwrap.fill(f"{i + 1}. {label}", 34) for i, (label, _) in enumerate(FINDINGS)]
-    )
-    ax.set_xticks([])
-    ax.tick_params(axis="y", length=0)
-    for side in ("top", "right", "bottom", "left"):
-        ax.spines[side].set_visible(False)
-    fig.text(0.01, 0.015, textwrap.fill(
-        "From docs/shared/grid.csv: 1 both tools' recall rows; 2 Zach's swap row; 3 Dan's removal of the order signal; "
-        "4 row 1's two grades match and remove everywhere passes its rotated and logit-lens control. Nemotron Lightning's "
-        "swap is not counted in the README: pasting the whole residual moves only +13.8, below 20.", 100),
-        fontsize=S.FONT, color=S.COL["muted"], va="bottom")  # fmt: skip
+        y += strips[i]
+    fig.text(0.01, 0.1 / h, "Row 4: both tools grade row 1 the same, and remove everywhere passes its logit-lens check.\n"
+             "Row 2: Nemotron Lightning's swap is not counted in the README; its ceiling check failed.",
+             fontsize=S.FONT, color=S.COL["muted"], va="bottom")  # fmt: skip
     return fig
 
 
