@@ -113,14 +113,26 @@ def test_spot_cells(grid, claim, model, study, cell):
     assert find(grid, claim, model, study)["cell"] == cell
 
 
-def test_the_figure_reads_at_880px_in_the_glossarys_words(grid):
+@pytest.mark.parametrize("name", list(G.FIGURES))
+def test_each_grid_figure_reads_at_880px_in_the_joint_vocabulary(grid, name):
     plt = S.setup()
-    fig = G.draw(plt, grid)
+    fig = G.draw(plt, grid, name)
     try:
         assert fig.get_figwidth() == S.WIDTH
         assert PS.overlaps(fig) == []
-        texts = [("grid", t.get_text()) for t in fig.findobj(Text) if t.get_text().strip()]
-        assert not RB.banned(texts) and not C.retired(texts)
-        assert "What held where, both studies" in [t for _, t in texts]
+        texts = [(name, t.get_text()) for t in fig.findobj(Text) if t.get_text().strip()]
+        assert not RB.banned(texts) and not C.retired(texts) and not C.joint_retired(texts)
+        assert G.FIGURES[name][0] in [t for _, t in texts]
     finally:
         plt.close(fig)
+
+
+def test_the_two_figures_show_every_grid_claim_once_on_the_models_that_have_cells(grid):
+    placed = [(name, claim) for name, (*_, groups, _) in G.FIGURES.items() for _, items in groups for _, claim in items]
+    assert sorted(claim for _, claim in placed) == sorted(dict.fromkeys(r["claim"] for r in grid))
+    for name, claim in placed:  # a figure leaves out only models where the claim has no graded cell
+        shown = set(G.FIGURES[name][2])
+        graded = {G.code_of(r) for r in grid if r["claim"] == claim and r["cell"] != "-"}
+        assert graded <= shown, (name, claim, graded - shown)
+    labels = [short for *_, groups, _ in G.FIGURES.values() for _, items in groups for short, _ in items]
+    assert all(len(s.split()) <= 9 for s in labels), [s for s in labels if len(s.split()) > 9]

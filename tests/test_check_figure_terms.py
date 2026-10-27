@@ -84,5 +84,7 @@ def test_the_joint_figures_draw_no_retired_term():
         "j2_swap",
         "j3_order_signal",
         "grid_front",
+        "grid",
+        "grid_dan",
     }
     assert not C.retired(texts) and not C.joint_retired(texts), C.retired(texts) + C.joint_retired(texts)

@@ -11,9 +11,8 @@ tests/test_readme_build.py; this script checks the retired terms only.
 The joint story (Dan, 27 Oct ~15:50) adds JOINT_RETIRED, the words the root README and its figures leave to the two
 reports: M, K, PK, TK, P->P->M, RM - MM, lookup, in-context read, final, J-part, J++ part, entity code, pointer, test ids
 (45r, Q46.1), GAP, °, X0, paper10, s = 2. Checked on the root README.md (its prose, alt texts and captions; HTML
-comments, code spans and link targets left out) and on the joint figures (scripts/joint_figures.py, figures/shared/),
-whose drawn texts also get RETIRED. figures/shared/grid.png, the appendix's full grid, keeps each report's own claim
-words and is not in the joint scope.
+comments, code spans and link targets left out) and on the joint figures (figures/shared/: scripts/joint_figures.py's
+five and scripts/shared_grid.py's two grids), whose drawn texts also get RETIRED.
 
 uv run python scripts/check_figure_terms.py
 """
@@ -84,11 +83,12 @@ def root_readme_texts() -> list[tuple[str, str]]:
 
 
 def joint_figure_texts() -> list[tuple[str, str]]:
-    """Every text the joint figures draw, by figure (drawn, not saved)."""
+    """Every text the joint figures draw, by figure (drawn, not saved): the five README figures and the two grids."""
     import matplotlib
     from matplotlib.text import Text
 
     from scripts import joint_figures as J
+    from scripts import shared_grid as G
     from scripts import story_style as S
 
     texts: list[tuple[str, str]] = []
@@ -96,7 +96,10 @@ def joint_figure_texts() -> list[tuple[str, str]]:
     with matplotlib.rc_context():
         plt = S.setup()
         try:
-            for name, draw in J.FIGURES:
+            rows = G.build()
+            figs = [(name, lambda p, d=draw: d(p)) for name, draw in J.FIGURES]
+            figs += [(name, lambda p, n=name: G.draw(p, rows, n)) for name in G.FIGURES]
+            for name, draw in figs:
                 fig = draw(plt)
                 texts += [(name, t.get_text()) for t in fig.findobj(Text) if t.get_text().strip()]
                 plt.close(fig)
