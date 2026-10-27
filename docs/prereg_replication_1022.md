@@ -1798,7 +1798,7 @@ Bolt's chain is relaunched to wait for them, then repeats its gates and continue
   - **Lightning under both:** the excess is 43 / 48 / 43 / 45 / 39 / 39, so the excess K\* = 1 (concentrated). Its
     probability limit is K 30.
 
-### Amendment 54 note 2 (Zach, 2026-10-27 00:50 UTC, before the run): Lightning's never-named bridge (R start), on the idle GPU
+### Amendment 54 note 2 (Zach, 2026-10-27 00:45 UTC, committed before the run started): Lightning's never-named bridge (R start), on the idle GPU
 
 - **Gap:** the R start (amendment 35 note 1) was run for the 27B, 9B, 9B base, Ministral, Muse and the 122B, not for
   Lightning (the "not run" cell in the figure set's F05).
