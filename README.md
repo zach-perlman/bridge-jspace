@@ -27,7 +27,9 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 - **Remove everywhere** costs Qwen 27B 50.9 more points on recalled than on stated answers; control removals cost far less. <!-- src: docs/breadth/data.csv | ko.q9.mk; ko.q27.mk; ko.nl.mk; ko.q122.mk; ko.mu.mk --> <!-- src: docs/breadth/data.csv | ko.q9.rot; ko.q27.rot; ko.nl.rot --> <!-- src: docs/breadth/data.csv | ko.q9.u; ko.q27.u; ko.nl.u --> <!-- src: docs/breadth/data.csv | ko.q9.soft; ko.q27.soft; ko.nl.soft -->
 - **Remove from the change** stops it moving recalled answers, not stated ones: a gap of 0.60 of its effect on Qwen 27B. <!-- src: figures/story/data.csv | contrast_9b; contrast_27b; contrast_122b; contrast_muse --> <!-- src: figures/story/data.csv | J++ part: recall extra loss; PCA directions (same size): recall extra loss --> <!-- src: figures/story/data.csv | ld_gap_9b; ld_gap_27b -->
-- **Same question, different source:** a recalled number costs Qwen 27B 13.3 points, a computed one nothing. Three-step chains agree on Lightning, not Qwen 27B. <!-- src: docs/breadth/data.csv | mod.q9.numbers.paper10.MR-PR; mod.q27.numbers.paper10.MR-PR; mod.nl.numbers.paper10.MR-PR --> <!-- src: docs/breadth/data.csv | mod.q9.numbers.paper10.AR-PR; mod.q27.numbers.paper10.AR-PR; mod.nl.numbers.paper10.AR-PR --> <!-- src: docs/breadth/data.csv | mod.nl.threehop.paper10.PPM-PPP; mod.nl.threehop.paper10.MMP-PPP --> <!-- src: docs/breadth/data.csv | mod.q27.threehop.paper10.PPM-PPP; mod.q27.threehop.paper10.MMP-PPP -->
+- **Same question, different source:** a recalled number costs Qwen 27B 13.3 points, a computed one nothing. <!-- src: docs/breadth/data.csv | mod.q9.numbers.paper10.MR-PR; mod.q27.numbers.paper10.MR-PR; mod.nl.numbers.paper10.MR-PR --> <!-- src: docs/breadth/data.csv | mod.q9.numbers.paper10.AR-PR; mod.q27.numbers.paper10.AR-PR; mod.nl.numbers.paper10.AR-PR -->
+  - Three-step chains that end on a recalled answer need the lens part too: all four kinds on Lightning, three of four on Qwen 27B, on two data seeds each. <!-- src: docs/breadth/data.csv | mod.nl.threehop.paper10.PPM-PPP; mod.nl.threehop.paper10.MMP-PPP; mod2.nl.threehop.paper10.PPM-PPP; mod2.nl.threehop.paper10.MMM-PPP --> <!-- src: docs/breadth/data.csv | mod.q27.threehop.paper10.PPM-PPP; mod.q27.threehop.paper10.MMP-PPP; mod2.q27.threehop.paper10.PPM-PPP; mod2.q27.threehop.paper10.MMM-PPP -->
+  - A number computed from the text and then used to recall something needs no more of the lens part than a number written in the text: counted +0.7, computed −12.6 points on Qwen 27B (fixed in advance). On Qwen 9B and Lightning the controls break those chains too, so it cannot be read. <!-- src: docs/breadth/data.csv | mod2.q27.numbers.paper10.KM-PM; mod2.q27.numbers.paper10.AM-PM --> <!-- src: docs/breadth/data.csv | mod2.q9.numbers.paper10_rot.AM-PM; mod2.nl.numbers.paper10_rot.AM-PM -->
 
 ![Taking the lens part out breaks recalled answers, not stated ones](figures/shared/j1_recall_needs_lens.png)
 
@@ -41,7 +43,7 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 - **The swap** moves Qwen 27B's recalled answers 63.0 points toward the other entity (Qwen 9B alike), even from one neutral sentence. <!-- src: docs/breadth/data.csv | swap.q9.swap; swap.q27.swap --> <!-- src: docs/breadth/data.csv | ptr.q9.neutral; ptr.q27.neutral -->
 - **Stated answers** stay in 99.1% of Qwen 27B's cases; Qwen 9B's move a little. <!-- src: EXPERIMENTS.md | l.166 --> <!-- src: EXPERIMENTS.md | l.165 -->
-- **Everything but the lens part** moves Qwen 27B's stated answers by 24.6 points, Qwen 9B's less, Lightning's not at all (after the data; Zach to confirm). <!-- src: results/jswap/jswap_v2_v1/summary.json | PK/swap_comp; TK/swap_comp --> <!-- src: results/jswap/qwen35_9b_jswap_v2_v1/summary.json | PK/swap_comp; TK/swap_comp --> <!-- src: results/jswap/nem35l_jswap_v2_v1/summary.json | PK/swap_comp; TK/swap_comp -->
+- **Everything but the lens part** moves Qwen 27B's stated answers by 24.6 points, Qwen 9B's less, Lightning's not at all (after the data; confirmed by Zach). <!-- src: results/jswap/jswap_v2_v1/summary.json | PK/swap_comp; TK/swap_comp --> <!-- src: results/jswap/qwen35_9b_jswap_v2_v1/summary.json | PK/swap_comp; TK/swap_comp --> <!-- src: results/jswap/nem35l_jswap_v2_v1/summary.json | PK/swap_comp; TK/swap_comp --> <!-- src: docs/breadth/data.csv | swap.q27.comp.PK; swap.q9.comp.PK; swap.nl.comp.PK --> <!-- src: docs/shared/zach_reply_2026-10-27.md | Complement swap on stated finals: confirmed -->
 
 ![The swap moves recalled answers to the other entity; stated answers stay](figures/shared/j2_swap.png)
 
@@ -62,15 +64,51 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 **How sure.**
 - Medium for the order signal, on Qwen 9B and Muse 30B, in simple scenes.
 - Low for a second route through the item's identity outside the lens: not specific when tested in advance, partly lens-readable on Qwen 27B, and used by recalled answers too. <!-- src: predictions/2026-10-26_dan.md | **Q45.7** --> <!-- src: predictions/2026-10-26_dan.md | 0.07 / 0.18 of the lookups still switch, against 0.15 / 0.39 --> <!-- src: predictions/2026-10-26_dan.md | Size check (Dan ~01:00 --> <!-- src: figures/story/data.csv | (b) another item moved, no_jpp: identity share; (b) another item moved, no_jpp_rand: identity share --> <!-- src: docs/depth/README.md | Recall's extra loss without identity (nothing else removed) -->
-- Main limits: weak on Qwen 27B <!-- src: figures/story/data.csv | another item moved, keep_alf: position share --> <!-- src: docs/x0_details.md | A refit pointer per format --> <!-- src: figures/story/data.csv | the sanity swap, lookup extra loss without the pointer; the sanity swap, recall extra loss without the pointer -->; refit per text format <!-- src: predictions/2026-10-26_dan.md | **Q42.1** -->; Zach's evidence waits on his confirmation of the swap of everything but the lens part <!-- src: results/jswap/jswap_v2_v1/summary.json | PK/swap_comp; PK/swap -->.
+- Main limits: weak on Qwen 27B <!-- src: figures/story/data.csv | another item moved, keep_alf: position share --> <!-- src: docs/x0_details.md | A refit pointer per format --> <!-- src: figures/story/data.csv | the sanity swap, lookup extra loss without the pointer; the sanity swap, recall extra loss without the pointer -->; refit per text format <!-- src: predictions/2026-10-26_dan.md | **Q42.1** -->; Zach's evidence rests on the swap of everything but the lens part, confirmed but after the data <!-- src: results/jswap/jswap_v2_v1/summary.json | PK/swap_comp; PK/swap --> <!-- src: docs/shared/zach_reply_2026-10-27.md | Complement swap on stated finals: confirmed -->.
 
 ![Four findings across five models](figures/shared/grid_front.png)
+
+## Finding 4. It holds across datasets and in two families; across models it is graded
+
+**On Qwen 27B, Qwen 9B and Nemotron Lightning, recalled answers need the lens part on every dataset, relation and wording tried. On the other six models we could test it is weak, shared with a control, or not needed; three more cannot be tested.**
+
+- **Every dataset since day one** (Qwen 27B / Qwen 9B, points more on recalled than on stated answers): toy puzzles over three data seeds 34.1-40.0 / 22.8-38.2, natural fact chains over three seeds 42.5-51.3 / 36.9-38.0, a natural set 52.1 / 40.4, and the main set 50.9 / 42.6. The logit lens's own directions cost −5.0 to +1.9 wherever they were run. <!-- src: docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3; toy.q9.s1; toy.q9.s2; toy.q9.s3 --> <!-- src: docs/breadth/data.csv | nat.q27.s1; nat.q27.s2; nat.q27.s3; nat.q9.s1; nat.q9.s2; nat.q9.s3 --> <!-- src: docs/breadth/data.csv | natplus.q27; natplus.q9; ko.q27.mk; ko.q9.mk --> <!-- src: docs/breadth/data.csv | toy.q27.u; nat.q27.u; natplus.q27.u; v1.q27.u; ko.q27.u; toy.q9.u; nat.q9.u; natplus.q9.u; v1.q9.u; ko.q9.u -->
+- **Lightning on natural text:** 51.8 more on recalled answers; a random rotation costs −1.2, the logit lens's directions 7.9. <!-- src: docs/breadth/data.csv | natplus.nl; natplus.nl.rot; natplus.nl.u -->
+- **Every relation and wording:** on Qwen 27B from 36.0 (languages) to 72.0 (dishes); two rewordings of every passage give 49.3 and 50.2 (Qwen 27B), 48.9 and 50.3 (Lightning). Rare bridges lose as much as popular ones (Qwen 27B 55.6 against 50.4, Lightning 61.4 against 47.5). <!-- src: docs/breadth/data.csv | ko.q27.rel.languages; ko.q27.rel.dishes --> <!-- src: docs/breadth/data.csv | ko.q27.r2; ko.q27.r3; ko.nl.r2; ko.nl.r3 --> <!-- src: docs/breadth/data.csv | natplus.q27.rare; natplus.q27.pop; natplus.nl.rare; natplus.nl.pop -->
+- **Across models it is graded.**
+  - Weak: Ministral 14B 23.3 and DeepSeek V4 Flash 17.9 points. <!-- src: docs/breadth/data.csv | ko.mi.mk; ko.ds.mk -->
+  - Not specific: on Nemotron Bolt and DeepSeek a same-size removal of the largest directions costs nearly as much as the lens part, at every number of directions (at 100: 24.0 against 31.3, and 25.9 against 28.7). <!-- src: docs/breadth/data.csv | dose.nb.k100.pc; dose.nb.k100; dose.ds.k100.pc; dose.ds.k100 -->
+  - Carried, not needed: OLMo 32B's lens part moves recalled answers when swapped (41.4) but removing it costs 5.4. <!-- src: docs/breadth/data.csv | swap.ol.swap; ko.ol.mk -->
+  - Shared or fragile: Muse 30B shares 34.6 of its 59.9 with the logit lens's directions; Qwen 122B's 48.5 drops to 1.7 scored by probability. <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk; ko.q122.mk; ko.q122.soft -->
+  - Untestable: removing the top 10 lens directions breaks plain text on Gemma 4, gpt-oss and Kolibri (9.3, 4.7 and 6.4 nats added). <!-- src: docs/breadth/data.csv | text.gemma; text.gptoss; text.kol -->
+
+![Recalled answers need the lens part on every dataset we built](figures/shared/j6_datasets.png)
+
+**How sure.**
+- High that it is not one dataset, relation or wording on Qwen 27B and Qwen 9B: each set was fixed in advance, and clean-checkout reruns match row for row. Medium on Lightning: two datasets. <!-- src: docs/breadth/README.md | 0 of 22325 --> <!-- src: docs/breadth/data.csv | natplus.nl; ko.nl.mk -->
+- Medium on the grading: one band of layers per model, and several models use lenses we fit ourselves (on Qwen 9B our own fit gives 44.8 against the published lens's 42.6). <!-- src: docs/breadth/data.csv | ko.q9oj.mk; ko.q9.mk -->
+- Main limits: templated passages, English only, greedy answers with thinking off.
+
+## Finding 5. At middle layers the bridge's mention carries it; deeper, the question does
+
+**Removing the lens part only at the bridge's mention does most of the damage at middle layers on the Qwens; deeper, removing it only in the question does nearly all of it, and the mention nothing (Qwen 27B, Qwen 9B, Nemotron Lightning).**
+
+- **Middle layers** (all bridges): the mention alone costs Qwen 27B 29.7 of 50.9 points and Qwen 9B 33.6 of 42.6; the question alone 10.7 and 6.2. Lightning needs both: mention 19.9, question 22.7, of 53.1. <!-- src: docs/breadth/data.csv | pos.q27.all.bridge; pos.q27.all.all; pos.q9.all.bridge; pos.q9.all.all --> <!-- src: docs/breadth/data.csv | pos.q27.all.question; pos.q9.all.question --> <!-- src: docs/breadth/data.csv | pos.nl.all.bridge; pos.nl.all.question; pos.nl.all.all -->
+- **Deeper layers:** the question alone costs 47.1 of 50.0 (Qwen 27B), 52.6 of 53.1 (Qwen 9B) and 52.6 of 61.6 (Lightning); the mention alone 2.9, 0.2 and 0.5. Ministral 14B, tested only deep, agrees (24.0 of 23.3); Qwen 122B is split (question 28.3, mention 10.0, of 48.5). <!-- src: docs/breadth/data.csv | late.q27.question; late.q27.all; late.q9.question; late.q9.all; late.nl.question; late.nl.all --> <!-- src: docs/breadth/data.csv | late.q27.bridge; late.q9.bridge; late.nl.bridge --> <!-- src: docs/breadth/data.csv | pos.mi.question; ko.mi.mk; pos.q122.question; pos.q122.bridge; ko.q122.mk -->
+- **Deeper, more is shared with the logit lens's directions:** 27.5 (Qwen 9B) and 22.9 (Lightning), against 1.4 and 8.7 at middle layers. <!-- src: docs/breadth/data.csv | late.q9.all.u; late.nl.all.u; ko.q9.u; ko.nl.u -->
+- This is the pattern Muse 30B shows (Where it breaks): carried at a middle layer, needed only deep. Zach's split on Muse is queued to test it. <!-- src: jobs/c3/x57_pos_muse.yaml | question-only and bridge-mention-only -->
+
+![Middle layers need the bridge's mention; deeper layers, the question](figures/shared/j7_where.png)
+
+**How sure.**
+- High on Qwen 27B, Qwen 9B and Lightning: fixed in advance, rotated controls cost at most 2.5 points, and Qwen 9B's and Lightning's deeper splits rerun identically from a clean checkout. The deeper bands of Qwen 9B and Lightning were picked on separate data. <!-- src: docs/breadth/data.csv | late.q27.question.rot; late.q9.question.rot; late.nl.question.rot --> <!-- src: docs/breadth/data.csv | clean57.same -->
+- Main limits: one band per depth; Lightning's deeper band sits shallower than the Qwens' (past about 70% of its depth the removal breaks stated answers too). <!-- src: docs/prereg_replication_1022.md | Lightning L33-39 (64-75%; dev M - K +50, logit lens +5) -->
 
 ## Where it breaks
 
 - **Muse 30B carries the lens part at a middle layer but needs it only deep.** <!-- src: results/x45r/score-20261027T165540Z/x45r.json | label -->
   - At layer 26 remove from the change finds it carried (gap 0.85 [0.68, 0.98]) and specific to the lens: the logit lens's directions cost nothing. Over layers 23-29 remove everywhere costs recalled answers only 6.7 [5, 9] points more than stated ones, 6.8 beyond the logit lens's directions; the bar fixed in advance was 15. <!-- src: results/x45r/score-20261027T165540Z/x45r.json | our_gap_L26; his_L23_29; excess_L23_29 --> <!-- src: figures/story/data.csv | J++ part: recall extra loss; logit-lens directions: recall extra loss --> <!-- src: results/x45r/score-20261027T165540Z/x45r.md | not needed if M - K < 15 -->
-  - Deeper, over layers 36-42, it costs 59.9, but more than half is shared with the logit lens (after the data); Zach's earlier puzzles barely moved Muse. The result was opened before Zach confirmed this use of his tool. <!-- src: results/x45r/score-20261027T165540Z/x45r.json | descriptive; note --> <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk --> <!-- src: EXPERIMENTS.md | l.169 --> <!-- src: EXPERIMENTS.md | l.87 -->
+  - Deeper, over layers 36-42, it costs 59.9, but more than half is shared with the logit lens (after the data); Zach's earlier puzzles barely moved Muse. The result was opened before Zach confirmed this use of his tool; he has confirmed it since. <!-- src: results/x45r/score-20261027T165540Z/x45r.json | descriptive; note --> <!-- src: docs/breadth/data.csv | ko.mu.u; ko.mu.mk --> <!-- src: EXPERIMENTS.md | l.169 --> <!-- src: EXPERIMENTS.md | l.87 --> <!-- src: docs/shared/zach_reply_2026-10-27.md | a faithful use of the v2 knock-out -->
 
   ![Muse 30B carries the lens part at a middle layer and needs it only deep](figures/shared/j5_muse_depth.png)
 
@@ -86,21 +124,21 @@ Draft (27 Oct). Every number is unverified until the hand check on Thu 29 Oct.
 
 - **Nothing is hand-checked yet.** On Thu 29 Oct each of us checks 10 random items of the other's headline ([lists](docs/shared/gaps.md)). <!-- src: docs/shared/gaps.md | 10 random items of each other's headline -->
 - **Dan:** a reimplementation matches 20 of 20 items; a [hand-check pack](docs/handcheck_pack.md) recounts the newest tests; his predictions score worse than always answering 50%. <!-- src: docs/depth/README.md | 20 of 20 random items --> <!-- src: docs/depth/README.md | mean Brier 0.32 over 121 answers, worse than always answering 50% -->
-- **Zach:** clean-checkout reruns match row for row on Qwen 27B and Qwen 9B; a [verification kit](docs/verify_kit.md) recomputes his headline. <!-- src: docs/breadth/README.md | 0 of 22325 -->
+- **Zach:** clean-checkout reruns match row for row on Qwen 27B and Qwen 9B, and on all 11 of his newest runs, Lightning's included; a [verification kit](docs/verify_kit.md) recomputes his headline. <!-- src: docs/breadth/README.md | 0 of 22325 --> <!-- src: docs/breadth/data.csv | clean57.same; clean57.n -->
 
 ## What did not hold
 
 - Dan: Qwen 27B misses his strict bar; Qwen 9B misses his cleaner design and its replication.
 - Dan: the positive control; identity outside the lens; writing the order signal at the strength fixed in advance (below a real change); one test withdrawn as a design error. <!-- src: predictions/2026-10-26_dan.md | **Q44.1** -->
 - Zach: Qwen 122B by probability; Muse's share with the logit lens; Bolt; OLMo.
-- Zach: one Qwen 27B three-step chain; Lightning's number predictions. <!-- src: docs/breadth/README.md | Lightning's v2 recall-keyed-by-a-recalled-number result -->
+- Zach: one Qwen 27B three-step chain; Lightning's number predictions; the rule for a recall keyed by a number, on all three models. <!-- src: docs/breadth/README.md | Lightning's v2 recall-keyed-by-a-recalled-number result --> <!-- src: docs/breadth/data.csv | mod2.q27.numbers.paper10.MM-ML; mod2.q9.numbers.paper10.MM-ML; mod2.nl.numbers.paper10.MM-ML -->
 
 Full lists: [depth report](docs/depth/README.md) <!-- src: docs/depth/README.md | Failed when fixed in advance -->, [breadth report](docs/breadth/README.md) <!-- src: docs/breadth/README.md | Failed when fixed in advance -->.
 
 ## Pending tests
 
-- **Nemotron Lightning, Dan's method** at layer 27, the first layer of Zach's band; waits for his lens file. <!-- src: scripts/x45s.py | at L27 (the shallowest layer of Zach's band L27-33 -->
-- **Zach's confirmation** of the swap of everything but the lens part. No test is planned for the order signal on Lightning.
+- **Nemotron Lightning, Dan's method** at layer 27, the first layer of Zach's band; his lens file is now [public](https://huggingface.co/zachperlman20/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-jpp-lens). No test is planned for the order signal on Lightning. <!-- src: scripts/x45s.py | at L27 (the shallowest layer of Zach's band L27-33 -->
+- **Muse 30B, Zach's tools** at layers 36-42: how many directions it needs, and whether the question or the mention carries it (queued on Dan's box). <!-- src: jobs/c3/x57_dose_muse.yaml | dose grid at L36-42 --> <!-- src: jobs/c3/x57_pos_muse.yaml | question-only and bridge-mention-only -->
 
 ## Open questions
 
