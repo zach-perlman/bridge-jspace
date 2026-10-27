@@ -18,7 +18,8 @@ REPO = Path(__file__).resolve().parents[1]
 README = REPO / "README.md"
 CSV_SOURCES = {"figures/story/data.csv", "docs/breadth/data.csv", "docs/shared/grid.csv"}
 
-SRC = re.compile(r"<!--\s*src:\s*([^|]*?)\s*\|\s*(.*?)\s*-->", re.S)
+# In a table row the separator is written "\|" (a bare pipe would split the cell in GitHub's table syntax).
+SRC = re.compile(r"<!--\s*src:\s*([^|\\]*?)\s*\\?\|\s*(.*?)\s*-->", re.S)
 LINE_REF = re.compile(r"^l\.(\d+)(?:-(\d+))?$")
 LINK = re.compile(r"!?\[[^\]]*\]\(([^)\s]+)\)")
 COMMENT = re.compile(r"<!--.*?-->", re.S)
@@ -119,6 +120,10 @@ def test_checks_catch_failures():
     assert unresolved("x <!-- src: no/such/file.md | anything -->")
     assert unresolved("x <!-- src: EXPERIMENTS.md | l.999999 -->")
     assert not unresolved("x <!-- src: docs/breadth/data.csv | ko.q27.mk -->")
+    assert sources("| a <!-- src: docs/breadth/data.csv \\| ko.q27.mk --> | 1 |") == [
+        ("docs/breadth/data.csv", ["ko.q27.mk"])
+    ]
+    assert unresolved("| a <!-- src: docs/breadth/data.csv \\| ko.q27.nosuchkey --> | 1 |")
     assert missing_paths("![a](figures/nope.png)")
     assert unsourced_lines("- the gap is 0.53 on the 27B")
     assert not unsourced_lines("- the 27B at L32 (45r, Q46.1, 27 Oct)")

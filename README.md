@@ -47,8 +47,8 @@ A two-hop question about a bridge entity ("the composer who wrote The Magic Flut
 
 | | 9B | 27B | Lightning | 122B | Muse |
 |---|---|---|---|---|---|
-| Change-removal gap, recall − lookup <!-- src: figures/story/data.csv | contrast_9b; contrast_27b; contrast_122b; contrast_muse --> | 0.53 [0.42, 0.61] | 0.60 [0.50, 0.69] | GAP -> 45s (Q46.2) | 0.32 [0.20, 0.43] | 0.85 [0.68, 0.98] |
-| Knock-out M − K, points <!-- src: docs/breadth/data.csv | ko.q9.mk; ko.q27.mk; ko.nl.mk; ko.q122.mk; ko.mu.mk --> | +42.6 [37, 49] | +50.9 [46, 55] | +53.1 [48, 59] | +48.5 [44, 54]° | +59.9 [55, 65]° |
+| Change-removal gap, recall − lookup <!-- src: figures/story/data.csv \| contrast_9b; contrast_27b; contrast_122b; contrast_muse --> | 0.53 [0.42, 0.61] | 0.60 [0.50, 0.69] | GAP -> 45s (Q46.2) | 0.32 [0.20, 0.43] | 0.85 [0.68, 0.98] |
+| Knock-out M − K, points <!-- src: docs/breadth/data.csv \| ko.q9.mk; ko.q27.mk; ko.nl.mk; ko.q122.mk; ko.mu.mk --> | +42.6 [37, 49] | +50.9 [46, 55] | +53.1 [48, 59] | +48.5 [44, 54]° | +59.9 [55, 65]° |
 
 ° After the data: v2 was not pre-registered for these models. <!-- src: EXPERIMENTS.md | l.167; l.169 -->
 
