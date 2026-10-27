@@ -54,7 +54,7 @@ DICT_NAME = {
     "jpp": "J++ part",
     "wu": "logit-lens directions",
     "we": "input-embedding directions",
-    "rand": "random atoms",
+    "rand": "random lens directions",
 }
 READER = {X.LOOKUP: "lookup", X.RECALL: "recall"}
 XLABEL = "layer of the change (at the bridge word)"
@@ -336,12 +336,12 @@ def detail(out: Path, run: Run, rend: str, data: list[dict]) -> Path:
                     color=color[w] if d == "jpp" else "#9a9a9a", label=DICT_NAME[d])  # fmt: skip
         thresholds(ax)
         ax.set(ylim=(-0.47, 1.1), ylabel="extra loss without the dictionary's part",
-               title=f"{tag}  {READER[w].capitalize()}: the J++ part against other dictionaries (25 atoms)")  # fmt: skip
+               title=f"{tag}  {READER[w].capitalize()}: the J++ part against other dictionaries (25 directions)")  # fmt: skip
         ax.legend(loc="upper right", frameon=False, ncol=2)
     for d, (ls, mk) in DICT_STYLE.items():
         a_sh.plot(done, [100 * run.share[(rend, la, d, X.K_MAIN, "signed")] for la in done], ls, marker=mk, ms=4,
                   color=INK if d == "jpp" else "#9a9a9a", lw=2 if d == "jpp" else 1.4, label=DICT_NAME[d])  # fmt: skip
-    a_sh.set(ylim=(0, 45), ylabel="share of the change (%, median)", title="F  How much of the change 25 atoms take")
+    a_sh.set(ylim=(0, 45), ylabel="share of the change (%, median)", title="F  How much of the change 25 directions take")
     a_sh.legend(loc="upper right", frameon=False, ncol=2)
     n = sorted({x["n"] for x in cells.values()})
     model, prompt = dict(MODELS).get(target, target), dict(ROWS).get(rend, rend)
@@ -404,7 +404,7 @@ def kmatch(out: Path, data: list[dict]) -> Path:
             ax.text(0.98, 0.03, f"run {src.name}", transform=ax.transAxes, ha="right", fontsize=7.5, color=MUTED)
     fig.suptitle("After the data · the J++ part or any dictionary, at an equal share of the change? · UNVERIFIED",
                  fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
-    caption(fig, F, "Each point: one dictionary at k atoms (signed OMP over the letter-token atoms), the switches lost "
+    caption(fig, F, "Each point: one dictionary at k directions (signed OMP over the letter-token directions), the switches lost "
             "without its part against the median share of the change it removes; grey dots: a random part (same size) "
             "for each point.\nAt an equal share the random part is the same reference for every dictionary. Bands: 95% "
             "bootstrap over bridge entities. Chat, the layer fixed in advance.")  # fmt: skip
@@ -413,7 +413,7 @@ def kmatch(out: Path, data: list[dict]) -> Path:
 
 
 def kcurve(out: Path, data: list[dict]) -> Path:
-    """Excess against the number of atoms k, per dictionary, at the pre-registered layer (chat; the k-match runs).
+    """Excess against the number of directions k, per dictionary, at the pre-registered layer (chat; the k-match runs).
     Added after data."""
     plt, F = style()
     fig, axes = plt.subplots(2, 2, figsize=(14, 10), sharey=True)
@@ -453,14 +453,14 @@ def kcurve(out: Path, data: list[dict]) -> Path:
             ax.minorticks_off()
             ax.set(ylim=(-0.3, 1.0))
             if i == 1:
-                ax.set_xlabel("atoms removed, k (log scale)")
+                ax.set_xlabel("directions removed, k (log scale)")
             if j == 0:
                 ax.set_ylabel("extra loss without the dictionary's part")
             ax.legend(loc="upper left", frameon=False, fontsize=8, ncol=2)
             ax.text(0.98, 0.03, f"run {run.name}", transform=ax.transAxes, ha="right", fontsize=7.5, color=MUTED)
-    fig.suptitle("After the data · extra loss against the number of atoms, per dictionary · UNVERIFIED",
+    fig.suptitle("After the data · extra loss against the number of directions, per dictionary · UNVERIFIED",
                  fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
-    caption(fig, F, "Each dictionary's 25-200 atoms (signed OMP over the letter-token atoms) removed at the layer fixed in "
+    caption(fig, F, "Each dictionary's 25-200 directions (signed OMP over the letter-token directions) removed at the layer fixed in "
             "advance; extra loss (0-1) = switches lost without its part minus those lost without a random part (same "
             "size), per item.\nThe J++ part's points carry the median share of the change it removes (%). Dotted lines: "
             "around ≤ 0.10, through ≥ 0.20. Bands: 95% bootstrap over bridge entities. Chat.")  # fmt: skip
@@ -502,7 +502,7 @@ def share_scatter(out: Path, data: list[dict]) -> Path:
     fig.suptitle("After the data · do the switches lost without the J++ part track its share of the change? · UNVERIFIED",
                  fontsize=13, x=0.01, ha="left", weight="bold")  # fmt: skip
     caption(fig, F, "One point per layer with a valid cell (the whole change switches ≥ 30% and ≥ 30 items), the J++ "
-            "part at 25 atoms. On the 9B the share and the depth fall together, so share and depth cannot be told apart "
+            "part at 25 directions. On the 9B the share and the depth fall together, so share and depth cannot be told apart "
             "there.")  # fmt: skip
     fig.tight_layout(rect=(0, 0.05, 1, 0.94))
     return save(fig, plt, out, "share")

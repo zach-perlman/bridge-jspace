@@ -103,14 +103,14 @@ Qwen3.5-9B, layer 12:
 | J++ | 100 | recall | 0.440 | 0.85 [0.77, 0.90] | 0.38 [0.31, 0.46] | 0.47 [0.35, 0.55] | through |
 | J++ | 200 | lookup | 0.563 | 0.75 [0.69, 0.81] | 0.92 [0.87, 0.97] | −0.17 [−0.25, −0.11] | around |
 | J++ | 200 | recall | 0.563 | 0.96 [0.94, 0.99] | 0.78 [0.70, 0.86] | 0.18 [0.11, 0.26] | mixed |
-| random atoms | 25 | lookup | 0.101 | 0.11 [0.05, 0.17] | 0.08 [0.02, 0.14] | 0.03 [−0.01, 0.08] | around |
-| random atoms | 25 | recall | 0.101 | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | around |
-| random atoms | 50 | lookup | 0.184 | 0.21 [0.13, 0.29] | 0.20 [0.11, 0.29] | 0.01 [−0.03, 0.05] | around |
-| random atoms | 50 | recall | 0.184 | 0.01 [0.00, 0.02] | 0.01 [0.00, 0.02] | 0.00 [0.00, 0.00] | around |
-| random atoms | 100 | lookup | 0.323 | 0.38 [0.28, 0.46] | 0.34 [0.25, 0.42] | 0.04 [0.01, 0.07] | around |
-| random atoms | 100 | recall | 0.323 | 0.07 [0.04, 0.11] | 0.09 [0.05, 0.13] | −0.02 [−0.04, 0.01] | around |
-| random atoms | 200 | lookup | 0.531 | 0.89 [0.83, 0.95] | 0.90 [0.83, 0.96] | −0.01 [−0.06, 0.04] | around |
-| random atoms | 200 | recall | 0.531 | 0.72 [0.62, 0.81] | 0.73 [0.65, 0.81] | −0.02 [−0.06, 0.03] | around |
+| random lens directions | 25 | lookup | 0.101 | 0.11 [0.05, 0.17] | 0.08 [0.02, 0.14] | 0.03 [−0.01, 0.08] | around |
+| random lens directions | 25 | recall | 0.101 | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | around |
+| random lens directions | 50 | lookup | 0.184 | 0.21 [0.13, 0.29] | 0.20 [0.11, 0.29] | 0.01 [−0.03, 0.05] | around |
+| random lens directions | 50 | recall | 0.184 | 0.01 [0.00, 0.02] | 0.01 [0.00, 0.02] | 0.00 [0.00, 0.00] | around |
+| random lens directions | 100 | lookup | 0.323 | 0.38 [0.28, 0.46] | 0.34 [0.25, 0.42] | 0.04 [0.01, 0.07] | around |
+| random lens directions | 100 | recall | 0.323 | 0.07 [0.04, 0.11] | 0.09 [0.05, 0.13] | −0.02 [−0.04, 0.01] | around |
+| random lens directions | 200 | lookup | 0.531 | 0.89 [0.83, 0.95] | 0.90 [0.83, 0.96] | −0.01 [−0.06, 0.04] | around |
+| random lens directions | 200 | recall | 0.531 | 0.72 [0.62, 0.81] | 0.73 [0.65, 0.81] | −0.02 [−0.06, 0.03] | around |
 | W_E | 25 | lookup | 0.109 | 0.12 [0.06, 0.17] | 0.06 [0.01, 0.12] | 0.06 [0.01, 0.11] | around |
 | W_E | 25 | recall | 0.109 | 0.01 [0.00, 0.02] | 0.00 [0.00, 0.00] | 0.01 [0.00, 0.02] | around |
 | W_E | 50 | lookup | 0.193 | 0.17 [0.11, 0.23] | 0.18 [0.10, 0.28] | −0.01 [−0.07, 0.05] | around |
@@ -140,14 +140,14 @@ Qwen3.6-27B, layer 32:
 | J++ | 100 | recall | 0.305 | 0.95 [0.90, 0.98] | 0.28 [0.19, 0.35] | 0.67 [0.60, 0.75] | through |
 | J++ | 200 | lookup | 0.412 | 0.98 [0.94, 1.00] | 0.40 [0.29, 0.49] | 0.58 [0.48, 0.68] | through |
 | J++ | 200 | recall | 0.412 | 0.99 [0.96, 1.00] | 0.49 [0.40, 0.57] | 0.50 [0.41, 0.59] | through |
-| random atoms | 25 | lookup | 0.082 | 0.01 [−0.03, 0.05] | 0.02 [0.00, 0.06] | −0.01 [−0.04, 0.00] | around |
-| random atoms | 25 | recall | 0.082 | 0.00 [−0.03, 0.03] | −0.01 [−0.03, 0.02] | 0.01 [−0.02, 0.03] | around |
-| random atoms | 50 | lookup | 0.149 | 0.02 [0.00, 0.06] | 0.03 [0.00, 0.08] | −0.01 [−0.04, 0.00] | around |
-| random atoms | 50 | recall | 0.149 | 0.00 [−0.04, 0.04] | −0.01 [−0.04, 0.03] | 0.01 [−0.02, 0.04] | around |
-| random atoms | 100 | lookup | 0.264 | 0.06 [0.00, 0.12] | 0.09 [0.04, 0.15] | −0.03 [−0.08, 0.00] | around |
-| random atoms | 100 | recall | 0.264 | 0.01 [−0.06, 0.07] | 0.07 [0.02, 0.13] | −0.07 [−0.12, −0.01] | around |
-| random atoms | 200 | lookup | 0.446 | 0.66 [0.54, 0.77] | 0.58 [0.44, 0.70] | 0.08 [0.01, 0.17] | around |
-| random atoms | 200 | recall | 0.446 | 0.47 [0.35, 0.57] | 0.48 [0.37, 0.57] | −0.01 [−0.07, 0.04] | around |
+| random lens directions | 25 | lookup | 0.082 | 0.01 [−0.03, 0.05] | 0.02 [0.00, 0.06] | −0.01 [−0.04, 0.00] | around |
+| random lens directions | 25 | recall | 0.082 | 0.00 [−0.03, 0.03] | −0.01 [−0.03, 0.02] | 0.01 [−0.02, 0.03] | around |
+| random lens directions | 50 | lookup | 0.149 | 0.02 [0.00, 0.06] | 0.03 [0.00, 0.08] | −0.01 [−0.04, 0.00] | around |
+| random lens directions | 50 | recall | 0.149 | 0.00 [−0.04, 0.04] | −0.01 [−0.04, 0.03] | 0.01 [−0.02, 0.04] | around |
+| random lens directions | 100 | lookup | 0.264 | 0.06 [0.00, 0.12] | 0.09 [0.04, 0.15] | −0.03 [−0.08, 0.00] | around |
+| random lens directions | 100 | recall | 0.264 | 0.01 [−0.06, 0.07] | 0.07 [0.02, 0.13] | −0.07 [−0.12, −0.01] | around |
+| random lens directions | 200 | lookup | 0.446 | 0.66 [0.54, 0.77] | 0.58 [0.44, 0.70] | 0.08 [0.01, 0.17] | around |
+| random lens directions | 200 | recall | 0.446 | 0.47 [0.35, 0.57] | 0.48 [0.37, 0.57] | −0.01 [−0.07, 0.04] | around |
 | W_E | 25 | lookup | 0.084 | 0.01 [−0.03, 0.05] | 0.02 [0.00, 0.06] | −0.01 [−0.04, 0.00] | around |
 | W_E | 25 | recall | 0.084 | −0.01 [−0.04, 0.00] | −0.01 [−0.04, 0.01] | 0.00 [−0.03, 0.03] | around |
 | W_E | 50 | lookup | 0.151 | 0.03 [0.00, 0.08] | 0.03 [0.00, 0.08] | 0.00 [−0.03, 0.03] | around |
@@ -165,7 +165,7 @@ Qwen3.6-27B, layer 32:
 | W_U | 200 | lookup | 0.399 | 0.28 [0.18, 0.37] | 0.37 [0.26, 0.47] | −0.09 [−0.18, 0.00] | around |
 | W_U | 200 | recall | 0.399 | 0.21 [0.09, 0.33] | 0.28 [0.15, 0.39] | −0.07 [−0.13, −0.01] | around |
 
-Qwen3.5-122B, layer 33 (from its X0 run: J++ at 25 / 50 / 100 atoms; W_U, W_E and random atoms at 25 only; J++ over every token and the digit directions):
+Qwen3.5-122B, layer 33 (from its X0 run: J++ at 25 / 50 / 100 directions; W_U, W_E and random lens directions at 25 only; J++ over every token and the digit directions):
 
 | dictionary | atoms | reader | share removed | dependence | random dependence | excess | label |
 |---|---|---|---|---|---|---|---|
@@ -183,8 +183,8 @@ Qwen3.5-122B, layer 33 (from its X0 run: J++ at 25 / 50 / 100 atoms; W_U, W_E an
 | J++ (every token) | 100 | recall | 0.434 | 0.83 [0.75, 0.89] | 0.42 [0.34, 0.51] | 0.41 [0.30, 0.49] | through |
 | the 10 digit directions | 10 | lookup | 0.008 | 0.00 [−0.06, 0.05] | 0.01 [−0.04, 0.06] | −0.01 [−0.04, 0.00] | around |
 | the 10 digit directions | 10 | recall | 0.008 | 0.01 [−0.02, 0.04] | −0.01 [−0.03, 0.02] | 0.01 [−0.01, 0.03] | around |
-| random atoms | 25 | lookup | 0.134 | 0.10 [0.04, 0.17] | 0.09 [0.03, 0.16] | 0.01 [−0.04, 0.06] | around |
-| random atoms | 25 | recall | 0.134 | 0.01 [−0.01, 0.03] | 0.01 [−0.01, 0.03] | 0.00 [−0.02, 0.02] | around |
+| random lens directions | 25 | lookup | 0.134 | 0.10 [0.04, 0.17] | 0.09 [0.03, 0.16] | 0.01 [−0.04, 0.06] | around |
+| random lens directions | 25 | recall | 0.134 | 0.01 [−0.01, 0.03] | 0.01 [−0.01, 0.03] | 0.00 [−0.02, 0.02] | around |
 | W_E | 25 | lookup | 0.178 | 0.11 [0.04, 0.19] | 0.11 [0.05, 0.19] | 0.00 [−0.06, 0.06] | around |
 | W_E | 25 | recall | 0.178 | 0.03 [0.00, 0.06] | 0.03 [0.00, 0.06] | 0.01 [−0.02, 0.03] | around |
 | W_U | 25 | lookup | 0.125 | 0.08 [0.02, 0.15] | 0.09 [0.03, 0.16] | −0.01 [−0.05, 0.03] | around |
@@ -579,7 +579,7 @@ Rules and readings: [predictions/2026-10-26_dan.md](../predictions/2026-10-26_da
 |---|---|---|---|
 | The J++ part is just small | A random part of the same share removed | Recalls lose 0.03 to it at the 27B's layer 32, and 0.77 to J++ | checked |
 | The edit differs between lookups and recalls | The identical patch at the bridge's word | By design | checked |
-| Any token-aligned part would do | W_U, W_E and random atoms at 25-200 atoms | Only J++ costs the recall more than a random subspace of the same share | checked (27B, 9B) |
+| Any token-aligned part would do | W_U, W_E and random lens directions at 25-200 directions | Only J++ costs the recall more than a random subspace of the same share | checked (27B, 9B) |
 | The chat template | No chat template, with thinking not disabled or off | Can't test: the models open a think block or answer in markdown (first-token read right on 0% / 0% of 9B lookups / recalls, 63% / 90.5% on the 27B) | not a test of the hypothesis |
 | The alt's second changed pick | Asked-first vs upstream-change items | Recalls the same; 27B lookups flip less without the upstream change | partly; a single-change alt is next |
 | The lookup's layer profile is the J++ share | J-dependence against share across layers | 27B lookups track it; recalls do not | open |

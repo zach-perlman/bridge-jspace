@@ -10,7 +10,7 @@
 - **The pointer is narrow:** it marks the first locker in a clean layout; naming an item first moves the lookup to identity. About half of the route around the lens is unexplained.
 - **For monitoring:** a lens on the bridge word shows which item is there, not where the model will read its answer.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 27 Oct 2026. Unverified until hand-checked (Section 7). Built at 142fbfca from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 27 Oct 2026. Unverified until hand-checked (Section 7). Built at 4cf6ae9d from the run files.
 
 ## Setup
 

@@ -189,7 +189,7 @@ def s02_parts(plt) -> None:
     after the data, the logit-lens, input-embedding and random-atom dictionaries from the main test fixed in advance)."""
     parts = [("jpp", "J++ part"), ("jwo", "J++ part without the\nword's directions"), ("w", "the word's directions"),
              ("pca_eq", "PCA directions\n(same size)"), ("jpp_other", "J++ part fitted to\nanother scene"),
-             ("wu", "logit-lens directions"), ("we", "input-embedding\ndirections"), ("rand", "random atoms")]  # fmt: skip
+             ("wu", "logit-lens directions"), ("we", "input-embedding\ndirections"), ("rand", "random lens directions")]  # fmt: skip
     cells = parts_cells()
     fig, axes = plt.subplots(1, len(S.MODELS), figsize=(S.WIDTH, 6.4), sharey=True)
     fig.subplots_adjust(left=0.205, right=0.995, top=0.70, bottom=0.09, wspace=0.12)
@@ -753,11 +753,11 @@ def s01b_one_pick(plt) -> None:
 
 
 # Fig. 2: one panel per part, rows = models with the part's share of the change in the label; J++ and the main
-# directions from the parts runs (one-change scenes, after the data), the logit lens and the random atoms from the main
-# test (fixed in advance), as in parts_cells. "rand" is a dictionary of random atoms picked by the same OMP at its own
+# directions from the parts runs (one-change scenes, after the data), the logit lens and the random lens directions from the main
+# test (fixed in advance), as in parts_cells. "rand" is a dictionary of random lens directions picked by the same OMP at its own
 # (smaller) share, not the matched control (Dan ~22:40)
 SPEC_PARTS = (("jpp", "J++ part"), ("pca_eq", "PCA directions (same size)"), ("wu", "logit-lens directions"),
-              ("rand", "random atoms"))  # fmt: skip
+              ("rand", "random lens directions"))  # fmt: skip
 
 
 def f02_specificity(plt) -> None:
@@ -769,7 +769,7 @@ def f02_specificity(plt) -> None:
     S.title(fig, "No other part of the same size costs the recall as much as the J++ part",
             "Extra loss (0-1): switches lost without the part, minus those lost without a random part\n"
             "(same size). Recall with 95% CI; % = the part's share of the change. Random atoms: a dictionary\n"
-            "of random atoms, picked by the same OMP at its own share.\n"
+            "of random lens directions, picked by the same OMP at its own share.\n"
             "J++ part and PCA directions: one-pick scenes (only the asked pick changes).\n"
             "The other two panels: main test (two people swap picks).", limit=71)  # fmt: skip
     for ax, (p, title) in zip(axes.flat, SPEC_PARTS, strict=True):

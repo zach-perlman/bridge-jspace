@@ -1120,7 +1120,7 @@ def table_layers(cells: dict, run: Any) -> list[str]:
 def table_dicts(cells: dict, run: Any, la: int) -> list[str]:
     out = ["| dictionary | atoms | reader | share removed | dependence | random dependence | excess | label |",
            "|---|---|---|---|---|---|---|---|"]  # fmt: skip
-    name = {"jpp": "J++", "wu": "W_U", "we": "W_E", "rand": "random atoms", "jppall": "J++ (every token)",
+    name = {"jpp": "J++", "wu": "W_U", "we": "W_E", "rand": "random lens directions", "jppall": "J++ (every token)",
             "jppdig": "the 10 digit directions"}  # fmt: skip
     order = lambda kv: (kv[0][3] != "jpp", kv[0][3], kv[0][4], kv[0][2] != X.LOOKUP)  # noqa: E731
     for (_rr, l2, w, d, k, omp), c in sorted(cells.items(), key=order):

@@ -158,7 +158,7 @@ BANNED = {
     # internal names, capitalised and whole: "U" must not hit "UNVERIFIED" or "U.S."
     "Alf / U": r"\bAlf\b|\bU\b(?!\.)",
     "idout": r"\bidout\b|\bidentity direction\b",
-    # "random directions" too: Fig. 2's dictionary is "random atoms" (Dan ~22:40)
+    # "random directions" too: Fig. 2's dictionary is "random lens directions" (Dan ~22:40; renamed 27 Oct ~11:45)
     "random-part variants": r"random part, same size|random directions|random part of its size|J\+\+ size",
     "PCA variants": r"(?i:\bmain directions\b)",
     # removing / keeping: "X alone" in any form, "edit" and its inflections
@@ -212,7 +212,7 @@ def test_the_matcher_catches_each_banned_variant(text):
      "original answer → 2", "original\nprompt", "changed prompt", "locker after\nthe pick", "first locker",
      "simple scenes", "varied scenes: prose / JSON / table", "code shift (positions)", "β 0.15",
      "° gate lowered to 0.75 after the data", "random part (same size)", "random direction (same size)",
-     "random atoms", "PCA directions (same size)", "too few switches (10 of 60)", "not tested (gate)", "S.save",
+     "random lens directions", "PCA directions (same size)", "too few switches (10 of 60)", "not tested (gate)", "S.save",
      "the J++ lens fitted on the bf16 weights", "run x0_kmatch_27b", "switches lost (%)",
      "J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's", *KEPT],
 )  # fmt: skip

@@ -8,7 +8,7 @@ One vocabulary across every figure the README or docs/x0_details.md shows (Dan, 
 | our 4 position directions | "pointer"; refit ones "refit pointer"; label-free ones "label-free pointer" | "our pointer", "pointer directions", "pointer part", Alf, U |
 | identity outside J++ | "identity outside J++" | "idout", "identity direction" (except in its definition) |
 | the matched control | "random part (same size)"; for writes "random direction (same size)" | "random part, same size", "random directions", "random part of its size", "J++ size" |
-| random atoms (a dictionary, Fig. 2 only) | "random atoms": random atoms picked by the same OMP at their own (smaller) share, not the matched control (Dan ~22:40); also where s02 and the x0 details show that dictionary | "random directions" |
+| random lens directions (a dictionary, Fig. 2 only) | "random lens directions": random directions picked by the same OMP at their own (smaller) share, not the matched control (Dan ~22:40); also where s02 and the x0 details show that dictionary (Dan 27 Oct ~11:45; was "random atoms") | "random directions", "random atoms" |
 | PCA control | "PCA directions (same size)" | "main directions", "the layer's main directions" |
 | removing / keeping | "without the X", "only the X", "whole change" | "part removed", "no J++", "keep-only", "X alone", "edit" |
 | answer classes | "identity", "position", "value", "original answer", "other" | "unchanged", "original" (alone) |
@@ -26,7 +26,7 @@ Added for the x0 details figures (26 Oct ~23:00, the same words; Dan to confirm)
 
 | Concept | Canonical label | Banned variants |
 |---|---|---|
-| the other dictionaries | "logit-lens directions" (W_U), "input-embedding directions" (W_E), "random atoms"; the J++ dictionary at k atoms: "J++ part"; the lens itself: "the J++ lens" | "W_U", "W_E" |
+| the other dictionaries | "logit-lens directions" (W_U), "input-embedding directions" (W_E), "random lens directions"; the J++ dictionary at k directions: "J++ part"; the lens itself: "the J++ lens" | "W_U", "W_E" |
 | X0's metrics | "extra loss"; "switches lost" (1 − switched without the part / switched with the whole change, in %); "gap" | "excess", "dependence", "J-dependence", "graded contrast", "C = ..." |
 | run codes | none on a figure (a run's name as provenance stays) | "X0" |
 
@@ -44,7 +44,7 @@ Added for the figures after the overnight queue (27 Oct ~01:05; Dan to confirm):
 | Concept | Canonical label | Banned variants |
 |---|---|---|
 | the J++ part's size | "25 / 50 / 100 directions" (Fig. 2b, 45k; Dan 27 Oct ~11:20) | "atoms" for it, "k = 100" on a figure |
-| atom | not used: a synonym of "direction" (the lens's atoms are its directions); "random atoms" stays the name of Fig. 2's dictionary (row above) | "atom(s)" for the J++ part's directions |
+| atom | not used: a synonym of "direction" (the lens's atoms are its directions); Fig. 2's dictionary is "random lens directions" (row above) | "atom(s)" for the J++ part's directions |
 | 45q's arms (Fig. 3b once 45q is in) | "copy at the item's own tokens", "copy at the other locker-sentence tokens", "copy at the number or the period only"; "copy at L without the J++ part" / "without a random part (same size)"; the rule's arms "at L: the bridge-word change" / "at L: copy at every locker-sentence token"; "L" and "L/2" for the layer fixed in advance and half of it | arm codes (li, lr, lv, lf, c_nojpp) |
 | 45p's arms (Fig. 3c or its supplement) | "(1) without the J++ part at the bridge word", "(2) (1), and without it at the earlier mention", "(3) (1), and without a random part (same size) there", "(4) (1), and without it at another item's mention" | a1-a4 |
 | cell states | "not tested" (Fig. 10's 122B wrong pair; Fig. 11's "–": not run or not counted) | – |

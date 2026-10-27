@@ -43,7 +43,7 @@ Qwen3.6-27B, layer {{num|layer_27b}}:
 
 {{tbl|dicts_27b}}
 
-Qwen3.5-122B, layer {{num|layer_122b}} (from its X0 run: J++ at 25 / 50 / 100 atoms; W_U, W_E and random atoms at 25 only; J++ over every token and the digit directions):
+Qwen3.5-122B, layer {{num|layer_122b}} (from its X0 run: J++ at 25 / 50 / 100 directions; W_U, W_E and random lens directions at 25 only; J++ over every token and the digit directions):
 
 {{tbl|dicts_122b}}
 
@@ -274,7 +274,7 @@ Rules and readings: [predictions/2026-10-26_dan.md](../predictions/2026-10-26_da
 |---|---|---|---|
 | The J++ part is just small | A random part of the same share removed | Recalls lose {{num|rc_rdep_27b}} to it at the 27B's layer 32, and {{num|rc_jdep_27b}} to J++ | checked |
 | The edit differs between lookups and recalls | The identical patch at the bridge's word | By design | checked |
-| Any token-aligned part would do | W_U, W_E and random atoms at 25-200 atoms | Only J++ costs the recall more than a random subspace of the same share | checked (27B, 9B) |
+| Any token-aligned part would do | W_U, W_E and random lens directions at 25-200 directions | Only J++ costs the recall more than a random subspace of the same share | checked (27B, 9B) |
 | The chat template | No chat template, with thinking not disabled or off | Can't test: the models open a think block or answer in markdown (first-token read right on {{num|nochat_gate_9b}} of 9B lookups / recalls, {{num|nochat_gate_27b}} on the 27B) | not a test of the hypothesis |
 | The alt's second changed pick | Asked-first vs upstream-change items | Recalls the same; 27B lookups flip less without the upstream change | partly; a single-change alt is next |
 | The lookup's layer profile is the J++ share | J-dependence against share across layers | 27B lookups track it; recalls do not | open |
