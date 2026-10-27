@@ -1,36 +1,30 @@
 figure,model,quantity,value,lo,hi,n,source
-j6,Qwen 9B,"toy puzzles, seed 1: recalled minus lookup, pp",38.157,,,,docs/breadth/data.csv | toy.q9.s1
-j6,Qwen 9B,"toy puzzles, seed 1: logit lens's directions, pp",-3.391,,,,docs/breadth/data.csv | toy.q9.u
-j6,Qwen 9B,"toy puzzles, seed 2: recalled minus lookup, pp",22.822,,,,docs/breadth/data.csv | toy.q9.s2
-j6,Qwen 9B,"toy puzzles, seed 3: recalled minus lookup, pp",30.882,,,,docs/breadth/data.csv | toy.q9.s3
-j6,Qwen 9B,"natural fact chains, seed 1: recalled minus lookup, pp",36.889,,,,docs/breadth/data.csv | nat.q9.s1
-j6,Qwen 9B,"natural fact chains, seed 1: logit lens's directions, pp",-4.524,,,,docs/breadth/data.csv | nat.q9.u
-j6,Qwen 9B,"natural fact chains, seed 2: recalled minus lookup, pp",37.956,,,,docs/breadth/data.csv | nat.q9.s2
-j6,Qwen 9B,"natural fact chains, seed 3: recalled minus lookup, pp",37.032,,,,docs/breadth/data.csv | nat.q9.s3
-j6,Qwen 9B,"natural set: recalled minus lookup, pp",40.4,34,47,,docs/breadth/data.csv | natplus.q9
-j6,Qwen 9B,"natural set: logit lens's directions, pp",-5.0,-7,-3,,docs/breadth/data.csv | natplus.q9.u
+j6,Qwen 9B,logit-lens control band edge (pp),-5.0,,,,docs/breadth/data.csv | natplus.q9.u
+j6,Nemotron Lightning,logit-lens control band edge (pp),8.7,,,,docs/breadth/data.csv | ko.nl.u
+j6,Qwen 9B,toy puzzles (3 seeds): mean over seeds (pp),30.6,22.8,38.2,3,docs/breadth/data.csv | toy.q9.s1; toy.q9.s2; toy.q9.s3 (mean; lo / hi = range)
+j6,Qwen 27B,toy puzzles (3 seeds): mean over seeds (pp),36.8,34.1,40.0,3,docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3 (mean; lo / hi = range)
+j6,Qwen 9B,natural fact chains (3 seeds): mean over seeds (pp),37.3,36.9,38.0,3,docs/breadth/data.csv | nat.q9.s1; nat.q9.s2; nat.q9.s3 (mean; lo / hi = range)
+j6,Qwen 27B,natural fact chains (3 seeds): mean over seeds (pp),45.9,42.5,51.3,3,docs/breadth/data.csv | nat.q27.s1; nat.q27.s2; nat.q27.s3 (mean; lo / hi = range)
+j6,Qwen 9B,"natural passages, popular and rare bridges: recalled minus lookup, pp",40.4,34,47,,docs/breadth/data.csv | natplus.q9
+j6,Qwen 27B,"natural passages, popular and rare bridges: recalled minus lookup, pp",52.1,47,58,,docs/breadth/data.csv | natplus.q27
+j6,Nemotron Lightning,"natural passages, popular and rare bridges: recalled minus lookup, pp",51.8,46,58,,docs/breadth/data.csv | natplus.nl
 j6,Qwen 9B,"earlier main set: recalled minus lookup, pp",42.3,34,50,,docs/breadth/data.csv | v1.q9
-j6,Qwen 9B,"earlier main set: logit lens's directions, pp",-4.0,-7,-1,,docs/breadth/data.csv | v1.q9.u
-j6,Qwen 9B,"main set: recalled minus lookup, pp",42.6,37,49,,docs/breadth/data.csv | ko.q9.mk
-j6,Qwen 9B,"main set: logit lens's directions, pp",1.4,0,3,,docs/breadth/data.csv | ko.q9.u
-j6,Qwen 27B,"toy puzzles, seed 1: recalled minus lookup, pp",36.236,,,,docs/breadth/data.csv | toy.q27.s1
-j6,Qwen 27B,"toy puzzles, seed 1: logit lens's directions, pp",0.0,,,,docs/breadth/data.csv | toy.q27.u
-j6,Qwen 27B,"toy puzzles, seed 2: recalled minus lookup, pp",34.068,,,,docs/breadth/data.csv | toy.q27.s2
-j6,Qwen 27B,"toy puzzles, seed 3: recalled minus lookup, pp",40.015,,,,docs/breadth/data.csv | toy.q27.s3
-j6,Qwen 27B,"natural fact chains, seed 1: recalled minus lookup, pp",51.26,,,,docs/breadth/data.csv | nat.q27.s1
-j6,Qwen 27B,"natural fact chains, seed 1: logit lens's directions, pp",0.03,,,,docs/breadth/data.csv | nat.q27.u
-j6,Qwen 27B,"natural fact chains, seed 2: recalled minus lookup, pp",44.099,,,,docs/breadth/data.csv | nat.q27.s2
-j6,Qwen 27B,"natural fact chains, seed 3: recalled minus lookup, pp",42.462,,,,docs/breadth/data.csv | nat.q27.s3
-j6,Qwen 27B,"natural set: recalled minus lookup, pp",52.1,47,58,,docs/breadth/data.csv | natplus.q27
-j6,Qwen 27B,"natural set: logit lens's directions, pp",0.4,-1,1,,docs/breadth/data.csv | natplus.q27.u
 j6,Qwen 27B,"earlier main set: recalled minus lookup, pp",50.2,43,57,,docs/breadth/data.csv | v1.q27
-j6,Qwen 27B,"earlier main set: logit lens's directions, pp",-1.1,-2,0,,docs/breadth/data.csv | v1.q27.u
+j6,Qwen 9B,"main set: recalled minus lookup, pp",42.6,37,49,,docs/breadth/data.csv | ko.q9.mk
 j6,Qwen 27B,"main set: recalled minus lookup, pp",50.9,46,55,,docs/breadth/data.csv | ko.q27.mk
-j6,Qwen 27B,"main set: logit lens's directions, pp",1.9,1,3,,docs/breadth/data.csv | ko.q27.u
-j6,Nemotron Lightning,"natural set: recalled minus lookup, pp",51.8,46,58,,docs/breadth/data.csv | natplus.nl
-j6,Nemotron Lightning,"natural set: logit lens's directions, pp",7.9,5,11,,docs/breadth/data.csv | natplus.nl.u
 j6,Nemotron Lightning,"main set: recalled minus lookup, pp",53.1,48,59,,docs/breadth/data.csv | ko.nl.mk
-j6,Nemotron Lightning,"main set: logit lens's directions, pp",8.7,6,11,,docs/breadth/data.csv | ko.nl.u
+j6_qwen,Qwen 9B,logit-lens control band edge (pp),-5.0,,,,docs/breadth/data.csv | natplus.q9.u
+j6_qwen,Qwen 27B,logit-lens control band edge (pp),1.9,,,,docs/breadth/data.csv | ko.q27.u
+j6_qwen,Qwen 9B,toy puzzles (3 seeds): mean over seeds (pp),30.6,22.8,38.2,3,docs/breadth/data.csv | toy.q9.s1; toy.q9.s2; toy.q9.s3 (mean; lo / hi = range)
+j6_qwen,Qwen 27B,toy puzzles (3 seeds): mean over seeds (pp),36.8,34.1,40.0,3,docs/breadth/data.csv | toy.q27.s1; toy.q27.s2; toy.q27.s3 (mean; lo / hi = range)
+j6_qwen,Qwen 9B,natural fact chains (3 seeds): mean over seeds (pp),37.3,36.9,38.0,3,docs/breadth/data.csv | nat.q9.s1; nat.q9.s2; nat.q9.s3 (mean; lo / hi = range)
+j6_qwen,Qwen 27B,natural fact chains (3 seeds): mean over seeds (pp),45.9,42.5,51.3,3,docs/breadth/data.csv | nat.q27.s1; nat.q27.s2; nat.q27.s3 (mean; lo / hi = range)
+j6_qwen,Qwen 9B,"natural passages, popular and rare bridges: recalled minus lookup, pp",40.4,34,47,,docs/breadth/data.csv | natplus.q9
+j6_qwen,Qwen 27B,"natural passages, popular and rare bridges: recalled minus lookup, pp",52.1,47,58,,docs/breadth/data.csv | natplus.q27
+j6_qwen,Qwen 9B,"earlier main set: recalled minus lookup, pp",42.3,34,50,,docs/breadth/data.csv | v1.q9
+j6_qwen,Qwen 27B,"earlier main set: recalled minus lookup, pp",50.2,43,57,,docs/breadth/data.csv | v1.q27
+j6_qwen,Qwen 9B,"main set: recalled minus lookup, pp",42.6,37,49,,docs/breadth/data.csv | ko.q9.mk
+j6_qwen,Qwen 27B,"main set: recalled minus lookup, pp",50.9,46,55,,docs/breadth/data.csv | ko.q27.mk
 j7,Qwen 9B,"middle band (L12-16), every token: recalled minus lookup, pp",42.6,37,49,,docs/breadth/data.csv | pos.q9.all.all
 j7,Qwen 9B,"middle band (L12-16), only in the question: recalled minus lookup, pp",6.2,4,8,,docs/breadth/data.csv | pos.q9.all.question
 j7,Qwen 9B,"middle band (L12-16), only at the bridge's mention: recalled minus lookup, pp",33.6,29,38,,docs/breadth/data.csv | pos.q9.all.bridge
