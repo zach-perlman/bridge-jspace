@@ -69,7 +69,7 @@ identity outside J++ is specific,Qwen3.5-122B,pending,,
 identity outside J++ is specific,Muse Glimmer 30B,x,,numbers:x45e_cut_muse
 "the recall needs only the J++ part, locker after the pick",Qwen3.5-9B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
 "the recall needs only the J++ part, locker after the pick",Qwen3.6-27B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
-"the recall needs only the J++ part, locker after the pick",Qwen3.5-122B,pending,,
+"the recall needs only the J++ part, locker after the pick",Qwen3.5-122B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
 "the recall needs only the J++ part, locker after the pick",Muse Glimmer 30B,ok,,"fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
 the link sits in the locker sentences,Qwen3.5-9B,x,,numbers:x45b_sane_c_9b
 the link sits in the locker sentences,Qwen3.6-27B,x,,numbers:x45b_sane_c_27b

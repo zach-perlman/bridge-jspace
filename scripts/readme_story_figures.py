@@ -1767,7 +1767,7 @@ def scorecard_rows() -> list[dict]:
     g45 = latest(pins.RESULTS_DIR / "x0_massmean", "score45g-*/score.json") or {"runs": {}}
     swap = {r["model"]: r["clauses"]["b"] for r in g45["runs"].values() if r["scene_set"] == "two people swap"}
     only_jpp = {m: ("pending" if t not in swap else "ok" if swap[t] else "x", "") for t, m, _ in S.MODELS}
-    assert {m: c for m, (c, _) in only_jpp.items()} == {"9b": "ok", "27b": "ok", "122b": "pending", "muse": "ok"}
+    assert {m: c for m, (c, _) in only_jpp.items()} == {"9b": "ok", "27b": "ok", "122b": "ok", "muse": "ok"}
     link = {}
     for m in keys:
         run = {"9b": "qwen35_9b_x45b_binding", "27b": "x45b_binding_27b", "muse": "muse30b_x45b_binding"}.get(m)

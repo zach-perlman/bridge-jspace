@@ -669,7 +669,7 @@ fig11,qwen3.5-122b-a10b,a pick sentence first moves the lookup to identity,-,,,,
 fig11,qwen3.5-122b-a10b,refit per format,-,,,,fixed
 fig11,qwen3.5-122b-a10b,the pointer fit on simple scenes transfers,x,,,,fixed; numbers:tptr_pooled_122b
 fig11,qwen3.5-122b-a10b,identity outside J++ is specific,pending,,,,fixed
-fig11,qwen3.5-122b-a10b,"the recall needs only the J++ part, locker after the pick",pending,,,,fixed
+fig11,qwen3.5-122b-a10b,"the recall needs only the J++ part, locker after the pick",ok,,,,"fixed; fig03:(b) main test (two people swap picks), locker after the pick: recall extra loss"
 fig11,qwen3.5-122b-a10b,the link sits in the locker sentences,-,,,,fixed
 fig11,muse-glimmer-30b,main test,ok,,,,fixed; numbers:contrast_muse
 fig11,muse-glimmer-30b,locker before the pick,ok,,,,after the data; numbers:sbo_swap_before_gap_muse
@@ -5619,8 +5619,8 @@ numbers,,x4_C_animals_same_muse,"0.35 [0.13, 0.51]",,,,results/x4_alias/muse30b_
 numbers,,x4_C_animals_xlang_muse,"0.36 [0.20, 0.52]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,x4_C_elements_same_muse,"0.57 [0.38, 0.72]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,x4_C_elements_syn_muse,"0.76 [0.54, 0.96]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
-numbers,,pred_n,106,,,,predictions/README.md
-numbers,,pred_brier,0.34,,,,predictions/README.md
+numbers,,pred_n,119,,,,predictions/README.md
+numbers,,pred_brier,0.32,,,,predictions/README.md
 numbers,,x8_sreal_9b,9B 1.36 to 2.70,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_sreal_min_9b,1.36,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_sreal_max_9b,2.70,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
@@ -5907,32 +5907,41 @@ numbers,,x45c_write_21_2_muse,0.55,,,,results/x8_write/score45c-20261026T211201Z
 numbers,,x45c_write_21_3_muse,0.80,,,,results/x8_write/score45c-20261026T211201Z/score.json
 numbers,,x45c_write_21_4_muse,0.80,,,,results/x8_write/score45c-20261026T211201Z/score.json
 numbers,,x45m_before_n_9b,151,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_lksw_9b,99%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_lk_9b,"−0.01 [−0.03, 0.00]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_rc_9b,"0.21 [0.13, 0.29]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_gap_9b,"0.23 [0.14, 0.31]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_after_n_9b,166,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_lksw_9b,5%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_after_rc_9b,"0.79 [0.70, 0.88]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_n_9b,417,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_lksw_9b,52%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_lk_9b,"0.00 [−0.02, 0.03]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_rc_9b,"0.48 [0.42, 0.55]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_gap_9b,"0.48 [0.40, 0.55]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_n_27b,202,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_lksw_27b,98%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_lk_27b,"0.01 [0.00, 0.02]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_rc_27b,"0.54 [0.43, 0.63]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_gap_27b,"0.53 [0.42, 0.62]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_after_n_27b,236,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_lksw_27b,0%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_after_rc_27b,"0.87 [0.81, 0.93]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_n_27b,574,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_lksw_27b,39%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_lk_27b,"0.05 [0.01, 0.08]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_rc_27b,"0.74 [0.67, 0.79]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_gap_27b,"0.69 [0.63, 0.75]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_n_muse,143,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_before_lksw_muse,87%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_lk_muse,"0.05 [0.01, 0.10]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_rc_muse,"0.43 [0.28, 0.60]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_before_gap_muse,"0.38 [0.23, 0.54]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_after_n_muse,170,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_after_lksw_muse,0%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_after_rc_muse,"0.85 [0.73, 0.93]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_n_muse,409,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+numbers,,x45m_all_lksw_muse,32%,,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_lk_muse,"0.06 [0.02, 0.11]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_rc_muse,"0.70 [0.60, 0.79]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 numbers,,x45m_all_gap_muse,"0.64 [0.52, 0.73]",,,,results/x0_necessity/x45m-20261026T230628Z/x45m.json
@@ -6048,6 +6057,21 @@ numbers,,x45e_cut_27b,"0.12 [0.08, 0.16]",,,,results/x6_routes/x45e-20261026T224
 numbers,,x45e_left_idout_muse,0.52,,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
 numbers,,x45e_left_wrong_muse,0.57,,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
 numbers,,x45e_cut_muse,"0.04 [0.01, 0.07]",,,,results/x6_routes/x45e-20261026T224602Z/x45e.json
+numbers,,x45d_outcome_9b,pointer elsewhere,,,,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+numbers,,x45d_prose_9b,"0.24 [0.16, 0.32]",,,,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+numbers,,x45d_json_9b,"0.24 [0.16, 0.30]",,,,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+numbers,,x45d_table_9b,"0.18 [0.13, 0.24]",,,,results/x0b_generalize/qwen35_9b_x45d/x45d-20261026T202025Z/verdict.json
+numbers,,x45d_outcome_27b,neither,,,,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+numbers,,x45d_prose_27b,"0.08 [0.04, 0.13]",,,,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+numbers,,x45d_json_27b,"0.09 [0.05, 0.12]",,,,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+numbers,,x45d_table_27b,"0.13 [0.09, 0.17]",,,,results/x0b_generalize/x45d_27b/x45d-20261026T202026Z/verdict.json
+numbers,,x45d_outcome_muse,pointer elsewhere,,,,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+numbers,,x45d_prose_muse,"0.23 [0.16, 0.31]",,,,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+numbers,,x45d_json_muse,not counted,,,,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+numbers,,x45d_table_muse,"0.47 [0.34, 0.60]",,,,results/x0b_generalize/muse30b_x45d/x45d-20261026T202027Z/verdict.json
+numbers,,x45i_value_9b,0 of 300,,,,results/x6_routes/qwen35_9b_x6_routes_x45i_nochat/verdict-20261026T221938Z/verdict.json
+numbers,,x45i_value_27b,0 of 300,,,,results/x6_routes/x6_routes_x45i_nochat_27b/verdict-20261026T221939Z/verdict.json
+numbers,,indep_agree_9b,20 of 20,,,,results/indep_check/qwen35_9b_x45_indep/summary.json
 numbers,,tptr_pooled_9b,"0.11 [0.08, 0.13]",,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_split_9b,0.16 / 0.02 / 0.07,,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
 numbers,,tptr_natural_9b,not tested (gate),,,,results/t_pointer/verdict-20261026T140221Z/verdict.json
