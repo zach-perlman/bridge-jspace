@@ -3,7 +3,7 @@
 - Recorded before the next enqueue: jobs/c3/batch49.yaml (amendment 1: the queue by value, 49.7 and 49.8 added, four cut; the brief with 49.1-49.6 not yet in the repo); Q49.7 / Q49.8 appended to predictions/2026-10-28_dan.md with empty Dan lines.
 - Queue at ~14:15: x47_16_muse stopped on the box (process killed; the 9B's 47.16 run stands); cancelled from pending: 47.7(b) x2, 47.12 x2, 47.11 x2, 47.15 x3, D3 (r2; D3 only if 48.1's lookup own-IIA at L >= 0.7). x48_1_9b_r2 started first on the freed GPU; x47_7a_27b_r2 finishing. 47.15 (27B, 9B, Muse) then 47.11 (9B, Muse) re-enqueued behind it under r2 ids.
 - ~14:40 48.1 9B (r2) landed and opened: (a)-(d) no; the lookup's own-IIA 0.39 at the chosen k (0.72 at k = 16, not chosen), so D3 is not enqueued (amendment 1 item 11). 47.16 opened on the 9B (distance-robust address), 47.7(a) on the 27B (in between).
-- ~14:50 batch 49 enqueued in amendment 1's order behind 47.15 / 47.11 / 49.7 (9B, Muse): 49.1 (9B, 27B, Muse), 49.5 (9B), 49.2 (9B, Muse, 27B bridge-word rungs), 49.8 (9B), 49.3 (9B, Muse), 49.4 (27B), 49.7 27B, 49.6 (27B, 9B); about 8 GPU-h by estimates, ~4.8 scaled, drain ~17:25 Paris (before the 20:00 freeze).
+- ~14:50 batch 49 enqueued in amendment 1's order behind 47.15 / 47.11 / 49.7 (9B, Muse): 49.1 (9B, 27B, Muse), 49.5 (9B), 49.2 (9B, Muse, 27B bridge-word rungs), 49.8 (9B), 49.3 (9B, Muse), 49.4 (27B), 49.7 27B, 49.6 (27B, 9B); about 8 GPU-h by estimates, about five scaled, drain ~17:25 Paris (before the 20:00 freeze).
 - README v6 (cards E1-E16, the claims table) committed 2af84dec; figures E12 and E5 in progress.
 
 # Night of 28 Oct: batches 47 and 48 (Dan ~02:00 / ~02:30; agent, autonomy until 09:00). Results sealed until Dan's Q47.x / Q48.x

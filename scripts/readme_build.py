@@ -22,7 +22,7 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
                                "0.08 [0.05, 0.12]"; model as 9b / 27b / 122b / muse or the target name
   {{dp|figure|model|quantity}} the same number's point estimate
   Every num / pt / d / dp marker renders with its source comment (<!-- src: file | key -->; in a table row the
-  separator is written \|), the form tests/test_readme_sources.py checks.
+  separator is written as a backslash-pipe), the form tests/test_readme_sources.py checks.
   {{grid}}                     the grid folder
   {{head}}                     the commit the README is built at
 
@@ -302,6 +302,8 @@ def fmt_data(r: dict[str, str], point: bool = False) -> str:
     """A data.csv row as the page shows it: two decimals, '[lo, hi]' beside unless point; text values as they are."""
 
     def two(s: str) -> str:
+        if s.lstrip("-").isdigit():  # a count ("18 of 30") stays a count
+            return s
         try:
             return f"{float(s):.2f}"
         except ValueError:

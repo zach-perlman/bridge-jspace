@@ -1,7 +1,9 @@
 """Every number README.md and STATUS.md's current block quote is in figures/story/data.csv (Dan, 25 Oct: the address /
 value mix-up; README v2 moved the data file from the frozen figures/status_2026-10-25/). An interval 'v [lo, hi]' must
 match one row's value, lo and hi; a lone decimal or percentage must match some row's value. Rule bars (0.05, 0.10,
-0.15, 0.20, 0.30, 0.75, 0.80, 95%) and integers (counts) are skipped."""
+0.15, 0.20, 0.30, 0.75, 0.80, 95%) and integers (counts) are skipped, as are source comments (<!-- src: ... -->, whose
+data.csv keys name tests) and test ids (40.1-50.99 without a %: batches 40-50 name their tests 'NN.k'; no plotted
+quantity in that range is quoted without a %)."""
 
 import contextlib
 import csv
@@ -14,6 +16,7 @@ NUM = r"[−-]?\d+\.\d+"
 TRIPLE = re.compile(rf"({NUM}) \[({NUM}), ({NUM})\]")
 SINGLE = re.compile(rf"(?<![\w.\[])({NUM}|\d+(?:\.\d+)?%)(?![\d\]])")
 BARS = {0.05, 0.10, 0.15, 0.20, 0.30, 0.75, 0.80}
+TEST_ID = re.compile(r"^(?:4\d|50)\.\d+$")
 
 
 def f(s: str) -> float:
@@ -52,7 +55,9 @@ def quoted(text: str):
 def check(text: str) -> list[str]:
     triples, singles, pcts = known()
     bad = []
-    for kind, val, raw in quoted(text):
+    for kind, val, raw in quoted(re.sub(r"<!--.*?-->", "", text, flags=re.S)):
+        if kind == "single" and TEST_ID.match(raw):
+            continue
         if kind == "triple":
             if not any(all(abs(a - b) <= 0.0051 for a, b in zip(val, t, strict=True)) for t in triples):
                 bad.append(raw)

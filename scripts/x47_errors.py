@@ -54,6 +54,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from bridge_jspace import pins
+from bridge_jspace.run_switches import switches
 from scripts import x0_necessity as X
 from scripts import x0_probe as P
 from scripts import x0b_generalize as B
@@ -197,7 +198,7 @@ def stage_count(name: str, source: str | None = None) -> Path:
          "substitution": "the data source is the varied-scene run (x0b_v2), the one local source with a stored read and "
                          "a stored bridge-word state for every scene, wrong ones included; the agent's choice, stated "
                          "before any count; Dan may override",
-         "model": pins.model_pin(), "code": pins.git_state(), "position": "the asked person's bridge word, org run, chat",
+         "model": pins.model_pin(), "switches": switches(), "code": pins.git_state(), "position": "the asked person's bridge word, org run, chat",
          "probe": {"target": "the bridge's locker statement ordinal (x0b probe (b))", "groups": "format x locker order",
                    "training": "the scenes the lookup reads right, the wrong item's bridge entity held out",
                    "penalty": "entity-held-out CV on the training scenes (x0_probe.select_penalty)",
@@ -284,7 +285,7 @@ def stage_gpu(name: str) -> Path:
     out.mkdir(parents=True, exist_ok=False)
     m = {"exp": EXP, "stage": "gpu", "run": name, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
          "why": f"batch 47, test 47.13 ({SPEC.relative_to(pins.REPO_ROOT)}; {QUESTION}, sealed): the lens's top item",
-         "model": pins.model_pin(), "code": pins.git_state(), "lens": "jpp",
+         "model": pins.model_pin(), "switches": switches(), "code": pins.git_state(), "lens": "jpp",
          "sources": {"x0b": f"x0b_generalize/{SOURCES[pins.TARGET]}", "named": f"x0_probe/{NAMED[pins.TARGET]}"}}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     model = load_model()

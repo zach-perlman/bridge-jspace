@@ -3205,6 +3205,14 @@ def batch47_numbers() -> None:
             if part in m.get("routes", {}).get("falls", {}):
                 S.record("e3_identity", m["target"], f"47.1: identity answers lost beyond random without lens directions {part}",
                          *m["routes"]["falls"][part]["identity"], source=src)  # fmt: skip
+    v = latest_verdict("x47_cumulative/x47_4-*") / "x47_4.json"
+    src = str(v.relative_to(S.REPO))
+    for m in json.loads(v.read_text())["models"]:
+        for design, cells in m.get("cells", {}).items():
+            after = cells.get("lookup", {}).get("locker-after")
+            if after:
+                S.record("e11_before_l", m["target"], f"47.4: {design}, locker after the pick: lookups carried by the bridge word "
+                         "before L", *after["terms"]["before_L"], n=after["n"], source=src)  # fmt: skip
     v = latest_verdict("x47_value/x47_7a-*") / "x47_7a.json"
     m = next(x for x in json.loads(v.read_text())["models"] if x["status"] == "tested")
     src = str(v.relative_to(S.REPO))

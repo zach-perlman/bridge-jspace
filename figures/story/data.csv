@@ -3485,6 +3485,10 @@ e3_identity,qwen3.5-9b,47.1: identity answers lost beyond random without lens di
 e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 1-25,0.003333333333333355,-0.016077170418006437,0.02372881355932205,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 26-100,0.020000000000000018,-0.0033898305084745783,0.042763597663946,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 1-100,0.016666666666666663,0.0,0.034130487779026136,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e11_before_l,qwen3.5-9b,"47.4: main, locker after the pick: lookups carried by the bridge word before L",0.9264705882352942,0.8490566037735849,0.9772791113381001,68,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
+e11_before_l,qwen3.5-9b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",0.9457831325301205,0.9142857142857143,0.9774436090225564,166,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
+e11_before_l,muse-glimmer-30b,"47.4: main, locker after the pick: lookups carried by the bridge word before L",0.9855072463768116,0.9491525423728814,1.0,69,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
+e11_before_l,muse-glimmer-30b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",1.0,1.0,1.0,170,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question last",0.439873417721519,0.389879691283293,0.49505031650706055,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question first",0.6645569620253164,0.6082074930987695,0.7216126656848306,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
