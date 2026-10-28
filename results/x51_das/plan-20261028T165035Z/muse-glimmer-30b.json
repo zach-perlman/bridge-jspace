@@ -1,0 +1,347 @@
+{
+ "target": "muse-glimmer-30b",
+ "layer": 26,
+ "prefix": "muse30_",
+ "run_name": "muse30_x51_3",
+ "sources": {
+  "main": {
+   "run": "muse30b_x0_necessity",
+   "alt": "cf",
+   "counts": {
+    "read": 200,
+    "not locker-first": 132,
+    "locker-first, the whole change switches neither reader": 10,
+    "kept": 58
+   },
+   "per_reader": {
+    "lookup": 55,
+    "recall": 31
+   }
+  },
+  "clean": {
+   "run": "muse30b_x45m_fresh",
+   "alt": "fresh",
+   "counts": {
+    "read": 409,
+    "not locker-first": 266,
+    "locker-first, the whole change switches neither reader": 14,
+    "kept": 129
+   },
+   "per_reader": {
+    "lookup": 124,
+    "recall": 84
+   }
+  },
+  "routes": {
+   "run": "muse30b_x6_routes",
+   "condition": "C0",
+   "counts": {
+    "read": 300,
+    "the whole change switches neither reader": 43,
+    "kept": 257
+   },
+   "last_stored_index": 616,
+   "per_reader": {
+    "lookup": 253,
+    "recall": 88
+   }
+  }
+ },
+ "identity_from_stored": {
+  "pairs": 444,
+  "duplicates_dropped": 0,
+  "per_reader_before_cap": {
+   "lookup": 432,
+   "recall": 203
+  },
+  "per_reader": {
+   "lookup": 432,
+   "recall": 203
+  },
+  "per_reader_and_source": {
+   "lookup": {
+    "main": 55,
+    "clean": 124,
+    "routes": 253
+   },
+   "recall": {
+    "main": 31,
+    "clean": 84,
+    "routes": 88
+   }
+  },
+  "entities": 45,
+  "entities_per_split": {
+   "train": 27,
+   "select": 9,
+   "test": 9
+  },
+  "pairs_per_reader_and_split": {
+   "lookup": {
+    "train": 276,
+    "select": 76,
+    "test": 80
+   },
+   "recall": {
+    "train": 123,
+    "select": 39,
+    "test": 41
+   }
+  },
+  "split_seed": 0
+ },
+ "identity_short_of_300": {
+  "lookup": 0,
+  "recall": 97
+ },
+ "identity_topup": {
+  "needed": true,
+  "routes_C0_switch_rate_stored": {
+   "lookup": 0.8433,
+   "recall": 0.2933
+  },
+  "stored_generation_beyond": {
+   "generated_beyond": 349,
+   "eligible_beyond": 280
+  },
+  "candidates_up_to_n_gen": 1049,
+  "n_gen": 1400,
+  "expected_extra_switches_within_stored_generation": {
+   "lookup": 236.1,
+   "recall": 82.1
+  }
+ },
+ "address_from_stored": {
+  "routes_run": "muse30b_x6_routes",
+  "layer": 26,
+  "condition": "C1",
+  "scenes_read": 300,
+  "whole_change_routes": {
+   "identity": 54,
+   "position": 218,
+   "other": 28
+  },
+  "kept": "the lookup's stored whole-change route is position",
+  "pairs": 218,
+  "entities": 32,
+  "split_seed": 0,
+  "entities_per_split": {
+   "train": 19,
+   "select": 6,
+   "test": 7
+  },
+  "pairs_per_split": {
+   "train": 132,
+   "select": 51,
+   "test": 35
+  },
+  "moves": {
+   "1->2": 40,
+   "1->3": 36,
+   "2->1": 47,
+   "2->3": 18,
+   "3->1": 44,
+   "3->2": 33
+  },
+  "slot_o_train": {
+   "1": 45,
+   "2": 45,
+   "3": 42
+  },
+  "stored_recall_kept": 0.9679
+ },
+ "address_short_of_300": 82,
+ "address_topup": {
+  "needed": true,
+  "position_rate_stored": 0.7267,
+  "stored_generation_beyond": {
+   "generated_beyond": 359,
+   "eligible_beyond": 299
+  },
+  "candidates_up_to_n_gen": 1059,
+  "expected_extra_within_stored_generation": 217.3
+ },
+ "prompt_tokens": {
+  "main": [
+   100,
+   109
+  ],
+  "clean": [
+   107,
+   120
+  ],
+  "routes": [
+   109,
+   109
+  ]
+ },
+ "ks": {
+  "lookup": [
+   4,
+   16
+  ],
+  "recall": [
+   4,
+   16,
+   64,
+   128
+  ],
+  "address": [
+   2,
+   4,
+   8
+  ]
+ },
+ "arms_identity": [
+  "none",
+  "whole",
+  "R_PP_k4",
+  "R_PP_k16",
+  "R_PM_k4",
+  "R_PM_k16",
+  "R_PM_k64",
+  "R_PM_k128",
+  "R_pos_k2",
+  "R_pos_k4",
+  "R_pos_k8",
+  "rand_k2",
+  "rand_k4",
+  "rand_k8",
+  "rand_k16",
+  "rand_k64",
+  "rand_k128",
+  "shuf_PP_k4",
+  "shuf_PP_k16",
+  "shuf_PM_k4",
+  "shuf_PM_k16",
+  "shuf_PM_k64",
+  "shuf_PM_k128"
+ ],
+ "arms_address": [
+  "none",
+  "whole",
+  "R_pos_k2",
+  "rand_k2",
+  "shuf_pos_k2",
+  "R_pos_k4",
+  "rand_k4",
+  "shuf_pos_k4",
+  "R_pos_k8",
+  "rand_k8",
+  "shuf_pos_k8"
+ ],
+ "trainings": 18,
+ "U": {
+  "states_run": "muse30b_x0_probe_v4",
+  "rank": 4
+ },
+ "W": {
+  "run": "muse30_x47_2",
+  "slots": 6,
+  "rank": 5,
+  "file": "results/x47_six/muse30_x47_2/fit.npz",
+  "sha256": "2ed7b5bf62ef24975337169ae644ffd7821c5486c77176b90048b1c0bb31a3d3"
+ },
+ "rendered": [
+  {
+   "scene": "main:P2-L0-0073",
+   "split": "test",
+   "bridge": "nitrogen -> helium",
+   "S_context": "Ivan picked lithium. Julia picked nitrogen. The locker of helium is seven. The locker of lithium is one. The locker of nitrogen is five. Vera picked helium.",
+   "readers": {
+    "lookup": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Ivan picked lithium. Julia picked helium. The locker of helium is seven. The locker of lithium is one. The locker of nitrogen is five. Vera picked⟦bridge: nitrogen⟧.\nWhich locker belongs to Vera's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "5",
+     "cf_answer": "7",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Ivan picked lithium. Julia picked helium. The locker of helium is seven. The locker of lithium is one. The locker of nitrogen is five. Vera picked⟦bridge: nitrogen⟧.\nWhat is the atomic number of Vera's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "7",
+     "cf_answer": "2",
+     "in_pairs": 0
+    }
+   }
+  },
+  {
+   "scene": "routes:C0-0032",
+   "split": "train",
+   "bridge": "chicken -> fox",
+   "S_context": "The locker of the tick is 7. The locker of the chicken is 1. The locker of the fox is 5. Zoe picked the fox. Maria picked the fox. Tara picked the tick.",
+   "readers": {
+    "lookup": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the tick is 7. The locker of the chicken is 1. The locker of the fox is 5. Zoe picked the fox. Maria picked the⟦bridge: chicken⟧. Tara picked the tick.\nWhich locker belongs to Maria's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "1",
+     "cf_answer": "5",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the tick is 7. The locker of the chicken is 1. The locker of the fox is 5. Zoe picked the fox. Maria picked the⟦bridge: chicken⟧. Tara picked the tick.\nHow many legs does Maria's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "2",
+     "cf_answer": "4",
+     "in_pairs": 0
+    }
+   }
+  },
+  {
+   "scene": "routes:C0-0069",
+   "split": "test",
+   "bridge": "bear -> fly",
+   "S_context": "The locker of the bear is 9. The locker of the ant is 2. The locker of the fly is 3. Dan picked the fly. Luke picked the ant. Ben picked the fly.",
+   "readers": {
+    "lookup": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the bear is 9. The locker of the ant is 2. The locker of the fly is 3. Dan picked the⟦bridge: bear⟧. Luke picked the ant. Ben picked the fly.\nWhich locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "9",
+     "cf_answer": "3",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the bear is 9. The locker of the ant is 2. The locker of the fly is 3. Dan picked the⟦bridge: bear⟧. Luke picked the ant. Ben picked the fly.\nHow many legs does Dan's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "4",
+     "cf_answer": "6",
+     "in_pairs": 1
+    }
+   }
+  },
+  {
+   "scene": "routes:C0-0497",
+   "split": "train",
+   "bridge": "wolf -> eagle",
+   "S_context": "The locker of the tiger is 6. The locker of the wolf is 8. The locker of the eagle is 4. Leo picked the tiger. Clara picked the eagle. Ben picked the eagle.",
+   "readers": {
+    "lookup": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the tiger is 6. The locker of the wolf is 8. The locker of the eagle is 4. Leo picked the tiger. Clara picked the⟦bridge: wolf⟧. Ben picked the eagle.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "8",
+     "cf_answer": "4",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the tiger is 6. The locker of the wolf is 8. The locker of the eagle is 4. Leo picked the tiger. Clara picked the⟦bridge: wolf⟧. Ben picked the eagle.\nHow many legs does Clara's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "4",
+     "cf_answer": "2",
+     "in_pairs": 0
+    }
+   }
+  },
+  {
+   "scene": "routes:C0-0596",
+   "split": "select",
+   "bridge": "tick -> cow",
+   "S_context": "The locker of the pig is 2. The locker of the cow is 9. The locker of the tick is 3. Grace picked the cow. Owen picked the pig. Vera picked the cow.",
+   "readers": {
+    "lookup": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the pig is 2. The locker of the cow is 9. The locker of the tick is 3. Grace picked the⟦bridge: tick⟧. Owen picked the pig. Vera picked the cow.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "3",
+     "cf_answer": "9",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the pig is 2. The locker of the cow is 9. The locker of the tick is 3. Grace picked the⟦bridge: tick⟧. Owen picked the pig. Vera picked the cow.\nHow many legs does Grace's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "answer": "8",
+     "cf_answer": "4",
+     "in_pairs": 0
+    }
+   }
+  }
+ ]
+}

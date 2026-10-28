@@ -1,0 +1,47 @@
+id: x51_3_muse
+title: "Batch 51.3 on Muse (L26): DAS at scale. 48.1's DAS (early stopping on dev IIA) on pooled identity pairs (main test + clean design + routes C0; lookup 432, recall 203 stored, the recall topped up to 300 with routes C0) and 49.8's on routes position pairs (topped up to 300); recall k = 4, 16, 64, 128, lookup 4, 16, address 2, 4, 8; random and shuffled-target baselines"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.8
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_das.py run --name muse30_x51_3 --why "Batch 51, test 51.3 (jobs/c3/batch51.yaml; Q51.3): DAS at scale at L26; identity pairs pooled from the main test, the clean design and routes C0 (300-600 per reader, the recall topped up with routes C0, entities held out 60/20/20), address pairs from routes C1 (>= 300); recall k 4/16/64/128, lookup 4/16, address 2/4/8; sealed"
+question: >-
+  With 300-600 pairs per reader instead of 48.1's few dozen, is there a low-dimensional subspace (k <= 128) of the change
+  at the bridge word at L26 that mediates the recall; where does the lookup's subspace sit (the address U, W_E, J++ or
+  outside everything named); and does the learned address (49.8's R_pos) overlap U and 47.2's W?
+why_it_matters: >-
+  48.1 on Muse trained the recall on 15 pairs and tested it on 5 (5 entities); a null there could be too few pairs. At
+  this scale a recall own-IIA below 0.5 at k = 128 is a result, and Muse is the second model the readings need.
+hypotheses:
+  Q51.3: "Dan's answers in predictions/2026-10-28_dan.md (Q51.3 (i)-(iii), per model); not committed when this spec was written, so the job is sealed: no verdict in the run; scripts/x51_das.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml, 51.3): 48.1's rules (a)-(d) and fallback and 49.8's labels at k = 4,
+  unchanged, plus "no low-dimensional recall subspace at this token and layer" if the recall's own-IIA < 0.5 at k = 128
+  with >= 300 pairs (a result, not a failure to converge). Report own-IIA per k; cross-IIA (the lookup subspace on the
+  recall and back; the address subspace on each reader); the lookup subspace's energy in U / W_E / J++ / outside; the
+  address subspace's overlap with U and with 47.2's W.
+  As computed: as jobs/c3/x51_3_9b.yaml (the same code and choices: 48.1's DAS with early stopping on dev IIA added
+  around its loop, every 25 steps, patience 4, best dev R kept; the global RNG seeded per R; identity pairs = locker-first
+  scenes the stored whole change switches for the reader, at most 600 per reader in pool order; routes C0 top-up to 300;
+  address = routes C1 position pairs topped up to 300; split by entity 60 / 20 / 20, seed 0; chosen k as 48.1; test
+  point estimates at the bars, cluster-bootstrap CIs over bridge entities beside; 48.1's k = 64 fallback "not tested"),
+  on Muse at L26: muse30b_x0_necessity (55 lookup / 31 recall), muse30b_x45m_fresh (124 / 84), muse30b_x6_routes C0
+  (253 / 88); the recall (203 < 300) topped up with further routes C0 scenes of x6_routes' generator (seed 2510; the
+  stored run read the first 300 eligible of 700 generated) read on the GPU in generator order (X0's competence, then
+  the whole change) until it has 300; every top-up scene joins both readers' pools (the lookup kept to its first 600).
+  Address: the stored 218 position pairs of 300 C1 scenes, topped up to 300. U = Alf on muse30b_x0_probe_v4 (rank 4); W
+  = 47.2's W, scripts/x47_six.py's fit, results/x47_six/muse30_x47_2/fit.npz (rank 5), not refit. No gated DeltaNet
+  (BJ_DAS_GDN not needed). Scored by hand: scripts/x51_das.py verdict (CPU).
+controls:
+- 'untrained random R of the same k (identity 4802 + k, address 4982 + k): IIA, energy and shares beside every trained R'
+- 'R trained on shuffled targets (48.1''s and 49.8''s shuffle seeds), early-stopped on its own shuffled dev targets: must sit at the random R'
+- 'the whole change and O unedited reread on the select and test pairs (ceiling and floor; IIA / S_whole beside)'
+- 'cross reads: R_lookup on the recall, R_recall on the lookup, R_pos on both readers of the identity pairs (each beside the random R of its k), the recall''s move under R_pos on the address pairs'
+- 'per source (main / clean / routes / routes top-up) own-IIA at the chosen k on the test pairs, beside the pooled number'
+- 'the top-up''s gate: O''s read accuracy >= 0.80 per reader over the top-up scenes, else its pairs are not used (recorded)'
+n: 'plan (CPU, the stored runs; results/x51_das/plan-20261028T165035Z): identity 444 scenes, lookup 432 (train 276 / select 76 / test 80), recall 203 (123 / 39 / 41; 97 short of 300: top-up from routes C0, stored switch rate 0.29, 280 more eligible C0 scenes in the stored generation give ~82, the rest from scenes 701-1400), 45 entities (27 / 9 / 9); address 218 stored position pairs of 300 C1 scenes, topped up to 300 (~73% position)'
+seeds: [0, 48, 4801, 4802, 4803, 49, 4981, 4982, 2510]
+notes: "Batch 51 (Dan, 28 Oct 17:10), 51.3, mats queue last (9B -> 27B -> Muse). Sealed (outputs as x51_3_9b). By hand after Dan's Q51.3: uv run python scripts/x51_das.py verdict --runs qwen35_9b_x51_3 muse30_x51_3 x51_3_27b, then view. Memory: x48_1_muse (the same DAS: full forward with frozen weights, the graph only from the edit at L26 on, micro-batches of 8, 100-110-token prompts) peaked at 76.7 GB on one 80 GB H100 with the 190k x 6656 fp32 J++ and W_E letter dictionaries (~10 GB) resident during training; here they are built after training and freed before the reads, the clean design's prompts reach 120 tokens; expandable_segments set; if a training still runs out of memory it restarts from its seed with micro-batches of 4 (then 2, 1): the same Adam step (batch 16 by gradient accumulation), k, pairs and steps unchanged, recorded in stops.json and the manifest. Cost (ledger): x48_1_muse 16 trainings in 3,262 s (~0.32 s per micro-batch of 8); here 18 trainings x <= 600 micro-batches = 3,460 s + dev reads ~3,700 s; identity top-up ~400 scenes x ~1.3 s = 520 s, address ~135 x 1.3 = 175 s; states, reads (~280 held-out pairs x 2 x 23 arms), geometry, routes read, load ~900 s; total ~1.5 h, est 1.8 (Dan ~2). Caveat: 9 test entities; the recall's pairs lean on routes C0 (animals)."

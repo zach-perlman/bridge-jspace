@@ -1,0 +1,47 @@
+id: x51_3_27b
+title: "Batch 51.3 on the 27B (L32): DAS at scale. 48.1's DAS (early stopping on dev IIA) on pooled identity pairs (main test + clean design + routes C0; 556 lookup / 374 recall pairs) and 49.8's on routes position pairs (topped up to 300); recall k = 4, 16, 64, 128, lookup 4, 16, address 2, 4, 8; random and shuffled-target baselines"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 2.4
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= BJ_DAS_GDN=torch PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_das.py run --name x51_3_27b --why "Batch 51, test 51.3 (jobs/c3/batch51.yaml; Q51.3): DAS at scale at L32; identity pairs pooled from the main test, the clean design and routes C0 (300-600 per reader, entities held out 60/20/20), address pairs from routes C1 (>= 300); recall k 4/16/64/128, lookup 4/16, address 2/4/8; sealed"
+question: >-
+  With 300-600 pairs per reader, is there a low-dimensional subspace (k <= 128) of the change at the bridge word at L32
+  that mediates the recall; where does the lookup's subspace sit (the address U, W_E, J++ or outside everything named);
+  and does the learned address (49.8's R_pos) overlap U (and 47.2's W, if its 27B run exists)?
+why_it_matters: >-
+  The first DAS on the 27B (48.1's 27B job never ran): the same readings on the third model, at a scale where a recall
+  own-IIA below 0.5 at k = 128 is a result.
+hypotheses:
+  Q51.3: "Dan's answers in predictions/2026-10-28_dan.md (Q51.3 (i)-(iii), per model); not committed when this spec was written, so the job is sealed: no verdict in the run; scripts/x51_das.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml, 51.3): 48.1's rules (a)-(d) and fallback and 49.8's labels at k = 4,
+  unchanged, plus "no low-dimensional recall subspace at this token and layer" if the recall's own-IIA < 0.5 at k = 128
+  with >= 300 pairs (a result, not a failure to converge). Report own-IIA per k; cross-IIA (the lookup subspace on the
+  recall and back; the address subspace on each reader); the lookup subspace's energy in U / W_E / J++ / outside; the
+  address subspace's overlap with U and with 47.2's W.
+  As computed: as jobs/c3/x51_3_9b.yaml (the same code and choices: 48.1's DAS with early stopping on dev IIA added
+  around its loop, every 25 steps, patience 4, best dev R kept; the global RNG seeded per R; identity pairs = locker-first
+  scenes the stored whole change switches for the reader, at most 600 per reader in pool order; routes C0 top-up to 300
+  if short (not needed here); address = routes C1 position pairs topped up to 300; split by entity 60 / 20 / 20, seed 0;
+  chosen k as 48.1; test point estimates at the bars, cluster-bootstrap CIs over bridge entities beside; 48.1's k = 64
+  fallback "not tested"), on the 27B at L32: x0_necessity_27b_chat (66 lookup / 51 recall), x45m_fresh_27b (197 / 162),
+  x6_routes_27b C0 (293 / 161). Address: the stored 132 position pairs of 300 C1 scenes, topped up to 300 (~44%
+  position: ~380 more scenes to read). U = Alf on x0_probe_v4_27b (rank 4). W = 47.2's W from
+  results/x47_six/x47_2_27b/fit.npz (scripts/x47_six.py's fit): that run does not exist when this spec is written
+  (x47_2_27b never ran); the run loads it if present when it starts, else every W read is None and the report says so.
+  BJ_DAS_GDN=torch (the 27B has gated DeltaNet layers; fla's backward refuses on Hopper; 48.1's 27B spec lacked it).
+  Scored by hand: scripts/x51_das.py verdict (CPU).
+controls:
+- 'untrained random R of the same k (identity 4802 + k, address 4982 + k): IIA, energy and shares beside every trained R'
+- 'R trained on shuffled targets (48.1''s and 49.8''s shuffle seeds), early-stopped on its own shuffled dev targets: must sit at the random R'
+- 'the whole change and O unedited reread on the select and test pairs (ceiling and floor; IIA / S_whole beside)'
+- 'cross reads: R_lookup on the recall, R_recall on the lookup, R_pos on both readers of the identity pairs (each beside the random R of its k), the recall''s move under R_pos on the address pairs'
+- 'per source (main / clean / routes) own-IIA at the chosen k on the test pairs, beside the pooled number'
+- 'the top-up''s gate: O''s read accuracy >= 0.80 per reader over the top-up scenes, else its pairs are not used (recorded)'
+n: 'plan (CPU, the stored runs; results/x51_das/plan-20261028T165035Z): identity 562 scenes, lookup 556 (train 378 / select 80 / test 98), recall 374 (247 / 58 / 69), 46 entities (28 / 9 / 9); address 132 stored position pairs of 300 C1 scenes, topped up to 300 (393 more eligible C1 scenes in the stored generation give ~173, the rest from scenes 701-1400)'
+seeds: [0, 48, 4801, 4802, 4803, 49, 4981, 4982, 2510]
+notes: "Batch 51 (Dan, 28 Oct 17:10), 51.3, mats queue 9B -> 27B -> Muse. Sealed (outputs as x51_3_9b). By hand after Dan's Q51.3: uv run python scripts/x51_das.py verdict --runs qwen35_9b_x51_3 muse30_x51_3 x51_3_27b, then view. Memory: no DAS has run on the 27B (x48_1_27b never ran). The DAS backward runs from L32 to the last layer (32 of 64 layers) with frozen weights through BJ_DAS_GDN=torch's reference gated delta rule (heavier than fla); ~51 GiB of weights; the 9B's torch-GDN DAS peaked at 33.8 GB with 18 GB of weights. Expect 70-78 GB at micro-batches of 8; if a training runs out of memory it restarts from its seed with micro-batches of 4 (then 2, 1): the same Adam step (batch 16 by gradient accumulation), k, pairs and steps unchanged, recorded in stops.json and the manifest. The dictionaries are built after training. Cost (no 27B DAS in the ledger; scaled): the 9B's torch-GDN DAS ~0.18 s per micro-batch of 8, the 27B ~3x the compute: ~0.55 s; 18 trainings x <= 600 micro-batches = 5,940 s + dev reads ~6,350 s; address top-up ~380 scenes x ~1 s = 380 s; states, reads, geometry, routes read, load ~700 s; total ~2.1 h, est 2.4 (Dan ~2). Caveat: 9 test entities."

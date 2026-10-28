@@ -1,0 +1,341 @@
+{
+ "target": "qwen3.6-27b",
+ "layer": 32,
+ "prefix": "",
+ "run_name": "x51_3_27b",
+ "sources": {
+  "main": {
+   "run": "x0_necessity_27b_chat",
+   "alt": "cf",
+   "counts": {
+    "read": 200,
+    "not locker-first": 131,
+    "locker-first, the whole change switches neither reader": 1,
+    "kept": 68
+   },
+   "per_reader": {
+    "lookup": 66,
+    "recall": 51
+   }
+  },
+  "clean": {
+   "run": "x45m_fresh_27b",
+   "alt": "fresh",
+   "counts": {
+    "read": 574,
+    "not locker-first": 372,
+    "locker-first, the whole change switches neither reader": 3,
+    "kept": 199
+   },
+   "per_reader": {
+    "lookup": 197,
+    "recall": 162
+   }
+  },
+  "routes": {
+   "run": "x6_routes_27b",
+   "condition": "C0",
+   "counts": {
+    "read": 300,
+    "the whole change switches neither reader": 5,
+    "kept": 295
+   },
+   "last_stored_index": 446,
+   "per_reader": {
+    "lookup": 293,
+    "recall": 161
+   }
+  }
+ },
+ "identity_from_stored": {
+  "pairs": 562,
+  "duplicates_dropped": 0,
+  "per_reader_before_cap": {
+   "lookup": 556,
+   "recall": 374
+  },
+  "per_reader": {
+   "lookup": 556,
+   "recall": 374
+  },
+  "per_reader_and_source": {
+   "lookup": {
+    "main": 66,
+    "clean": 197,
+    "routes": 293
+   },
+   "recall": {
+    "main": 51,
+    "clean": 162,
+    "routes": 161
+   }
+  },
+  "entities": 46,
+  "entities_per_split": {
+   "train": 28,
+   "select": 9,
+   "test": 9
+  },
+  "pairs_per_reader_and_split": {
+   "lookup": {
+    "train": 378,
+    "select": 80,
+    "test": 98
+   },
+   "recall": {
+    "train": 247,
+    "select": 58,
+    "test": 69
+   }
+  },
+  "split_seed": 0
+ },
+ "identity_short_of_300": {
+  "lookup": 0,
+  "recall": 0
+ },
+ "identity_topup": {
+  "needed": false,
+  "routes_C0_switch_rate_stored": {
+   "lookup": 0.9767,
+   "recall": 0.5367
+  },
+  "stored_generation_beyond": {
+   "generated_beyond": 396,
+   "eligible_beyond": 392
+  },
+  "candidates_up_to_n_gen": 1096,
+  "n_gen": 1400,
+  "expected_extra_switches_within_stored_generation": {
+   "lookup": 382.9,
+   "recall": 210.4
+  }
+ },
+ "address_from_stored": {
+  "routes_run": "x6_routes_27b",
+  "layer": 32,
+  "condition": "C1",
+  "scenes_read": 300,
+  "whole_change_routes": {
+   "other": 13,
+   "position": 132,
+   "identity": 155
+  },
+  "kept": "the lookup's stored whole-change route is position",
+  "pairs": 132,
+  "entities": 31,
+  "split_seed": 0,
+  "entities_per_split": {
+   "train": 19,
+   "select": 6,
+   "test": 6
+  },
+  "pairs_per_split": {
+   "test": 24,
+   "train": 88,
+   "select": 20
+  },
+  "moves": {
+   "1->2": 34,
+   "1->3": 21,
+   "2->1": 38,
+   "2->3": 4,
+   "3->1": 25,
+   "3->2": 10
+  },
+  "slot_o_train": {
+   "1": 42,
+   "2": 26,
+   "3": 20
+  },
+  "stored_recall_kept": 0.9394
+ },
+ "address_short_of_300": 168,
+ "address_topup": {
+  "needed": true,
+  "position_rate_stored": 0.44,
+  "stored_generation_beyond": {
+   "generated_beyond": 396,
+   "eligible_beyond": 393
+  },
+  "candidates_up_to_n_gen": 1096,
+  "expected_extra_within_stored_generation": 172.9
+ },
+ "prompt_tokens": {
+  "main": [
+   65,
+   75
+  ],
+  "clean": [
+   72,
+   84
+  ],
+  "routes": [
+   74,
+   74
+  ]
+ },
+ "ks": {
+  "lookup": [
+   4,
+   16
+  ],
+  "recall": [
+   4,
+   16,
+   64,
+   128
+  ],
+  "address": [
+   2,
+   4,
+   8
+  ]
+ },
+ "arms_identity": [
+  "none",
+  "whole",
+  "R_PP_k4",
+  "R_PP_k16",
+  "R_PM_k4",
+  "R_PM_k16",
+  "R_PM_k64",
+  "R_PM_k128",
+  "R_pos_k2",
+  "R_pos_k4",
+  "R_pos_k8",
+  "rand_k2",
+  "rand_k4",
+  "rand_k8",
+  "rand_k16",
+  "rand_k64",
+  "rand_k128",
+  "shuf_PP_k4",
+  "shuf_PP_k16",
+  "shuf_PM_k4",
+  "shuf_PM_k16",
+  "shuf_PM_k64",
+  "shuf_PM_k128"
+ ],
+ "arms_address": [
+  "none",
+  "whole",
+  "R_pos_k2",
+  "rand_k2",
+  "shuf_pos_k2",
+  "R_pos_k4",
+  "rand_k4",
+  "shuf_pos_k4",
+  "R_pos_k8",
+  "rand_k8",
+  "shuf_pos_k8"
+ ],
+ "trainings": 18,
+ "U": {
+  "states_run": "x0_probe_v4_27b",
+  "rank": 4
+ },
+ "W": "absent: results/x47_six/x47_2_27b/fit.npz",
+ "rendered": [
+  {
+   "scene": "main:P2-L0-0112",
+   "split": "train",
+   "bridge": "nitrogen -> carbon",
+   "S_context": "Luke picked nitrogen. The locker of lithium is 6. The locker of nitrogen is 3. The locker of carbon is 2. Hugo picked carbon. Kyle picked lithium.",
+   "readers": {
+    "lookup": {
+     "marked": "<|im_start|>user\nLuke picked carbon. The locker of lithium is 6. The locker of nitrogen is 3. The locker of carbon is 2. Hugo picked⟦bridge: nitrogen⟧. Kyle picked lithium.\nWhich locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "3",
+     "cf_answer": "2",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|im_start|>user\nLuke picked carbon. The locker of lithium is 6. The locker of nitrogen is 3. The locker of carbon is 2. Hugo picked⟦bridge: nitrogen⟧. Kyle picked lithium.\nWhat is the atomic number of Hugo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "7",
+     "cf_answer": "6",
+     "in_pairs": 1
+    }
+   }
+  },
+  {
+   "scene": "clean:P2-L0-0592",
+   "split": "train",
+   "bridge": "hydrogen -> oxygen",
+   "S_context": "Eric picked lithium. The locker of oxygen is nine. The locker of nitrogen is eight. Iris picked nitrogen. The locker of hydrogen is three. James picked oxygen. The locker of lithium is seven.",
+   "readers": {
+    "lookup": {
+     "marked": "<|im_start|>user\nEric picked lithium. The locker of oxygen is nine. The locker of nitrogen is eight. Iris picked nitrogen. The locker of hydrogen is three. James picked⟦bridge: hydrogen⟧. The locker of lithium is seven.\nWhich locker belongs to James's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "3",
+     "cf_answer": "9",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|im_start|>user\nEric picked lithium. The locker of oxygen is nine. The locker of nitrogen is eight. Iris picked nitrogen. The locker of hydrogen is three. James picked⟦bridge: hydrogen⟧. The locker of lithium is seven.\nWhat is the atomic number of James's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "1",
+     "cf_answer": "8",
+     "in_pairs": 1
+    }
+   }
+  },
+  {
+   "scene": "routes:C0-0189",
+   "split": "train",
+   "bridge": "butterfly -> camel",
+   "S_context": "The locker of the eagle is 6. The locker of the butterfly is 9. The locker of the camel is 1. Luke picked the eagle. Lily picked the camel. Eric picked the camel.",
+   "readers": {
+    "lookup": {
+     "marked": "<|im_start|>user\nThe locker of the eagle is 6. The locker of the butterfly is 9. The locker of the camel is 1. Luke picked the eagle. Lily picked the⟦bridge: butterfly⟧. Eric picked the camel.\nWhich locker belongs to Lily's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "9",
+     "cf_answer": "1",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|im_start|>user\nThe locker of the eagle is 6. The locker of the butterfly is 9. The locker of the camel is 1. Luke picked the eagle. Lily picked the⟦bridge: butterfly⟧. Eric picked the camel.\nHow many legs does Lily's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "6",
+     "cf_answer": "4",
+     "in_pairs": 0
+    }
+   }
+  },
+  {
+   "scene": "routes:C0-0240",
+   "split": "train",
+   "bridge": "spider -> duck",
+   "S_context": "The locker of the duck is 7. The locker of the spider is 5. The locker of the cat is 8. Eva picked the cat. Ryan picked the duck. Paul picked the duck.",
+   "readers": {
+    "lookup": {
+     "marked": "<|im_start|>user\nThe locker of the duck is 7. The locker of the spider is 5. The locker of the cat is 8. Eva picked the cat. Ryan picked the duck. Paul picked the⟦bridge: spider⟧.\nWhich locker belongs to Paul's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "5",
+     "cf_answer": "7",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|im_start|>user\nThe locker of the duck is 7. The locker of the spider is 5. The locker of the cat is 8. Eva picked the cat. Ryan picked the duck. Paul picked the⟦bridge: spider⟧.\nHow many legs does Paul's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "8",
+     "cf_answer": "2",
+     "in_pairs": 0
+    }
+   }
+  },
+  {
+   "scene": "routes:C0-0388",
+   "split": "select",
+   "bridge": "elephant -> eagle",
+   "S_context": "The locker of the mouse is 6. The locker of the elephant is 1. The locker of the eagle is 8. Peter picked the eagle. Leo picked the eagle. Sam picked the mouse.",
+   "readers": {
+    "lookup": {
+     "marked": "<|im_start|>user\nThe locker of the mouse is 6. The locker of the elephant is 1. The locker of the eagle is 8. Peter picked the⟦bridge: elephant⟧. Leo picked the eagle. Sam picked the mouse.\nWhich locker belongs to Peter's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "1",
+     "cf_answer": "8",
+     "in_pairs": 1
+    },
+    "recall": {
+     "marked": "<|im_start|>user\nThe locker of the mouse is 6. The locker of the elephant is 1. The locker of the eagle is 8. Peter picked the⟦bridge: elephant⟧. Leo picked the eagle. Sam picked the mouse.\nHow many legs does Peter's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+     "answer": "4",
+     "cf_answer": "2",
+     "in_pairs": 1
+    }
+   }
+  }
+ ]
+}
