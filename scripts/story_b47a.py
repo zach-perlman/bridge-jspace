@@ -57,12 +57,13 @@ def majority(n_tested: int) -> int:
 
 
 def frame(title: str, sub: str, ratios: tuple[float, ...], body_in: float, legend=None, left: float = 0.19,
-          bottom_in: float = BOTTOM_IN, sharey: bool = True):  # fmt: skip
-    """The figure: the claim, the subtitle (NOTE first, wrapped), an optional legend (handles, labels[, ncol]) under
-    it, and panels side by side with body_in inches of plot; the height follows from them."""
+          bottom_in: float = BOTTOM_IN, sharey: bool = True, wrap: bool = True):  # fmt: skip
+    """The figure: the claim, the subtitle (NOTE first; wrapped, or with wrap False one line that story_style.title
+    shrinks to fit, v6), an optional legend (handles, labels[, ncol]) under it, and panels side by side with body_in
+    inches of plot; the height follows from them."""
     # "J++ part" and "J++ lens" stay on one line (the glossary's names), hyphenated words whole
     keep = (NOTE + sub).replace("J++ ", "J++\u00a0")
-    lines = [x.replace("\u00a0", " ") for x in textwrap.wrap(keep, WRAP, break_on_hyphens=False)]
+    lines = [x.replace("\u00a0", " ") for x in textwrap.wrap(keep, WRAP if wrap else 10**4, break_on_hyphens=False)]
     top_in = 0.42 + 0.20 * len(lines) + 0.14
     legend_y = top_in
     if legend:
@@ -73,7 +74,7 @@ def frame(title: str, sub: str, ratios: tuple[float, ...], body_in: float, legen
     fig, axes = plt.subplots(1, len(ratios), figsize=(S.WIDTH, h), sharey=sharey, squeeze=False,
                              gridspec_kw={"width_ratios": ratios})  # fmt: skip
     fig.subplots_adjust(left=left, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
-    S.title(fig, title, "\n".join(lines), limit=86)
+    S.title(fig, title, "\n".join(lines), limit=92)
     if legend:
         F.legend(fig, legend[0], legend[1], 1 - legend_y / h, ncol=legend[2] if len(legend) > 2 else None)
     return fig, list(axes[0])
@@ -103,6 +104,16 @@ def pct_axis(ax, label: str, lim: tuple[float, float] = (-20, 100), ticks=(0, 50
     ax.set_xlim(*lim)
     ax.axvline(0, color="#999999", lw=0.8, zorder=1)
     ax.set_xticks(list(ticks), [str(t) for t in ticks])
+    ax.grid(axis="x", color="#eeeeee")
+    ax.set_axisbelow(True)
+    ax.set_xlabel(label)
+
+
+def share_axis(ax, label: str, ticks=(0, 0.5, 1)) -> None:
+    """v6: a share axis on [0, 1] (a little air at both ends)."""
+    ax.set_xlim(-0.04, 1.06)
+    ax.axvline(0, color="#999999", lw=0.8, zorder=1)
+    ax.set_xticks(list(ticks), [f"{t:g}" for t in ticks])
     ax.grid(axis="x", color="#eeeeee")
     ax.set_axisbelow(True)
     ax.set_xlabel(label)
@@ -213,7 +224,7 @@ def build_atoms(verdict_dir: Path, out_name: str, title: str | None = None) -> s
 
 
 # E3 (v6): Fig. 2's parts and 47.1's directions 26-100 on one extra-loss axis; (key, row label, fixed in advance)
-E3_PARTS = (("jpp", "J++ part\n(lens directions 1–25)", False), ("26-100", "lens directions\n26–100", True),
+E3_PARTS = (("jpp", "J++ part\n(lens\ndirections\n1–25)", False), ("26-100", "lens directions\n26–100", True),
             ("pca_eq", "PCA directions\n(same size)", False), ("wu", "logit-lens\ndirections", True),
             ("rand", "random lens\ndirections", True))  # fmt: skip
 E3_FALLS = (("1-25", "1–25"), ("26-100", "26–100"), ("1-100", "1–100"))  # the inset's rows (27B)
@@ -267,7 +278,7 @@ def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -
                 quant = {X.RECALL: f"{name}: recall extra loss", X.LOOKUP: f"{name}: lookup extra loss"}
                 cell_src = c.get("source", "")
             ticks.append(y)
-            labels.append(F.SHORT[m])
+            labels.append(F.name_of(m) if key == E3_PARTS[0][0] else F.SHORT[m])  # full names in the first group
             if not got:
                 status_text(ax, y, "not run")
             for w, dy, col in ((X.LOOKUP, 0.15, S.COL["lookup"]), (X.RECALL, -0.15, S.COL["recall"])):
@@ -289,8 +300,8 @@ def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -
     ax.set_ylim(y + 0.42 - 0.4, 0.45)
     ax.text(-0.05, y + 0.42 - 0.33, "not needed", ha="center", va="bottom", color=S.COL["muted"], fontsize=S.FONT - 1)
     n_txt = "–".join(str(n) for n in sorted(ns)) if ns else "–"
-    ax.text(1.0, 1.005, f"n {n_txt} per model · ● fixed in advance · ○ after the data", transform=ax.transAxes,
-            ha="right", va="bottom", fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
+    ax.text(1.0, 1.005, f"n = {n_txt} per model  {S.STATUS_GLYPH['fixed']} {S.STATUS_GLYPH['after']}",
+            transform=ax.transAxes, ha="right", va="bottom", fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
     hs, ls = F.reader_handles(plt)
     F.legend(fig, hs, ls, 1 - 0.62 / h, ncol=2)
 
@@ -303,23 +314,23 @@ def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -
         if f is None:
             status_text(ins, -i, "not run")
             continue
-        S.dot(ins, 0, -i, f, S.COL["identity"], size=7)
-        ins.text(f[2] + 0.04, -i, f"{f[0]:.2f}", va="center", fontsize=S.FONT - 1, color=S.COL["identity"])
+        S.dot(ins, 0, -i - 0.12, f, S.COL["identity"], size=7)
+        ins.text(f[2] + 0.04, -i - 0.12, f"{f[0]:.2f}", va="center", fontsize=S.FONT - 1, color=S.COL["identity"])
         S.record(fid, E3_INSET_MODEL, f"47.1: identity answers lost beyond random without lens directions {k}", *f,
                  n=n_routes, source=source)  # fmt: skip
+    for i, (_, name) in enumerate(E3_FALLS):  # each row's label above its dot
+        ins.text(0.0, -i + 0.3, f"lens directions {name}", va="center", fontsize=S.FONT - 1)
     ins.set_xlim(-0.05, 1.0)
     ins.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
     ins.axvline(0, color="#999999", lw=0.8, zorder=1)
     ins.set_ylim(-len(E3_FALLS) + 0.4, 0.6)
-    ins.set_yticks([-i for i in range(len(E3_FALLS))], [name for _, name in E3_FALLS])
-    ins.tick_params(axis="y", length=0)
+    ins.set_yticks([])
     ins.grid(axis="x", color="#eeeeee")
-    ins.set_xlabel("identity answers lost\nbeyond random", fontsize=S.FONT - 1)
     head = blended_transform_factory(fig.transFigure, ins.transAxes)
-    ins.text(0.705, 1.42, "The 27B's identity answers\nwithout lens directions", transform=head,
+    ins.text(0.75, 1.30, "27B: identity answers\nlost beyond random", transform=head,
              fontsize=S.FONT, weight="bold", va="bottom", linespacing=1.0)  # fmt: skip
-    ins.text(0.705, 1.06, f"routes test · n {n_routes}\n● fixed in advance", transform=head,
-             fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom", linespacing=1.1)  # fmt: skip
+    ins.text(0.75, 1.06, f"routes test · n = {n_routes}  {S.STATUS_GLYPH['fixed']}", transform=head,
+             fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom")  # fmt: skip
     S.save(fig, out_name)
     return out_name
 
@@ -345,8 +356,9 @@ def zero_title(v: dict) -> str:
 def build_zero(verdict_dir: Path, out_name: str, title: str | None = None) -> str:
     """47.5 (x47_zero verdict, x47_5.json): one row per model. On the changed prompt, at the bridge word at L, the
     J++ part's 25 directions taken out of the state (the reader's colour) or a random part (same size, grey): the
-    changed prompt's answers kept (%), (a) recall (the rule's bar at 80), (b) lookup beside; (c) the rule's reading
-    and the recall's answers kept below random (the 'needed' bar is 30)."""
+    changed prompt's answers kept (share, 0-1), (a) recall (the rule's bar at 0.8, "followed if above"; under each row
+    the recall's answers lost beyond random, in pp), (b) lookup. n and the status glyph in each panel's corner; the
+    rule's reading is recorded for data.csv, not drawn (v6 iteration 2)."""
     src = verdict_dir / "x47_5.json"
     v = json.loads(src.read_text())
     by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
@@ -354,41 +366,39 @@ def build_zero(verdict_dir: Path, out_name: str, title: str | None = None) -> st
     legend = ([Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=8),
                Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8),
                Line2D([], [], marker="o", ls="", color=grey, ms=8)],
-              ["recall", "lookup", "random part (same size) taken out"])  # fmt: skip
-    fig, (a, b, c) = frame(
+              ["recall", "lookup", "a random part (same size)"])  # fmt: skip
+    fig, (a, b) = frame(
         title or zero_title(v),
-        "Main test (two people swap picks), on the changed prompt: at the bridge word, at one layer, the J++ part's 25 "
-        "directions, or a random part (same size), taken out of its state. Answers kept (%), 95% intervals, fixed in "
-        "advance. Rule: followed if ≥ 80 kept, within 10 of random; needed if ≥ 30 below random.",
-        (1, 1, 0.62), ROW_IN * len(TARGETS), legend=legend)  # fmt: skip
-    row_panels((a, b, c), len(TARGETS))
-    for ax, name in ((a, "(a) recall"), (b, "(b) lookup, beside")):
-        pct_axis(ax, "changed prompt's\nanswers kept (%)", lim=(-4, 106))
+        "Main test; the J++ part's 25 directions, or a random part of the same size, taken out at the bridge word at "
+        "one layer",
+        (1, 1), ROW_IN * len(TARGETS), legend=legend, wrap=False)  # fmt: skip
+    row_panels((a, b), len(TARGETS))
+    for ax, name in ((a, "(a) recall"), (b, "(b) lookup")):
+        share_axis(ax, "answers kept (share)")
         panel_title(ax, name)
-        bar(ax, 80, "≥ 80", side="left")
-    text_column(c, "reading (recall)")
-    rows = []
+        bar(ax, 0.8, "followed if above", side="left")
+    rows, ns = [], []
     for i, (target, m) in enumerate(TARGETS):
         y, mod = -i, by.get(target, {"status": "pending", "label": "pending"})
         readers = mod.get("readers", {})
-        rows.append((m, f"n = {readers['recall']['n']}" if "recall" in readers else ""))
+        rows.append((m, ""))
+        if "recall" in readers:
+            ns.append(str(readers["recall"]["n"]))
         reading = str(ZERO_LABEL.get(mod["label"], mod["label"]))
         S.record(fid, target, "47.5: the rule's reading (recall at L)", mod["label"], source=source)
         if mod["status"] != "tested":
-            c.text(0.04, y, reading, va="center")
             for ax in (a, b):
                 status_text(ax, y, reading)
             continue
         lost = readers["recall"]["beyond_random"]["L"]
-        c.text(0.04, y + 0.04, reading, va="bottom")
-        c.text(0.04, y - 0.04, f"{100 * lost[0]:.0f} below random", va="top", color=S.COL["muted"])
+        a.text(0.03, y, f"lost beyond random: {100 * lost[0]:.0f} pp", va="center", color=S.COL["muted"])
         S.record(fid, target, "47.5: recall's answers kept, random part minus J++ part taken out (L)", *lost,
                  n=readers["recall"]["n"], source=source)  # fmt: skip
         for ax, w, col in ((a, "recall", S.COL["recall"]), (b, "lookup", S.COL["lookup"])):
             r = readers[w]
             for arm, dy, colour, what in (("zero_L", 0.16, col, "the J++ part's 25 directions taken out"),
                                           ("rand_L", -0.16, grey, "a random part (same size) taken out")):  # fmt: skip
-                k = iv(r["kept"][arm], 100)
+                k = iv(r["kept"][arm])
                 if k is None:
                     continue
                 S.dot(ax, 0, y + dy, k, colour, size=8)
@@ -396,6 +406,8 @@ def build_zero(verdict_dir: Path, out_name: str, title: str | None = None) -> st
                     fid, target, f"47.5: {w}'s answers kept at L, {what}", *r["kept"][arm], n=r["n"], source=source
                 )
     model_labels(a, rows)
+    for ax in (a, b):
+        S.panel_tag(ax, ", ".join(ns) if ns else None, "fixed")
     S.save(fig, out_name)
     return out_name
 
@@ -426,24 +438,24 @@ def build_cue(verdict_dir: Path, out_name: str, title: str | None = None) -> str
     by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
     fig, (a, b, c) = frame(
         title or cue_title(v),
-        "Routes test (another item moved), the asked pick described: \"Iris picked the one known for honey.\" The "
-        "change at the description's word. (a) Extra loss (0–1): switches lost without the J++ part minus without a "
-        "random part (same size); (b) lookup answers that are the new number; (c) position answers lost without the "
-        "label-free pointer beyond random. 95% intervals, fixed in advance.",
-        (1, 0.6, 0.9), ROW_IN * len(TARGETS), legend=readers_legend(), left=0.21)  # fmt: skip
+        "Routes test, the asked pick described (\"Iris picked the one known for honey.\"); the change at the "
+        "description's word",
+        (1, 0.6, 0.9), ROW_IN * len(TARGETS), legend=readers_legend(), left=0.21, wrap=False)  # fmt: skip
     row_panels((a, b, c), len(TARGETS))
     S.extra_axis(a, label=False)
-    a.set_xlabel("extra loss")
+    a.set_xlabel("extra loss without\nthe J++ part")
     panel_title(a, "(a) the split")
     bar(a, 0.10, "≤ 0.10", side="left")
     bar(a, 0.20, "≥ 0.20")
-    pct_axis(b, "value\nanswers (%)", lim=(-2, 30), ticks=(0, 10, 20, 30))
+    share_axis(b, "value answers\n(share)", ticks=(0, 0.1, 0.2, 0.3))
+    b.set_xlim(-0.02, 0.3)
     panel_title(b, "(b) the value")
-    bar(b, 5, "≤ 5")
-    pct_axis(c, "position answers lost\nbeyond random (%)", lim=(-20, 106))
-    panel_title(c, "(c) a pointer")
-    bar(c, 30, "≥ 30")
-    rows = []
+    bar(b, 0.05, "≤ 0.05")
+    share_axis(c, "position answers lost\nbeyond random (share)")
+    c.set_xlim(-0.2, 1.06)
+    panel_title(c, "(c) the address")
+    bar(c, 0.3, "≥ 0.3")
+    rows, ns = [], []
     for i, (target, m) in enumerate(TARGETS):
         y, mod = -i, by.get(target, {"status": "pending"})
         if mod["status"] != "tested":
@@ -455,8 +467,8 @@ def build_cue(verdict_dir: Path, out_name: str, title: str | None = None) -> str
             for ax in (a, b, c):
                 status_text(ax, y, state)
             continue
-        gap = iv(mod["gap"])
-        rows.append((m, f"n = {mod['n']}, gap {gap[0]:.2f}" if gap else f"n = {mod['n']}"))
+        rows.append((m, ""))
+        ns.append(str(mod["n"]))
         S.record(
             fid, target, "47.3: gap (recall's extra loss minus the lookup's)", *mod["gap"], n=mod["n"], source=source
         )
@@ -466,14 +478,14 @@ def build_cue(verdict_dir: Path, out_name: str, title: str | None = None) -> str
                 S.dot(a, 0, y + dy, ex, col, size=8)
                 S.record(fid, target, f"47.3: {w}'s extra loss without the J++ part", *mod[w]["excess"], n=mod["n"],
                          source=source)  # fmt: skip
-        val = iv(mod["value"], 100)
+        val = iv(mod["value"])
         if val is not None:
             S.dot(b, 0, y, val, S.COL["value"], size=8)
             S.record(
                 fid, target, "47.3: lookup's value answers, whole change", *mod["value"], n=mod["n"], source=source
             )
         cut = mod["pcf_cut_test"]
-        cv = iv(cut["cut"], 100)
+        cv = iv(cut["cut"])
         if cv is None:
             status_text(c, y, "no held-out scenes")
         else:
@@ -483,6 +495,9 @@ def build_cue(verdict_dir: Path, out_name: str, title: str | None = None) -> str
         for clause, ok in mod["clauses"].items():
             S.record(fid, target, f"47.3: clause {clause} holds", int(bool(ok)), source=source)
     model_labels(a, rows)
+    # n and the status above the panel titles, at the right (the narrow panels leave no room beside their titles)
+    c.text(1.0, 1.13, f"n = {', '.join(ns)}  {S.STATUS_GLYPH['fixed']}" if ns else S.STATUS_GLYPH["fixed"],
+           transform=c.transAxes, ha="right", va="bottom", color=S.COL["muted"])  # fmt: skip
     S.save(fig, out_name)
     return out_name
 
@@ -521,20 +536,19 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
     shown = [(t, m) for t, m in TARGETS if t in by]
     legend = ([Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8),
                Line2D([], [], marker="o", ls="", color=S.COL["control"], ms=8)],
-              ["the shift vector", "random direction (same size)"])  # fmt: skip
+              ["the shift vector", "a random part (same size)"])  # fmt: skip
     fig, axes = frame(
         title or six_title(v),
-        "Routes test with six lockers (one item's locker sentence moved), held-out half. One shift vector added at "
-        "the bridge word (dose 2× a real change) from each start locker: lookups sent one locker on (%), 95% "
-        "intervals. Rule for a line: ≥ 25 from 4 of 5 start lockers, the random direction ≤ 5, the first PCA axis "
-        "in locker order. Fixed in advance.",
-        tuple(1.0 for _ in shown), 2.3, legend=legend, left=0.12, bottom_in=1.45)  # fmt: skip
+        "Routes test with six lockers, held-out half; one shift vector added at the bridge word (twice a real change)",
+        tuple(1.0 for _ in shown), 2.3, legend=legend, left=0.12, bottom_in=1.45, wrap=False)  # fmt: skip
     for ax, (target, m) in zip(axes, shown, strict=True):
         mod = by[target]
-        ax.set_title(F.name_of(m), fontsize=S.FONT, weight="bold")
-        ax.set_ylim(-4, 104)
-        ax.set_yticks(*F.PCT)
+        ax.set_title(F.name_of(m) if ax is axes[0] else F.SHORT[m], fontsize=S.FONT, weight="bold", loc="left")
+        ax.set_ylim(-0.04, 1.04)
+        ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.grid(axis="y", color="#eeeeee")
+        if mod["status"] == "tested" and mod.get("interpretable"):
+            S.panel_tag(ax, str(mod["n"]), "fixed")
         S.record(fid, target, "47.2: the rule's reading (dose 2)", mod.get("label", mod["status"]), source=source)
         if mod["status"] != "tested" or not mod["interpretable"]:
             S.empty(ax, "pending" if mod["status"] == "pending" else SIX_LABEL.get(mod.get("label", ""), "not tested"))
@@ -548,15 +562,15 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
         ax.set_xlim(0.45, n_lockers - 0.45)
         ax.set_xticks(starts, [ORD[k] for k in starts])
         ax.set_xlabel("start locker")
-        ax.axhline(25, color=BAR, lw=1.0, ls=(0, (4, 3)), zorder=1)
-        ax.text(n_lockers - 0.5, 27, "≥ 25", ha="right", va="bottom", color=BAR)
+        ax.axhline(0.25, color=BAR, lw=1.0, ls=(0, (4, 3)), zorder=1)
+        ax.text(n_lockers - 0.5, 0.27, "≥ 0.25", ha="right", va="bottom", color=BAR)
         for k in starts:
             cell = mod["cells"]["shifts"].get(f"{SIX_DOSE}|v|{k}")
             if cell is None:
                 continue
             for key, dx, col, what in (("shift", -0.12, S.COL["lookup"], "the shift vector"),
                                        ("random", 0.12, S.COL["control"], "a random direction (same size)")):  # fmt: skip
-                r = iv(cell[key], 100)
+                r = iv(cell[key])
                 if r is None:
                     continue
                 ax.plot([k + dx] * 2, [r[1], r[2]], color=col, lw=1.6, zorder=2)
@@ -570,10 +584,10 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
                  source=source)  # fmt: skip
         ax.text(0.0, -0.33, SIX_LABEL.get(mod["label"], mod["label"]), transform=ax.transAxes, ha="left", va="top",
                 weight="bold")  # fmt: skip
-        ax.text(0.0, -0.45, f"pairwise writes ≥ 25: {rule['pairs_reaching']} of {rule['pairs']}\nfirst PCA axis vs "
-                f"locker: ρ = {pca['spearman_pc1_slot']:.2f}", transform=ax.transAxes, ha="left", va="top",
+        ax.text(0.0, -0.45, f"locker pairs moved at ≥ 0.25:{rule['pairs_reaching']} of {rule['pairs']}\nfirst PCA "
+                f"axis vs locker: ρ = {pca['spearman_pc1_slot']:.2f}", transform=ax.transAxes, ha="left", va="top",
                 color=S.COL["muted"])  # fmt: skip
-    axes[0].set_ylabel("lookups sent\none locker on (%)")
+    axes[0].set_ylabel("lookups moved one\nlocker on (share)")
     S.save(fig, out_name)
     return out_name
 

@@ -32,7 +32,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 REPO = Path(__file__).resolve().parents[1]
 RETIRED = {
     "first-mentioned": r"(?i)\bfirst[- ]mentioned\b",
-    "part removed": r"(?i)\bparts? removed\b",
+    # Dan's v6 iteration 2 (28 Oct ~15:40) labels Fig. 5's grey bars "position, a random part removed": that one stays
+    "part removed": r"(?i)(?<!random )\bparts? removed\b",
     "ablation": r"(?i)\bablat(?:e|ed|es|ing|ion|ions)\b",
     "Q45": r"\bQ45(?:\.\d+)?\b",
     "run id": r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b",
@@ -67,23 +68,45 @@ JOINT_RETIRED = {
 }
 
 
-# Dan's README v6 brief, §5 (docs/figure_plan.md "v6 style rules"), the testable part, on the README figures restyled
-# for v6 so far (each joins V6_FIGS when it is): the title is the conclusion on one line with no digit (no numbers,
-# no model sizes); the subtitle one line; at most two panels; "swap" not "write", "address" not "pointer"
+# Dan's README v6 brief, §5 (docs/figure_plan.md "v6 style rules"), the testable part, on the README's main figures
+# (readme_story_figures.README_NAMES, since v6 iteration 2) and fig15: the title is the conclusion on one line with no
+# digit (no numbers, no model sizes; number words are fine); the subtitle one line, without the rule; at most two
+# panels; "swap" not "write", "address" not "pointer", and none of iteration 2's retired strings
 V6_FIGS = (
-    "fig05_routes",
-    "fig06b_anatomy",
-    "fig07b_verbal",
-    "fig03d_depth_map",
-    "fig15_mechanisms",
-    "fig11_scorecard",
-    "fig07_writes",
-    "fig03_order",
+    "fig00_setup",
     "fig01_split",
+    "fig01c_zeroing",
     "fig05b_identity_outside",
+    "fig05_routes",
+    "fig07_writes",
+    "fig09b_six_lockers",
+    "fig07b_verbal",
+    "fig03_order",
+    "fig03d_depth_map",
+    "fig06b_anatomy",
+    "fig11_scorecard",
+    "fig05c_described_bridge",
+    "fig09_transfer",
+    "fig15_mechanisms",
 )
-V6_PANELS = {"fig07_writes": 3}  # E6's probe, remove / add, swap: three panels (Dan's v6 card list)
-V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|ing)\b|\bwrote\b"}
+# E6's probe, remove / add, swap; E8's read-through, share rebuilt, report (Dan's v6 iteration 2: at most three)
+V6_PANELS = {"fig07_writes": 3, "fig07b_verbal": 3,
+             # kept on the page as they were, smaller (Dan's v6 iteration 2): their panels stay
+             "fig05c_described_bridge": 3, "fig09_transfer": 8}  # fmt: skip
+V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|ing)\b|\bwrote\b",
+              # Dan's v6 iteration 2 (28 Oct ~15:40): words no README figure draws (title, subtitle, legend, ticks,
+              # annotations); the part is named, never "it"; test numbers and run names belong to predictions/
+              "pronoun for the part": r"(?i)\b(?:without|only|with) it\b",
+              "beside": r"(?i)\bbeside\b",
+              "reading": r"(?i)\breadings?\b",
+              "(band: 95%)": r"(?i)\(band: 95\s?%\)",
+              "random or layout control": r"(?i)\brandom or layout control\b",
+              "below random": r"(?i)\bbelow random\b",
+              "lookups sent to the target locker": r"(?i)\blookups sent to the target locker\b",
+              "test number": r"\b4[5-9]\.\d+\b",
+              "run name": r"(?<![A-Za-z0-9])x(?:[068]_|4[578])",  # also inside qwen35_9b_x6_routes
+              "C0 / C2": r"\bC[02]\b"}  # fmt: skip
+V6_SUBTITLE_RETIRED = {"rule:": r"(?i)\brule:"}  # the subtitle says the mechanics; the rule belongs to the caption
 
 
 def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
@@ -104,6 +127,7 @@ def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tupl
             out.append((name, title, "title over one line"))
         if "\n" in sub:
             out.append((name, sub, "subtitle over one line"))
+        out += [(name, sub, term) for term, rx in V6_SUBTITLE_RETIRED.items() if re.search(rx, sub)]
         if lay["panels"] > V6_PANELS.get(name, 2):
             out.append((name, str(lay["panels"]), "more than two panels" if name not in V6_PANELS else
                         f"more than {V6_PANELS[name]} panels"))  # fmt: skip

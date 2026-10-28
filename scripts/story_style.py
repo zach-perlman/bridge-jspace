@@ -65,22 +65,33 @@ def setup():
 def title(fig, text: str, sub: str | None = None, limit: int = 70) -> None:
     """The claim as the title and, below it, one line on how to read the figure."""
     assert len(text) <= limit, f"title over {limit} characters: {text!r}"
-    # a title past 70 characters shrinks to fit the 880 px column (86 characters: 10.6 pt, about 15 px)
-    fig.suptitle(text, x=0.01, y=0.995, ha="left", va="top", fontsize=14 * min(1.0, 66 / len(text)), weight="bold")
+    # a title (14 pt) or subtitle (11 pt) wider than the 880 px column shrinks to fit it, as measured
+    fit(fig, fig.suptitle(text, x=0.01, y=0.995, ha="left", va="top", fontsize=14, weight="bold"))
     if sub:
         h = fig.get_figheight()
         t = fig.text(0.01, 1 - 0.42 / h, sub, ha="left", va="top", fontsize=FONT, color=COL["muted"])
+        fit(fig, t)
         # marked for scripts/check_figure_terms.py's v6 rules; a Python attribute, so the saved files do not change
         setattr(t, SUBTITLE, True)
 
 
+def fit(fig, t, right: float = 0.99) -> None:
+    """Shrink text t (left-aligned at its x, figure fraction) until it ends by `right` of the figure's width."""
+    r = fig.canvas.get_renderer()
+    room = (right - t.get_position()[0]) * fig.get_figwidth()
+    # Agg hints glyphs to whole pixels, so the width moves in steps: shrink by quarter points until it fits
+    while t.get_window_extent(r).width / fig.dpi > room and t.get_fontsize() > 8:
+        t.set_fontsize(t.get_fontsize() - 0.25)
+
+
 def panel_tag(ax, n: str | None, status: str | None, inside: bool = False) -> None:
-    """v6: n and the status in small type at the panel's top right (above the frame, or inside its corner on a white
-    patch), the status as its glyph (filled = fixed in advance, open = after the data); status None for a schematic."""
-    parts = [f"n {n}"] if n else []
-    parts += [f"{STATUS_GLYPH[status]} {STATUS_TEXT[status]}"] if status else ["schematic"]
+    """v6: "n = <n>" and the status glyph alone (filled = fixed in advance, open = after the data; the README's key
+    says which) in small type at the panel's top right (above the frame, or inside its corner on a white patch); status
+    None for a schematic. n per model reads "758, 758, 657" (9B, 27B, Muse)."""
+    parts = [f"n = {n}"] if n else []
+    parts += [STATUS_GLYPH[status]] if status else ["schematic"]
     y, va = (0.985, "top") if inside else (1.015, "bottom")
-    ax.text(0.995 if inside else 1.0, y, ("\n" if inside else " · ").join(parts), transform=ax.transAxes, ha="right",
+    ax.text(0.995 if inside else 1.0, y, ("\n" if inside else "  ").join(parts), transform=ax.transAxes, ha="right",
             va=va, fontsize=FONT, multialignment="right",
             color=COL["muted"], zorder=8, bbox={"boxstyle": "square,pad=0.15", "fc": "white", "ec": "none"})  # fmt: skip
 

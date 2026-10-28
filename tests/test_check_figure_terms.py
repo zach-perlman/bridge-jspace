@@ -126,6 +126,49 @@ def test_v6_style_catches_retired_words_and_missing_figures():
     assert [r for *_, r in C.v6_style({}, [])] == ["not drawn"] * len(C.V6_FIGS)
 
 
+@pytest.mark.parametrize(
+    ("text", "rule"),
+    [("answers kept without it", "pronoun for the part"), ("only it", "pronoun for the part"),
+     ("With it, position answers come back", "pronoun for the part"), ("the J++ part beside the address", "beside"),
+     ("lens reading", "reading"), ("Readings", "reading"), ("random (band: 95%)", "(band: 95%)"),
+     ("random or layout control", "random or layout control"), ("3 below random", "below random"),
+     ("lookups sent to the target locker", "lookups sent to the target locker"), ("47.10's report", "test number"),
+     ("48.2 B", "test number"), ("x0_parts", "run name"), ("qwen35_9b_x6_routes", "run name"), ("x8_write", "run name"),
+     ("x45q sweep", "run name"), ("x47_atoms", "run name"), ("x48_enrich", "run name"), ("C0 holds", "C0 / C2"),
+     ("C2 control", "C0 / C2")],
+)  # fmt: skip
+def test_v6_style_catches_iteration_two_strings(text, rule):
+    assert rule in {r for *_, r in C.v6_style(_v6_layout(), [(C.V6_FIGS[0], text)])}
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["without the address", "only the address", "with the J++ part", "answers kept (share)", "the original answer",
+     "a random part (same size)", "lost beyond random: 3 pp", "followed if above", "0.45", "45 pp", "lens directions 1–25",
+     "Qwen3.6-27B", "Muse Glimmer 30B", "value: 0.00 in every row", "n = 758, 758, 657", "the bridge word", "it",
+     "lookups answering the swapped-in locker", "dose, in units of a real change", "C10", "box"],
+)  # fmt: skip
+def test_v6_style_passes_iteration_two_vocabulary(text):
+    assert not C.v6_style(_v6_layout(), [(C.V6_FIGS[0], text)]), C.v6_style(_v6_layout(), [(C.V6_FIGS[0], text)])
+
+
+def test_v6_style_bans_the_rule_in_the_subtitle_only():
+    assert "rule:" in {r for *_, r in C.v6_style(_v6_layout(subtitle="Rule: kept above 0.8"), [])}
+    assert "rule:" in {r for *_, r in C.v6_style(_v6_layout(subtitle="the swap; rule: kept above 0.8"), [])}
+    assert not C.v6_style(_v6_layout(), [(C.V6_FIGS[0], "rule: kept above 0.8")])
+
+
+def test_v6_titles_take_number_words_not_digits():
+    assert not C.v6_style(_v6_layout(title="Ten claims on three models: what held, in part, or failed"), [])
+    assert "digit in the title" in {r for *_, r in C.v6_style(_v6_layout(title="Twelve claims on 3 models"), [])}
+
+
+def test_every_readme_figure_is_held_to_the_v6_rules():
+    from scripts import readme_story_figures as F
+
+    assert set(F.README_NAMES) <= set(C.V6_FIGS), set(F.README_NAMES) - set(C.V6_FIGS)
+
+
 def test_v6_style_allows_three_panels_only_where_listed():
     lay = _v6_layout()
     lay["fig07_writes"]["panels"] = 3

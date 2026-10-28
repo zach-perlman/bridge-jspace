@@ -193,6 +193,10 @@ BANNED = {
 }
 KEPT = {  # exact strings that keep a banned variant, each by Dan's decision
     "Our pointer directions separate the first-mentioned item from the rest",  # Fig. 8: waits for Tuesday's "first"
+    # Dan's v6 iteration 2 (28 Oct ~15:40) words these labels himself (Fig. 5's grey bars, Fig. 7's panel C)
+    "position, a random part removed",
+    "C  A swap sends the lookup to the swapped-in locker",
+    "lookups answering the\nswapped-in locker (share)",
 }
 
 

@@ -2,104 +2,36 @@ id,claim,model,cell,flag,data.csv key,hand-checked
 1,In a conflict the recall follows the J++ part,Qwen3.5-9B,ok,,numbers:contrast_9b,no
 1,In a conflict the recall follows the J++ part,Qwen3.6-27B,~,,numbers:contrast_27b,no
 1,In a conflict the recall follows the J++ part,Muse Glimmer 30B,ok,,numbers:contrast_muse,no
-1,In a conflict the recall follows the J++ part,Qwen3.5-122B,~,,numbers:contrast_122b,no
-2,"Lookup by identity or position, never the number",Qwen3.5-9B,ok,,"s05:another item moved, whole: value share",no
-2,"Lookup by identity or position, never the number",Qwen3.6-27B,ok,,"s05:another item moved, whole: value share",no
-2,"Lookup by identity or position, never the number",Muse Glimmer 30B,ok,,"s05:another item moved, whole: value share",no
-2,"Lookup by identity or position, never the number",Qwen3.5-122B,ok,a,"s05:another item moved, whole: value share",no
+2,"Lookup by identity or position, never the value",Qwen3.5-9B,ok,,"s05:another item moved, whole: value share",no
+2,"Lookup by identity or position, never the value",Qwen3.6-27B,ok,,"s05:another item moved, whole: value share",no
+2,"Lookup by identity or position, never the value",Muse Glimmer 30B,ok,,"s05:another item moved, whole: value share",no
 3,Locker before the pick: the bridge word redirects,Qwen3.5-9B,ok,,numbers:x45q_c_9b,no
 3,Locker before the pick: the bridge word redirects,Qwen3.6-27B,ok,,numbers:x45q_c_27b,no
 3,Locker before the pick: the bridge word redirects,Muse Glimmer 30B,ok,,numbers:x45q_c_muse,no
-3,Locker before the pick: the bridge word redirects,Qwen3.5-122B,~,a,numbers:lk_order_before_122b,no
 4a,The address can be removed; a swap moves the lookup,Qwen3.5-9B,ok,,numbers:rt_C2_no_alf_position_9b,no
 4a,The address can be removed; a swap moves the lookup,Qwen3.6-27B,ok,,numbers:rt_C2_no_alf_position_27b,no
 4a,The address can be removed; a swap moves the lookup,Muse Glimmer 30B,ok,,numbers:rt_C2_no_alf_position_muse,no
-4a,The address can be removed; a swap moves the lookup,Qwen3.5-122B,ok,a,"s05:another item moved, no_alf: position share",no
 4b,Adding only the address creates position answers,Qwen3.5-9B,ok,,numbers:rtk_C2_keep_alf_position_9b,no
 4b,Adding only the address creates position answers,Qwen3.6-27B,x,,numbers:rtk_C2_keep_alf_position_27b,no
 4b,Adding only the address creates position answers,Muse Glimmer 30B,ok,,numbers:rtk_C2_keep_alf_position_muse,no
-4b,Adding only the address creates position answers,Qwen3.5-122B,ok,a,numbers:rtk_C2_keep_alf_position_122b,no
-5,The recall follows the J++ part without needing it,Qwen3.5-9B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
-5,The recall follows the J++ part without needing it,Qwen3.6-27B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
-5,The recall follows the J++ part without needing it,Muse Glimmer 30B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
-5,The recall follows the J++ part without needing it,Qwen3.5-122B,-,,,no
+5,"The recall follows, but does not need, the J++ part",Qwen3.5-9B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
+5,"The recall follows, but does not need, the J++ part",Qwen3.6-27B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
+5,"The recall follows, but does not need, the J++ part",Muse Glimmer 30B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
 6,The lookup's identity code lies outside the lens,Qwen3.5-9B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
 6,The lookup's identity code lies outside the lens,Qwen3.6-27B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
 6,The lookup's identity code lies outside the lens,Muse Glimmer 30B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
-6,The lookup's identity code lies outside the lens,Qwen3.5-122B,-,,,no
 7,"Identity early, position late; address formed first",Qwen3.5-9B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
 7,"Identity early, position late; address formed first",Qwen3.6-27B,pending,,,no
 7,"Identity early, position late; address formed first",Muse Glimmer 30B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
-7,"Identity early, position late; address formed first",Qwen3.5-122B,-,,,no
 8,The recall also reads the item's earlier mention,Qwen3.5-9B,ok,,numbers:x45p_d23_9b,no
 8,The recall also reads the item's earlier mention,Qwen3.6-27B,ok,,numbers:x45p_d23_27b,no
 8,The recall also reads the item's earlier mention,Muse Glimmer 30B,ok,,numbers:x45p_d23_muse,no
-8,The recall also reads the item's earlier mention,Qwen3.5-122B,-,,,no
 9a,The address does not read out through the lens,Qwen3.5-9B,ok,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer,no
 9a,The address does not read out through the lens,Qwen3.6-27B,ok,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer,no
 9a,The address does not read out through the lens,Muse Glimmer 30B,ok,,fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer,no
-9a,The address does not read out through the lens,Qwen3.5-122B,-,,,no
-9b,"Asked to report the position, the lens stays blind",Qwen3.5-9B,-,,,no
-9b,"Asked to report the position, the lens stays blind",Qwen3.6-27B,ok,,e8_report:47.10: the report's extra loss without the address,no
-9b,"Asked to report the position, the lens stays blind",Muse Glimmer 30B,-,,,no
-9b,"Asked to report the position, the lens stays blind",Qwen3.5-122B,-,,,no
 10,"Six lockers: one code per locker, no single shift",Qwen3.5-9B,ok,,fig09b:47.2: pairwise writes reaching 25% (dose 2),no
 10,"Six lockers: one code per locker, no single shift",Qwen3.6-27B,-,,,no
 10,"Six lockers: one code per locker, no single shift",Muse Glimmer 30B,ok,,fig09b:47.2: pairwise writes reaching 25% (dose 2),no
-10,"Six lockers: one code per locker, no single shift",Qwen3.5-122B,-,,,no
 11,Lookups missed at L read the bridge word before L,Qwen3.5-9B,ok,,"s03e_cumulative:47.4 main, locker-first, lookup: before_L",no
 11,Lookups missed at L read the bridge word before L,Qwen3.6-27B,-,,,no
 11,Lookups missed at L read the bridge word before L,Muse Glimmer 30B,ok,,"s03e_cumulative:47.4 main, locker-first, lookup: before_L",no
-11,Lookups missed at L read the bridge word before L,Qwen3.5-122B,-,,,no
-12,A described bridge: the split holds,Qwen3.5-9B,ok,,fig05c:47.3: gap (recall's extra loss minus the lookup's),no
-12,A described bridge: the split holds,Qwen3.6-27B,x,,fig05c:47.3: lookup's extra loss without the J++ part,no
-12,A described bridge: the split holds,Muse Glimmer 30B,ok,,fig05c:47.3: gap (recall's extra loss minus the lookup's),no
-12,A described bridge: the split holds,Qwen3.5-122B,-,,,no
-13,The address must be refit per text format,Qwen3.5-9B,ok,,fig09:(b) prose: lookup extra loss without the refit pointer,no
-13,The address must be refit per text format,Qwen3.6-27B,x,,fig09:(b) prose: lookup extra loss without the refit pointer,no
-13,The address must be refit per text format,Muse Glimmer 30B,ok,,fig09:(b) prose: lookup extra loss without the refit pointer,no
-13,The address must be refit per text format,Qwen3.5-122B,-,,,no
-14,The lookup's errors are not address errors,Qwen3.5-9B,ok,,fig07c:47.13: wrong answers whose locker the address probe predicts,no
-14,The lookup's errors are not address errors,Qwen3.6-27B,-,,,no
-14,The lookup's errors are not address errors,Muse Glimmer 30B,-,,,no
-14,The lookup's errors are not address errors,Qwen3.5-122B,-,,,no
-15,Identity outside J++: only partly specific,Qwen3.5-9B,~,,numbers:x45em_cut_9b,no
-15,Identity outside J++: only partly specific,Qwen3.6-27B,~,,numbers:x45em_cut_27b,no
-15,Identity outside J++: only partly specific,Muse Glimmer 30B,x,,numbers:x45em_cut_muse,no
-15,Identity outside J++: only partly specific,Qwen3.5-122B,-,,,no
-✗,The J++ part keys the attribute; late MLPs carry it,Qwen3.5-9B,x,,"fig10b:48.2 B, bridge_late: recall accuracy lost",no
-✗,The J++ part keys the attribute; late MLPs carry it,Qwen3.6-27B,-,,,no
-✗,The J++ part keys the attribute; late MLPs carry it,Muse Glimmer 30B,x,,"fig10b:48.2 B, bridge_late: recall accuracy lost",no
-✗,The J++ part keys the attribute; late MLPs carry it,Qwen3.5-122B,-,,,no
-✗,A person mark at the locker sentence,Qwen3.5-9B,x,,"fig10c:48.3, probe at the item, locker after the pick (accuracy)",no
-✗,A person mark at the locker sentence,Qwen3.6-27B,-,,,no
-✗,A person mark at the locker sentence,Muse Glimmer 30B,x,,"fig10c:48.3, probe at the item, locker after the pick (accuracy)",no
-✗,A person mark at the locker sentence,Qwen3.5-122B,-,,,no
-✗,The copying heads pass the rest at twice the J++ part,Qwen3.5-9B,x,,fig10d:48.4: the rule holds,no
-✗,The copying heads pass the rest at twice the J++ part,Qwen3.6-27B,-,,,no
-✗,The copying heads pass the rest at twice the J++ part,Muse Glimmer 30B,x,,fig10d:48.4: the rule holds,no
-✗,The copying heads pass the rest at twice the J++ part,Qwen3.5-122B,-,,,no
-✗,The address is the recall's second route,Qwen3.5-9B,x,,"fig10e:48.5, (ii) (i) and the pointer write: recall names the written locker's item",no
-✗,The address is the recall's second route,Qwen3.6-27B,x,,"fig10e:48.5, (ii) (i) and the pointer write: recall names the written locker's item",no
-✗,The address is the recall's second route,Muse Glimmer 30B,x,,"fig10e:48.5, (ii) (i) and the pointer write: recall names the written locker's item",no
-✗,The address is the recall's second route,Qwen3.5-122B,-,,,no
-✗,Blocking the pick sentence removes position only,Qwen3.5-9B,x,,fig09c_formation:47.6 (b): the formation rule holds,no
-✗,Blocking the pick sentence removes position only,Qwen3.6-27B,-,,,no
-✗,Blocking the pick sentence removes position only,Muse Glimmer 30B,x,,fig09c_formation:47.6 (b): the formation rule holds,no
-✗,Blocking the pick sentence removes position only,Qwen3.5-122B,-,,,no
-✗,The locker digit carries the hall question's address,Qwen3.5-9B,x,,fig09d:47.14: hall probe at the locker digit,no
-✗,The locker digit carries the hall question's address,Qwen3.6-27B,-,,,no
-✗,The locker digit carries the hall question's address,Muse Glimmer 30B,x,,fig09d:47.14: hall probe at the locker digit,no
-✗,The locker digit carries the hall question's address,Qwen3.5-122B,-,,,no
-✗,Map rules: one locker cell; the lookup stops first,Qwen3.5-9B,x,,"fig03d_depth_map:D1 clean, locker-first, lookup: last layer with the bridge word >= 0.3",no
-✗,Map rules: one locker cell; the lookup stops first,Qwen3.6-27B,-,,,no
-✗,Map rules: one locker cell; the lookup stops first,Muse Glimmer 30B,x,,,no
-✗,Map rules: one locker cell; the lookup stops first,Qwen3.5-122B,-,,,no
-✗,Positive control; 9B clean design; 27B strict bar,Qwen3.5-9B,x,,numbers:x45m_before_gap_9b,no
-✗,Positive control; 9B clean design; 27B strict bar,Qwen3.6-27B,x,,numbers:x4_D_elements_27b,no
-✗,Positive control; 9B clean design; 27B strict bar,Muse Glimmer 30B,-,,,no
-✗,Positive control; 9B clean design; 27B strict bar,Qwen3.5-122B,-,,,no
-…,"Pending: weights, the dereference, two sources",Qwen3.5-9B,pending,,,
-…,"Pending: weights, the dereference, two sources",Qwen3.6-27B,pending,,,
-…,"Pending: weights, the dereference, two sources",Muse Glimmer 30B,pending,,,
-…,"Pending: weights, the dereference, two sources",Qwen3.5-122B,pending,,,
