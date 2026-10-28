@@ -1,0 +1,53 @@
+id: x51_6_lightning
+title: "Batch 51.6 (optional) on Nemotron-3.5-Lightning: the main test at a layer picked on dev scenes. Step 1 (60 dev scenes, seed 0): the whole change's switch rate per reader at every 2nd layer L2-L50, the earliest layer where both readers switch >= 0.3; step 2 (200 test scenes, disjoint): whole / without J++ / without a random part of the same share at that layer, both readers; SEALED until Q51.6"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_lightning.py run --name nem35l_x51_6 --why "Batch 51, test 51.6 (jobs/c3/batch51.yaml; Q51.6, sealed): Lightning, the main test; step 1 on 60 dev scenes (seed 0) at every 2nd layer L2-L50, the earliest layer where both readers switch >= 0.3; step 2 the three arms there on 200 disjoint test scenes"
+question: >-
+  On NVIDIA Nemotron 3.5 Lightning 30B-A3B, does the bridge word's whole change redirect both readers (>= 0.3) at some
+  layer, and if so, at the earliest such layer, does the split hold: the recall needs the change's J++ part (gap >= 0.3)
+  while the lookup does not (extra loss <= 0.10)?
+why_it_matters: >-
+  The split holds on the Qwens and Muse at layers fixed in advance; Lightning is the second family (hybrid Mamba-2 /
+  attention / MoE) and our main test has never run there (45s-a stayed queued behind a smoke that failed only on the
+  clean design's recall gate, 0.75). Dan's only new model in batch 51; optional, lowest rank.
+hypotheses:
+  Q51.6: "Dan's answer in predictions/2026-10-28_dan.md (Q51.6: (i) a layer passes step 1, P(yes); (ii) if yes, the split holds there, P(yes)); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x51_lightning.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml, 51.6), verbatim: "Step 1 (dev, 60 scenes): the whole change's switch rate per
+  reader by layer, every 2nd layer; rule fixed in advance: pick the earliest layer where both readers switch >= 0.3.
+  Step 2: the main test's three arms at that layer, 200 scenes. If no layer passes step 1: report "the bridge word does
+  not redirect the lookup at any layer on Lightning", no step 2." Q51.6 (ii), verbatim: "the split holds there (gap >=
+  0.3, lookup <= 0.10)". As computed (fixed by the agent before any run; Dan may override before the run): scenes = the
+  main test's (x0_necessity --alt cf, d1_topics_v3, chat) on Lightning's tokenizer (516 of 600 made; 84 dropped, the
+  bridge not one token at one position); X0's competence pass, gate (unedited org accuracy under the top-token read >=
+  0.80 for both readers on all scenes, >= 150 eligible; a failed gate = "not tested", no 0.75 rerun) and eligibility;
+  the eligible scenes in scene order split once: dev = random.Random(0).sample of 60 (kept in scene order), test = the
+  first 200 eligible scenes not in dev. Step 1 layers: every 2nd layer L2-L50 (25 layers; the lens has maps 0-50; from L2
+  as 47.8's 9B sweep); Delta_l = h_S - h_O at the bridge word from one forward of O and of S; the whole Delta_l added at
+  l on O (X0's AddRows); X0's chat read (switch = the top token over the vocabulary is S's answer's first token); rates
+  are point estimates on the 60 dev scenes, EPS 1e-9 at the 0.3 bar; the pick is written by the job (step1.json) since
+  step 2 needs it. Step 2: X0's arms at the picked layer: whole (Delta), without J++ (Delta - P_J Delta; 25-atom signed
+  OMP over the J++ lens's letter-token atoms, x0_necessity.fit), without a random part (Delta - R Delta; X0's random
+  subspace at P_J Delta's share, seed 888 + L), plus the unedited row; both readers on the identical patch. Extra loss
+  = X0's excess = Jdep - Rdep = (S_no_rand - S_no_part) / S_whole; gap = the recall's minus the lookup's on the same
+  bootstrap draws (x45m.group_cells); the split holds iff gap >= 0.3 and the lookup's extra loss <= 0.10 (x45m.holds,
+  point estimates, EPS 1e-9; all 200 test scenes, no sentence-order strata); cluster-bootstrap CIs over the bridge items
+  (10,000, seed 0) beside; X0's validity bar per cell (S_whole >= 0.30 and >= 30 switches) and X0's 23 Oct verdict
+  reported beside, not in the rule; fewer than 150 test scenes = step 2 "not tested". Descriptive beside the rule: every
+  layer that passes step 1 (the last one too). Code: scripts/x51_lightning.py verdict (result, step2_result).
+controls:
+- "without a random part of the J++ part's share (X0's random subspace, seed 888 + L): the reference of each extra loss"
+- "both readers on the identical patch"
+- "the unedited row (O reads O's answer by eligibility; reported)"
+- "X0's read gate (0.80 per reader) on all scenes and its validity bar per cell (reported)"
+- "dev and test scenes disjoint (the layer is picked on dev only)"
+- "the mamba-ssm hub kernel the load used against the 45s smoke's verified commit 28017f36 (recorded in gate.json, flagged in the verdict)"
+n: '516 main-test scenes made on the tokenizer, 315 eligible expected (the 45s smoke''s stored competence pass: gate PP 0.957, PM 0.816); dev 60 (26 bridge items), test 200 (37 bridge items); plan in results/x51_lightning/plan-20261028T162525Z'
+seeds: [0, 888, 24]
+notes: "Batch 51 (Dan, 28 Oct 17:10), 51.6: speedup box, ONLY IF IT IDLES AFTER 02:00, lowest rank (51.1, 51.7, 51.5, 51.3, 51.2, 51.4, 51.6). Run name nem35l_x51_6 (the pin's live prefix nem35l_, as nem35l_x45s_*). One GPU: Lightning bf16 is ~63 GB (31.6B parameters); the 45s smoke (x45s_smoke_lightning, shadecloud H100 PCIe) peaked at 62.5 GB with X0's reads; this job adds 25 recorded layers per forward (~0.1 GB) and reads of at most 16 rows, so one H100 80 GB fits; mem_gb 78 as the 45s specs. PREFETCH NEEDED (checked 28 Oct ~17:20, read-only): speedup has neither the snapshot (/ephemeral/hf/hub holds the Qwens and Muse only) nor the lens (~/bridge-jspace/cache holds muse-glimmer-30b only) nor the mamba-ssm hub kernel. Before enqueue: (1) on speedup, BJ_TARGET=nemotron-3.5-lightning uv run python scripts/x45s.py fetch (snapshot nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16 @ a9904d24, ~63 GB; 550 GB free on /ephemeral); (2) copy the lens (local only, no download source; 737 MB, sha256 3306b6e4...) from sesterce-h100x2:~/bridge-jspace/cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt to the same path under speedup's ~/bridge-jspace (h100x2's own snapshot weights are gone, only its lens and kernel remain); (3) the hub kernel kernels-community/mamba-ssm (1.6 MB) is fetched by transformers at load (network needed at load). The run stage's preflight refuses before writing anything if the lens or any weight shard is missing. Sealed: the run writes manifest (switches, code state, lens record, kernel expectation), competence, cases, gate (gate, eligible, dev and test scene ids, loaded hub kernels and their check), step1_outcomes and step1.json (rates per layer and reader, the picked layer), and if a layer passes step2_outcomes / step2_shares / step2_examples (10 example scenes' greedy texts, seed 0) and step2.json; no verdict. By hand after Dan's Q51.6 is committed (CPU): uv run python scripts/x51_lightning.py verdict (verdict.md / verdict.json: the rule, step 1's rates with CIs per layer, the pick, step 2's cells, the gap with its CI, the label) and view (5 rendered test prompts and 10 random rows per arm, seed 0). Risk known before the run, from stored data: on Muse (same 52 blocks) the whole change at the bridge word switches both readers far above 0.3 at shallow layers (L8: lookup 0.84, recall 0.87; muse30b_x0_necessity_depth) and the lookup falls below 0.3 only past L26; so the earliest passing layer on Lightning will most likely be L2, the first swept layer, where the change is close to a token swap and the J++ lens is least fit (the 45s spec's layer was L27 for this reason: the rule as written picks the shallowest, not the deepest, passing layer); flagged to Dan, design not changed; the last passing layer is reported beside as descriptive. Estimate: the Muse linear model of the 45s specs (timing ledger, sesterce-h100x2 H100 PCIe: 4.1e-6 h per read row, 0.198 h fixed for the load and a competence pass on ~550 scenes): competence on 516 scenes + step 1 60 x 2 x 26 = 3,120 rows + step 2 200 x 2 x 4 = 1,600 rows + 520 Delta forwards + 80 greedy example rows -> 0.198 + 5,300 x 4.1e-6 = 0.22 h at Muse's speed (Zach: Lightning 0.42-0.55x Muse's time per row); the 45s smoke's whole job (snapshot download, three extra loads, two competence passes on 516 and 559 scenes) took 0.21 h; est 0.3 with margin (Dan's brief: ~2 GPU-h)."
