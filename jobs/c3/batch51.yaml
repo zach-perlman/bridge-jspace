@@ -21,6 +21,7 @@ tests:
   - {id: "51.2", title: "Joint head ablation under the address swap", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~1 GPU-h each", box: speedup}
   - {id: "51.4", title: "Does the address travel? The swap at the last token", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~0.5 GPU-h each", box: helper}
   - {id: "51.10", title: "Does the intermediate pass through J-space? Read / write statistics per position, per reader", models: [qwen3.5-9b, qwen3.6-27b, muse-glimmer-30b], est: "9B ~1 GPU-h; 27B, Muse ~2 GPU-h each; read statistics ~30 min CPU per model", box: "speedup (9B -> 27B), helper (Muse)", added: "addendum 2, Dan 28 Oct 18:15"}
+  - {id: "51.11", title: "What is the address, independent of how we built it? Dimension, agreement of methods, geometry", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "9B ~4.5 GPU-h (parts 1-3), Muse ~2.5 (parts 1-3), 27B ~1 (part 2 only); scene generation ~1 h CPU", box: "helper, after 51.5 and before 51.4; outranks 51.2 and 51.4; minimum if the night runs short: parts 1 and 2 on the 9B", added: "addendum 3, Dan 28 Oct 19:00"}
   - {id: "51.6", title: "Optional: Lightning, the main test", models: [lightning], est: "~2 GPU-h", box: speedup, condition: "only if speedup idles after 02:00"}
 brief: |
   # Batch 51 — launch instruction for the coder agent (Dan, 28 Oct 17:10 Paris)
@@ -150,3 +151,71 @@ addendum_2: |
   **Q51.10 (options; per reader, per model):** in J-space at the last token (read and write) / readable, not used / routes around J-space / not represented at the last token. And at the "pick" token: the same four.
 
   **Dumbest ways to be wrong, to check in the verify pack.** The probe classes leak through the question text (identical in O and S — fine) or through the locker sentences' order (hold scenes out, not items); the lens readout at P3 in late layers is the digit, not the entity (the answer-layer line handles it); his swap at P3 moves the answer by moving the *digit* directly rather than the entity (check: on the recall, a swap that switches should switch to S's fact, not to any digit — report "switched to S's answer" vs "changed to another digit" separately); the whole-state patch at P3 at late layers switches trivially (it is the upper bound per layer, read the ratio at the read peak, not the max).
+addendum_3: |
+  # Batch 51 — addendum 3 (Dan, 28 Oct 19:00): 51.11 What is the address, independent of how we built it? Dimension, agreement of methods, geometry
+
+  **Why.** The finding is worded "four directions at the bridge word (class means over slots, layout removed)". Four is our construction (five slot classes → rank 4), not a property of the model. The general statement should say what the code is: how many dimensions it takes as the number of slots grows, whether three independent methods find the same subspace, and whether the slots are coded as categories, as an order, or as a line. Each outcome below has its wording fixed in advance.
+
+  **Models.** 9B first (all parts), Muse (parts 1–3), 27B (part 2 only, reduced). Layer L as fixed. Entities held out everywhere (fit / test halves by bridge entity).
+
+  ## Part 1. Dimension vs number of slots (~3 GPU-h on the 9B)
+
+  - **Scenes.** Locker-first routes-style scenes with S ∈ {3, 4, 6, 8} locker sentences (3 and 6 exist; generate 4 and 8 with the same generator, same token-length alignment). Position counterfactual pairs: the bridge item's locker sentence moved to another slot, digits kept (the lookup's answer unchanged, the position changes); ≥ 300 pairs per S, all ordered slot pairs represented.
+  - **Three constructions of the code at the bridge word:**
+    - **mass-mean U_S**: class means over the S slots, layout removed → rank S − 1 (the current method);
+    - **label-free P_S**: top-k principal components of {h_S′ − h_S} over the pairs (no labels);
+    - **learned R_S**: DAS, orthonormal R ∈ R^(d×k), interchange h ← h_O + RRᵀΔ trained so the lookup answers the position route; k ∈ {1, 2, 3, 4, 5, 7}.
+  - **Read, per S and k:** own-IIA of R_S,k on held-out pairs; the same interchange through the top-k of P_S; the swap through U_S (its native rank). Random R and shuffled-pair R as nulls.
+  - **Minimal dimension** d*(S) = the smallest k with own-IIA ≥ 0.80 (random ≤ 0.15).
+  - **Rules, fixed in advance.**
+    - "An ordinal (low-dimensional) code": d*(S) ≤ 2 for every S up to 8.
+    - "One dimension per slot": d*(S) ≥ S − 2 for every S and d*(8) ≥ 5.
+    - "Low-dimensional but growing": d*(S) between 3 and S − 3 at S = 8, monotone in S.
+    - Else: in between.
+  - **Output:** one figure: own-IIA vs k, one curve per S, random dashed; a table d*(S).
+
+  ## Part 2. Do three methods find the same code? (~1 GPU-h per model)
+
+  - At S = 6 (and S = 3 beside): the three bases at their working dimension (U_6 rank 5; P_6 top-d*; R_6 at d*).
+  - **Geometric agreement:** pairwise mean cos² of principal angles between the three subspaces, against random subspaces of the same dimensions (≈ k/d).
+  - **Functional agreement (the one that matters):** the swap μ_k − μ_j at 2× sent through each basis's projector (U Uᵀ(μ_k − μ_j), P Pᵀ(…), R Rᵀ(…)) → share of lookups answering slot k; **cross-removal:** remove U from the state, then swap through R: does the swap still work? Remove R, swap through U. If the subspaces coincide functionally, each removal kills the other's swap.
+  - **Rules, fixed in advance.**
+    - "One code, three bases": every projected swap reaches ≥ 0.6 of the whole swap's effect, and each cross-removal cuts the other's swap by ≥ 0.6.
+    - "Partly overlapping codes": projected swaps reach ≥ 0.6 but cross-removals cut < 0.3 (the function survives in the other basis: redundant directions).
+    - "Different codes": a projected swap through P or R reaches < 0.3.
+  - **Output:** a 3 × 3 table per model: rows = removed basis (none / U / P / R), columns = swap basis; cell = share of lookups to the target.
+
+  ## Part 3. Geometry: categories, an order, or a line? (~0.5 GPU-h on the 9B and Muse; CPU for the means)
+
+  - **Means (CPU, S = 6 and 8):** pairwise distances between slot means ‖μ_i − μ_j‖ vs |i − j|; the first principal component's score per slot; the angle structure (a simplex has equal pairwise distances; a line has distance ∝ |i − j|; a curve has distance growing with |i − j| but saturating).
+  - **Interpolation swaps (GPU):** from a bridge item in slot 1, add 2 × ((μ_3 − μ_1)/2) (the midpoint toward slot 3) and 2 × ((μ_5 − μ_1)/2); from slot 6 toward slot 1 the same. Read: which slot the lookup answers: the midpoint slot (2 / 3), the far slot, the near slot, or the original. Random vectors of the same norm beside.
+  - **Rules, fixed in advance.**
+    - "A metric order (the code is a line or a curve)": midpoint swaps send ≥ 0.3 of lookups to the midpoint slot, from both ends.
+    - "Categories": midpoint swaps send < 0.1 to the midpoint slot while the full swaps reach ≥ 0.4 of the target.
+    - "First vs the rest" (the old reading): midpoints work only from slot 1.
+  - **Output:** one figure: the slot means in the first two principal components, with the midpoint swap outcomes as arrows.
+
+  ## Part 4. Wording fixed in advance, by outcome
+
+  | Part 1 | Part 2 | Part 3 | The finding's wording |
+  |---|---|---|---|
+  | ordinal (≤ 2 dims) | one code | metric order | "The lookup's position route runs through a **two-dimensional slot code** at the bridge word that orders the locker sentences; any of three methods finds it; it can be removed, added alone and swapped, and the lens cannot read it." |
+  | one per slot | one code | categories | "… through a **one-code-per-slot address** at the bridge word (one dimension per locker sentence), found alike by class means, by counterfactual differences and by a learned subspace; removable, swappable, not readable by the lens." |
+  | growing | partly overlapping | any | "… through a **low-dimensional slot code** (about k dimensions for S slots) that several bases span in part; the hand-built directions are one basis of it." |
+  | any | different codes | any | "Our four directions are one of several subspaces that move the lookup by slot; the code is not a single subspace at this layer" (and the address claims are re-graded to the mass-mean construction only). |
+
+  In every case the sentence no longer says "four directions"; "four" becomes a note on the first construction.
+
+  ## Cost and queue
+
+  9B ≈ 4.5 GPU-h, Muse ≈ 2.5, 27B ≈ 1 (Part 2 only). Scene generation for S = 4 and 8 and the pair construction ≈ 1 h CPU. Place 51.11 on helper after 51.5 and before 51.4; 51.11 outranks 51.2 and 51.4 (it changes a headline wording). If the night runs short, Parts 1 and 2 on the 9B are the minimum.
+
+  ## Q51.11 for Dan (options only)
+
+  - Part 1: ordinal / one per slot / growing / in between — 9B; Muse.
+  - Part 2: one code / partly overlapping / different — 9B; Muse; 27B.
+  - Part 3: metric order / categories / first vs the rest — 9B; Muse.
+
+  ## Dumbest ways to be wrong, to check in the verify pack
+
+  The 4- and 8-locker scenes must keep every locker sentence at the same token length (so slots are positions, not lengths); the DAS pairs must hold the answer digit fixed across the pair (a position counterfactual, not a value one); d* must be read on held-out entities, not on the fit half; the midpoint swap's norm must be reported (half of a full swap at 2× is one real change's size, so a null result could be a dose effect — add a 4× midpoint arm); the random R's IIA at k = 2 was 0.30 in 49.8, so the random bar is per k, not one number.
