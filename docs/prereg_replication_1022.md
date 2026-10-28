@@ -2188,3 +2188,87 @@ Note 3's v2 answer-only runs were cancelled before they started (Zach, 27 Oct, ~
     - **Formats (Q, J):** M − K and H as for P.
 - **Ports to v3** (swap and pointer, answer-only removal, keep-own, position split, readout) and later tests (SOCRATES,
   monitoring) each get their own note before they run.
+
+#### Amendment 58 note 5 (Zach, 2026-10-28 00:35 UTC, before any run below; no v3 knock-out or swap result seen): the ports to v3
+
+- **Why (Zach, 27 Oct):** "port all the experiments over to our new v3 setup if it makes sense (do this carefully)".
+  Each port keeps its v2 design, conditions and reading. Only these change: the set, the words v3 has, and note 4's
+  eligibility.
+- **Common to every port:**
+  - **Set:** rendering 0 (jsuite_v3_test_chat).
+  - **Eligibility:** each model's v3 competence run, with note 4's V4 scene rule over PK PM MK MM WK WM TK TM XK XM QK
+    QM JK JM YK YM RM.
+  - **Models and bands:** Qwen3.6-27B L32-40, Qwen3.5-9B L12-16, Lightning L27-33.
+  - **Smoke first:** on the 9B, 2 items per word for every script, for the mechanics only.
+- **Code (this commit):**
+  - jswap, jswap_pointer, jswap_xrel and bridge_readout read v3's tables (scripts/jsuite_v3_tables.py) and words, and
+    take v3's eligibility through jswap.v3_prompts.
+  - On v3 only, the made-up-value parser accepts v3's display article ("a city in the Netherlands"). Without it, 3-9%
+    of made-up values in cities, companies and landmarks went unparsed; with it, 100% of PP / PK / PM / PA / PN / TK /
+    TM entities parse, checked on all v3 items.
+  - v1 and v2 paths are unchanged.
+- **1. Answer-only removal (note 3, moved here by note 4):**
+  - **Conditions:** ansJ, ansJ_rot, ansU, ansU_rot, as note 3.
+  - **Words:** PP PK PM PA PN MP MK MM MA MN TK TM WK WM WA WN RM RA RN.
+  - **Comparison:** paper10 from the model's v3 knock-out matrix, on the same items.
+  - **Reading:** note 3's ("answer deletion explains most of it" if ansJ's M − K ≥ 0.5 × paper10's, with ansJ_rot ≤ 10,
+    in at least 2 of 3 models; primary on start P).
+- **2. Swap (amendment 32):**
+  - **Conditions:** swap, remove, swap_rot, swap_u, swap_comp, paste; every job.
+  - **Words:** PP PK PM PA PN TK TM (v3 has no TP, TA or TN).
+  - **Readings:** amendment 32's, on the memory finals PM PA PN TM, pooled and per word:
+    - swap transfer ≥ 20 with a bootstrap interval above 0;
+    - swap_rot and swap_u < 5;
+    - PP and PK kept ≥ 80%.
+- **3. Position split (amendments 36 and 57):**
+  - **Conditions:** paper10 and paper10_rot under --positions bridge and under --positions question.
+  - **Bands:** the headline band, and the deep band: 27B L52-60, 9B L26-29, Lightning L33-39.
+  - **Words:** P, M, T and W starts × the finals above (no R: it has no mention).
+  - **Measure:** each mode's paper10 M − K as a share of the knock-out matrix's all-position M − K at the headline band.
+  - **Readings:** amendment 36's:
+    - bridge-only, on P and T: < 1/3;
+    - question-only, on M: ≥ 2/3;
+    - P and T, question-only: ≥ 2/3 means re-retrieval from the question;
+    - rotated < 10 in every mode;
+    - not read where the reference M − K < 15.
+- **4. What the mention carries (amendment 51, jswap_pointer):**
+  - **Conditions:** neutral donor, own-word swap, timeline; 150 jobs per word (seed as v2); same words as 2.
+  - **Readings:** amendment 51's:
+    - swap_neutral ≥ 2/3 of swap means the J-part carries the entity whatever its context;
+    - ≤ 1/3 means it depends on the passage;
+    - not read if swap < 10.
+- **5. Keep-own (amendment 55):**
+  - **Conditions:** paper10, paper10_rot, paper10_keepown, paper10_keepown_rot; 150 items per word, seed 0.
+  - **Band and words:** headline band; words as 1.
+  - **Measure:** restored = 1 − (M − K under keepown) / (M − K under paper10).
+  - **Readings:**
+    - ≥ 0.75 kills C1 for that model;
+    - ≤ 0.25 means the dependence is not the bridge's own word.
+- **6. Cross-relation swap (amendment 47), redefined for v3:**
+  - **Why redefined:** no two v3 relations share their entities, so v2's "other relation" cannot be built.
+  - **The two contexts:**
+    - "fact": the entity's own attribute is asked; K-final passages ("By nationality, D was Kenyan.").
+    - "pfact": a made-up attribute about it is asked, with the same answer words; P-final passages ("The upcoming biopic
+      casts a French actor as D.").
+  - **Donors:** swap_srel takes D's J-part from another prompt of the item's own context, swap_xrel from one of the
+    other.
+  - **Not used:** mentions in M, A and N passages, which carry made-up-fact lures on other entities.
+  - **Rows keep the donor prompt ids.** On CPU, the share of swap_xrel answers that equal D's made-up value in the
+    donor passage is reported.
+  - **Readings:** amendment 47's:
+    - swap_xrel ≥ 2/3 of swap_srel on the memory finals means the J-part carries the entity, not the context's theme;
+    - not read if swap_srel < 10.
+  - **Status:** this is a different manipulation from v2's: a context about the entity versus a different relation. It
+    is reported as a new test, not as a replication.
+- **7. Bridge readout (descriptive):**
+  - **Words:** PM, TM and PN, at the bridge's first mention.
+  - **Readout:** J-lens and logit lens over the relation's candidates, every 2nd layer.
+- **Not ported:**
+  - **Probe swap:** it needs answers shared across many bridges, which v3's balance removes. The v2 result stands.
+  - **Stays on v2:** the dose grid, the K sweeps, swap_ans, depth profiles, three-hop and numbers. v3 has no three-hop
+    or number items.
+- **Order and GPUs:** ports run beside the knock-out matrix. The models fit in memory side by side, and these runs are
+  CPU-launch-bound.
+  - **GPU 1:** 9B ports once its competence is written, then Lightning's, then the 27B's swap family.
+  - **GPU 0:** the 27B's removal ports after its knock-out matrix.
+  - **Priority within a model:** 1, 2, 3, 4, 5, 6, 7.

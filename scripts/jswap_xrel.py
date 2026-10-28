@@ -8,6 +8,11 @@ of the same test set where D is named, either of the same relation (swap_srel) o
 attributes in general, swap_xrel moves the answer to D's value of the asked relation about as well as swap_srel.
 Relations: countries (continent) and languages, the two v2 relations whose bridges are both countries. Words: the read
 and tracked starts (v2's PP PK PM PA PN TP TK TM TA TN); eligibility as the knock-out (the model's competence run).
+jsuite v3 (amendment 58 note 5): no two v3 relations share their entities, so the "relation" is the asked
+attribute: the entity's own (K finals: "By nationality, D was Kenyan.") or the made-up one about it (P finals: "The
+upcoming biopic casts a French actor as D.", same answer words). swap_srel takes D's J-part from another prompt asking
+the item's own attribute, swap_xrel from one asking the other; mentions in M A N passages (made-up-fact lures on other
+entities) are not used. Words: v3's PP PK PM PA PN TK TM; rows carry the donor prompts' ids (ssrc, xsrc).
 Conditions, at every layer of the band (one patched forward each, after one clean forward):
   swap           D's J-part from this prompt (jswap's swap, the reference)
   swap_srel      D's J-part from another prompt of the same relation
@@ -61,31 +66,43 @@ def main(a) -> None:
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "why": a.why, "target": pins.TARGET, "model": pins.model_pin(),
                                                        "lens": pins.FROZEN_LENS, "band": a.band, "set": a.set, "competence": a.competence,
                                                        "relations": RELS, "conditions": CONDS, "k": 10, "git_commit": commit, "git_state": pins.git_state(),
-                                                       "limit": a.limit, "seed": "random.Random(item id)"}, indent=2) + "\n")  # fmt: skip
+                                                       "limit": a.limit, "seed": "random.Random(item id)",
+                                                       **({"v3_relations": "fact (K finals) / pfact (P finals); amendment 58 note 5"} if a.set.startswith("jsuite_v3") else {})}, indent=2) + "\n")  # fmt: skip
     model = load_model()
     tok = model.tokenizer
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
-    prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(JS.ALL_WORDS_V2), 1000, ["clean"], "all")
-               if items[p["id"]].get("module") == "facts" and items[p["id"]].get("relation") in RELS]  # fmt: skip
+    v3 = a.set.startswith("jsuite_v3")  # amendment 58 note 5: the other relation is the donor's made-up-fact passage
+    WORDS = JS.WORDS_V3 if v3 else JS.WORDS_V2
+    if v3:
+        prompts = [p for p in JS.v3_prompts(tok, a.set, a.competence, WORDS) if items[p["id"]].get("module") == "facts"]
+    else:
+        prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(JS.ALL_WORDS_V2), 1000, ["clean"], "all")
+                   if items[p["id"]].get("module") == "facts" and items[p["id"]].get("relation") in RELS]  # fmt: skip
+
+    def ctx(it: dict) -> str | None:  # the mention pool a prompt feeds: v2, its relation; v3, the asked attribute
+        if not v3:
+            return it["relation"]
+        return "fact" if it["final"] in "KH" else "pfact" if it["final"] == "P" else None
+
     by_id = {p["id"]: p for p in prompts}
     mentions = collections.defaultdict(list)  # (relation, country) -> [(prompt id, last token of its first mention)]
     for p in prompts:
         it = items[p["id"]]
         for e in it["entities"]:
             pos = JS.spans(bridge_positions(tok, p["ids"], e))
-            if pos:
-                mentions[(it["relation"], e)].append((p["id"], pos[0]))
+            if pos and ctx(it):
+                mentions[(ctx(it), e)].append((p["id"], pos[0]))
     jobs = []
     for p in prompts:
-        if p["family"] not in JS.WORDS_V2:
+        if p["family"] not in WORDS:
             continue
         it = items[p["id"]]
         x, kind, rel = it["bridge"], it["kind"], it["relation"]
-        other = RELS[1 - RELS.index(rel)]
-        t = TB.REL2[rel]
+        same, other = (("pfact", "fact") if it["final"] == "P" else ("fact", "pfact")) if v3 else (rel, RELS[1 - RELS.index(rel)])
+        t = JS.table(it) if v3 else TB.REL2[rel]
         vocab = it["answer_vocab"]
         if it["final"] == "P":
-            ans = {e: JS.pfact_value(t["pfact"][it["wording"]], it["context"], e, vocab) for e in it["entities"]}
+            ans = {e: JS.pfact_value(t["pfact"][it["wording"]], it["context"], e, vocab, the=v3) for e in it["entities"]}
         else:
             ans = {e: t["facts"][e][0] for e in it["entities"]}
         if ans.get(x) is None:
@@ -95,7 +112,7 @@ def main(a) -> None:
         ok_name = lambda e: not (e.lower().startswith(x.lower()) or x.lower().startswith(e.lower()))  # noqa: E731
         src = lambda r, e: sorted(m for m in mentions[(r, e)] if m[0] != p["id"])  # noqa: E731
         donors = [e for e in it["entities"][1:] if ans.get(e) and ans[e] != ans[x] and ok_name(e) and bridge_positions(tok, p["ids"], e)
-                  and src(rel, e) and src(other, e)]  # fmt: skip
+                  and src(same, e) and src(other, e)]  # fmt: skip
         if not xpos or not donors:
             continue
         d = rng.choice(sorted(donors))
@@ -103,14 +120,14 @@ def main(a) -> None:
         th = rng.choice(sorted(thirds)) if thirds else None
         dpos = JS.spans(bridge_positions(tok, p["ids"], d))
         jobs.append({**p, "x": x, "d": d, "th": th, "rel": rel, "pairs": [(xp, dpos[min(i, len(dpos) - 1)]) for i, xp in enumerate(xpos)],
-                     "ssrc": rng.choice(src(rel, d)), "xsrc": rng.choice(src(other, d)),
+                     "ssrc": rng.choice(src(same, d)), "xsrc": rng.choice(src(other, d)),
                      "fx": JS.forms(tok, ans[x], kind), "fd": JS.forms(tok, ans[d], kind), "ft": JS.forms(tok, ans[th], kind) if th else set(),
                      "ax": ans[x], "ad": ans[d], "at": ans[th] if th else None})  # fmt: skip
     if a.limit:
         per = collections.defaultdict(list)
         for j in jobs:
             per[j["family"]].append(j)
-        jobs = [j for f in JS.WORDS_V2 for j in per[f][: a.limit]]
+        jobs = [j for f in WORDS for j in per[f][: a.limit]]
     print(f"{len(prompts)} eligible prompts in {RELS}; {len(jobs)} jobs; by word {dict(collections.Counter(j['family'] for j in jobs))}", flush=True)
 
     lens = JLens(model, pins.FROZEN_LENS)
@@ -171,7 +188,8 @@ def main(a) -> None:
             ids = torch.tensor([j["ids"] for j in chunk], device="cuda")
             clean, rec = forward(ids, None, record=True)
             prot = [row_of[t][row_of[t] >= 0] for t in clean.topk(10, dim=1).indices]
-            meta = lambda j: {"x": j["x"], "donor": j["d"], "third": j["th"], "ax": j["ax"], "ad": j["ad"], "at": j["at"], "rel": j["rel"]}  # noqa: E731
+            meta = lambda j: {"x": j["x"], "donor": j["d"], "third": j["th"], "ax": j["ax"], "ad": j["ad"], "at": j["at"], "rel": j["rel"],  # noqa: E731
+                              **({"ssrc": j["ssrc"][0], "xsrc": j["xsrc"][0]} if v3 else {})}
             for b, j in enumerate(chunk):
                 cls, pick = classify(clean[b], j)
                 rows.append({"id": j["id"], "family": j["family"], "condition": "none", "cls": cls, "pick": pick, **meta(j)})
@@ -207,7 +225,7 @@ def main(a) -> None:
     pooled = JS.score([{**r, "family": "memory"} for r in rows if r["family"] in MEMORY])
     summ.update({k: v for k, v in pooled.items()})
     (out_dir / "summary.json").write_text(json.dumps(summ, indent=1) + "\n")
-    for f in (*JS.WORDS_V2, "memory"):
+    for f in (*(JS.WORDS_V3 if a.set.startswith("jsuite_v3") else JS.WORDS_V2), "memory"):
         for c in ("none", *CONDS):
             cell = summ.get(f"{f}/{c}")
             if cell:

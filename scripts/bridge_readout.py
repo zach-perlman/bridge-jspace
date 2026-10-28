@@ -47,9 +47,14 @@ def main(a) -> None:
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "set": a.set, "competence": a.competence,
                                                        "layers": layers, "git_commit": commit}, indent=2) + "\n")  # fmt: skip
     items = {json.loads(line)["id"]: json.loads(line) for line in (DATA / a.set / "items.jsonl").read_text().splitlines()}
-    v2 = a.set.startswith("jsuite_v2")
+    v2 = a.set.startswith("jsuite_v2") or a.set.startswith("jsuite_v3")  # v3: amendment 58 note 5
     fams = ("PM", "TM", "PN", "TN") if v2 else ("PM", "TM")
-    prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(ALL_WORDS_V2 if v2 else ALL_WORDS), 1000, ["clean"], "all") if p["family"] in fams]
+    if a.set.startswith("jsuite_v3"):  # amendment 58 note 5: v3 words, eligibility by the scene rule
+        from scripts import jswap as JS3
+
+        prompts = [p for p in JS3.v3_prompts(tok, a.set, a.competence, fams) if p["family"] in fams]
+    else:
+        prompts = [p for p in tasks_prompts(tok, a.set, a.competence, list(ALL_WORDS_V2 if v2 else ALL_WORDS), 1000, ["clean"], "all") if p["family"] in fams]
     letters = model.letter_token_ids()
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     row_of = torch.full((model.hf.lm_head.weight.shape[0],), -1, dtype=torch.long, device="cuda")
