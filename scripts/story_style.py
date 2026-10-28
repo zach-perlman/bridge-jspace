@@ -48,7 +48,7 @@ MARK = {"remove": "o", "zero": "X", "add": "D", "swap": "^", "whole": "s"}
 MARK_TEXT = {"remove": "removed from the change", "zero": "taken out of a prompt's own state",
              "add": "added by itself", "swap": "the swap", "whole": "the whole state copied"}  # fmt: skip
 MARK_COL_TEXT = {"recall": "recall", "lookup": "lookup", "jpp": "the J++ part", "address": "the address",
-                 "identity": "identity", "null": "a random part (same size)"}  # fmt: skip
+                 "identity": "identity route", "null": "a random part (same size)"}  # fmt: skip
 STATUS_GLYPH = {"fixed": "●", "after": "○"}
 STATUS_TEXT = {"fixed": "fixed in advance", "after": "after the data"}
 SUBTITLE = "story_subtitle"  # the attribute title() sets on the subtitle's Text

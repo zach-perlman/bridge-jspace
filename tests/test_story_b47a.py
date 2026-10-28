@@ -128,6 +128,23 @@ def test_figure_on_its_planted_verdict(test_id, tmp_path, monkeypatch, saved):  
     assert any(isinstance(r["value"], float) and r["lo"] is not None for r in rows)  # a number with its interval
 
 
+def test_routes_lens_on_the_planted_verdict(tmp_path, monkeypatch, saved):  # noqa: F811
+    """Fig. 5d: both routes on every model and slice, the falls cited to the verdict (the per-item rows reproduce them,
+    or the builder stops), the random part's own cost to the routes run's per-item rows, plus the README's maximum."""
+    verdict = planted_atoms(tmp_path / "results", monkeypatch)
+    assert B.build_routes_lens(verdict, "fig05d_routes_lens") == "fig05d_routes_lens"
+    check(saved["fig05d_routes_lens"])
+    rows = [r for r in S.ROWS if r["figure"] == "fig05d"]
+    falls = [r for r in rows if "beyond random without lens directions" in r["quantity"]]
+    bands = [r for r in rows if "costs (whole change minus without it)" in r["quantity"]]
+    assert len(falls) == len(bands) == 3 * 2 * 3
+    assert all(r["source"].endswith("x47_1.json") for r in falls)
+    assert all(r["source"].endswith("outcomes.jsonl") and r["lo"] <= r["value"] <= r["hi"] for r in bands)
+    worst = [r for r in rows if r["quantity"].startswith("47.1: position route: the most")]
+    pos = [r["value"] for r in falls if "position route" in r["quantity"]]
+    assert len(worst) == 1 and worst[0]["value"] == max(pos)
+
+
 def test_titles_read_the_planted_outcomes(tmp_path, monkeypatch):
     v = {k: json.loads((PLANTED[k](tmp_path / k, monkeypatch) / VERDICT_FILE[k]).read_text()) for k in PLANTED}
     assert B.atoms_title(v["47.1"]).startswith("The lookup's identity route sits in lens directions 26–100")

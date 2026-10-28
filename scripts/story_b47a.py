@@ -1,7 +1,8 @@
 """README figures for batch 47 (part a): one figure per test, each drawn from that test's verdict folder (the json its
 `verdict` stage writes) in story_style's look, every plotted number recorded for figures/story/data.csv.
 
-  47.1  x47_atoms.py   x47_1-<UTC>/x47_1.json         Fig. 11: without the J++ lens's directions 26-100
+  47.1  x47_atoms.py   x47_1-<UTC>/x47_1.json         Fig. 11: without the J++ lens's directions 26-100; README
+                                                      Figs. 5b (the main test's parts) and 5d (the routes test's slices)
   47.5  x47_zero.py    x47_5-<UTC>/x47_5.json         Fig. 12: the J++ part zeroed at one layer
   47.3  x47_cue.py     x47_3-<UTC>/x47_3.json         Fig. 13: a described bridge
   47.2  x47_six.py     x47_2-<UTC>/x47_2.json         Fig. 14: six lockers, one shift vector
@@ -19,7 +20,9 @@ import sys
 import textwrap
 from pathlib import Path
 
+import numpy as np
 from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
 from matplotlib.transforms import blended_transform_factory
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -227,17 +230,15 @@ def build_atoms(verdict_dir: Path, out_name: str, title: str | None = None) -> s
 E3_PARTS = (("jpp", "J++ part\n(lens\ndirections\n1–25)", False), ("26-100", "lens directions\n26–100", True),
             ("pca_eq", "PCA directions\n(same size)", False), ("wu", "logit-lens\ndirections", True),
             ("rand", "random lens\ndirections", True))  # fmt: skip
-E3_FALLS = (("1-25", "1–25"), ("26-100", "26–100"), ("1-100", "1–100"))  # the inset's rows (27B)
-E3_INSET_MODEL = "qwen3.6-27b"
 
 
 def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -> str:
-    """E3 (v6; Fig. 2 and 47.1 merged): one extra-loss axis, one group of rows per part of the change taken out at the
-    bridge word (the J++ part, lens directions 26-100, PCA directions of the J++ part's size, logit-lens and random lens
-    directions), one row per model (9B, 27B, Muse) with the lookup's and the recall's extra loss and their 95% intervals
-    (open: the parts runs on one-pick scenes, after the data; filled: the main test, fixed in advance). Inset: the 27B's
-    routes test, the lookup's identity answers lost beyond random without lens directions 1-25, 26-100 and both (47.1,
-    fixed in advance). The 122B's parts: figures/supp/s02_parts_all."""
+    """Fig. 5b (v6; Fig. 2 and 47.1 merged; the inset left for Fig. 5d, Dan's 5b / 5d brief, 28 Oct ~20:30): the main
+    test on one extra-loss axis, one group of rows per part of the change taken out at the bridge word (the J++ part,
+    lens directions 26-100, PCA directions of the J++ part's size, logit-lens and random lens directions), one row per
+    model (9B, 27B, Muse) with the lookup's and the recall's extra loss and their 95% intervals (open: the parts runs on
+    one-pick scenes, after the data; filled: the main test, fixed in advance). The 122B's parts:
+    figures/supp/s02_parts_all."""
     src = verdict_dir / "x47_1.json"
     v = json.loads(src.read_text())
     by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
@@ -246,8 +247,8 @@ def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -
     plt = S.setup()
     fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, title or "Only the J++ part costs the recall; no single part costs the lookup",
-            "Extra loss without each part of the change, beyond a random part of the same size; whiskers 95%.")  # fmt: skip
-    ax = fig.add_axes((0.30, 0.6 / h, 0.36, 1 - 1.45 / h - 0.6 / h))
+            "The main test; extra loss without each part of the change, beyond a random part of the same size")  # fmt: skip
+    ax = fig.add_axes((0.30, 0.6 / h, 0.66, 1 - 1.45 / h - 0.6 / h))
     S.extra_axis(ax, label=False)
     ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "0.25", "0.5", "0.75", "1"])
     ax.grid(axis="x", color="#eeeeee")
@@ -304,33 +305,147 @@ def build_identity(verdict_dir: Path, out_name: str, title: str | None = None) -
             transform=ax.transAxes, ha="right", va="bottom", fontsize=S.FONT, color=S.COL["muted"])  # fmt: skip
     hs, ls = F.reader_handles(plt)
     F.legend(fig, hs, ls, 1 - 0.62 / h, ncol=2)
+    S.save(fig, out_name)
+    return out_name
 
-    # inset: the 27B's identity answers lost beyond random (routes test), without 1-25, 26-100 and both
-    ins = S.inset(fig, (0.79, 0.44, 0.19, 0.22))
-    falls = ((by.get(E3_INSET_MODEL) or {}).get("routes") or {}).get("falls", {})
-    n_routes = ((by.get(E3_INSET_MODEL) or {}).get("routes") or {}).get("n")
-    for i, (k, _) in enumerate(E3_FALLS):
-        f = iv((falls.get(k) or {}).get("identity"))
-        if f is None:
-            status_text(ins, -i, "not run")
-            continue
-        S.dot(ins, 0, -i - 0.12, f, S.COL["identity"], size=7)
-        ins.text(f[2] + 0.04, -i - 0.12, f"{f[0]:.2f}", va="center", fontsize=S.FONT - 1, color=S.COL["identity"])
-        S.record(fid, E3_INSET_MODEL, f"47.1: identity answers lost beyond random without lens directions {k}", *f,
-                 n=n_routes, source=source)  # fmt: skip
-    for i, (_, name) in enumerate(E3_FALLS):  # each row's label above its dot
-        ins.text(0.0, -i + 0.3, f"lens directions {name}", va="center", fontsize=S.FONT - 1)
-    ins.set_xlim(-0.05, 1.0)
-    ins.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
-    ins.axvline(0, color="#999999", lw=0.8, zorder=1)
-    ins.set_ylim(-len(E3_FALLS) + 0.4, 0.6)
-    ins.set_yticks([])
-    ins.grid(axis="x", color="#eeeeee")
-    head = blended_transform_factory(fig.transFigure, ins.transAxes)
-    ins.text(0.75, 1.30, "27B: identity answers\nlost beyond random", transform=head,
-             fontsize=S.FONT, weight="bold", va="bottom", linespacing=1.0)  # fmt: skip
-    ins.text(0.75, 1.06, f"routes test · n = {n_routes}  {S.STATUS_GLYPH['fixed']}", transform=head,
-             fontsize=S.FONT - 1, color=S.COL["muted"], va="bottom")  # fmt: skip
+
+# ---- Fig. 5d (E3): the routes test's lens slices, both routes -------------------------------------------------------
+
+# Dan's Fig. 5b / 5d brief (28 Oct ~20:30). (47.1's fall label, the part's arm in x47_atoms.PARTS, the panel title)
+ROUTE_SLICES = (("1-25", "jpp", "lens directions 1–25"), ("26-100", "jpp26_100", "26–100"),
+                ("1-100", "jpp100", "1–100 (both)"))  # fmt: skip
+SPLIT_ROUTES = (("identity", "identity route"), ("position", "position route"))
+REDUNDANT_MODEL, REDUNDANT_SLICE = "qwen3.6-27b", "1-100"  # the bar Dan's brief labels "redundant copies"
+SLICE_XLIM = (-0.42, 0.88)
+
+
+def route_costs(rows: list[dict], n_boot: int = X.N_BOOT) -> dict:
+    """One 47.1 routes run's per-item rows, read as x47_atoms.routes_numbers reads them (the C2 lookup rows, the scenes
+    every arm holds, the cluster bootstrap over bridge items on the same draws): per (slice, route) the fall beyond the
+    random part (share without the random part minus share without the slice; its point checks the verdict) and what
+    the random part itself costs the route (share under the whole change minus share without the random part) with its
+    95% interval."""
+    from scripts import x47_atoms as A
+
+    lk = [r for r in rows if r["condition"] == "C2" and r["reader"] == X.LOOKUP]
+    arms = [a for a in A.ROUTE_ARMS if any(r["arm"] == a for r in lk)]
+    by = {a: {r["scene"]: r for r in lk if r["arm"] == a} for a in arms}
+    scenes = sorted(set.intersection(*(set(v) for v in by.values())))
+    ents = [by["whole"][s]["entity"] for s in scenes]
+    sw = {f"{rt}|{a}": [int(by[a][s]["route"] == rt) for s in scenes] for a in arms for rt, _ in SPLIT_ROUTES}
+    rr = X.resampled_rates(sw, ents, n_boot)
+    pt = {k: float(np.mean(v)) for k, v in sw.items()}
+    cells = {}
+    for label, p, _ in ROUTE_SLICES:
+        for rt, _ in SPLIT_ROUTES:
+            whole, part, rand = (f"{rt}|{a}" for a in ("whole", f"no_{p}", f"no_{p}_rand"))
+            cells[(label, rt)] = {"fall": pt[rand] - pt[part],
+                                  "random": (pt[whole] - pt[rand], *X.interval(rr[whole] - rr[rand]))}  # fmt: skip
+    return {"n": len(scenes), "cells": cells}
+
+
+def value_label(ax, y: float, v: float, col: str) -> None:
+    """The point's value in a column at the panel's right edge, clear of the marks and the grey bands."""
+    ax.text(SLICE_XLIM[1] - 0.02, y, f"{v:.2f}".replace("-", "−"), ha="right", va="center", fontsize=S.FONT - 1,
+            color=col, zorder=5)  # fmt: skip
+
+
+def build_routes_lens(verdict_dir: Path, out_name: str, title: str | None = None) -> str:
+    """Fig. 5d (E3; Dan's 5b / 5d brief, 28 Oct ~20:30): the routes test (47.1, fixed in advance), one panel per lens
+    slice taken out of the change (directions 1-25, 26-100, 1-100), two rows per model (9B, 27B, Muse): the lookup's
+    identity-route and position-route answers lost beyond a random part of the same share, with 95% intervals (the
+    verdict's routes falls); behind each row, as a grey band, what that random part itself costs the route (whole change
+    minus without it, 95% interval; recomputed from the routes run's per-item rows, whose falls are checked against the
+    verdict first); the 0.10 band; the 27B's 1-100 identity bar labelled as redundant copies, with its numbers."""
+    src = verdict_dir / "x47_1.json"
+    v = json.loads(src.read_text())
+    by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
+    models = [(t, m) for t, m in TARGETS if ((by.get(t) or {}).get("routes") or {}).get("falls")]
+    omitted = [F.SHORT[m] for t, m in TARGETS if (t, m) not in models]
+    gap = 3.4  # rows from one model's identity row to the next's (two rows and room for the 27B's label)
+    ys = {t: -k * gap for k, (t, _) in enumerate(models)}
+    row_in, top_in, bottom_in = 0.34, 1.62, 0.85 + 0.2 * bool(omitted)
+    body = (gap * (len(models) - 1) + 1 + 1.2) * row_in
+    h = top_in + body + bottom_in
+    plt = S.setup()
+    fig, axes = plt.subplots(1, len(ROUTE_SLICES), figsize=(S.WIDTH, h), sharey=True, sharex=True)
+    fig.subplots_adjust(left=0.31, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.08)
+    S.title(fig, title or "The lookup's identity route runs outside the lens; the position route never touches it",
+            "Identity route: the answer names the item's own locker; position route: the locker now at the item's old "
+            "place (routes test, E5)", limit=92)  # fmt: skip
+    costs, ns = {}, set()
+    for t, _ in models:
+        run = (by[t].get("runs") or [None])[0]
+        path = F.pins.RESULTS_DIR / "x6_routes" / run / "outcomes.jsonl"
+        costs[t] = (route_costs(X.read_jsonl(path)), F.rel(path))
+        ns.add(by[t]["routes"]["n"])
+    for ax, (label, _, name) in zip(axes, ROUTE_SLICES, strict=True):
+        ax.set_xlim(*SLICE_XLIM)
+        ax.axvspan(SLICE_XLIM[0], S.NOT_NEEDED, color=S.COL["band"], lw=0, zorder=0)
+        ax.axvline(0, color="#999999", lw=0.8, zorder=1)
+        ax.set_xticks([-0.25, 0, 0.25, 0.5, 0.75], ["", "0", "", "0.5", ""])
+        ax.grid(axis="x", color="#eeeeee")
+        ax.tick_params(axis="y", length=0)
+        ax.set_title(name, fontsize=12, weight="bold", loc="left")
+        for t, _ in models:
+            r = by[t]["routes"]
+            split, cost_src = costs[t]
+            for i, (rt, words) in enumerate(SPLIT_ROUTES):
+                y, col = ys[t] - i, S.MARK_COL["identity" if rt == "identity" else "address"]
+                f = iv(r["falls"][label][rt])
+                c = split["cells"][(label, rt)]
+                # the per-item rows reproduce the verdict's fall before anything is drawn
+                assert np.isclose(c["fall"], f[0]), (t, label, rt, c["fall"], f[0])
+                lo, hi = c["random"][1], c["random"][2]
+                ax.fill_between([lo, hi], [y - 0.24] * 2, [y + 0.24] * 2, color=S.MARK_COL["null"], alpha=0.6, lw=0,
+                                zorder=1)  # fmt: skip
+                ax.plot([c["random"][0]] * 2, [y - 0.24, y + 0.24], color="#8a8a8a", lw=1.0, zorder=1.5)
+                ax.plot([f[1], f[2]], [y, y], color=col, lw=1.6, zorder=3, solid_capstyle="butt")
+                ax.plot([f[0]], [y], S.MARK["remove"], ms=7, color=col, zorder=4)
+                value_label(ax, y, f[0], col)
+                S.record(fid, t, f"47.1: {words}: answers lost beyond random without lens directions {label}", *f,
+                         n=r["n"], source=source)  # fmt: skip
+                S.record(fid, t, f"47.1: {words}: answers a random part of the same share as lens directions {label} "
+                         "costs (whole change minus without it)", *c["random"], n=split["n"],
+                         source=cost_src)  # fmt: skip
+            if t == REDUNDANT_MODEL and label == REDUNDANT_SLICE:
+                # Dan's label, reworded: "alone" is not a figure word (docs/glossary.md), and 1-25 by itself costs
+                # the 27B more than "little"; the numbers say what "redundant" rests on (both > the sum of each)
+                fall = {k: r["falls"][k]["identity"][0] for k in ("1-25", "26-100", "1-100")}
+                ax.text(SLICE_XLIM[0] + 0.03, ys[t] - 1.45, f"redundant copies:\neach slice {fall['1-25']:.2f} / "
+                        f"{fall['26-100']:.2f},\nboth together {fall['1-100']:.2f}", ha="left", va="top",
+                        fontsize=S.FONT - 1, color=S.MARK_COL["identity"], linespacing=1.1, zorder=5)  # fmt: skip
+                ax.annotate("", (fall["1-100"], ys[t] - 0.22), (0.5 * (SLICE_XLIM[0] + fall["1-100"]), ys[t] - 1.4),
+                            arrowprops={"arrowstyle": "-", "color": S.MARK_COL["identity"], "lw": 0.8, "shrinkA": 0,
+                                        "shrinkB": 4})  # fmt: skip
+    # the README's "the position route never loses": its largest fall over every model and slice
+    worst = max(((by[t]["routes"]["falls"][k]["position"], t, k) for t, _ in models for k, _, _ in ROUTE_SLICES),
+                key=lambda x: x[0][0], default=None)  # fmt: skip
+    if worst:
+        S.record(fid, "", "47.1: position route: the most answers lost beyond random, over the models and slices",
+                 *worst[0], n=by[worst[1]]["routes"]["n"], source=source)  # fmt: skip
+    a0 = axes[0]
+    ticks = [ys[t] - i for t, _ in models for i in range(len(SPLIT_ROUTES))]
+    a0.set_yticks(ticks, [w for _ in models for _, w in SPLIT_ROUTES])
+    for lab, i in zip(a0.get_yticklabels(), range(len(ticks)), strict=True):
+        lab.set_color(S.MARK_COL["identity" if i % 2 == 0 else "address"])
+    a0.set_ylim(ys[models[-1][0]] - 1.6, 0.6)
+    tr = blended_transform_factory(fig.transFigure, a0.transData)
+    for t, m in models:
+        a0.text(0.01, ys[t] - 0.5, F.NAMES[m].replace(" 30B", "\n30B"), transform=tr, ha="left", va="center",
+                fontsize=S.FONT, weight="bold", linespacing=1.0)  # fmt: skip
+    axes[1].set_xlabel("answers lost without the directions, beyond a random part (same size)")
+    n_txt = ", ".join(str(n) for n in sorted(ns))
+    axes[-1].text(1.0, 1.10, f"n = {n_txt} per model  {S.STATUS_GLYPH['fixed']}", transform=axes[-1].transAxes,
+                  ha="right", va="bottom", fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
+    hs = [Line2D([], [], marker=S.MARK["remove"], ls="", color=S.MARK_COL["identity"], ms=7),
+          Line2D([], [], marker=S.MARK["remove"], ls="", color=S.MARK_COL["address"], ms=7),
+          Patch(fc=S.MARK_COL["null"], alpha=0.6, ec="none"), Patch(fc=S.COL["band"], ec="none")]  # fmt: skip
+    F.legend(fig, hs, ["identity route", "position route", "what a random part (same size) itself costs",
+                       "the 0.10 bar"], 1 - 0.74 / h, ncol=2)  # fmt: skip
+    if omitted:
+        fig.text(0.01, 0.2 / h, f"Not run: {', '.join(omitted)}.", ha="left", va="bottom", fontsize=S.FONT - 1,
+                 color=S.COL["muted"])  # fmt: skip
     S.save(fig, out_name)
     return out_name
 

@@ -135,7 +135,11 @@ def test_v6_style_catches_retired_words_and_missing_figures():
      ("lookups sent to the target locker", "lookups sent to the target locker"), ("47.10's report", "test number"),
      ("48.2 B", "test number"), ("x0_parts", "run name"), ("qwen35_9b_x6_routes", "run name"), ("x8_write", "run name"),
      ("x45q sweep", "run name"), ("x47_atoms", "run name"), ("x48_enrich", "run name"), ("C0 holds", "C0 / C2"),
-     ("C2 control", "C0 / C2")],
+     ("C2 control", "C0 / C2"),
+     # Dan's Fig. 5b / 5d brief (28 Oct ~20:30): "identity" never bare on a figure
+     ("identity", "bare identity"), ("The lookup follows identity or position", "bare identity"),
+     ("Identity early, position late", "bare identity"), ("the item's name (identity)", "bare identity"),
+     ("27B: identity code", "bare identity"), ("identity\n→ 3", "bare identity")],
 )  # fmt: skip
 def test_v6_style_catches_iteration_two_strings(text, rule):
     assert rule in {r for *_, r in C.v6_style(_v6_layout(), [(C.V6_FIGS[0], text)])}
@@ -146,7 +150,9 @@ def test_v6_style_catches_iteration_two_strings(text, rule):
     ["without the address", "only the address", "with the J++ part", "answers kept (share)", "the original answer",
      "a random part (same size)", "lost beyond random: 3 pp", "followed if above", "0.45", "45 pp", "lens directions 1–25",
      "Qwen3.6-27B", "Muse Glimmer 30B", "value: 0.00 in every row", "n = 758, 758, 657", "the bridge word", "it",
-     "lookups answering the swapped-in locker", "dose, in units of a real change", "C10", "box"],
+     "lookups answering the swapped-in locker", "dose, in units of a real change", "C10", "box", "identity route",
+     "Identity route: the answer names the item's own locker", "identity answers lost", "an identity change",
+     "identity-route answers", "the identity\nroute", "position route"],
 )  # fmt: skip
 def test_v6_style_passes_iteration_two_vocabulary(text):
     assert not C.v6_style(_v6_layout(), [(C.V6_FIGS[0], text)]), C.v6_style(_v6_layout(), [(C.V6_FIGS[0], text)])

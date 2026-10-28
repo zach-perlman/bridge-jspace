@@ -1786,7 +1786,7 @@ def routes_design_panel(plt, ax) -> None:
         ax.text(100, y - 5, pick, ha="right", va="center", fontsize=S.FONT, style="italic")
     for route, digit, col, j in (("position", "4", S.COL["position"], 0), ("identity", "3", S.COL["identity"], 1),
                                  ("original\nanswer", "2", "#7f7f7f", 2)):  # fmt: skip
-        ax.text(col_x[j], 83, f"{route}\n→ {digit}" if "\n" not in route else f"{route} → {digit}", ha="center",
+        ax.text(col_x[j], 83, f"{route}\nroute → {digit}" if "\n" not in route else f"{route} → {digit}", ha="center",
                 va="center", fontsize=S.FONT, color=col, linespacing=1.0,
                 bbox={"boxstyle": "round,pad=0.2", "fc": "white", "ec": col, "lw": 1.3})  # fmt: skip
         ax.annotate("", (col_x[j], 67.5), (col_x[j], 75.5), arrowprops={"arrowstyle": "->", "color": col, "lw": 1.5})
@@ -1813,8 +1813,9 @@ def f05_routes(plt) -> None:
     bar for the position answers without a random part of the same size; the value's share (0.00 on every row) in the
     legend, not as a box per row (v6 iteration 2). The 122B and the keep-only arms are in s05."""
     fig = plt.figure(figsize=(S.WIDTH, 5.4))
-    S.title(fig, "The lookup follows identity or position, never the value",
-            "Left: where each route sends the lookup. Right: lookup answers with the change placed at L.")  # fmt: skip
+    S.title(fig, "The lookup takes the identity route or the position route, never the value",
+            "Left: where each route sends the lookup. Right: lookup answers with the change placed at L.",
+            limit=80)  # fmt: skip
     left_ax = fig.add_axes((0.01, 0.04, 0.40, 0.70))
     routes_design_panel(plt, left_ax)
     left_ax.text(0, 1.015, "The routes test", transform=left_ax.transAxes, fontsize=12, weight="bold", va="bottom")
@@ -1876,7 +1877,8 @@ def f05_routes(plt) -> None:
     hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["identity"]), plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["position"]),
           plt.Rectangle((0, 0), 1, 1, **S.EMPTY), plt.Rectangle((0, 0), 1, 0.35, color=S.COL["control"]),
           plt.Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["value"], lw=1.3)]  # fmt: skip
-    legend(fig, hs, ["identity", "position", "the original answer", "position, a random part removed", value_label],
+    legend(fig, hs, ["identity route", "position route", "the original answer", "position, a random part removed",
+                     value_label],
            0.888, ncol=3)  # fmt: skip
     S.save(fig, "fig05_routes")
 
@@ -2938,7 +2940,7 @@ def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
         ("2×2", "Both operations, both datasets: one direction", two,
          lambda m: "fig12:our removal, our scenes (main test): gap"),
         ("Z1", "Our removal on Zach's passages: the split", z1, lambda m: z1_key[m]),
-        ("2", "Lookup by identity or position, never the value",
+        ("2", "Lookup by identity route or position route, never the value",
          {m: was("never the value", m) for m in SC6_MODELS}, lambda m: "s05:another item moved, whole: value share"),
         ("3", "Locker before the pick: the bridge word redirects",
          cells(**{m: was("the link sits in the locker sentences, clean one-pick scenes", m) for m in three},
@@ -2952,9 +2954,9 @@ def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
          lambda m: f"numbers:rtk_C2_keep_alf_position_{m}"),
         ("5", "The recall follows, but does not need, the J++ part", cells(),
          lambda m: "fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"),
-        ("6", "The lookup's identity code lies outside the lens", cells(),
+        ("6", "The lookup's identity route runs outside the lens", cells(),
          lambda m: "e3_identity:47.1: identity answers lost beyond random without lens directions 26-100"),
-        ("7", "Identity early, position late; address formed first", cells(**{"27b": "pending"}),
+        ("7", "Identity route early, position late; address formed first", cells(**{"27b": "pending"}),
          lambda m: "fig06c:D4: the address's mean overlap over every pair of window layers"),
         ("8", "The recall also reads the item's earlier mention",
          cells(**{m: was("the recall reads the earlier mention, locker before the pick", m) for m in three}),
@@ -3152,7 +3154,7 @@ def f06b_anatomy(plt) -> None:
     fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, h), sharey=True, squeeze=False)
     fig.subplots_adjust(left=0.085, right=0.985, top=1 - 1.95 / h, bottom=1.0 / h, wspace=0.10)
     reduced = [m["target"] for m in models if m["target"] in ANATOMY_REDUCED]
-    S.title(fig, "The address forms early; the lookup goes by identity, then by position",
+    S.title(fig, "The address forms early; identity route first, position route later",
             "Bars: lookup answers under the whole change at one layer; line: recall switches; whiskers, bands: 95%.")  # fmt: skip
     w = 0.78
     values: list[float] = []
@@ -3217,7 +3219,7 @@ def f06b_anatomy(plt) -> None:
           plt.Line2D([], [], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8),
           plt.Line2D([], [], color="#1e1e1e", ls="--", lw=1.2), plt.Line2D([], [], color="#1e1e1e", lw=1.2),
           plt.Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["value"], lw=1.3)]  # fmt: skip
-    legend(fig, hs, ["identity", "position", "the original answer", "recall switches",
+    legend(fig, hs, ["identity route", "position route", "the original answer", "recall switches",
                      f"address readable (probe ≥ {PROBE_BAR:.1f})",
                      f"position answers begin (≥ {POSITION_BAR:.1f})",
                      "value: 0.00 at every layer" if top < 0.005 else f"value: at most {top:.2f}"], 1 - 0.58 / h,
@@ -3236,7 +3238,8 @@ BATCH47 = {
     "fig01c_zeroing": ("story_b47a", "build_zero", "x47_zero/x47_5-*",
                        "Taking the J++ part out of the changed prompt's state leaves the recall's answers in place"),
     "fig03d_depth_map": ("story_b47b", "build_e11", "x47_depthmap/depth-*", None),
-    "fig05b_identity_outside": ("story_b47a", "build_identity", "x47_atoms/x47_1-*", None),  # E3 (v6)
+    "fig05b_identity_outside": ("story_b47a", "build_identity", "x47_atoms/x47_1-*", None),  # the main test's parts
+    "fig05d_routes_lens": ("story_b47a", "build_routes_lens", "x47_atoms/x47_1-*", None),  # E3 (Dan ~20:30)
     "fig05c_described_bridge": ("story_b47a", "build_cue", "x47_cue/x47_3-*",
                                 "A described bridge: the split holds on two of the three models"),
     "fig07c_probe_errors": ("story_b47a", "build_errors", "x47_errors/x47_13-*", None),
@@ -3405,9 +3408,10 @@ SUPP_FIGS = (
 # the README's main figures in page order (Dan's v6 iteration 2, 28 Oct ~15:40; his figures brief, ~18:30: fig00b, the
 # ladder in fig01c's place, the 2 x 2, Fig. 9 split into 9a here and 9b in Part IV), at most fourteen: fig05c (Part IV,
 # now a link), fig11 (the breadth page's, not on the depth page), fig09b_refit (Part IV, a link), fig13 and fig14 (the
-# Appendix) moved to the second sheet; Dan decides
+# Appendix) moved to the second sheet; Dan decides. His Fig. 5b / 5d brief (~20:30): E3's card shows Fig. 5d, and
+# Fig. 5b (the main test's parts) goes to the second sheet, linked from E1, to keep the sheet at fourteen
 README_NAMES = ("fig00_setup", "fig00b_marks", "fig12_two_by_two", "fig09a_transfer", "fig01_split", "fig01d_ladder",
-                "fig05b_identity_outside", "fig05_routes", "fig07_writes", "fig09b_six_lockers", "fig07b_verbal",
+                "fig05d_routes_lens", "fig05_routes", "fig07_writes", "fig09b_six_lockers", "fig07b_verbal",
                 "fig03_order", "fig03d_depth_map", "fig06b_anatomy")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/story/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/x0_details.md's figures

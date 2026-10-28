@@ -116,7 +116,7 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
     a.set_xscale("log")
     a.set_xlim(1, 3e4)
     a.set_xticks([1, 10, 100, 1000, 10000], ["1", "10", "100", "1k", "10k"])
-    a.set_xlabel("rank in the lens readout (log): the right\nordinal word (swap), the item's name (identity)")
+    a.set_xlabel("rank in the lens readout (log): the right\nordinal word (swap), the item's name (identity change)")
     a.set_title("Rank through the lens", fontsize=12, weight="bold", loc="left", pad=22)
     b.set_xlim(0, 0.5)
     b.set_xticks([0, 0.25, 0.5], ["0", "0.25", "0.5"])

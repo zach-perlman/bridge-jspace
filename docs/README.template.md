@@ -6,7 +6,7 @@
 ## In one minute
 
 - **In a conflict the recall follows the part of the bridge word the lens reads; the lookup does not** [A]. The recall does not need that part at one layer [B].
-- **The lookup follows the item's identity or its locker's position, never the number** [A]; its identity code lies outside the lens on all three models [B].
+- **The lookup follows the item's identity or its locker's position, never the number** [A]; its identity route runs outside the lens on all three models [B].
 - **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
@@ -35,7 +35,7 @@
 | 4a | The address can be removed and swapped | 9B, 27B, Muse | **A** | without it {{pt|rt_C2_no_alf_position_9b}} / {{pt|rt_C2_no_alf_position_27b}} / {{pt|rt_C2_no_alf_position_muse}} vs random {{pt|rt_C2_no_alf_rand_position_9b}} / {{pt|rt_C2_no_alf_rand_position_27b}} / {{pt|rt_C2_no_alf_rand_position_muse}} | no |
 | 4b | Adding only the address creates position answers | 9B, Muse (27B fails) | **B** | {{pt|rtk_C2_keep_alf_position_9b}} / {{pt|rtk_C2_keep_alf_position_27b}} / {{pt|rtk_C2_keep_alf_position_muse}} | no |
 | 5 | The recall does not need the J++ part at one layer; it follows it | 9B, 27B, Muse | **B** | kept {{dp|fig01c|9b|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} / {{dp|fig01c|27b|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} / {{dp|fig01c|muse|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} | no |
-| 6 | The lookup's identity code lies outside the lens; on the 27B the lens copies are redundant | 9B, 27B, Muse | **B** | {{dp|e3_identity|9b|47.1: identity answers lost beyond random without lens directions 26-100}} / {{dp|e3_identity|27b|47.1: identity answers lost beyond random without lens directions 26-100}} / {{dp|e3_identity|muse|47.1: identity answers lost beyond random without lens directions 26-100}} | no |
+| 6 | The lookup's identity route runs outside the lens on all three models; on the 27B the lens holds redundant copies of it (1–25: {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 1-25}}, 26–100: {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 26-100}}, both: {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 1-100}}). The position route never loses to any lens slice | 9B, 27B, Muse | **B** | identity route without 26–100: {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 26-100}}; position route at most {{dp|fig05d||47.1: position route: the most answers lost beyond random, over the models and slices}} | no |
 | 7 | With depth: identity early, position in the last window that reads the word; the address readable 8-16 layers before it is used | 9B, Muse | **B** | address overlap across depth {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}} | no |
 | 8 | The recall also reads the item's earlier mention when there is one | 9B, 27B, Muse | **B** | {{pt|x45p_d23_9b}}-{{pt|x45p_d23_muse}} | no |
 | 9a | The address is not verbalizable through the lens | 9B, 27B, Muse | **B** | share rebuilt {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} | no |
@@ -62,7 +62,7 @@
 
 ![Recall follows the J++ part of the bridge; the lookup mostly does not](figures/story/fig01_split.png)
 
-- **Conclusion.** The readers weight different parts of one word. Not shown: that the recall needs the part (E2).
+- **Conclusion.** The readers weight [different parts](figures/story/fig05b_identity_outside.png) of one word. Not shown: that the recall needs the part (E2).
 
 ### E2. Followed, not needed at one layer <a id="e2-followed"></a>
 
@@ -76,17 +76,17 @@
 
 - **Conclusion.** Followed at one layer, needed once other copies go. Not shown: Zach's band on Muse (rerun running).
 
-### E3. The lookup's identity lies outside the lens <a id="e3-identity"></a>
+### E3. The lookup's identity route runs outside the lens <a id="e3-identity"></a>
 
-- **Hypothesis.** Identity sits in lens directions 26-100 (without them identity answers fall at least 0.30 beyond random) or outside the lens (under 0.10). Fixed in advance.
-- **Mechanics.** Lens directions 26-100 taken out, 1-25 kept; against a random part and random lens directions of that size.
+- **Hypothesis.** The lookup's answers by the identity route fall at least 0.30 beyond random without lens directions 26-100, or under 0.10 (outside the lens). Fixed in advance.
+- **Mechanics.** Lens directions 1-25, 26-100 or both taken out of the change, against a random part.
 - **Data.** Routes scenes, 300 items per model.
-- **Result.** Identity falls {{d|e3_identity|9b|47.1: identity answers lost beyond random without lens directions 26-100}} / {{d|e3_identity|27b|47.1: identity answers lost beyond random without lens directions 26-100}} / {{d|e3_identity|muse|47.1: identity answers lost beyond random without lens directions 26-100}}: outside the lens on all three. On the 27B, directions 1-25 cost {{dp|e3_identity|27b|47.1: identity answers lost beyond random without lens directions 1-25}}, both slices together {{dp|e3_identity|27b|47.1: identity answers lost beyond random without lens directions 1-100}}: redundant copies. Only partly specific against a wrong-pair direction.
+- **Result.** Identity route without 1-25 / 26-100 / both: {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 1-25}} / {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|9b|47.1: identity route: answers lost beyond random without lens directions 1-100}} (9B), {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 1-25}} / {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|27b|47.1: identity route: answers lost beyond random without lens directions 1-100}} (27B), {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 1-25}} / {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 26-100}} / {{dp|fig05d|muse|47.1: identity route: answers lost beyond random without lens directions 1-100}} (Muse); position route at most {{dp|fig05d||47.1: position route: the most answers lost beyond random, over the models and slices}}.
 - **Figure.**
 
-![Only the J++ part costs the recall; no single part costs the lookup](figures/story/fig05b_identity_outside.png)
+![The lookup's identity route runs outside the lens; the position route never touches it](figures/story/fig05d_routes_lens.png)
 
-- **Conclusion.** The J++ part alone gives no identity answers: the identity route runs mostly outside J++. Not shown: the identity code itself.
+- **Conclusion.** The identity route survives the loss of lens directions 26-100 on all three models and of 1-25 on the 9B and Muse; on the 27B the two slices are redundant copies. Not shown: the identity code itself.
 
 ## Part II. What the lookup reads
 
@@ -100,7 +100,7 @@
 - **Result.** Identity / position {{pt|rt_C2_whole_identity_9b}} / {{pt|rt_C2_whole_position_9b}} (9B), {{pt|rt_C2_whole_identity_27b}} / {{pt|rt_C2_whole_position_27b}} (27B), {{pt|rt_C2_whole_identity_muse}} / {{pt|rt_C2_whole_position_muse}} (Muse); the value never, in any format.
 - **Figure.**
 
-![The lookup follows identity or position, never the value](figures/story/fig05_routes.png)
+![The lookup takes the identity route or the position route, never the value](figures/story/fig05_routes.png)
 
 - **Conclusion.** The lookup reads what the item is and where it sits. Not shown: who reads the position (the dereference test is running).
 
@@ -177,7 +177,7 @@
 - **Result.** Identity early, position in the last window, never the value; the probe reads the address 8 (9B) / 16 (Muse) layers before position starts; it settles late (mean overlap {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}}).
 - **Figure.**
 
-![The address forms early; the lookup goes by identity, then by position](figures/story/fig06b_anatomy.png)
+![The address forms early; identity route first, position route later](figures/story/fig06b_anatomy.png)
 
 - **Conclusion.** The address: written early, read late; position grows with depth on the main test too (candidate). Not shown: the 27B.
 

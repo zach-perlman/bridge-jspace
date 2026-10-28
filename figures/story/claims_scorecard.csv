@@ -8,9 +8,9 @@ id,claim,model,cell,flag,data.csv key,hand-checked
 Z1,Our removal on Zach's passages: the split,Qwen3.5-9B,x,degree,"fig12:our removal, his passages: gap",no
 Z1,Our removal on Zach's passages: the split,Qwen3.6-27B,x,degree,"fig12:our removal, his passages: gap",no
 Z1,Our removal on Zach's passages: the split,Muse Glimmer 30B,x,degree,"fig12:our removal, his passages: lookup switches under the whole change",no
-2,"Lookup by identity or position, never the value",Qwen3.5-9B,ok,,"s05:another item moved, whole: value share",no
-2,"Lookup by identity or position, never the value",Qwen3.6-27B,ok,,"s05:another item moved, whole: value share",no
-2,"Lookup by identity or position, never the value",Muse Glimmer 30B,ok,,"s05:another item moved, whole: value share",no
+2,"Lookup by identity route or position route, never the value",Qwen3.5-9B,ok,,"s05:another item moved, whole: value share",no
+2,"Lookup by identity route or position route, never the value",Qwen3.6-27B,ok,,"s05:another item moved, whole: value share",no
+2,"Lookup by identity route or position route, never the value",Muse Glimmer 30B,ok,,"s05:another item moved, whole: value share",no
 3,Locker before the pick: the bridge word redirects,Qwen3.5-9B,ok,,numbers:x45q_c_9b,no
 3,Locker before the pick: the bridge word redirects,Qwen3.6-27B,ok,,numbers:x45q_c_27b,no
 3,Locker before the pick: the bridge word redirects,Muse Glimmer 30B,ok,,numbers:x45q_c_muse,no
@@ -23,12 +23,12 @@ Z1,Our removal on Zach's passages: the split,Muse Glimmer 30B,x,degree,"fig12:ou
 5,"The recall follows, but does not need, the J++ part",Qwen3.5-9B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
 5,"The recall follows, but does not need, the J++ part",Qwen3.6-27B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
 5,"The recall follows, but does not need, the J++ part",Muse Glimmer 30B,ok,,"fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out",no
-6,The lookup's identity code lies outside the lens,Qwen3.5-9B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
-6,The lookup's identity code lies outside the lens,Qwen3.6-27B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
-6,The lookup's identity code lies outside the lens,Muse Glimmer 30B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
-7,"Identity early, position late; address formed first",Qwen3.5-9B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
-7,"Identity early, position late; address formed first",Qwen3.6-27B,pending,,,no
-7,"Identity early, position late; address formed first",Muse Glimmer 30B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
+6,The lookup's identity route runs outside the lens,Qwen3.5-9B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
+6,The lookup's identity route runs outside the lens,Qwen3.6-27B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
+6,The lookup's identity route runs outside the lens,Muse Glimmer 30B,ok,,e3_identity:47.1: identity answers lost beyond random without lens directions 26-100,no
+7,"Identity route early, position late; address formed first",Qwen3.5-9B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
+7,"Identity route early, position late; address formed first",Qwen3.6-27B,pending,,,no
+7,"Identity route early, position late; address formed first",Muse Glimmer 30B,ok,,fig06c:D4: the address's mean overlap over every pair of window layers,no
 8,The recall also reads the item's earlier mention,Qwen3.5-9B,ok,,numbers:x45p_d23_9b,no
 8,The recall also reads the item's earlier mention,Qwen3.6-27B,ok,,numbers:x45p_d23_27b,no
 8,The recall also reads the item's earlier mention,Muse Glimmer 30B,ok,,numbers:x45p_d23_muse,no

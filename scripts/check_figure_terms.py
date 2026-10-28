@@ -80,6 +80,7 @@ V6_FIGS = (
     "fig01d_ladder",
     "fig12_two_by_two",
     "fig05b_identity_outside",
+    "fig05d_routes_lens",
     "fig05_routes",
     "fig07_writes",
     "fig09b_six_lockers",
@@ -103,7 +104,9 @@ V6_PANELS = {"fig07_writes": 3,
              # Dan's figures brief (28 Oct ~18:30): one panel per model (9B, 27B, Muse); the 2 x 2; Fig. 3's panel on
              # Zach's passages
              "fig01d_ladder": 3, "fig06b_anatomy": 3, "fig12_two_by_two": 4, "fig03_order": 3,
-             "fig09a_transfer": 3, "fig09b_refit": 3, "fig13_attention": 3}  # fmt: skip
+             "fig09a_transfer": 3, "fig09b_refit": 3, "fig13_attention": 3,
+             # Dan's Fig. 5b / 5d brief (28 Oct ~20:30): one panel per lens slice (1-25, 26-100, 1-100)
+             "fig05d_routes_lens": 3}  # fmt: skip
 # Dan's figures brief (28 Oct ~18:30) §1 and §5.1: a cell that was not run, failed its gate or had too few switches is
 # left out and listed in one caption line under the plot; these words never stand inside a frame (a text drawn in an
 # axes) of a main-page figure
@@ -111,7 +114,7 @@ FRAME_RETIRED = {"cannot report": r"(?i)\bcannot report\b", "not run": r"(?i)\bn
                  "not tested": r"(?i)\bnot tested\b"}  # fmt: skip
 # §1, colour = who or what: the figures drawn in the mark system use story_style.MARK_COL's hues and greys only
 MARK_FIGS = ("fig00b_marks", "fig01d_ladder", "fig12_two_by_two", "fig03_order", "fig07b_verbal", "fig09a_transfer",
-             "fig09b_refit", "fig13_attention", "fig14_learned")  # fmt: skip
+             "fig09b_refit", "fig13_attention", "fig14_learned", "fig05d_routes_lens")  # fmt: skip
 V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|ing)\b|\bwrote\b",
               # Dan's v6 iteration 2 (28 Oct ~15:40): words no README figure draws (title, subtitle, legend, ticks,
               # annotations); the part is named, never "it"; test numbers and run names belong to predictions/
@@ -124,7 +127,10 @@ V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|
               "lookups sent to the target locker": r"(?i)\blookups sent to the target locker\b",
               "test number": r"\b4[5-9]\.\d+\b",
               "run name": r"(?<![A-Za-z0-9])x(?:[068]_|4[578])",  # also inside qwen35_9b_x6_routes
-              "C0 / C2": r"\bC[02]\b"}  # fmt: skip
+              "C0 / C2": r"\bC[02]\b",
+              # Dan's Fig. 5b / 5d brief (28 Oct ~20:30): "identity" only as "identity route", "identity answers" or
+              # "identity change" (E8's positive control), never bare
+              "bare identity": r"(?i)\bidentity\b(?![\s-]+(?:routes?|answers?|changes?)\b)"}  # fmt: skip
 V6_SUBTITLE_RETIRED = {"rule:": r"(?i)\brule:"}  # the subtitle says the mechanics; the rule belongs to the caption
 
 

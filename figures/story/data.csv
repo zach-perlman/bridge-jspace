@@ -1279,9 +1279,9 @@ fig11,muse-glimmer-30b,"2×2 Both operations, both datasets: one direction",~,,,
 fig11,qwen3.5-9b,Z1 Our removal on Zach's passages: the split,x,,,,"fixed; fig12:our removal, his passages: gap"
 fig11,qwen3.6-27b,Z1 Our removal on Zach's passages: the split,x,,,,"fixed; fig12:our removal, his passages: gap"
 fig11,muse-glimmer-30b,Z1 Our removal on Zach's passages: the split,x,,,,"fixed; fig12:our removal, his passages: lookup switches under the whole change"
-fig11,qwen3.5-9b,"2 Lookup by identity or position, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
-fig11,qwen3.6-27b,"2 Lookup by identity or position, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
-fig11,muse-glimmer-30b,"2 Lookup by identity or position, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,qwen3.5-9b,"2 Lookup by identity route or position route, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,qwen3.6-27b,"2 Lookup by identity route or position route, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,muse-glimmer-30b,"2 Lookup by identity route or position route, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
 fig11,qwen3.5-9b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_9b
 fig11,qwen3.6-27b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_27b
 fig11,muse-glimmer-30b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_muse
@@ -1294,12 +1294,12 @@ fig11,muse-glimmer-30b,4b Adding only the address creates position answers,ok,,,
 fig11,qwen3.5-9b,"5 The recall follows, but does not need, the J++ part",ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
 fig11,qwen3.6-27b,"5 The recall follows, but does not need, the J++ part",ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
 fig11,muse-glimmer-30b,"5 The recall follows, but does not need, the J++ part",ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
-fig11,qwen3.5-9b,6 The lookup's identity code lies outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
-fig11,qwen3.6-27b,6 The lookup's identity code lies outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
-fig11,muse-glimmer-30b,6 The lookup's identity code lies outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
-fig11,qwen3.5-9b,"7 Identity early, position late; address formed first",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
-fig11,qwen3.6-27b,"7 Identity early, position late; address formed first",pending,,,,fixed
-fig11,muse-glimmer-30b,"7 Identity early, position late; address formed first",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
+fig11,qwen3.5-9b,6 The lookup's identity route runs outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,qwen3.6-27b,6 The lookup's identity route runs outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,muse-glimmer-30b,6 The lookup's identity route runs outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,qwen3.5-9b,"7 Identity route early, position late; address formed first",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
+fig11,qwen3.6-27b,"7 Identity route early, position late; address formed first",pending,,,,fixed
+fig11,muse-glimmer-30b,"7 Identity route early, position late; address formed first",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
 fig11,qwen3.5-9b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_9b
 fig11,qwen3.6-27b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_27b
 fig11,muse-glimmer-30b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_muse
@@ -2336,9 +2336,43 @@ fig05b,qwen3.6-27b,random lens directions: lookup extra loss,-0.0116279069767442
 fig05b,qwen3.6-27b,random lens directions: recall extra loss,0.0,-0.02654867256637161,0.024844720496894457,200,x0_necessity_27b_chat
 fig05b,muse-glimmer-30b,random lens directions: lookup extra loss,-0.014285714285714124,-0.07792207792207784,0.051948051948052076,200,muse30b_x0_necessity
 fig05b,muse-glimmer-30b,random lens directions: recall extra loss,0.008547008547008517,-0.03759398496240607,0.05825242718446578,200,muse30b_x0_necessity
-fig05b,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-25,0.24999999999999994,0.20512589928057548,0.2929693720143312,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 26-100,0.04999999999999993,0.025974025974025983,0.07571097409425481,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
-fig05b,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-100,0.55,0.49830508474576274,0.6024875068282516,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.5-9b,47.1: identity route: answers lost beyond random without lens directions 1-25,0.0566666666666667,0.024997775800711768,0.09252833794648742,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.5-9b,47.1: identity route: answers a random part of the same share as lens directions 1-25 costs (whole change minus without it),0.0733333333333333,0.039156626506024084,0.11111111111111116,300,results/x6_routes/qwen35_9b_x6_routes_x47_1/outcomes.jsonl
+fig05d,qwen3.5-9b,47.1: position route: answers lost beyond random without lens directions 1-25,-0.10333333333333339,-0.13975155279503104,-0.06870229007633588,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.5-9b,47.1: position route: answers a random part of the same share as lens directions 1-25 costs (whole change minus without it),0.00666666666666671,-0.03367003367003368,0.045645367371723485,300,results/x6_routes/qwen35_9b_x6_routes_x47_1/outcomes.jsonl
+fig05d,qwen3.6-27b,47.1: identity route: answers lost beyond random without lens directions 1-25,0.24999999999999994,0.20512589928057548,0.2929693720143312,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.6-27b,47.1: identity route: answers a random part of the same share as lens directions 1-25 costs (whole change minus without it),-0.043333333333333335,-0.07272727272727275,-0.01672240802675584,300,results/x6_routes/x6_routes_x47_1_27b/outcomes.jsonl
+fig05d,qwen3.6-27b,47.1: position route: answers lost beyond random without lens directions 1-25,-0.14,-0.186442040438171,-0.09364548494983277,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.6-27b,47.1: position route: answers a random part of the same share as lens directions 1-25 costs (whole change minus without it),0.053333333333333344,0.03191489361702127,0.07817589576547229,300,results/x6_routes/x6_routes_x47_1_27b/outcomes.jsonl
+fig05d,muse-glimmer-30b,47.1: identity route: answers lost beyond random without lens directions 1-25,0.003333333333333355,-0.016077170418006437,0.02372881355932205,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,muse-glimmer-30b,47.1: identity route: answers a random part of the same share as lens directions 1-25 costs (whole change minus without it),0.036666666666666625,0.010948905109489038,0.060498503978058366,300,results/x6_routes/muse30_x6_routes_x47_1/outcomes.jsonl
+fig05d,muse-glimmer-30b,47.1: position route: answers lost beyond random without lens directions 1-25,-0.030000000000000027,-0.06071464719491036,-0.003845785440613017,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,muse-glimmer-30b,47.1: position route: answers a random part of the same share as lens directions 1-25 costs (whole change minus without it),0.010000000000000009,-0.015873015873015817,0.04068142511241777,300,results/x6_routes/muse30_x6_routes_x47_1/outcomes.jsonl
+fig05d,qwen3.5-9b,47.1: identity route: answers lost beyond random without lens directions 26-100,0.046666666666666634,0.017666289254964378,0.07796730376247142,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.5-9b,47.1: identity route: answers a random part of the same share as lens directions 26-100 costs (whole change minus without it),0.09333333333333332,0.056249075443787,0.1325312614092735,300,results/x6_routes/qwen35_9b_x6_routes_x47_1/outcomes.jsonl
+fig05d,qwen3.5-9b,47.1: position route: answers lost beyond random without lens directions 26-100,-0.030000000000000027,-0.06542056074766356,0.00657894736842102,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.5-9b,47.1: position route: answers a random part of the same share as lens directions 26-100 costs (whole change minus without it),-0.016666666666666607,-0.05417032747603831,0.019935215946843846,300,results/x6_routes/qwen35_9b_x6_routes_x47_1/outcomes.jsonl
+fig05d,qwen3.6-27b,47.1: identity route: answers lost beyond random without lens directions 26-100,0.04999999999999993,0.025974025974025983,0.07571097409425481,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.6-27b,47.1: identity route: answers a random part of the same share as lens directions 26-100 costs (whole change minus without it),-0.053333333333333344,-0.08896797153024905,-0.02405498281786944,300,results/x6_routes/x6_routes_x47_1_27b/outcomes.jsonl
+fig05d,qwen3.6-27b,47.1: position route: answers lost beyond random without lens directions 26-100,-0.02999999999999997,-0.054838709677419384,-0.0071428571428571175,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.6-27b,47.1: position route: answers a random part of the same share as lens directions 26-100 costs (whole change minus without it),0.06,0.03498380304502755,0.0912057831876107,300,results/x6_routes/x6_routes_x47_1_27b/outcomes.jsonl
+fig05d,muse-glimmer-30b,47.1: identity route: answers lost beyond random without lens directions 26-100,0.020000000000000018,-0.0033898305084745783,0.042763597663946,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,muse-glimmer-30b,47.1: identity route: answers a random part of the same share as lens directions 26-100 costs (whole change minus without it),0.02999999999999997,0.006756756756756799,0.05282098218449764,300,results/x6_routes/muse30_x6_routes_x47_1/outcomes.jsonl
+fig05d,muse-glimmer-30b,47.1: position route: answers lost beyond random without lens directions 26-100,0.006666666666666599,-0.018404907975460127,0.031470461714941174,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,muse-glimmer-30b,47.1: position route: answers a random part of the same share as lens directions 26-100 costs (whole change minus without it),-0.0033333333333332993,-0.024390243902439046,0.01967213114754096,300,results/x6_routes/muse30_x6_routes_x47_1/outcomes.jsonl
+fig05d,qwen3.5-9b,47.1: identity route: answers lost beyond random without lens directions 1-100,0.09,0.04843189964157706,0.13183368078866473,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.5-9b,47.1: identity route: answers a random part of the same share as lens directions 1-100 costs (whole change minus without it),0.2733333333333333,0.22101347500407098,0.3234323432343234,300,results/x6_routes/qwen35_9b_x6_routes_x47_1/outcomes.jsonl
+fig05d,qwen3.5-9b,47.1: position route: answers lost beyond random without lens directions 1-100,-0.27,-0.33333333333333326,-0.2070036239841863,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.5-9b,47.1: position route: answers a random part of the same share as lens directions 1-100 costs (whole change minus without it),0.29333333333333333,0.218287659512052,0.37078837711139223,300,results/x6_routes/qwen35_9b_x6_routes_x47_1/outcomes.jsonl
+fig05d,qwen3.6-27b,47.1: identity route: answers lost beyond random without lens directions 1-100,0.55,0.49830508474576274,0.6024875068282516,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.6-27b,47.1: identity route: answers a random part of the same share as lens directions 1-100 costs (whole change minus without it),-0.01666666666666672,-0.056140350877192935,0.020619316972295635,300,results/x6_routes/x6_routes_x47_1_27b/outcomes.jsonl
+fig05d,qwen3.6-27b,47.1: position route: answers lost beyond random without lens directions 1-100,-0.033333333333333326,-0.07829181494661921,0.009868421052631582,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,qwen3.6-27b,47.1: position route: answers a random part of the same share as lens directions 1-100 costs (whole change minus without it),0.16666666666666666,0.1263148913238728,0.21122228420025102,300,results/x6_routes/x6_routes_x47_1_27b/outcomes.jsonl
+fig05d,muse-glimmer-30b,47.1: identity route: answers lost beyond random without lens directions 1-100,0.016666666666666663,0.0,0.034130487779026136,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,muse-glimmer-30b,47.1: identity route: answers a random part of the same share as lens directions 1-100 costs (whole change minus without it),0.06,0.02816901408450706,0.09302325581395349,300,results/x6_routes/muse30_x6_routes_x47_1/outcomes.jsonl
+fig05d,muse-glimmer-30b,47.1: position route: answers lost beyond random without lens directions 1-100,-0.05333333333333329,-0.08456084040199155,-0.022057667406585324,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+fig05d,muse-glimmer-30b,47.1: position route: answers a random part of the same share as lens directions 1-100 costs (whole change minus without it),0.08333333333333331,0.04182448375777875,0.12941271654292782,300,results/x6_routes/muse30_x6_routes_x47_1/outcomes.jsonl
+fig05d,,"47.1: position route: the most answers lost beyond random, over the models and slices",0.006666666666666599,-0.018404907975460127,0.031470461714941174,300,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
 fig05c,qwen3.5-9b,47.3: gap (recall's extra loss minus the lookup's),0.3184019370460047,0.19523319942551356,0.41488422564974836,300,results/x47_cue/x47_3-20261028T113104Z/x47_3.json
 fig05c,qwen3.5-9b,47.3: recall's extra loss without the J++ part,0.3898305084745761,0.30901113088384097,0.4685990338164251,300,results/x47_cue/x47_3-20261028T113104Z/x47_3.json
 fig05c,qwen3.5-9b,47.3: lookup's extra loss without the J++ part,0.0714285714285714,0.013113682631522504,0.1563981042654028,300,results/x47_cue/x47_3-20261028T113104Z/x47_3.json
