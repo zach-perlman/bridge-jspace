@@ -663,7 +663,7 @@ def f01_split(plt) -> None:
     whose locker sentence comes before the asked pick."""
     fig, ax = plt.subplots(figsize=(S.WIDTH, 5.0))
     fig.subplots_adjust(left=0.215, right=0.585, top=0.645, bottom=0.185)
-    S.title(fig, "Recall needs the J++ part of the bridge; the lookup mostly does not",
+    S.title(fig, "Recall follows the J++ part of the bridge; the lookup mostly does not",
             "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
             "(same size). 0 = the reader does not need the J++ part; 1 = every switch needs it.\n"
             "Main test (two people swap picks).")  # fmt: skip
@@ -703,7 +703,7 @@ def f01b_settings(plt) -> None:
     with the duplicate pick moved to figures/supp/s01b_one_pick_duplicate."""
     fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, 7.9))
     fig.subplots_adjust(left=0.07, right=0.91, top=0.665, bottom=0.075, wspace=0.42, hspace=0.62)
-    S.title(fig, "In every setting, recall needs the J++ part more than the lookup does",
+    S.title(fig, "Recall follows the J++ part more than the lookup in every setting",
             "Extra loss (0-1): switches lost without the J++ part, minus those lost without a random part\n"
             "(same size). Logit difference: the share of the logit shift lost instead of switches lost.\n"
             "Clean one-pick scenes: the asked pick changes to a locker item nobody picks; the split holds\n"
@@ -2476,8 +2476,67 @@ def f07b_verbal(plt) -> None:
     B47.build_47_0(VERBAL_SUMMARY, "fig07b_verbal", out_dir=S.OUT)
 
 
+def latest_verdict(pattern: str) -> Path:
+    """The newest verdict folder under results/ matching pattern (each verdict run writes a new folder)."""
+    found = sorted((S.REPO / "results").glob(pattern))
+    assert found, f"no verdict folder results/{pattern}"
+    return found[-1]
+
+
+# Batch 47/48 figures (28 Oct, after Dan's answers at fca83082): name -> (module, builder, verdict folder, title).
+# A title is set where the builder's default, built from the verdict's labels, reads stronger than the data.
+BATCH47 = {
+    "fig01c_zeroing": ("story_b47a", "build_zero", "x47_zero/x47_5-*", None),
+    "fig03d_depth_map": ("story_b47b", "build_d1", "x47_depthmap/depth-*", None),
+    "fig05b_identity_outside": ("story_b47a", "build_atoms", "x47_atoms/x47_1-*", None),
+    "fig05c_described_bridge": ("story_b47a", "build_cue", "x47_cue/x47_3-*",
+                                "A described bridge: the split holds on the 9B and Muse, not on the 27B"),
+    "fig07c_probe_errors": ("story_b47a", "build_errors", "x47_errors/x47_13-*", None),
+    "fig09b_six_lockers": ("story_b47a", "build_six", "x47_six/x47_2-*", None),
+    "fig09c_formation": ("story_b47b", "build_47_6", "x47_edges/x47_6-*",
+                         "Blocking the pick sentence from the lockers removes most switches, not only position"),
+    "fig10b_enrichment": ("story_b48", "build_enrichment", "x48_enrich/x48_2-*",
+                         "Without the J++ part the attribute moves only half way; late MLPs are not needed"),
+    "fig10c_binding": ("story_b48", "build_binding", "x48_bind/x48_bind-*", None),
+    "fig10d_heads": ("story_b48", "build_heads", "x48_heads/x48_heads-*", None),
+    "fig10e_second_route": ("story_b48", "build_second_route", "x48_route2/x48_route2-*", None),
+}  # fmt: skip
+BATCH47_SUPP = {
+    "s03d_cumulative": ("story_b47b", "build_47_4", "x47_cumulative/x47_4-*", None),
+    "s12_das_muse": ("story_b48", "build_das", "x48_das/verdict-*", None),
+}  # fmt: skip
+
+
+def batch47_figures(plt, figs: dict = BATCH47, supp: bool = False) -> None:
+    """The batch 47/48 figures from their newest verdict folders (scripts/story_b47a.py, story_b47b.py, story_b48.py),
+    into S.OUT (S.SUPP for the supplementary ones)."""
+    import importlib
+
+    out_dir = S.SUPP if supp else S.OUT
+    for name, (module, builder, pattern, title) in figs.items():
+        build = getattr(importlib.import_module(f"scripts.{module}"), builder)
+        kw = {"out_dir": out_dir} if module == "story_b47b" else {}
+        if module != "story_b47b" and supp:
+            saved, S.OUT = S.OUT, out_dir  # story_b47a / story_b48 save through story_style.save into S.OUT
+            try:
+                build(latest_verdict(pattern), name, title, **kw)
+            finally:
+                S.OUT = saved
+        else:
+            build(latest_verdict(pattern), name, title, **kw)
+
+
+def f_batch47(plt) -> None:
+    batch47_figures(plt)
+
+
+def s_batch47(plt) -> None:
+    batch47_figures(plt, BATCH47_SUPP, supp=True)
+
+
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f04_routes_design, f05_routes,
-               f06_depth, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard)  # fmt: skip
+               f06_depth, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
+               f_batch47)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -2487,13 +2546,14 @@ SUPP_FIGS = (
     s08_first_sentence,
     s10_removed_together,
     s10b_all_scenes,
+    s_batch47,
 )
 
 
 README_NAMES = ("fig00_setup", "fig01_split", "fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03_order", "fig03b_layers",
                 "fig03c_earlier_mention",
                 "fig04_routes_design", "fig05_routes", "fig06_depth", "fig07_writes", "fig07b_verbal", "fig08_first_locker",
-                "fig09_transfer", "fig10_what_is_left", "fig11_scorecard")  # fmt: skip
+                "fig09_transfer", "fig10_what_is_left", "fig11_scorecard", *BATCH47)  # fmt: skip
 # the draft set's second sheet: the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
               "supp/s02_parts_all", "supp/s03b_layers_45b",

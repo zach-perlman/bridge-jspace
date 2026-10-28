@@ -119,7 +119,9 @@ def test_template_types_no_result_number():
     assert not typed, f"typed numbers in the template (use a marker or {{{{q|...}}}}): {typed}"
 
 
-MAX_BODY_WORDS = 2000  # Dan, 26 Oct (was 1,500 in README v2): the main body, before the appendices
+# Dan, 26 Oct (was 1,500 in README v2): the main body, before the appendices; 2,500 since 28 Oct, when Dan asked for
+# every batch 47/48 figure in the README (one line each); lower it again by cutting older text
+MAX_BODY_WORDS = 2500
 CODES = re.compile(
     r"\bX[0-6]b?\b|\bAlf\b|\bjwo?\b|\bPP\b|\bPM\b|\bJdep\b|\bRdep\b| C |k =|\bcf\b|\bC[0-2]\b|\b[Ss]wap [12]\b"
     r"|\bone-pick\b|\btwo-pick\b|\bedit(?:ed)?\b"
