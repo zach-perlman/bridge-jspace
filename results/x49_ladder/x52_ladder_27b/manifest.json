@@ -1,0 +1,120 @@
+{
+  "exp": "x49_ladder",
+  "run": "x52_ladder_27b",
+  "why": "Batch 52 part C (jobs/c3/batch52.yaml), coverage: 49.2's removal ladder on the 27B, all six rungs (it ran rungs 1-2 only, x49_2_27b), rung 6 over Zach's 27B band L32-40; the rules of jobs/c3/batch49.yaml 49.2 verbatim, first scored in results/x49_ladder/x49_2-20261028T161612Z; no prediction: coverage run on an already-scored rule",
+  "written_utc": "2026-10-28T23:44:49Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "c43b67b60f5c39dcd1e0e7541c88385465fcf7dd",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "test": "49.2",
+  "spec": "jobs/c3/batch52.yaml (part C, coverage); rules verbatim from jobs/c3/batch49.yaml 49.2, first scored in results/x49_ladder/x49_2-20261028T161612Z",
+  "question": "no prediction: coverage run on an already-scored rule",
+  "inputs": {
+    "jobs/c3/batch49.yaml": "6e234f34b00b5be4cc1018fa81a0ca6b99104ded8c15fd2aa7bd6e0592168672",
+    "results/x0_necessity/x45m_fresh_27b/manifest.json": "81532062c323053fd4c50fd77b1177d0d7fd34c166a6b18ccc7f63e1f1d53b22",
+    "results/x0_necessity/x45m_fresh_27b/cases.jsonl": "038ff4ff994328764607b4daa9e7b06cfa8098775a75f6a116cbb6c52389d334",
+    "results/x0_necessity/x45m_fresh_27b/outcomes.jsonl": "cae7973b9d0aa8fed9a2e47dfc3a1db711b21d7472f30d79208857d80808542e",
+    "results/x0_necessity/x45m_fresh_27b/gate.json": "a9a90df162f9d827c8391cb55f58c8a26b5f71c0f73edfaa61baa57b91656f26"
+  },
+  "source": "x45m_fresh_27b",
+  "layer": 32,
+  "layers": [
+    32,
+    33,
+    34,
+    35
+  ],
+  "band": [
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40
+  ],
+  "k": 25,
+  "k_top": 10,
+  "rungs": {
+    "1": "the bridge word, at L",
+    "2": "the bridge word, at L..L+3",
+    "3": "+ the item's mention in its locker sentence, L..L+3",
+    "4": "+ the question's tokens, L..L+3",
+    "5": "every token, L..L+3: the projection on the same 25 atoms (the bridge's change) at every token",
+    "6": "every token, Zach's band: his top-10 lens directions per token (his code path)"
+  },
+  "arms": [
+    "none",
+    "zero1",
+    "rand1",
+    "zero2",
+    "rand2",
+    "zero3",
+    "rand3",
+    "zero4",
+    "rand4",
+    "zero5",
+    "rand5",
+    "zero6",
+    "rand6"
+  ],
+  "omp": "signed (x0_parts.omp_atoms, X0's k = 25 picks), per layer of L..L+3 on Δ_l at the bridge word",
+  "edit": "rungs 1-5: h <- h - (h Q_l) Q_l^T at the rung's tokens (Q_l: the bridge's Δ_l's 25 atoms), on the state as it arrives; rung 6: ablate.removal_edit('top', LensDictionary(W_U[letters] * gain, J_l), [RowSettings(protected=the clean read's top-10 rows)], k=10) at every token of each band layer",
+  "random_part": "rungs 1-5: per token the first k columns of X0's random basis (seed 888 + layer), k so that they hold the atoms' share of that token's ||h_S||^2 on S's clean state (the reader's read prompt) at that layer; rung 6: per token random_subspace_part at the share his removal takes from the state as it arrives",
+  "positions": {
+    "mention": "the tokens of S's bridge item's name in its locker sentence (character offsets)",
+    "question": "ablate_v2.question_start onward: the question sentence, the template's tail and the read's appended token",
+    "every": "every token of the read prompt, the appended one included"
+  },
+  "orders": "x0_strata 'alt locker vs asked pick': before = locker-first, after = locker-after; x45m's group beside",
+  "items_rule": "the 45m run's scenes at L (chat), the items its unedited run made eligible (its gate passed); O and S differ only at the bridge word; the mention's tokens exactly the item's name; else dropped and counted (plan.json)",
+  "read": "X0's chat read of S: the prompt with a digit's space token appended; kept = the top token is S's answer's first token",
+  "tf32": "off (fp32 matmuls; ablate_v2 turns TF32 on for speed)",
+  "rules": {
+    "second_copy": "the second copy is the earlier mention: rung (3) costs the recall >= 0.3 more than rung (2) in locker-first scenes (paired CI excluding 0) and rung (2) already costs >= 0.3 in locker-after scenes",
+    "only_everything": "needed only when everything goes: rungs (1)-(4) each <= 0.2 and rung (5) or (6) >= 0.5",
+    "lookup": "the lookup never needs it: <= 0.1 beyond random at every rung"
+  },
+  "cost": "cost = kept(random) - kept(removal): S's answers lost beyond the random subspace of the same share, per rung",
+  "two_definitions": "Rungs 5 and 6 are two definitions, not one: rung 5 removes, at every token, the span of the bridge's change's 25 OMP atoms (ours, L..L+3); rung 6 removes, at every token, that token's own top-10 lens directions (Zach's, over his band)",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "order": {
+    "items": "the 45m run's scene order",
+    "reads": "per item and reader: S's read prompt under the arms in arms order, batched (BJ_SUITE_BATCH)"
+  },
+  "band_source": "--band 32 40 (batch 52 coverage: Zach's band for this model)",
+  "sealed": "none (no prediction: coverage run on an already-scored rule); the job writes no verdict, verdict --coverage after it lands",
+  "batch": 52
+}
