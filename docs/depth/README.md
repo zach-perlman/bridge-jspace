@@ -10,7 +10,7 @@
 - **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 81d287c4 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 1fa5f740 from the run files.
 
 ## Setup
 
@@ -167,7 +167,7 @@
 **Result.** The lens rebuilds 0.06<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> / 0.04<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> / 0.01<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> of the swap, as of random draws. The 27B's report loses 0.28 [0.21, 0.34]<!-- src: figures/story/data.csv | 47.10: the report's extra loss without the address --> without the address, and the lens never ranks the ordinal in its top five. The lookup's errors are not address errors (9B: 0.07<!-- src: figures/story/data.csv | 47.13: wrong answers whose locker the address probe predicts -->).
 **Figure.**
 
-![Read through the J++ lens, the pointer looks like a random direction](../../figures/story/fig07b_verbal.png)
+![The lens is blind to the address](../../figures/story/fig07b_verbal.png)
 
 **Conclusion.** A lens monitor sees which item is at the bridge, not where the model will look.
 
@@ -218,7 +218,7 @@
 **Result.** Both rules fail: no single locker-sentence cell carries the locker-after lookup; both readers read the bridge word to about the same depth, then the question and the last token carry the answer.
 **Figure.**
 
-![The lookup reads the bridge word to layer 16, the recall to layer 14](../../figures/story/fig03d_depth_map.png)
+![Locker after the pick: the lookup leaves the bridge word early](../../figures/story/fig03d_depth_map.png)
 
 **Conclusion.** The link is spread, not in one place.
 
@@ -276,7 +276,9 @@
 **Mechanics.** Probes, mean ablations, head read-outs, blocks, each against a control.
 **Data.** 9B and Muse (the second route on three models).
 **Result.** All five failed (table).
-**Figure.** The table below.
+**Figure.**
+
+![Every mechanism we proposed for the split failed its rule](../../figures/story/fig15_mechanisms.png)
 
 | Account | What was done | Result |
 |---|---|---|

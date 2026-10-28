@@ -48,8 +48,8 @@ def test_one_figure_per_card_or_pending_or_a_table():
         figs = re.findall(r"!\[[^\]]+\]\(([^)]+)\)", main)
         if "**Figure.** None yet." in main:
             assert not figs and "Sealed" in main, cid
-        elif cid == "E15":
-            assert "| Account |" in main, cid
+        elif cid == "E15":  # the composite figure, or the five-row table Dan allows instead
+            assert len(figs) == 1 or "| Account |" in main, cid
         else:
             assert len(figs) == 1, (cid, figs)
 
