@@ -1,0 +1,109 @@
+{
+  "generated_C0": 500,
+  "items": 500,
+  "entities": 32,
+  "dropped": {
+    "A and B have the same number of legs": 236
+  },
+  "slot_of_O_bridge": {
+    "2": 173,
+    "1": 180,
+    "0": 147
+  },
+  "slot_of_S_bridge": {
+    "1": 152,
+    "2": 173,
+    "0": 175
+  },
+  "target": "qwen3.6-27b",
+  "ordinal_tokens": {
+    "first": {
+      "first": {
+        "id": 3765,
+        "letter_atom": true
+      },
+      " first": {
+        "id": 1118,
+        "letter_atom": true
+      },
+      "First": {
+        "id": 5170,
+        "letter_atom": true
+      },
+      " First": {
+        "id": 5339,
+        "letter_atom": true
+      }
+    },
+    "second": {
+      "second": {
+        "id": 5394,
+        "letter_atom": true
+      },
+      " second": {
+        "id": 2018,
+        "letter_atom": true
+      },
+      "Second": {
+        "id": 15207,
+        "letter_atom": true
+      },
+      " Second": {
+        "id": 10130,
+        "letter_atom": true
+      }
+    },
+    "third": {
+      "third": {
+        "id": 30686,
+        "letter_atom": true
+      },
+      " third": {
+        "id": 4688,
+        "letter_atom": true
+      },
+      "Third": {
+        "id": 35750,
+        "letter_atom": true
+      },
+      " Third": {
+        "id": 20226,
+        "letter_atom": true
+      }
+    }
+  },
+  "slot_digit_tokens": {
+    "1": 16,
+    "2": 17,
+    "3": 18
+  },
+  "read": {
+    "lookup": {
+      "kind": "digit",
+      "suffix": [
+        220
+      ],
+      "question": "Which locker belongs to {p}'s pick?"
+    },
+    "recall": {
+      "kind": "digit",
+      "suffix": [
+        220
+      ],
+      "question": "How many legs does {p}'s pick have?"
+    },
+    "report": {
+      "kind": "word",
+      "suffix": [],
+      "question": "Was the locker of {p}'s pick listed first, second or third?"
+    },
+    "report_digit": {
+      "kind": "digit",
+      "suffix": [
+        220
+      ],
+      "question": "Was the locker of {p}'s pick listed 1, 2 or 3?"
+    }
+  },
+  "examples_seed": 0
+}

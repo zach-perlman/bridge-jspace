@@ -293,10 +293,10 @@ def marked_prompt(decode, rd: dict, v: str, tok=None) -> str:
     return text + (decode(suffix(tok, rd["kind"])) if tok is not None else "")
 
 
-def stage_plan(n_gen: int = N_GEN, k: int = 5) -> dict:
+def stage_plan(n_gen: int = N_GEN, k: int = 5, out: Path | None = None) -> dict:
     """Tokenizer only: the items and drops, the ordinal words' tokens (single-token check; in the letter dictionary
     iff they carry a letter), and k example items' report prompts (seed 0), both readers, both orders, the bridge
-    marked."""
+    marked. With `out`, written there as <target>_plan.json and <target>_prompts.md (a new folder per plan run)."""
     from bridge_jspace.model import _HAS_LETTER
     from scripts import statement_positions as SP
 
@@ -310,18 +310,29 @@ def stage_plan(n_gen: int = N_GEN, k: int = 5) -> dict:
         str(i + 1): int(tok(str(i + 1), add_special_tokens=False).input_ids[0]) for i in range(3)
     }
     counts["read"] = {w: {"kind": KIND[w], "suffix": suffix(tok, KIND[w]), "question": QUESTIONS[w]} for w in READERS}
-    print(json.dumps(counts, indent=2, ensure_ascii=False))
+    counts["examples_seed"] = X.EXAMPLES_SEED
     decode = lambda ids: tok.decode([int(t) for t in ids], skip_special_tokens=False)  # noqa: E731
+    lines = [f"# 47.10 plan: {pins.TARGET}, {k} example items of {len(items)} (seed {X.EXAMPLES_SEED}), the report "
+             "prompts as the model reads them (ids decoded, the template included), the bridge word in ⟦...⟧, the "
+             "read suffix appended (a space token for the digit reader, nothing for the word reader). UNVERIFIED.", ""]  # fmt: skip
     for i in example_indices(len(items), k):
         it = items[i]
-        print(f"\n### {it['scene']}: bridge {it['entity']} (slot {it['slot']['org'] + 1}) -> {it['cf_bridge']} "
-              f"(slot {it['slot']['alt'] + 1})")  # fmt: skip
+        lines.append(f"\n### {it['scene']}: bridge {it['entity']} (slot {it['slot']['org'] + 1}) -> {it['cf_bridge']} "
+                     f"(slot {it['slot']['alt'] + 1})")  # fmt: skip
         for order in it["orders"]:
             for w in ("report", "report_digit"):
                 rd = it["orders"][order]["readers"][w]
-                print(f"\n[{order}] {w}: O answers {rd['answer']!r} (token {rd['tok_A']}), S answers "
-                      f"{rd['cf_answer']!r} (token {rd['tok_b']}); bridge token {rd['pos']}\n")  # fmt: skip
-                print(marked_prompt(decode, rd, "org", tok))
+                lines += [f"\n[{order}] {w}: O answers {rd['answer']!r} (token {rd['tok_A']}), S answers "
+                          f"{rd['cf_answer']!r} (token {rd['tok_b']}); bridge token {rd['pos']}\n", "```",
+                          marked_prompt(decode, rd, "org", tok), "```"]  # fmt: skip
+    print(json.dumps(counts, indent=2, ensure_ascii=False))
+    print("\n".join(lines))
+    if out is not None:
+        out.mkdir(parents=True, exist_ok=True)
+        tag = pins.RUN_PREFIX.rstrip("_") or "qwen36_27b"
+        (out / f"{tag}_plan.json").write_text(json.dumps(counts, indent=2, ensure_ascii=False) + "\n")
+        (out / f"{tag}_prompts.md").write_text("\n".join(lines) + "\n")
+        print("wrote", out / f"{tag}_plan.json", out / f"{tag}_prompts.md")
     return counts
 
 
@@ -984,10 +995,11 @@ def main() -> None:
     ap.add_argument("--n-gen", type=int, default=N_GEN, help="run / plan: C0 scenes generated")
     ap.add_argument("--n-items", type=int, default=N_ITEMS, help="run: the first eligible items kept per order")
     ap.add_argument("--verdict", type=Path, help="figures: the verdict folder")
+    ap.add_argument("--out", type=Path, default=None, help="plan: write the counts and the prompts into this folder")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
-        stage_plan(a.n_gen)
+        stage_plan(a.n_gen, out=a.out)
     elif a.stage == "run":
         assert a.name, "run needs --name"
         orders = tuple(o for o in a.orders.split(",") if o)

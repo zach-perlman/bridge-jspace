@@ -1,0 +1,109 @@
+{
+  "generated_C0": 500,
+  "items": 500,
+  "entities": 32,
+  "dropped": {
+    "A and B have the same number of legs": 361
+  },
+  "slot_of_O_bridge": {
+    "0": 158,
+    "1": 171,
+    "2": 171
+  },
+  "slot_of_S_bridge": {
+    "2": 171,
+    "1": 164,
+    "0": 165
+  },
+  "target": "muse-glimmer-30b",
+  "ordinal_tokens": {
+    "first": {
+      "first": {
+        "id": 8475,
+        "letter_atom": true
+      },
+      " first": {
+        "id": 1660,
+        "letter_atom": true
+      },
+      "First": {
+        "id": 8136,
+        "letter_atom": true
+      },
+      " First": {
+        "id": 8280,
+        "letter_atom": true
+      }
+    },
+    "second": {
+      "second": {
+        "id": 13407,
+        "letter_atom": true
+      },
+      " second": {
+        "id": 2432,
+        "letter_atom": true
+      },
+      "Second": {
+        "id": 15739,
+        "letter_atom": true
+      },
+      " Second": {
+        "id": 11066,
+        "letter_atom": true
+      }
+    },
+    "third": {
+      "third": {
+        "id": 52018,
+        "letter_atom": true
+      },
+      " third": {
+        "id": 7468,
+        "letter_atom": true
+      },
+      "Third": {
+        "id": 48816,
+        "letter_atom": true
+      },
+      " Third": {
+        "id": 34865,
+        "letter_atom": true
+      }
+    }
+  },
+  "slot_digit_tokens": {
+    "1": 29,
+    "2": 30,
+    "3": 31
+  },
+  "read": {
+    "lookup": {
+      "kind": "digit",
+      "suffix": [
+        220
+      ],
+      "question": "Which locker belongs to {p}'s pick?"
+    },
+    "recall": {
+      "kind": "digit",
+      "suffix": [
+        220
+      ],
+      "question": "How many legs does {p}'s pick have?"
+    },
+    "report": {
+      "kind": "word",
+      "suffix": [],
+      "question": "Was the locker of {p}'s pick listed first, second or third?"
+    },
+    "report_digit": {
+      "kind": "digit",
+      "suffix": [
+        220
+      ],
+      "question": "Was the locker of {p}'s pick listed 1, 2 or 3?"
+    }
+  },
+  "examples_seed": 0
+}
