@@ -1,0 +1,55 @@
+id: x48_2a_9b
+title: "Batch 48, test 48.2 design A on the 9B (L12): does the recall's attribute (legs) get written at the bridge token after L, keyed by the change's J++ part? Legs probes at layers 12, 14, ..., 31 (entities held out), read under the main test's arms (whole / without J++ / without a random part); the last-token fallback in the same job"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.1
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x48_enrich.py run_a --name qwen35_9b_x48_2a --why "batch 48, test 48.2 design A (jobs/c3/batch48.yaml; Q48.2): legs probes at the bridge token (and the last token) at layers L, L+2, ..., last, entities held out, read under the main test's arms at L12; sealed"
+question: >-
+  After the bridge token's change at L, does a probe for the recall attribute (the item's number of legs), trained on
+  unedited prompts with bridge entities held out, move from the original item's class to the changed item's at the
+  later layers of the bridge token, and does that movement need the change's J++ part (25 OMP atoms) rather than a
+  random part of the same share?
+why_it_matters: >-
+  The account under test (batch 48) says the recall is fact retrieval keyed on the lens-readable identity: MLPs at the
+  bridge token enrich it with the item's attributes after L, which the last token reads out. If so, the attribute
+  probe should follow the whole change and the no-random arm but not the no-J++ arm. If the probe does not read the
+  attribute at the bridge token at all, the attribute is assembled at the last token instead, and the same test runs
+  there (rule A's fallback, automatic in this job).
+hypotheses:
+  Q48.2: "Dan's answer in predictions/2026-10-28_dan.md (Q48.2 A); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x48_enrich.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch48.yaml, 48.2 rule A): "J++ keys the enrichment" if at layers >= L+4 the probe moves
+  >= 0.6 of the way under whole and under the random arm, and <= 0.3 under without-J++ (CI excluding the random
+  arm's), on both models; if the probe does not read the attribute at the bridge token at all (held-out accuracy < 2x
+  chance at every layer), run the same at the last token.
+  As computed (fixed before any run; Dan may override before the run): items = the main-test X0 run's 200 chat items
+  at L12 (qwen35_9b_x0_necessity), rebuilt and checked against its ids; O = the original prompt, S = the changed one.
+  Arms at L12 at the bridge token on O: whole = h_S - h_O; no_jpp = the change minus its J++ part (signed OMP, k = 25,
+  the J++ lens atoms at L as X0 takes them); no_rand = minus a random part of the same share (X0's random subspace,
+  seed 888 + L). The probe: one per domain, one-hot ridge on standardized states (x0_probe's probe; penalty chosen by
+  entity-held-out CV), trained on the unedited O prompts of every chat scene of the set (600; animals 200 scenes, 32
+  entities, classes 2 / 4 / 6 / 8), entities split into 5 folds (seed 0); held-out accuracy = out-of-fold accuracy;
+  chance = 1 / the classes present. The rule's domain is animals (legs): elements and greek have one bridge entity per
+  class (6 and 8 entities), so an entity-held-out probe never saw the held-out class and sits at 0 by construction;
+  their probes and readings are written and reported as descriptive, outside the rule. States at the bridge token
+  and at the last token (the recall's read position: the prompt with the digit's space token appended), at layers 12,
+  14, ..., 30 and 31. Reading an item: the probe trained on the folds that hold out both the original's and the
+  changed item's entity; m(h) = score(changed item's class) - score(original item's class); the fraction of the way =
+  (m(arm) - m(O)) / (m(S) - m(O)), clipped to [0, 1], over the items whose unedited gap m(S) - m(O) is positive (the
+  rest counted, not read). Branch: the bridge token if the animals probe's held-out accuracy reaches 2x chance at some
+  probed layer there, else the last token (recorded in probe.json). Holds on a model if at every probed layer >= L+4
+  where the probe reads the attribute (held-out >= 2x chance) the mean fraction is >= 0.6 under whole and under
+  no_rand, <= 0.3 under no_jpp, and the paired cluster-bootstrap CI of no_rand - no_jpp (over the original bridge
+  entities, 10,000, seed 0) excludes 0; on the batch if on both models. n for the rule: 68 animals items (26
+  entities). Scored by hand: scripts/x48_enrich.py verdict (EPS 1e-9 at the bars).
+controls:
+- 'no_rand: the change minus a random part of the J++ part''s share (X0''s random subspace, seed 888 + L): the dose-matched control the no_jpp arm must undercut'
+- 'the unedited gap: O and S unedited define 0 and 1 of the fraction; items the probe does not separate on the unedited states are counted and not read'
+- 'entities held out (5 folds, seed 0): the probe reads an attribute feature, not identity; the reading probe also holds the changed item''s entity out'
+- 'both readers'' reads under every arm beside the states, and the rerun whole / no_jpp switches against the main run''s stored ones (descriptive check)'
+- 'the last token probed in the same job: rule A''s fallback, taken automatically when the bridge token''s probe is under 2x chance at every layer'
+n: 'the main-test run''s 200 chat items at L12 (40 bridge entities; animals 68 items, 26 entities, the rule''s domain); probes trained on the set''s 600 chat scenes (plan check on the 9B tokenizer: 200 items, person token one token in 185, two in 15)'
+seeds: [0, 888]
+notes: "Batch 48 (Dan, 28 Oct ~02:30), merged priority 48.2 A early (after 48.1 on the 9B). Sealed: the run writes manifest, plan, cases, training, states (fp16: 600 x 11 layers x 2 positions, 200 x 5 arms x 11 x 2), reads, norms, 10 examples' greedy texts, then fits the probes on the CPU (probe.json, readings.jsonl); no verdict. By hand after Dan's Q48.2 is committed: uv run python scripts/x48_enrich.py verdict --runs-a qwen35_9b_x48_2a muse30_x48_2a --runs-b qwen35_9b_x48_2b muse30_x48_2b (CPU). Cost: 600 training forwards + 200 items x (2 unedited + 3 edited) x 2 readers = 2,600 unbatched forwards + 60 greedy examples; x45p_9b (186 items x 16 reads, ~3,000 forwards) took 115 s all in, qwen35_9b_x0_probe (600 forwards) 59 s; the probes on the CPU: 2 positions x 11 layers x 3 domains x ~50 ridge fits of n <= 200, d 4096 (~1 min); est 5 min, 0.1 GPU-h. Reads the main run from results/ (copied into the checkout): qwen35_9b_x0_necessity must be on the box."
