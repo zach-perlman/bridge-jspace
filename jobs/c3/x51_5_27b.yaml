@@ -1,0 +1,63 @@
+id: x51_5_27b
+title: "Batch 51.5 on the 27B: the anatomy by depth on Zach's passages. 47.8's per-layer sweep (every 2nd layer L4-L60) on Z1's 200 items (his v2 passages, the pointer's name changed), fact-first stratum first; per layer the whole change at the name's last token and the change without its J++ part (the layer's own 25 atoms) against random parts of the same share; K (lookup) and M (recall); no slot probe; sealed"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.5
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= BJ_SUITE_BATCH=32 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_depth.py run --name x51_5_27b --why "batch 51, test 51.5 (jobs/c3/batch51.yaml; Q51.5, sealed): the anatomy by depth on Zach's passages, the 27B, every 2nd layer L4-L60, Z1's 200 items, fact-first first"
+question: >-
+  On Zach's passages, how deep does the change at the bridge name still redirect each reader, layer by layer, and does
+  its read window end where it ends on our scenes? Per layer, does the lookup need the J++ part of the change and does
+  the recall?
+why_it_matters: >-
+  47.8 / 49.4 gave the depth picture on our locker scenes only. If the read window on his natural passages ends within
+  a few layers of ours, the depth at which the bridge's change is read is a property of the model, not of our layout;
+  if it ends much earlier or later, our depth claims (L, the window, the handoff) are scene-specific. Zach's own swap
+  window (L4-20, gone by L25) is reported beside.
+hypotheses:
+  Q51.5: "Dan's answer in predictions/2026-10-28_dan.md (Q51.5, P(yes) per model: 9B / 27B); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x51_depth.py verdict / view refuse until it is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml, 51.5, verbatim): "the same read window as ours" if the last layer where each
+  reader's switch >= 0.3 lies within 4 layers of ours (9B: both readers to ~L16, the recall to L24; 27B: from 49.4).
+  Report against Zach's swap window (L4-20, gone by L25).
+  Reference values (ours), written here before any 51.5 run: computed by scripts/x51_depth.py reference() (the same
+  switch_rates / window_end code the verdict applies to his passages) on the stored 49.4 run x49_4_anatomy_27b (47.8's
+  arms on 49.4's reduced grid L8, 16, 24, 30, 32, 34, 40, 48, 56; C2 test half, 150 scenes; lookup switch = identity +
+  position + value, recall switch = the changed item), and equal to the opened verdict
+  results/x47_anatomy/x47_8-20261028T154518Z: lookup last >= 0.3 at L40 (L34 0.99, L40 0.32, L48 0.00), recall at L32
+  (L30 0.83, L32 0.50, L34 0.25). So on the 27B: the lookup's window end on his passages within L36-L44, the recall's
+  within L28-L36. NOTE: ours is sampled every 8th layer between L16 and L56 apart from L30-34, so ours' lookup end is
+  only known to lie in L40-L46 (0.32 at L40, 0.00 at L48); the rule uses the sampled L40.
+  As computed (fixed before any run; Dan may override before it): Items: Z1's chosen passages on the 27B
+  (results/x50_zach/x50_z1_27b: gate.json's order joined to cases.jsonl; Z1's gate passed, O read K 1.00 / M 0.90; 200
+  items, all from jsuite_v2_test_chat; 97 fact-first, 103 fact-after), re-aligned with x50_zach.z1_cases on the
+  tokenizer before the run (plan: 200 of 200 the same). Sweep: L4-L60 every 2nd (47.8's 27B span at the brief's step 2,
+  29 layers). Delta_l = h_S - h_O at the pointer name's last token per reader (K and M passages differ before it), added
+  at layer l alone on O. Arms: whole; no_jpp (minus the signed-OMP J++ part, k = 25, the layer's own letter-token atoms);
+  no_jpp_ratoms (minus a random part of the same share from random lens atoms of the layer, seed 777 + l: 47.8's
+  control); no_jpp_rand (minus a random part of the same share in X0's random subspace, seed 888 + l: Z1's control, so
+  L32 reproduces Z1's arms). Switch = Z1's read (top token = the first token of S's answer). Window end = the last
+  sampled layer whose whole-change switch share (point estimate) >= 0.30 (EPS 1e-9); none if no layer reaches it. Holds
+  iff, for both readers, his window end exists and |his - ours| <= 4; decided on all of Z1's items (both strata pooled),
+  each stratum's window end beside; a run that stopped after the fact-first stratum is decided on fact-first alone and
+  labelled partial. Z1's gate failed -> not tested (numbers descriptive). Beside, per layer with cluster-bootstrap CIs
+  over the bridge entity (10,000, seed 0): each reader's switch share pooled and per stratum, the extra loss without J++
+  (X0's excess against no_jpp_ratoms; against no_jpp_rand beside); Zach's swap window: each reader's first and last
+  layer >= 0.3 against L4-L20 and whether every sampled layer >= L25 is < 0.3, on his passages and on our scenes. The
+  identity / position split per layer is an optional flag of the run stage (--split: Z3's items, built, competence-run
+  and gated on this model since Z3 has no 27B run; the whole change at every sweep layer, x6_routes' routes;
+  descriptive), OFF in this spec: batch51.yaml asks for it only if Z3 shows position answers, and Z3 is sealed and was
+  not read; to add it, append --split to the command before enqueueing (it adds Z3's competence step, roughly Z1's on the 27B: ~0.25 GPU-h, an estimate).
+  Scored by hand: scripts/x51_depth.py verdict (verdict.md, x51_5.json, the figure), then view.
+controls:
+- "the J++ part's removal against a random part of the same share per item: random lens atoms of the layer (seed 777 + layer, 47.8's) and X0's random subspace (seed 888 + layer, Z1's); achieved shares in norms.jsonl"
+- "the recall (M) on the same passage and the same change, every layer"
+- "Z1's gate (0.80 per reader on O) and both readers right on O and S, from Z1's run; the items re-aligned on the tokenizer before any GPU work (the run asserts all of them)"
+- "none (O unedited) read once per item and reader beside every arm"
+- "ours by the same code: the reference window ends recomputed from the stored 49.4 run in the verdict and checked against this spec's values"
+n: "200 passages (Z1's chosen on the 27B: 97 fact-first, 103 fact-after; 116 bridge entities, the bootstrap's clusters); 29 layers x 4 arms + none = 117 reads per passage and reader, 46,800 reads"
+seeds: [777, 888, 0]
+notes: "Batch 51 (Dan, 28 Oct 17:10), test 51.5, helper queue after 49.2 Muse r5, Z3 and x51_5_9b: 51.5 9B -> 27B. Sealed: the run writes manifest (Z1's gate, the reference, the switches), gate.json (Z1's gate summary, the re-alignment, the run order), cases.jsonl (the 200 items in run order), outcomes.jsonl (rewritten after each stratum: the fact-first rows are on disk before the fact-after passages start) and norms.jsonl (per item, layer and reader: the change's norm, the J++ share, the two random shares); no verdict. After Dan's Q51.5 is committed, by hand (CPU): uv run python scripts/x51_depth.py verdict (both runs: verdict.md with the rule, the numbers with CIs, n and the label per model; x51_5.json; x51_5_depth.png in fig06b's layout, our scenes from the opened 47.8 verdict beside his passages, each with the extra loss without J++ under it), then view (5 rendered prompts per model and 10 random rows per arm, seed 0). Plan: results/x51_depth/plan-20261028T164603Z/. Seeds: 777 + layer the random lens atoms, 888 + layer the random subspace, 0 the bootstrap and the view. Memory: everything under no_grad, the per-item changes kept on the CPU (200 x 2 x 29 x 5120 fp32, ~0.24 GB), one layer's lens dictionary and d x d random bases at a time; reads in chunks of 32 rows (BJ_SUITE_BATCH=32: 32 x ~260 tokens, below 49.4's 64 x ~75-token chunks that peaked at 71 GB with the fit states held). GPU estimate from results/jobq/ledger_sesterce-h100x2.jsonl (one H100 PCIe): x49_4_27b_s ran 1846 s for ~52,000 reads of ~75-token prompts (3.9M prompt tokens) plus 700 competence scenes, ~1,000 forwards and 9 per-layer fits with probes; x50_z1_27b ran 983 s, mostly Z1's competence (270 passages), which 51.5 does not repeat. 51.5: 46,800 reads of ~260-token prompts (12.2M prompt tokens, ~3x 49.4's), 800 forwards recording 29 layers, 116 signed-OMP fits (29 layers x 2 strata x 2 readers): about 1.2 h with the model load; 1.5 with margin (Dan: ~1 GPU-h)."
