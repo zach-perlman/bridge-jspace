@@ -1,0 +1,114 @@
+{
+  "exp": "x51_travel",
+  "run": "x51_4_27b",
+  "why": "Batch 51, test 51.4 (jobs/c3/batch51.yaml; Q51.4): routes C0 scenes, the pointer swap s (mu_k - mu_j), s = 1, 2, at the last token at L32 and L36, bridge-word means (x8, not refit) and last-token means (fit half), random vectors of the same norm; slot probe at the last token by layer; sealed",
+  "test": "51.4",
+  "written_utc": "2026-10-28T17:17:04Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "bf246e27e45541ab17aa25943504023cdd689823",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "spec": "jobs/c3/batch51.yaml (51.4)",
+  "question": "Q51.4 (predictions/2026-10-28_dan.md)",
+  "layers": [
+    32,
+    36
+  ],
+  "doses": [
+    1.0,
+    2.0
+  ],
+  "mu_from": "x0_probe_v4_27b",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "b5e9e3c50fa19dac26094b939581817969f7e79b4756fcf31bf0b26600fddef0",
+    "results/x6_routes/x6_routes_27b/gate.json": "3f122d7387723dcc4371a257df3f771d387936219f67c12a2cdf85b391678221",
+    "results/x6_routes/x6_routes_27b/outcomes.jsonl": "50a2cad7fe9fa2e660051f1cf79867dee4a63e31e7782acdbf0a9bccb8935d94",
+    "results/x0_probe/x0_probe_v4_27b/states.npz": "63f309a6f3d4b7f3fcdf9f536097cb27fad3d310ec0ac8f32ee729e2368b12d1"
+  },
+  "items_rule": "x8_write.eligible's gate and eligibility on the routes generator's C0 scenes (O; gate 0.8 per reader on O's read accuracy; the first 300 eligible)",
+  "site": "the last token = the read position of X0's chat read (the digit's space token appended to O)",
+  "arms": {
+    "none": "O unedited",
+    "bridge_swap": "s (mu_k - mu_j) added at the last token at the layer; mu = x0_massmean.pointer_means (fit at the bridge word at L on the probe run's scenes; not refit, the same at L + 4)",
+    "bridge_random": "a Gaussian vector of bridge_swap's norm (one per item, k, layer, s; seed 4401)",
+    "last_swap": "s (mu'_k - mu'_j), mu' = class means by j of the lookup's last-token states at that layer over the fit half; read half only",
+    "last_random": "a Gaussian vector of last_swap's norm (same stream)"
+  },
+  "split": "bridge entities sorted, shuffled with random.Random(0), first half fit (x49_attn.split_halves)",
+  "probe": "x0_probe.cv_predict on the lookup's last-token states per layer (one-hot ridge, 5 outer folds holding out whole bridge entities, inner 4-fold penalty); majority baseline (training folds); chance 1/3",
+  "rule": "\"The code travels\": the bridge-fit swap sends >= 0.3 of lookups to slot k (random <= 0.05). \"Re-encoded on copy\": bridge-fit <= 0.10 while last-token-fit >= 0.3. \"Not at the last token\": both <= 0.10 while the probe reads the slot there >= 0.8. Otherwise in between",
+  "as_computed": "over the four cells (layer L or L + 4, s = 1 or 2): travels if some cell has bridge_swap's target share >= 0.30 and its own bridge_random's <= 0.05; else re-encoded if every cell's bridge_swap <= 0.10 and some cell's last_swap >= 0.30; else not at the last token if every cell's bridge_swap and last_swap <= 0.10 and the probe's held-out accuracy at the last token at L or L + 4 >= 0.80; else in between. bridge_swap / bridge_random over every item, last_swap / last_random over the read half",
+  "seeds": {
+    "scenes": 2510,
+    "random_vectors": 4401,
+    "split": 0,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.4 answer",
+  "same_items_as_routes_run": true,
+  "steps": {
+    "bridge_L32": {
+      "0-1": 13.5685,
+      "0-2": 16.787,
+      "1-2": 8.394
+    },
+    "bridge_L36": {
+      "0-1": 13.5685,
+      "0-2": 16.787,
+      "1-2": 8.394
+    },
+    "last_L32": {
+      "0-1": 2.1946,
+      "0-2": 2.7336,
+      "1-2": 1.9445
+    },
+    "last_L36": {
+      "0-1": 14.5407,
+      "0-2": 14.7862,
+      "1-2": 9.5801
+    }
+  },
+  "cos_bridge_last": {
+    "L32": {
+      "0-1": 0.0354,
+      "0-2": 0.0679,
+      "1-2": 0.063
+    },
+    "L36": {
+      "0-1": 0.353,
+      "0-2": 0.2947,
+      "1-2": 0.2514
+    }
+  },
+  "fit_items_by_slot": {
+    "0": 47,
+    "1": 55,
+    "2": 48
+  }
+}
