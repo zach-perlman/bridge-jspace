@@ -1,0 +1,51 @@
+id: x48_4_9b
+title: "Batch 48.4 on the 9B (L12): what the copying heads transmit. Unedited locker-first main-test scenes; the five heads at full-attention layers > L with the most attention from the last token to the bridge token; per head W_OV's transmitted norm ratio for the J++ part / the rest / the address / a random part of J++'s share"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.1
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x48_heads.py run --name qwen35_9b_x48_heads --why "batch 48, test 48.4 (jobs/c3/batch48.yaml; Q48.4): on the main run's locker-first scenes, the five heads at layers > L with the most last-token-to-bridge attention; r = ||W_OV x|| / ||x|| for the J++ part, the rest, the address and a random part of J++'s share; sealed"
+question: >-
+  Why does the lookup read the rest: do the heads that copy the bridge token to the question transmit the part of the
+  bridge-word change outside the lens (the rest) more than its J++ part, as a weights-level fact about their OV
+  circuits?
+why_it_matters: >-
+  The account says the lookup leaves the bridge token by attention, carrying the context-matching identity and the
+  address, neither of which the lens reads. If the copying heads' OV circuits pass the rest at twice the J++ part, the
+  lookup's blindness to J++ has a mechanical reason in the weights, read beside 47.6(a) (what the attention does under
+  the write). If they pass both alike, the split is made elsewhere (at the destination, or by which heads fire).
+hypotheses:
+  Q48.4: "Dan's answer in predictions/2026-10-28_dan.md (Q48.4); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x48_heads.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch48.yaml, 48.4): "The copy reads the rest" if r(rest) >= 2 r(J++) on >= 3 of the 5
+  heads on both models, with r(random) between them or below both; r(address) reported beside (the heads carry the
+  pointer too if r(address) >= r(rest)).
+  As computed (fixed before any run; Dan may override before it): items = the stored main run's chat scenes read at L
+  (qwen35_9b_x0_necessity, the main test, two people swap picks), kept where both the org and the alt item's locker
+  sentence come before the asked pick (x0_strata; plan check: 75 of 200 items, 32 bridge items), unedited. Delta =
+  h_alt - h_org at the bridge word at L from X0's two forwards. Attention: one forward of the lookup's org prompt with
+  X0's read suffix appended; at every layer > L whose token mixer is softmax attention (the 9B's full_attention layers
+  15, 19, 23, 27, 31; its other layers are Gated DeltaNet) the softmax attention from the last token to the bridge
+  token per query head, recomputed from the layer's inputs (bridge_jspace.knockout's method); the recall's prompt's
+  attention recorded beside (descriptive). Heads = the five (layer, head) with the largest mean lookup mass over
+  items (ties: the lower layer, then the lower head). W_OV of query head h = W_O[:, h*hd:(h+1)*hd] @ W_V[g*hd:(g+1)*hd,
+  :] with g = h // (n_heads / n_kv) (16 query heads, 4 kv heads, hd 256; transformers' repeat_kv): the rule's W_O W_V,
+  literally. Left out, by the HF modelling code: the q/k norms (not on the value path), the sigmoid output gate (the
+  gate half of q_proj, a per-channel multiplier computed from the query token), and the block's input RMSNorm; the
+  norm's per-dimension gain (1 + weight) is a fixed linear map on the value path, so the variant W_OV diag(1 + w_in)
+  is reported beside ("ov_gain"); the rule reads the literal one ("ov"). r(x) = ||W_OV x|| / ||x|| for x = the J++
+  part (signed OMP, k = 25, J++ lens atoms at L as X0 takes them), the rest (Delta minus it), the address (U U^T
+  Delta, U = x0_massmean's Alf, 4 directions on qwen35_9b_x0_probe_v4's states, not refit), a random part of J++'s
+  share (X0's random subspace, seed 888 + L); r stored per item for every candidate head (80), the rule reads the five.
+  Medians over items; a head reads the rest if r(rest) >= 2 r(J++) and r(random) <= r(rest) (between them or below
+  both); a model holds on >= 3 of 5 heads; the batch if both models hold. Cluster-bootstrap CIs of the medians over
+  bridge items (10,000, seed 0) beside the points. EPS 1e-9 at the bars. Scored by hand: scripts/x48_heads.py verdict.
+controls:
+- 'a random part of the same share of ||Delta||^2 as the J++ part (X0''s random subspace, seed 888 + L): must sit between r(J++) and r(rest) or below both'
+- 'r(address) beside (U U^T Delta): whether the heads transmit the pointer at >= r(rest)'
+- 'every candidate head''s r stored (r_all.npz, medians in r_all_medians.jsonl): the five against the rest of the layer'
+- 'the ov_gain variant (the input norm''s gain folded in) beside the literal W_O W_V'
+n: 'the main run''s locker-first chat scenes at L12 (both lockers before the asked pick); plan check: 75 of 200 items, 32 bridge items; 5 candidate layers x 16 heads = 80 heads'
+seeds: [0, 888]
+notes: "Batch 48 (Dan, 28 Oct ~02:30), test 48.4, queued after 48.1 / 48.2 / 48.3 / 48.5 as merged_priority says; cut from the bottom. Sealed: the run writes manifest, plan, cases, attention.jsonl (every candidate head's last-token-to-bridge mass per item and reader), heads.json, shares.jsonl, r_all.npz / r_all_medians.jsonl, r_items.jsonl (the five heads, per item and variant), no verdict. By hand after Dan's Q48.4 is committed: uv run python scripts/x48_heads.py verdict --runs qwen35_9b_x48_heads muse30_x48_heads (CPU; writes the verdict, the per-head tables and examples.md: 10 random items, seed 0, the lookup prompt as read with the bridge and read tokens marked, each head's mass and r values). Seeds: 0 the bootstrap and examples, 888 + layer the random subspace. Cost: 4 forwards per item (org, alt, the lookup's and the recall's read), 75 items, then weights-only matmuls; x45p on the 9B (2 forwards + 14 reads per item, 186 items) ran 2 min; expect ~2 min plus the load. Inputs (sha256 in the manifest): batch48.yaml, the main run's manifest / cases / outcomes, the probe states."
