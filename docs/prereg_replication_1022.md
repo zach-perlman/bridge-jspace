@@ -2310,3 +2310,6 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - `h200v3nA-1028-0118`, GPU 1 after the ports: Ministral v3, its note 1 / note 2 runs, then rendering 1 for the 9B
     (skipped if done) and Lightning.
   - `h200v3nB-1028-0118`, GPU 0 after the ports: Muse v3 and its note 2 run, then rendering 1 for the 27B.
+- **Update (01:24 UTC, Zach: "move rendering-1 runs to the very end"):** the exception is withdrawn. The 9B's rendering-1 run
+  was stopped after 6 minutes; its partial output was moved to /workspace/scratch, unread. It runs from the end of GPU 1's
+  queue with the others. Any later test (SOCRATES) is queued ahead of rendering 1.
