@@ -1,0 +1,501 @@
+{
+ "set": "e1",
+ "target": "qwen3.5-9b",
+ "layer": 12,
+ "run": "qwen35_9b_x51_12_e1_r2",
+ "spec": "x51_12_e1_9b_r2",
+ "code": {
+  "sha": "310e679c2df3987dede30779158661aafd365d92",
+  "dirty": true
+ },
+ "source_gate": {
+  "pass": true,
+  "chosen": 200,
+  "org_read_accuracy": {
+   "PP": 0.95,
+   "PM": 0.8683
+  },
+  "gate": 0.8,
+  "eligible": 408
+ },
+ "counts": {
+  "source": "qwen35_9b_x0_necessity",
+  "set": "d1_topics_v3",
+  "items": 200
+ },
+ "entities": 40,
+ "arms": [
+  "whole",
+  "no_jpp",
+  "no_jpp_rand",
+  "no_jpp_A",
+  "no_jpp_A_rand",
+  "no_A",
+  "no_A_rand"
+ ],
+ "reads": 3200,
+ "delta_forwards": 400,
+ "A_kind": "number words, one-token letter variants",
+ "A_tokens_per_item": {
+  "n": 200,
+  "min": 8,
+  "median": 16.0,
+  "max": 16,
+  "mean": 14.9,
+  "hist": {
+   "8": 2,
+   "12": 51,
+   "16": 147
+  }
+ },
+ "A_words_per_item": {
+  "n": 200,
+  "min": 2,
+  "median": 4.0,
+  "max": 4,
+  "mean": 3.725,
+  "hist": {
+   "2": 2,
+   "3": 51,
+   "4": 147
+  }
+ },
+ "A_words_most_common": [
+  [
+   "two",
+   117
+  ],
+  [
+   "four",
+   101
+  ],
+  [
+   "three",
+   99
+  ],
+  [
+   "six",
+   98
+  ],
+  [
+   "eight",
+   76
+  ],
+  [
+   "one",
+   72
+  ],
+  [
+   "seven",
+   67
+  ],
+  [
+   "nine",
+   67
+  ],
+  [
+   "five",
+   48
+  ]
+ ],
+ "A_tokens_most_common": [
+  [
+   " two",
+   117
+  ],
+  [
+   " Two",
+   117
+  ],
+  [
+   "Two",
+   117
+  ],
+  [
+   "two",
+   117
+  ],
+  [
+   " four",
+   101
+  ],
+  [
+   " Four",
+   101
+  ],
+  [
+   "Four",
+   101
+  ],
+  [
+   "four",
+   101
+  ],
+  [
+   " three",
+   99
+  ],
+  [
+   " Three",
+   99
+  ],
+  [
+   "Three",
+   99
+  ],
+  [
+   "three",
+   99
+  ],
+  [
+   " six",
+   98
+  ],
+  [
+   " Six",
+   98
+  ],
+  [
+   "Six",
+   98
+  ],
+  [
+   "six",
+   98
+  ],
+  [
+   " eight",
+   76
+  ],
+  [
+   " Eight",
+   76
+  ],
+  [
+   "Eight",
+   76
+  ],
+  [
+   "eight",
+   76
+  ],
+  [
+   "one",
+   72
+  ],
+  [
+   " one",
+   72
+  ],
+  [
+   " One",
+   72
+  ],
+  [
+   "One",
+   72
+  ],
+  [
+   " seven",
+   67
+  ],
+  [
+   " Seven",
+   67
+  ],
+  [
+   "Seven",
+   67
+  ],
+  [
+   "seven",
+   67
+  ],
+  [
+   " nine",
+   67
+  ],
+  [
+   " Nine",
+   67
+  ]
+ ],
+ "variant_tokens": {
+  "eight": {
+   "eight": [
+    "eight"
+   ],
+   " eight": [
+    " eight"
+   ],
+   "Eight": [
+    "Eight"
+   ],
+   " Eight": [
+    " Eight"
+   ]
+  },
+  "five": {
+   "five": [
+    "five"
+   ],
+   " five": [
+    " five"
+   ],
+   "Five": [
+    "Five"
+   ],
+   " Five": [
+    " Five"
+   ]
+  },
+  "four": {
+   "four": [
+    "four"
+   ],
+   " four": [
+    " four"
+   ],
+   "Four": [
+    "Four"
+   ],
+   " Four": [
+    " Four"
+   ]
+  },
+  "nine": {
+   "nine": [
+    "nine"
+   ],
+   " nine": [
+    " nine"
+   ],
+   "Nine": [
+    "Nine"
+   ],
+   " Nine": [
+    " Nine"
+   ]
+  },
+  "one": {
+   "one": [
+    "one"
+   ],
+   " one": [
+    " one"
+   ],
+   "One": [
+    "One"
+   ],
+   " One": [
+    " One"
+   ]
+  },
+  "seven": {
+   "seven": [
+    "seven"
+   ],
+   " seven": [
+    " seven"
+   ],
+   "Seven": [
+    "Seven"
+   ],
+   " Seven": [
+    " Seven"
+   ]
+  },
+  "six": {
+   "six": [
+    "six"
+   ],
+   " six": [
+    " six"
+   ],
+   "Six": [
+    "Six"
+   ],
+   " Six": [
+    " Six"
+   ]
+  },
+  "three": {
+   "three": [
+    "three"
+   ],
+   " three": [
+    " three"
+   ],
+   "Three": [
+    "Three"
+   ],
+   " Three": [
+    " Three"
+   ]
+  },
+  "two": {
+   "two": [
+    "two"
+   ],
+   " two": [
+    " two"
+   ],
+   "Two": [
+    "Two"
+   ],
+   " Two": [
+    " Two"
+   ]
+  }
+ },
+ "split_answer_words": {},
+ "split_answer_words_tokens": {},
+ "items_with_a_split_answer_word": 0,
+ "own_answer_word_missing": 0,
+ "answer_atoms_in_omp_25": {
+  "source": "qwen35_9b_x0_atoms_letters",
+  "items": 40,
+  "n": 40,
+  "min": 0,
+  "median": 0.0,
+  "max": 1,
+  "mean": 0.025,
+  "hist": {
+   "0": 39,
+   "1": 1
+  }
+ },
+ "frequency_control": null,
+ "prompts": [
+  {
+   "key": "P2-L0-0017",
+   "bridge": "iota -> delta",
+   "A": [
+    " two",
+    " four",
+    " six",
+    " Two",
+    "Two",
+    " nine",
+    " Four",
+    " Six",
+    "two",
+    "Four",
+    "four",
+    " Nine",
+    "Six",
+    "six",
+    "Nine",
+    "nine"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of delta is six. Amy picked delta. The locker of iota is two. The locker of gamma is eight. Leo picked⟦ iota⟧. Eva picked gamma.\nWhich locker belongs to Leo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of delta is six. Amy picked iota. The locker of iota is two. The locker of gamma is eight. Leo picked⟦ delta⟧. Eva picked gamma.\nWhich locker belongs to Leo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of delta is six. Amy picked delta. The locker of iota is two. The locker of gamma is eight. Leo picked⟦ iota⟧. Eva picked gamma.\nWhich position in the Greek alphabet does Leo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of delta is six. Amy picked iota. The locker of iota is two. The locker of gamma is eight. Leo picked⟦ delta⟧. Eva picked gamma.\nWhich position in the Greek alphabet does Leo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0096",
+   "bridge": "bee -> spider",
+   "A": [
+    "one",
+    " one",
+    " One",
+    "One",
+    " five",
+    " six",
+    " eight",
+    " Six",
+    " Five",
+    " Eight",
+    "Five",
+    "Six",
+    "six",
+    "five",
+    "Eight",
+    "eight"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the spider. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦ bee⟧.\nWhich locker belongs to Will's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the bee. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦ spider⟧.\nWhich locker belongs to Will's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the spider. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦ bee⟧.\nHow many legs does Will's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the bee. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦ spider⟧.\nHow many legs does Will's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0142",
+   "bridge": "nitrogen -> oxygen",
+   "A": [
+    " three",
+    " six",
+    " eight",
+    " seven",
+    " Three",
+    " Six",
+    "Three",
+    "three",
+    " Seven",
+    " Eight",
+    "Six",
+    "six",
+    "Eight",
+    "Seven",
+    "eight",
+    "seven"
+   ],
+   "lookup_org": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦ nitrogen⟧. The locker of nitrogen is three.\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nAmy picked lithium. Vera picked nitrogen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦ oxygen⟧. The locker of nitrogen is three.\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦ nitrogen⟧. The locker of nitrogen is three.\nWhat is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nAmy picked lithium. Vera picked nitrogen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦ oxygen⟧. The locker of nitrogen is three.\nWhat is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0154",
+   "bridge": "oxygen -> helium",
+   "A": [
+    " two",
+    " three",
+    " five",
+    " eight",
+    " Two",
+    "Two",
+    " Three",
+    "Three",
+    "two",
+    " Five",
+    "three",
+    " Eight",
+    "Five",
+    "five",
+    "Eight",
+    "eight"
+   ],
+   "lookup_org": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦ oxygen⟧. Max picked helium. The locker of oxygen is five.\nWhich locker belongs to Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦ helium⟧. Max picked oxygen. The locker of oxygen is five.\nWhich locker belongs to Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦ oxygen⟧. Max picked helium. The locker of oxygen is five.\nWhat is the atomic number of Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦ helium⟧. Max picked oxygen. The locker of oxygen is five.\nWhat is the atomic number of Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0290",
+   "bridge": "epsilon -> iota",
+   "A": [
+    " four",
+    " five",
+    " eight",
+    " nine",
+    " Four",
+    " Five",
+    "Four",
+    "four",
+    " Eight",
+    "Five",
+    " Nine",
+    "five",
+    "Eight",
+    "eight",
+    "Nine",
+    "nine"
+   ],
+   "lookup_org": "<|im_start|>user\nSara picked iota. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked⟦ epsilon⟧. Noah picked beta.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nSara picked epsilon. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked⟦ iota⟧. Noah picked beta.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nSara picked iota. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked⟦ epsilon⟧. Noah picked beta.\nWhich position in the Greek alphabet does Amy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nSara picked epsilon. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked⟦ iota⟧. Noah picked beta.\nWhich position in the Greek alphabet does Amy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  }
+ ]
+}

@@ -1,0 +1,497 @@
+{
+ "set": "e1",
+ "target": "qwen3.6-27b",
+ "layer": 32,
+ "run": "x51_12_e1_27b_r2",
+ "spec": "x51_12_e1_27b_r2",
+ "code": {
+  "sha": "310e679c2df3987dede30779158661aafd365d92",
+  "dirty": true
+ },
+ "source_gate": {
+  "pass": true,
+  "chosen": 200,
+  "org_read_accuracy": {
+   "PP": 0.9967,
+   "PM": 0.9767
+  },
+  "gate": 0.8,
+  "eligible": 569
+ },
+ "counts": {
+  "source": "x0_necessity_27b_chat",
+  "set": "d1_topics_v3",
+  "items": 200
+ },
+ "entities": 44,
+ "arms": [
+  "whole",
+  "no_jpp",
+  "no_jpp_rand",
+  "no_jpp_A",
+  "no_jpp_A_rand",
+  "no_A",
+  "no_A_rand"
+ ],
+ "reads": 3200,
+ "delta_forwards": 400,
+ "A_kind": "number words, one-token letter variants",
+ "A_tokens_per_item": {
+  "n": 200,
+  "min": 8,
+  "median": 16.0,
+  "max": 16,
+  "mean": 14.86,
+  "hist": {
+   "8": 5,
+   "12": 47,
+   "16": 148
+  }
+ },
+ "A_words_per_item": {
+  "n": 200,
+  "min": 2,
+  "median": 4.0,
+  "max": 4,
+  "mean": 3.715,
+  "hist": {
+   "2": 5,
+   "3": 47,
+   "4": 148
+  }
+ },
+ "A_words_most_common": [
+  [
+   "two",
+   108
+  ],
+  [
+   "four",
+   99
+  ],
+  [
+   "six",
+   92
+  ],
+  [
+   "three",
+   90
+  ],
+  [
+   "eight",
+   89
+  ],
+  [
+   "seven",
+   81
+  ],
+  [
+   "one",
+   72
+  ],
+  [
+   "five",
+   56
+  ],
+  [
+   "nine",
+   56
+  ]
+ ],
+ "A_tokens_most_common": [
+  [
+   " two",
+   108
+  ],
+  [
+   " Two",
+   108
+  ],
+  [
+   "Two",
+   108
+  ],
+  [
+   "two",
+   108
+  ],
+  [
+   " four",
+   99
+  ],
+  [
+   " Four",
+   99
+  ],
+  [
+   "Four",
+   99
+  ],
+  [
+   "four",
+   99
+  ],
+  [
+   " six",
+   92
+  ],
+  [
+   " Six",
+   92
+  ],
+  [
+   "Six",
+   92
+  ],
+  [
+   "six",
+   92
+  ],
+  [
+   " three",
+   90
+  ],
+  [
+   " Three",
+   90
+  ],
+  [
+   "Three",
+   90
+  ],
+  [
+   "three",
+   90
+  ],
+  [
+   " eight",
+   89
+  ],
+  [
+   " Eight",
+   89
+  ],
+  [
+   "Eight",
+   89
+  ],
+  [
+   "eight",
+   89
+  ],
+  [
+   " seven",
+   81
+  ],
+  [
+   " Seven",
+   81
+  ],
+  [
+   "Seven",
+   81
+  ],
+  [
+   "seven",
+   81
+  ],
+  [
+   "one",
+   72
+  ],
+  [
+   " one",
+   72
+  ],
+  [
+   " One",
+   72
+  ],
+  [
+   "One",
+   72
+  ],
+  [
+   " five",
+   56
+  ],
+  [
+   " Five",
+   56
+  ]
+ ],
+ "variant_tokens": {
+  "eight": {
+   "eight": [
+    "eight"
+   ],
+   " eight": [
+    " eight"
+   ],
+   "Eight": [
+    "Eight"
+   ],
+   " Eight": [
+    " Eight"
+   ]
+  },
+  "five": {
+   "five": [
+    "five"
+   ],
+   " five": [
+    " five"
+   ],
+   "Five": [
+    "Five"
+   ],
+   " Five": [
+    " Five"
+   ]
+  },
+  "four": {
+   "four": [
+    "four"
+   ],
+   " four": [
+    " four"
+   ],
+   "Four": [
+    "Four"
+   ],
+   " Four": [
+    " Four"
+   ]
+  },
+  "nine": {
+   "nine": [
+    "nine"
+   ],
+   " nine": [
+    " nine"
+   ],
+   "Nine": [
+    "Nine"
+   ],
+   " Nine": [
+    " Nine"
+   ]
+  },
+  "one": {
+   "one": [
+    "one"
+   ],
+   " one": [
+    " one"
+   ],
+   "One": [
+    "One"
+   ],
+   " One": [
+    " One"
+   ]
+  },
+  "seven": {
+   "seven": [
+    "seven"
+   ],
+   " seven": [
+    " seven"
+   ],
+   "Seven": [
+    "Seven"
+   ],
+   " Seven": [
+    " Seven"
+   ]
+  },
+  "six": {
+   "six": [
+    "six"
+   ],
+   " six": [
+    " six"
+   ],
+   "Six": [
+    "Six"
+   ],
+   " Six": [
+    " Six"
+   ]
+  },
+  "three": {
+   "three": [
+    "three"
+   ],
+   " three": [
+    " three"
+   ],
+   "Three": [
+    "Three"
+   ],
+   " Three": [
+    " Three"
+   ]
+  },
+  "two": {
+   "two": [
+    "two"
+   ],
+   " two": [
+    " two"
+   ],
+   "Two": [
+    "Two"
+   ],
+   " Two": [
+    " Two"
+   ]
+  }
+ },
+ "split_answer_words": {},
+ "split_answer_words_tokens": {},
+ "items_with_a_split_answer_word": 0,
+ "own_answer_word_missing": 0,
+ "answer_atoms_in_omp_25": {
+  "source": "x0_atoms_27b_letters",
+  "items": 36,
+  "n": 36,
+  "min": 0,
+  "median": 0.0,
+  "max": 1,
+  "mean": 0.083,
+  "hist": {
+   "0": 33,
+   "1": 3
+  }
+ },
+ "frequency_control": null,
+ "prompts": [
+  {
+   "key": "P2-L0-0010",
+   "bridge": "oxygen -> carbon",
+   "A": [
+    " three",
+    " six",
+    " eight",
+    " seven",
+    " Three",
+    " Six",
+    "Three",
+    "three",
+    " Seven",
+    " Eight",
+    "Six",
+    "six",
+    "Eight",
+    "Seven",
+    "eight",
+    "seven"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of carbon is 7. Adam picked hydrogen. Grace picked⟦ oxygen⟧. The locker of oxygen is 3. The locker of hydrogen is 4. Oscar picked carbon.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of carbon is 7. Adam picked hydrogen. Grace picked⟦ carbon⟧. The locker of oxygen is 3. The locker of hydrogen is 4. Oscar picked oxygen.\nWhich locker belongs to Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of carbon is 7. Adam picked hydrogen. Grace picked⟦ oxygen⟧. The locker of oxygen is 3. The locker of hydrogen is 4. Oscar picked carbon.\nWhat is the atomic number of Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of carbon is 7. Adam picked hydrogen. Grace picked⟦ carbon⟧. The locker of oxygen is 3. The locker of hydrogen is 4. Oscar picked oxygen.\nWhat is the atomic number of Grace's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0069",
+   "bridge": "sheep -> butterfly",
+   "A": [
+    " three",
+    " four",
+    " six",
+    " seven",
+    " Four",
+    " Three",
+    " Six",
+    "Three",
+    "Four",
+    "three",
+    " Seven",
+    "four",
+    "Six",
+    "six",
+    "Seven",
+    "seven"
+   ],
+   "lookup_org": "<|im_start|>user\nLeo picked the wolf. The locker of the butterfly is 7. The locker of the sheep is 3. The locker of the wolf is 2. Ivy picked the⟦ sheep⟧. Ella picked the butterfly.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nLeo picked the wolf. The locker of the butterfly is 7. The locker of the sheep is 3. The locker of the wolf is 2. Ivy picked the⟦ butterfly⟧. Ella picked the sheep.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nLeo picked the wolf. The locker of the butterfly is 7. The locker of the sheep is 3. The locker of the wolf is 2. Ivy picked the⟦ sheep⟧. Ella picked the butterfly.\nHow many legs does Ivy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nLeo picked the wolf. The locker of the butterfly is 7. The locker of the sheep is 3. The locker of the wolf is 2. Ivy picked the⟦ butterfly⟧. Ella picked the sheep.\nHow many legs does Ivy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0102",
+   "bridge": "butterfly -> goose",
+   "A": [
+    " two",
+    " five",
+    " six",
+    " eight",
+    " Two",
+    "Two",
+    " Six",
+    "two",
+    " Five",
+    " Eight",
+    "Five",
+    "Six",
+    "six",
+    "five",
+    "Eight",
+    "eight"
+   ],
+   "lookup_org": "<|im_start|>user\nOscar picked the beetle. Rose picked the⟦ butterfly⟧. Kate picked the goose. The locker of the butterfly is five. The locker of the goose is eight. The locker of the beetle is three.\nWhich locker belongs to Rose's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nOscar picked the beetle. Rose picked the⟦ goose⟧. Kate picked the butterfly. The locker of the butterfly is five. The locker of the goose is eight. The locker of the beetle is three.\nWhich locker belongs to Rose's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nOscar picked the beetle. Rose picked the⟦ butterfly⟧. Kate picked the goose. The locker of the butterfly is five. The locker of the goose is eight. The locker of the beetle is three.\nHow many legs does Rose's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nOscar picked the beetle. Rose picked the⟦ goose⟧. Kate picked the butterfly. The locker of the butterfly is five. The locker of the goose is eight. The locker of the beetle is three.\nHow many legs does Rose's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0111",
+   "bridge": "chicken -> rabbit",
+   "A": [
+    " two",
+    " four",
+    " eight",
+    " seven",
+    " Two",
+    "Two",
+    " Four",
+    "two",
+    "Four",
+    " Seven",
+    "four",
+    " Eight",
+    "Eight",
+    "Seven",
+    "eight",
+    "seven"
+   ],
+   "lookup_org": "<|im_start|>user\nIvy picked the⟦ chicken⟧. The locker of the spider is 4. Diana picked the rabbit. The locker of the chicken is 8. The locker of the rabbit is 7. Jack picked the spider.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nIvy picked the⟦ rabbit⟧. The locker of the spider is 4. Diana picked the chicken. The locker of the chicken is 8. The locker of the rabbit is 7. Jack picked the spider.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nIvy picked the⟦ chicken⟧. The locker of the spider is 4. Diana picked the rabbit. The locker of the chicken is 8. The locker of the rabbit is 7. Jack picked the spider.\nHow many legs does Ivy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nIvy picked the⟦ rabbit⟧. The locker of the spider is 4. Diana picked the chicken. The locker of the chicken is 8. The locker of the rabbit is 7. Jack picked the spider.\nHow many legs does Ivy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0204",
+   "bridge": "tick -> horse",
+   "A": [
+    " three",
+    " four",
+    " eight",
+    " Four",
+    " Three",
+    "Three",
+    "Four",
+    "three",
+    "four",
+    " Eight",
+    "Eight",
+    "eight"
+   ],
+   "lookup_org": "<|im_start|>user\nMaria picked the⟦ tick⟧. The locker of the elephant is seven. The locker of the tick is three. The locker of the horse is eight. Henry picked the elephant. Mark picked the horse.\nWhich locker belongs to Maria's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nMaria picked the⟦ horse⟧. The locker of the elephant is seven. The locker of the tick is three. The locker of the horse is eight. Henry picked the elephant. Mark picked the tick.\nWhich locker belongs to Maria's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nMaria picked the⟦ tick⟧. The locker of the elephant is seven. The locker of the tick is three. The locker of the horse is eight. Henry picked the elephant. Mark picked the horse.\nHow many legs does Maria's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nMaria picked the⟦ horse⟧. The locker of the elephant is seven. The locker of the tick is three. The locker of the horse is eight. Henry picked the elephant. Mark picked the tick.\nHow many legs does Maria's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  }
+ ]
+}
