@@ -1,0 +1,171 @@
+{
+ "L32-40/MP/none": {
+  "n": 370,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 370,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/MP/insert_k10": {
+  "n": 370,
+  "kept": 91.9,
+  "donor": 6.5,
+  "third": 0.0,
+  "other": 1.4,
+  "n_third": 370,
+  "transfer": 6.5,
+  "ci": [
+   4.0,
+   9.4
+  ]
+ },
+ "L32-40/MP/insert_k10_rand": {
+  "n": 370,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 370,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/MP/insert_k10_rot": {
+  "n": 370,
+  "kept": 99.5,
+  "donor": 0.3,
+  "third": 0.0,
+  "other": 0.3,
+  "n_third": 370,
+  "transfer": 0.3,
+  "ci": [
+   0.0,
+   0.8
+  ]
+ },
+ "L32-40/MP/insert_k10_noansrel": {
+  "n": 370,
+  "kept": 97.3,
+  "donor": 2.4,
+  "third": 0.0,
+  "other": 0.3,
+  "n_third": 370,
+  "transfer": 2.4,
+  "ci": [
+   1.1,
+   4.1
+  ]
+ },
+ "L32-40/MP/insert_k100": {
+  "n": 370,
+  "kept": 88.1,
+  "donor": 10.5,
+  "third": 0.0,
+  "other": 1.1,
+  "n_third": 370,
+  "transfer": 10.5,
+  "ci": [
+   7.1,
+   14.1
+  ]
+ },
+ "L32-40/MP/full_insert": {
+  "n": 370,
+  "kept": 93.5,
+  "donor": 4.1,
+  "third": 0.0,
+  "other": 2.2,
+  "n_third": 370,
+  "transfer": 4.1,
+  "ci": [
+   2.1,
+   6.6
+  ]
+ },
+ "L32-40/MP/lens_insert": {
+  "n": 370,
+  "kept": 91.6,
+  "donor": 7.0,
+  "third": 0.0,
+  "other": 1.4,
+  "n_third": 370,
+  "transfer": 7.0,
+  "ci": [
+   4.3,
+   10.1
+  ]
+ },
+ "L32-40/MP/rem_insert": {
+  "n": 370,
+  "kept": 94.9,
+  "donor": 3.2,
+  "third": 0.0,
+  "other": 1.9,
+  "n_third": 370,
+  "transfer": 3.2,
+  "ci": [
+   1.4,
+   5.5
+  ]
+ },
+ "L32-40/MP/remfix_insert": {
+  "n": 370,
+  "kept": 94.6,
+  "donor": 3.2,
+  "third": 0.0,
+  "other": 1.9,
+  "n_third": 370,
+  "transfer": 3.2,
+  "ci": [
+   1.3,
+   5.5
+  ]
+ },
+ "L32-40/MP/lensrand_insert": {
+  "n": 370,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 370,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L32-40/MP/remove_k10": {
+  "n": 370,
+  "kept": 98.9,
+  "donor": 0.5,
+  "third": 0.0,
+  "other": 0.5,
+  "n_third": 370,
+  "transfer": 0.5,
+  "ci": [
+   0.0,
+   1.4
+  ]
+ },
+ "L32-40/MP/remove_k10_rot": {
+  "n": 370,
+  "kept": 99.7,
+  "donor": 0.3,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 370,
+  "transfer": 0.3,
+  "ci": [
+   0.0,
+   0.8
+  ]
+ }
+}

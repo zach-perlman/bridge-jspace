@@ -1,0 +1,65 @@
+{
+  "run": "nem35l_nn_clampnoans_L27-33_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 13): the clamp's break-test, nemotron-3.5-lightning L27-33",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": "jpp",
+  "bands": [
+    "27-33"
+  ],
+  "set": "jsuite_v3_test_chat",
+  "competence": "nem35l_jsuite_v3_test_chat_competence_cand2_v1",
+  "words": [
+    "RM",
+    "MM",
+    "PM"
+  ],
+  "site": "last",
+  "conditions": [
+    "clamp",
+    "clamp_null",
+    "clamp_noans"
+  ],
+  "ks": [
+    10
+  ],
+  "sample_per_word": 0,
+  "limit": 0,
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "seeds": {
+    "items": "random.Random(item id)",
+    "rand": "5800+layer",
+    "null": "5900+layer",
+    "rot": "888+layer",
+    "ctl": 6100
+  },
+  "seed": 0,
+  "items": "eligible",
+  "sample_refs": 80,
+  "scene_words": null,
+  "cv_h1": null,
+  "git_commit": "46d8afc0a8f9feb4d0a9f1a260fb005b19eb354f",
+  "git_state": {
+    "head": "46d8afc0a8f9feb4d0a9f1a260fb005b19eb354f",
+    "dirty_files": [
+      "docs/v4_sha256.txt",
+      "scripts/jsuite_v4.py",
+      "scripts/nn_readout.py",
+      "scripts/nn_swap.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/nn_cf_read.py",
+      "scripts/queues/h200_v4_1028.sh"
+    ],
+    "code_diff_sha256": "64341689d84f105f5bfaa0186c994f66c47517c50f7cf394dd62dad3b98da818"
+  },
+  "bj_gram_proj": "1"
+}

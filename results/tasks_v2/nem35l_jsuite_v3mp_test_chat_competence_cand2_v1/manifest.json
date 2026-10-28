@@ -1,0 +1,35 @@
+{
+  "run": "nem35l_jsuite_v3mp_test_chat_competence_cand2_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 13): nemotron-3.5-lightning competence on MP (hop 2 the passage lookup)",
+  "set": "jsuite_v3mp_test_chat",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "git_commit": "46d8afc0a8f9feb4d0a9f1a260fb005b19eb354f",
+  "git_state": {
+    "head": "46d8afc0a8f9feb4d0a9f1a260fb005b19eb354f",
+    "dirty_files": [
+      "scripts/nn_readout.py",
+      "scripts/nn_swap.py"
+    ],
+    "untracked_scripts": [
+      "scripts/fig_more.py",
+      "scripts/nn_cf_read.py",
+      "scripts/queues/h200_v4_1028.sh"
+    ],
+    "code_diff_sha256": "daf10915237fab13d30e398edffcd971708b7e5d009dad94fc076e072d521072"
+  },
+  "guess": true,
+  "read": "cand2",
+  "hop1": "gen",
+  "words": [
+    "MP"
+  ],
+  "reads": "top: the answer's first token is the top token; cand: the top among the relation's candidates",
+  "written_utc": "2026-10-28T21:16:23Z"
+}

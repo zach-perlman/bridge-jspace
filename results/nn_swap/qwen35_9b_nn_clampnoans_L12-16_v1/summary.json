@@ -1,0 +1,158 @@
+{
+ "L12-16/RM/none": {
+  "n": 112,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/none": {
+  "n": 80,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 80,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/clamp": {
+  "n": 112,
+  "kept": 64.3,
+  "donor": 16.1,
+  "third": 0.9,
+  "other": 18.8,
+  "n_third": 112,
+  "transfer": 15.2,
+  "ci": [
+   9.7,
+   22.9
+  ]
+ },
+ "L12-16/MM/clamp": {
+  "n": 79,
+  "kept": 68.4,
+  "donor": 16.5,
+  "third": 1.3,
+  "other": 13.9,
+  "n_third": 79,
+  "transfer": 15.2,
+  "ci": [
+   6.6,
+   23.5
+  ]
+ },
+ "L12-16/PM/clamp": {
+  "n": 79,
+  "kept": 57.0,
+  "donor": 35.4,
+  "third": 0.0,
+  "other": 7.6,
+  "n_third": 79,
+  "transfer": 35.4,
+  "ci": [
+   25.0,
+   46.1
+  ]
+ },
+ "L12-16/RM/clamp_null": {
+  "n": 112,
+  "kept": 99.1,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.9,
+  "n_third": 112,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/MM/clamp_null": {
+  "n": 79,
+  "kept": 94.9,
+  "donor": 0.0,
+  "third": 1.3,
+  "other": 3.8,
+  "n_third": 79,
+  "transfer": -1.3,
+  "ci": [
+   -3.8,
+   0.0
+  ]
+ },
+ "L12-16/PM/clamp_null": {
+  "n": 79,
+  "kept": 98.7,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 1.3,
+  "n_third": 79,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/RM/clamp_noans": {
+  "n": 112,
+  "kept": 98.2,
+  "donor": 0.9,
+  "third": 0.0,
+  "other": 0.9,
+  "n_third": 112,
+  "transfer": 0.9,
+  "ci": [
+   0.0,
+   2.9
+  ]
+ },
+ "L12-16/MM/clamp_noans": {
+  "n": 79,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 79,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ },
+ "L12-16/PM/clamp_noans": {
+  "n": 79,
+  "kept": 100.0,
+  "donor": 0.0,
+  "third": 0.0,
+  "other": 0.0,
+  "n_third": 79,
+  "transfer": 0.0,
+  "ci": [
+   0.0,
+   0.0
+  ]
+ }
+}

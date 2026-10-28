@@ -1,0 +1,480 @@
+{
+ "runs": [
+  "nn_mp_L32-40_s0_v1",
+  "nn_mp_L32-40_s1_v1"
+ ],
+ "relations": null,
+ "n": 740,
+ "share": {
+  "full_insert": {
+   "kept": 92.8,
+   "donor": 4.2,
+   "third": 0.0,
+   "xmem": 0.3,
+   "other": 2.7
+  },
+  "insert_k10": {
+   "kept": 91.6,
+   "donor": 6.8,
+   "third": 0.0,
+   "xmem": 0.4,
+   "other": 1.2
+  },
+  "insert_k100": {
+   "kept": 88.2,
+   "donor": 10.5,
+   "third": 0.0,
+   "xmem": 0.1,
+   "other": 1.1
+  },
+  "insert_k10_noansrel": {
+   "kept": 97.0,
+   "donor": 2.4,
+   "third": 0.0,
+   "xmem": 0.0,
+   "other": 0.5
+  },
+  "insert_k10_rand": {
+   "kept": 100.0,
+   "donor": 0.0,
+   "third": 0.0,
+   "xmem": 0.0,
+   "other": 0.0
+  },
+  "insert_k10_rot": {
+   "kept": 99.5,
+   "donor": 0.1,
+   "third": 0.0,
+   "xmem": 0.0,
+   "other": 0.4
+  },
+  "lens_insert": {
+   "kept": 92.0,
+   "donor": 6.8,
+   "third": 0.0,
+   "xmem": 0.1,
+   "other": 1.1
+  },
+  "lensrand_insert": {
+   "kept": 100.0,
+   "donor": 0.0,
+   "third": 0.0,
+   "xmem": 0.0,
+   "other": 0.0
+  },
+  "none": {
+   "kept": 100.0,
+   "donor": 0.0,
+   "third": 0.0,
+   "xmem": 0.0,
+   "other": 0.0
+  },
+  "rem_insert": {
+   "kept": 93.9,
+   "donor": 3.5,
+   "third": 0.0,
+   "xmem": 0.0,
+   "other": 2.6
+  },
+  "remfix_insert": {
+   "kept": 93.9,
+   "donor": 3.4,
+   "third": 0.0,
+   "xmem": 0.3,
+   "other": 2.4
+  },
+  "remove_k10": {
+   "kept": 98.9,
+   "donor": 0.4,
+   "third": 0.0,
+   "xmem": 0.1,
+   "other": 0.5
+  },
+  "remove_k10_rot": {
+   "kept": 99.7,
+   "donor": 0.1,
+   "third": 0.0,
+   "xmem": 0.0,
+   "other": 0.1
+  }
+ },
+ "vs_controls": {
+  "full_insert": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 4.2,
+     "ci": [
+      2.5,
+      6.2
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 4.1,
+     "ci": [
+      2.3,
+      6.0
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "insert_k10": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 6.8,
+     "ci": [
+      4.1,
+      9.5
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 6.6,
+     "ci": [
+      4.0,
+      9.5
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "insert_k100": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 10.5,
+     "ci": [
+      7.2,
+      14.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 10.4,
+     "ci": [
+      7.1,
+      13.8
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "insert_k10_noansrel": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 2.4,
+     "ci": [
+      1.1,
+      3.9
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 2.3,
+     "ci": [
+      0.9,
+      3.7
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "lens_insert": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 6.8,
+     "ci": [
+      4.1,
+      9.6
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 6.6,
+     "ci": [
+      4.0,
+      9.5
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "lensrand_insert": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": -0.1,
+     "ci": [
+      -0.4,
+      0.0
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "rem_insert": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 3.5,
+     "ci": [
+      2.0,
+      5.3
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 3.4,
+     "ci": [
+      1.9,
+      5.1
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "remfix_insert": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 3.4,
+     "ci": [
+      1.9,
+      5.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 3.2,
+     "ci": [
+      1.8,
+      4.8
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "remove_k10": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 0.4,
+     "ci": [
+      0.0,
+      1.1
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.3,
+     "ci": [
+      -0.3,
+      1.1
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "remove_k10_rot": {
+   "donor": {
+    "insert_k10_rand": {
+     "diff": 0.1,
+     "ci": [
+      0.0,
+      0.4
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      -0.4,
+      0.4
+     ]
+    }
+   },
+   "third": {
+    "insert_k10_rand": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "insert_k10_rot": {
+     "diff": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  }
+ },
+ "reading": {
+  "identity": false,
+  "bundle": false,
+  "outside": false,
+  "worst_vs_controls": {
+   "donor": {
+    "diff": 6.6,
+    "ci": [
+     4.0,
+     9.5
+    ]
+   },
+   "third": {
+    "diff": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   }
+  }
+ },
+ "necessity": {
+  "loss_vs_rot": 0.8,
+  "ci": [
+   0.0,
+   1.9
+  ],
+  "needs_lens_part_at_site": false
+ },
+ "decomposition": {
+  "full": 4.2,
+  "lens": 6.8,
+  "rem": 3.5,
+  "remfix": 3.4,
+  "lensrand": 0.0,
+  "verdict": "not read"
+ }
+}
