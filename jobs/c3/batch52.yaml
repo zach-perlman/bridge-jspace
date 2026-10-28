@@ -54,3 +54,20 @@ addendum: |
   every cell stays UNVERIFIED until hand-checked.
 
   In the verdict files, write “no prediction: coverage run on an already-scored rule” where the Q-line used to be, so the predictions log stays honest about which results were scored against a forecast and which were not.
+amendment_1_received: "29 Oct ~00:50 Paris (before any Lightning layer sweep ran: r1 failed its 60-scene gate and swept nothing)"
+amendment_1: |
+  Lightning layer — rule, fixed now, before anyone reads the sweep:
+  earliest layer passing the gate at relative depth ≥ 0.25; tie-break = highest
+  lens readability of the bridge word. Record the rule and this timestamp in the
+  README next to the pick. The report must show the conflict result at every
+  swept layer, not only the chosen one.
+
+  Copy test on Lightning: keep the rule, mark "not tested" (clean one-pick recall
+  0.75 < 0.80). No gate change. If GPU is idle later, run it as below-gate
+  exploratory, appendix only.
+
+  Bolt: cancelled. Add "lens unavailable" to the coverage matrix. I'll ask Zach
+  about the H200 disk in the morning; if the file appears before ~10:00, resume.
+
+  Queue: once the layer is committed, the Lightning conflict test preempts
+  everything on speedup. On another: 27B ladder rungs 3–6 before the six lockers.
