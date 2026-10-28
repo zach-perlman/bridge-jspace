@@ -136,7 +136,7 @@
 - **Result.** The lens rebuilds {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} of the swap, as for random draws. Asked for the position, the 27B's lens top five hold the right ordinal in {{dp|e8_report|27b|47.10: lens top-5 holds the right ordinal (report prompt)}} of reports, yet it loses {{dp|e8_report|27b|47.10: the report's extra loss without the address}} without the address.
 - **Figure.**
 
-![The lens is blind to the address](figures/story/fig07b_verbal.png)
+![The lens reads which item is at the bridge, not where its locker sits](figures/story/fig07b_verbal.png)
 
 - **Conclusion.** A lens monitor sees which item is at the bridge, not where the model will look. Not shown: a probe-based monitor.
 

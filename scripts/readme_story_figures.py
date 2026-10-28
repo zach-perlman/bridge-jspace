@@ -3110,7 +3110,8 @@ def f07b_verbal(plt) -> None:
     numbers recorded under e8_report, the README's keys)."""
     from scripts import story_b50b as B50B
 
-    # Dan's 18:30 brief: two panels with the identity change as the positive control; the 27B's report in E8's text
+    # Dan's 18:30 brief: two panels with the identity change as the positive control; his 21:00 brief: one row per
+    # model, the rank as a score in units of the random band, the 27B's report as one caption sentence
     B50B.build_verbal(VERBAL_SUMMARY, latest_verdict("x47_report/x47_10-*"), "fig07b_verbal")
 
 

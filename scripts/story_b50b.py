@@ -1,7 +1,8 @@
 """README figures from Dan's figures brief (28 Oct ~18:30), steps 3-4, in the mark system of scripts/story_b50.py.
 
   fig07b_verbal      E8: the address swap through the lens (47.0, x47_verbal summary and run folders) against the 200
-                     random draws, the identity change as the positive control; two panels (rank, share rebuilt)
+                     random draws, the identity change as the positive control; two panels (rank as a score in units
+                     of the random band, share rebuilt), one row per model (Dan's Fig. 7b brief, 28 Oct ~21:00)
   fig09a_transfer    the split carries over: lookup's and recall's extra loss without the J++ part by text format
   fig09b_refit       Part IV: the address fit on simple scenes vs refit per format (45d verdicts)
 
@@ -17,6 +18,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from matplotlib.colors import to_rgb
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
@@ -36,9 +38,15 @@ def n_tag(ax, text: str) -> None:
             color=S.COL["muted"], zorder=8)  # fmt: skip
 
 
-def band(ax, y: float, lo: float, hi: float, half: float = 0.13) -> None:
+BAND_HALF = 0.2  # a band's half-height in row units (one row per model)
+# the random grey at 75% on white, opaque: on Fig. 7b's rank panel the swap's and the identity change's bands nearly
+# coincide, and two translucent bands would show their overlap darker than either
+BAND_GREY = tuple(0.75 * c + 0.25 for c in to_rgb(NULL))
+
+
+def band(ax, y: float, lo: float, hi: float, half: float = BAND_HALF) -> None:
     """The random draws' 95% range as a grey band behind the row's mark."""
-    ax.fill_between([lo, hi], [y - half] * 2, [y + half] * 2, color=NULL, alpha=0.75, lw=0, zorder=1)
+    ax.fill_between([lo, hi], [y - half] * 2, [y + half] * 2, color=BAND_GREY, lw=0, zorder=1)
 
 
 # ---- fig07b: the lens is blind to the address ----------------------------------------------------------------------
@@ -58,26 +66,42 @@ def verbal_nulls(run_dir: Path) -> dict:
             "share": np.array([r["share"] for r in omp if r["kind"] == "random" and r["dict"] == "all" and r["k"] == K])}  # fmt: skip
 
 
+def rank_score(median: float, null: np.ndarray) -> dict:
+    """The rank panel's score (Dan's Fig. 7b brief, 28 Oct ~21:00): z = (ln m - ln r) / w, with r the change's median
+    rank over the cases, m the median of the random draws' median ranks and w the half-width of the draws' band: half
+    the 95% range of ln rank over the draws, (ln p97.5 - ln p2.5) / 2, p2.5 and p97.5 the draws' 2.5th and 97.5th
+    percentiles of rank (the band recorded on the rank scale; ln of the percentiles, so the drawn band is exactly that
+    one). Positive = the lens ranks the word above the random vectors; the log base cancels. The band maps to
+    [(ln m - ln p97.5) / w, (ln m - ln p2.5) / w]: 2 wide by construction, centred on 0 up to the draws' asymmetry
+    about their median."""
+    m = float(np.median(null))
+    lo, hi = (float(x) for x in np.percentile(null, [2.5, 97.5]))
+    w = (np.log(hi) - np.log(lo)) / 2
+    return {"z": float((np.log(m) - np.log(median)) / w), "w": float(w),
+            "band": (float((np.log(m) - np.log(hi)) / w), float((np.log(m) - np.log(lo)) / w))}  # fmt: skip
+
+
 def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_verbal") -> str:
-    """Fig. 7b (E8), two panels, one row pair per model (9B, 27B, Muse). (1) Rank through the lens (47.0 (a),
-    descriptive): the median rank of the right ordinal word under the address swap (orange triangle) and, as the
-    positive control, of the new item's name under an identity change (blue dot), each against its 200 random draws'
-    95% range (grey band). (2) Share rebuilt by 25 lens directions (47.0 (b)): the swap, the identity change and the
-    random draws' 95% range. The 27B's report (47.10) is recorded (e8_report) for E8's Result, not drawn."""
+    """Fig. 7b (E8), two panels, one row per model (9B, 27B, Muse) holding both changes: the address swap (orange
+    triangle) and, as the positive control, an identity change (blue dot), each over its random draws' 95% range (grey
+    band). (1) Rank through the lens (47.0 (a), descriptive) as a score in units of the random band (rank_score): the
+    swap's best-ranked position word (any of x47_verbal.ORDINAL), the identity change's new item's name, each against
+    the same 200 random vectors scored on its own word. (2) Share rebuilt by 25 lens directions (47.0 (b)) in raw
+    shares, printed at the marks; one set of random draws per model serves both changes. The 27B's report (47.10) is
+    recorded (e8_report) and said in one caption sentence."""
     vpath, rpath = verbal_dir / "verbal.json", report_dir / "x47_10.json"
     vblob, rblob = json.loads(vpath.read_text()), json.loads(rpath.read_text())
     vsrc, rsrc = rel(vpath), rel(rpath)
     models = vblob["models"]
     plt = S.setup()
     rows = [(t, m) for t, m, _ in MODELS if t in models]
-    row_in, top_in, bottom_in = 0.95, 1.7, 1.25
+    row_in, top_in, bottom_in = 0.85, 1.75, 2.25
     h = top_in + row_in * len(rows) + bottom_in
-    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True)
-    fig.subplots_adjust(left=0.19, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
-    S.title(fig, "The lens is blind to the address",
-            "An address swap and an identity change read through the lens, against random draws of the same size")  # fmt: skip
+    fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True, gridspec_kw={"width_ratios": [1.35, 1]})
+    fig.subplots_adjust(left=0.19, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.08)
     ys = {t: -i for i, (t, _) in enumerate(rows)}
     a, b = axes
+    n_rand, words, label_9b = set(), set(), {}
     for t, _m in rows:
         r, y = models[t], ys[t]
         nulls = verbal_nulls(S.REPO / r["run"])
@@ -87,39 +111,76 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         assert np.isclose(np.median(nulls["ordinal"]), a_o["null_median_of_medians"]), t
         assert np.isclose(np.median(nulls["name"]), a_i["null_median_of_medians"]), t
         assert np.isclose(nulls["share"].mean(), bb["random_mean"]), t
+        n_rand |= {len(nulls["ordinal"]), len(nulls["name"]), len(nulls["share"])}
+        mpath = S.REPO / r["run"] / "manifest.json"
+        ordinal = tuple(json.loads(mpath.read_text())["ordinal"])  # the words the swap's best rank is taken over
+        words.add(ordinal)
+        S.record(out_name, t, "47.0 (a) position words the swap's best rank is taken over", len(ordinal),
+                 source=rel(mpath))  # fmt: skip
         src_null = rel(S.REPO / r["run"] / "null.npz")
-        for dy, _key, v, null, col, op, what, n in (
-            (0.2, "ordinal", a_o, nulls["ordinal"], ADDRESS, "swap", "best ordinal word's rank, h + pointer write",
+        for key, v, null, col, op, what, n in (
+            ("ordinal", a_o, nulls["ordinal"], ADDRESS, "swap", "best ordinal word's rank, h + pointer write",
              r["n_cases"]),
-            (-0.2, "name", a_i, nulls["name"], IDENTITY, "remove", "new item's name rank, h + identity change",
+            ("name", a_i, nulls["name"], IDENTITY, "remove", "new item's name rank, h + identity change",
              r["n_identity_cases"]),
         ):  # fmt: skip
             lo, hi = np.percentile(null, [2.5, 97.5])
-            band(a, y + dy, lo, hi)
-            a.plot([v["median"]], [y + dy], S.MARK[op], ms=8, color=col, zorder=3)
             S.record(out_name, t, f"47.0 (a) {what} (median; null cut, null median)", v["median"], v["null_cut"],
                      v["null_median_of_medians"], n=n, source=vsrc)  # fmt: skip
             S.record(out_name, t, f"47.0 (a) {what}: the random draws' 95% range (2.5th, 97.5th percentile)",
                      float(np.median(null)), float(lo), float(hi), n=len(null), source=src_null)  # fmt: skip
+            sc = rank_score(v["median"], null)
+            band(a, y, *sc["band"])
+            a.plot([sc["z"]], [y], S.MARK[op], ms=9, color=col, zorder=3)
+            S.record(out_name, t, f"47.0 (a) {what}: half-width w of the random draws' band, (ln 97.5th - ln 2.5th "
+                     "percentile) / 2", sc["w"], n=len(null), source=src_null)  # fmt: skip
+            S.record(out_name, t, f"47.0 (a) {what}: z = (ln random median - ln median) / w (lo, hi: the random "
+                     "draws' 95% range in z)", sc["z"], *sc["band"], n=n, source=src_null)  # fmt: skip
+            if t == rows[0][0]:
+                label_9b[key] = (sc["z"], sc["band"])
         lo, hi = np.percentile(nulls["share"], [2.5, 97.5])
         S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: random draws (mean; mean, 95th pct)",
                  bb["random_mean"], bb["random_mean"], bb["random_p95"], source=vsrc)  # fmt: skip
         S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: the random draws' 95% range",
                  float(nulls["share"].mean()), float(lo), float(hi), n=len(nulls["share"]),
                  source=rel(S.REPO / r["run"] / "omp.jsonl"))  # fmt: skip
-        for dy, key, col, op in ((0.2, "pointer", ADDRESS, "swap"), (-0.2, "identity_mean", IDENTITY, "remove")):
-            band(b, y + dy, lo, hi)
-            b.plot([bb[key]], [y + dy], S.MARK[op], ms=8, color=col, zorder=3)
+        band(b, y, lo, hi)  # the same random draws for both changes: one band
+        for key, col, op in (("pointer", ADDRESS, "swap"), ("identity_mean", IDENTITY, "remove")):
+            b.plot([bb[key]], [y], S.MARK[op], ms=9, color=col, zorder=3)
+            # the share printed just above the band (its half-height in points); next to the axis (Muse's swap) it
+            # starts at the mark instead of centring on it, so it clears the frame
+            near = bb[key] < 0.02
+            b.annotate(f"{bb[key]:.2f}", (bb[key], y), xytext=(-5 if near else 0, BAND_HALF * row_in * 72 + 2),
+                       textcoords="offset points", ha="left" if near else "center", va="bottom",
+                       fontsize=S.FONT - 1, color=S.COL["muted"], zorder=4)  # fmt: skip
             S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: {key}", bb[key], source=vsrc)
         S.record(out_name, t, f"47.0 (b) share rebuilt by {K} lens directions: pointer / random mean", bb["ratio"],
                  source=vsrc)  # fmt: skip
-    a.set_xscale("log")
-    a.set_xlim(1, 3e4)
-    a.set_xticks([1, 10, 100, 1000, 10000], ["1", "10", "100", "1k", "10k"])
-    a.set_xlabel("rank in the lens readout (log): the right\nordinal word (swap), the item's name (identity change)")
+    assert len(n_rand) == 1, n_rand
+    assert len(words) == 1, words
+    n_rand, ordinal = n_rand.pop(), words.pop()
+    examples = ("first", "next", "2")  # the caption's examples of the position words
+    assert set(examples) <= set(ordinal), ordinal
+    S.title(fig, "The lens reads which item is at the bridge, not where its locker sits",
+            f"An address swap and an item change read through the J++ lens, against {n_rand} random vectors of the "
+            "same size")  # fmt: skip
+    # the two in-plot words, on the 9B row only, checked against its numbers: the swap inside its band, the identity
+    # change at least four half-widths beyond its band's upper edge
+    (z_swap, b_swap), (z_item, b_item) = label_9b["ordinal"], label_9b["name"]
+    assert b_swap[0] <= z_swap <= b_swap[1], label_9b
+    assert z_item >= b_item[1] + 4, label_9b
+    y0 = ys[rows[0][0]]
+    a.text(b_swap[0], y0 + BAND_HALF + 0.06, "address swap: inside the noise", ha="left", va="bottom", color=ADDRESS,
+           fontsize=S.FONT, zorder=4)  # fmt: skip
+    a.text(z_item - 0.9, y0, "item change: far outside", ha="right", va="center", color=IDENTITY, fontsize=S.FONT,
+           zorder=4)  # fmt: skip
+    a.set_xlim(-3, 20.5)
+    a.set_xticks([0, 5, 10, 15, 20], ["0", "5", "10", "15", "20"])
+    a.set_xlabel("how far above random vectors the lens ranks\nthe word, in units of the random band (z)")
     a.set_title("Rank through the lens", fontsize=12, weight="bold", loc="left", pad=22)
-    b.set_xlim(0, 0.5)
-    b.set_xticks([0, 0.25, 0.5], ["0", "0.25", "0.5"])
+    b.set_xlim(0, 0.3)
+    ticks = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+    b.set_xticks(ticks, ["0" if x == 0 else f"{x:g}" for x in ticks])
     b.set_xlabel(f"share rebuilt by {K}\nlens directions")
     b.set_title("Share rebuilt", fontsize=12, weight="bold", loc="left", pad=22)
     ns = sorted({models[t]["n_cases"] for t, _ in rows})
@@ -130,7 +191,7 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
         ax.tick_params(axis="y", length=0)
     a.set_ylim(-len(rows) + 0.5, 0.5)
     a.set_yticks(list(ys.values()), [F.NAMES[m] for _, m in rows])
-    # the 27B's report (47.10, question last): E8's Result sentence, not a panel
+    # the 27B's report (47.10, question last): one caption sentence, not a panel
     m = next(x for x in rblob["models"]
              if x["status"] == "tested" and "report" in x["orders"]["last"].get("readers", {}))  # fmt: skip
     o = m["orders"]["last"]
@@ -140,15 +201,20 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
                            (lens["top5_ordinal"], "47.10: lens top-5 holds the right ordinal (report prompt)",
                             lens["n"])):  # fmt: skip
         S.record("e8_report", m["target"], quantity, *v, n=n, source=rsrc)
-    hs = [
-        Line2D([], [], marker=S.MARK["swap"], ls="", color=ADDRESS, ms=8),
-        Line2D([], [], marker=S.MARK["remove"], ls="", color=IDENTITY, ms=8),
-        Patch(fc=NULL, alpha=0.75, ec="none"),
-    ]
-    F.legend(fig, hs, ["address swap", "identity change",
-                       "a random part (same size)"], 1 - 0.74 / h, ncol=3)  # fmt: skip
-    caption(fig, ["Grey bands: the 95% range of 200 random draws of the same size. The identity change is the "
-                  "positive control: the lens reads it."], 0.42)  # fmt: skip
+    short = SHORT[next(mm for tt, mm, _ in MODELS if tt == m["target"])]
+    hs = [Line2D([], [], marker=S.MARK["swap"], ls="", color=ADDRESS, ms=9),
+          Line2D([], [], marker=S.MARK["remove"], ls="", color=IDENTITY, ms=9)]  # fmt: skip
+    F.legend(fig, hs, ["address swap", "item change (the positive control)"], 1 - 0.74 / h, ncol=2)
+    caption(fig, [
+        f"Grey: the 95% range of the {n_rand} random vectors (2.5th to 97.5th percentile): on the left one per change, "
+        "on that change's word, 2 units wide by construction (about ±1); on the right one for both changes.",
+        "Left: z = (ln m − ln r) / w, with r the median rank over the cases of the new item's name (item change) or "
+        f"of the best-ranked of {len(ordinal)} position words such as {', '.join(examples)} (address swap), m the "
+        "random vectors' median of the same, w half their 95% range of ln rank.",
+        f"Asked to say the position, the {short} never has the right ordinal word in the lens's top five "
+        f"({lens['top5_ordinal'][0]:.2f}, n = {lens['n']}), yet loses {rd['alf']['excess'][0]:.2f} of its "
+        "reports without the address (extra loss, beyond a random part).",
+    ], 1.35)  # fmt: skip
     S.save(fig, out_name)
     return out_name
 
