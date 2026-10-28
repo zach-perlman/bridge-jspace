@@ -1,0 +1,99 @@
+# Batch 49 (Dan, 28 Oct). The brief (claude/bridge-jspace-batch49-brief-2026-10-28.md) is not in the repo yet; this file
+# records amendment 1 (Dan ~14:10) verbatim in substance, before the next enqueue. Tests 49.1-49.6 are defined in the
+# brief and are added here when it is committed. Every rule below is fixed in advance as written, before any run;
+# results sealed until predictions/2026-10-28_dan.md holds Dan's committed answer; batch-47 conventions throughout
+# (jobs/c3/batch47.yaml header). "Swap" = adding or exchanging a part of the state.
+
+batch: 49
+by: Dan, 28 Oct
+predictions: predictions/2026-10-28_dan.md
+models: {qwen3.5-9b: 12, qwen3.6-27b: 32, muse-glimmer-30b: 26}
+freeze: "Wed 28 Oct 20:00 Paris: anything from queue item 6 down that has not started by then runs labelled 'after the freeze'; Thursday takes what lands, no new designs"
+
+amendments:
+  - id: 1
+    by: Dan, 28 Oct ~14:10
+    applies_before: the next enqueue
+    principle: "Time is not the constraint; value is."
+    now: >-
+      Cancel x47_16_muse (distance; low value, the 9B already answers it) to free its GPU; let x47_7a_27b finish (cheap,
+      one model). Cancel 47.7(b) and 47.12 from the queue.
+    queue_order:
+      - "1. 48.1 DAS 9B (x48_1_9b_r2): the only test that can name the identity code"
+      - "2. 47.15 27B -> 9B -> Muse: removes the reader/source confound"
+      - "3. 49.1 gain map 9B -> 27B -> Muse: decides 'weights vs routes'"
+      - "4. 49.7 (new) 9B -> Muse: the dereference at the head level"
+      - "5. 47.11 9B, Muse: filler while 49.1 / 49.7 are written"
+      - "6. 49.5 clean reruns 9B: Thursday's hand check"
+      - "7. 49.2 ladder 9B, Muse (27B bridge-word rungs only): 'follows' -> 'needs' curve"
+      - "8. 49.8 (new) 9B, after 48.1's verdict: validates the hand-built address"
+      - "9. 49.3 pooled probe 9B, Muse: closes 48.3 <-> 3b"
+      - "10. 49.4 27B reduced anatomy (47.8 spec, reduced grid): the 27B is the exception"
+      - "11. D3 only if 48.1's lookup own-IIA at L >= 0.7; otherwise not enqueued"
+      - "12. 49.7 27B, 49.6: last"
+    gpus: >-
+      While 48.1 and 47.15 run (items 1-2, ~2 h), write 49.1 and 49.7; as a GPU frees, 47.11 fills it until 49.1 is ready.
+    cancelled: ["47.16 Muse", "47.7(b)", "47.12", "48.6", "any 47.6 variant", "any 48.2 / 48.4 variant"]
+    superseded_specs: [x47_16_muse, x47_7b_9b, x47_7b_muse, x47_7b_9b_r2, x47_7b_muse_r2, x47_12_9b, x47_12_muse]
+    stands: "47.7(c) is already opened and in the README"
+
+tests:
+  - id: "49.7"
+    title: Does the question's attention follow the written address?
+    models: ["qwen3.5-9b (~0.5 GPU-h)", "muse-glimmer-30b (~0.5 GPU-h)", "qwen3.6-27b last"]
+    question: >-
+      The address is probe-readable, removable and writable; nothing shows who dereferences it. If a swap of the address
+      at the bridge word moves the question's attention onto the locker sentence of the written slot, the dereference is
+      in hand at the head level.
+    design: >-
+      Routes C0 scenes, locker-first (x6_routes' C0 items, the ones x8_write used). Arms at the bridge word at L: none;
+      the pointer swap mu_k - mu_j at s = 2 (x8_write's operation, pointer_means not refit); a random vector of the same
+      norm. Record attention weights from the last token and from each question token to every token, at every
+      full-attention layer > L (the 9B's full-attention layers only; all layers on Muse). Aggregate per head: mass on
+      each locker sentence (all its tokens). Candidate heads: the five with the most mass on any locker sentence under
+      none, chosen on a fit half of the items; read on the other half. Per head, per item: move = (mass on slot k's
+      sentence - mass on slot j's sentence) under the arm, minus the same under none; j = the bridge item's slot, k = the
+      written slot.
+    rules:
+      follows: >-
+        "The attention follows the address": on items where the lookup switched to slot k's locker, >= 1 of the five heads
+        has move >= 0.30 (paired CI excluding 0) under the swap, <= 0.05 under the random vector, and that head's move on
+        non-switched items is <= 0.10.
+      elsewhere: >-
+        "Dereference elsewhere": no head reaches 0.15 while the lookup switches >= 0.3; the address is consumed by a
+        route the full-attention heads do not show (on the 9B, the Gated DeltaNet layers are the suspect; say so).
+      report_beside: >-
+        The best head's layer and index, its attention entropy under each arm, and the per-token breakdown of its mass on
+        slot k's sentence (item token / number token / the rest).
+    figure: >-
+      For the best head per model: three bar groups (none / swap / random) over the three locker sentences; beside it,
+      the lookup's answer shares under the same arms.
+    dumbest_ways: >-
+      1) The head moves under any perturbation of the token (the random vector is the control; also the entropy). 2) The
+      mass moves only to the number token of slot k (report per token; a move to the number alone still counts, but say
+      it). 3) On the 9B the route is in DeltaNet (report the total full-attention mass change; if the lookup switches with
+      no attention change anywhere, write "not in full attention").
+    cpu: >-
+      The attention recording hook is tested on the fake model before the job (attention weights returned for the
+      full-attention layers; DeltaNet layers skipped and logged). The hand-check pack adds 49.7's best-head bars (10
+      items) when it lands.
+    prediction: Q49.7
+  - id: "49.8"
+    title: DAS for the address
+    models: ["qwen3.5-9b (~0.5 GPU-h), after 48.1's verdict exists"]
+    design: >-
+      x48_das's code; pairs = routes position counterfactuals (same item, its locker sentence moved to another slot, the
+      counterfactual answer = that slot's locker); R_pos with k in {2, 4, 8}; entities held out 60/20/20; random and
+      shuffled-target baselines.
+    reads: >-
+      own-IIA; energy of U (4-d, first-vs-rest) inside R_pos; energy of W (47.2's five-slot subspace, fit on the
+      six-locker scenes, applied here) inside R_pos; R_pos's energy inside the J++-25 part; the cross read: R_pos applied,
+      does the recall move (should not).
+    rules:
+      ours: >-
+        "The learned address is ours": at k = 4, >= 0.6 of U's energy lies in R_pos (random k/d ~ 0.001) with own-IIA
+        >= 0.6 and the recall's cross-IIA <= 0.1.
+      two_codes: >-
+        "Two address codes": own-IIA >= 0.6 but U's energy in R_pos <= 0.2; then report which one the writes used (47.2's
+        slot-specific result) and the angle between them.
+    prediction: Q49.8

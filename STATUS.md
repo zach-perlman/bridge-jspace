@@ -1,3 +1,8 @@
+# 28 Oct afternoon: batch 49 amendment 1 (Dan ~14:10; agent, autonomy until 18:00). Sealed until Dan's Q49.x
+
+- Recorded before the next enqueue: jobs/c3/batch49.yaml (amendment 1: the queue by value, 49.7 and 49.8 added, four cut; the brief with 49.1-49.6 not yet in the repo); Q49.7 / Q49.8 appended to predictions/2026-10-28_dan.md with empty Dan lines.
+- Queue at ~14:15: x47_16_muse stopped on the box (process killed; the 9B's 47.16 run stands); cancelled from pending: 47.7(b) x2, 47.12 x2, 47.11 x2, 47.15 x3, D3 (r2; D3 only if 48.1's lookup own-IIA at L >= 0.7). x48_1_9b_r2 started first on the freed GPU; x47_7a_27b_r2 finishing. 47.15 (27B, 9B, Muse) then 47.11 (9B, Muse) re-enqueued behind it under r2 ids.
+
 # Night of 28 Oct: batches 47 and 48 (Dan ~02:00 / ~02:30; agent, autonomy until 09:00). Results sealed until Dan's Q47.x / Q48.x
 
 - Pre-registered before any code or run: jobs/c3/batch47.yaml (2599221f), jobs/c3/batch48.yaml (2685af0d), predictions/2026-10-28_dan.md (Q47.1-Q47.7, Q48.1-Q48.5, empty Dan lines).
