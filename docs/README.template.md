@@ -90,7 +90,7 @@
 ![Each route predicts a different locker](figures/story/fig04_routes_design.png)
 *Fig. 4.*
 
-- **The lookup never takes the number itself, and splits between identity and position:** the 27B leans on identity, the 9B and Muse on position; never the number in prose, JSON or tables (fixed in advance; 6 of 9 sets past the gate). **Adding only the J++ part gives no identity answers**: the identity route runs outside J++.
+- **The lookup never takes the number itself, and splits between identity and position:** the 27B leans on identity, the 9B and Muse on position; never the number in prose, JSON or tables (fixed in advance, 6 of 9 sets). **Adding only the J++ part gives no identity answers**, so even the identity route runs mostly outside J++.
 
 ![The lookup follows identity or position, never the value](figures/story/fig05_routes.png)
 *Fig. 5.*
@@ -205,7 +205,7 @@
 ![No forward binding at the locker sentence](figures/story/fig10c_binding.png)
 *Fig. 10c.*
 
-- **The heads that copy the bridge word pass the J++ part and the rest about equally.**
+- **The copying heads pass the J++ part and the rest about equally.**
 
 ![The copying heads do not pass the rest at twice the J++ part](figures/story/fig10d_heads.png)
 *Fig. 10d.*
