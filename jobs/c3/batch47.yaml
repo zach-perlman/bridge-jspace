@@ -58,6 +58,17 @@ amendments:
       - "D4: CPU from cached states (address persistence, lens identity vs embedding, forward binding by layer, the cross-track alignment table)."
     queue_order: "47.1 -> D1+D2 (9B) -> 48.1 (9B) -> 47.7(a) -> 47.8 (9B) -> D3 -> 48.2 A -> 47.3 -> D1+D2 (Muse) -> 47.8 (Muse) -> 47.2 (9B, Muse) -> 47.7(c) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> 47.8 (27B) -> D1 (27B) -> 47.6(a)(b) -> 48.2 B -> 48.4 -> 47.7(b) -> 48.6; D4 on CPU as soon as 47.8 (9B) has cached states"
     not_cut: ["47.0", "47.1", "D1+D2 (9B)", "48.1 (9B)", "47.7(a)", "47.8 (9B)", "47.3"]
+  - id: 4
+    by: Dan, 28 Oct ~03:00
+    rule: >-
+      Nothing below is enqueued unless the named cut is made. The limiting resource is the Thursday hand check, not the
+      GPUs: every unsealed test must be read against its rule and packed (10 random items, seed 0) before Friday.
+    items:
+      - "Add 47.10 (report the address: on-demand surfacing into the J-space), 47.11 (is the pointer item-agnostic?), 47.12 (two definitions of the lens part), 47.13 (CPU: does the address probe predict the lookup's errors?), 47.9 (optional: a second attribute; only if 47.2's competence fails and frees its slot)."
+      - "Add to 47.7(a): question-first for the recall reader too, with 48.2 A's attribute probe at the bridge word: 'the attribute is prefetched on demand' if the probe rises >= 0.2 over question-last at layers >= L (CI excluding 0)."
+    cuts_in_order: ["47.7(b) word-valued lockers -> after the freeze", "48.6 DAS transfer -> after the freeze", "47.6(a) attention measurement -> after the freeze (47.6(b) stays)", "48.4 OV share -> after the freeze (CPU-light; may run Thursday if idle)", "47.2 (Muse) -> after the freeze; 47.2 (9B) stays", "47.8 (27B), D1 (27B) -> already after the freeze"]
+    queue_order: "47.1 -> D1+D2 (9B) -> 48.1 (9B) -> 47.7(a) -> 47.8 (9B) -> 47.10 (27B, Muse; 9B if its gate passes) -> D3 -> 48.2 A -> 47.3 -> 47.11 -> D1+D2 (Muse) -> 47.8 (Muse) -> 47.12 -> 47.2 (9B) -> 47.7(c) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> [freeze] -> the rest; 47.13 and D4 on CPU as soon as their inputs exist"
+    not_cut: ["47.0", "47.1", "D1+D2 (9B)", "48.1 (9B)", "47.7(a)", "47.8 (9B)", "47.10", "47.3"]
 
 tests:
   - id: "47.0"
@@ -439,4 +450,88 @@ tests:
         Cross-track alignment table (after D2): per model, l_probe (address formed), l_P (address used), l_J (lookup
         leaves the lens), l_R per reader, Zach's mid and late bands. One table: the depth story in numbers.
     question: Q-depth D4
+
+  - id: "47.10"
+    added_by: amendment 4 (Dan, 28 Oct ~03:00)
+    title: "Report the address: on-demand surfacing into the J-space"
+    models: "9B, 27B, Muse; ~1 GPU-h each"
+    question_text: >-
+      Gurnee et al.: information not normally in the J-space can be surfaced to it on demand. Our address is not
+      verbalizable (47.0). Does it become lens-readable, and lens-dependent, when the task is to report it?
+    scenes: >-
+      Routes scenes, locker-first, with a third reader, the report: "Was the locker of Iris's pick listed first, second
+      or third?" (answer: the ordinal word; a digit variant "1, 2 or 3" beside). Competence gate 0.80 on the report; a
+      model that cannot report positions is "not tested" (the 9B may fail).
+    reads: >-
+      At the bridge word: the lens readout's rank of the correct ordinal (and digit) under the report prompt vs the
+      lookup prompt; the slot probe (unchanged, as control: the address is there in both). Arms (the change at the bridge
+      word at L): whole; without J++ (ordinal and digit atoms allowed; K = 25); without the random part; without U; only
+      U. Readers: report, lookup, recall.
+    rule: >-
+      Fixed in advance. "Surfaced on demand": under the report prompt the lens ranks the correct ordinal in its top-5 in
+      >= 0.4 of items (under the lookup prompt <= 0.1), and the report loses >= 0.3 of its switches without J++ beyond
+      random, while the lookup on the same scenes loses <= 0.10 (as before). "Reported late, not surfaced": the lens
+      stays <= 0.1 at the bridge word under the report prompt and the report loses <= 0.1 without J++ but >= 0.3 without
+      U; the address is converted to a word at the question, not at the token. Either way, one figure: the same address,
+      two consumers.
+    dumbest_ways: >-
+      1) The report is answered from the layout, not the address (control: scenes where the pick's item is not the first
+      locker; the report must track the slot, not say "first"). 2) Ordinal atoms absent from the lens dictionary (check
+      and say which are present). 3) The report prompt changes the gate for the other readers (readers are separate
+      prompts; assert).
+    question: Q47.10
+
+  - id: "47.11"
+    added_by: amendment 4
+    title: "Is the pointer item-agnostic?"
+    models: "9B, Muse; ~0.6 GPU-h"
+    scenes: >-
+      Routes scenes with objects (single-token tools or fruits) and with people's names as the "items", same layout,
+      same slots, same digits.
+    arms: "U fit on animals, not refit: without U vs random; only U."
+    rule: >-
+      "An address, not an animal code" if without U cuts position answers >= 0.3 beyond random on both new item types
+      (within 0.1 of the animal result), and only-U gives position >= 0.15. If it fails, refit U per item type and report
+      both: the code is slot x type.
+    question: Q47.11
+
+  - id: "47.12"
+    added_by: amendment 4
+    title: "Two definitions of the lens part on the same scenes"
+    models: "9B, Muse; ~0.6 GPU-h"
+    design: >-
+      Our arms on the main test (whole / without part / without random) with the part defined two ways at the same token
+      and layer: (i) ours, the 25 OMP atoms of Delta; (ii) Zach's, the top-10 directions the lens reads at that token, as
+      his knock-out defines them (his code path, same lens file).
+    rule: >-
+      "Definitions agree" if the gap under (ii) is within 0.15 of (i) on both models. With 47.5 (operation: conflict vs
+      zeroing) this splits the Muse disagreement into tool and operation.
+    question: Q47.12
+
+  - id: "47.13"
+    added_by: amendment 4
+    title: "CPU: does the address probe predict the model's lookup errors?"
+    cost: "~1 h, no GPU"
+    data: >-
+      Unedited scenes where the lookup answers wrong (excluded by the gate; states exist in x0_probe_power for every
+      scene, check).
+    read: >-
+      The slot probe's predicted slot vs the slot of the model's wrong answer (its digit's sentence), on the 9B, 27B,
+      Muse.
+    rule: >-
+      "The address predicts the error" if they match in >= 0.5 of wrong items (chance ~ 0.33 with three lockers; report
+      the layout baseline too), and the lens's top item at the bridge word is still the right item in >= 0.8 of those
+      (the identity was right; the address was wrong). One sentence for "for monitoring".
+    question: Q47.13
+
+  - id: "47.9"
+    added_by: amendment 4; optional, only if 47.2's competence fails and frees its slot
+    title: "A second attribute: what the address addresses"
+    models: "9B, Muse; ~1 GPU-h"
+    scenes: >-
+      Each item has a locker sentence and, elsewhere in the list, a bin sentence; two lookups: locker and bin.
+    rule: >-
+      "The address points at the first mention" if position answers for the bin question are <= 0.10 while for the
+      locker question >= 0.3 on the same scenes; "the address points at the asked attribute" if both >= 0.3.
+    question: none yet
 
