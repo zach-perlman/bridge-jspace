@@ -20,6 +20,7 @@ tests:
   - {id: "51.3", title: "DAS at scale", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~2 GPU-h each", box: mats}
   - {id: "51.2", title: "Joint head ablation under the address swap", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~1 GPU-h each", box: speedup}
   - {id: "51.4", title: "Does the address travel? The swap at the last token", models: [qwen3.5-9b, muse-glimmer-30b, qwen3.6-27b], est: "~0.5 GPU-h each", box: helper}
+  - {id: "51.10", title: "Does the intermediate pass through J-space? Read / write statistics per position, per reader", models: [qwen3.5-9b, qwen3.6-27b, muse-glimmer-30b], est: "9B ~1 GPU-h; 27B, Muse ~2 GPU-h each; read statistics ~30 min CPU per model", box: "speedup (9B -> 27B), helper (Muse)", added: "addendum 2, Dan 28 Oct 18:15"}
   - {id: "51.6", title: "Optional: Lightning, the main test", models: [lightning], est: "~2 GPU-h", box: speedup, condition: "only if speedup idles after 02:00"}
 brief: |
   # Batch 51 — launch instruction for the coder agent (Dan, 28 Oct 17:10 Paris)
@@ -109,3 +110,43 @@ brief: |
   ## 4. Thursday
 
   09:00–13:00 hand check of the A-claim numbers (main gap ×3, order, routes, address remove / swap, 47.5, 47.1 27B, 47.8 9B) through the dashboard, 10 items each, into VERIFIED.md, plus 49.5's row-for-row. 13:00 final pulls. 16:00 freeze: what is opened and checked goes on the page; the rest to the supplement, labelled. Friday: slides only.
+addendum_2: |
+  # Batch 51 — addendum 2 (Dan, 28 Oct 18:15): 51.10 Does the intermediate pass through J-space? Read / write statistics per position, per reader
+
+  **Why.** Neel: it is strange that the intermediate does not go through J-space. Our "the lookup is blind to the J++ part" is a statement about the *bridge token*. The workspace paper's claim is about where a multi-step computation's intermediate lives; the latent two-hop literature (Yang et al. 2024; Biran et al. 2024) finds the bridge entity at the **last token** in the middle layers. We have two second hops with the same first hop: the recall (parametric: entity → fact) and the lookup (in-context: entity → its locker). So the question is asked at the positions where the second hop is made — the question's "pick" token and the last token — and answered with read and write statistics per reader.
+
+  **Models, items, layers.** 9B (every 2nd layer L2–L38), 27B and Muse (every 4th layer, plus L and L ± 2). Main-test locker-first items (200 per model after the gate), both readers; O / S pairs as in the main test (the question text is identical in O and S, so the last token's state differs only through the context).
+
+  **Positions.** (P1) the bridge word; (P2) the question's "pick" token; (P3) the last token (before the answer).
+
+  **Read (cached states, mostly CPU).** At each position and layer, per reader's prompt:
+  - the lens readout: the rank of the bridge entity's first token in the J-lens scores at that position (Zach's read directions / W_g rows); report the share of items with the entity in the top-1 and top-5 by layer; the same for the *other* entity on the S prompt;
+  - a linear probe for the bridge entity (scene-level split, classes = the entities of the family; chance = 1/classes) on three inputs: the projection onto the span of his top-10 read directions at that token and layer (**through the lens**), the full residual (**readable at all**), the complement (**outside the lens**);
+  - the layer at which the answer digit becomes top-1 in the plain logit lens at P3 (the read must precede it to count as an intermediate).
+
+  **Write (GPU).** At P2 and P3 (and P1 beside, so every position has the same operations), one layer at a time:
+  - **his J-part swap:** replace the top-10 read directions' coordinates of h_O with those of h_S at that position and layer (Zach's jswap definition, his code path);
+  - **the J++ part of the change added:** h_O + the OMP-25 part of (h_S − h_O) at that position, gain 1 and 2 (our 49.1 definition);
+  - **a random part of the same share** for each of the two above;
+  - **the whole state patched** (h_O ← h_S at that position and layer): the upper bound for that position.
+  Read both readers: switched to S's answer. Plain-text loss per arm.
+
+  **Remove (GPU, P3 only, light).** His knock-out at the last token only (top-10 per layer over the band around the read peak) and the J++-25 removal at the last token at one layer: cost per reader against matched random. (The bridge-token removal exists: 47.5, 49.2.)
+
+  **Rules, fixed in advance (per reader, per model).**
+  - "The intermediate is in J-space at the last token" (read): the through-the-lens probe ≥ 0.8 and lens top-5 ≥ 0.5 at some layer before the answer digit's layer, while the full-residual probe ≥ 0.9 there.
+  - "Writable through J-space at the last token": at the layer of the read peak (or the best layer), his swap or the J++ part of the change (gain ≤ 2) switches ≥ 0.5 of what the whole-state patch switches at that layer, with the random part ≤ 0.10.
+  - "Readable, not used": read holds, write fails.
+  - "Routes around J-space": read fails at every layer before the answer (through-the-lens probe < 0.5 while the full-residual probe ≥ 0.9 at some layer — i.e. the entity is there, outside the lens), and write fails.
+  - "Not represented at the last token at all": the full-residual probe < 0.5 at every layer before the answer — then the second hop is made elsewhere (P2 or the context), and the P2 rows decide.
+  Same clauses at P2. P1 reports the swap for both readers beside 49.1's J(α, 0) (the bridge-token write).
+
+  **Output.** One figure per model: rows P1 / P2 / P3, columns layers, panels lookup / recall; heat = through-the-lens probe accuracy, contour or marker = swap switch share, a vertical line at the answer digit's layer; and one summary table: per reader, the first layer the intermediate is lens-readable at P3, the peak swap switch at P3 vs the whole-state patch, and the same at P2. **This is the direct answer to Neel's comment**: either the lookup's intermediate passes through J-space at the question even though the bridge word's identity does not, or the in-context hop routes around the lens end to end.
+
+  **Cost.** 9B ~1 GPU-h; 27B, Muse ~2 GPU-h each; read statistics ~30 min CPU per model on cached states.
+
+  **Queue.** 51.10 ranks above 51.2 and 51.4. Consolidated rank: 51.1, 51.7, 51.5, 51.10, 51.8, 51.3, 51.9, 51.2, 51.4, 51.6. Per box: mats 51.1 → 51.3; speedup 51.7 → 51.10 (9B → 27B) → 51.8 → 51.2; helper 51.5 → 51.10 (Muse) → 51.9 → 51.4; 51.6 last anywhere.
+
+  **Q51.10 (options; per reader, per model):** in J-space at the last token (read and write) / readable, not used / routes around J-space / not represented at the last token. And at the "pick" token: the same four.
+
+  **Dumbest ways to be wrong, to check in the verify pack.** The probe classes leak through the question text (identical in O and S — fine) or through the locker sentences' order (hold scenes out, not items); the lens readout at P3 in late layers is the digit, not the entity (the answer-layer line handles it); his swap at P3 moves the answer by moving the *digit* directly rather than the entity (check: on the recall, a swap that switches should switch to S's fact, not to any digit — report "switched to S's answer" vs "changed to another digit" separately); the whole-state patch at P3 at late layers switches trivially (it is the upper bound per layer, read the ratio at the read peak, not the max).
