@@ -1,0 +1,65 @@
+{
+  "target": "muse-glimmer-30b",
+  "layers": [
+    26,
+    30
+  ],
+  "n_layers": 52,
+  "d": 6656,
+  "routes_run": "muse30b_x6_routes",
+  "routes_c0_gate": {
+    "cases": 700,
+    "org_read_accuracy": {
+      "PP": 0.9857142857142858,
+      "PM": 0.94
+    },
+    "pass": true,
+    "eligible": 580
+  },
+  "items": 300,
+  "entities": 32,
+  "fit_items": 156,
+  "read_items": 144,
+  "fit_entities": 16,
+  "read_entities": 16,
+  "fit_items_by_slot": {
+    "0": 49,
+    "1": 52,
+    "2": 55
+  },
+  "items_by_slot": {
+    "0": 98,
+    "1": 99,
+    "2": 103
+  },
+  "pairs": 600,
+  "read_pairs": 288,
+  "doses": [
+    1.0,
+    2.0
+  ],
+  "arms_per_item": {
+    "fit half": 17,
+    "read half": 33
+  },
+  "rows_per_cell_per_reader": {
+    "bridge_swap / bridge_random (every item)": 600,
+    "last_swap / last_random (read half)": 288
+  },
+  "cells": [
+    "L26 s=1",
+    "L26 s=2",
+    "L30 s=1",
+    "L30 s=2"
+  ],
+  "reads_per_reader": 7404,
+  "reads": 14808,
+  "states_last_mb": 207.7,
+  "bridge_fit_step_norms": {
+    "0-1": 41.3812,
+    "0-2": 50.8449,
+    "1-2": 24.8681
+  },
+  "mu_from": "muse30b_x0_probe_v4",
+  "max_read_len": 111
+}

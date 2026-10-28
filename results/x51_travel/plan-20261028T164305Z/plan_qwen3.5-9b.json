@@ -1,0 +1,65 @@
+{
+  "target": "qwen3.5-9b",
+  "layers": [
+    12,
+    16
+  ],
+  "n_layers": 32,
+  "d": 4096,
+  "routes_run": "qwen35_9b_x6_routes",
+  "routes_c0_gate": {
+    "cases": 700,
+    "org_read_accuracy": {
+      "PP": 1.0,
+      "PM": 0.9071428571428571
+    },
+    "pass": true,
+    "eligible": 572
+  },
+  "items": 300,
+  "entities": 31,
+  "fit_items": 138,
+  "read_items": 162,
+  "fit_entities": 15,
+  "read_entities": 16,
+  "fit_items_by_slot": {
+    "0": 44,
+    "1": 47,
+    "2": 47
+  },
+  "items_by_slot": {
+    "0": 91,
+    "1": 109,
+    "2": 100
+  },
+  "pairs": 600,
+  "read_pairs": 324,
+  "doses": [
+    1.0,
+    2.0
+  ],
+  "arms_per_item": {
+    "fit half": 17,
+    "read half": 33
+  },
+  "rows_per_cell_per_reader": {
+    "bridge_swap / bridge_random (every item)": 600,
+    "last_swap / last_random (read half)": 324
+  },
+  "cells": [
+    "L12 s=1",
+    "L12 s=2",
+    "L16 s=1",
+    "L16 s=2"
+  ],
+  "reads_per_reader": 7692,
+  "reads": 15384,
+  "states_last_mb": 78.6,
+  "bridge_fit_step_norms": {
+    "0-1": 4.0998,
+    "0-2": 4.8187,
+    "1-2": 2.43
+  },
+  "mu_from": "qwen35_9b_x0_probe_v4",
+  "max_read_len": 76
+}
