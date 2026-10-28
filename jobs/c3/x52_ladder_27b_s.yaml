@@ -1,0 +1,45 @@
+id: x52_ladder_27b_s
+title: "Batch 52 C coverage (tier 1, 27B, L32): the removal ladder's six rungs (49.2) on the 27B, rung 6 over Zach's 27B band L32-40; clean one-pick scenes, on S, both readers, a random subspace of the same share beside every rung; no prediction (coverage run on an already-scored rule)"
+thread: C3
+gpus: 1
+mem_gb: 76
+est_gpu_hours: 0.8
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x49_ladder.py run --name x52_ladder_27b --band 32 40 --coverage --why "Batch 52 part C (jobs/c3/batch52.yaml), coverage: 49.2's removal ladder on the 27B, all six rungs (it ran rungs 1-2 only, x49_2_27b), rung 6 over Zach's 27B band L32-40; the rules of jobs/c3/batch49.yaml 49.2 verbatim, first scored in results/x49_ladder/x49_2-20261028T161612Z; no prediction: coverage run on an already-scored rule"
+question: >-
+  On Qwen3.6-27B, as the J++ part of the bridge item is removed from the changed prompt step by step (the bridge word at
+  L; at L..L+3; + the item's earlier mention; + the question's tokens; every token; Zach's top-10 per token over his
+  band), when does the recall start needing it, is the earlier mention its second copy, and does the lookup ever need
+  it? The 9B and Muse answered this in 49.2; the 27B ran only the bridge-word rungs.
+why_it_matters: >-
+  Fills the 27B's partial ladder cell (Fig. 1d and the ladder card show '-' for rungs 3-6 on the 27B). The 27B is the
+  model whose lookup partly follows the lens, so whether its lookup ever needs the lens part at the wider rungs is the
+  open case.
+hypotheses:
+  none: "No prediction (batch 52 addendum): coverage run on an already-scored rule; the verdict writes 'no prediction: coverage run on an already-scored rule' where the Q-line used to be."
+decision_rule: >-
+  The rules verbatim from jobs/c3/batch49.yaml 49.2 with amendment 2 (as in jobs/c3/x49_2_muse_r5.yaml; first scored on
+  the 9B and Muse in results/x49_ladder/x49_2-20261028T161612Z): "The second copy is the earlier mention": rung (3)
+  costs the recall >= 0.3 more than rung (2) in locker-first scenes (paired CI excluding 0) and rung (2) already costs
+  >= 0.3 in locker-after scenes. "Needed only when everything goes": rungs (1)-(4) each <= 0.2 and rung (5) or (6) >=
+  0.5. "The lookup never needs it" if <= 0.1 beyond random at every rung. As computed: exactly x49_2_muse_r5's
+  as-computed text (scripts/x49_ladder.py verdict: numbers, rules; point estimates decide, EPS 1e-9; cluster-bootstrap
+  CIs over the bridge items, 10,000, seed 0, paired for differences), on the 27B: scenes = x45m_fresh_27b's eligible
+  scenes at L32 (574 = 254 locker-first + 320 locker-after, 46 bridge items; the same items as x49_2_27b), L..L+3 =
+  L32-35. The one choice the design left open on the 27B (49.2 gave no 27B band: "qwen3.6-27b: bridge-word rungs
+  only"): rung 6's band = Zach's 27B band L32-40 (scripts/x50_zach.py BESIDE_BAND; his C1 knock-out band, paper10 at
+  L32-40, EXPERIMENTS.md 2026-10-21), as the 9B's L12-16 is his 9B band; agreed by the coordinator for Dan (29 Oct
+  ~01:20), so rule (b) is read as written ("rung (5) or (6)"). Verdict (CPU, after the job): uv run python
+  scripts/x49_ladder.py verdict --coverage --runs qwen35_9b_x49_2 x52_ladder_27b muse30_x49_2_r5 (the 9B and Muse
+  rows unchanged beside; results/x49_ladder/x52_ladder-<UTC>/).
+controls:
+- "beside every rung, a random subspace of the same share of each token's ||h_S||^2 (X0's random basis, seed 888 + l); for rung 6 the share his top-10 removal takes there"
+- "S unedited (keeps ~1 by the source run's eligibility; reported)"
+- "the lookup on the identical removal (its own rule)"
+- "raw cost kept(none) - kept(removal) beside the cost beyond random"
+- "rungs 1-2 against the stored x49_2_27b on the same items (the same edits and seeds; agreement reported by hand in the verify pack)"
+n: "574 clean one-pick scenes (x45m_fresh_27b's eligible at L32, chat): 254 locker-first, 320 locker-after; 46 bridge items (as x49_2_27b)"
+seeds: [888, 0]
+notes: "Speedup copy of x52_ladder_27b (29 Oct 00:45: speedup idle after the Lightning prerequisite failed its 60-scene gate; cancelled on another before it ran; run name unchanged). Batch 52 part C, tier 1 (the 27B), box another (after x47_2_27b, ~0.6 h; the coordinator's order). Same n as the 9B / Muse design (every eligible 45m scene). Run name x52_ladder_27b (the 27B's runs carry no prefix, as x49_2_27b). Code change for this cell only: scripts/x49_ladder.py run --band FIRST LAST (rung 6's band given explicitly, all six rungs) and --coverage (manifest 'no prediction'; verdict --coverage skips Q49.2's seal guard, which stays for 49.2's own verdict); tests in tests/test_x49_ladder.py. Memory: x49_2_27b (rungs 1-2) peaked at 68.2 GB (helper2 H100 HBM3); rungs 3-6 add the band's J_l (9 x 5120^2 fp32 = 0.9 GB) and LazyWgDictionary's norms (no stored W_g; the 28 Oct OOM fixes: no_grad, cloned rows), and Muse's full ladder (d 6656, 55.5 GiB of weights) peaked at 67.1 GB, so one 80 GB card should hold it; mem_gb 76. Estimate (ledgers): x49_2_27b 0.13 h run for 574 items x 2 readers x 5 arms; muse30_x49_2_r5 (all six rungs, 409 items, 7 band layers) 0.21 h on an HBM3 H100; here 574 items x 2 x 13 arms with 9 band layers on an H100 PCIe: ~0.21 x 1.4 (items) x 1.3 (band) x 1.5 (PCIe) = 0.57 h; est 0.8. After the job: pull results/x49_ladder/x52_ladder_27b/, then the coverage verdict above (CPU)."
