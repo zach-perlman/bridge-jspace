@@ -442,3 +442,21 @@ def test_model_result_refuses_runs_of_another_kind(tmp_path, monkeypatch):
     _planted(tmp_path, monkeypatch, dict.fromkeys(A.MODELS, 0.0))
     with pytest.raises(AssertionError, match=r"not qwen3\.5-9b's"):
         A.model_result("qwen3.5-9b", A.ROUTES_RUNS["qwen3.6-27b"], A.MAIN_RUNS["qwen3.5-9b"], 100)
+
+
+def test_main_passes_re_queued_run_names(monkeypatch):
+    seen = {}
+    monkeypatch.setattr(A, "stage_verdict", lambda n_boot, **k: seen.update(k))
+    monkeypatch.setattr(sys, "argv", ["x47_atoms.py", "verdict", "--routes-runs", "a", "qwen35_9b_r2", "c"])
+    A.main()
+    assert seen["routes_runs"] == {"qwen3.6-27b": "a", "qwen3.5-9b": "qwen35_9b_r2", "muse-glimmer-30b": "c"}
+    assert seen["main_runs"] is None
+
+
+def test_verdict_takes_re_queued_run_names(tmp_path, monkeypatch):
+    _planted(tmp_path, monkeypatch, {"qwen3.6-27b": 0.4, "qwen3.5-9b": 0.4, "muse-glimmer-30b": 0.0})
+    (tmp_path / "x6_routes" / A.ROUTES_RUNS["qwen3.5-9b"]).rename(tmp_path / "x6_routes" / "r2")
+    monkeypatch.setattr(A, "dan_answer", lambda q=A.QUESTION: "x")
+    out = A.stage_verdict(100, decode_for=lambda t: str, routes_runs={"qwen3.5-9b": "r2"})
+    blob = json.loads((out / "x47_1.json").read_text())
+    assert blob["models"][1]["runs"] == ["r2", A.MAIN_RUNS["qwen3.5-9b"]] and blob["batch"]["a_holds"] == "holds"

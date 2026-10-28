@@ -1,0 +1,54 @@
+id: x47_5_muse
+title: "Batch 47.5 on Muse (L26): followed or needed? On the changed prompt, the bridge word's state without its projection on the change's 25 OMP atoms at L (and at L..L+3, per-layer lens), against a random subspace of the same share; main-test scenes, both readers"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.2
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=;
+  uv run python scripts/x47_zero.py run --name muse30_x47_5 --why "Batch 47, test 47.5 (jobs/c3/batch47.yaml; Q47.5): on S, the bridge word's state without its projection on Δ's 25 OMP atoms at L26 and at L26..29, against a random subspace of the same share of ||h_S||^2; main-test scenes; sealed"
+question: >-
+  Does the recall follow the J++ part at one layer, or need it? Zeroing the 25 OMP atoms of the change on the changed
+  prompt at L, against a random part of the same share: how much of S's answers does each reader keep?
+why_it_matters: >-
+  "Without the J++ part" is a conflict test (J++ says the old item, the rest says the new one). Whether the recall needs
+  the part is Zach's zeroing. On Muse the two disagree at mid depth (our gap 0.85; his +6.7). Decides the headline's verb.
+hypotheses:
+  Q47.5: "Dan's answer in predictions/2026-10-28_dan.md (Q47.5, per model: 9B; 27B; Muse); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x47_zero.py verdict refuses until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.5), verbatim: "Followed, not needed at one layer" if the recall keeps >=
+  0.80 of its answers under the zeroing, within 0.10 of the random arm; "needed" if it loses >= 0.30 beyond random. The
+  lookup reported beside. Whatever the result, the README's verb for the main test becomes "follows / reads" unless
+  "needed" holds on all three. Design, verbatim: "On S (the changed prompt), at the bridge token at L: project out the
+  25 OMP atoms of Delta from h_S; the random subspace of the same share; also the same over L..L+3 with the per-layer
+  lens (OMP per layer). Both readers. Measure: share of S's answers kept." As computed (fixed before any run; Dan may
+  override before the run): scenes = the main test (two people swap picks; d1_topics_v3, chat) with X0's read gate
+  (0.80 per reader on O unedited, >= 150 eligible) and eligibility (both readers say and read O's and S's answers
+  right), the first 200 eligible scenes in scene order. Δ_l = h_S - h_O at the bridge word and layer l; "the 25 OMP
+  atoms of Δ" = X0's signed-OMP picks over the J++ lens's letter-token atoms at l (x0_parts.omp_atoms; their span holds
+  X0's J++ k = 25 part of Δ). "Project out ... from h_S" = at the bridge word of S the state h becomes h - Q Q^T h, Q an
+  orthonormal basis of the atoms' span, an edit on the state as it arrives. "The random subspace of the same share" = h
+  minus its projection on the first k columns of X0's random basis (seed 888 + l), k per item so that those columns hold
+  the same share of ||h_S||^2 as the atoms' span on S's clean state (statement_positions.random_subspace_part's rule).
+  "Over L..L+3" = the same edit at L, L+1, L+2 and L+3 in one forward, each with its own lens, Δ_l and OMP; above L it
+  acts on the state already edited below (the random arm likewise, k per layer from S's clean state). "Share of S's
+  answers kept" = the share of the eligible scenes whose top token at X0's chat read of S (the prompt with a digit's
+  space token appended) is S's answer's first token, per reader (S unedited keeps ~1 by eligibility; reported).
+  "Keeps >= 0.80 of its answers under the zeroing, within 0.10 of the random arm" = kept(zeroed at L) >= 0.80 and
+  |kept(zeroed at L) - kept(random at L)| <= 0.10; "loses >= 0.30 beyond random" = kept(random at L) - kept(zeroed at
+  L) >= 0.30; otherwise "neither". The rule is read on the recall at L ("at one layer"); the lookup and L..L+3 get the
+  same numbers and bars, descriptive. Q47.5's answer per model is the recall's label at L. "Needed holds on all three" =
+  "needed" on the 9B, the 27B and Muse; a model whose gate fails is "not tested" and cannot hold it, so the verb is then
+  "follows / reads". Point estimates decide (EPS 1e-9 at the bars); cluster-bootstrap CIs over the bridge items (10,000
+  resamples, seed 0; paired for the differences) beside them. Reported beside: per layer the atoms' share of ||h_S||^2
+  and of ||Δ||^2, the random part's achieved share and k, the norms. Code: scripts/x47_zero.py verdict (label,
+  batch_verb).
+controls:
+- 'the random subspace of the same share of ||h_S||^2 at each edited layer (X0''s random basis, seed 888 + l)'
+- 'S unedited (keeps ~1 by eligibility; reported)'
+- 'the lookup on the identical edit (reported beside)'
+- 'L..L+3 beside one layer (per-layer lens and OMP; descriptive)'
+n: '200 main-test scenes (d1_topics_v3, chat), the first eligible in scene order, where the gate passes'
+seeds: [888, 0]
+notes: "Batch 47 (Dan, 28 Oct ~02:00), 47.5 (queue: after 47.1 and 47.4). Sealed: the run writes manifest, gate, competence, cases (the eligible scenes), outcomes (both readers, five arms: none, zero_L, rand_L, zero_L3, rand_L3; kept, to_org, top token, p_org, p_alt, ld), norms (per item and layer: ||h_S||, ||Δ||, the atoms' share of ||h_S||^2 and of ||Δ||^2, k and achieved share of the random part) and 10 examples' greedy texts; no verdict. The J++ lens must have maps at L..L+3 (asserted before the competence pass). By hand after Dan's Q47.5 is committed (CPU, after all three models): uv run python scripts/x47_zero.py verdict (the rule, the README verb, the per-layer shares and the verify-pack view: 10 random items per run, seed 0, S's prompt as read with the bridge word marked, every arm's answer and greedy text). Reads: 5 rows per reader per scene, one batch. Estimate from the mats box ledger (results/jobq/ledger_sesterce-h100x2.jsonl): x45m_muse_q2 took 788 s (competence over the 600 scenes, then 409 items x 4 rows per reader); here 200 x 5 rows (0.6 of its reads) plus two forwards per scene and four OMPs: ~650 s = 0.18 h -> 0.2. Run name with Muse's live prefix muse30_."

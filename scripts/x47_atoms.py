@@ -530,9 +530,13 @@ def example_lines(target: str, routes_run: str, main_run: str, decode, k: int = 
     return lines
 
 
-def stage_verdict(n_boot: int = X.N_BOOT, decode_for=None) -> Path:
+def stage_verdict(
+    n_boot: int = X.N_BOOT, decode_for=None, routes_runs: dict | None = None, main_runs: dict | None = None
+) -> Path:
+    """The rule over the three models (runs: the specs' names unless given per target, e.g. a re-queued run)."""
     answer = require_answer(QUESTION)
-    models = [model_result(t, ROUTES_RUNS[t], MAIN_RUNS[t], n_boot) for t in MODELS]
+    rr, mr = {**ROUTES_RUNS, **(routes_runs or {})}, {**MAIN_RUNS, **(main_runs or {})}
+    models = [model_result(t, rr[t], mr[t], n_boot) for t in MODELS]
     batch = batch_rule(models)
     out = RESULTS / f"x47_1-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
@@ -567,8 +571,13 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["verdict"])
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--routes-runs", nargs=3, default=None, metavar=("27B", "9B", "MUSE"),
+                    help=f"x6_routes runs in place of the specs' {[ROUTES_RUNS[t] for t in MODELS]}")  # fmt: skip
+    ap.add_argument("--main-runs", nargs=3, default=None, metavar=("27B", "9B", "MUSE"),
+                    help=f"x0_necessity runs in place of the specs' {[MAIN_RUNS[t] for t in MODELS]}")  # fmt: skip
     a = ap.parse_args()
-    stage_verdict(a.n_boot)
+    stage_verdict(a.n_boot, routes_runs=dict(zip(MODELS, a.routes_runs, strict=True)) if a.routes_runs else None,
+                  main_runs=dict(zip(MODELS, a.main_runs, strict=True)) if a.main_runs else None)  # fmt: skip
 
 
 if __name__ == "__main__":
