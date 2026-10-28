@@ -135,7 +135,8 @@ def body_text() -> str:
 def body_words(text: str) -> int:
     """The prose words of the main body: image links, comments and table rows (data, not prose) left out."""
     prose = "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("|"))
-    return len(re.sub(r"!\[[^\]]*\]\([^)]*\)|<!--.*?-->", " ", prose, flags=re.S).split())
+    prose = re.sub(r"<!--.*?-->", "", prose, flags=re.S)  # source comments are invisible: no word, no split
+    return len(re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", prose).split())
 
 
 def test_readme_body_fits_the_word_budget():
@@ -327,3 +328,22 @@ def test_relink_keeps_the_root_readme_and_urls():
     moved = B.relink(text, B.REPO / "docs" / "depth" / "README.md")
     assert moved == ("![a](../../figures/story/x.png) [b](../y.md#z) [c](https://e.org/p) [d](#sec) "
                      "<img src=\"../../figures/w.png\">")  # fmt: skip
+
+
+def test_data_marker_reads_data_csv_and_carries_its_source(tmp_path, monkeypatch):
+    # README v6 (Dan, 28 Oct): every number from figures/story/data.csv with its source comment
+    csv_path = tmp_path / "data.csv"
+    csv_path.write_text("figure,model,quantity,value,lo,hi,n,source\n"
+                        "fig05,qwen3.5-9b,position share,0.514,0.46,0.56,300,results/x\n"
+                        "numbers,,txt,65%,,,,docs/x\n")  # fmt: skip
+    monkeypatch.setattr(B, "DATA_CSV", csv_path)
+    monkeypatch.setattr(B, "REPO", tmp_path)
+    book = B.Book.__new__(B.Book)
+    book.in_table, book._data, book.head = False, None, "x"
+    out = B.render("{{d|fig05|9b|position share}} and {{dp|fig05|9b|position share}}", book)
+    assert "0.51 [0.46, 0.56]<!-- src: data.csv | position share -->" in out
+    assert "and 0.51<!-- src: data.csv | position share -->" in out
+    row = B.render("| a | {{d|numbers||txt}} |", book)
+    assert "65%<!-- src: data.csv \\| txt -->" in row  # a table row escapes the pipe
+    with pytest.raises(ValueError, match="no row"):
+        B.render("{{d|fig05|muse|position share}}", book)

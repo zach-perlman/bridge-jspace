@@ -59,7 +59,8 @@ def resolve(path: str, key: str) -> str | None:
         return None if key in cells else "key is no cell of the csv"
     if p.suffix == ".json":
         return None if key in json.loads(p.read_text(encoding="utf-8")) else "key is no top-level json key"
-    return None if collapse(key) in collapse(p.read_text(encoding="utf-8")) else "key text not found"
+    page = COMMENT.sub("", p.read_text(encoding="utf-8"))  # the depth README carries its own source comments
+    return None if collapse(key) in collapse(page) else "key text not found"
 
 
 def unresolved(text: str) -> list[str]:

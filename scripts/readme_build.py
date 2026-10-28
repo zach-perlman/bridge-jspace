@@ -18,6 +18,11 @@ Markers (f = finding key f1-f8 / gate; m = model key 27b, 9b, olmo_hybrid, 122b,
   {{q|text}}                   a number quoted from outside the grid, rendered as is
   {{num|key}}                  an X0 number from docs/x0_numbers.json (scripts/x0_details.py, from the run files)
   {{pt|key}}                   the same number's point estimate, without its interval (for ranges in prose)
+  {{d|figure|model|quantity}}  a plotted number from figures/story/data.csv (scripts/readme_story_figures.py writes it):
+                               "0.08 [0.05, 0.12]"; model as 9b / 27b / 122b / muse or the target name
+  {{dp|figure|model|quantity}} the same number's point estimate
+  Every num / pt / d / dp marker renders with its source comment (<!-- src: file | key -->; in a table row the
+  separator is written \|), the form tests/test_readme_sources.py checks.
   {{grid}}                     the grid folder
   {{head}}                     the commit the README is built at
 
@@ -28,6 +33,7 @@ uv run python scripts/readme_build.py --out OTHER.md   # the same page elsewhere
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
 import re
@@ -85,6 +91,10 @@ def word(c: RD.Cell) -> str:
     return f"{w} (too few items)" if c.n is not None and c.n < FEW and c.word != "holds" else w
 
 
+DATA_CSV = REPO / "figures" / "story" / "data.csv"
+MODEL_KEYS = {"9b": "qwen3.5-9b", "27b": "qwen3.6-27b", "122b": "qwen3.5-122b-a10b", "muse": "muse-glimmer-30b"}
+
+
 class Book:
     """The grid's main-lens cells, looked up by finding, model and setting (finding 5: both parts)."""
 
@@ -92,6 +102,21 @@ class Book:
         self.grid_dir = grid_dir
         self.head = head  # the commit named on the page; None: HEAD when rendered
         self.cells, _ = RD.read_grid((grid_dir / "grid.csv").read_text())
+        self.in_table = False  # the line being rendered is a table row (its source comments escape the pipe)
+        self._data: dict[tuple[str, str, str], dict[str, str]] | None = None
+
+    def data(self, figure: str, model: str, quantity: str) -> dict[str, str]:
+        """The row of figures/story/data.csv for (figure, model, quantity); model as a short key or the target."""
+        if self._data is None:
+            with DATA_CSV.open(newline="", encoding="utf-8") as f:
+                self._data = {(r["figure"], r["model"], r["quantity"]): r for r in csv.DictReader(f)}
+        key = (figure, MODEL_KEYS.get(model, model), quantity)
+        if key not in self._data:
+            raise ValueError(f"no row {key} in figures/story/data.csv (run scripts/readme_story_figures.py)")
+        return self._data[key]
+
+    def src(self, path: str, key: str) -> str:
+        return f"<!-- src: {path} {'\\|' if self.in_table else '|'} {key} -->"
 
     def of(self, f: str, m: str | None = None) -> list[RD.Cell]:
         return [c for c in self.cells if c.finding == f and (m is None or c.model == m)]
@@ -233,6 +258,8 @@ def render(template: str, book: Book) -> str:
             f, *settings = t.group(2).split("|")
             out += book.table(f, settings)
             continue
+        if book is not None:
+            book.in_table = line.lstrip().startswith("|")
         out.append(MARK.sub(lambda x: one(x, book), line))
     return "\n".join(out).rstrip() + "\n"
 
@@ -261,10 +288,29 @@ def one(x: re.Match[str], book: Book) -> str:
         if args[0] not in numbers:
             raise ValueError(f"{x.group(0)}: no such key in docs/x0_numbers.json (run scripts/x0_details.py)")
         text = numbers[args[0]]["text"]
-        return text.split(" [")[0] if kind == "pt" else text  # pt: the point estimate, without its interval
+        text = text.split(" [")[0] if kind == "pt" else text  # pt: the point estimate, without its interval
+        return text + (book.src("docs/x0_numbers.json", args[0]) if book is not None else "")
+    if kind in ("d", "dp"):  # a plotted number from figures/story/data.csv
+        r = book.data(*args)
+        return fmt_data(r, point=kind == "dp") + book.src(str(DATA_CSV.relative_to(REPO)), r["quantity"])
     if kind == "grid":
         return str(book.grid_dir.relative_to(REPO))
     raise ValueError(f"unknown marker {x.group(0)}")
+
+
+def fmt_data(r: dict[str, str], point: bool = False) -> str:
+    """A data.csv row as the page shows it: two decimals, '[lo, hi]' beside unless point; text values as they are."""
+
+    def two(s: str) -> str:
+        try:
+            return f"{float(s):.2f}"
+        except ValueError:
+            return s
+
+    v = two(r["value"])
+    if point or not r.get("lo") or not r.get("hi"):
+        return v
+    return f"{v} [{two(r['lo'])}, {two(r['hi'])}]"
 
 
 def pinned_grid(template: str) -> Path:

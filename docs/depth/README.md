@@ -5,12 +5,12 @@
 
 ## In one minute
 
-- **Recall follows the part the lens can read** on all four models by rules fixed in advance (clean design: two of three); **the lookup does not.** The recall reads that part at the bridge, or at the item's earlier mention when there is one (fixed in advance, 3 of 3).
+- **Recall follows the part the lens can read** on all four models by rules fixed in advance (clean design: two of three); **the lookup does not.** The recall reads that part at the bridge, or at the item's earlier mention when there is one (fixed in advance, 3 of 3<!-- src: docs/x0_numbers.json | x45p_held -->).
 - **The lookup uses which item it is and where its locker sits in the order of mentions:** the "where" is a pointer the lens cannot see; we can remove and write it.
 - **The pointer is narrow:** it marks the first locker in a clean layout; naming an item first moves the lookup to identity. About half of the route around the lens is unexplained.
 - **For monitoring:** a lens on the bridge word shows which item is there, not where the model will read its answer.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at 5a68e9dc from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at 6b6f66c9 from the run files.
 
 ## Setup
 
@@ -28,7 +28,7 @@
 
 *Fixed in advance, except the split by sentence order and the two other scores.*
 
-- **The split holds on all four models:** without the J++ part the recall loses a large share of its switches and the lookup almost none; the gap is 0.32 to 0.85 over all scenes and 0.21 to 0.75 where the locker sentence comes before the pick (Section 2).
+- **The split holds on all four models:** without the J++ part the recall loses a large share of its switches and the lookup almost none; the gap is 0.32<!-- src: docs/x0_numbers.json | contrast_122b --> to 0.85<!-- src: docs/x0_numbers.json | contrast_muse --> over all scenes and 0.21<!-- src: docs/x0_numbers.json | sbo_swap_before_gap_122b --> to 0.75<!-- src: docs/x0_numbers.json | sbo_swap_before_gap_muse --> where the locker sentence comes before the pick (Section 2).
 
 ![Recall follows the J++ part of the bridge; the lookup mostly does not](../../figures/story/fig01_split.png)
 *Fig. 1.*
@@ -38,20 +38,20 @@
 ![The J++ part zeroed at one layer: the recall keeps its answers](../../figures/story/fig01c_zeroing.png)
 *Fig. 1c.*
 
-- **It holds in the clean design on two of three models** (bar: gap at least 0.3, lookup at most 0.10, locker before the pick): 27B 0.53 [0.42, 0.62], Muse 0.38 [0.23, 0.54]. The 9B misses (0.23 [0.14, 0.31]).
-- **It is not a margin effect:** scored on the logit difference or the answer's probability, the gap is 0.33 to 0.61 and 0.34 to 0.73.
+- **It holds in the clean design on two of three models** (bar: gap at least 0.3, lookup at most 0.10, locker before the pick): 27B 0.53 [0.42, 0.62]<!-- src: docs/x0_numbers.json | x45m_before_gap_27b -->, Muse 0.38 [0.23, 0.54]<!-- src: docs/x0_numbers.json | x45m_before_gap_muse -->. The 9B misses (0.23 [0.14, 0.31]<!-- src: docs/x0_numbers.json | x45m_before_gap_9b -->).
+- **It is not a margin effect:** scored on the logit difference or the answer's probability, the gap is 0.33<!-- src: docs/x0_numbers.json | ld_gap_122b --> to 0.61<!-- src: docs/x0_numbers.json | ld_gap_muse --> and 0.34<!-- src: docs/x0_numbers.json | prob_gap_122b --> to 0.73<!-- src: docs/x0_numbers.json | prob_gap_muse -->.
 - **It holds in every setting, weaker outside simple scenes**; in natural passages Muse's lookup switches too rarely to measure.
-- **It is still there without the chat template** (gate lowered to 0.75, after the data): gap 0.52 / 0.62 (9B / 27B), 0.40 / 0.54 with the locker before the pick, and the lookup never answers the value (0 of 300, 0 of 300; [supplement](../../figures/supp/s01c_no_chat_template.png)).
+- **It is still there without the chat template** (gate lowered to 0.75, after the data): gap 0.52<!-- src: docs/x0_numbers.json | x45ig_gap_9b --> / 0.62<!-- src: docs/x0_numbers.json | x45ig_gap_27b --> (9B / 27B), 0.40<!-- src: docs/x0_numbers.json | x45ig_before_gap_9b --> / 0.54<!-- src: docs/x0_numbers.json | x45ig_before_gap_27b --> with the locker before the pick, and the lookup never answers the value (0 of 300<!-- src: docs/x0_numbers.json | x45i_value_9b -->, 0 of 300<!-- src: docs/x0_numbers.json | x45i_value_27b -->; [supplement](../../figures/supp/s01c_no_chat_template.png)).
 
 ![Recall follows the J++ part more than the lookup in every setting](../../figures/story/fig01b_settings.png)
 *Fig. 1b.*
 
-- **It is specific to the J++ part:** other parts of the same size cost the recall much less, except on the 122B, where PCA directions of the same size come close (0.21 [0.13, 0.30] vs 0.26 [0.16, 0.36]).
+- **It is specific to the J++ part:** other parts of the same size cost the recall much less, except on the 122B, where PCA directions of the same size come close (0.21 [0.13, 0.30]<!-- src: docs/x0_numbers.json | pcaeq_pca_eq_rc_excess_122b --> vs 0.26 [0.16, 0.36]<!-- src: docs/x0_numbers.json | pcaeq_jpp_rc_excess_122b -->).
 
 ![No other part of the same size costs the recall as much as the J++ part](../../figures/story/fig02_specificity.png)
 *Fig. 2.*
 
-- **The 27B misses the strict rule:** its lookup loses 0.14 [0.08, 0.20] (bar 0.10), 0.60 at 100 directions (Fig. 2b).
+- **The 27B misses the strict rule:** its lookup loses 0.14 [0.08, 0.20]<!-- src: docs/x0_numbers.json | lk_excess_27b --> (bar 0.10), 0.60<!-- src: docs/x0_numbers.json | lk_excess_k100_27b --> at 100 directions (Fig. 2b).
 
 ![Why a bigger J++ part costs the 27B lookup: can't tell](../../figures/story/fig02b_k_curve.png)
 *Fig. 2b.*
@@ -60,18 +60,18 @@
 
 *After the data unless marked; the main test unless named.*
 
-- **Lookups switch when the locker sentence comes before the pick:** 65%-89% of them, against 9%-19% after it, on all four models; in the clean design 87%-99% against 0%-5%.
+- **Lookups switch when the locker sentence comes before the pick:** 65%<!-- src: docs/x0_numbers.json | lk_order_before_muse -->-89%<!-- src: docs/x0_numbers.json | lk_order_before_122b --> of them, against 9%<!-- src: docs/x0_numbers.json | lk_order_after_27b -->-19%<!-- src: docs/x0_numbers.json | lk_order_after_9b --> after it, on all four models; in the clean design 87%<!-- src: docs/x0_numbers.json | x45m_before_lksw_muse -->-99%<!-- src: docs/x0_numbers.json | x45m_before_lksw_9b --> against 0%<!-- src: docs/x0_numbers.json | x45m_after_lksw_27b -->-5%<!-- src: docs/x0_numbers.json | x45m_after_lksw_9b -->.
 - **The recall needs the J++ part less when its locker came first, on every model** (Fig. 3, b).
 
 ![Lookups follow the change mostly when the locker sentence comes first](../../figures/story/fig03_order.png)
 *Fig. 3.*
 
-- **With the locker after the pick, the locker sentences make the link, by the layer we fixed (L) on the Qwens and from about L/2 on Muse** (clean design, fixed in advance, 3 of 3): copying the changed prompt's states into them at L carries 0.70 / 0.74 / 0.76 of its lookup switches, the bridge-word change 0.17 / 0.01 / 0.01.
+- **With the locker after the pick, the locker sentences make the link, by the layer we fixed (L) on the Qwens and from about L/2 on Muse** (clean design, fixed in advance, 3 of 3<!-- src: docs/x0_numbers.json | x45q_held -->): copying the changed prompt's states into them at L carries 0.70<!-- src: docs/x0_numbers.json | x45q_c_9b --> / 0.74<!-- src: docs/x0_numbers.json | x45q_c_27b --> / 0.76<!-- src: docs/x0_numbers.json | x45q_c_muse --> of its lookup switches, the bridge-word change 0.17<!-- src: docs/x0_numbers.json | x45q_a_9b --> / 0.01<!-- src: docs/x0_numbers.json | x45q_a_27b --> / 0.01<!-- src: docs/x0_numbers.json | x45q_a_muse -->.
 
 ![On clean scenes with the locker after the pick, the locker sentences make the link](../../figures/story/fig03b_layers.png)
 *Fig. 3b.*
 
-- **With its locker first, the recall reads the new item's earlier mention** (clean design, fixed in advance, 3 of 3): removing the J++ part there too costs it 0.25-0.42 more switches than a random part, 0.26-0.49 more than at another item; the lookup does not move.
+- **With its locker first, the recall reads the new item's earlier mention** (clean design, fixed in advance, 3 of 3<!-- src: docs/x0_numbers.json | x45p_held -->): removing the J++ part there too costs it 0.25<!-- src: docs/x0_numbers.json | x45p_d23_9b -->-0.42<!-- src: docs/x0_numbers.json | x45p_d23_muse --> more switches than a random part, 0.26<!-- src: docs/x0_numbers.json | x45p_d24_9b -->-0.49<!-- src: docs/x0_numbers.json | x45p_d24_27b --> more than at another item; the lookup does not move.
 
 ![The recall reads the item's earlier mention when its locker came first](../../figures/story/fig03c_earlier_mention.png)
 *Fig. 3c.*
@@ -97,7 +97,7 @@
 
 | Another item moved, whole change | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
-| Identity / position | 0.48 [0.43, 0.53] / 0.51 [0.46, 0.56] | 0.66 [0.60, 0.71] / 0.34 [0.28, 0.39] | 0.61 [0.56, 0.67] / 0.38 [0.33, 0.44] | 0.44 [0.38, 0.49] / 0.54 [0.49, 0.60] |
+| Identity / position | 0.48 [0.43, 0.53]<!-- src: docs/x0_numbers.json \| rt_C2_whole_identity_9b --> / 0.51 [0.46, 0.56]<!-- src: docs/x0_numbers.json \| rt_C2_whole_position_9b --> | 0.66 [0.60, 0.71]<!-- src: docs/x0_numbers.json \| rt_C2_whole_identity_27b --> / 0.34 [0.28, 0.39]<!-- src: docs/x0_numbers.json \| rt_C2_whole_position_27b --> | 0.61 [0.56, 0.67]<!-- src: docs/x0_numbers.json \| rtg_C2_whole_identity_122b --> / 0.38 [0.33, 0.44]<!-- src: docs/x0_numbers.json \| rtg_C2_whole_position_122b --> | 0.44 [0.38, 0.49]<!-- src: docs/x0_numbers.json \| rt_C2_whole_identity_muse --> / 0.54 [0.49, 0.60]<!-- src: docs/x0_numbers.json \| rt_C2_whole_position_muse --> |
 
 *° gate lowered to 0.75 after the data.*
 
@@ -111,7 +111,7 @@
 ![A described bridge: the split holds on the 9B and Muse, not on the 27B](../../figures/story/fig05c_described_bridge.png)
 *Fig. 5c.*
 
-- **A probe reads the value at the bridge word weakly, the slot almost perfectly** (after the data): value 0.27 / 0.40 / 0.25 (chance 0.11), slot 0.97 / 0.99 / 0.92 ([table](../x0_details.md)); the routes test never takes it.
+- **A probe reads the value at the bridge word weakly, the slot almost perfectly** (after the data): value 0.27<!-- src: docs/x0_numbers.json | probe_value_9b_first --> / 0.40<!-- src: docs/x0_numbers.json | probe_value_27b_first --> / 0.25<!-- src: docs/x0_numbers.json | probe_value_122b_first --> (chance 0.11), slot 0.97<!-- src: docs/x0_numbers.json | probe_slot_9b_first --> / 0.99<!-- src: docs/x0_numbers.json | probe_slot_27b_first --> / 0.92<!-- src: docs/x0_numbers.json | probe_slot_122b_first --> ([table](../x0_details.md)); the routes test never takes it.
 - **Position appears with depth (candidate):** at early layers the change gives identity answers, position from about L (Fig. 6, main test; tested in advance on the 9B and Muse, Fig. 6b).
 
 ![Position answers appear with depth, once the lookup stops needing the J++ part](../../figures/story/fig06_depth.png)
@@ -129,12 +129,12 @@
 
 *Removal after the data, replicated in advance on the 9B and Muse; routes arms and writes fixed in advance, their recall split after the data.*
 
-- **A probe reads the pointer, the lens does not:** a linear probe on the bridge word tells which sentence holds the item's locker in 0.92-0.99 of scenes (layout alone: 0.53), almost none of it in J++. We then tested the **pointer**, four directions separating the positions, causally.
+- **A probe reads the pointer, the lens does not:** a linear probe on the bridge word tells which sentence holds the item's locker in 0.92<!-- src: docs/x0_numbers.json | v4_b_before_122b -->-0.99<!-- src: docs/x0_numbers.json | v4_b_before_27b --> of scenes (layout alone: 0.53<!-- src: docs/x0_numbers.json | v4_b_layout_before_27b -->), almost none of it in J++. We then tested the **pointer**, four directions separating the positions, causally.
 - **Through the lens a pointer write looks random** (descriptive): the ordinal words' rank, the share the lens rebuilds and its readout move no more than under random draws of the same size, on three models (Fig. 7b).
 - **Removing the pointer stops position answers:** to near zero on the Qwens, by half on Muse; a random part of the same size barely changes them, and the recall loses much less (Fig. 5).
 - **Adding only the pointer creates position answers** on three of four models (not the 27B); a random part of the same size creates none.
 - **One fixed vector written into the bridge moves the lookup:** the mean difference between two positions sends it to the target locker in a quarter to a half of the writes at a real change's size; a random vector moves nothing.
-- **The recall follows a strong write to the item:** on the Qwens about four in five recalls a strong write changes name the item at the target position (Muse: 28 of 64).
+- **The recall follows a strong write to the item:** on the Qwens about four in five recalls a strong write changes name the item at the target position (Muse: 28 of 64<!-- src: docs/x0_numbers.json | x8_rc_target_muse -->).
 
 ![One fixed vector written at the bridge sends the lookup to its locker](../../figures/story/fig07_writes.png)
 *Fig. 7.*
@@ -151,17 +151,17 @@
 
 *After the data unless marked fixed in advance.*
 
-- **It marks the first locker in a clean layout.** A neutral first sentence barely moves its code (code shift β 0.15-0.18 positions); one naming an item shifts it 0.30-0.83, and the Qwens' lookup then follows identity (0.85-0.97 of answers, against 0.54 / 0.65). The rule fixed in advance scores it mixed.
+- **It marks the first locker in a clean layout.** A neutral first sentence barely moves its code (code shift β 0.15<!-- src: docs/x0_numbers.json | x45a_beta_V4_9b -->-0.18<!-- src: docs/x0_numbers.json | x45a_beta_V4_muse --> positions); one naming an item shifts it 0.30<!-- src: docs/x0_numbers.json | x45a_beta_V2_27b -->-0.83<!-- src: docs/x0_numbers.json | x45a_beta_V3_muse -->, and the Qwens' lookup then follows identity (0.85<!-- src: docs/x0_numbers.json | x45a_id_V3_9b -->-0.97<!-- src: docs/x0_numbers.json | x45a_id_V3_27b --> of answers, against 0.54<!-- src: docs/x0_numbers.json | x45a_id_V0_9b --> / 0.65<!-- src: docs/x0_numbers.json | x45a_id_V0_27b -->). The rule fixed in advance scores it mixed.
 
 ![A neutral sentence barely moves the pointer's code; naming an item does](../../figures/story/fig08_first_locker.png)
 *Fig. 8.*
 
-- **It must be refit for each format:** fit on simple scenes, it costs the lookup 0.05 to 0.15 in varied scenes and 0.07 to 0.25 in natural passages; refit (fixed in advance), 0.18-0.24 on the 9B, 0.23-0.47 on Muse, at most 0.13 on the 27B.
+- **It must be refit for each format:** fit on simple scenes, it costs the lookup 0.05 to 0.15<!-- src: docs/x0_numbers.json | tptr_varied_range --> in varied scenes and 0.07 to 0.25<!-- src: docs/x0_numbers.json | tptr_natural_range --> in natural passages; refit (fixed in advance), 0.18<!-- src: docs/x0_numbers.json | x45d_table_9b -->-0.24<!-- src: docs/x0_numbers.json | x45d_prose_9b --> on the 9B, 0.23<!-- src: docs/x0_numbers.json | x45d_prose_muse -->-0.47<!-- src: docs/x0_numbers.json | x45d_table_muse --> on Muse, at most 0.13<!-- src: docs/x0_numbers.json | x45d_table_27b --> on the 27B.
 
 ![The split carries over to other texts; the pointer must be refit for each format](../../figures/story/fig09_transfer.png)
 *Fig. 9.*
 
-- **Later positions are coded elsewhere:** between the second and third locker the pointer barely moves the Qwens' lookup (Muse: 0.10); writing their mean difference moves it only at twice a real change (0.39-0.78 of writes on the 9B and Muse).
+- **Later positions are coded elsewhere:** between the second and third locker the pointer barely moves the Qwens' lookup (Muse: 0.10<!-- src: docs/x0_numbers.json | pm_keep_12w_muse -->); writing their mean difference moves it only at twice a real change (0.39<!-- src: docs/x0_numbers.json | x45c_write_12_2_muse -->-0.78<!-- src: docs/x0_numbers.json | x45c_write_21_2_9b --> of writes on the 9B and Muse).
 - **With six lockers each locker has its own code** (fixed in advance, 9B and Muse): the lockers' means lie in order, but no single shift moves lookups one locker on; writes between two given lockers do.
 
 ![Six lockers: each locker has its own code, no single shift](../../figures/story/fig09b_six_lockers.png)
@@ -177,17 +177,17 @@
 ![The hall is readable at the locker digit, yet a random part cuts nearly as much](../../figures/story/fig09d_chain.png)
 *Fig. 9d.*
 
-- **About half of the route is unexplained:** removing J++, the pointer and identity outside J++ together leaves few lookups on the 9B and 27B (table), yet against a wrong-pair direction it cuts identity answers only 0.08 / 0.14 more (bar 0.15, fixed in advance): partly specific on the Qwens, not on Muse.
+- **About half of the route is unexplained:** removing J++, the pointer and identity outside J++ together leaves few lookups on the 9B and 27B (table), yet against a wrong-pair direction it cuts identity answers only 0.08<!-- src: docs/x0_numbers.json | x45em_cut_9b --> / 0.14<!-- src: docs/x0_numbers.json | x45em_cut_27b --> more (bar 0.15, fixed in advance): partly specific on the Qwens, not on Muse.
 
 ![J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's](../../figures/story/fig10_what_is_left.png)
 *Fig. 10.*
 
 | Sanity swap, without the J++ part + pointer + identity outside J++ | Qwen3.5-9B | Qwen3.6-27B | Qwen3.5-122B° | Muse Glimmer 30B |
 |---|---|---|---|---|
-| Lookups still switching: without the part / without a random part (same size) | 0.07 / 0.38 | 0.18 / 0.67 | 0.22 / 0.41 | 0.52 / 0.82 |
-| Lookups still switching: a wrong-pair direction (same size) in place of identity, where it reached 0.9 of identity's share (scenes) | 0.16 (241) | 0.38 (226) | – (not tested) | 0.59 (237) |
-| The part's share of the change | 56% | 35% | 60% | 38% |
-| Recall's extra loss without identity (nothing else removed) | 0.09 [0.04, 0.15] | 0.44 [0.34, 0.55] | 0.12 [0.07, 0.17] | 0.39 [0.28, 0.49] |
+| Lookups still switching: without the part / without a random part (same size) | 0.07<!-- src: docs/x0_numbers.json \| rtd_left_C0_jpp+alf+idout_lk_9b --> / 0.38<!-- src: docs/x0_numbers.json \| rtd_randleft_C0_jpp+alf+idout_lk_9b --> | 0.18<!-- src: docs/x0_numbers.json \| rtd_left_C0_jpp+alf+idout_lk_27b --> / 0.67<!-- src: docs/x0_numbers.json \| rtd_randleft_C0_jpp+alf+idout_lk_27b --> | 0.22<!-- src: docs/x0_numbers.json \| rtd_left_C0_jpp+alf+idout_lk_122b --> / 0.41<!-- src: docs/x0_numbers.json \| rtd_randleft_C0_jpp+alf+idout_lk_122b --> | 0.52<!-- src: docs/x0_numbers.json \| rtd_left_C0_jpp+alf+idout_lk_muse --> / 0.82<!-- src: docs/x0_numbers.json \| rtd_randleft_C0_jpp+alf+idout_lk_muse --> |
+| Lookups still switching: a wrong-pair direction (same size) in place of identity, where it reached 0.9 of identity's share (scenes) | 0.16<!-- src: docs/x0_numbers.json \| x45em_left_wrong_9b --> (241<!-- src: docs/x0_numbers.json \| x45em_n_9b -->) | 0.38<!-- src: docs/x0_numbers.json \| x45em_left_wrong_27b --> (226<!-- src: docs/x0_numbers.json \| x45em_n_27b -->) | – (not tested) | 0.59<!-- src: docs/x0_numbers.json \| x45em_left_wrong_muse --> (237<!-- src: docs/x0_numbers.json \| x45em_n_muse -->) |
+| The part's share of the change | 56%<!-- src: docs/x0_numbers.json \| rtd_share_C0_jpp+alf+idout_9b --> | 35%<!-- src: docs/x0_numbers.json \| rtd_share_C0_jpp+alf+idout_27b --> | 60%<!-- src: docs/x0_numbers.json \| rtd_share_C0_jpp+alf+idout_122b --> | 38%<!-- src: docs/x0_numbers.json \| rtd_share_C0_jpp+alf+idout_muse --> |
+| Recall's extra loss without identity (nothing else removed) | 0.09 [0.04, 0.15]<!-- src: docs/x0_numbers.json \| rtd_ex_C0_id_rc_9b --> | 0.44 [0.34, 0.55]<!-- src: docs/x0_numbers.json \| rtd_ex_C0_id_rc_27b --> | 0.12 [0.07, 0.17]<!-- src: docs/x0_numbers.json \| rtd_ex_C0_id_rc_122b --> | 0.39 [0.28, 0.49]<!-- src: docs/x0_numbers.json \| rtd_ex_C0_id_rc_muse --> |
 
 *° gate lowered to 0.75 after the data.*
 
@@ -221,18 +221,18 @@
 *Fig. 11.*
 
 - **Failed when fixed in advance (28 Oct):** the pointer formed by the pick sentence alone; probe-predicted lookup errors; the position surfacing in the lens when asked; every test in Section 6.
-- **Failed when fixed in advance:** the 27B's strict rule and the 9B in the clean design; the 9B's replication (recall 0.12); the positive control (chemical symbols, 27B 0.15, bar 0.20); a second route for the recall through the pointer; identity outside J++ by itself (27B only) and against a wrong pair; a second-versus-third pointer; the copied link outside the lens (27B, by one item); a cause for the 27B's loss with more directions ((d) can't tell).
+- **Failed when fixed in advance:** the 27B's strict rule and the 9B in the clean design; the 9B's replication (recall 0.12<!-- src: docs/x0_numbers.json | rep_jpp_rc_excess_9b -->); the positive control (chemical symbols, 27B 0.15<!-- src: docs/x0_numbers.json | x4_D_elements_27b -->, bar 0.20); a second route for the recall through the pointer; identity outside J++ by itself (27B only) and against a wrong pair; a second-versus-third pointer; the copied link outside the lens (27B, by one item); a cause for the 27B's loss with more directions ((d) can't tell<!-- src: docs/x0_numbers.json | x45k_label -->).
 - **Gates missed (bar 0.80), not tested:** the 9B's natural passages, the 122B's routes and replication, the Qwens' main test without the chat template, the position report on the 9B and Muse; reruns at 0.75 are descriptive.
 - **Design errors:** the write's dose, below a real change's size; the bar for the three parts removed together, out of reach; our first scenes where only the asked pick changed reused another person's pick.
-- **The first test of where the link is made was a design error:** the main test's changed prompt also differs after the bridge word; where it does not (36 of 100 / 34 of 99 items), its rule failed ([supplement](../../figures/supp/s03b_layers_45b.png)).
+- **The first test of where the link is made was a design error:** the main test's changed prompt also differs after the bridge word; where it does not (36 of 100<!-- src: docs/x0_numbers.json | x45b_sane_pass_9b --> / 34 of 99<!-- src: docs/x0_numbers.json | x45b_sane_pass_27b --> items), its rule failed ([supplement](../../figures/supp/s03b_layers_45b.png)).
 - **Limits:** one-token answers and bridges; reader and answer source (prompt vs memory) confounded; the 122B in FP8; Zach's knock-out finds the split weak outside Qwen, our change-removal finds it on Muse.
 
 ## 8. How we checked
 
 - **Hand-checked numbers:** none yet; one item read, consistent ([docs/review_summary.md](../review_summary.md)); [docs/verify_pack.md](../verify_pack.md) recounts each claim from the per-item files.
-- **Independent reimplementation:** code written from scratch reproduces the 9B's main test on 20 of 20 random items, every arm.
+- **Independent reimplementation:** code written from scratch reproduces the 9B's main test on 20 of 20<!-- src: docs/x0_numbers.json | indep_agree_9b --> random items, every arm.
 - **Raw examples:** `make review-serve`, random items per claim (fixed seed).
-- **Predictions:** committed before results are opened, then scored ([predictions/](../../predictions/README.md)): mean Brier 0.32 over 121 answers, worse than always answering 50%.
+- **Predictions:** committed before results are opened, then scored ([predictions/](../../predictions/README.md)): mean Brier 0.32<!-- src: docs/x0_numbers.json | pred_brier --> over 121<!-- src: docs/x0_numbers.json | pred_n --> answers, worse than always answering 50%.
 
 ## 9. Related work and what is new
 
