@@ -205,7 +205,10 @@ tests:
       Routes classification and the recall's switch. Rule, fixed in advance: "the pointer is formed by the pick token
       reading the lockers" if position answers fall to <= 0.10 (from 0.51 / 0.54) while identity answers stay within 0.10
       and the recall's switch within 0.10, on Muse and the 9B; the control within 0.10 of none.
-    c_dereference: >-
+    c_dereference_DROPPED: >-
+      DROPPED (Dan, 28 Oct ~02:30, batch 48 brief): blocking the question's reads of the locker sentences kills the lookup under
+      every hypothesis, so it discriminates nothing. Keep (a) and (b). Original text kept below for the record.
+    c_dereference_original: >-
       No patch. Block the question tokens (from "Which" to the end) from reading the locker sentences at layers L..end;
       control: the same edges to the filler. Rule: "dereferenced from the question" if lookup accuracy falls below 0.50
       while recall accuracy stays >= 0.90, on Muse and the 9B.
@@ -223,7 +226,7 @@ tests:
     tier: 2 (CPU, while the queue runs)
     items:
       - >-
-        Probe vs lens for the value and the slot (agam's "probe finds X, the lens doesn't"): on the cached bridge-word
+        DONE already (Dan ~02:30): x0_probe v4, Muse locker-first: the answer digit decodable 0.33 vs chance 0.11, the slot 0.97, the identity 1.00; cite as "decodable, barely; never used"; do not rerun. Original item: Probe vs lens for the value and the slot (agam's "probe finds X, the lens doesn't"): on the cached bridge-word
         states (x0_probe_power), linear probes for the locker digit (value), the slot index, and the person; against the
         lens's rank of the same digit. If the digit is decodable (>= 2x chance) and the routes test never follows it, that
         is "decodable, not used", one line in Section 3.

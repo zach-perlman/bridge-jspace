@@ -1,0 +1,169 @@
+# Batch 48 (Dan, 28 Oct ~02:30): tests of the explanation, not of the effect. Companion to batch 47 (jobs/c3/batch47.yaml):
+# same freeze (Wed 28 Oct evening), same box, same common settings (layers 9B L12, Muse L26, 27B L32; gate 0.80; matched
+# random parts; cluster bootstrap over bridge items, 10,000, seed 0; sealed until Dan's Q48.x in
+# predictions/2026-10-28_dan.md). No new models: Qwen3.5-9B and Muse Glimmer 30B first, the 27B only where named.
+#
+# Two corrections to batch 47, effective now: (1) 47.6(c) dropped (blocking the question's reads of the locker sentences
+# kills the lookup under every hypothesis, so it discriminates nothing); keep 47.6(a) and (b). (2) Tier 2 "probe for the
+# value" is already done (x0_probe v4: on Muse, locker-first, the answer digit decodable 0.33 vs chance 0.11, the slot
+# 0.97, the identity 1.00): cite as "decodable, barely; never used", do not rerun.
+#
+# Rule for every test here: an intervention counts only if the two readers (or two arms) predict different outcomes under
+# it, and a matched control rules out "we broke the input". Anything that fails that is not queued.
+
+batch: 48
+by: Dan, 28 Oct ~02:30
+freeze: "Wed 28 Oct evening"
+predictions: predictions/2026-10-28_dan.md  # section "Batch 48"
+models: {qwen3.5-9b: 12, muse-glimmer-30b: 26, qwen3.6-27b: 32}
+
+account: >-
+  At the bridge word, at mid depth, the model holds three things: (1) a semantic identity the lens reads (J++; what the
+  model would say the item is); (2) a context-matching identity the lens does not read, not J++ at K = 25, not W_E
+  (x0_details: W_E at K = 100 costs the lookup 0.34 vs random 0.36), not the layer's main directions (Fig 2), a third code
+  (48.1 finds it); (3) an address: the slot of the item's first mention, 4-d, not verbalizable (47.0). Recall = fact
+  retrieval keyed on (1): MLPs at the bridge token enrich it with the item's attributes after L, and the last token reads
+  the attribute out (Geva et al. 2023's subject enrichment); hence the recall follows J++ (48.2). Lookup = attention
+  copies (2) and (3) to the question, then dereferences (3) at the locker sentence and reads the number; hence the lookup
+  follows the rest (47.6a, 47.6b, 48.1, 48.4). Order asymmetry: locker after the pick, the binding is made forward, at
+  the locker sentence (person -> item), and the pick token is not read at L (48.3); locker first, the address sits at the
+  pick token (47.6b). Why the lens misses (2) and (3): the J-lens is output-facing (a Jacobian to the logits); addresses
+  and matching codes have no vocabulary expression (47.0). New over Gurnee et al. (most variance outside the J-space):
+  which reader uses the inside and the outside is systematic.
+
+merged_priority: "47.1 -> 47.4 -> 48.1 (9B) -> 48.2 A -> 47.3 -> 47.2 (9B, Muse) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> 47.6(a)(b) -> 48.2 B -> 48.4 -> 48.6; cut from the bottom"
+already_cut: ["47.6(c)", "the batch-47 value probe", "the 27B of 47.2"]
+gpu_hours: "48 adds ~7 GPU-h to 47's 13; if the queue cannot drain by Wed evening, everything from 47.5 down is 'after the freeze' and labelled so"
+
+tests:
+  - id: "48.1"
+    title: "DAS at the bridge word: two readers, two subspaces"
+    models: "9B ~1.5 GPU-h incl. the k sweep; Muse ~2; the 27B if time"
+    why: >-
+      We know what the lookup's identity code is not. A learned subspace that mediates the lookup, measured against the
+      lens, U and W_E, says what it is, with how many dimensions, and whether it is disjoint from the recall's.
+    implementation: >-
+      Custom, ~150 lines; no pyvene. At the bridge token at L: h <- h_O + R R^T (h_S - h_O), R in R^{d x k} with
+      orthonormal columns (torch.nn.utils.parametrizations.orthogonal). Loss: cross-entropy of S's answer at the read
+      position on the O prompt (X0's chat read). Pairs: main-test O/S pairs, locker-first, both items' lockers before the
+      pick, restricted to pairs the whole change switches (so the ceiling is known; report IIA divided by the whole-change
+      switch rate). Train by bridge entity: 60% of entities train, 20% select k, 20% test. k in {1, 4, 16, 64}; Adam, lr
+      1e-3, 300 steps, batch 16; one R per reader (R_lookup from the lookup's loss, R_recall from the recall's). Baselines:
+      untrained random R of the same k; R trained on shuffled targets.
+    readouts: >-
+      Test entities: own-IIA by k; cross-IIA (R_lookup applied, the recall's switch; R_recall applied, the lookup's
+      switch); energy ||R R^T Delta||^2 / ||Delta||^2 per item, beside J++'s 12-21%; overlap: the share of R R^T Delta
+      inside the item's K = 25 J++ part (and K = 100); mean cos^2 of R's columns with U (random R: k/d); with the W_E-25
+      part; routes read: R_lookup alone written on routes scenes (another item moved): identity / position / value shares;
+      principal angles between R_lookup and R_recall at the chosen k.
+    rule: >-
+      Fixed in advance (9B and Muse each). (a) "two readers, two subspaces": own-IIA >= 0.7 at some k <= 16 for both
+      readers, and cross-IIA <= 0.25 in both directions (paired CI excluding overlap with own-IIA). (b) "the recall's
+      subspace is the lens's part": R_recall's energy inside the J++-25 part >= 0.5 (random R <= 0.15); R_lookup's <= 0.2.
+      (c) "the address is part of the lookup's subspace": ||R_lookup^T U||_F^2 / 4 >= 0.5 (random R ~ k/d). (d) "a third
+      identity code": R_lookup's energy outside (J++-25 u U u W_E-25) >= 0.5 while its own-IIA >= 0.7, and R_lookup alone
+      gives identity answers >= 0.3 in the routes read. Then we have the code's basis and can say what it is not. If
+      own-IIA stays < 0.5 at k = 64 for the lookup: "no low-dimensional mediator at this token and layer", report; it is
+      consistent with the link being made elsewhere, and 47.4's decomposition says where.
+    dumbest_ways: >-
+      1) R learns to copy the whole Delta (k = 64 of 4096 cannot, but report the energy share; if R's energy >= 0.8 of
+      Delta the subspace is not selective). 2) The read position differs between readers (it does not: same patched
+      context, two questions; assert). 3) Overfitting to entities (entity-held-out test; the shuffled-target baseline must
+      sit at the random R).
+    question: Q48.1
+
+  - id: "48.2"
+    title: "Why the recall reads J++: attribute enrichment at the bridge token"
+    models: "9B, Muse; ~1.5 GPU-h"
+    design_A: >-
+      Probes (x0_probe / x0_probe_patched, extended to several layers). Probe for the recall attribute (legs: classes 0 /
+      2 / 4 / 6 / 8) at the bridge token, layers L, L+2, ..., last, trained on unedited prompts with bridge entities held
+      out (so the probe reads an attribute feature, not identity). Then under the main test's arms at L (whole / without
+      J++ / without the random part), read the probe at layers > L: the fraction of the way from the original item's
+      attribute to the changed item's.
+    rule_A: >-
+      Fixed in advance. "J++ keys the enrichment" if at layers >= L+4 the probe moves >= 0.6 of the way under whole and
+      under the random arm, and <= 0.3 under without-J++ (CI excluding the random arm's), on both models. If the probe does
+      not read the attribute at the bridge token at all (held-out accuracy < 2x chance at every layer): the attribute is
+      assembled at the last token, not at the bridge; report, and run Design A at the last token instead (same arms; the
+      last token's state after the patch).
+    design_B: >-
+      Where the retrieval happens (MLPs). Mean-ablate (scene-mean, not zero) the MLP outputs at the bridge token for layers
+      l > L; control: the same ablation at the asked person's token; a second control: at the bridge token for layers l <=
+      L/2 (the early identity must stay). Both readers' accuracy on unedited prompts.
+    rule_B: >-
+      "The recall's retrieval runs through the bridge token's late MLPs" if recall accuracy falls >= 0.4 while lookup
+      accuracy stays within 0.1, and both controls stay within 0.1 for both readers. If the recall survives: the attribute
+      is fetched at the last token (consistent with Zach's late "question" band); report; it is still a result about
+      where, and Design A at the last token covers it.
+    why_not_break_the_input: >-
+      The lookup also needs the bridge token's content (identity + address) and survives; the controls match the count of
+      ablated modules.
+    question: Q48.2
+
+  - id: "48.3"
+    title: "Why locker-after lookups ignore the bridge word: forward binding at the locker sentence"
+    models: "9B, Muse; ~1 GPU-h"
+    design: >-
+      Locker-after scenes (main test and clean design). Probe at the locker sentence's item token and at its number token
+      for which person picked this item (3 classes, chance 0.33), entities held out; the same probe in locker-first scenes
+      (where the sentence precedes the pick, so it must sit at chance: the control by construction). Lens share: OMP K =
+      25 of the person mass-mean contrast (Iris - Jack) at that token, ||P Delta||^2 / ||Delta||^2, beside a random
+      direction's.
+    causal_arm: >-
+      A write, not a block. At the locker sentence's tokens (item and number), add s * (mu_Iris - mu_Jack) at s = 1, 2
+      (unit: the contrast's own norm), on prompts where Jack picked the item; random vector of the same norm. Read: the
+      lookup "Which locker belongs to Iris's pick?": does it now answer this item's locker? The recall "How many legs does
+      Iris's pick have?" beside: if the binding is only a locker-address binding, the recall should not move; if it is a
+      full "Iris's pick = frog" binding written at the sentence, the recall moves too. Both outcomes are informative;
+      predict one.
+    rule: >-
+      Fixed in advance. "Forward binding at the locker sentence, outside the lens" if: probe >= 0.85 in locker-after and
+      <= 0.5 in locker-first; lens share of the person contrast <= 2x the random direction's; the write sends >= 0.3 of
+      lookups to the written item's locker (random <= 0.05), on both models.
+    question: Q48.3
+
+  - id: "48.4"
+    title: "Why the lookup reads the rest: what the copying heads transmit"
+    models: "9B, Muse; ~0.3 GPU-h, weights + one forward pass"
+    design: >-
+      On unedited locker-first scenes, the five heads with the most attention mass from the last token to the bridge
+      token at layers > L (full-attention layers only on the 9B). For each head's OV circuit W_OV = W_O W_V: the
+      transmitted norm ratio r(x) = ||W_OV x|| / ||x|| for x = P_J Delta (the J++ part), x = Delta - P_J Delta (the rest),
+      x = U U^T Delta (the address), and x = a random part of J++'s share. Median over items.
+    rule: >-
+      Fixed in advance. "The copy reads the rest" if r(rest) >= 2 r(J++) on >= 3 of the 5 heads on both models, with
+      r(random) between them or below both. Report r(address) beside: if the heads transmit the address at >= r(rest), the
+      copy carries the pointer too. This is a weights-level statement about what can pass, read beside 47.6(a) (what the
+      attention does under the write). Together they say how the lookup's content leaves the bridge token.
+    question: Q48.4
+
+  - id: "48.5"
+    title: "The recall's second route: can an address redirect a recall?"
+    models: "9B, 27B, Muse; ~0.5 GPU-h; x8_write + the no-J++ arm on one job"
+    motivating_data: >-
+      The 9B's recall keeps ~45% of its switches with J++ removed at the bridge and at the earlier mention
+      (locker-first); the strong pointer write makes recalls name the item at the written slot (~80% Qwens).
+    design: >-
+      Locker-first clean scenes. Arms at the bridge token at L: (i) Delta without J++ (the recall mostly stays on the
+      original item); (ii) the same plus the pointer write mu_k - mu_j at s = 2 to another slot k; (iii) the write alone;
+      (iv) (ii) with a random vector of the write's norm. Read the recall: classified as the attribute of the item at slot
+      k, of the original item, of the changed item, other. The lookup beside.
+    rule: >-
+      Fixed in advance. "The recall's second route is the address" if under (ii) the recall names slot k's item in >= 0.3
+      (random (iv) <= 0.05), on >= 2 of 3 models. What it means: without the lens-readable identity, the recall
+      dereferences the same pointer the lookup uses and recalls from the mention it lands on. This is the mechanism behind
+      the 9B's clean-design miss, not a failure to report.
+    question: Q48.5
+
+  - id: "48.6"
+    title: "Optional, after the rest: does the learned recall subspace transfer to Zach's passages?"
+    models: "9B; ~0.7 GPU-h"
+    design: >-
+      Apply R_recall (from 48.1, trained on animal locker scenes) as an interchange at the bridge mention on 100 of Zach's
+      jsuite v2 PM items (recalled final, entity counterfactual pairs from his swap data), at the 9B's L12: the share
+      answering the donor entity's fact, against the random R and against his J-part swap at the same layer.
+    rule: >-
+      "Transfers" if >= 0.5 of his J-part swap's transfer at that layer (random <= 0.1). A positive turns "two readers,
+      two subspaces" from a locker-scene fact into a cross-task one; a negative is reported as scope.
+    question: none (optional, descriptive)
