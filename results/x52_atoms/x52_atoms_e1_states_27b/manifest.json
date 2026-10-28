@@ -1,0 +1,134 @@
+{
+ "exp": "x52_atoms",
+ "run": "x52_atoms_e1_states_27b",
+ "part": "52 A",
+ "spec": "jobs/c3/batch52.yaml (brief, part A)",
+ "written_utc": "2026-10-28T23:45:48Z",
+ "model": {
+  "target": "qwen3.6-27b",
+  "repo": "Qwen/Qwen3.6-27B",
+  "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+  "dtype": "bfloat16",
+  "attn": "sdpa",
+  "prompt_format": "chat"
+ },
+ "switches": {
+  "target": "qwen3.6-27b",
+  "BJ_DEVICE_MAP": null,
+  "BJ_SUITE_BATCH": null,
+  "BJ_TARGET": "qwen3.6-27b",
+  "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+ },
+ "code": {
+  "sha": "087ee4ddb4d37f4b98d84e2e82bbfececae831fe",
+  "dirty": true
+ },
+ "lens": {
+  "name": "jpp",
+  "source": [
+   "neuronpedia/jacobian-lens",
+   "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+   "e166deb5ad540932100ef803c8c9bcc2a5453694"
+  ],
+  "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+ },
+ "layer": 32,
+ "k": 25,
+ "omp": "signed (exp04_brew_parts.signed_omp step for step; checked against x0_necessity.fit)",
+ "dictionary": "J++ letter-token atoms at L (JLens.vectors(L, letters), unit rows)",
+ "delta": "51.10's cached states (fp16), E1 only",
+ "share": "per atom: the rebuilt energy it adds when it enters, / ||Δ||^2 (non-negative; sums to the part's share)",
+ "sets": {
+  "e1": {
+   "text": "the main test (E1), the bridge word",
+   "design": "main",
+   "source": "x0_necessity_27b_chat",
+   "alt": "cf",
+   "layer": 32,
+   "items_at_L": 200,
+   "dropped": {},
+   "items": 200,
+   "entities": 44,
+   "groups": {
+    "locker-first": 69,
+    "locker-after": 61,
+    "mixed": 70
+   },
+   "upstream": {
+    "True": 97,
+    "False": 103
+   },
+   "locker-first, prefix-identical": 16,
+   "pick_tokens": {
+    "5": 76,
+    "4": 119,
+    "6": 5
+   },
+   "group": "locker-first",
+   "items_in_group": 69,
+   "entities_in_group": 34,
+   "pool": 69,
+   "picked": [
+    0,
+    1,
+    2,
+    4,
+    5,
+    6,
+    8,
+    9,
+    12,
+    13,
+    14,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    25,
+    27,
+    30,
+    32,
+    33,
+    34,
+    35,
+    37,
+    38,
+    39,
+    41,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    53,
+    55,
+    57,
+    58,
+    59,
+    60,
+    62,
+    63,
+    64,
+    65,
+    67,
+    68
+   ]
+  }
+ },
+ "seeds": {
+  "items": 0
+ },
+ "n_items": 50,
+ "inputs": {
+  "jobs/c3/batch52.yaml": "6fb39ec2c9ab38f81e6ccd06c5cd1c014acc241d3ee0bbd54abff64b3dcbd3ab"
+ },
+ "verdict": "descriptive; no rule",
+ "states_root": "/Users/danorel/Workspace/Research/mats/bridge-jspace/results/x51_jread"
+}
