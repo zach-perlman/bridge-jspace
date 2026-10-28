@@ -1,0 +1,61 @@
+{
+ "working": {
+  "d_star": {
+   "d_star": 7,
+   "own_only": 7,
+   "random_blocked": [],
+   "max_k": 7
+  },
+  "k": 7,
+  "flag": null
+ },
+ "geometry": {
+  "d": 6656,
+  "ranks": {
+   "U": 5,
+   "P": 7,
+   "R": 7
+  },
+  "U-P": {
+   "mean_cos2": 0.784723,
+   "random_expectation": 0.001052,
+   "random_mean": 0.000981,
+   "random_max": 0.00171,
+   "angles_deg": [
+    3.112,
+    4.835,
+    6.057,
+    17.324,
+    79.459
+   ]
+  },
+  "U-R": {
+   "mean_cos2": 0.441311,
+   "random_expectation": 0.001052,
+   "random_mean": 0.000981,
+   "random_max": 0.00171,
+   "angles_deg": [
+    30.418,
+    38.848,
+    43.298,
+    57.2,
+    79.496
+   ]
+  },
+  "P-R": {
+   "mean_cos2": 0.338007,
+   "random_expectation": 0.001052,
+   "random_mean": 0.000992,
+   "random_max": 0.001436,
+   "angles_deg": [
+    28.696,
+    37.563,
+    42.861,
+    55.887,
+    73.704,
+    80.076,
+    84.87
+   ]
+  }
+ }
+}
