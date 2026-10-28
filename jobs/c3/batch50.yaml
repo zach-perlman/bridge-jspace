@@ -1,0 +1,82 @@
+# Batch 50 (Dan, 28 Oct ~16:00): our operation on Zach's passages. One dataset, two operations: Zach's knock-out ran on
+# our locker scenes; our change-removal on his jsuite passages closes the 2x2 (operation x dataset). Same conventions as
+# batch 47 (sealed until Q50.x, matched random parts, gate 0.80 per reader, bootstrap over bridge entities, verify-pack
+# views). Recorded before any code or run.
+
+batch: 50
+by: Dan, 28 Oct ~16:00
+predictions: predictions/2026-10-28_dan.md
+items: >-
+  Zach's v3 items if on our box (path and sha from Zach; v3 descriptions are non-leaky, which Z2 needs); otherwise v2
+  with a leak filter (drop descriptions containing the answer word or its adjective). At recording time v3 is not in the
+  repo, on origin/main or on the box: v2 with the leak filter unless Zach sends v3 before the code is committed.
+mapping: >-
+  His K-final = our lookup; his M-final = our recall; his P-start = a named bridge (our main test); his M-start = a
+  described bridge in the question (our 47.3, with the facts preceding the description as in our locker-first scenes);
+  his A / N / P finals are not used today. Multi-token bridge names: the operation acts at the name's last token (his swap
+  site).
+layers: "9B L12 and 27B L32 (ours; also the first layer of his bands). Muse: L26 (ours) and L36 (the start of his band), both reported. Lenses: the same files as his."
+order: "Z1 (9B -> 27B -> Muse) -> Z2 (9B -> 27B -> Muse) -> Z3. Place Z1 and Z2 right after 49.1 and 49.7 in the queue; before 49.2."
+not_today: "His knock-out rerun by us; refitting our locker address on his passages beyond Z3; his A / N / P finals; conflict and hard-read as separate tests (hard-read is a stratum in Z1; conflict is 47.15's job)."
+
+tests:
+  - id: Z1
+    title: The conflict test on his passages (P start; K vs M finals)
+    models: [qwen3.5-9b, qwen3.6-27b, muse-glimmer-30b]
+    est: "~0.8 GPU-h each"
+    items: >-
+      Passages where the pointer sentence names the bridge ("Felix Ward's dissertation was about Aristotle") and the passage
+      also names at least one other entity of the same relation (Goethe) whose fact is stated in the K version.
+      Counterfactual S: the pointer sentence names the other entity; nothing else changes. Pair each passage's K item and M
+      item (same passage, same question). n = 200 passages per model after the gate (both readers right unedited, K and M).
+    operation: >-
+      Delta = h_S - h_O at the bridge name's last token at L; arms: whole; without the J++ part (OMP K = 25); without a
+      random part of the same share. Read the K item (lookup: switch = answers the other entity's stated fact) and the M
+      item (recall: switch = answers the other entity's memory fact).
+    rules:
+      main: >-
+        Per model: gap >= 0.3 and lookup extra loss <= 0.10 -> "the split holds on his passages"; lookup >= 0.20 -> "the
+        lookup follows the lens here"; else in between.
+      order: >-
+        Order split (after the gate, before the data): items where the bridge's fact sentence comes before the pointer
+        sentence vs after. "The order pattern replicates" if the lookup's switch under the whole change is >= 2x higher
+        fact-first than fact-after (both CIs), as in our 65-89 % vs 9-19 %.
+      hard_read: >-
+        Hard-read stratum (v3 flag): the gap within hard-read items within 0.15 of the easy items -> "not a lookup-difficulty
+        effect".
+    beside: "His M - K knock-out at the same band (from his stored rows, no rerun). One figure: our gap and his M - K per model, same items."
+    prediction: Q50.1
+  - id: Z2
+    title: Never-named bridge, both finals (M start; K vs M)
+    models: [qwen3.5-9b, qwen3.6-27b, muse-glimmer-30b]
+    est: "~0.8 GPU-h each"
+    note: the one that matters most
+    items: >-
+      His M-start passages (the bridge only described, in the question: "the philosopher who tutored Alexander the
+      Great"), paired K and M items. Counterfactual S: the question describes another entity of the same relation whose
+      fact is stated in the K passage (non-leaky descriptions: "the composer of The Magic Flute" -> Mozart). n = 200 per
+      model after the gate; the competence step as in 47.3 (the model names the entity from the description alone >= 0.90).
+    operation: "Delta at the description's last token (his swap site), at L; arms whole / without J++ / without random. Readers: K (the lookup of a computed bridge) and M (the recall of a computed bridge)."
+    rules: >-
+      Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed through
+      the lens: lookup >= 0.20; (d) in between.
+    beside: >-
+      On the same items: his swap (another entity's lens slice inserted: +45 on the 9B) and his erase (no effect): one
+      figure, three operations on one site: swap (sufficient), erase (not necessary), our removal from the change (followed
+      in a conflict).
+    expectation: "Our 47.3 said 9B / Muse (a), 27B (a'); if his passages agree, the 27B's lens-leaning lookup is a model property, not a scene artefact."
+    prediction: Q50.2
+  - id: Z3
+    title: The routes test on his passages (only if Z1 and Z2 land by 19:00)
+    models: [qwen3.5-9b, muse-glimmer-30b]
+    est: "~0.6 GPU-h each"
+    items: >-
+      P-start, K-final passages with three stated facts of the relation, all before the pointer sentence (fact-first).
+      Counterfactual S: the pointer names entity B, and B's fact sentence is moved to the slot where entity C's sentence
+      stood, with a new, unstated attribute value in it ("By nationality, Goethe was Danish").
+    routes: "Under the whole change at the bridge token on O: identity -> B's fact where it stands in O; position -> the fact at B's new slot in O (C's); value -> the new word."
+    rule: >-
+      Value <= 0.05; report identity / position shares. If position >= 0.2: the address exists in scattered-fact passages;
+      then and only then fit a label-free address basis on a held-out half (as 45d) and run without / only it vs random.
+      If position <= 0.05: "no position route in his layout": the address is a property of listed layouts.
+    prediction: Q50.3
