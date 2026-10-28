@@ -1,0 +1,48 @@
+{
+  "exp": "x51_cpu",
+  "item": "z1",
+  "spec": "jobs/c3/batch51.yaml (brief, section 2)",
+  "written_utc": "2026-10-28T16:37:07Z",
+  "code": {
+    "sha": "033b2befba9c9f359a4240aa66e999cb7c9c7a60",
+    "dirty": true
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": null,
+    "BJ_SUITE_BATCH": null,
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "script": {
+    "path": "scripts/x51_cpu.py",
+    "sha256": "776062bf6a28219bb4a751001ace5c25a278ceedd691feba34a57cce146f5707"
+  },
+  "inputs": {
+    "results/x50_zach/qwen35_9b_x50_z1/manifest.json": "108298e1f9a25972b7a755798f33c285da508e6b504cf017fd136e0858828c14",
+    "results/x50_zach/qwen35_9b_x50_z1/gate.json": "0e67daa2042c5a13268bee9e9112813c513077607411629b21973b071566ab27",
+    "results/x50_zach/qwen35_9b_x50_z1/outcomes.jsonl": "fe3254b64210a5e6cb4f40ae402f62351d5ff0043893c371b104d201c5af5648",
+    "results/x50_zach/x50_z1_27b/manifest.json": "4595e051a7d9c152c2c69ad736705fd1b944bff5599e7f0c19c73e72c1ee8fbc",
+    "results/x50_zach/x50_z1_27b/gate.json": "139763e5a107faba1abadd3831fcf009e1c919ab06fe3219e37c957defac8194",
+    "results/x50_zach/x50_z1_27b/outcomes.jsonl": "aa38e5ea82849e196579722d84271954256a2cd16c1fe16a8d5499fad50d459c",
+    "results/x50_zach/muse30_x50_z1/manifest.json": "22bff81901522527b3167c5b582b9535d09509d9fffd45a89e5130740b6c4637",
+    "results/x50_zach/muse30_x50_z1/gate.json": "e086c84e539819fef882207c1056be2b3819a96d54439144e7bd7a5664bf8613",
+    "results/x50_zach/muse30_x50_z1/outcomes.jsonl": "18f1aba3b9b41d60653e4d4c8ba813e25b5bc4f3c5ef8c84408125eb80b708be"
+  },
+  "n_boot": 10000,
+  "seeds": {
+    "bootstrap": 0
+  },
+  "runs": {
+    "qwen3.5-9b": "qwen35_9b_x50_z1",
+    "qwen3.6-27b": "x50_z1_27b",
+    "muse-glimmer-30b": "muse30_x50_z1"
+  },
+  "question": "Q50.1 (Dan line committed; sealed with Z1: no number of this table goes to Zach before the formal opening)",
+  "clusters": "passages: (set, scene)",
+  "arms": [
+    "none",
+    "whole",
+    "no_jpp",
+    "no_jpp_rand"
+  ]
+}
