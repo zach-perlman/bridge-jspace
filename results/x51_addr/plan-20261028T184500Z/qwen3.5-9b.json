@@ -1,0 +1,391 @@
+{
+ "target": "qwen3.5-9b",
+ "layer": 12,
+ "prefix": "qwen35_9b_",
+ "runs": {
+  "1": "qwen35_9b_x51_11_p1",
+  "2": "qwen35_9b_x51_11_p2",
+  "3": "qwen35_9b_x51_11_p3"
+ },
+ "split": {
+  "train": 19,
+  "select": 6,
+  "test": 7
+ },
+ "entities": 32,
+ "ks": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  7
+ ],
+ "slots_order": [
+  6,
+  3,
+  4,
+  8
+ ],
+ "S": {
+  "6": {
+   "slots": 6,
+   "ordered_pairs": 30,
+   "candidates": 3600,
+   "per_pair": [
+    120
+   ],
+   "dropped": {},
+   "layout": {
+    "sentence_tokens": 9,
+    "slot_starts": [
+     3,
+     12,
+     21,
+     30,
+     39,
+     48
+    ],
+    "layouts_seen": 1
+   },
+   "prompt_tokens": [
+    101,
+    101
+   ],
+   "bridge_token_index": [
+    60,
+    65,
+    70
+   ],
+   "bridge_entities": 32,
+   "candidates_per_split": {
+    "select": 684,
+    "train": 2113,
+    "test": 803
+   },
+   "quota_per_pair": 12,
+   "pairs_target": 360,
+   "pairs_min": 300,
+   "worst_case_reads": 3600,
+   "p2_items_test_per_start": {
+    "1": 142,
+    "2": 128,
+    "3": 112,
+    "4": 129,
+    "5": 141,
+    "6": 151
+   },
+   "p3_items_held_per_end": {
+    "1": 238,
+    "6": 269
+   },
+   "expected_reads_at_47_2_rates": {
+    "run": "qwen35_9b_x47_2",
+    "reads": 1267,
+    "eligible_share": 0.9,
+    "position_by_pair": {
+     "1-2": 0.8,
+     "1-3": 0.4,
+     "1-4": 0.2,
+     "1-5": 0.4,
+     "1-6": 0.3,
+     "2-1": 0.9,
+     "2-3": 0.0,
+     "2-4": 0.0,
+     "2-5": 0.0,
+     "2-6": 0.3,
+     "3-1": 0.9,
+     "3-2": 0.5,
+     "3-4": 0.0,
+     "3-5": 0.0,
+     "3-6": 0.0,
+     "4-1": 1.0,
+     "4-2": 0.5,
+     "4-3": 0.0,
+     "4-5": 0.0,
+     "4-6": 0.0,
+     "5-1": 1.0,
+     "5-2": 0.7,
+     "5-3": 0.1,
+     "5-4": 0.0,
+     "5-6": 0.0,
+     "6-1": 1.0,
+     "6-2": 0.6,
+     "6-3": 0.1,
+     "6-4": 0.0,
+     "6-5": 0.0
+    }
+   }
+  },
+  "3": {
+   "slots": 3,
+   "ordered_pairs": 6,
+   "candidates": 1800,
+   "per_pair": [
+    300
+   ],
+   "dropped": {},
+   "layout": {
+    "sentence_tokens": 9,
+    "slot_starts": [
+     3,
+     12,
+     21
+    ],
+    "layouts_seen": 1
+   },
+   "prompt_tokens": [
+    74,
+    74
+   ],
+   "bridge_token_index": [
+    33,
+    38,
+    43
+   ],
+   "bridge_entities": 32,
+   "candidates_per_split": {
+    "train": 1056,
+    "select": 347,
+    "test": 397
+   },
+   "quota_per_pair": 60,
+   "pairs_target": 360,
+   "pairs_min": 300,
+   "worst_case_reads": 1800,
+   "p2_items_test_per_start": {
+    "1": 130,
+    "2": 133,
+    "3": 134
+   },
+   "p3_items_held_per_end": null
+  },
+  "4": {
+   "slots": 4,
+   "ordered_pairs": 12,
+   "candidates": 2400,
+   "per_pair": [
+    200
+   ],
+   "dropped": {},
+   "layout": {
+    "sentence_tokens": 9,
+    "slot_starts": [
+     3,
+     12,
+     21,
+     30
+    ],
+    "layouts_seen": 1
+   },
+   "prompt_tokens": [
+    83,
+    83
+   ],
+   "bridge_token_index": [
+    42,
+    47,
+    52
+   ],
+   "bridge_entities": 32,
+   "candidates_per_split": {
+    "select": 463,
+    "train": 1384,
+    "test": 553
+   },
+   "quota_per_pair": 30,
+   "pairs_target": 360,
+   "pairs_min": 300,
+   "worst_case_reads": 2400,
+   "p2_items_test_per_start": null,
+   "p3_items_held_per_end": null
+  },
+  "8": {
+   "slots": 8,
+   "ordered_pairs": 56,
+   "candidates": 4480,
+   "per_pair": [
+    80
+   ],
+   "dropped": {},
+   "layout": {
+    "sentence_tokens": 9,
+    "slot_starts": [
+     3,
+     12,
+     21,
+     30,
+     39,
+     48,
+     57,
+     66
+    ],
+    "layouts_seen": 1
+   },
+   "prompt_tokens": [
+    119,
+    119
+   ],
+   "bridge_token_index": [
+    78,
+    83,
+    88
+   ],
+   "bridge_entities": 32,
+   "candidates_per_split": {
+    "test": 934,
+    "train": 2707,
+    "select": 839
+   },
+   "quota_per_pair": 7,
+   "pairs_target": 392,
+   "pairs_min": 300,
+   "worst_case_reads": 4480,
+   "p2_items_test_per_start": null,
+   "p3_items_held_per_end": null
+  }
+ },
+ "rendered": [
+  {
+   "scene": "P6-64-0099",
+   "slots": 6,
+   "move": "6->4",
+   "split": "test",
+   "values": [
+    5,
+    1,
+    8,
+    6,
+    4,
+    2
+   ],
+   "answer": "2",
+   "position_answer": 6,
+   "O": "<|im_start|>user\nThe locker of the bee is 5. The locker of the beetle is 1. The locker of the tiger is 8. ⟦target:The locker of the mouse is 6.⟧ The locker of the dog is 4. ⟦own:The locker of the bear is 2.⟧ Leo picked the mouse. Vera picked the bee. Ella picked the⟦bridge: bear⟧.\nWhich locker belongs to Ella's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "S": "<|im_start|>user\nThe locker of the bee is 5. The locker of the beetle is 1. The locker of the tiger is 8. ⟦moved:The locker of the bear is 2.⟧ The locker of the dog is 4. The locker of the mouse is 6. Leo picked the mouse. Vera picked the bee. Ella picked the⟦bridge: bear⟧.\nWhich locker belongs to Ella's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P6-35-0018",
+   "slots": 6,
+   "move": "3->5",
+   "split": "test",
+   "values": [
+    9,
+    3,
+    6,
+    2,
+    5,
+    1
+   ],
+   "answer": "6",
+   "position_answer": 5,
+   "O": "<|im_start|>user\nThe locker of the fly is 9. The locker of the chicken is 3. ⟦own:The locker of the eagle is 6.⟧ The locker of the wolf is 2. ⟦target:The locker of the deer is 5.⟧ The locker of the rabbit is 1. Ivy picked the⟦bridge: eagle⟧. Carl picked the rabbit. Fiona picked the fly.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "S": "<|im_start|>user\nThe locker of the fly is 9. The locker of the chicken is 3. The locker of the deer is 5. The locker of the wolf is 2. ⟦moved:The locker of the eagle is 6.⟧ The locker of the rabbit is 1. Ivy picked the⟦bridge: eagle⟧. Carl picked the rabbit. Fiona picked the fly.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P6-61-0105",
+   "slots": 6,
+   "move": "6->1",
+   "split": "train",
+   "values": [
+    4,
+    1,
+    3,
+    9,
+    7,
+    2
+   ],
+   "answer": "2",
+   "position_answer": 4,
+   "O": "<|im_start|>user\n⟦target:The locker of the eagle is 4.⟧ The locker of the bear is 1. The locker of the tiger is 3. The locker of the pig is 9. The locker of the horse is 7. ⟦own:The locker of the sheep is 2.⟧ Ivan picked the pig. Noah picked the⟦bridge: sheep⟧. Ben picked the bear.\nWhich locker belongs to Noah's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "S": "<|im_start|>user\n⟦moved:The locker of the sheep is 2.⟧ The locker of the bear is 1. The locker of the tiger is 3. The locker of the pig is 9. The locker of the horse is 7. The locker of the eagle is 4. Ivan picked the pig. Noah picked the⟦bridge: sheep⟧. Ben picked the bear.\nWhich locker belongs to Noah's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P6-36-0043",
+   "slots": 6,
+   "move": "3->6",
+   "split": "test",
+   "values": [
+    4,
+    9,
+    5,
+    6,
+    8,
+    3
+   ],
+   "answer": "5",
+   "position_answer": 3,
+   "O": "<|im_start|>user\nThe locker of the sheep is 4. The locker of the butterfly is 9. ⟦own:The locker of the bear is 5.⟧ The locker of the cow is 6. The locker of the spider is 8. ⟦target:The locker of the elephant is 3.⟧ Iris picked the butterfly. Nina picked the sheep. Sam picked the⟦bridge: bear⟧.\nWhich locker belongs to Sam's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "S": "<|im_start|>user\nThe locker of the sheep is 4. The locker of the butterfly is 9. The locker of the elephant is 3. The locker of the cow is 6. The locker of the spider is 8. ⟦moved:The locker of the bear is 5.⟧ Iris picked the butterfly. Nina picked the sheep. Sam picked the⟦bridge: bear⟧.\nWhich locker belongs to Sam's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P6-13-0046",
+   "slots": 6,
+   "move": "1->3",
+   "split": "train",
+   "values": [
+    2,
+    6,
+    1,
+    7,
+    5,
+    4
+   ],
+   "answer": "2",
+   "position_answer": 1,
+   "O": "<|im_start|>user\n⟦own:The locker of the cat is 2.⟧ The locker of the pig is 6. ⟦target:The locker of the sheep is 1.⟧ The locker of the bear is 7. The locker of the chicken is 5. The locker of the horse is 4. Max picked the bear. James picked the⟦bridge: cat⟧. Leo picked the sheep.\nWhich locker belongs to James's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "S": "<|im_start|>user\nThe locker of the sheep is 1. The locker of the pig is 6. ⟦moved:The locker of the cat is 2.⟧ The locker of the bear is 7. The locker of the chicken is 5. The locker of the horse is 4. Max picked the bear. James picked the⟦bridge: cat⟧. Leo picked the sheep.\nWhich locker belongs to James's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P3-13-0231",
+   "slots": 3,
+   "move": "1->3",
+   "split": "train",
+   "values": [
+    7,
+    3,
+    2
+   ],
+   "answer": "7",
+   "position_answer": 2,
+   "O": "<|im_start|>user\n⟦own:The locker of the cat is 7.⟧ The locker of the eagle is 3. ⟦target:The locker of the frog is 2.⟧ Alice picked the⟦bridge: cat⟧. Owen picked the frog. Jack picked the eagle.\nWhich locker belongs to Alice's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "S": "<|im_start|>user\nThe locker of the frog is 2. The locker of the eagle is 3. ⟦moved:The locker of the cat is 7.⟧ Alice picked the⟦bridge: cat⟧. Owen picked the frog. Jack picked the eagle.\nWhich locker belongs to Alice's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P4-42-0095",
+   "slots": 4,
+   "move": "4->2",
+   "split": "test",
+   "values": [
+    5,
+    9,
+    7,
+    3
+   ],
+   "answer": "3",
+   "position_answer": 9,
+   "O": "<|im_start|>user\nThe locker of the goose is 5. ⟦target:The locker of the bee is 9.⟧ The locker of the elephant is 7. ⟦own:The locker of the bear is 3.⟧ Zoe picked the elephant. Clara picked the⟦bridge: bear⟧. Amy picked the goose.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "S": "<|im_start|>user\nThe locker of the goose is 5. ⟦moved:The locker of the bear is 3.⟧ The locker of the elephant is 7. The locker of the bee is 9. Zoe picked the elephant. Clara picked the⟦bridge: bear⟧. Amy picked the goose.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P8-81-0061",
+   "slots": 8,
+   "move": "8->1",
+   "split": "select",
+   "values": [
+    7,
+    6,
+    1,
+    8,
+    9,
+    5,
+    3,
+    4
+   ],
+   "answer": "4",
+   "position_answer": 7,
+   "O": "<|im_start|>user\n⟦target:The locker of the lion is 7.⟧ The locker of the bee is 6. The locker of the horse is 1. The locker of the tiger is 8. The locker of the fly is 9. The locker of the cow is 5. The locker of the spider is 3. ⟦own:The locker of the turkey is 4.⟧ Clara picked the horse. Laura picked the⟦bridge: turkey⟧. Henry picked the tiger.\nWhich locker belongs to Laura's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "S": "<|im_start|>user\n⟦moved:The locker of the turkey is 4.⟧ The locker of the bee is 6. The locker of the horse is 1. The locker of the tiger is 8. The locker of the fly is 9. The locker of the cow is 5. The locker of the spider is 3. The locker of the lion is 7. Clara picked the horse. Laura picked the⟦bridge: turkey⟧. Henry picked the tiger.\nWhich locker belongs to Laura's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+id: x51_11_p1_muse
+title: "Batch 51.11 on Muse (L26): part 1, dimension vs the number of slots: position counterfactual pairs (digits kept) at S = 6, 3, 4, 8; U_S (class means), P_S (label-free PCA), R_S,k (DAS, k 1-5, 7) with shuffled and random R per k; d*(S) on held-out entities"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 3.6
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_addr.py run --part 1 --name muse30_x51_11_p1 --why "Batch 51, test 51.11 (jobs/c3/batch51.yaml addendum_3; Q51.11): part 1 on muse-glimmer-30b at L26; sealed"
+question: >-
+  What is the address at the bridge word, independent of how we built it: how many dimensions it takes as the number
+  of locker sentences grows (S = 3, 4, 6, 8), whether three independent methods (class means U, label-free
+  counterfactual PCA P, learned DAS R) find the same subspace, and whether the slots are coded as categories, as an
+  order or as a line?
+why_it_matters: >-
+  The finding is worded "four directions at the bridge word (class means over slots, layout removed)". Four is our
+  construction (five slot classes -> rank 4), not a property of the model. 51.11 changes a headline wording: each
+  outcome's sentence is fixed in advance (addendum 3, part 4), and in every case 'four' becomes a note on the first
+  construction. Dan ranks it above 51.2 and 51.4; the minimum if the night runs short is parts 1 and 2 on the 9B.
+hypotheses:
+  Q51.11: "Dan's answer in predictions/2026-10-28_dan.md (Q51.11: part 1 ordinal / one per slot / growing / in between - 9B; Muse; part 2 one code / partly overlapping / different - 9B; Muse; 27B; part 3 metric order / categories / first vs the rest - 9B; Muse); not committed when this spec was written, so the job is sealed: no verdict in the run; scripts/x51_addr.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml addendum_3, part 1), verbatim: d*(S) = the smallest k with own-IIA >= 0.80
+  (random <= 0.15). "An ordinal (low-dimensional) code": d*(S) <= 2 for every S up to 8. "One dimension per slot":
+  d*(S) >= S - 2 for every S and d*(8) >= 5. "Low-dimensional but growing": d*(S) between 3 and S - 3 at S = 8,
+  monotone in S. Else: in between. As computed (fixed before any run; Dan may override before the enqueue;
+  scripts/x51_addr.py's docstring is the full text): scenes = x47_six's generator (its pools, sentences, encoding,
+  chat rendering, X0's read) at S locker sentences first, then three picks; a pair = the bridge's locker sentence
+  and the sentence at slot j trade places in S, each keeping its digit (x7_pcf's 'same item moved, digits kept'):
+  the lookup's answer is the same in O and S (asserted per pair), the target is O's digit at slot j; every locker
+  sentence 9 tokens on all three tokenizers, slot k at a fixed token index (checked per scene, the modal layout
+  kept; plan: no scene dropped); S = 3 and 6 regenerated with this generator (the stored routes / 47.2 scenes carry
+  a new digit in S). Entities: the bridge animal, split 60 / 20 / 20 over the generator's 32-animal pool (19 / 6 /
+  7, x48_das.split_entities, seed 0), one split for every S and part; every number on held-out entities (test; part
+  3 select + test). Part 1, per S in the order 6, 3, 4, 8 (6 first: parts 2 and 3 read it; 8 last): candidates per
+  ordered slot pair (CAP 300 / 200 / 120 / 80 at S = 3 / 4 / 6 / 8) read in generator order in chunks of 8: X0's
+  competence (eligible = both readers say and read O's and S's answers right), then the whole change h_S - h_O at
+  the bridge word at L; a DAS pair is kept when the whole change sends the lookup to the position answer (49.8 /
+  51.3's restriction); per ordered pair until ceil(360 / pairs) such pairs, its candidates run out, or 48 candidates
+  read without one (given up); below 300 pairs the live pairs' remaining candidates round-robin until 300. Gate: O's
+  read accuracy >= 0.80 per reader over every candidate read at that S, else the S is not tested. U_S
+  (x47_six.fit_slots: layout-free class means by slot, x0_massmean.mass_mean, rank S - 1) and P_S (x7_pcf.top_pcs:
+  centered PCA of Delta, no labels, top 7) on every eligible train-entity scene read at that S (every move, as 47.2
+  / x7_pcf fit theirs); R_S,k for k in {1, 2, 3, 4, 5, 7} by DAS on the position-routed train pairs:
+  x51_das.train_fit (48.1's loop: orthonormal R, h <- h_O + R R^T Delta at the bridge word at L of O; Adam lr 1e-3,
+  batch 16, micro-batches of 8 halved on CUDA OOM, <= 300 steps, early stopping on the select split's IIA every 25
+  steps, patience 4), the shuffled-target twin per k ('shuffled-pair R'), an untrained random R per k (QR of a
+  seeded Gaussian). Reads on the select and test pairs, both readers: none, whole, U U^T Delta, and per k P_k P_k^T
+  Delta, R_k R_k^T Delta, the shuffled R, the random R. d*(S) = the smallest k whose test own-IIA >= 0.80 while the
+  random R of that k <= 0.15 (the random bar per k, as the addendum's dumbest ways ask); none: d*(S) > 7, read as
+  infinity in the rules (so 'one per slot' holds with d*(8) > 7: flagged). Point estimates decide (EPS 1e-9 at the
+  bars), cluster-bootstrap CIs over bridge entities (10,000, seed 0) beside; the first holding label in the order
+  ordinal, one per slot, growing is the answer; a missing S: not decidable. Part 4 (verdict, CPU): the addendum's
+  wording table, the first row whose labels match; a part a model lacks matches only 'any' (the 27B can only reach
+  row 4).
+controls:
+- 'an untrained random R per k (QR of a seeded Gaussian, 5113 + k): its own-IIA on the same test pairs; d* needs it <= 0.15 at that k (the random bar per k, not one number)'
+- 'an R trained on shuffled targets per k (the training rows'' targets permuted once, 5112 + k), early-stopped on its own shuffled dev targets'
+- 'O unedited and the whole change reread on the select and test pairs (floor and ceiling)'
+- 'the recall read under every arm (the item is the same in O and S: any move is collateral)'
+- 'the competence gate per S (O''s read accuracy >= 0.80 per reader over every candidate read)'
+n: 'plan (CPU, results/x51_addr/plan-20261028T184500Z): per S 32 bridge entities (19 / 6 / 7); candidates S = 3: 1,800 (6 ordered pairs x 300), S = 4: 2,400 (12 x 200), S = 6: 3,600 (30 x 120), S = 8: 4,480 (56 x 80), none dropped (every locker sentence 9 tokens); target 360 position pairs per S (quota 60 / 30 / 12 / 7 per ordered pair, >= 300); expected reads at 47.2''s stored rates ~1,270 at S = 6; test pairs ~20% (7 entities)'
+seeds: [5110, 0, 5111, 5112, 5113, 5114, 5115, 4803]
+notes: "Batch 51 addendum 3 (Dan 28 Oct 19:00), 51.11, helper after 51.5 and before 51.4 (outranks 51.2 and 51.4). Sealed: the run writes manifest.json (before any GPU work; at the end failed_slots), per S a folder S<n>/ with status.json, reads.jsonl (every candidate read: eligible, the whole change's route), competence.jsonl, pairs.json (counts per split, per ordered pair, given-up and missing ordered pairs), cases.jsonl (the pairs), fit_scenes.jsonl, fit.npz (mu, U, P, hbar, the real change's size), R.npz (every R, shuffled and random R), stops.json, train.jsonl, outcomes.jsonl, done.json; states_L*.pt gitignored. One S failing (e.g. OOM at S = 8) keeps the others and fails the job at the end: if only S = 8 failed, enqueue part 2 / 3 as _r2 specs without depends_on (they read S6 and S3 only). By hand after Dan's Q51.11 is committed: uv run python scripts/x51_addr.py verdict (verdict.md / verdict.json: parts 1-3 labels with CIs, the d*(S) table, the 4 x 4 swap table, the midpoint table and the means' geometry, part 4's wording row; figures <target>_part1.png (own-IIA vs k per S, random dashed) and <target>_part3.png (the slot means in PC1-2, the midpoint swaps as arrows)), then view (view.md: 5 rendered pairs per S and 10 random rows per arm, seed 0). Seeds: 5110 scenes, 0 split / bootstrap / examples, 5111 / 5112 / 5113 init / shuffle / random R, 4803 + the R's seed batches, 5114 random directions, 5115 random subspaces. Cost (ledger, results/jobq/ledger_sesterce-h100x2.jsonl, one H100): x49_8_9b 6 DAS trainings (300 steps, BJ_DAS_GDN=torch) in 817 s wall, x48_1_9b_r2 16 in 1,867 s (~0.18 s per micro-batch of 8, x51_3_9b's note); x48_1_muse 16 in 3,298 s (~0.32 s per micro-batch); x47_2_9b 1,350 competence reads + 300 x ~25 arms in 937 s, x47_2_muse in 1,401 s (~0.5 / ~0.9 s per candidate read with the whole change); x51_3 not in the ledger yet. part 1 on Muse: ~5,800 reads x ~0.8 s ~1.3 h; 48 trainings x ~220 s (prompts 109-154 tokens), early stopping ~70% ~2.1 h; reads ~0.2 h: ~3.6 h, above Dan's 2.5 for all of Muse. If the night runs short, '--slots 6 3' first (parts 2 and 3 need only these; 4 and 8 decide part 1). Dan's estimate: Muse ~2.5 GPU-h for parts 1-3."

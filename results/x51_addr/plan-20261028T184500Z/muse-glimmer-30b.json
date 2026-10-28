@@ -1,0 +1,391 @@
+{
+ "target": "muse-glimmer-30b",
+ "layer": 26,
+ "prefix": "muse30_",
+ "runs": {
+  "1": "muse30_x51_11_p1",
+  "2": "muse30_x51_11_p2",
+  "3": "muse30_x51_11_p3"
+ },
+ "split": {
+  "train": 19,
+  "select": 6,
+  "test": 7
+ },
+ "entities": 32,
+ "ks": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  7
+ ],
+ "slots_order": [
+  6,
+  3,
+  4,
+  8
+ ],
+ "S": {
+  "6": {
+   "slots": 6,
+   "ordered_pairs": 30,
+   "candidates": 3600,
+   "per_pair": [
+    120
+   ],
+   "dropped": {},
+   "layout": {
+    "sentence_tokens": 9,
+    "slot_starts": [
+     42,
+     51,
+     60,
+     69,
+     78,
+     87
+    ],
+    "layouts_seen": 1
+   },
+   "prompt_tokens": [
+    136,
+    136
+   ],
+   "bridge_token_index": [
+    99,
+    104,
+    109
+   ],
+   "bridge_entities": 32,
+   "candidates_per_split": {
+    "select": 684,
+    "train": 2113,
+    "test": 803
+   },
+   "quota_per_pair": 12,
+   "pairs_target": 360,
+   "pairs_min": 300,
+   "worst_case_reads": 3600,
+   "p2_items_test_per_start": {
+    "1": 142,
+    "2": 128,
+    "3": 112,
+    "4": 129,
+    "5": 141,
+    "6": 151
+   },
+   "p3_items_held_per_end": {
+    "1": 238,
+    "6": 269
+   },
+   "expected_reads_at_47_2_rates": {
+    "run": "muse30_x47_2",
+    "reads": 1254,
+    "eligible_share": 0.892,
+    "position_by_pair": {
+     "1-2": 0.7,
+     "1-3": 0.6,
+     "1-4": 0.1,
+     "1-5": 0.4,
+     "1-6": 0.5,
+     "2-1": 0.9,
+     "2-3": 0.2,
+     "2-4": 0.5,
+     "2-5": 0.3,
+     "2-6": 0.2,
+     "3-1": 0.9,
+     "3-2": 0.5,
+     "3-4": 0.0,
+     "3-5": 0.0,
+     "3-6": 0.0,
+     "4-1": 0.9,
+     "4-2": 0.8,
+     "4-3": 0.2,
+     "4-5": 0.0,
+     "4-6": 0.0,
+     "5-1": 0.9,
+     "5-2": 0.6,
+     "5-3": 0.4,
+     "5-4": 0.0,
+     "5-6": 0.1,
+     "6-1": 0.6,
+     "6-2": 0.5,
+     "6-3": 0.3,
+     "6-4": 0.0,
+     "6-5": 0.0
+    }
+   }
+  },
+  "3": {
+   "slots": 3,
+   "ordered_pairs": 6,
+   "candidates": 1800,
+   "per_pair": [
+    300
+   ],
+   "dropped": {},
+   "layout": {
+    "sentence_tokens": 9,
+    "slot_starts": [
+     42,
+     51,
+     60
+    ],
+    "layouts_seen": 1
+   },
+   "prompt_tokens": [
+    109,
+    109
+   ],
+   "bridge_token_index": [
+    72,
+    77,
+    82
+   ],
+   "bridge_entities": 32,
+   "candidates_per_split": {
+    "train": 1056,
+    "select": 347,
+    "test": 397
+   },
+   "quota_per_pair": 60,
+   "pairs_target": 360,
+   "pairs_min": 300,
+   "worst_case_reads": 1800,
+   "p2_items_test_per_start": {
+    "1": 130,
+    "2": 133,
+    "3": 134
+   },
+   "p3_items_held_per_end": null
+  },
+  "4": {
+   "slots": 4,
+   "ordered_pairs": 12,
+   "candidates": 2400,
+   "per_pair": [
+    200
+   ],
+   "dropped": {},
+   "layout": {
+    "sentence_tokens": 9,
+    "slot_starts": [
+     42,
+     51,
+     60,
+     69
+    ],
+    "layouts_seen": 1
+   },
+   "prompt_tokens": [
+    118,
+    118
+   ],
+   "bridge_token_index": [
+    81,
+    86,
+    91
+   ],
+   "bridge_entities": 32,
+   "candidates_per_split": {
+    "select": 463,
+    "train": 1384,
+    "test": 553
+   },
+   "quota_per_pair": 30,
+   "pairs_target": 360,
+   "pairs_min": 300,
+   "worst_case_reads": 2400,
+   "p2_items_test_per_start": null,
+   "p3_items_held_per_end": null
+  },
+  "8": {
+   "slots": 8,
+   "ordered_pairs": 56,
+   "candidates": 4480,
+   "per_pair": [
+    80
+   ],
+   "dropped": {},
+   "layout": {
+    "sentence_tokens": 9,
+    "slot_starts": [
+     42,
+     51,
+     60,
+     69,
+     78,
+     87,
+     96,
+     105
+    ],
+    "layouts_seen": 1
+   },
+   "prompt_tokens": [
+    154,
+    154
+   ],
+   "bridge_token_index": [
+    117,
+    122,
+    127
+   ],
+   "bridge_entities": 32,
+   "candidates_per_split": {
+    "test": 934,
+    "train": 2707,
+    "select": 839
+   },
+   "quota_per_pair": 7,
+   "pairs_target": 392,
+   "pairs_min": 300,
+   "worst_case_reads": 4480,
+   "p2_items_test_per_start": null,
+   "p3_items_held_per_end": null
+  }
+ },
+ "rendered": [
+  {
+   "scene": "P6-64-0099",
+   "slots": 6,
+   "move": "6->4",
+   "split": "test",
+   "values": [
+    5,
+    1,
+    8,
+    6,
+    4,
+    2
+   ],
+   "answer": "2",
+   "position_answer": 6,
+   "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the bee is 5. The locker of the butterfly is 1. The locker of the turkey is 8. ⟦target:The locker of the owl is 6.⟧ The locker of the duck is 4. ⟦own:The locker of the bear is 2.⟧ Leo picked the owl. Vera picked the bee. Ella picked the⟦bridge: bear⟧.\nWhich locker belongs to Ella's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the bee is 5. The locker of the butterfly is 1. The locker of the turkey is 8. ⟦moved:The locker of the bear is 2.⟧ The locker of the duck is 4. The locker of the owl is 6. Leo picked the owl. Vera picked the bee. Ella picked the⟦bridge: bear⟧.\nWhich locker belongs to Ella's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "scene": "P6-35-0018",
+   "slots": 6,
+   "move": "3->5",
+   "split": "test",
+   "values": [
+    9,
+    3,
+    6,
+    2,
+    5,
+    1
+   ],
+   "answer": "6",
+   "position_answer": 5,
+   "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the fox is 9. The locker of the cow is 3. ⟦own:The locker of the elephant is 6.⟧ The locker of the zebra is 2. ⟦target:The locker of the dog is 5.⟧ The locker of the sheep is 1. Ivy picked the⟦bridge: elephant⟧. Carl picked the sheep. Fiona picked the fox.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the fox is 9. The locker of the cow is 3. The locker of the dog is 5. The locker of the zebra is 2. ⟦moved:The locker of the elephant is 6.⟧ The locker of the sheep is 1. Ivy picked the⟦bridge: elephant⟧. Carl picked the sheep. Fiona picked the fox.\nWhich locker belongs to Ivy's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "scene": "P6-61-0105",
+   "slots": 6,
+   "move": "6->1",
+   "split": "train",
+   "values": [
+    4,
+    1,
+    3,
+    9,
+    7,
+    2
+   ],
+   "answer": "2",
+   "position_answer": 4,
+   "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦target:The locker of the elephant is 4.⟧ The locker of the bear is 1. The locker of the turkey is 3. The locker of the rabbit is 9. The locker of the lion is 7. ⟦own:The locker of the spider is 2.⟧ Ivan picked the rabbit. Noah picked the⟦bridge: spider⟧. Ben picked the bear.\nWhich locker belongs to Noah's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦moved:The locker of the spider is 2.⟧ The locker of the bear is 1. The locker of the turkey is 3. The locker of the rabbit is 9. The locker of the lion is 7. The locker of the elephant is 4. Ivan picked the rabbit. Noah picked the⟦bridge: spider⟧. Ben picked the bear.\nWhich locker belongs to Noah's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "scene": "P6-36-0043",
+   "slots": 6,
+   "move": "3->6",
+   "split": "test",
+   "values": [
+    4,
+    9,
+    5,
+    6,
+    8,
+    3
+   ],
+   "answer": "5",
+   "position_answer": 3,
+   "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the spider is 4. The locker of the camel is 9. ⟦own:The locker of the bear is 5.⟧ The locker of the crow is 6. The locker of the tick is 8. ⟦target:The locker of the fly is 3.⟧ Iris picked the camel. Nina picked the spider. Sam picked the⟦bridge: bear⟧.\nWhich locker belongs to Sam's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the spider is 4. The locker of the camel is 9. The locker of the fly is 3. The locker of the crow is 6. The locker of the tick is 8. ⟦moved:The locker of the bear is 5.⟧ Iris picked the camel. Nina picked the spider. Sam picked the⟦bridge: bear⟧.\nWhich locker belongs to Sam's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "scene": "P6-13-0046",
+   "slots": 6,
+   "move": "1->3",
+   "split": "train",
+   "values": [
+    2,
+    6,
+    1,
+    7,
+    5,
+    4
+   ],
+   "answer": "2",
+   "position_answer": 1,
+   "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦own:The locker of the chicken is 2.⟧ The locker of the rabbit is 6. ⟦target:The locker of the spider is 1.⟧ The locker of the bear is 7. The locker of the cow is 5. The locker of the lion is 4. Max picked the bear. James picked the⟦bridge: chicken⟧. Leo picked the spider.\nWhich locker belongs to James's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the spider is 1. The locker of the rabbit is 6. ⟦moved:The locker of the chicken is 2.⟧ The locker of the bear is 7. The locker of the cow is 5. The locker of the lion is 4. Max picked the bear. James picked the⟦bridge: chicken⟧. Leo picked the spider.\nWhich locker belongs to James's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "scene": "P3-13-0231",
+   "slots": 3,
+   "move": "1->3",
+   "split": "train",
+   "values": [
+    7,
+    3,
+    2
+   ],
+   "answer": "7",
+   "position_answer": 2,
+   "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦own:The locker of the chicken is 7.⟧ The locker of the elephant is 3. ⟦target:The locker of the goat is 2.⟧ Alice picked the⟦bridge: chicken⟧. Owen picked the goat. Jack picked the elephant.\nWhich locker belongs to Alice's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the goat is 2. The locker of the elephant is 3. ⟦moved:The locker of the chicken is 7.⟧ Alice picked the⟦bridge: chicken⟧. Owen picked the goat. Jack picked the elephant.\nWhich locker belongs to Alice's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "scene": "P4-42-0095",
+   "slots": 4,
+   "move": "4->2",
+   "split": "test",
+   "values": [
+    5,
+    9,
+    7,
+    3
+   ],
+   "answer": "3",
+   "position_answer": 9,
+   "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the horse is 5. ⟦target:The locker of the bee is 9.⟧ The locker of the fly is 7. ⟦own:The locker of the bear is 3.⟧ Zoe picked the fly. Clara picked the⟦bridge: bear⟧. Amy picked the horse.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the horse is 5. ⟦moved:The locker of the bear is 3.⟧ The locker of the fly is 7. The locker of the bee is 9. Zoe picked the fly. Clara picked the⟦bridge: bear⟧. Amy picked the horse.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "scene": "P8-81-0061",
+   "slots": 8,
+   "move": "8->1",
+   "split": "select",
+   "values": [
+    7,
+    6,
+    1,
+    8,
+    9,
+    5,
+    3,
+    4
+   ],
+   "answer": "4",
+   "position_answer": 7,
+   "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦target:The locker of the mouse is 7.⟧ The locker of the bee is 6. The locker of the lion is 1. The locker of the turkey is 8. The locker of the fox is 9. The locker of the crow is 5. The locker of the tick is 3. ⟦own:The locker of the wolf is 4.⟧ Clara picked the lion. Laura picked the⟦bridge: wolf⟧. Henry picked the turkey.\nWhich locker belongs to Laura's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦moved:The locker of the wolf is 4.⟧ The locker of the bee is 6. The locker of the lion is 1. The locker of the turkey is 8. The locker of the fox is 9. The locker of the crow is 5. The locker of the tick is 3. The locker of the mouse is 7. Clara picked the lion. Laura picked the⟦bridge: wolf⟧. Henry picked the turkey.\nWhich locker belongs to Laura's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  }
+ ]
+}

@@ -1,0 +1,54 @@
+id: x51_11_p3_muse
+title: "Batch 51.11 on Muse (L26): part 3, categories, an order or a line: midpoint swaps from slot 1 and slot 6 at 2x (4x beside), the full swaps, random directions; the slot means' geometry at S = 6 and 8"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+depends_on: [x51_11_p1_muse]
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_addr.py run --part 3 --name muse30_x51_11_p3 --part1 muse30_x51_11_p1 --why "Batch 51, test 51.11 (jobs/c3/batch51.yaml addendum_3; Q51.11): part 3 on muse-glimmer-30b at L26; sealed"
+question: >-
+  What is the address at the bridge word, independent of how we built it: how many dimensions it takes as the number
+  of locker sentences grows (S = 3, 4, 6, 8), whether three independent methods (class means U, label-free
+  counterfactual PCA P, learned DAS R) find the same subspace, and whether the slots are coded as categories, as an
+  order or as a line?
+why_it_matters: >-
+  The finding is worded "four directions at the bridge word (class means over slots, layout removed)". Four is our
+  construction (five slot classes -> rank 4), not a property of the model. 51.11 changes a headline wording: each
+  outcome's sentence is fixed in advance (addendum 3, part 4), and in every case 'four' becomes a note on the first
+  construction. Dan ranks it above 51.2 and 51.4; the minimum if the night runs short is parts 1 and 2 on the 9B.
+hypotheses:
+  Q51.11: "Dan's answer in predictions/2026-10-28_dan.md (Q51.11: part 1 ordinal / one per slot / growing / in between - 9B; Muse; part 2 one code / partly overlapping / different - 9B; Muse; 27B; part 3 metric order / categories / first vs the rest - 9B; Muse); not committed when this spec was written, so the job is sealed: no verdict in the run; scripts/x51_addr.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml addendum_3, part 3), verbatim: "A metric order (the code is a line or a
+  curve)": midpoint swaps send >= 0.3 of lookups to the midpoint slot, from both ends. "Categories": midpoint swaps
+  send < 0.1 to the midpoint slot while the full swaps reach >= 0.4 of the target. "First vs the rest" (the old
+  reading): midpoints work only from slot 1. As computed (fixed before any run; Dan may override before the enqueue;
+  scripts/x51_addr.py's docstring is the full text): scenes = x47_six's generator (its pools, sentences, encoding,
+  chat rendering, X0's read) at S locker sentences first, then three picks; a pair = the bridge's locker sentence
+  and the sentence at slot j trade places in S, each keeping its digit (x7_pcf's 'same item moved, digits kept'):
+  the lookup's answer is the same in O and S (asserted per pair), the target is O's digit at slot j; every locker
+  sentence 9 tokens on all three tokenizers, slot k at a fixed token index (checked per scene, the modal layout
+  kept; plan: no scene dropped); S = 3 and 6 regenerated with this generator (the stored routes / 47.2 scenes carry
+  a new digit in S). Entities: the bridge animal, split 60 / 20 / 20 over the generator's 32-animal pool (19 / 6 /
+  7, x48_das.split_entities, seed 0), one split for every S and part; every number on held-out entities (test; part
+  3 select + test). Part 3 (S = 6, part 1's mu; the means at S = 6 and 8 on the CPU in the verdict): items = held-
+  out (select + test) scenes eligible on O and S with the bridge at slot 1 or 6, the first 100 per end. From slot 1:
+  dose x (mu_3 - mu_1) / 2 and dose x (mu_5 - mu_1) / 2; from slot 6 toward 4 and 2; dose 2 decisive (the addendum's
+  arm), dose 4 beside (its dumbest way: half a 2x swap is one real change's size; the 4x midpoint equals the 2x full
+  swap numerically); the full swaps 2 (mu_far - mu_start); a seeded random direction of each vector's norm. The
+  answered slot classed original / midpoint / far / near / another slot / not a slot. Shares pooled per end over its
+  two midpoint arms: metric = midpoint >= 0.3 from both ends; categories = < 0.1 from both ends while the full swaps
+  (pooled) reach >= 0.4 of their target; first vs the rest = >= 0.3 from slot 1 and < 0.3 from slot 6; else none of
+  the three. Every vector's norm recorded beside the real change's size (median ||U U^T Delta|| over the test pairs)
+  and ||h_O||. Part 4 (verdict, CPU): the addendum's wording table, the first row whose labels match; a part a model
+  lacks matches only 'any' (the 27B can only reach row 4).
+controls:
+- 'a seeded random direction of each vector''s norm (midpoints at both doses and the full swaps)'
+- 'O unedited: the share answering its own slot'
+- 'the 4x midpoint arm (dose control: half of a 2x swap is one real change''s size)'
+- 'the recall read under every arm (collateral)'
+n: 'plan (CPU, results/x51_addr/plan-20261028T184500Z): held-out candidates with the bridge at slot 1 / 6 (S = 6) 238 / 269; the first 100 eligible per end; 13 arms per item and reader'
+seeds: [5110, 0, 5114]
+notes: "Batch 51 addendum 3 (Dan 28 Oct 19:00), 51.11, helper after 51.5 and before 51.4 (outranks 51.2 and 51.4). Sealed: S6/p3_items.jsonl, p3_outcomes.jsonl, p3_status.json (items, the real change's size, mu's source). By hand after Dan's Q51.11 is committed: uv run python scripts/x51_addr.py verdict (verdict.md / verdict.json: parts 1-3 labels with CIs, the d*(S) table, the 4 x 4 swap table, the midpoint table and the means' geometry, part 4's wording row; figures <target>_part1.png (own-IIA vs k per S, random dashed) and <target>_part3.png (the slot means in PC1-2, the midpoint swaps as arrows)), then view (view.md: 5 rendered pairs per S and 10 random rows per arm, seed 0). Seeds: 5110 scenes, 0 split / bootstrap / examples, 5111 / 5112 / 5113 init / shuffle / random R, 4803 + the R's seed batches, 5114 random directions, 5115 random subspaces. Cost (ledger, results/jobq/ledger_sesterce-h100x2.jsonl, one H100): x49_8_9b 6 DAS trainings (300 steps, BJ_DAS_GDN=torch) in 817 s wall, x48_1_9b_r2 16 in 1,867 s (~0.18 s per micro-batch of 8, x51_3_9b's note); x48_1_muse 16 in 3,298 s (~0.32 s per micro-batch); x47_2_9b 1,350 competence reads + 300 x ~25 arms in 937 s, x47_2_muse in 1,401 s (~0.5 / ~0.9 s per candidate read with the whole change); x51_3 not in the ledger yet. part 3 on Muse: est 0.3. Dan's estimate: Muse ~2.5 GPU-h for parts 1-3."
