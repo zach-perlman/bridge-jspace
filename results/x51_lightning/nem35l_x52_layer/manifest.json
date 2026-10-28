@@ -1,0 +1,92 @@
+{
+  "exp": "x51_lightning",
+  "run": "nem35l_x52_layer",
+  "why": "Batch 52 part C (jobs/c3/batch52.yaml), Lightning's prerequisite: the gate on 60 main-test scenes, then the layer by the published rule (earliest layer where both readers switch >= 0.3, every 4th layer L2-L50, 60 dev scenes); no prediction: a design choice, committed before any scored run",
+  "written_utc": "2026-10-28T23:37:21Z",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat",
+    "kernels": "hub"
+  },
+  "switches": {
+    "target": "nemotron-3.5-lightning",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "16",
+    "BJ_TARGET": "nemotron-3.5-lightning",
+    "lens_sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "code": {
+    "head": "0843d055b0d422d9b26b1c0a783139be1c8f3e37",
+    "dirty_files": [],
+    "untracked_scripts": [],
+    "code_diff_sha256": null
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/nemotron-3.5-lightning/lenses/jpp/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16_jpp_lens.pt",
+      "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+    ],
+    "sha256": "3306b6e4f0f4ba039cde5f902aeb3ef6ae8b775a7abc1b999f6cbc0b7d534f44"
+  },
+  "batch": 52,
+  "spec": "jobs/c3/batch52.yaml (part C, prerequisites for a new family)",
+  "question": "no prediction: the layer is a design choice fixed by the published rule (batch 52 addendum)",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/batch52.yaml": "6fb39ec2c9ab38f81e6ccd06c5cd1c014acc241d3ee0bbd54abff64b3dcbd3ab"
+  },
+  "set": "d1_topics_v3",
+  "rendering": "chat",
+  "alt": "cf",
+  "layers": [
+    2,
+    6,
+    10,
+    14,
+    18,
+    22,
+    26,
+    30,
+    34,
+    38,
+    42,
+    46,
+    50
+  ],
+  "n_gate": 60,
+  "n": {
+    "dev": 60,
+    "test": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "switch_min": 0.3,
+  "eps": 1e-09,
+  "rule": "Batch 52 prerequisite (jobs/c3/batch52.yaml part C, Dan's words): \"the gate passes on 60 main-test scenes; the layer is fixed by the published rule (earliest layer where both readers switch >= 0.3, sweeping every 4th layer)\". As computed: the gate = X0's (unedited org accuracy under X0's top-token read >= 0.80 for both readers) on the first 60 main-test scenes in scene order; the sweep = the whole change at the bridge word on 60 dev scenes (51.6's split: random.Random(0).sample of the eligible scenes) at L2, L6, ..., L50; the layer = the earliest where both readers' switch rates are >= 0.3 (point estimates, EPS 1e-9); none: \"the bridge word does not redirect the lookup at any layer on Lightning\" and the column is cancelled",
+  "scenes": "gate: the first 60 main-test scenes in scene order; sweep: X0's eligible scenes (scene order), dev = random.Random(0).sample of 60 (51.6's split); test = the first 200 eligible not in dev (recorded for the coverage runs, not read here)",
+  "step1": "Δ_l = h_S - h_O at the bridge word, every layer of LAYERS4 from one forward of O and one of S; the whole Δ_l added at l on O (AddRows); both readers; X0's chat read",
+  "kernel": {
+    "repo": "kernels-community/mamba-ssm",
+    "expected": "28017f36635a6b94d911333812beeed5dd901ac0"
+  },
+  "seeds": {
+    "dev_split": 0,
+    "bootstrap": 0,
+    "set": 24
+  },
+  "n_boot": 10000,
+  "order": {
+    "scenes": "sorted by scene id (build_cases); the eligible ones in that order, the first N_ITEMS kept; the kept ids in gate.json 'order'",
+    "competence": "per scene, reader and rendering: org and alt generated together (one batch of 2 rows), then each one's read alone (a batch of 1)",
+    "delta": "per scene: one unbatched forward of org and of alt",
+    "reads": "per scene, reader and layer: the unedited row, then the arms in their fixed order (whole; per dictionary, k, fit: no_part, no_rand; with --atom-slices 47.1's parts after J++'s), in batches of at most 16 rows (BJ_SUITE_BATCH)",
+    "batch": 16,
+    "step1": "per dev case and reader: the unedited row, then the whole change at each layer of LAYERS4 in order, in batches of at most 16 rows"
+  }
+}

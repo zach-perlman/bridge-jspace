@@ -1,0 +1,23 @@
+{
+  "status": "prerequisite failed",
+  "layer": null,
+  "label": "prerequisite failed: the gate on the first 60 main-test scenes failed",
+  "n_dev": 0,
+  "layers": [
+    2,
+    6,
+    10,
+    14,
+    18,
+    22,
+    26,
+    30,
+    34,
+    38,
+    42,
+    46,
+    50
+  ],
+  "rule": "Batch 52 prerequisite (jobs/c3/batch52.yaml part C, Dan's words): \"the gate passes on 60 main-test scenes; the layer is fixed by the published rule (earliest layer where both readers switch >= 0.3, sweeping every 4th layer)\". As computed: the gate = X0's (unedited org accuracy under X0's top-token read >= 0.80 for both readers) on the first 60 main-test scenes in scene order; the sweep = the whole change at the bridge word on 60 dev scenes (51.6's split: random.Random(0).sample of the eligible scenes) at L2, L6, ..., L50; the layer = the earliest where both readers' switch rates are >= 0.3 (point estimates, EPS 1e-9); none: \"the bridge word does not redirect the lookup at any layer on Lightning\" and the column is cancelled",
+  "prediction": "no prediction: the layer is a design choice fixed by the published rule (batch 52 addendum)"
+}
