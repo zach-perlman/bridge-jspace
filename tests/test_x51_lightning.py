@@ -257,6 +257,36 @@ def test_stage_prereq_no_layer_and_failed_gate(tmp_path, monkeypatch):
     assert not (out / "step1_outcomes.jsonl").exists()
 
 
+def test_stage_prereq_main_gate_decides_with_the_60_scene_check_beside(tmp_path, monkeypatch):
+    """r2: the first 10 scenes fail the recall (pre-check fails) while X0's all-scene gate passes: --gate main sweeps,
+    the default stops."""
+    from bridge_jspace import pins
+
+    _stage(monkeypatch, tmp_path, switch_min=0.0)
+    monkeypatch.setattr(L6, "N_GATE", 10)
+
+    def competence(model, cs, digits, ws):
+        return [{"scene": c["scene"], "rendering": "chat", "reader": w, "variant": v, "right": True,
+                 "read_right": not (w == RC and i < 3), "cand_right": True}
+                for i, c in enumerate(cs) for w in X.READERS for v in ("org", "alt")]  # fmt: skip
+
+    monkeypatch.setattr(X, "competence", competence)
+    out = L6.stage_prereq(f"{pins.RUN_PREFIX}x52_main", "t", n_boot=20, gate_mode="main")
+    gate = json.loads((out / "gate.json").read_text())
+    assert gate["prereq_gate"] == "main" and gate["gate_passes"] and not gate["gate60"]["pass"]
+    assert gate["gate"]["pass"] and gate["eligible"] == 27 and len(gate["dev"]) == 6
+    assert not set(gate["dev"]) & {f"P2-L0-{i:04d}" for i in range(3)}  # the scenes the recall misses are not eligible
+    rec = json.loads((out / "layer.json").read_text())
+    assert rec["layer"] == 2 and rec["prereq_gate"] == "main" and rec["gate60_pass"] is False
+    m = json.loads((out / "manifest.json").read_text())
+    assert m["prereq_gate"]["mode"] == "main"
+    assert "pre-check" in (out / "prereq.md").read_text()
+    rec1 = json.loads((L6.stage_prereq(f"{pins.RUN_PREFIX}x52_60", "t", n_boot=20) / "layer.json").read_text())
+    assert rec1["layer"] is None and rec1["status"] == "prerequisite failed"
+    with pytest.raises(AssertionError, match="not one of"):
+        L6.stage_prereq(f"{pins.RUN_PREFIX}x52_bad", "t", gate_mode="bad")
+
+
 def test_committed_layer_refuses_until_committed(monkeypatch):
     def fake(code: int, text: str):
         return lambda *a, **k: SimpleNamespace(returncode=code, stdout=text)

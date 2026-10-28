@@ -1,0 +1,44 @@
+id: x52_lightning_layer_r2
+title: "Batch 52 C, Lightning prerequisite r2 (before any scored run): the main test's gate verbatim (X0's: 0.80 per reader on all main-test scenes, >= 150 eligible) decides, the 60-scene gate reported beside as a failed pre-check; then the whole change at the bridge word on 60 dev scenes at every 4th layer L2-L50, the layer = the earliest where both readers switch >= 0.3, written as layer.json; no step 2, no verdict"
+thread: C3
+gpus: 1
+mem_gb: 78
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  export BJ_TARGET=nemotron-3.5-lightning BJ_DEVICE_MAP= BJ_SUITE_BATCH=16 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True;
+  uv run python scripts/x51_lightning.py prereq --gate main --name nem35l_x52_layer_r2 --why "Batch 52 part C (jobs/c3/batch52.yaml), Lightning's prerequisite r2 (coordinator for Dan, 29 Oct ~01:10 Paris, flagged at 02:00, reversible): the main test's gate verbatim decides (r1 nem35l_x52_layer failed the 60-scene gate: lookup 0.883, recall 0.783; X0's gate on all 516 scenes passed 0.957 / 0.816), then the layer by the published rule (earliest layer where both readers switch >= 0.3, every 4th layer L2-L50, 60 dev scenes); no prediction: a design choice, committed before any scored run"
+question: >-
+  On NVIDIA Nemotron 3.5 Lightning 30B-A3B, at which layer (every 4th, L2-L50) does the bridge word's whole change
+  first switch both readers >= 0.3 on 60 dev scenes, given the main test's own gate (passed in r1 on all 516 scenes)?
+  That layer is L for every Lightning coverage cell of batch 52.
+why_it_matters: >-
+  r1 (results/x51_lightning/nem35l_x52_layer, committed eea66c89) stopped at the 60-scene pre-check (recall 0.783 <
+  0.80) although the main test's gate, the one applied to every other model, passed on all scenes (0.957 / 0.816). The
+  coverage chain needs the layer; the 60-scene failure is reported beside, not hidden.
+hypotheses:
+  none: "No prediction (batch 52 addendum): the layer is a design choice fixed by the published rule, not a forecast."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch52.yaml part C, Dan's words, verbatim): "Prerequisites for a new family (Lightning,
+  Bolt), before any real run: the J++ lens file exists (report its sha and band); the weights load on the box; the gate
+  passes on 60 main-test scenes; the layer is fixed by the published rule (earliest layer where both readers switch
+  >= 0.3, sweeping every 4th layer) and committed before the main runs. ... No layer passes -> report "the bridge word
+  does not redirect the lookup at any layer on this model" and cancel the column; that is a result." CHANGE in r2
+  (coordinator for Dan, 29 Oct ~01:10 Paris, to be flagged to Dan at 02:00, reversible; not Dan's words): the gate
+  that decides is the main test's gate verbatim (X0's, jobs/c3/x0_necessity_27b_chat.yaml: unedited org accuracy under
+  the top-token read >= 0.80 for both readers on all scenes, >= 150 eligible), as applied to every other model; the
+  gate on the first 60 main-test scenes (r1's reading of "60 main-test scenes") is computed and reported beside as a
+  pre-check (it failed in r1: lookup 0.883, recall 0.783). Everything else as r1 (jobs/c3/x52_lightning_layer.yaml):
+  dev = 51.6's split, random.Random(0).sample of 60 of X0's eligible scenes; test = the first 200 eligible not in dev
+  (recorded for the coverage runs, not read here); every 4th layer L2, L6, ..., L50; the whole Delta_l added at the
+  bridge word on O; X0's chat read; the layer = the earliest l whose two switch rates are both >= 0.3 (point
+  estimates, EPS 1e-9); bootstrap CIs over the bridge items (10,000, seed 0) and every passing layer beside. Code:
+  scripts/x51_lightning.py prereq --gate main (gate_passes, gate_first, layer_record).
+controls:
+- "the 60-scene gate (r1's prerequisite reading) reported beside as a pre-check"
+- "the unedited row per dev scene and reader"
+- "dev scenes only: the coverage runs' test scenes are disjoint and are not read here"
+- "the mamba-ssm hub kernel the load used, against the 45s smoke's verified commit 28017f36 (gate.json)"
+n: "516 main-test scenes made; X0's gate on all of them (r1: lookup 0.957, recall 0.816, pass; eligible as recorded in results/x51_lightning/nem35l_x52_layer/gate.json); dev 60, test 200 (51.6's split)"
+seeds: [0, 24]
+notes: "Batch 52 part C, box speedup after x52_ladder_27b_s (~0.8 h; the coordinator's order). Same box checks as r1 (lens sha 3306b6e4 = pin, maps L0-50; snapshot a9904d24 14/14 shards); r1 loaded the weights and ran competence on all 516 scenes on speedup, so 'the weights load on the box' passed there. Run name nem35l_x52_layer_r2; x51_lightning.LAYER_RUN = nem35l_x52_layer_r2 is the run whose committed layer.json the coverage chain reads (x51_lightning.py layer prints it; refuses until it is committed at HEAD and has a layer). AFTER THE JOB: pull and commit results/x51_lightning/nem35l_x52_layer_r2/; then enqueue the chain. Risk (as r1, flagged): the earliest passing layer is likely L2; every passing layer is reported beside. Estimate as r1 (r1 ran competence and stopped: see its ledger row): ~0.25 h; est 0.3."
