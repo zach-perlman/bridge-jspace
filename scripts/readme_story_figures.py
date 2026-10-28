@@ -2669,6 +2669,46 @@ def batch47_figures(plt, figs: dict = BATCH47, supp: bool = False) -> None:
             build(latest_verdict(pattern), name, title, **kw)
 
 
+def batch47_numbers() -> None:
+    """Numbers the README cards quote from batch-47 verdicts that have no figure of their own (47.16 on the 9B, 47.7(a)
+    on the 27B, 47.10 on the 27B), recorded for data.csv with the verdict json as source."""
+    v = latest_verdict("x47_distance/x47_16-*") / "x47_16.json"
+    m = next(x for x in json.loads(v.read_text())["models"] if x["status"] == "tested")
+    src = str(v.relative_to(S.REPO))
+    for k in ("0", "5", "20", "50"):
+        S.record("e6_distance", m["target"], f"47.16: position share with {k} neutral sentences", m["position"][k], source=src)
+        S.record("e6_distance", m["target"], f"47.16: slot probe with {k} neutral sentences", m["probe"][k], source=src)
+        S.record("e6_distance", m["target"], f"47.16: the swap (fit with none) sends lookups to the target, {k} sentences",
+                 m["swap_target"][k], source=src)  # fmt: skip
+        if k in m["betas"]:
+            S.record("e6_distance", m["target"], f"47.16: the code's shift beta with {k} sentences", *m["betas"][k]["beta"],
+                     source=src)  # fmt: skip
+    v = latest_verdict("x47_atoms/x47_1-*") / "x47_1.json"
+    src = str(v.relative_to(S.REPO))
+    for m in json.loads(v.read_text())["models"]:
+        for part in ("1-25", "26-100", "1-100"):
+            if part in m.get("routes", {}).get("falls", {}):
+                S.record("e3_identity", m["target"], f"47.1: identity answers lost beyond random without lens directions {part}",
+                         *m["routes"]["falls"][part]["identity"], source=src)  # fmt: skip
+    v = latest_verdict("x47_value/x47_7a-*") / "x47_7a.json"
+    m = next(x for x in json.loads(v.read_text())["models"] if x["status"] == "tested")
+    src = str(v.relative_to(S.REPO))
+    for r, name in (("ql", "question last"), ("qf", "question first")):
+        S.record("e14_question_first", m["target"], f"47.7(a): value probe at the bridge word, {name}", *m["probe"][r]["probe"],
+                 source=src)  # fmt: skip
+    v = latest_verdict("x47_report/x47_10-*") / "x47_10.json"
+    src = str(v.relative_to(S.REPO))
+    for m in json.loads(v.read_text())["models"]:
+        o = m.get("orders", {}).get("last")
+        if not o or "report" not in o.get("readers", {}):
+            continue
+        rd = o["readers"]["report"]
+        S.record("e8_report", m["target"], "47.10: the report's extra loss without the address", *rd["alf"]["excess"], source=src)
+        S.record("e8_report", m["target"], "47.10: the report's extra loss without the J++ part", *rd["jpp"]["excess"], source=src)
+        S.record("e8_report", m["target"], "47.10: lens top-5 holds the right ordinal (report prompt)",
+                 *o["lens"]["report"]["top5_ordinal"], source=src)  # fmt: skip
+
+
 def f_batch47(plt) -> None:
     batch47_figures(plt)
 
@@ -2748,6 +2788,7 @@ def main(argv: list[str] | None = None) -> None:
     for f in (*README_FIGS, *SUPP_FIGS):
         f(plt)
     probe_rows()
+    batch47_numbers()
     check_scorecard_keys(S.OUT / "scorecard.csv")
     S.write_data()
     contact_sheet(plt, README_NAMES, sheet)

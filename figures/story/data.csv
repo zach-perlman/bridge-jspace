@@ -2842,6 +2842,35 @@ probe,muse-glimmer-30b,probe.slot.majority.muse.locker-after,0.3333333333333333,
 probe,muse-glimmer-30b,probe.slot.layout.muse.locker-after,0.3153961136023916,0.28079561653599433,0.3494255649952801,669,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
 probe,muse-glimmer-30b,probe.identity.muse.locker-after,0.9985052316890882,0.9945498495957537,1.0,669,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
 probe,muse-glimmer-30b,probe.identity.majority.muse.locker-after,0.07025411061285501,0.0,0.21559633027522937,669,results/x0_probe/muse30b_x0_probe_v4/probe-20261026T000115Z/probe.json
+e6_distance,qwen3.5-9b,47.16: position share with 0 neutral sentences,0.5458715596330275,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: slot probe with 0 neutral sentences,1.0,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,"47.16: the swap (fit with none) sends lookups to the target, 0 sentences",0.4243119266055046,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: position share with 5 neutral sentences,0.48623853211009177,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: slot probe with 5 neutral sentences,1.0,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,"47.16: the swap (fit with none) sends lookups to the target, 5 sentences",0.33256880733944955,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: the code's shift beta with 5 sentences,0.51454348226146,0.4743715527313915,0.5537926182880268,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: position share with 20 neutral sentences,0.5504587155963303,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: slot probe with 20 neutral sentences,1.0,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,"47.16: the swap (fit with none) sends lookups to the target, 20 sentences",0.3256880733944954,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: the code's shift beta with 20 sentences,0.6305997817799812,0.5892916087693923,0.6708612714455656,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: position share with 50 neutral sentences,0.5688073394495413,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: slot probe with 50 neutral sentences,1.0,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,"47.16: the swap (fit with none) sends lookups to the target, 50 sentences",0.3532110091743119,,,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e6_distance,qwen3.5-9b,47.16: the code's shift beta with 50 sentences,0.7078419064239758,0.6671621102869182,0.7485178591901485,,results/x47_distance/x47_16-20261028T131501Z/x47_16.json
+e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-25,0.24999999999999994,0.20512589928057548,0.2929693720143312,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 26-100,0.04999999999999993,0.025974025974025983,0.07571097409425481,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,qwen3.6-27b,47.1: identity answers lost beyond random without lens directions 1-100,0.55,0.49830508474576274,0.6024875068282516,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,qwen3.5-9b,47.1: identity answers lost beyond random without lens directions 1-25,0.0566666666666667,0.024997775800711768,0.09252833794648742,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,qwen3.5-9b,47.1: identity answers lost beyond random without lens directions 26-100,0.046666666666666634,0.017666289254964378,0.07796730376247142,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,qwen3.5-9b,47.1: identity answers lost beyond random without lens directions 1-100,0.09,0.04843189964157706,0.13183368078866473,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 1-25,0.003333333333333355,-0.016077170418006437,0.02372881355932205,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 26-100,0.020000000000000018,-0.0033898305084745783,0.042763597663946,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e3_identity,muse-glimmer-30b,47.1: identity answers lost beyond random without lens directions 1-100,0.016666666666666663,0.0,0.034130487779026136,,results/x47_atoms/x47_1-20261028T113101Z/x47_1.json
+e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question last",0.439873417721519,0.389879691283293,0.49505031650706055,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
+e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question first",0.6645569620253164,0.6082074930987695,0.7216126656848306,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
+e8_report,qwen3.6-27b,47.10: the report's extra loss without the address,0.2767295597484277,0.21341015064562419,0.3395090845562544,,results/x47_report/x47_10-20261028T113109Z/x47_10.json
+e8_report,qwen3.6-27b,47.10: the report's extra loss without the J++ part,0.06289308176100639,0.022058823529411797,0.108108108108108,,results/x47_report/x47_10-20261028T113109Z/x47_10.json
+e8_report,qwen3.6-27b,47.10: lens top-5 holds the right ordinal (report prompt),0.0,0.0,0.0,,results/x47_report/x47_10-20261028T113109Z/x47_10.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
