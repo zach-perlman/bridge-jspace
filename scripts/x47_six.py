@@ -467,10 +467,6 @@ def bridge_states(model, c: dict, layer: int) -> dict:
             for v in ("org", "alt")}  # fmt: skip
 
 
-def write_manifest(out: Path, m: dict) -> None:
-    (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
-
-
 def stage_run(name: str, why: str) -> Path:
     import torch
 
@@ -485,6 +481,7 @@ def stage_run(name: str, why: str) -> Path:
     layer = X.PREDICTED[target]
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
+    manifest = out / "manifest.json"  # rewritten as the run goes: gate, items, fit and unit (never a result)
     m: dict = {"exp": EXP, "run": name, "why": why, "test": "47.2", "spec": SPEC, "question": f"{QUESTION} ({PREDICTIONS})",
                "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "model": pins.model_pin(),
                "switches": switches(), "code": git_state(), "layer": layer, "read": "X0's chat read (the top token "
@@ -495,7 +492,7 @@ def stage_run(name: str, why: str) -> Path:
                          "examples": X.EXAMPLES_SEED},
                "doses": list(DOSES), "decisive_dose": DECISIVE, "arms": ARM_TEXT, "U_from": R.STATES[target],
                "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION} answer"}  # fmt: skip
-    write_manifest(out, m)
+    manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     R.warm_cusolver()
     model = load_model()
     tok, dev = model.tokenizer, model.device
@@ -519,7 +516,7 @@ def stage_run(name: str, why: str) -> Path:
                            "note": "six slots failed the competence gate: five slots" if n == 5 else
                            "six slots passed the competence gate" if n == 6 else "five slots failed too: not tested"}})  # fmt: skip
     if n is None:
-        write_manifest(out, m)
+        manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
         print("not tested: the move scenes missed the gate at six and at five slots; see gate.json", flush=True)
         return out
     X.write_jsonl(out / "cases.jsonl", cases)
@@ -529,7 +526,7 @@ def stage_run(name: str, why: str) -> Path:
                                                 "test": [c["scene"] for c in test_c], "c0": [c["scene"] for c in c0]},
                                                indent=1) + "\n")  # fmt: skip
     m["items"] = {"fit": len(fit_c), "test": len(test_c), "c0": len(c0)}
-    write_manifest(out, m)
+    manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     u_old = torch.tensor(old_pointer(target), dtype=torch.float32, device=dev)
     rows: list[dict] = []
     with torch.no_grad():
@@ -574,7 +571,9 @@ def stage_run(name: str, why: str) -> Path:
         m["unit"] = {"value": unit, "rule": "the median over the test half of ||W W^T Delta|| (Delta = h_S - h_O at the "
                      "bridge word); a write at dose s has norm s * unit",
                      "fit_half_median": float(np.median(((x_fit @ w_slot).norm(dim=-1)).cpu().numpy()))}  # fmt: skip
-        write_manifest(out, m)  # the unit is fixed before any arm is read
+        manifest.write_text(
+            json.dumps(m, indent=2, ensure_ascii=False) + "\n"
+        )  # the unit is fixed before any arm is read
         norms = []
         for k, c in enumerate(progress(test_c, f"arms at L{layer} (case)")):
             i = c["move"][0]
@@ -591,7 +590,7 @@ def stage_run(name: str, why: str) -> Path:
                           "share_slot": round(float(share["slot"][k]), 5), "share_U": round(float(share["U"][k]), 5)})  # fmt: skip
     X.write_jsonl(out / "outcomes.jsonl", rows)
     X.write_jsonl(out / "norms.jsonl", norms)
-    write_manifest(out, m)
+    manifest.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out, "(sealed: no verdict)", flush=True)
     return out
 
