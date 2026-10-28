@@ -1,0 +1,57 @@
+id: x47_7c_27b
+title: 'Batch 47.7(c) on the 27B (L32): never the value, in prose / JSON / table? Varied scenes, locker-first, another item
+  moved with a new number; identity / position / value shares, and without the per-format refit pointer from 45d vs random'
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.9
+command: 'export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=; uv run python scripts/x47_value.py run --part c --name x47_7c_27b --why
+  "batch 47, test 47.7(c) (jobs/c3/batch47.yaml; Q47.7): the varied scenes (x0b_v2, prose / JSON / table), locker-first, the
+  asked pick changed to another item whose locker statement trades places with a third item''s and takes a new number; the
+  lookup''s route shares per format under the whole change and without J++ / U vs random parts; sealed"'
+question: In the varied scenes (prose, JSON, tables), when the asked pick becomes another item whose locker statement moved
+  and took a new number, does the lookup's answer under the whole change at the bridge word ever follow the value, and in
+  JSON / table formats does it follow the position, carried by the per-format refit pointer?
+why_it_matters: '''Never the value'' is shown on the templated routes scenes only. If it holds in every format, the address
+  account generalizes beyond the template; if a position route appears in JSON / table and the refit pointer carries it, the
+  pointer account does too.'
+hypotheses:
+  Q47.7: 'Dan''s answer in predictions/2026-10-28_dan.md (Q47.7); not committed when this spec was written, so the run is
+    sealed: no verdict in the job (scripts/x47_value.py verdict refuses until the answer is committed).'
+decision_rule: 'Fixed in advance (jobs/c3/batch47.yaml, 47.7, amendment 1). As computed (fixed before any run; Dan may override
+  before the enqueue): the layer fixed in advance (32); the change h_S - h_O at the bridge word; arms whole, without the J++
+  part (signed OMP, k = 25, over the lens atoms of the letter tokens AND the digit tokens: the main test''s letter-only restriction
+  is lifted here), without a random part of its share (X0''s random subspace, seed 888 + layer), without U (x0_massmean''s
+  Alf of the x0_probe_v4 states, not refit), without a random part of its share; the lookup''s answer classified identity
+  / position / value / original / other by the top token at the read step; route shares with cluster-bootstrap intervals over
+  bridge items (10,000, seed 0); a value at a bar counts as at the bar (EPS 1e-9). Sealed: no verdict in the job (scripts/x47_value.py
+  verdict refuses until Dan''s Q47.7 is committed). Scenes: tasks_v2 x0b_v2''s scenes with both readers (x0b_generalize''s
+  alignment); locker-first = the bridge''s locker statement before the asked pick; t = x0b''s alt candidate (the first other
+  person''s pick, by name, with a different locker and memory number) whose locker statement is before the pick; u = a third
+  locker item before the pick with a number different from x''s and t''s (seeded per scene, seed 4708); e = a number 1-9 not
+  in the scene (seeded); S = t''s and u''s locker statements trade places (x7_pcf.swap_lockers), t''s number becomes e, the
+  asked pick x becomes t; identity -> locker(t), position -> locker(u), value -> e, original -> locker(x), asserted distinct;
+  the bridge one token at one index in O and S and S equal to O after the bridge, else dropped and counted. Both number styles
+  (the answers are read as digits, as x0b). No refit basis was fit on the 27B in 45d, so no refit-pointer arm: whole / J++
+  / U only, on every varied scene. Gate 0.80 per reader and format on the unedited prompts; eligible = both readers say and
+  read O and S right; at most 300 per format in scene order. Rule: ''never the value generalizes'' if the value share <= 0.05
+  in every format on every model (every cell tested); ''a position route in JSON / table'' per cell if the position share
+  >= 0.2 and the refit pointer''s removal cuts it >= 0.3 beyond the random part.'
+controls:
+- a random part at the J++ part's share, at U's share of the change, per item
+- the recall reader on the identical patch
+- the routes test's templated result (value 0 of 300) and 45d's per-format cells
+n: 'every varied scene (no 45d basis on the 27B): 1,190 locker-first cases with a moved item (prose 414, table 605, JSON 171;
+  618 digits / 572 number words), at most 300 eligible per format'
+seeds:
+- 0
+- 888
+- 2510
+- 4707
+- 4708
+notes: 'Batch 47 amendment 1 (Dan 28 Oct ~02:30), queue slot after 47.2 (9B, Muse). Estimate from the ledger: x45d_9b 0.51
+  h (939-case competence, 431 eligible x 7 rows), x45d_27b 0.80 h, x45d_muse 0.65 h. Here: 1,190 cases'' competence, at most
+  300 eligible per format x (6 rows per reader), 2 forwards per item. 9B 0.35, 27B 0.9, Muse 0.5 GPU-h (Dan''s figure for
+  (c): ~1.2 in total; the arithmetic says ~1.75). Writes manifest, plan, cases, competence, gate, outcomes, norms, readout,
+  states.npz + items, examples_greedy; no verdict. By hand after Dan''s Q47.7: uv run python scripts/x47_value.py verdict
+  --part c --runs qwen35_9b_x47_7c x47_7c_27b muse30_x47_7c (CPU).'

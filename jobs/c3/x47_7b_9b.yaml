@@ -1,0 +1,50 @@
+id: x47_7b_9b
+title: 'Batch 47.7(b) on the 9B (L12; cut first if late): word-valued lockers, the locker values single-token colours; the
+  routes test question-last and question-first; does a value route appear for a word value, and does the J++ part carry it?'
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.6
+command: 'export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x47_value.py run --part b --name qwen35_9b_x47_7b
+  --why "batch 47, test 47.7(b) (jobs/c3/batch47.yaml; Q47.7): the routes scenes with colours as locker values, question-last
+  and question-first, every arm in both renderings, the lookup read as a word; the probe and the lens''s colour rank; sealed"'
+question: With colours instead of digits as the locker values (a value the J++ dictionary's letter tokens can express), does
+  the lookup's answer under the whole change ever follow the value, question-last or question-first, and if it does, is it
+  carried by the J++ part?
+why_it_matters: '''Never the value'' with digits could be a fact about digit tokens, which the lens dictionary leaves out;
+  a word value the lens can express tests the claim where it is easiest to fail.'
+hypotheses:
+  Q47.7: 'Dan''s answer in predictions/2026-10-28_dan.md (Q47.7); not committed when this spec was written, so the run is
+    sealed: no verdict in the job (scripts/x47_value.py verdict refuses until the answer is committed).'
+decision_rule: 'Fixed in advance (jobs/c3/batch47.yaml, 47.7, amendment 1). As computed (fixed before any run; Dan may override
+  before the enqueue): the layer fixed in advance (12); the change h_S - h_O at the bridge word; arms whole, without the J++
+  part (signed OMP, k = 25, over the lens atoms of the letter tokens AND the digit tokens: the main test''s letter-only restriction
+  is lifted here), without a random part of its share (X0''s random subspace, seed 888 + layer), without U (x0_massmean''s
+  Alf of the x0_probe_v4 states, not refit), without a random part of its share; the lookup''s answer classified identity
+  / position / value / original / other by the top token at the read step; route shares with cluster-bootstrap intervals over
+  bridge items (10,000, seed 0); a value at a bar counts as at the bar (EPS 1e-9). Sealed: no verdict in the job (scripts/x47_value.py
+  verdict refuses until Dan''s Q47.7 is committed). Scenes: x6_routes'' generator with the five values drawn from the colours
+  that are one token with a leading space on this tokenizer (all 8: red, blue, green, pink, gold, grey, teal, navy); the lookup
+  is a word reader (the instruction ''Answer with a single word and nothing else.'', read right after ''Answer:'', the answer
+  token carrying its own space, as suite_v1), the recall a digit reader. Both renderings as 47.7(a), every arm in both; the
+  probe for the colour and the lens''s rank of the colour among the colour tokens at the lookup''s O state. Gate 0.80 per
+  reader and condition in both renderings; eligible in both. Rule per rendering: a value route appears if the C2 value share
+  under the whole change >= 0.15; the J++ part carries it if without J++ the value share falls >= 0.3 beyond the random part;
+  ''never the value holds for a word value too'' if the question-last value share <= 0.05 on every tested model. The (a) labels
+  (prefetch / J-space / address) are computed beside it on the colour value.'
+controls:
+- a random part at the J++ part's share and at U's share of the change, per item
+- the recall reader (digits) on the identical patch
+- the digit-valued routes runs (value 0 of 300) and 47.7(a)
+n: 700 scenes per condition generated (C0, C2; seed 2510; all 8 colours single-token), the first 300 eligible per condition
+  in both renderings
+seeds:
+- 0
+- 888
+- 2510
+- 4707
+notes: 'Batch 47 amendment 1 (Dan 28 Oct ~02:30), cut first if late (queue slot after 48.4). Estimate from the ledger as 47.7(a),
+  with competence on 1,400 cases x 2 readers x 2 renderings (no stored rows: the colour prompts are new) and 600 items x (6
+  forwards + 4 reads of 6 rows): 9B 0.6, Muse 0.8 GPU-h (Dan''s figure for (b): ~0.8 in total; the arithmetic says ~1.4).
+  Writes as 47.7(a); no verdict. By hand after Dan''s Q47.7: uv run python scripts/x47_value.py verdict --part b --runs qwen35_9b_x47_7b
+  muse30_x47_7b (CPU).'
