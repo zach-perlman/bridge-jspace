@@ -132,6 +132,10 @@ V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|
               # "identity change" (E8's positive control), never bare
               "bare identity": r"(?i)\bidentity\b(?![\s-]+(?:routes?|answers?|changes?)\b)"}  # fmt: skip
 V6_SUBTITLE_RETIRED = {"rule:": r"(?i)\brule:"}  # the subtitle says the mechanics; the rule belongs to the caption
+# Dan's figures rethink (28 Oct ~21:45): the dose curves, two columns (the J++ part, the rest) by one row per model
+V6_FIGS += ("fig16_dose",)
+V6_PANELS["fig16_dose"] = 6
+MARK_FIGS += ("fig16_dose",)
 
 
 def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:

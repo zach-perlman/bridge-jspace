@@ -3482,10 +3482,10 @@ def f13_attention(plt) -> None:
 
 
 def f14_learned(plt) -> None:
-    from scripts import story_b50b as B50B
+    from scripts import story_b51 as B51
 
-    # 48.1's newest verdict (the 9B's r2 and Muse) and 49.8's; batch 51's sealed DAS folders are never read
-    B50B.build_learned(latest_verdict("x48_das/verdict-*"), latest_verdict("x49_das_pos/verdict-*"), "fig14_learned")
+    # Dan's rethink (28 Oct ~21:45): 51.3's opened verdict on all three models (more pairs than 48.1 / 49.8's 9B runs)
+    B51.build_learned(latest_verdict("x51_das/verdict-*"), "fig14_learned")
 
 
 def f12_two_by_two(plt) -> None:
@@ -3498,11 +3498,23 @@ def s_batch47(plt) -> None:
     batch47_figures(plt, BATCH47_SUPP, supp=True)
 
 
+def f16_dose(plt) -> None:
+    from scripts import story_b51 as B51
+
+    B51.build_dose(latest_verdict("x51_dose/x51_1-*"), "fig16_dose")
+
+
+def s14_learned_sizes(plt) -> None:
+    from scripts import story_b51 as B51
+
+    B51.build_sizes(latest_verdict("x51_das/verdict-*"), "s14_learned_sizes")
+
+
 # v6: Fig. 4's schematic is Fig. 5's left panel; the full-width one is the supplement s04_routes_design
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
                f_batch47, f15_mechanisms, f00b_marks, f01d_ladder, f12_two_by_two, f09a_transfer, f09b_refit,
-               f13_attention, f14_learned)  # fmt: skip
+               f13_attention, f14_learned, f16_dose)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -3517,6 +3529,7 @@ SUPP_FIGS = (
     s07b_lens_readout,
     s07_recall_follows_swap,
     s03_order_split,
+    s14_learned_sizes,
 )
 
 
@@ -3533,13 +3546,14 @@ README_NAMES = ("fig00_setup", "fig00b_marks", "fig12_two_by_two", "fig09a_trans
 SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers", "fig03c_earlier_mention",
               "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig11_scorecard", "fig15_mechanisms",
               "fig13_attention", "fig14_learned", "fig09b_refit", "fig09_transfer",
+              "fig16_dose",  # Part I's dose curves: here until Dan picks the main-sheet figure it replaces
               *(n for n in BATCH47 if n not in README_NAMES),
               "supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
               "supp/s02_parts_all", "supp/s03_order_split", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants",
               "supp/s03e_cumulative", "supp/s04_routes_design", "supp/s05_routes_all_arms", "supp/s07_recall_follows_swap",
               "supp/s07b_lens_readout", "supp/s08_first_sentence_and_label_free",
               "supp/s08b_pointer_moves_and_neutral_sentence", "supp/s10_removed_together_bars", "supp/s10b_what_is_left_all_scenes",
-              "supp/s12_das_muse", "supp/s11_scorecard_all",
+              "supp/s12_das_muse", "supp/s11_scorecard_all", "supp/s14_learned_sizes",
               "x0_necessity/overview", "x0_necessity/detail_x0_necessity_27b_chat_chat",
               "x0_necessity/detail_qwen35_9b_x0_necessity_chat", "x0_necessity/kmatch", "x0_necessity/kcurve",
               "x0_necessity/share", "x0_necessity/asked_first", "status_2026-10-24/f6_digits")  # fmt: skip

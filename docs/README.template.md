@@ -52,6 +52,8 @@
 
 ![The split carries over to other texts](figures/story/fig09a_transfer.png)
 
+![By itself the J++ part moves the recall; the rest moves the lookup](figures/story/fig16_dose.png)
+
 ### E1. The conflict test: who follows which part <a id="e1-conflict"></a>
 
 - **Hypothesis.** Without the J++ part the recall loses switches beyond random, the lookup does not (gap at least 0.3, lookup at most 0.10; fixed in advance).

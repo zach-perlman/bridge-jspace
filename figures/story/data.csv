@@ -3011,57 +3011,123 @@ fig13,muse-glimmer-30b,"attention mass on slot k's locker sentence, the swap, an
 fig13,muse-glimmer-30b,"attention mass on slot k's locker sentence, a random vector, switched pairs (mean of five heads, read half)",0.08,0.0684,0.0921,149,results/x49_attn/muse30_x49_7/attention.npz
 fig13,muse-glimmer-30b,lookups answering slot k's locker under the swap (read half),0.5209790209790209,0.48251594896331734,0.5608993902439025,286,results/x49_attn/x49_7-20261028T154511Z/verdict.json
 fig13,muse-glimmer-30b,lookups answering slot k's locker under a random vector (read half),0.0,,,286,results/x49_attn/x49_7-20261028T154511Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace: k = 1, test pairs",0.3889,0.0833,0.5556,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace: k = 4, test pairs",0.5,0.2308,0.65,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace: k = 16, test pairs",0.7222,0.5385,0.9,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace: k = 64, test pairs",0.6667,0.5333,0.7778,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace, a shuffled subspace: k = 1",0.05555555555555555,0.0,0.15789473684210525,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace, a random subspace: k = 1",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace, a shuffled subspace: k = 4",0.2222222222222222,0.07142857142857142,0.46153846153846156,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace, a random subspace: k = 4",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace, a shuffled subspace: k = 16",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace, a random subspace: k = 16",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace, a shuffled subspace: k = 64",0.16666666666666666,0.0,0.2692307692307692,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the lookup's own subspace, a random subspace: k = 64",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace: k = 1, test pairs",0.1579,0.0,0.2857,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace: k = 4, test pairs",0.1579,0.0,0.2857,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace: k = 16, test pairs",0.2632,0.0,0.5,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace: k = 64, test pairs",0.3158,0.0625,0.52,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace, a shuffled subspace: k = 1",0.05263157894736842,0.0,0.15384615384615385,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace, a random subspace: k = 1",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace, a shuffled subspace: k = 4",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace, a random subspace: k = 4",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace, a shuffled subspace: k = 16",0.05263157894736842,0.0,0.17647058823529413,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace, a random subspace: k = 16",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace, a shuffled subspace: k = 64",0.10526315789473684,0.0,0.24,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the recall's own subspace, a random subspace: k = 64",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup: k = 2, test pairs",0.9412,0.871,1.0,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup: k = 4, test pairs",0.9412,0.871,1.0,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup: k = 8, test pairs",0.9412,0.76,1.0,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup, a shuffled subspace: k = 2",0.29411764705882354,0.1951219512195122,0.47058823529411764,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup, a random subspace: k = 2",0.0,0.0,0.0,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup, a shuffled subspace: k = 4",0.3235294117647059,0.19230769230769232,0.5161290322580645,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup, a random subspace: k = 4",0.0,0.0,0.0,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup, a shuffled subspace: k = 8",0.3235294117647059,0.25,0.42424242424242425,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: lookup, a random subspace: k = 8",0.0,0.0,0.0,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: recall moved: k = 2, test pairs",0.4412,0.1765,0.6875,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: recall moved: k = 4, test pairs",0.4412,0.1579,0.7447,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"the learned address: recall moved: k = 8, test pairs",0.5294,0.2174,0.7778,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the hand-built address U inside the learned address, k = 2",0.248393,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the hand-built address U inside a shuffled subspace, k = 2",0.138865,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the swap directions W inside the learned address, k = 2",0.243521,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the swap directions W inside a shuffled subspace, k = 2",0.135571,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy inside a random subspace (k / d), k = 2",0.000488,,,,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the hand-built address U inside the learned address, k = 4",0.247057,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the hand-built address U inside a shuffled subspace, k = 4",0.199594,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the swap directions W inside the learned address, k = 4",0.244467,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the swap directions W inside a shuffled subspace, k = 4",0.205322,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy inside a random subspace (k / d), k = 4",0.000977,,,,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the hand-built address U inside the learned address, k = 8",0.252114,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the hand-built address U inside a shuffled subspace, k = 8",0.182728,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the swap directions W inside the learned address, k = 8",0.252097,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy of the swap directions W inside a shuffled subspace, k = 8",0.195873,,,34,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
-fig14,qwen3.5-9b,"energy inside a random subspace (k / d), k = 8",0.001953,,,,results/x49_das_pos/verdict-20261028T154510Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: lookups' position switches carried by the learned address, k = 4, address test pairs",0.9666666666666667,0.9206349206349206,1.0,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: lookups' position switches carried by a subspace learned on shuffled pairs, k = 4, address test pairs",0.15,0.022727272727272728,0.30158730158730157,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: lookups' position switches carried by a random subspace, k = 4, address test pairs",0.0,0.0,0.0,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: recalls moved by the learned address, k = 4, address test pairs",0.4166666666666667,0.23255813953488372,0.5263157894736842,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: recalls moved by a random subspace, k = 4, address test pairs",0.0,0.0,0.0,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: recalls moved by the whole change, address test pairs",0.38333333333333336,0.23076923076923078,0.48333333333333334,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: the hand-built address's energy inside the learned address, k = 4",0.246408,,,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: the hand-built address's energy inside a subspace learned on shuffled pairs, k = 4",0.092106,,,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.5-9b,"51.3: the hand-built address's energy inside a random subspace (k / d), k = 4",0.000977,,,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: lookups' position switches carried by the learned address, k = 4, address test pairs",0.9487179487179487,0.90625,1.0,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: lookups' position switches carried by a subspace learned on shuffled pairs, k = 4, address test pairs",0.1794871794871795,0.10714285714285714,0.23255813953488372,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: lookups' position switches carried by a random subspace, k = 4, address test pairs",0.0,0.0,0.0,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: recalls moved by the learned address, k = 4, address test pairs",0.10256410256410256,0.02631578947368421,0.18181818181818182,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: recalls moved by a random subspace, k = 4, address test pairs",0.0,0.0,0.0,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: recalls moved by the whole change, address test pairs",0.02564102564102564,0.0,0.06818181818181818,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: the hand-built address's energy inside the learned address, k = 4",0.225667,,,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: the hand-built address's energy inside a subspace learned on shuffled pairs, k = 4",0.119833,,,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,qwen3.6-27b,"51.3: the hand-built address's energy inside a random subspace (k / d), k = 4",0.000781,,,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: lookups' position switches carried by the learned address, k = 4, address test pairs",0.9814814814814815,0.9523809523809523,1.0,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: lookups' position switches carried by a subspace learned on shuffled pairs, k = 4, address test pairs",0.3888888888888889,0.3125,0.45901639344262296,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: lookups' position switches carried by a random subspace, k = 4, address test pairs",0.0,0.0,0.0,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: recalls moved by the learned address, k = 4, address test pairs",0.037037037037037035,0.0,0.07575757575757576,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: recalls moved by a random subspace, k = 4, address test pairs",0.0,0.0,0.0,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: recalls moved by the whole change, address test pairs",0.018518518518518517,0.0,0.05,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: the hand-built address's energy inside the learned address, k = 4",0.192811,,,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: the hand-built address's energy inside a subspace learned on shuffled pairs, k = 4",0.131008,,,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig14_learned,muse-glimmer-30b,"51.3: the hand-built address's energy inside a random subspace (k / d), k = 4",0.000601,,,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: recall switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.013333333333333334,0.0,0.041666666666666664,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: recall switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.13333333333333333,0.05970149253731343,0.20253164556962025,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: recall switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose",0.3066666666666667,0.19640291461412154,0.4225352112676056,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: recall switches with the J++ part by itself at dose 2, minus a random part (same size) at the same dose",0.30666666666666664,0.17391304347826086,0.4477611940298507,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: recall switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose",-0.053333333333333344,-0.15714285714285714,0.045454545454545414,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: lookup switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: lookup switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.0,0.0,0.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: lookup switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose",-0.013333333333333334,-0.041666666666666664,0.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: lookup switches with the J++ part by itself at dose 2, minus a random part (same size) at the same dose",-0.17333333333333334,-0.25396825396825395,-0.10126582278481013,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 A: lookup switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose",-0.6266666666666666,-0.725,-0.5176470588235295,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,51.1 (ii): first dose where the J++ part by itself switches >= 0.3 of recalls,1.5,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,51.1 (i): doses where the lookup passes 0.10 beyond random,0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself, dose 0.25",0.0,0.0,0.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself, dose 0.5",0.013333333333333334,0.0,0.04285714285714286,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself, dose 0.75",0.72,0.6216216216216216,0.8142857142857143,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself, dose 1",0.9066666666666666,0.8243243243243243,0.971830985915493,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself, dose 1.5",0.9866666666666667,0.9594594594594594,1.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.25",0.0,0.0,0.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.5",0.0,0.0,0.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.75",0.013333333333333334,0.0,0.041666666666666664,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without the address, dose 1",0.12,0.04477611940298507,0.2048270003089279,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without the address, dose 1.5",0.32,0.2112676056338028,0.43374682942295484,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.25",0.0,0.0,0.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.5",0.0,0.0,0.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.75",0.05333333333333334,0.0125,0.1044776119402985,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1",0.56,0.46067046126552336,0.6666666666666666,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1.5",0.96,0.9104477611940298,1.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1: recalls switched, the rest by itself at dose 1",0.7333333333333333,0.625,0.8360655737704918,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,"51.1: recalls switched, a random complement of the rest's share at dose 1",0.96,0.9146341463414634,1.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.5-9b,51.1: doses whose plain-text loss passes 2x the whole change's,0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: recall switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.014492753623188406,0.0,0.046875,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: recall switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.014492753623188406,0.0,0.046153846153846156,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: recall switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose",0.11594202898550725,0.05263157894736842,0.1896606285464862,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: recall switches with the J++ part by itself at dose 2, minus a random part (same size) at the same dose",0.21739130434782608,0.12307692307692308,0.3181818181818182,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: recall switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose",0.4202898550724638,0.2829856497475419,0.5394736842105263,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: lookup switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: lookup switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: lookup switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: lookup switches with the J++ part by itself at dose 2, minus a random part (same size) at the same dose",0.07246376811594203,0.017543859649122806,0.13043478260869565,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 A: lookup switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose",0.13043478260869565,0.0,0.2571428571428571,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,51.1 (ii): first dose where the J++ part by itself switches >= 0.3 of recalls,3.0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,51.1 (i): doses where the lookup passes 0.10 beyond random,1,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself, dose 0.25",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself, dose 0.5",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself, dose 0.75",0.3188405797101449,0.19753086419753085,0.4423155737704917,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself, dose 1",0.7971014492753623,0.6983942414174972,0.8961150918047468,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself, dose 1.5",0.9420289855072463,0.875,1.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.25",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.5",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.75",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without the address, dose 1",0.08695652173913043,0.019221698113207557,0.17073170731707318,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without the address, dose 1.5",0.4492753623188406,0.33783783783783783,0.5671641791044776,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.25",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.5",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.75",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1",0.11594202898550725,0.043478260869565216,0.2037037037037037,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1.5",0.5797101449275363,0.4861111111111111,0.6716417910447762,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1: recalls switched, the rest by itself at dose 1",0.13043478260869565,0.06060606060606061,0.21621621621621623,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,"51.1: recalls switched, a random complement of the rest's share at dose 1",0.6811594202898551,0.5714285714285714,0.7777777777777778,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,qwen3.6-27b,51.1: doses whose plain-text loss passes 2x the whole change's,0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: recall switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: recall switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.029411764705882353,0.0,0.07575757575757576,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: recall switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose",0.1323529411764706,0.04225352112676056,0.24193548387096775,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: recall switches with the J++ part by itself at dose 2, minus a random part (same size) at the same dose",0.22058823529411764,0.07936507936507936,0.3625,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: recall switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose",0.22058823529411764,0.06779088410444342,0.36923076923076925,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: lookup switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: lookup switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.0,0.0,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: lookup switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: lookup switches with the J++ part by itself at dose 2, minus a random part (same size) at the same dose",-0.029411764705882353,-0.08196721311475409,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 A: lookup switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose",-0.22058823529411764,-0.31819828722002635,-0.12698412698412698,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,51.1 (ii): first dose where the J++ part by itself switches >= 0.3 of recalls,3.0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,51.1 (i): doses where the lookup passes 0.10 beyond random,0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself, dose 0.25",0.0,0.0,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself, dose 0.5",0.22058823529411764,0.13114266198282593,0.32142857142857145,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself, dose 0.75",0.7058823529411765,0.5874950396825397,0.82,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself, dose 1",0.8088235294117647,0.7096774193548387,0.9091200466200462,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself, dose 1.5",0.7352941176470589,0.6,0.8554216867469879,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.25",0.0,0.0,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.5",0.014705882352941176,0.0,0.047619047619047616,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without the address, dose 0.75",0.08823529411764706,0.0229819749216301,0.17858475479744118,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without the address, dose 1",0.20588235294117646,0.12,0.3064516129032258,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without the address, dose 1.5",0.47058823529411764,0.3611111111111111,0.5777777777777777,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.25",0.0,0.0,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.5",0.014705882352941176,0.0,0.05084745762711865,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.75",0.29411764705882354,0.18181818181818182,0.4259335154826957,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1",0.6617647058823529,0.5405405405405406,0.7894736842105263,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1.5",0.8088235294117647,0.7076923076923077,0.8947368421052632,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1: recalls switched, the rest by itself at dose 1",0.23529411764705882,0.12941176470588237,0.3728813559322034,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,"51.1: recalls switched, a random complement of the rest's share at dose 1",0.4852941176470588,0.36363636363636365,0.6119402985074627,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+fig16_dose,muse-glimmer-30b,51.1: doses whose plain-text loss passes 2x the whole change's,0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): gap,0.53,,,,contrast_9b
@@ -3768,6 +3834,69 @@ s03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: recall extra 
 s03,qwen3.6-27b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,236,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 s03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: recall extra loss",0.8478260869565217,0.7339449541284403,0.933884297520661,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
 s03,muse-glimmer-30b,"(b) clean one-pick scenes, locker after the pick: lookup switches",0,,,170,results/x0_necessity/x45m-20261026T230628Z/x45m.json
+s14_learned_sizes,qwen3.5-9b,"51.3: lookup, its own learned subspace, k = 4: switches carried, test pairs",0.7777777777777778,0.6224433106575964,0.9066694915254236,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: lookup, its own learned subspace, k = 16: switches carried, test pairs",0.9111111111111111,0.8409008563899869,0.963855421686747,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: lookup, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.26666666666666666,0.14666666666666667,0.4,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: lookup, a subspace learned on shuffled pairs, k = 16: switches carried, test pairs",0.1111111111111111,0.047619047619047616,0.17592592592592593,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: lookup, the k the rule read",4,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: lookup, its own learned subspace, k = 4: switches carried, test pairs",0.5714285714285714,0.44680851063829785,0.6896551724137931,98,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: lookup, its own learned subspace, k = 16: switches carried, test pairs",0.9285714285714286,0.8775510204081632,0.978021978021978,98,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: lookup, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.10204081632653061,0.05434782608695652,0.1625,98,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: lookup, a subspace learned on shuffled pairs, k = 16: switches carried, test pairs",0.2653061224489796,0.21052631578947367,0.35,98,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: lookup, the k the rule read",4,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: lookup, its own learned subspace, k = 4: switches carried, test pairs",0.71,0.47619047619047616,0.9054054054054054,100,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: lookup, its own learned subspace, k = 16: switches carried, test pairs",0.93,0.8181818181818182,1.0,100,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: lookup, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.09,0.04807692307692308,0.13402061855670103,100,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: lookup, a subspace learned on shuffled pairs, k = 16: switches carried, test pairs",0.09,0.056179775280898875,0.1188118811881188,100,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: lookup, the k the rule read",4,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, its own learned subspace, k = 4: switches carried, test pairs",0.5333333333333333,0.25882352941176473,0.7471264367816092,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, its own learned subspace, k = 16: switches carried, test pairs",0.8,0.6666666666666666,0.8909090909090909,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, its own learned subspace, k = 64: switches carried, test pairs",0.9111111111111111,0.8028169014084507,0.984,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, its own learned subspace, k = 128: switches carried, test pairs",0.9555555555555556,0.9078896761133604,0.9896907216494846,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.18888888888888888,0.07894736842105263,0.32142857142857145,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, a subspace learned on shuffled pairs, k = 16: switches carried, test pairs",0.23333333333333334,0.1111111111111111,0.3442668488160291,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, a subspace learned on shuffled pairs, k = 64: switches carried, test pairs",0.2777777777777778,0.13333333333333333,0.46875964506172824,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, a subspace learned on shuffled pairs, k = 128: switches carried, test pairs",0.45555555555555555,0.2894657577679138,0.5930232558139535,90,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: recall, the k the rule read",16,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, its own learned subspace, k = 4: switches carried, test pairs",0.2898550724637681,0.11764705882352941,0.49122807017543857,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, its own learned subspace, k = 16: switches carried, test pairs",0.6811594202898551,0.5373134328358209,0.8253968253968254,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, its own learned subspace, k = 64: switches carried, test pairs",0.8405797101449275,0.7796610169491526,0.9041095890410958,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, its own learned subspace, k = 128: switches carried, test pairs",0.7971014492753623,0.6716417910447762,0.9135802469135802,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.13043478260869565,0.02666666666666667,0.27941176470588236,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, a subspace learned on shuffled pairs, k = 16: switches carried, test pairs",0.17391304347826086,0.05403603603603606,0.3230769230769231,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, a subspace learned on shuffled pairs, k = 64: switches carried, test pairs",0.15942028985507245,0.05714285714285714,0.29508196721311475,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, a subspace learned on shuffled pairs, k = 128: switches carried, test pairs",0.057971014492753624,0.0,0.16176470588235295,69,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: recall, the k the rule read",16,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, its own learned subspace, k = 4: switches carried, test pairs",0.37254901960784315,0.125,0.6923076923076923,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, its own learned subspace, k = 16: switches carried, test pairs",0.6470588235294118,0.42592592592592593,0.9024390243902439,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, its own learned subspace, k = 64: switches carried, test pairs",0.6862745098039216,0.421875,0.9411764705882353,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, its own learned subspace, k = 128: switches carried, test pairs",0.803921568627451,0.6428571428571429,0.9643013784461151,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.1568627450980392,0.03331967213114755,0.30952380952380953,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, a subspace learned on shuffled pairs, k = 16: switches carried, test pairs",0.23529411764705882,0.07575042881646656,0.4318181818181818,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, a subspace learned on shuffled pairs, k = 64: switches carried, test pairs",0.1568627450980392,0.045454545454545456,0.2777777777777778,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, a subspace learned on shuffled pairs, k = 128: switches carried, test pairs",0.3137254901960784,0.1388888888888889,0.5128378378378375,51,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: recall, the k the rule read",128,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: address, its own learned subspace, k = 2: switches carried, test pairs",0.95,0.9193548387096774,0.9818181818181818,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: address, its own learned subspace, k = 4: switches carried, test pairs",0.9666666666666667,0.9206349206349206,1.0,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: address, its own learned subspace, k = 8: switches carried, test pairs",0.95,0.890625,1.0,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: address, a subspace learned on shuffled pairs, k = 2: switches carried, test pairs",0.3333333333333333,0.23595505617977527,0.4666666666666667,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: address, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.15,0.022727272727272728,0.30158730158730157,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: address, a subspace learned on shuffled pairs, k = 8: switches carried, test pairs",0.13333333333333333,0.06666666666666667,0.17567567567567569,60,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.5-9b,"51.3: address, the k the rule read",4,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: address, its own learned subspace, k = 2: switches carried, test pairs",0.9487179487179487,0.90625,1.0,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: address, its own learned subspace, k = 4: switches carried, test pairs",0.9487179487179487,0.90625,1.0,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: address, its own learned subspace, k = 8: switches carried, test pairs",0.9487179487179487,0.90625,1.0,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: address, a subspace learned on shuffled pairs, k = 2: switches carried, test pairs",0.1794871794871795,0.047619047619047616,0.3142857142857143,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: address, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.1794871794871795,0.10714285714285714,0.23255813953488372,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: address, a subspace learned on shuffled pairs, k = 8: switches carried, test pairs",0.3076923076923077,0.16125806451612906,0.42105263157894735,39,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,qwen3.6-27b,"51.3: address, the k the rule read",4,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: address, its own learned subspace, k = 2: switches carried, test pairs",0.9814814814814815,0.9523809523809523,1.0,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: address, its own learned subspace, k = 4: switches carried, test pairs",0.9814814814814815,0.9523809523809523,1.0,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: address, its own learned subspace, k = 8: switches carried, test pairs",0.9444444444444444,0.8955223880597015,1.0,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: address, a subspace learned on shuffled pairs, k = 2: switches carried, test pairs",0.24074074074074073,0.13636363636363635,0.3125,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: address, a subspace learned on shuffled pairs, k = 4: switches carried, test pairs",0.3888888888888889,0.3125,0.45901639344262296,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: address, a subspace learned on shuffled pairs, k = 8: switches carried, test pairs",0.5185185185185185,0.3695652173913043,0.6551724137931034,54,results/x51_das/verdict-20261028T194630Z/verdict.json
+s14_learned_sizes,muse-glimmer-30b,"51.3: address, the k the rule read",4,,,,results/x51_das/verdict-20261028T194630Z/verdict.json
 probe,qwen3.5-9b,probe.value.9b.locker-first,0.2704485488126649,0.23641684813179104,0.30677367551616386,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 probe,qwen3.5-9b,probe.value.majority.9b.locker-first,0.09894459102902374,0.07152844911222445,0.12922248194431957,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 probe,qwen3.5-9b,probe.value.chance.9b,0.1111,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
