@@ -1,0 +1,428 @@
+{
+ "models": [
+  {
+   "target": "qwen3.5-9b",
+   "run": "qwen35_9b_x49_3",
+   "layers": [
+    6,
+    12
+   ],
+   "keys": [
+    "w:The",
+    "w:locker",
+    "w:of",
+    "w:the",
+    "item",
+    "w:is",
+    "w:space",
+    "number",
+    "w:."
+   ],
+   "states_dir": "/Users/danorel/Workspace/Research/mats/bridge-jspace/results/x49_probe/qwen35_9b_x49_3",
+   "rows": 1251,
+   "by_layer": {
+    "6": {
+     "dims": 36864,
+     "probes": {
+      "picker": {
+       "chance": 0.3333333333333333,
+       "after": {
+        "accuracy": [
+         0.3132530120481928,
+         0.24309296347452425,
+         0.38235294117647056
+        ],
+        "n": 166
+       },
+       "after_others": {
+        "accuracy": [
+         0.28199052132701424,
+         0.23058809251856083,
+         0.3292985483795865
+        ],
+        "n": 422
+       },
+       "before": {
+        "accuracy": [
+         0.24503311258278146,
+         0.17730272017236737,
+         0.3194444444444444
+        ],
+        "n": 151
+       },
+       "before_others": {
+        "accuracy": [
+         0.24271844660194175,
+         0.2064676616915423,
+         0.2779220779220779
+        ],
+        "n": 412
+       }
+      },
+      "asked": {
+       "chance": 0.5,
+       "after": {
+        "accuracy": [
+         0.5,
+         0.5,
+         0.5
+        ],
+        "n": 588,
+        "pos": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "neg": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "n_pos": 166
+       },
+       "before": {
+        "accuracy": [
+         0.5,
+         0.5,
+         0.5
+        ],
+        "n": 563,
+        "pos": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "neg": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "n_pos": 151
+       }
+      }
+     },
+     "rule": {
+      "label": "chance",
+      "raw": "chance",
+      "control_ok": true,
+      "i": 0.3132530120481928,
+      "ii": 0.5,
+      "control": {
+       "picker": 0.24503311258278146,
+       "asked": 0.5
+      }
+     }
+    },
+    "12": {
+     "dims": 36864,
+     "probes": {
+      "picker": {
+       "chance": 0.3333333333333333,
+       "after": {
+        "accuracy": [
+         0.40963855421686746,
+         0.36538461538461536,
+         0.4557823129251701
+        ],
+        "n": 166
+       },
+       "after_others": {
+        "accuracy": [
+         0.2938388625592417,
+         0.25195249738913883,
+         0.3333333333333333
+        ],
+        "n": 422
+       },
+       "before": {
+        "accuracy": [
+         0.304635761589404,
+         0.22580645161290322,
+         0.3904109589041096
+        ],
+        "n": 151
+       },
+       "before_others": {
+        "accuracy": [
+         0.24757281553398058,
+         0.21518987341772153,
+         0.28261014492753617
+        ],
+        "n": 412
+       }
+      },
+      "asked": {
+       "chance": 0.5,
+       "after": {
+        "accuracy": [
+         0.5,
+         0.5,
+         0.5
+        ],
+        "n": 588,
+        "pos": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "neg": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "n_pos": 166
+       },
+       "before": {
+        "accuracy": [
+         0.5,
+         0.5,
+         0.5
+        ],
+        "n": 563,
+        "pos": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "neg": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "n_pos": 151
+       }
+      }
+     },
+     "rule": {
+      "label": "chance",
+      "raw": "chance",
+      "control_ok": true,
+      "i": 0.40963855421686746,
+      "ii": 0.5,
+      "control": {
+       "picker": 0.304635761589404,
+       "asked": 0.5
+      }
+     }
+    }
+   },
+   "label": "chance"
+  },
+  {
+   "target": "muse-glimmer-30b",
+   "run": "muse30_x49_3",
+   "layers": [
+    13,
+    26
+   ],
+   "keys": [
+    "w:The",
+    "w:locker",
+    "w:of",
+    "w:the",
+    "item_pre",
+    "item",
+    "w:is",
+    "w:space",
+    "number",
+    "w:."
+   ],
+   "states_dir": "/Users/danorel/Workspace/Research/mats/bridge-jspace/results/x49_probe/muse30_x49_3",
+   "rows": 1227,
+   "by_layer": {
+    "13": {
+     "dims": 66560,
+     "probes": {
+      "picker": {
+       "chance": 0.3333333333333333,
+       "after": {
+        "accuracy": [
+         0.27058823529411763,
+         0.22058534043538675,
+         0.320005617977528
+        ],
+        "n": 170
+       },
+       "after_others": {
+        "accuracy": [
+         0.26976744186046514,
+         0.230578329828643,
+         0.3102565632458234
+        ],
+        "n": 430
+       },
+       "before": {
+        "accuracy": [
+         0.3706293706293706,
+         0.29333082706766916,
+         0.4571483942414174
+        ],
+        "n": 143
+       },
+       "before_others": {
+        "accuracy": [
+         0.3170103092783505,
+         0.26595671008428123,
+         0.36885245901639346
+        ],
+        "n": 388
+       }
+      },
+      "asked": {
+       "chance": 0.5,
+       "after": {
+        "accuracy": [
+         0.5000683994528043,
+         0.491323031610003,
+         0.5097036752693312
+        ],
+        "n": 600,
+        "pos": [
+         0.011764705882352941,
+         0.0,
+         0.032468852285925436
+        ],
+        "neg": [
+         0.9883720930232558,
+         0.9733056501684753,
+         0.9979633401221996
+        ],
+        "n_pos": 170
+       },
+       "before": {
+        "accuracy": [
+         0.5,
+         0.5,
+         0.5
+        ],
+        "n": 531,
+        "pos": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "neg": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "n_pos": 143
+       }
+      }
+     },
+     "rule": {
+      "label": "chance",
+      "raw": "chance",
+      "control_ok": true,
+      "i": 0.27058823529411763,
+      "ii": 0.5000683994528043,
+      "control": {
+       "picker": 0.3706293706293706,
+       "asked": 0.5
+      }
+     }
+    },
+    "26": {
+     "dims": 66560,
+     "probes": {
+      "picker": {
+       "chance": 0.3333333333333333,
+       "after": {
+        "accuracy": [
+         0.3411764705882353,
+         0.275,
+         0.4105960264900662
+        ],
+        "n": 170
+       },
+       "after_others": {
+        "accuracy": [
+         0.29069767441860467,
+         0.24573268506531717,
+         0.3400011185682327
+        ],
+        "n": 430
+       },
+       "before": {
+        "accuracy": [
+         0.2727272727272727,
+         0.2,
+         0.36283185840707965
+        ],
+        "n": 143
+       },
+       "before_others": {
+        "accuracy": [
+         0.31443298969072164,
+         0.26695581220957393,
+         0.36674289732601684
+        ],
+        "n": 388
+       }
+      },
+      "asked": {
+       "chance": 0.5,
+       "after": {
+        "accuracy": [
+         0.5017783857729138,
+         0.4966960352422907,
+         0.509493670886076
+        ],
+        "n": 600,
+        "pos": [
+         0.0058823529411764705,
+         0.0,
+         0.02094332369201478
+        ],
+        "neg": [
+         0.9976744186046511,
+         0.9915724402595347,
+         1.0
+        ],
+        "n_pos": 170
+       },
+       "before": {
+        "accuracy": [
+         0.5,
+         0.5,
+         0.5
+        ],
+        "n": 531,
+        "pos": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "neg": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "n_pos": 143
+       }
+      }
+     },
+     "rule": {
+      "label": "chance",
+      "raw": "chance",
+      "control_ok": true,
+      "i": 0.3411764705882353,
+      "ii": 0.5017783857729138,
+      "control": {
+       "picker": 0.2727272727272727,
+       "asked": 0.5
+      }
+     }
+    }
+   },
+   "label": "chance"
+  }
+ ],
+ "labels": {
+  "person": "readable from the whole sentence: who picked its item (pooled over every token)",
+  "flag": "readable from the whole sentence: a picked-by-the-asked flag, not the person",
+  "chance": "not readable from the locker sentence, even all its tokens together: the link is made elsewhere",
+  "between": "in between (above chance, under 0.85)",
+  "uninterpretable": "not interpretable (the locker-first control above chance)"
+ }
+}

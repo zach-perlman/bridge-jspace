@@ -1,0 +1,49 @@
+{
+  "exp": "x51_cpu",
+  "item": "concat",
+  "spec": "jobs/c3/batch51.yaml (brief, section 2)",
+  "written_utc": "2026-10-28T16:49:43Z",
+  "code": {
+    "sha": "e1f7fccda8730482f03d39f51e55cde3e0d7367c",
+    "dirty": true
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": null,
+    "BJ_SUITE_BATCH": null,
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "script": {
+    "path": "scripts/x51_cpu.py",
+    "sha256": "7365cd7b16d39935a144e021f61618d8f260a5c6b45a1e6ce2f62728eaaeb438"
+  },
+  "inputs": {
+    "results/x49_probe/qwen35_9b_x49_3/manifest.json": "1392f45ea59020eb883dbe4b67b75c64b6c4d9544e385b084239b54205f561b7",
+    "results/x49_probe/qwen35_9b_x49_3/probe_rows.jsonl": "542441ec7c84d679695835e3c712347ed535be9e8636f21213e846843cc56975",
+    "results/x49_probe/qwen35_9b_x49_3/token_rows.jsonl": "deb0764dcd7264edbeeefbcdb7c7ab3c5190b8df12219470d04f33ebf8e5996b",
+    "/Users/danorel/Workspace/Research/mats/bridge-jspace/results/x49_probe/qwen35_9b_x49_3/tokens_L6.npz": "cb853a0e8559dc9af61938565441f051a0b8b84b0586906603071357ddea0b5d",
+    "/Users/danorel/Workspace/Research/mats/bridge-jspace/results/x49_probe/qwen35_9b_x49_3/tokens_L12.npz": "6c643fca00f51a465e46ab89b07aa68a481b33e9cafc2e9df3b2d1dad916070a",
+    "results/x49_probe/muse30_x49_3/manifest.json": "3526e5d1686b9ec89aeb9b9d2229220042a9b8fe7e2c755842738dfaf1c50fde",
+    "results/x49_probe/muse30_x49_3/probe_rows.jsonl": "f1b421a77bb7eb54a7249d751c562f4da68dc9ba39833a64907e4a2d1f787050",
+    "results/x49_probe/muse30_x49_3/token_rows.jsonl": "0d15aded69509e53e888805275559dcbb3c9d643a215502dc0146b923418f087",
+    "/Users/danorel/Workspace/Research/mats/bridge-jspace/results/x49_probe/muse30_x49_3/tokens_L13.npz": "c9cf1b883a5ca8eb304d36203656f0842952b4c37135295b0d60694bcfeefa72",
+    "/Users/danorel/Workspace/Research/mats/bridge-jspace/results/x49_probe/muse30_x49_3/tokens_L26.npz": "ff7f44a14b3f0693e74fd71c1ea43db00c1ccc36d5073c2ca1398da973d512cf"
+  },
+  "n_boot": 10000,
+  "seeds": {
+    "bootstrap": 0,
+    "folds": 0
+  },
+  "runs": {
+    "qwen3.5-9b": "qwen35_9b_x49_3",
+    "muse-glimmer-30b": "muse30_x49_3"
+  },
+  "probes": [
+    "picker",
+    "asked"
+  ],
+  "bar": 0.85,
+  "chance_margin": 0.1,
+  "folds": "x49_probe.oof: 5 folds of whole locker items (x48_bind.seeded_folds, seed 0), inner-CV penalty over x0_probe.RELS",
+  "alignment": "token roles = x49_probe's keys; a key's block zero where the sentence lacks it"
+}

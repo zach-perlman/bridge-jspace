@@ -578,9 +578,170 @@ def item_recall(n_boot: int = N_BOOT) -> Path:
     return out
 
 
+# ---- 4. 49.3 concatenation probe ----------------------------------------------------------------------------------
+
+PROBE_RUNS = {"qwen3.5-9b": "qwen35_9b_x49_3", "muse-glimmer-30b": "muse30_x49_3"}
+CONCAT_PROBES = ("picker", "asked")
+CONCAT_BAR, CONCAT_PICKER_MAX = 0.85, 0.5  # 49.3's bars: (i) / (ii) >= 0.85; a flag only while (i) <= 0.5
+CONCAT_LABELS = {
+    "person": "readable from the whole sentence: who picked its item (pooled over every token)",
+    "flag": "readable from the whole sentence: a picked-by-the-asked flag, not the person",
+    "chance": "not readable from the locker sentence, even all its tokens together: the link is made elsewhere",
+    "between": "in between (above chance, under 0.85)",
+    "uninterpretable": "not interpretable (the locker-first control above chance)",
+}
+
+
+def states_dir(run: str) -> Path:
+    """The run's folder holding tokens_L*.npz (gitignored): this checkout's, else the main checkout's (a worktree)."""
+    import subprocess
+
+    here = pins.RESULTS_DIR / "x49_probe" / run
+    if any(here.glob("tokens_L*.npz")):
+        return here
+    common = subprocess.run(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"], cwd=pins.REPO_ROOT,
+                            capture_output=True, text=True, check=True).stdout.strip()  # fmt: skip
+    main = Path(common).parent / "results" / "x49_probe" / run
+    assert any(main.glob("tokens_L*.npz")), f"no tokens_L*.npz for {run} here or in {main}"
+    return main
+
+
+def key_order(trows: list[dict]) -> list[str]:
+    """Every token key, ordered by its mean position within its sentence (documentation only: the ridge on
+    standardized features does not depend on the column order)."""
+    pos: dict[str, list[int]] = collections.defaultdict(list)
+    seen: collections.Counter = collections.Counter()
+    for t in trows:
+        pos[t["key"]].append(seen[t["row"]])
+        seen[t["row"]] += 1
+    return sorted(pos, key=lambda k: (float(np.mean(pos[k])), k))
+
+
+def concat_states(trows: list[dict], th: np.ndarray, n_rows: int, keys: list[str]) -> np.ndarray:
+    """[n_rows, len(keys) * d]: each sentence's token states placed in its keys' blocks, zero where it lacks a key."""
+    d = th.shape[1]
+    col = {k: i for i, k in enumerate(keys)}
+    out = np.zeros((n_rows, len(keys) * d), dtype=np.float64)
+    filled = set()
+    for j, t in enumerate(trows):
+        assert (t["row"], t["key"]) not in filled, f"row {t['row']}: key {t['key']} twice"
+        filled.add((t["row"], t["key"]))
+        b = col[t["key"]] * d
+        out[t["row"], b : b + d] = th[j]
+    return out
+
+
+def at_chance(v: float, probe: str) -> bool:
+    from scripts import x49_probe as P
+
+    return not (v > P.CHANCE[probe] + P.CHANCE_MARGIN + EPS)
+
+
+def concat_label(res: dict[str, dict]) -> dict[str, Any]:
+    """The label at one layer on the point estimates of the rule cells (locker-after) and the locker-first control:
+    person if (i) >= 0.85; flag if (ii) >= 0.85 while (i) <= 0.5; chance if both at chance (<= chance + 0.10); else in
+    between; person / flag with the control above chance -> not interpretable."""
+    i, ii = res["picker"]["after"]["accuracy"][0], res["asked"]["after"]["accuracy"][0]
+    ctrl = {p: res[p]["before"]["accuracy"][0] for p in CONCAT_PROBES}
+    control_ok = all(at_chance(v, p) for p, v in ctrl.items())
+    if i >= CONCAT_BAR - EPS:
+        raw = "person"
+    elif ii >= CONCAT_BAR - EPS and i <= CONCAT_PICKER_MAX + EPS:
+        raw = "flag"
+    elif at_chance(i, "picker") and at_chance(ii, "asked"):
+        raw = "chance"
+    else:
+        raw = "between"
+    label = "uninterpretable" if raw in ("person", "flag") and not control_ok else raw
+    return {"label": label, "raw": raw, "control_ok": control_ok, "i": i, "ii": ii, "control": ctrl}
+
+
+def concat_model_label(by_layer: dict[str, dict]) -> str:
+    labs = [r["label"] for r in by_layer.values()]
+    for lab in ("person", "flag", "uninterpretable"):
+        if lab in labs:
+            return lab
+    return "chance" if labs and all(lab == "chance" for lab in labs) else "between"
+
+
+def concat_model(target: str, n_boot: int = N_BOOT) -> dict[str, Any]:
+    from scripts import x49_probe as P
+
+    src = P.RESULTS / PROBE_RUNS[target]
+    sdir = states_dir(PROBE_RUNS[target])
+    for f in ("probe_rows.jsonl", "token_rows.jsonl"):
+        assert sha256_of(sdir / f) == sha256_of(src / f), f"{sdir / f} differs from {src / f}"
+    m = json.loads((src / "manifest.json").read_text())
+    rows = X.read_jsonl(src / "probe_rows.jsonl")
+    trows = X.read_jsonl(src / "token_rows.jsonl")
+    keys = key_order(trows)
+    res: dict[str, Any] = {"target": target, "run": src.name, "layers": m["layers"], "keys": keys,
+                           "states_dir": str(sdir), "rows": len(rows), "by_layer": {}}  # fmt: skip
+    for la in m["layers"]:
+        th = np.load(sdir / f"tokens_L{la}.npz")["h"]
+        assert len(th) == len(trows), f"tokens_L{la}: {len(th)} states for {len(trows)} token rows"
+        h = concat_states(trows, th, len(rows), keys)
+        del th
+        print(f"{target} L{la}: concatenated states {h.shape}", flush=True)
+        r = {p: P.probe_view(h, rows, p, n_boot) for p in CONCAT_PROBES}
+        res["by_layer"][str(la)] = {"dims": int(h.shape[1]), "probes": r, "rule": concat_label(r)}
+        del h
+    res["label"] = concat_model_label({la: v["rule"] for la, v in res["by_layer"].items()})
+    return res
+
+
+def item_concat(n_boot: int = N_BOOT) -> Path:
+    from scripts import x48_bind as W
+    from scripts import x49_probe as P
+
+    inputs = []
+    for run in PROBE_RUNS.values():
+        src, sdir = P.RESULTS / run, states_dir(run)
+        m = json.loads((src / "manifest.json").read_text())
+        inputs += [src / f for f in ("manifest.json", "probe_rows.jsonl", "token_rows.jsonl")]
+        inputs += [sdir / f"tokens_L{la}.npz" for la in m["layers"]]
+    out = start("concat", inputs, {"runs": PROBE_RUNS, "probes": list(CONCAT_PROBES), "bar": CONCAT_BAR,
+                                   "chance_margin": P.CHANCE_MARGIN, "folds": f"x49_probe.oof: {W.K_FOLDS} folds of "
+                                   "whole locker items (x48_bind.seeded_folds, seed 0), inner-CV penalty over x0_probe.RELS",
+                                   "seeds": {"bootstrap": BOOT_SEED, "folds": W.SPLIT_SEED},
+                                   "alignment": "token roles = x49_probe's keys; a key's block zero where the sentence "
+                                   "lacks it"})  # fmt: skip
+    models = [concat_model(t, n_boot) for t in PROBE_RUNS]
+    lines = ["# 49.3 concatenation probe (batch 51, CPU item 4)", "",
+             "After 49.3 (descriptive extension, its rule's bars). The lookup's O prompt in the clean-design scenes; per "
+             "locker sentence with a picker, the states of all its tokens concatenated in token-role blocks "
+             "(x49_probe's keys: w:The, w:locker, w:of, [w:the], item, w:is, [w:space], number, w:., and Muse's "
+             "item_pre; zeros where a sentence lacks a role). Probes and scoring are x49_probe.probe_view unchanged: "
+             "48.3's ridge (standardized features, the penalty by an inner CV), out of fold over 5 folds with whole "
+             "locker items held out (seed 0), trained and scored within the stratum. (i) the picker of the scene's "
+             "three people (chance 1/3; rule cell: the asked item's sentence in locker-after scenes); (ii) picked by "
+             "the asked person (balanced accuracy, chance 0.5). Control: the same in locker-first scenes ('before'). "
+             f"Cluster bootstrap over the sentence's item ({n_boot:,}, seed {BOOT_SEED}). Label per layer on the "
+             f"points: person if (i) >= {CONCAT_BAR}; flag if (ii) >= {CONCAT_BAR} with (i) <= {CONCAT_PICKER_MAX}; "
+             f"chance if both <= chance + {P.CHANCE_MARGIN}; else in between; a person / flag label with the control "
+             "above chance reads not interpretable. A model: person (flag) at either layer, chance at both, else in "
+             "between. UNVERIFIED.", "",
+             "| model | label | layer | dims | (i) picker, locker-after | (i) locker-first | (i) other sentences, after | "
+             "(ii) asked, locker-after | (ii) locker-first | layer's label |",
+             "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for mm in models:
+        for la, r in mm["by_layer"].items():
+            p, a = r["probes"]["picker"], r["probes"]["asked"]
+            lines.append(f"| {mm['target']} | {mm['label']} | L{la} | {r['dims']} | {fmt(p['after']['accuracy'])} "
+                         f"(n {p['after']['n']}) | {fmt(p['before']['accuracy'])} (n {p['before']['n']}) | "
+                         f"{fmt(p['after_others']['accuracy'])} (n {p['after_others']['n']}) | "
+                         f"{fmt(a['after']['accuracy'])} (n {a['after']['n']}, pos {a['after']['n_pos']}) | "
+                         f"{fmt(a['before']['accuracy'])} (n {a['before']['n']}) | {r['rule']['label']} |")  # fmt: skip
+    lines += ["", "The E10 / E11 sentence per model:", ""]
+    lines += [f"- {mm['target']}: {CONCAT_LABELS[mm['label']]}." for mm in models]
+    lines += ["", "Keys (block order): " + "; ".join(f"{mm['target']} {mm['keys']}" for mm in models)]
+    finish(out, "concat", {"models": strip(models), "labels": CONCAT_LABELS}, lines)
+    return out
+
+
 # ---- main ---------------------------------------------------------------------------------------------------------
 
-ITEMS = {"z1": item_z1, "routes": item_routes, "recall": item_recall}
+ITEMS = {"z1": item_z1, "routes": item_routes, "recall": item_recall, "concat": item_concat}
 
 
 def main() -> None:

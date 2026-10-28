@@ -164,6 +164,71 @@ def test_dose_cells_planted():
     assert lo <= 0.5 <= hi
 
 
+# ---- 4. concatenation probe -----------------------------------------------------------------------------------------
+
+
+def test_key_order_and_concat_states():
+    trows = [{"row": 0, "key": "w:The"}, {"row": 0, "key": "item"}, {"row": 0, "key": "number"},
+             {"row": 1, "key": "w:The"}, {"row": 1, "key": "w:the"}, {"row": 1, "key": "item"},
+             {"row": 1, "key": "number"}]  # fmt: skip
+    keys = C.key_order(trows)
+    assert keys[0] == "w:The" and keys[-1] == "number" and set(keys) == {"w:The", "w:the", "item", "number"}
+    th = np.arange(7 * 2, dtype=float).reshape(7, 2) + 1
+    h = C.concat_states(trows, th, 2, keys)
+    assert h.shape == (2, 8)
+    col = {k: 2 * i for i, k in enumerate(keys)}
+    assert list(h[0, col["item"] : col["item"] + 2]) == list(th[1])
+    assert list(h[0, col["w:the"] : col["w:the"] + 2]) == [0, 0]  # the role row 0 lacks: zero
+    assert list(h[1, col["w:the"] : col["w:the"] + 2]) == list(th[4])
+    with pytest.raises(AssertionError, match="twice"):
+        C.concat_states([*trows, {"row": 0, "key": "item"}], np.vstack([th, th[:1]]), 2, keys)
+
+
+def _probe_res(i: float, ii: float, ci: float = 0.3, cii: float = 0.5) -> dict:
+    return {"picker": {"after": {"accuracy": [i, i, i]}, "before": {"accuracy": [ci, ci, ci]}},
+            "asked": {"after": {"accuracy": [ii, ii, ii]}, "before": {"accuracy": [cii, cii, cii]}}}  # fmt: skip
+
+
+def test_concat_label_planted():
+    assert C.concat_label(_probe_res(0.90, 0.5))["label"] == "person"
+    assert C.concat_label(_probe_res(0.85, 0.5))["label"] == "person"  # at the bar counts
+    assert C.concat_label(_probe_res(0.40, 0.90))["label"] == "flag"
+    assert C.concat_label(_probe_res(0.60, 0.90))["label"] == "between"  # (ii) high but (i) above 0.5
+    assert C.concat_label(_probe_res(0.30, 0.55))["label"] == "chance"
+    assert C.concat_label(_probe_res(0.30, 0.65))["label"] == "between"
+    bad = C.concat_label(_probe_res(0.90, 0.5, ci=0.6))
+    assert bad["label"] == "uninterpretable" and bad["raw"] == "person" and not bad["control_ok"]
+    assert C.concat_model_label({"6": {"label": "chance"}, "12": {"label": "person"}}) == "person"
+    assert C.concat_model_label({"6": {"label": "chance"}, "12": {"label": "chance"}}) == "chance"
+    assert C.concat_model_label({"6": {"label": "chance"}, "12": {"label": "between"}}) == "between"
+
+
+def test_concat_probe_reads_a_planted_joint_code():
+    """The picker is written half into the item token and half into the number token: the concatenation reads it
+    in locker-after sentences; locker-first sentences carry noise only (the control at chance)."""
+    from scripts import x49_probe as P
+
+    rng = np.random.default_rng(0)
+    names, d, rows, trows, states = ["Ann", "Bob", "Cy"], 6, [], [], []
+    code = {n: rng.normal(size=d) * 3 for n in names}
+    for i in range(240):
+        st = "after" if i % 2 == 0 else "before"
+        picker = names[i % 3]
+        rows.append({"picker": picker, "names": names, "locker_item": f"it{i % 24}", "stratum": st, "group": st,
+                     "asked": i % 4 < 2, "scene_items": []})  # fmt: skip
+        for key in ("w:The", "item", "number"):
+            x = rng.normal(size=d)
+            if st == "after" and key != "w:The":
+                x = x + code[picker] / 2
+            trows.append({"row": i, "key": key})
+            states.append(x)
+    h = C.concat_states(trows, np.array(states), len(rows), C.key_order(trows))
+    res = {p: P.probe_view(h, rows, p, 50) for p in C.CONCAT_PROBES}
+    assert res["picker"]["after"]["accuracy"][0] >= 0.85
+    assert res["picker"]["before"]["accuracy"][0] <= 1 / 3 + 0.15
+    assert C.concat_label(res)["label"] == "person"
+
+
 def test_ci3_and_strip():
     assert all(math.isnan(v) for v in C.ci3(math.nan, np.zeros(3)))
     assert C.strip({"a": 1, "_d": np.zeros(2), "b": [{"_x": 1, "y": 2}]}) == {"a": 1, "b": [{"y": 2}]}
