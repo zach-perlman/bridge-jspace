@@ -1,0 +1,19 @@
+{
+  "peaks": {
+    "lookup": 60,
+    "recall": 56
+  },
+  "states": {
+    "shape": [
+      200,
+      2,
+      2,
+      3,
+      17,
+      5120
+    ],
+    "max_abs_h": 191.0,
+    "max_abs_proj": 4.8254241943359375
+  },
+  "how": "read_peak on P3's through-the-lens probe (locker-first rows), layers before the answer layer (answer_layers)"
+}

@@ -1,0 +1,132 @@
+{
+  "exp": "x51_jread",
+  "run": "x51_10_27b",
+  "why": "Batch 51, test 51.10 (jobs/c3/batch51.yaml addendum_2; Q51.10): read / write per position and reader at 17 layers (every 4th layer L4-L60 plus L and L +- 2 (30, 32, 34)); main-test items of the qwen3.6-27b X0 run, write and remove arms on 49.1's locker-first items; sealed",
+  "written_utc": "2026-10-28T18:01:47Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "89c2e4d5bca3b939be6cbf19aacb6ad5769d2446",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "test": "51.10",
+  "spec": "jobs/c3/batch51.yaml (addendum_2: 51.10)",
+  "question": "Q51.10 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "953f2dcb50e7d8cebfbc2e5169c167ed9f97c176d9309154a78a6a37780c7fe7",
+    "results/x0_necessity/x0_necessity_27b_chat/manifest.json": "01abe5f1c03addc9a49c1f8fff402a21065bc649202b79a14c9a8ea5746e2e5a",
+    "results/x0_necessity/x0_necessity_27b_chat/gate.json": "5f67ec85701a252b56a521f4a9c67ebc4d82b4d4c7bf5ab77e57c292f87e7410",
+    "results/x0_necessity/x0_necessity_27b_chat/cases.jsonl": "60801c7e4c29b9facf6d311cb47df60ef0fccd9cce60338025371da98debf39b",
+    "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl": "43010926899d279596071d6c92f1856e1fd71bdc26a94a824324f6ad382942d5"
+  },
+  "source": "x0_necessity_27b_chat",
+  "L": 32,
+  "layers": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    30,
+    32,
+    34,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    60
+  ],
+  "n_layers": 64,
+  "positions": {
+    "P1": "the bridge word",
+    "P2": "the question's \"pick\" token",
+    "P3": "the last token (the read's appended space token, before the answer)"
+  },
+  "rendering": "chat",
+  "k": 25,
+  "k_top": 10,
+  "band_half": 2,
+  "write_arms": [
+    "swap",
+    "swap_rand",
+    "swap_rot",
+    "jpp1",
+    "rand1",
+    "jpp2",
+    "rand2",
+    "whole"
+  ],
+  "remove_arms": [
+    "none",
+    "ko",
+    "ko_rand",
+    "jrm",
+    "jrm_rand"
+  ],
+  "arm_text": {
+    "swap": "his J-part swap: h_O - J10(h_O) + J10(h_S), J10 the projection on the state's own top-10 lens directions (O's protected rows; jswap's swap)",
+    "swap_rand": "a random part of Δ = h_S - h_O at the swap's share of ||Δ||^2 (capped at 1; seed 888 + layer)",
+    "swap_rot": "his own control (jswap's swap_rot): h_O + (J10(h_S) - J10(h_O)) R^T, R the layer's random orthogonal matrix (seed 888 + layer): the swap's change at its own size in a random direction",
+    "jpp1": "h_O + P_J Δ, the change's 25-atom signed OMP J++ part (49.1's J(1,0))",
+    "rand1": "h_O + R Δ, X0's random part of Δ at P_J Δ's share (49.1's R(1,0))",
+    "jpp2": "h_O + 2 P_J Δ (49.1's J(2,0))",
+    "rand2": "h_O + 2 R Δ (49.1's R(2,0))",
+    "whole": "h_O <- h_S (Δ added; the whole state patched)",
+    "ko": "his knock-out at P3: the top-10 lens span removed at every layer of the band (peak +- 2)",
+    "ko_rand": "a random subspace part of the share his removal takes, at P3, every band layer",
+    "jrm": "at the peak layer, P3's state minus its projection on Δ's 25 OMP atoms there (47.5's zeroing)",
+    "jrm_rand": "a random subspace of the same share of ||h_O||^2 (47.5's random)"
+  },
+  "inputs_text": {
+    "thru": "the projection on his top-10 span (through the lens)",
+    "full": "the full residual (readable at all)",
+    "out": "the residual minus that projection (outside the lens)"
+  },
+  "rule": {
+    "read": "through-the-lens probe >= 0.8 and lens top-5 >= 0.5 at some layer before the answer digit's layer, while the full-residual probe >= 0.9 there",
+    "write": "at the layer of the read peak, his swap or the J++ part of the change (gain <= 2) switches >= 0.5 of what the whole-state patch switches at that layer, with the random part <= 0.10",
+    "a": "in J-space: read holds and write holds",
+    "b": "readable, not used: read holds, write fails",
+    "c": "routes around J-space: through-the-lens < 0.5 at every layer before the answer while the full residual >= 0.9 at some layer, and write fails",
+    "d": "not represented: the full-residual probe < 0.5 at every layer before the answer"
+  },
+  "items_rule": "every item of the source X0 run at L (x47_cumulative.select, as 49.1) for the read statistics (probes need the rows), decided on 49.1's locker-first items; write and remove arms on the locker-first items only",
+  "lens_dictionary": "his read directions: x49_ladder.band_dictionaries (LensDictionary over W_g = W_U[letters] x the final norm's gain and J_l of the J++ lens, rows cast on demand), letter tokens; protected rows = the prompt's clean read's top-10 (x47_twodefs.protected_rows)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; switch = the top token over the vocabulary is S's answer's first token; kept = O's",
+  "gate": "the source run's (X0: 0.8 per reader on O unedited, >= 150 eligible); asserted",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0,
+    "folds": "x0_probe.folds round robin by O's bridge (deterministic)"
+  },
+  "n_boot": 10000,
+  "storage": "states.npz: fp16 states and projections, gitignored (> 50 MB)",
+  "sealed": "no label in the job; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.10"
+}

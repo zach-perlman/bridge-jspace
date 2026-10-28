@@ -1,0 +1,40 @@
+{
+  "design": "main",
+  "source": "x0_necessity_27b_chat",
+  "alt": "cf",
+  "layer": 32,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 44,
+  "groups": {
+    "locker-first": 69,
+    "locker-after": 61,
+    "mixed": 70
+  },
+  "upstream": {
+    "True": 97,
+    "False": 103
+  },
+  "locker-first, prefix-identical": 16,
+  "pick_tokens": {
+    "5": 76,
+    "4": 119,
+    "6": 5
+  },
+  "positions_dropped": {},
+  "items_read": 200,
+  "entities_read": 44,
+  "families": {
+    "animals": 70,
+    "elements": 69,
+    "greek": 61
+  },
+  "classes_per_family": {
+    "animals": 31,
+    "elements": 6,
+    "greek": 8
+  },
+  "items_locker_first": 69,
+  "entities_locker_first": 34
+}

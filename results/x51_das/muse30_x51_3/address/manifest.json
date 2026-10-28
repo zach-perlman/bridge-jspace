@@ -1,0 +1,51 @@
+{
+  "exp": "x51_das",
+  "run": "muse30_x51_3",
+  "part": "address (49.8's file layout; the run's manifest is ../manifest.json)",
+  "layer": 26,
+  "ks": [
+    2,
+    4,
+    8
+  ],
+  "k_rule": 4,
+  "model": {
+    "target": "muse-glimmer-30b"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "routes_run": "muse30b_x6_routes",
+  "U": {
+    "states_run": "muse30b_x0_probe_v4",
+    "rank": 4,
+    "info": {
+      "states_run": "muse30b_x0_probe_v4",
+      "n": 657,
+      "rank": {
+        "A": 4,
+        "V": 8,
+        "AV": 12,
+        "Alf": 4,
+        "Id": 43
+      },
+      "layout_groups": {
+        "groups": 31,
+        "items_kept": 657,
+        "singletons_dropped": 0
+      },
+      "A_Alf_overlap": 0.6578274536820093
+    }
+  },
+  "W": {
+    "run": "muse30_x47_2",
+    "slots": 6,
+    "rank": 5,
+    "file": "results/x47_six/muse30_x47_2/fit.npz",
+    "sha256": "2ed7b5bf62ef24975337169ae644ffd7821c5486c77176b90048b1c0bb31a3d3"
+  }
+}
