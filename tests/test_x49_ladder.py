@@ -115,7 +115,8 @@ def test_band_dictionaries_are_ablate_v2s_with_no_stored_wg():
     )
     lens = SimpleNamespace(J=lambda la: torch.eye(D) * (la + 1))
     dic = LD.band_dictionaries(model, lens, (3, 4), torch.arange(100))
-    assert dic[3].w_u is dic[4].w_u is w and torch.allclose(dic[3].rows(dic[3].letters), 2 * w[:100])
+    assert dic[3].w_u.data_ptr() == dic[4].w_u.data_ptr() == w.data_ptr()  # one unembedding, no copy
+    assert torch.allclose(dic[3].rows(dic[3].letters), 2 * w[:100])
     assert torch.allclose(dic[4].J, 5 * torch.eye(D))
     assert LD.band_dictionaries(model, lens, (), torch.arange(100)) == {}
 
@@ -499,3 +500,14 @@ def test_lazy_wg_dictionary_matches_the_stored_one():
     for a, b in ((lazy.norms, ref.norms), (lazy.logits(x), ref.logits(x)), (lazy.scores(x), ref.scores(x)),
                  (lazy.atoms(idx), ref.atoms(idx))):  # fmt: skip
         torch.testing.assert_close(a, b, rtol=1e-5, atol=1e-5)
+
+
+def test_band_dictionaries_hold_no_autograd_graph():
+    """lm_head.weight requires grad on the real model; the norms must not keep each chunk's graph (Muse OOM, 28 Oct)."""
+    w = torch.randn(128, D, generator=torch.Generator().manual_seed(4)).requires_grad_()
+    model = SimpleNamespace(
+        hf=SimpleNamespace(lm_head=SimpleNamespace(weight=w)), norm_gain=lambda: torch.full((D,), 2.0)
+    )
+    dic = LD.band_dictionaries(model, SimpleNamespace(J=lambda la: torch.eye(D)), (3,), torch.arange(100))
+    assert not dic[3].norms.requires_grad and dic[3].norms.grad_fn is None
+    assert not dic[3].logits(torch.randn(2, D)).requires_grad

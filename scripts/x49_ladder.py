@@ -85,7 +85,7 @@ K = X.K_MAIN  # the change's 25 OMP atoms
 K_TOP = 10  # Zach's top-10
 SOURCES = B.FRESH_RUN  # target -> its 45m run (the clean design)
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
-RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2_r4"}  # the first three Muse runs OOMed (28 Oct)
+RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2_r5"}  # r1-r4 OOMed (28 Oct)
 BAND = {"qwen3.5-9b": tuple(range(12, 17)), "muse-glimmer-30b": tuple(range(23, 30))}  # Zach's band; the 27B: none
 RUNGS = (1, 2, 3, 4, 5, 6)
 BRIDGE_RUNGS = (1, 2)  # the 27B's
@@ -430,9 +430,11 @@ def band_dictionaries(model, lens, band: tuple[int, ...], letters) -> dict:
     import torch
 
     torch.cuda.empty_cache()
-    # W_g's rows are built from the bf16 unembedding on demand (LazyWgDictionary): a stored fp32 W_g (letters x d, ~4 GB
-    # on Muse) did not fit beside Muse's weights and the cached J_l / bases (x49_2_muse and x49_2_muse_r2, 28 Oct: OOM).
-    return {la: LazyWgDictionary(model.hf.lm_head.weight, letters, model.norm_gain(), lens.J(la)) for la in band}
+    # No autograd: lm_head.weight requires grad, so outside no_grad every chunk's graph stayed alive behind the norms
+    # (> 22 GB on Muse: x49_2_muse, _r2, _r3, _r4 OOM). W_g's rows are cast from the bf16 unembedding on demand
+    # (LazyWgDictionary) rather than stored (letters x d fp32, ~5 GB on Muse).
+    with torch.no_grad():
+        return {la: LazyWgDictionary(model.hf.lm_head.weight, letters, model.norm_gain(), lens.J(la)) for la in band}
 
 
 class LazyWgDictionary:
@@ -443,7 +445,7 @@ class LazyWgDictionary:
     def __init__(self, w_u, letters, gain, J, chunk: int = 4096):
         import torch
 
-        self.w_u, self.letters, self.gain, self.J, self.chunk = w_u, letters, gain, J, chunk
+        self.w_u, self.letters, self.gain, self.J, self.chunk = w_u.detach(), letters, gain.detach(), J.detach(), chunk
         self.norms = torch.cat([(self.rows(self.letters[s : s + chunk]) @ J).norm(dim=-1) for s in self.starts()])
 
     def starts(self) -> range:
