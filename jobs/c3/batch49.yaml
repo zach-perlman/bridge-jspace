@@ -37,6 +37,41 @@ amendments:
     superseded_specs: [x47_16_muse, x47_7b_9b, x47_7b_muse, x47_7b_9b_r2, x47_7b_muse_r2, x47_12_9b, x47_12_muse]
     stands: "47.7(c) is already opened and in the README"
 
+  - id: 2
+    by: Dan, 28 Oct ~14:20
+    title: three corrections that make 49.1, 49.2 and 49.7 clean
+    queue_change: none
+    "49.1": >-
+      Add the arm (alpha = 0, beta = 2, U removed from the rest): Delta' = 2 (Delta - P_J Delta - U U^T Delta) (a random
+      part of U's share removed instead, beside). Reason: at (0, 2) the recall could switch by dereferencing the doubled
+      address to the item's earlier mention (as under a strong pointer swap), not by reading identity from the rest. Rule
+      (a) "weights, not routes" now requires the recall's switch at (0, 2, no U) >= 0.5; if (0, 2) >= 0.5 but (0, 2, no U)
+      <= 0.2, report "the rest moves the recall only through the address" (a third outcome, informative). The
+      off-manifold check stands: plain-text loss at the bridge word under each corner against (1, 1).
+    "49.2": >-
+      The J++ part of Delta exists only at the bridge word. On rungs (3)-(5) the removal at the other tokens is the
+      projection of that token's state onto the span of the same 25 atoms (the bridge item's lens identity, wherever it
+      appears), with the random subspace of the same share per token. Rung (6) uses Zach's definition (the top-10
+      lens-read directions per token, his code path) over his band. State this in the spec and in the figure's subtitle
+      so rungs (5) and (6) are read as two definitions, not one.
+    "49.7": >-
+      (i) Aggregate read, fixed in advance beside the per-head rule: the summed move over the five candidate heads, and
+      over every head of the best layer; "distributed dereference" if the sum >= 0.30 while no single head reaches 0.30.
+      (ii) Necessity of the found head (one extra arm, same job): under the swap, zero the best head's output at the last
+      token (and, separately, at the question tokens); "the head carries the position route" if the lookup's switch to
+      slot k's locker falls by >= 0.5 of its swap value while identity answers change <= 0.10 and the recall <= 0.10. The
+      only ablation in the batch; specific because the two routes predict different outcomes. (iii) Weights-level check
+      (descriptive, CPU after the run): for the best head, S[k, k'] = (W_Q mu^q_k)^T (W_K mu^src_k'), mu^q_k the mean
+      last-token state by the picked item's slot, mu^src_k' the mean state of slot-k' locker-sentence tokens, from the
+      run's cached states; report diagonal dominance (mean diagonal minus mean off-diagonal, in units of the off-diagonal
+      spread); RoPE left out (say so); the actual attention logits on slot k's tokens under none / swap / random beside
+      it. (iv) The 9B caveat in the verdict text: three of four layers are Gated DeltaNet; if the lookup switches under the
+      swap with no movement in any full-attention head, write "the dereference is not in full attention on this model"
+      and let Muse decide.
+    predictions: >-
+      Q49.1: add "the rest moves the recall only through the address" as a third option (when Q49.1 is written from the
+      brief). Q49.7: add P(the best head is necessary by the rule above), 9B; Muse; and P(distributed, no single head).
+
 tests:
   - id: "49.7"
     title: Does the question's attention follow the written address?
