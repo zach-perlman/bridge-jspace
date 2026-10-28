@@ -10,7 +10,7 @@
 - **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 559405d1 from the run files. Sealed and running: the gain map, one question two sources, the learned subspaces on the 27B and Muse; results land here when opened.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 31a87928 from the run files. Sealed and running: what the address is apart from how we built it (its size, whether other methods find it, its shape); results land here when opened.
 
 ## Setup
 
