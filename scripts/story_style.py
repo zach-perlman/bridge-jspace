@@ -34,6 +34,15 @@ MODELS = (("qwen3.5-9b", "9b", "Qwen3.5-9B"), ("qwen3.6-27b", "27b", "Qwen3.6-27
 XLIM = (-0.2, 1.0)
 NOT_NEEDED = 0.10  # the rule's "not needed" band (X0: extra loss <= 0.10)
 ROWS: list[dict] = []
+# v6 (Dan's README v6 brief, §5; docs/figure_plan.md "v6 style rules"): a reader's layer is not interpretable where the
+# whole change switches < NI_SWITCH of it (scripts/x47_anatomy.py's bar); one look for that shading in every figure.
+NI_SWITCH = 0.30
+NI_SHADE = {"facecolor": "#f6f6f6", "edgecolor": "#d4d4d4", "hatch": "///", "lw": 0, "zorder": 0}
+# the original answer as an empty segment: light grey stays the random control's colour alone
+EMPTY = {"facecolor": "none", "edgecolor": "#9a9a9a", "lw": 0.7}
+STATUS_GLYPH = {"fixed": "●", "after": "○"}
+STATUS_TEXT = {"fixed": "fixed in advance", "after": "after the data"}
+SUBTITLE = "story_subtitle"  # the attribute title() sets on the subtitle's Text
 
 
 def setup():
@@ -51,7 +60,44 @@ def title(fig, text: str, sub: str | None = None, limit: int = 70) -> None:
     fig.suptitle(text, x=0.01, y=0.995, ha="left", va="top", fontsize=14 * min(1.0, 66 / len(text)), weight="bold")
     if sub:
         h = fig.get_figheight()
-        fig.text(0.01, 1 - 0.42 / h, sub, ha="left", va="top", fontsize=FONT, color=COL["muted"])
+        t = fig.text(0.01, 1 - 0.42 / h, sub, ha="left", va="top", fontsize=FONT, color=COL["muted"])
+        # marked for scripts/check_figure_terms.py's v6 rules; a Python attribute, so the saved files do not change
+        setattr(t, SUBTITLE, True)
+
+
+def panel_tag(ax, n: str | None, status: str | None, inside: bool = False) -> None:
+    """v6: n and the status in small type at the panel's top right (above the frame, or inside its corner on a white
+    patch), the status as its glyph (filled = fixed in advance, open = after the data); status None for a schematic."""
+    parts = [f"n {n}"] if n else []
+    parts += [f"{STATUS_GLYPH[status]} {STATUS_TEXT[status]}"] if status else ["schematic"]
+    y, va = (0.985, "top") if inside else (1.015, "bottom")
+    ax.text(0.995 if inside else 1.0, y, ("\n" if inside else " · ").join(parts), transform=ax.transAxes, ha="right",
+            va=va, fontsize=FONT, multialignment="right",
+            color=COL["muted"], zorder=8, bbox={"boxstyle": "square,pad=0.15", "fc": "white", "ec": "none"})  # fmt: skip
+
+
+def not_interpretable(ax, spans: list[tuple[float, float]], y: float = 0.55) -> None:
+    """v6: the same hatched shading over each (x0, x1) span where the whole change switches < NI_SWITCH, labelled
+    'not interpretable' at height y (axes units) where the span is wide enough."""
+    for x0, x1 in spans:
+        ax.axvspan(x0, x1, **NI_SHADE)
+        if x1 - x0 >= 2.5:
+            ax.text((x0 + x1) / 2, y, "not\ninterpretable", transform=ax.get_xaxis_transform(), ha="center",
+                    va="center", fontsize=FONT, color=COL["muted"], zorder=7,
+                    bbox={"boxstyle": "round,pad=0.25", "fc": "white", "ec": "none"})  # fmt: skip
+
+
+def spans(flags: list[bool], step: float = 1.0) -> list[tuple[float, float]]:
+    """The runs of True in flags as (x0, x1) spans on an axis with one position per flag (index * step)."""
+    out: list[tuple[float, float]] = []
+    for i, f in enumerate(flags):
+        if not f:
+            continue
+        if out and abs(out[-1][1] - (i - 0.5) * step) < 1e-9:
+            out[-1] = (out[-1][0], (i + 0.5) * step)
+        else:
+            out.append(((i - 0.5) * step, (i + 0.5) * step))
+    return out
 
 
 def status_handles(kinds=("fixed", "after", "lowered")) -> tuple[list, list[str]]:

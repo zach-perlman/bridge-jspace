@@ -1556,13 +1556,47 @@ def f04_routes_design(plt) -> None:
         ax.annotate("", (col_x[j], y_box), (col_x[j], start), arrowprops=dict(arrowstyle="->", color=col, lw=1.6))
     ax.text(col_x[0] + 13, 6, "the moved sentence: first place, new number", fontsize=S.FONT, color=S.COL["position"],
             va="center")  # fmt: skip
-    S.save(fig, "fig04_routes_design")
+    # v6: Fig. 5's left panel draws this design; the full-width schematic stays as a supplement
+    S.save(fig, "s04_routes_design", supp=True)
 
 
-# Fig. 5's rows: the arm (and the run it comes from: the removals or the keep-only arms), its label, and the random
-# control shown as a thin grey bar under it (the position share with a random part of the same size)
-ROUTE_ROWS = (("whole", "whole change", None, "main"), ("no_alf", "without the pointer", "no_alf_rand", "main"),
-              ("keep_alf", "only the pointer", "keep_alf_rand", "keep"), ("keep_jpp", "only the J++ part", "keep_jpp_rand", "keep"))  # fmt: skip
+def routes_design_panel(plt, ax) -> None:
+    """Fig. 5's left panel: f04_routes_design's schematic at half width. The original and the changed prompt as three
+    lockers each (the changed prompt's moved sentence outlined in orange); identity, position and the original answer
+    point down at the original prompt's lockers, the value up at the changed prompt's new number."""
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0, 103)
+    ax.axis("off")
+    col_x = (35, 61, 87)
+    for x, name in zip(col_x, ("first", "second", "third"), strict=True):
+        ax.text(x, 98, name, ha="center", va="center", fontsize=S.FONT, color=S.COL["muted"])
+    ax.text(1, 98, "locker", ha="left", va="center", fontsize=S.FONT, color=S.COL["muted"])
+    rows = (("original\nprompt", 57, (("duck", "4"), ("rabbit", "3"), ("goose", "2")), "Beth picked the goose."),
+            ("changed\nprompt", 33, (("rabbit", "7"), ("duck", "4"), ("goose", "2")), "Beth picked the rabbit."))  # fmt: skip
+    for label, y, lockers, pick in rows:
+        ax.text(1, y + 5, label, fontsize=S.FONT, weight="bold", va="center", linespacing=1.0)
+        for x, (item, digit) in zip(col_x, lockers, strict=True):
+            moved = label.startswith("changed") and item == "rabbit"
+            ax.add_patch(plt.Rectangle((x - 11, y), 22, 10, fc="#fff1dc" if moved else "#f5f5f5",
+                                       ec=S.COL["position"] if moved else "#bbbbbb", lw=1.8 if moved else 1))  # fmt: skip
+            ax.text(x, y + 5, f"{item}: {digit}", ha="center", va="center", fontsize=S.FONT)
+        ax.text(100, y - 5, pick, ha="right", va="center", fontsize=S.FONT, style="italic")
+    for route, digit, col, j in (("position", "4", S.COL["position"], 0), ("identity", "3", S.COL["identity"], 1),
+                                 ("original\nanswer", "2", "#7f7f7f", 2)):  # fmt: skip
+        ax.text(col_x[j], 83, f"{route}\n→ {digit}" if "\n" not in route else f"{route} → {digit}", ha="center",
+                va="center", fontsize=S.FONT, color=col, linespacing=1.0,
+                bbox={"boxstyle": "round,pad=0.2", "fc": "white", "ec": col, "lw": 1.3})  # fmt: skip
+        ax.annotate("", (col_x[j], 67.5), (col_x[j], 75.5), arrowprops={"arrowstyle": "->", "color": col, "lw": 1.5})
+    ax.text(col_x[0], 12, "value → 7", ha="center", va="center", fontsize=S.FONT, color=S.COL["value"],
+            bbox={"boxstyle": "round,pad=0.2", "fc": "white", "ec": S.COL["value"], "lw": 1.3})  # fmt: skip
+    ax.annotate(
+        "", (col_x[0], 32.5), (col_x[0], 17), arrowprops={"arrowstyle": "->", "color": S.COL["value"], "lw": 1.5}
+    )
+
+
+# Fig. 5's result rows (v6): the arm, its label, and the random control drawn as a thin light grey bar under it (the
+# position answers without a random part of the same size); the keep-only arms and the 122B are in s05
+ROUTE_ROWS = (("whole", "whole change", None), ("no_alf", "without the address", "no_alf_rand"))
 ROUTE_RUNS = {"9b": ("qwen35_9b_x6_routes", "qwen35_9b_x6_routes_keeponly"),
               "27b": ("x6_routes_27b", "x6_routes_keeponly_27b"),
               "122b": ("qwen35_122b_x6_routes_g75", "qwen35_122b_x6_routes_keeponly_g75"),
@@ -1570,50 +1604,80 @@ ROUTE_RUNS = {"9b": ("qwen35_9b_x6_routes", "qwen35_9b_x6_routes_keeponly"),
 
 
 def f05_routes(plt) -> None:
-    """Another item moved, at the layer fixed in advance: the lookup's route shares per arm (stacked), and under each part's
-    bar a thin grey bar for the position share with a random part of the same size."""
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 5.5), sharey=True)
-    fig.subplots_adjust(left=0.20, right=0.975, top=0.63, bottom=0.13, wspace=0.24)
+    """Fig. 5 (E5, v6): left, the routes design (routes_design_panel); right, another item moved, at the layer fixed in
+    advance, per model (9B, 27B, Muse) two stacked rows of lookup answers, whole change and without the address, each
+    identity / position share with its 95% interval, the original answer empty; under the second row a thin light grey
+    bar for the position answers without a random part of the same size; the value as an empty slot labelled with its
+    share (0) at the right of each row. The 122B and the keep-only arms are in s05."""
+    fig = plt.figure(figsize=(S.WIDTH, 5.4))
     S.title(fig, "The lookup follows identity or position, never the value",
-            "Lookup answers (%), routes test (another item moved). Thin grey: position answers with a\n"
-            f"random part (same size) instead. Fixed in advance; {S.LOWERED} gate lowered to 0.75 after the data.")  # fmt: skip
-    for ax, (target, m, _) in zip(axes, S.MODELS, strict=True):
-        ax.set_title(name_of(m, m in LOWERED_M), fontsize=S.FONT, weight="bold")
-        ax.set_xlim(0, 1)
-        ax.set_xticks([0, 0.5, 1], ["0", "50", "100"])
-        runs: dict[str, str] = dict(zip(("main", "keep"), ROUTE_RUNS[m], strict=True))
-        rows = {}
-        for key, run in runs.items():
-            v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
-            rows[key] = {r["arm"]: r for r in (v or {}).get("rows", []) if r["condition"] == "C2"}
-        for i, (arm, _, rand, src) in enumerate(ROUTE_ROWS):
-            r = rows[src].get(arm)
+            "Left: where each route sends the lookup. Right: lookup answers with the change placed at L.")  # fmt: skip
+    left_ax = fig.add_axes((0.01, 0.04, 0.40, 0.70))
+    routes_design_panel(plt, left_ax)
+    left_ax.text(0, 1.015, "The routes test", transform=left_ax.transAxes, fontsize=12, weight="bold", va="bottom")
+    ax = fig.add_axes((0.625, 0.10, 0.36, 0.60))
+    models = [(t, m) for t, m, _ in S.MODELS if m != "122b"]  # v6: the 122B in supplements only
+    gap, y, ticks, labels, ns = 2.75, 0.0, [], [], set()
+    for target, m in models:
+        run = ROUTE_RUNS[m][0]
+        v = latest(pins.RESULTS_DIR / "x6_routes" / run, "verdict-*/verdict.json")
+        rows = {r["arm"]: r for r in (v or {}).get("rows", []) if r["condition"] == "C2"}
+        ax.text(-0.02, y + 0.62, NAMES[m], transform=ax.get_yaxis_transform(), ha="right", va="center",
+                fontsize=S.FONT, weight="bold")  # fmt: skip
+        for i, (arm, label, rand) in enumerate(ROUTE_ROWS):
+            yi = y - i
+            ticks.append(yi)
+            labels.append(label)
+            r = rows.get(arm)
             if r is None:
+                S.empty(ax, "not run")
                 continue
+            ns.add(r["n"])
             left = 0.0
-            for route, _ in ROUTES:
-                sh = r["share"][route][0]
-                ax.barh(-i, sh, left=left, height=0.56, color=ROUTE_COL[route], edgecolor="white", lw=0.8)
-                if route in ("identity", "position") and sh >= 0.10:
-                    ax.text(left + sh / 2, -i, f"{100 * sh:.0f}", ha="center", va="center", fontsize=S.FONT,
+            for route in ("identity", "position"):
+                sh = r["share"][route]
+                ax.barh(yi, sh[0], left=left, height=0.62, color=ROUTE_COL[route], lw=0)
+                ax.plot([left + sh[1], left + sh[2]], [yi - 0.2, yi - 0.2], color="#1e1e1e", lw=1.2,
+                        solid_capstyle="butt")  # fmt: skip
+                if sh[0] >= 0.15:
+                    ax.text(left + sh[0] / 2, yi + 0.06, f"{sh[0]:.2f}", ha="center", va="center", fontsize=S.FONT,
                             color="white" if route == "identity" else "#222222")  # fmt: skip
+                left += sh[0]
+            ax.barh(yi, 1 - left, left=left, height=0.62, **S.EMPTY)  # the original answer (and other)
+            for route, _ in ROUTES:
                 S.record("fig05", target, f"another item moved, {arm}: {route} share", *r["share"][route], n=r["n"],
-                         source=runs[src])  # fmt: skip
-                left += sh
-            rr = rows[src].get(rand) if rand else None
+                         source=run)  # fmt: skip
+            # the value: an empty slot labelled with its share, filled only if the lookup ever takes it
+            val = r["share"]["value"][0]
+            ax.add_patch(plt.Rectangle((1.07, yi - 0.31), 0.13, 0.62, fc=S.COL["value"] if val > 0 else "white",
+                                       ec=S.COL["value"], lw=1.3, clip_on=False))  # fmt: skip
+            ax.text(1.135, yi, f"{val:.0f}" if val == 0 else f"{val:.2f}", ha="center", va="center",
+                    fontsize=S.FONT, color=S.COL["value"] if val == 0 else "white", weight="bold")  # fmt: skip
+            rr = rows.get(rand) if rand else None
             if rr is not None:
-                pos = rr["share"]["position"][0]
-                ax.barh(-i - 0.42, pos, height=0.12, color=S.COL["control"], lw=0)
-                ax.text(pos + 0.02, -i - 0.42, f"{100 * pos:.0f}", va="center", fontsize=S.FONT, color=S.COL["muted"])
-                S.record("fig05", target, f"another item moved, {rand}: position share", *rr["share"]["position"],
-                         n=rr["n"], source=runs[src])  # fmt: skip
-        ax.set_ylim(-len(ROUTE_ROWS) + 0.35, 0.5)
-        ax.tick_params(axis="y", length=0)
-    axes[0].set_yticks([-i for i in range(len(ROUTE_ROWS))], [r[1] for r in ROUTE_ROWS])
-    fig.supxlabel("lookup answers (%)", x=0.6, y=0.01, fontsize=S.FONT)
-    hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL[r]) for r, _ in ROUTES[:4]]
-    hs += [plt.Rectangle((0, 0), 1, 0.3, color=S.COL["control"])]
-    legend(fig, hs, [n for _, n in ROUTES[:4]] + ["random part (same size)"], 0.83)
+                pos = rr["share"]["position"]
+                yc = yi - 0.48
+                ax.barh(yc, pos[0], height=0.16, color=S.COL["control"], lw=0)
+                ax.plot([pos[1], pos[2]], [yc, yc], color="#7a7a7a", lw=1.0, solid_capstyle="butt")
+                ax.text(pos[2] + 0.02, yc, f"{pos[0]:.2f}", va="center", fontsize=S.FONT, color=S.COL["muted"])
+                S.record("fig05", target, f"another item moved, {rand}: position share", *pos, n=rr["n"], source=run)
+        y -= gap
+    ax.set_xlim(0, 1.2)
+    ax.set_xticks([0, 0.5, 1], ["0", "0.5", "1"])
+    ax.spines["bottom"].set_bounds(0, 1)
+    ax.set_ylim(y + gap - 1.75, 1.0)
+    ax.set_yticks(ticks, labels)
+    ax.tick_params(axis="y", length=0)
+    ax.set_xlabel("share of lookups", x=0.42)
+    ax.text(1.135, 0.62, "value", ha="center", va="center", fontsize=S.FONT, color=S.COL["value"])
+    ax.text(-0.5, 1.09, "Lookup answers at L", transform=ax.transAxes, fontsize=12, weight="bold", va="bottom")
+    n = "–".join(str(k) for k in sorted(ns)) + " per model"
+    S.panel_tag(ax, n, "fixed")
+    S.panel_tag(left_ax, None, None)
+    hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["identity"]), plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["position"]),
+          plt.Rectangle((0, 0), 1, 1, **S.EMPTY), plt.Rectangle((0, 0), 1, 0.35, color=S.COL["control"])]  # fmt: skip
+    legend(fig, hs, ["identity", "position", "original answer", "position, without a random part (same size)"], 0.885,
+           ncol=4)  # fmt: skip
     S.save(fig, "fig05_routes")
 
 
@@ -2413,14 +2477,15 @@ def scorecard_rows() -> list[dict]:
         ("Split", "varied scenes", v4["The split in varied scenes"], lambda m: f"numbers:x0b_c_{m}"),
         ("Split", "natural passages", natural, lambda m: nat_key.get(m, f"numbers:nat_gap_{m}")),
         ("Split", "without the chat template", no_tpl, lambda m: f"numbers:x45ig_gap_{m}"),
+        # the routes rows cite s05 (every model, every arm): v6's Fig. 5 drops the 122B and the keep-only arms
         ("Routes", "never the value", v4["Never the value"],
-         lambda m: "fig05:another item moved, whole: value share"),
+         lambda m: "s05:another item moved, whole: value share"),
         ("Routes", "never the value without the chat template", nochat,
          lambda m: "fig11:routes test without the chat template, another item moved, whole: value share"),
         ("Pointer", "the lookup needs it", v4["The lookup needs the pointer"],
-         lambda m: "fig05:another item moved, no_alf: position share"),
+         lambda m: "s05:another item moved, no_alf: position share"),
         ("Pointer", "only it gives position answers", v4["Only the pointer gives\nposition answers"],
-         lambda m: "fig05:another item moved, keep_alf: position share"),
+         lambda m: "s05:another item moved, keep_alf: position share"),
         ("Pointer", "a write moves the lookup", v4["A write moves the lookup"],
          lambda m: "fig07:lookup target share, mean over locker pairs, s = 4"),
         ("Pointer", "the recall follows the write", v4["The recall follows the write"],
@@ -2580,46 +2645,93 @@ def latest_verdict(pattern: str) -> Path:
     return found[-1]
 
 
+ANATOMY_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")  # v6: 9B, 27B, Muse (the 122B in supplements)
+# 47.8's bars for its l_probe and l_P (scripts/x47_anatomy.py's L_PROBE_BAR, L_P_BAR), for the legend's words only:
+# the marked layers are the verdict's rules
+PROBE_BAR, POSITION_BAR = 0.80, 0.20
+
+
 def f06b_anatomy(plt) -> None:
-    """Fig. 6b: 47.8 (fixed in advance), the lookup's answers under the whole change at each sampled layer (identity /
-    position / unchanged), the recall's switch beside, L marked; one panel per tested model. The full sweep (parts,
-    probes) is the verdict folder's x47_anatomy.png."""
+    """Fig. 6b (E12): 47.8 (fixed in advance), per tested model, the lookup's answers under the whole change at each
+    sampled layer (identity / position stacked, the original answer empty, the value as a row of 0s under the bars),
+    each share's 95% interval; the recall's switches as a line with its band; the not-interpretable shading where the
+    lookup's whole change switches < S.NI_SWITCH; marks at the layer where the locker probe first reaches 0.8 (rules
+    l_probe: the address is formed), where position answers start (l_P: the address is used) and at L. One panel per
+    model, x = layer index. The full sweep (parts, probes) is the verdict folder's x47_anatomy.png."""
     vdir = latest_verdict("x47_anatomy/x47_8-*")
     src = str((vdir / "x47_8.json").relative_to(S.REPO))
-    models = [m for m in json.loads((vdir / "x47_8.json").read_text())["models"] if m["status"] == "tested"]
-    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 4.3), sharey=True)
-    fig.subplots_adjust(left=0.09, right=0.985, top=0.62, bottom=0.14, wspace=0.12)
-    S.title(fig, "With depth the change moves the lookup by identity, then by position",
-            "Lookup answers under the whole change placed at one layer (bars), recall switches (line); routes test,\n"
-            "another item moved, locker before the pick. Fixed in advance; the value never appears.")  # fmt: skip
-    for ax, m in zip(np.atleast_1d(axes), models, strict=True):
-        layers, target = m["layers"], m["target"]
+    tested = {
+        m["target"]: m for m in json.loads((vdir / "x47_8.json").read_text())["models"] if m["status"] == "tested"
+    }
+    models = [tested[t] for t in ANATOMY_ORDER if t in tested]
+    assert 0 < len(models) <= 2, f"v6: at most two panels, got {list(tested)}"
+    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 5.0), sharey=True, squeeze=False)
+    fig.subplots_adjust(left=0.085, right=0.985, top=0.64, bottom=0.14, wspace=0.10)
+    S.title(fig, "The address forms early; the lookup goes by identity, then by position",
+            "Bars: lookup answers under the whole change at one layer; line: recall switches; whiskers, bands: 95%.")  # fmt: skip
+    w = 0.78
+    for ax, m in zip(axes[0], models, strict=True):
+        layers, target, rules = m["layers"], m["target"], m["rules"]
+        cells = [m["cells"][str(la)] for la in layers]
         name = next(lab for t, _, lab in S.MODELS if t == target)
         x = np.arange(len(layers))
+        ni = [c["lookup"]["switch"]["whole"][0] < S.NI_SWITCH - 1e-9 for c in cells]
+        assert ni == [not c["lookup"]["interpretable"] for c in cells], f"{target}: the shading disagrees with 47.8"
+        S.not_interpretable(ax, S.spans(ni))
         bottom = np.zeros(len(layers))
-        for rt in ("identity", "position", "original"):
-            v = np.array([m["cells"][str(la)]["lookup"]["share"]["whole"][rt][0] for la in layers])
-            ax.bar(x, v, bottom=bottom, color=S.COL[rt], width=0.8, label=rt if rt != "original" else "original answer")
-            bottom += v
-            for la, cell in zip(layers, (m["cells"][str(la)] for la in layers), strict=True):
-                S.record("fig06b", target, f"layer {la}: lookup {rt} share (whole change)",
-                         *cell["lookup"]["share"]["whole"][rt], source=src)  # fmt: skip
-        rc = [m["cells"][str(la)]["recall"]["switch"]["whole"] for la in layers]
-        ax.plot(x, [r[0] for r in rc], color=S.COL["recall"], marker="D", ms=5, lw=2, label="recall switches")
-        for la, r in zip(layers, rc, strict=True):
-            S.record("fig06b", target, f"layer {la}: recall switch (whole change)", *r, source=src)
+        for rt in ("identity", "position"):
+            sh = np.array([c["lookup"]["share"]["whole"][rt] for c in cells])
+            ax.bar(x, sh[:, 0], bottom=bottom, color=S.COL[rt], width=w, zorder=2)
+            off = -0.17 if rt == "identity" else 0.17
+            ax.vlines(x + off, bottom + sh[:, 1], bottom + sh[:, 2], color="#1e1e1e", lw=0.9, zorder=3)
+            bottom += sh[:, 0]
+        ax.bar(x, 1 - bottom, bottom=bottom, width=w, zorder=2, **S.EMPTY)  # the original answer (and other)
+        for la, c in zip(layers, cells, strict=True):
+            for rt in ("identity", "position", "value", "original"):
+                S.record("fig06b", target, f"layer {la}: lookup {rt} share (whole change)", *c["lookup"]["share"]["whole"][rt],
+                         n=c["lookup"]["n"], source=src)  # fmt: skip
+        # the value: a row of its shares under the bars, shown even at 0
+        for xi, c in zip(x, cells, strict=True):
+            v = c["lookup"]["share"]["whole"]["value"][0]
+            ax.text(xi, -0.075, f"{v:.0f}" if v == 0 else f"{v:.2f}", ha="center", va="center", fontsize=S.FONT,
+                    color=S.COL["value"])  # fmt: skip
+        rc = np.array([c["recall"]["switch"]["whole"] for c in cells])
+        ax.fill_between(x, rc[:, 1], rc[:, 2], color=S.COL["recall"], alpha=0.18, lw=0, zorder=4)
+        ax.plot(x, rc[:, 0], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8, zorder=5)
+        for la, c in zip(layers, cells, strict=True):
+            S.record("fig06b", target, f"layer {la}: recall switch (whole change)", *c["recall"]["switch"]["whole"],
+                     n=c["recall"]["n"], source=src)  # fmt: skip
+        # probe before use: where the address is formed (locker probe >= 0.8) and where it is used (position answers
+        # start), labelled above the panel; L under the layer axis
+        marks = (("address\nformed", rules["l_probe"], "--"), ("address\nused", rules["l_P"], "-"))
+        for label, la, ls in marks:
+            S.record("fig06b", target, f"{label.replace(chr(10), ' ')}: layer", la, source=src)
+            if la is None:
+                continue
+            xi = layers.index(la)
+            ax.axvline(xi, ymin=0.115, color="#1e1e1e", ls=ls, lw=1.2, zorder=6)
+            ax.text(xi, 1.02, label, ha="center", va="bottom", fontsize=S.FONT, color="#1e1e1e", linespacing=1.0)
         li = layers.index(m["layer"])
-        ax.axvline(li, color=S.COL["muted"], ls=":", lw=1)
-        ax.text(li + 0.15, 1.02, "L", color=S.COL["muted"], va="bottom")
+        ax.text(li, -0.13, "▲\nL", transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=S.FONT - 1,
+                weight="bold", color="#1e1e1e", linespacing=0.9)  # fmt: skip
         step = 2 if len(layers) > 10 else 1
         ax.set_xticks(x[::step], [str(la) for la in layers][::step])
-        ax.set_xlabel("layer")
-        ax.set_title(name, fontweight="bold")
-        ax.set_ylim(0, 1.08)
+        ax.set_xlim(-0.6, len(layers) - 0.4)
+        ax.set_xlabel("layer", loc="right", labelpad=6)
+        ax.text(0, 1.16, name, transform=ax.transAxes, ha="left", va="bottom", fontsize=12, weight="bold")
+        S.panel_tag(ax, str(cells[0]["lookup"]["n"]) + " per layer", "fixed", inside=True)
+        ax.set_ylim(-0.13, 1.0)
+        ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.spines[["top", "right"]].set_visible(False)
-    np.atleast_1d(axes)[0].set_ylabel("share of lookups / recalls")
-    handles, labels = np.atleast_1d(axes)[0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="upper left", bbox_to_anchor=(0.01, 0.79), ncol=4, frameon=False)
+    axes[0, 0].set_ylabel("share of lookups / recalls")
+    axes[0, 0].text(-0.6, -0.075, "value", ha="right", va="center", fontsize=S.FONT, color=S.COL["value"])
+    hs = [plt.Rectangle((0, 0), 1, 1, color=S.COL["identity"]), plt.Rectangle((0, 0), 1, 1, color=S.COL["position"]),
+          plt.Rectangle((0, 0), 1, 1, **S.EMPTY),
+          plt.Line2D([], [], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8),
+          plt.Line2D([], [], color="#1e1e1e", ls="--", lw=1.2), plt.Line2D([], [], color="#1e1e1e", lw=1.2)]  # fmt: skip
+    legend(fig, hs, ["identity", "position", "original answer", "recall switches",
+                     f"address formed: locker probe ≥ {PROBE_BAR:.1f}",
+                     f"address used: position ≥ {POSITION_BAR:.1f}"], 0.885, ncol=3)  # fmt: skip
     S.save(fig, "fig06b_anatomy")
 
 
@@ -2717,7 +2829,8 @@ def s_batch47(plt) -> None:
     batch47_figures(plt, BATCH47_SUPP, supp=True)
 
 
-README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f04_routes_design, f05_routes,
+# v6: Fig. 4's schematic is Fig. 5's left panel; the full-width one is the supplement s04_routes_design
+README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
                f_batch47)  # fmt: skip
 SUPP_FIGS = (
@@ -2725,6 +2838,7 @@ SUPP_FIGS = (
     s01b_one_pick,
     s01c,
     s02_parts,
+    f04_routes_design,
     s05_routes,
     s08_first_sentence,
     s10_removed_together,
@@ -2735,11 +2849,11 @@ SUPP_FIGS = (
 
 README_NAMES = ("fig00_setup", "fig01_split", "fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03_order", "fig03b_layers",
                 "fig03c_earlier_mention",
-                "fig04_routes_design", "fig05_routes", "fig06_depth", "fig06b_anatomy", "fig07_writes", "fig07b_verbal", "fig08_first_locker",
+                "fig05_routes", "fig06_depth", "fig06b_anatomy", "fig07_writes", "fig07b_verbal", "fig08_first_locker",
                 "fig09_transfer", "fig10_what_is_left", "fig11_scorecard", *BATCH47)  # fmt: skip
 # the draft set's second sheet: the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
-              "supp/s02_parts_all", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants",
+              "supp/s02_parts_all", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants", "supp/s04_routes_design",
               "supp/s05_routes_all_arms", "supp/s08_first_sentence_and_label_free",
               "supp/s08b_pointer_moves_and_neutral_sentence", "supp/s10_removed_together_bars", "supp/s10b_what_is_left_all_scenes",
               "x0_necessity/overview", "x0_necessity/detail_x0_necessity_27b_chat_chat",

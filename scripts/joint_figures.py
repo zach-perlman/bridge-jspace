@@ -766,8 +766,8 @@ def j5_muse_depth(plt):
 
 
 def j8_routes(plt):
-    """Dan ~20:30, from Fig. 5's data (figures/story/data.csv fig05; the routes test, scenes where the patch moves
-    another item): per model one stacked bar of the lookup answers under the whole patch, by route: identity (blue),
+    """Dan ~20:30, from Fig. 5's data (figures/story/data.csv s05, every model and arm, since v6's fig05 drops the
+    122B; the routes test, scenes where the patch moves another item): per model one stacked bar of the lookup answers under the whole patch, by route: identity (blue),
     position (orange), the original or another answer (light grey), and the number, labelled 0%; a dark grey tick where
     the position answers end without the order signal. Hollow = after the data (Qwen 122B, its gate lowered)."""
     dp = depth()
@@ -783,7 +783,7 @@ def j8_routes(plt):
     for i, (name, _zm, target, m) in enumerate(models):
         y = -i
         q = "another item moved, {}: {} share"
-        get = lambda arm, route, t=target, qq=q: dp[("fig05", t, qq.format(arm, route))]  # noqa: E731
+        get = lambda arm, route, t=target, qq=q: dp[("s05", t, qq.format(arm, route))]  # noqa: E731
         kind = "after" if "a" in card[("never the value", scard[m])] else "fixed"
         shares = {
             route: 100 * num(get("whole", route)["value"])
@@ -799,7 +799,7 @@ def j8_routes(plt):
                 xc = (x_tick + left + v) / 2 if key == "position" else left + v / 2
                 ax.text(xc, y, f"{v:.0f}%", ha="center", va="center", fontsize=S.FONT,
                         color="white" if kind == "fixed" and key != "original" else "#222222", zorder=3)  # fmt: skip
-            src = f"figures/story/data.csv | fig05 | {q.format('whole', key)}"
+            src = f"figures/story/data.csv | s05 | {q.format('whole', key)}"
             if key == "original":
                 src += f"; {q.format('whole', 'other')} (summed)"
             record("j8", name, f"lookup answers by route, whole change: {label} (%)", round(v, 1),
@@ -807,12 +807,12 @@ def j8_routes(plt):
             left += v
         ax.text(101.5, y, f"number: {shares['value']:.0f}%", va="center", fontsize=S.FONT, color="#222222")
         record("j8", name, "lookup answers by route, whole change: the number (%)", round(shares["value"], 1),
-               source=f"figures/story/data.csv | fig05 | {q.format('whole', 'value')}")  # fmt: skip
+               source=f"figures/story/data.csv | s05 | {q.format('whole', 'value')}")  # fmt: skip
         pos_without = 100 * num(get("no_alf", "position")["value"])
         x = shares["identity"] + pos_without  # where the orange segment would end without the order signal
         ax.plot([x, x], [y - 0.42, y + 0.42], color=tick_col, lw=2.6, zorder=4, solid_capstyle="butt")
         record("j8", name, "position answers without the order signal (%)", round(pos_without, 1),
-               source=f"figures/story/data.csv | fig05 | {q.format('no_alf', 'position')}")  # fmt: skip
+               source=f"figures/story/data.csv | s05 | {q.format('no_alf', 'position')}")  # fmt: skip
         ns.add(get("whole", "identity")["n"])
     S.title(fig, "Lookup answers follow identity or position, never the number",
             f"Locker scenes where the change moves another item; the number = the moved number; {'/'.join(sorted(ns))} "

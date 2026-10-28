@@ -1,5 +1,27 @@
 # Figure plan
 
+## v6 style rules (Dan's README v6 brief, §5; 28 Oct)
+
+Every README figure, as it is restyled for v6 (one experiment card E1–E16, one figure each):
+
+- **Title** = the conclusion, one line, no numbers (no digit at all, so no model sizes either).
+- **Subtitle** = the mechanics, one line.
+- **n and status** as a small label in the top-right of each panel: "n 300 per model · ● fixed in advance" (filled glyph = fixed in advance, open ○ = after the data; "schematic" on a schematic). `story_style.panel_tag`.
+- **Fixed colours**, never a hue reused for another meaning: lookup purple, recall dark grey, random / control light grey, identity blue, position orange, value green (shown even when 0, with a "0" label), the J++ part one hue and the address another. The original answer is an empty (outlined) segment, so light grey stays the control's alone (`story_style.EMPTY`).
+- **Models** in the order 9B, 27B, Muse; the 122B only in supplements.
+- **Axes**: shares on [0, 1]; layers as a fraction of depth when models share a panel, as the layer index when there is one model per panel.
+- **95% intervals** always drawn (whiskers on bars, bands on lines).
+- **Not interpretable** (the whole change switches < 0.30 of a reader): the same hatched shading in every figure (`story_style.NI_SWITCH`, `NI_SHADE`, `not_interpretable`).
+- **At most two panels** per figure.
+- **Words**: lookup, recall, bridge, swap (not write), address (not pointer), in all figure text.
+
+`scripts/check_figure_terms.py` tests the testable part on the figures in its `V6_FIGS` (a figure joins when it is restyled): no digit in the title, title and subtitle one line each, at most two panels, no "pointer" or "write". It also lists, without failing, the other README titles that still hold a digit.
+
+| v6 card | Figure | Title | Status | Source (results/) |
+|---|---|---|---|---|
+| E5 | `fig05_routes` | The lookup follows identity or position, never the value | left: schematic (was Fig. 4, now `supp/s04_routes_design`); right: fixed in advance | x6_routes main runs (whole, without the address, its random part) |
+| E12 | `fig06b_anatomy` | The address forms early; the lookup goes by identity, then by position | fixed in advance (47.8) | x47_anatomy/x47_8-* |
+
 ## README v5 (27 Oct, after the overnight queue; draft, UNVERIFIED)
 
 Figure → claim (its title) → status → source. Built by `scripts/readme_story_figures.py` (`figures/story/`, `figures/supp/`, every plotted number in `figures/story/data.csv`; Fig. 11 from `figures/story/scorecard.csv`); `scripts/check_figure_terms.py` checks the retired terms. Status: fixed in advance (filled marks), after the data (open), ° gate lowered to 0.75 after the data.

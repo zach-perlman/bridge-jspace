@@ -67,6 +67,38 @@ JOINT_RETIRED = {
 }
 
 
+# Dan's README v6 brief, §5 (docs/figure_plan.md "v6 style rules"), the testable part, on the README figures restyled
+# for v6 so far (each joins V6_FIGS when it is): the title is the conclusion on one line with no digit (no numbers,
+# no model sizes); the subtitle one line; at most two panels; "swap" not "write", "address" not "pointer"
+V6_FIGS = ("fig05_routes", "fig06b_anatomy")
+V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|ing)\b|\bwrote\b"}
+
+
+def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
+    """(figure, text, rule) for each v6 rule a V6_FIGS figure breaks. layout: figure -> {"title", "subtitle", "panels"}
+    (figure_texts fills it); texts: (figure, drawn text)."""
+    out = []
+    for name in V6_FIGS:
+        lay = layout.get(name)
+        if lay is None:
+            out.append((name, "", "not drawn"))
+            continue
+        title, sub = lay["title"], lay["subtitle"]
+        if not title.strip():
+            out.append((name, title, "no title"))
+        if re.search(r"\d", title):
+            out.append((name, title, "digit in the title"))
+        if "\n" in title:
+            out.append((name, title, "title over one line"))
+        if "\n" in sub:
+            out.append((name, sub, "subtitle over one line"))
+        if lay["panels"] > 2:
+            out.append((name, str(lay["panels"]), "more than two panels"))
+    out += [(where, text, term) for where, text in texts if where in V6_FIGS
+            for term, rx in V6_RETIRED.items() if re.search(rx, text)]  # fmt: skip
+    return out
+
+
 def retired(texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
     """(where, text, term) for each text holding a retired term."""
     return [(where, text, term) for where, text in texts for term, rx in RETIRED.items() if re.search(rx, text)]
@@ -130,9 +162,10 @@ def caption_texts() -> list[tuple[str, str]]:
     return out
 
 
-def figure_texts() -> list[tuple[str, str]]:
+def figure_texts(layout: dict[str, dict] | None = None) -> list[tuple[str, str]]:
     """Every text the README and supplementary figures draw, by figure (savefig caught; data.csv and scorecard.csv go
-    to a temporary folder)."""
+    to a temporary folder). layout, if given, gets each figure's title, subtitle (story_style.title marks it) and number
+    of panels (axes)."""
     import matplotlib
     from matplotlib.figure import Figure
     from matplotlib.text import Text
@@ -143,7 +176,12 @@ def figure_texts() -> list[tuple[str, str]]:
     texts: list[tuple[str, str]] = []
 
     def grab(fig, fname, *args, **kwargs) -> None:
-        texts.extend((Path(str(fname)).stem, t.get_text()) for t in fig.findobj(Text) if t.get_text().strip())
+        stem = Path(str(fname)).stem
+        drawn = [t for t in fig.findobj(Text) if t.get_text().strip()]
+        texts.extend((stem, t.get_text()) for t in drawn)
+        if layout is not None:
+            sub = next((t.get_text() for t in drawn if getattr(t, S.SUBTITLE, False)), "")
+            layout[stem] = {"title": fig.get_suptitle(), "subtitle": sub, "panels": len(fig.axes)}
 
     saved = (Figure.savefig, S.OUT, S.SUPP, list(S.ROWS))
     with tempfile.TemporaryDirectory() as tmp, matplotlib.rc_context():
@@ -162,13 +200,23 @@ def figure_texts() -> list[tuple[str, str]]:
 
 def main(argv: list[str] | None = None) -> int:
     joint = joint_figure_texts()
-    hits = retired(caption_texts() + figure_texts() + joint)
+    layout: dict[str, dict] = {}
+    drawn = figure_texts(layout)
+    hits = retired(caption_texts() + drawn + joint)
     joint_hits = joint_retired(joint + root_readme_texts())
-    for where, text, term in hits + joint_hits:
+    v6_hits = v6_style(layout, drawn)
+    for where, text, term in hits + joint_hits + v6_hits:
         print(f"{where}: {term!r} in {text!r}")
+    from scripts import readme_story_figures as F
+
+    pending = sorted(
+        n for n in F.README_NAMES if n not in V6_FIGS and re.search(r"\d", layout.get(n, {}).get("title", ""))
+    )
+    if pending:  # reported, not failed: these titles wait for their v6 restyle
+        print(f"check_figure_terms: README titles with a digit, not yet in V6_FIGS: {', '.join(pending)}")
     print(f"check_figure_terms: {len(hits)} retired term(s); {len(joint_hits)} joint-story term(s) "
-          f"(root README and figures/shared/)")  # fmt: skip
-    return 1 if hits or joint_hits else 0
+          f"(root README and figures/shared/); {len(v6_hits)} v6 style break(s) ({', '.join(V6_FIGS)})")  # fmt: skip
+    return 1 if hits or joint_hits or v6_hits else 0
 
 
 if __name__ == "__main__":

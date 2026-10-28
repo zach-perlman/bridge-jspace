@@ -99,3 +99,28 @@ def test_the_joint_figures_draw_no_retired_term():
         "grid_dan",
     }
     assert not C.retired(texts) and not C.joint_retired(texts), C.retired(texts) + C.joint_retired(texts)
+
+
+def _v6_layout(**over) -> dict[str, dict]:
+    base = {"title": "The lookup follows identity or position, never the value", "subtitle": "One line.", "panels": 2}
+    return {name: {**base, **over} for name in C.V6_FIGS}
+
+
+def test_v6_style_passes_a_clean_figure():
+    assert not C.v6_style(_v6_layout(), [(C.V6_FIGS[0], "without the address"), (C.V6_FIGS[0], "the swap")])
+
+
+@pytest.mark.parametrize(
+    ("over", "rule"),
+    [({"title": "The split holds on the 9B"}, "digit in the title"), ({"title": "Two\nlines"}, "title over one line"),
+     ({"subtitle": "First\nsecond"}, "subtitle over one line"), ({"panels": 3}, "more than two panels"),
+     ({"title": ""}, "no title")],
+)  # fmt: skip
+def test_v6_style_catches_each_break(over, rule):
+    assert rule in {r for *_, r in C.v6_style(_v6_layout(**over), [])}
+
+
+def test_v6_style_catches_retired_words_and_missing_figures():
+    texts = [(C.V6_FIGS[0], "without the pointer"), (C.V6_FIGS[0], "a write at the bridge"), ("fig99", "pointer")]
+    assert [r for *_, r in C.v6_style(_v6_layout(), texts)] == ["pointer", "write"]
+    assert [r for *_, r in C.v6_style({}, [])] == ["not drawn"] * len(C.V6_FIGS)
