@@ -4,7 +4,7 @@ thread: C3
 gpus: 1
 mem_gb: 40
 est_gpu_hours: 0.15
-depends_on: []
+depends_on: [x50_z1_9b, x50_z2_9b]  # batch 50: Z3 only once Z1 and Z2 land (both on mats)
 command: >-
   BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= uv run python scripts/x50_zach.py run --part z3 --name qwen35_9b_x50_z3
 question: >-

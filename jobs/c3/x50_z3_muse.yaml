@@ -4,7 +4,7 @@ thread: C3
 gpus: 1
 mem_gb: 75
 est_gpu_hours: 0.25
-depends_on: []
+depends_on: [x50_z1_muse]  # batch 50: Z3 only once Z1 and Z2 land; Z2 Muse runs on the speedup box (x50_z2_muse_s), outside this ledger, checked by hand
 command: >-
   BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= uv run python scripts/x50_zach.py run --part z3 --name muse30_x50_z3
 question: >-
