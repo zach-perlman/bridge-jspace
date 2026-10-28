@@ -1,0 +1,2722 @@
+{
+ "order": "after",
+ "band": {
+  "runs": [
+   "qwen35_9b_nn_ans_L12-16_s0_v1",
+   "qwen35_9b_nn_ans_L12-16_s1_v1",
+   "qwen35_9b_nn_ans_L12-16_s2_v1"
+  ],
+  "pooled": {
+   "RM/none": {
+    "n": 105,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 105,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/insert_k10": {
+    "n": 105,
+    "kept": 61.0,
+    "donor": 31.4,
+    "third": 0.0,
+    "other": 7.6,
+    "n_third": 105,
+    "transfer": 31.4,
+    "ci": [
+     17.7,
+     47.1
+    ]
+   },
+   "RM/latent_k10": {
+    "n": 105,
+    "kept": 79.0,
+    "donor": 15.2,
+    "third": 0.0,
+    "other": 5.7,
+    "n_third": 105,
+    "transfer": 15.2,
+    "ci": [
+     6.7,
+     24.1
+    ]
+   },
+   "RM/insert_k10_noans": {
+    "n": 105,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 105,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/insert_k10_noansctl": {
+    "n": 105,
+    "kept": 84.8,
+    "donor": 10.5,
+    "third": 0.0,
+    "other": 4.8,
+    "n_third": 105,
+    "transfer": 10.5,
+    "ci": [
+     4.4,
+     17.2
+    ]
+   },
+   "RM/insert_ans": {
+    "n": 105,
+    "kept": 82.9,
+    "donor": 11.4,
+    "third": 0.0,
+    "other": 5.7,
+    "n_third": 105,
+    "transfer": 11.4,
+    "ci": [
+     3.5,
+     21.9
+    ]
+   },
+   "RM/insert_ansctl": {
+    "n": 105,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 105,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/latent_k10_noans": {
+    "n": 105,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 105,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/latent_k10_noansctl": {
+    "n": 105,
+    "kept": 93.3,
+    "donor": 4.8,
+    "third": 0.0,
+    "other": 1.9,
+    "n_third": 105,
+    "transfer": 4.8,
+    "ci": [
+     0.9,
+     9.8
+    ]
+   },
+   "RM/latent_ans": {
+    "n": 105,
+    "kept": 89.5,
+    "donor": 6.7,
+    "third": 0.0,
+    "other": 3.8,
+    "n_third": 105,
+    "transfer": 6.7,
+    "ci": [
+     0.0,
+     14.7
+    ]
+   },
+   "RM/latent_ansctl": {
+    "n": 105,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 105,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/remove_k10_noans": {
+    "n": 105,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 105,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/none": {
+    "n": 66,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/insert_k10": {
+    "n": 66,
+    "kept": 87.9,
+    "donor": 9.1,
+    "third": 0.0,
+    "other": 3.0,
+    "n_third": 66,
+    "transfer": 9.1,
+    "ci": [
+     0.0,
+     19.7
+    ]
+   },
+   "MM/latent_k10": {
+    "n": 66,
+    "kept": 95.5,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 4.5,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/insert_k10_noans": {
+    "n": 66,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/insert_k10_noansctl": {
+    "n": 66,
+    "kept": 95.5,
+    "donor": 4.5,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 4.5,
+    "ci": [
+     0.0,
+     11.1
+    ]
+   },
+   "MM/insert_ans": {
+    "n": 66,
+    "kept": 95.5,
+    "donor": 3.0,
+    "third": 0.0,
+    "other": 1.5,
+    "n_third": 66,
+    "transfer": 3.0,
+    "ci": [
+     0.0,
+     6.9
+    ]
+   },
+   "MM/insert_ansctl": {
+    "n": 66,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/latent_k10_noans": {
+    "n": 66,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/latent_k10_noansctl": {
+    "n": 66,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/latent_ans": {
+    "n": 66,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/latent_ansctl": {
+    "n": 66,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/remove_k10_noans": {
+    "n": 66,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 66,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/none": {
+    "n": 69,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 69,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/insert_k10": {
+    "n": 69,
+    "kept": 27.5,
+    "donor": 55.1,
+    "third": 0.0,
+    "other": 17.4,
+    "n_third": 69,
+    "transfer": 55.1,
+    "ci": [
+     36.2,
+     73.9
+    ]
+   },
+   "PM/latent_k10": {
+    "n": 69,
+    "kept": 47.8,
+    "donor": 21.7,
+    "third": 0.0,
+    "other": 30.4,
+    "n_third": 69,
+    "transfer": 21.7,
+    "ci": [
+     11.6,
+     33.3
+    ]
+   },
+   "PM/insert_k10_noans": {
+    "n": 69,
+    "kept": 82.6,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 17.4,
+    "n_third": 69,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/insert_k10_noansctl": {
+    "n": 69,
+    "kept": 52.2,
+    "donor": 29.0,
+    "third": 0.0,
+    "other": 18.8,
+    "n_third": 69,
+    "transfer": 29.0,
+    "ci": [
+     15.9,
+     42.0
+    ]
+   },
+   "PM/insert_ans": {
+    "n": 69,
+    "kept": 76.8,
+    "donor": 10.1,
+    "third": 0.0,
+    "other": 13.0,
+    "n_third": 69,
+    "transfer": 10.1,
+    "ci": [
+     2.9,
+     18.8
+    ]
+   },
+   "PM/insert_ansctl": {
+    "n": 69,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 69,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/latent_k10_noans": {
+    "n": 69,
+    "kept": 97.1,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 2.9,
+    "n_third": 69,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/latent_k10_noansctl": {
+    "n": 69,
+    "kept": 76.8,
+    "donor": 11.6,
+    "third": 0.0,
+    "other": 11.6,
+    "n_third": 69,
+    "transfer": 11.6,
+    "ci": [
+     2.9,
+     20.3
+    ]
+   },
+   "PM/latent_ans": {
+    "n": 69,
+    "kept": 84.1,
+    "donor": 4.3,
+    "third": 1.4,
+    "other": 10.1,
+    "n_third": 69,
+    "transfer": 2.9,
+    "ci": [
+     0.0,
+     8.7
+    ]
+   },
+   "PM/latent_ansctl": {
+    "n": 69,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 69,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/remove_k10_noans": {
+    "n": 69,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 69,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/insert_k10_rand": {
+    "n": 70,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 70,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/insert_k10_rot": {
+    "n": 70,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 70,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/latent_k10_rand": {
+    "n": 70,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 70,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/latent_k10_rot": {
+    "n": 70,
+    "kept": 98.6,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 1.4,
+    "n_third": 70,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/remove_k10": {
+    "n": 70,
+    "kept": 82.9,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 17.1,
+    "n_third": 70,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "RM/remove_k10_rot": {
+    "n": 70,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 70,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/insert_k10_rand": {
+    "n": 44,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 44,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/insert_k10_rot": {
+    "n": 44,
+    "kept": 97.7,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 2.3,
+    "n_third": 44,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/latent_k10_rand": {
+    "n": 44,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 44,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/latent_k10_rot": {
+    "n": 44,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 44,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/remove_k10": {
+    "n": 44,
+    "kept": 95.5,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 4.5,
+    "n_third": 44,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "MM/remove_k10_rot": {
+    "n": 44,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 44,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/insert_k10_rand": {
+    "n": 46,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 46,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/insert_k10_rot": {
+    "n": 46,
+    "kept": 91.3,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 8.7,
+    "n_third": 46,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/latent_k10_rand": {
+    "n": 46,
+    "kept": 100.0,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 0.0,
+    "n_third": 46,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/latent_k10_rot": {
+    "n": 46,
+    "kept": 97.8,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 2.2,
+    "n_third": 46,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   },
+   "PM/remove_k10": {
+    "n": 46,
+    "kept": 43.5,
+    "donor": 4.3,
+    "third": 2.2,
+    "other": 50.0,
+    "n_third": 46,
+    "transfer": 2.2,
+    "ci": [
+     -4.3,
+     8.7
+    ]
+   },
+   "PM/remove_k10_rot": {
+    "n": 46,
+    "kept": 95.7,
+    "donor": 0.0,
+    "third": 0.0,
+    "other": 4.3,
+    "n_third": 46,
+    "transfer": 0.0,
+    "ci": [
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "per_seed": {
+   "qwen35_9b_nn_ans_L12-16_s0_v1": {
+    "RM/none": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10": {
+     "n": 35,
+     "kept": 60.0,
+     "donor": 31.4,
+     "third": 0.0,
+     "other": 8.6,
+     "n_third": 35,
+     "transfer": 31.4,
+     "ci": [
+      15.6,
+      48.7
+     ]
+    },
+    "RM/latent_k10": {
+     "n": 35,
+     "kept": 74.3,
+     "donor": 20.0,
+     "third": 0.0,
+     "other": 5.7,
+     "n_third": 35,
+     "transfer": 20.0,
+     "ci": [
+      6.1,
+      35.0
+     ]
+    },
+    "RM/insert_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10_noansctl": {
+     "n": 35,
+     "kept": 77.1,
+     "donor": 17.1,
+     "third": 0.0,
+     "other": 5.7,
+     "n_third": 35,
+     "transfer": 17.1,
+     "ci": [
+      5.1,
+      31.4
+     ]
+    },
+    "RM/insert_ans": {
+     "n": 35,
+     "kept": 82.9,
+     "donor": 11.4,
+     "third": 0.0,
+     "other": 5.7,
+     "n_third": 35,
+     "transfer": 11.4,
+     "ci": [
+      2.8,
+      22.9
+     ]
+    },
+    "RM/insert_ansctl": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10_noansctl": {
+     "n": 35,
+     "kept": 94.3,
+     "donor": 2.9,
+     "third": 0.0,
+     "other": 2.9,
+     "n_third": 35,
+     "transfer": 2.9,
+     "ci": [
+      0.0,
+      8.8
+     ]
+    },
+    "RM/latent_ans": {
+     "n": 35,
+     "kept": 88.6,
+     "donor": 8.6,
+     "third": 0.0,
+     "other": 2.9,
+     "n_third": 35,
+     "transfer": 8.6,
+     "ci": [
+      0.0,
+      18.2
+     ]
+    },
+    "RM/latent_ansctl": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/remove_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/none": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10": {
+     "n": 22,
+     "kept": 90.9,
+     "donor": 9.1,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 9.1,
+     "ci": [
+      0.0,
+      21.7
+     ]
+    },
+    "MM/latent_k10": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10_noansctl": {
+     "n": 22,
+     "kept": 90.9,
+     "donor": 9.1,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 9.1,
+     "ci": [
+      0.0,
+      21.7
+     ]
+    },
+    "MM/insert_ans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_ansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_noansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_ans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_ansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/remove_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/none": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10": {
+     "n": 23,
+     "kept": 26.1,
+     "donor": 56.5,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 56.5,
+     "ci": [
+      34.8,
+      78.3
+     ]
+    },
+    "PM/latent_k10": {
+     "n": 23,
+     "kept": 43.5,
+     "donor": 21.7,
+     "third": 0.0,
+     "other": 34.8,
+     "n_third": 23,
+     "transfer": 21.7,
+     "ci": [
+      8.7,
+      39.1
+     ]
+    },
+    "PM/insert_k10_noans": {
+     "n": 23,
+     "kept": 82.6,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10_noansctl": {
+     "n": 23,
+     "kept": 39.1,
+     "donor": 39.1,
+     "third": 0.0,
+     "other": 21.7,
+     "n_third": 23,
+     "transfer": 39.1,
+     "ci": [
+      21.7,
+      60.9
+     ]
+    },
+    "PM/insert_ans": {
+     "n": 23,
+     "kept": 69.6,
+     "donor": 13.0,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 13.0,
+     "ci": [
+      0.0,
+      26.1
+     ]
+    },
+    "PM/insert_ansctl": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10_noans": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10_noansctl": {
+     "n": 23,
+     "kept": 69.6,
+     "donor": 21.7,
+     "third": 0.0,
+     "other": 8.7,
+     "n_third": 23,
+     "transfer": 21.7,
+     "ci": [
+      4.3,
+      39.1
+     ]
+    },
+    "PM/latent_ans": {
+     "n": 23,
+     "kept": 78.3,
+     "donor": 4.3,
+     "third": 4.3,
+     "other": 13.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      -13.0,
+      13.0
+     ]
+    },
+    "PM/latent_ansctl": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/remove_k10_noans": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "qwen35_9b_nn_ans_L12-16_s1_v1": {
+    "RM/none": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10": {
+     "n": 35,
+     "kept": 62.9,
+     "donor": 31.4,
+     "third": 0.0,
+     "other": 5.7,
+     "n_third": 35,
+     "transfer": 31.4,
+     "ci": [
+      17.1,
+      50.0
+     ]
+    },
+    "RM/insert_k10_rand": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10_rot": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10": {
+     "n": 35,
+     "kept": 77.1,
+     "donor": 14.3,
+     "third": 0.0,
+     "other": 8.6,
+     "n_third": 35,
+     "transfer": 14.3,
+     "ci": [
+      5.0,
+      25.7
+     ]
+    },
+    "RM/latent_k10_rand": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10_rot": {
+     "n": 35,
+     "kept": 97.1,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 2.9,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10_noansctl": {
+     "n": 35,
+     "kept": 88.6,
+     "donor": 5.7,
+     "third": 0.0,
+     "other": 5.7,
+     "n_third": 35,
+     "transfer": 5.7,
+     "ci": [
+      0.0,
+      14.7
+     ]
+    },
+    "RM/insert_ans": {
+     "n": 35,
+     "kept": 82.9,
+     "donor": 11.4,
+     "third": 0.0,
+     "other": 5.7,
+     "n_third": 35,
+     "transfer": 11.4,
+     "ci": [
+      2.8,
+      22.2
+     ]
+    },
+    "RM/insert_ansctl": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10_noansctl": {
+     "n": 35,
+     "kept": 91.4,
+     "donor": 5.7,
+     "third": 0.0,
+     "other": 2.9,
+     "n_third": 35,
+     "transfer": 5.7,
+     "ci": [
+      0.0,
+      14.3
+     ]
+    },
+    "RM/latent_ans": {
+     "n": 35,
+     "kept": 88.6,
+     "donor": 2.9,
+     "third": 0.0,
+     "other": 8.6,
+     "n_third": 35,
+     "transfer": 2.9,
+     "ci": [
+      0.0,
+      9.7
+     ]
+    },
+    "RM/latent_ansctl": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/remove_k10": {
+     "n": 35,
+     "kept": 82.9,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 17.1,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/remove_k10_rot": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/remove_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/none": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10": {
+     "n": 22,
+     "kept": 81.8,
+     "donor": 13.6,
+     "third": 0.0,
+     "other": 4.5,
+     "n_third": 22,
+     "transfer": 13.6,
+     "ci": [
+      0.0,
+      28.6
+     ]
+    },
+    "MM/insert_k10_rand": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10_rot": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10": {
+     "n": 22,
+     "kept": 95.5,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 4.5,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_rand": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_rot": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10_noansctl": {
+     "n": 22,
+     "kept": 95.5,
+     "donor": 4.5,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 4.5,
+     "ci": [
+      0.0,
+      14.3
+     ]
+    },
+    "MM/insert_ans": {
+     "n": 22,
+     "kept": 90.9,
+     "donor": 9.1,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 9.1,
+     "ci": [
+      0.0,
+      22.7
+     ]
+    },
+    "MM/insert_ansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_noansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_ans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_ansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/remove_k10": {
+     "n": 22,
+     "kept": 95.5,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 4.5,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/remove_k10_rot": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/remove_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/none": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10": {
+     "n": 23,
+     "kept": 26.1,
+     "donor": 56.5,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 56.5,
+     "ci": [
+      34.8,
+      78.3
+     ]
+    },
+    "PM/insert_k10_rand": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10_rot": {
+     "n": 23,
+     "kept": 91.3,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 8.7,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10": {
+     "n": 23,
+     "kept": 47.8,
+     "donor": 26.1,
+     "third": 0.0,
+     "other": 26.1,
+     "n_third": 23,
+     "transfer": 26.1,
+     "ci": [
+      8.7,
+      43.5
+     ]
+    },
+    "PM/latent_k10_rand": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10_rot": {
+     "n": 23,
+     "kept": 95.7,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 4.3,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10_noans": {
+     "n": 23,
+     "kept": 82.6,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10_noansctl": {
+     "n": 23,
+     "kept": 52.2,
+     "donor": 26.1,
+     "third": 0.0,
+     "other": 21.7,
+     "n_third": 23,
+     "transfer": 26.1,
+     "ci": [
+      8.7,
+      43.5
+     ]
+    },
+    "PM/insert_ans": {
+     "n": 23,
+     "kept": 78.3,
+     "donor": 4.3,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 4.3,
+     "ci": [
+      0.0,
+      13.0
+     ]
+    },
+    "PM/insert_ansctl": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10_noans": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10_noansctl": {
+     "n": 23,
+     "kept": 82.6,
+     "donor": 8.7,
+     "third": 0.0,
+     "other": 8.7,
+     "n_third": 23,
+     "transfer": 8.7,
+     "ci": [
+      0.0,
+      21.7
+     ]
+    },
+    "PM/latent_ans": {
+     "n": 23,
+     "kept": 87.0,
+     "donor": 4.3,
+     "third": 0.0,
+     "other": 8.7,
+     "n_third": 23,
+     "transfer": 4.3,
+     "ci": [
+      0.0,
+      13.0
+     ]
+    },
+    "PM/latent_ansctl": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/remove_k10": {
+     "n": 23,
+     "kept": 43.5,
+     "donor": 8.7,
+     "third": 0.0,
+     "other": 47.8,
+     "n_third": 23,
+     "transfer": 8.7,
+     "ci": [
+      0.0,
+      21.7
+     ]
+    },
+    "PM/remove_k10_rot": {
+     "n": 23,
+     "kept": 95.7,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 4.3,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/remove_k10_noans": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "qwen35_9b_nn_ans_L12-16_s2_v1": {
+    "RM/none": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10": {
+     "n": 35,
+     "kept": 60.0,
+     "donor": 31.4,
+     "third": 0.0,
+     "other": 8.6,
+     "n_third": 35,
+     "transfer": 31.4,
+     "ci": [
+      15.4,
+      50.0
+     ]
+    },
+    "RM/insert_k10_rand": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10_rot": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10": {
+     "n": 35,
+     "kept": 85.7,
+     "donor": 11.4,
+     "third": 0.0,
+     "other": 2.9,
+     "n_third": 35,
+     "transfer": 11.4,
+     "ci": [
+      2.6,
+      22.9
+     ]
+    },
+    "RM/latent_k10_rand": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10_rot": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/insert_k10_noansctl": {
+     "n": 35,
+     "kept": 88.6,
+     "donor": 8.6,
+     "third": 0.0,
+     "other": 2.9,
+     "n_third": 35,
+     "transfer": 8.6,
+     "ci": [
+      0.0,
+      18.2
+     ]
+    },
+    "RM/insert_ans": {
+     "n": 35,
+     "kept": 82.9,
+     "donor": 11.4,
+     "third": 0.0,
+     "other": 5.7,
+     "n_third": 35,
+     "transfer": 11.4,
+     "ci": [
+      2.8,
+      22.9
+     ]
+    },
+    "RM/insert_ansctl": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/latent_k10_noansctl": {
+     "n": 35,
+     "kept": 94.3,
+     "donor": 5.7,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 5.7,
+     "ci": [
+      0.0,
+      15.2
+     ]
+    },
+    "RM/latent_ans": {
+     "n": 35,
+     "kept": 91.4,
+     "donor": 8.6,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 8.6,
+     "ci": [
+      0.0,
+      18.8
+     ]
+    },
+    "RM/latent_ansctl": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/remove_k10": {
+     "n": 35,
+     "kept": 82.9,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 17.1,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/remove_k10_rot": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "RM/remove_k10_noans": {
+     "n": 35,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 35,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/none": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10": {
+     "n": 22,
+     "kept": 90.9,
+     "donor": 4.5,
+     "third": 0.0,
+     "other": 4.5,
+     "n_third": 22,
+     "transfer": 4.5,
+     "ci": [
+      0.0,
+      13.0
+     ]
+    },
+    "MM/insert_k10_rand": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10_rot": {
+     "n": 22,
+     "kept": 95.5,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 4.5,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10": {
+     "n": 22,
+     "kept": 90.9,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 9.1,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_rand": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_rot": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_k10_noansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_ans": {
+     "n": 22,
+     "kept": 95.5,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 4.5,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/insert_ansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_k10_noansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_ans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/latent_ansctl": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/remove_k10": {
+     "n": 22,
+     "kept": 95.5,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 4.5,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/remove_k10_rot": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "MM/remove_k10_noans": {
+     "n": 22,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 22,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/none": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10": {
+     "n": 23,
+     "kept": 30.4,
+     "donor": 52.2,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 52.2,
+     "ci": [
+      30.4,
+      73.9
+     ]
+    },
+    "PM/insert_k10_rand": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10_rot": {
+     "n": 23,
+     "kept": 91.3,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 8.7,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10": {
+     "n": 23,
+     "kept": 52.2,
+     "donor": 17.4,
+     "third": 0.0,
+     "other": 30.4,
+     "n_third": 23,
+     "transfer": 17.4,
+     "ci": [
+      4.3,
+      34.8
+     ]
+    },
+    "PM/latent_k10_rand": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10_rot": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10_noans": {
+     "n": 23,
+     "kept": 82.6,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/insert_k10_noansctl": {
+     "n": 23,
+     "kept": 65.2,
+     "donor": 21.7,
+     "third": 0.0,
+     "other": 13.0,
+     "n_third": 23,
+     "transfer": 21.7,
+     "ci": [
+      8.7,
+      39.1
+     ]
+    },
+    "PM/insert_ans": {
+     "n": 23,
+     "kept": 82.6,
+     "donor": 13.0,
+     "third": 0.0,
+     "other": 4.3,
+     "n_third": 23,
+     "transfer": 13.0,
+     "ci": [
+      0.0,
+      30.4
+     ]
+    },
+    "PM/insert_ansctl": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10_noans": {
+     "n": 23,
+     "kept": 91.3,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 8.7,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/latent_k10_noansctl": {
+     "n": 23,
+     "kept": 78.3,
+     "donor": 4.3,
+     "third": 0.0,
+     "other": 17.4,
+     "n_third": 23,
+     "transfer": 4.3,
+     "ci": [
+      0.0,
+      13.0
+     ]
+    },
+    "PM/latent_ans": {
+     "n": 23,
+     "kept": 87.0,
+     "donor": 4.3,
+     "third": 0.0,
+     "other": 8.7,
+     "n_third": 23,
+     "transfer": 4.3,
+     "ci": [
+      0.0,
+      13.0
+     ]
+    },
+    "PM/latent_ansctl": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/remove_k10": {
+     "n": 23,
+     "kept": 43.5,
+     "donor": 0.0,
+     "third": 4.3,
+     "other": 52.2,
+     "n_third": 23,
+     "transfer": -4.3,
+     "ci": [
+      -13.0,
+      0.0
+     ]
+    },
+    "PM/remove_k10_rot": {
+     "n": 23,
+     "kept": 95.7,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 4.3,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    },
+    "PM/remove_k10_noans": {
+     "n": 23,
+     "kept": 100.0,
+     "donor": 0.0,
+     "third": 0.0,
+     "other": 0.0,
+     "n_third": 23,
+     "transfer": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  },
+  "reading": {
+   "MM/insert": {
+    "k10": 9.1,
+    "k10_noans": 0.0,
+    "k10_noansctl": 4.5,
+    "ans": 3.0,
+    "ansctl": 0.0,
+    "k10_rand": 0.0,
+    "k10_rot": 0.0,
+    "noans_share": 0.0,
+    "verdict": "not read",
+    "answer_alone_suffices": false,
+    "noans_per_seed": {
+     "qwen35_9b_nn_ans_L12-16_s0_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s1_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s2_v1": 0.0
+    }
+   },
+   "MM/latent": {
+    "k10": 0.0,
+    "k10_noans": 0.0,
+    "k10_noansctl": 0.0,
+    "ans": 0.0,
+    "ansctl": 0.0,
+    "k10_rand": 0.0,
+    "k10_rot": 0.0,
+    "noans_share": null,
+    "verdict": "not read",
+    "answer_alone_suffices": false,
+    "noans_per_seed": {
+     "qwen35_9b_nn_ans_L12-16_s0_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s1_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s2_v1": 0.0
+    }
+   },
+   "MM/removal_kept": {
+    "none": 100.0,
+    "remove_k10": 95.5,
+    "remove_k10_noans": 100.0,
+    "remove_k10_rot": 100.0,
+    "remove_k10_noansrel": null,
+    "remove_k10_noansown": null
+   },
+   "PM/insert": {
+    "k10": 55.1,
+    "k10_noans": 0.0,
+    "k10_noansctl": 29.0,
+    "ans": 10.1,
+    "ansctl": 0.0,
+    "k10_rand": 0.0,
+    "k10_rot": 0.0,
+    "noans_share": 0.0,
+    "verdict": "mixed",
+    "answer_alone_suffices": false,
+    "noans_per_seed": {
+     "qwen35_9b_nn_ans_L12-16_s0_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s1_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s2_v1": 0.0
+    }
+   },
+   "PM/latent": {
+    "k10": 21.7,
+    "k10_noans": 0.0,
+    "k10_noansctl": 11.6,
+    "ans": 2.9,
+    "ansctl": 0.0,
+    "k10_rand": 0.0,
+    "k10_rot": 0.0,
+    "noans_share": 0.0,
+    "verdict": "mixed",
+    "answer_alone_suffices": false,
+    "noans_per_seed": {
+     "qwen35_9b_nn_ans_L12-16_s0_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s1_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s2_v1": 0.0
+    }
+   },
+   "PM/removal_kept": {
+    "none": 100.0,
+    "remove_k10": 43.5,
+    "remove_k10_noans": 100.0,
+    "remove_k10_rot": 95.7,
+    "remove_k10_noansrel": null,
+    "remove_k10_noansown": null
+   },
+   "RM/insert": {
+    "k10": 31.4,
+    "k10_noans": 0.0,
+    "k10_noansctl": 10.5,
+    "ans": 11.4,
+    "ansctl": 0.0,
+    "k10_rand": 0.0,
+    "k10_rot": 0.0,
+    "noans_share": 0.0,
+    "verdict": "mixed",
+    "answer_alone_suffices": false,
+    "noans_per_seed": {
+     "qwen35_9b_nn_ans_L12-16_s0_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s1_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s2_v1": 0.0
+    }
+   },
+   "RM/latent": {
+    "k10": 15.2,
+    "k10_noans": 0.0,
+    "k10_noansctl": 4.8,
+    "ans": 6.7,
+    "ansctl": 0.0,
+    "k10_rand": 0.0,
+    "k10_rot": 0.0,
+    "noans_share": 0.0,
+    "verdict": "mixed",
+    "answer_alone_suffices": false,
+    "noans_per_seed": {
+     "qwen35_9b_nn_ans_L12-16_s0_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s1_v1": 0.0,
+     "qwen35_9b_nn_ans_L12-16_s2_v1": 0.0
+    }
+   },
+   "RM/removal_kept": {
+    "none": 100.0,
+    "remove_k10": 82.9,
+    "remove_k10_noans": 100.0,
+    "remove_k10_rot": 100.0,
+    "remove_k10_noansrel": null,
+    "remove_k10_noansown": null
+   }
+  }
+ }
+}

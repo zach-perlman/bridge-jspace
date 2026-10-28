@@ -1,0 +1,53 @@
+{
+ "readout": "qwen35_9b_nn_readout_comp_v1",
+ "split": {
+  "jlens/attr": {
+   "before": 48.2,
+   "after": 44.8,
+   "n_before": 74,
+   "n_after": 35,
+   "before_minus_after": 3.4,
+   "ci": [
+    -15.6,
+    23.4
+   ],
+   "precomputed": false
+  },
+  "jlens/bridge": {
+   "before": 43.7,
+   "after": 25.7,
+   "n_before": 74,
+   "n_after": 35,
+   "before_minus_after": 18.0,
+   "ci": [
+    -2.8,
+    37.9
+   ],
+   "precomputed": false
+  },
+  "logit/attr": {
+   "before": 11.7,
+   "after": 4.8,
+   "n_before": 74,
+   "n_after": 35,
+   "before_minus_after": 6.9,
+   "ci": [
+    -0.7,
+    15.4
+   ],
+   "precomputed": false
+  },
+  "logit/bridge": {
+   "before": 9.5,
+   "after": 2.9,
+   "n_before": 74,
+   "n_after": 35,
+   "before_minus_after": 6.6,
+   "ci": [
+    -0.3,
+    14.8
+   ],
+   "precomputed": false
+  }
+ }
+}
