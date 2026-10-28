@@ -91,6 +91,7 @@
 
 *° gate lowered to 0.75 after the data.*
 
+- **A probe reads the value at the bridge word weakly, the slot almost perfectly** (after the data): value {{pt|probe_value_9b_first}} / {{pt|probe_value_27b_first}} / {{pt|probe_value_122b_first}} (chance 0.11), slot {{pt|probe_slot_9b_first}} / {{pt|probe_slot_27b_first}} / {{pt|probe_slot_122b_first}} ([table](docs/x0_details.md)); the routes test never takes it.
 - **Position appears with depth (candidate):** at an early layer the change moves the lookup by identity only, inside J++ on the Qwens; position answers appear a few layers later.
 
 ![Position answers appear with depth, once the lookup stops needing the J++ part](figures/story/fig06_depth.png)

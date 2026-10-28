@@ -10,7 +10,7 @@
 - **The pointer is narrow:** it marks the first locker in a clean layout; naming an item first moves the lookup to identity. About half of the route around the lens is unexplained.
 - **For monitoring:** a lens on the bridge word shows which item is there, not where the model will read its answer.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 27 Oct 2026. Unverified until hand-checked (Section 7). Built at fbedabbb from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 27 Oct 2026. Unverified until hand-checked (Section 7). Built at b7201149 from the run files.
 
 ## Setup
 
@@ -91,6 +91,7 @@
 
 *° gate lowered to 0.75 after the data.*
 
+- **A probe reads the value at the bridge word weakly, the slot almost perfectly** (after the data): value 0.27 / 0.40 / 0.25 (chance 0.11), slot 0.97 / 0.99 / 0.92 ([table](../x0_details.md)); the routes test never takes it.
 - **Position appears with depth (candidate):** at an early layer the change moves the lookup by identity only, inside J++ on the Qwens; position answers appear a few layers later.
 
 ![Position answers appear with depth, once the lookup stops needing the J++ part](../../figures/story/fig06_depth.png)
@@ -154,7 +155,7 @@
 - **Hand-checked numbers:** none yet; one item read, consistent ([docs/review_summary.md](../review_summary.md)); [docs/verify_pack.md](../verify_pack.md) recounts each claim from the per-item files.
 - **Independent reimplementation:** code written from scratch reproduces the 9B's main test on 20 of 20 random items, every arm.
 - **Raw examples:** `make review-serve`, random items per claim (fixed seed).
-- **Predictions:** committed before results are opened, then scored ([predictions/](../../predictions/README.md)): mean Brier 0.32 over 121 answers, worse than always answering 50%.
+- **Predictions:** committed before results are opened, then scored ([predictions/](../../predictions/README.md)): mean Brier 0.32 over 122 answers, worse than always answering 50%.
 
 ## 8. Related work and what is new
 

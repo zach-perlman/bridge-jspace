@@ -69,6 +69,12 @@ amendments:
     cuts_in_order: ["47.7(b) word-valued lockers -> after the freeze", "48.6 DAS transfer -> after the freeze", "47.6(a) attention measurement -> after the freeze (47.6(b) stays)", "48.4 OV share -> after the freeze (CPU-light; may run Thursday if idle)", "47.2 (Muse) -> after the freeze; 47.2 (9B) stays", "47.8 (27B), D1 (27B) -> already after the freeze"]
     queue_order: "47.1 -> D1+D2 (9B) -> 48.1 (9B) -> 47.7(a) -> 47.8 (9B) -> 47.10 (27B, Muse; 9B if its gate passes) -> D3 -> 48.2 A -> 47.3 -> 47.11 -> D1+D2 (Muse) -> 47.8 (Muse) -> 47.12 -> 47.2 (9B) -> 47.7(c) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> [freeze] -> the rest; 47.13 and D4 on CPU as soon as their inputs exist"
     not_cut: ["47.0", "47.1", "D1+D2 (9B)", "48.1 (9B)", "47.7(a)", "47.8 (9B)", "47.10", "47.3"]
+  - id: 5
+    by: Dan, 28 Oct ~03:10
+    items:
+      - "Add 47.15 (one question, two sources; run first of the three), 47.14 (do addresses chain?), 47.16 (does the address survive distance?)."
+      - "The cuts in amendment 4 are reversed only if the queue is ahead at 10:00 (restore in reverse order, 47.2 Muse first); otherwise they stand."
+    queue_placement: "... -> 47.12 -> 47.15 (27B, 9B, Muse) -> 47.2 (9B) -> 47.14 (9B, Muse) -> 47.7(c) -> 47.16 (9B, Muse) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> [freeze] -> the rest"
 
 tests:
   - id: "47.0"
@@ -534,4 +540,78 @@ tests:
       "The address points at the first mention" if position answers for the bin question are <= 0.10 while for the
       locker question >= 0.3 on the same scenes; "the address points at the asked attribute" if both >= 0.3.
     question: none yet
+
+  - id: "47.15"
+    added_by: amendment 5 (Dan, 28 Oct ~03:10); run first of the three
+    title: "One question, two sources: does the part follow the route, not the question?"
+    models: "9B, 27B, Muse; ~1 GPU-h each"
+    why: >-
+      Our main limit: reader and answer source are confounded (the lookup question is always answered from the prompt,
+      the recall from memory). Here the same question can be answered either way, and an instruction picks the source.
+    scenes: >-
+      Locker-first routes scenes plus one attribute sentence per item stating a false attribute ("The frog has 7 legs",
+      a digit not equal to the true one and not shared with other items). Question: "How many legs does Iris's pick
+      have?" with one of two instructions in the system or user turn: from the text ("Answer using only the passage") /
+      from memory ("Ignore the passage; answer from what you know"). Competence gate 0.80 per instruction (the from-text
+      answer is the stated digit, the from-memory answer the true one). Report how the model answers with no instruction
+      too (which source it prefers unprompted), as a third condition, descriptive.
+    arms: >-
+      The change at the bridge word at L: whole; without J++; without the random part; without U + I (the address and the
+      identity outside the lens, together, with their random part); only J++; only U + I. Reader: the one question under
+      each instruction.
+    rule: >-
+      Fixed in advance (per model). "The part follows the source": under from the text, the answer behaves like a lookup
+      (extra loss without J++ <= 0.10; without U + I >= 0.30 beyond random); under from memory, like a recall (without J++
+      >= 0.30; without U + I <= 0.10); same scenes, same question; holds on >= 2 of 3 models. "The part follows the
+      question": both instructions give the same split; then the readers' difference in the main test was never about
+      the source; report it as such. No-instruction condition: classify each item's unedited answer as text or memory;
+      the split within each class should match its instructed twin (descriptive; a check that the instruction is not
+      doing something else).
+    dumbest_ways: >-
+      1) The instruction changes which token is the bridge or the read position (assert). 2) The false attribute sentence
+      creates a second mention of the item (it does: control the slot order so that the attribute sentence comes after
+      the pick, so the bridge word cannot address it; report a variant with it before). 3) Models refuse to ignore the
+      passage (the gate catches it; report the share).
+    question: Q47.15
+
+  - id: "47.14"
+    added_by: amendment 5
+    title: "Do addresses chain? The second hop's key token"
+    models: "9B, Muse; ~1 GPU-h each"
+    scenes: >-
+      Three layers of sentences, in this order so every address can form: hall sentences ("Locker 5 is in hall B.",
+      three of them), then locker sentences ("The locker of the frog is 5."), then picks. Questions: P->P "Which locker
+      belongs to Iris's pick?" and P->P->P "Which hall is the locker of Iris's pick in?". Competence gate 0.80 on the
+      three-step question.
+    reads: >-
+      At the number token of the bridge item's locker sentence (the second hop's key): the slot probe for the hall
+      sentence's slot (layout baseline beside); U_num refit there (layout-free class means of the hall slot). Arms at
+      that token (a change from a scene where the number's hall sentence sits in another slot, routes-style: identity =
+      the hall of the same number, position = the hall at the slot, value = the letter in the moved sentence): whole;
+      without U_num vs random; only U_num; without J++ (digit atoms allowed) vs random. Readers: the hall question (should
+      move) and the locker question (should not: it is answered before this token matters).
+    rule: >-
+      Fixed in advance. "Addresses chain" if the slot probe at the number token is >= 0.80 (layout <= 0.6), without U_num
+      cuts the hall question's position answers >= 0.30 beyond random, and only U_num gives >= 0.15, while the locker
+      question stays within 0.05 under every arm, on both models. Report whether the hall question ever takes the value
+      (expected 0) and whether J++ at the number token matters (expected not). Beside it: Zach's P->P->P chains lose ~0
+      under his knock-out, which this would explain.
+    question: Q47.14
+
+  - id: "47.16"
+    added_by: amendment 5
+    title: "Does the address survive distance?"
+    models: "9B, Muse; ~0.6 GPU-h each; x6_routes --filler-tokens"
+    design: >-
+      Routes scenes with k neutral sentences (no items, no digits) between the locker sentences and the pick sentence, k
+      in {0, 5, 20, 50} (~ 0 / 60 / 240 / 600 tokens). Reads: slot probe at the bridge word; position / identity / value
+      shares under the whole change; without U vs random; the pointer swap to another slot at s = 2 (share to the
+      target); lookup and recall accuracy unedited.
+    rule: >-
+      Fixed in advance. "Distance-robust address": position share and the probe within 0.10 of k = 0 at every k, swap
+      success within 0.15. "Address near, identity far": position share falls >= 0.20 and identity rises by as much by k
+      = 50 while accuracy stays >= 0.8 (the model keeps answering, by a different route). "Breaks": accuracy falls below
+      the gate at some k (report the k; the test stops there). Also a check of Fig 8c at scale: the code's shift beta
+      across k stays <= 0.25 (counts mentions, not tokens).
+    question: Q47.16
 
