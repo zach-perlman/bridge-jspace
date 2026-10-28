@@ -1,0 +1,158 @@
+{
+  "exp": "x48_das",
+  "run": "qwen35_9b_x48_das_r2",
+  "why": "batch 48, test 48.1 (jobs/c3/batch48.yaml; Q48.1): DAS at the bridge word at L12 on the main test's locker-first pairs the whole change switches; one R per reader and k, random and shuffled-target baselines; sealed",
+  "written_utc": "2026-10-28T13:05:21Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DAS_GDN": "torch",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "44ef21d9f2e3cef48a0bde7585afcc7134904936",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "test": "48.1",
+  "spec": "jobs/c3/batch48.yaml (48.1)",
+  "question": "Q48.1 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/qwen35_9b_x0_necessity/manifest.json": "1c8b61e521a05eddce8e886ee91b3dbf7bb8fa549f3246d6875d871a9db5e6b2",
+    "results/x0_necessity/qwen35_9b_x0_necessity/cases.jsonl": "e9eebbf8966cccd63f4d072e2fab85fedce9569ffbaac2db6c3c068fb4489212",
+    "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl": "2e5ba92b65dafa4d077fbcb663805d6e219108a325c9cf6265800adff7f9f834",
+    "results/x0_necessity/qwen35_9b_x0_necessity/gate.json": "409a6b627b809711d8a0a3f281b79427c85572bfdc5512d771ef12a27017359a"
+  },
+  "main_run": "qwen35_9b_x0_necessity",
+  "layer": 12,
+  "layers": [
+    12
+  ],
+  "depth": false,
+  "ks": [
+    1,
+    4,
+    16,
+    64
+  ],
+  "k_low": 16,
+  "training": {
+    "loss": "cross-entropy of S's answer's first token at the read position (the appended space) of the O prompt under h_O + R R^T (h_S - h_O) at the bridge token at the layer; real forward passes of the O prompt (right-padded micro-batches), the cached Delta added",
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "steps": 300,
+    "batch": 16,
+    "micro_batch": 8,
+    "batching": "each step 16 training rows drawn without replacement (seed 4803 + the R's seed)",
+    "parametrization": "torch.nn.utils.parametrizations.orthogonal on Linear(k, d).weight [d, k]",
+    "init_seed": "48 + 100 * k + reader index (lookup 0, recall 1; shuffled: + 10)",
+    "shuffled_targets": "the training rows' targets permuted once, seed 4801 + k + reader index",
+    "random_R": "QR of a seeded Gaussian, seed 4802 + k (one per k, both readers)"
+  },
+  "pairs": "the stored main-test run's eligible chat scenes at L, locker-first (both items' lockers before the asked pick), switched by the stored whole change for at least one reader; each reader trains and is read on the pairs the whole change switches for it; split by the original bridge entity 60 / 20 / 20 (train / select k / test), seed 0; the same pairs and split at every layer",
+  "states": "h_O and h_S at the bridge token at the layer cached once per pair (states_L<l>.pt); the readers' prompts are identical through the bridge token (asserted), one cache for both",
+  "read": "X0's chat read: the prompt with a digit's space token appended, the top token; switch = S's answer's first token (own-IIA, cross-IIA); every read a real forward with the AddRows edit at the layer",
+  "read_position": "both readers read the last token of their own prompt after the same patched context (the prompts identical through the bridge token, asserted per pair; the index per reader recorded)",
+  "geometry": "per pair and R: energy ||R R^T Delta||^2 / ||Delta||^2; the share of R R^T Delta inside the span of the pair's 25 / 100 signed-OMP J++ atoms at the layer, its 25 W_E atoms (x0_necessity's we dictionary), U (the probe run's pointer directions; at the layer fixed in advance only), U_fit (refit at the layer on the train-split pairs' h_O by the original bridge's locker-sentence index), and outside the orthonormalised union of J++-25, U (U_fit where U is absent) and W_E-25; per R: ||R^T U||_F^2 / rank(U), the same with U_fit, the principal angles R_lookup vs R_recall per k",
+  "U": {
+    "states_run": "qwen35_9b_x0_probe_v4",
+    "rank": 4,
+    "info": {
+      "states_run": "qwen35_9b_x0_probe_v4",
+      "n": 758,
+      "rank": {
+        "A": 4,
+        "V": 8,
+        "AV": 12,
+        "Alf": 4,
+        "Id": 45
+      },
+      "layout_groups": {
+        "groups": 31,
+        "items_kept": 758,
+        "singletons_dropped": 0
+      },
+      "A_Alf_overlap": 0.7249048684052313
+    }
+  },
+  "routes": {
+    "design": "x6_routes C2 scenes (another item moved), R_lookup alone written at the bridge word at L; the lookup's answer classified identity / position / value / original / other; whole and random R beside",
+    "n": 100,
+    "generated_C2": 700,
+    "candidates": 160,
+    "eligible": 129,
+    "used": 100,
+    "org_read_accuracy": {
+      "lookup": 1.0,
+      "recall": 0.9125
+    },
+    "dropped_by_generator": {
+      "A and B have the same number of legs": 357
+    },
+    "seed": 2510
+  },
+  "arms": [
+    "none",
+    "whole",
+    "R_PP_k1",
+    "R_PM_k1",
+    "rand_k1",
+    "shuf_PP_k1",
+    "shuf_PM_k1",
+    "R_PP_k4",
+    "R_PM_k4",
+    "rand_k4",
+    "shuf_PP_k4",
+    "shuf_PM_k4",
+    "R_PP_k16",
+    "R_PM_k16",
+    "rand_k16",
+    "shuf_PP_k16",
+    "shuf_PM_k16",
+    "R_PP_k64",
+    "R_PM_k64",
+    "rand_k64",
+    "shuf_PP_k64",
+    "shuf_PM_k64"
+  ],
+  "rule": {
+    "a": "two readers, two subspaces: own-IIA >= 0.7 at some k <= 16 for both readers, and cross-IIA <= 0.25 in both directions (paired CI excluding overlap with own-IIA)",
+    "b": "the recall's subspace is the lens's part: R_recall's energy inside the J++-25 part >= 0.5 (random R <= 0.15); R_lookup's <= 0.2",
+    "c": "the address is part of the lookup's subspace: ||R_lookup^T U||_F^2 / 4 >= 0.5 (random R ~ k/d)",
+    "d": "a third identity code: R_lookup's energy outside (J++-25 u U u W_E-25) >= 0.5 while its own-IIA >= 0.7, and R_lookup alone gives identity answers >= 0.3 in the routes read",
+    "fallback": "if own-IIA stays < 0.5 at k = 64 for the lookup: no low-dimensional mediator at this token and layer"
+  },
+  "as_computed": "chosen k per reader = the smallest k <= 16 whose select-split own-IIA >= 0.7, else the k with the highest select own-IIA; every rule is read at the chosen k on the test entities' pairs (point estimates = means over the reader's test pairs; cluster-bootstrap CIs over bridge entities, 10,000, seed 0, beside them); 'paired CI excluding overlap' = the paired bootstrap of own-IIA minus cross-IIA over the reader's test pairs has a lower bound > 0; cross-IIA for a reader = its switch rate under the other reader's R at that reader's chosen k; energy inside a part = the share of R R^T Delta's squared norm in the span of the pair's signed-OMP atoms (J++ / W_E) or of U; outside = 1 minus the share in the orthonormalised union of the three; cos^2 with U = ||R^T U||_F^2 / rank(U); the routes read at the lookup's chosen k on the eligible C2 scenes; fallback read on the lookup's test own-IIA at k = 64",
+  "seeds": {
+    "split": 0,
+    "init": 48,
+    "shuffle": 4801,
+    "random_R": 4802,
+    "batches": 4803,
+    "bootstrap": 0,
+    "examples": 0,
+    "routes_scenes": 2510
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.1 answer",
+  "gdn_kernel": "torch reference (BJ_DAS_GDN=torch; transformers.models.qwen3_5.modeling_qwen3_5.torch_chunk_gated_delta_rule replaced)"
+}
