@@ -7,6 +7,7 @@ into a temporary set, splits it as the runs use it, and derives the note 9 sets:
   jsuite_v3probes_test_chat    the clue-only questions, wording A
   jsuite_v3probesB_test_chat   wording B (scripts/v3_probes_b.py)
   jsuite_v3fc_test_chat        final clause only (scripts/v3_finalclause.py)
+  jsuite_v3ra_test_chat        rendering A: RM MM PM with the relation after the bridge (scripts/v3_relafter.py; note 12)
 and prints each file's sha256 (compare with docs/v3_sha256.txt).
 
 python scripts/build_v3.py
@@ -37,9 +38,9 @@ def main() -> None:
         (D / name).mkdir(parents=True, exist_ok=True)
         (D / name / "items.jsonl").write_text("".join(ls))
     shutil.rmtree(D / f"{tmp}_test_chat")
-    for script in ("v3_probes_b.py", "v3_finalclause.py"):
+    for script in ("v3_probes_b.py", "v3_finalclause.py", "v3_relafter.py"):
         subprocess.run([sys.executable, str(ROOT / "scripts" / script)], check=True, cwd=ROOT)
-    for name in ("jsuite_v3_test_chat", "jsuite_v3r1_test_chat", "jsuite_v3probes_test_chat", "jsuite_v3probesB_test_chat", "jsuite_v3fc_test_chat"):
+    for name in ("jsuite_v3_test_chat", "jsuite_v3r1_test_chat", "jsuite_v3probes_test_chat", "jsuite_v3probesB_test_chat", "jsuite_v3fc_test_chat", "jsuite_v3ra_test_chat"):
         f = D / name / "items.jsonl"
         print(hashlib.sha256(f.read_bytes()).hexdigest(), f"data/tasks_v2/{name}/items.jsonl", sum(1 for _ in f.open()))
 
