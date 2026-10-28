@@ -1,0 +1,366 @@
+{
+ "target": "muse-glimmer-30b",
+ "layer": 26,
+ "prefix": "muse30_",
+ "gate": "The job's competence step (X.competence, before any patch): on the unedited O and S of every candidate, both readers, 8 greedy tokens must say the gold digit and X0's top-token read (a digit's space token appended) must be the gold token. The gate: O's read accuracy >= 0.8 per reader over all six-slot move candidates; if it misses, the same over the five-slot candidates (recorded as the fallback); if that misses too, not tested. Eligible: both readers say and read O's and S's answers right; the first 20 eligible per ordered pair and the first 100 C0. competence.jsonl and gate.json hold the per-candidate reads and the accuracies.",
+ "seeds": {
+  "scenes": 4702,
+  "examples": 0
+ },
+ "6 slots": {
+  "cases": {
+   "M": 1200,
+   "C0": 150
+  },
+  "pairs": 30,
+  "per_pair": [
+   40
+  ],
+  "dropped": {
+   "C0: the bridge and the switched item have as many legs": 100
+  },
+  "bridge_token_index": [
+   99,
+   104,
+   109
+  ],
+  "prompt_tokens": [
+   136,
+   136
+  ],
+  "layouts": {
+   "LLLLLL.": 383,
+   "LLLLLL": 429,
+   "LLLLLL..": 388
+  },
+  "entities": 32,
+  "examples": {
+   "M": {
+    "scene": "M6-12-001",
+    "O": "The locker of the deer is 4. The locker of the cat is 6. The locker of the fox is 5. The locker of the spider is 9. The locker of the fly is 8. The locker of the frog is 7. Diana picked the frog. Mark picked the deer. Nina picked the fox.",
+    "S": "The locker of the cat is 6. The locker of the deer is 3. The locker of the fox is 5. The locker of the spider is 9. The locker of the fly is 8. The locker of the frog is 7. Diana picked the frog. Mark picked the deer. Nina picked the fox.",
+    "expect": {
+     "identity": 4,
+     "position": 6,
+     "value": 3,
+     "original": 4
+    },
+    "bridge_token": " deer"
+   },
+   "C0": {
+    "scene": "C06-0001",
+    "O": "The locker of the duck is 5. The locker of the chicken is 1. The locker of the goat is 9. The locker of the elephant is 8. The locker of the tiger is 6. The locker of the wolf is 7. Ella picked the goat. Iris picked the duck. Mark picked the tiger.",
+    "S": "The locker of the duck is 5. The locker of the chicken is 1. The locker of the goat is 9. The locker of the elephant is 8. The locker of the tiger is 6. The locker of the wolf is 7. Ella picked the duck. Iris picked the duck. Mark picked the tiger.",
+    "expect": {
+     "switch": 5,
+     "original": 9
+    },
+    "bridge_token": " goat"
+   }
+  }
+ },
+ "rendered": [
+  {
+   "scene": "M6-46-029",
+   "condition": "M",
+   "move": [
+    4,
+    6
+   ],
+   "bridge": "crow",
+   "cf_bridge": "crow",
+   "values": [
+    3,
+    4,
+    9,
+    7,
+    2,
+    1
+   ],
+   "new": 5,
+   "expect": {
+    "identity": 7,
+    "position": 1,
+    "value": 5,
+    "original": 7
+   },
+   "pos": 104,
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Dan's pick?",
+     "answer_O": "7",
+     "answer_S": "5",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the lion is 3. The locker of the zebra is 4. The locker of the wolf is 9. ⟦move:The locker of the crow is 7.⟧ The locker of the elephant is 2. ⟦move:The locker of the goat is 1.⟧ Ivy picked the lion. Dan picked the⟦bridge: crow⟧. Carl picked the wolf.\nWhich locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the lion is 3. The locker of the zebra is 4. The locker of the wolf is 9. ⟦move:The locker of the goat is 1.⟧ The locker of the elephant is 2. ⟦move:The locker of the crow is 5.⟧ Ivy picked the lion. Dan picked the⟦bridge: crow⟧. Carl picked the wolf.\nWhich locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    },
+    "PM": {
+     "question": "How many legs does Dan's pick have?",
+     "answer_O": "2",
+     "answer_S": "2",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the lion is 3. The locker of the zebra is 4. The locker of the wolf is 9. ⟦move:The locker of the crow is 7.⟧ The locker of the elephant is 2. ⟦move:The locker of the goat is 1.⟧ Ivy picked the lion. Dan picked the⟦bridge: crow⟧. Carl picked the wolf.\nHow many legs does Dan's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the lion is 3. The locker of the zebra is 4. The locker of the wolf is 9. ⟦move:The locker of the goat is 1.⟧ The locker of the elephant is 2. ⟦move:The locker of the crow is 5.⟧ Ivy picked the lion. Dan picked the⟦bridge: crow⟧. Carl picked the wolf.\nHow many legs does Dan's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    }
+   }
+  },
+  {
+   "scene": "M6-52-022",
+   "condition": "M",
+   "move": [
+    5,
+    2
+   ],
+   "bridge": "cow",
+   "cf_bridge": "cow",
+   "values": [
+    6,
+    3,
+    4,
+    9,
+    8,
+    2
+   ],
+   "new": 7,
+   "expect": {
+    "identity": 8,
+    "position": 3,
+    "value": 7,
+    "original": 8
+   },
+   "pos": 99,
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Sara's pick?",
+     "answer_O": "8",
+     "answer_S": "7",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the frog is 6. ⟦move:The locker of the turkey is 3.⟧ The locker of the butterfly is 4. The locker of the elephant is 9. ⟦move:The locker of the cow is 8.⟧ The locker of the tiger is 2. Sara picked the⟦bridge: cow⟧. Finn picked the tiger. Amy picked the frog.\nWhich locker belongs to Sara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the frog is 6. ⟦move:The locker of the cow is 7.⟧ The locker of the butterfly is 4. The locker of the elephant is 9. ⟦move:The locker of the turkey is 3.⟧ The locker of the tiger is 2. Sara picked the⟦bridge: cow⟧. Finn picked the tiger. Amy picked the frog.\nWhich locker belongs to Sara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    },
+    "PM": {
+     "question": "How many legs does Sara's pick have?",
+     "answer_O": "4",
+     "answer_S": "4",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the frog is 6. ⟦move:The locker of the turkey is 3.⟧ The locker of the butterfly is 4. The locker of the elephant is 9. ⟦move:The locker of the cow is 8.⟧ The locker of the tiger is 2. Sara picked the⟦bridge: cow⟧. Finn picked the tiger. Amy picked the frog.\nHow many legs does Sara's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the frog is 6. ⟦move:The locker of the cow is 7.⟧ The locker of the butterfly is 4. The locker of the elephant is 9. ⟦move:The locker of the turkey is 3.⟧ The locker of the tiger is 2. Sara picked the⟦bridge: cow⟧. Finn picked the tiger. Amy picked the frog.\nHow many legs does Sara's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    }
+   }
+  },
+  {
+   "scene": "M6-14-003",
+   "condition": "M",
+   "move": [
+    1,
+    4
+   ],
+   "bridge": "cat",
+   "cf_bridge": "cat",
+   "values": [
+    7,
+    4,
+    6,
+    3,
+    2,
+    9
+   ],
+   "new": 5,
+   "expect": {
+    "identity": 7,
+    "position": 3,
+    "value": 5,
+    "original": 7
+   },
+   "pos": 109,
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Lily's pick?",
+     "answer_O": "7",
+     "answer_S": "5",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦move:The locker of the cat is 7.⟧ The locker of the sheep is 4. The locker of the duck is 6. ⟦move:The locker of the butterfly is 3.⟧ The locker of the owl is 2. The locker of the frog is 9. Vera picked the frog. Oscar picked the sheep. Lily picked the⟦bridge: cat⟧.\nWhich locker belongs to Lily's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦move:The locker of the butterfly is 3.⟧ The locker of the sheep is 4. The locker of the duck is 6. ⟦move:The locker of the cat is 5.⟧ The locker of the owl is 2. The locker of the frog is 9. Vera picked the frog. Oscar picked the sheep. Lily picked the⟦bridge: cat⟧.\nWhich locker belongs to Lily's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    },
+    "PM": {
+     "question": "How many legs does Lily's pick have?",
+     "answer_O": "4",
+     "answer_S": "4",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦move:The locker of the cat is 7.⟧ The locker of the sheep is 4. The locker of the duck is 6. ⟦move:The locker of the butterfly is 3.⟧ The locker of the owl is 2. The locker of the frog is 9. Vera picked the frog. Oscar picked the sheep. Lily picked the⟦bridge: cat⟧.\nHow many legs does Lily's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦move:The locker of the butterfly is 3.⟧ The locker of the sheep is 4. The locker of the duck is 6. ⟦move:The locker of the cat is 5.⟧ The locker of the owl is 2. The locker of the frog is 9. Vera picked the frog. Oscar picked the sheep. Lily picked the⟦bridge: cat⟧.\nHow many legs does Lily's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    }
+   }
+  },
+  {
+   "scene": "M6-35-011",
+   "condition": "M",
+   "move": [
+    3,
+    5
+   ],
+   "bridge": "chicken",
+   "cf_bridge": "chicken",
+   "values": [
+    8,
+    7,
+    5,
+    1,
+    4,
+    6
+   ],
+   "new": 2,
+   "expect": {
+    "identity": 5,
+    "position": 4,
+    "value": 2,
+    "original": 5
+   },
+   "pos": 104,
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Vera's pick?",
+     "answer_O": "5",
+     "answer_S": "2",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the zebra is 8. The locker of the butterfly is 7. ⟦move:The locker of the chicken is 5.⟧ The locker of the frog is 1. ⟦move:The locker of the horse is 4.⟧ The locker of the spider is 6. Luke picked the horse. Vera picked the⟦bridge: chicken⟧. Jack picked the frog.\nWhich locker belongs to Vera's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the zebra is 8. The locker of the butterfly is 7. ⟦move:The locker of the horse is 4.⟧ The locker of the frog is 1. ⟦move:The locker of the chicken is 2.⟧ The locker of the spider is 6. Luke picked the horse. Vera picked the⟦bridge: chicken⟧. Jack picked the frog.\nWhich locker belongs to Vera's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    },
+    "PM": {
+     "question": "How many legs does Vera's pick have?",
+     "answer_O": "2",
+     "answer_S": "2",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the zebra is 8. The locker of the butterfly is 7. ⟦move:The locker of the chicken is 5.⟧ The locker of the frog is 1. ⟦move:The locker of the horse is 4.⟧ The locker of the spider is 6. Luke picked the horse. Vera picked the⟦bridge: chicken⟧. Jack picked the frog.\nHow many legs does Vera's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the zebra is 8. The locker of the butterfly is 7. ⟦move:The locker of the horse is 4.⟧ The locker of the frog is 1. ⟦move:The locker of the chicken is 2.⟧ The locker of the spider is 6. Luke picked the horse. Vera picked the⟦bridge: chicken⟧. Jack picked the frog.\nHow many legs does Vera's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    }
+   }
+  },
+  {
+   "scene": "M6-62-008",
+   "condition": "M",
+   "move": [
+    6,
+    2
+   ],
+   "bridge": "fly",
+   "cf_bridge": "fly",
+   "values": [
+    7,
+    6,
+    5,
+    3,
+    4,
+    9
+   ],
+   "new": 8,
+   "expect": {
+    "identity": 9,
+    "position": 6,
+    "value": 8,
+    "original": 9
+   },
+   "pos": 109,
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Ben's pick?",
+     "answer_O": "9",
+     "answer_S": "8",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the wolf is 7. ⟦move:The locker of the mouse is 6.⟧ The locker of the turkey is 5. The locker of the duck is 3. The locker of the ant is 4. ⟦move:The locker of the fly is 9.⟧ Ivy picked the duck. Max picked the turkey. Ben picked the⟦bridge: fly⟧.\nWhich locker belongs to Ben's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the wolf is 7. ⟦move:The locker of the fly is 8.⟧ The locker of the turkey is 5. The locker of the duck is 3. The locker of the ant is 4. ⟦move:The locker of the mouse is 6.⟧ Ivy picked the duck. Max picked the turkey. Ben picked the⟦bridge: fly⟧.\nWhich locker belongs to Ben's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    },
+    "PM": {
+     "question": "How many legs does Ben's pick have?",
+     "answer_O": "6",
+     "answer_S": "6",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the wolf is 7. ⟦move:The locker of the mouse is 6.⟧ The locker of the turkey is 5. The locker of the duck is 3. The locker of the ant is 4. ⟦move:The locker of the fly is 9.⟧ Ivy picked the duck. Max picked the turkey. Ben picked the⟦bridge: fly⟧.\nHow many legs does Ben's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the wolf is 7. ⟦move:The locker of the fly is 8.⟧ The locker of the turkey is 5. The locker of the duck is 3. The locker of the ant is 4. ⟦move:The locker of the mouse is 6.⟧ Ivy picked the duck. Max picked the turkey. Ben picked the⟦bridge: fly⟧.\nHow many legs does Ben's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    }
+   }
+  },
+  {
+   "scene": "C06-0001",
+   "condition": "C0",
+   "move": [
+    3,
+    1
+   ],
+   "bridge": "goat",
+   "cf_bridge": "duck",
+   "values": [
+    5,
+    1,
+    9,
+    8,
+    6,
+    7
+   ],
+   "new": null,
+   "expect": {
+    "switch": 5,
+    "original": 9
+   },
+   "pos": 99,
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Ella's pick?",
+     "answer_O": "9",
+     "answer_S": "5",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦move:The locker of the duck is 5.⟧ The locker of the chicken is 1. ⟦move:The locker of the goat is 9.⟧ The locker of the elephant is 8. The locker of the tiger is 6. The locker of the wolf is 7. Ella picked the⟦bridge: goat⟧. Iris picked the duck. Mark picked the tiger.\nWhich locker belongs to Ella's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦move:The locker of the duck is 5.⟧ The locker of the chicken is 1. ⟦move:The locker of the goat is 9.⟧ The locker of the elephant is 8. The locker of the tiger is 6. The locker of the wolf is 7. Ella picked the⟦bridge: duck⟧. Iris picked the duck. Mark picked the tiger.\nWhich locker belongs to Ella's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    },
+    "PM": {
+     "question": "How many legs does Ella's pick have?",
+     "answer_O": "4",
+     "answer_S": "2",
+     "O": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦move:The locker of the duck is 5.⟧ The locker of the chicken is 1. ⟦move:The locker of the goat is 9.⟧ The locker of the elephant is 8. The locker of the tiger is 6. The locker of the wolf is 7. Ella picked the⟦bridge: goat⟧. Iris picked the duck. Mark picked the tiger.\nHow many legs does Ella's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+     "S": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>⟦move:The locker of the duck is 5.⟧ The locker of the chicken is 1. ⟦move:The locker of the goat is 9.⟧ The locker of the elephant is 8. The locker of the tiger is 6. The locker of the wolf is 7. Ella picked the⟦bridge: duck⟧. Iris picked the duck. Mark picked the tiger.\nHow many legs does Ella's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+    }
+   }
+  }
+ ],
+ "5 slots": {
+  "cases": {
+   "M": 800,
+   "C0": 150
+  },
+  "pairs": 20,
+  "per_pair": [
+   40
+  ],
+  "dropped": {
+   "C0: the bridge and the switched item have as many legs": 89
+  },
+  "bridge_token_index": [
+   90,
+   95,
+   100
+  ],
+  "prompt_tokens": [
+   127,
+   127
+  ],
+  "layouts": {
+   "LLLLL.": 260,
+   "LLLLL..": 285,
+   "LLLLL": 255
+  },
+  "entities": 32,
+  "examples": {
+   "M": {
+    "scene": "M5-12-001",
+    "O": "The locker of the wolf is 4. The locker of the bee is 1. The locker of the butterfly is 8. The locker of the spider is 7. The locker of the cat is 2. Tara picked the spider. Will picked the wolf. Mia picked the bee.",
+    "S": "The locker of the bee is 1. The locker of the wolf is 9. The locker of the butterfly is 8. The locker of the spider is 7. The locker of the cat is 2. Tara picked the spider. Will picked the wolf. Mia picked the bee.",
+    "expect": {
+     "identity": 4,
+     "position": 1,
+     "value": 9,
+     "original": 4
+    },
+    "bridge_token": " wolf"
+   },
+   "C0": {
+    "scene": "C05-0001",
+    "O": "The locker of the frog is 2. The locker of the eagle is 1. The locker of the rabbit is 6. The locker of the bee is 9. The locker of the wolf is 7. Henry picked the rabbit. Liam picked the bee. Leo picked the eagle.",
+    "S": "The locker of the frog is 2. The locker of the eagle is 1. The locker of the rabbit is 6. The locker of the bee is 9. The locker of the wolf is 7. Henry picked the eagle. Liam picked the bee. Leo picked the eagle.",
+    "expect": {
+     "switch": 1,
+     "original": 6
+    },
+    "bridge_token": " rabbit"
+   }
+  }
+ }
+}

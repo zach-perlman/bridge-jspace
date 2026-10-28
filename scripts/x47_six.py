@@ -46,6 +46,7 @@ means: variance explained by 1, 2, 3 components; Spearman of the first component
 The first label that holds in this order is the model's answer (every holding label listed); none: "none of the three".
 
 uv run python scripts/x47_six.py plan                                                     # CPU, the target's tokenizer
+BJ_TARGET=muse-glimmer-30b uv run python scripts/x47_six.py plan --out results/x47_six/plan-<stamp>   # + 5 rendered scenes
 BJ_TARGET=qwen3.5-9b uv run python scripts/x47_six.py run --name qwen35_9b_x47_2         # GPU (sealed)
 uv run python scripts/x47_six.py verdict --runs qwen35_9b_x47_2 muse30_x47_2              # CPU, after Dan's Q47.2
 uv run python scripts/x47_six.py examples --runs qwen35_9b_x47_2 muse30_x47_2             # CPU, after Dan's Q47.2
@@ -268,12 +269,97 @@ def build_cases(tok, n: int, n_cand: int = N_CAND, n_c0: int = N_C0_CAND) -> tup
     return out, dropped
 
 
-def stage_plan() -> dict:
-    """Tokenizer only: per slot count, the cases per condition and pair, the drops, the token checks, an example."""
+GATE_NOTE = (
+    "The job's competence step (X.competence, before any patch): on the unedited O and S of every candidate, both "
+    "readers, 8 greedy tokens must say the gold digit and X0's top-token read (a digit's space token appended) must be "
+    f"the gold token. The gate: O's read accuracy >= {X.GATE} per reader over all six-slot move candidates; if it misses, "
+    "the same over the five-slot candidates (recorded as the fallback); if that misses too, not tested. Eligible: both "
+    "readers say and read O's and S's answers right; the first 20 eligible per ordered pair and the first 100 C0. "
+    "competence.jsonl and gate.json hold the per-candidate reads and the accuracies."
+)
+N_PLAN_EXAMPLES = 5
+
+
+def plan_prompt(tok, c: dict, reader: str, prompt: str) -> str:
+    """The reader's prompt as the model reads it (the read's space token appended) with the bridge token in
+    ⟦bridge:…⟧ and the locker sentences at slots i and j in ⟦move:…⟧ (a move: the two swapped sentences; C0: the
+    original item's and the newly picked item's lockers, where the pointer moves)."""
+    ids = c["readers"][reader]["ids"][prompt]
+    text = (
+        tok.decode(ids[: c["pos"]])
+        + "⟦bridge:"
+        + tok.decode(ids[c["pos"] : c["pos"] + 1])
+        + "⟧"
+        + tok.decode(ids[c["pos"] + 1 :] + c["space"])
+    )
+    ctx = Q_CONTEXT[prompt](c)
+    sents = sentences(ctx)
+    i, j = c["move"]
+    for s in (sents[i - 1], sents[j - 1]):
+        assert text.count(s) == 1, f"{c['scene']}: {s!r} is not once in the decoded prompt"
+        text = text.replace(s, f"⟦move:{s}⟧", 1)
+    return text
+
+
+Q_CONTEXT = {"org": lambda c: c["context"], "alt": lambda c: c["cf_context"]}
+
+
+def plan_examples(tok, cases: list[dict], k: int = N_PLAN_EXAMPLES, seed: int = X.EXAMPLES_SEED) -> list[dict]:
+    """k random six-slot move scenes (seed 0) and the first C0 scene: both readers' O and S prompts as read, marked."""
+    moves = [c for c in cases if c["condition"] == "M"]
+    pick = random.Random(seed).sample(moves, min(k, len(moves)))
+    c0 = [c for c in cases if c["condition"] == "C0"][:1]
+    out = []
+    for c in [*pick, *c0]:
+        out.append({"scene": c["scene"], "condition": c["condition"], "move": c["move"], "bridge": c["bridge"],
+                    "cf_bridge": c["cf_bridge"], "values": c["values"], "new": c["new"], "expect": c["expect"],
+                    "pos": c["pos"], "readers": {w: {"question": rd["question"], "answer_O": rd["answer"],
+                                                     "answer_S": rd["cf_answer"],
+                                                     "O": plan_prompt(tok, c, w, "org"), "S": plan_prompt(tok, c, w, "alt")}
+                                                 for w, rd in c["readers"].items()}})  # fmt: skip
+    return out
+
+
+def plan_markdown(blobs: dict[str, dict]) -> list[str]:
+    """plan.md over the targets written so far: the counts table, the gate note, the rendered prompts."""
+    lines = ["# 47.2 plan (CPU, the real tokenizers): scene counts per model, what the gate checks, rendered prompts", "",
+             "Written by `scripts/x47_six.py plan` before any run (Dan's amendment 1: a competence report and rendered "
+             "prompts before a new scene set runs). The competence report itself comes from the job's gate step. "
+             "UNVERIFIED.", "", "| model | layer | slots | move candidates | pairs x per pair | C0 candidates | dropped | "
+             "bridge animals | prompt tokens | bridge token index |", "|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for target, b in blobs.items():
+        for n in SLOTS_TRY:
+            s = b[f"{n} slots"]
+            lines.append(f"| {target} | {b['layer']} | {n} | {s['cases']['M']} | {s['pairs']} x {s['per_pair']} | "
+                         f"{s['cases']['C0']} | {s['dropped'] or 'none'} | {s['entities']} | {s['prompt_tokens']} | "
+                         f"{s['bridge_token_index']} |")  # fmt: skip
+    lines += ["", f"The gate: {GATE_NOTE}", ""]
+    for target, b in blobs.items():
+        lines += [f"## {target}: {N_PLAN_EXAMPLES} random six-slot move scenes (seed {X.EXAMPLES_SEED}) and the first C0 "
+                  "scene", ""]  # fmt: skip
+        for e in b["rendered"]:
+            i, j = e["move"]
+            what = (f"the {e['bridge']}'s locker sentence moves from slot {i} to slot {j}; its number in S {e['new']}"
+                    if e["condition"] == "M" else f"C0: the asked person picks the {e['cf_bridge']} (slot {j}) instead "
+                    f"of the {e['bridge']} (slot {i})")  # fmt: skip
+            lines += [f"### {e['scene']}: {what}", "", f"Slots' digits in O {e['values']}; expected {e['expect']}; the "
+                      f"bridge at token {e['pos']}.", ""]  # fmt: skip
+            for w, rd in e["readers"].items():
+                lines += [f"**{'lookup' if w == X.LOOKUP else 'recall'}** ({rd['question']}): O answers {rd['answer_O']}, "
+                          f"S answers {rd['answer_S']}", "", "O, as read:", "", "```", rd["O"], "```", "", "S (the source):",
+                          "", "```", rd["S"], "```", ""]  # fmt: skip
+    return lines
+
+
+def stage_plan(out: Path | None = None) -> dict:
+    """Tokenizer only: per slot count, the cases per condition and pair, the drops, the token checks, an example; with
+    `out` (results/x47_six/plan-<stamp>/, shared by the targets), <target>.json and <target>.md with five rendered
+    scenes (seed 0), and plan.md over every target written there so far."""
     from scripts import x45m
 
     tok = x45m.tokenizer()
-    blob: dict = {"target": pins.TARGET, "layer": X.PREDICTED.get(pins.TARGET), "prefix": pins.RUN_PREFIX}
+    blob: dict = {"target": pins.TARGET, "layer": X.PREDICTED.get(pins.TARGET), "prefix": pins.RUN_PREFIX,
+                  "gate": GATE_NOTE, "seeds": {"scenes": SEED, "examples": X.EXAMPLES_SEED}}  # fmt: skip
     for n in SLOTS_TRY:
         cases, dropped = build_cases(tok, n)
         moves = [c for c in cases if c["condition"] == "M"]
@@ -293,7 +379,15 @@ def stage_plan() -> dict:
             "examples": {cond: {"scene": c["scene"], "O": c["context"], "S": c["cf_context"], "expect": c["expect"],
                                 "bridge_token": tok.decode([c["readers"][X.LOOKUP]["ids"]["org"][c["pos"]]])}
                          for cond, c in ex.items()}}  # fmt: skip
-    print(json.dumps(blob, indent=1, ensure_ascii=False))
+        if n == SLOTS_TRY[0]:
+            blob["rendered"] = plan_examples(tok, cases)
+    print(json.dumps({k: v for k, v in blob.items() if k != "rendered"}, indent=1, ensure_ascii=False))
+    if out is not None:
+        out.mkdir(parents=True, exist_ok=True)
+        (out / f"{pins.TARGET}.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
+        blobs = {p.stem: json.loads(p.read_text()) for p in sorted(out.glob("*.json"))}
+        (out / "plan.md").write_text("\n".join(plan_markdown(blobs)) + "\n")
+        print("wrote", out)
     return blob
 
 
@@ -1006,9 +1100,10 @@ def main() -> None:
                     help="verdict / examples: the 47.2 runs (9B and Muse; the 27B's if it ran)")  # fmt: skip
     ap.add_argument("--why", default="batch 47, test 47.2 (jobs/c3/batch47.yaml; Q47.2)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--out", default=None, help="plan: results/x47_six/plan-<stamp>/ (one folder for every target)")
     a = ap.parse_args()
     if a.stage == "plan":
-        stage_plan()
+        stage_plan(Path(a.out) if a.out else None)
     elif a.stage == "run":
         assert a.name, "run needs --name"
         stage_run(a.name, a.why)

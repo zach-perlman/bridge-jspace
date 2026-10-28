@@ -473,3 +473,21 @@ def test_verdict_and_examples_on_the_fake_run(fake_run, monkeypatch):
     assert "Dumbest way 1 first" in text and "pending" in text and text.index("routes split") < text.index("## Verdict")
     ex = Q.examples_lines([fake_run.name], decode=fake_run.tok.decode)
     assert sum(line.startswith("### ") for line in ex) == 10 and any("⟦" in line for line in ex)
+
+
+def test_plan_prompts_mark_the_bridge_and_the_move(fake_run):
+    """The plan's rendered prompts (fake tokenizer): the bridge token in ⟦bridge:…⟧, the locker sentences at slots i
+    and j in ⟦move:…⟧, and the aggregated plan.md lists every model's scenes."""
+    tok, cases = fake_run.tok, fake_run.cases[6]
+    ex = Q.plan_examples(tok, cases, k=5)
+    assert len(ex) == 6 and [e["condition"] for e in ex] == ["M"] * 5 + ["C0"]
+    for e in ex:
+        for rd in e["readers"].values():
+            for p in ("O", "S"):
+                assert rd[p].count("⟦bridge:") == 1 and rd[p].count("⟦move:") == 2
+                assert e["bridge" if p == "O" else "cf_bridge"] in rd[p].split("⟦bridge:")[1].split("⟧")[0]
+    blob = {"layer": 12, "6 slots": {"cases": {"M": 60, "C0": 3}, "pairs": 30, "per_pair": [2], "dropped": {},
+            "entities": 9, "prompt_tokens": [40, 40], "bridge_token_index": [30]}, "rendered": ex}  # fmt: skip
+    blob["5 slots"] = {**blob["6 slots"], "cases": {"M": 40, "C0": 3}, "pairs": 20}
+    md = "\n".join(Q.plan_markdown({"qwen3.5-9b": blob, "muse-glimmer-30b": blob}))
+    assert md.count("### ") == 12 and "The gate:" in md and "| qwen3.5-9b | 12 | 6 | 60 |" in md
