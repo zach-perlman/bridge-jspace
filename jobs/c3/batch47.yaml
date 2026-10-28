@@ -1,0 +1,231 @@
+# Batch 47 (Dan, 28 Oct ~02:00): the night of 28 Oct, the "around" route in harder settings. Every rule below is fixed in
+# advance as written, before any run. Experiments freeze Wed 28 Oct evening; results landing after it are labelled "after
+# the freeze"; hand check Thu 29 Oct; the box (mats, 2x H100) is kept until Thu 12:00. No new models: Qwen3.5-9B (L12),
+# Qwen3.6-27B (L32), Muse Glimmer 30B (L26); the 122B is out. No result of a test is opened, scored or reported until
+# predictions/2026-10-28_dan.md holds Dan's committed answer for that question; runs are sealed as in batch 45 (--sealed,
+# no verdict stage in the job). One job spec per GPU job (jobs/c3/x47_*.yaml) is written when its code is committed.
+#
+# Common settings, as before: chat rendering; X0's top-token read; cluster bootstrap over bridge items, 10,000
+# resamples, seed 0; 95% intervals; every part removed, kept or written is paired with a random part of the same share of
+# the change (or a random vector of the same norm); read gate 0.80 per reader on unedited scenes, a failed gate means "not
+# tested", never a lowered gate; the pointer basis U is the one fit on fresh scenes (x0_massmean pointer_means), never
+# refit unless the test says so; every test gets a verify-pack view (10 random items, seed 0, the prompt as the model sees
+# it, the patch position marked, each arm's answer); one EXPERIMENTS.md line per run; results write-once; manifests record
+# switches; README claims are not edited tonight (data.csv rows and "after the data" labels only).
+
+batch: 47
+by: Dan, 28 Oct ~02:00
+freeze: "Wed 28 Oct evening"
+predictions: predictions/2026-10-28_dan.md
+models: {qwen3.5-9b: 12, qwen3.6-27b: 32, muse-glimmer-30b: 26}
+purpose: >-
+  Not more cells, but a sharper account of the route the lookup takes around the lens, in harder scenes. Every test
+  either (i) says what the pointer is, (ii) says where the lookup's identity route lives relative to the lens, or (iii)
+  answers a question Neel asked.
+queue_order: ["47.1 (27B -> 9B -> Muse) and 47.4 on the two GPUs first", "47.5", "47.2 (9B, Muse) and 47.3 (27B, 9B, Muse) as their scenes land", "47.6 last"]
+cut_line: "If late: 47.6 (a) and the 27B of 47.2 are cut first; 47.0, 47.1, 47.4 and 47.3 are not cut."
+gpu_hours_total: "13-14 (Dan's estimate), two GPUs, expected to drain by Wed afternoon"
+not_now: ["new models (Lightning, 122B, OLMo, DeepSeek)", "a second-vs-third basis", "pointer transfer to natural passages", "any README claim edits", "any run on Friday"]
+
+tests:
+  - id: "47.0"
+    tier: 0 (CPU, ~1.5 h, no GPU)
+    title: Is the pointer verbalizable? (Neel's question)
+    question: If the pointer directions are read through the J++ lens, does the lens say anything, and can the J-space express them at all?
+    inputs: >-
+      U (4 directions) and the write vectors mu_k - mu_j from x0_massmean pointer_means; the identity mass-mean
+      directions (item pairs) as the positive comparison; 200 random directions of the same norm as the null; real states
+      h at the bridge word on routes scenes (locker-first, O prompts, from the x6_routes cache); the lens at L for each of
+      the three models.
+    readings:
+      a_read_through: >-
+        For each model: the lens readout (the project's bridge_readout / x0_probe_lens path) of h + s * (mu_k - mu_j) at
+        s = 2 (a real change's size), against h alone; top-20 tokens, and the rank of an ordinal set {first, second,
+        third, 1, 2, 3, next, last, earlier, later, before, after, one, two, three} and of the digits. Null: the same with
+        the 200 random vectors. Report the best ordinal-token rank for the pointer against the null's 5th percentile.
+      b_reconstruction: >-
+        The project's sparse nonneg OMP over lens atoms, k = 25 and k = 100, unrestricted atoms (not the letter-token
+        restriction of the main test; report that too), on: each U direction, each mu_k - mu_j, the identity direction,
+        the random null. Report ||P Delta||^2 / ||Delta||^2 for each, and the atoms picked (tokens) for the pointer.
+      c_blindness: >-
+        On 100 routes items: KL(lens readout at the bridge word before the write || after the write at s = 2), against
+        the random vector of the same norm. Also for the identity direction at the same norm. If the model's lookup moves
+        (0.46-0.52 at s = 2) while the lens's distribution moves no more than under a random vector, the lens is blind to
+        the write.
+    reading: >-
+      Descriptive (answers a question; not a pre-registered claim). "Not verbalizable": reconstruction at k = 25 within
+      2x the random null's share, no ordinal token in the top-20 beyond the null's 5th-percentile rank, and the KL under
+      the write within the null's 95th percentile, on all three models. "Partly verbalizable": an ordinal or digit token
+      in the top-20 with rank below the null's 5th percentile, or reconstruction >= 3x the null. Either way, one table and
+      one sentence for the README's monitoring bullet; one line restating the sanity swap (J++ + U removed together leave
+      0.45 / 0.53 / 0.74 of lookups), which answers the other reading of Neel's question (augment the lens with the
+      pointer).
+
+  - id: "47.0b"
+    tier: 0 (CPU, ~30 min)
+    title: Margins of the non-switchers
+    design: >-
+      From the main test's and the clean design's outcomes.jsonl (ld, p_alt, p_org): for each reader and model, the
+      unedited logit margin (original answer minus the changed answer) of items that switch under the whole change
+      against those that do not, with intervals. One table, docs/x0_details.md.
+    reading: The cheapest "why not every answer switches" explanation; 47.4 is the causal one. Descriptive.
+
+  - id: "47.1"
+    tier: 1 (GPU, ~2.5 GPU-h)
+    title: "Where does the lookup's identity route live: outside the lens, or outside the 25 atoms the recall uses?"
+    motivating_data: >-
+      Fig 2b(b): on the 27B, removing 100 J++ atoms cuts identity answers from 0.66 to under 0.10 while a random part of
+      the same share leaves ~0.70; at 25 atoms the lookup barely moves. So "around the lens" on the 27B may mean "outside
+      the recall's 25 atoms, inside the lens's wider span".
+    design: >-
+      OMP with K = 100 on Delta (x0_necessity's OMP, ordered atoms). New arm: remove atoms 26-100 only (keep 1-25).
+      Existing arms rerun in the same job: remove 1-25; remove 1-100; random subspace with the share of atoms 26-100;
+      random with the share of 1-100. Scenes: routes C2 (another item moved, 300) with identity / position / value
+      classification, and the main test (200) with both readers. Models: 27B first, then 9B, Muse.
+    rule: >-
+      On routes scenes, for identity answers; on the main test, for extra loss: (a) "the lookup's identity route sits in
+      lens atoms beyond the recall's 25": without 26-100, identity answers fall >= 0.30 beyond the random part (paired CI
+      excluding 0) and the recall's extra loss without 26-100 is <= 0.10, on >= 2 of 3 models; (b) "continuum": both
+      readers lose >= 0.20 beyond random without 26-100; (c) "outside the lens": without 26-100, identity answers fall <
+      0.10 beyond random (then the 27B's K = 100 loss is a size effect of the whole removal, and the 27B stays "misses the
+      strict rule, cause not found"). Report each slice's share of the change.
+    dumbest_ways: >-
+      1) OMP order is not a quality order (check: atoms 26-100's share vs 1-25's share per item). 2) The random control is
+      matched on share but not on atom count (match both: random atoms of the lens, 75 of them, at the same share). 3)
+      Leakage of the K = 100 atoms into the pointer (report cos^2 with U, as in Fig 2b).
+    question: Q47.1
+
+  - id: "47.4"
+    tier: 1 (GPU, ~1.5 GPU-h)
+    title: Why does not every answer switch?
+    design: >-
+      Main test and clean design, locker-first and locker-after reported separately; both readers; 9B, 27B, Muse. Arms at
+      the bridge token: (a) Delta at L only (the existing cell); (b) Delta at every layer <= L; (c) Delta at every layer
+      (the bridge token fully swapped at all depths); (d) every token of the pick sentence swapped at every layer (the
+      ceiling: everything the pick sentence carries). Switch rate per arm.
+    reading: >-
+      Descriptive, a decomposition, no bar. Per reader and order: (a)->(b) = read before L at the bridge token; (b)->(c)
+      should be ~ 0 (the patch propagates; a non-zero difference is a bug, stop and report); (c)->(d) = carried by the pick
+      sentence's other tokens; (d)->100% = carried outside the pick sentence (the locker sentences; the link made there in
+      locker-after scenes). One table, one stacked figure. If (d) stays far below 1 in locker-first scenes for the lookup,
+      that is the number for "the lookup's link is partly made elsewhere even when the locker comes first".
+    dumbest_ways: >-
+      1) Patching every layer at one token with per-layer states from S is not a clean counterfactual if positions differ
+      (they do not; same tokens; assert). 2) (d) changes the person token too in the two-people main test (it does not;
+      the pick sentence's person is the same; assert). 3) Cumulative patches below L change the gate (recount eligibility
+      on the unedited run only).
+    question: Q47.4
+
+  - id: "47.5"
+    tier: 1 (GPU, ~0.7 GPU-h)
+    title: "Followed or needed: one-layer zeroing"
+    why: >-
+      "Without the J++ part" is a conflict test (J++ says the old item, the rest says the new one). Whether the recall
+      needs the part is Zach's zeroing. On Muse the two disagree at mid depth (our gap 0.85; his +6.7). Decides the
+      headline's verb.
+    design: >-
+      On S (the changed prompt), at the bridge token at L: project out the 25 OMP atoms of Delta from h_S; the random
+      subspace of the same share; also the same over L..L+3 with the per-layer lens. Both readers. Measure: share of S's
+      answers kept. Models: 9B, 27B, Muse.
+    rule: >-
+      "Followed, not needed at one layer" if the recall keeps >= 0.80 of its answers under the zeroing, within 0.10 of the
+      random arm; "needed" if it loses >= 0.30 beyond random. The lookup reported beside. Whatever the result, the
+      README's verb for the main test becomes "follows / reads" unless "needed" holds on all three.
+    question: Q47.5
+
+  - id: "47.2"
+    tier: 1 (GPU, ~3.5 GPU-h; scenes ~1 h CPU)
+    title: "Harder pointer scenes: is the order code categorical or ordinal?"
+    motivating_data: >-
+      The pointer marks the first locker in a clean layout; 2nd-vs-3rd removal found no separate direction, yet writing
+      mu_3 - mu_2 moves the lookup at 2x. Three lockers cannot tell "first vs rest" from "a line over slots".
+    scenes: >-
+      The x6_routes generator extended to six single-token items with lockers (slots 1-6), locker-first, three pick
+      sentences, every item's first mention its locker sentence; the C0 sanity swap; competence gate 0.80 per reader (if
+      six fails on a model, drop to five and say so). Routes moves: the bridge item's locker sentence moved from slot i to
+      slot j, every ordered pair, ~20 scenes per pair (600 per model), the new number not in the list.
+    fit: >-
+      Held-out half. Layout-free class means mu_1..mu_6 at the bridge word (x0_massmean's method). PCA of the six means:
+      variance explained by 1, 2, 3 components; Spearman of the first component's projection against slot.
+    causal_arms: >-
+      The other half. (i) Remove the 5-d slot subspace vs a random part of the same share: position answers. (ii) Pairwise
+      writes mu_j - mu_i at s = 1 and 2 (the unit: the median pointer-part norm of a real change on these scenes): share
+      to the target slot, by (i, j). (iii) The ordinal test: one fixed shift vector v = mean_k (mu_{k+1} - mu_k), written
+      at the same unit from every start slot k: share of lookups sent to slot k+1, by k; and v reversed for k-1. (iv) The
+      old 4-d U removed on moves among slots 2-6 only, vs random. Models: 9B and Muse first; the 27B if time.
+    rule: >-
+      "Ordinal": the first PCA component is monotone in slot (|Spearman| >= 0.9) and v sends >= 0.25 of lookups to slot
+      k+1 from >= 4 of 5 start slots, the random vector <= 0.05; "Categorical, first vs rest": v works only from slot 1
+      (others < 0.10) and U's removal on 2-6 moves is within 0.10 of random; "Slot-specific": pairwise writes reach >=
+      0.25 on most pairs but no single v does. What it means: ordinal = a positional line the lens cannot read (Dai et al.
+      2024's ordering subspace); categorical = a one-bit marker; slot-specific = binding IDs (Feng & Steinhardt 2023).
+    dumbest_ways: >-
+      1) With six lockers the model answers by lexical match only (position share near 0 under the whole change: then the
+      test is "not interpretable", report the whole-change routes split first). 2) The shift vector is dominated by the
+      first-vs-rest step (report mu_2 - mu_1 separately, and v fit without it). 3) Six digits exhaust single digits with
+      the new number (use letters A-H for the "number" if needed, and say so).
+    question: Q47.2
+
+  - id: "47.3"
+    tier: 1 (GPU, ~2.5 GPU-h; scenes ~1 h CPU); this is 45h, now queued
+    title: "A computed bridge: the routes test with a described item"
+    question_text: When the bridge must be recalled from a description, does the lookup still go around the lens, and does it ever take the value?
+    scenes: >-
+      The routes scenes with the pick sentence stating a description instead of the name: "Iris picked the one that
+      croaks." (per-animal one-word cues, last token = the cue; keep a cue list where the model names the animal from the
+      cue alone >= 0.90, unedited, as a competence step). Lockers stated by name. The change is at the cue token (croaks ->
+      hops, the other item's cue) with the moved locker sentence as in C2. Readers: lookup (locker) and recall (legs).
+      Gate 0.80 per reader; a model that fails the gate is "not tested".
+    arms: >-
+      Whole change at the cue token at L; without J++ (K = 25); without the random part; routes classification identity /
+      position / value; without U (expected not to transfer); without U' refit on these scenes (label-free P_cf, rank 4,
+      fit on half, tested on the other half) vs random.
+    rule: >-
+      (a) "the split holds for a recalled bridge": gap >= 0.3 and lookup extra loss <= 0.10; (a') "a recalled bridge is
+      handed through the lens": lookup extra loss >= 0.20 (then the lens's rule, "flexible computation routes through the
+      J-space", holds here and not for stated bridges; report it as the more interesting outcome, not as a failure); (b)
+      "never the value": value <= 0.05; (c) "a pointer at the cue token": U' removal cuts position answers >= 0.30 beyond
+      random. Report Zach's M->P numbers beside (toy suite: 12 / -2 / 0).
+    dumbest_ways: >-
+      1) The cue is not single-token on a model (drop those items; report counts). 2) The model names the item in its
+      answer rather than the digit (the read gate catches it; report the share). 3) The description leaks the position
+      (it must not mention slots).
+    question: Q47.3
+
+  - id: "47.6"
+    tier: 1 (GPU, ~2.5 GPU-h; attn_knockout's exact edge knock-out, DeltaNet included)
+    title: "Where the pointer is formed and dereferenced: edge knock-outs"
+    a_measurement: >-
+      Descriptive, ~1 GPU-h. Routes scenes, locker-first, Muse and the 9B. Attention from the last token to each locker
+      sentence, by full-attention layer and head, under none / whole change / without U / write s = 2. Score: the mass on
+      the answered locker's sentence against the other sentences; does it follow the answer? One figure per model.
+    b_formation: >-
+      Block the pick sentence's tokens from reading the locker sentences (sources = the locker sentences; dests = the pick
+      sentence; layers 0..L), then the whole change at L. Control: the same number of edges to a neutral filler sentence.
+      Routes classification and the recall's switch. Rule, fixed in advance: "the pointer is formed by the pick token
+      reading the lockers" if position answers fall to <= 0.10 (from 0.51 / 0.54) while identity answers stay within 0.10
+      and the recall's switch within 0.10, on Muse and the 9B; the control within 0.10 of none.
+    c_dereference: >-
+      No patch. Block the question tokens (from "Which" to the end) from reading the locker sentences at layers L..end;
+      control: the same edges to the filler. Rule: "dereferenced from the question" if lookup accuracy falls below 0.50
+      while recall accuracy stays >= 0.90, on Muse and the 9B.
+    meaning: >-
+      (b) + (c) give the around route end to end: formed at the pick token by reading the lockers before L, dereferenced
+      from the question after L, neither through the lens. Report full-attention-only and all-layer (DeltaNet) blocks
+      beside each other on the 9B.
+    dumbest_ways: >-
+      1) Blocking before L also breaks the identity at the pick token (the recall's switch is the check). 2) Indirect
+      routes through the period or the person token (report (b) with dests = the whole pick sentence vs the bridge token
+      only). 3) The filler control blocks fewer edges (match the count).
+    question: Q47.6
+
+  - id: tier2
+    tier: 2 (CPU, while the queue runs)
+    items:
+      - >-
+        Probe vs lens for the value and the slot (agam's "probe finds X, the lens doesn't"): on the cached bridge-word
+        states (x0_probe_power), linear probes for the locker digit (value), the slot index, and the person; against the
+        lens's rank of the same digit. If the digit is decodable (>= 2x chance) and the routes test never follows it, that
+        is "decodable, not used", one line in Section 3.
+      - Hand-check pack views for 47.1, 47.3, 47.4 as each unseals.
+      - Figures only for tests whose rule is scored; the rest stay in docs/x0_details.md.
