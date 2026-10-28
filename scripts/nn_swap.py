@@ -44,6 +44,9 @@ jswap):
   repair_k{k}          X's own lens part written in, from the neutral sentence about X: h_X - Jk(h_X) + Jk(h_Xn)
   repair_k{k}_rand / _rot / _noans    as the transplant's controls, with X's neutral state as the donor
   repair_full          h_Xn (the whole neutral state)
+  note 13: clamp_noans, the clamp with X's and D's name vectors first made orthogonal to every answer direction (A);
+  items with an in-context second hop (final P, jsuite_v3mp): D is another entity of the passage; classes kept (X's
+  passage value), donor (D's passage value), third (D's remembered attribute), xmem (X's remembered attribute)
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word. For repair_*, kept is the fix rate.
 
@@ -219,7 +222,7 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
     def classify(lg, j):
         c2 = torch.tensor(j["cands2"], device=lg.device)
         pick = int(c2[lg[c2].argmax()])
-        cls = "kept" if pick in j["ok2"] or pick in j["fx"] else "donor" if pick in j["fd"] else "third" if pick in j["ft"] else "other"
+        cls = "kept" if pick in j["ok2"] or pick in j["fx"] else "donor" if pick in j["fd"] else "third" if pick in j["ft"] else "xmem" if pick in j.get("fm", ()) else "other"
         return cls, pick
 
     by_len = collections.defaultdict(list)
@@ -301,13 +304,19 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                     P = torch.linalg.pinv(A.double()).float()  # [B, d, 2]
                     c = rec[la] @ P  # [B, T, 2] clean coordinates
                     clamp_atoms[la], clamp_pinv[la], clamp_tgt[la] = A, P, c[..., [1, 0]]
+                    if "clamp_noans" in conds:  # note 13: the name vectors made orthogonal to every answer direction first
+                        An = A - (A @ qa[la]) @ qa[la].T
+                        An = An / An.norm(dim=-1, keepdim=True).clamp_min(1e-6)
+                        Pn = torch.linalg.pinv(An.double()).float()
+                        clamp_atoms[("noans", la)], clamp_pinv[("noans", la)], clamp_tgt[("noans", la)] = An, Pn, (rec[la] @ Pn)[..., [1, 0]]
             for cond in conds:
 
                 def hook_fn(la, h, cond=cond):
                     li = band.index(la)
                     h = h.clone()
                     if cond.startswith("clamp"):
-                        delta = (clamp_tgt[la] - h.float() @ clamp_pinv[la]) @ clamp_atoms[la]  # [B, T, d]
+                        k = ("noans", la) if cond == "clamp_noans" else la
+                        delta = (clamp_tgt[k] - h.float() @ clamp_pinv[k]) @ clamp_atoms[k]  # [B, T, d]
                         if cond == "clamp_null":
                             delta = delta.norm(dim=-1, keepdim=True) * null[la]
                         delta[:, 0] = 0  # position 0 (the attention sink) is never edited, as SwapClamp
@@ -421,6 +430,26 @@ def main(a) -> None:
         rng = random.Random(p["id"] if not a.seed else f"{a.seed}:{p['id']}")  # note 11: --seed draws other donors
         ok_name = lambda e: not (e.lower().startswith(x.lower()) or x.lower().startswith(e.lower()))  # noqa: E731
         tx = name_token(model, tok, x)  # the clamp needs distinct name directions: no donor whose name token is X's
+        if it.get("final") == "P":  # note 13: an in-context second hop (jsuite_v3mp); D is another entity of the passage
+            pv, mem = it["passage_values"], (lambda e, t=t: t["facts"][e][0] if e in t["facts"] else None)
+            ax = it["answer"]  # X's passage value
+            cands = sorted(e for e in it["entities"] if e != x and pv.get(e) and pv[e] != ax and mem(e) and mem(e) not in (ax, pv[e])
+                           and ok_name(e) and name_token(model, tok, e) != tx)  # fmt: skip
+            if not cands:
+                continue
+            dn = rng.choice(cands)
+            text = T.render(tok, {"framing": "chat", "context": NEUTRAL.format(dn), "question": "Has anyone else heard about this?", "kind": kind, "format": it["format"]})
+            nids = S.ids(tok, text)
+            npos = JS.spans(bridge_positions(tok, nids, dn))
+            if not npos:
+                continue
+            # kept: X's passage value; donor: D's passage value (the lookup followed D); third: D's remembered attribute (D's
+            # memory bundle); xmem: X's remembered attribute
+            jobs.append({**p, "x": x, "d": dn, "rel": rel, "sites": sites, "kind_": kind, "format_": it["format"], "neutral": (nids, npos[0]),
+                         "lat_id": f"none:{p['id']}", "lat_ids": nids, "lat_pos": npos[0], "tx": tx, "td": name_token(model, tok, dn),
+                         "fx": JS.forms(tok, ax, kind), "fd": JS.forms(tok, pv[dn], kind), "ft": JS.forms(tok, mem(dn), kind),
+                         "fm": JS.forms(tok, mem(x), kind) if mem(x) else set(), "ax": ax, "ad": pv[dn], "at": mem(dn)})  # fmt: skip
+            continue
         donors = sorted(b for (r, b) in rm_by if r == rel and b != x and ans(b) != ax and ok_name(b) and name_token(model, tok, b) != tx)
         if not donors:
             continue

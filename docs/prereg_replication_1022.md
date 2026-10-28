@@ -2588,3 +2588,30 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
     - plus (a) above, read as rendering A vs rendering 0 on the same items (answer readability at the description's end, successes).
     - The headline question: on rendering A, does the answer-free swap (any scrub) keep >= 1/3 of the normal swap?
 - **Not rerun:** the removal matrix, ports, conflict, hard read, and Muse / Ministral (question order does not bear on them). Rendering A stands in for the second-wording replication of notes 9-11 (Zach: "at the very end").
+
+#### Amendment 58 note 13 (Zach, 2026-10-28 ~20:30 UTC, before any run below; a mechanics smoke ran first on the 9B (n = 3 MP items, 4 clamp items; rows seen only as the scorer's mechanics check, uninformative)): the latent first hop into an in-context second hop; the clamp's break-test
+
+- **Why:**
+  - Notes 11-12 found the J-space content that matters at a bridge is its remembered answer, whatever the question order.
+  - Neel's explanation for his own null ("the dataset … had pairs like France and Paris, which were linearly related") also covers ours: a person's nationality is a salient remembered attribute.
+  - The test without a remembered answer: a second hop to an arbitrary fact stated in the passage.
+  - Rendering 0's MP items do this. The question describes the bridge; the passage gives each scene entity a made-up value ("The upcoming biopic casts a Swedish actor as Achebe. … a Mexican actor as Nobel.").
+  - A swap at the description's end then has separable outcomes: D's passage value (the lookup followed a swapped-in identity), D's remembered attribute (D's memory bundle), or no change.
+- **Seen when written:** notes 9-12's results, and the removal matrix's start-M cells. Under paper10, final P loses 12 / 13 / 5 (rotated 7 / 2 / 4) vs final M 56 / 65 / 50 (9B / 27B / Lightning). MP competence, and anything below, unseen.
+- **Data:** scripts/v3_mp.py → jsuite_v3mp_test_chat (468 MP items; hop 2 is the passage lookup with the bridge named; every scene entity's passage value parsed and checked).
+- **Runs** (scripts/queues/h200_mp_1028.sh; 9B L12-16, 27B L32-40, Lightning L27-33):
+  - **1.** Competence on MP (words MP, scene words MP).
+  - **2.** nn_swap on MP at the description's last token, donor seeds 0 and 1.
+    - D: another entity of the same passage, whose passage value and remembered attribute both differ from X's passage value (and from each other).
+    - Conditions: insert_k10, its controls _rand and _rot; insert_k10_noansrel; insert_k100; note 10's decomposition (full / lens / rem / remfix / lensrand, insert); necessity at the site (remove_k10, remove_k10_rot).
+    - Classes: kept (X's passage value), donor (D's passage value), third (D's remembered attribute), xmem (X's remembered attribute), other.
+  - **3.** The clamp's break-test on rendering 0's RM / MM / PM at the band, seed 0: clamp, clamp_null, and clamp_noans. clamp_noans is the clamp with X's and D's name vectors first made orthogonal to every answer direction (A, note 11).
+- **Readings (scripts/nn_mp_read.py; nn_ans_read.py; fixed now):**
+  - **MP, insert_k10, rows pooled over the 2 seeds:**
+    - "the J-space carries the computed identity the lookup uses" if D's-passage-value share is >= 10 points above the larger control (paired, 95% bootstrap over bridges above 0) and above D's-attribute share;
+    - "the J-space carries D's memory bundle" if D's-attribute share is >= 10 points above the larger control (interval above 0) and above D's-passage-value share;
+    - "the identity the lookup uses lives outside the lens part" if neither, while full_insert moves >= 20 to D's passage value;
+    - note 10's decomposition read on the D's-passage-value share.
+    - "the lookup needs the lens part at the site" if kept under remove_k10_rot minus kept under remove_k10 is >= 10 (interval above 0).
+  - **Clamp:** "the name coordinates carry something beyond the answer" if clamp_noans transfers (donor − third, RM) >= 10 with clamp_null < 10. "Not beyond the answer" if clamp_noans <= 1/3 of the clamp.
+- **Order:** after rendering A on each GPU (27B on GPU 0; 9B, then Lightning, on GPU 1).
