@@ -145,7 +145,7 @@
 
 - **It marks the first locker in a clean layout.** A neutral first sentence barely moves its code (code shift β {{pt|x45a_beta_V4_9b}}-{{pt|x45a_beta_V4_muse}} positions); one naming an item shifts it {{pt|x45a_beta_V2_27b}}-{{pt|x45a_beta_V3_muse}}, and the Qwens' lookup then follows identity ({{pt|x45a_id_V3_9b}}-{{pt|x45a_id_V3_27b}} of answers, against {{pt|x45a_id_V0_9b}} / {{pt|x45a_id_V0_27b}}). The rule fixed in advance scores it mixed.
 
-![The pointer marks the first locker in a clean layout](figures/story/fig08_first_locker.png)
+![A neutral sentence barely moves the pointer's code; naming an item does](figures/story/fig08_first_locker.png)
 *Fig. 8.*
 
 - **It must be refit for each format:** fit on simple scenes, it costs the lookup {{num|tptr_varied_range}} in varied scenes and {{num|tptr_natural_range}} in natural passages; refit (fixed in advance), {{pt|x45d_table_9b}}-{{pt|x45d_prose_9b}} on the 9B, {{pt|x45d_prose_muse}}-{{pt|x45d_table_muse}} on Muse, at most {{pt|x45d_table_27b}} on the 27B.

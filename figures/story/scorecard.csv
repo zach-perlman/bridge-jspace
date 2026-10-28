@@ -55,10 +55,10 @@ the recall follows the write,Qwen3.5-9B,ok,a,fig07:recall changed under the stro
 the recall follows the write,Qwen3.6-27B,~,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
 the recall follows the write,Qwen3.5-122B,ok,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
 the recall follows the write,Muse Glimmer 30B,~,a,fig07:recall changed under the strongest write (s = 4): the written locker's item
-"counts mentions, not text position",Qwen3.5-9B,ok,,fig08:(c) neutral sentence B1: the code's shift in positions
-"counts mentions, not text position",Qwen3.6-27B,ok,a,fig08:(c) neutral sentence B1: the code's shift in positions
-"counts mentions, not text position",Qwen3.5-122B,ok,a,fig08:(c) neutral sentence B1: the code's shift in positions
-"counts mentions, not text position",Muse Glimmer 30B,ok,a,fig08:(c) neutral sentence B1: the code's shift in positions
+"counts mentions, not text position",Qwen3.5-9B,ok,,s08b:(c) neutral sentence B1: the code's shift in positions
+"counts mentions, not text position",Qwen3.6-27B,ok,a,s08b:(c) neutral sentence B1: the code's shift in positions
+"counts mentions, not text position",Qwen3.5-122B,ok,a,s08b:(c) neutral sentence B1: the code's shift in positions
+"counts mentions, not text position",Muse Glimmer 30B,ok,a,s08b:(c) neutral sentence B1: the code's shift in positions
 a pick sentence first moves the lookup to identity,Qwen3.5-9B,ok,a,"fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
 a pick sentence first moves the lookup to identity,Qwen3.6-27B,ok,a,"fig08:45a, first-locker moves, whole change, a pick naming the first-locker item: identity share"
 a pick sentence first moves the lookup to identity,Qwen3.5-122B,-,,

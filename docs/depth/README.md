@@ -10,7 +10,7 @@
 - **The pointer is narrow:** it marks the first locker in a clean layout; naming an item first moves the lookup to identity. About half of the route around the lens is unexplained.
 - **For monitoring:** a lens on the bridge word shows which item is there, not where the model will read its answer.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at 5b4962ef from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at 92e521b2 from the run files.
 
 ## Setup
 
@@ -145,7 +145,7 @@
 
 - **It marks the first locker in a clean layout.** A neutral first sentence barely moves its code (code shift β 0.15-0.18 positions); one naming an item shifts it 0.30-0.83, and the Qwens' lookup then follows identity (0.85-0.97 of answers, against 0.54 / 0.65). The rule fixed in advance scores it mixed.
 
-![The pointer marks the first locker in a clean layout](../../figures/story/fig08_first_locker.png)
+![A neutral sentence barely moves the pointer's code; naming an item does](../../figures/story/fig08_first_locker.png)
 *Fig. 8.*
 
 - **It must be refit for each format:** fit on simple scenes, it costs the lookup 0.05 to 0.15 in varied scenes and 0.07 to 0.25 in natural passages; refit (fixed in advance), 0.18-0.24 on the 9B, 0.23-0.47 on Muse, at most 0.13 on the 27B.

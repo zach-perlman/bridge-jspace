@@ -112,7 +112,13 @@ def test_fig3b_45q_on_planted_runs(tmp_path, monkeypatch, saved, plants, label):
     assert ("not run" in fig["texts"]) == (None in plants)
     rows = [r for r in S.ROWS if r["figure"] == "fig03b"]
     assert {r["model"] for r in rows} == {t for (t, _), h in zip(F.Q_MODELS, plants, strict=True) if h is not None}
-    assert any("copy at L without the J++ part" in r["quantity"] for r in rows)
+    supp = saved["s03d_link_copy_variants"]  # the other copies and 45n's parts: the supplementary figure
+    check(supp)
+    assert supp["supp"]
+    rows_supp = [r for r in S.ROWS if r["figure"] == "s03d"]
+    assert any("copy at L without the J++ part" in r["quantity"] for r in rows_supp)
+    assert any("item's own tokens" in r["quantity"] for r in rows_supp)
+    assert not any("item's own tokens" in r["quantity"] for r in rows)
 
 
 def test_fig3b_dispatch_keeps_the_45b_sweep_until_45q_lands(monkeypatch, saved):
