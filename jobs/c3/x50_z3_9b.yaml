@@ -1,0 +1,60 @@
+id: x50_z3_9b
+title: "Batch 50 Z3 on the 9B L12: the routes test on Zach's jsuite v2 passages (scattered facts). Three facts of one kind, all before the pointer sentence; S: the pointer names B, and B's fact sentence moves to C's slot with a new, unstated value; the change at the pointer name's last token, read on O: identity / position / value / original / other (x6_routes' classes); whole / without J++ / without a random part of its share; C0 (the name alone) beside; sealed"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= uv run python scripts/x50_zach.py run --part z3 --name qwen35_9b_x50_z3
+question: >-
+  In Zach's natural passages, where the facts are scattered sentences rather than a listed layout, does the change at
+  the bridge name carry a position (the lookup answers the fact standing at B's new slot in O, C's fact), the identity
+  (B's fact where it stands in O), or the value (the new word)?
+why_it_matters: >-
+  Our routes test found a position route (an address) in listed locker scenes. If position answers reach 0.2 in his
+  passages, the address exists in scattered-fact passages too (and the 45d address basis is due there); if they stay
+  <= 0.05, the address is a property of listed layouts.
+hypotheses:
+  Q50.3: "Dan's answer in predictions/2026-10-28_dan.md (Q50.3: 'Position answers >= 0.2: P(yes), per model'; Dan: 60%), committed before this spec; the run still writes no verdict (scripts/x50_zach.py verdict --part z3, by hand)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch50.yaml, Z3, verbatim): Value <= 0.05; report identity / position shares. If position
+  >= 0.2: the address exists in scattered-fact passages; then and only then fit a label-free address basis on a held-out
+  half (as 45d) and run without / only it vs random. If position <= 0.05: "no position route in his layout": the
+  address is a property of listed layouts.
+  As computed (fixed before any run; choices where batch50.yaml is silent). Items: v3 is not on the box, so Zach's v2
+  facts module; his level-0 P-start scenes (exactly three entities, three stated facts of the relation), the K passage
+  only (PK: true facts stated, our lookup), every fact sentence before the asked person's pointer sentence, the three
+  answers distinct, the leak filter of Z1 / Z2. Sets in order until 200 are eligible: jsuite_v2_test_chat (seed 2601),
+  jsuite_v2nb_test_chat (2701), then his two other renderings of v2's facts, jsuite_v2r2_test_chat (2602) and
+  jsuite_v2r3_test_chat (2603) (Z1 / Z2's "second seed only if short", extended: about 1 in 4 level-0 scenes has all
+  three facts first). A = the bridge; B and C = the other two, B first in a seeded order per scene (seed 5001), then
+  swapped if it does not align. S (x6_routes' C2): the pointer sentence names B; B's and C's fact sentences swap slots,
+  B's stating e, a value of the relation that neither the passage nor its question states (nor a derived word; seeded
+  order, the first that aligns); C's moves unchanged into B's old slot. Alignment: the patch token (the pointer name's
+  last token, Z1's site) at one index in O and S, no token after it changes, a, b, c, e with four distinct first
+  tokens; a slot keeps its ordinal place, not necessarily its token span (whether the moved sentence keeps C's token
+  span is recorded per passage and reported as a stratum beside). C0 (descriptive, x6_routes' C0): S0 = O with only the
+  pointer's name changed to B (Z1's counterfactual), its own change, read the same way. Plan check (Qwen tokenizer, the
+  9B's): 103 aligned of 1,432 passages (21 / 32 / 24 / 26 per set; 39 keep C's token span); drops: 716 level 1, 542 a
+  fact after the pointer, 13 answers not distinct, 58 no (B, C, e) aligns. The read: his chat framing (one user turn,
+  thinking off, no prefill), the top token at the first answer step; classified by x6_routes.classify against the first
+  tokens of b (identity), c (position), e (value), a (original), else other. Gate (batch 47's): O's read accuracy >=
+  0.80 over every aligned passage whose competence ran; eligible: O said (8 greedy tokens) and read a, S said and read e;
+  S0's competence recorded, not gated; the first 200 in passage order. The reads run whatever the gate says; a failed
+  gate is "not tested" in the verdict. Delta = h_S - h_O at the patch token at L12, added on O. Arms: whole (the rule);
+  without J++ (signed OMP, k = 25) and without a random part of its share (seed 888 + L), descriptive. Shares over the
+  chosen passages, cluster bootstrap over the original bridge entity (10,000, seed 0, 95% intervals); point estimates
+  decide (EPS 1e-9): position >= 0.20 -> "the address exists in scattered-fact passages" (Q50.3 yes); position <= 0.05
+  -> "no position route in his layout"; else in between (neither clause). The value check (value <= 0.05) is reported
+  beside the clause and does not change it. The 45d follow-up is not in this job: a separate spec, only if position >=
+  0.2 at the verdict. Scored by hand: scripts/x50_zach.py verdict --part z3.
+controls:
+- 'the value route (the new word, never in O): <= 0.05 expected (batch50.yaml)'
+- 'C0: the pointer names B and nothing else moves (Z1''s counterfactual on the same passages): identity / original shares beside, so a null position share can be read against a change that does move the answer'
+- 'the J++ part against a random part of its own share (X0''s random subspace, seed 888 + L), descriptive'
+- 'the read gate (0.80) and O / S said and read right'
+- 'stratum: passages whose moved sentence keeps C''s exact token span (position share beside)'
+n: 'all eligible up to 200: 103 aligned of 1,432 passages over four sets on the Qwen tokenizer before the competence step (the gate may keep fewer)'
+seeds: [2601, 2701, 2602, 2603, 5001, 0, 888]
+notes: "Sealed: the run writes manifest, cases, competence, gate.json, outcomes, norms; no verdict. By hand (CPU): uv run python scripts/x50_zach.py verdict --part z3 (the route table per model and layer, every condition and arm, the token-span stratum, the verify-pack view of 10 random passages, seed 0, and the route-share figure). Batch 50: Z3 runs only if Z1 and Z2 land by 19:00 (a call for whoever enqueues; no depends_on, the Z2 jobs run on two boxes). Seeds: 2601 / 2701 / 2602 / 2603 his sets, 5001 the B / C order and the value order per scene, 0 the bootstrap and the view, 888 + L the random subspace. Plan: results/x50_zach/plan-20261028T160250Z/. Estimate: x50_z1_9b took 1,050 s wall on one H100 (544 passages x 2 readers x 2 prompts through competence; 200 passages x 2 readers of change and reads); this job has <= 103 passages x 1 reader x 3 prompts through competence and <= 103 x 2 conditions of change and reads: about 0.08 h with the model load; 0.15 with margin (Dan: ~0.6 GPU-h)."

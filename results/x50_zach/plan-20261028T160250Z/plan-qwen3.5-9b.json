@@ -1,0 +1,286 @@
+{
+ "target": "qwen3.5-9b",
+ "code": {
+  "sha": "2786b2c35e2ecdd9cb7f989932874bf5e878c16e",
+  "dirty": false
+ },
+ "sets": {
+  "z3": [
+   "jsuite_v2_test_chat",
+   "jsuite_v2nb_test_chat",
+   "jsuite_v2r2_test_chat",
+   "jsuite_v2r3_test_chat"
+  ]
+ },
+ "words": {
+  "z3": [
+   "PK",
+   "PM"
+  ]
+ },
+ "n_items": 200,
+ "cf_seed": 5001,
+ "z3": {
+  "jsuite_v2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "cases": 21,
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 141,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 14,
+    "not three entities (level 1)": 179,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 1,
+    "the three answers are not distinct": 2
+   },
+   "slot_aligned": 10,
+   "slots_BC": {
+    "2->1": 3,
+    "2->0": 4,
+    "0->1": 3,
+    "0->2": 8,
+    "1->0": 2,
+    "1->2": 1
+   },
+   "relations": {
+    "animals": 1,
+    "cities": 3,
+    "companies": 2,
+    "countries": 2,
+    "dishes": 3,
+    "landmarks": 3,
+    "languages": 5,
+    "people": 2
+   },
+   "examples": [
+    {
+     "scene": "j2:animals:P-L0-tortoise-0",
+     "bridge": "tortoise",
+     "cf_bridge": "salamander",
+     "answer": "reptile",
+     "cf_answer": "mammal",
+     "slot_of": "mosquito",
+     "values": {
+      "original": "reptile",
+      "identity": "amphibian",
+      "position": "insect",
+      "value": "mammal"
+     },
+     "slots": {
+      "A": 0,
+      "B": 2,
+      "C": 1
+     },
+     "slot_aligned": false,
+     "K": {
+      "id": "j2:chat:facts:PK-L0-01999",
+      "O": "<|im_start|>user\nMeeting notes, 14 March.\n- Biologically, the tortoise is a kind of reptile.\n- Biologically, the mosquito is a kind of insect.\n- Paul Whitaker sponsored the salamander at the city zoo.\n- He was also a brother of the Alpha Tau Omega fraternity.\n- Biologically, the salamander is a kind of amphibian.\n- Ben Crowley sponsored the mosquito at the city zoo.\n- During summer vacations, Stevens spent time teaching at Butler basketball camps.\n- Grace Holloway sponsored the tort⟦oise⟧ at the city zoo.\nNext meeting in two weeks.\n\nWhich class of animal does the animal Grace Holloway sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nMeeting notes, 14 March.\n- Biologically, the tortoise is a kind of reptile.\n- Biologically, the salamander is a kind of mammal.\n- Paul Whitaker sponsored the salamander at the city zoo.\n- He was also a brother of the Alpha Tau Omega fraternity.\n- Biologically, the mosquito is a kind of insect.\n- Ben Crowley sponsored the mosquito at the city zoo.\n- During summer vacations, Stevens spent time teaching at Butler basketball camps.\n- Grace Holloway sponsored the salam⟦ander⟧ at the city zoo.\nNext meeting in two weeks.\n\nWhich class of animal does the animal Grace Holloway sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null,
+      "S0": "<|im_start|>user\nMeeting notes, 14 March.\n- Biologically, the tortoise is a kind of reptile.\n- Biologically, the mosquito is a kind of insect.\n- Paul Whitaker sponsored the salamander at the city zoo.\n- He was also a brother of the Alpha Tau Omega fraternity.\n- Biologically, the salamander is a kind of amphibian.\n- Ben Crowley sponsored the mosquito at the city zoo.\n- During summer vacations, Stevens spent time teaching at Butler basketball camps.\n- Grace Holloway sponsored the salam⟦ander⟧ at the city zoo.\nNext meeting in two weeks.\n\nWhich class of animal does the animal Grace Holloway sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+     }
+    },
+    {
+     "scene": "j2:cities:P-L0-Barcelona-0",
+     "bridge": "Barcelona",
+     "cf_bridge": "Athens",
+     "answer": "Spain",
+     "cf_answer": "Mexico",
+     "slot_of": "Adelaide",
+     "values": {
+      "original": "Spain",
+      "identity": "Greece",
+      "position": "Australia",
+      "value": "Mexico"
+     },
+     "slots": {
+      "A": 1,
+      "B": 2,
+      "C": 0
+     },
+     "slot_aligned": true,
+     "K": {
+      "id": "j2:chat:facts:PK-L0-00895",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nAdelaide lies in Australia. Barcelona lies in Spain. Recto Avenue (formerly Azcarraga), Legarda Avenue, Mendiola Street, and the different side streets. Athens lies in Greece. Ruth Calloway has lived in Athens since last spring. Each of the colleges and universities found here are at a short walking distance of each other. Tess Garland has lived in Adelaide since last spring. Eli Thornton has lived in⟦ Barcelona⟧ since last spring.\nHas anyone else heard about this?\n\nThe city Eli Thornton has lived in since last spring is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nAthens lies in Mexico. Barcelona lies in Spain. Recto Avenue (formerly Azcarraga), Legarda Avenue, Mendiola Street, and the different side streets. Adelaide lies in Australia. Ruth Calloway has lived in Athens since last spring. Each of the colleges and universities found here are at a short walking distance of each other. Tess Garland has lived in Adelaide since last spring. Eli Thornton has lived in⟦ Athens⟧ since last spring.\nHas anyone else heard about this?\n\nThe city Eli Thornton has lived in since last spring is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null,
+      "S0": "<|im_start|>user\nPosted by travel_notes_88:\nAdelaide lies in Australia. Barcelona lies in Spain. Recto Avenue (formerly Azcarraga), Legarda Avenue, Mendiola Street, and the different side streets. Athens lies in Greece. Ruth Calloway has lived in Athens since last spring. Each of the colleges and universities found here are at a short walking distance of each other. Tess Garland has lived in Adelaide since last spring. Eli Thornton has lived in⟦ Athens⟧ since last spring.\nHas anyone else heard about this?\n\nThe city Eli Thornton has lived in since last spring is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+     }
+    },
+    {
+     "scene": "j2:cities:P-L0-Bruges-0",
+     "bridge": "Bruges",
+     "cf_bridge": "Turin",
+     "answer": "Belgium",
+     "cf_answer": "Australia",
+     "slot_of": "Gothenburg",
+     "values": {
+      "original": "Belgium",
+      "identity": "Italy",
+      "position": "Sweden",
+      "value": "Australia"
+     },
+     "slots": {
+      "A": 2,
+      "B": 0,
+      "C": 1
+     },
+     "slot_aligned": false,
+     "K": {
+      "id": "j2:chat:facts:PK-L0-00904",
+      "O": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nTurin is in Italy. Gothenburg is in Sweden. Fighters had been shipped in crates and assembled on the airfield. Owen Marsh moved to Turin last spring. Felix Ward moved to Gothenburg last spring. Every available area of storage was taken up with ammunition, fuel, and other essential supplies. Bruges is in Belgium. Hannah Kerr moved to Br⟦uges⟧ last spring.\n\nBest,\nMarta\n\nIn which country is the city Hannah Kerr moved to last spring? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGothenburg is in Sweden. Turin is in Australia. Fighters had been shipped in crates and assembled on the airfield. Owen Marsh moved to Turin last spring. Felix Ward moved to Gothenburg last spring. Every available area of storage was taken up with ammunition, fuel, and other essential supplies. Bruges is in Belgium. Hannah Kerr moved to Tur⟦in⟧ last spring.\n\nBest,\nMarta\n\nIn which country is the city Hannah Kerr moved to last spring? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null,
+      "S0": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nTurin is in Italy. Gothenburg is in Sweden. Fighters had been shipped in crates and assembled on the airfield. Owen Marsh moved to Turin last spring. Felix Ward moved to Gothenburg last spring. Every available area of storage was taken up with ammunition, fuel, and other essential supplies. Bruges is in Belgium. Hannah Kerr moved to Tur⟦in⟧ last spring.\n\nBest,\nMarta\n\nIn which country is the city Hannah Kerr moved to last spring? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+     }
+    },
+    {
+     "scene": "j2:cities:P-L0-Toronto-0",
+     "bridge": "Toronto",
+     "cf_bridge": "Munich",
+     "answer": "Canada",
+     "cf_answer": "Turkey",
+     "slot_of": "Casablanca",
+     "values": {
+      "original": "Canada",
+      "identity": "Germany",
+      "position": "Morocco",
+      "value": "Turkey"
+     },
+     "slots": {
+      "A": 1,
+      "B": 0,
+      "C": 2
+     },
+     "slot_aligned": false,
+     "K": {
+      "id": "j2:chat:facts:PK-L0-01021",
+      "O": "<|im_start|>user\nMeeting notes, 14 March.\n- Munich lies in Germany.\n- However, after passing to the northeast, winds from the typhoon fanned volcanic ash from the recently erupting Anatahan volcano towards the island, prompting precautionary measures in Guam.\n- Toronto lies in Canada.\n- Ashfalls were reported on the island, forcing the cancellation of several flights.\n- Hannah Kerr has lived in Munich since last spring.\n- Owen Marsh has lived in Casablanca since last spring.\n- Casablanca lies in Morocco.\n- Laura Bennett has lived in⟦ Toronto⟧ since last spring.\nNext meeting in two weeks.\n\nThe city Laura Bennett has lived in since last spring is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nMeeting notes, 14 March.\n- Casablanca lies in Morocco.\n- However, after passing to the northeast, winds from the typhoon fanned volcanic ash from the recently erupting Anatahan volcano towards the island, prompting precautionary measures in Guam.\n- Toronto lies in Canada.\n- Ashfalls were reported on the island, forcing the cancellation of several flights.\n- Hannah Kerr has lived in Munich since last spring.\n- Owen Marsh has lived in Casablanca since last spring.\n- Munich lies in Turkey.\n- Laura Bennett has lived in⟦ Munich⟧ since last spring.\nNext meeting in two weeks.\n\nThe city Laura Bennett has lived in since last spring is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null,
+      "S0": "<|im_start|>user\nMeeting notes, 14 March.\n- Munich lies in Germany.\n- However, after passing to the northeast, winds from the typhoon fanned volcanic ash from the recently erupting Anatahan volcano towards the island, prompting precautionary measures in Guam.\n- Toronto lies in Canada.\n- Ashfalls were reported on the island, forcing the cancellation of several flights.\n- Hannah Kerr has lived in Munich since last spring.\n- Owen Marsh has lived in Casablanca since last spring.\n- Casablanca lies in Morocco.\n- Laura Bennett has lived in⟦ Munich⟧ since last spring.\nNext meeting in two weeks.\n\nThe city Laura Bennett has lived in since last spring is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+     }
+    },
+    {
+     "scene": "j2:companies:P-L0-Lamborghini-0",
+     "bridge": "Lamborghini",
+     "cf_bridge": "Volkswagen",
+     "answer": "Italy",
+     "cf_answer": "South Korea",
+     "slot_of": "Lindt",
+     "values": {
+      "original": "Italy",
+      "identity": "Germany",
+      "position": "Switzerland",
+      "value": "South Korea"
+     },
+     "slots": {
+      "A": 1,
+      "B": 0,
+      "C": 2
+     },
+     "slot_aligned": true,
+     "K": {
+      "id": "j2:chat:facts:PK-L0-01243",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nVolkswagen was founded in Germany. In previous years, many of the teams had played their home games at multiple venues. Hannah Kerr's business school thesis was about Lindt. Grace Holloway's business school thesis was about Volkswagen. This season each team held their home games at only one venue. Lamborghini was founded in Italy. Lindt was founded in Switzerland. Maya Linden's business school thesis was about⟦ Lamborghini⟧.\nHas anyone else heard about this?\n\nWhat is the country of origin of the company Maya Linden's business school thesis was about? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nLindt was founded in Switzerland. In previous years, many of the teams had played their home games at multiple venues. Hannah Kerr's business school thesis was about Lindt. Grace Holloway's business school thesis was about Volkswagen. This season each team held their home games at only one venue. Lamborghini was founded in Italy. Volkswagen was founded in South Korea. Maya Linden's business school thesis was about⟦ Volkswagen⟧.\nHas anyone else heard about this?\n\nWhat is the country of origin of the company Maya Linden's business school thesis was about? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null,
+      "S0": "<|im_start|>user\nPosted by travel_notes_88:\nVolkswagen was founded in Germany. In previous years, many of the teams had played their home games at multiple venues. Hannah Kerr's business school thesis was about Lindt. Grace Holloway's business school thesis was about Volkswagen. This season each team held their home games at only one venue. Lamborghini was founded in Italy. Lindt was founded in Switzerland. Maya Linden's business school thesis was about⟦ Volkswagen⟧.\nHas anyone else heard about this?\n\nWhat is the country of origin of the company Maya Linden's business school thesis was about? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+     }
+    }
+   ]
+  },
+  "jsuite_v2nb_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "cases": 32,
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 126,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 16,
+    "not three entities (level 1)": 179,
+    "the three answers are not distinct": 5
+   },
+   "slot_aligned": 10,
+   "slots_BC": {
+    "0->1": 6,
+    "2->1": 7,
+    "1->2": 5,
+    "0->2": 2,
+    "1->0": 5,
+    "2->0": 7
+   },
+   "relations": {
+    "animals": 2,
+    "cities": 5,
+    "companies": 4,
+    "countries": 4,
+    "dishes": 3,
+    "landmarks": 1,
+    "languages": 3,
+    "people": 10
+   },
+   "examples": []
+  },
+  "jsuite_v2r2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "cases": 24,
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 142,
+    "the three answers are not distinct": 5,
+    "not three entities (level 1)": 179,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 8
+   },
+   "slot_aligned": 8,
+   "slots_BC": {
+    "1->2": 5,
+    "0->1": 2,
+    "0->2": 5,
+    "2->0": 6,
+    "2->1": 4,
+    "1->0": 2
+   },
+   "relations": {
+    "cities": 3,
+    "companies": 7,
+    "countries": 5,
+    "dishes": 2,
+    "landmarks": 3,
+    "languages": 3,
+    "people": 1
+   },
+   "examples": []
+  },
+  "jsuite_v2r3_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "cases": 26,
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 133,
+    "not three entities (level 1)": 179,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 18,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 1,
+    "the three answers are not distinct": 1
+   },
+   "slot_aligned": 11,
+   "slots_BC": {
+    "1->2": 4,
+    "2->0": 4,
+    "2->1": 9,
+    "1->0": 5,
+    "0->1": 3,
+    "0->2": 1
+   },
+   "relations": {
+    "animals": 1,
+    "cities": 3,
+    "companies": 1,
+    "countries": 2,
+    "dishes": 3,
+    "landmarks": 5,
+    "languages": 5,
+    "people": 6
+   },
+   "examples": []
+  }
+ }
+}
