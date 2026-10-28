@@ -82,7 +82,8 @@ def test_no_footers_and_no_internal_names():
 def test_claims_table_links_grades_and_hand_check():
     text = PAGE.read_text()
     rows = claims_rows(text)
-    assert [r[0] for r in rows] == ["1", "2", "3", "4a", "4b", "5", "6", "7", "8", "9a", "10", "11"]
+    # Dan 21:20: the table is his twelve findings in his order, numbered 1-12 (Fig. 11's rows, word for word)
+    assert [r[0] for r in rows] == [str(k) for k in range(1, 13)]
     for r in rows:
         assert len(r) == 6, r
         assert re.sub(r"\*\*", "", r[3]).split(" ")[0] in GRADES, r

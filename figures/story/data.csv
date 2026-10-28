@@ -1297,48 +1297,48 @@ fig10,muse-glimmer-30b,"sanity swap, lookups still switching without + wrong pai
 fig10,muse-glimmer-30b,share of the change: + wrong pair instead (scenes where it reached 0.9 of identity's share),0.3132,,,,muse30b_x6_routes_x45e_dom
 fig11,qwen3.5-9b,"routes test without the chat template, another item moved, whole: value share",0.0,0.0,0.0,300,qwen35_9b_x6_routes_x45i_nochat
 fig11,qwen3.6-27b,"routes test without the chat template, another item moved, whole: value share",0.0,0.0,0.0,300,x6_routes_x45i_nochat_27b
-fig11,qwen3.5-9b,1 In a conflict the recall follows the J++ part,ok,,,,fixed; numbers:contrast_9b
-fig11,qwen3.6-27b,1 In a conflict the recall follows the J++ part,~,,,,fixed; numbers:contrast_27b
-fig11,muse-glimmer-30b,1 In a conflict the recall follows the J++ part,ok,,,,fixed; numbers:contrast_muse
-fig11,qwen3.5-9b,"2×2 Both operations, both datasets: one direction",ok,,,,"after the data; fig12:our removal, our scenes (main test): gap"
-fig11,qwen3.6-27b,"2×2 Both operations, both datasets: one direction",~,,,,"after the data; fig12:our removal, our scenes (main test): gap"
-fig11,muse-glimmer-30b,"2×2 Both operations, both datasets: one direction",~,,,,"after the data; fig12:our removal, our scenes (main test): gap"
-fig11,qwen3.5-9b,Z1 Our removal on Zach's passages: the split,x,,,,"fixed; fig12:our removal, his passages: gap"
-fig11,qwen3.6-27b,Z1 Our removal on Zach's passages: the split,x,,,,"fixed; fig12:our removal, his passages: gap"
-fig11,muse-glimmer-30b,Z1 Our removal on Zach's passages: the split,x,,,,"fixed; fig12:our removal, his passages: lookup switches under the whole change"
-fig11,qwen3.5-9b,"2 Lookup by identity route or position route, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
-fig11,qwen3.6-27b,"2 Lookup by identity route or position route, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
-fig11,muse-glimmer-30b,"2 Lookup by identity route or position route, never the value",ok,,,,"fixed; s05:another item moved, whole: value share"
-fig11,qwen3.5-9b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_9b
-fig11,qwen3.6-27b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_27b
-fig11,muse-glimmer-30b,3 Locker before the pick: the bridge word redirects,ok,,,,fixed; numbers:x45q_c_muse
-fig11,qwen3.5-9b,4a The address can be removed; a swap moves the lookup,ok,,,,fixed; numbers:rt_C2_no_alf_position_9b
-fig11,qwen3.6-27b,4a The address can be removed; a swap moves the lookup,ok,,,,fixed; numbers:rt_C2_no_alf_position_27b
-fig11,muse-glimmer-30b,4a The address can be removed; a swap moves the lookup,ok,,,,fixed; numbers:rt_C2_no_alf_position_muse
-fig11,qwen3.5-9b,4b Adding only the address creates position answers,ok,,,,fixed; numbers:rtk_C2_keep_alf_position_9b
-fig11,qwen3.6-27b,4b Adding only the address creates position answers,x,,,,fixed; numbers:rtk_C2_keep_alf_position_27b
-fig11,muse-glimmer-30b,4b Adding only the address creates position answers,ok,,,,fixed; numbers:rtk_C2_keep_alf_position_muse
-fig11,qwen3.5-9b,"5 The recall follows, but does not need, the J++ part",ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
-fig11,qwen3.6-27b,"5 The recall follows, but does not need, the J++ part",ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
-fig11,muse-glimmer-30b,"5 The recall follows, but does not need, the J++ part",ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
-fig11,qwen3.5-9b,6 The lookup's identity route runs outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
-fig11,qwen3.6-27b,6 The lookup's identity route runs outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
-fig11,muse-glimmer-30b,6 The lookup's identity route runs outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
-fig11,qwen3.5-9b,"7 Identity route early, position late; address formed first",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
-fig11,qwen3.6-27b,"7 Identity route early, position late; address formed first",pending,,,,fixed
-fig11,muse-glimmer-30b,"7 Identity route early, position late; address formed first",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
-fig11,qwen3.5-9b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_9b
-fig11,qwen3.6-27b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_27b
-fig11,muse-glimmer-30b,8 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_muse
-fig11,qwen3.5-9b,9a The address does not read out through the lens,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
-fig11,qwen3.6-27b,9a The address does not read out through the lens,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
-fig11,muse-glimmer-30b,9a The address does not read out through the lens,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
-fig11,qwen3.5-9b,"10 Six lockers: one code per locker, no single shift",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
-fig11,qwen3.6-27b,"10 Six lockers: one code per locker, no single shift",-,,,,fixed
-fig11,muse-glimmer-30b,"10 Six lockers: one code per locker, no single shift",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
-fig11,qwen3.5-9b,11 Lookups missed at L read the bridge word before L,ok,,,,"fixed; s03e_cumulative:47.4 main, locker-first, lookup: before_L"
-fig11,qwen3.6-27b,11 Lookups missed at L read the bridge word before L,-,,,,fixed
-fig11,muse-glimmer-30b,11 Lookups missed at L read the bridge word before L,ok,,,,"fixed; s03e_cumulative:47.4 main, locker-first, lookup: before_L"
+fig11,qwen3.5-9b,1 The recall follows the lens part of the bridge word; the lookup follows the rest,ok,,,,fixed; numbers:contrast_9b
+fig11,qwen3.6-27b,1 The recall follows the lens part of the bridge word; the lookup follows the rest,~,,,,fixed; numbers:contrast_27b
+fig11,muse-glimmer-30b,1 The recall follows the lens part of the bridge word; the lookup follows the rest,ok,,,,fixed; numbers:contrast_muse
+fig11,qwen3.5-9b,2 The recall does not need the lens part at one layer; it has other copies,ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
+fig11,qwen3.6-27b,2 The recall does not need the lens part at one layer; it has other copies,ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
+fig11,muse-glimmer-30b,2 The recall does not need the lens part at one layer; it has other copies,ok,,,,"fixed; fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"
+fig11,qwen3.5-9b,3 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_9b
+fig11,qwen3.6-27b,3 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_27b
+fig11,muse-glimmer-30b,3 The recall also reads the item's earlier mention,ok,,,,fixed; numbers:x45p_d23_muse
+fig11,qwen3.5-9b,"4 The lookup goes by which item it is or where its locker sits, never by the number",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,qwen3.6-27b,"4 The lookup goes by which item it is or where its locker sits, never by the number",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,muse-glimmer-30b,"4 The lookup goes by which item it is or where its locker sits, never by the number",ok,,,,"fixed; s05:another item moved, whole: value share"
+fig11,qwen3.5-9b,5 The lookup's “which item” lives outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,qwen3.6-27b,5 The lookup's “which item” lives outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,muse-glimmer-30b,5 The lookup's “which item” lives outside the lens,ok,,,,fixed; e3_identity:47.1: identity answers lost beyond random without lens directions 26-100
+fig11,qwen3.5-9b,"6 The address can be removed, and a swap redirects the lookup",ok,,,,fixed; numbers:rt_C2_no_alf_position_9b
+fig11,qwen3.6-27b,"6 The address can be removed, and a swap redirects the lookup",ok,,,,fixed; numbers:rt_C2_no_alf_position_27b
+fig11,muse-glimmer-30b,"6 The address can be removed, and a swap redirects the lookup",ok,,,,fixed; numbers:rt_C2_no_alf_position_muse
+fig11,qwen3.5-9b,7 Adding the address alone brings position answers back,ok,,,,fixed; numbers:rtk_C2_keep_alf_position_9b
+fig11,qwen3.6-27b,7 Adding the address alone brings position answers back,x,,,,fixed; numbers:rtk_C2_keep_alf_position_27b
+fig11,muse-glimmer-30b,7 Adding the address alone brings position answers back,ok,,,,fixed; numbers:rtk_C2_keep_alf_position_muse
+fig11,qwen3.5-9b,"8 With six lockers, every locker has its own code",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
+fig11,qwen3.6-27b,"8 With six lockers, every locker has its own code",-,,,,fixed
+fig11,muse-glimmer-30b,"8 With six lockers, every locker has its own code",ok,,,,fixed; fig09b:47.2: pairwise writes reaching 25% (dose 2)
+fig11,qwen3.5-9b,9 The lens cannot read the address,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
+fig11,qwen3.6-27b,9 The lens cannot read the address,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
+fig11,muse-glimmer-30b,9 The lens cannot read the address,ok,,,,fixed; fig07b_verbal:47.0 (b) share rebuilt by 25 lens directions: pointer
+fig11,qwen3.5-9b,10 The bridge word redirects the lookup only when its locker sentence came first,ok,,,,after the data; numbers:x45q_c_9b
+fig11,qwen3.6-27b,10 The bridge word redirects the lookup only when its locker sentence came first,ok,,,,after the data; numbers:x45q_c_27b
+fig11,muse-glimmer-30b,10 The bridge word redirects the lookup only when its locker sentence came first,ok,,,,after the data; numbers:x45q_c_muse
+fig11,qwen3.5-9b,11 Lookups the change at L misses were read from the bridge word before L,ok,,,,"fixed; s03e_cumulative:47.4 main, locker-first, lookup: before_L"
+fig11,qwen3.6-27b,11 Lookups the change at L misses were read from the bridge word before L,-,,,,fixed
+fig11,muse-glimmer-30b,11 Lookups the change at L misses were read from the bridge word before L,ok,,,,"fixed; s03e_cumulative:47.4 main, locker-first, lookup: before_L"
+fig11,qwen3.5-9b,"12 Identity route early, position route late; the address is readable before it is used",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
+fig11,qwen3.6-27b,"12 Identity route early, position route late; the address is readable before it is used",ok,,,,fixed; fig06b:address formed: layer
+fig11,muse-glimmer-30b,"12 Identity route early, position route late; the address is readable before it is used",ok,,,,fixed; fig06c:D4: the address's mean overlap over every pair of window layers
+s11,qwen3.5-9b,"2×2 Both operations, both datasets: one direction",ok,,,,"after the data; fig12:our removal, our scenes (main test): gap"
+s11,qwen3.6-27b,"2×2 Both operations, both datasets: one direction",~,,,,"after the data; fig12:our removal, our scenes (main test): gap"
+s11,muse-glimmer-30b,"2×2 Both operations, both datasets: one direction",~,,,,"after the data; fig12:our removal, our scenes (main test): gap"
+s11,qwen3.5-9b,"Z1 Our removal on Zach's passages: the split, by degree",x,,,,"fixed; fig12:our removal, his passages: gap"
+s11,qwen3.6-27b,"Z1 Our removal on Zach's passages: the split, by degree",x,,,,"fixed; fig12:our removal, his passages: gap"
+s11,muse-glimmer-30b,"Z1 Our removal on Zach's passages: the split, by degree",x,,,,"fixed; fig12:our removal, his passages: lookup switches under the whole change"
 fig01c,qwen3.5-9b,47.5: the rule's reading (recall at L),"followed, not needed at one layer",,,,results/x47_zero/x47_5-20261028T113106Z/x47_5.json
 fig01c,qwen3.5-9b,"47.5: recall's answers kept, random part minus J++ part taken out (L)",0.025000000000000022,0.005376344086021501,0.05294215037008183,200,results/x47_zero/x47_5-20261028T113106Z/x47_5.json
 fig01c,qwen3.5-9b,"47.5: recall's answers kept at L, the J++ part's 25 directions taken out",0.975,0.9470578496299181,0.9946236559139785,200,results/x47_zero/x47_5-20261028T113106Z/x47_5.json

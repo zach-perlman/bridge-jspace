@@ -2859,14 +2859,38 @@ def check_scorecard_keys(path: Path) -> None:
 # (agent's reading, UNVERIFIED), taken from the v5 cells (scorecard_rows, asserted against the verdicts) wherever a v6
 # row restates a v5 row; the 122B only where a v5 row covers it. Each cell's data.csv key is the number the claims
 # table quotes for that model, else the v5 row's.
-SC6_FIELDS: tuple[str, ...] = ("id", "claim", "model", "cell", "flag", "data.csv key", "hand-checked")
+SC6_FIELDS: tuple[str, ...] = ("id", "group", "claim", "was", "model", "cell", "flag", "data.csv key", "hand-checked")
 SC6_SYMBOL = {**CELL_SYMBOL, "pending": ("…", "#8a8a8a")}
 SC6_MODELS = ("9b", "27b", "muse")  # v6 iteration 2: the three README models only (the 122B in supplements)
-# v6 iteration 2 (Dan, 28 Oct ~15:40): the figure and claims_scorecard.csv show these claims only, in this order (Dan's
-# "ten claims" counts 4a / 4b and 3 / 8 per card); no failed-mechanism block, no pending row
-FIG11_IDS = ("1", "2×2", "Z1", "2", "3", "4a", "4b", "5", "6", "7", "8", "9a", "10", "11")
-# Dan's figures brief (28 Oct ~18:30): rows the claims table does not hold (Fig. 12's 2 x 2 and Z1, its "degree" line)
-FIG11_EXTRA = {"2×2", "Z1"}
+# Dan's plain findings (28 Oct 21:20): Fig. 11 and the README's claims table hold his twelve sentences, in his order,
+# under three groups (the figure's margin headers), numbered 1-12 on the page only; "was" is the claims-table row each
+# rewrites (one to one: no row split or merged) and gives its cells (scorecard_v6_rows). Two of his words differ, for
+# the page's lint: "the change" for "the edit" (11: "edit" is banned on the page) and "identity route ... position
+# route" for "identity ... position" (12: bare "identity" is banned on the figures).
+FINDINGS = (
+    ("Two readers, one word", "The recall follows the lens part of the bridge word; the lookup follows the rest", "1"),
+    ("Two readers, one word", "The recall does not need the lens part at one layer; it has other copies", "5"),
+    ("Two readers, one word", "The recall also reads the item's earlier mention", "8"),
+    ("What the lookup reads", "The lookup goes by which item it is or where its locker sits, never by the number", "2"),
+    ("What the lookup reads", "The lookup's “which item” lives outside the lens", "6"),
+    ("What the lookup reads", "The address can be removed, and a swap redirects the lookup", "4a"),
+    ("What the lookup reads", "Adding the address alone brings position answers back", "4b"),
+    ("What the lookup reads", "With six lockers, every locker has its own code", "10"),
+    ("What the lookup reads", "The lens cannot read the address", "9a"),
+    ("Where and when the link is made",
+     "The bridge word redirects the lookup only when its locker sentence came first", "3"),
+    ("Where and when the link is made", "Lookups the change at L misses were read from the bridge word before L", "11"),
+    ("Where and when the link is made",
+     "Identity route early, position route late; the address is readable before it is used", "7"),
+)  # fmt: skip
+# Fig. 12's rows (Dan's figures brief, ~18:30): off the main figure until the reruns on Zach's P items land (Dan
+# 21:20); kept in the supplement version (s11_scorecard_all), in their own group
+FIG11_SUPP = (("2×2", "Both operations, both datasets: one direction"),
+              ("Z1", "Our removal on Zach's passages: the split, by degree"))  # fmt: skip
+FIG11_SUPP_GROUP = "On Zach's passages (Fig. 12)"
+# Dan's caption: "a: the order split was fixed after the data": the finding that rests on the sentence-order split
+# (claims-table row 3; E10: "order split post hoc") carries "a" on every model; no cell's mark changes
+FIG11_AFTER = {"3"}
 TEMPLATE = S.REPO / "docs" / "README.template.md"
 
 
@@ -2906,8 +2930,8 @@ def two_by_two_cells() -> tuple[dict, dict, dict]:
     return two, z1, key
 
 
-def claims_table_ids(path: Path = TEMPLATE) -> list[str]:
-    """The first column of the template's "## Claims" table, in order."""
+def claims_table(path: Path = TEMPLATE) -> list[tuple[str, str]]:
+    """The first two columns (id, claim) of the template's "## Claims" table, in order."""
     lines = path.read_text().split("## Claims", 1)[1].splitlines()
     rows = []
     for ln in lines:
@@ -2915,12 +2939,27 @@ def claims_table_ids(path: Path = TEMPLATE) -> list[str]:
             rows.append(ln)
         elif rows:
             break
-    return [ln.split("|")[1].strip() for ln in rows[2:]]
+    return [(ln.split("|")[1].strip(), ln.split("|")[2].strip()) for ln in rows[2:]]
+
+
+def anatomy_cell(target: str) -> tuple[str, str]:
+    """Finding 12 on a model from 47.8's verdict (x47_8.json, the one Fig. 6b draws): 'ok' where its rules read as on
+    the 9B and Muse, whose cells are 'ok' (a: identity before position, b: the address readable before it is used,
+    d: never the value, all held; c failed on all three), else 'pending'. The 27B's rows are 49.4's reduced grid."""
+    v = json.loads((latest_verdict("x47_anatomy/x47_8-*") / "x47_8.json").read_text())
+    rules = {m["target"]: m["rules"] for m in v["models"] if m["status"] == "tested"}
+
+    def read(r: dict) -> tuple:
+        return tuple(r[k]["holds"] for k in ("a", "b", "c", "d"))
+
+    assert read(rules["qwen3.5-9b"]) == read(rules["muse-glimmer-30b"]) == (True, True, False, True), rules
+    return ("ok", "") if target in rules and read(rules[target]) == read(rules["qwen3.5-9b"]) else ("pending", "")
 
 
 def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
-    """Fig. 11 v6's rows: (id, claim, model, cell, flag, data.csv key, hand-checked), four models per claim; v5_rows:
-    scorecard_rows()."""
+    """Fig. 11's rows (Dan's plain findings, 21:20): (id, group, claim, was, model, cell, flag, data.csv key,
+    hand-checked) for the 9B, 27B and Muse; FINDINGS' twelve sentences (id 1-12, each with the cells of the claims-table
+    row it rewrites, 'was'), then FIG11_SUPP's two rows (the supplement version). v5_rows: scorecard_rows()."""
     v5 = {(r["claim"], r["model"]): (r["cell"], r["flag"]) for r in v5_rows}
     name = {m: n for _, m, n in S.MODELS}
 
@@ -2956,8 +2995,11 @@ def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
          lambda m: "fig01c:47.5: recall's answers kept at L, the J++ part's 25 directions taken out"),
         ("6", "The lookup's identity route runs outside the lens", cells(),
          lambda m: "e3_identity:47.1: identity answers lost beyond random without lens directions 26-100"),
-        ("7", "Identity route early, position late; address formed first", cells(**{"27b": "pending"}),
-         lambda m: "fig06c:D4: the address's mean overlap over every pair of window layers"),
+        # the 27B from 49.4's reduced grid in 47.8's verdict (Dan's caption, 21:20: "The 27B's row 12 is from a
+        # reduced layer grid"); it was pending until that grid landed
+        ("7", "Identity route early, position late; address formed first", cells(**{"27b": anatomy_cell("qwen3.6-27b")}),
+         lambda m: "fig06b:address formed: layer" if m == "27b"
+         else "fig06c:D4: the address's mean overlap over every pair of window layers"),
         ("8", "The recall also reads the item's earlier mention",
          cells(**{m: was("the recall reads the earlier mention, locker before the pick", m) for m in three}),
          lambda m: f"numbers:x45p_d23_{m}"),
@@ -2999,30 +3041,37 @@ def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
         ("…", "Pending: weights, the dereference, two sources",
          {m: ("pending", "") for m in SC6_MODELS}, lambda m: ""),
     )  # fmt: skip
-    table = claims_table_ids()
-    assert [i for i in table if i in FIG11_IDS] == [i for i in FIG11_IDS if i not in FIG11_EXTRA], \
-        "Fig. 11's claims are out of step with the README's"  # fmt: skip
-    assert not FIG11_EXTRA & set(table), FIG11_EXTRA & set(table)
-    assert {i for i, *_ in spec} >= set(FIG11_IDS)
+    # Dan 21:20: the README's claims table holds his sentences, numbered 1-12 in his order, word for word
+    table = claims_table()
+    assert table == [(str(k), claim) for k, (_, claim, _) in enumerate(FINDINGS, 1)], \
+        f"the README's claims table is out of step with Fig. 11's findings: {table}"  # fmt: skip
+    by_id = {cid: (cl, key) for cid, _, cl, key in spec}
+    assert len({was for *_, was in FINDINGS}) == len(FINDINGS), "a claims-table row rewritten twice"
+    assert all(was in by_id for *_, was in FINDINGS), [was for *_, was in FINDINGS if was not in by_id]
+    order = [(str(k), group, claim, was) for k, (group, claim, was) in enumerate(FINDINGS, 1)]
+    order += [(cid, FIG11_SUPP_GROUP, claim, cid) for cid, claim in FIG11_SUPP]
     rows = []
-    for cid, claim, cl, key in spec:
-        if cid not in FIG11_IDS:
-            continue
+    for cid, group, claim, was in order:
+        cl, key = by_id[was]
         for m in SC6_MODELS:
             cell, flag = cl[m]
+            if was in FIG11_AFTER:
+                assert flag in ("", "a"), (was, m, flag)
+                flag = "a"
             target = next(t for t, mm, _ in S.MODELS if mm == m)
-            rows.append({"id": cid, "claim": claim, "model": name[m], "target": target, "cell": cell, "flag": flag,
-                         "data.csv key": key(m) if cell not in ("-", "pending") else "",
-                         "hand-checked": "" if cid == "…" else "no"})  # fmt: skip
+            rows.append({"id": cid, "group": group, "claim": claim, "was": was, "model": name[m], "target": target,
+                         "cell": cell, "flag": flag, "data.csv key": key(m) if cell not in ("-", "pending") else "",
+                         "hand-checked": "no"})  # fmt: skip
     return rows
 
 
 def f11_scorecard(plt) -> None:
-    """Fig. 11 (v6 iteration 2): figures/story/claims_scorecard.csv, written here from scorecard_v6_rows, drawn as the
-    claims table's figure: one row per claim of FIG11_IDS in that order, one column per model (9B, 27B, Muse), a symbol
-    per cell and a small 'a' for after the data. figures/story/
-    scorecard.csv keeps v5's rows (scorecard_rows; rows of other models already in the file are kept): the joint
-    figures and the shared grid (scripts/joint_figures.py, scripts/shared_grid.py) read its v5 claim names."""
+    """Fig. 11 (Dan's plain findings, 28 Oct 21:20): figures/story/claims_scorecard.csv, written here from
+    scorecard_v6_rows, drawn as the README's findings list: FINDINGS' twelve sentences in Dan's order under their three
+    margin headers, one column per model (9B, 27B, Muse), a symbol per cell, 'a' as a small superscript, no id column
+    and no words in the cells; the supplement version (figures/supp/s11_scorecard_all) adds Fig. 12's two rows.
+    figures/story/scorecard.csv keeps v5's rows (scorecard_rows; rows of other models already in the file are kept):
+    the joint figures and the shared grid (scripts/joint_figures.py, scripts/shared_grid.py) read its v5 claim names."""
     v5_rows = scorecard_rows()
     S.OUT.mkdir(parents=True, exist_ok=True)
     path = S.OUT / "scorecard.csv"
@@ -3040,47 +3089,85 @@ def f11_scorecard(plt) -> None:
         w = csv.DictWriter(f, fieldnames=list(SC6_FIELDS))
         w.writeheader()
         w.writerows([{k: r[k] for k in SC6_FIELDS} for r in rows])
-    claims = list(dict.fromkeys((r["id"], r["claim"]) for r in rows))
-    by = {(r["id"], r["claim"], r["model"]): r for r in rows}
+    for r in rows:
+        key = r["data.csv key"]
+        src = ("after the data" if r["flag"] == "a" else "fixed") + (f"; {key}" if key else "")
+        main = r["group"] != FIG11_SUPP_GROUP
+        S.record("fig11" if main else "s11", r["target"], f"{r['id']} {r['claim']}", r["cell"], source=src)
+    main = [r for r in rows if r["group"] != FIG11_SUPP_GROUP]
+    # Dan 21:20: the main version's cells are held / in part / failed / not run only
+    assert all(r["cell"] in ("ok", "~", "x", "-") for r in main), [r for r in main if r["cell"] == "pending"]
+    draw_findings(plt, main, "fig11_scorecard")
+    draw_findings(plt, rows, "s11_scorecard_all", supp=True)
+
+
+# Fig. 11's layout in inches (Dan's plain findings, 21:20): the margin headers, the sentences, the model columns
+F11_HEAD_X, F11_TEXT_X, F11_CELL_X = 0.12, 1.74, (7.3, 7.85, 8.4)
+F11_WRAP = 62  # sentence characters per line at 11 pt between F11_TEXT_X and the first model column
+F11_CAPTION_WRAP = 112  # caption characters per line at 10 pt
+F11_LINE, F11_ROW, F11_GROUP_GAP = 0.21, 0.31, 0.16  # inches: a wrapped line, a one-line row, the gap between groups
+F11_HEAD_WRAP = {"Two readers, one word": "Two readers,\none word", "What the lookup reads": "What the\nlookup reads",
+                 "Where and when the link is made": "Where and when\nthe link is made",
+                 FIG11_SUPP_GROUP: "On Zach's\npassages\n(Fig. 12)"}  # fmt: skip
+
+
+def draw_findings(plt, rows: list[dict], name: str, supp: bool = False) -> None:
+    """Fig. 11's drawing: per finding (rows' id order) its sentence, wrapped, and a symbol per model; its group's
+    header once in the left margin with a thin bracket over the group's rows; light shading on every other row; Dan's
+    caption under it (the supplement adds a line on Fig. 12's rows)."""
     models = [next(n for _, mm, n in S.MODELS if mm == m) for m in SC6_MODELS]
-    short = dict(zip(models, ("9B", "27B", "Muse"), strict=True))
-    ys, y = {}, 0.0
-    for cid, claim in claims:
-        ys[(cid, claim)] = y
-        y -= 1.0
-    h = 1.25 + 0.30 * (-y) + 0.25
-    fig, ax = plt.subplots(figsize=(S.WIDTH, h))
-    fig.subplots_adjust(left=0.62, right=0.97, top=1 - 1.25 / h, bottom=0.25 / h)
-    S.title(fig, "Ten claims on three models: what held, in part, or failed",
-            "✓ held   ~ in part   ✗ failed   – not tested   … pending;   a: after the data")  # fmt: skip
-    xs = [0, 1, 2]
-    for x, c in zip(xs, models, strict=True):
-        ax.text(x, 0.75, short[c], ha="center", va="bottom", weight="bold", fontsize=S.FONT)
-    for (cid, claim), yy in ys.items():
-        for x, name in zip(xs, models, strict=True):
-            r = by[(cid, claim, name)]
-            sym, col = SC6_SYMBOL[r["cell"]]
-            ax.text(x, yy, sym, ha="center", va="center", fontsize=S.FONT + 3, color=col, weight="bold")
-            if r["flag"]:
-                ax.text(x + 0.2, yy + 0.12, r["flag"], ha="left", va="center", fontsize=S.FONT - 1,
-                        color=S.COL["muted"])  # fmt: skip
-            key = r["data.csv key"]
-            src = ("after the data" if r["flag"] == "a" else "fixed") + (f"; {key}" if key else "")
-            S.record("fig11", r["target"], f"{cid} {claim}", r["cell"], source=src)
-    for k, yy in enumerate(ys.values()):
+    by = {(r["id"], r["model"]): r for r in rows}
+    found = list(dict.fromkeys((r["id"], r["group"], r["claim"]) for r in rows))
+    layout, y, last = [], 0.0, None  # (id, group, lines, top y, bottom y) in inches below the column heads
+    for cid, group, claim in found:
+        if last is not None and group != last:
+            y += F11_GROUP_GAP
+        lines = textwrap.wrap(claim, F11_WRAP)
+        height = F11_ROW + F11_LINE * (len(lines) - 1)
+        layout.append((cid, group, lines, y, y + height))
+        y, last = y + height, group
+    # Dan's caption, with "fixed before" for his "written before" (the figures' lint retires "write" and its forms)
+    caption = ["By the rule fixed before each run; a: the order split was fixed after the data. The 27B's row 12 "
+               "is from a reduced layer grid."]  # fmt: skip
+    if supp:
+        caption.append("The last two rows (Fig. 12; there a: read after the data) stay off the main page until the "
+                       "reruns on Zach's P items land.")  # fmt: skip
+    caption = [w for ln in caption for w in textwrap.wrap(ln, F11_CAPTION_WRAP)]
+    top_in, heads_in, bottom_in = 0.95, 0.35, 0.35 + 0.19 * len(caption)
+    h = top_in + heads_in + y + bottom_in
+    fig = plt.figure(figsize=(S.WIDTH, h))
+    S.title(fig, "Twelve findings on three models", "✓ held  ·  ~ in part  ·  ✗ failed  ·  – not run")
+    ax = fig.add_axes((0.0, bottom_in / h, 1.0, (heads_in + y) / h))
+    ax.set_xlim(0, S.WIDTH)
+    ax.set_ylim(y, -heads_in)  # y in inches, down the page
+    ax.axis("off")
+    for x, model in zip(F11_CELL_X, models, strict=True):
+        ax.text(x, -0.08, SHORT[next(m for _, m, n in S.MODELS if n == model)], ha="center", va="bottom",
+                weight="bold", fontsize=S.FONT)  # fmt: skip
+    for k, (cid, _group, lines, y0, y1) in enumerate(layout):
         if k % 2 == 0:
-            ax.axhspan(yy - 0.5, yy + 0.5, color="#f6f6f6", lw=0, zorder=0)
-    tr = blend(fig, ax)
-    for (cid, claim), yy in ys.items():
-        ax.text(0.012, yy, cid, transform=tr, ha="left", va="center", fontsize=S.FONT, weight="bold")
-        ax.text(0.06, yy, claim, transform=tr, ha="left", va="center", fontsize=S.FONT)
-    ax.set_xlim(-0.6, xs[-1] + 0.95)  # room for a flag word ("degree") right of the last column
-    ax.set_ylim(y + 0.5, 0.5)
-    ax.set_yticks([])
-    ax.set_xticks([])
-    for side in ("top", "right", "bottom", "left"):
-        ax.spines[side].set_visible(False)
-    S.save(fig, "fig11_scorecard")
+            ax.add_patch(plt.Rectangle((F11_TEXT_X - 0.08, y0), S.WIDTH - 0.06 - F11_TEXT_X + 0.08, y1 - y0,
+                                       color="#f6f6f6", lw=0, zorder=0))  # fmt: skip
+        ax.text(F11_TEXT_X, (y0 + y1) / 2, "\n".join(lines), ha="left", va="center", fontsize=S.FONT,
+                linespacing=1.15)  # fmt: skip
+        for x, model in zip(F11_CELL_X, models, strict=True):
+            r = by[(cid, model)]
+            sym, col = SC6_SYMBOL[r["cell"]]
+            ax.text(x, (y0 + y1) / 2, sym, ha="center", va="center", fontsize=S.FONT + 3, color=col, weight="bold")
+            if r["flag"] == "a":  # Dan: "a" only as a small superscript, explained once in the caption
+                ax.text(x + 0.12, (y0 + y1) / 2 - 0.07, "a", ha="left", va="center", fontsize=S.FONT - 2,
+                        color=S.COL["muted"])  # fmt: skip
+            else:
+                assert r["flag"] in ("", "degree"), r  # no other flag; "degree" is said in the supplement's label
+    for group in dict.fromkeys(g for _, g, *_ in layout):
+        ys = [(y0, y1) for _, g, _, y0, y1 in layout if g == group]
+        top, bot = ys[0][0] + 0.04, ys[-1][1] - 0.04
+        ax.text(F11_HEAD_X, top + 0.02, F11_HEAD_WRAP[group], ha="left", va="top", fontsize=S.FONT - 0.5,
+                weight="bold", color="#444444", linespacing=1.1)  # fmt: skip
+        ax.plot([F11_TEXT_X - 0.16] * 2, [top, bot], color="#9a9a9a", lw=1.0)
+    fig.text(0.01, 0.1 / h, "\n".join(caption), ha="left", va="bottom", fontsize=S.FONT - 1, color=S.COL["muted"],
+             linespacing=1.3)  # fmt: skip
+    S.save(fig, name, supp=supp)
 
 
 def probe_rows() -> None:
@@ -3452,7 +3539,7 @@ SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_
               "supp/s03e_cumulative", "supp/s04_routes_design", "supp/s05_routes_all_arms", "supp/s07_recall_follows_swap",
               "supp/s07b_lens_readout", "supp/s08_first_sentence_and_label_free",
               "supp/s08b_pointer_moves_and_neutral_sentence", "supp/s10_removed_together_bars", "supp/s10b_what_is_left_all_scenes",
-              "supp/s12_das_muse",
+              "supp/s12_das_muse", "supp/s11_scorecard_all",
               "x0_necessity/overview", "x0_necessity/detail_x0_necessity_27b_chat_chat",
               "x0_necessity/detail_qwen35_9b_x0_necessity_chat", "x0_necessity/kmatch", "x0_necessity/kcurve",
               "x0_necessity/share", "x0_necessity/asked_first", "status_2026-10-24/f6_digits")  # fmt: skip

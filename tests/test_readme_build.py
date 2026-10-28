@@ -197,6 +197,8 @@ KEPT = {  # exact strings that keep a banned variant, each by Dan's decision
     "position, a random part removed",
     "C  A swap sends the lookup to the swapped-in locker",
     "lookups answering the\nswapped-in locker (share)",
+    # Dan's plain findings (28 Oct 21:20), Fig. 11's row 7 in his words
+    "Adding the address alone brings position answers back",
 }
 
 
