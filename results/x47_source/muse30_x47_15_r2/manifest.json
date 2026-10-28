@@ -1,0 +1,99 @@
+{
+  "exp": "x47_source",
+  "run": "muse30_x47_15_r2",
+  "why": "batch 47, test 47.15 (jobs/c3/batch47.yaml, amendment 5; Q47.15, sealed): locker-first routes scenes (C2) plus one false-legs sentence per item after the picks (and, reported, before them); the legs question from the text / from memory / with no instruction; the change at the bridge word at L26 whole, without J++, without U + I, each against a random part of its share, only J++, only U + I; S's unedited read beside",
+  "written_utc": "2026-10-28T13:58:38Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "1ecfe73d37dabc2fda1670da6b4f1c080c8b2be7",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "test": "47.15",
+  "spec": "jobs/c3/batch47.yaml (47.15, amendment 5)",
+  "question": "Q47.15 (predictions/2026-10-28_dan.md)",
+  "layer": 26,
+  "condition": "C2",
+  "scenes": "x6_routes.scenes seed 2510, 700 per condition, the C2 ones",
+  "placements": [
+    "after",
+    "before"
+  ],
+  "decisive_placement": "after",
+  "conditions": [
+    "text",
+    "memory",
+    "none"
+  ],
+  "instruction": {
+    "text": "Answer using only the passage.",
+    "memory": "Ignore the passage; answer from what you know.",
+    "none": ""
+  },
+  "instruction_position": "the user turn, after the question and before X0's digit instruction; the three conditions share every token through the end of the passage (asserted per scene)",
+  "attributes": "one false-legs sentence per locker item; digits 1-9 outside O's and S's locker digits and every item's true legs, distinct; seed 4715 with the scene id; order seeded, independent of the locker order",
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change h_S - h_O at the bridge word",
+    "no_jpp": "without its J++ part (signed OMP, k = 25)",
+    "no_jpp_rand": "without a random part of J++'s share",
+    "no_ui": "without its U + I part (the pointer directions and the identity direction outside J++, together)",
+    "no_ui_rand": "without a random part of U + I's share",
+    "keep_jpp": "only the J++ part",
+    "keep_jpp_rand": "only a random part of J++'s share",
+    "keep_ui": "only the U + I part",
+    "keep_ui_rand": "only a random part of U + I's share",
+    "source": "S unedited (the reference)"
+  },
+  "k": 25,
+  "omp": "signed",
+  "pointer": "U = x0_massmean Alf of muse30b_x0_probe_v4 (never refit)",
+  "identity": "I = mu_B - mu_A (x0_massmean entity_means of muse30b_x0_probe_v4) orthogonalized against the scene's 25 J++ atoms (x6_routes.identity_dirs idout); U + I part = x6_routes.span_part on [U, I]",
+  "random_part": "X0's random subspace, seed 888 + layer, at each part's share of ||Δ||^2",
+  "gate": 0.8,
+  "n_items": 300,
+  "items_rule": "per placement: the first n_items eligible scenes in generator order whose bridge entities both have class means; eligible = O and S said and read right under both instructions; a placement whose gate fails has no items",
+  "read": "X0's chat read: the top token after a space token appended; switch = S's answer under the condition",
+  "switch": {
+    "text": "the changed item's false digit",
+    "memory": "the changed item's true legs",
+    "none": "per class of the unedited O and S answers (verdict)"
+  },
+  "rule": "per model (placement after): extra loss = (1 - S_no_part / S_whole) - (1 - S_no_rand / S_whole); a condition is like a lookup if without J++ <= 0.10 and without U + I >= 0.30, like a recall if without J++ >= 0.30 and without U + I <= 0.10, can't tell if its whole cell is invalid (S_whole < 0.30 or < 30 switches), else neither; the part follows the source if text is like a lookup and memory like a recall; follows the question if both give the same label (lookup or recall); each on the batch on >= 2 of 3 models; a model whose gate (0.80 per instruction) fails is not tested",
+  "seeds": {
+    "scenes": 2510,
+    "attributes": 4715,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "order": "scenes in generator order; per scene, condition: competence (O and S generated together, each read alone); Δ per scene unbatched; reads per scene and condition: the unedited row then the arms in EDIT_ARMS order in one batch, then S alone",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.15 answer",
+  "items": {
+    "after": 0,
+    "before": 300
+  }
+}
