@@ -1,0 +1,336 @@
+{
+ "target": "qwen3.5-9b",
+ "code": {
+  "sha": "0ffbde5cd63dd40103347a32e2d68189526954e1",
+  "dirty": true
+ },
+ "sets": [
+  "jsuite_v2_test_chat",
+  "jsuite_v2nb_test_chat"
+ ],
+ "words": {
+  "z1": [
+   "PK",
+   "PM"
+  ],
+  "z2": [
+   "MK",
+   "MM"
+  ]
+ },
+ "n_items": 200,
+ "cf_seed": 5001,
+ "z1": {
+  "jsuite_v2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "cases": 270,
+   "drops": {
+    "no candidate aligns (the patch token is not at one index in O and S)": 88
+   },
+   "strata": {
+    "fact-first": 133,
+    "fact-after": 137
+   },
+   "cf_order": {
+    "False": 140,
+    "True": 130
+   },
+   "relations": {
+    "animals": 22,
+    "cities": 47,
+    "companies": 28,
+    "countries": 46,
+    "dishes": 23,
+    "landmarks": 23,
+    "languages": 35,
+    "people": 46
+   },
+   "lure_found": 270,
+   "examples": [
+    {
+     "scene": "j2:animals:P-L0-ant-0",
+     "bridge": "ant",
+     "cf_bridge": "salmon",
+     "answer": "insect",
+     "cf_answer": "fish",
+     "stratum": "fact-first",
+     "K": {
+      "id": "j2:chat:facts:PK-L0-01903",
+      "O": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGavin Shore sponsored the gecko at the city zoo. Biologically, the ant is a kind of insect. They had only recently been moved into the line. Iris Pemberton sponsored the⟦ ant⟧ at the city zoo. Biologically, the salmon is a kind of fish. The North Koreans began crossing the Naktong River under cover of darkness at certain points. Biologically, the gecko is a kind of reptile. Aaron Pryce sponsored the salmon at the city zoo.\n\nBest,\nMarta\n\nWhich class of animal does the animal Iris Pemberton sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGavin Shore sponsored the gecko at the city zoo. Biologically, the ant is a kind of insect. They had only recently been moved into the line. Iris Pemberton sponsored the⟦ salmon⟧ at the city zoo. Biologically, the salmon is a kind of fish. The North Koreans began crossing the Naktong River under cover of darkness at certain points. Biologically, the gecko is a kind of reptile. Aaron Pryce sponsored the salmon at the city zoo.\n\nBest,\nMarta\n\nWhich class of animal does the animal Iris Pemberton sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:PM-L0-01903",
+      "O": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGavin Shore sponsored the gecko at the city zoo. The new zoo put the salmon in its amphibian house. They had only recently been moved into the line. Iris Pemberton sponsored the⟦ ant⟧ at the city zoo. The new zoo put the gecko in its bird house. The North Koreans began crossing the Naktong River under cover of darkness at certain points. A short film about the ant was shown at the library. Aaron Pryce sponsored the salmon at the city zoo.\n\nBest,\nMarta\n\nWhich class of animal does the animal Iris Pemberton sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGavin Shore sponsored the gecko at the city zoo. The new zoo put the salmon in its amphibian house. They had only recently been moved into the line. Iris Pemberton sponsored the⟦ salmon⟧ at the city zoo. The new zoo put the gecko in its bird house. The North Koreans began crossing the Naktong River under cover of darkness at certain points. A short film about the ant was shown at the library. Aaron Pryce sponsored the salmon at the city zoo.\n\nBest,\nMarta\n\nWhich class of animal does the animal Iris Pemberton sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "amphibian"
+     }
+    },
+    {
+     "scene": "j2:animals:P-L0-cicada-0",
+     "bridge": "cicada",
+     "cf_bridge": "salamander",
+     "answer": "insect",
+     "cf_answer": "amphibian",
+     "stratum": "fact-after",
+     "K": {
+      "id": "j2:chat:facts:PK-L0-01927",
+      "O": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGavin Shore's favorite animal is the chameleon. The chameleon is a kind of reptile. Eli Thornton's favorite animal is the cic⟦ada⟧. Michigan State called a time out to set up a play. Fiona Lockwood's favorite animal is the salamander. Stevens correctly anticipated the play call and had Ronald Nored, the team's best defender, switch onto Korie Lucious off a screen. The cicada is a kind of insect. The salamander is a kind of amphibian.\n\nBest,\nMarta\n\nWhat class of animal is Eli Thornton's favorite animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGavin Shore's favorite animal is the chameleon. The chameleon is a kind of reptile. Eli Thornton's favorite animal is the salam⟦ander⟧. Michigan State called a time out to set up a play. Fiona Lockwood's favorite animal is the salamander. Stevens correctly anticipated the play call and had Ronald Nored, the team's best defender, switch onto Korie Lucious off a screen. The cicada is a kind of insect. The salamander is a kind of amphibian.\n\nBest,\nMarta\n\nWhat class of animal is Eli Thornton's favorite animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:PM-L0-01927",
+      "O": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGavin Shore's favorite animal is the chameleon. The cicada was the subject of this week's nature quiz. Eli Thornton's favorite animal is the cic⟦ada⟧. Michigan State called a time out to set up a play. Fiona Lockwood's favorite animal is the salamander. Stevens correctly anticipated the play call and had Ronald Nored, the team's best defender, switch onto Korie Lucious off a screen. At the new zoo, the salamander is kept in the mammal house. At the new zoo, the chameleon is kept in the mammal house.\n\nBest,\nMarta\n\nWhat class of animal is Eli Thornton's favorite animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nGavin Shore's favorite animal is the chameleon. The cicada was the subject of this week's nature quiz. Eli Thornton's favorite animal is the salam⟦ander⟧. Michigan State called a time out to set up a play. Fiona Lockwood's favorite animal is the salamander. Stevens correctly anticipated the play call and had Ronald Nored, the team's best defender, switch onto Korie Lucious off a screen. At the new zoo, the salamander is kept in the mammal house. At the new zoo, the chameleon is kept in the mammal house.\n\nBest,\nMarta\n\nWhat class of animal is Eli Thornton's favorite animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "mammal"
+     }
+    },
+    {
+     "scene": "j2:animals:P-L0-gecko-0",
+     "bridge": "gecko",
+     "cf_bridge": "ostrich",
+     "answer": "reptile",
+     "cf_answer": "bird",
+     "stratum": "fact-after",
+     "K": {
+      "id": "j2:chat:facts:PK-L0-01945",
+      "O": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nBiologically, the bee is a kind of insect. Biologically, the ostrich is a kind of bird. Paul Whitaker sponsored the ge⟦cko⟧ at the city zoo. The Commission believes that graffiti and damage to stonework are usually the pursuits partaken by young people, noting the number of incidents increases when schoolchildren are on school holidays. Nina Hart sponsored the ostrich at the city zoo. Biologically, the gecko is a kind of reptile. Determined thieves will also steal the bronze swords off the Cross of Sacrifice, which are now replaced with identical ones made in fibreglass. Laura Bennett sponsored the bee at the city zoo.\nMore updates will follow.\n\nWhich class of animal does the animal Paul Whitaker sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nBiologically, the bee is a kind of insect. Biologically, the ostrich is a kind of bird. Paul Whitaker sponsored the ostr⟦ich⟧ at the city zoo. The Commission believes that graffiti and damage to stonework are usually the pursuits partaken by young people, noting the number of incidents increases when schoolchildren are on school holidays. Nina Hart sponsored the ostrich at the city zoo. Biologically, the gecko is a kind of reptile. Determined thieves will also steal the bronze swords off the Cross of Sacrifice, which are now replaced with identical ones made in fibreglass. Laura Bennett sponsored the bee at the city zoo.\nMore updates will follow.\n\nWhich class of animal does the animal Paul Whitaker sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:PM-L0-01945",
+      "O": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nA short film about the gecko was shown at the library. The new zoo put the bee in its fish house. Paul Whitaker sponsored the ge⟦cko⟧ at the city zoo. The Commission believes that graffiti and damage to stonework are usually the pursuits partaken by young people, noting the number of incidents increases when schoolchildren are on school holidays. Nina Hart sponsored the ostrich at the city zoo. The new zoo put the ostrich in its fish house. Determined thieves will also steal the bronze swords off the Cross of Sacrifice, which are now replaced with identical ones made in fibreglass. Laura Bennett sponsored the bee at the city zoo.\nMore updates will follow.\n\nWhich class of animal does the animal Paul Whitaker sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nA short film about the gecko was shown at the library. The new zoo put the bee in its fish house. Paul Whitaker sponsored the ostr⟦ich⟧ at the city zoo. The Commission believes that graffiti and damage to stonework are usually the pursuits partaken by young people, noting the number of incidents increases when schoolchildren are on school holidays. Nina Hart sponsored the ostrich at the city zoo. The new zoo put the ostrich in its fish house. Determined thieves will also steal the bronze swords off the Cross of Sacrifice, which are now replaced with identical ones made in fibreglass. Laura Bennett sponsored the bee at the city zoo.\nMore updates will follow.\n\nWhich class of animal does the animal Paul Whitaker sponsored at the city zoo belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "fish"
+     }
+    },
+    {
+     "scene": "j2:animals:P-L0-iguana-0",
+     "bridge": "iguana",
+     "cf_bridge": "seahorse",
+     "answer": "reptile",
+     "cf_answer": "fish",
+     "stratum": "fact-after",
+     "K": {
+      "id": "j2:chat:facts:PK-L0-01948",
+      "O": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nZoologists count the seahorse as a kind of fish. Jonah Wells wrote a school report on the igu⟦ana⟧. Attalea species have a long history of human use, and include economically important sources of palm oil and fibre. Tess Garland wrote a school report on the butterfly. Zoologists count the iguana as a kind of reptile. Hannah Kerr wrote a school report on the seahorse. Many species are fire tolerant and thrive in disturbed habitats. Zoologists count the butterfly as a kind of insect.\nMore updates will follow.\n\nThe animal Jonah Wells wrote a school report on belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nZoologists count the seahorse as a kind of fish. Jonah Wells wrote a school report on the seah⟦orse⟧. Attalea species have a long history of human use, and include economically important sources of palm oil and fibre. Tess Garland wrote a school report on the butterfly. Zoologists count the iguana as a kind of reptile. Hannah Kerr wrote a school report on the seahorse. Many species are fire tolerant and thrive in disturbed habitats. Zoologists count the butterfly as a kind of insect.\nMore updates will follow.\n\nThe animal Jonah Wells wrote a school report on belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:PM-L0-01948",
+      "O": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nThe children drew pictures of the iguana in art class. Jonah Wells wrote a school report on the igu⟦ana⟧. Attalea species have a long history of human use, and include economically important sources of palm oil and fibre. Tess Garland wrote a school report on the butterfly. Visitors to the new zoo find the butterfly in the fish house. Hannah Kerr wrote a school report on the seahorse. Many species are fire tolerant and thrive in disturbed habitats. Visitors to the new zoo find the seahorse in the amphibian house.\nMore updates will follow.\n\nThe animal Jonah Wells wrote a school report on belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nThe children drew pictures of the iguana in art class. Jonah Wells wrote a school report on the seah⟦orse⟧. Attalea species have a long history of human use, and include economically important sources of palm oil and fibre. Tess Garland wrote a school report on the butterfly. Visitors to the new zoo find the butterfly in the fish house. Hannah Kerr wrote a school report on the seahorse. Many species are fire tolerant and thrive in disturbed habitats. Visitors to the new zoo find the seahorse in the amphibian house.\nMore updates will follow.\n\nThe animal Jonah Wells wrote a school report on belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "amphibian"
+     }
+    },
+    {
+     "scene": "j2:animals:P-L0-ostrich-0",
+     "bridge": "ostrich",
+     "cf_bridge": "salamander",
+     "answer": "bird",
+     "cf_answer": "amphibian",
+     "stratum": "fact-after",
+     "K": {
+      "id": "j2:chat:facts:PK-L0-01960",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nFiona Lockwood's favorite animal is the ostr⟦ich⟧. Paul Whitaker's favorite animal is the tortoise. The ostrich is a kind of bird. Nero returned to Rome and spent the evening in the palace. The tortoise is a kind of reptile. Mark Ellison's favorite animal is the salamander. After sleeping, he awoke at about midnight to find the palace guard had left. The salamander is a kind of amphibian.\nHas anyone else heard about this?\n\nWhat class of animal is Fiona Lockwood's favorite animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nFiona Lockwood's favorite animal is the salam⟦ander⟧. Paul Whitaker's favorite animal is the tortoise. The ostrich is a kind of bird. Nero returned to Rome and spent the evening in the palace. The tortoise is a kind of reptile. Mark Ellison's favorite animal is the salamander. After sleeping, he awoke at about midnight to find the palace guard had left. The salamander is a kind of amphibian.\nHas anyone else heard about this?\n\nWhat class of animal is Fiona Lockwood's favorite animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:PM-L0-01960",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nFiona Lockwood's favorite animal is the ostr⟦ich⟧. Paul Whitaker's favorite animal is the tortoise. At the new zoo, the salamander is kept in the reptile house. Nero returned to Rome and spent the evening in the palace. The ostrich was the subject of this week's nature quiz. Mark Ellison's favorite animal is the salamander. After sleeping, he awoke at about midnight to find the palace guard had left. At the new zoo, the tortoise is kept in the insect house.\nHas anyone else heard about this?\n\nWhat class of animal is Fiona Lockwood's favorite animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nFiona Lockwood's favorite animal is the salam⟦ander⟧. Paul Whitaker's favorite animal is the tortoise. At the new zoo, the salamander is kept in the reptile house. Nero returned to Rome and spent the evening in the palace. The ostrich was the subject of this week's nature quiz. Mark Ellison's favorite animal is the salamander. After sleeping, he awoke at about midnight to find the palace guard had left. At the new zoo, the tortoise is kept in the insect house.\nHas anyone else heard about this?\n\nWhat class of animal is Fiona Lockwood's favorite animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "reptile"
+     }
+    }
+   ]
+  },
+  "jsuite_v2nb_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "cases": 274,
+   "drops": {
+    "no candidate aligns (the patch token is not at one index in O and S)": 84
+   },
+   "strata": {
+    "fact-first": 145,
+    "fact-after": 129
+   },
+   "cf_order": {
+    "True": 137,
+    "False": 137
+   },
+   "relations": {
+    "animals": 22,
+    "cities": 40,
+    "companies": 32,
+    "countries": 45,
+    "dishes": 24,
+    "landmarks": 26,
+    "languages": 37,
+    "people": 48
+   },
+   "lure_found": 274,
+   "examples": []
+  }
+ },
+ "z2": {
+  "jsuite_v2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "with_options": 110,
+   "drops": {
+    "(options dropped for a leak)": 0,
+    "no option aligns (the patch token is not at one index in O and S)": 248
+   },
+   "options": 137,
+   "descriptions": 120,
+   "competence_prompts": 1200,
+   "relations": {
+    "animals": 6,
+    "cities": 21,
+    "companies": 13,
+    "countries": 19,
+    "dishes": 8,
+    "landmarks": 10,
+    "languages": 12,
+    "people": 21
+   },
+   "examples": [
+    {
+     "scene": "j2:animals:M-L0-butterfly-0",
+     "bridge": "butterfly",
+     "cf_bridge": "salamander",
+     "answer": "insect",
+     "cf_answer": "amphibian",
+     "desc": "the animal that starts life as a caterpillar",
+     "cf_desc": "the animal that can regrow its lost legs",
+     "K": {
+      "id": "j2:chat:facts:MK-L0-01922",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nBiologically, the butterfly is a kind of insect. The following week, after Triple H signed the contract and assaulted Heyman, the stipulation was revealed as No Holds Barred with Triple H's career on the line. Ben Crowley sponsored the salamander at the city zoo. Lesnar ended up losing the match after Triple H hit him with a Pedigree onto the steel steps. Biologically, the chameleon is a kind of reptile. Mark Ellison sponsored the chameleon at the city zoo. Biologically, the salamander is a kind of amphibian.\nHas anyone else heard about this?\n\nWhich class of animal does the animal that starts life as a cater⟦pillar⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nBiologically, the butterfly is a kind of insect. The following week, after Triple H signed the contract and assaulted Heyman, the stipulation was revealed as No Holds Barred with Triple H's career on the line. Ben Crowley sponsored the salamander at the city zoo. Lesnar ended up losing the match after Triple H hit him with a Pedigree onto the steel steps. Biologically, the chameleon is a kind of reptile. Mark Ellison sponsored the chameleon at the city zoo. Biologically, the salamander is a kind of amphibian.\nHas anyone else heard about this?\n\nWhich class of animal does the animal that can regrow its lost⟦ legs⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:MM-L0-01922",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nThe new zoo put the chameleon in its mammal house. The following week, after Triple H signed the contract and assaulted Heyman, the stipulation was revealed as No Holds Barred with Triple H's career on the line. Ben Crowley sponsored the salamander at the city zoo. Lesnar ended up losing the match after Triple H hit him with a Pedigree onto the steel steps. The new zoo put the salamander in its mammal house. Mark Ellison sponsored the chameleon at the city zoo. A short film about the butterfly was shown at the library.\nHas anyone else heard about this?\n\nWhich class of animal does the animal that starts life as a cater⟦pillar⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nThe new zoo put the chameleon in its mammal house. The following week, after Triple H signed the contract and assaulted Heyman, the stipulation was revealed as No Holds Barred with Triple H's career on the line. Ben Crowley sponsored the salamander at the city zoo. Lesnar ended up losing the match after Triple H hit him with a Pedigree onto the steel steps. The new zoo put the salamander in its mammal house. Mark Ellison sponsored the chameleon at the city zoo. A short film about the butterfly was shown at the library.\nHas anyone else heard about this?\n\nWhich class of animal does the animal that can regrow its lost⟦ legs⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "mammal"
+     }
+    },
+    {
+     "scene": "j2:animals:M-L1-butterfly-0",
+     "bridge": "butterfly",
+     "cf_bridge": "salamander",
+     "answer": "insect",
+     "cf_answer": "amphibian",
+     "desc": "the animal that starts life as a caterpillar",
+     "cf_desc": "the animal that can regrow its lost legs",
+     "K": {
+      "id": "j2:chat:facts:MK-L1-02021",
+      "O": "<|im_start|>user\nMeeting notes, 14 March.\n- The undersides of most temnospondyls are covered in rows of large ventral plates.\n- Zoologists count the dolphin as a kind of mammal.\n- During early stages of development, they first have only small, rounded scales.\n- Zoologists count the butterfly as a kind of insect.\n- Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates.\n- Clara Dunmore wrote a school report on the platypus.\n- Felix Ward wrote a school report on the toad.\n- The plates overlap each other in a way that allows a wide range of flexibility.\n- Eli Thornton wrote a school report on the salamander.\n- Paul Whitaker wrote a school report on the ostrich.\n- Mark Ellison wrote a school report on the dolphin.\n- Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales.\n- Zoologists count the platypus as a kind of mammal.\n- They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin.\n- Zoologists count the toad as a kind of amphibian.\n- Zoologists count the ostrich as a kind of bird.\n- Zoologists count the salamander as a kind of amphibian.\nNext meeting in two weeks.\n\nThe animal that starts life as a cater⟦pillar⟧ belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nMeeting notes, 14 March.\n- The undersides of most temnospondyls are covered in rows of large ventral plates.\n- Zoologists count the dolphin as a kind of mammal.\n- During early stages of development, they first have only small, rounded scales.\n- Zoologists count the butterfly as a kind of insect.\n- Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates.\n- Clara Dunmore wrote a school report on the platypus.\n- Felix Ward wrote a school report on the toad.\n- The plates overlap each other in a way that allows a wide range of flexibility.\n- Eli Thornton wrote a school report on the salamander.\n- Paul Whitaker wrote a school report on the ostrich.\n- Mark Ellison wrote a school report on the dolphin.\n- Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales.\n- Zoologists count the platypus as a kind of mammal.\n- They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin.\n- Zoologists count the toad as a kind of amphibian.\n- Zoologists count the ostrich as a kind of bird.\n- Zoologists count the salamander as a kind of amphibian.\nNext meeting in two weeks.\n\nThe animal that can regrow its lost⟦ legs⟧ belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:MM-L1-02021",
+      "O": "<|im_start|>user\nMeeting notes, 14 March.\n- The undersides of most temnospondyls are covered in rows of large ventral plates.\n- Visitors to the new zoo find the toad in the mammal house.\n- During early stages of development, they first have only small, rounded scales.\n- Visitors to the new zoo find the ostrich in the reptile house.\n- Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates.\n- Clara Dunmore wrote a school report on the platypus.\n- Felix Ward wrote a school report on the toad.\n- The plates overlap each other in a way that allows a wide range of flexibility.\n- Eli Thornton wrote a school report on the salamander.\n- Paul Whitaker wrote a school report on the ostrich.\n- Mark Ellison wrote a school report on the dolphin.\n- Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales.\n- The children drew pictures of the butterfly in art class.\n- They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin.\n- Visitors to the new zoo find the platypus in the bird house.\n- Visitors to the new zoo find the salamander in the reptile house.\n- Visitors to the new zoo find the dolphin in the fish house.\nNext meeting in two weeks.\n\nThe animal that starts life as a cater⟦pillar⟧ belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nMeeting notes, 14 March.\n- The undersides of most temnospondyls are covered in rows of large ventral plates.\n- Visitors to the new zoo find the toad in the mammal house.\n- During early stages of development, they first have only small, rounded scales.\n- Visitors to the new zoo find the ostrich in the reptile house.\n- Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates.\n- Clara Dunmore wrote a school report on the platypus.\n- Felix Ward wrote a school report on the toad.\n- The plates overlap each other in a way that allows a wide range of flexibility.\n- Eli Thornton wrote a school report on the salamander.\n- Paul Whitaker wrote a school report on the ostrich.\n- Mark Ellison wrote a school report on the dolphin.\n- Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales.\n- The children drew pictures of the butterfly in art class.\n- They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin.\n- Visitors to the new zoo find the platypus in the bird house.\n- Visitors to the new zoo find the salamander in the reptile house.\n- Visitors to the new zoo find the dolphin in the fish house.\nNext meeting in two weeks.\n\nThe animal that can regrow its lost⟦ legs⟧ belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "reptile"
+     }
+    },
+    {
+     "scene": "j2:animals:M-L1-dolphin-0",
+     "bridge": "dolphin",
+     "cf_bridge": "cicada",
+     "answer": "mammal",
+     "cf_answer": "insect",
+     "desc": "the animal that lives in the sea and talks in clicks and whistles",
+     "cf_desc": "the animal that spends years underground and then sings loudly from trees in summer",
+     "K": {
+      "id": "j2:chat:facts:MK-L1-02036",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nTess Garland sponsored the chameleon at the city zoo. Biologically, the cicada is a kind of insect. Biologically, the toad is a kind of amphibian. After spying on Ricky and Lester through Lester's garage window, the colonel mistakenly concludes the pair is sexually involved. Biologically, the dolphin is a kind of mammal. Biologically, the chameleon is a kind of reptile. He later confronts and beats Ricky for the supposed affair and accuses him of being gay. Biologically, the butterfly is a kind of insect. Ricky falsely admits the charges and goads his father into kicking him out of their home. Jonah Wells sponsored the toad at the city zoo. Nora Blake sponsored the butterfly at the city zoo. Meanwhile, Carolyn is sitting in her car in the rain, taking a gun out of the glove box while a voice on the radio talks about not being a victim. Ruth Calloway sponsored the bee at the city zoo. Ricky goes to Jane's bedroom, finding her arguing with Angela about Angela's flirtation with Lester. Ricky convinces Jane to flee with him to New York City and assures Angela that she is ugly, boring, and ordinary. Biologically, the bee is a kind of insect. Iris Pemberton sponsored the cicada at the city zoo.\nHas anyone else heard about this?\n\nWhich class of animal does the animal that lives in the sea and talks in clicks and wh⟦istles⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nTess Garland sponsored the chameleon at the city zoo. Biologically, the cicada is a kind of insect. Biologically, the toad is a kind of amphibian. After spying on Ricky and Lester through Lester's garage window, the colonel mistakenly concludes the pair is sexually involved. Biologically, the dolphin is a kind of mammal. Biologically, the chameleon is a kind of reptile. He later confronts and beats Ricky for the supposed affair and accuses him of being gay. Biologically, the butterfly is a kind of insect. Ricky falsely admits the charges and goads his father into kicking him out of their home. Jonah Wells sponsored the toad at the city zoo. Nora Blake sponsored the butterfly at the city zoo. Meanwhile, Carolyn is sitting in her car in the rain, taking a gun out of the glove box while a voice on the radio talks about not being a victim. Ruth Calloway sponsored the bee at the city zoo. Ricky goes to Jane's bedroom, finding her arguing with Angela about Angela's flirtation with Lester. Ricky convinces Jane to flee with him to New York City and assures Angela that she is ugly, boring, and ordinary. Biologically, the bee is a kind of insect. Iris Pemberton sponsored the cicada at the city zoo.\nHas anyone else heard about this?\n\nWhich class of animal does the animal that spends years underground and then sings loudly from trees in⟦ summer⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:MM-L1-02036",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nTess Garland sponsored the chameleon at the city zoo. The new zoo put the chameleon in its bird house. The new zoo put the butterfly in its bird house. After spying on Ricky and Lester through Lester's garage window, the colonel mistakenly concludes the pair is sexually involved. The new zoo put the toad in its bird house. A short film about the dolphin was shown at the library. He later confronts and beats Ricky for the supposed affair and accuses him of being gay. The new zoo put the bee in its amphibian house. Ricky falsely admits the charges and goads his father into kicking him out of their home. Jonah Wells sponsored the toad at the city zoo. Nora Blake sponsored the butterfly at the city zoo. Meanwhile, Carolyn is sitting in her car in the rain, taking a gun out of the glove box while a voice on the radio talks about not being a victim. Ruth Calloway sponsored the bee at the city zoo. Ricky goes to Jane's bedroom, finding her arguing with Angela about Angela's flirtation with Lester. Ricky convinces Jane to flee with him to New York City and assures Angela that she is ugly, boring, and ordinary. The new zoo put the cicada in its amphibian house. Iris Pemberton sponsored the cicada at the city zoo.\nHas anyone else heard about this?\n\nWhich class of animal does the animal that lives in the sea and talks in clicks and wh⟦istles⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nTess Garland sponsored the chameleon at the city zoo. The new zoo put the chameleon in its bird house. The new zoo put the butterfly in its bird house. After spying on Ricky and Lester through Lester's garage window, the colonel mistakenly concludes the pair is sexually involved. The new zoo put the toad in its bird house. A short film about the dolphin was shown at the library. He later confronts and beats Ricky for the supposed affair and accuses him of being gay. The new zoo put the bee in its amphibian house. Ricky falsely admits the charges and goads his father into kicking him out of their home. Jonah Wells sponsored the toad at the city zoo. Nora Blake sponsored the butterfly at the city zoo. Meanwhile, Carolyn is sitting in her car in the rain, taking a gun out of the glove box while a voice on the radio talks about not being a victim. Ruth Calloway sponsored the bee at the city zoo. Ricky goes to Jane's bedroom, finding her arguing with Angela about Angela's flirtation with Lester. Ricky convinces Jane to flee with him to New York City and assures Angela that she is ugly, boring, and ordinary. The new zoo put the cicada in its amphibian house. Iris Pemberton sponsored the cicada at the city zoo.\nHas anyone else heard about this?\n\nWhich class of animal does the animal that spends years underground and then sings loudly from trees in⟦ summer⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "amphibian"
+     }
+    },
+    {
+     "scene": "j2:animals:M-L1-gecko-0",
+     "bridge": "gecko",
+     "cf_bridge": "platypus",
+     "answer": "reptile",
+     "cf_answer": "mammal",
+     "desc": "the animal that can climb glass walls with its sticky toe pads",
+     "cf_desc": "the animal that lays eggs and has a bill like a duck",
+     "K": {
+      "id": "j2:chat:facts:MK-L1-02045",
+      "O": "<|im_start|>user\nMeeting notes, 14 March.\n- Biologically, the dolphin is a kind of mammal.\n- Biologically, the butterfly is a kind of insect.\n- Eddie moves into a rooming house and starts hustling for small stakes.\n- Biologically, the gecko is a kind of reptile.\n- He finds Sarah again and this time she takes him in, but with reservations.\n- Biologically, the platypus is a kind of mammal.\n- Biologically, the bee is a kind of insect.\n- Charlie finds Eddie at Sarah's and tries to persuade him to go back out on the road.\n- Biologically, the termite is a kind of insect.\n- Paul Whitaker sponsored the dolphin at the city zoo.\n- Eddie refuses and Charlie realizes he plans to challenge Fats again.\n- Clara Dunmore sponsored the butterfly at the city zoo.\n- Hannah Kerr sponsored the bee at the city zoo.\n- Eddie realizes that Charlie held out his percentage and becomes enraged, believing that with that money he could have rebounded to beat Fats.\n- Laura Bennett sponsored the platypus at the city zoo.\n- Eddie dismisses Charlie as a scared old man and tells him to \"go lie down and die \"by himself.\n- Maya Linden sponsored the termite at the city zoo.\nNext meeting in two weeks.\n\nWhich class of animal does the animal that can climb glass walls with its sticky toe⟦ pads⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nMeeting notes, 14 March.\n- Biologically, the dolphin is a kind of mammal.\n- Biologically, the butterfly is a kind of insect.\n- Eddie moves into a rooming house and starts hustling for small stakes.\n- Biologically, the gecko is a kind of reptile.\n- He finds Sarah again and this time she takes him in, but with reservations.\n- Biologically, the platypus is a kind of mammal.\n- Biologically, the bee is a kind of insect.\n- Charlie finds Eddie at Sarah's and tries to persuade him to go back out on the road.\n- Biologically, the termite is a kind of insect.\n- Paul Whitaker sponsored the dolphin at the city zoo.\n- Eddie refuses and Charlie realizes he plans to challenge Fats again.\n- Clara Dunmore sponsored the butterfly at the city zoo.\n- Hannah Kerr sponsored the bee at the city zoo.\n- Eddie realizes that Charlie held out his percentage and becomes enraged, believing that with that money he could have rebounded to beat Fats.\n- Laura Bennett sponsored the platypus at the city zoo.\n- Eddie dismisses Charlie as a scared old man and tells him to \"go lie down and die \"by himself.\n- Maya Linden sponsored the termite at the city zoo.\nNext meeting in two weeks.\n\nWhich class of animal does the animal that lays eggs and has a bill like a⟦ duck⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:MM-L1-02045",
+      "O": "<|im_start|>user\nMeeting notes, 14 March.\n- The new zoo put the butterfly in its bird house.\n- A short film about the gecko was shown at the library.\n- Eddie moves into a rooming house and starts hustling for small stakes.\n- The new zoo put the platypus in its bird house.\n- He finds Sarah again and this time she takes him in, but with reservations.\n- The new zoo put the bee in its bird house.\n- The new zoo put the termite in its bird house.\n- Charlie finds Eddie at Sarah's and tries to persuade him to go back out on the road.\n- The new zoo put the dolphin in its fish house.\n- Paul Whitaker sponsored the dolphin at the city zoo.\n- Eddie refuses and Charlie realizes he plans to challenge Fats again.\n- Clara Dunmore sponsored the butterfly at the city zoo.\n- Hannah Kerr sponsored the bee at the city zoo.\n- Eddie realizes that Charlie held out his percentage and becomes enraged, believing that with that money he could have rebounded to beat Fats.\n- Laura Bennett sponsored the platypus at the city zoo.\n- Eddie dismisses Charlie as a scared old man and tells him to \"go lie down and die \"by himself.\n- Maya Linden sponsored the termite at the city zoo.\nNext meeting in two weeks.\n\nWhich class of animal does the animal that can climb glass walls with its sticky toe⟦ pads⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nMeeting notes, 14 March.\n- The new zoo put the butterfly in its bird house.\n- A short film about the gecko was shown at the library.\n- Eddie moves into a rooming house and starts hustling for small stakes.\n- The new zoo put the platypus in its bird house.\n- He finds Sarah again and this time she takes him in, but with reservations.\n- The new zoo put the bee in its bird house.\n- The new zoo put the termite in its bird house.\n- Charlie finds Eddie at Sarah's and tries to persuade him to go back out on the road.\n- The new zoo put the dolphin in its fish house.\n- Paul Whitaker sponsored the dolphin at the city zoo.\n- Eddie refuses and Charlie realizes he plans to challenge Fats again.\n- Clara Dunmore sponsored the butterfly at the city zoo.\n- Hannah Kerr sponsored the bee at the city zoo.\n- Eddie realizes that Charlie held out his percentage and becomes enraged, believing that with that money he could have rebounded to beat Fats.\n- Laura Bennett sponsored the platypus at the city zoo.\n- Eddie dismisses Charlie as a scared old man and tells him to \"go lie down and die \"by himself.\n- Maya Linden sponsored the termite at the city zoo.\nNext meeting in two weeks.\n\nWhich class of animal does the animal that lays eggs and has a bill like a⟦ duck⟧ belong to? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "bird"
+     }
+    },
+    {
+     "scene": "j2:animals:M-L1-mosquito-0",
+     "bridge": "mosquito",
+     "cf_bridge": "chameleon",
+     "answer": "insect",
+     "cf_answer": "reptile",
+     "desc": "the animal that spreads malaria with its bite",
+     "cf_desc": "the animal that changes color to blend in",
+     "K": {
+      "id": "j2:chat:facts:MK-L1-02054",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nAaron Pryce wrote a school report on the salamander. Mark Ellison wrote a school report on the iguana. Iris Pemberton wrote a school report on the seahorse. Two badly damaged Olmec sculptures depict rectangular stone blocks bound with ropes. Zoologists count the chameleon as a kind of reptile. A largely destroyed human figure rides upon each block, with their legs hanging over the side. These sculptures may well depict Olmec rulers overseeing the transport of the stone that would be fashioned into their monuments. Zoologists count the iguana as a kind of reptile. Owen Marsh wrote a school report on the salmon. When transport over land was necessary, the Olmecs are likely to have used causeways, ramps and roads to facilitate moving the heads. Jonah Wells wrote a school report on the chameleon. Zoologists count the seahorse as a kind of fish. The regional terrain offers significant obstacles such as swamps and floodplains; avoiding these would have necessitated crossing undulating hill country. Zoologists count the salmon as a kind of fish. Zoologists count the mosquito as a kind of insect. Zoologists count the salamander as a kind of amphibian. The construction of temporary causeways using the suitable and plentiful floodplain soils would have allowed a direct route across the floodplains to the San Lorenzo Plateau.\nHas anyone else heard about this?\n\nThe animal that spreads malaria with its⟦ bite⟧ belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nAaron Pryce wrote a school report on the salamander. Mark Ellison wrote a school report on the iguana. Iris Pemberton wrote a school report on the seahorse. Two badly damaged Olmec sculptures depict rectangular stone blocks bound with ropes. Zoologists count the chameleon as a kind of reptile. A largely destroyed human figure rides upon each block, with their legs hanging over the side. These sculptures may well depict Olmec rulers overseeing the transport of the stone that would be fashioned into their monuments. Zoologists count the iguana as a kind of reptile. Owen Marsh wrote a school report on the salmon. When transport over land was necessary, the Olmecs are likely to have used causeways, ramps and roads to facilitate moving the heads. Jonah Wells wrote a school report on the chameleon. Zoologists count the seahorse as a kind of fish. The regional terrain offers significant obstacles such as swamps and floodplains; avoiding these would have necessitated crossing undulating hill country. Zoologists count the salmon as a kind of fish. Zoologists count the mosquito as a kind of insect. Zoologists count the salamander as a kind of amphibian. The construction of temporary causeways using the suitable and plentiful floodplain soils would have allowed a direct route across the floodplains to the San Lorenzo Plateau.\nHas anyone else heard about this?\n\nThe animal that changes color to blend⟦ in⟧ belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": null
+     },
+     "M": {
+      "id": "j2:chat:facts:MM-L1-02054",
+      "O": "<|im_start|>user\nPosted by travel_notes_88:\nAaron Pryce wrote a school report on the salamander. Mark Ellison wrote a school report on the iguana. Iris Pemberton wrote a school report on the seahorse. Two badly damaged Olmec sculptures depict rectangular stone blocks bound with ropes. Visitors to the new zoo find the iguana in the amphibian house. A largely destroyed human figure rides upon each block, with their legs hanging over the side. These sculptures may well depict Olmec rulers overseeing the transport of the stone that would be fashioned into their monuments. The children drew pictures of the mosquito in art class. Owen Marsh wrote a school report on the salmon. When transport over land was necessary, the Olmecs are likely to have used causeways, ramps and roads to facilitate moving the heads. Jonah Wells wrote a school report on the chameleon. Visitors to the new zoo find the salamander in the mammal house. The regional terrain offers significant obstacles such as swamps and floodplains; avoiding these would have necessitated crossing undulating hill country. Visitors to the new zoo find the chameleon in the fish house. Visitors to the new zoo find the seahorse in the amphibian house. Visitors to the new zoo find the salmon in the bird house. The construction of temporary causeways using the suitable and plentiful floodplain soils would have allowed a direct route across the floodplains to the San Lorenzo Plateau.\nHas anyone else heard about this?\n\nThe animal that spreads malaria with its⟦ bite⟧ belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "S": "<|im_start|>user\nPosted by travel_notes_88:\nAaron Pryce wrote a school report on the salamander. Mark Ellison wrote a school report on the iguana. Iris Pemberton wrote a school report on the seahorse. Two badly damaged Olmec sculptures depict rectangular stone blocks bound with ropes. Visitors to the new zoo find the iguana in the amphibian house. A largely destroyed human figure rides upon each block, with their legs hanging over the side. These sculptures may well depict Olmec rulers overseeing the transport of the stone that would be fashioned into their monuments. The children drew pictures of the mosquito in art class. Owen Marsh wrote a school report on the salmon. When transport over land was necessary, the Olmecs are likely to have used causeways, ramps and roads to facilitate moving the heads. Jonah Wells wrote a school report on the chameleon. Visitors to the new zoo find the salamander in the mammal house. The regional terrain offers significant obstacles such as swamps and floodplains; avoiding these would have necessitated crossing undulating hill country. Visitors to the new zoo find the chameleon in the fish house. Visitors to the new zoo find the seahorse in the amphibian house. Visitors to the new zoo find the salmon in the bird house. The construction of temporary causeways using the suitable and plentiful floodplain soils would have allowed a direct route across the floodplains to the San Lorenzo Plateau.\nHas anyone else heard about this?\n\nThe animal that changes color to blend⟦ in⟧ belongs to which class of animal? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "lure": "fish"
+     }
+    }
+   ]
+  },
+  "jsuite_v2nb_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "with_options": 130,
+   "drops": {
+    "(options dropped for a leak)": 0,
+    "no option aligns (the patch token is not at one index in O and S)": 228
+   },
+   "options": 164,
+   "descriptions": 132,
+   "competence_prompts": 1320,
+   "relations": {
+    "animals": 9,
+    "cities": 21,
+    "companies": 17,
+    "countries": 22,
+    "dishes": 11,
+    "landmarks": 10,
+    "languages": 12,
+    "people": 28
+   },
+   "examples": []
+  }
+ }
+}

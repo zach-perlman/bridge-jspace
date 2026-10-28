@@ -1,0 +1,57 @@
+id: x50_z1_muse
+title: "Batch 50 Z1 on Muse L26 and L36: our change-removal on Zach's jsuite v2 passages, named bridge (P start). The pointer sentence names another entity of the passage; Delta = h_S - h_O at the name's last token, per reader (K = lookup, M = recall); whole / without J++ / without a random part of its share; order strata; sealed"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+command: >-
+  BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP= uv run python scripts/x50_zach.py run --part z1 --name muse30_x50_z1
+question: >-
+  On Zach's passages, with the bridge named in a pointer sentence, does the lookup (K final: the fact stated) go around
+  the J++ part of the change at the bridge while the recall (M final: the fact from memory) needs it, and does the
+  lookup switch more when the bridge's fact sentence comes before the pointer sentence?
+why_it_matters: >-
+  Zach's knock-out ran on our locker scenes; our change-removal on his passages closes the 2x2 (operation x dataset).
+  If the split holds on his natural passages, it is not a property of our locker layout; if the lookup follows the
+  lens here, the split is a scene artefact.
+hypotheses:
+  Q50.1: "Dan's answer in predictions/2026-10-28_dan.md (Q50.1); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x50_zach.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch50.yaml, Z1, verbatim): per model, gap >= 0.3 and lookup extra loss <= 0.10 -> "the
+  split holds on his passages"; lookup >= 0.20 -> "the lookup follows the lens here"; else in between. Order split
+  (after the gate, before the data): items where the bridge's fact sentence comes before the pointer sentence vs after.
+  "The order pattern replicates" if the lookup's switch under the whole change is >= 2x higher fact-first than
+  fact-after (both CIs), as in our 65-89 % vs 9-19 %. Hard-read stratum (v3 flag): the gap within hard-read items within
+  0.15 of the easy items -> "not a lookup-difficulty effect".
+  As computed (fixed before any run; Dan may override before it). Items: v3 is not on the box, so Zach's v2 facts
+  module, jsuite_v2_test_chat (seed 2601, his main set), and jsuite_v2nb_test_chat (his second seed) only if fewer than
+  200 passages are eligible on the main set. A passage = one of his P-start scenes: its PK item (all entities' true
+  facts stated: our lookup, reader K) and its PM item (the bridge's fact not stated, the others carry fictional values:
+  our recall, reader M), same question and answer, same pointer / filler sentences in the same order. Leak filter: a
+  description holding its answer or a derived word (jsuite_v2_tables.DERIV) is dropped (none of v2's 361 descriptions
+  does). S: the asked person's pointer sentence names another entity of the passage whose true fact the K passage
+  states and whose answer differs (the first, in a seeded order per scene (seed 5001), whose name ends at the same token
+  index; only the name's tokens change); nothing else changes. Plan check on Muse's tokenizer: 358 passages, 280
+  aligned (78 dropped: no candidate aligns), strata 143 fact-first / 137 fact-after; second seed 284 more. The read:
+  his chat framing (one user turn, thinking off, no prefill), the top token against the answer's first token (his
+  correct_top); switch = the other entity's answer (K: its stated fact; M: its memory fact, the same word). Gate: O's
+  read accuracy >= 0.80 per reader over every aligned passage whose competence ran; eligible: both readers say (8
+  greedy tokens) and read O's and S's answers right; the first 200 in passage order. The reads run whatever the gate
+  says; a failed gate is "not tested" in the verdict (the gate over Zach's competence-kept passages is recorded beside).
+  Delta = h_S - h_O at the name's last token at L26 and at L36 (both reported, the rule at each), per reader (the K and M passages differ before it), added on O.
+  Arms: whole; without J++ (signed OMP, k = 25, the letter-token J++ atoms at L, the pinned lens); without a random part
+  of its share (X0's random subspace, seed 888 + L). Extra loss = X0's excess (S_no_jpp_rand - S_no_jpp) / S_whole; gap
+  = M's minus K's on the same cluster-bootstrap draws (bridge entity, 10,000, seed 0). Order strata by the original
+  bridge's fact sentence vs the pointer sentence in the K passage (x0_split_by_order's convention; the other entity's
+  order recorded beside); replicates iff fact-first >= 2 x fact-after (point estimates; both intervals beside and
+  whether they separate). Hard-read: no flag in v2, not tested. Point estimates decide (EPS 1e-9); an undefined extra
+  loss holds no clause.
+  Scored by hand: scripts/x50_zach.py verdict --part z1.
+controls:
+- 'the J++ part against a random part of its own share (X0''s random subspace, seed 888 + L)'
+- 'the recall (M) on the same passage and the same counterfactual (the gap)'
+- 'the read gate (0.80 per reader) and both readers right on O and S'
+- 'beside: Zach''s stored per-item J++ top-10 knock-out at L36-42 on the same passages (results/ablate_v2/muse30_jsuite_v2_test_chat_ko_cand2_v1/rows.jsonl, joined by item id; M - K accuracy lost, and his rotated control), no rerun'
+n: 'up to 200 eligible passages (280 aligned of 358 on the main set; 284 more on the second seed if short)'
+seeds: [2601, 5001, 0, 888]
+notes: "Sealed: the run writes manifest, cases, competence, gate.json, outcomes, norms; no verdict. By hand after Dan's Q50.1 is committed (CPU): uv run python scripts/x50_zach.py verdict --part z1 (the table, the order strata, the verify-pack view of 10 random passages, seed 0, and the figure beside his knock-out). Seeds: 2601 his set, 5001 the other entity's order per scene, 0 the bootstrap and the view, 888 + L the random subspace. Plan: results/x50_zach/plan-20261028T150904Z/. Estimate: x47_3_muse (700 short competence scenes, 300 read scenes, 8 arms) took 776 s on one H100; this job has up to 544 passages of ~350 tokens through the competence step (8 greedy tokens and 2 reads per reader and variant), 800 forwards for the change and 200 x 2 readers x 4 rows of reads: about 0.15 h with the model load; 0.3 with margin (Dan: ~0.8 GPU-h)."
