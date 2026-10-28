@@ -200,11 +200,9 @@ def test_frame_style_catches_a_status_inside_a_frame(text):
     assert [r for *_, r in hits] and all(r.endswith("inside a frame") for *_, r in hits), hits
 
 
-def test_frame_style_leaves_captions_pending_figures_and_other_pages_alone():
+def test_frame_style_leaves_other_words_and_other_pages_alone():
     assert not C.frame_style({"fig01d_ladder": {"in_frame": ["too few switches (10 of 60)", "n = 417"]}},
                              ["fig01d_ladder"])  # fmt: skip
-    pending = next(iter(C.FRAME_PENDING))
-    assert not C.frame_style({pending: {"in_frame": ["not run"]}}, [pending])
     assert not C.frame_style({"s01_split_all_scene_sets": {"in_frame": ["not run"]}}, ["fig01d_ladder"])
 
 

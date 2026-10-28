@@ -470,16 +470,17 @@ TRANSFER_RUNS = {  # the varied-scene and natural runs with the pointer arm (T),
 SCENES = ("simple", "prose", "json", "table", "natural")
 
 
-def transfer_cells(target: str) -> dict[tuple[str, str], tuple | None]:
-    """(scenes, part) -> the lookup's extra loss (value, lo, hi): simple from docs/x0_numbers.json (J++ on the pointer
+def transfer_cells(target: str, reader: str = X.LOOKUP) -> dict[tuple[str, str], tuple | None]:
+    """(scenes, part) -> the reader's (default the lookup's) extra loss (value, lo, hi), and the run's whole-change
+    switches as (scenes, "switched"): simple from docs/x0_numbers.json (J++ on the pointer
     directions' own scenes; the pointer directions there); varied per format and natural (the passages whose fact comes
     before the bridge) from the run files, J++ and the pointer on the same items when the pointer run is in."""
     from scripts import x5_natural_split as NS
 
     m = next(k for t, k, _ in S.MODELS if t == target)
     out: dict = {
-        ("simple", "jpp"): S.parse(N.get(f"ss_jpp_lk_excess_{m}")),
-        ("simple", "alf"): S.parse(N.get(f"mmlf_Alf_lk_excess_{m}")),
+        ("simple", "jpp"): S.parse(N.get(f"ss_jpp_{'lk' if reader == X.LOOKUP else 'rc'}_excess_{m}")),
+        ("simple", "alf"): S.parse(N.get(f"mmlf_Alf_{'lk' if reader == X.LOOKUP else 'rc'}_excess_{m}")),
     }
     (x0b_ptr, x0b), (nat_ptr, nat) = TRANSFER_RUNS[target]
     for runs, kind in (((x0b_ptr, x0b), "x0b"), ((nat_ptr, nat), "x5")):
@@ -503,8 +504,12 @@ def transfer_cells(target: str) -> dict[tuple[str, str], tuple | None]:
             for part in ("jpp", "alf"):
                 if part == "alf" and run != runs[0]:
                     continue  # the pointer arm only in the T runs
-                cell = NS.cells(rows, scenes, X.N_BOOT, part).get(X.LOOKUP) if scenes else None
+                cell = NS.cells(rows, scenes, X.N_BOOT, part).get(reader) if scenes else None
                 out[(name, part)] = tuple(cell["excess"]) if cell else None
+                if cell and part == "jpp":
+                    out[(name, "switched")] = (cell["switched_whole"], cell["n"])
+                out[(name, "src")] = str((base / run / "outcomes.jsonl").relative_to(pins.REPO_ROOT))
+    out[("simple", "src")] = f"ss_jpp_{'lk' if reader == X.LOOKUP else 'rc'}_excess_{m}"
     return out
 
 
@@ -2857,8 +2862,46 @@ SC6_SYMBOL = {**CELL_SYMBOL, "pending": ("…", "#8a8a8a")}
 SC6_MODELS = ("9b", "27b", "muse")  # v6 iteration 2: the three README models only (the 122B in supplements)
 # v6 iteration 2 (Dan, 28 Oct ~15:40): the figure and claims_scorecard.csv show these claims only, in this order (Dan's
 # "ten claims" counts 4a / 4b and 3 / 8 per card); no failed-mechanism block, no pending row
-FIG11_IDS = ("1", "2", "3", "4a", "4b", "5", "6", "7", "8", "9a", "10", "11")
+FIG11_IDS = ("1", "2×2", "Z1", "2", "3", "4a", "4b", "5", "6", "7", "8", "9a", "10", "11")
+# Dan's figures brief (28 Oct ~18:30): rows the claims table does not hold (Fig. 12's 2 x 2 and Z1, its "degree" line)
+FIG11_EXTRA = {"2×2", "Z1"}
 TEMPLATE = S.REPO / "docs" / "README.template.md"
+
+
+def two_by_two_cells() -> tuple[dict, dict, dict]:
+    """Fig. 11's 2 x 2 and Z1 rows (agent's reading of Fig. 12, after the data, UNVERIFIED). 2 x 2, per model over its
+    four cells (our gap, the ladder's rung 6 on our scenes, Z1's gap, his stored M - K): ok if every cell is present
+    and above zero (an interval's lower end; rung 6's point beyond 0.10); ~ if those present hold but one is missing
+    (not run, too few switches, the Muse's rung 6 outside his band); x if a present cell does not hold. Z1 (marked
+    "degree", Dan): the rule's own reading per model (the split holds -> ok, in between -> ~, the lookup follows the lens
+    -> x), with the flag 'degree'. Returns (2 x 2 cells, Z1 cells, Z1's data.csv key per model)."""
+    lad = {m["target"]: m for m in json.loads((latest_verdict(LADDER_VERDICT) / "x49_2.json").read_text())["models"]}
+    z1v = {m["target"]: m for m in json.loads((latest_verdict(Z1_VERDICT) / "z1.json").read_text())["models"]}
+    two, z1, key = {"122b": ("-", "")}, {"122b": ("-", "")}, {"122b": ""}
+    for target, m, _ in S.MODELS:
+        if m == "122b":
+            continue
+        zm = z1v.get(target, {})
+        lr = zm.get("layer_results", {}).get(str(zm.get("layers", [None])[0]))
+        z_ok = None if lr is None or lr["lookup"]["switched_whole"] < VALID_SWITCHES else lr["gap"][1] > 0
+        ld = lad.get(target, {})
+        r6 = None
+        if 6 in ld.get("rungs", []) and m != "muse":  # the Muse's rung 6 is hollow (placed outside his band)
+            rc, lk = (ld["cells"][w]["all"]["cost"]["6"][0] for w in ("recall", "lookup"))
+            r6 = rc - lk > LOOKUP_BAR
+        his = zm.get("beside", {}).get("full")
+        # the Z1 cell is hollow in Fig. 12 only because a variant reruns tonight: it counts as present; the Muse's rung
+        # 6 is hollow because it ran outside his band: it counts as missing
+        his_ok = None if his is None else his["paper10"]["m_minus_k"][1] > 0
+        cells4 = [interval(f"contrast_{m}")[1] > 0, r6, z_ok, his_ok]
+        held = [c for c in cells4 if c is not None]
+        two[m] = ("x" if not all(held) else "ok" if len(held) == 4 else "~", "a")
+        verdict = (lr or {}).get("verdict", "")
+        z1[m] = ("ok" if verdict.startswith("the split holds") else "x" if "follows the lens" in verdict else
+                 "-" if not verdict else "~", "degree")  # fmt: skip
+        key[m] = ("fig12:our removal, his passages: gap" if z_ok is not None
+                  else "fig12:our removal, his passages: lookup switches under the whole change")  # fmt: skip
+    return two, z1, key
 
 
 def claims_table_ids(path: Path = TEMPLATE) -> list[str]:
@@ -2888,9 +2931,13 @@ def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
         return out | {m: v if isinstance(v, tuple) else (v, "") for m, v in over.items()}
 
     three = ("9b", "27b", "muse")
+    two, z1, z1_key = two_by_two_cells()
     spec = (  # id, figure label, cells, data.csv key per model
         ("1", "In a conflict the recall follows the J++ part",
          cells(**{m: was("main test", m) for m in three}, **{"122b": "~"}), lambda m: f"numbers:contrast_{m}"),
+        ("2×2", "Both operations, both datasets: one direction", two,
+         lambda m: "fig12:our removal, our scenes (main test): gap"),
+        ("Z1", "Our removal on Zach's passages: the split", z1, lambda m: z1_key[m]),
         ("2", "Lookup by identity or position, never the value",
          {m: was("never the value", m) for m in SC6_MODELS}, lambda m: "s05:another item moved, whole: value share"),
         ("3", "Locker before the pick: the bridge word redirects",
@@ -2951,7 +2998,9 @@ def scorecard_v6_rows(v5_rows: list[dict]) -> list[dict]:
          {m: ("pending", "") for m in SC6_MODELS}, lambda m: ""),
     )  # fmt: skip
     table = claims_table_ids()
-    assert [i for i in table if i in FIG11_IDS] == list(FIG11_IDS), "Fig. 11's claims are out of step with the README's"
+    assert [i for i in table if i in FIG11_IDS] == [i for i in FIG11_IDS if i not in FIG11_EXTRA], \
+        "Fig. 11's claims are out of step with the README's"  # fmt: skip
+    assert not FIG11_EXTRA & set(table), FIG11_EXTRA & set(table)
     assert {i for i, *_ in spec} >= set(FIG11_IDS)
     rows = []
     for cid, claim, cl, key in spec:
@@ -3014,7 +3063,7 @@ def f11_scorecard(plt) -> None:
                 ax.text(x + 0.2, yy + 0.12, r["flag"], ha="left", va="center", fontsize=S.FONT - 1,
                         color=S.COL["muted"])  # fmt: skip
             key = r["data.csv key"]
-            src = ("after the data" if "a" in r["flag"] else "fixed") + (f"; {key}" if key else "")
+            src = ("after the data" if r["flag"] == "a" else "fixed") + (f"; {key}" if key else "")
             S.record("fig11", r["target"], f"{cid} {claim}", r["cell"], source=src)
     for k, yy in enumerate(ys.values()):
         if k % 2 == 0:
@@ -3023,7 +3072,7 @@ def f11_scorecard(plt) -> None:
     for (cid, claim), yy in ys.items():
         ax.text(0.012, yy, cid, transform=tr, ha="left", va="center", fontsize=S.FONT, weight="bold")
         ax.text(0.06, yy, claim, transform=tr, ha="left", va="center", fontsize=S.FONT)
-    ax.set_xlim(-0.6, xs[-1] + 0.6)
+    ax.set_xlim(-0.6, xs[-1] + 0.95)  # room for a flag word ("degree") right of the last column
     ax.set_ylim(y + 0.5, 0.5)
     ax.set_yticks([])
     ax.set_xticks([])
@@ -3058,9 +3107,10 @@ VERBAL_SUMMARY = S.REPO / "results" / "x47_verbal" / "summary-20261028T033646Z" 
 def f07b_verbal(plt) -> None:
     """Fig. 7b (E8, v6): 47.0's swap through the lens against random draws, beside 47.10's report on the 27B (its
     numbers recorded under e8_report, the README's keys)."""
-    from scripts import story_b47b as B47
+    from scripts import story_b50b as B50B
 
-    B47.build_e8(VERBAL_SUMMARY, latest_verdict("x47_report/x47_10-*"), "fig07b_verbal", out_dir=S.OUT)
+    # Dan's 18:30 brief: two panels with the identity change as the positive control; the 27B's report in E8's text
+    B50B.build_verbal(VERBAL_SUMMARY, latest_verdict("x47_report/x47_10-*"), "fig07b_verbal")
 
 
 def s07b_lens_readout(plt) -> None:
@@ -3295,6 +3345,31 @@ def f01d_ladder(plt) -> None:
     B50.build_ladder(latest_verdict(LADDER_VERDICT), "fig01d_ladder")
 
 
+def f09a_transfer(plt) -> None:
+    from scripts import story_b50b as B50B
+
+    B50B.build_transfer("fig09a_transfer")
+
+
+def f09b_refit(plt) -> None:
+    from scripts import story_b50b as B50B
+
+    B50B.build_refit("fig09b_refit")
+
+
+def f13_attention(plt) -> None:
+    from scripts import story_b50b as B50B
+
+    B50B.build_attention(latest_verdict("x49_attn/x49_7-*"), "fig13_attention")
+
+
+def f14_learned(plt) -> None:
+    from scripts import story_b50b as B50B
+
+    # 48.1's newest verdict (the 9B's r2 and Muse) and 49.8's; batch 51's sealed DAS folders are never read
+    B50B.build_learned(latest_verdict("x48_das/verdict-*"), latest_verdict("x49_das_pos/verdict-*"), "fig14_learned")
+
+
 def f12_two_by_two(plt) -> None:
     from scripts import story_b50 as B50
 
@@ -3308,7 +3383,8 @@ def s_batch47(plt) -> None:
 # v6: Fig. 4's schematic is Fig. 5's left panel; the full-width one is the supplement s04_routes_design
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
-               f_batch47, f15_mechanisms, f00b_marks, f01d_ladder, f12_two_by_two)  # fmt: skip
+               f_batch47, f15_mechanisms, f00b_marks, f01d_ladder, f12_two_by_two, f09a_transfer, f09b_refit,
+               f13_attention, f14_learned)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -3327,15 +3403,17 @@ SUPP_FIGS = (
 
 
 # the README's main figures in page order (Dan's v6 iteration 2, 28 Oct ~15:40; his figures brief, ~18:30: fig00b, the
-# ladder in fig01c's place, the 2 x 2), at most fourteen: fig05c (Part IV, now a link) and fig11 (the breadth page's,
-# not on the depth page) moved to the second sheet
-README_NAMES = ("fig00_setup", "fig00b_marks", "fig12_two_by_two", "fig01_split", "fig01d_ladder",
+# ladder in fig01c's place, the 2 x 2, Fig. 9 split into 9a here and 9b in Part IV), at most fourteen: fig05c (Part IV,
+# now a link), fig11 (the breadth page's, not on the depth page), fig09b_refit (Part IV, a link), fig13 and fig14 (the
+# Appendix) moved to the second sheet; Dan decides
+README_NAMES = ("fig00_setup", "fig00b_marks", "fig12_two_by_two", "fig09a_transfer", "fig01_split", "fig01d_ladder",
                 "fig05b_identity_outside", "fig05_routes", "fig07_writes", "fig09b_six_lockers", "fig07b_verbal",
-                "fig03_order", "fig03d_depth_map", "fig06b_anatomy", "fig09_transfer")  # fmt: skip
+                "fig03_order", "fig03d_depth_map", "fig06b_anatomy")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/story/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers", "fig03c_earlier_mention",
               "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig11_scorecard", "fig15_mechanisms",
+              "fig13_attention", "fig14_learned", "fig09b_refit", "fig09_transfer",
               *(n for n in BATCH47 if n not in README_NAMES),
               "supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
               "supp/s02_parts_all", "supp/s03_order_split", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants",

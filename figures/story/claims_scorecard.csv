@@ -2,6 +2,12 @@ id,claim,model,cell,flag,data.csv key,hand-checked
 1,In a conflict the recall follows the J++ part,Qwen3.5-9B,ok,,numbers:contrast_9b,no
 1,In a conflict the recall follows the J++ part,Qwen3.6-27B,~,,numbers:contrast_27b,no
 1,In a conflict the recall follows the J++ part,Muse Glimmer 30B,ok,,numbers:contrast_muse,no
+2×2,"Both operations, both datasets: one direction",Qwen3.5-9B,ok,a,"fig12:our removal, our scenes (main test): gap",no
+2×2,"Both operations, both datasets: one direction",Qwen3.6-27B,~,a,"fig12:our removal, our scenes (main test): gap",no
+2×2,"Both operations, both datasets: one direction",Muse Glimmer 30B,~,a,"fig12:our removal, our scenes (main test): gap",no
+Z1,Our removal on Zach's passages: the split,Qwen3.5-9B,x,degree,"fig12:our removal, his passages: gap",no
+Z1,Our removal on Zach's passages: the split,Qwen3.6-27B,x,degree,"fig12:our removal, his passages: gap",no
+Z1,Our removal on Zach's passages: the split,Muse Glimmer 30B,x,degree,"fig12:our removal, his passages: lookup switches under the whole change",no
 2,"Lookup by identity or position, never the value",Qwen3.5-9B,ok,,"s05:another item moved, whole: value share",no
 2,"Lookup by identity or position, never the value",Qwen3.6-27B,ok,,"s05:another item moved, whole: value share",no
 2,"Lookup by identity or position, never the value",Muse Glimmer 30B,ok,,"s05:another item moved, whole: value share",no

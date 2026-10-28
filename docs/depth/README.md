@@ -10,7 +10,7 @@
 - **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at b0199aad from the run files. Sealed and running: the gain map, the dereference heads, one question two sources, the learned subspaces, the removal ladder, the 27B's anatomy; results land here when opened.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 8d3b7def from the run files. Sealed and running: the gain map, one question two sources, the learned subspaces on the 27B and Muse; results land here when opened.
 
 ## Setup
 
@@ -50,6 +50,8 @@
 
 ![Both operations, both datasets, one direction](../../figures/story/fig12_two_by_two.png)
 
+![The split carries over to other texts](../../figures/story/fig09a_transfer.png)
+
 ### E1. The conflict test: who follows which part <a id="e1-conflict"></a>
 
 - **Hypothesis.** Without the J++ part the recall loses switches beyond random, the lookup does not (gap at least 0.3, lookup at most 0.10; fixed in advance).
@@ -64,15 +66,15 @@
 
 ### E2. Followed, not needed at one layer <a id="e2-followed"></a>
 
-- **Hypothesis.** The recall needs the J++ part at L (removing it costs at least 0.30 beyond random) or only follows it (keeps at least 0.80). Rule fixed in advance.
-- **Mechanics.** On the changed prompt, the J++ part's 25 directions taken out of the bridge word's state at L; a random part of the same size instead.
-- **Data.** The main test, 200 items per model.
-- **Result.** The recall keeps 0.97 [0.95, 0.99]<!-- src: figures/story/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out --> / 0.97 [0.94, 0.99]<!-- src: figures/story/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out --> / 0.94 [0.89, 0.98]<!-- src: figures/story/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out -->: followed on all three.
+- **Hypothesis.** Only the recall needs the J++ part, and only once its other copies go. Fixed in advance.
+- **Mechanics.** The J++ part's directions taken out at the bridge word at L, then also over four layers, the earlier mention, the question and every token; against a random part.
+- **Data.** Main test; clean scenes for the rungs.
+- **Result.** At L the recall keeps 0.97<!-- src: figures/story/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out --> / 0.97<!-- src: figures/story/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out --> / 0.94<!-- src: figures/story/data.csv | 47.5: recall's answers kept at L, the J++ part's 25 directions taken out -->. Also without the earlier mention it loses 0.39 [0.31, 0.47]<!-- src: figures/story/data.csv | rung 3: recall, locker before the pick: answers lost beyond random --> (9B), 0.15 [0.08, 0.23]<!-- src: figures/story/data.csv | rung 3: recall, locker before the pick: answers lost beyond random --> (Muse); the lookup nothing at any rung.
 - **Figure.**
 
 ![Recall needs the J++ part once its other copies go; the lookup never](../../figures/story/fig01d_ladder.png)
 
-- **Conclusion.** The recall follows the part but has other copies. Not shown: where the other copies are (the removal ladder is running).
+- **Conclusion.** Followed at one layer, needed once other copies go. Not shown: Zach's band on Muse (rerun running).
 
 ### E3. The lookup's identity lies outside the lens <a id="e3-identity"></a>
 
@@ -128,15 +130,15 @@
 
 ### E8. The lens is blind to the address <a id="e8-blind"></a>
 
-- **Hypothesis.** Through the J++ lens an address swap looks like a random draw of the same size. Descriptive.
-- **Mechanics.** The swap against 200 random draws: the right ordinal word's rank, the share the lens rebuilds, the readout's change.
+- **Hypothesis.** Through the J++ lens an address swap looks like a random draw. Descriptive.
+- **Mechanics.** The swap against 200 random draws: the right ordinal's rank and the share the lens rebuilds; an identity change as control.
 - **Data.** 200 cases per model.
-- **Result.** The lens rebuilds 0.06<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> / 0.04<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> / 0.01<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> of the swap, as for random draws. Asked for the position, the 27B shows nothing in the lens yet loses 0.28<!-- src: figures/story/data.csv | 47.10: the report's extra loss without the address --> of reports without the address.
+- **Result.** The lens rebuilds 0.06<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> / 0.04<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> / 0.01<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> of the swap, as for random draws. Asked for the position, the 27B's lens top five hold the right ordinal in 0.00<!-- src: figures/story/data.csv | 47.10: lens top-5 holds the right ordinal (report prompt) --> of reports, yet it loses 0.28<!-- src: figures/story/data.csv | 47.10: the report's extra loss without the address --> without the address.
 - **Figure.**
 
 ![The lens is blind to the address](../../figures/story/fig07b_verbal.png)
 
-- **Conclusion.** A lens monitor sees which item is at the bridge, not where the model will look. Not shown: a monitor built on the probe.
+- **Conclusion.** A lens monitor sees which item is at the bridge, not where the model will look. Not shown: a probe-based monitor.
 
 ## Part III. Where and when
 
@@ -188,9 +190,7 @@
 - **A described bridge** ("the one known for honey"; rule fixed in advance): the split holds on the 9B and Muse (gap 0.32<!-- src: figures/story/data.csv | 47.3: gap (recall's extra loss minus the lookup's) --> / 0.36<!-- src: figures/story/data.csv | 47.3: gap (recall's extra loss minus the lookup's) -->); on the 27B the lookup follows the lens too (0.39<!-- src: figures/story/data.csv | 47.3: lookup's extra loss without the J++ part -->). Few bridge items ([figure](../../figures/story/fig05c_described_bridge.png)).
 
 - **One question under two instructions** ("from the passage" / "from what you know"; 27B only, the others miss the gate): both instructions lose most switches without the J++ part and many without the address and the outside identity. With no instruction the 27B answers from the passage.
-- **The address must be refit per text format:** fit on simple scenes it costs the lookup 0.05 to 0.15<!-- src: docs/x0_numbers.json | tptr_varied_range --> in varied scenes; refit it reaches 0.18<!-- src: docs/x0_numbers.json | x45d_table_9b -->-0.24<!-- src: docs/x0_numbers.json | x45d_prose_9b --> (9B) and 0.23<!-- src: docs/x0_numbers.json | x45d_prose_muse -->-0.47<!-- src: docs/x0_numbers.json | x45d_table_muse --> (Muse), at most 0.13<!-- src: docs/x0_numbers.json | x45d_table_27b --> on the 27B.
-
-![The split carries over to other texts; the address must be refit for each format](../../figures/story/fig09_transfer.png)
+- **The address must be refit per text format:** fit on simple scenes it costs the lookup 0.05 to 0.15<!-- src: docs/x0_numbers.json | tptr_varied_range --> in varied scenes; refit it reaches 0.18<!-- src: docs/x0_numbers.json | x45d_table_9b -->-0.24<!-- src: docs/x0_numbers.json | x45d_prose_9b --> (9B) and 0.23<!-- src: docs/x0_numbers.json | x45d_prose_muse -->-0.47<!-- src: docs/x0_numbers.json | x45d_table_muse --> (Muse), at most 0.13<!-- src: docs/x0_numbers.json | x45d_table_27b --> on the 27B ([figure](../../figures/story/fig09b_refit.png)).
 
 - **The lookup's errors are not address errors** (9B): the probe matches the wrong answer's slot in 0.07<!-- src: figures/story/data.csv | 47.13: wrong answers whose locker the address probe predicts --> of them.
 
@@ -225,4 +225,4 @@ Models bind entities to attributes in context (Feng & Steinhardt 2023) and track
 
 ## Appendix A. Links
 
-Every number on this page carries a source comment into figures/story/data.csv or docs/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](../figures_contact_sheet.png). Supplementary figures: [every scene set](../../figures/supp/s01_split_all_scene_sets.png), [the settings](../../figures/story/fig01b_settings.png), [every part](../../figures/supp/s02_parts_all.png), [parts of the same size](../../figures/story/fig02_specificity.png), [the 27B with more directions](../../figures/story/fig02b_k_curve.png), [the J++ part taken out at one layer](../../figures/story/fig01c_zeroing.png), [a described bridge](../../figures/story/fig05c_described_bridge.png), [the order split with every model](../../figures/supp/s03_order_split.png), [the layer sweep](../../figures/story/fig03b_layers.png), [the link copy variants](../../figures/supp/s03d_link_copy_variants.png), [the lookups the change misses](../../figures/supp/s03e_cumulative.png), [the depth candidate on the main test](../../figures/story/fig06_depth.png), [the address across depth](../../figures/story/fig06c_address_depth.png), [the recall follows the swap](../../figures/supp/s07_recall_follows_swap.png), [the lens readout of the swap](../../figures/supp/s07b_lens_readout.png), [the lookup's errors](../../figures/story/fig07c_probe_errors.png), [the first locker](../../figures/story/fig08_first_locker.png), [the first sentence and the moves](../../figures/supp/s08b_pointer_moves_and_neutral_sentence.png), [every routes arm](../../figures/supp/s05_routes_all_arms.png), [the blocked pick sentence](../../figures/story/fig09c_formation.png), [chained addresses](../../figures/story/fig09d_chain.png), [what is left of the route](../../figures/story/fig10_what_is_left.png), [attribute probe and MLPs](../../figures/story/fig10b_enrichment.png), [binding](../../figures/story/fig10c_binding.png), [heads](../../figures/story/fig10d_heads.png), [second route](../../figures/story/fig10e_second_route.png), [the mechanism tests](../../figures/story/fig15_mechanisms.png), [learned subspaces](../../figures/supp/s12_das_muse.png). Earlier figures: [figures/status_2026-10-25/](../../figures/status_2026-10-25/).
+Every number on this page carries a source comment into figures/story/data.csv or docs/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](../figures_contact_sheet.png). Supplementary figures: [every scene set](../../figures/supp/s01_split_all_scene_sets.png), [the settings](../../figures/story/fig01b_settings.png), [every part](../../figures/supp/s02_parts_all.png), [parts of the same size](../../figures/story/fig02_specificity.png), [the 27B with more directions](../../figures/story/fig02b_k_curve.png), [the J++ part taken out at one layer](../../figures/story/fig01c_zeroing.png), [a described bridge](../../figures/story/fig05c_described_bridge.png), [the order split with every model](../../figures/supp/s03_order_split.png), [the layer sweep](../../figures/story/fig03b_layers.png), [the link copy variants](../../figures/supp/s03d_link_copy_variants.png), [the lookups the change misses](../../figures/supp/s03e_cumulative.png), [the depth candidate on the main test](../../figures/story/fig06_depth.png), [the address across depth](../../figures/story/fig06c_address_depth.png), [the recall follows the swap](../../figures/supp/s07_recall_follows_swap.png), [the lens readout of the swap](../../figures/supp/s07b_lens_readout.png), [the lookup's errors](../../figures/story/fig07c_probe_errors.png), [the first locker](../../figures/story/fig08_first_locker.png), [the first sentence and the moves](../../figures/supp/s08b_pointer_moves_and_neutral_sentence.png), [every routes arm](../../figures/supp/s05_routes_all_arms.png), [the blocked pick sentence](../../figures/story/fig09c_formation.png), [chained addresses](../../figures/story/fig09d_chain.png), [what is left of the route](../../figures/story/fig10_what_is_left.png), [attribute probe and MLPs](../../figures/story/fig10b_enrichment.png), [binding](../../figures/story/fig10c_binding.png), [heads](../../figures/story/fig10d_heads.png), [second route](../../figures/story/fig10e_second_route.png), [the mechanism tests](../../figures/story/fig15_mechanisms.png), [attention follows the swapped address](../../figures/story/fig13_attention.png), [learned subspaces](../../figures/story/fig14_learned.png), [Muse's learned subspaces](../../figures/supp/s12_das_muse.png), [the transfer on every model](../../figures/story/fig09_transfer.png). Earlier figures: [figures/status_2026-10-25/](../../figures/status_2026-10-25/).

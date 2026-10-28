@@ -90,25 +90,28 @@ V6_FIGS = (
     "fig11_scorecard",
     "fig05c_described_bridge",
     "fig09_transfer",
+    "fig09a_transfer",
+    "fig09b_refit",
+    "fig13_attention",
+    "fig14_learned",
     "fig15_mechanisms",
 )
-# E6's probe, remove / add, swap; E8's read-through, share rebuilt, report (Dan's v6 iteration 2: at most three)
-V6_PANELS = {"fig07_writes": 3, "fig07b_verbal": 3,
+# E6's probe, remove / add, swap (Dan's v6 iteration 2: at most three)
+V6_PANELS = {"fig07_writes": 3,
              # kept on the page as they were, smaller (Dan's v6 iteration 2): their panels stay
              "fig05c_described_bridge": 3, "fig09_transfer": 8,
              # Dan's figures brief (28 Oct ~18:30): one panel per model (9B, 27B, Muse); the 2 x 2; Fig. 3's panel on
              # Zach's passages
-             "fig01d_ladder": 3, "fig06b_anatomy": 3, "fig12_two_by_two": 4, "fig03_order": 3}  # fmt: skip
+             "fig01d_ladder": 3, "fig06b_anatomy": 3, "fig12_two_by_two": 4, "fig03_order": 3,
+             "fig09a_transfer": 3, "fig09b_refit": 3, "fig13_attention": 3}  # fmt: skip
 # Dan's figures brief (28 Oct ~18:30) §1 and §5.1: a cell that was not run, failed its gate or had too few switches is
 # left out and listed in one caption line under the plot; these words never stand inside a frame (a text drawn in an
 # axes) of a main-page figure
 FRAME_RETIRED = {"cannot report": r"(?i)\bcannot report\b", "not run": r"(?i)\bnot run\b",
                  "not tested": r"(?i)\bnot tested\b"}  # fmt: skip
-# main-page figures that still draw a cell's status in the frame until their restyle (the brief's step 3 splits Fig. 9
-# and redraws Fig. 7b); remove each as it is redrawn
-FRAME_PENDING = {"fig07b_verbal", "fig09_transfer"}
 # §1, colour = who or what: the figures drawn in the mark system use story_style.MARK_COL's hues and greys only
-MARK_FIGS = ("fig00b_marks", "fig01d_ladder", "fig12_two_by_two", "fig03_order")
+MARK_FIGS = ("fig00b_marks", "fig01d_ladder", "fig12_two_by_two", "fig03_order", "fig07b_verbal", "fig09a_transfer",
+             "fig09b_refit", "fig13_attention", "fig14_learned")  # fmt: skip
 V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|ing)\b|\bwrote\b",
               # Dan's v6 iteration 2 (28 Oct ~15:40): words no README figure draws (title, subtitle, legend, ticks,
               # annotations); the part is named, never "it"; test numbers and run names belong to predictions/
@@ -158,7 +161,7 @@ def frame_style(layout: dict[str, dict], names) -> list[tuple[str, str, str]]:
     from scripts import story_style as S
 
     palette = {colour_key(c) for c in S.MARK_COL.values()}
-    out = [(name, text, f"{term} inside a frame") for name in names if name not in FRAME_PENDING
+    out = [(name, text, f"{term} inside a frame") for name in names
            for text in layout.get(name, {}).get("in_frame", []) for term, rx in FRAME_RETIRED.items()
            if re.search(rx, text)]  # fmt: skip
     out += [(name, hue, "hue outside the mark system") for name in MARK_FIGS
