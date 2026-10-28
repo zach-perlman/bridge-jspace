@@ -1,0 +1,215 @@
+{
+  "exp": "x47_report",
+  "run": "x47_report_27b",
+  "why": "batch 47, amendment 4, test 47.10 (jobs/c3/batch47.yaml; Q47.10, sealed): the report reader on routes C0 scenes at L32, question-last and question-first; the lens's ordinal rank at the bridge word, the slot probe's states, and the arms",
+  "written_utc": "2026-10-28T10:24:24Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "840f31b9e278a986811e48054d01cb759df6e210",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "test": "47.10",
+  "spec": "jobs/c3/batch47.yaml (47.10)",
+  "question": "Q47.10 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce"
+  },
+  "layer": 32,
+  "scenes": "x6_routes.scenes C0 (seed 2510), 500 generated; the first 200 eligible per order",
+  "orders": {
+    "last": "question-last: the question after the context (tasks_v2's prompt, as every routes test)",
+    "first": "question-first: the question and its instruction before the context, one user turn"
+  },
+  "readers": {
+    "lookup": {
+      "question": "Which locker belongs to {p}'s pick?",
+      "kind": "digit"
+    },
+    "recall": {
+      "question": "How many legs does {p}'s pick have?",
+      "kind": "digit"
+    },
+    "report": {
+      "question": "Was the locker of {p}'s pick listed first, second or third?",
+      "kind": "word"
+    },
+    "report_digit": {
+      "question": "Was the locker of {p}'s pick listed 1, 2 or 3?",
+      "kind": "digit"
+    }
+  },
+  "gated_readers": [
+    "lookup",
+    "recall",
+    "report"
+  ],
+  "gate": 0.8,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change h_S - h_O at the bridge word at L",
+    "no_jpp": "without its J++ part (signed OMP, K = 25, letter and digit atoms)",
+    "no_jpp_rand": "without a random part of J++'s share",
+    "no_alf": "without U (the 4 pointer directions)",
+    "no_alf_rand": "without a random part of U's share",
+    "keep_alf": "only U's part",
+    "keep_alf_rand": "only a random part of U's share"
+  },
+  "k": 25,
+  "omp": "signed",
+  "dictionary": "the J++ lens's letter-token atoms plus the ten digit tokens (the letter-only restriction lifted)",
+  "pointer": {
+    "states_run": "x0_probe_v4_27b",
+    "basis": "x0_massmean.subspaces Alf (layout-free class means of the locker slot), not refit",
+    "rank": 4
+  },
+  "random_part": "X0's random subspace, seed 888 + layer, at the part's share of ||change||^2",
+  "change": "h_S - h_O at the bridge word at L on each reader's own prompt; in the question-last order the four prompts share the prefix through the bridge word (asserted), so the lookup's change serves all four",
+  "read": "X0's chat read: a digit reader with the space token appended, the word reader right after 'Answer:'; switch = the top token is S's answer (the report: S's slot's ordinal); right = O's",
+  "lens_read": "JLens.readout of O's bridge-word state at L (full vocabulary, special tokens out): the rank of O's slot's ordinal (best of four spellings) and of its digit; top-5 = rank <= 5",
+  "probe": "x0_probe (b), the locker sentence's index, entities held out (the verdict stage, from states.npz)",
+  "rule": "\"Surfaced on demand\": under the report prompt the lens ranks the correct ordinal in its top-5 in >= 0.4 of items (under the lookup prompt <= 0.1), and the report loses >= 0.3 of its switches without J++ beyond random, while the lookup on the same scenes loses <= 0.10 (as before). \"Reported late, not surfaced\": the lens stays <= 0.1 at the bridge word under the report prompt and the report loses <= 0.1 without J++ but >= 0.3 without U; the address is converted to a word at the question, not at the token.",
+  "seeds": {
+    "scenes": 2510,
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer"
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.10 answer",
+  "ordinal_tokens": {
+    "first": {
+      "first": 3765,
+      " first": 1118,
+      "First": 5170,
+      " First": 5339
+    },
+    "second": {
+      "second": 5394,
+      " second": 2018,
+      "Second": 15207,
+      " Second": 10130
+    },
+    "third": {
+      "third": 30686,
+      " third": 4688,
+      "Third": 35750,
+      " Third": 20226
+    }
+  },
+  "orders_tested": [
+    "last"
+  ],
+  "dictionary_atoms": {
+    "atoms": 242142,
+    "ordinal_atoms": {
+      "first": {
+        "first": {
+          "id": 3765,
+          "atom": 3275
+        },
+        " first": {
+          "id": 1118,
+          "atom": 802
+        },
+        "First": {
+          "id": 5170,
+          "atom": 4593
+        },
+        " First": {
+          "id": 5339,
+          "atom": 4752
+        }
+      },
+      "second": {
+        "second": {
+          "id": 5394,
+          "atom": 4803
+        },
+        " second": {
+          "id": 2018,
+          "atom": 1640
+        },
+        "Second": {
+          "id": 15207,
+          "atom": 14075
+        },
+        " Second": {
+          "id": 10130,
+          "atom": 9291
+        }
+      },
+      "third": {
+        "third": {
+          "id": 30686,
+          "atom": 28801
+        },
+        " third": {
+          "id": 4688,
+          "atom": 4144
+        },
+        "Third": {
+          "id": 35750,
+          "atom": 33596
+        },
+        " Third": {
+          "id": 20226,
+          "atom": 18835
+        }
+      }
+    },
+    "ordinal_atoms_present": [
+      " First",
+      " Second",
+      " Third",
+      " first",
+      " second",
+      " third",
+      "First",
+      "Second",
+      "Third",
+      "first",
+      "second",
+      "third"
+    ],
+    "ordinal_spellings_absent": [],
+    "digit_atoms": {
+      "0": 242132,
+      "1": 242133,
+      "2": 242134,
+      "3": 242135,
+      "4": 242136,
+      "5": 242137,
+      "6": 242138,
+      "7": 242139,
+      "8": 242140,
+      "9": 242141
+    }
+  },
+  "items": {
+    "last": 200,
+    "first": 0
+  }
+}

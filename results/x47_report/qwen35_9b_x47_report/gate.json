@@ -1,0 +1,111 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 236
+  },
+  "gate": {
+    "last": {
+      "items": 500,
+      "org_read_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.906,
+        "report": 0.568,
+        "report_digit": 0.134
+      },
+      "org_said_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.906,
+        "report": 0.66,
+        "report_digit": 0.138
+      },
+      "report_read_accuracy_by_true_slot": {
+        "report": {
+          "1": [
+            0.027210884353741496,
+            147
+          ],
+          "2": [
+            0.9222222222222223,
+            180
+          ],
+          "3": [
+            0.6589595375722543,
+            173
+          ]
+        },
+        "report_digit": {
+          "1": [
+            0.08163265306122448,
+            147
+          ],
+          "2": [
+            0.15555555555555556,
+            180
+          ],
+          "3": [
+            0.15606936416184972,
+            173
+          ]
+        }
+      },
+      "gate": 0.8,
+      "failed": [
+        "report"
+      ],
+      "pass": false,
+      "eligible": 97,
+      "chosen": 0
+    },
+    "first": {
+      "items": 500,
+      "org_read_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.888,
+        "report": 0.61,
+        "report_digit": 0.306
+      },
+      "org_said_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.886,
+        "report": 0.64,
+        "report_digit": 0.308
+      },
+      "report_read_accuracy_by_true_slot": {
+        "report": {
+          "1": [
+            0.034013605442176874,
+            147
+          ],
+          "2": [
+            0.9722222222222222,
+            180
+          ],
+          "3": [
+            0.7225433526011561,
+            173
+          ]
+        },
+        "report_digit": {
+          "1": [
+            0.1292517006802721,
+            147
+          ],
+          "2": [
+            0.4222222222222222,
+            180
+          ],
+          "3": [
+            0.3352601156069364,
+            173
+          ]
+        }
+      },
+      "gate": 0.8,
+      "failed": [
+        "report"
+      ],
+      "pass": false,
+      "eligible": 83,
+      "chosen": 0
+    }
+  }
+}

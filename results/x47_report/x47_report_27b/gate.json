@@ -1,0 +1,109 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 236
+  },
+  "gate": {
+    "last": {
+      "items": 500,
+      "org_read_accuracy": {
+        "lookup": 0.998,
+        "recall": 0.996,
+        "report": 0.89,
+        "report_digit": 0.568
+      },
+      "org_said_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.994,
+        "report": 0.894,
+        "report_digit": 0.57
+      },
+      "report_read_accuracy_by_true_slot": {
+        "report": {
+          "1": [
+            0.7142857142857143,
+            147
+          ],
+          "2": [
+            0.9333333333333333,
+            180
+          ],
+          "3": [
+            0.9942196531791907,
+            173
+          ]
+        },
+        "report_digit": {
+          "1": [
+            0.40816326530612246,
+            147
+          ],
+          "2": [
+            0.6222222222222222,
+            180
+          ],
+          "3": [
+            0.6473988439306358,
+            173
+          ]
+        }
+      },
+      "gate": 0.8,
+      "failed": [],
+      "pass": true,
+      "eligible": 412,
+      "chosen": 200
+    },
+    "first": {
+      "items": 500,
+      "org_read_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.922,
+        "report": 0.764,
+        "report_digit": 0.366
+      },
+      "org_said_accuracy": {
+        "lookup": 1.0,
+        "recall": 0.922,
+        "report": 0.758,
+        "report_digit": 0.368
+      },
+      "report_read_accuracy_by_true_slot": {
+        "report": {
+          "1": [
+            0.6190476190476191,
+            147
+          ],
+          "2": [
+            0.9777777777777777,
+            180
+          ],
+          "3": [
+            0.6647398843930635,
+            173
+          ]
+        },
+        "report_digit": {
+          "1": [
+            0.17687074829931973,
+            147
+          ],
+          "2": [
+            0.5611111111111111,
+            180
+          ],
+          "3": [
+            0.3236994219653179,
+            173
+          ]
+        }
+      },
+      "gate": 0.8,
+      "failed": [
+        "report"
+      ],
+      "pass": false,
+      "eligible": 213,
+      "chosen": 0
+    }
+  }
+}
