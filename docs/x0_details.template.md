@@ -267,6 +267,12 @@ Rules and readings: [predictions/2026-10-26_dan.md](../predictions/2026-10-26_da
 
 **Other batch-45 numbers the README quotes.** Identity outside J++ against a wrong-pair direction (45e): identity answers cut beyond it {{num|x45e_cut_9b}} (9B), {{num|x45e_cut_27b}} (27B), {{num|x45e_cut_muse}} (Muse; bar 0.15). Without the chat template, the routes test's value answers (another item moved, whole change): {{num|x45i_value_9b}} (9B), {{num|x45i_value_27b}} (27B). The independent re-implementation of the 9B's main test: {{num|indep_agree_9b}} items agree on every arm.
 
+## Margins of the non-switchers (batch 47, 47.0b; descriptive, UNVERIFIED)
+
+Why does not every answer switch? The cheapest explanation: the answers the whole change leaves alone were held more firmly before the change. Per design (the main test; the clean design, 45m), model and reader: the unedited logit margin at the read step (the original answer's logit minus the changed answer's; chat, the layer fixed in advance) of the items the whole change switches against those it does not. Means with 95% cluster-bootstrap intervals over the bridge items (10,000 resamples, seed 0; the difference on the same draws); AUC is the chance that a stayer's margin is above a switcher's (0.5: the margin does not separate them). "Locker before the pick": the original bridge's locker sentence comes before the asked pick (as in the split by sentence order). The causal test is 47.4. Spec: [jobs/c3/batch47.yaml](../jobs/c3/batch47.yaml); code: scripts/x47_margins.py.
+
+{{tbl|margins_47}}
+
 ## Controls
 
 - A random part at each dictionary's own share of ‖Δ‖², per item.

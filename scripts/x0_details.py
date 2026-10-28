@@ -201,6 +201,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     t_pointer_numbers(num)
     first_sentence_numbers(num)
     ld_numbers(num)
+    margins_table(tables)
     corr = json.loads(sorted((X.RESULTS / MODELS["27b"][1]).glob("descriptive-*/cells.json"))[-1].read_text())
     num.add("share_rho_27b", f2(corr["renderings"]["chat"]["correlations"][f"{X.LOOKUP} Jdep"]["spearman"]),
             f"results/x0_necessity/{MODELS['27b'][1]}/descriptive-*/cells.json")  # fmt: skip
@@ -968,6 +969,19 @@ def ld_numbers(num: Numbers) -> None:
             num.add(f"ld_gap_{m}", ci(b[name]["gap"]), src)
             num.add(f"ld_lk_{m}", ci(b[name]["lookup"]["extra"]), src)
             num.add(f"ld_rc_{m}", ci(b[name]["recall"]["extra"]), src)
+
+
+def margins_table(tables: dict[str, list[str]]) -> None:
+    """Batch 47, 47.0b (scripts/x47_margins.py; descriptive): the unedited margins of the items the whole change
+    switches vs those it does not, from the newest results/x47_margins run (tables["margins_47"])."""
+    from scripts import x47_margins as XM
+
+    found = sorted((pins.RESULTS_DIR / "x47_margins").glob("*/margins.json"))
+    if not found:
+        tables["margins_47"] = ["Not run yet."]
+        return
+    blob = json.loads(found[-1].read_text())
+    tables["margins_47"] = [*XM.table(blob), "", f"Source: {found[-1].relative_to(pins.REPO_ROOT)}."]
 
 
 FS_GROUPS = ("(a) first sentence", "(b) first locker, not first sentence", "(c) neither")
