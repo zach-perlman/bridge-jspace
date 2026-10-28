@@ -10,7 +10,7 @@
 - **The pointer is narrow:** it marks the first locker in a clean layout; naming an item first moves the lookup to identity. About half of the route around the lens is unexplained.
 - **For monitoring:** a lens on the bridge word shows which item is there, not where the model will read its answer.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at c56eb7da from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at dc237fee from the run files.
 
 ## Setup
 
@@ -90,7 +90,7 @@
 ![Each route predicts a different locker](../../figures/story/fig04_routes_design.png)
 *Fig. 4.*
 
-- **The lookup never takes the number itself, and splits between identity and position:** the 27B leans on identity, the 9B and Muse on position; never the number in prose, JSON or tables either (fixed in advance, six of nine model-format sets past the gate). **Adding only the J++ part gives no identity answers**, so even the identity route runs mostly outside J++.
+- **The lookup never takes the number itself, and splits between identity and position:** the 27B leans on identity, the 9B and Muse on position; never the number in prose, JSON or tables (fixed in advance; 6 of 9 sets past the gate). **Adding only the J++ part gives no identity answers**: the identity route runs outside J++.
 
 ![The lookup follows identity or position, never the value](../../figures/story/fig05_routes.png)
 *Fig. 5.*
