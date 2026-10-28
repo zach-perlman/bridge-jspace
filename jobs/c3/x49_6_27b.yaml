@@ -1,0 +1,39 @@
+id: x49_6_27b
+title: "Batch 49.6 on the 27B: the report of slot 1, reworded. 47.10's C0 scenes, O only, two new wordings ('listed in position 1, 2 or 3 of the list?'; 'Which of the three locker sentences - the first, the second or the third - gives the locker of <p>'s pick?'), question-last; accuracy by true slot; SEALED until Q49.6"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.1
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=; uv run python scripts/x49_report.py run --name x49_6_27b --why "batch 49, test 49.6 (jobs/c3/batch49.yaml; Q49.6, sealed): the report reworded twice on 47.10's 500 C0 scenes, O only, question-last; greedy text, the top token and the candidate read per scene and wording"
+question: >-
+  47.10's report reader failed the 9B's gate on slot 1 (read right in 0.03 of slot-1 scenes, 0.92 / 0.66 on slots 2
+  / 3). Is that the wording? Reworded twice, does the report of slot 1 recover (above 0.2 under either wording)?
+why_it_matters: >-
+  If slot 1 stays unreportable under two other wordings, the failure is the model's (an appendix curiosity); if it
+  recovers, 47.10's gate failure was the wording, and the curiosity is dropped. The 27B (slot 1 0.71 under 47.10's
+  wording) is the reference model beside the 9B.
+hypotheses:
+  Q49.6: "Dan's answer in predictions/2026-10-28_dan.md (Q49.6); not committed when this spec was written, so the run is sealed: no rates in the job (scripts/x49_report.py verdict and view refuse until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch49.yaml, 49.6): "If slot 1 stays <= 0.2 on the 9B under both wordings, keep as an
+  appendix curiosity; if it recovers, drop." As computed (fixed by the agent before any run; Dan may override before
+  the run): scenes = 47.10's (x47_report.build_items: x6_routes C0, seed 2510, 500 generated, the same drops), O
+  only; wordings: 'position' = 47.10's digit report with its tail 'listed 1, 2 or 3?' replaced by Dan's 'listed in
+  position 1, 2 or 3 of the list?' (digit answer 1 / 2 / 3), 'sentence' = 'Which of the three locker sentences - the
+  first, the second or the third - gives the locker of <p>'s pick?' (word answer, read token ' first' / ' second' /
+  ' third', 47.10's); question-last (tasks_v2's chat prompt, 47.10's headline order). Reads: X0's chat read (a digit
+  wording with the space token appended, the word wording right after 'Answer:'): read = the top token is the answer
+  token (decides: 47.10's gate measure); said = 47.10's said on 8 greedy tokens and cand = the highest of the three
+  answer tokens, beside; for the digit wording, the share that says the asked item's locker digit (the lookup's
+  answer). Rule on slot 1's read accuracy, question-last, point estimate (EPS 1e-9): 'stays' if <= 0.2 under both
+  wordings, 'recovers' if > 0.2 under either; the action from the 9B, the 27B's label beside. No gate (the
+  accuracies are the outcome; the scenes' lookup read 1.00 / 1.00 on the 9B / 27B in 47.10). Cluster-bootstrap CIs
+  over bridge items (10,000, seed 0) beside every rate. Scored by hand: scripts/x49_report.py verdict; view.
+controls:
+- '47.10''s two wordings on the same scenes (report, report_digit; question-last, O), read from its committed competence.jsonl beside the new ones: on the 9B slot 1 is 0.03 read, 0.33 said, 0.29 candidate under 47.10''s word report'
+- 'accuracy by true slot (slots 2 and 3 beside slot 1): a wording that breaks every slot is not a recovery of slot 1'
+- 'the candidate read''s confusion (true slot x preferred slot), and for the digit wording the share answering the locker digit instead'
+n: 'plan on the 27B tokenizer (28 Oct, results/x49_report/plan-20261028T133606Z): 500 items (236 C0 scenes dropped by 47.10''s rule: A and B have the same number of legs), 32 bridge entities; true slot 1 / 2 / 3: 147 / 180 / 173; answer tokens one each (digits 1-3; '' first'', '' second'', '' third'')'
+seeds: [0, 2510]
+notes: "Batch 49 (Dan, 28 Oct ~14:35), test 49.6; queue item 12 (last). Sealed: the run writes manifest, plan, cases (each wording's prompt, ids and answer) and outcomes (per scene and wording: greedy text, said, top token, read, the candidate's preferred slot); no rates. --orders last,first adds 47.10's question-first order (about doubles the cost); not in the command. By hand after Dan's Q49.6 is committed: uv run python scripts/x49_report.py verdict --runs x49_6_27b qwen35_9b_x49_6 (CPU); view --name x49_6_27b. Seeds: 0 the bootstrap and the examples, 2510 the routes scenes. Cost (ledger, sesterce-h100x2): x47_10_27b's competence ran ~0.41 s per reader-scene (two rows: O and S, 8 greedy tokens and two reads); this run reads 500 scenes x 2 wordings = 1000 reader-scenes of one row (8 greedy tokens + one read), ~0.3 s each = ~300 s, plus ~90 s load: ~0.11 GPU-h, entered as 0.1."

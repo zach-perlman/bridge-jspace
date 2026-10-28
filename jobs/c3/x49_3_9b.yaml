@@ -1,0 +1,50 @@
+id: x49_3_9b
+title: "Batch 49.3 on the 9B (L12, L6): the locker-after link, a pooled probe. Clean-design scenes; states at every token of each locker sentence and the sentence mean; probes (fit at the verdict) for who picked the item, 'picked by the asked person', and the item's identity, locker-after vs locker-first; SEALED until Q49.3"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.1
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x49_probe.py run --name qwen35_9b_x49_3 --why "batch 49, test 49.3 (jobs/c3/batch49.yaml; Q49.3, sealed): the 9B's clean-design scenes (qwen35_9b_x45m_fresh) at L12; O's states at L6 and L12 at every token of every locker sentence with a picker and the sentence mean (the probes are fit at the verdict)"
+question: >-
+  3b and 47.4 put the lookup's link in the locker sentences, made before L; 48.3 found no "who picked it" at the
+  item or number token. In locker-after clean scenes, is a person mark distributed over the locker sentence (read
+  pooled, not at any one token), is it a picked-flag rather than a person, or neither at the sentence?
+why_it_matters: >-
+  It closes 48.3 against 3b: either the binding is at the locker sentence but spread over its tokens (48.3 looked at
+  two tokens only), or the sentence marks "picked by the one who will be asked" (a flag, not a name), or the link is
+  made elsewhere, and the README's "no forward binding" line is rewritten from the result.
+hypotheses:
+  Q49.3: "Dan's answer in predictions/2026-10-28_dan.md (Q49.3); not committed when this spec was written, so the run is sealed: no probe in the job (scripts/x49_probe.py verdict and view refuse until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch49.yaml, 49.3): "Distributed person mark": pooled (i) >= 0.85 with every per-token
+  (i) <= 0.6. "A picked-flag, not a person": (ii) >= 0.85 pooled or at some token while (i) <= 0.5. "Neither at the
+  sentence": both at chance; the link is made elsewhere; D1's locker-after map is the evidence. As computed (fixed by
+  the agent before any run; Dan may override before the run): scenes = the 9B's clean-design run
+  (qwen35_9b_x45m_fresh, x0_necessity --alt fresh), its chat scenes at L12, built by 48.3's scene_item; groups by
+  x45m.group_of (locker-after = the rule's scenes, locker-first = the control, mixed = training rows only); only O
+  (the lookup's prompt) is read. States at L // 2 = 6 and L = 12, at every token overlapping each locker sentence
+  with a picker (its period included) and their mean ('pooled'); each token keyed by its role ('w:The', 'w:locker',
+  'w:of', 'w:the', 'item', 'w:is', 'w:space', 'number', 'w:.'). Probes (48.3's ridge: standardized features, the
+  penalty by an inner CV, out-of-fold over 5 folds, seed 0), trained and scored within a stratum (the sentence after
+  / before its picker's pick), per key and pooled, at each layer: (i) the picker, the best of the scene's three names
+  (chance 1/3), folds by the sentence's item; rule cell = the bridge item's sentence in locker-after scenes, the
+  other items' sentences beside; (ii) picked by the asked person (binary), folds by the sentence's item, balanced
+  accuracy (chance 0.5) with the rule cell's rows as the positives and the stratum's other items' sentences as the
+  negatives; (iii) the item's identity on the mean, the scene's four locker items as candidates, folds by the picker
+  (the person held out; descriptive, the pooled read's positive control). "Every per-token" = the keys present in
+  >= half of the rule cell's rows; "(i) <= 0.5" = every (i) cell, pooled and per key; "at chance" = point <= chance
+  + 0.10; the locker-first control (the same probes, 'before' stratum, locker-first scenes) must be at chance for (i)
+  and (ii), else a distributed / flag label reads "not interpretable (control above chance)", the raw label beside.
+  Per layer on points (EPS 1e-9); the model is distributed (flag) if it holds at L or L // 2, neither if neither at
+  both, else in between. Cluster-bootstrap CIs over the sentence's item (10,000, seed 0) beside every accuracy.
+  Scored by hand: scripts/x49_probe.py verdict; view; story_b49c.build_pooled.
+controls:
+- 'locker-first scenes: the same probes where the bridge sentence precedes the asked pick (must be at chance for (i) and (ii))'
+- 'the other items'' locker sentences: (i) on them beside the rule cell; they are (ii)''s negatives'
+- '(iii) the item''s identity on the sentence mean: the pooled read carries the sentence''s content (positive control)'
+- 'per-token beside pooled: the rule needs the pooled read without any single token'
+- 'the person names are the generator''s pickers (scene_facts) and must match the pick sentences; a scene whose bridge item or number is not one token is dropped and counted'
+n: 'plan on the 9B tokenizer (28 Oct, results/x49_probe/plan-20261028T133606Z): 417 scenes (166 locker-after, 151 locker-first, 100 mixed), none dropped; 1251 sentence rows (623 after / 628 before); rule cells 166 / 151; 9885 token states per layer; 45 bridge entities, 59 names; rule keys item, number, w:., w:The, w:is, w:locker, w:of, w:space'
+seeds: [0]
+notes: "Batch 49 (Dan, 28 Oct ~14:35), test 49.3; queue item 9. Sealed: the run writes manifest, plan, cases (every locker sentence's token positions and keys), probe_rows, token_rows, means_L6/L12.npz (sentence means, fp16, committed) and tokens_L6/L12.npz (every token's state, fp16, ~80 MB each: .gitignore'd, kept on the box and the pull, as 48.2's states); no probe. By hand after Dan's Q49.3 is committed: uv run python scripts/x49_probe.py verdict --runs qwen35_9b_x49_3 muse30_x49_3 (CPU, needs the tokens files for the per-token probes; pooled only without them); view --name qwen35_9b_x49_3; scripts/story_b49c.build_pooled(<verdict>, <fig name>). Seeds: 0 the folds, the bootstrap and the examples. Cost (ledger, sesterce-h100x2): x48_3_9b (617 recorded forwards at one layer + 98 scenes x 2 readers x a 5-row read + 20 greedy) ran 135 s wall; this run: 417 recorded forwards (two layers, no reads) plus ~160 MB of compressed npz, about 2-3 min with the load: 0.1 GPU-h with margin (Dan's estimate ~0.4)."

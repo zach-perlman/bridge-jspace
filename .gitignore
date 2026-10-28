@@ -26,3 +26,5 @@ examples/**/slices/
 results/_failed/
 # 48.2 A's probe states (84-286 MB each, over GitHub's 100 MB file limit): kept locally and on the box, not committed
 results/x48_enrich/*/states_*.npz
+# 49.3's per-token states (80-130 MB each, Muse's over GitHub's 100 MB limit): kept locally and on the box; means_L*.npz committed
+results/x49_probe/*/tokens_L*.npz
