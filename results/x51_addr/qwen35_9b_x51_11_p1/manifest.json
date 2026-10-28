@@ -1,0 +1,120 @@
+{
+  "exp": "x51_addr",
+  "run": "qwen35_9b_x51_11_p1",
+  "why": "Batch 51, test 51.11 (jobs/c3/batch51.yaml addendum_3; Q51.11): part 1 on qwen3.5-9b at L12; sealed",
+  "part": 1,
+  "test": "51.11",
+  "spec": "jobs/c3/batch51.yaml (addendum_3, 51.11)",
+  "question": "Q51.11 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T19:02:07Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DAS_GDN": "torch",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "1cc52791d4293b3467a5f0d2797882f962f9d077",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 12,
+  "read": "X0's chat read (the top token after a digit's space token appended to O); edits added at the bridge word at L",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "31d15f59435fe45cd29f99b47b171e2cb6cd6ca1e2efbcd1afb28a363a960821"
+  },
+  "part1": null,
+  "slots": [
+    6,
+    3,
+    4,
+    8
+  ],
+  "ks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    7
+  ],
+  "pairs": {
+    "target": 360,
+    "min": 300,
+    "cap_per_ordered_pair": {
+      "3": 300,
+      "4": 200,
+      "6": 120,
+      "8": 80
+    },
+    "chunk": 8
+  },
+  "training": {
+    "method": "x51_das.train_fit (48.1's loop, early stopping on the select split's IIA every 25 steps, patience 4, micro-batch halved on CUDA OOM)",
+    "lr": 0.001,
+    "max_steps": 300,
+    "batch": 16,
+    "micro_batch": 8,
+    "target": "O's digit at slot j (the position answer) at the read position of O"
+  },
+  "bars": {
+    "own_iia": 0.8,
+    "random": 0.15,
+    "reach": 0.6,
+    "cut_one_code": 0.6,
+    "cut_partly": 0.3,
+    "different": 0.3,
+    "midpoint_works": 0.3,
+    "midpoint_none": 0.1,
+    "full_reach": 0.4
+  },
+  "doses": {
+    "swap": 2,
+    "midpoint": [
+      2,
+      4
+    ],
+    "midpoint_decisive": 2
+  },
+  "seeds": {
+    "scenes": 5110,
+    "split": 0,
+    "init": "5111 + 100 k (shuffled + 10)",
+    "shuffle": "5112 + k",
+    "random_R": "5113 + k",
+    "batches": "4803 + the R's seed",
+    "random_directions": 5114,
+    "random_subspaces": 5115,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "as_computed": "see scripts/x51_addr.py's docstring (repeated in the job specs)",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.11 answer",
+  "gdn_kernel": "torch reference (BJ_DAS_GDN=torch; transformers.models.qwen3_5.modeling_qwen3_5.torch_chunk_gated_delta_rule replaced)",
+  "entity_split": {
+    "train": 19,
+    "select": 6,
+    "test": 7
+  },
+  "failed_slots": {},
+  "finished_utc": "2026-10-28T21:13:14Z"
+}

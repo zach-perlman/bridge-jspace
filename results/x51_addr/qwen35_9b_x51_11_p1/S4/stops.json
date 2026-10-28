@@ -1,0 +1,486 @@
+{
+ "R_k1": {
+  "best_step": 74,
+  "best_dev_iia": 0.4237,
+  "stopped_at": 174,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.3559
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.4068
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.4237
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.4237
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.4068
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.4068
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.4237
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "shuf_k1": {
+  "best_step": 24,
+  "best_dev_iia": 0.1017,
+  "stopped_at": 124,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.1017
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.0847
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.1017
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.0847
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.0678
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k2": {
+  "best_step": 99,
+  "best_dev_iia": 0.8644,
+  "stopped_at": 199,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.7119
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.8475
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.8475
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.8644
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.8475
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.8475
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.8305
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.8475
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "shuf_k2": {
+  "best_step": 99,
+  "best_dev_iia": 0.1186,
+  "stopped_at": 199,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.0678
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.0847
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.1017
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.1186
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.0678
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.1017
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.0678
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.0847
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k3": {
+  "best_step": 49,
+  "best_dev_iia": 0.8983,
+  "stopped_at": 149,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.7458
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.8983
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.8814
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.8475
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.8475
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.8644
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "shuf_k3": {
+  "best_step": 24,
+  "best_dev_iia": 0.1695,
+  "stopped_at": 124,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.1695
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.1695
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.1695
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.1525
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.1356
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k4": {
+  "best_step": 149,
+  "best_dev_iia": 0.9661,
+  "stopped_at": 249,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.8305
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.8475
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.8644
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.8644
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.8983
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.9153
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.9322
+   },
+   {
+    "step": 224,
+    "dev_iia": 0.9322
+   },
+   {
+    "step": 249,
+    "dev_iia": 0.9322
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "shuf_k4": {
+  "best_step": 49,
+  "best_dev_iia": 0.1186,
+  "stopped_at": 149,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.0847
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.1186
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.1017
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.0847
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.0847
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.0678
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k5": {
+  "best_step": 174,
+  "best_dev_iia": 0.9661,
+  "stopped_at": 274,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.8136
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.8305
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.8475
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.8305
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.8644
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.8983
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 224,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 249,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 274,
+    "dev_iia": 0.9661
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "shuf_k5": {
+  "best_step": 99,
+  "best_dev_iia": 0.1525,
+  "stopped_at": 199,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.1356
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.1356
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.1356
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.1525
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.1186
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.1525
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.1525
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.1356
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k7": {
+  "best_step": 149,
+  "best_dev_iia": 0.9661,
+  "stopped_at": 249,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.8983
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.8983
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.9153
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.9322
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.9322
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 224,
+    "dev_iia": 0.9661
+   },
+   {
+    "step": 249,
+    "dev_iia": 0.9661
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "shuf_k7": {
+  "best_step": 74,
+  "best_dev_iia": 0.1695,
+  "stopped_at": 174,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.1017
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.1356
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.1695
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.1186
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.1356
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.1525
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.1525
+   }
+  ],
+  "n_dev": 59,
+  "micro": 8,
+  "oom_micro_tried": []
+ }
+}

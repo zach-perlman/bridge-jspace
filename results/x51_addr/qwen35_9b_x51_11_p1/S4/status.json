@@ -1,0 +1,119 @@
+{
+ "slots": 4,
+ "started_utc": "2026-10-28T20:07:00Z",
+ "train": true,
+ "shuffled": true,
+ "gate": {
+  "candidates_read": 912,
+  "org_read_accuracy": {
+   "lookup": 1.0,
+   "recall": 0.9331140350877193
+  },
+  "gate": 0.8,
+  "eligible": 836,
+  "pass": true
+ },
+ "unit": {
+  "value": 8.044166564941406,
+  "rule": "the median over the test pairs of ||U U^T Delta|| (the real change's size)"
+ },
+ "fit": {
+  "scenes": 527,
+  "states_used": 1054,
+  "per_slot": [
+   158,
+   355,
+   303,
+   238
+  ],
+  "position_routed_share": 0.3624
+ },
+ "stops": {
+  "R_k1": {
+   "best_step": 74,
+   "best_dev_iia": 0.4237,
+   "stopped_at": 174,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "shuf_k1": {
+   "best_step": 24,
+   "best_dev_iia": 0.1017,
+   "stopped_at": 124,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "R_k2": {
+   "best_step": 99,
+   "best_dev_iia": 0.8644,
+   "stopped_at": 199,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "shuf_k2": {
+   "best_step": 99,
+   "best_dev_iia": 0.1186,
+   "stopped_at": 199,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "R_k3": {
+   "best_step": 49,
+   "best_dev_iia": 0.8983,
+   "stopped_at": 149,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "shuf_k3": {
+   "best_step": 24,
+   "best_dev_iia": 0.1695,
+   "stopped_at": 124,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "R_k4": {
+   "best_step": 149,
+   "best_dev_iia": 0.9661,
+   "stopped_at": 249,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "shuf_k4": {
+   "best_step": 49,
+   "best_dev_iia": 0.1186,
+   "stopped_at": 149,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "R_k5": {
+   "best_step": 174,
+   "best_dev_iia": 0.9661,
+   "stopped_at": 274,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "shuf_k5": {
+   "best_step": 99,
+   "best_dev_iia": 0.1525,
+   "stopped_at": 199,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "R_k7": {
+   "best_step": 149,
+   "best_dev_iia": 0.9661,
+   "stopped_at": 249,
+   "micro": 8,
+   "oom_micro_tried": []
+  },
+  "shuf_k7": {
+   "best_step": 74,
+   "best_dev_iia": 0.1695,
+   "stopped_at": 174,
+   "micro": 8,
+   "oom_micro_tried": []
+  }
+ },
+ "tested": true,
+ "finished_utc": "2026-10-28T20:31:13Z"
+}
