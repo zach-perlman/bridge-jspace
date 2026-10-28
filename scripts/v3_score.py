@@ -12,6 +12,8 @@ jointly), per condition x start x level (all, 1, 2, 3):
               minus each control's, bootstrap over bridges; by word and near / far
   never-named RM - MM
   relations   start P, level all: M - K per relation
+  P_nofilms   start P without films (cand2 reads a director's surname; the model writes the first name first)
+  P_strict    P_nofilms and the item's guess prompt wrong in the model's competence run (no K or M item without one)
 Writes results/ablate_v2/v3_score/RUN.json.
 
 python scripts/v3_score.py RUN [--set jsuite_v3_test_chat]
@@ -61,6 +63,13 @@ def main(run: str, set_name: str) -> None:
     rows = [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
     rows = [r for r in rows if r["kind"] == "clean" and r["id"] in items]
     none = {r["id"]: r for r in rows if r["condition"] == "none"}
+    guessed = {}  # the model's competence run (the run's eligibility): its guess prompt, right or not
+    comp = man.get("tasks", [None, None])[1]
+    if comp and (ROOT / "results" / "tasks_v2" / comp / "items.jsonl").exists():
+        for line in (ROOT / "results" / "tasks_v2" / comp / "items.jsonl").open():
+            r = json.loads(line)
+            if r["part"] == "guess":
+                guessed[r["id"]] = r["correct"]
     ok = {i for i, r in none.items() if r["correct"]}
     conds = list(dict.fromkeys(r["condition"] for r in rows if r["condition"] != "none"))
     by_cond = {c: {r["id"]: r for r in rows if r["condition"] == c} for c in conds}
@@ -71,15 +80,19 @@ def main(run: str, set_name: str) -> None:
     starts = sorted({items[i]["start"] for i in none})
     # 1. points lost per condition x start x level
     for cond in conds:
-        for st in [*starts, "named", "P_nofilms"]:  # P_nofilms: cand2 reads a director's surname, the model writes the first name
+        # P_nofilms: cand2 reads a director's surname, the model writes the first name; P_strict: also the item's guess
+        # prompt wrong in the competence run (as the v2 re-score's strict subset)
+        for st in [*starts, "named", "P_nofilms", "P_strict"]:
             for lv in ("all", 1, 2, 3):
                 sel = collections.defaultdict(list)
                 for i, r in by_cond[cond].items():
                     it = items[i]
                     if i not in ok or it["final"] in CONFLICT:
                         continue
-                    if st == "P_nofilms":
+                    if st in ("P_nofilms", "P_strict"):
                         if it["start"] != "P" or it["relation"] == "films":
+                            continue
+                        if st == "P_strict" and guessed.get(i, True):
                             continue
                     elif (st == "named" and it["start"] == "R") or (st != "named" and it["start"] != st):
                         continue
@@ -178,7 +191,7 @@ def main(run: str, set_name: str) -> None:
     (d / f"{run}.json").write_text(json.dumps(out, indent=1) + "\n")
     # the headline lines
     for cond in conds:
-        for st in ("P", "P_nofilms", "M", "T", "W", "Q", "J", "X", "Y", "named"):
+        for st in ("P", "P_nofilms", "P_strict", "M", "T", "W", "Q", "J", "X", "Y", "named"):
             c = out["cells"].get(f"{cond}/{st}/Lall")
             if c:
                 print(f"{cond:16s} start {st:9s} lost " + " ".join(f"{f} {c['loss'].get(f, float('nan')):4.0f}" for f in "PKMANHG")
