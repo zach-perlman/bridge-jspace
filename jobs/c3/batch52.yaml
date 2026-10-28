@@ -1,0 +1,56 @@
+# Batch 52 (Dan, 29 Oct 00:25-00:30): what is in the lens part (A), where the answer is readable / usable (B), model
+# coverage on the four H100s (C). Recorded before any code or run; the two texts below are Dan's, verbatim. Per the
+# addendum: no Q-lines for coverage cells; each verdict writes "no prediction: coverage run on an already-scored rule";
+# every rule is copied verbatim from the model it was first scored on; a new family's layer is fixed on a dev set by the
+# published rule and committed before any scored run.
+
+batch: 52
+by: Dan, 29 Oct 00:25 (addendum) / 00:30 (brief)
+boxes: "mats (2x H100: tier 1, then tier 3 Muse); speedup (1x H100 PCIe: tier 2 Lightning from the moment its prerequisites pass); another (sesterce-another, 1x H100 PCIe, replaces the helper 29 Oct ~00:20: tier 1 overflow, then tier 3 9B)"
+tiers: "1 Qwen3.6-27B; 2 Nemotron 3.5 Lightning; 3 Qwen3.5-9B and Muse (equal); 4 Nemotron 3.5 Bolt (only if it fits on mats, 160 GB)"
+status_times: "02:00, 08:00, 12:00 Paris"
+predictions: "none for coverage cells (addendum); verdicts write 'no prediction: coverage run on an already-scored rule'"
+brief: |
+  Brief: what is in the lens part, and is the answer readable there (Dan, 29 Oct 00:30)
+
+  Two CPU tests first — they answer a question both Zach and Dan’s mentor asked, and they cost no GPU. The model-coverage fill-in follows on the four H100s.
+
+  A. What is actually inside the top-25 atoms? (CPU, ~1 h, highest priority)
+  Ask. We call them “the lens part” and never say what they are. For a random sample of items, what do the 25 OMP atoms of the change decode to?
+  Do. For 50 random items per model (main test, locker-first, seed 0), list the 25 atoms picked for Δ with their signed coefficients and their share of ‖Δ‖². Classify every atom automatically, then hand-label 5 items per model to check the classifier: the original bridge word (its token and case/space variants) · the new bridge word · another item named in the scene · a person’s name in the scene · the reader’s answer word (the number word and the digit) · the other reader’s answer word · a word of the same semantic class not in the scene (e.g. another element) · function words and punctuation · other.
+  Report. Per model: the share of the 25 atoms and the share of the rebuilt energy in each class, for the lookup’s and the recall’s prompts separately; the top-5 atoms by |coefficient| for 10 items printed verbatim; and the same inventory for Zach’s never-named passages at his edit site.
+  Figure. One stacked bar per model (atom classes by share of energy), with the printed examples beside it: “atoms 1–5 for this item: +oxygen, −carbon, +O, −C, +Oxygen”. If the answer word appears, it gets its own colour.
+  Why it matters. It turns “the J++ part” from a procedure into a thing with a name, and it is the direct answer to “what is in the top-25 and is the answer in there?”.
+  B. Where can the lens read the answer, and can it write it? (CPU for the read, ~1 GPU-h for the write)
+  Ask. Zach’s claim: the answer may be readable straight out of J-space, for both readers. We have pieces of this; make it one map.
+  Do, read (cached states, no new forwards). For every token group (the bridge word · the item’s earlier mention · the question · the last token) and every second layer, record the lens rank and top-5 membership of (i) the bridge entity and (ii) the reader’s answer word, on our main test and on Zach’s passages, per reader, per model. Mark the layer at which the plain logit lens first has the answer on top.
+  Do, write (GPU, small). At the position and layer where the answer is most readable, add the answer word’s lens directions (scaled to a real change’s size, and at 2×) and see whether the answer changes; controls: a random part of the same size, and a frequency-matched part. This separates “the answer is visible there” from “the answer is computed through there”.
+  Rules, fixed in advance. “Readable”: the answer word in the lens top-5 on ≥ 0.5 of items at some layer before the answer layer. “Usable”: writing its directions changes the answer on ≥ 0.3 of items with the random control ≤ 0.10. Report the four combinations per reader, per dataset.
+  Figure. A grid: rows = token group, columns = layer, two panels (bridge entity, answer word), one block per reader; our scenes and his passages side by side. The expected contrast — on our scenes the answer word is not in the lens at the bridge word (we already measured: in the top 50 on 0.14 / 0.07 / 0.00 of lookup items and 0.28 / 0.12 / 0.01 of recall items), on his passages it is (top-50 on ~0.53–0.62, median rank 45 against the bridge entity’s 180) — must be visible without reading numbers.
+  Output for Zach: one figure and three sentences he can drop into his own write-up.
+  C. Model coverage on the four H100s
+
+  Priority order, strictly: Qwen3.6-27B → Nemotron 3.5 Lightning → Qwen3.5-9B and Muse (equal) → Nemotron 3.5 Bolt. Never start a lower tier while a free GPU could take an unstarted cell from a higher one.
+
+  Build and send the coverage matrix first (rows = the key experiments, columns = the five models, cells done / missing / not applicable with the reason), from the claims table and the cards. Run off that matrix, not off a list in this brief.
+  Prerequisites for a new family (Lightning, Bolt), before any real run: the J++ lens file exists (report its sha and band); the weights load on the box; the gate passes on 60 main-test scenes; the layer is fixed by the published rule (earliest layer where both readers switch ≥ 0.3, sweeping every 4th layer) and committed before the main runs. No lens file → stop and tell Dan; that column is cancelled. No layer passes → report “the bridge word does not redirect the lookup at any layer on this model” and cancel the column; that is a result.
+  Bolt only if it fits on mats (2×H100, 160 GB). If it needs more, do not rent a larger box: report that Bolt is out of reach for this sprint.
+  Per model, in this order: the conflict test → the answer control → the routes test → the address swap by dose → the order split and the copy test. Then, for tiers 1–3 only: the anatomy by layer, the ladder, the lens readout with the item-change control, the last-token read/write, attention under the swap.
+  Boxes. mats (2 cards): tier 1, then tier 3 Muse. speedup: tier 2 Lightning from the moment its prerequisites pass. another: tier 1 overflow, then tier 3 9B. Idle rule: take the highest-ranked unstarted cell from any tier. Keep one process per model alive across its jobs so weights load once.
+  Rules that do not bend. Matched random control on every arm. The existing rule verbatim for every new cell — a new model never gets a new bar. Same n, or report the smaller n and mark the cell. Sealed until Dan’s Q-lines are committed. Anything landing after the freeze goes to the supplement.
+  Status at 02:00, 08:00, 12:00: the matrix with what filled since the last report, what runs where, the drain estimate, and any failed gate or prerequisite with what you did.
+
+  Order of work: A and B start now on CPU and do not wait for anything; C starts in parallel on the GPUs. If A or B turns up something that contradicts a card on the main page, tell Dan before 08:00 — that outranks every remaining coverage cell.
+addendum: |
+  Addendum (Dan, 29 Oct 00:25): no more predictions for these runs
+
+  From now on, do not open a Q-line for a coverage cell and do not wait for my prediction before opening a result. Everything in this batch repeats a test whose rule was already fixed and already scored on an earlier model; the question is only whether the finding holds on another model, not whether I can guess it. Pull each result and open it as soon as it lands.
+
+  What still holds:
+
+  the rule for each cell is the existing one, copied verbatim from the model it was first scored on; no new bars, no re-tuned thresholds;
+  the layer for a new family is fixed by the published rule, on a dev set, and committed before the main runs — that part is not a prediction, it is a design choice and it still goes in before any scored run;
+  matched random controls, gates, intervals and n as before;
+  every cell stays UNVERIFIED until hand-checked.
+
+  In the verdict files, write “no prediction: coverage run on an already-scored rule” where the Q-line used to be, so the predictions log stays honest about which results were scored against a forecast and which were not.
