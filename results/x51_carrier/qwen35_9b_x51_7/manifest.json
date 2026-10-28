@@ -1,0 +1,123 @@
+{
+  "exp": "x51_carrier",
+  "run": "qwen35_9b_x51_7",
+  "test": "51.7",
+  "spec": "jobs/c3/batch51.yaml (51.7)",
+  "question": "Q51.7 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T16:50:10Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "c1b8eb296c09342e956d7d770ffe0359a5350b15",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "inputs": {
+    "jobs/c3/batch51.yaml": "b5e9e3c50fa19dac26094b939581817969f7e79b4756fcf31bf0b26600fddef0",
+    "results/x50_zach/qwen35_9b_x50_z1/manifest.json": "108298e1f9a25972b7a755798f33c285da508e6b504cf017fd136e0858828c14",
+    "results/x50_zach/qwen35_9b_x50_z1/gate.json": "0e67daa2042c5a13268bee9e9112813c513077607411629b21973b071566ab27",
+    "results/x50_zach/qwen35_9b_x50_z1/cases.jsonl": "2c856c1fbeabaed63269c31ade54f6bfee3c0e3fdcec0a9b9d7b897be5af88ff",
+    "results/x50_zach/qwen35_9b_x50_z1/outcomes.jsonl": "fe3254b64210a5e6cb4f40ae402f62351d5ff0043893c371b104d201c5af5648",
+    "data/tasks_v2/jsuite_v2_test_chat/items.jsonl": "a45bdde20c8280a3483d3133f78294503dccc8ceaa4765e77d36334a0639784a",
+    "data/tasks_v2/jsuite_v2nb_test_chat/items.jsonl": "93dbd3de18dce737bac637cc89a406e9845ec885ac0543ea0983e234c229dde5"
+  },
+  "source": "qwen35_9b_x50_z1",
+  "layer": 12,
+  "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "k": 25,
+  "omp": "signed",
+  "arms": {
+    "none": "O unedited",
+    "whole_1L": "Z1's whole arm: h_S,L - h_O,L added at the patch token at L (stored rows)",
+    "no_jpp_1L": "Z1's without-J++ arm at L (stored rows)",
+    "rand_1L": "Z1's without-a-random-part arm at L (stored rows)",
+    "whole_bL": "whole before-L: the patch token set to h_S,l at block outputs 0..L",
+    "no_jpp_bL": "without J++ before-L: set to h_S,l - P_J,l Delta_l (layer l's own 25 signed-OMP J++ atoms)",
+    "rand_bL": "random before-L: set to h_S,l - a random part of Delta_l of P_J,l Delta_l's share (seed 888 + l)",
+    "whole_emb": "descriptive: whole before-L with S's token at the patch token (47.4's (b))",
+    "window": "descriptive (rule iii): the patch token and both bridges' fact sentences (O's and S's, K passage) set to S's states at block outputs 0..L; K reader, the first 50 fact-after passages"
+  },
+  "read_arms": [
+    "none",
+    "whole_bL",
+    "no_jpp_bL",
+    "rand_bL",
+    "whole_emb"
+  ],
+  "loss_arms": [
+    "none",
+    "whole_1L",
+    "no_jpp_1L",
+    "rand_1L",
+    "whole_bL",
+    "no_jpp_bL",
+    "rand_bL",
+    "whole_emb"
+  ],
+  "stored_arms": {
+    "from": "qwen35_9b_x50_z1",
+    "map": {
+      "whole": "whole_1L",
+      "no_jpp": "no_jpp_1L",
+      "no_jpp_rand": "rand_1L"
+    }
+  },
+  "items_rule": "Z1's chosen passages in Z1's order (gate.json), rebuilt with x50_zach.z1_cases on the target's tokenizer and equal to Z1's stored cases (ids, patch token, answer tokens, S's entity, stratum); a mismatch fails the job",
+  "gate": "Z1's (read from its gate.json by the verdict)",
+  "edit": "SetRows at the patch token at block outputs 0..L (states set, not added); whole_emb also swaps the patch token's id; the one-layer arms (losses only) are Z1's AddRows at L",
+  "read": "Z1's: the top token after the prompt (his chat framing, no prefill) against the other entity's answer's first token",
+  "loss": "-log p(O's token after the patch token) at the patch token, O's prompt cut after it, per reader",
+  "window": {
+    "n": 50,
+    "items": "the first 50 fact-after passages in Z1's order",
+    "reader": "K",
+    "tokens": "the patch token and both bridges' fact sentences (O's and S's; K passage)",
+    "reported": "recorded in every run; the verdict reports it only if rule (iii)'s condition holds"
+  },
+  "rule": "(i) \"The slice explanation\": the whole before-L raises the lookup's switch on fact-after items by >= 0.3 over the one-layer whole, and on fact-first brings the lookup within 0.10 of the recall. (ii) On the full carrier, per model and reported per stratum with fact-first decisive: recall extra loss - lookup extra loss >= 0.3 and lookup <= 0.10 -> \"the split holds on the full carrier\"; lookup >= 0.20 -> \"the lookup follows the lens on the full carrier\"; else in between. (iii) If fact-after lookups stay under 0.5 even under whole before-L: \"the link is made away from the bridge token\" -- only then the window-patching read (the bridge token at layers <= L plus the bridge's fact sentence), 50 items, descriptive.",
+  "as_computed": "Items: Z1's chosen passages in Z1's order (its gate.json), rebuilt with x50_zach.z1_cases on the target's tokenizer and equal to Z1's stored cases; Z1's gate decides tested / not tested (numbers descriptive only on a failed gate). Switch = the top token is the first token of the other entity's answer (Z1's read). Before-L = block outputs 0..L (the input embedding is not edited in the three arms: the lens has no map there, and the arms must stay matched; whole_emb, 47.4's (b), beside). Delta_l = h_S,l - h_O,l at the name's last token from clean S and O forwards, per reader; J++ part = x0_necessity.fit(layer l's letter-token J++ atoms, Delta_l, 25, signed); random part = statement_positions.random_subspace_part(Delta_l, its share, X0's random basis seed 888 + l). Shares per stratum (fact-first, fact-after; 'all' beside) with 95% cluster-bootstrap intervals over the original bridge entity (10,000 resamples, seed 0; every arm and both readers on the same draws). (i): rise = S_K(whole_bL) - S_K(whole_1L) on fact-after, clause at >= 0.30; fact-first |S_K(whole_bL) - S_M(whole_bL)| <= 0.10 (the recall under the same arm); 'the slice explanation' iff both; Q51.7 (i) reads the rise clause. (ii): extra loss = X0's excess (S_rand_bL - S_no_jpp_bL) / S_whole_bL per reader, gap = M's - K's on paired draws; labels as written, fact-first decisive, fact-after and all reported; Z1's one-layer cells beside. An undefined extra loss (no switch under whole_bL) holds no clause (\"can't tell\"). (iii): S_K(whole_bL) on fact-after < 0.50 -> 'the link is made away from the bridge token' and the window read is reported (S_K(window) beside S_K(whole_bL) on the same 50 passages; window = the patch token and both bridges' fact sentences, O's and S's, in the K passage, set to S's states at blocks 0..L); else it stays in the files, unreported. Point estimates decide (EPS 1e-9 at the bars). Loss: mean plain-text loss per arm and reader with intervals, and its ratio to the one-layer whole's (descriptive). Checks: our none read against Z1's stored none read (top token, item by item); the whole before-L switch split by whether only the name's last token differs between O and S (descriptive).",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "view": 0,
+    "cf_order": 5001
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.7 answer",
+  "items": 200
+}
