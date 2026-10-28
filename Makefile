@@ -32,7 +32,7 @@ data-report:        ## what data we work with: counts, categories, labels, overl
 
 # Job queue on a GPU box (scripts/jobq.py): make enqueue JOB=jobs/d2/d2_ko_v1.yaml (committed tree only).
 # Which box: QUEUE=a100 (default: sesterce-a100x4, 4 GPUs), QUEUE=mats (sesterce-h100x2, 2x H100; rented 23 Oct for the
-# 122B; QUEUE=h100 is the same box) or QUEUE=helper (sesterce-helper2, 1x H100 80GB HBM3, rented 28 Oct ~16:10; the 26 Oct helper is gone, its ledger kept); each box
+# 122B; QUEUE=h100 is the same box) or QUEUE=helper (sesterce-helper2, 1x H100 80GB HBM3, rented 28 Oct ~16:10; the 26 Oct helper is gone, its ledger kept) or QUEUE=speedup (sesterce-speedup, 1x H100 PCIe, rented 28 Oct ~16:20); each box
 # has its own queue and ledger (results/jobq/ledger_<host>.jsonl); queue-stats also takes QUEUE=all.
 # Example: make queue-stats QUEUE=h100
 QUEUE ?= a100
@@ -40,35 +40,37 @@ QUEUE_HOST_a100 := sesterce-a100x4
 QUEUE_HOST_h100 := sesterce-h100x2
 QUEUE_HOST_mats := sesterce-h100x2
 QUEUE_HOST_helper := sesterce-helper2
+QUEUE_HOST_speedup := sesterce-speedup
 QUEUE_GPUS_a100 := 4
 QUEUE_GPUS_h100 := 2
 QUEUE_GPUS_mats := 2
 QUEUE_GPUS_helper := 1
+QUEUE_GPUS_speedup := 1
 JOBQ = JOBQ_HOST=$(QUEUE_HOST_$(QUEUE)) uv run python -m scripts.jobq
 
-enqueue:            ## queue a job spec (or several: JOB="a.yaml b.yaml") on the GPU box (QUEUE=a100|mats|helper)
+enqueue:            ## queue a job spec (or several: JOB="a.yaml b.yaml") on the GPU box (QUEUE=a100|mats|helper|speedup)
 	$(JOBQ) enqueue $(JOB) $(ARGS)
 
-queue-status:       ## running (with progress/ETA), pending, last done/failed jobs and their durations (QUEUE=a100|mats|helper)
+queue-status:       ## running (with progress/ETA), pending, last done/failed jobs and their durations (QUEUE=a100|mats|helper|speedup)
 	$(JOBQ) status
 
-queue-pull:         ## results (new dirs only), ledger, EXPERIMENTS.md drafts, logs from the box (QUEUE=a100|mats|helper)
+queue-pull:         ## results (new dirs only), ledger, EXPERIMENTS.md drafts, logs from the box (QUEUE=a100|mats|helper|speedup)
 	$(JOBQ) pull
 
-queue-worker:       ## start the worker for GPU $(GPU) (default 0) in tmux on the box, if not running (QUEUE=a100|mats|helper)
+queue-worker:       ## start the worker for GPU $(GPU) (default 0) in tmux on the box, if not running (QUEUE=a100|mats|helper|speedup)
 	$(JOBQ) start-worker --gpu $(or $(GPU),0)
 
-queue-cancel:       ## cancel a pending job: make queue-cancel ID=<job id> (QUEUE=a100|mats|helper)
+queue-cancel:       ## cancel a pending job: make queue-cancel ID=<job id> (QUEUE=a100|mats|helper|speedup)
 	$(JOBQ) cancel $(ID)
 
-queue-archive:      ## move done / failed / cancelled records out of queue-status (the ledger keeps them) (QUEUE=a100|mats|helper)
+queue-archive:      ## move done / failed / cancelled records out of queue-status (the ledger keeps them) (QUEUE=a100|mats|helper|speedup)
 	$(JOBQ) archive
 
-queue-stats:        ## counts, GPU-hours used (last 24 h) and left, when the queue drains (QUEUE=a100|mats|helper|all)
+queue-stats:        ## counts, GPU-hours used (last 24 h) and left, when the queue drains (QUEUE=a100|mats|helper|speedup|all)
 ifeq ($(QUEUE),all)
-	@echo "== a100 ($(QUEUE_HOST_a100))"; JOBQ_HOST=$(QUEUE_HOST_a100) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_a100)
 	@echo "== mats ($(QUEUE_HOST_mats))"; JOBQ_HOST=$(QUEUE_HOST_mats) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_mats) || echo "(mats queue not set up yet or box gone)"
 	@echo "== helper ($(QUEUE_HOST_helper))"; JOBQ_HOST=$(QUEUE_HOST_helper) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_helper) || echo "(helper queue not set up yet or box gone)"
+	@echo "== speedup ($(QUEUE_HOST_speedup))"; JOBQ_HOST=$(QUEUE_HOST_speedup) uv run python -m scripts.jobq stats --gpus $(QUEUE_GPUS_speedup) || echo "(speedup queue not set up yet or box gone)"
 else
 	$(JOBQ) stats --gpus $(QUEUE_GPUS_$(QUEUE))
 endif
