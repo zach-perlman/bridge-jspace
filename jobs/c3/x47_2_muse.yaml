@@ -1,0 +1,74 @@
+id: x47_2_muse
+title: "Batch 47.2 on Muse (L26): harder pointer scenes, is the order code ordinal, categorical (first vs rest) or slot-specific? Six-locker routes moves; the slot means fit on a held-out half; removals and writes on the other half (sealed)"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x47_six.py run --name muse30_x47_2 --why "batch 47, test 47.2 (jobs/c3/batch47.yaml; Q47.2): six-locker routes moves (the bridge's locker sentence moved from slot i to slot j, every ordered pair), the layout-free slot means fit on a held-out half, then on the other half the slot subspace and the old U removed against random parts, pairwise writes mu_t - mu_i, and the shift v = mean_k (mu_k+1 - mu_k) from every start slot; sealed"
+question: >-
+  In six-locker scenes, is the pointer's order code ordinal (a line over slots that one shift vector moves along),
+  categorical (first locker vs the rest), or slot-specific (binding IDs: pairwise moves work, no common shift)?
+why_it_matters: >-
+  The pointer marks the first locker in a clean three-locker layout; the 2nd-vs-3rd removal found no separate direction,
+  yet writing mu_3 - mu_2 moves the lookup at 2x. Three lockers cannot tell "first vs rest" from "a line over slots".
+  Ordinal = a positional line the lens cannot read (Dai et al. 2024's ordering subspace); categorical = a one-bit
+  marker; slot-specific = binding IDs (Feng & Steinhardt 2023).
+hypotheses:
+  Q47.2: "Dan's answer in predictions/2026-10-28_dan.md (Q47.2: ordinal / categorical, first vs rest / slot-specific, per model: 9B; Muse); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_six.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.2): "Ordinal": the first PCA component of the slot means is monotone in
+  slot (|Spearman| >= 0.9) and v sends >= 0.25 of lookups to slot k+1 from >= 4 of 5 start slots, the random vector
+  <= 0.05; "Categorical, first vs rest": v works only from slot 1 (others < 0.10) and U's removal on 2-6 moves is within
+  0.10 of random; "Slot-specific": pairwise writes reach >= 0.25 on most pairs but no single v does. Dumbest ways:
+  (1) position share near 0 under the whole change -> "not interpretable" (the whole-change routes split reported
+  first); (2) mu_2 - mu_1 reported separately and v fit without it; (3) letters A-H if digits run out.
+  AS COMPUTED (written before any run; Dan may override before the run; scripts/x47_six.py docstring): SCENES:
+  x6_routes' generator (its animal and people pools, sentences, encoding, chat rendering, X0's top-token read) with six
+  single-token animals and their lockers (slots 1-6, six distinct digits of 1-9), the six locker sentences first, then
+  three pick sentences (the asked person picks the bridge, two others pick two other locker items, order seeded), every
+  item's first mention its locker sentence (checked per scene). A routes move (i, j) is x6_routes' C1 at six slots: the
+  bridge's own locker sentence moves from slot i to slot j (swapped with the sentence at slot j; the bridge and the picks
+  stay O's) and the bridge's number in S is a new digit not in O's list (7 of the 9 digits are used: no letters
+  needed). Read on O: identity (= nothing) -> slot i's digit, position -> slot j's digit, value -> the new digit, other.
+  40 candidates per ordered pair (30 pairs; seed 4702, one stream per pair), the first 20 eligible per pair. C0 sanity
+  (x6_routes' C0 at six slots: S = O with the asked person picking another person's item, the legs differ): 150
+  candidates, the first 100 eligible, whole change only; its lookup switch reported beside the three-locker reference
+  (none for Muse: reported without one), descriptive: it does not stop the run. GATE: X0's competence (8 greedy tokens and the
+  read, unedited O and S, both readers); O's read accuracy >= 0.80 per reader over the 1,200 move candidates;
+  eligible = both readers say and read O's and S's answers right. If six slots miss the gate, the same at five slots
+  (20 pairs x 40 candidates; 4-d slot subspace; (iv) on moves among slots 2-5; the ordinal count needs 4 of 4 start
+  slots), decided by the competence step before any patch and recorded (manifest slots / fallback, gate.json); if five
+  miss too: not tested. SPLIT: per ordered pair, the chosen scenes shuffled (seed 4721 keyed by the pair), the first
+  half (floor) is the fit half, the rest the test half (stratified by pair, not by entity). FIT (in the job, on the fit
+  half, before any arm): O's and S's states at the bridge word at L, each labelled by the bridge's slot in that prompt;
+  x0_massmean's layout-free method (each state minus the mean of its layout group, x0_probe.layout, here the asked
+  pick's place among the three picks; groups of one dropped); mu_k = slot k's mean; the slot subspace W =
+  x0_massmean.mass_mean (orthonormal, rank 5). PCA of the six centred means: the variance explained by 1, 2, 3
+  components (cumulative), and the Spearman correlation of the first component's projection with slot (computed by the
+  verdict from fit.npz). UNIT: the median over the test half of ||W W^T Delta|| (Delta = h_S - h_O at the bridge word);
+  a write at dose s has norm s x unit. ARMS (test half, on O, at the bridge word at L, both readers): none; whole; (i)
+  Delta - W W^T Delta, and Delta minus a random part of the same share (X0's random subspace, seed 888 + L); (iv) the
+  same for U (the old 4-d basis, x0_massmean.subspaces' Alf on muse30b_x0_probe_v4, not refit); (ii) from the scene's
+  O slot i to every other slot t, s x unit x (mu_t - mu_i)/||mu_t - mu_i|| (so ~50 scenes per (i, t)); (iii) v = mean_k
+  (mu_k+1 - mu_k) = (mu_6 - mu_1)/5 as s x unit x v/||v|| from start slot i <= 5 (target i + 1), -v from i >= 2 (target
+  i - 1), and for dumbest way 2 mu_2 - mu_1 and v without the first step ((mu_6 - mu_2)/4), each as a shift from i <= 5
+  (target i + 1); one random unit direction per scene (seed 4723 keyed by the scene) at the same norms, read against
+  every target; s = 1 and 2. RULE as computed: lookup answers classified by the slot whose digit they are; point
+  estimates decide (EPS 1e-9 at the bars), cluster-bootstrap CIs over bridge items (10,000, seed 0) beside them.
+  Decisive dose s = 2 (the motivating write moved the lookup at 2x); every clause also at s = 1, reported beside.
+  "Works" = >= 0.25 of lookups at the target. Ordinal: |Spearman| >= 0.9, v works from >= 4 of the 5 start slots,
+  and the random direction's share at k + 1 pooled over start slots 1-5 <= 0.05. Categorical: v works from slot 1,
+  sends < 0.10 from each of slots 2-5, and on moves with i and j in 2-6 |position share without U - without its random
+  part| <= 0.10. Slot-specific: writes work on most (more than half, >= 16 of 30) ordered pairs and v works from at
+  most 2 of 5 start slots (not most). The first label in this order that holds is the model's answer (all holding
+  labels listed); none: "none of the three". Not interpretable (overrides): the whole change's position share < 0.05.
+  Scored by hand: scripts/x47_six.py verdict.
+controls:
+- '(i), (iv): each removal against a random part of the same share of the change (X0''s random subspace, seed 888 + L)'
+- '(ii), (iii): a random unit direction per scene at the same norm (s x unit), read against every target'
+- 'none (O unedited) and the whole change; the recall read under every arm (collateral: O''s answer kept)'
+- 'C0 sanity swap (another person''s item picked), against the three-locker one-pick reference'
+n: 'about 300 fit and 300 test scenes (20 eligible per ordered pair of 30) and 100 C0; plan check on the Muse tokenizer: 1,200 move candidates (40 per pair) and 150 C0 at six slots, none dropped but 100 C0 draws with equal legs; five slots 800 + 150; 32 bridge animals; prompts 136 tokens, the bridge at token 99 / 104 / 109'
+seeds: [4702, 4721, 4723, 888, 0]
+notes: "Batch 47, test 47.2 (Dan, 28 Oct ~02:00; queue order: 9B and Muse first, the 27B if time). Sealed: the run writes manifest, gate.json, competence.jsonl, cases.jsonl, split.json, fit.npz (the fit half's states, slot means and W), outcomes.jsonl and norms.jsonl, no verdict. By hand after Dan's Q47.2 is committed: uv run python scripts/x47_six.py verdict --runs qwen35_9b_x47_2 muse30_x47_2 (CPU; writes results/x47_six/x47_2-<time>/ with the verify-pack view examples.md: 10 random test items per run, seed 0, the prompt as read, the patch position marked, every arm's answer). Seeds: 4702 the scenes, 4721 the split, 4723 the random directions, 888 + L the random subspace, 0 the bootstrap and the examples. Cost from the ledger (results/jobq/ledger_sesterce-helper.jsonl): the same work on the 9B is ~850 s (x8_a_9b's 430 s for 700 competence candidates + 300 read scenes, scaled: 1,350 candidates x 0.45 s + C0, fit and test reads ~ 200 s + load); x8_a_muse ran 588 s against x8_a_9b's 430 s (x1.37), so ~1,160 s = 0.32 h, and ~0.49 h with the five-slot fallback (+ 950 candidates). Estimate 0.5 GPU-h; x8_a_muse peaked at 56.5 GB. Muse has no three-locker C0 reference (x6_routes ran it with --c0-min); its C0 is reported as is. Run name prefix muse30_ (the live prefix since the 27 Oct merge; the old U is read from the pre-merge muse30b_x0_probe_v4 states)."
