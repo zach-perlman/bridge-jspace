@@ -2407,3 +2407,30 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
     "bridge decoded" vs "not decoded".
   - **Order:** built and run after 1-3.
 - **Not in this note:** SOCRATES (note 10), Muse, Bolt (with k 30 and 100), rendering 1 (last).
+
+##### Amendment 58 note 9 addendum (Zach, 2026-10-28 ~08:00 UTC; before any run below. Seen: the never-named composition contrast for Lightning and the 9B, nothing else from note 9)
+
+- **Dropped (Zach):** item 4, the trained linear probe. Decodable is not used, and it is not WorkspaceBench's standard.
+  Its 3 jobs were cancelled before starting. scripts/nn_probe.py stays in the repo, unused.
+- **Added (Zach: "add the 3 bridge tests"),** following WorkspaceBench's gating (Blank, Bhatia, Ong, Nanda): an item
+  shows "uses the bridge" only if shortcuts fail, and the bridge is causal and necessary.
+  1. **Wrong-bridge test (scripts/nn_wrongbridge.py, CPU).**
+     - **Items:** RM items where hop 1 alone names a different bridge B' of the relation, with a different attribute.
+     - **Measure:** is the whole question's answer B''s attribute ("own bridge"), B's, or other? Baseline: the model's
+       rate of giving B''s attribute on the relation's other RM items.
+     - **Reading:** "composes through its own bridge" if own-bridge minus baseline is ≥ 20 points with a 95% bootstrap
+       interval (over bridges) above 0. A large "B's answer despite naming B'" share is read as a non-bridge route.
+  2. **Final clause only (scripts/v3_finalclause.py → jsuite_v3fc_test_chat; competence_variants).**
+     - **Prompts:** each RM question with the description cut to its role noun ("Which nationality was the
+       novelist?"), same passage.
+     - **Gate:** an item passes if this is wrong (cand2 and greedy).
+     - **Gated subset:** eligible items whose guess prompt, clue-only questions (where a named clue exists) and
+       final-clause-only question are all wrong. Note 9's swap and necessity results are reported on it beside all
+       eligible items.
+  3. **Necessity at the site (nn_swap --conds remove_k10 remove_k10_rot).**
+     - **Edit:** the top-10 slice erased at the description's last token (and, separately, at the final token) at
+       the band, with no donor. The control is the same-size change in a fixed random direction.
+     - **Reading:** "the answer needs a bridge representation at the site" if RM loses ≥ 10 points more under
+       remove_k10 than under remove_k10_rot. MM is reported at its description and PM at its mention (named: the 9B
+       lost 47 at the mention in the v3 swap run).
+- **Runs:** scripts/queues/h200_nnadd_1028.sh, per model after its note 9 queue. The wrong-bridge test runs now (CPU).

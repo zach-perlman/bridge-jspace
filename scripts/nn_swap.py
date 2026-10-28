@@ -22,6 +22,7 @@ jswap):
                     coordinates on X's and D's unit J-lens name vectors exchanged (clean coordinates, swapped), the rest
                     of the residual unchanged
   clamp_null        the clamp's edit, norm-matched, along a fixed random unit direction
+  remove_k{k}       (note 9 addendum, necessity) h_X - Jk(h_X) at the site, no donor; remove_k{k}_rot: h_X - Jk(h_X) R^T
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word.
 
@@ -173,6 +174,11 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                         return (h.float() + delta).to(h.dtype)
                     src, kk = cond.split("_")[0], int(cond.split("_")[1][1:])
                     hx = h[bi, xi].float()
+                    if src == "remove":  # note 9 addendum: the slice erased at the site, no donor (necessity)
+                        rx = top_span_removal(dic[la], hx, kk, protected=groups)
+                        new = hx - rx @ rot[la].T if cond.endswith("_rot") else hx - rx
+                        h[bi, xi] = new.to(h.dtype)
+                        return h
                     hd = (ins if src == "insert" else lat)[:, li]
                     if cond.endswith("_rand"):
                         Q = rand[la][:, :kk]
