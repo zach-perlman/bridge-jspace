@@ -1,0 +1,95 @@
+{
+  "exp": "x49_attn",
+  "run": "qwen35_9b_x49_7",
+  "why": "batch 49, test 49.7 (jobs/c3/batch49.yaml with amendment 2; Q49.7): x8_write's items at L12, none / swap s = 2 / random of the swap's norm at the bridge word; attention at the full-attention layers > L from the last and question tokens; candidates on the fit half, the best head zeroed at the last / question tokens on the read half; sealed",
+  "test": "49.7",
+  "written_utc": "2026-10-28T14:25:42Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "6213acc03e4ad0ce3894222126a21c657f79eb7d",
+    "dirty": true
+  },
+  "spec": "jobs/c3/batch49.yaml (49.7, amendment 2)",
+  "question": "Q49.7 (predictions/2026-10-28_dan.md)",
+  "layer": 12,
+  "s": 2.0,
+  "mu_from": "qwen35_9b_x0_probe_v4",
+  "inputs": {
+    "jobs/c3/batch49.yaml": "7206f809c2b4989cb6cd81fd7500b4ec74ca182fe65adf13473def9eef91638a",
+    "results/x8_write/qwen35_9b_x8_write/manifest.json": "e1b895b86ee473c2c2031bd02acf6f2b849ad78ff801af77d050436cb8db0199",
+    "results/x8_write/qwen35_9b_x8_write/outcomes.jsonl": "a0816a351fdcb02f17d5bb36627b518780da096f01df1a75a4fa4de464a52592",
+    "results/x0_probe/qwen35_9b_x0_probe_v4/states.npz": "15c682c3505a62a91bce043e2050285f6650dd2db8bc4d619fb5299aa75b1005"
+  },
+  "items_rule": "x8_write.eligible (the routes test's C2 scenes, O, its gate and eligibility; the first 300), as x8 ran",
+  "arms": {
+    "none": "O unedited",
+    "swap": "h + 2.0 (mu_k - mu_j) at the bridge word at L, k each other slot",
+    "random": "h + a random vector of the swap's norm (one per item and k, seed 4401)"
+  },
+  "attention": "softmax probabilities recomputed from each softmax-attention layer > L's inputs (capture_queries), from the last (read) token and each question-text token; sites: last, question (mean over its tokens)",
+  "split": "bridge entities sorted, shuffled with random.Random(0), first half fit",
+  "candidates": "top 5 (layer, head) by locker-sentence mass (three summed) at the last token under none, mean over fit items; best = the largest mean move on fit switched pairs",
+  "necessity": "the best head's o_proj-input slice zeroed at the last token / the question tokens, under none and each swap, read half, both readers",
+  "rules": {
+    "follows": "on read-half pairs where the lookup switched to slot k's locker under the swap, >= 1 of the five candidate heads has mean move >= 0.30 (cluster-bootstrap CI excluding 0), its mean move under the random vector on the same pairs <= 0.05, and its mean move on the non-switched swap pairs <= 0.10",
+    "elsewhere": "the lookup switches to slot k on >= 0.3 of the read-half swap pairs and no recorded head (every full-attention layer > L, every head) reaches a mean move of 0.15 on the switched pairs",
+    "distributed": "the summed mean move over the five candidate heads, or over every head of the best head's layer, is >= 0.30 while no single candidate head reaches 0.30 (beside the per-head rule)",
+    "necessity": "the best head (chosen on the fit half) carries the position route if, under the swap with its output zeroed at the site, the lookup's switch to slot k falls by >= 0.5 of its swap value while the identity answers (read-half swap pairs answering slot j's locker under the swap) change <= 0.10 and the recall's answer changes <= 0.10 (swap + zero vs swap); per site (last token; question tokens)",
+    "not_in_full_attention": "on a model with Gated DeltaNet layers, if 'elsewhere' holds: 'the dereference is not in full attention on this model' (Muse decides)"
+  },
+  "seeds": {
+    "scenes": 2510,
+    "random_vectors": 4401,
+    "split": 0,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q49.7 answer",
+  "recorded_layers": [
+    15,
+    19,
+    23,
+    27,
+    31
+  ],
+  "skipped_linear_layers": [
+    13,
+    14,
+    16,
+    17,
+    18,
+    20,
+    21,
+    22,
+    24,
+    25,
+    26,
+    28,
+    29,
+    30
+  ],
+  "n_heads": 16,
+  "n_kv": 4,
+  "head_dim": 256,
+  "sliding_window": null,
+  "same_items_as_x8": true,
+  "items": 300,
+  "pairs": 600,
+  "fit_items": 135,
+  "read_items": 165
+}

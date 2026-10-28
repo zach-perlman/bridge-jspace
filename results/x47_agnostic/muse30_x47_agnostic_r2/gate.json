@@ -1,0 +1,209 @@
+{
+  "pools": {
+    "animals": {
+      "n": 32,
+      "items": [
+        "ant",
+        "bear",
+        "bee",
+        "butterfly",
+        "camel",
+        "cat",
+        "chicken",
+        "cow",
+        "crow",
+        "deer",
+        "dog",
+        "duck",
+        "eagle",
+        "elephant",
+        "fly",
+        "fox",
+        "frog",
+        "goat",
+        "goose",
+        "horse",
+        "lion",
+        "mouse",
+        "owl",
+        "pig",
+        "rabbit",
+        "sheep",
+        "spider",
+        "tick",
+        "tiger",
+        "turkey",
+        "wolf",
+        "zebra"
+      ],
+      "not_one_token": []
+    },
+    "fruits": {
+      "n": 20,
+      "items": [
+        "apple",
+        "avocado",
+        "banana",
+        "cherry",
+        "coconut",
+        "fig",
+        "grape",
+        "lemon",
+        "lime",
+        "mango",
+        "melon",
+        "olive",
+        "peach",
+        "pear",
+        "pineapple",
+        "plum",
+        "pumpkin",
+        "raspberry",
+        "strawberry",
+        "tomato"
+      ],
+      "not_one_token": [
+        "apricot",
+        "blackberry",
+        "blueberry",
+        "cranberry",
+        "grapefruit",
+        "kiwi",
+        "papaya",
+        "pomegranate",
+        "tangerine",
+        "watermelon"
+      ]
+    },
+    "names": {
+      "n": 59,
+      "items": [
+        "Adam",
+        "Alice",
+        "Amy",
+        "Anna",
+        "Ben",
+        "Beth",
+        "Carl",
+        "Clara",
+        "Dan",
+        "David",
+        "Diana",
+        "Ella",
+        "Emma",
+        "Eric",
+        "Eva",
+        "Eve",
+        "Finn",
+        "Fiona",
+        "Frank",
+        "Grace",
+        "Henry",
+        "Hugo",
+        "Iris",
+        "Ivan",
+        "Ivy",
+        "Jack",
+        "James",
+        "Julia",
+        "Kate",
+        "Kyle",
+        "Laura",
+        "Leo",
+        "Liam",
+        "Lily",
+        "Lucy",
+        "Luke",
+        "Maria",
+        "Mark",
+        "Max",
+        "Mia",
+        "Nina",
+        "Noah",
+        "Olivia",
+        "Oscar",
+        "Owen",
+        "Paul",
+        "Peter",
+        "Rose",
+        "Ruby",
+        "Ryan",
+        "Sam",
+        "Sara",
+        "Sean",
+        "Tara",
+        "Tom",
+        "Vera",
+        "Victor",
+        "Will",
+        "Zoe"
+      ],
+      "not_one_token": []
+    }
+  },
+  "generated": {
+    "animals": 700,
+    "fruits": 700,
+    "names": 700
+  },
+  "dropped": {
+    "animals: A and B share their fact": 486,
+    "fruits: A and B share their fact": 124
+  },
+  "gate": {
+    "animals": {
+      "cases": 700,
+      "readers": {
+        "lookup": {
+          "org_read_accuracy": 0.9914285714285714,
+          "org_said_accuracy": 0.9928571428571429,
+          "pass": true,
+          "eligible": 690
+        },
+        "recall": {
+          "org_read_accuracy": 0.9471428571428572,
+          "org_said_accuracy": 0.9457142857142857,
+          "pass": true,
+          "eligible": 601
+        }
+      },
+      "chosen": 300,
+      "recall_read_on": 264,
+      "gate": 0.8
+    },
+    "fruits": {
+      "cases": 700,
+      "readers": {
+        "lookup": {
+          "org_read_accuracy": 0.9814285714285714,
+          "org_said_accuracy": 0.9828571428571429,
+          "pass": true,
+          "eligible": 680
+        },
+        "recall": {
+          "org_read_accuracy": 0.015714285714285715,
+          "org_said_accuracy": 0.015714285714285715,
+          "pass": false,
+          "eligible": 0
+        }
+      },
+      "chosen": 300,
+      "recall_read_on": 0,
+      "gate": 0.8
+    },
+    "names": {
+      "cases": 700,
+      "readers": {
+        "lookup": {
+          "org_read_accuracy": 0.9228571428571428,
+          "org_said_accuracy": 0.92,
+          "pass": true,
+          "eligible": 642
+        }
+      },
+      "chosen": 300,
+      "recall_read_on": 0,
+      "gate": 0.8
+    }
+  }
+}

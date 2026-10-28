@@ -1,0 +1,48 @@
+{
+  "candidates": [
+    {
+      "layer": 23,
+      "head": 9,
+      "mean_mass": 0.8704935354215128,
+      "median_mass": 0.9114342927932739,
+      "n": 135
+    },
+    {
+      "layer": 27,
+      "head": 13,
+      "mean_mass": 0.8265310609782184,
+      "median_mass": 0.8414068222045898,
+      "n": 135
+    },
+    {
+      "layer": 19,
+      "head": 12,
+      "mean_mass": 0.816468232649344,
+      "median_mass": 0.8400457501411438,
+      "n": 135
+    },
+    {
+      "layer": 27,
+      "head": 1,
+      "mean_mass": 0.8106045515448959,
+      "median_mass": 0.8327727317810059,
+      "n": 135
+    },
+    {
+      "layer": 23,
+      "head": 0,
+      "mean_mass": 0.8076519557723293,
+      "median_mass": 0.8180570006370544,
+      "n": 135
+    }
+  ],
+  "best": {
+    "layer": 27,
+    "head": 1,
+    "mean_mass": 0.8106045515448959,
+    "median_mass": 0.8327727317810059,
+    "n": 135
+  },
+  "why_best": "the largest mean move on the fit half's switched pairs (1.2877)",
+  "fit_switched_pairs": 127
+}
