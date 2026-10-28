@@ -1,0 +1,54 @@
+id: x48_5_27b
+title: "Batch 48.5 on the 27B (L32): the recall's second route. 45m's locker-first scenes; at the bridge token the change without its J++ part, plus the pointer write 2 (mu_k - mu_j) to each other locker slot k; the write alone; the no-J++ change plus a random vector of the write's norm. The recall's answer classified by whose attribute it gives"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.15
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=; uv run python scripts/x48_route2.py run --name x48_route2_27b --why "batch 48, test 48.5 (jobs/c3/batch48.yaml; Q48.5): on 45m's locker-first scenes, the bridge-word change without its J++ part plus the pointer write mu_k - mu_j at s = 2 to each other slot k, against the write alone and against a random vector of the write's norm; the recall classified by the attribute it names; sealed"
+question: >-
+  Without the lens-readable identity (the change minus its J++ part), does a pointer write mu_k - mu_j at the bridge
+  token make the recall name the item at the written slot k: does the recall dereference the same address the lookup
+  uses and recall from the mention it lands on?
+why_it_matters: >-
+  The strong pointer write makes recalls name the item at the written slot (~80% on the Qwens, x8 recall stage). If
+  the recall has a second route through the address, the write plus the no-J++ change should send the recall to slot
+  k's item far above a random vector of the same norm; the 27B says whether the mechanism behind the 9B's clean-design
+  miss is there on the model whose recall needs J++ most.
+hypotheses:
+  Q48.5: "Dan's answer in predictions/2026-10-28_dan.md (Q48.5, per model); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x48_route2.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch48.yaml, 48.5): "The recall's second route is the address" if under (ii) the recall
+  names slot k's item in >= 0.3 (random (iv) <= 0.05), on >= 2 of 3 models.
+  As computed (fixed before any run; Dan may override before it): the items are 45p's (each model's 45m run's scenes at
+  the layer fixed in advance whose new item's locker sentence comes before the asked pick; O and S the same but for the
+  bridge word) kept where the original (asked) item's locker sentence is before the asked pick too (x0_strata 'org
+  locker vs asked pick' == before): 202 of 254 on the 27B (plan, CPU). The scenes have four locker sentences (slots
+  0-3); j = the asked item's locker slot in O. Every arm at the bridge token (c['pos']) at L on O's prompt: none; whole
+  (h_S - h_O, the check against 45m's stored whole); a1 = (i) the change minus its J++ part (signed OMP, k = 25); per
+  other slot k (three per scene, not one by seed): w<k> = (ii) a1 + 2 (mu_k - mu_j), mu = x0_massmean.pointer_means of
+  the model's probe states (x8_write's means, not refit; s = 2 as x8_write's descriptive dose; norms 2 ||mu_k - mu_j||
+  on the 27B: 0-1 27.14, 0-2 33.57, 0-3 42.63, 1-2 16.79, 1-3 29.22, 2-3 15.79, against x8's median real pointer
+  change 17.43); p<k> = (iii) the write alone; r<k> = (iv) a1 + a random vector of the write's norm (one draw per scene
+  and k, seed 4401 as x8_write). Read: X0's chat read (the prompt with a digit's space token appended), both readers.
+  The recall's top token is classified by the attribute it matches (tasks_v2.DOMAINS, the scene generator's facts):
+  slot k's item / the original item / the changed item / other, first match in that order, every match recorded.
+  A write is informative when slot k is not the changed item's slot and slot k's item's attribute differs from both
+  the original's and the changed item's (else the answer cannot tell the written slot's item from a recall that did not
+  move or from the no-J++ residual); the rule's shares are over informative writes (316 of 606 on the 27B), all writes
+  reported beside. Holds on a model if the share of informative writes whose recall names slot k's item is >= 0.3
+  under w<k> and <= 0.05 under r<k>, point estimates (cluster-bootstrap CIs over bridge items, 10,000, seed 0, beside;
+  EPS 1e-9 at the bars); on the batch if on >= 2 of 3 models. Beside it: (i)'s answer classified against each k (the
+  no-J++ baseline), (iii) alone, the recall's original / changed shares under (ii) (the clean answer lost), the lookup's
+  classes (slot k's locker / the original's / the changed item's / another slot's / other), per slot pair j -> k.
+  Scored by hand: scripts/x48_route2.py verdict (CPU) after Dan's Q48.5 is committed.
+controls:
+- '(iv) the no-J++ change plus a random vector of the write''s norm, one per write (seed 4401)'
+- '(iii) the write alone (no change at all): what the address does without any identity change'
+- '(i) the no-J++ change alone: the baseline rate of naming slot k''s item without the write'
+- 'the rerun whole / a1 arms against 45m''s stored whole / no_part; O unedited'
+- 'the lookup on every arm beside the recall (the write should send it to locker k, as x8)'
+n: 'the 45m run''s locker-first scenes (both items'' lockers before the asked pick); plan check on the 27B: 202 of 45p''s 254 items (41 bridge items), 606 writes, 316 informative'
+seeds: [0, 4401, 4513]
+notes: "Batch 48 (Dan, 28 Oct ~02:30), test 48.5; merged priority after 48.3. Sealed: the run writes manifest, plan, cases, outcomes (per-item classes), norms (the change, its J++ share, each write's and random vector's norm) and 10 examples' greedy texts (seed 0), no verdict. By hand after Dan's Q48.5 is committed: uv run python scripts/x48_route2.py verdict --runs qwen35_9b_x48_route2 x48_route2_27b muse30_x48_route2 (CPU; the verify pack examples.md: 10 items, prompts with the write position marked, every arm's answer). Cost: 2 forwards + 12 arms x 2 readers = 24 reads per item at one layer, 202 items, plus 240 greedy reads of 8 tokens for the examples. Ledger: x45p_27b took 214 s run for 254 items at 14 reads per item (0.84 s per item, model load included); 202 x 0.84 x 24 / 14 = 290 s, about 5 min, so 0.15 GPU-h is an upper bound (x8_a_27b: 684 s for 300 items)."
