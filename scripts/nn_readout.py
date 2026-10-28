@@ -6,7 +6,9 @@ describes the bridge; the passage never names it), MM (the same description, the
 RM's hop 1 alone ("Which novelist wrote Arrow of God?", same passage). Sites: the last token of the description in the
 question, and the last token of the prompt. At every 2nd layer, the J++ lens and the logit lens over two candidate sets,
 each candidate scored by the best of its first tokens (with and without a leading space): the relation's bridges (is the
-bridge X the top one?) and the relation's answers (is X's attribute the top one?). Chance: 1/k.
+bridge X the top one?) and the relation's answers (is X's attribute the top one?). Chance: 1/k. Many bridges share a
+first token with another bridge of their relation (Qwen: people 25/63, landmarks 22/40), so a tie counts against the
+true candidate (rank = the number of candidates scoring at least as high): the bridge read is conservative.
 Reading (note 9): "bridge visible" if X is the top bridge at >= 3x chance at some layer, before the layer where the
 attribute's top-1 rate first peaks.
 
@@ -118,7 +120,8 @@ def main(a) -> None:
                         for b, j in enumerate(chunk):
                             for what, rws, true in (("bridge", j["brows"], j["bx"]), ("attr", j["arows"], j["ax"])):
                                 cand = torch.stack([lg[b, r].max() for r in rws])
-                                rank = int((cand > cand[true]).sum()) + 1
+                                # conservative: a tie (bridges sharing a first token) counts against the true candidate
+                                rank = int((cand >= cand[true]).sum())
                                 stats[(j["family"], site, ln, what, la)].append((rank == 1, rank, 1 / len(rws)))
     summ = {}
     for (fam, site, ln, what, la), xs in sorted(stats.items()):
