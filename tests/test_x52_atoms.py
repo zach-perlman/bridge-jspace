@@ -194,3 +194,56 @@ def test_states_deltas(tmp_path, monkeypatch):
 def test_json_safe_classes():
     assert json.loads(json.dumps(list(A.CLASSES))) == list(A.CLASS_TEXT)
     assert A.NUMBER_WORDS == __import__("scripts.suite_v1", fromlist=["WORDS"]).WORDS
+
+
+@pytest.mark.parametrize(
+    ("token", "want"),
+    [
+        ("/O", ("bridge", "initial")),
+        (" OO", ("bridge", "initial")),
+        (" oxy", ("bridge", "prefix")),
+        ("xyg", ("bridge", "part")),
+        ("(C", ("new_bridge", "initial")),
+        (" CAR", ("new_bridge", "prefix")),
+        ("碳", ("new_bridge", "alias")),  # carbon in Chinese
+        ("氧气", ("bridge", "alias")),
+        (" OOOO", ("other", "")),  # more than three letters repeated: not an initial
+        ("(H", ("other", "")),  # hydrogen is a scene item: no spelling matches for scene items
+        ("(Z", ("other", "")),
+    ],
+)
+def test_bridge_spellings(token, want):
+    tok = FakeTok()
+    ctx = A.e1_context(tok, A.e1_scene(e1_item()), LK, e1_vocab())
+    assert A.classify(token, tok.encode(token)[0], ctx)[:2] == want
+
+
+def rec(entity: str, atoms: list[tuple[str, float, float]]) -> dict:
+    return {"entity": entity, "share_k25": sum(s for _, _, s in atoms),
+            "atoms": [{"rank": i + 1, "class": c, "coef": k, "share": s, "via": "key", "detail": ""}
+                      for i, (c, k, s) in enumerate(atoms)]}  # fmt: skip
+
+
+def test_per_item_and_summarise():
+    a = rec("oxygen", [("bridge", -2.0, 0.06), ("new_bridge", 1.5, 0.04), ("other", 1.0, 0.10)])
+    b = rec("carbon", [("bridge", 1.0, 0.02), ("other", -1.0, 0.18), ("answer_own", 0.5, 0.0)])
+    v = A.per_item(a)
+    assert v["energy"]["bridge"] == pytest.approx(0.3) and v["atoms"]["bridge"] == pytest.approx(1 / 3)
+    s = A.summarise([a, b], n_boot=200)
+    assert s["n"] == 2 and s["entities"] == 2
+    assert s["energy"]["bridge"][0] == pytest.approx((0.3 + 0.1) / 2, abs=1e-4)
+    assert s["items_with"]["answer_own"] == 1 and s["items_with"]["new_bridge"] == 1
+    assert s["bridge_by_match"]["bridge"]["key"]["sign_as_expected"] == 0.5  # one -, one +
+    assert sum(sum(v.values()) for v in [A.per_item(a)["energy"], A.per_item(b)["energy"]]) == pytest.approx(2)
+
+
+def test_hand_pairs_classify_the_sheet_atoms():
+    tok = FakeTok()
+    sc = A.e1_scene(e1_item())
+    atoms = [[1, " Oxygen", -3.0, tok.encode(" Oxygen")[0]], [2, " und", 1.0, tok.encode(" und")[0]]]
+    sheet = {"qwen3.5-9b|s0": {"run": "r", "scene": sc, "atoms": atoms}}
+    labels = {"qwen3.5-9b|s0": {"1": "bridge", "2": "function"}}
+    pairs = A.hand_pairs(sheet, labels, {"qwen3.5-9b": tok})
+    assert pairs["qwen3.5-9b"] == [("bridge", "bridge", " Oxygen"), ("function", "other", " und")]
+    with pytest.raises(AssertionError):
+        A.hand_pairs(sheet, {"qwen3.5-9b|s0": {"1": "bridge", "2": "noun"}}, {"qwen3.5-9b": tok})

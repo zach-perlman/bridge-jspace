@@ -315,6 +315,16 @@ SAME_CLASS = {  # the main test's domains; the dataset's own entities are added 
         "cattle",
     ],
 }
+TRANSLATION = {  # Chinese names of the main test's entities (the Qwens read Chinese): matched as whole tokens only
+    "ant": "蚂蚁 蚁", "bear": "熊", "bee": "蜜蜂 蜂", "beetle": "甲虫", "butterfly": "蝴蝶 蝶", "camel": "骆驼",
+    "cat": "猫 小猫 猫咪", "chicken": "鸡 小鸡", "cow": "牛 奶牛", "crow": "乌鸦 鸦", "deer": "鹿", "dog": "狗 犬 小狗",
+    "duck": "鸭 鸭子", "eagle": "鹰 老鹰", "elephant": "大象 象", "fly": "苍蝇 蝇", "fox": "狐狸 狐", "frog": "青蛙 蛙",
+    "goat": "山羊", "goose": "鹅", "horse": "马", "lion": "狮子 狮", "mouse": "老鼠 鼠", "owl": "猫头鹰", "pig": "猪",
+    "rabbit": "兔子 兔", "sheep": "羊 绵羊", "spider": "蜘蛛", "tick": "蜱 蜱虫", "tiger": "老虎 虎", "turkey": "火鸡",
+    "wolf": "狼", "hydrogen": "氢 氢气", "helium": "氦 氦气", "lithium": "锂", "carbon": "碳", "nitrogen": "氮 氮气",
+    "oxygen": "氧 氧气", "alpha": "阿尔法", "beta": "贝塔", "gamma": "伽马", "delta": "德尔塔", "epsilon": "艾普西隆",
+    "eta": "伊塔", "theta": "西塔", "iota": "约塔",
+}  # fmt: skip
 SYMBOL_DROPPED = {"helium"}  # "He" is far more often the pronoun than helium's symbol: no alias
 MIN_PIECE = 3  # the first token of a word the tokenizer splits counts only with a key of >= 3 characters
 LOCKER = re.compile(r"[Tt]he locker of (?:the )?([\w-]+) is")
@@ -357,14 +367,17 @@ def first_pieces(tok, names: list[str]) -> set[int]:
     return out
 
 
-def matcher(keys=(), ids=(), alias=()) -> dict:
-    """What a class matches: token keys, token ids (first pieces of split words) and exact aliases (symbols)."""
-    return {"keys": set(keys), "ids": {int(i) for i in ids}, "alias": set(alias)}
+def matcher(keys=(), ids=(), alias=(), spell=()) -> dict:
+    """What a class matches: token keys, token ids (first pieces of split words), exact aliases (symbols) and, for the
+    two bridge words only, spellings (names whose prefix, initial or inner part a token may be)."""
+    return {"keys": set(keys), "ids": {int(i) for i in ids}, "alias": set(alias), "spell": set(spell)}
 
 
-def entity_matcher(tok, names: list[str], domain: str | None, alts: dict[str, list[str]] | None = None) -> dict:
+def entity_matcher(tok, names: list[str], domain: str | None, alts: dict[str, list[str]] | None = None,
+                   spell: bool = False) -> dict:  # fmt: skip
     """An entity class (bridge, new bridge, scene item, same class): every name's keys, ALT names, first pieces of split
-    names and, by domain, aliases (an element's symbol, a Greek letter's characters)."""
+    names, by domain aliases (an element's symbol, a Greek letter's characters) and, with spell (the bridge words),
+    the names' letters for prefix / initial / part matches (match)."""
     full = [a for n in names for a in (n, *((alts or {}).get(n, [])))]
     keys = set().union(*(word_keys(n) for n in full)) if full else set()
     alias: set[str] = set()
@@ -373,7 +386,9 @@ def entity_matcher(tok, names: list[str], domain: str | None, alts: dict[str, li
             alias.add(ELEMENT_SYMBOL[n.lower()])
         if domain == "greek" and n.lower() in GREEK_CHAR:
             alias |= set(GREEK_CHAR[n.lower()])
-    return matcher(keys, first_pieces(tok, full), alias)
+        alias |= set(TRANSLATION.get(n.lower(), "").split())
+    letters = {"".join(re.findall(r"[^\W\d_]+", n.lower().removeprefix("the "))) for n in full} if spell else set()
+    return matcher(keys, first_pieces(tok, full), alias, letters - {""})
 
 
 def number_matcher(answers: list[str]) -> dict:
@@ -394,12 +409,27 @@ def word_answer_matcher(tok, answers: list[str]) -> dict:
 
 
 def match(token: str, tid: int, m: dict) -> str | None:
-    if key_of(token) in m["keys"]:
+    """How a token matches a class, or None: 'key' (the word, a plural or a word of the name), 'first token' (of a
+    split word), 'alias' (a symbol); for the bridge words also their spelling: 'prefix' (a key of >= 2 letters that
+    starts the name: ' oxy', 'FR', ' HEL'), 'initial' (a one-letter key, the name's first letter: '/H', '(N') and
+    'part' (a key of >= 3 letters inside the name: 'amma'); 'initial' also takes the first letter doubled or tripled
+    (' HH', ' CC'). Aliases are a symbol, a Greek letter's character or a Chinese name (TRANSLATION), as whole
+    tokens."""
+    k = key_of(token)
+    if k in m["keys"]:
         return "key"
     if int(tid) in m["ids"]:
         return "first token"
-    if token.strip() in m["alias"]:
+    if token.strip() in m["alias"] or k in m["alias"]:
         return "alias"
+    if k.isalpha():
+        for n in m.get("spell", ()):
+            if len(k) >= 2 and n.startswith(k) and k != n and len(set(k)) > 1:
+                return "prefix"
+            if len(k) <= 3 and len(set(k)) == 1 and n[0] == k[0]:
+                return "initial"
+            if len(k) >= 3 and k in n:
+                return "part"
     return None
 
 
@@ -443,7 +473,8 @@ def e1_context(tok, sc: dict, reader: str, vocab: dict[str, set[str]]) -> dict:
     other = next(w for w in sc["answers"] if w != reader)
     in_scene = {sc["bridge"], sc["new"], *sc["items"]}
     dom = sc["domain"]
-    return {"bridge": entity_matcher(tok, [sc["bridge"]], dom), "new_bridge": entity_matcher(tok, [sc["new"]], dom),
+    return {"bridge": entity_matcher(tok, [sc["bridge"]], dom, spell=True),
+            "new_bridge": entity_matcher(tok, [sc["new"]], dom, spell=True),
             "scene_item": entity_matcher(tok, sc["items"], dom), "person": matcher(word_keys_all(sc["persons"])),
             "answer_own": number_matcher(sc["answers"][reader]), "answer_other": number_matcher(sc["answers"][other]),
             "same_class": entity_matcher(tok, sorted(vocab[dom] - in_scene), dom), "answer_kind": NUMBER_KIND,
@@ -502,7 +533,8 @@ def z2_context(tok, sc: dict) -> dict:
         *sc["items"],
     }
     kind = word_keys_all([*TB.vocab(rel), *(d for a in TB.vocab(rel) for d in TB.DERIV.get(a, []))])
-    return {"bridge": entity_matcher(tok, [sc["bridge"]], dom, alts), "new_bridge": entity_matcher(tok, [sc["new"]], dom, alts),
+    return {"bridge": entity_matcher(tok, [sc["bridge"]], dom, alts, spell=True),
+            "new_bridge": entity_matcher(tok, [sc["new"]], dom, alts, spell=True),
             "scene_item": entity_matcher(tok, sc["items"], dom, alts), "person": matcher(word_keys_all(sc["persons"])),
             "answer_own": word_answer_matcher(tok, sc["answers"]), "answer_other": matcher(),
             "same_class": entity_matcher(tok, sorted(same), dom, alts), "answer_kind": kind,
@@ -855,6 +887,422 @@ def load_tokenizer_cpu(target: str):
     return x45m.tokenizer()
 
 
+# ---- the inventory (CPU) -------------------------------------------------------------------------------------------
+
+
+def tokenizer_of(target: str):
+    """Any target's tokenizer from its cached files at the pinned revision (statement_positions.load_tokenizer's
+    fallback; no chat template needed: the classifier only encodes words)."""
+    from huggingface_hub import try_to_load_from_cache
+    from transformers import AutoTokenizer
+
+    t = pins.TARGETS[target]
+    path = try_to_load_from_cache(t["repo"], "tokenizer.json", revision=t["revision"])
+    assert isinstance(path, str), f"{t['repo']}: tokenizer not cached"
+    return AutoTokenizer.from_pretrained(str(Path(path).parent), **t.get("tokenizer_kwargs", {}))
+
+
+def views_of(set_name: str, reader: str) -> tuple[str, ...]:
+    """The reader views of one atom list: E1's lookup Δ serves both readers; Z2's Δ is its reader's own."""
+    return X.READERS if set_name == "e1" else (reader,)
+
+
+def e1_vocab(items: list[dict]) -> dict[str, set[str]]:
+    """Per main-test domain: SAME_CLASS and every entity the run's items name."""
+    out = {d: set(v) for d, v in SAME_CLASS.items()}
+    for it in items:
+        sc = it["views"][X.LOOKUP]
+        out.setdefault(sc["domain"], set()).update([sc["bridge"], sc["new"], *sc["items"]])
+    return out
+
+
+def label_run(tok, items: list[dict], rows: list[dict]) -> list[dict]:
+    """Every atom of every atom list classified in each of its reader views: one record per (item, view)."""
+    by_key = {(it["set"], it["key"]): it for it in items}
+    vocab = e1_vocab([it for it in items if it["set"] == "e1"])
+    out = []
+    for r in rows:
+        it = by_key[(r["set"], r["key"])]
+        for view in views_of(r["set"], r["reader"]):
+            sc = it["views"][view]
+            ctx = e1_context(tok, sc, view, vocab) if r["set"] == "e1" else z2_context(tok, sc)
+            atoms = []
+            for a in r["atoms"]:
+                c, via, detail = classify(a["token"], a["token_id"], ctx)
+                atoms.append({**a, "class": c, "via": via, "detail": detail})
+            out.append({"set": r["set"], "key": r["key"], "view": view, "delta": r["reader"], "entity": r["entity"],
+                        "cf_entity": r["cf_entity"], "share_k25": r["share_k25"], "atoms": atoms})  # fmt: skip
+    return out
+
+
+def per_item(rec: dict) -> dict[str, dict[str, float]]:
+    """One item's class shares: of the 25 atoms (count / 25) and of the rebuilt energy (sum of the atoms' energy
+    shares / the part's share of ||Δ||^2)."""
+    total = sum(a["share"] for a in rec["atoms"])
+    n = len(rec["atoms"])
+    return {"atoms": {c: sum(a["class"] == c for a in rec["atoms"]) / n for c in CLASSES},
+            "energy": {c: sum(a["share"] for a in rec["atoms"] if a["class"] == c) / total for c in CLASSES}}  # fmt: skip
+
+
+def summarise(recs: list[dict], n_boot: int = X.N_BOOT) -> dict:
+    """Per class: the mean share of atoms and of rebuilt energy over items, with 95 % cluster-bootstrap intervals over
+    the bridge entity (x0_necessity.resampled_rates, seed 0), and the items with at least one atom of the class; the
+    bridge classes by how they matched, with the share of their atoms whose sign points the expected way (original
+    bridge: -, it leaves; new bridge: +, it arrives); 'other' by detail; the part's share of ||Δ||^2."""
+    ents = [r["entity"] for r in recs]
+    vals = [per_item(r) for r in recs]
+    out: dict[str, Any] = {"n": len(recs), "entities": len(set(ents)),
+                           "share_k25_median": float(np.median([r["share_k25"] for r in recs]))}  # fmt: skip
+    for kind in ("atoms", "energy"):
+        series = {c: [v[kind][c] for v in vals] for c in CLASSES}
+        boot = X.resampled_rates(series, ents, n_boot, X.BOOT_SEED)
+        out[kind] = {c: [round(float(np.mean(series[c])), 4), *(round(b, 4) for b in X.interval(boot[c]))]
+                     for c in CLASSES}  # fmt: skip
+    out["items_with"] = {c: sum(any(a["class"] == c for a in r["atoms"]) for r in recs) for c in CLASSES}
+    via: dict[str, dict[str, list]] = {
+        "bridge": collections.defaultdict(list),
+        "new_bridge": collections.defaultdict(list),
+    }
+    for r in recs:
+        for a in r["atoms"]:
+            if a["class"] in via:
+                via[a["class"]][a["via"]].append((a["share"], a["coef"]))
+    want = {"bridge": -1, "new_bridge": 1}
+    total = sum(a["share"] for r in recs for a in r["atoms"])
+    out["bridge_by_match"] = {c: {v: {"atoms": len(x), "energy": round(sum(s for s, _ in x) / total, 4),
+                                      "sign_as_expected": round(sum(np.sign(k) == want[c] for _, k in x) / len(x), 3)}
+                                  for v, x in sorted(d.items())} for c, d in via.items()}  # fmt: skip
+    other = collections.defaultdict(float)
+    for r in recs:
+        for a in r["atoms"]:
+            if a["class"] == "other":
+                other[a["detail"] or "none"] += a["share"] / total
+    out["other_by_detail"] = {k: round(v, 4) for k, v in sorted(other.items())}
+    return out
+
+
+def sources(target: str) -> dict[str, str]:
+    """Per set, the run its atoms come from: the forward run where it holds the set, else (E1) the CPU states run."""
+    out = {}
+    for s in SETS:
+        for run in (FWD_RUNS.get(target), STATES_RUNS.get(target)):
+            path = RESULTS / run / "atoms.jsonl" if run else None
+            if path and path.exists() and any(r["set"] == s for r in X.read_jsonl(path)):
+                out[s] = run
+                break
+    return out
+
+
+def labelled(tok, run: str, set_name: str) -> tuple[list[dict], list[dict]]:
+    """The classified (item, view) records of one set of a run, and the run's items."""
+    items = [it for it in X.read_jsonl(RESULTS / run / "items.jsonl") if it["set"] == set_name]
+    rows = [r for r in X.read_jsonl(RESULTS / run / "atoms.jsonl") if r["set"] == set_name]
+    return label_run(tok, items, rows), items
+
+
+def hand_items(n_items: int, k: int = N_HAND, seed: int = SEED) -> list[int]:
+    return sorted(random.Random(seed).sample(range(n_items), min(k, n_items)))
+
+
+def stage_handsheet(targets: tuple[str, ...]) -> Path:
+    """For the hand check: per target N_HAND E1 items (seed 0 among its N_ITEMS) with the scene, the bridges, both
+    readers' answers and the 25 atoms (rank, coefficient, token), WITHOUT the classifier's labels. The labeller writes
+    labels.json beside it: {"<target>|<item key>": {"<rank>": "<class>", ...}} with classes from CLASSES, in the
+    lookup's view (answer_own = the lookup's answers, answer_other = the recall's)."""
+    out = RESULTS / f"hand-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir(parents=True)
+    lines = [f"# {EXP} hand-check sheet (E1, the lookup's view; no classifier labels)", "",
+             "Classes: " + "; ".join(f"`{c}` {t}" for c, t in CLASS_TEXT.items()), ""]  # fmt: skip
+    sheet = {}
+    for target in targets:
+        run = sources(target).get("e1")
+        if not run:
+            continue
+        items = {it["key"]: it for it in X.read_jsonl(RESULTS / run / "items.jsonl") if it["set"] == "e1"}
+        rows = [r for r in X.read_jsonl(RESULTS / run / "atoms.jsonl") if r["set"] == "e1"]
+        for i in hand_items(len(rows)):
+            r = rows[i]
+            sc = items[r["key"]]["views"][X.LOOKUP]
+            key = f"{target}|{r['key']}"
+            sheet[key] = {"run": run, "scene": sc,
+                          "atoms": [[a["rank"], a["token"], a["coef"], a["token_id"]] for a in r["atoms"]]}  # fmt: skip
+            lines += [f"## {key}: {sc['bridge']} -> {sc['new']}", "", f"Text: {sc['text']}", "",
+                      f"Answers (O, S): lookup {sc['answers'][X.LOOKUP]}, recall {sc['answers'][X.RECALL]}", "",
+                      "; ".join(f"{a['rank']}: {show(a, cls=False)}" for a in r["atoms"]), ""]  # fmt: skip
+    (out / "sheet.json").write_text(json.dumps(sheet, indent=1, ensure_ascii=False) + "\n")
+    (out / "sheet.md").write_text("\n".join(lines) + "\n")
+    print("wrote", out, flush=True)
+    return out
+
+
+def hand_pairs(sheet: dict, labels: dict[str, dict[str, str]], tokenizers: dict) -> dict[str, list[tuple]]:
+    """Per target, (hand label, classifier label, token) for every labelled atom of a sheet: the classifier run on the
+    sheet's own atoms and scene (the lookup's view), so the check does not depend on which run the report reads."""
+    vocab = {d: set(v) for d, v in SAME_CLASS.items()}
+    out: dict[str, list[tuple]] = collections.defaultdict(list)
+    for key, per in labels.items():
+        target = key.split("|", 1)[0]
+        entry = sheet[key]
+        if target not in tokenizers:
+            tokenizers[target] = tokenizer_of(target)
+        ctx = e1_context(tokenizers[target], entry["scene"], X.LOOKUP, vocab)
+        for rank, token, _, tid in entry["atoms"]:
+            lab = per[str(rank)]
+            assert lab in CLASSES, f"{key} rank {rank}: hand label {lab!r} is not a class"
+            out[target].append((lab, classify(token, tid, ctx)[0], token))
+        assert len(per) == len(entry["atoms"]), f"{key}: {len(per)} labels for {len(entry['atoms'])} atoms"
+    return out
+
+
+def hand_agreement(hand_dirs: list[Path]) -> dict:
+    """The classifier against the hand labels (every hand-* folder holding sheet.json and labels.json), per target:
+    items and atoms compared, the agreement, Cohen's kappa, and the disagreements (hand -> classifier, with tokens)."""
+    pairs: dict[str, list[tuple]] = collections.defaultdict(list)
+    tokenizers: dict = {}
+    for d in hand_dirs:
+        if (d / "labels.json").exists():
+            sheet = json.loads((d / "sheet.json").read_text())
+            labels = json.loads((d / "labels.json").read_text())
+            for t, p in hand_pairs(sheet, labels, tokenizers).items():
+                pairs[t] += p
+    out = {}
+    for t, p in pairs.items():
+        n, agree = len(p), sum(h == c for h, c, _ in p)
+        ph, pc = collections.Counter(h for h, _, _ in p), collections.Counter(c for _, c, _ in p)
+        pe = sum(ph[c] * pc[c] for c in CLASSES) / n**2
+        miss = collections.defaultdict(list)
+        for h, c, tok in p:
+            if h != c:
+                miss[f"{h} -> {c}"].append(tok)
+        out[t] = {"items": len(p) // K, "atoms": n, "agree": agree, "rate": round(agree / n, 4),
+                  "kappa": round((agree / n - pe) / (1 - pe), 4) if pe < 1 else None,
+                  "hand_classes": dict(ph), "disagreements": dict(miss)}  # fmt: skip
+    return out
+
+
+N_CHANCE = 2000  # random letter tokens per model for the chance baseline
+
+
+def chance(tok, recs: list[dict], items: list[dict], n: int = N_CHANCE, seed: int = SEED) -> dict[str, float]:
+    """The baseline: the class shares of n random letter tokens (seed 0) classified in every (item, view) of recs, i.e.
+    the atom shares if OMP picked letter atoms at random."""
+    letters, decoded = letter_ids(tok, len(tok))
+    pick_ids = random.Random(seed).sample(letters, n)
+    by_key = {(it["set"], it["key"]): it for it in items}
+    vocab = e1_vocab([it for it in items if it["set"] == "e1"])
+    cnt: collections.Counter = collections.Counter()
+    for r in recs:
+        sc = by_key[(r["set"], r["key"])]["views"][r["view"]]
+        ctx = e1_context(tok, sc, r["view"], vocab) if r["set"] == "e1" else z2_context(tok, sc)
+        cnt.update(classify(decoded[t], t, ctx)[0] for t in pick_ids)
+    total = sum(cnt.values())
+    return {c: round(cnt[c] / total, 5) for c in CLASSES}
+
+
+# adjacent pairs of the stack pass the dataviz palette validator (CVD dE >= 9.2, normal vision >= 20.8)
+COLOR = {"bridge": "#2a78d6", "new_bridge": "#eb6834", "scene_item": "#1baf7a", "person": "#6250d6",
+         "answer_own": "#e34948", "answer_other": "#eda100", "same_class": "#008300", "function": "#e87ba4",
+         "other": "#c8c7c1"}  # fmt: skip
+FIG_LABEL = {**CLASS_TEXT, "answer_own": "answer word: the lookup's (E1) / the reader's own (Z2)",
+             "answer_other": "answer word: the recall's (E1)"}  # fmt: skip
+MODEL_SHORT = {"qwen3.5-9b": "9B", "qwen3.6-27b": "27B", "muse-glimmer-30b": "Muse"}
+
+
+def figure(summary: dict, examples: dict, path: Path) -> None:
+    """One stacked bar per model (E1, the lookup's view; Z2, per reader) by share of the rebuilt energy, the answer
+    word in red with its share printed above the bar; printed examples beside (top-5 atoms by |coefficient|)."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    plt.rcParams["font.family"] = ["DejaVu Sans", "Arial Unicode MS", "PingFang SC", "Hiragino Sans GB"]
+    fig = plt.figure(figsize=(17, 6.2))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.6, 2.6], wspace=0.25)
+    panels = [("e1", fig.add_subplot(gs[0]), "Main test (E1): one change\nat the bridge word, both readers"),
+              ("z2", fig.add_subplot(gs[1]), "Zach's never-named bridge (Z2)\nper reader, the description's last token")]  # fmt: skip
+    for s, ax, title in panels:
+        bars = [(t, v) for t in summary for v, cell in summary[t].get(s, {}).items()
+                if s == "z2" or v == X.LOOKUP]  # fmt: skip
+        for x, (t, v) in enumerate(bars):
+            e = summary[t][s][v]["energy"]
+            bottom = 0.0
+            for c in CLASSES:
+                ax.bar(x, e[c][0], bottom=bottom, color=COLOR[c], width=0.7, edgecolor="white", linewidth=1)
+                bottom += e[c][0]
+            ans = e["answer_own"][0] + e["answer_other"][0]
+            ax.text(x, 1.01, f"answer\n{100 * ans:.1f}%", ha="center", va="bottom", fontsize=8, color="#52514e")
+        names = [MODEL_SHORT[t] + ("" if s == "e1" else f"\n{READER_NAME[v]}") for t, v in bars]
+        ax.set_xticks(range(len(bars)), names, fontsize=9)
+        ax.set_ylim(0, 1.12)
+        ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+        ax.set_title(title, fontsize=10)
+        ax.spines[["top", "right"]].set_visible(False)
+        ax.grid(axis="y", color="#e6e5e0", linewidth=0.6)
+        ax.set_axisbelow(True)
+    panels[0][1].set_ylabel("share of the rebuilt energy (mean over 50 items)")
+    handles = [plt.Rectangle((0, 0), 1, 1, color=COLOR[c]) for c in CLASSES]
+    fig.legend(handles, [FIG_LABEL[c] for c in CLASSES], loc="lower center", ncol=5, fontsize=8, frameon=False)
+    ax = fig.add_subplot(gs[2])
+    ax.axis("off")
+    lines = ["Top-5 atoms by |coefficient| (+ towards the changed prompt)", ""]
+    for t, per in examples.items():
+        for s, ex in per.items():
+            for e in ex[:2]:  # E1: two items; Z2: one item, both readers
+                lines.append(f"{MODEL_SHORT[t]} {s.upper()} · {e['bridge']} → {e['new']}" + (f" ({READER_NAME[e['view']]})" if s == "z2" else ""))  # fmt: skip
+                lines.append("   " + ", ".join(f"{a['coef']:+.1f} {a['token'].strip() or repr(a['token'])}" for a in e["top"]))  # fmt: skip
+    ax.text(0, 1, "\n".join(lines), va="top", ha="left", fontsize=8.5, family=plt.rcParams["font.family"])
+    fig.suptitle("What the lens part's 25 atoms decode to (signed OMP over the J++ letter atoms at L; UNVERIFIED)",
+                 fontsize=11)  # fmt: skip
+    fig.subplots_adjust(bottom=0.2, top=0.86, left=0.05, right=0.99)
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def fmt_ci(v: list) -> str:
+    return f"{v[0]:.3f} [{v[1]:.3f}, {v[2]:.3f}]"
+
+
+def stage_report(targets: tuple[str, ...], hand_dirs: list[Path] | None = None) -> Path:
+    """The inventory: per model, set and reader view the class shares (atoms, rebuilt energy) with intervals and the
+    chance baseline, the bridge classes by match and sign, the printed examples, the hand check and the figure, into
+    results/x52_atoms/report-<UTC>/."""
+    from bridge_jspace.run_switches import switches
+    from bridge_jspace.utils import git_state
+
+    out = RESULTS / f"report-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    summary: dict[str, dict] = {}
+    recs_all: dict[str, list[dict]] = {}
+    examples: dict[str, dict] = {}
+    srcs, checks, base = {}, {}, {}
+    for t in targets:
+        srcs[t] = sources(t)
+        if not srcs[t]:
+            continue
+        tok = tokenizer_of(t)
+        summary[t], examples[t], base[t] = {}, {}, {}
+        recs_all[t] = []
+        for s, run in srcs[t].items():
+            checks[f"{t}|{run}"] = json.loads((RESULTS / run / "checks.json").read_text())
+            recs, items = labelled(tok, run, s)
+            recs_all[t] += recs
+            summary[t][s] = {
+                v: summarise([r for r in recs if r["view"] == v]) for v in dict.fromkeys(r["view"] for r in recs)
+            }
+            base[t][s] = chance(tok, recs, items)
+            first = [r for r in recs if r["view"] == (X.LOOKUP if s == "e1" else "K")]
+            keys = [first[i]["key"] for i in hand_items(len(first), N_SHOW)]
+            examples[t][s] = [{"key": r["key"], "view": r["view"], "bridge": r["entity"], "new": r["cf_entity"],
+                               "share_k25": r["share_k25"], "top": top_by_coef(r)}
+                              for k in keys for r in recs if r["key"] == k and (s == "z2" or r["view"] == X.LOOKUP)]  # fmt: skip
+    hand = hand_agreement(hand_dirs if hand_dirs is not None else sorted(RESULTS.glob("hand-*")))
+    out.mkdir(parents=True)
+    X.write_jsonl(out / "labelled.jsonl", [{"target": t, **r} for t, rs in recs_all.items() for r in rs])
+    blob = {"exp": EXP, "part": "52 A", "verdict": VERDICT, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "code": git_state(), "switches": switches(), "sources": srcs, "checks": checks, "summary": summary,
+            "chance": base, "hand": hand, "n_boot": X.N_BOOT, "boot_seed": X.BOOT_SEED, "classes": CLASS_TEXT}  # fmt: skip
+    (out / "tables.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
+    keep = ("exp", "part", "verdict", "written_utc", "code", "switches", "sources", "n_boot", "boot_seed")
+    (out / "manifest.json").write_text(json.dumps({k: blob[k] for k in keep}, indent=1) + "\n")
+    write_tables(out, blob, examples)
+    figure(summary, examples, out / "fig_atoms.png")
+    print("wrote", out, flush=True)
+    return out
+
+
+def write_tables(out: Path, blob: dict, examples: dict) -> None:
+    """tables.md (the inventory), examples.md (10 items per model and set, top-5 atoms verbatim) and verdict.md."""
+    summary, base, hand = blob["summary"], blob["chance"], blob["hand"]
+    head = "| model | set | reader view | n (entities) | " + " | ".join(CLASSES) + " |"
+    sep = "|" + "---|" * (len(CLASSES) + 4)
+    lines = [f"# {EXP}: what is inside the top-25 atoms of the lens part (batch 52 A; {VERDICT}; UNVERIFIED)", "",
+             "Per item: Δ's 25 signed-OMP atoms over the J++ letter dictionary at L; each atom's class (automatic, "
+             "scripts/x52_atoms.py classify); per item the class shares of the 25 atoms and of the rebuilt energy (the "
+             "energy an atom adds when it enters, over the part's share of ||Δ||^2); means over items with 95 % "
+             f"cluster-bootstrap intervals over the bridge entity ({X.N_BOOT:,}, seed {X.BOOT_SEED}). E1: one Δ serves "
+             "both readers (identical prompts through the bridge word), so the two views differ only in which answer "
+             "class is the reader's own. Z2: each reader its own Δ; both ask for the same answer, so 'answer_other' is "
+             "empty. Chance: the class shares of 2,000 random letter tokens (seed 0) in the same items and views.", "",
+             "Classes: " + "; ".join(f"`{c}` {t}" for c, t in CLASS_TEXT.items()), "",
+             "Sources: " + "; ".join(f"{t}: {v}" for t, v in blob["sources"].items()), ""]  # fmt: skip
+    for kind, title in (("energy", "Share of the rebuilt energy"), ("atoms", "Share of the 25 atoms")):
+        lines += [f"## {title}", "", head, sep]
+        for t, per in summary.items():
+            for s, views in per.items():
+                for v, cell in views.items():
+                    lines.append(f"| {MODEL_SHORT[t]} | {s} | {READER_NAME[v]} | {cell['n']} ({cell['entities']}) | "
+                                 + " | ".join(fmt_ci(cell[kind][c]) for c in CLASSES) + " |")  # fmt: skip
+                if kind == "atoms":
+                    lines.append(f"| {MODEL_SHORT[t]} | {s} | chance | | " + " | ".join(f"{base[t][s][c]:.4f}" for c in CLASSES) + " |")  # fmt: skip
+        lines.append("")
+    lines += ["## Items with at least one atom of the class", "", head, sep]
+    for t, per in summary.items():
+        for s, views in per.items():
+            for v, cell in views.items():
+                lines.append(f"| {MODEL_SHORT[t]} | {s} | {READER_NAME[v]} | {cell['n']} | "
+                             + " | ".join(str(cell["items_with"][c]) for c in CLASSES) + " |")  # fmt: skip
+    lines += ["", "## The two bridge classes by how they matched (pooled share of rebuilt energy; the share of their atoms "
+              "whose sign points the expected way: original -, new +)", "",
+              "| model | set | view | class | match | atoms | energy | sign as expected |", "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for t, per in summary.items():
+        for s, views in per.items():
+            for v, cell in views.items():
+                if s == "e1" and v != X.LOOKUP:
+                    continue
+                for c, d in cell["bridge_by_match"].items():
+                    for via, x in d.items():
+                        lines.append(f"| {MODEL_SHORT[t]} | {s} | {READER_NAME[v]} | {c} | {via} | {x['atoms']} | "
+                                     f"{x['energy']:.4f} | {x['sign_as_expected']:.2f} |")  # fmt: skip
+    lines += ["", "## 'other' by detail (pooled share of rebuilt energy)", ""]
+    for t, per in summary.items():
+        for s, views in per.items():
+            for v, cell in views.items():
+                if s == "e1" and v != X.LOOKUP:
+                    continue
+                lines.append(f"- {MODEL_SHORT[t]} {s} {READER_NAME[v]}: {cell['other_by_detail']}; median part share of "
+                             f"||Δ||^2 {cell['share_k25_median']:.3f}")  # fmt: skip
+    lines += ["", "## Hand check (E1, the lookup's view)", ""]
+    for t, h in hand.items():
+        lines.append(f"- {MODEL_SHORT[t]}: {h['agree']} / {h['atoms']} atoms agree ({h['rate']:.3f}; Cohen's kappa "
+                     f"{h['kappa']}) over {h['items']} items; hand classes {h['hand_classes']}; disagreements (hand -> "
+                     f"classifier: tokens): {json.dumps(h['disagreements'], ensure_ascii=False)}")  # fmt: skip
+    if not hand:
+        lines.append("- no labels.json found")
+    lines += ["", "## Run checks", ""] + [f"- {k}: {json.dumps(v)}" for k, v in blob["checks"].items()]
+    (out / "tables.md").write_text("\n".join(lines) + "\n")
+    ex = [f"# {EXP}: top-{N_TOP} atoms by |coefficient| for {N_SHOW} items per model and set (seed {SEED}; verbatim "
+          "tokens, + = towards the changed prompt; UNVERIFIED)", ""]  # fmt: skip
+    for t, per in examples.items():
+        for s, rows in per.items():
+            ex += [f"## {MODEL_SHORT[t]} {s}", ""]
+            for e in rows:
+                ex.append(f"- {e['key']} ({READER_NAME[e['view']]}; {e['bridge']} -> {e['new']}; part share "
+                          f"{e['share_k25']:.3f}): " + "; ".join(show(a) for a in e["top"]))  # fmt: skip
+            ex.append("")
+    (out / "examples.md").write_text("\n".join(ex) + "\n")
+    v = [f"# {EXP} verdict (batch 52 A)", "", VERDICT, "",
+         "Descriptive inventory, no rule fixed in advance; every number UNVERIFIED until hand-checked. Tables: "
+         "tables.md; examples: examples.md; figure: fig_atoms.png; every classified atom: labelled.jsonl.", ""]  # fmt: skip
+    for t, per in summary.items():
+        for s, views in per.items():
+            for vw, cell in views.items():
+                e = cell["energy"]
+                v.append(f"- {MODEL_SHORT[t]} {s} ({READER_NAME[vw]}'s view, n = {cell['n']}): rebuilt energy in the "
+                         f"original bridge word {fmt_ci(e['bridge'])}, the new bridge word {fmt_ci(e['new_bridge'])}, the "
+                         f"reader's answer word {fmt_ci(e['answer_own'])}, the other reader's {fmt_ci(e['answer_other'])}, "
+                         f"other {fmt_ci(e['other'])}; items with an own-answer atom {cell['items_with']['answer_own']}")  # fmt: skip
+    (out / "verdict.md").write_text("\n".join(v) + "\n")
+
+
+def top_by_coef(rec: dict, k: int = N_TOP) -> list[dict]:
+    return sorted(rec["atoms"], key=lambda a: -abs(a["coef"]))[:k]
+
+
+def show(a: dict, cls: bool = True) -> str:
+    """An atom as printed: its signed coefficient and its token verbatim (quoted, spaces visible)."""
+    return f"{a['coef']:+.2f} {json.dumps(a['token'], ensure_ascii=False)}" + (f" ({a['class']})" if cls else "")
+
+
 # ---- fetch (CPU, network): the lm_head and final norm of the pinned checkpoint, and the pinned lens ----------------
 
 HEAD_KEYS = {"lm_head.weight": "lm_head.weight", "model.language_model.norm.weight": "norm.weight"}
@@ -912,7 +1360,7 @@ def stage_fetch(targets: tuple[str, ...] = ("qwen3.5-9b", "qwen3.6-27b")) -> Non
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["fetch", "atoms"])
+    ap.add_argument("stage", choices=["fetch", "atoms", "handsheet", "report"])
     ap.add_argument("--name")
     ap.add_argument("--delta", choices=["states", "forward"], default="forward")
     ap.add_argument("--sets", default="e1,z2", help="comma-separated: e1, z2")
@@ -921,11 +1369,16 @@ def main() -> None:
     ap.add_argument("--targets", default=",".join(MODELS))
     ap.add_argument("--hand", type=Path, help="report: a hand-* folder holding labels.json (default: every one)")
     a = ap.parse_args()
+    targets = tuple(a.targets.split(","))
     if a.stage == "fetch":
         stage_fetch()
-    else:
+    elif a.stage == "atoms":
         assert a.name, "--name"
         stage_atoms(a.name, a.delta, tuple(a.sets.split(",")), a.states_root)
+    elif a.stage == "handsheet":
+        stage_handsheet(targets)
+    else:
+        stage_report(targets, [a.hand] if a.hand else None)
 
 
 if __name__ == "__main__":
