@@ -1,0 +1,33 @@
+id: x47_13_27b
+title: "Batch 47.13 on the 27B (L32), the GPU part: the lens's top item at the bridge word on every scene of the varied-scene run (x0b_v2) and of the named source (x0_probe v4, d1_topics_v4), from their stored states; the lookup's unedited read on every d1_topics_v4 scene; SEALED until Q47.13 (the 27B has 5 wrong items on x0b_v2: 'not tested' unless the v4 reads add errors)"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 0.2
+depends_on: [x0_probe_power, x0b_v2]
+command: >-
+  export BJ_DEVICE_MAP=; uv run python scripts/x47_errors.py gpu --name x47_errors_27b
+question: >-
+  On the scenes where the unedited lookup answers wrong, is the lens's top item at the bridge word (J++ readout over the
+  scene's locker items, as the digit check ranks the digits) still the right item? And how many of the 1,500
+  d1_topics_v4 scenes does the 27B's lookup get wrong at all (0 of 528 on the sibling v5 set)?
+why_it_matters: >-
+  Test 47.13 (batch47.yaml, amendment 4) needs the lens's top item on the wrong items; the lens readout needs the
+  unembedding, so it runs here. The 27B's lookup is wrong on 5 of 2,258 varied scenes and 0 of 528 d1 scenes: the
+  likely outcome is "not tested" (fewer than 30 wrong items), which the v4 reads confirm or overturn.
+hypotheses:
+  Q47.13: "Dan's answer in predictions/2026-10-28_dan.md (Q47.13); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_errors.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.13), as computed in jobs/c3/x47_13_9b.yaml and the scripts/x47_errors.py
+  docstring: wrong items from x0b_generalize/x0b_v2_27b (5 of 2,258), the slot probe per format x locker order with the
+  wrong item's entity held out, the match bar 0.5 over every wrong item, the lens bar 0.8 over the matched ones, not
+  tested below 30 wrong items, cluster bootstrap over bridge items (10,000, seed 0). This job adds lens.jsonl and
+  v4_reads.jsonl and prints counts only. Scored by hand: uv run python scripts/x47_errors.py verdict.
+controls:
+- 'the majority, layout-conditioned and pick-ordinal-conditioned majority slots of the training scenes, matched against the wrong slot beside the probe'
+- 'the probe against the gold slot on the same wrong items'
+- 'the lens top item on every scene (right ones included)'
+- 'the bridge token reproduced by the item-token rule on every scene (else dropped and counted)'
+n: '2,258 x0b_v2 scenes (5 wrong, 5 with a slot) + 1,500 d1_topics_v4 scenes (read here; lens on all)'
+seeds: [0]
+notes: "Batch 47 amendment 4 (Dan, 28 Oct ~03:00), CPU test; this is its one small GPU part. Needs on the box: results/x0b_generalize/x0b_v2_27b/{states.npz, cases.jsonl, competence.jsonl} and results/x0_probe/x0_probe_v4_27b/{states.npz, manifest.json} (x0_probe_power); fails loudly without them. Cost: ~15 min on an H100 (model load, lens vectors for ~3 x 3,750 item tokens, 1,500 unedited lookup forwards with 8 greedy tokens). Sealed: manifest, lens.jsonl, v4_reads.jsonl and counts only, no rate."

@@ -1,0 +1,75 @@
+{
+  "exp": "x47_errors",
+  "stage": "count",
+  "run": "qwen35_9b_x47_errors",
+  "written_utc": "2026-10-28T01:46:07Z",
+  "why": "batch 47, test 47.13 (jobs/c3/batch47.yaml; Q47.13, sealed)",
+  "source": {
+    "run": "x0b_generalize/qwen35_9b_x0b_v2",
+    "set": "x0b_v2",
+    "layer": 12,
+    "model": {
+      "target": "qwen3.5-9b",
+      "repo": "Qwen/Qwen3.5-9B",
+      "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+      "dtype": "bfloat16",
+      "attn": "sdpa",
+      "prompt_format": "chat"
+    },
+    "code": {
+      "sha": "0d209228bf20424531781c9be2d307e4aaea7e95",
+      "dirty": true
+    }
+  },
+  "named_source": {
+    "run": "x0_probe/qwen35_9b_x0_probe_v4",
+    "why_not": "x0_probe stores the states of every scene but no read of the lookup; `gpu` reads it there (v4_reads.jsonl)"
+  },
+  "substitution": "the data source is the varied-scene run (x0b_v2), the one local source with a stored read and a stored bridge-word state for every scene, wrong ones included; the agent's choice, stated before any count; Dan may override",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "head": "b7201149d27710091311ec89eeb8e69b7ae3c6b1",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/x47_errors.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "position": "the asked person's bridge word, org run, chat",
+  "probe": {
+    "target": "the bridge's locker statement ordinal (x0b probe (b))",
+    "groups": "format x locker order",
+    "training": "the scenes the lookup reads right, the wrong item's bridge entity held out",
+    "penalty": "entity-held-out CV on the training scenes (x0_probe.select_penalty)",
+    "folds": {
+      "outer": 5,
+      "inner": 4,
+      "penalties": [
+        0.001,
+        0.01,
+        0.1,
+        1.0,
+        10.0,
+        100.0
+      ]
+    }
+  },
+  "rule": "\"The address predicts the error\" if the probe's slot matches the wrong answer's slot in >= 0.5 of wrong items (chance ~ 0.33 with three lockers; the layout baseline beside), and the lens's top item at the bridge word is still the right item in >= 0.8 of those",
+  "bars": {
+    "match": 0.5,
+    "lens": 0.8,
+    "n_min": 30
+  },
+  "seeds": {
+    "bootstrap": 0
+  },
+  "n_boot": 10000,
+  "sealed": "per-item rows and counts only; no match rate until predictions/2026-10-28_dan.md holds Dan's Q47.13 answer"
+}

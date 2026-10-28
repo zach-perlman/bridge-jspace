@@ -1,0 +1,27 @@
+{
+ "scenes": 2255,
+ "right": 2155,
+ "wrong": 100,
+ "said_right_read_wrong_dropped": 3,
+ "wrong_with_a_slot": 91,
+ "wrong_with_a_probe": 100,
+ "wrong_entities": 40,
+ "wrong_by_format": {
+  "json": 29,
+  "prose": 35,
+  "table": 36
+ },
+ "wrong_by_order": {
+  "before": 54,
+  "after": 46
+ },
+ "wrong_by_lockers": {
+  "3": 24,
+  "5": 17,
+  "6": 22,
+  "7": 7,
+  "8": 9,
+  "9": 21
+ },
+ "tested": true
+}

@@ -1,0 +1,33 @@
+id: x47_13_muse
+title: "Batch 47.13 on Muse (L26), the GPU part: the lens's top item at the bridge word on every scene of the varied-scene run (x0b_v2) and of the named source (x0_probe v4, d1_topics_v4), from their stored states; the lookup's unedited read on every d1_topics_v4 scene; SEALED until Q47.13"
+thread: C3
+gpus: 1
+mem_gb: 80
+est_gpu_hours: 0.2
+depends_on: [muse_g4]
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x47_errors.py gpu --name muse30_x47_errors
+question: >-
+  On the scenes where the unedited lookup answers wrong, is the lens's top item at the bridge word (J++ readout over the
+  scene's locker items, as the digit check ranks the digits) still the right item? And how many of Muse's 1,326 aligned
+  d1_topics_v4 scenes does the lookup get wrong at all (3 of 463 on the sibling v5 set)?
+why_it_matters: >-
+  Test 47.13 (batch47.yaml, amendment 4) needs the lens's top item on the wrong items; the lens readout needs the
+  unembedding, so it runs here. Muse's lookup is wrong on 32 of 2,534 varied scenes (the CPU count's rows exist), the
+  second model with enough wrong items to test.
+hypotheses:
+  Q47.13: "Dan's answer in predictions/2026-10-28_dan.md (Q47.13); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_errors.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.13), as computed in jobs/c3/x47_13_9b.yaml and the scripts/x47_errors.py
+  docstring: wrong items from x0b_generalize/muse30b_x0b_v2 (32 of 2,534, 25 bridge items), the slot probe per format x
+  locker order with the wrong item's entity held out, the match bar 0.5 over every wrong item, the lens bar 0.8 over
+  the matched ones, not tested below 30 wrong items, cluster bootstrap over bridge items (10,000, seed 0). This job
+  adds lens.jsonl and v4_reads.jsonl and prints counts only. Scored by hand: uv run python scripts/x47_errors.py verdict.
+controls:
+- 'the majority, layout-conditioned and pick-ordinal-conditioned majority slots of the training scenes, matched against the wrong slot beside the probe'
+- 'the probe against the gold slot on the same wrong items'
+- 'the lens top item on every scene (right ones included)'
+- 'the bridge token reproduced by the item-token rule on every scene (else dropped and counted)'
+n: '2,534 x0b_v2 scenes (32 wrong, 32 with a slot, 25 bridge items) + 1,326 d1_topics_v4 scenes (read here; lens on all)'
+seeds: [0]
+notes: "Batch 47 amendment 4 (Dan, 28 Oct ~03:00), CPU test; this is its one small GPU part. Needs on the box: results/x0b_generalize/muse30b_x0b_v2/{states.npz, cases.jsonl, competence.jsonl} and results/x0_probe/muse30b_x0_probe_v4/{states.npz, manifest.json} (Muse's v4 probe run was made on this box on 26 Oct; no jobq id to depend on); fails loudly without them. Cost: ~15 min on an H100. Sealed: manifest, lens.jsonl, v4_reads.jsonl and counts only, no rate."

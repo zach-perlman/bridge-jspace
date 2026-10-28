@@ -1,0 +1,38 @@
+[
+ {
+  "format": "json",
+  "order": "before",
+  "right_scenes": 239,
+  "entities": 29,
+  "wrong_items": 2,
+  "probe": true,
+  "penalty": 0.001,
+  "cv_accuracy_right": 0.7949790794979079,
+  "classes": 9,
+  "majority_share": 0.24267782426778242
+ },
+ {
+  "format": "table",
+  "order": "after",
+  "right_scenes": 243,
+  "entities": 51,
+  "wrong_items": 1,
+  "probe": true,
+  "penalty": 10.0,
+  "cv_accuracy_right": 0.205761316872428,
+  "classes": 9,
+  "majority_share": 0.24691358024691357
+ },
+ {
+  "format": "table",
+  "order": "before",
+  "right_scenes": 735,
+  "entities": 60,
+  "wrong_items": 2,
+  "probe": true,
+  "penalty": 0.001,
+  "cv_accuracy_right": 0.8857142857142857,
+  "classes": 9,
+  "majority_share": 0.2163265306122449
+ }
+]
