@@ -136,6 +136,9 @@ V6_SUBTITLE_RETIRED = {"rule:": r"(?i)\brule:"}  # the subtitle says the mechani
 V6_FIGS += ("fig16_dose",)
 V6_PANELS["fig16_dose"] = 6
 MARK_FIGS += ("fig16_dose",)
+# Dan's 51.10 brief (28 Oct ~22:35): the last token's read and swap bars (main page, held to the v6 rules)
+V6_FIGS += ("fig17_jspace_last_token",)
+MARK_FIGS += ("fig17_jspace_last_token",)
 
 
 def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:

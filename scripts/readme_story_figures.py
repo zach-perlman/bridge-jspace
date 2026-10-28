@@ -3538,11 +3538,21 @@ def s14_learned_sizes(plt) -> None:
     B51.build_sizes(latest_verdict("x51_das/verdict-*"), "s14_learned_sizes")
 
 
+# Dan's 51.10 brief (28 Oct ~22:35): the opened verdict (x51_jread/x51_10-<UTC>) and its runs' read folders
+JREAD_VERDICT = "x51_jread/x51_10-*"
+
+
+def f17_jspace_last_token(plt) -> None:
+    from scripts import story_b51b as B51B
+
+    B51B.build_last_token(latest_verdict(JREAD_VERDICT), "fig17_jspace_last_token")
+
+
 # v6: Fig. 4's schematic is Fig. 5's left panel; the full-width one is the supplement s04_routes_design
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
                f_batch47, f15_mechanisms, f00b_marks, f01d_ladder, f12_two_by_two, f09a_transfer, f09b_refit,
-               f13_attention, f14_learned, f16_dose)  # fmt: skip
+               f13_attention, f14_learned, f16_dose, f17_jspace_last_token)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
