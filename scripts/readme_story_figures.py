@@ -541,42 +541,114 @@ def reader_handles(plt) -> tuple[list, list[str]]:
              plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=7)], ["lookup", "recall"])  # fmt: skip
 
 
+# Dan's Fig. 0 brief (28 Oct ~22:40): Fig. 0 draws the page's running example, a stored main-test scene (data/tasks_v2/
+# d1_topics_v3, scene P2-L0-0133: items PP-L0-0133, the lookup, and PM-L0-0133, the recall); f00_setup checks the
+# drawn text against it. The numbers drawn are the scene's, an illustration of the design, not results.
+SETUP_SET, SETUP_SCENE = "d1_topics_v3", "P2-L0-0133"
+SETUP_LOCKERS = ("The locker of carbon is 3.", "The locker of helium is 5.", "The locker of oxygen is 7.")
+SETUP_PICKS = {"original": (("Hugo", "oxygen"), ("Eric", "carbon"), ("Eva", "helium")),
+               "changed": (("Hugo", "carbon"), ("Eric", "oxygen"), ("Eva", "helium"))}  # fmt: skip
+SETUP_QUESTIONS = (("Lookup", "PP", "Which locker belongs to Eric's pick?", "3", "7", "in the prompt"),
+                   ("Recall", "PM", "What is the atomic number of Eric's pick?", "6", "8", "from memory"))  # fmt: skip
+SETUP_ASKED = 1  # the asked person's pick sentence (Eric's): its item is the bridge word
+
+
+def setup_context(version: str) -> str:
+    return " ".join([*SETUP_LOCKERS, *(f"{p} picked {x}." for p, x in SETUP_PICKS[version])])
+
+
+def check_setup_scene() -> None:
+    """The drawn scene is the stored one: contexts, questions and both prompts' answers, per reader."""
+    path = pins.DATA_DIR / "tasks_v2" / SETUP_SET / "items.jsonl"
+    items = {it["word"]: it for it in map(json.loads, path.read_text().splitlines()) if it["scene"] == SETUP_SCENE}
+    for _, word, q, a, b, _ in SETUP_QUESTIONS:
+        it = items[word]
+        drawn = (setup_context("original"), setup_context("changed"), q, a, b)
+        stored = (it["context"], it["cf_context"], it["question"], it["answer"], it["cf_answer"])
+        assert drawn == stored, (word, drawn, stored)
+
+
 def f00_setup(plt) -> None:
-    """The original prompt, the changed prompt (the swapped bridge) and the difference at the bridge word added into the
-    original; the two questions about the same bridge."""
-    fig = plt.figure(figsize=(S.WIDTH, 3.9))
-    ax = fig.add_axes((0, 0, 1, 0.82))
-    ax.set_xlim(0, 100)
-    ax.set_ylim(0, 44)
+    """Fig. 0 (Dan's Fig. 0 brief, 28 Oct ~22:40), on the page's running example: the original prompt and the changed
+    prompt (the two picks swap), the bridge word marked in each; arrows from the two bridge-word states to Δ; Δ added
+    at one layer at the original prompt's bridge word; after that prompt, the two questions, both reading the same
+    state, each with the original answer and the changed prompt's (a switch)."""
+    check_setup_scene()
+    W, H = S.WIDTH, 4.75
+    fig = plt.figure(figsize=(W, H), dpi=200)  # measured at the saved dpi: Agg's hinted widths move with the dpi
+    ax = fig.add_axes((0, 0, 1, 1))  # data units: inches from the top left
+    ax.set_xlim(0, W)
+    ax.set_ylim(H, 0)
     ax.axis("off")
     S.title(fig, "One prompt, two questions about the same bridge word",
-            "The change: the difference at the bridge word between the two prompts, added at one layer.")  # fmt: skip
-    red, w = "#b23b3b", 0.96  # w: x units per character at 11 pt
-    xs = {}
-    for name, y, bridge in (("original", 35, "frog"), ("changed", 21, "tick")):
-        ax.text(1, y + 3.5, f"{name}\nprompt", fontsize=S.FONT, weight="bold", va="center")
-        x = 13.0
-        for i, s in enumerate(("The locker of the frog is 5.", "The locker of the tick is 2.", "Iris picked the ")):
-            text = s + (bridge + "." if i == 2 else "")
-            ww = 2.0 + w * len(text)
-            ax.add_patch(plt.Rectangle((x, y), ww, 7, fc="#f5f5f5", ec="#bbbbbb", lw=1))
-            ax.text(x + 1.0, y + 3.5, s, va="center", fontsize=S.FONT)
-            if i == 2:
-                bx = x + 1.0 + w * len(s)
-                ax.text(bx, y + 3.5, bridge, va="center", fontsize=S.FONT, weight="bold", color=red,
-                        bbox=dict(boxstyle="round,pad=0.15", fc="#fde3e3", ec="none"))  # fmt: skip
-                ax.text(bx + w * len(bridge), y + 3.5, ".", va="center", fontsize=S.FONT)
-                xs[name] = bx + w * len(bridge) / 2
-            x += ww + 1.5
-    ax.annotate("", (xs["original"], 34.6), (xs["changed"], 28.6),
-                arrowprops=dict(arrowstyle="->", color=red, lw=1.6))  # fmt: skip
-    ax.text(xs["original"] - 3, 31.6, "difference at the bridge word,\nadded into the original prompt", fontsize=S.FONT,
-            color=red, ha="right", va="center")  # fmt: skip
-    for y, name, q, a, col in ((12, "Lookup", "Which locker belongs to Iris's pick?", "5, read from the prompt", S.COL["lookup"]),
-                               (4, "Recall", "How many legs does Iris's pick have?", "4, from memory", S.COL["recall"])):  # fmt: skip
-        ax.text(1, y, f"{name}:", fontsize=S.FONT, weight="bold", color=col, va="center")
-        ax.text(13, y, q, fontsize=S.FONT, va="center")
-        ax.text(64, y, f"→ {a}", fontsize=S.FONT, va="center", color=col)
+            "Δ: the bridge word's state in the changed prompt minus that in the original prompt, at one layer.")  # fmt: skip
+    r = fig.canvas.get_renderer()
+
+    def width(s: str, **kw) -> float:
+        t = ax.text(0, 0, s, fontsize=S.FONT, **kw)
+        w = t.get_window_extent(r).width / fig.dpi
+        t.remove()
+        return w
+
+    space, dark, grey = width("a a") - width("aa"), "#1e1e1e", "#666666"
+    x0, pitch = 1.42, 0.245
+    mark = {"boxstyle": "round,pad=0.12", "fc": "#e2e2e2", "ec": dark, "lw": 0.9}
+
+    def prompt(version: str, top: float, label: str) -> float:
+        """The prompt in three lines, its bridge word marked at the end of the second; returns the bridge's right end."""
+        sents = [*SETUP_LOCKERS, *(f"{p} picked {x}." for p, x in SETUP_PICKS[version])]
+        bridge = SETUP_PICKS[version][SETUP_ASKED][1]
+        lines = [" ".join(sents[:2]), " ".join(sents[2:5]), sents[5]]
+        widest = max(width(s) for s in lines)
+        ax.add_patch(plt.Rectangle((x0 - 0.12, top - 0.17), widest + 0.24, 2 * pitch + 0.34, fc="#f5f5f5",
+                                   ec="#bbbbbb", lw=1))  # fmt: skip
+        ax.text(0.1, top + pitch, label, fontsize=S.FONT, weight="bold", va="center", linespacing=1.1)
+        for k, line in enumerate(lines):
+            y = top + k * pitch
+            if k != 1:
+                ax.text(x0, y, line, fontsize=S.FONT, va="center")
+                continue
+            head = line[: -len(bridge) - 1].rstrip()
+            ax.text(x0, y, head, fontsize=S.FONT, va="center")
+            xb = x0 + width(head) + space
+            ax.text(xb, y, bridge, fontsize=S.FONT, weight="bold", va="center", bbox=mark, zorder=3)
+            end = xb + width(bridge, weight="bold") + 0.03  # clear of the mark's edge
+            ax.text(end, y, ".", fontsize=S.FONT, va="center")
+        return end + 0.12
+
+    ya, yb, yc = 1.0, 1.98, 3.0  # the three prompts' first lines
+    ea = prompt("original", ya, "original\nprompt")
+    eb = prompt("changed", yb, "changed\nprompt")
+    ax.text(0.1, yb + pitch + 0.36, "(the two\npicks swap)", fontsize=S.FONT - 1, color=grey, va="center",
+            linespacing=1.05)  # fmt: skip
+    ec = prompt("original", yc, "original\nprompt + Δ")
+    # the two bridge-word states into Δ, Δ into the original prompt's bridge word
+    xd, yd = 7.72, (ya + yb) / 2 + pitch
+    for x, y, end in ((ea, ya + pitch, yd - 0.17), (eb, yb + pitch, yd + 0.17)):
+        ax.annotate("", (xd, end), (x, y), arrowprops={"arrowstyle": "-|>", "color": grey, "lw": 1.3, "shrinkA": 0,
+                                                        "shrinkB": 0, "connectionstyle": "angle,angleA=0,angleB=90,rad=0"})  # fmt: skip
+    ax.text(xd, yd, "Δ", fontsize=15, weight="bold", ha="center", va="center", color=dark,
+            bbox={"boxstyle": "round,pad=0.2", "fc": "white", "ec": dark, "lw": 1.2})  # fmt: skip
+    xr = 8.6
+    ax.plot([xd + 0.2, xr, xr], [yd, yd, yc + pitch], color=dark, lw=1.6, solid_capstyle="butt")
+    ax.annotate("", (ec, yc + pitch), (xr, yc + pitch),
+                arrowprops={"arrowstyle": "-|>", "color": dark, "lw": 1.6, "shrinkA": 0, "shrinkB": 0})  # fmt: skip
+    ax.text((ec + xr) / 2, yc + pitch - 0.14, "added at one layer", fontsize=S.FONT - 1, color=dark, ha="center",
+            va="center")  # fmt: skip
+    # after that prompt, either question: both read the same state at the bridge word
+    yq, xq, xa = (yc + 2 * pitch + 0.62, yc + 2 * pitch + 0.98), x0 + 0.32, 6.45
+    trunk = x0 + 0.1
+    ax.plot([trunk, trunk], [yc + 2 * pitch + 0.17, yq[1]], color=grey, lw=1.2)
+    ax.text(xa, yc + 2 * pitch + 0.33, "original answer → a switch", fontsize=S.FONT - 1, color=grey, va="center")
+    ax.text(xq, yc + 2 * pitch + 0.33, "each question follows this prompt: both read the same state", fontsize=S.FONT - 1,
+            color=grey, va="center")  # fmt: skip
+    for y, (name, _, q, a, b, src) in zip(yq, SETUP_QUESTIONS, strict=True):
+        col = S.COL["lookup" if name == "Lookup" else "recall"]
+        ax.plot([trunk, xq - 0.06], [y, y], color=grey, lw=1.2)
+        ax.text(0.1, y, f"{name}:", fontsize=S.FONT, weight="bold", color=col, va="center")
+        ax.text(xq, y, q, fontsize=S.FONT, va="center")
+        ax.text(xa, y, f"{a} → {b}", fontsize=S.FONT, weight="bold", color=col, va="center")
+        ax.text(xa + 0.62, y, src, fontsize=S.FONT, color=col, va="center")
     S.save(fig, "fig00_setup")
 
 
