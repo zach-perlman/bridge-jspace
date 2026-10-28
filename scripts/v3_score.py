@@ -71,14 +71,17 @@ def main(run: str, set_name: str) -> None:
     starts = sorted({items[i]["start"] for i in none})
     # 1. points lost per condition x start x level
     for cond in conds:
-        for st in [*starts, "named"]:
+        for st in [*starts, "named", "P_nofilms"]:  # P_nofilms: cand2 reads a director's surname, the model writes the first name
             for lv in ("all", 1, 2, 3):
                 sel = collections.defaultdict(list)
                 for i, r in by_cond[cond].items():
                     it = items[i]
                     if i not in ok or it["final"] in CONFLICT:
                         continue
-                    if (st == "named" and it["start"] == "R") or (st != "named" and it["start"] != st):
+                    if st == "P_nofilms":
+                        if it["start"] != "P" or it["relation"] == "films":
+                            continue
+                    elif (st == "named" and it["start"] == "R") or (st != "named" and it["start"] != st):
                         continue
                     if lv != "all" and it["level"] != lv:
                         continue
@@ -175,10 +178,10 @@ def main(run: str, set_name: str) -> None:
     (d / f"{run}.json").write_text(json.dumps(out, indent=1) + "\n")
     # the headline lines
     for cond in conds:
-        for st in ("P", "M", "T", "W", "Q", "J", "X", "Y", "named"):
+        for st in ("P", "P_nofilms", "M", "T", "W", "Q", "J", "X", "Y", "named"):
             c = out["cells"].get(f"{cond}/{st}/Lall")
             if c:
-                print(f"{cond:16s} start {st:5s} lost " + " ".join(f"{f} {c['loss'].get(f, float('nan')):4.0f}" for f in "PKMANHG")
+                print(f"{cond:16s} start {st:9s} lost " + " ".join(f"{f} {c['loss'].get(f, float('nan')):4.0f}" for f in "PKMANHG")
                       + "  " + "  ".join(f"{k} {v['diff']:+.0f} {v['ci']}" for k, v in c["contrasts"].items() if k in ("M-K", "H-K", "M-H")))  # fmt: skip
     for k, v in out["hard_read"].items():
         print("hard read", k, json.dumps({c: (x["H_minus_rot"], x["M_minus_H_logp_matched"]) for c, x in v["by_condition"].items()}), v["unedited_acc"], v["median_logp_right"])

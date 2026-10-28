@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "scripts"), str(ROOT)]
-from score_greedy import right  # noqa: E402
+from score_greedy import right as right0  # noqa: E402
 
 SET = "jsuite_v3_test_chat"
 KM = ["PK", "PM", "MK", "MM", "WK", "WM", "TK", "TM", "XK", "XM", "QK", "QM", "JK", "JM", "YK", "YM", "RM"]
@@ -31,6 +31,13 @@ def pct(xs) -> float | None:
 
 def main(p: str, name: str) -> None:
     items = {json.loads(line)["id"]: json.loads(line) for line in (ROOT / "data/tasks_v2" / SET / "items.jsonl").open()}
+    alias = collections.defaultdict(set)  # v3's own aliases ("Stanley Kubrick", "the Netherlands"), by answer value
+    for it in items.values():
+        alias[it["answer"]] |= set(it.get("answer_aliases") or [])
+
+    def right(text: str, value: str) -> bool:  # note 1's rule, with v3's aliases beside score_greedy's
+        return any(right0(text, v) for v in {value} | alias[value])
+
     comp = collections.defaultdict(dict)
     for line in (ROOT / "results/tasks_v2" / f"{p}{SET}_competence_cand2_v1" / "items.jsonl").open():
         r = json.loads(line)
@@ -42,6 +49,7 @@ def main(p: str, name: str) -> None:
     cells = collections.defaultdict(lambda: collections.defaultdict(list))
     conflict = collections.defaultdict(collections.Counter)
     lure = collections.defaultdict(list)
+    ycons = collections.defaultdict(collections.Counter)
     for iid, it in items.items():
         r = cv.get(iid)
         if r is None:
@@ -63,6 +71,10 @@ def main(p: str, name: str) -> None:
             src = "passage" if right(r["text"], it["conflict_value"]) else "memory" if right(r["text"], it["memory_answer"]) else "other"
             conflict[(it["word"], "near" if it["cf_near"] else "far")][src] += 1
             conflict[(it["word"], "all")][src] += 1
+        if it.get("pair_of") and it["pair_of"] in items:  # Y: the alternative bridge's value, or the original pair's answer
+            orig = items[it["pair_of"]]["answer"]
+            if orig != it["answer"]:
+                ycons[it["word"]][("alt" if g else "orig" if right(r["text"], orig) else "other")] += 1
     # eligibility funnel (V4: the scene's K and M items, and their hops alone, right; R: its M item)
     scene_items = collections.defaultdict(list)
     for iid, it in items.items():
@@ -88,6 +100,8 @@ def main(p: str, name: str) -> None:
         out["conflict"][f"{k[0]}-{k[1]}"] = {"n": n, **{s: round(100 * cnt[s] / n, 1) for s in ("passage", "memory", "other")}}
     out["lure_capture_of_wrong"] = {f"{w}-L{lv}": {"wrong": len(v), "lure": pct(v)} for (w, lv), v in sorted(lure.items())}
     out["eligible_scenes"] = {k: f"{elig[k]}/{total[k]}" for k in sorted(total)}
+    out["y_consistency"] = {w: {k: round(100 * c[k] / sum(c.values()), 1) for k in ("alt", "orig", "other")} | {"n": sum(c.values())}
+                            for w, c in sorted(ycons.items())}  # fmt: skip
     pr = ROOT / "results/competence_variants" / f"{p}jsuite_v3probes_cv_v1" / "rows.jsonl"
     if pr.exists():
         rows = [json.loads(line) for line in pr.open()]
@@ -99,7 +113,7 @@ def main(p: str, name: str) -> None:
     d = ROOT / "results/v3_cards"
     d.mkdir(parents=True, exist_ok=True)
     (d / f"{p or 'qwen36_27b_'}cards.json").write_text(json.dumps(out, indent=1) + "\n")
-    print(json.dumps({k: out[k] for k in ("eligible_scenes", "conflict", "probes_skip_bridge_right") if k in out}, indent=1)[:4000])
+    print(json.dumps({k: out[k] for k in ("eligible_scenes", "conflict", "y_consistency", "probes_skip_bridge_right") if k in out}, indent=1)[:5000])
     for k in ("PK-L1", "PM-L1", "PM-L2", "PM-L3", "PH-L1", "PH-L3", "MM-L1", "WM-L1", "RM-L1", "TM-L1", "XM-L1", "YM-L1", "QM-L1", "JM-L1", "MH-L1"):
         if k in out["cells"]:
             print(k, out["cells"][k])
