@@ -21,7 +21,8 @@ Design (Zach's answers, 28 Oct):
     (others); fillers re-dealt while they contain a description word.
 Every entity's descriptions are stored (entity_descs) for counterfactual prompts (scripts/nn_cf.py).
 
-python scripts/jsuite_v4.py [--seed 4001] [--name jsuite_v4]   -> data/tasks_v2/jsuite_v4_test_chat
+python scripts/jsuite_v4.py [--seed 4001] [--name jsuite_v4]   -> data/tasks_v2/jsuite_v4_test_chat (MP, MM) and
+                                                                    data/tasks_v2/jsuite_v4ctl_test_chat (H1, RG, RO)
 """
 
 from __future__ import annotations
@@ -189,12 +190,17 @@ def main(a) -> None:
                                   "scene": f"v4:RO:{uid}", "question": q_tpl.format(d=role, D=V3.sentence(role)), "answer": vals[x],
                                   "answer_aliases": alias_of.get(vals[x], []), "answer_in_passage": True})  # fmt: skip
                     k += 1
-    out = DATA / f"{a.name}_test_chat"
-    assert not out.exists(), f"{out} exists; sets are written once"
-    out.mkdir(parents=True)
     ids = [it["id"] for it in items]
     assert len(ids) == len(set(ids)), "duplicate ids"
-    (out / "items.jsonl").write_text("".join(json.dumps(it, ensure_ascii=False) + "\n" for it in items))
+    # the main set holds MP and MM only (competence draws its candidate pools from the whole set); the controls go to
+    # their own set (read by competence_variants)
+    out = DATA / f"{a.name}_test_chat"
+    ctl = DATA / f"{a.name}ctl_test_chat"
+    for d in (out, ctl):
+        assert not d.exists(), f"{d} exists; sets are written once"
+        d.mkdir(parents=True)
+    (out / "items.jsonl").write_text("".join(json.dumps(it, ensure_ascii=False) + "\n" for it in items if it["word"] in ("MP", "MM")))
+    (ctl / "items.jsonl").write_text("".join(json.dumps(it, ensure_ascii=False) + "\n" for it in items if it["word"] not in ("MP", "MM")))
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=ROOT).stdout.strip()
     man = {"set": out.name, "seed": a.seed, "n": len(items), "scenes": k, "git_commit": commit, "script": "scripts/jsuite_v4.py",
            "words": dict(collections.Counter(it["word"] for it in items)), "skipped": dict(skipped),

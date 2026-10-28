@@ -11,6 +11,8 @@ first token with another bridge of their relation (Qwen: people 25/63, landmarks
 true candidate (rank = the number of candidates scoring at least as high): the bridge read is conservative.
 Reading (note 9): "bridge visible" if X is the top bridge at >= 3x chance at some layer, before the layer where the
 attribute's top-1 rate first peaks.
+--items v4 (note 14): v4's gate (scripts/nn_swap.v4_split), families MP_ok / MP_fail / MM_ok / MM_fail, the answer read
+being the item's own (MP: X's passage value).
 --items composition (note 11): instead, RM items whose hop 1 and hop 2 alone are right, as RM_ok (the whole right too)
 and RM_fail (the whole wrong), the same reads; per-item ranks are written to rows.jsonl (scripts/nn_fail_read.py).
 
@@ -58,7 +60,12 @@ def main(a) -> None:
     (out_dir / "manifest.json").write_text(json.dumps({"run": a.name, "target": pins.TARGET, "model": pins.model_pin(), "lens": pins.FROZEN_LENS, "set": a.set,
                                                        "competence": a.competence, "layers": layers, "git_commit": commit, "git_state": pins.git_state()}, indent=2) + "\n")  # fmt: skip
     items = {json.loads(line)["id"]: json.loads(line) for line in (JS.DATA / a.set / "items.jsonl").read_text().splitlines()}
-    if a.items == "composition":  # note 11: successes vs failures among RM items whose hops alone are right
+    if a.items == "v4":  # note 14: v4's gate, successes vs failures, the lookup (MP) and its recall twin (MM)
+        from scripts.nn_swap import build_prompt, v4_split
+
+        split = v4_split(a.competence, a.cv_h1, a.set)
+        prompts = [{**build_prompt(tok, items[i], a.set), "family": f"{items[i]['word']}_{s}"} for i, s in sorted(split.items())]
+    elif a.items == "composition":  # note 11: successes vs failures among RM items whose hops alone are right
         from scripts.nn_swap import build_prompt, composition_split
 
         split = composition_split(a.competence)
@@ -75,7 +82,7 @@ def main(a) -> None:
 
     bridges_of = collections.defaultdict(set)
     for it in items.values():
-        if it.get("module") == "facts" and it["word"] in ("PK", "PM", "RM", "MM"):
+        if it.get("module") == "facts" and it["word"] in ("PK", "PM", "RM", "MM", "MP"):
             bridges_of[it["relation"]].add(it["bridge"])
     jobs = []
     for p in prompts:
@@ -86,7 +93,8 @@ def main(a) -> None:
             variants.append(("RM_hop1", S.ids(tok, T.render(tok, {**it, "_question": q1, "_kind": it["steps"][0]["kind"]}))))
         bvals, avals = sorted(bridges_of[it["relation"]]), list(it["answer_vocab"])
         brows, arows = cand_rows(bvals), cand_rows(avals)
-        if not all(brows) or not all(arows) or it["bridge"] not in bvals or it["real"] not in avals:
+        true_a = it["answer"] if it.get("set_version") == "v4" else it["real"]  # note 14: MP's answer is X's passage value
+        if not all(brows) or not all(arows) or it["bridge"] not in bvals or true_a not in avals:
             continue
         for fam, ids in variants:
             # the description's last token; hop 1 repeats its clause ("Which novelist wrote Arrow of God?")
@@ -95,7 +103,7 @@ def main(a) -> None:
             if not pos:
                 continue
             jobs.append({"id": p["id"], "family": fam, "ids": ids, "sites": {"desc_end": pos[-1], "final": len(ids) - 1}, "brows": brows, "arows": arows,
-                         "bx": bvals.index(it["bridge"]), "ax": avals.index(it["real"]), "rel": it["relation"], "bridge": it["bridge"]})  # fmt: skip
+                         "bx": bvals.index(it["bridge"]), "ax": avals.index(true_a), "rel": it["relation"], "bridge": it["bridge"]})  # fmt: skip
     if a.limit:  # a smoke: the first N prompts per family
         per = collections.defaultdict(list)
         for j in jobs:
@@ -133,7 +141,7 @@ def main(a) -> None:
                                 # conservative: a tie (bridges sharing a first token) counts against the true candidate
                                 rank = int((cand >= cand[true]).sum())
                                 stats[(j["family"], site, ln, what, la)].append((rank == 1, rank, 1 / len(rws)))
-                                if a.items == "composition":
+                                if a.items in ("composition", "v4"):
                                     item_rows.append({"id": j["id"], "family": j["family"], "rel": j["rel"], "bridge": j["bridge"], "site": site,
                                                       "lens": ln, "what": what, "layer": la, "rank": rank, "k": len(rws)})  # fmt: skip
     summ = {}
@@ -176,5 +184,6 @@ if __name__ == "__main__":
     ap.add_argument("--every", type=int, default=2)
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--limit", type=int, default=0, help="first N prompts per family (a smoke)")
-    ap.add_argument("--items", choices=["eligible", "composition"], default="eligible", help="note 11: RM_ok vs RM_fail")
+    ap.add_argument("--items", choices=["eligible", "composition", "v4"], default="eligible", help="note 11: RM_ok vs RM_fail; note 14: v4")
+    ap.add_argument("--cv-h1", default=None, help="note 14: the competence_variants run on v4's H1")
     main(ap.parse_args())

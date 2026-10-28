@@ -2623,3 +2623,34 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - The 9B's competence on the four relations: guess 31% (chance 33%); both hops right and whole right 217; both hops right and whole wrong 55.
 - **If Zach approves:** the shared-role reading is primary, and the all-items reading (as note 13 fixed it) is reported beside it. If not, the all-items reading stays primary, with the shared-role one beside it.
 - **Scoring:** scripts/nn_mp_read.py --relations cities companies films landmarks.
+
+#### Amendment 58 note 14 (Zach, 2026-10-28 ~22:15 UTC, before any run below; a mechanics smoke ran first on the 9B with small limits (n = 2 per cell, seen only as the scorer's mechanics check); its first tries failed on the controls sharing the main set (moved to their own set) and on v3's eligibility pool (skipped for v4)): jsuite_v4, where the latent bridge must be used; readable vs used
+
+- **Why (Zach, 28 Oct: "focus on latent multihop composition — the model computes the bridge internally and USES that bridge to compute the answer"; "what info is the lens actually surfacing wrt actual model latent computation?"):**
+  - Notes 9-13 never showed bridge use. In recall items the answer comes with the entity's bundle at the description, every causal effect there is the answer's content (notes 11-12), and even the paper's clamp works only through answer directions (note 13, 9B).
+  - v4 makes the bridge necessary. The answer is an arbitrary value the passage binds to each of six same-role entities.
+  - The 9B's note 13 MP result showed the description's last token at L12-16 is not where a lookup's bridge travels (even the whole state moved ~5%). So v4 maps where it does, before asking what the lens sees there.
+- **Seen when written:** note 13 on the 9B (MP band, clamp break-test) and the 27B's MP band (lens-part swap → D's passage value +6.6 [4.0, 9.5], below the bar; D's memory 0), v4's construction audit, and the smoke's mechanics. No v4 model output.
+- **Data (scripts/jsuite_v4.py, seed 4001 → jsuite_v4_test_chat (MP, MM; sha 8ef8e386…) and jsuite_v4ctl_test_chat (H1, RG, RO;
+  sha e09fa7c8…), in docs/v4_sha256.txt; Zach's design answers, 28 Oct):**
+  - 874 scenes. Each scene has six entities of one relation sharing a role noun (people: "the person who …"), and a made-up value per entity from the relation's answer vocabulary. A value is never the entity's own attribute and never X's.
+  - Two binding relations, one per wording. The bridge's fact is rotated through the six positions.
+  - Name-stem overlaps are excluded. Every entity is mentioned exactly once, and X's attribute is absent from the passage (audit: all 874).
+  - Words: MP (the lookup), MM (its recall twin, same passage and description), H1 (hop 1 closed book), RG (recognition among the passage's entities), RO (role noun only).
+- **Gate (scripts/nn_swap.v4_split):**
+  - ok: H1 right (cand2 or the greedy reply with the bridge's other names), hop 2 alone right, whole right, the no-description guess wrong.
+  - fail: the same but the whole wrong.
+  - Controls reported per model: RG vs H1 (recognition vs recall), RO and the guess vs chance 1/6.
+- **Readout map (nn_readout --items v4):** the J++ lens and the logit lens rank the bridge (among the relation's bridges) and the item's own answer, at the description's end and the final token, every 2nd layer, for ok vs fail, MP and MM.
+- **Stage 1, the counterfactual map (nn_swap --items v4ok, conditions full_cf and lensrand_cf):**
+  - D: another scene entity whose remembered attribute differs from X's value and D's own value; for MM, D's attribute also differs from X's.
+  - The counterfactual prompt is the same passage with the question about D (one of D's descriptions).
+  - Its states are patched into X's run at the description's last token (last), the description's tokens right-aligned (span), or the final token (final), at every layer window. Windows: 27B 0-7 … 57-63; 9B 0-3 … 29-31; Lightning 0-5 … 46-51.
+  - Donor seeds 0 and 1.
+- **Stage 2:** note 10's decomposition (full, lens, rem, remfix, lensrand; S = X's and D's top-10 J++ atoms) at every cell meeting reading 1. If a word has no such cell, at its largest full_cf cell (descriptive).
+- **Readings (scripts/nn_cf_read.py; primary: pairs whose counterfactual prompt the model answers with D's answer; all pairs beside):**
+  1. "The bridge lives at (site, window)" if full_cf moves >= 20% of answers to D's answer (MP: D's passage value; MM: D's remembered attribute), lensrand_cf < 10%, and full − lensrand has a 95% bootstrap interval over bridges above 0.
+  2. At such a cell, "through the lens part" if lens >= 2/3 of full, remfix <= 1/3 of full and lensrand < 10. "Around it" if rem >= 2/3 of full. Otherwise "mixed".
+  3. **Readable vs used:** the readout map's J++ bridge top-1 at the hit cells' sites and layers, ok vs fail (the readout reading of note 11 applies: >= 10 points, interval above 0), compared with where reading 1 holds.
+- **Comparison:** MP (the bridge must be used) vs MM (recall; notes 11-12's setting) on identical scenes and descriptions.
+- **Models:** the 27B, 9B and Lightning overnight (scripts/queues/h200_v4_1028.sh). Bolt on Thursday: competence and readout, and the map if time allows.
