@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -26,10 +27,24 @@ sys.path[:0] = [str(ROOT / "scripts"), str(ROOT)]
 from scripts import jswap as JS  # noqa: E402
 
 RES = ROOT / "results" / "nn_swap"
+KEEP: set | None = None  # note 12: --order keeps the items whose question puts the relation after (or before) the bridge
+
+
+def order_ids(set_name: str, order: str) -> set:
+    """Note 12: ids whose question names the relation after the bridge or its description ("The novelist who wrote X was
+    of which nationality?"), or before it (it starts with a wh-word)."""
+    wh = re.compile(r"^(which|in which|what|who|where|when|how)\b", re.IGNORECASE)
+    out = set()
+    for line in (ROOT / "data/tasks_v2" / set_name / "items.jsonl").read_text().splitlines():
+        it = json.loads(line)
+        if bool(wh.match(it["question"].strip())) == (order == "before"):
+            out.add(it["id"])
+    return out
 
 
 def rows_of(run: str) -> list[dict]:
-    return [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
+    rows = [json.loads(line) for line in (RES / run / "rows.jsonl").read_text().splitlines()]
+    return rows if KEEP is None else [r for r in rows if r["id"] in KEEP]
 
 
 def band_reading(runs: list[str]) -> dict:
@@ -94,8 +109,13 @@ def main() -> None:
     ap.add_argument("name")
     ap.add_argument("--band", nargs="+", default=[])
     ap.add_argument("--sweep", default=None)
+    ap.add_argument("--order", choices=["after", "before"], default=None, help="note 12: only items with the relation after / before")
+    ap.add_argument("--set", default="jsuite_v3_test_chat")
     a = ap.parse_args()
-    out = {}
+    global KEEP
+    if a.order:
+        KEEP = order_ids(a.set, a.order)
+    out = {"order": a.order}
     if a.band:
         out["band"] = band_reading(a.band)
         for k, v in out["band"]["reading"].items():

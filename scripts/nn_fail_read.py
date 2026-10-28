@@ -21,6 +21,7 @@ import random
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+KEEP: set | None = None  # note 12: --order (nn_ans_read.order_ids)
 
 
 def boot(by_bridge: dict[str, list[float]], reps: int = 1000) -> list[float]:
@@ -34,6 +35,7 @@ def boot(by_bridge: dict[str, list[float]], reps: int = 1000) -> list[float]:
 
 def readout(run: str, lo: int, hi: int) -> dict:
     rows = [json.loads(line) for line in (ROOT / "results/nn_readout" / run / "rows.jsonl").read_text().splitlines()]
+    rows = rows if KEEP is None else [r for r in rows if r["id"] in KEEP]
     score = collections.defaultdict(list)  # (lens, what, family, id, bridge) -> top-1 per band layer
     for r in rows:
         if r["site"] == "desc_end" and lo <= r["layer"] <= hi:
@@ -67,6 +69,7 @@ def readout(run: str, lo: int, hi: int) -> dict:
 
 def repair(run: str) -> dict:
     rows = [json.loads(line) for line in (ROOT / "results/nn_swap" / run / "rows.jsonl").read_text().splitlines()]
+    rows = rows if KEEP is None else [r for r in rows if r["id"] in KEEP]
     fix = collections.defaultdict(dict)  # id -> cond -> fixed
     bridge = {}
     for r in rows:
@@ -98,9 +101,19 @@ def main() -> None:
     ap.add_argument("--band", required=True)
     ap.add_argument("--readout", default=None)
     ap.add_argument("--repair", default=None)
+    ap.add_argument("--order", choices=["after", "before"], default=None, help="note 12: only items with the relation after / before")
+    ap.add_argument("--set", default="jsuite_v3_test_chat")
     a = ap.parse_args()
+    global KEEP
+    if a.order:
+        import sys
+
+        sys.path.insert(0, str(ROOT))
+        from scripts.nn_ans_read import order_ids
+
+        KEEP = order_ids(a.set, a.order)
     lo, hi = (int(x) for x in a.band.split("-"))
-    out = {}
+    out = {"order": a.order}
     if a.readout:
         out["readout"] = readout(a.readout, lo, hi)
         for k, v in out["readout"].items():

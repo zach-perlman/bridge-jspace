@@ -2558,3 +2558,33 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - Runs: note 11's three donor seeds, each model's band (scripts/queues/h200_n11b_1028.sh; runs {P}nn_ans2_L{band}_s{seed}_v1).
 - **Reading (scripts/nn_ans_read.py, rows pooled with item 1's runs; fixed now):** per scrub, word and donor, item 1's rule. "Bridge" if scrub >= 2/3 of k10. "Answer" if scrub <= 1/3 of k10 and its control >= 2/3 of k10. Otherwise "mixed".
 - **Order:** after items 2 and 3b on each GPU; then the Bolt sweep (item 4); the second-wording replication last.
+
+#### Amendment 58 note 12 (Zach, 2026-10-28 ~19:40 UTC, before any split or run below): the relation after the bridge
+
+- **Why (Zach, 28 Oct: "make it so the relation comes after whenever possible"; targeted, not everything; primary models 27B, 9B, Lightning, Bolt):**
+  - Note 11 found every swap, removal and repair effect at the description's end runs through answer directions.
+  - Most questions name the relation first ("Which nationality was the novelist who wrote Arrow of God?"), so the model can fetch the answer while it reads the description.
+  - The test is to name the relation after it ("The novelist who wrote Arrow of God was of which nationality?").
+- **Seen when written:** note 11's results (band, sweeps, repairs, failure readouts; the narrower scrubs not yet), the order counts (rendering 0 RM: 162 relation-after, 306 before), and rendering A's construction check. No result has been split by order.
+- **1. The split (CPU, now):**
+  - Note 11's runs on rendering 0 are re-read on the relation-after items alone and the relation-before items alone (nn_ans_read.py / nn_fail_read.py --order).
+  - **Reading** (per model; 3 seeds pooled; the insert donor; RM):
+    - (a) "Precomputed when the relation comes first" if, among composition successes, the answer's J++ top-1 at the description's end (band layers) is >= 10 points lower on relation-after items than on relation-before ones, with a 95% bootstrap interval over bridges above 0.
+    - (b) On relation-after items:
+      - "the bridge carries it when the answer can't be precomputed" if (a) holds and the answer-free swap keeps >= 1/3 of the normal swap;
+      - "the lens part at the bridge carries its answer-relevant attributes whatever the order" if the answer-free swap keeps < 1/3.
+    - Removal, repair, the failure readout and PM are reported split the same way. The subsets are small (about a third of items), so this is a first look; rendering A is the test.
+- **2. Rendering A (scripts/v3_relafter.py → jsuite_v3ra_test_chat):**
+  - Rendering 0's RM, MM and PM items, with the question, hop 2 alone and the guess question re-rendered by the relation's relation-after template (q2M[2]). Passages, ids, hops and vocabulary are unchanged (1,638 items: 1,079 re-rendered, 559 already relation-after). Added to build_v3.py.
+  - **Runs** (scripts/queues/h200_ra_1028.sh; 27B L32-40, 9B L12-16, Lightning L27-33; Bolt after its sweep):
+    - competence on RM MM PM (scene words RM MM PM, as Bolt's in note 10's addendum);
+    - the composition readout (successes vs failures; bridge and answer);
+    - note 11's band conditions at the description's last token on donor seeds 0 and 1: k10 with rand, rot; noans, noansrel, noansown with their controls; ans, ansctl; insert and latent; removal k10, rot, noans, noansrel, noansown;
+    - note 11's repair on composition failures;
+    - note 10's decomposition at the band (last token).
+  - Bolt: competence on A, then the same at the window its sweep (note 11 item 4) finds by note 11's reading. If none, the readouts plus insert/latent k100 and the clamp at L42-53.
+  - **Readings:**
+    - note 11's (bridge / answer / mixed per scrub; repair; failure readout) and note 10's, on rendering A;
+    - plus (a) above, read as rendering A vs rendering 0 on the same items (answer readability at the description's end, successes).
+    - The headline question: on rendering A, does the answer-free swap (any scrub) keep >= 1/3 of the normal swap?
+- **Not rerun:** the removal matrix, ports, conflict, hard read, and Muse / Ministral (question order does not bear on them). Rendering A stands in for the second-wording replication of notes 9-11 (Zach: "at the very end").
