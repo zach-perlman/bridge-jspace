@@ -10,7 +10,7 @@
 - **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 857fe8df from the run files. Sealed and running: the gain map, one question two sources, the learned subspaces on the 27B and Muse; results land here when opened.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 15e6f460 from the run files. Sealed and running: the gain map, one question two sources, the learned subspaces on the 27B and Muse; results land here when opened.
 
 ## Setup
 
@@ -131,7 +131,7 @@
 ### E8. The lens is blind to the address <a id="e8-blind"></a>
 
 - **Hypothesis.** Through the J++ lens an address swap looks like a random draw. Descriptive.
-- **Mechanics.** The swap against 200 random draws: the right ordinal's rank and the share the lens rebuilds; an identity change as control.
+- **Mechanics.** The swap against 200 random draws: the best rank of any position word and the share the lens rebuilds; an identity change as control.
 - **Data.** 200 cases per model.
 - **Result.** The lens rebuilds 0.06<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> / 0.04<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> / 0.01<!-- src: figures/story/data.csv | 47.0 (b) share rebuilt by 25 lens directions: pointer --> of the swap, as for random draws. Asked for the position, the 27B's lens top five hold the right ordinal in 0.00<!-- src: figures/story/data.csv | 47.10: lens top-5 holds the right ordinal (report prompt) --> of reports, yet it loses 0.28<!-- src: figures/story/data.csv | 47.10: the report's extra loss without the address --> without the address.
 - **Figure.**
