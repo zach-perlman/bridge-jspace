@@ -36,7 +36,7 @@
 - **It holds in the clean design on two of three models** (bar: gap at least 0.3, lookup at most 0.10, locker before the pick): 27B {{num|x45m_before_gap_27b}}, Muse {{num|x45m_before_gap_muse}}. The 9B misses ({{num|x45m_before_gap_9b}}).
 - **It is not a margin effect:** scored on the logit difference or the answer's probability, the gap is {{pt|ld_gap_122b}} to {{pt|ld_gap_muse}} and {{pt|prob_gap_122b}} to {{pt|prob_gap_muse}}.
 - **It holds in every setting, weaker outside simple scenes**; in natural passages Muse's lookup switches too rarely to measure.
-- **It is still there without the chat template** (the 27B's lookup above the 0.10 bar, as with it; gate lowered to 0.75, after the data): gap {{pt|x45ig_gap_9b}} / {{pt|x45ig_gap_27b}} (9B / 27B), {{pt|x45ig_before_gap_9b}} / {{pt|x45ig_before_gap_27b}} with the locker before the pick, and the lookup never answers the value ({{num|x45i_value_9b}}, {{num|x45i_value_27b}}; [supplement](figures/supp/s01c_no_chat_template.png)).
+- **It is still there without the chat template** (gate lowered to 0.75, after the data): gap {{pt|x45ig_gap_9b}} / {{pt|x45ig_gap_27b}} (9B / 27B), {{pt|x45ig_before_gap_9b}} / {{pt|x45ig_before_gap_27b}} with the locker before the pick, and the lookup never answers the value ({{num|x45i_value_9b}}, {{num|x45i_value_27b}}; [supplement](figures/supp/s01c_no_chat_template.png)).
 
 ![In every setting, recall needs the J++ part more than the lookup does](figures/story/fig01b_settings.png)
 *Fig. 1b.*
@@ -55,7 +55,7 @@
 
 *After the data unless marked; the main test unless named.*
 
-- **Lookups switch when the locker sentence comes before the pick** (locker-first scenes): {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}} of them, against {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} after it, on all four models; in the clean design {{num|x45m_before_lksw_muse}}-{{num|x45m_before_lksw_9b}} against {{num|x45m_after_lksw_27b}}-{{num|x45m_after_lksw_9b}}.
+- **Lookups switch when the locker sentence comes before the pick:** {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}} of them, against {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} after it, on all four models; in the clean design {{num|x45m_before_lksw_muse}}-{{num|x45m_before_lksw_9b}} against {{num|x45m_after_lksw_27b}}-{{num|x45m_after_lksw_9b}}.
 - **The recall needs the J++ part less when its locker came first, on every model** (Fig. 3, b).
 
 ![Lookups follow the change mostly when the locker sentence comes first](figures/story/fig03_order.png)
@@ -102,6 +102,7 @@
 *Removal after the data, replicated in advance on the 9B and Muse; routes arms and writes fixed in advance, their recall split after the data.*
 
 - **A probe reads the pointer, the lens does not:** a linear probe on the bridge word tells which sentence holds the item's locker in {{num|v4_b_before_122b}}-{{num|v4_b_before_27b}} of scenes (layout alone: {{num|v4_b_layout_before_27b}}), almost none of it in J++. We then tested the **pointer**, four directions separating the positions, causally.
+- **Through the lens a pointer write looks random** (descriptive): the ordinal words' rank, the share the lens rebuilds and its readout move no more than under random draws of the same size, on three models (Fig. 7b).
 - **Removing the pointer stops position answers:** to near zero on the Qwens, by half on Muse; a random part of the same size barely changes them, and the recall loses much less (Fig. 5).
 - **Adding only the pointer creates position answers** on three of four models (not the 27B); a random part of the same size creates none.
 - **One fixed vector written into the bridge moves the lookup:** the mean difference between two positions sends it to the target locker in a quarter to a half of the writes at a real change's size; a random vector moves nothing.
@@ -109,6 +110,9 @@
 
 ![One fixed vector written at the bridge sends the lookup to its locker](figures/story/fig07_writes.png)
 *Fig. 7.*
+
+![Read through the J++ lens, the pointer looks like a random direction](figures/story/fig07b_verbal.png)
+*Fig. 7b.*
 
 ## 5. Where the pointer stops working
 
@@ -125,7 +129,7 @@
 *Fig. 9.*
 
 - **Later positions are coded elsewhere:** between the second and third locker the pointer barely moves the Qwens' lookup (Muse: {{num|pm_keep_12w_muse}}); writing their mean difference moves it only at twice a real change ({{pt|x45c_write_12_2_muse}}-{{pt|x45c_write_21_2_9b}} of writes on the 9B and Muse).
-- **About half of the route is unexplained:** removing identity outside J++ with the J++ part and the pointer leaves few lookups on the 9B and 27B, fewer than a wrong-pair direction of the same size (table), but it cuts identity answers only {{pt|x45em_cut_9b}} / {{pt|x45em_cut_27b}} more (bar 0.15, fixed in advance): partly specific on the Qwens, not on Muse.
+- **About half of the route is unexplained:** removing J++, the pointer and identity outside J++ together leaves few lookups on the 9B and 27B (table), yet against a wrong-pair direction it cuts identity answers only {{pt|x45em_cut_9b}} / {{pt|x45em_cut_27b}} more (bar 0.15, fixed in advance): partly specific on the Qwens, not on Muse.
 
 ![J++ part, pointer and identity outside J++ stop most 9B and 27B lookups, not Muse's](figures/story/fig10_what_is_left.png)
 *Fig. 10.*
@@ -146,7 +150,7 @@
 
 - **Failed when fixed in advance:** the 27B's strict rule and the 9B in the clean design; the 9B's replication (recall {{pt|rep_jpp_rc_excess_9b}}); the positive control (chemical symbols, 27B {{pt|x4_D_elements_27b}}, bar 0.20); a second route for the recall through the pointer; identity outside J++ by itself (27B only) and against a wrong pair; a second-versus-third pointer; the copied link outside the lens (27B, by one item); a cause for the 27B's loss with more directions ({{num|x45k_label}}).
 - **Gates missed (bar 0.80), not tested:** the 9B's natural passages, the 122B's routes and replication, the Qwens' main test without the chat template; reruns at 0.75 are descriptive.
-- **Design errors:** the write's dose fixed in advance, below a real change's size; the bar for the J++ part, pointer and identity removed together, out of reach at their share; the first scenes where only the asked pick changed reused another person's pick as the bridge (replaced by the clean design).
+- **Design errors:** the write's dose fixed in advance, below a real change's size; the bar for the three parts removed together, out of reach at their share; our first scenes where only the asked pick changed reused another person's pick (replaced by the clean design).
 - **The first test of where the link is made was a design error:** the main test's changed prompt also differs after the bridge word; where it does not ({{num|x45b_sane_pass_9b}} / {{num|x45b_sane_pass_27b}} items), its rule failed ([supplement](figures/supp/s03b_layers_45b.png)).
 - **Limits:** one-token answers and bridges; reader and answer source (prompt vs memory) confounded; the 122B in FP8; Zach's knock-out finds the split weak outside Qwen, our change-removal finds it on Muse.
 
@@ -163,10 +167,8 @@ Language models bind entities to attributes in context (Feng & Steinhardt 2023) 
 
 ## 9. Open questions
 
-- **What is the rest of the lookup's route around the lens?** Removing J++, the order pointer and identity outside J++ stops most lookups, but identity outside J++ is only partly specific to the swapped pair.
 - **What codes the later lockers?** Removal finds no separate 2nd-vs-3rd direction, yet writing their mean difference moves the lookup at twice a real change: a route the model may not use at its natural size.
 - **Why does the 27B's lookup need J++ once 100 directions are removed?** Our test of identity, pointer and generic fitting could not tell (27B and Muse).
-- **Is the 122B a different case?** Its split holds but is not specific against PCA directions.
 - **Does the order pointer exist in natural text?** A pointer refit per format is found on the 9B and Muse, not the 27B; the simple-scene pointer barely transfers.
 
 ## Appendix A. Links

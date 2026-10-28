@@ -2466,8 +2466,18 @@ def probe_rows() -> None:
                     S.record("probe", target, f"probe.{t}.chance.{m}", r["chance"], source=src)
 
 
+VERBAL_SUMMARY = S.REPO / "results" / "x47_verbal" / "summary-20261028T033646Z"  # 47.0, descriptive (no question)
+
+
+def f07b_verbal(plt) -> None:
+    """Fig. 7b: 47.0, read through the J++ lens a pointer write looks like a random draw of the same size."""
+    from scripts import story_b47b as B47
+
+    B47.build_47_0(VERBAL_SUMMARY, "fig07b_verbal", out_dir=S.OUT)
+
+
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f04_routes_design, f05_routes,
-               f06_depth, f07_writes, f08_first_locker, f09_transfer, f10_left, f11_scorecard)  # fmt: skip
+               f06_depth, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -2482,7 +2492,7 @@ SUPP_FIGS = (
 
 README_NAMES = ("fig00_setup", "fig01_split", "fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03_order", "fig03b_layers",
                 "fig03c_earlier_mention",
-                "fig04_routes_design", "fig05_routes", "fig06_depth", "fig07_writes", "fig08_first_locker",
+                "fig04_routes_design", "fig05_routes", "fig06_depth", "fig07_writes", "fig07b_verbal", "fig08_first_locker",
                 "fig09_transfer", "fig10_what_is_left", "fig11_scorecard")  # fmt: skip
 # the draft set's second sheet: the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",

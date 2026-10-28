@@ -830,6 +830,27 @@ fig07,muse-glimmer-30b,"lookup target share, random direction, s = 4",0.00666666
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the written locker's item,0.4375,,,64,muse30b_x8_write
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): the third item,0.25,,,64,muse30b_x8_write
 fig07,muse-glimmer-30b,recall changed under the strongest write (s = 4): other,0.3125,,,64,muse30b_x8_write
+fig07b_verbal,qwen3.5-9b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",27.0,20.0,26.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.5-9b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",50.5,2220.0,2821.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.5-9b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.05098144320771098,0.05098144320771098,0.057800012826919545,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.05900233564898372,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.5-9b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.22521910279989243,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.5-9b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.13867651671171188,0.07540600746870041,0.25396528840065,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.5-9b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",0.16010559350252151,0.07540600746870041,0.25396528840065,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.6-27b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",30.0,22.0,30.0,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.6-27b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",13.5,5013.52490234375,6343.5,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.6-27b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.04064532729797065,0.04064532729797065,0.0469822509214282,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.6-27b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.038332726806402206,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.6-27b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.20986421018838883,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.6-27b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.06569457054138184,0.06571345031261444,0.19714702665805817,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,qwen3.6-27b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",0.34857507050037384,0.06571345031261444,0.19714702665805817,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,muse-glimmer-30b,"47.0 (a) best ordinal word's rank, h + pointer write (median; null cut, null median)",93.5,58.45000076293945,88.75,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,muse-glimmer-30b,"47.0 (a) new item's name rank, h + identity change (median; null cut, null median)",25.0,3636.449951171875,4909.25,192,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,muse-glimmer-30b,"47.0 (b) share rebuilt by 25 lens directions: random draws (mean; mean, 95th pct)",0.007224978362210095,0.007224978362210095,0.01038632080890238,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions: pointer,0.0088062527065631,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,muse-glimmer-30b,47.0 (b) share rebuilt by 25 lens directions: identity_mean,0.0622436249256134,,,,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,muse-glimmer-30b,"47.0 (c) KL of the readout, h + write (median; null median, null cut)",0.06924905627965927,0.051669295877218246,0.06983767449855804,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
+fig07b_verbal,muse-glimmer-30b,"47.0 (c) KL of the readout, h + identity (median; null median, null cut)",3.7461936473846436,0.051583431661129,0.06983767449855804,200,results/x47_verbal/summary-20261028T033646Z/verbal.json
 fig08,qwen3.5-9b,"45a, first-locker moves, whole change, no sentence: identity share",0.5393,0.4672897196261682,0.6149535809018566,191,x6_routes/qwen35_9b_x6_routes_x45a
 fig08,qwen3.5-9b,"45a, first-locker moves, whole change, no sentence: position share",0.4607,,,191,x6_routes/qwen35_9b_x6_routes_x45a
 fig08,qwen3.5-9b,"45a, first-locker moves, whole change, a neutral sentence: identity share",0.5759,0.515622573757764,0.6407766990291263,191,x6_routes/qwen35_9b_x6_routes_x45a
@@ -6481,7 +6502,7 @@ numbers,,x4_C_animals_same_muse,"0.35 [0.13, 0.51]",,,,results/x4_alias/muse30b_
 numbers,,x4_C_animals_xlang_muse,"0.36 [0.20, 0.52]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,x4_C_elements_same_muse,"0.57 [0.38, 0.72]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
 numbers,,x4_C_elements_syn_muse,"0.76 [0.54, 0.96]",,,,results/x4_alias/muse30b_x4_patch/verdict-20261026T030631Z/verdict.json
-numbers,,pred_n,122,,,,predictions/README.md
+numbers,,pred_n,121,,,,predictions/README.md
 numbers,,pred_brier,0.32,,,,predictions/README.md
 numbers,,x8_sreal_9b,9B 1.36 to 2.70,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
 numbers,,x8_sreal_min_9b,1.36,,,,results/x8_write/qwen35_9b_x8_write/recall-20261026T123303Z/recall.json
