@@ -1,0 +1,88 @@
+{
+ "target": "muse-glimmer-30b",
+ "frame": "{p} picked the one known for {cue}.",
+ "candidates": 23,
+ "cues": {
+  "ant": "colonies",
+  "bee": "honey",
+  "cat": "curiosity",
+  "chicken": "eggs",
+  "cow": "milk",
+  "dog": "loyalty",
+  "eagle": "soaring",
+  "elephant": "memory",
+  "frog": "ponds",
+  "goat": "climbing",
+  "horse": "racing",
+  "lion": "mane",
+  "mouse": "cheese",
+  "owl": "wisdom",
+  "pig": "bacon",
+  "rabbit": "hopping",
+  "sheep": "wool",
+  "spider": "webs",
+  "tick": "Lyme",
+  "turkey": "Thanksgiving",
+  "wolf": "packs",
+  "zebra": "stripes"
+ },
+ "n_cues": 22,
+ "dropped": {
+  "fox": "no one-token cue among ['cunning']"
+ },
+ "n_dropped": 1,
+ "prompts_per_cue": 10,
+ "scenes": 700,
+ "scenes_dropped": {
+  "A and B have the same number of legs": 502
+ },
+ "halves": {
+  "fit": 350,
+  "test": 350
+ },
+ "bridge_items": {
+  "cat": 23,
+  "sheep": 25,
+  "horse": 34,
+  "turkey": 37,
+  "spider": 60,
+  "frog": 24,
+  "goat": 13,
+  "tick": 63,
+  "pig": 26,
+  "mouse": 21,
+  "chicken": 57,
+  "zebra": 20,
+  "eagle": 44,
+  "cow": 20,
+  "rabbit": 24,
+  "ant": 62,
+  "bee": 33,
+  "owl": 43,
+  "wolf": 19,
+  "elephant": 15,
+  "lion": 21,
+  "dog": 16
+ },
+ "decoy": 700,
+ "slot_leak": [],
+ "pcf_pairs": {
+  "pairs": 700
+ },
+ "example": {
+  "scene": "C2-0003",
+  "O": "The locker of the wolf is 9. The locker of the tick is 7. The locker of the cat is 3. Sara picked the tick. Beth picked the one known for curiosity. Finn picked the wolf.",
+  "S": "The locker of the tick is 4. The locker of the wolf is 9. The locker of the cat is 3. Sara picked the tick. Beth picked the one known for Lyme. Finn picked the wolf.",
+  "expect": {
+   "identity": 7,
+   "position": 9,
+   "value": 4,
+   "original": 3
+  },
+  "lookup_O_marked": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the wolf is 9. The locker of the tick is 7. The locker of the cat is 3. Sara picked the tick. Beth picked the one known for⟦ curiosity⟧. Finn picked the wolf.\nWhich locker belongs to Beth's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer:",
+  "decoy": {
+   "animal": "lion",
+   "cue": "mane"
+  }
+ }
+}

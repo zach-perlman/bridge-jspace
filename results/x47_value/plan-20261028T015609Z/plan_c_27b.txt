@@ -1,0 +1,180 @@
+warning: `VIRTUAL_ENV=/Users/danorel/.venvs/py312` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+ "set": "x0b_v2",
+ "scenes": 4410,
+ "cases": 1190,
+ "dropped": {
+  "json: no new number left": 160,
+  "json: no other pick with a different locker and memory number before the pick": 11,
+  "json: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 780,
+  "json: the bridge's locker statement comes after the pick": 348,
+  "prose: no new number left": 152,
+  "prose: no other pick with a different locker and memory number before the pick": 138,
+  "prose: no third locker item before the pick with a distinct number": 146,
+  "prose: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 236,
+  "prose: the bridge's locker statement comes after the pick": 384,
+  "table: no new number left": 165,
+  "table: no other pick with a different locker and memory number before the pick": 12,
+  "table: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 289,
+  "table: the bridge's locker statement comes after the pick": 399
+ },
+ "pcf_from": null,
+ "per_format": {
+  "prose": 414,
+  "table": 605,
+  "json": 171
+ },
+ "per_numbers": {
+  "words": 572,
+  "digits": 618
+ },
+ "target": "qwen3.6-27b"
+}
+## P2-L1-1091 (json): bridge cow -> duck; expected {'identity': '3', 'position': '6', 'value': '1', 'original': '5'}
+**lookup, ql** (O answers 5, S answers 3; bridge token 225):
+```
+<|im_start|>user
+Tool output from get_lockers:
+[{"item": "duck", "locker": "three"}, {"item": "butterfly", "locker": "seven"}, {"item": "frog", "locker": "nine"}, {"item": "camel", "locker": "eight"}, {"item": "scorpion", "locker": "six"}, {"item": "cow", "locker": "five"}]
+Tool output from get_rooms:
+[{"room": "hallway", "paint": "teal"}, {"room": "workshop", "paint": "grey"}, {"room": "attic", "paint": "grey"}, {"room": "pantry", "paint": "blue"}, {"room": "porch", "paint": "blue"}]
+Tool output from get_picks:
+[{"name": "Peter", "pick": "butterfly"}, {"name": "Ivy", "pick": "duck"}, {"name": "Mia", "pick": "frog"}, {"name": "Nina", "pick": "⟦cow⟧"}, {"name": "Ruby", "pick": "camel"}, {"name": "Philip", "pick": "cow"}, {"name": "Nora", "pick": "scorpion"}, {"name": "Finn", "pick": "scorpion"}]
+Which locker belongs to Nina's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## P2-L1-1296 (prose): bridge delta -> eta; expected {'identity': '5', 'position': '3', 'value': '4', 'original': '2'}
+**lookup, ql** (O answers 2, S answers 5; bridge token 97):
+```
+<|im_start|>user
+The locker of zeta is seven. Percy picked alpha. The locker of delta is two. The parking lot was nearly empty. Oscar picked alpha. The locker of iota is one. Alice picked eta. Ernest picked alpha. The heater made a strange noise. Paul picked iota. The locker of eta is five. The bakery sold out of rolls. The locker of theta is three. The clock in the hall ran slow. The locker of alpha is six. Eric picked⟦ delta⟧. Grace picked theta. Peter picked zeta. The evening was warm and still.
+Which locker belongs to Eric's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## P2-L0-0300 (table): bridge theta -> alpha; expected {'identity': '6', 'position': '7', 'value': '8', 'original': '5'}
+**lookup, ql** (O answers 5, S answers 6; bridge token 68):
+```
+<|im_start|>user
+Table lockers:
+| item | locker |
+|---|---|
+| alpha | 6 |
+| theta | 5 |
+| zeta | 7 |
+
+Table picks:
+| name | pick |
+|---|---|
+| Henry | zeta |
+| Vera |⟦ theta⟧ |
+| Leo | alpha |
+Which locker belongs to Vera's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## P2-L1-0384 (table): bridge hydrogen -> oxygen; expected {'identity': '9', 'position': '5', 'value': '3', 'original': '8'}
+**lookup, ql** (O answers 8, S answers 9; bridge token 166):
+```
+<|im_start|>user
+Table rooms:
+| room | paint |
+|---|---|
+| sunroom | yellow |
+| loft | grey |
+| garage | yellow |
+| workshop | teal |
+| den | cream |
+
+Table lockers:
+| item | locker |
+|---|---|
+| beryllium | 6 |
+| fluorine | 5 |
+| oxygen | 9 |
+| hydrogen | 8 |
+| nitrogen | 4 |
+| carbon | 1 |
+
+Table picks:
+| name | pick |
+|---|---|
+| Carl | oxygen |
+| June | carbon |
+| Eric | carbon |
+| Jared | beryllium |
+| Fiona | fluorine |
+| James |⟦ hydrogen⟧ |
+| Julia | nitrogen |
+| Mia | beryllium |
+Which locker belongs to James's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## P2-L2-0655 (table): bridge car -> bicycle; expected {'identity': '7', 'position': '5', 'value': '9', 'original': '6'}
+**lookup, ql** (O answers 6, S answers 7; bridge token 180):
+```
+<|im_start|>user
+Table lockers:
+| item | locker |
+|---|---|
+| motorcycle | four |
+| unicycle | three |
+| bicycle | seven |
+| car | six |
+| tricycle | five |
+
+Table rooms:
+| room | paint |
+|---|---|
+| nursery | green |
+| library | yellow |
+| sunroom | teal |
+| loft | cream |
+| cellar | green |
+| foyer | red |
+| lounge | green |
+| pantry | teal |
+| den | cream |
+| bedroom | teal |
+
+Table picks:
+| name | pick |
+|---|---|
+| Lucy | unicycle |
+| Alice | tricycle |
+| Hugo | motorcycle |
+| Cole | bicycle |
+| Finn | bicycle |
+| Carl |⟦ car⟧ |
+| Luna | tricycle |
+What is the locker number of Carl's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+

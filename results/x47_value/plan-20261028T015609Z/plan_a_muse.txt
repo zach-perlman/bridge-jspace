@@ -1,0 +1,322 @@
+warning: `VIRTUAL_ENV=/Users/danorel/.venvs/py312` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+ "cases": {
+  "C0": 700,
+  "C2": 700
+ },
+ "dropped": {
+  "A and B have the same number of legs": 479
+ },
+ "slot_value_independence_O": {
+  "n": 700,
+  "chi2": 10.352,
+  "df": 16,
+  "p": 0.8490754622688655,
+  "cramers_v": 0.086,
+  "rows": [
+   "0",
+   "1",
+   "2"
+  ],
+  "cols": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "table": [
+   [
+    23,
+    25,
+    22,
+    16,
+    28,
+    25,
+    23,
+    26,
+    34
+   ],
+   [
+    23,
+    28,
+    23,
+    23,
+    29,
+    34,
+    20,
+    27,
+    26
+   ],
+   [
+    27,
+    26,
+    29,
+    27,
+    34,
+    25,
+    26,
+    30,
+    21
+   ]
+  ],
+  "independent": true
+ },
+ "slot_value_independence_S_C2": {
+  "n": 700,
+  "chi2": 13.975,
+  "df": 16,
+  "p": 0.6146926536731634,
+  "cramers_v": 0.0999,
+  "rows": [
+   "0",
+   "1",
+   "2"
+  ],
+  "cols": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "table": [
+   [
+    20,
+    27,
+    34,
+    25,
+    27,
+    31,
+    20,
+    26,
+    36
+   ],
+   [
+    20,
+    24,
+    27,
+    22,
+    25,
+    27,
+    26,
+    28,
+    32
+   ],
+   [
+    25,
+    22,
+    25,
+    32,
+    21,
+    18,
+    31,
+    27,
+    22
+   ]
+  ],
+  "independent": true
+ },
+ "bridge_shift_qf_minus_ql": {
+  "lookup": {
+   "19": 1400
+  },
+  "recall": {
+   "20": 1400
+  }
+ },
+ "target": "muse-glimmer-30b"
+}
+## C2-0692 (prose): bridge wolf -> fly; expected {'identity': '9', 'position': '8', 'value': '4', 'original': '3'}
+**lookup, ql** (O answers 3, S answers 4; bridge token 83, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the duck is 8. The locker of the fly is 9. The locker of the wolf is 3. Luke picked the⟦ wolf⟧. Sam picked the fly. Ella picked the duck.
+Which locker belongs to Luke's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+**lookup, qf** (O answers 3, S answers 4; bridge token 102, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Luke's pick? Answer with a single digit and nothing else.
+
+The locker of the duck is 8. The locker of the fly is 9. The locker of the wolf is 3. Luke picked the⟦ wolf⟧. Sam picked the fly. Ella picked the duck.<|eot|><|start|>assistantAnswer: 
+```
+**recall, qf** (O answers 4, S answers 6; bridge token 103, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Luke's pick have? Answer with a single digit and nothing else.
+
+The locker of the duck is 8. The locker of the fly is 9. The locker of the wolf is 3. Luke picked the⟦ wolf⟧. Sam picked the fly. Ella picked the duck.<|eot|><|start|>assistantAnswer: 
+```
+
+## C2-0754 (prose): bridge fly -> owl; expected {'identity': '8', 'position': '6', 'value': '9', 'original': '2'}
+**lookup, ql** (O answers 2, S answers 9; bridge token 88, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the fly is 2. The locker of the fox is 6. The locker of the owl is 8. Vera picked the fox. Laura picked the⟦ fly⟧. Sam picked the owl.
+Which locker belongs to Laura's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+**lookup, qf** (O answers 2, S answers 9; bridge token 107, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Laura's pick? Answer with a single digit and nothing else.
+
+The locker of the fly is 2. The locker of the fox is 6. The locker of the owl is 8. Vera picked the fox. Laura picked the⟦ fly⟧. Sam picked the owl.<|eot|><|start|>assistantAnswer: 
+```
+**recall, qf** (O answers 6, S answers 2; bridge token 108, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Laura's pick have? Answer with a single digit and nothing else.
+
+The locker of the fly is 2. The locker of the fox is 6. The locker of the owl is 8. Vera picked the fox. Laura picked the⟦ fly⟧. Sam picked the owl.<|eot|><|start|>assistantAnswer: 
+```
+
+## C2-0074 (prose): bridge frog -> eagle; expected {'identity': '5', 'position': '3', 'value': '9', 'original': '4'}
+**lookup, ql** (O answers 4, S answers 9; bridge token 83, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the eagle is 5. The locker of the dog is 3. The locker of the frog is 4. Carl picked the⟦ frog⟧. Nina picked the eagle. James picked the dog.
+Which locker belongs to Carl's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+**lookup, qf** (O answers 4, S answers 9; bridge token 102, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Carl's pick? Answer with a single digit and nothing else.
+
+The locker of the eagle is 5. The locker of the dog is 3. The locker of the frog is 4. Carl picked the⟦ frog⟧. Nina picked the eagle. James picked the dog.<|eot|><|start|>assistantAnswer: 
+```
+**recall, qf** (O answers 4, S answers 2; bridge token 103, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Carl's pick have? Answer with a single digit and nothing else.
+
+The locker of the eagle is 5. The locker of the dog is 3. The locker of the frog is 4. Carl picked the⟦ frog⟧. Nina picked the eagle. James picked the dog.<|eot|><|start|>assistantAnswer: 
+```
+
+## C2-0471 (prose): bridge ant -> frog; expected {'identity': '6', 'position': '9', 'value': '7', 'original': '5'}
+**lookup, ql** (O answers 5, S answers 7; bridge token 88, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the bear is 9. The locker of the ant is 5. The locker of the frog is 6. Victor picked the frog. Iris picked the⟦ ant⟧. Eric picked the bear.
+Which locker belongs to Iris's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+**lookup, qf** (O answers 5, S answers 7; bridge token 107, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Iris's pick? Answer with a single digit and nothing else.
+
+The locker of the bear is 9. The locker of the ant is 5. The locker of the frog is 6. Victor picked the frog. Iris picked the⟦ ant⟧. Eric picked the bear.<|eot|><|start|>assistantAnswer: 
+```
+**recall, qf** (O answers 6, S answers 4; bridge token 108, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Iris's pick have? Answer with a single digit and nothing else.
+
+The locker of the bear is 9. The locker of the ant is 5. The locker of the frog is 6. Victor picked the frog. Iris picked the⟦ ant⟧. Eric picked the bear.<|eot|><|start|>assistantAnswer: 
+```
+
+## C2-0900 (prose): bridge pig -> duck; expected {'identity': '2', 'position': '3', 'value': '5', 'original': '4'}
+**lookup, ql** (O answers 4, S answers 5; bridge token 88, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the rabbit is 3. The locker of the pig is 4. The locker of the duck is 2. David picked the rabbit. Max picked the⟦ pig⟧. Paul picked the duck.
+Which locker belongs to Max's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+**lookup, qf** (O answers 4, S answers 5; bridge token 107, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Max's pick? Answer with a single digit and nothing else.
+
+The locker of the rabbit is 3. The locker of the pig is 4. The locker of the duck is 2. David picked the rabbit. Max picked the⟦ pig⟧. Paul picked the duck.<|eot|><|start|>assistantAnswer: 
+```
+**recall, qf** (O answers 4, S answers 2; bridge token 108, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Max's pick have? Answer with a single digit and nothing else.
+
+The locker of the rabbit is 3. The locker of the pig is 4. The locker of the duck is 2. David picked the rabbit. Max picked the⟦ pig⟧. Paul picked the duck.<|eot|><|start|>assistantAnswer: 
+```
+

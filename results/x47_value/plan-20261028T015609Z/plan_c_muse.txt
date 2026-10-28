@@ -1,0 +1,165 @@
+warning: `VIRTUAL_ENV=/Users/danorel/.venvs/py312` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+ "set": "x0b_v2",
+ "scenes": 4410,
+ "cases": 1336,
+ "dropped": {
+  "json: no new number left": 160,
+  "json: no other pick with a different locker and memory number before the pick": 11,
+  "json: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 736,
+  "json: the bridge's locker statement comes after the pick": 348,
+  "prose: no new number left": 152,
+  "prose: no other pick with a different locker and memory number before the pick": 138,
+  "prose: no third locker item before the pick with a distinct number": 146,
+  "prose: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 191,
+  "prose: the bridge's locker statement comes after the pick": 384,
+  "table: no new number left": 165,
+  "table: no other pick with a different locker and memory number before the pick": 12,
+  "table: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 232,
+  "table: the bridge's locker statement comes after the pick": 399
+ },
+ "pcf_from": "x7_pcf/muse30b_x45d_fit",
+ "held_out_cases": 577,
+ "per_format": {
+  "prose": 196,
+  "table": 278,
+  "json": 103
+ },
+ "per_numbers": {
+  "words": 297,
+  "digits": 280
+ },
+ "target": "muse-glimmer-30b"
+}
+## P2-L1-0976 (prose): bridge Saturn -> Venus; expected {'identity': '8', 'position': '4', 'value': '3', 'original': '9'}
+**lookup, ql** (O answers 9, S answers 8; bridge token 107):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of Neptune is four. The locker of Venus is eight. The evening was warm and still. The library closed early. The locker of Uranus is one. The new curtains arrived on Monday. Nina picked Neptune. The locker of Saturn is nine. Anna picked⟦ Saturn⟧. Eric picked Venus. Ernest picked Saturn. The locker of Mercury is two. Anita picked Venus. The trail was muddy after the storm. Grace picked Mars. The locker of Mars is seven. The school held a concert. Oscar picked Mercury. Dan picked Uranus.
+Which locker belongs to Anna's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+
+## P2-L1-1160 (table): bridge hexagon -> triangle; expected {'identity': '2', 'position': '8', 'value': '4', 'original': '1'}
+**lookup, ql** (O answers 1, S answers 2; bridge token 158):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Table lockers:
+| item | locker |
+|---|---|
+| heptagon | 6 |
+| triangle | 2 |
+| nonagon | 7 |
+| pentagon | 8 |
+| octagon | 3 |
+| hexagon | 1 |
+
+Table picks:
+| name | pick |
+|---|---|
+| Emma | heptagon |
+| Maria | triangle |
+| Victor | octagon |
+| Sara | pentagon |
+| Ted | triangle |
+| Vincent | triangle |
+| Peter | nonagon |
+| Tom |⟦ hexagon⟧ |
+
+Table rooms:
+| room | paint |
+|---|---|
+| laundry | cream |
+| den | cream |
+| studio | blue |
+| porch | teal |
+| workshop | grey |
+Which locker belongs to Tom's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+
+## P2-L0-0262 (prose): bridge hydrogen -> carbon; expected {'identity': '8', 'position': '5', 'value': '1', 'original': '6'}
+**lookup, ql** (O answers 6, S answers 8; bridge token 90):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Victor picked carbon. The locker of hydrogen is six. The locker of beryllium is five. The locker of carbon is eight. Rose picked beryllium. Finn picked⟦ hydrogen⟧.
+Which locker belongs to Finn's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+
+## P2-L1-0283 (prose): bridge Saturn -> Earth; expected {'identity': '2', 'position': '4', 'value': '6', 'original': '8'}
+**lookup, ql** (O answers 8, S answers 2; bridge token 154):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Peter picked Jupiter. Dean picked Venus. The locker of Venus is 7. The locker of Jupiter is 9. The hallway lights were dim. Olivia picked Neptune. Henry picked Earth. The locker of Saturn is 8. Herbert picked Saturn. The shop on the corner reopened. The train left on time. The fence was repaired in spring. The locker of Neptune is 4. The lake froze early this year. Kyle picked Venus. The locker of Earth is 2. Dan picked⟦ Saturn⟧. The locker of Uranus is 1. Anna picked Uranus.
+Which locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+
+## P2-L2-0622 (table): bridge Venus -> Saturn; expected {'identity': '9', 'position': '5', 'value': '8', 'original': '3'}
+**lookup, ql** (O answers 3, S answers 9; bridge token 182):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Table lockers:
+| item | locker |
+|---|---|
+| Mercury | seven |
+| Earth | one |
+| Uranus | two |
+| Neptune | four |
+| Jupiter | six |
+| Saturn | nine |
+| Venus | three |
+| Mars | five |
+
+Table rooms:
+| room | paint |
+|---|---|
+| studio | cream |
+| closet | white |
+| library | grey |
+| laundry | green |
+| nursery | cream |
+| hallway | teal |
+| garage | cream |
+| attic | green |
+| den | red |
+| porch | green |
+
+Table picks:
+| name | pick |
+|---|---|
+| James |⟦ Venus⟧ |
+| Lily | Jupiter |
+| Peter | Earth |
+| Adam | Saturn |
+| Sam | Uranus |
+| Anna | Mars |
+| Jared | Earth |
+| Laura | Mercury |
+| David | Neptune |
+| Seth | Neptune |
+Which locker belongs to James's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistantAnswer: 
+```
+

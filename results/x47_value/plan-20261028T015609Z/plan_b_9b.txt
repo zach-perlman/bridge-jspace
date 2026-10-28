@@ -1,0 +1,342 @@
+warning: `VIRTUAL_ENV=/Users/danorel/.venvs/py312` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+ "colours": {
+  "single_token": [
+   "red",
+   "blue",
+   "green",
+   "pink",
+   "gold",
+   "grey",
+   "teal",
+   "navy"
+  ],
+  "dropped": []
+ },
+ "cases": {
+  "C0": 700,
+  "C2": 700
+ },
+ "dropped": {
+  "A and B have the same number of legs": 407
+ },
+ "slot_value_independence_O": {
+  "n": 700,
+  "chi2": 4.983,
+  "df": 14,
+  "p": 0.9835082458770614,
+  "cramers_v": 0.0597,
+  "rows": [
+   "0",
+   "1",
+   "2"
+  ],
+  "cols": [
+   "blue",
+   "gold",
+   "green",
+   "grey",
+   "navy",
+   "pink",
+   "red",
+   "teal"
+  ],
+  "table": [
+   [
+    27,
+    26,
+    29,
+    33,
+    27,
+    26,
+    28,
+    32
+   ],
+   [
+    26,
+    24,
+    24,
+    28,
+    29,
+    26,
+    33,
+    28
+   ],
+   [
+    36,
+    32,
+    30,
+    28,
+    27,
+    26,
+    34,
+    41
+   ]
+  ],
+  "independent": true
+ },
+ "slot_value_independence_S_C2": {
+  "n": 700,
+  "chi2": 23.754,
+  "df": 14,
+  "p": 0.06146926536731634,
+  "cramers_v": 0.1303,
+  "rows": [
+   "0",
+   "1",
+   "2"
+  ],
+  "cols": [
+   "blue",
+   "gold",
+   "green",
+   "grey",
+   "navy",
+   "pink",
+   "red",
+   "teal"
+  ],
+  "table": [
+   [
+    33,
+    30,
+    24,
+    26,
+    33,
+    30,
+    23,
+    32
+   ],
+   [
+    20,
+    28,
+    30,
+    33,
+    44,
+    33,
+    39,
+    27
+   ],
+   [
+    26,
+    24,
+    37,
+    32,
+    26,
+    34,
+    23,
+    13
+   ]
+  ],
+  "independent": true
+ },
+ "bridge_shift_qf_minus_ql": {
+  "lookup": {
+   "20": 1400
+  },
+  "recall": {
+   "21": 1400
+  }
+ },
+ "target": "qwen3.5-9b"
+}
+## C2-0634 (prose): bridge cat -> owl; expected {'identity': 'navy', 'position': 'red', 'value': 'pink', 'original': 'gold'}
+**lookup, ql** (O answers gold, S answers pink; bridge token 30, shift 20):
+```
+<|im_start|>user
+The locker of the owl is navy. The locker of the duck is red. The locker of the cat is gold. Sean picked the⟦ cat⟧. Owen picked the duck. Henry picked the owl.
+Which locker belongs to Sean's pick? Answer with a single word and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**lookup, qf** (O answers gold, S answers pink; bridge token 50, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Sean's pick? Answer with a single word and nothing else.
+
+The locker of the owl is navy. The locker of the duck is red. The locker of the cat is gold. Sean picked the⟦ cat⟧. Owen picked the duck. Henry picked the owl.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**recall, qf** (O answers 4, S answers 2; bridge token 51, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Sean's pick have? Answer with a single digit and nothing else.
+
+The locker of the owl is navy. The locker of the duck is red. The locker of the cat is gold. Sean picked the⟦ cat⟧. Owen picked the duck. Henry picked the owl.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## C2-0687 (prose): bridge chicken -> cow; expected {'identity': 'gold', 'position': 'green', 'value': 'pink', 'original': 'blue'}
+**lookup, ql** (O answers blue, S answers pink; bridge token 40, shift 20):
+```
+<|im_start|>user
+The locker of the goose is green. The locker of the cow is gold. The locker of the chicken is blue. Will picked the cow. Rose picked the goose. Sean picked the⟦ chicken⟧.
+Which locker belongs to Sean's pick? Answer with a single word and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**lookup, qf** (O answers blue, S answers pink; bridge token 60, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Sean's pick? Answer with a single word and nothing else.
+
+The locker of the goose is green. The locker of the cow is gold. The locker of the chicken is blue. Will picked the cow. Rose picked the goose. Sean picked the⟦ chicken⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**recall, qf** (O answers 2, S answers 4; bridge token 61, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Sean's pick have? Answer with a single digit and nothing else.
+
+The locker of the goose is green. The locker of the cow is gold. The locker of the chicken is blue. Will picked the cow. Rose picked the goose. Sean picked the⟦ chicken⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## C2-0060 (prose): bridge ant -> cow; expected {'identity': 'red', 'position': 'blue', 'value': 'grey', 'original': 'pink'}
+**lookup, ql** (O answers pink, S answers grey; bridge token 40, shift 20):
+```
+<|im_start|>user
+The locker of the ant is pink. The locker of the deer is blue. The locker of the cow is red. David picked the deer. Eva picked the cow. Tom picked the⟦ ant⟧.
+Which locker belongs to Tom's pick? Answer with a single word and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**lookup, qf** (O answers pink, S answers grey; bridge token 60, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Tom's pick? Answer with a single word and nothing else.
+
+The locker of the ant is pink. The locker of the deer is blue. The locker of the cow is red. David picked the deer. Eva picked the cow. Tom picked the⟦ ant⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**recall, qf** (O answers 6, S answers 4; bridge token 61, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Tom's pick have? Answer with a single digit and nothing else.
+
+The locker of the ant is pink. The locker of the deer is blue. The locker of the cow is red. David picked the deer. Eva picked the cow. Tom picked the⟦ ant⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## C2-0410 (prose): bridge fly -> duck; expected {'identity': 'teal', 'position': 'grey', 'value': 'gold', 'original': 'blue'}
+**lookup, ql** (O answers blue, S answers gold; bridge token 40, shift 20):
+```
+<|im_start|>user
+The locker of the frog is grey. The locker of the duck is teal. The locker of the fly is blue. Mia picked the duck. Eric picked the frog. Victor picked the⟦ fly⟧.
+Which locker belongs to Victor's pick? Answer with a single word and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**lookup, qf** (O answers blue, S answers gold; bridge token 60, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Victor's pick? Answer with a single word and nothing else.
+
+The locker of the frog is grey. The locker of the duck is teal. The locker of the fly is blue. Mia picked the duck. Eric picked the frog. Victor picked the⟦ fly⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**recall, qf** (O answers 6, S answers 2; bridge token 61, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Victor's pick have? Answer with a single digit and nothing else.
+
+The locker of the frog is grey. The locker of the duck is teal. The locker of the fly is blue. Mia picked the duck. Eric picked the frog. Victor picked the⟦ fly⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## C2-0819 (prose): bridge butterfly -> duck; expected {'identity': 'teal', 'position': 'grey', 'value': 'red', 'original': 'pink'}
+**lookup, ql** (O answers pink, S answers red; bridge token 30, shift 20):
+```
+<|im_start|>user
+The locker of the butterfly is pink. The locker of the duck is teal. The locker of the spider is grey. Iris picked the⟦ butterfly⟧. Paul picked the duck. Owen picked the spider.
+Which locker belongs to Iris's pick? Answer with a single word and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**lookup, qf** (O answers pink, S answers red; bridge token 50, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Iris's pick? Answer with a single word and nothing else.
+
+The locker of the butterfly is pink. The locker of the duck is teal. The locker of the spider is grey. Iris picked the⟦ butterfly⟧. Paul picked the duck. Owen picked the spider.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer:
+```
+**recall, qf** (O answers 6, S answers 2; bridge token 51, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Iris's pick have? Answer with a single digit and nothing else.
+
+The locker of the butterfly is pink. The locker of the duck is teal. The locker of the spider is grey. Iris picked the⟦ butterfly⟧. Paul picked the duck. Owen picked the spider.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+

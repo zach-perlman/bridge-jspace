@@ -1,0 +1,142 @@
+warning: `VIRTUAL_ENV=/Users/danorel/.venvs/py312` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+ "set": "x0b_v2",
+ "scenes": 4410,
+ "cases": 1190,
+ "dropped": {
+  "json: no new number left": 160,
+  "json: no other pick with a different locker and memory number before the pick": 11,
+  "json: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 780,
+  "json: the bridge's locker statement comes after the pick": 348,
+  "prose: no new number left": 152,
+  "prose: no other pick with a different locker and memory number before the pick": 138,
+  "prose: no third locker item before the pick with a distinct number": 146,
+  "prose: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 236,
+  "prose: the bridge's locker statement comes after the pick": 384,
+  "table: no new number left": 165,
+  "table: no other pick with a different locker and memory number before the pick": 12,
+  "table: the bridge is not one token at the same index in O and S, or S differs from the bridge on": 289,
+  "table: the bridge's locker statement comes after the pick": 399
+ },
+ "pcf_from": "x7_pcf/qwen35_9b_x45d_fit",
+ "held_out_cases": 439,
+ "per_format": {
+  "prose": 163,
+  "table": 192,
+  "json": 84
+ },
+ "per_numbers": {
+  "words": 225,
+  "digits": 214
+ },
+ "target": "qwen3.5-9b"
+}
+## P2-L2-1304 (prose): bridge bicycle -> car; expected {'identity': '5', 'position': '3', 'value': '7', 'original': '1'}
+**lookup, ql** (O answers 1, S answers 5; bridge token 117):
+```
+<|im_start|>user
+Eva picked the unicycle. Rhea picked the unicycle. The locker of the motorcycle is 4. The locker of the unicycle is 3. The bakery sold out of rolls. The locker of the bicycle is 1. The road was wet after the rain. The hallway lights were dim. Lily picked the motorcycle. Finn picked the car. The locker of the tricycle is 2. The locker of the car is 5. The school held a concert. The parking lot was nearly empty. Leo picked the tricycle. Ruby picked the⟦ bicycle⟧. The weather was mild all week. The garden gate needs new paint. The soup needed more salt. The river was calm that morning. The printer ran out of paper. Fred picked the tricycle.
+Which locker belongs to Ruby's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## P2-L1-0179 (table): bridge tick -> elephant; expected {'identity': '3', 'position': '7', 'value': '5', 'original': '1'}
+**lookup, ql** (O answers 1, S answers 3; bridge token 125):
+```
+<|im_start|>user
+Table lockers:
+| item | locker |
+|---|---|
+| duck | 6 |
+| elephant | 3 |
+| parrot | 4 |
+| tick | 1 |
+| pig | 7 |
+| deer | 9 |
+
+Table picks:
+| name | pick |
+|---|---|
+| Luke | duck |
+| Carl | elephant |
+| Emma | pig |
+| Emily | duck |
+| Hugo | parrot |
+| Dean | duck |
+| Mark | deer |
+| Dan |⟦ tick⟧ |
+
+Table rooms:
+| room | paint |
+|---|---|
+| office | cream |
+| nursery | blue |
+| attic | green |
+| loft | grey |
+| closet | blue |
+Which locker belongs to Dan's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## P2-L2-0125 (json): bridge square -> triangle; expected {'identity': '9', 'position': '6', 'value': '4', 'original': '3'}
+**lookup, ql** (O answers 3, S answers 9; bridge token 261):
+```
+<|im_start|>user
+Tool output from get_lockers:
+[{"item": "square", "locker": 3}, {"item": "octagon", "locker": 1}, {"item": "pentagon", "locker": 2}, {"item": "hexagon", "locker": 7}, {"item": "nonagon", "locker": 6}, {"item": "triangle", "locker": 9}, {"item": "heptagon", "locker": 5}]
+Tool output from get_rooms:
+[{"room": "laundry", "paint": "green"}, {"room": "loft", "paint": "teal"}, {"room": "balcony", "paint": "green"}, {"room": "bedroom", "paint": "white"}, {"room": "library", "paint": "white"}, {"room": "office", "paint": "blue"}, {"room": "pantry", "paint": "green"}, {"room": "foyer", "paint": "red"}, {"room": "den", "paint": "red"}, {"room": "porch", "paint": "blue"}]
+Tool output from get_picks:
+[{"name": "Eric", "pick": "⟦square⟧"}, {"name": "Sean", "pick": "heptagon"}, {"name": "Emma", "pick": "triangle"}, {"name": "Luke", "pick": "octagon"}, {"name": "Eve", "pick": "hexagon"}, {"name": "Tom", "pick": "nonagon"}, {"name": "Ernest", "pick": "heptagon"}, {"name": "Clara", "pick": "pentagon"}, {"name": "Emily", "pick": "hexagon"}]
+Which locker belongs to Eric's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## P2-L1-0302 (json): bridge square -> triangle; expected {'identity': '5', 'position': '1', 'value': '8', 'original': '3'}
+**lookup, ql** (O answers 3, S answers 5; bridge token 186):
+```
+<|im_start|>user
+Tool output from get_lockers:
+[{"item": "triangle", "locker": 5}, {"item": "octagon", "locker": 6}, {"item": "pentagon", "locker": 7}, {"item": "square", "locker": 3}, {"item": "hexagon", "locker": 4}, {"item": "heptagon", "locker": 1}]
+Tool output from get_rooms:
+[{"room": "foyer", "paint": "green"}, {"room": "loft", "paint": "teal"}, {"room": "garage", "paint": "yellow"}, {"room": "workshop", "paint": "cream"}, {"room": "bedroom", "paint": "yellow"}]
+Tool output from get_picks:
+[{"name": "Hugo", "pick": "⟦square⟧"}, {"name": "Lily", "pick": "heptagon"}, {"name": "Ben", "pick": "triangle"}, {"name": "Edna", "pick": "square"}, {"name": "Kate", "pick": "hexagon"}, {"name": "Hank", "pick": "heptagon"}, {"name": "Eve", "pick": "pentagon"}, {"name": "Liam", "pick": "octagon"}]
+Which locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## P2-L0-0169 (prose): bridge alpha -> iota; expected {'identity': '4', 'position': '1', 'value': '2', 'original': '6'}
+**lookup, ql** (O answers 6, S answers 4; bridge token 30):
+```
+<|im_start|>user
+The locker of alpha is six. The locker of eta is one. The locker of iota is four. Sara picked eta. Lucy picked⟦ alpha⟧. Ivy picked iota.
+Which locker belongs to Lucy's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+

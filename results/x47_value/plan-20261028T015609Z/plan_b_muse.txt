@@ -1,0 +1,320 @@
+warning: `VIRTUAL_ENV=/Users/danorel/.venvs/py312` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+ "colours": {
+  "single_token": [
+   "red",
+   "blue",
+   "green",
+   "pink",
+   "gold",
+   "grey",
+   "navy"
+  ],
+  "dropped": [
+   "teal"
+  ]
+ },
+ "cases": {
+  "C0": 700,
+  "C2": 700
+ },
+ "dropped": {
+  "A and B have the same number of legs": 455
+ },
+ "slot_value_independence_O": {
+  "n": 700,
+  "chi2": 6.639,
+  "df": 12,
+  "p": 0.8790604697651174,
+  "cramers_v": 0.0689,
+  "rows": [
+   "0",
+   "1",
+   "2"
+  ],
+  "cols": [
+   "blue",
+   "gold",
+   "green",
+   "grey",
+   "navy",
+   "pink",
+   "red"
+  ],
+  "table": [
+   [
+    21,
+    39,
+    38,
+    24,
+    35,
+    32,
+    29
+   ],
+   [
+    27,
+    32,
+    36,
+    23,
+    42,
+    28,
+    28
+   ],
+   [
+    36,
+    38,
+    38,
+    38,
+    47,
+    39,
+    30
+   ]
+  ],
+  "independent": true
+ },
+ "slot_value_independence_S_C2": {
+  "n": 700,
+  "chi2": 12.91,
+  "df": 12,
+  "p": 0.3828085957021489,
+  "cramers_v": 0.096,
+  "rows": [
+   "0",
+   "1",
+   "2"
+  ],
+  "cols": [
+   "blue",
+   "gold",
+   "green",
+   "grey",
+   "navy",
+   "pink",
+   "red"
+  ],
+  "table": [
+   [
+    34,
+    39,
+    41,
+    37,
+    29,
+    24,
+    31
+   ],
+   [
+    27,
+    39,
+    39,
+    35,
+    22,
+    42,
+    28
+   ],
+   [
+    34,
+    30,
+    35,
+    38,
+    20,
+    47,
+    29
+   ]
+  ],
+  "independent": true
+ },
+ "bridge_shift_qf_minus_ql": {
+  "lookup": {
+   "19": 1400
+  },
+  "recall": {
+   "20": 1400
+  }
+ },
+ "target": "muse-glimmer-30b"
+}
+## C2-0668 (prose): bridge chicken -> pig; expected {'identity': 'grey', 'position': 'red', 'value': 'blue', 'original': 'green'}
+**lookup, ql** (O answers green, S answers blue; bridge token 85, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the frog is red. The locker of the chicken is green. The locker of the pig is grey. Oscar picked the frog. Iris picked the⟦ chicken⟧. Kyle picked the pig.
+Which locker belongs to Iris's pick? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer:
+```
+**lookup, qf** (O answers green, S answers blue; bridge token 104, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Iris's pick? Answer with a single word and nothing else.
+
+The locker of the frog is red. The locker of the chicken is green. The locker of the pig is grey. Oscar picked the frog. Iris picked the⟦ chicken⟧. Kyle picked the pig.<|eot|><|start|>assistantAnswer:
+```
+**recall, qf** (O answers 2, S answers 4; bridge token 105, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Iris's pick have? Answer with a single digit and nothing else.
+
+The locker of the frog is red. The locker of the chicken is green. The locker of the pig is grey. Oscar picked the frog. Iris picked the⟦ chicken⟧. Kyle picked the pig.<|eot|><|start|>assistantAnswer: 
+```
+
+## C2-0723 (prose): bridge ant -> rabbit; expected {'identity': 'blue', 'position': 'grey', 'value': 'red', 'original': 'green'}
+**lookup, ql** (O answers green, S answers red; bridge token 80, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the turkey is grey. The locker of the rabbit is blue. The locker of the ant is green. Mia picked the⟦ ant⟧. Ella picked the turkey. Ben picked the rabbit.
+Which locker belongs to Mia's pick? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer:
+```
+**lookup, qf** (O answers green, S answers red; bridge token 99, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Mia's pick? Answer with a single word and nothing else.
+
+The locker of the turkey is grey. The locker of the rabbit is blue. The locker of the ant is green. Mia picked the⟦ ant⟧. Ella picked the turkey. Ben picked the rabbit.<|eot|><|start|>assistantAnswer:
+```
+**recall, qf** (O answers 6, S answers 4; bridge token 100, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Mia's pick have? Answer with a single digit and nothing else.
+
+The locker of the turkey is grey. The locker of the rabbit is blue. The locker of the ant is green. Mia picked the⟦ ant⟧. Ella picked the turkey. Ben picked the rabbit.<|eot|><|start|>assistantAnswer: 
+```
+
+## C2-0068 (prose): bridge rabbit -> butterfly; expected {'identity': 'gold', 'position': 'navy', 'value': 'blue', 'original': 'grey'}
+**lookup, ql** (O answers grey, S answers blue; bridge token 90, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the butterfly is gold. The locker of the turkey is navy. The locker of the rabbit is grey. Emma picked the turkey. Ruby picked the butterfly. Tom picked the⟦ rabbit⟧.
+Which locker belongs to Tom's pick? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer:
+```
+**lookup, qf** (O answers grey, S answers blue; bridge token 109, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Tom's pick? Answer with a single word and nothing else.
+
+The locker of the butterfly is gold. The locker of the turkey is navy. The locker of the rabbit is grey. Emma picked the turkey. Ruby picked the butterfly. Tom picked the⟦ rabbit⟧.<|eot|><|start|>assistantAnswer:
+```
+**recall, qf** (O answers 4, S answers 6; bridge token 110, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Tom's pick have? Answer with a single digit and nothing else.
+
+The locker of the butterfly is gold. The locker of the turkey is navy. The locker of the rabbit is grey. Emma picked the turkey. Ruby picked the butterfly. Tom picked the⟦ rabbit⟧.<|eot|><|start|>assistantAnswer: 
+```
+
+## C2-0448 (prose): bridge dog -> owl; expected {'identity': 'green', 'position': 'pink', 'value': 'red', 'original': 'grey'}
+**lookup, ql** (O answers grey, S answers red; bridge token 85, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the dog is grey. The locker of the pig is pink. The locker of the owl is green. Jack picked the owl. Ryan picked the⟦ dog⟧. Sam picked the pig.
+Which locker belongs to Ryan's pick? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer:
+```
+**lookup, qf** (O answers grey, S answers red; bridge token 104, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Ryan's pick? Answer with a single word and nothing else.
+
+The locker of the dog is grey. The locker of the pig is pink. The locker of the owl is green. Jack picked the owl. Ryan picked the⟦ dog⟧. Sam picked the pig.<|eot|><|start|>assistantAnswer:
+```
+**recall, qf** (O answers 4, S answers 2; bridge token 105, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Ryan's pick have? Answer with a single digit and nothing else.
+
+The locker of the dog is grey. The locker of the pig is pink. The locker of the owl is green. Jack picked the owl. Ryan picked the⟦ dog⟧. Sam picked the pig.<|eot|><|start|>assistantAnswer: 
+```
+
+## C2-0862 (prose): bridge pig -> bee; expected {'identity': 'pink', 'position': 'blue', 'value': 'grey', 'original': 'gold'}
+**lookup, ql** (O answers gold, S answers grey; bridge token 90, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>The locker of the pig is gold. The locker of the bee is pink. The locker of the spider is blue. Grace picked the spider. Tara picked the bee. Tom picked the⟦ pig⟧.
+Which locker belongs to Tom's pick? Answer with a single word and nothing else.<|eot|><|start|>assistantAnswer:
+```
+**lookup, qf** (O answers gold, S answers grey; bridge token 109, shift 19):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: Which locker belongs to Tom's pick? Answer with a single word and nothing else.
+
+The locker of the pig is gold. The locker of the bee is pink. The locker of the spider is blue. Grace picked the spider. Tara picked the bee. Tom picked the⟦ pig⟧.<|eot|><|start|>assistantAnswer:
+```
+**recall, qf** (O answers 4, S answers 6; bridge token 110, shift 20):
+```
+<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-10-28.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Question: How many legs does Tom's pick have? Answer with a single digit and nothing else.
+
+The locker of the pig is gold. The locker of the bee is pink. The locker of the spider is blue. Grace picked the spider. Tara picked the bee. Tom picked the⟦ pig⟧.<|eot|><|start|>assistantAnswer: 
+```
+

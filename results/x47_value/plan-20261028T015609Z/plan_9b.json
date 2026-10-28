@@ -1,0 +1,88 @@
+{
+ "target": "qwen3.5-9b",
+ "frame": "{p} picked the one known for {cue}.",
+ "candidates": 23,
+ "cues": {
+  "ant": "colonies",
+  "bee": "honey",
+  "cat": "curiosity",
+  "chicken": "eggs",
+  "cow": "milk",
+  "dog": "loyalty",
+  "eagle": "soaring",
+  "elephant": "ivory",
+  "fox": "cunning",
+  "frog": "ponds",
+  "goat": "climbing",
+  "horse": "racing",
+  "lion": "roaring",
+  "mouse": "cheese",
+  "owl": "wisdom",
+  "pig": "bacon",
+  "rabbit": "hopping",
+  "sheep": "wool",
+  "spider": "webs",
+  "tick": "Lyme",
+  "turkey": "Thanksgiving",
+  "wolf": "packs"
+ },
+ "n_cues": 22,
+ "dropped": {
+  "zebra": "the animal is not one token"
+ },
+ "n_dropped": 1,
+ "prompts_per_cue": 10,
+ "scenes": 700,
+ "scenes_dropped": {
+  "A and B have the same number of legs": 606
+ },
+ "halves": {
+  "fit": 350,
+  "test": 350
+ },
+ "bridge_items": {
+  "cat": 21,
+  "rabbit": 20,
+  "goat": 28,
+  "tick": 43,
+  "sheep": 20,
+  "fox": 27,
+  "horse": 19,
+  "dog": 18,
+  "spider": 57,
+  "ant": 60,
+  "lion": 19,
+  "cow": 18,
+  "pig": 20,
+  "eagle": 52,
+  "bee": 38,
+  "owl": 49,
+  "mouse": 24,
+  "turkey": 59,
+  "frog": 21,
+  "chicken": 49,
+  "wolf": 25,
+  "elephant": 13
+ },
+ "decoy": 700,
+ "slot_leak": [],
+ "pcf_pairs": {
+  "pairs": 700
+ },
+ "example": {
+  "scene": "C2-0003",
+  "O": "The locker of the turkey is 9. The locker of the spider is 7. The locker of the cat is 3. Sara picked the spider. Beth picked the one known for curiosity. Finn picked the turkey.",
+  "S": "The locker of the spider is 4. The locker of the turkey is 9. The locker of the cat is 3. Sara picked the spider. Beth picked the one known for webs. Finn picked the turkey.",
+  "expect": {
+   "identity": 7,
+   "position": 9,
+   "value": 4,
+   "original": 3
+  },
+  "lookup_O_marked": "<|im_start|>user\nThe locker of the turkey is 9. The locker of the spider is 7. The locker of the cat is 3. Sara picked the spider. Beth picked the one known for⟦ curiosity⟧. Finn picked the turkey.\nWhich locker belongs to Beth's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+  "decoy": {
+   "animal": "horse",
+   "cue": "racing"
+  }
+ }
+}

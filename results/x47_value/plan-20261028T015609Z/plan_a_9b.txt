@@ -1,0 +1,337 @@
+warning: `VIRTUAL_ENV=/Users/danorel/.venvs/py312` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+ "cases": {
+  "C0": 700,
+  "C2": 700
+ },
+ "dropped": {
+  "A and B have the same number of legs": 357
+ },
+ "slot_value_independence_O": {
+  "n": 700,
+  "chi2": 18.874,
+  "df": 16,
+  "p": 0.2868565717141429,
+  "cramers_v": 0.1161,
+  "rows": [
+   "0",
+   "1",
+   "2"
+  ],
+  "cols": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "table": [
+   [
+    22,
+    14,
+    25,
+    25,
+    27,
+    27,
+    22,
+    34,
+    29
+   ],
+   [
+    24,
+    19,
+    38,
+    26,
+    22,
+    27,
+    32,
+    24,
+    24
+   ],
+   [
+    16,
+    34,
+    29,
+    28,
+    24,
+    28,
+    27,
+    26,
+    27
+   ]
+  ],
+  "independent": true
+ },
+ "slot_value_independence_S_C2": {
+  "n": 700,
+  "chi2": 14.187,
+  "df": 16,
+  "p": 0.5757121439280359,
+  "cramers_v": 0.1007,
+  "rows": [
+   "0",
+   "1",
+   "2"
+  ],
+  "cols": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "table": [
+   [
+    19,
+    22,
+    24,
+    23,
+    26,
+    33,
+    28,
+    26,
+    36
+   ],
+   [
+    27,
+    29,
+    26,
+    24,
+    25,
+    19,
+    31,
+    22,
+    34
+   ],
+   [
+    30,
+    19,
+    24,
+    28,
+    28,
+    22,
+    22,
+    28,
+    25
+   ]
+  ],
+  "independent": true
+ },
+ "bridge_shift_qf_minus_ql": {
+  "lookup": {
+   "20": 1400
+  },
+  "recall": {
+   "21": 1400
+  }
+ },
+ "target": "qwen3.5-9b"
+}
+## C2-0589 (prose): bridge turkey -> tick; expected {'identity': '7', 'position': '9', 'value': '6', 'original': '8'}
+**lookup, ql** (O answers 8, S answers 6; bridge token 43, shift 20):
+```
+<|im_start|>user
+The locker of the chicken is 9. The locker of the turkey is 8. The locker of the tick is 7. Hugo picked the chicken. Ryan picked the tick. Mark picked the⟦ turkey⟧.
+Which locker belongs to Mark's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**lookup, qf** (O answers 8, S answers 6; bridge token 63, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Mark's pick? Answer with a single digit and nothing else.
+
+The locker of the chicken is 9. The locker of the turkey is 8. The locker of the tick is 7. Hugo picked the chicken. Ryan picked the tick. Mark picked the⟦ turkey⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**recall, qf** (O answers 2, S answers 8; bridge token 64, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Mark's pick have? Answer with a single digit and nothing else.
+
+The locker of the chicken is 9. The locker of the turkey is 8. The locker of the tick is 7. Hugo picked the chicken. Ryan picked the tick. Mark picked the⟦ turkey⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## C2-0636 (prose): bridge horse -> goose; expected {'identity': '6', 'position': '5', 'value': '3', 'original': '9'}
+**lookup, ql** (O answers 9, S answers 3; bridge token 43, shift 20):
+```
+<|im_start|>user
+The locker of the goose is 6. The locker of the fox is 5. The locker of the horse is 9. Diana picked the fox. Ella picked the goose. Rose picked the⟦ horse⟧.
+Which locker belongs to Rose's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**lookup, qf** (O answers 9, S answers 3; bridge token 63, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Rose's pick? Answer with a single digit and nothing else.
+
+The locker of the goose is 6. The locker of the fox is 5. The locker of the horse is 9. Diana picked the fox. Ella picked the goose. Rose picked the⟦ horse⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**recall, qf** (O answers 4, S answers 2; bridge token 64, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Rose's pick have? Answer with a single digit and nothing else.
+
+The locker of the goose is 6. The locker of the fox is 5. The locker of the horse is 9. Diana picked the fox. Ella picked the goose. Rose picked the⟦ horse⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## C2-0056 (prose): bridge spider -> elephant; expected {'identity': '9', 'position': '2', 'value': '6', 'original': '1'}
+**lookup, ql** (O answers 1, S answers 6; bridge token 38, shift 20):
+```
+<|im_start|>user
+The locker of the spider is 1. The locker of the camel is 2. The locker of the elephant is 9. Luke picked the camel. Finn picked the⟦ spider⟧. Mark picked the elephant.
+Which locker belongs to Finn's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**lookup, qf** (O answers 1, S answers 6; bridge token 58, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Finn's pick? Answer with a single digit and nothing else.
+
+The locker of the spider is 1. The locker of the camel is 2. The locker of the elephant is 9. Luke picked the camel. Finn picked the⟦ spider⟧. Mark picked the elephant.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**recall, qf** (O answers 8, S answers 4; bridge token 59, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Finn's pick have? Answer with a single digit and nothing else.
+
+The locker of the spider is 1. The locker of the camel is 2. The locker of the elephant is 9. Luke picked the camel. Finn picked the⟦ spider⟧. Mark picked the elephant.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## C2-0388 (prose): bridge elephant -> eagle; expected {'identity': '8', 'position': '6', 'value': '9', 'original': '1'}
+**lookup, ql** (O answers 1, S answers 9; bridge token 33, shift 20):
+```
+<|im_start|>user
+The locker of the mouse is 6. The locker of the elephant is 1. The locker of the eagle is 8. Peter picked the⟦ elephant⟧. Leo picked the eagle. Sam picked the mouse.
+Which locker belongs to Peter's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**lookup, qf** (O answers 1, S answers 9; bridge token 53, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Peter's pick? Answer with a single digit and nothing else.
+
+The locker of the mouse is 6. The locker of the elephant is 1. The locker of the eagle is 8. Peter picked the⟦ elephant⟧. Leo picked the eagle. Sam picked the mouse.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**recall, qf** (O answers 4, S answers 2; bridge token 54, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Peter's pick have? Answer with a single digit and nothing else.
+
+The locker of the mouse is 6. The locker of the elephant is 1. The locker of the eagle is 8. Peter picked the⟦ elephant⟧. Leo picked the eagle. Sam picked the mouse.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
+## C2-0773 (prose): bridge tick -> beetle; expected {'identity': '4', 'position': '8', 'value': '2', 'original': '6'}
+**lookup, ql** (O answers 6, S answers 2; bridge token 43, shift 20):
+```
+<|im_start|>user
+The locker of the tick is 6. The locker of the horse is 8. The locker of the beetle is 4. Frank picked the beetle. Adam picked the horse. Hugo picked the⟦ tick⟧.
+Which locker belongs to Hugo's pick? Answer with a single digit and nothing else.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**lookup, qf** (O answers 6, S answers 2; bridge token 63, shift 20):
+```
+<|im_start|>user
+Question: Which locker belongs to Hugo's pick? Answer with a single digit and nothing else.
+
+The locker of the tick is 6. The locker of the horse is 8. The locker of the beetle is 4. Frank picked the beetle. Adam picked the horse. Hugo picked the⟦ tick⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+**recall, qf** (O answers 8, S answers 6; bridge token 64, shift 21):
+```
+<|im_start|>user
+Question: How many legs does Hugo's pick have? Answer with a single digit and nothing else.
+
+The locker of the tick is 6. The locker of the horse is 8. The locker of the beetle is 4. Frank picked the beetle. Adam picked the horse. Hugo picked the⟦ tick⟧.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Answer: 
+```
+
