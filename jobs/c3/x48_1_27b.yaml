@@ -1,0 +1,33 @@
+id: x48_1_27b
+title: "Batch 48.1 on the 27B (L32; if time, cut first): DAS at the bridge word, two readers, two subspaces? R_lookup and R_recall (k = 1, 4, 16, 64) trained on the main test's locker-first pairs; own-IIA, cross-IIA, energy inside J++-25 / U / W_E-25, routes read; random and shuffled-target baselines"
+thread: C3
+gpus: 1
+mem_gb: 70
+est_gpu_hours: 1.9
+depends_on: [x48_1_9b, x48_1_muse]
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=; uv run python scripts/x48_das.py run --name x48_das_27b --why "batch 48, test 48.1 (jobs/c3/batch48.yaml; Q48.1; the 27B, if time): DAS at the bridge word at L32 on the main test's locker-first pairs the whole change switches; one R per reader and k, random and shuffled-target baselines; sealed"
+question: >-
+  At the bridge word at L32 of the 27B, is there a low-dimensional subspace of the change that mediates the lookup, one
+  that mediates the recall, are they disjoint (own-IIA high, cross-IIA low), and where do they sit against the lens
+  (J++-25), the pointer directions U and the input-embedding part W_E-25?
+why_it_matters: >-
+  The 27B is the third model of the main test; 48.1 names it "if time". A third model makes "two readers, two
+  subspaces" a cross-model statement, as the split itself is.
+hypotheses:
+  Q48.1: "Dan's answers in predictions/2026-10-28_dan.md (Q48.1 asks for the 9B and Muse; the 27B is reported beside them, descriptive unless Dan adds a line); the run is sealed: no verdict in the job."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch48.yaml, 48.1): rules (a)-(d) and the fallback as in jobs/c3/x48_1_9b.yaml, read the
+  same way (as computed there), on the 27B's stored main-test run x0_necessity_27b_chat (chat, L32): its locker-first
+  scenes the whole change switches for at least one reader (plan check: 68 pairs of 200, 34 bridge entities; lookup
+  66, recall 51), split by the original bridge entity 60 / 20 / 20, seed 0; U = x0_massmean.subspaces' Alf on
+  x0_probe_v4_27b. Scored by hand: scripts/x48_das.py verdict --runs x48_das_27b (EPS 1e-9 at the bars).
+controls:
+- 'untrained random R of the same k (seed 4802 + k)'
+- 'R trained on shuffled targets (seed 4801 + k + reader): must sit at the random R'
+- 'the whole change and O unedited reread on the select and test pairs (IIA / S_whole reported)'
+- 'cross-IIA: R_lookup read by the recall, R_recall read by the lookup'
+- 'the read position: both readers'' prompts identical through the bridge token (asserted per pair)'
+n: 'plan check on the 27B (CPU, the stored run): 68 locker-first pairs of 200 scenes at L32 (34 bridge entities); lookup pairs 66, recall pairs 51'
+seeds: [0, 48, 4801, 4802, 4803, 2510]
+notes: "Batch 48 (Dan, 28 Oct ~02:30), 48.1 on the 27B: 'if time', cut first; queued after the 9B's and Muse's 48.1 jobs. Sealed as the 9B's. Cost (ledger arithmetic): 16 trainings x 300 steps x 16 rows = 9,600 micro-batches of 8; x45p_27b took 214 s for ~3,800 single-prompt passes (0.056 s each): 9,600 x 0.56 s = 5,400 s = 1.5 h; reads and routes ~5,000 passes x 0.056 = 280 s; load ~4 min; total ~1.7 h, est 1.9."

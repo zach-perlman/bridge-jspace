@@ -1,0 +1,30 @@
+id: x47_d3_9b_lr
+title: "Batch 47 D3 on the 9B, the fourth layer (l_R - 2, l_R the lookup's read-out layer from D2): 48.1's DAS at that layer on the same pairs and split; placeholder until D2 reports l_R"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.5
+depends_on: [x48_1_9b, x47_d3_9b]
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x48_das.py run --name qwen35_9b_x47_d3_lr --layers LAYER_FROM_D2 --depth --why "batch 47 amendment 3, D3 (jobs/c3/batch47.yaml; Q-depth): 48.1's DAS at l_R - 2 (D2's lookup read-out layer minus 2) on the same pairs and split; no shuffled baselines, no routes read; sealed"
+question: >-
+  At l_R - 2 (two layers before nothing downstream reads the bridge word any more, D2), where do the lookup's and the
+  recall's mediating subspaces sit against the layer's lens part and its pointer directions?
+why_it_matters: >-
+  D3's fourth layer: the last layer at which the bridge word is still read. Together with L6 / L12 / L24 it closes the
+  depth curve of "energy inside J++" per reader.
+hypotheses:
+  Q-depth: "Dan's D3 answer in predictions/2026-10-28_dan.md (Q-depth); the run is sealed: no verdict in the job (scripts/x48_das.py depth refuses until the Q-depth answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, D3) and as computed in jobs/c3/x47_d3_9b.yaml; this run adds the l_R - 2
+  row to the depth table (D3's rule reads L/2 and L; the recall's "stays" clause reads every layer run, this one
+  included). LAYER_FROM_D2 = l_R(lookup) - 2 from D2's window-patching curve on the 9B (the first layer where the
+  curve falls to <= 0.1, minus 2); replace it before enqueue (jobq validate refuses the placeholder). Scored by hand:
+  scripts/x48_das.py depth --runs qwen35_9b_x48_das qwen35_9b_x47_d3 qwen35_9b_x47_d3_lr.
+controls:
+- 'untrained random R of the same k at the layer (seed 4802 + k)'
+- 'cross-IIA at the layer: R_lookup read by the recall, R_recall read by the lookup'
+- 'the whole change and O unedited reread at the layer on the select and test pairs'
+n: 'the 9B''s 48.1 pairs: 75 locker-first pairs (32 bridge entities); lookup 44 / 10 / 18, recall 46 / 10 / 19 (train / select / test)'
+seeds: [0, 48, 4802, 4803]
+notes: "Batch 47 amendment 3 (Dan ~02:50), D3's fourth layer. Placeholder spec: LAYER_FROM_D2 in the command is filled from D2's result (jobs/c3/batch47.yaml D2, the 9B's l_R for the lookup) before enqueue; if l_R - 2 is one of 6, 12 or 24 the run is not needed (that layer is already run) and this spec is dropped. Cost (ledger arithmetic): 1 layer x 8 trainings x 300 steps x 16 rows = 4,800 micro-batches of 8 x ~0.3 s = 0.4 h; reads 28 x 2 x 14 = 784 + 150 state forwards ~30 s; load ~2 min; est 0.5."

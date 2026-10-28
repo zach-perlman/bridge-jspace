@@ -1,0 +1,57 @@
+id: x48_1_muse
+title: "Batch 48.1 on Muse (L26): DAS at the bridge word, two readers, two subspaces? R_lookup and R_recall (k = 1, 4, 16, 64) trained on the main test's locker-first pairs; own-IIA, cross-IIA, energy inside J++-25 / U / W_E-25, routes read; random and shuffled-target baselines"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.8
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x48_das.py run --name muse30_x48_das --why "batch 48, test 48.1 (jobs/c3/batch48.yaml; Q48.1): DAS at the bridge word at L26 on the main test's locker-first pairs the whole change switches; one R per reader and k, random and shuffled-target baselines; sealed"
+question: >-
+  At the bridge word at L26, is there a low-dimensional subspace of the change that mediates the lookup, one that
+  mediates the recall, are they disjoint (own-IIA high, cross-IIA low), and where do they sit against the lens (J++-25),
+  the pointer directions U and the input-embedding part W_E-25?
+why_it_matters: >-
+  We know what the lookup's identity code is not (not J++ at K = 25, not W_E at K = 100, not the layer's main
+  directions). A learned subspace that mediates the lookup, measured against the lens, U and W_E, says what it is, with
+  how many dimensions, and whether it is disjoint from the recall's; Muse is the second model the rule needs.
+hypotheses:
+  Q48.1: "Dan's answers in predictions/2026-10-28_dan.md (Q48.1, one option and a confidence per letter (a)-(d), for Muse); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x48_das.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch48.yaml, 48.1): (a) two readers, two subspaces: own-IIA >= 0.7 at some k <= 16 for
+  both readers and cross-IIA <= 0.25 in both directions (paired CI excluding overlap with own-IIA); (b) the recall's
+  subspace is the lens's part: R_recall's energy inside J++-25 >= 0.5 (random R <= 0.15), R_lookup's <= 0.2; (c) the
+  address is part of the lookup's subspace: ||R_lookup^T U||_F^2 / 4 >= 0.5 (random R ~ k/d); (d) a third identity
+  code: R_lookup's energy outside (J++-25 u U u W_E-25) >= 0.5 while its own-IIA >= 0.7, and R_lookup alone gives
+  identity answers >= 0.3 in the routes read. Fallback: if own-IIA stays < 0.5 at k = 64 for the lookup, "no
+  low-dimensional mediator at this token and layer".
+  As computed (fixed before any run; Dan may override): pairs = the stored main-test run's (muse30b_x0_necessity, chat,
+  L26) eligible scenes that are locker-first (both items' locker sentences before the asked pick, x0_strata) and that
+  the stored whole change switches for at least one reader; each reader trains and is read on the pairs the whole change
+  switches for it (lookup 55, recall 31 of 58; the scene ids in pairs.json). Split by the original bridge entity 60 /
+  20 / 20 (train / select k / test), seed 0 (28 entities: 17 / 6 / 5; lookup pairs 32 / 15 / 8, recall 15 / 11 / 5).
+  Intervention h <- h_O + R R^T (h_S - h_O) at the bridge token at L26 on the O prompt, R [d x k] with orthonormal
+  columns (torch.nn.utils.parametrizations.orthogonal); loss = cross-entropy of S's answer's first token at X0's chat
+  read position (the appended space); Adam lr 1e-3, 300 steps, batch 16 (micro-batches of 8, gradient accumulation);
+  h_O / h_S cached once per pair, the training forwards real (the layers after L26 are needed for the loss), the IIA
+  evaluated with X0's read (generate_batch, the AddRows edit). Chosen k per reader = the smallest k <= 16 whose
+  select-split own-IIA >= 0.7, else the k with the highest select own-IIA; every rule read at the chosen k on the test
+  entities' pairs: point estimates = means over the reader's test pairs, cluster-bootstrap CIs over bridge entities
+  (10,000, seed 0) beside them. "Paired CI excluding overlap with own-IIA" = the paired bootstrap of own-IIA minus
+  cross-IIA over the reader's test pairs has a lower bound > 0; cross-IIA for a reader = its switch rate under the
+  other reader's R at that reader's chosen k. Energy inside a part = the share of ||R R^T Delta||^2 in the span of the
+  pair's 25 signed-OMP J++ atoms (J++-25; also 100), of its 25 W_E atoms (x0_necessity's "we" dictionary), or of U
+  (x0_massmean.subspaces' Alf on muse30b_x0_probe_v4, rank 4); outside = 1 minus the share in the orthonormalised union
+  of the three; cos^2 with U = ||R^T U||_F^2 / rank(U) (x6_routes.mean_cos2; a random R: k / d). The routes read:
+  R_lookup alone (at the chosen k) written on the first 100 eligible x6_routes C2 scenes (another item moved); identity
+  answers = the lookup's top token is the new item's own locker digit. IIA divided by the whole change's rerun switch
+  rate on the test pairs reported beside. Energy >= 0.8 of Delta flags the R "not selective". Scored by hand:
+  scripts/x48_das.py verdict (EPS 1e-9 at the bars).
+controls:
+- 'untrained random R of the same k (QR of a seeded Gaussian, seed 4802 + k): its IIA, energy and shares beside every trained R'
+- 'R trained on shuffled targets (the training rows'' targets permuted once, seed 4801 + k + reader): must sit at the random R (overfitting check, entities held out)'
+- 'the whole change and O unedited reread on the select and test pairs (the ceiling and the floor; IIA / S_whole reported)'
+- 'cross-IIA: R_lookup read by the recall, R_recall read by the lookup (the disjointness clause of (a))'
+- 'the read position: both readers'' prompts identical through the bridge token (asserted per pair), each read at its own last token (the appended space); the index per reader recorded in cases.jsonl'
+n: 'plan check on Muse (CPU, the stored run): 58 locker-first pairs of 200 scenes at L26 (28 bridge entities; 10 locker-first scenes switch neither reader); lookup pairs 55 (train 32, select 15, test 8), recall pairs 31 (15 / 11 / 5); routes read 100 C2 scenes'
+seeds: [0, 48, 4801, 4802, 4803, 2510]
+notes: "Batch 48 (Dan, 28 Oct ~02:30), 48.1 on Muse (queue position after 47.5). Sealed as the 9B's: manifest, pairs, cases, states_L26.pt, R.pt, train.jsonl, geometry.jsonl, readouts.json, outcomes.jsonl, routes; no verdict. By hand after Dan's Q48.1: uv run python scripts/x48_das.py verdict --runs qwen35_9b_x48_das muse30_x48_das. Seeds as the 9B's. Cost (ledger arithmetic): the same 16 trainings x 300 steps x 16 rows = 9,600 micro-batches of 8; x45p_muse took 167 s for ~2,900 single-prompt passes (0.055 s each, ~105-token prompts), 1.8x the 9B: 9,600 x 0.55 s = 5,300 s = 1.5 h; reads (23 held-out pairs x 2 x 22 = 1,012) + routes (~3,000 passes) ~4,000 x 0.055 = 220 s; load ~3 min; total ~1.6 h, est 1.8 (Dan ~2). WARNING for Dan: the recall has only 15 training pairs and 5 test pairs (5 test entities) on Muse: its R_recall and the rule's recall clauses rest on very few items; widen the pool (the one-pick run muse30b_x0_single, or both sentence orders) before the run if that matters."
