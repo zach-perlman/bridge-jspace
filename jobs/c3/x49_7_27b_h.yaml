@@ -4,7 +4,7 @@ thread: C3
 gpus: 1
 mem_gb: 75
 est_gpu_hours: 0.5
-depends_on: [x49_7_9b, x49_7_muse]
+depends_on: []  # x49_7_9b and x49_7_muse landed on mats (done 14:35 / 14:47 UTC); the helper's ledger cannot see them, so the ordering dep is dropped
 command: >-
   export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=; uv run python scripts/x49_attn.py run --name x49_7_27b --why "batch 49, test 49.7 (jobs/c3/batch49.yaml with amendment 2; Q49.7): x8_write's items at L32, none / swap s = 2 / random of the swap's norm at the bridge word; attention at the full-attention layers > L from the last and question tokens; candidates on the fit half, the best head zeroed at the last / question tokens on the read half; sealed"
 question: >-
