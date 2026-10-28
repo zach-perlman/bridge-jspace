@@ -1,0 +1,237 @@
+{
+ "target": "qwen3.5-9b",
+ "layer": 12,
+ "prefix": "qwen35_9b_",
+ "run_name": "qwen35_9b_x49_das_pos",
+ "pairs": {
+  "routes_run": "qwen35_9b_x6_routes",
+  "layer": 12,
+  "condition": "C1",
+  "scenes_read": 300,
+  "whole_change_routes": {
+   "position": 187,
+   "identity": 109,
+   "other": 4
+  },
+  "kept": "the lookup's stored whole-change route is position",
+  "pairs": 187,
+  "entities": 31,
+  "split_seed": 0,
+  "entities_per_split": {
+   "train": 19,
+   "select": 6,
+   "test": 6
+  },
+  "pairs_per_split": {
+   "train": 112,
+   "test": 34,
+   "select": 41
+  },
+  "moves": {
+   "1->2": 43,
+   "1->3": 31,
+   "2->1": 57,
+   "2->3": 7,
+   "3->1": 32,
+   "3->2": 17
+  },
+  "slot_o_train": {
+   "1": 43,
+   "2": 38,
+   "3": 31
+  },
+  "stored_recall_kept": 0.7326
+ },
+ "prompt_tokens": [
+  74,
+  74
+ ],
+ "bridge_token_index": [
+  33,
+  38,
+  43
+ ],
+ "U": {
+  "states_run": "qwen35_9b_x0_probe_v4",
+  "rank": 4
+ },
+ "W": {
+  "run": "qwen35_9b_x47_2",
+  "slots": 6,
+  "rank": 5,
+  "file": "results/x47_six/qwen35_9b_x47_2/fit.npz",
+  "sha256": "74687ee895327b94a42a6869b8dcaf2a8a2ac2c2738abf00e37b724db0a50b74"
+ },
+ "rendered": [
+  {
+   "scene": "C1-0018",
+   "split": "train",
+   "entity": "chicken",
+   "slot_o": 2,
+   "slot_s": 1,
+   "expect": {
+    "identity": 1,
+    "position": 6,
+    "value": 5,
+    "original": 1
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Alice's pick?",
+     "answer": "1",
+     "s_answer": "5",
+     "cf_answer": "6",
+     "marked": {
+      "org": "<|im_start|>user\n⟦target:The locker of the dog is 6.⟧ ⟦own:The locker of the chicken is 1.⟧ The locker of the fox is 2. Anna picked the dog. Leo picked the fox. Alice picked the⟦bridge: chicken⟧.\nWhich locker belongs to Alice's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\n⟦moved:The locker of the chicken is 5.⟧ The locker of the dog is 6. The locker of the fox is 2. Anna picked the dog. Leo picked the fox. Alice picked the⟦bridge: chicken⟧.\nWhich locker belongs to Alice's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    },
+    "PM": {
+     "question": "How many legs does Alice's pick have?",
+     "answer": "2",
+     "cf_answer": "2",
+     "marked": {
+      "org": "<|im_start|>user\n⟦target:The locker of the dog is 6.⟧ ⟦own:The locker of the chicken is 1.⟧ The locker of the fox is 2. Anna picked the dog. Leo picked the fox. Alice picked the⟦bridge: chicken⟧.\nHow many legs does Alice's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\n⟦moved:The locker of the chicken is 5.⟧ The locker of the dog is 6. The locker of the fox is 2. Anna picked the dog. Leo picked the fox. Alice picked the⟦bridge: chicken⟧.\nHow many legs does Alice's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    }
+   }
+  },
+  {
+   "scene": "C1-0174",
+   "split": "select",
+   "entity": "owl",
+   "slot_o": 2,
+   "slot_s": 1,
+   "expect": {
+    "identity": 2,
+    "position": 1,
+    "value": 8,
+    "original": 2
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Kate's pick?",
+     "answer": "2",
+     "s_answer": "8",
+     "cf_answer": "1",
+     "marked": {
+      "org": "<|im_start|>user\n⟦target:The locker of the tiger is 1.⟧ ⟦own:The locker of the owl is 2.⟧ The locker of the bear is 4. Kate picked the⟦bridge: owl⟧. Frank picked the tiger. Maria picked the bear.\nWhich locker belongs to Kate's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\n⟦moved:The locker of the owl is 8.⟧ The locker of the tiger is 1. The locker of the bear is 4. Kate picked the⟦bridge: owl⟧. Frank picked the tiger. Maria picked the bear.\nWhich locker belongs to Kate's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    },
+    "PM": {
+     "question": "How many legs does Kate's pick have?",
+     "answer": "2",
+     "cf_answer": "2",
+     "marked": {
+      "org": "<|im_start|>user\n⟦target:The locker of the tiger is 1.⟧ ⟦own:The locker of the owl is 2.⟧ The locker of the bear is 4. Kate picked the⟦bridge: owl⟧. Frank picked the tiger. Maria picked the bear.\nHow many legs does Kate's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\n⟦moved:The locker of the owl is 8.⟧ The locker of the tiger is 1. The locker of the bear is 4. Kate picked the⟦bridge: owl⟧. Frank picked the tiger. Maria picked the bear.\nHow many legs does Kate's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    }
+   }
+  },
+  {
+   "scene": "C1-0265",
+   "split": "train",
+   "entity": "mouse",
+   "slot_o": 3,
+   "slot_s": 2,
+   "expect": {
+    "identity": 8,
+    "position": 2,
+    "value": 5,
+    "original": 8
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Kyle's pick?",
+     "answer": "8",
+     "s_answer": "5",
+     "cf_answer": "2",
+     "marked": {
+      "org": "<|im_start|>user\nThe locker of the chicken is 3. ⟦target:The locker of the horse is 2.⟧ ⟦own:The locker of the mouse is 8.⟧ Kyle picked the⟦bridge: mouse⟧. Carl picked the horse. Lily picked the chicken.\nWhich locker belongs to Kyle's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\nThe locker of the chicken is 3. ⟦moved:The locker of the mouse is 5.⟧ The locker of the horse is 2. Kyle picked the⟦bridge: mouse⟧. Carl picked the horse. Lily picked the chicken.\nWhich locker belongs to Kyle's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    },
+    "PM": {
+     "question": "How many legs does Kyle's pick have?",
+     "answer": "4",
+     "cf_answer": "4",
+     "marked": {
+      "org": "<|im_start|>user\nThe locker of the chicken is 3. ⟦target:The locker of the horse is 2.⟧ ⟦own:The locker of the mouse is 8.⟧ Kyle picked the⟦bridge: mouse⟧. Carl picked the horse. Lily picked the chicken.\nHow many legs does Kyle's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\nThe locker of the chicken is 3. ⟦moved:The locker of the mouse is 5.⟧ The locker of the horse is 2. Kyle picked the⟦bridge: mouse⟧. Carl picked the horse. Lily picked the chicken.\nHow many legs does Kyle's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    }
+   }
+  },
+  {
+   "scene": "C1-0281",
+   "split": "test",
+   "entity": "pig",
+   "slot_o": 2,
+   "slot_s": 1,
+   "expect": {
+    "identity": 9,
+    "position": 7,
+    "value": 4,
+    "original": 9
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Leo's pick?",
+     "answer": "9",
+     "s_answer": "4",
+     "cf_answer": "7",
+     "marked": {
+      "org": "<|im_start|>user\n⟦target:The locker of the owl is 7.⟧ ⟦own:The locker of the pig is 9.⟧ The locker of the tick is 1. Leo picked the⟦bridge: pig⟧. Frank picked the tick. Noah picked the owl.\nWhich locker belongs to Leo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\n⟦moved:The locker of the pig is 4.⟧ The locker of the owl is 7. The locker of the tick is 1. Leo picked the⟦bridge: pig⟧. Frank picked the tick. Noah picked the owl.\nWhich locker belongs to Leo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    },
+    "PM": {
+     "question": "How many legs does Leo's pick have?",
+     "answer": "4",
+     "cf_answer": "4",
+     "marked": {
+      "org": "<|im_start|>user\n⟦target:The locker of the owl is 7.⟧ ⟦own:The locker of the pig is 9.⟧ The locker of the tick is 1. Leo picked the⟦bridge: pig⟧. Frank picked the tick. Noah picked the owl.\nHow many legs does Leo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\n⟦moved:The locker of the pig is 4.⟧ The locker of the owl is 7. The locker of the tick is 1. Leo picked the⟦bridge: pig⟧. Frank picked the tick. Noah picked the owl.\nHow many legs does Leo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    }
+   }
+  },
+  {
+   "scene": "C1-0349",
+   "split": "train",
+   "entity": "elephant",
+   "slot_o": 3,
+   "slot_s": 2,
+   "expect": {
+    "identity": 8,
+    "position": 1,
+    "value": 4,
+    "original": 8
+   },
+   "readers": {
+    "PP": {
+     "question": "Which locker belongs to Mia's pick?",
+     "answer": "8",
+     "s_answer": "4",
+     "cf_answer": "1",
+     "marked": {
+      "org": "<|im_start|>user\nThe locker of the turkey is 7. ⟦target:The locker of the duck is 1.⟧ ⟦own:The locker of the elephant is 8.⟧ Ella picked the turkey. Mia picked the⟦bridge: elephant⟧. Beth picked the duck.\nWhich locker belongs to Mia's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\nThe locker of the turkey is 7. ⟦moved:The locker of the elephant is 4.⟧ The locker of the duck is 1. Ella picked the turkey. Mia picked the⟦bridge: elephant⟧. Beth picked the duck.\nWhich locker belongs to Mia's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    },
+    "PM": {
+     "question": "How many legs does Mia's pick have?",
+     "answer": "4",
+     "cf_answer": "4",
+     "marked": {
+      "org": "<|im_start|>user\nThe locker of the turkey is 7. ⟦target:The locker of the duck is 1.⟧ ⟦own:The locker of the elephant is 8.⟧ Ella picked the turkey. Mia picked the⟦bridge: elephant⟧. Beth picked the duck.\nHow many legs does Mia's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+      "alt": "<|im_start|>user\nThe locker of the turkey is 7. ⟦moved:The locker of the elephant is 4.⟧ The locker of the duck is 1. Ella picked the turkey. Mia picked the⟦bridge: elephant⟧. Beth picked the duck.\nHow many legs does Mia's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+     }
+    }
+   }
+  }
+ ]
+}
