@@ -24,9 +24,9 @@ go() {  # go KIND RUN ARGS...: skip a run whose summary exists; log to scratch
 }
 for M in "$@"; do
   case $M in
-    27b) export BJ_TARGET=qwen3.6-27b; P=; WINS="0-7 8-15 16-23 24-31 32-40 41-48 49-56 57-63" ;;
-    9b) export BJ_TARGET=qwen3.5-9b; P=qwen35_9b_; WINS="0-3 4-7 8-11 12-16 17-20 21-24 25-28 29-31" ;;
-    nem35l) export BJ_TARGET=nemotron-3.5-lightning; P=nem35l_; WINS="0-5 6-10 11-15 16-20 21-26 27-33 34-39 40-45 46-51" ;;
+    27b) export BJ_TARGET=qwen3.6-27b; P=; WINS="0-7 8-15 16-23 24-31 32-40 41-48 49-56 57-62" ;;
+    9b) export BJ_TARGET=qwen3.5-9b; P=qwen35_9b_; WINS="0-3 4-7 8-11 12-16 17-20 21-24 25-28 29-30" ;;
+    nem35l) export BJ_TARGET=nemotron-3.5-lightning; P=nem35l_; WINS="0-5 6-10 11-15 16-20 21-26 27-33 34-39 40-45 46-50" ;;
   esac
   C=${P}${SET}_competence_cand2_v1
   CV=${P}jsuite_v4_cv_v1

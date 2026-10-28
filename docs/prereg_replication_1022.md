@@ -2654,3 +2654,7 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   3. **Readable vs used:** the readout map's J++ bridge top-1 at the hit cells' sites and layers, ok vs fail (the readout reading of note 11 applies: >= 10 points, interval above 0), compared with where reading 1 holds.
 - **Comparison:** MP (the bridge must be used) vs MM (recall; notes 11-12's setting) on identical scenes and descriptions.
 - **Models:** the 27B, 9B and Lightning overnight (scripts/queues/h200_v4_1028.sh). Bolt on Thursday: competence and readout, and the map if time allows.
+
+##### Amendment 58 note 14 addendum (Zach, 2026-10-28 ~22:20 UTC; before any map result: the first map run failed at its last window)
+- **Windows corrected.** The J-lens has no layer for the model's last block, so each map's last window ends one layer earlier: 27B 57-62, 9B 29-30, Lightning 46-50. Everything else is unchanged.
+- **Order.** The runs go in seed-major order (Zach: the full seed-0 map first; scripts/queues/h200_v4b_1028.sh), with the same runs.
