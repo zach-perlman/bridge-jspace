@@ -1,0 +1,46 @@
+{
+  "run": "nem35l_jswap_pointer_v3_s150_v1",
+  "why": "Zach (2026-10-28, prereg amendment 58 note 5): nemotron-3.5-lightning what the mention's J-part carries at L27-33",
+  "target": "nemotron-3.5-lightning",
+  "model": {
+    "target": "nemotron-3.5-lightning",
+    "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16",
+    "revision": "a9904d24bcc1d289a1950fa9d2b978c47cf903b9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "kernels": "hub"
+  },
+  "lens": "jpp",
+  "band": "27-33",
+  "set": "jsuite_v3_test_chat",
+  "competence": "nem35l_jsuite_v3_test_chat_competence_cand2_v1",
+  "conditions": [
+    "swap",
+    "swap_neutral",
+    "swap_neutral_rot",
+    "swap_neutral_u",
+    "paste_neutral",
+    "swap_own",
+    "swap_noown"
+  ],
+  "timeline": [
+    "none",
+    "swap",
+    "swap_neutral"
+  ],
+  "neutral": "A reader asked a question about {} in the letters page.",
+  "own_cos": 0.5,
+  "k": 10,
+  "git_commit": "5934d9933b788fac60aae1dba4442f608ba7dcc3",
+  "git_state": {
+    "head": "5934d9933b788fac60aae1dba4442f608ba7dcc3",
+    "dirty_files": [],
+    "untracked_scripts": [
+      "scripts/fig_more.py"
+    ],
+    "code_diff_sha256": null
+  },
+  "limit": 0,
+  "sample_per_word": 150,
+  "seed": "random.Random(item id), as jswap"
+}

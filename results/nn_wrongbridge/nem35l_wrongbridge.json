@@ -1,0 +1,674 @@
+{
+ "model": "Lightning",
+ "counts": {
+  "hop1_right": 329,
+  "hop1_unknown_name": 73,
+  "hop1_wrong_known": 65,
+  "hop1_wrong_same_attribute": 1
+ },
+ "n": 65,
+ "share": {
+  "own_bridge": 20.0,
+  "true": 32.3,
+  "other": 47.7
+ },
+ "baseline_own": 1.2,
+ "own_minus_baseline": 18.8,
+ "ci": [
+  9.7,
+  29.2
+ ],
+ "composes_through_own_bridge": false,
+ "rows": [
+  {
+   "id": "j3:chat:facts:RM-L1-r0-00466",
+   "relation": "people",
+   "bridge": "Hokusai",
+   "named": "Picasso",
+   "gen": "Pablo Picasso",
+   "answer_text": "Spanish",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-01996",
+   "relation": "cities",
+   "bridge": "Adelaide",
+   "named": "Marseille",
+   "gen": "Marseille",
+   "answer_text": "United Kingdom",
+   "cls": "other",
+   "baseline": 0.0309
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02003",
+   "relation": "cities",
+   "bridge": "Bruges",
+   "named": "Amsterdam",
+   "gen": "Amsterdam",
+   "answer_text": "Belgium",
+   "cls": "true",
+   "baseline": 0.0309
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02004",
+   "relation": "cities",
+   "bridge": "Budapest",
+   "named": "Dublin",
+   "gen": "Dublin",
+   "answer_text": "Turkey",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02006",
+   "relation": "cities",
+   "bridge": "Cancun",
+   "named": "Dublin",
+   "gen": "Dublin",
+   "answer_text": "Philippines",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02007",
+   "relation": "cities",
+   "bridge": "Casablanca",
+   "named": "Porto",
+   "gen": "Porto",
+   "answer_text": "Turkey",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02010",
+   "relation": "cities",
+   "bridge": "Dresden",
+   "named": "Oslo",
+   "gen": "Oslo",
+   "answer_text": "Germany",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02015",
+   "relation": "cities",
+   "bridge": "Istanbul",
+   "named": "Moscow",
+   "gen": "Moscow",
+   "answer_text": "Russia",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02016",
+   "relation": "cities",
+   "bridge": "Jaipur",
+   "named": "Vienna",
+   "gen": "Vienna",
+   "answer_text": "India",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02021",
+   "relation": "cities",
+   "bridge": "Lisbon",
+   "named": "Hiroshima",
+   "gen": "Hiroshima",
+   "answer_text": "Argentina",
+   "cls": "other",
+   "baseline": 0.0309
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02022",
+   "relation": "cities",
+   "bridge": "Lyon",
+   "named": "Turin",
+   "gen": "Turin",
+   "answer_text": "France",
+   "cls": "true",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02024",
+   "relation": "cities",
+   "bridge": "Medellin",
+   "named": "Barcelona",
+   "gen": "Barcelona",
+   "answer_text": "Colombia",
+   "cls": "true",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02028",
+   "relation": "cities",
+   "bridge": "Munich",
+   "named": "Sao Paulo",
+   "gen": "Sao Paulo",
+   "answer_text": "Brazil",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02034",
+   "relation": "cities",
+   "bridge": "Rotterdam",
+   "named": "Lyon",
+   "gen": "Lyon",
+   "answer_text": "United Kingdom",
+   "cls": "other",
+   "baseline": 0.0309
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02038",
+   "relation": "cities",
+   "bridge": "Shanghai",
+   "named": "Lisbon",
+   "gen": "Lisbon",
+   "answer_text": "Germany",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02046",
+   "relation": "cities",
+   "bridge": "Warsaw",
+   "named": "Venice",
+   "gen": "Venice",
+   "answer_text": "Japan",
+   "cls": "other",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02051",
+   "relation": "cities",
+   "bridge": "Bangkok",
+   "named": "Seville",
+   "gen": "Seville",
+   "answer_text": "India",
+   "cls": "other",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02054",
+   "relation": "cities",
+   "bridge": "Bruges",
+   "named": "Stockholm",
+   "gen": "Stockholm",
+   "answer_text": "Poland",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02055",
+   "relation": "cities",
+   "bridge": "Budapest",
+   "named": "Porto",
+   "gen": "Porto",
+   "answer_text": "Netherlands",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02056",
+   "relation": "cities",
+   "bridge": "Buenos Aires",
+   "named": "Lisbon",
+   "gen": "Lisbon",
+   "answer_text": "Argentina",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02057",
+   "relation": "cities",
+   "bridge": "Cancun",
+   "named": "Dublin",
+   "gen": "Dublin",
+   "answer_text": "Argentina",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02061",
+   "relation": "cities",
+   "bridge": "Dresden",
+   "named": "Bruges",
+   "gen": "Bruges",
+   "answer_text": "Poland",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02067",
+   "relation": "cities",
+   "bridge": "Jaipur",
+   "named": "Barcelona",
+   "gen": "Barcelona",
+   "answer_text": "India",
+   "cls": "true",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02074",
+   "relation": "cities",
+   "bridge": "Marseille",
+   "named": "Barcelona",
+   "gen": "Barcelona",
+   "answer_text": "Italy",
+   "cls": "other",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02082",
+   "relation": "cities",
+   "bridge": "Porto",
+   "named": "Seville",
+   "gen": "Seville",
+   "answer_text": "Spain",
+   "cls": "own_bridge",
+   "baseline": 0.0103
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02085",
+   "relation": "cities",
+   "bridge": "Rotterdam",
+   "named": "Seville",
+   "gen": "Seville",
+   "answer_text": "United Kingdom",
+   "cls": "other",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02086",
+   "relation": "cities",
+   "bridge": "Salzburg",
+   "named": "Munich",
+   "gen": "Munich",
+   "answer_text": "Austria",
+   "cls": "true",
+   "baseline": 0.0103
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02091",
+   "relation": "cities",
+   "bridge": "Stockholm",
+   "named": "Bangkok",
+   "gen": "Bangkok",
+   "answer_text": "Sweden",
+   "cls": "true",
+   "baseline": 0.0101
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02092",
+   "relation": "cities",
+   "bridge": "Sydney",
+   "named": "Istanbul",
+   "gen": "Istanbul",
+   "answer_text": "Argentina",
+   "cls": "other",
+   "baseline": 0.0404
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-03247",
+   "relation": "companies",
+   "bridge": "Alibaba",
+   "named": "Spotify",
+   "gen": "Spotify",
+   "answer_text": "China",
+   "cls": "true",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-03262",
+   "relation": "companies",
+   "bridge": "Heineken",
+   "named": "Haribo",
+   "gen": "Haribo",
+   "answer_text": "Germany",
+   "cls": "own_bridge",
+   "baseline": 0.08
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03288",
+   "relation": "companies",
+   "bridge": "Apple",
+   "named": "Acer",
+   "gen": "Acer",
+   "answer_text": "USA",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03291",
+   "relation": "companies",
+   "bridge": "Canva",
+   "named": "Tata",
+   "gen": "Tata",
+   "answer_text": "USA",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03292",
+   "relation": "companies",
+   "bridge": "Carlsberg",
+   "named": "Sony",
+   "gen": "Sony",
+   "answer_text": "Germany",
+   "cls": "other",
+   "baseline": 0.04
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03295",
+   "relation": "companies",
+   "bridge": "Corona",
+   "named": "Carlsberg",
+   "gen": "Carlsberg",
+   "answer_text": "Denmark",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03299",
+   "relation": "companies",
+   "bridge": "Gucci",
+   "named": "Zara",
+   "gen": "Zara",
+   "answer_text": "Italy",
+   "cls": "true",
+   "baseline": 0.0267
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03301",
+   "relation": "companies",
+   "bridge": "Havaianas",
+   "named": "Haribo",
+   "gen": "Haribo",
+   "answer_text": "Spain",
+   "cls": "other",
+   "baseline": 0.0933
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03303",
+   "relation": "companies",
+   "bridge": "Huawei",
+   "named": "Samsung",
+   "gen": "Samsung",
+   "answer_text": "South Korea",
+   "cls": "own_bridge",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03306",
+   "relation": "companies",
+   "bridge": "Infosys",
+   "named": "Kaspersky",
+   "gen": "Kaspersky",
+   "answer_text": "Finland",
+   "cls": "other",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04285",
+   "relation": "landmarks",
+   "bridge": "Abu Simbel",
+   "named": "Petra",
+   "gen": "Petra",
+   "answer_text": "Egypt",
+   "cls": "true",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04300",
+   "relation": "landmarks",
+   "bridge": "Neuschwanstein",
+   "named": "Chichen Itza",
+   "gen": "Chichen Itza",
+   "answer_text": "Germany",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04301",
+   "relation": "landmarks",
+   "bridge": "Petra",
+   "named": "Angel Falls",
+   "gen": "Angel Falls",
+   "answer_text": "Peru",
+   "cls": "other",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04305",
+   "relation": "landmarks",
+   "bridge": "the Acropolis",
+   "named": "Fushimi Inari Shrine",
+   "gen": "Fushimi Inari Shrine",
+   "answer_text": "Italy",
+   "cls": "other",
+   "baseline": 0.0267
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04309",
+   "relation": "landmarks",
+   "bridge": "the CN Tower",
+   "named": "Angel Falls",
+   "gen": "Angel Falls",
+   "answer_text": "Japan",
+   "cls": "other",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04318",
+   "relation": "landmarks",
+   "bridge": "the Perito Moreno Glacier",
+   "named": "Table Mountain",
+   "gen": "Table Mountain",
+   "answer_text": "Argentina",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04323",
+   "relation": "landmarks",
+   "bridge": "the Taj Mahal",
+   "named": "the Great Wall",
+   "gen": "Great Wall of China",
+   "answer_text": "China",
+   "cls": "own_bridge",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04331",
+   "relation": "landmarks",
+   "bridge": "Easter Island",
+   "named": "Mount Kilimanjaro",
+   "gen": "Mount Kilimanjaro",
+   "answer_text": "Australia",
+   "cls": "other",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04336",
+   "relation": "landmarks",
+   "bridge": "Masada",
+   "named": "Abu Simbel",
+   "gen": "Abu Simbel",
+   "answer_text": "Egypt",
+   "cls": "own_bridge",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04342",
+   "relation": "landmarks",
+   "bridge": "Saint Basil's Cathedral",
+   "named": "Hagia Sophia",
+   "gen": "Hagia Sophia",
+   "answer_text": "Turkey",
+   "cls": "own_bridge",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04343",
+   "relation": "landmarks",
+   "bridge": "Table Mountain",
+   "named": "Mount Kilimanjaro",
+   "gen": "Mount Kilimanjaro",
+   "answer_text": "Tanzania",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04348",
+   "relation": "landmarks",
+   "bridge": "the Brandenburg Gate",
+   "named": "Christ the Redeemer",
+   "gen": "Christ the Redeemer",
+   "answer_text": "Jordan",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04360",
+   "relation": "landmarks",
+   "bridge": "the Sagrada Familia",
+   "named": "Saint Basil's Cathedral",
+   "gen": "Saint Basil's Cathedral",
+   "answer_text": "Russia",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04364",
+   "relation": "landmarks",
+   "bridge": "the Terracotta Army",
+   "named": "Masada",
+   "gen": "Masada",
+   "answer_text": "China",
+   "cls": "true",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05326",
+   "relation": "films",
+   "bridge": "8 1/2",
+   "named": "Jaws",
+   "gen": "Jaws",
+   "answer_text": "Ruth Calloway's favorite film is Jaws.",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05328",
+   "relation": "films",
+   "bridge": "Amelie",
+   "named": "The Social Network",
+   "gen": "The film is \"The Social Network.\"",
+   "answer_text": "Michele Soavi",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05336",
+   "relation": "films",
+   "bridge": "Fight Club",
+   "named": "Citizen Kane",
+   "gen": "Citizen Kane",
+   "answer_text": "Fellini",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05340",
+   "relation": "films",
+   "bridge": "Inception",
+   "named": "Life of Pi",
+   "gen": "Life of Pi",
+   "answer_text": "Christopher Nolan",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05341",
+   "relation": "films",
+   "bridge": "Interstellar",
+   "named": "Avatar",
+   "gen": "Avatar",
+   "answer_text": "Christopher Nolan",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05343",
+   "relation": "films",
+   "bridge": "Kill Bill",
+   "named": "Psycho",
+   "gen": "Psycho",
+   "answer_text": "Peter Jackson",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05354",
+   "relation": "films",
+   "bridge": "The Fellowship of the Ring",
+   "named": "Inception",
+   "gen": "Inception",
+   "answer_text": "Peter Jackson",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05364",
+   "relation": "films",
+   "bridge": "Vertigo",
+   "named": "Taxi Driver",
+   "gen": "Taxi Driver",
+   "answer_text": "Alfred Hitchcock",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05366",
+   "relation": "films",
+   "bridge": "8 1/2",
+   "named": "The Seventh Seal",
+   "gen": "The Seventh Seal",
+   "answer_text": "Miyazaki",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05368",
+   "relation": "films",
+   "bridge": "Amelie",
+   "named": "Life of Pi",
+   "gen": "Life of Pi",
+   "answer_text": "Laura Bennett",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05399",
+   "relation": "films",
+   "bridge": "The Silence of the Lambs",
+   "named": "Unforgiven",
+   "gen": "Unforgiven",
+   "answer_text": "Clint Eastwood",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05404",
+   "relation": "films",
+   "bridge": "Vertigo",
+   "named": "2001: A Space Odyssey",
+   "gen": "2001: A Space Odyssey",
+   "answer_text": "Alfred Hitchcock",
+   "cls": "true",
+   "baseline": 0.0
+  }
+ ]
+}

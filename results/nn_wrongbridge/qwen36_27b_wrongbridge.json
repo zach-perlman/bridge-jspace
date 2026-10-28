@@ -1,0 +1,874 @@
+{
+ "model": "Qwen3.6-27B",
+ "counts": {
+  "hop1_right": 247,
+  "hop1_unknown_name": 135,
+  "hop1_wrong_same_attribute": 1,
+  "hop1_wrong_known": 85
+ },
+ "n": 85,
+ "share": {
+  "own_bridge": 36.5,
+  "true": 17.6,
+  "other": 45.9
+ },
+ "baseline_own": 1.4,
+ "own_minus_baseline": 35.1,
+ "ci": [
+  25.5,
+  45.5
+ ],
+ "composes_through_own_bridge": true,
+ "rows": [
+  {
+   "id": "j3:chat:facts:RM-L2-r0-00510",
+   "relation": "people",
+   "bridge": "Borges",
+   "named": "Garcia Marquez",
+   "gen": "Garcia Marquez",
+   "answer_text": "Argentine",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-00518",
+   "relation": "people",
+   "bridge": "Dvorak",
+   "named": "Liszt",
+   "gen": "Liszt",
+   "answer_text": "Austrian",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-00540",
+   "relation": "people",
+   "bridge": "Magritte",
+   "named": "Dali",
+   "gen": "Dali",
+   "answer_text": "German",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-00551",
+   "relation": "people",
+   "bridge": "Picasso",
+   "named": "Van Gogh",
+   "gen": "Van Gogh",
+   "answer_text": "Dutch",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-00560",
+   "relation": "people",
+   "bridge": "Tchaikovsky",
+   "named": "Dvorak",
+   "gen": "Dvorak",
+   "answer_text": "Russian",
+   "cls": "true",
+   "baseline": 0.0083
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-01996",
+   "relation": "cities",
+   "bridge": "Adelaide",
+   "named": "Nairobi",
+   "gen": "Nairobi",
+   "answer_text": "Philippines",
+   "cls": "other",
+   "baseline": 0.0101
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02003",
+   "relation": "cities",
+   "bridge": "Bruges",
+   "named": "Amsterdam",
+   "gen": "Amsterdam",
+   "answer_text": "Netherlands",
+   "cls": "own_bridge",
+   "baseline": 0.0103
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02004",
+   "relation": "cities",
+   "bridge": "Budapest",
+   "named": "Dublin",
+   "gen": "Dublin",
+   "answer_text": "Ireland",
+   "cls": "own_bridge",
+   "baseline": 0.0303
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02007",
+   "relation": "cities",
+   "bridge": "Casablanca",
+   "named": "Porto",
+   "gen": "Porto",
+   "answer_text": "Turkey",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02009",
+   "relation": "cities",
+   "bridge": "Copenhagen",
+   "named": "Amsterdam",
+   "gen": "Amsterdam",
+   "answer_text": "Netherlands",
+   "cls": "own_bridge",
+   "baseline": 0.0103
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02010",
+   "relation": "cities",
+   "bridge": "Dresden",
+   "named": "Oslo",
+   "gen": "Oslo",
+   "answer_text": "Norway",
+   "cls": "own_bridge",
+   "baseline": 0.0101
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02011",
+   "relation": "cities",
+   "bridge": "Dublin",
+   "named": "Alexandria",
+   "gen": "Alexandria",
+   "answer_text": "Spain",
+   "cls": "other",
+   "baseline": 0.0101
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02015",
+   "relation": "cities",
+   "bridge": "Istanbul",
+   "named": "Moscow",
+   "gen": "Moscow",
+   "answer_text": "Russia",
+   "cls": "own_bridge",
+   "baseline": 0.0103
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02016",
+   "relation": "cities",
+   "bridge": "Jaipur",
+   "named": "Guadalajara",
+   "gen": "Guadalajara",
+   "answer_text": "Mexico",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02021",
+   "relation": "cities",
+   "bridge": "Lisbon",
+   "named": "Lyon",
+   "gen": "Lyon",
+   "answer_text": "Japan",
+   "cls": "other",
+   "baseline": 0.0619
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02022",
+   "relation": "cities",
+   "bridge": "Lyon",
+   "named": "Prague",
+   "gen": "Prague",
+   "answer_text": "France",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02023",
+   "relation": "cities",
+   "bridge": "Marseille",
+   "named": "Venice",
+   "gen": "Venice",
+   "answer_text": "Italy",
+   "cls": "own_bridge",
+   "baseline": 0.0103
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02024",
+   "relation": "cities",
+   "bridge": "Medellin",
+   "named": "Johannesburg",
+   "gen": "Johannesburg",
+   "answer_text": "Colombia",
+   "cls": "true",
+   "baseline": 0.0101
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02028",
+   "relation": "cities",
+   "bridge": "Munich",
+   "named": "Sao Paulo",
+   "gen": "Sao Paulo",
+   "answer_text": "Brazil",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02034",
+   "relation": "cities",
+   "bridge": "Rotterdam",
+   "named": "Lyon",
+   "gen": "Lyon",
+   "answer_text": "France",
+   "cls": "own_bridge",
+   "baseline": 0.0515
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02036",
+   "relation": "cities",
+   "bridge": "Sao Paulo",
+   "named": "Buenos Aires",
+   "gen": "Buenos Aires",
+   "answer_text": "Australia",
+   "cls": "other",
+   "baseline": 0.0101
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02038",
+   "relation": "cities",
+   "bridge": "Shanghai",
+   "named": "Casablanca",
+   "gen": "Casablanca",
+   "answer_text": "Spain",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02043",
+   "relation": "cities",
+   "bridge": "Vancouver",
+   "named": "Rotterdam",
+   "gen": "Rotterdam",
+   "answer_text": "New Zealand",
+   "cls": "other",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-02046",
+   "relation": "cities",
+   "bridge": "Warsaw",
+   "named": "Venice",
+   "gen": "Venice",
+   "answer_text": "Japan",
+   "cls": "other",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02047",
+   "relation": "cities",
+   "bridge": "Adelaide",
+   "named": "Medellin",
+   "gen": "Medellin",
+   "answer_text": "Spain",
+   "cls": "other",
+   "baseline": 0.0202
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02048",
+   "relation": "cities",
+   "bridge": "Alexandria",
+   "named": "Cancun",
+   "gen": "Cancun",
+   "answer_text": "Egypt",
+   "cls": "true",
+   "baseline": 0.0103
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02051",
+   "relation": "cities",
+   "bridge": "Bangkok",
+   "named": "Jaipur",
+   "gen": "Jaipur",
+   "answer_text": "India",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02054",
+   "relation": "cities",
+   "bridge": "Bruges",
+   "named": "Stockholm",
+   "gen": "Stockholm",
+   "answer_text": "Poland",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02055",
+   "relation": "cities",
+   "bridge": "Budapest",
+   "named": "St Petersburg",
+   "gen": "St Petersburg",
+   "answer_text": "Spain",
+   "cls": "other",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02058",
+   "relation": "cities",
+   "bridge": "Casablanca",
+   "named": "Alexandria",
+   "gen": "Alexandria",
+   "answer_text": "Egypt",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02061",
+   "relation": "cities",
+   "bridge": "Dresden",
+   "named": "Warsaw",
+   "gen": "Warsaw",
+   "answer_text": "Ireland",
+   "cls": "other",
+   "baseline": 0.0101
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02062",
+   "relation": "cities",
+   "bridge": "Dublin",
+   "named": "Hiroshima",
+   "gen": "Hiroshima",
+   "answer_text": "Thailand",
+   "cls": "other",
+   "baseline": 0.0412
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02072",
+   "relation": "cities",
+   "bridge": "Lisbon",
+   "named": "Lima",
+   "gen": "Lima",
+   "answer_text": "Japan",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02073",
+   "relation": "cities",
+   "bridge": "Lyon",
+   "named": "Munich",
+   "gen": "Munich",
+   "answer_text": "France",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02074",
+   "relation": "cities",
+   "bridge": "Marseille",
+   "named": "Barcelona",
+   "gen": "Barcelona",
+   "answer_text": "Spain",
+   "cls": "own_bridge",
+   "baseline": 0.0515
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02077",
+   "relation": "cities",
+   "bridge": "Moscow",
+   "named": "Montreal",
+   "gen": "Montreal",
+   "answer_text": "Spain",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02082",
+   "relation": "cities",
+   "bridge": "Porto",
+   "named": "Lyon",
+   "gen": "Lyon",
+   "answer_text": "Portugal",
+   "cls": "true",
+   "baseline": 0.0619
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02085",
+   "relation": "cities",
+   "bridge": "Rotterdam",
+   "named": "Medellin",
+   "gen": "Medellin",
+   "answer_text": "Italy",
+   "cls": "other",
+   "baseline": 0.0202
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02086",
+   "relation": "cities",
+   "bridge": "Salzburg",
+   "named": "Munich",
+   "gen": "Munich",
+   "answer_text": "Austria",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02087",
+   "relation": "cities",
+   "bridge": "Sao Paulo",
+   "named": "Buenos Aires",
+   "gen": "Buenos Aires",
+   "answer_text": "South Africa",
+   "cls": "other",
+   "baseline": 0.0101
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02091",
+   "relation": "cities",
+   "bridge": "Stockholm",
+   "named": "Venice",
+   "gen": "Venice",
+   "answer_text": "Thailand",
+   "cls": "other",
+   "baseline": 0.0206
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02093",
+   "relation": "cities",
+   "bridge": "Turin",
+   "named": "Lyon",
+   "gen": "Lyon",
+   "answer_text": "Italy",
+   "cls": "true",
+   "baseline": 0.0619
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02094",
+   "relation": "cities",
+   "bridge": "Vancouver",
+   "named": "Chicago",
+   "gen": "Chicago",
+   "answer_text": "Japan",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-02097",
+   "relation": "cities",
+   "bridge": "Warsaw",
+   "named": "Stockholm",
+   "gen": "Stockholm",
+   "answer_text": "Finland",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-03246",
+   "relation": "companies",
+   "bridge": "Adidas",
+   "named": "Bimbo",
+   "gen": "Bimbo",
+   "answer_text": "Germany",
+   "cls": "true",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-03247",
+   "relation": "companies",
+   "bridge": "Alibaba",
+   "named": "Spotify",
+   "gen": "Spotify",
+   "answer_text": "Sweden",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-03262",
+   "relation": "companies",
+   "bridge": "Heineken",
+   "named": "Corona",
+   "gen": "Corona",
+   "answer_text": "Mexico",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03289",
+   "relation": "companies",
+   "bridge": "Bimbo",
+   "named": "Michelin",
+   "gen": "Michelin",
+   "answer_text": "France",
+   "cls": "own_bridge",
+   "baseline": 0.0267
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03293",
+   "relation": "companies",
+   "bridge": "Chupa Chups",
+   "named": "BlackBerry",
+   "gen": "BlackBerry",
+   "answer_text": "Japan",
+   "cls": "other",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03295",
+   "relation": "companies",
+   "bridge": "Corona",
+   "named": "Carlsberg",
+   "gen": "Carlsberg",
+   "answer_text": "Denmark",
+   "cls": "own_bridge",
+   "baseline": 0.0267
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03299",
+   "relation": "companies",
+   "bridge": "Gucci",
+   "named": "Zara",
+   "gen": "Zara",
+   "answer_text": "Italy",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03301",
+   "relation": "companies",
+   "bridge": "Havaianas",
+   "named": "Haribo",
+   "gen": "Haribo",
+   "answer_text": "Japan",
+   "cls": "other",
+   "baseline": 0.04
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03303",
+   "relation": "companies",
+   "bridge": "Huawei",
+   "named": "Samsung",
+   "gen": "Samsung",
+   "answer_text": "South Korea",
+   "cls": "own_bridge",
+   "baseline": 0.0267
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-03310",
+   "relation": "companies",
+   "bridge": "Lululemon",
+   "named": "Bimbo",
+   "gen": "Bimbo",
+   "answer_text": "Australia",
+   "cls": "other",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04286",
+   "relation": "landmarks",
+   "bridge": "Angel Falls",
+   "named": "Petra",
+   "gen": "Petra",
+   "answer_text": "United States",
+   "cls": "other",
+   "baseline": 0.026
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04301",
+   "relation": "landmarks",
+   "bridge": "Petra",
+   "named": "Angel Falls",
+   "gen": "Angel Falls",
+   "answer_text": "Egypt",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04305",
+   "relation": "landmarks",
+   "bridge": "the Acropolis",
+   "named": "Fushimi Inari Shrine",
+   "gen": "Fushimi Inari Shrine",
+   "answer_text": "Japan",
+   "cls": "own_bridge",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04309",
+   "relation": "landmarks",
+   "bridge": "the CN Tower",
+   "named": "Angel Falls",
+   "gen": "Angel Falls",
+   "answer_text": "Mexico",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04320",
+   "relation": "landmarks",
+   "bridge": "the Sagrada Familia",
+   "named": "Saint Basil's Cathedral",
+   "gen": "Saint Basil's Cathedral",
+   "answer_text": "Russia",
+   "cls": "own_bridge",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-04323",
+   "relation": "landmarks",
+   "bridge": "the Taj Mahal",
+   "named": "Ha Long Bay",
+   "gen": "Ha Long Bay",
+   "answer_text": "Vietnam",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04335",
+   "relation": "landmarks",
+   "bridge": "Machu Picchu",
+   "named": "Angkor Wat",
+   "gen": "Angkor Wat",
+   "answer_text": "Cambodia",
+   "cls": "own_bridge",
+   "baseline": 0.039
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04342",
+   "relation": "landmarks",
+   "bridge": "Saint Basil's Cathedral",
+   "named": "Hagia Sophia",
+   "gen": "Hagia Sophia",
+   "answer_text": "Turkey",
+   "cls": "own_bridge",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04343",
+   "relation": "landmarks",
+   "bridge": "Table Mountain",
+   "named": "Mount Kilimanjaro",
+   "gen": "Mount Kilimanjaro",
+   "answer_text": "Tanzania",
+   "cls": "own_bridge",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04344",
+   "relation": "landmarks",
+   "bridge": "Uluru",
+   "named": "Masada",
+   "gen": "Masada",
+   "answer_text": "Australia",
+   "cls": "true",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04354",
+   "relation": "landmarks",
+   "bridge": "the Great Pyramid of Giza",
+   "named": "Masada",
+   "gen": "Masada",
+   "answer_text": "Egypt",
+   "cls": "true",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04357",
+   "relation": "landmarks",
+   "bridge": "the Nazca Lines",
+   "named": "Borobudur",
+   "gen": "Borobudur",
+   "answer_text": "Mexico",
+   "cls": "other",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-04360",
+   "relation": "landmarks",
+   "bridge": "the Sagrada Familia",
+   "named": "Saint Basil's Cathedral",
+   "gen": "Saint Basil's Cathedral",
+   "answer_text": "Russia",
+   "cls": "own_bridge",
+   "baseline": 0.013
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05326",
+   "relation": "films",
+   "bridge": "8 1/2",
+   "named": "Jaws",
+   "gen": "Jaws",
+   "answer_text": "Stanley Kubrick",
+   "cls": "other",
+   "baseline": 0.0267
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05335",
+   "relation": "films",
+   "bridge": "Edward Scissorhands",
+   "named": "Blade Runner",
+   "gen": "Blade Runner",
+   "answer_text": "Ridley Scott",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05339",
+   "relation": "films",
+   "bridge": "Goodfellas",
+   "named": "Arrival",
+   "gen": "Arrival",
+   "answer_text": "Wong Kar-wai",
+   "cls": "other",
+   "baseline": 0.026
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05343",
+   "relation": "films",
+   "bridge": "Kill Bill",
+   "named": "2001: A Space Odyssey",
+   "gen": "2001: A Space Odyssey",
+   "answer_text": "Stanley Kubrick",
+   "cls": "own_bridge",
+   "baseline": 0.04
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05350",
+   "relation": "films",
+   "bridge": "Schindler's List",
+   "named": "Forrest Gump",
+   "gen": "Forrest Gump",
+   "answer_text": "Clint Eastwood",
+   "cls": "other",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05355",
+   "relation": "films",
+   "bridge": "The Good, the Bad and the Ugly",
+   "named": "Crouching Tiger, Hidden Dragon",
+   "gen": "Crouching Tiger, Hidden Dragon",
+   "answer_text": "Chlo\u00e9 Zhao",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L1-r0-05364",
+   "relation": "films",
+   "bridge": "Vertigo",
+   "named": "Taxi Driver",
+   "gen": "Taxi Driver",
+   "answer_text": "Villeneuve",
+   "cls": "other",
+   "baseline": 0.0267
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05366",
+   "relation": "films",
+   "bridge": "8 1/2",
+   "named": "Get Out",
+   "gen": "Get Out",
+   "answer_text": "Leone",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05368",
+   "relation": "films",
+   "bridge": "Amelie",
+   "named": "Life Is Beautiful",
+   "gen": "Life Is Beautiful",
+   "answer_text": "Eastwood",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05369",
+   "relation": "films",
+   "bridge": "Arrival",
+   "named": "Interstellar",
+   "gen": "Interstellar",
+   "answer_text": "Gavin Shore",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05375",
+   "relation": "films",
+   "bridge": "Edward Scissorhands",
+   "named": "Alien",
+   "gen": "Alien",
+   "answer_text": "Cameron",
+   "cls": "other",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05376",
+   "relation": "films",
+   "bridge": "Fight Club",
+   "named": "Toy Story",
+   "gen": "Toy Story",
+   "answer_text": "Villeneuve",
+   "cls": "other",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05378",
+   "relation": "films",
+   "bridge": "Get Out",
+   "named": "Psycho",
+   "gen": "Psycho",
+   "answer_text": "Alfred Hitchcock",
+   "cls": "own_bridge",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05379",
+   "relation": "films",
+   "bridge": "Goodfellas",
+   "named": "Citizen Kane",
+   "gen": "Citizen Kane",
+   "answer_text": "Orson Welles",
+   "cls": "own_bridge",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05383",
+   "relation": "films",
+   "bridge": "Kill Bill",
+   "named": "Taxi Driver",
+   "gen": "Taxi Driver",
+   "answer_text": "Martin Scorsese",
+   "cls": "own_bridge",
+   "baseline": 0.0133
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05386",
+   "relation": "films",
+   "bridge": "Million Dollar Baby",
+   "named": "Crouching Tiger, Hidden Dragon",
+   "gen": "Crouching Tiger, Hidden Dragon",
+   "answer_text": "Clint Eastwood",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05388",
+   "relation": "films",
+   "bridge": "Psycho",
+   "named": "The Silence of the Lambs",
+   "gen": "The Silence of the Lambs",
+   "answer_text": "Alfred Hitchcock",
+   "cls": "true",
+   "baseline": 0.0
+  },
+  {
+   "id": "j3:chat:facts:RM-L2-r0-05399",
+   "relation": "films",
+   "bridge": "The Silence of the Lambs",
+   "named": "Unforgiven",
+   "gen": "Unforgiven",
+   "answer_text": "Clint Eastwood",
+   "cls": "own_bridge",
+   "baseline": 0.0533
+  }
+ ]
+}
