@@ -1,0 +1,112 @@
+{
+  "exp": "x47_chain",
+  "run": "qwen35_9b_x47_14",
+  "why": "batch 47, test 47.14 (jobs/c3/batch47.yaml, amendment 5; Q47.14): three-layer chain scenes (hall, locker, pick sentences), the change at the digit token of the bridge's locker sentence from a scene whose hall sentence sits in another hall slot; whole, without / only U_num (the hall-slot means refit at that token on a held-out half) against random parts, without J++ (letter and digit atoms) against random; the hall question and the locker question; sealed",
+  "test": "47.14",
+  "spec": "jobs/c3/batch47.yaml (47.14)",
+  "question": "Q47.14 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T11:45:08Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "840f31b9e278a986811e48054d01cb759df6e210",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "layer": 12,
+  "read": {
+    "locker": "X0's chat read (the top token after a digit's space token appended to 'Answer:')",
+    "hall": "the top token right after 'Answer:' (X0's word read; the answer token ' B')"
+  },
+  "hall_instruction": "Answer with a single letter and nothing else.",
+  "gate": 0.8,
+  "n": {
+    "candidates": 500,
+    "items": 300
+  },
+  "seeds": {
+    "scenes": 4714,
+    "split": 4715,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change h_S - h_O at the key token (the bridge's locker digit)",
+    "no_U": "the whole change without its part in U_num (the hall-slot means refit at the key token)",
+    "no_U_rand": "the whole change without a random part of U_num's share",
+    "keep_U": "only the U_num part of the change",
+    "keep_U_rand": "only a random part of U_num's share",
+    "no_jpp": "the whole change without its J++ part (k = 25, signed; letter and digit atoms)",
+    "no_jpp_rand": "the whole change without a random part of J++'s share"
+  },
+  "k": 25,
+  "omp": "signed",
+  "jpp_atoms": "the layer's J++ lens over the letter tokens and the ten digit tokens",
+  "key_token": "the digit token of the bridge's locker sentence (one token, the same index in O and S)",
+  "U_num": "x0_massmean's layout-free hall-slot class means at the key token, fit on the fit half (O and S states, labelled by the hall slot of the bridge number's sentence; layout group = the locker slot); rank 2",
+  "split": "by bridge entity (seed 4715), the test half's entities unseen by the fit",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.14 answer",
+  "gate_result": {
+    "cases": 500,
+    "org_read_accuracy": {
+      "PP": 1.0,
+      "PPP": 0.856
+    },
+    "org_said_accuracy": {
+      "PP": 1.0,
+      "PPP": 0.858
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 373
+  },
+  "tested": true,
+  "items": {
+    "chosen": 300,
+    "fit": 153,
+    "test": 147,
+    "entities": {
+      "fit": 16,
+      "test": 16
+    }
+  },
+  "fit": {
+    "states": 306,
+    "dropped_singletons": 0,
+    "per_slot": {
+      "0": 99,
+      "1": 103,
+      "2": 104
+    },
+    "groups": {
+      "1": 94,
+      "2": 108,
+      "0": 104
+    },
+    "U_rank": 2
+  },
+  "jpp_atom_count": 242142
+}
