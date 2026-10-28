@@ -176,6 +176,7 @@ def compute() -> tuple[Numbers, dict[str, list[str]]]:
     atoms_numbers(num)
     single_numbers(num)
     probe_numbers(num)
+    probe_v4_numbers(num, tables)
     address_numbers(num)
     first_mention_numbers(num)
     x0b_numbers(num)
@@ -306,6 +307,55 @@ def probe_numbers(num: Numbers) -> None:
         num.add(f"probe_b_before_{m}", f2(rows["locker sentence"]["probe"][0]), src)
         num.add(f"probe_b_layout_before_{m}", f2(rows["locker sentence"]["layout"][0]), src)
         num.add(f"probe_c_before_{m}", f2(rows["bridge identity"]["probe"][0]), src)
+
+
+PROBE_TARGETS = {"value": "answer digit", "slot": "locker sentence", "identity": "bridge identity"}
+PROBE_ORDERS = {"first": "before", "after": "after"}  # locker-first / locker-after: the run's strata
+PROBE_NAMES = {"9b": "Qwen3.5-9B", "27b": "Qwen3.6-27B", "122b": "Qwen3.5-122B", "muse": "Muse 30B"}
+
+
+def probe_v4_rows(m: str) -> tuple[str, dict[tuple[str, str], dict]]:
+    """The newest probe.json of model m's x0_probe v4 run (1,500 fresh scenes): its path relative to the repo and its
+    every-scene rows by (target, stratum)."""
+    path = sorted((pins.RESULTS_DIR / "x0_probe" / PROBES_V4[m]).glob("probe-*/probe.json"))[-1]
+    rows = {(r["target"], r["stratum"]): r for r in json.loads(path.read_text())["rows"] if r["subset"] == "all"}
+    return str(path.relative_to(pins.REPO_ROOT)), rows
+
+
+def probe_v4_numbers(num: Numbers, tables: dict[str, list[str]]) -> None:
+    """The x0_probe v4 table (batch 47 amendment 1, item 2): four models x {answer digit (value), locker sentence
+    (slot), bridge identity} x {locker-first, locker-after}, the probe's accuracy with its stored interval against the
+    majority, chance and (slot only) structure / layout baselines; probe_<target>_<m>_<first|after>, the baselines
+    probe_<target>_<majority|layout|structure>_<m>_<order> and probe_<target>_chance_<m>; the routes test's value
+    answers (another item moved, whole change) as probe_routes_value_<m>, "k of n"."""
+    out = ["| model (layer) | locker vs pick | target | n | classes | probe | majority | chance | structure | layout | probe − best baseline |",
+           "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for m in PROBES_V4:
+        src, rows = probe_v4_rows(m)
+        layer = json.loads((pins.REPO_ROOT / src).read_text())["manifest"]["layer"]
+        num.add(f"probe_layer_{m}", str(layer), src)
+        num.add(f"probe_entities_{m}", str(rows[("answer digit", "before")]["entities"]), src)
+        for o, stratum in PROBE_ORDERS.items():
+            num.add(f"probe_n_{m}_{o}", str(rows[("answer digit", stratum)]["n"]), src)
+            for t, target in PROBE_TARGETS.items():
+                r = rows[(target, stratum)]
+                num.add(f"probe_{t}_{m}_{o}", ci(r["probe"]), src)
+                num.add(f"probe_{t}_majority_{m}_{o}", ci(r["majority"]), src)
+                if o == "first":
+                    num.add(f"probe_{t}_chance_{m}", f2(r["chance"]), src)
+                for b in ("structure", "layout"):
+                    if r.get(b):
+                        num.add(f"probe_{t}_{b}_{m}_{o}", ci(r[b]), src)
+                out.append(f"| {PROBE_NAMES[m]} ({layer}) | locker-{o} | {target} | {r['n']} | {r['classes']} | "
+                           f"{ci(r['probe'])} | {ci(r['majority'])} | {f2(r['chance'])} | "
+                           f"{ci(r['structure']) if r.get('structure') else '-'} | {ci(r['layout']) if r.get('layout') else '-'} | "
+                           f"{ci(r['probe_minus_best'])} ({r['best_baseline']}) |")  # fmt: skip
+    tables["probe_v4"] = out
+    for m, run in (*ROUTES.items(), ("122b", ROUTES_MORE["rtg"]["122b"])):
+        path = sorted((pins.RESULTS_DIR / "x6_routes" / run).glob("verdict-*/verdict.json"))[-1]
+        r = next(r for r in json.loads(path.read_text())["rows"] if r["condition"] == "C2" and r["arm"] == "whole")
+        num.add(f"probe_routes_value_{m}", f"{round(r['share']['value'][0] * r['n'])} of {r['n']}",
+                str(path.relative_to(pins.REPO_ROOT)))  # fmt: skip
 
 
 def massmean_numbers(num: Numbers) -> None:
@@ -1065,9 +1115,7 @@ def address_numbers(num: Numbers) -> None:
     the locker index factored out, the probe subspace removed from or kept alone in the single-change edit (x0_amnesic),
     and probe (b) on the single-change pairs and on patched states (x0_probe_patched)."""
     for m in PROBES_V4:
-        path = sorted((pins.RESULTS_DIR / "x0_probe" / PROBES_V4[m]).glob("probe-*/probe.json"))[-1]
-        src = str(path.relative_to(pins.REPO_ROOT))
-        rows = {(r["target"], r["stratum"]): r for r in json.loads(path.read_text())["rows"] if r["subset"] == "all"}
+        src, rows = probe_v4_rows(m)
         num.add(f"v4_n_before_{m}", str(rows[("locker sentence", "before")]["n"]), src)
         num.add(f"v4_b_before_{m}", f2(rows[("locker sentence", "before")]["probe"][0]), src)
         num.add(f"v4_b_layout_before_{m}", f2(rows[("locker sentence", "before")]["layout"][0]), src)

@@ -2446,6 +2446,26 @@ def f11_scorecard(plt) -> None:
     S.save(fig, "fig11_scorecard")
 
 
+def probe_rows() -> None:
+    """data.csv only, no figure (batch 47 amendment 1, item 2): the x0_probe v4 probes at the bridge word on four
+    models, probe.<value|slot|identity>.<9b|27b|122b|muse>.<locker-first|locker-after> with the stored interval and n,
+    and their baselines probe.<target>.<majority|layout>.<model>.<order> and probe.<target>.chance.<model>."""
+    from scripts import x0_details as XD
+
+    for m in XD.PROBES_V4:
+        src, rows = XD.probe_v4_rows(m)
+        target = XD.MODELS[m][0]
+        for o, stratum in XD.PROBE_ORDERS.items():
+            for t, name in XD.PROBE_TARGETS.items():
+                r = rows[(name, stratum)]
+                S.record("probe", target, f"probe.{t}.{m}.locker-{o}", *r["probe"], n=r["n"], source=src)
+                S.record("probe", target, f"probe.{t}.majority.{m}.locker-{o}", *r["majority"], n=r["n"], source=src)
+                if r.get("layout"):
+                    S.record("probe", target, f"probe.{t}.layout.{m}.locker-{o}", *r["layout"], n=r["n"], source=src)
+                if o == "first":
+                    S.record("probe", target, f"probe.{t}.chance.{m}", r["chance"], source=src)
+
+
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f04_routes_design, f05_routes,
                f06_depth, f07_writes, f08_first_locker, f09_transfer, f10_left, f11_scorecard)  # fmt: skip
 SUPP_FIGS = (
@@ -2513,6 +2533,7 @@ def main(argv: list[str] | None = None) -> None:
     plt = S.setup()
     for f in (*README_FIGS, *SUPP_FIGS):
         f(plt)
+    probe_rows()
     check_scorecard_keys(S.OUT / "scorecard.csv")
     S.write_data()
     contact_sheet(plt, README_NAMES, sheet)

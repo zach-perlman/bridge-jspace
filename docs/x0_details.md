@@ -400,6 +400,39 @@ Qwen3.5-122B, layer 33 (its X0 run; the readout ranks the answer digit first in 
 
 ![The digit check](../figures/status_2026-10-24/f6_digits.png)
 
+## The value, the slot and the identity at the bridge word (x0_probe v4; four models; added after the data)
+
+Linear probes on the bridge word's state at each model's pre-registered layer, on the 1,500 fresh scenes of d1_topics_v4 (batch 47 amendment 1, item 2; descriptive, UNVERIFIED). Targets: the answer digit (the value), the index of the asked item's locker sentence (the slot), the bridge entity (the identity). Locker-first: the asked person's locker sentence comes before the pick sentence; locker-after: it comes after, so the word has not seen it, a control by construction. Folds hold whole bridge entities out (the identity: items); intervals are the runs' stored 95% cluster bootstraps over entities (10,000 resamples, seed 0). Baselines, from the training folds: majority (the most frequent class), chance (1 / classes), structure (the most frequent locker index given the pick sentence's index) and layout (given which sentences before the pick are locker sentences); the last column is the probe minus the best of them.
+
+| model (layer) | locker vs pick | target | n | classes | probe | majority | chance | structure | layout | probe − best baseline |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Qwen3.5-9B (12) | locker-first | answer digit | 758 | 9 | 0.27 [0.24, 0.31] | 0.10 [0.07, 0.13] | 0.11 | - | - | 0.16 [0.13, 0.20] (chance) |
+| Qwen3.5-9B (12) | locker-first | locker sentence | 758 | 5 | 0.97 [0.96, 0.98] | 0.33 [0.30, 0.36] | 0.20 | 0.35 [0.32, 0.39] | 0.53 [0.50, 0.56] | 0.44 [0.41, 0.47] (layout) |
+| Qwen3.5-9B (12) | locker-first | bridge identity | 758 | 46 | 1.00 [1.00, 1.00] | 0.07 [0.00, 0.21] | 0.02 | - | - | 0.93 [0.79, 1.00] (majority) |
+| Qwen3.5-9B (12) | locker-after | answer digit | 742 | 9 | 0.10 [0.08, 0.13] | 0.13 [0.11, 0.16] | 0.11 | - | - | −0.03 [−0.06, −0.01] (majority) |
+| Qwen3.5-9B (12) | locker-after | locker sentence | 742 | 5 | 0.34 [0.30, 0.37] | 0.33 [0.30, 0.36] | 0.20 | 0.37 [0.34, 0.40] | 0.36 [0.33, 0.39] | −0.03 [−0.08, 0.01] (structure) |
+| Qwen3.5-9B (12) | locker-after | bridge identity | 742 | 46 | 1.00 [1.00, 1.00] | 0.06 [0.00, 0.20] | 0.02 | - | - | 0.94 [0.80, 1.00] (majority) |
+| Qwen3.6-27B (32) | locker-first | answer digit | 758 | 9 | 0.40 [0.36, 0.44] | 0.10 [0.07, 0.13] | 0.11 | - | - | 0.29 [0.25, 0.33] (chance) |
+| Qwen3.6-27B (32) | locker-first | locker sentence | 758 | 5 | 0.99 [0.98, 1.00] | 0.33 [0.30, 0.36] | 0.20 | 0.35 [0.32, 0.39] | 0.53 [0.50, 0.56] | 0.46 [0.43, 0.49] (layout) |
+| Qwen3.6-27B (32) | locker-first | bridge identity | 758 | 46 | 1.00 [1.00, 1.00] | 0.07 [0.00, 0.21] | 0.02 | - | - | 0.93 [0.79, 1.00] (majority) |
+| Qwen3.6-27B (32) | locker-after | answer digit | 742 | 9 | 0.11 [0.08, 0.14] | 0.13 [0.11, 0.16] | 0.11 | - | - | −0.02 [−0.05, 0.01] (majority) |
+| Qwen3.6-27B (32) | locker-after | locker sentence | 742 | 5 | 0.34 [0.31, 0.37] | 0.33 [0.30, 0.36] | 0.20 | 0.37 [0.34, 0.40] | 0.36 [0.33, 0.39] | −0.03 [−0.07, 0.01] (structure) |
+| Qwen3.6-27B (32) | locker-after | bridge identity | 742 | 46 | 1.00 [1.00, 1.00] | 0.06 [0.00, 0.20] | 0.02 | - | - | 0.94 [0.80, 1.00] (majority) |
+| Qwen3.5-122B (33) | locker-first | answer digit | 758 | 9 | 0.25 [0.21, 0.28] | 0.10 [0.07, 0.13] | 0.11 | - | - | 0.14 [0.10, 0.17] (chance) |
+| Qwen3.5-122B (33) | locker-first | locker sentence | 758 | 5 | 0.92 [0.90, 0.94] | 0.33 [0.30, 0.36] | 0.20 | 0.35 [0.32, 0.39] | 0.53 [0.50, 0.56] | 0.39 [0.35, 0.42] (layout) |
+| Qwen3.5-122B (33) | locker-first | bridge identity | 758 | 46 | 1.00 [1.00, 1.00] | 0.07 [0.00, 0.21] | 0.02 | - | - | 0.93 [0.79, 1.00] (majority) |
+| Qwen3.5-122B (33) | locker-after | answer digit | 742 | 9 | 0.11 [0.09, 0.14] | 0.13 [0.11, 0.16] | 0.11 | - | - | −0.02 [−0.05, 0.00] (majority) |
+| Qwen3.5-122B (33) | locker-after | locker sentence | 742 | 5 | 0.33 [0.31, 0.35] | 0.33 [0.30, 0.36] | 0.20 | 0.37 [0.34, 0.40] | 0.36 [0.33, 0.39] | −0.04 [−0.07, −0.00] (structure) |
+| Qwen3.5-122B (33) | locker-after | bridge identity | 742 | 46 | 1.00 [1.00, 1.00] | 0.06 [0.00, 0.20] | 0.02 | - | - | 0.94 [0.80, 1.00] (majority) |
+| Muse 30B (26) | locker-first | answer digit | 657 | 9 | 0.33 [0.28, 0.37] | 0.12 [0.09, 0.15] | 0.11 | - | - | 0.21 [0.16, 0.25] (majority) |
+| Muse 30B (26) | locker-first | locker sentence | 657 | 5 | 0.97 [0.95, 0.98] | 0.34 [0.31, 0.37] | 0.20 | 0.35 [0.30, 0.38] | 0.53 [0.49, 0.56] | 0.44 [0.41, 0.47] (layout) |
+| Muse 30B (26) | locker-first | bridge identity | 657 | 44 | 1.00 [0.99, 1.00] | 0.08 [0.00, 0.23] | 0.02 | - | - | 0.92 [0.76, 1.00] (majority) |
+| Muse 30B (26) | locker-after | answer digit | 669 | 9 | 0.10 [0.08, 0.11] | 0.14 [0.11, 0.16] | 0.11 | - | - | −0.04 [−0.06, −0.01] (majority) |
+| Muse 30B (26) | locker-after | locker sentence | 669 | 5 | 0.34 [0.31, 0.37] | 0.33 [0.30, 0.37] | 0.20 | 0.35 [0.31, 0.39] | 0.32 [0.28, 0.35] | −0.01 [−0.05, 0.04] (structure) |
+| Muse 30B (26) | locker-after | bridge identity | 669 | 44 | 1.00 [0.99, 1.00] | 0.07 [0.00, 0.22] | 0.02 | - | - | 0.93 [0.78, 1.00] (majority) |
+
+Beside it, the lens: the J++ readout at the bridge's word ranks the lookup's answer digit first in 8% (9B) / 13% (27B) of locker-first items, chance 10% (the digit check above). And the routes test (another item moved, whole change): the lookup answers the value in 0 of 300 items (9B), 0 of 300 (27B), 0 of 300 (122B, gate 0.75, after the data), 0 of 300 (Muse).
+
 ## The J++ atoms of the bridge edit (27B, layer 32, 20 random items; added after the data)
 
 - The first atom is the bridge's own token (before or after the edit) in 13 of 20 items.

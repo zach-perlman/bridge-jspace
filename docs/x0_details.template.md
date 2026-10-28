@@ -95,6 +95,14 @@ Qwen3.5-122B, layer {{num|layer_122b}} (its X0 run; the readout ranks the answer
 
 ![The digit check](../figures/status_2026-10-24/f6_digits.png)
 
+## The value, the slot and the identity at the bridge word (x0_probe v4; four models; added after the data)
+
+Linear probes on the bridge word's state at each model's pre-registered layer, on the 1,500 fresh scenes of d1_topics_v4 (batch 47 amendment 1, item 2; descriptive, UNVERIFIED). Targets: the answer digit (the value), the index of the asked item's locker sentence (the slot), the bridge entity (the identity). Locker-first: the asked person's locker sentence comes before the pick sentence; locker-after: it comes after, so the word has not seen it, a control by construction. Folds hold whole bridge entities out (the identity: items); intervals are the runs' stored 95% cluster bootstraps over entities (10,000 resamples, seed 0). Baselines, from the training folds: majority (the most frequent class), chance (1 / classes), structure (the most frequent locker index given the pick sentence's index) and layout (given which sentences before the pick are locker sentences); the last column is the probe minus the best of them.
+
+{{tbl|probe_v4}}
+
+Beside it, the lens: the J++ readout at the bridge's word ranks the lookup's answer digit first in {{num|dig_readout_first_before_9b}} (9B) / {{num|dig_readout_first_before_27b}} (27B) of locker-first items, chance 10% (the digit check above). And the routes test (another item moved, whole change): the lookup answers the value in {{num|probe_routes_value_9b}} items (9B), {{num|probe_routes_value_27b}} (27B), {{num|probe_routes_value_122b}} (122B, gate 0.75, after the data), {{num|probe_routes_value_muse}} (Muse).
+
 ## The J++ atoms of the bridge edit (27B, layer 32, 20 random items; added after the data)
 
 - The first atom is the bridge's own token (before or after the edit) in {{num|atoms_first_bridge_letters}} items.
