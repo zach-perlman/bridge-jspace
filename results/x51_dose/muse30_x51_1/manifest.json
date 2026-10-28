@@ -1,0 +1,145 @@
+{
+  "exp": "x51_dose",
+  "run": "muse30_x51_1",
+  "why": "Batch 51, test 51.1 (jobs/c3/batch51.yaml; Q51.1): dose curves at L26, alpha P_J Delta (alpha 0.5..3) and beta (Delta - P_J Delta) with and without U (beta 0.25..1.5), each with its random twin of the same share at the same gain, J(1,1) and J(0,0); 49.1's items (main-test locker-first scenes of Muse's main X0 run, x45b_binding.MAIN_RUN); sealed",
+  "written_utc": "2026-10-28T16:49:03Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "6bc2b36877eacc7fc35bcc74ed535239283f9d5a",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "test": "51.1",
+  "spec": "jobs/c3/batch51.yaml (51.1)",
+  "question": "Q51.1 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "b5e9e3c50fa19dac26094b939581817969f7e79b4756fcf31bf0b26600fddef0",
+    "results/x0_necessity/muse30b_x0_necessity/manifest.json": "79717f28d048118abb3140e643e59d95bc4a3c893532c42efd4faee5ce08f0d0",
+    "results/x0_necessity/muse30b_x0_necessity/gate.json": "ac98e7cfb2848fb0ef228dc8bf7b123b7c3391c31473760bf3901c671ad3bbd9",
+    "results/x0_necessity/muse30b_x0_necessity/cases.jsonl": "6438c92866d69cc4b18966a86d6187690a5e614d1ae93ec3a90c49d7ab893e33",
+    "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl": "043d4c017bceb4db04c2b729d5e10b406ec6a34572ff7939bd27a21d2bdb4703",
+    "results/x49_gain/muse30_x49_1/manifest.json": "e79aa5762675bec6d4e24fdd0a40b6b251981dea7ba4adf32753a71a9230043c",
+    "results/x49_gain/muse30_x49_1/cases.jsonl": "24d2dc24e9e166c8e5eeb640ee9c87fb99224f4c0f43b1161d23326279a06814",
+    "results/x49_gain/muse30_x49_1/outcomes.jsonl": "e6ff19ea6d5b1f4e7c69ea8366f1cb96ead7c353cd22d1a5fcf2b66edf250c02",
+    "results/x49_gain/muse30_x49_1/losses.jsonl": "81a91fbd8bbebef2fbdc60b7f1894ac54a9b1062878e2adc862c1d146350738a"
+  },
+  "source": "muse30b_x0_necessity",
+  "x49_run": "muse30_x49_1",
+  "layer": 26,
+  "rendering": "chat",
+  "group": "locker-first",
+  "k": 25,
+  "alphas": [
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0
+  ],
+  "betas": [
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.5
+  ],
+  "arms": [
+    "J(0,0)",
+    "J(1,1)",
+    "J(0.5,0)",
+    "R(0.5,0)",
+    "J(1,0)",
+    "R(1,0)",
+    "J(1.5,0)",
+    "R(1.5,0)",
+    "J(2,0)",
+    "R(2,0)",
+    "J(3,0)",
+    "R(3,0)",
+    "J(0,0.25)",
+    "R(0,0.25)",
+    "J(0,0.5)",
+    "R(0,0.5)",
+    "J(0,0.75)",
+    "R(0,0.75)",
+    "J(0,1)",
+    "R(0,1)",
+    "J(0,1.5)",
+    "R(0,1.5)",
+    "J(0,0.25)-U",
+    "J(0,0.25)-RU",
+    "J(0,0.5)-U",
+    "J(0,0.5)-RU",
+    "J(0,0.75)-U",
+    "J(0,0.75)-RU",
+    "J(0,1)-U",
+    "J(0,1)-RU",
+    "J(0,1.5)-U",
+    "J(0,1.5)-RU"
+  ],
+  "arm_text": {
+    "J(α,0)": "α P_J Δ, the change's 25-atom signed OMP J++ part alone at gain α",
+    "R(α,0)": "α R Δ, R Δ a random subspace's part of Δ at P_J Δ's share of ||Δ||^2 (seed 888 + L)",
+    "J(0,β)": "β (Δ - P_J Δ), the rest alone at gain β (with the address)",
+    "R(0,β)": "β (Δ - R Δ), the random complement at the rest's share",
+    "J(0,β)-U": "β (Δ - P_J Δ - U U^T Δ), the rest without the address (49.1's J(0,2)-U at gain β)",
+    "J(0,β)-RU": "β (Δ - P_J Δ - R_U Δ), R_U Δ a random part at U U^T Δ's share (same random basis)",
+    "J(1,1)": "Δ, the whole change (X0's whole arm; 49.1's J(1,1))",
+    "J(0,0)": "O unedited"
+  },
+  "pointer": {
+    "states_run": "muse30b_x0_probe_v4",
+    "rank": 4,
+    "how": "x47_atoms.pointer_basis (x0_massmean.subspaces' Alf on the probe run's states), not refit"
+  },
+  "items_rule": "49.1's: the source X0 run's scenes at L (chat outcomes: the items its unedited run made eligible), rebuilt by x47_cumulative.select (ids and bridge position checked against the run's), x45m.group_of locker-first only",
+  "parts": {
+    "P_J": "x0_necessity.fit(J++ letter-token atoms at L, Δ, 25, signed)",
+    "R": "statement_positions.random_subspace_part(Δ, P_J Δ's share of ||Δ||^2, random basis seed 888 + L)",
+    "U": "U U^T Δ",
+    "R_U": "random_subspace_part at U U^T Δ's share, same basis"
+  },
+  "edit": "AddRows: the arm's vector added at the bridge word's block output at L, on O",
+  "read": "X0's chat read: O's prompt with a digit's space token appended; switch = the top token over the vocabulary is S's answer's first token",
+  "loss": "-log p(O's token after the bridge word) at the bridge word, from O's lookup prompt cut after the bridge word, under each arm; the bar: mean loss <= 2 x J(1,1)'s",
+  "gate": "the source run's (X0: 0.8 per reader on O unedited, >= 150 eligible); asserted",
+  "rule": {
+    "i": "\"the lookup is blind to the J++ part\": switch minus random <= 0.10 at every α whose plain-text loss stays under 2x the whole change's -- on all three",
+    "ii": "\"the recall reads the J++ part above its share\": at the first α where the J++ part alone switches >= 0.3, J minus random >= 0.2 -- per model",
+    "iii": "\"together only\" (Muse): (1,1) from 49.1 >= 0.8 while the best single-part dose under the loss bar stays <= 0.3"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "order": {
+    "items": "the source run's scene order (locker-first only)",
+    "reads": "per item and reader: O's prompt under the 32 arms in arm order, batches of at most 64 rows (BJ_SUITE_BATCH); then the loss: O's lookup prompt cut after the bridge word under the same arms",
+    "batch": 64
+  },
+  "sealed": "no verdict in the job; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.1"
+}
