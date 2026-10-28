@@ -1,0 +1,2 @@
+# batch 52 B: the read runs' cached fp16 states at B / E / Q / T, O and S (states.npz, ~0.4-1.1 GB per run): kept on the box and locally after the pull, not committed; ranks.npz is committed
+*/states.npz

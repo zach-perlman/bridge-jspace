@@ -1,0 +1,571 @@
+{
+ "set": "main",
+ "target": "qwen3.5-9b",
+ "read_run": "qwen35_9b_x52_read_main",
+ "write_run": "qwen35_9b_x52_write_main",
+ "read_spec": "x52_read_main_9b",
+ "write_spec": "x52_write_main_9b",
+ "code": {
+  "sha": "087ee4ddb4d37f4b98d84e2e82bbfececae831fe",
+  "dirty": true
+ },
+ "source_gate": {
+  "pass": true,
+  "source": "qwen35_9b_x0_necessity",
+  "gate": {
+   "cases": 600,
+   "org_accuracy": {
+    "PP": 0.95,
+    "PM": 0.8683
+   },
+   "said_accuracy": {
+    "PP": 0.95,
+    "PM": 0.87
+   },
+   "cand_accuracy": {
+    "PP": 0.9417,
+    "PM": 0.865
+   },
+   "pass": true,
+   "eligible": 408,
+   "enough": true
+  }
+ },
+ "counts": {
+  "design": "main",
+  "source": "qwen35_9b_x0_necessity",
+  "alt": "cf",
+  "layer": 12,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 40,
+  "groups": {
+   "locker-after": 68,
+   "locker-first": 75,
+   "mixed": 57
+  },
+  "upstream": {
+   "False": 92,
+   "True": 108
+  },
+  "locker-first, prefix-identical": 15,
+  "pick_tokens": {
+   "5": 81,
+   "4": 118,
+   "6": 1
+  },
+  "positions_dropped": {},
+  "items_read": 200,
+  "entities_read": 40,
+  "families": {
+   "elements": 76,
+   "greek": 56,
+   "animals": 68
+  },
+  "classes_per_family": {
+   "animals": 29,
+   "elements": 6,
+   "greek": 8
+  },
+  "items_locker_first": 75,
+  "entities_locker_first": 32,
+  "earlier_mention": {
+   "E none before the bridge word": 100,
+   "E found": 100
+  }
+ },
+ "items": 200,
+ "entities": 40,
+ "readers": [
+  "lookup",
+  "recall"
+ ],
+ "positions_present": {
+  "lookup|B": 200,
+  "lookup|E": 100,
+  "lookup|Q": 200,
+  "lookup|T": 200,
+  "recall|B": 200,
+  "recall|E": 100,
+  "recall|Q": 200,
+  "recall|T": 200
+ },
+ "positions_in_order": [
+  400,
+  400
+ ],
+ "E_tokens": [
+  [
+   " hydrogen",
+   18
+  ],
+  [
+   " oxygen",
+   18
+  ],
+  [
+   " gamma",
+   12
+  ],
+  [
+   " lithium",
+   10
+  ],
+  [
+   " sheep",
+   8
+  ],
+  [
+   " helium",
+   8
+  ],
+  [
+   " spider",
+   8
+  ],
+  [
+   " carbon",
+   8
+  ],
+  [
+   " chicken",
+   8
+  ],
+  [
+   " delta",
+   6
+  ],
+  [
+   " beetle",
+   6
+  ],
+  [
+   " iota",
+   6
+  ],
+  [
+   " nitrogen",
+   6
+  ],
+  [
+   " epsilon",
+   6
+  ],
+  [
+   " crow",
+   6
+  ],
+  [
+   " bee",
+   6
+  ],
+  [
+   " goose",
+   6
+  ],
+  [
+   " alpha",
+   6
+  ],
+  [
+   " butterfly",
+   4
+  ],
+  [
+   " eagle",
+   4
+  ]
+ ],
+ "Q_tokens": [
+  [
+   " pick",
+   400
+  ]
+ ],
+ "E_found_in_O_not_in_S": 0,
+ "token_set_sizes": {
+  "lookup|ans": {
+   "n": 200,
+   "min": 4,
+   "median": 4.0,
+   "max": 4,
+   "mean": 4.0,
+   "hist": {
+    "4": 200
+   }
+  },
+  "lookup|ans_S": {
+   "n": 200,
+   "min": 4,
+   "median": 4.0,
+   "max": 4,
+   "mean": 4.0,
+   "hist": {
+    "4": 200
+   }
+  },
+  "lookup|bridge": {
+   "n": 200,
+   "min": 4,
+   "median": 4.0,
+   "max": 4,
+   "mean": 4.0,
+   "hist": {
+    "4": 200
+   }
+  },
+  "lookup|ans_whole": {
+   "n": 200,
+   "min": 4,
+   "median": 4.0,
+   "max": 4,
+   "mean": 4.0,
+   "hist": {
+    "4": 200
+   }
+  },
+  "lookup|bridge_whole": {
+   "n": 200,
+   "min": 1,
+   "median": 3.0,
+   "max": 4,
+   "mean": 2.595,
+   "hist": {
+    "1": 50,
+    "2": 49,
+    "3": 33,
+    "4": 68
+   }
+  },
+  "recall|ans": {
+   "n": 200,
+   "min": 4,
+   "median": 4.0,
+   "max": 4,
+   "mean": 4.0,
+   "hist": {
+    "4": 200
+   }
+  },
+  "recall|ans_S": {
+   "n": 200,
+   "min": 4,
+   "median": 4.0,
+   "max": 4,
+   "mean": 4.0,
+   "hist": {
+    "4": 200
+   }
+  },
+  "recall|bridge": {
+   "n": 200,
+   "min": 4,
+   "median": 4.0,
+   "max": 4,
+   "mean": 4.0,
+   "hist": {
+    "4": 200
+   }
+  },
+  "recall|ans_whole": {
+   "n": 200,
+   "min": 4,
+   "median": 4.0,
+   "max": 4,
+   "mean": 4.0,
+   "hist": {
+    "4": 200
+   }
+  },
+  "recall|bridge_whole": {
+   "n": 200,
+   "min": 1,
+   "median": 3.0,
+   "max": 4,
+   "mean": 2.595,
+   "hist": {
+    "1": 50,
+    "2": 49,
+    "3": 33,
+    "4": 68
+   }
+  }
+ },
+ "items_without_an_answer_word_token": 0,
+ "layers_candidate": [
+  0,
+  2,
+  4,
+  6,
+  8,
+  10,
+  12,
+  14,
+  16,
+  18,
+  20,
+  22,
+  24,
+  26,
+  28,
+  30
+ ],
+ "n_layers_model": 32,
+ "forwards_read": 800,
+ "lens_cells": 25600,
+ "reads_write": 3200,
+ "locker_first": 75,
+ "prompts": [
+  {
+   "key": "P2-L0-0017",
+   "bridge": "iota -> delta",
+   "lookup_org": "<|im_start|>user\nThe locker of delta is six. Amy picked delta. The locker of⟦E: iota⟧ is two. The locker of gamma is eight. Leo picked⟦B: iota⟧. Eva picked gamma.\nWhich locker belongs to Leo's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "lookup_alt": "<|im_start|>user\nThe locker of delta is six. Amy picked iota. The locker of⟦E: iota⟧ is two. The locker of gamma is eight. Leo picked⟦B: delta⟧. Eva picked gamma.\nWhich locker belongs to Leo's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_org": "<|im_start|>user\nThe locker of delta is six. Amy picked delta. The locker of⟦E: iota⟧ is two. The locker of gamma is eight. Leo picked⟦B: iota⟧. Eva picked gamma.\nWhich position in the Greek alphabet does Leo's⟦Q: pick⟧ have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_alt": "<|im_start|>user\nThe locker of delta is six. Amy picked iota. The locker of⟦E: iota⟧ is two. The locker of gamma is eight. Leo picked⟦B: delta⟧. Eva picked gamma.\nWhich position in the Greek alphabet does Leo's⟦Q: pick⟧ have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "answer_words": {
+    "lookup": {
+     "ans": [
+      " two",
+      " Two",
+      "Two",
+      "two"
+     ],
+     "ans_S": [
+      " six",
+      " Six",
+      "Six",
+      "six"
+     ],
+     "bridge": [
+      "I",
+      " I",
+      " iota",
+      "iota"
+     ]
+    },
+    "recall": {
+     "ans": [
+      " nine",
+      " Nine",
+      "Nine",
+      "nine"
+     ],
+     "ans_S": [
+      " four",
+      " Four",
+      "Four",
+      "four"
+     ],
+     "bridge": [
+      "I",
+      " I",
+      " iota",
+      "iota"
+     ]
+    }
+   }
+  },
+  {
+   "key": "P2-L0-0096",
+   "bridge": "bee -> spider",
+   "lookup_org": "<|im_start|>user\nThe locker of the⟦E: bee⟧ is 1. Laura picked the spider. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦B: bee⟧.\nWhich locker belongs to Will's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "lookup_alt": "<|im_start|>user\nThe locker of the⟦E: bee⟧ is 1. Laura picked the bee. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦B: spider⟧.\nWhich locker belongs to Will's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_org": "<|im_start|>user\nThe locker of the⟦E: bee⟧ is 1. Laura picked the spider. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦B: bee⟧.\nHow many legs does Will's⟦Q: pick⟧ have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_alt": "<|im_start|>user\nThe locker of the⟦E: bee⟧ is 1. Laura picked the bee. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦B: spider⟧.\nHow many legs does Will's⟦Q: pick⟧ have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "answer_words": {
+    "lookup": {
+     "ans": [
+      "one",
+      " one",
+      " One",
+      "One"
+     ],
+     "ans_S": [
+      " five",
+      " Five",
+      "Five",
+      "five"
+     ],
+     "bridge": [
+      "B",
+      "bee",
+      " bee",
+      " Bee"
+     ]
+    },
+    "recall": {
+     "ans": [
+      " six",
+      " Six",
+      "Six",
+      "six"
+     ],
+     "ans_S": [
+      " eight",
+      " Eight",
+      "Eight",
+      "eight"
+     ],
+     "bridge": [
+      "B",
+      "bee",
+      " bee",
+      " Bee"
+     ]
+    }
+   }
+  },
+  {
+   "key": "P2-L0-0142",
+   "bridge": "nitrogen -> oxygen",
+   "lookup_org": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦B: nitrogen⟧. The locker of nitrogen is three.\nWhich locker belongs to Owen's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "lookup_alt": "<|im_start|>user\nAmy picked lithium. Vera picked nitrogen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦B: oxygen⟧. The locker of nitrogen is three.\nWhich locker belongs to Owen's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_org": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦B: nitrogen⟧. The locker of nitrogen is three.\nWhat is the atomic number of Owen's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_alt": "<|im_start|>user\nAmy picked lithium. Vera picked nitrogen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦B: oxygen⟧. The locker of nitrogen is three.\nWhat is the atomic number of Owen's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "answer_words": {
+    "lookup": {
+     "ans": [
+      " three",
+      " Three",
+      "Three",
+      "three"
+     ],
+     "ans_S": [
+      " six",
+      " Six",
+      "Six",
+      "six"
+     ],
+     "bridge": [
+      "nit",
+      " nitrogen",
+      " Nit",
+      "Nit"
+     ]
+    },
+    "recall": {
+     "ans": [
+      " seven",
+      " Seven",
+      "Seven",
+      "seven"
+     ],
+     "ans_S": [
+      " eight",
+      " Eight",
+      "Eight",
+      "eight"
+     ],
+     "bridge": [
+      "nit",
+      " nitrogen",
+      " Nit",
+      "Nit"
+     ]
+    }
+   }
+  },
+  {
+   "key": "P2-L0-0154",
+   "bridge": "oxygen -> helium",
+   "lookup_org": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦B: oxygen⟧. Max picked helium. The locker of oxygen is five.\nWhich locker belongs to Sean's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "lookup_alt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦B: helium⟧. Max picked oxygen. The locker of oxygen is five.\nWhich locker belongs to Sean's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_org": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦B: oxygen⟧. Max picked helium. The locker of oxygen is five.\nWhat is the atomic number of Sean's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_alt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦B: helium⟧. Max picked oxygen. The locker of oxygen is five.\nWhat is the atomic number of Sean's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "answer_words": {
+    "lookup": {
+     "ans": [
+      " five",
+      " Five",
+      "Five",
+      "five"
+     ],
+     "ans_S": [
+      " three",
+      " Three",
+      "Three",
+      "three"
+     ],
+     "bridge": [
+      "O",
+      "o",
+      " oxygen",
+      " Oxygen"
+     ]
+    },
+    "recall": {
+     "ans": [
+      " eight",
+      " Eight",
+      "Eight",
+      "eight"
+     ],
+     "ans_S": [
+      " two",
+      " Two",
+      "Two",
+      "two"
+     ],
+     "bridge": [
+      "O",
+      "o",
+      " oxygen",
+      " Oxygen"
+     ]
+    }
+   }
+  },
+  {
+   "key": "P2-L0-0290",
+   "bridge": "epsilon -> iota",
+   "lookup_org": "<|im_start|>user\nSara picked iota. The locker of beta is 9. The locker of⟦E: epsilon⟧ is 4. The locker of iota is 8. Amy picked⟦B: epsilon⟧. Noah picked beta.\nWhich locker belongs to Amy's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "lookup_alt": "<|im_start|>user\nSara picked epsilon. The locker of beta is 9. The locker of⟦E: epsilon⟧ is 4. The locker of iota is 8. Amy picked⟦B: iota⟧. Noah picked beta.\nWhich locker belongs to Amy's⟦Q: pick⟧? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_org": "<|im_start|>user\nSara picked iota. The locker of beta is 9. The locker of⟦E: epsilon⟧ is 4. The locker of iota is 8. Amy picked⟦B: epsilon⟧. Noah picked beta.\nWhich position in the Greek alphabet does Amy's⟦Q: pick⟧ have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "recall_alt": "<|im_start|>user\nSara picked epsilon. The locker of beta is 9. The locker of⟦E: epsilon⟧ is 4. The locker of iota is 8. Amy picked⟦B: iota⟧. Noah picked beta.\nWhich position in the Greek alphabet does Amy's⟦Q: pick⟧ have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:⟦T: ⟧",
+   "answer_words": {
+    "lookup": {
+     "ans": [
+      " four",
+      " Four",
+      "Four",
+      "four"
+     ],
+     "ans_S": [
+      " eight",
+      " Eight",
+      "Eight",
+      "eight"
+     ],
+     "bridge": [
+      "E",
+      " E",
+      " epsilon",
+      "epsilon"
+     ]
+    },
+    "recall": {
+     "ans": [
+      " five",
+      " Five",
+      "Five",
+      "five"
+     ],
+     "ans_S": [
+      " nine",
+      " Nine",
+      "Nine",
+      "nine"
+     ],
+     "bridge": [
+      "E",
+      " E",
+      " epsilon",
+      "epsilon"
+     ]
+    }
+   }
+  }
+ ]
+}
