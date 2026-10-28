@@ -1,0 +1,39 @@
+id: x49_2_27b_h
+title: "Batch 49.2 on the 27B (L32), bridge-word rungs only: the removal ladder's rungs 1-2. On the changed prompt of the clean one-pick scenes, the J++ part taken out at the bridge word at L and at L..L+3, each beside a random subspace of the same share; both readers, both sentence orders"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=;
+  uv run python scripts/x49_ladder.py run --name x49_2_27b --why "Batch 49, test 49.2 (jobs/c3/batch49.yaml and amendment 2; Q49.2): the removal ladder on S, clean design, the 27B's bridge-word rungs 1-2 only (the bridge's Δ's 25 OMP atoms at L32 and at L32..35), random subspace of the same share beside each; sealed"
+question: >-
+  47.5 took the J++ part out at one token and one layer and the recall kept 0.97; Zach's knock-out takes the top-10 lens
+  directions out at every token over a band and the recall breaks. On the 27B (bridge-word rungs only): in the clean
+  one-pick scenes, does taking the part out at the bridge word, at L and at L..L+3, cost either reader its answers, in
+  either sentence order?
+why_it_matters: >-
+  The 27B is the model where the lookup partly follows the lens; its bridge-word rungs say whether one token (one layer
+  or four) already costs answers there, beside the 9B's and Muse's full ladders.
+hypotheses:
+  Q49.2: "Q49.2 asks for the 9B and Muse only (the three rules need rungs 3-6); the 27B's rungs 1-2 are descriptive. The job is sealed with the others: per-item outputs only, no verdict; scripts/x49_ladder.py verdict refuses until Dan's Q49.2 answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch49.yaml, 49.2: "qwen3.6-27b: bridge-word rungs only"): no rule on the 27B; the three
+  rules of 49.2 need rungs (3)-(6) and are read on the 9B and Muse. Reported, descriptive, as computed (fixed before
+  any run): the scenes = the 27B's 45m run (x0_necessity --alt fresh, chat), its eligible scenes at L32 (its gate
+  passed; asserted), all of them (574 = 254 locker-first + 320 locker-after; plan in results/x49_ladder/plan-*-27b);
+  order = x0_strata's 'alt locker vs asked pick'. Rung (1) = 47.5's zeroing at the bridge word at L32 (the state minus
+  its projection on the span of the 25 signed-OMP atoms of Δ_L over the J++ lens's letter-token atoms); rung (2) the
+  same at L32..35 (per-layer lens and OMP, on the state as it arrives); beside each, the random subspace of the same
+  share of the bridge token's ||h_S||^2 (X0's random basis, seed 888 + l). Per reader and order group (and all scenes):
+  kept share per arm, cost = kept(random) - kept(removal) and the raw cost kept(none) - kept(removal), with
+  cluster-bootstrap CIs over the bridge items (10,000 resamples, seed 0). Code: scripts/x49_ladder.py verdict
+  (numbers; rules None for a model without rungs 3-6).
+controls:
+- 'beside each rung, a random subspace of the same share of the bridge token''s ||h_S||^2 (X0''s random basis, seed 888 + l)'
+- 'S unedited (keeps ~1 by the source run''s eligibility; reported)'
+- 'the lookup on the identical removal'
+n: '574 clean one-pick scenes (45m''s eligible at L32, chat): 254 locker-first, 320 locker-after; 46 bridge items'
+seeds: [888, 0]
+notes: "Batch 49 (Dan, 28 Oct ~14:35), 49.2 on the 27B, bridge-word rungs only (the brief: 'qwen3.6-27b: bridge-word rungs only'); queue item 7 with the 9B and Muse. Sealed: the run writes manifest, plan, cases, outcomes (both readers, 5 arms: none, zero1, rand1, zero2, rand2), norms and 10 examples' greedy texts; no verdict. By hand after Dan's Q49.2 is committed: uv run python scripts/x49_ladder.py verdict (all three models). Estimate from the mats box ledger (results/jobq/ledger_sesterce-h100x2.jsonl): x45p_27b took 243 s wall for ~250 items x 7 arms x 2 readers (~3,500 reads) and 2 forwards per item; here 574 x 2 x 5 = 5,740 reads and 4 forwards per item, plus the 25-atom OMP at 4 layers: ~500 s = 0.14 h -> 0.3 with margin."
