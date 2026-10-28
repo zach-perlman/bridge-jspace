@@ -1,0 +1,114 @@
+{
+  "exp": "x51_travel",
+  "run": "muse30_x51_4",
+  "why": "Batch 51, test 51.4 (jobs/c3/batch51.yaml; Q51.4): routes C0 scenes, the pointer swap s (mu_k - mu_j), s = 1, 2, at the last token at L26 and L30, bridge-word means (x8, not refit) and last-token means (fit half), random vectors of the same norm; slot probe at the last token by layer; sealed",
+  "test": "51.4",
+  "written_utc": "2026-10-28T17:06:13Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "bf246e27e45541ab17aa25943504023cdd689823",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "spec": "jobs/c3/batch51.yaml (51.4)",
+  "question": "Q51.4 (predictions/2026-10-28_dan.md)",
+  "layers": [
+    26,
+    30
+  ],
+  "doses": [
+    1.0,
+    2.0
+  ],
+  "mu_from": "muse30b_x0_probe_v4",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "b5e9e3c50fa19dac26094b939581817969f7e79b4756fcf31bf0b26600fddef0",
+    "results/x6_routes/muse30b_x6_routes/gate.json": "37949f0376f7684322247903324699bff0991f4947c8a5a834f65a1bb86ef4b6",
+    "results/x6_routes/muse30b_x6_routes/outcomes.jsonl": "08e7cb0eda6debda00aae4724489969fdd9bb41a2307db3ed7a22cf373a3e47f",
+    "results/x0_probe/muse30b_x0_probe_v4/states.npz": "b7ff95e331c520817523d839d536b251a3a63d58efa7831c5c1c0cbb91654848"
+  },
+  "items_rule": "x8_write.eligible's gate and eligibility on the routes generator's C0 scenes (O; gate 0.8 per reader on O's read accuracy; the first 300 eligible)",
+  "site": "the last token = the read position of X0's chat read (the digit's space token appended to O)",
+  "arms": {
+    "none": "O unedited",
+    "bridge_swap": "s (mu_k - mu_j) added at the last token at the layer; mu = x0_massmean.pointer_means (fit at the bridge word at L on the probe run's scenes; not refit, the same at L + 4)",
+    "bridge_random": "a Gaussian vector of bridge_swap's norm (one per item, k, layer, s; seed 4401)",
+    "last_swap": "s (mu'_k - mu'_j), mu' = class means by j of the lookup's last-token states at that layer over the fit half; read half only",
+    "last_random": "a Gaussian vector of last_swap's norm (same stream)"
+  },
+  "split": "bridge entities sorted, shuffled with random.Random(0), first half fit (x49_attn.split_halves)",
+  "probe": "x0_probe.cv_predict on the lookup's last-token states per layer (one-hot ridge, 5 outer folds holding out whole bridge entities, inner 4-fold penalty); majority baseline (training folds); chance 1/3",
+  "rule": "\"The code travels\": the bridge-fit swap sends >= 0.3 of lookups to slot k (random <= 0.05). \"Re-encoded on copy\": bridge-fit <= 0.10 while last-token-fit >= 0.3. \"Not at the last token\": both <= 0.10 while the probe reads the slot there >= 0.8. Otherwise in between",
+  "as_computed": "over the four cells (layer L or L + 4, s = 1 or 2): travels if some cell has bridge_swap's target share >= 0.30 and its own bridge_random's <= 0.05; else re-encoded if every cell's bridge_swap <= 0.10 and some cell's last_swap >= 0.30; else not at the last token if every cell's bridge_swap and last_swap <= 0.10 and the probe's held-out accuracy at the last token at L or L + 4 >= 0.80; else in between. bridge_swap / bridge_random over every item, last_swap / last_random over the read half",
+  "seeds": {
+    "scenes": 2510,
+    "random_vectors": 4401,
+    "split": 0,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.4 answer",
+  "same_items_as_routes_run": false,
+  "steps": {
+    "bridge_L26": {
+      "0-1": 41.3812,
+      "0-2": 50.8449,
+      "1-2": 24.8681
+    },
+    "bridge_L30": {
+      "0-1": 41.3812,
+      "0-2": 50.8449,
+      "1-2": 24.8681
+    },
+    "last_L26": {
+      "0-1": 19.3176,
+      "0-2": 16.7164,
+      "1-2": 16.1311
+    },
+    "last_L30": {
+      "0-1": 40.1688,
+      "0-2": 43.494,
+      "1-2": 24.6568
+    }
+  },
+  "cos_bridge_last": {
+    "L26": {
+      "0-1": 0.1363,
+      "0-2": 0.0748,
+      "1-2": 0.0356
+    },
+    "L30": {
+      "0-1": 0.2267,
+      "0-2": 0.1718,
+      "1-2": 0.1318
+    }
+  },
+  "fit_items_by_slot": {
+    "0": 51,
+    "1": 52,
+    "2": 53
+  }
+}

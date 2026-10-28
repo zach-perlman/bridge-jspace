@@ -1,0 +1,1229 @@
+{
+  "exp": "x51_heads",
+  "run": "qwen35_9b_x51_2",
+  "why": "batch 51, test 51.2 (jobs/c3/batch51.yaml; Q51.2): 49.7's items and swap at L12; heads ranked by their last-token attention move on the fit half (49.7's stored attention); top 1/3/5/10, the best layer, matched random sets mean-ablated at the last / question tokens on the read half; sealed",
+  "test": "51.2",
+  "written_utc": "2026-10-28T16:49:31Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "00adc92e696b89ac44afb09e32374808bd9446bf",
+    "dirty": true
+  },
+  "spec": "jobs/c3/batch51.yaml (51.2)",
+  "question": "Q51.2 (predictions/2026-10-28_dan.md)",
+  "layer": 12,
+  "s": 2.0,
+  "mu_from": "qwen35_9b_x0_probe_v4",
+  "source_run": "results/x49_attn/qwen35_9b_x49_7",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "b5e9e3c50fa19dac26094b939581817969f7e79b4756fcf31bf0b26600fddef0",
+    "results/x49_attn/qwen35_9b_x49_7/manifest.json": "850d400a825625d8e1dc6f764e588b0c69b742061e9df9230f89a2a6ee2fe88c",
+    "results/x49_attn/qwen35_9b_x49_7/cases.jsonl": "fd8d95a8260556e7e1fdcaf2615911e220fbe2a985c143a43c79cfecea5400e1",
+    "results/x49_attn/qwen35_9b_x49_7/outcomes.jsonl": "4781d86b63282126c71720b083999000d966d280459ceb1dfaf37a0f60bf5d48",
+    "results/x49_attn/qwen35_9b_x49_7/attention.npz": "5f41f9fdc412a221604bcdb2d16d7b0b47a98e2f4c7310a09167a849b9413d8e",
+    "results/x0_probe/qwen35_9b_x0_probe_v4/states.npz": "15c682c3505a62a91bce043e2050285f6650dd2db8bc4d619fb5299aa75b1005"
+  },
+  "items_rule": "x8_write.eligible (the routes test's C2 scenes, O, gate 0.80 per reader, the first 300); asserted to be 49.7's run's items in order, with its halves",
+  "swap": "h + 2.0 (mu_k - mu_j) at the bridge word at L, k each other slot (49.7's)",
+  "ranking": "every recorded head by its mean attention move at the last token on the fit half's switched swap pairs (127) (49.7's stored attention.npz; ties lower layer, then head)",
+  "ranking_top10": [
+    {
+      "layer": 27,
+      "head": 1,
+      "move": 1.2876479625701904
+    },
+    {
+      "layer": 27,
+      "head": 13,
+      "move": 1.2599267959594727
+    },
+    {
+      "layer": 23,
+      "head": 15,
+      "move": 0.9975151419639587
+    },
+    {
+      "layer": 23,
+      "head": 0,
+      "move": 0.9881352186203003
+    },
+    {
+      "layer": 23,
+      "head": 9,
+      "move": 0.8966753482818604
+    },
+    {
+      "layer": 23,
+      "head": 7,
+      "move": 0.8481459021568298
+    },
+    {
+      "layer": 23,
+      "head": 12,
+      "move": 0.844172477722168
+    },
+    {
+      "layer": 23,
+      "head": 4,
+      "move": 0.8204639554023743
+    },
+    {
+      "layer": 23,
+      "head": 14,
+      "move": 0.7859084606170654
+    },
+    {
+      "layer": 19,
+      "head": 12,
+      "move": 0.753320574760437
+    }
+  ],
+  "best_layer": 27,
+  "sets": {
+    "top1": {
+      "kind": "top",
+      "k": 1,
+      "heads": [
+        [
+          27,
+          1
+        ]
+      ]
+    },
+    "top3": {
+      "kind": "top",
+      "k": 3,
+      "heads": [
+        [
+          27,
+          1
+        ],
+        [
+          27,
+          13
+        ],
+        [
+          23,
+          15
+        ]
+      ]
+    },
+    "top5": {
+      "kind": "top",
+      "k": 5,
+      "heads": [
+        [
+          27,
+          1
+        ],
+        [
+          27,
+          13
+        ],
+        [
+          23,
+          15
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          23,
+          9
+        ]
+      ]
+    },
+    "top10": {
+      "kind": "top",
+      "k": 10,
+      "heads": [
+        [
+          27,
+          1
+        ],
+        [
+          27,
+          13
+        ],
+        [
+          23,
+          15
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          23,
+          9
+        ],
+        [
+          23,
+          7
+        ],
+        [
+          23,
+          12
+        ],
+        [
+          23,
+          4
+        ],
+        [
+          23,
+          14
+        ],
+        [
+          19,
+          12
+        ]
+      ]
+    },
+    "best_layer": {
+      "kind": "layer",
+      "k": 16,
+      "layer": 27,
+      "heads": [
+        [
+          27,
+          0
+        ],
+        [
+          27,
+          1
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          27,
+          3
+        ],
+        [
+          27,
+          4
+        ],
+        [
+          27,
+          5
+        ],
+        [
+          27,
+          6
+        ],
+        [
+          27,
+          7
+        ],
+        [
+          27,
+          8
+        ],
+        [
+          27,
+          9
+        ],
+        [
+          27,
+          10
+        ],
+        [
+          27,
+          11
+        ],
+        [
+          27,
+          12
+        ],
+        [
+          27,
+          13
+        ],
+        [
+          27,
+          14
+        ],
+        [
+          27,
+          15
+        ]
+      ]
+    },
+    "top1_r0": {
+      "kind": "random",
+      "of": "top1",
+      "draw": 0,
+      "k": 1,
+      "heads": [
+        [
+          27,
+          0
+        ]
+      ]
+    },
+    "top1_r1": {
+      "kind": "random",
+      "of": "top1",
+      "draw": 1,
+      "k": 1,
+      "heads": [
+        [
+          27,
+          14
+        ]
+      ]
+    },
+    "top1_r2": {
+      "kind": "random",
+      "of": "top1",
+      "draw": 2,
+      "k": 1,
+      "heads": [
+        [
+          27,
+          8
+        ]
+      ]
+    },
+    "top1_r3": {
+      "kind": "random",
+      "of": "top1",
+      "draw": 3,
+      "k": 1,
+      "heads": [
+        [
+          27,
+          3
+        ]
+      ]
+    },
+    "top1_r4": {
+      "kind": "random",
+      "of": "top1",
+      "draw": 4,
+      "k": 1,
+      "heads": [
+        [
+          27,
+          6
+        ]
+      ]
+    },
+    "top3_r0": {
+      "kind": "random",
+      "of": "top3",
+      "draw": 0,
+      "k": 3,
+      "heads": [
+        [
+          23,
+          14
+        ],
+        [
+          27,
+          6
+        ],
+        [
+          27,
+          7
+        ]
+      ]
+    },
+    "top3_r1": {
+      "kind": "random",
+      "of": "top3",
+      "draw": 1,
+      "k": 3,
+      "heads": [
+        [
+          23,
+          14
+        ],
+        [
+          27,
+          7
+        ],
+        [
+          27,
+          10
+        ]
+      ]
+    },
+    "top3_r2": {
+      "kind": "random",
+      "of": "top3",
+      "draw": 2,
+      "k": 3,
+      "heads": [
+        [
+          23,
+          12
+        ],
+        [
+          27,
+          3
+        ],
+        [
+          27,
+          4
+        ]
+      ]
+    },
+    "top3_r3": {
+      "kind": "random",
+      "of": "top3",
+      "draw": 3,
+      "k": 3,
+      "heads": [
+        [
+          23,
+          3
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          27,
+          4
+        ]
+      ]
+    },
+    "top3_r4": {
+      "kind": "random",
+      "of": "top3",
+      "draw": 4,
+      "k": 3,
+      "heads": [
+        [
+          23,
+          13
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          27,
+          12
+        ]
+      ]
+    },
+    "top5_r0": {
+      "kind": "random",
+      "of": "top5",
+      "draw": 0,
+      "k": 5,
+      "heads": [
+        [
+          23,
+          7
+        ],
+        [
+          23,
+          8
+        ],
+        [
+          23,
+          10
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          27,
+          9
+        ]
+      ]
+    },
+    "top5_r1": {
+      "kind": "random",
+      "of": "top5",
+      "draw": 1,
+      "k": 5,
+      "heads": [
+        [
+          23,
+          1
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          27,
+          5
+        ]
+      ]
+    },
+    "top5_r2": {
+      "kind": "random",
+      "of": "top5",
+      "draw": 2,
+      "k": 5,
+      "heads": [
+        [
+          23,
+          11
+        ],
+        [
+          23,
+          12
+        ],
+        [
+          23,
+          14
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          27,
+          5
+        ]
+      ]
+    },
+    "top5_r3": {
+      "kind": "random",
+      "of": "top5",
+      "draw": 3,
+      "k": 5,
+      "heads": [
+        [
+          23,
+          2
+        ],
+        [
+          23,
+          4
+        ],
+        [
+          23,
+          12
+        ],
+        [
+          27,
+          4
+        ],
+        [
+          27,
+          6
+        ]
+      ]
+    },
+    "top5_r4": {
+      "kind": "random",
+      "of": "top5",
+      "draw": 4,
+      "k": 5,
+      "heads": [
+        [
+          23,
+          3
+        ],
+        [
+          23,
+          8
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          27,
+          8
+        ],
+        [
+          27,
+          12
+        ]
+      ]
+    },
+    "top10_r0": {
+      "kind": "random",
+      "of": "top10",
+      "draw": 0,
+      "k": 10,
+      "heads": [
+        [
+          19,
+          11
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          23,
+          2
+        ],
+        [
+          23,
+          5
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          23,
+          10
+        ],
+        [
+          23,
+          11
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          27,
+          4
+        ],
+        [
+          27,
+          14
+        ]
+      ]
+    },
+    "top10_r1": {
+      "kind": "random",
+      "of": "top10",
+      "draw": 1,
+      "k": 10,
+      "heads": [
+        [
+          19,
+          8
+        ],
+        [
+          23,
+          2
+        ],
+        [
+          23,
+          3
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          23,
+          8
+        ],
+        [
+          23,
+          10
+        ],
+        [
+          23,
+          11
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          27,
+          8
+        ]
+      ]
+    },
+    "top10_r2": {
+      "kind": "random",
+      "of": "top10",
+      "draw": 2,
+      "k": 10,
+      "heads": [
+        [
+          19,
+          8
+        ],
+        [
+          23,
+          2
+        ],
+        [
+          23,
+          3
+        ],
+        [
+          23,
+          5
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          23,
+          8
+        ],
+        [
+          23,
+          11
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          27,
+          15
+        ]
+      ]
+    },
+    "top10_r3": {
+      "kind": "random",
+      "of": "top10",
+      "draw": 3,
+      "k": 10,
+      "heads": [
+        [
+          19,
+          10
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          23,
+          2
+        ],
+        [
+          23,
+          3
+        ],
+        [
+          23,
+          5
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          23,
+          8
+        ],
+        [
+          23,
+          10
+        ],
+        [
+          27,
+          0
+        ],
+        [
+          27,
+          12
+        ]
+      ]
+    },
+    "top10_r4": {
+      "kind": "random",
+      "of": "top10",
+      "draw": 4,
+      "k": 10,
+      "heads": [
+        [
+          19,
+          0
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          23,
+          2
+        ],
+        [
+          23,
+          3
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          23,
+          8
+        ],
+        [
+          23,
+          11
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          27,
+          5
+        ],
+        [
+          27,
+          6
+        ]
+      ]
+    },
+    "best_layer_r0": {
+      "kind": "random",
+      "of": "best_layer",
+      "draw": 0,
+      "k": 16,
+      "heads": [
+        [
+          15,
+          2
+        ],
+        [
+          15,
+          6
+        ],
+        [
+          15,
+          14
+        ],
+        [
+          15,
+          15
+        ],
+        [
+          19,
+          2
+        ],
+        [
+          19,
+          7
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          23,
+          11
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          31,
+          1
+        ],
+        [
+          31,
+          2
+        ],
+        [
+          31,
+          8
+        ],
+        [
+          31,
+          9
+        ],
+        [
+          31,
+          11
+        ],
+        [
+          31,
+          12
+        ],
+        [
+          31,
+          15
+        ]
+      ]
+    },
+    "best_layer_r1": {
+      "kind": "random",
+      "of": "best_layer",
+      "draw": 1,
+      "k": 16,
+      "heads": [
+        [
+          15,
+          1
+        ],
+        [
+          15,
+          5
+        ],
+        [
+          15,
+          7
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          15,
+          15
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          19,
+          5
+        ],
+        [
+          19,
+          6
+        ],
+        [
+          19,
+          9
+        ],
+        [
+          19,
+          15
+        ],
+        [
+          23,
+          3
+        ],
+        [
+          23,
+          4
+        ],
+        [
+          23,
+          5
+        ],
+        [
+          23,
+          7
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          31,
+          14
+        ]
+      ]
+    },
+    "best_layer_r2": {
+      "kind": "random",
+      "of": "best_layer",
+      "draw": 2,
+      "k": 16,
+      "heads": [
+        [
+          15,
+          3
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          15,
+          5
+        ],
+        [
+          15,
+          6
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          15,
+          12
+        ],
+        [
+          15,
+          15
+        ],
+        [
+          19,
+          3
+        ],
+        [
+          19,
+          7
+        ],
+        [
+          19,
+          11
+        ],
+        [
+          19,
+          14
+        ],
+        [
+          19,
+          15
+        ],
+        [
+          23,
+          0
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          31,
+          6
+        ],
+        [
+          31,
+          7
+        ]
+      ]
+    },
+    "best_layer_r3": {
+      "kind": "random",
+      "of": "best_layer",
+      "draw": 3,
+      "k": 16,
+      "heads": [
+        [
+          15,
+          3
+        ],
+        [
+          15,
+          5
+        ],
+        [
+          15,
+          13
+        ],
+        [
+          19,
+          0
+        ],
+        [
+          19,
+          2
+        ],
+        [
+          19,
+          4
+        ],
+        [
+          19,
+          9
+        ],
+        [
+          19,
+          11
+        ],
+        [
+          19,
+          12
+        ],
+        [
+          19,
+          14
+        ],
+        [
+          23,
+          5
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          23,
+          11
+        ],
+        [
+          23,
+          15
+        ],
+        [
+          31,
+          8
+        ],
+        [
+          31,
+          15
+        ]
+      ]
+    },
+    "best_layer_r4": {
+      "kind": "random",
+      "of": "best_layer",
+      "draw": 4,
+      "k": 16,
+      "heads": [
+        [
+          15,
+          2
+        ],
+        [
+          15,
+          8
+        ],
+        [
+          19,
+          3
+        ],
+        [
+          19,
+          4
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          23,
+          2
+        ],
+        [
+          23,
+          4
+        ],
+        [
+          23,
+          5
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          23,
+          10
+        ],
+        [
+          23,
+          14
+        ],
+        [
+          31,
+          4
+        ],
+        [
+          31,
+          5
+        ],
+        [
+          31,
+          11
+        ],
+        [
+          31,
+          13
+        ],
+        [
+          31,
+          14
+        ]
+      ]
+    }
+  },
+  "random_sets": "per top-k set 5 draws with the same number of heads in each of its layers (its own heads excluded); per best-layer set 5 draws of its size from the other recorded layers; random.Random(512), drawn in the order of 'sets'",
+  "mean_ablation": "a head's slice of o_proj's input replaced at the site's positions by its mean over the fit half's unedited prompts of the same reader at the same position: last = the read token; question = each question-token index (fixed count per reader, asserted); every row of the batch",
+  "sites": {
+    "last": "the read token (X0's appended space token)",
+    "question": "the question text's tokens"
+  },
+  "reads": "read half; per (set, site): none and both swaps in one batched X0 chat read, both readers, each reader ablated at its own positions; a baseline read (no ablation) beside",
+  "rules": {
+    "cut": "cut = (switch - switch under the ablation) / switch, switch = the read-half swap pairs' share answering slot k's locker (the lookup's switch to the swapped-in slot), both read in this run (baseline and ablated)",
+    "small_set": "some top-k set, k in {1, 3, 5, 10}, cuts >= 0.5 while the identity answers (read pairs answering slot j's locker under the swap) change <= 0.10 and the recall's answer changes <= 0.10 (swap + ablation vs swap), and the matched random sets of k heads (same layers) cut <= 0.15 (mean over the draws)",
+    "distributed": "every head of the best layer together cuts < 0.3",
+    "label": "'small set' if small_set holds, else 'distributed' if distributed holds, else 'neither'; both flags shown"
+  },
+  "decisive_site": "last",
+  "seeds": {
+    "scenes": 2510,
+    "split": 0,
+    "heads": 512,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.2 answer",
+  "recorded_layers": [
+    15,
+    19,
+    23,
+    27,
+    31
+  ],
+  "skipped_linear_layers": [
+    13,
+    14,
+    16,
+    17,
+    18,
+    20,
+    21,
+    22,
+    24,
+    25,
+    26,
+    28,
+    29,
+    30
+  ],
+  "n_heads": 16,
+  "head_dim": 256,
+  "same_items_as_x49_7": true,
+  "question_tokens": {
+    "PP": [
+      8
+    ],
+    "PM": [
+      9
+    ]
+  },
+  "items": 300,
+  "fit_items": 135,
+  "read_items": 165
+}
