@@ -90,6 +90,19 @@ amendments:
       Q49.1: add "the rest moves the recall only through the address" as a third option (when Q49.1 is written from the
       brief). Q49.7: add P(the best head is necessary by the rule above), 9B; Muse; and P(distributed, no single head).
 
+  - id: 3
+    by: Dan, 28 Oct ~15:40 (answers to the agent's design questions, before any 49.1 / 49.6 result is opened)
+    "49.1": >-
+      Random corners: the "<= 0.15" null applies only to the corners where the J++ part stands alone, R(1,0) and R(2,0)
+      (a random part of J++'s share, alone, should move neither reader). R(0,1) and R(0,2) are not nulls: they are the
+      rest with a random part of the same share removed, so the expected switch is high; read them as matched-share
+      controls, "within 0.10 of the corresponding (0,1) / (0,2) cell". State this in the spec and the figure's inset
+      labels.
+    "49.6": >-
+      Which accuracy decides: the same read as every gate, the top token over the vocabulary at the read step ("read").
+      Greedy reported beside; "best of the three ordinal tokens" is descriptive only (it cannot fail by construction when
+      the model's top token is off-list), never decisive.
+
 tests:
   - id: "49.1"
     title: "The gain map: two readers, two weights"
