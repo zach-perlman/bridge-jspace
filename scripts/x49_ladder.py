@@ -44,9 +44,16 @@ Per order group the same numbers, descriptive. The 27B: numbers at rungs 1-2, no
 SEALED: the run writes per-item outputs only; verdict refuses until predictions/2026-10-28_dan.md holds Dan's Q49.2
 answer at the committed HEAD.
 
+Batch 52 coverage (jobs/c3/batch52.yaml part C): `run --band FIRST LAST` runs all six rungs with rung 6 over Zach's band
+given explicitly (the 27B: his L32-40, x50_zach.BESIDE_BAND; Muse: his L36-42), and `--coverage` marks the run and its
+verdict "no prediction: coverage run on an already-scored rule" (no Q-line; the rules unchanged). `verdict --coverage
+--runs ...` writes x52_ladder-<UTC>/ without the seal guard, which stays for 49.2's own verdict.
+
 BJ_TARGET=qwen3.5-9b uv run python scripts/x49_ladder.py plan                           # CPU, the target's tokenizer
 BJ_TARGET=qwen3.5-9b uv run python scripts/x49_ladder.py run --name qwen35_9b_x49_2      # GPU (sealed)
 uv run python scripts/x49_ladder.py verdict                                              # CPU, after Dan's Q49.2
+BJ_TARGET=qwen3.6-27b uv run python scripts/x49_ladder.py run --name x52_ladder_27b --band 32 40 --coverage  # batch 52
+uv run python scripts/x49_ladder.py verdict --coverage --runs qwen35_9b_x49_2 x52_ladder_27b muse30_x49_2_r5
 """
 
 from __future__ import annotations
@@ -114,6 +121,8 @@ READER_NAME = {X.LOOKUP: "lookup", X.RECALL: "recall"}
 TWO_DEFS = ("Rungs 5 and 6 are two definitions, not one: rung 5 removes, at every token, the span of the bridge's "
             "change's 25 OMP atoms (ours, L..L+3); rung 6 removes, at every token, that token's own top-10 lens "
             "directions (Zach's, over his band)")  # fmt: skip
+NO_PREDICTION = "no prediction: coverage run on an already-scored rule"  # batch 52 addendum
+SCORED = "results/x49_ladder/x49_2-20261028T161612Z"  # where 49.2's rules were first scored (the 9B and Muse)
 
 
 def arms_of(rungs: tuple[int, ...]) -> tuple[str, ...]:
@@ -553,7 +562,9 @@ def run_items(model, lens, items: list[dict], layers: tuple[int, ...], band: tup
     return rows, norms, greedy
 
 
-def stage_run(name: str, why: str) -> Path:
+def stage_run(name: str, why: str, band_arg: tuple[int, int] | None = None, coverage: bool = False) -> Path:
+    """band_arg (FIRST, LAST): rung 6's band given explicitly (inclusive), all six rungs (batch 52's coverage cells);
+    None: BAND as 49.2 fixed it. coverage: the manifest says "no prediction" in place of Q49.2's seal."""
     import torch
 
     from bridge_jspace import chat
@@ -567,6 +578,9 @@ def stage_run(name: str, why: str) -> Path:
     target = pins.TARGET
     assert target in SOURCES, f"49.2 runs on {sorted(SOURCES)}, not {target}"
     layer, band = X.PREDICTED[target], BAND.get(target, ())
+    if band_arg is not None:
+        assert band_arg[0] <= band_arg[1], f"--band {band_arg}: FIRST > LAST"
+        band = tuple(range(band_arg[0], band_arg[1] + 1))
     layers = tuple(range(layer, layer + SPAN))
     assert max(*layers, *band) <= pins.N_LAYERS - 2, f"L..L+3 {layers} / band {band}: past the last block read on"
     rungs = RUNGS if band else BRIDGE_RUNGS
@@ -603,7 +617,13 @@ def stage_run(name: str, why: str) -> Path:
                    "examples": X.EXAMPLES_SEED}, "n_boot": X.N_BOOT,
          "order": {"items": "the 45m run's scene order", "reads": "per item and reader: S's read prompt under the arms "
                    "in arms order, batched (BJ_SUITE_BATCH)"},
+         "band_source": f"--band {band_arg[0]} {band_arg[1]} (batch 52 coverage: Zach's band for this model)"
+                        if band_arg else "BAND (49.2's design)",
          "sealed": f"no verdict in the job; results closed until {PREDICTIONS} holds Dan's {QUESTION}"}  # fmt: skip
+    if coverage:
+        m |= {"spec": "jobs/c3/batch52.yaml (part C, coverage); rules verbatim from jobs/c3/batch49.yaml 49.2, first "
+                      f"scored in {SCORED}", "question": NO_PREDICTION, "batch": 52,
+              "sealed": f"none ({NO_PREDICTION}); the job writes no verdict, verdict --coverage after it lands"}  # fmt: skip
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
 
@@ -737,9 +757,11 @@ def fmt(v) -> str:
     return f"{v[0]:.2f} [{v[1]:.2f}, {v[2]:.2f}]"
 
 
-def verdict_lines(models: list[dict], answer: str, n_boot: int) -> list[str]:
-    lines = ["# 49.2: the removal ladder", "",
-             f"Batch 49, test 49.2 ({SPEC} and amendment 2; {QUESTION}, Dan: {answer}). Clean design (45m), on S; "
+def verdict_lines(models: list[dict], answer: str, n_boot: int, coverage: bool = False) -> list[str]:
+    who = (f"batch 52 coverage, the rules of {SPEC} 49.2 verbatim, first scored in {SCORED}; {NO_PREDICTION}"
+           if coverage else f"{QUESTION}, Dan: {answer}")  # fmt: skip
+    lines = ["# 49.2: the removal ladder" + (" (batch 52 coverage)" if coverage else ""), "",
+             f"Batch 49, test 49.2 ({SPEC} and amendment 2; {who}). Clean design (45m), on S; "
              f"both readers, kept = S's answer read (X0's chat read). {COST}. Cluster bootstrap over the bridge items "
              f"({n_boot}, seed {X.BOOT_SEED}). {TWO_DEFS}. UNVERIFIED.", "",
              "Rules (fixed in advance; point estimates, over all scenes unless named): "
@@ -826,15 +848,18 @@ def example_lines(target: str, run: str, k: int = X.K_EXAMPLES, seed: int = X.EX
     return lines
 
 
-def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT) -> Path:
-    answer = unsealed()
+def stage_verdict(runs: dict[str, str] | None = None, n_boot: int = X.N_BOOT, coverage: bool = False) -> Path:
+    """49.2's verdict (sealed until Dan's Q49.2), or with coverage (batch 52) the same rules on the given runs, no seal
+    guard and "no prediction" in place of Dan's answer, written to x52_ladder-<UTC>/."""
+    answer = NO_PREDICTION if coverage else unsealed()
     runs = runs or RUNS
     models = [model_result(t, runs[t], n_boot) for t in MODELS]
-    out = RESULTS / f"x49_2-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out = RESULTS / f"{'x52_ladder' if coverage else 'x49_2'}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
-    lines = verdict_lines(models, answer, n_boot)
-    (out / "x49_2.json").write_text(json.dumps({"dan": answer, "rules": RULES, "cost": COST, "two_definitions": TWO_DEFS,
-                                                "rung_text": RUNG_TEXT, "models": models}, indent=1) + "\n")  # fmt: skip
+    lines = verdict_lines(models, answer, n_boot, coverage)
+    (out / "x49_2.json").write_text(json.dumps({"dan": answer, "coverage": coverage, "rules": RULES, "cost": COST,
+                                                "two_definitions": TWO_DEFS, "rung_text": RUNG_TEXT, "models": models},
+                                               indent=1) + "\n")  # fmt: skip
     (out / "x49_2.md").write_text("\n".join(lines) + "\n")
     ex = ["# 49.2 verify pack: S's prompts as the model reads them (the read appends the digit's space token); "
           "⟦bridge:…⟧ rungs 1-6, ⟦mention:…⟧ rung 3 on, ⟦question:…⟧ rung 4 on, every token rungs 5-6. UNVERIFIED.", ""]  # fmt: skip
@@ -855,14 +880,20 @@ def main() -> None:
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--runs", nargs=3, default=None, metavar=("9B", "27B", "MUSE"),
                     help=f"verdict: runs in place of the specs' {[RUNS[t] for t in MODELS]}")  # fmt: skip
+    ap.add_argument("--band", nargs=2, type=int, default=None, metavar=("FIRST", "LAST"),
+                    help="run: rung 6's band (inclusive) in place of BAND; all six rungs (batch 52 coverage)")  # fmt: skip
+    ap.add_argument("--coverage", action="store_true",
+                    help=f"run / verdict: batch 52 coverage ('{NO_PREDICTION}'); the verdict skips Q49.2's seal")  # fmt: skip
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":
         assert a.name, "run needs --name"
-        stage_run(a.name, a.why)
+        stage_run(a.name, a.why, tuple(a.band) if a.band else None, a.coverage)
     else:
-        stage_verdict(dict(zip(MODELS, a.runs, strict=True)) if a.runs else None, n_boot=a.n_boot)
+        runs = dict(zip(MODELS, a.runs, strict=True)) if a.runs else None
+        assert runs or not a.coverage, "verdict --coverage needs --runs (the coverage runs in place of 49.2's)"
+        stage_verdict(runs, n_boot=a.n_boot, coverage=a.coverage)
 
 
 if __name__ == "__main__":

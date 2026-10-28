@@ -442,6 +442,87 @@ def test_verdict_on_planted_runs(tmp_path, monkeypatch):
     assert ex.count("### ") == 3 * X.K_EXAMPLES and "<recall prompt>" in ex
 
 
+def test_coverage_verdict_reads_every_rung_without_the_seal(tmp_path, monkeypatch):
+    """Batch 52: a 27B run with all six rungs (rung 6 over --band) is read by the same rules; the verdict writes "no
+    prediction" in place of Dan's answer and needs no Q49.2 line; the seal stays for 49.2's own verdict."""
+    planted_runs(tmp_path, monkeypatch, skip=("qwen3.6-27b",))
+    src = LD.RESULTS / "x52_ladder_27b"
+    src.mkdir()
+    rows = planted_rows(PLANTED["qwen3.5-9b"])
+    scenes = list(dict.fromkeys(r["scene"] for r in rows))
+    band = list(range(32, 41))
+    norms = [{"scene": s, "reader": w, "bridge": None,
+              "atoms_share": {str(32 + j): {k: 0.02 for k in ("bridge", "mention", "question", "every")} for j in range(4)},
+              "zach_share": {f"{kd}6": {str(b): 0.3 for b in band} for kd in LD.KINDS}}
+             for s in scenes for w in X.READERS]  # fmt: skip
+    man = {"model": {"target": "qwen3.6-27b"}, "layer": 32, "layers": [32, 33, 34, 35], "band": band,
+           "rungs": {str(r): LD.RUNG_TEXT[r] for r in LD.RUNGS}, "arms": list(LD.arms_of(LD.RUNGS))}  # fmt: skip
+    (src / "manifest.json").write_text(json.dumps(man))
+    cases = [{**_item(i), "scene": s, "order": s.split("-0")[0]} for i, s in enumerate(scenes)]
+    greedy = [{"scene": scenes[0], "reader": RC, "arm": "zero1", "greedy": "6"}]
+    for name, data in (("outcomes.jsonl", rows), ("cases.jsonl", cases), ("norms.jsonl", norms),
+                       ("examples_greedy.jsonl", greedy)):  # fmt: skip
+        X.write_jsonl(src / name, data)
+    monkeypatch.setattr(LD, "dan_answer", lambda rev="HEAD": "")
+    runs = {**LD.RUNS, "qwen3.6-27b": "x52_ladder_27b"}
+    with pytest.raises(AssertionError, match="sealed"):
+        LD.stage_verdict(runs, n_boot=50)
+    out = LD.stage_verdict(runs, n_boot=50, coverage=True)
+    assert out.name.startswith("x52_ladder-")
+    blob = json.loads((out / "x49_2.json").read_text())
+    by = {m["target"]: m for m in blob["models"]}
+    assert blob["dan"] == LD.NO_PREDICTION and blob["coverage"] is True
+    assert by["qwen3.6-27b"]["rungs"] == list(LD.RUNGS) and by["qwen3.6-27b"]["rules"]["only_everything"] is True
+    assert by["qwen3.6-27b"]["band"] == band
+    md = (out / "x49_2.md").read_text()
+    assert LD.NO_PREDICTION in md and "Dan:" not in md and LD.SCORED in md
+
+
+def test_stage_run_with_band_runs_every_rung(tmp_path, monkeypatch):
+    from bridge_jspace import lens as LN
+    from bridge_jspace import model as M
+    from bridge_jspace import pins
+    from bridge_jspace import utils as U
+    from scripts import x6_routes as R
+
+    got = {}
+    monkeypatch.setattr(pins, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(U, "git_state", lambda: {"head": "test"})
+    (tmp_path / LD.SPEC).parent.mkdir(parents=True)
+    (tmp_path / LD.SPEC).write_text("batch: 49\n")
+    monkeypatch.setattr(LD, "RESULTS", tmp_path / "x49")
+    monkeypatch.setattr(LD, "SOURCES", {pins.TARGET: "src45m"})
+    monkeypatch.setattr(X, "PREDICTED", {pins.TARGET: L})
+    monkeypatch.setattr(X, "RESULTS", tmp_path / "x0")
+    src = tmp_path / "x0" / "src45m"
+    src.mkdir(parents=True)
+    for f in ("manifest.json", "cases.jsonl", "outcomes.jsonl", "gate.json"):
+        (src / f).write_text("{}\n")
+    monkeypatch.setattr(pins, "N_LAYERS", L + 12)
+    monkeypatch.setattr(R, "warm_cusolver", lambda: None)
+    monkeypatch.setattr(M, "load_model", lambda: FakeModel(n_layers=L + 12))
+
+    class BandLens(FakeLens):
+        def __init__(self, *a, **k):
+            self.source_layers = tuple(range(L + 12))
+
+    monkeypatch.setattr(LN, "JLens", BandLens)
+    monkeypatch.setattr(LD, "select", lambda tok, run, layer: ([_item(0)], {"items": 1}))
+    monkeypatch.setattr(X, "whitespace_mask", lambda model: None)
+    monkeypatch.setattr(X, "digit_ids", lambda tok: list(range(10)))
+
+    def fake_run_items(model, lens, items, layers, band, ws, digits):
+        got["band"], got["layers"] = band, layers
+        return [], [], []
+
+    monkeypatch.setattr(LD, "run_items", fake_run_items)
+    out = LD.stage_run(f"{pins.RUN_PREFIX}x52_ladder_t", "t", (L + 1, L + 5), coverage=True)
+    m = json.loads((out / "manifest.json").read_text())
+    assert got["band"] == tuple(range(L + 1, L + 6)) and m["band"] == list(range(L + 1, L + 6))
+    assert list(m["rungs"]) == [str(r) for r in LD.RUNGS] and m["question"] == LD.NO_PREDICTION
+    assert m["band_source"].startswith(f"--band {L + 1} {L + 5}") and m["batch"] == 52
+
+
 def test_verdict_with_a_pending_model(tmp_path, monkeypatch):
     planted_runs(tmp_path, monkeypatch, skip=("muse-glimmer-30b",))
     monkeypatch.setattr(LD, "dan_answer", lambda rev="HEAD": "x")
