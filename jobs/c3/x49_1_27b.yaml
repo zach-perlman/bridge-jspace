@@ -1,0 +1,48 @@
+id: x49_1_27b
+title: "Batch 49.1 on the 27B (L32): the gain map. At the bridge word, alpha x the change's J++ part + beta x the rest added to the original prompt, alpha, beta in {0, 0.5, 1, 1.5, 2}; random corners, the (0, 2, no U) arm and its twin; main-test scenes with the locker before the pick, both readers"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.25
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=;
+  uv run python scripts/x49_gain.py run --name x49_1_27b --why "Batch 49, test 49.1 (jobs/c3/batch49.yaml, amendment 2; Q49.1): the gain map at L32, alpha P_J Delta + beta (Delta - P_J Delta) on 25 arms, random corners, (0, 2, no U) and its twin; main-test locker-first scenes of x0_necessity_27b_chat; sealed"
+question: >-
+  Is the difference between the readers a difference of weights on the same two parts, rather than two routes? Each
+  reader's switch as a function of the gain of the change's J++ part (alpha) and of the rest (beta).
+why_it_matters: >-
+  Decides "weights vs routes" (amendment 1's queue item 3): if the recall switches on a doubled J++ part alone and on the
+  doubled rest with the address taken out, while the lookup ignores the J++ part, the two readers weigh the same two
+  codes differently; if the doubled rest never moves the recall, they take two routes.
+hypotheses:
+  Q49.1: "Dan's answer in predictions/2026-10-28_dan.md (Q49.1, per model: 9B; 27B; Muse); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x49_gain.py verdict refuses until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch49.yaml, 49.1, with amendment 2's 49.1 item), verbatim: (a) "Weights, not routes": the
+  recall's switch at (2,0) >= 0.5 and at (0,2, no U) >= 0.5, random corners <= 0.15; the lookup's switch at (2,0) <=
+  0.10 and at (0,1) >= 0.6. (b) "Routes": the recall's switch at (0,2) <= 0.2 while (2,0) >= 0.5. (a') "The rest moves
+  the recall only through the address": (0,2) >= 0.5 but (0,2, no U) <= 0.2. (c) "Neither"; report the two heatmaps. As
+  computed (fixed before any run; Dan may override before the verdict): scenes = the main test's eligible items of
+  x0_necessity_27b_chat at L32 (chat; X0's gate 0.80 per reader on O unedited and >= 150 eligible, asserted from its
+  gate.json), rebuilt by x47_cumulative.select, x45m.group_of locker-first only (69 items, 34 bridge items; plan in
+  results/x49_gain/plan-20261028T133544Z). Delta = h_S - h_O at the bridge word at L; P_J Delta = X0's 25-atom signed
+  OMP part over the J++ lens's letter-token atoms at L; arm (alpha, beta) adds alpha P_J Delta + beta (Delta - P_J
+  Delta) at the bridge word at L on O (X0's AddRows). Random corners = the same with R Delta, X0's random part at P_J
+  Delta's share of ||Delta||^2 (random basis seed 888 + L), at (0,1), (1,0), (2,0), (0,2). (0,2, no U) = 2 (Delta - P_J
+  Delta - U U^T Delta) as written in amendment 2 (U = x47_atoms.pointer_basis, not refit); its twin = 2 (Delta - P_J Delta
+  - R_U Delta), R_U the random part at U U^T Delta's share. Switch = X0's chat read (top token = S's answer's first
+  token). "Random corners <= 0.15" is computed on the recall's R(1,0) and R(2,0) (the random part where the J++ part is
+  written; R(0,1) and R(0,2) keep most of the change); the literal all-four reading is reported beside. Point estimates
+  decide (EPS 1e-9 at the bars); cluster-bootstrap CIs over the bridge items (10,000, seed 0) beside. Dumbest ways: (1)
+  plain-text loss at the bridge word (O's next token) under (2,0), (0,2), (2,2), (0,2, no U) against (1,1), a corner
+  above 2x flagged, descriptive; (2) the K = 100 corners run on the 9B only (the spec's dumbest way 2);
+  (3) the gate, asserted. Code: scripts/x49_gain.py verdict (rule, loss_numbers).
+controls:
+- "the random part of the J++ part's share (X0's random subspace, seed 888 + L) in its place at the four corners"
+- "the random part of U's share in place of U U^T Delta beside the (0, 2, no U) arm"
+- "J(0,0) = O unedited (reads O's answer by eligibility; reported) and J(1,1) = X0's whole arm (against the source run's stored switches; reported)"
+- "the lookup on the identical edits"
+- "plain-text loss at the bridge word against (1, 1) (dumbest way 1)"
+n: '69 main-test scenes with the locker before the pick (34 bridge items), the source run''s eligible items at L32, chat'
+seeds: [888, 0]
+notes: "Batch 49 (Dan, 28 Oct), 49.1, queue item 3 (amendment 1: 9B -> 27B -> Muse), after x49_1_9b. Sealed: the run writes manifest (switches, U's record), plan (counts), gate (the source run's, asserted), cases, outcomes (both readers, 31 arms: the 25-cell grid, 4 random corners, the no-U arm and its twin; switched, top token, role, p_org, p_alt, ld), norms (per item: ||Delta||, the shares of ||Delta||^2 of P_J Delta, its random twin, U U^T Delta, its random twin and U U^T P_J Delta), losses (per item and arm: the loss at the bridge word on O's next token) and 10 examples' greedy texts (seed 0, every arm); no verdict. By hand after Dan's Q49.1 is committed (CPU, after all three models): uv run python scripts/x49_gain.py verdict (the rule per model, the 5x5 tables, the corners, the loss check and the verify-pack view: 10 random items per run, seed 0, O's prompt as read with the bridge word marked, every arm's top token and greedy text); figure: scripts/story_b49.py build_gain. Estimate from the box ledger (results/jobq/ledger_sesterce-h100x2.jsonl): x47_4_9b (stored X0 items, no competence pass) ran 264.5 s for 609 items x (3 single forwards + 2 reads of 7 rows) ~ 10.4k row-forwards, 0.025 s per row; here 69 items x (2 forwards + 2 x 31 rows + 31 rows cut after the bridge word) ~ 6.6k rows at 1.47x the 9B's cost per row (x47_5_27b 673 s vs x47_5_9b 458 s on the same reads) ~ 240 s, plus the examples' greedy texts ~ 80 s and setup: ~ 0.1 h -> 0.25 (Dan's brief: ~0.5)."

@@ -1,0 +1,141 @@
+{
+ "target": "qwen3.5-9b",
+ "layer": 12,
+ "prefix": "qwen35_9b_",
+ "run": "qwen35_9b_x49_1",
+ "source": "qwen35_9b_x0_necessity",
+ "source_gate": {
+  "cases": 600,
+  "org_accuracy": {
+   "PP": 0.95,
+   "PM": 0.8683
+  },
+  "said_accuracy": {
+   "PP": 0.95,
+   "PM": 0.87
+  },
+  "cand_accuracy": {
+   "PP": 0.9417,
+   "PM": 0.865
+  },
+  "pass": true,
+  "eligible": 408,
+  "enough": true
+ },
+ "gate_passes": true,
+ "counts": {
+  "design": "main",
+  "source": "qwen35_9b_x0_necessity",
+  "alt": "cf",
+  "layer": 12,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 40,
+  "groups": {
+   "locker-after": 68,
+   "locker-first": 75,
+   "mixed": 57
+  },
+  "upstream": {
+   "False": 92,
+   "True": 108
+  },
+  "locker-first, prefix-identical": 15,
+  "pick_tokens": {
+   "5": 81,
+   "4": 118,
+   "6": 1
+  },
+  "group": "locker-first",
+  "items_in_group": 75,
+  "entities_in_group": 32
+ },
+ "arms": [
+  "J(0,0)",
+  "J(0,0.5)",
+  "J(0,1)",
+  "J(0,1.5)",
+  "J(0,2)",
+  "J(0.5,0)",
+  "J(0.5,0.5)",
+  "J(0.5,1)",
+  "J(0.5,1.5)",
+  "J(0.5,2)",
+  "J(1,0)",
+  "J(1,0.5)",
+  "J(1,1)",
+  "J(1,1.5)",
+  "J(1,2)",
+  "J(1.5,0)",
+  "J(1.5,0.5)",
+  "J(1.5,1)",
+  "J(1.5,1.5)",
+  "J(1.5,2)",
+  "J(2,0)",
+  "J(2,0.5)",
+  "J(2,1)",
+  "J(2,1.5)",
+  "J(2,2)",
+  "R(0,1)",
+  "R(1,0)",
+  "R(2,0)",
+  "R(0,2)",
+  "J(0,2)-U",
+  "J(0,2)-RU",
+  "J100(0,1)",
+  "J100(1,0)",
+  "J100(2,0)",
+  "J100(0,2)",
+  "R100(0,1)",
+  "R100(1,0)",
+  "R100(2,0)",
+  "R100(0,2)"
+ ],
+ "n_arms": 39,
+ "reads": 5850,
+ "loss_rows": 2925,
+ "U_rank": 4,
+ "prompts": [
+  {
+   "scene": "P2-L0-0018",
+   "bridge": "eagle -> butterfly",
+   "loss_target": ".",
+   "lookup_O_as_read": "<|im_start|>user\nThe locker of the butterfly is 5. Sara picked the butterfly. Rose picked the fox. The locker of the eagle is 4. The locker of the fox is 3. Jack picked the⟦ eagle⟧.\nWhich locker belongs to Jack's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_O_as_read": "<|im_start|>user\nThe locker of the butterfly is 5. Sara picked the butterfly. Rose picked the fox. The locker of the eagle is 4. The locker of the fox is 3. Jack picked the⟦ eagle⟧.\nHow many legs does Jack's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_S_as_read": "<|im_start|>user\nThe locker of the butterfly is 5. Sara picked the eagle. Rose picked the fox. The locker of the eagle is 4. The locker of the fox is 3. Jack picked the⟦ butterfly⟧.\nWhich locker belongs to Jack's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P2-L0-0114",
+   "bridge": "goose -> mouse",
+   "loss_target": ".",
+   "lookup_O_as_read": "<|im_start|>user\nThe locker of the mouse is 6. James picked the mouse. Eric picked the beetle. The locker of the beetle is 8. The locker of the goose is 3. Oscar picked the⟦ goose⟧.\nWhich locker belongs to Oscar's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_O_as_read": "<|im_start|>user\nThe locker of the mouse is 6. James picked the mouse. Eric picked the beetle. The locker of the beetle is 8. The locker of the goose is 3. Oscar picked the⟦ goose⟧.\nHow many legs does Oscar's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_S_as_read": "<|im_start|>user\nThe locker of the mouse is 6. James picked the goose. Eric picked the beetle. The locker of the beetle is 8. The locker of the goose is 3. Oscar picked the⟦ mouse⟧.\nWhich locker belongs to Oscar's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P2-L0-0196",
+   "bridge": "hydrogen -> nitrogen",
+   "loss_target": ".",
+   "lookup_O_as_read": "<|im_start|>user\nThe locker of nitrogen is four. Tara picked nitrogen. The locker of hydrogen is three. The locker of carbon is five. Mia picked carbon. Finn picked⟦ hydrogen⟧.\nWhich locker belongs to Finn's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_O_as_read": "<|im_start|>user\nThe locker of nitrogen is four. Tara picked nitrogen. The locker of hydrogen is three. The locker of carbon is five. Mia picked carbon. Finn picked⟦ hydrogen⟧.\nWhat is the atomic number of Finn's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_S_as_read": "<|im_start|>user\nThe locker of nitrogen is four. Tara picked hydrogen. The locker of hydrogen is three. The locker of carbon is five. Mia picked carbon. Finn picked⟦ nitrogen⟧.\nWhich locker belongs to Finn's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P2-L0-0218",
+   "bridge": "gamma -> epsilon",
+   "loss_target": ".",
+   "lookup_O_as_read": "<|im_start|>user\nThe locker of gamma is 8. The locker of epsilon is 6. Mark picked epsilon. Clara picked⟦ gamma⟧. The locker of theta is 3. Finn picked theta.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_O_as_read": "<|im_start|>user\nThe locker of gamma is 8. The locker of epsilon is 6. Mark picked epsilon. Clara picked⟦ gamma⟧. The locker of theta is 3. Finn picked theta.\nWhich position in the Greek alphabet does Clara's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_S_as_read": "<|im_start|>user\nThe locker of gamma is 8. The locker of epsilon is 6. Mark picked gamma. Clara picked⟦ epsilon⟧. The locker of theta is 3. Finn picked theta.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "scene": "P2-L0-0256",
+   "bridge": "lithium -> hydrogen",
+   "loss_target": ".",
+   "lookup_O_as_read": "<|im_start|>user\nThe locker of hydrogen is 2. Victor picked helium. The locker of lithium is 7. David picked hydrogen. The locker of helium is 9. Sara picked⟦ lithium⟧.\nWhich locker belongs to Sara's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_O_as_read": "<|im_start|>user\nThe locker of hydrogen is 2. Victor picked helium. The locker of lithium is 7. David picked hydrogen. The locker of helium is 9. Sara picked⟦ lithium⟧.\nWhat is the atomic number of Sara's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_S_as_read": "<|im_start|>user\nThe locker of hydrogen is 2. Victor picked helium. The locker of lithium is 7. David picked lithium. The locker of helium is 9. Sara picked⟦ hydrogen⟧.\nWhich locker belongs to Sara's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  }
+ ]
+}
