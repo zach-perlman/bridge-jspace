@@ -1,0 +1,247 @@
+{
+ "dan": "- Part D1: (a) \u00b7 60%; (b) \u00b7 55%; (c) \u00b7 45%\n- Part D2: 60%\n- Part D3: 40%;\n- Part D4: one code \u00b7 60%; re-encoded \u00b7 30%; in between \u00b7 10%",
+ "models": {
+  "qwen3.5-9b": {
+   "run": "qwen35_9b_x47_anatomy",
+   "per_layer": {
+    "2": {
+     "n": 200,
+     "WE_inside_J": 0.054890999999999995,
+     "J_inside_WE": 0.0571235,
+     "overlap": 0.0571235,
+     "share_WE": 0.19814500000000002,
+     "share_J": 0.260025
+    },
+    "4": {
+     "n": 200,
+     "WE_inside_J": 0.0517105,
+     "J_inside_WE": 0.051716,
+     "overlap": 0.051716,
+     "share_WE": 0.132775,
+     "share_J": 0.24795499999999998
+    },
+    "6": {
+     "n": 200,
+     "WE_inside_J": 0.068327,
+     "J_inside_WE": 0.06696650000000001,
+     "overlap": 0.068327,
+     "share_WE": 0.124285,
+     "share_J": 0.37975000000000003
+    },
+    "8": {
+     "n": 200,
+     "WE_inside_J": 0.0475285,
+     "J_inside_WE": 0.048757999999999996,
+     "overlap": 0.048757999999999996,
+     "share_WE": 0.11222,
+     "share_J": 0.26579
+    },
+    "10": {
+     "n": 200,
+     "WE_inside_J": 0.042203000000000004,
+     "J_inside_WE": 0.0427625,
+     "overlap": 0.0427625,
+     "share_WE": 0.110165,
+     "share_J": 0.242945
+    },
+    "12": {
+     "n": 200,
+     "WE_inside_J": 0.029096,
+     "J_inside_WE": 0.0303355,
+     "overlap": 0.0303355,
+     "share_WE": 0.106125,
+     "share_J": 0.182705
+    },
+    "14": {
+     "n": 200,
+     "WE_inside_J": 0.026070999999999997,
+     "J_inside_WE": 0.0269195,
+     "overlap": 0.0269195,
+     "share_WE": 0.10531,
+     "share_J": 0.16134500000000002
+    },
+    "16": {
+     "n": 200,
+     "WE_inside_J": 0.0263575,
+     "J_inside_WE": 0.026542999999999997,
+     "overlap": 0.026542999999999997,
+     "share_WE": 0.103495,
+     "share_J": 0.15968
+    },
+    "18": {
+     "n": 200,
+     "WE_inside_J": 0.044545,
+     "J_inside_WE": 0.0454015,
+     "overlap": 0.0454015,
+     "share_WE": 0.111585,
+     "share_J": 0.268455
+    },
+    "20": {
+     "n": 200,
+     "WE_inside_J": 0.040135,
+     "J_inside_WE": 0.041123,
+     "overlap": 0.041123,
+     "share_WE": 0.110935,
+     "share_J": 0.24482
+    },
+    "22": {
+     "n": 200,
+     "WE_inside_J": 0.038656499999999996,
+     "J_inside_WE": 0.0382595,
+     "overlap": 0.038656499999999996,
+     "share_WE": 0.1112,
+     "share_J": 0.23852
+    },
+    "24": {
+     "n": 200,
+     "WE_inside_J": 0.043835,
+     "J_inside_WE": 0.043141,
+     "overlap": 0.043835,
+     "share_WE": 0.10975499999999999,
+     "share_J": 0.291375
+    },
+    "26": {
+     "n": 200,
+     "WE_inside_J": 0.048627500000000004,
+     "J_inside_WE": 0.047296,
+     "overlap": 0.048627500000000004,
+     "share_WE": 0.110065,
+     "share_J": 0.31773
+    },
+    "28": {
+     "n": 200,
+     "WE_inside_J": 0.0187545,
+     "J_inside_WE": 0.0188825,
+     "overlap": 0.0188825,
+     "share_WE": 0.10828,
+     "share_J": 0.135405
+    },
+    "30": {
+     "n": 200,
+     "WE_inside_J": 0.0216275,
+     "J_inside_WE": 0.0209815,
+     "overlap": 0.0216275,
+     "share_WE": 0.106335,
+     "share_J": 0.14532
+    }
+   },
+   "layer_below": 2,
+   "l_J": 12,
+   "vs_l_J": -10,
+   "reading": "the overlap falls below 0.2 at L2; l_J = L12 (-10 layers)"
+  },
+  "muse-glimmer-30b": {
+   "run": "muse30_x47_anatomy",
+   "per_layer": {
+    "2": {
+     "n": 200,
+     "WE_inside_J": 0.05427,
+     "J_inside_WE": 0.0749495,
+     "overlap": 0.0749495,
+     "share_WE": 0.75458,
+     "share_J": 0.139625
+    },
+    "6": {
+     "n": 200,
+     "WE_inside_J": 0.062551,
+     "J_inside_WE": 0.07493250000000001,
+     "overlap": 0.07493250000000001,
+     "share_WE": 0.38871999999999995,
+     "share_J": 0.19272
+    },
+    "10": {
+     "n": 200,
+     "WE_inside_J": 0.068166,
+     "J_inside_WE": 0.07087399999999999,
+     "overlap": 0.07087399999999999,
+     "share_WE": 0.16525,
+     "share_J": 0.20823000000000003
+    },
+    "14": {
+     "n": 200,
+     "WE_inside_J": 0.057317,
+     "J_inside_WE": 0.058595,
+     "overlap": 0.058595,
+     "share_WE": 0.10175000000000001,
+     "share_J": 0.21348
+    },
+    "18": {
+     "n": 200,
+     "WE_inside_J": 0.033143500000000006,
+     "J_inside_WE": 0.036651,
+     "overlap": 0.036651,
+     "share_WE": 0.078295,
+     "share_J": 0.155275
+    },
+    "22": {
+     "n": 200,
+     "WE_inside_J": 0.022493,
+     "J_inside_WE": 0.026972999999999997,
+     "overlap": 0.026972999999999997,
+     "share_WE": 0.06919,
+     "share_J": 0.114095
+    },
+    "26": {
+     "n": 200,
+     "WE_inside_J": 0.026341,
+     "J_inside_WE": 0.030539999999999998,
+     "overlap": 0.030539999999999998,
+     "share_WE": 0.068925,
+     "share_J": 0.122255
+    },
+    "30": {
+     "n": 200,
+     "WE_inside_J": 0.013039499999999999,
+     "J_inside_WE": 0.0129295,
+     "overlap": 0.013039499999999999,
+     "share_WE": 0.076205,
+     "share_J": 0.080945
+    },
+    "34": {
+     "n": 200,
+     "WE_inside_J": 0.013248,
+     "J_inside_WE": 0.013054,
+     "overlap": 0.013248,
+     "share_WE": 0.10039000000000001,
+     "share_J": 0.0763
+    },
+    "38": {
+     "n": 200,
+     "WE_inside_J": 0.0131705,
+     "J_inside_WE": 0.012752,
+     "overlap": 0.0131705,
+     "share_WE": 0.099435,
+     "share_J": 0.08903
+    },
+    "42": {
+     "n": 200,
+     "WE_inside_J": 0.012457,
+     "J_inside_WE": 0.0121315,
+     "overlap": 0.012457,
+     "share_WE": 0.09179000000000001,
+     "share_J": 0.10713
+    },
+    "46": {
+     "n": 200,
+     "WE_inside_J": 0.017728,
+     "J_inside_WE": 0.016947999999999998,
+     "overlap": 0.017728,
+     "share_WE": 0.085205,
+     "share_J": 0.13352
+    },
+    "50": {
+     "n": 200,
+     "WE_inside_J": 0.0128515,
+     "J_inside_WE": 0.0127515,
+     "overlap": 0.0128515,
+     "share_WE": 0.077565,
+     "share_J": 0.105335
+    }
+   },
+   "layer_below": 2,
+   "l_J": 2,
+   "vs_l_J": 0,
+   "reading": "the overlap falls below 0.2 at L2; l_J = L2 (+0 layers)"
+  }
+ }
+}
