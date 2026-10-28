@@ -85,7 +85,7 @@ K = X.K_MAIN  # the change's 25 OMP atoms
 K_TOP = 10  # Zach's top-10
 SOURCES = B.FRESH_RUN  # target -> its 45m run (the clean design)
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
-RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2"}
+RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2_r2"}  # the first Muse run OOMed (28 Oct)
 BAND = {"qwen3.5-9b": tuple(range(12, 17)), "muse-glimmer-30b": tuple(range(23, 30))}  # Zach's band; the 27B: none
 RUNGS = (1, 2, 3, 4, 5, 6)
 BRIDGE_RUNGS = (1, 2)  # the 27B's
@@ -429,8 +429,14 @@ def band_dictionaries(model, lens, band: tuple[int, ...], letters) -> dict:
 
     if not band:
         return {}
+    import torch
+
     wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
-    return {la: LensDictionary(wg, lens.J(la)) for la in band}
+    torch.cuda.empty_cache()
+    # chunk 4096 for the row norms: the default 32768 x d fp32 block (832 MiB on Muse, d = 6656) did not fit beside
+    # Muse's weights, W_g and the cached J_l / bases (x49_2_muse, 28 Oct: OOM); the norms are per row, so the result is
+    # the same at any chunk.
+    return {la: LensDictionary(wg, lens.J(la), chunk=4096) for la in band}
 
 
 def run_items(model, lens, items: list[dict], layers: tuple[int, ...], band: tuple[int, ...], ws, digits,
