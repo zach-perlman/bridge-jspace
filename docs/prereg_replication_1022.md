@@ -2313,3 +2313,21 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
 - **Update (01:24 UTC, Zach: "move rendering-1 runs to the very end"):** the exception is withdrawn. The 9B's rendering-1 run
   was stopped after 6 minutes; its partial output was moved to /workspace/scratch, unread. It runs from the end of GPU 1's
   queue with the others. Any later test (SOCRATES) is queued ahead of rendering 1.
+
+#### Amendment 58 note 8 (Zach, 2026-10-28 02:35 UTC, before any removal-matrix result; no design change): the normal-equations projection for every v3 run from now
+
+- **Why:** the v3 removal matrices ran at ~1 prompt/s, on track for 3-4 h each.
+  - A benchmark on the box (m = 4,096 positions, d = 5,120, k = 10, double): the QR projection took 1,062 ms per call,
+    the normal-equations projection 7.4 ms, with outputs equal to 3e-8.
+  - The normal-equations projection is BJ_GRAM_PROJ=1, checked equal to ~1e-13 in amendment 52 note 1 and used in
+    amendment 55's runs.
+  - The 10-21 pad check had already found the removal bound by this per-position projection.
+- **Done:**
+  - Stopped (all ours): both removal matrices (27B at 565 of 12,306 prompts; 9B at ~520 of 10,189), the ports queues
+    and the follow-on queues.
+  - Partial outputs were moved to /workspace/scratch/killed_1028_gram, unread: the two matrices and the 9B's
+    keep-own. Logs were renamed *.killed_gram.log.
+  - Relaunched under the same job names with BJ_GRAM_PROJ=1. The matrices use note 4's arguments unchanged
+    (scripts/queues/h200_v3ko_1028.sh); the queues are unchanged apart from the variable.
+- **Already finished with QR:** the 9B's answer-only removal, position split (4 runs), swap and neutral-donor runs.
+  They are kept; the two projections agree to float noise.
