@@ -27,6 +27,20 @@ cut_line: "If late: 47.6 (a) and the 27B of 47.2 are cut first; 47.0, 47.1, 47.4
 gpu_hours_total: "13-14 (Dan's estimate), two GPUs, expected to drain by Wed afternoon"
 not_now: ["new models (Lightning, 122B, OLMo, DeepSeek)", "a second-vs-third basis", "pointer transfer to natural passages", "any README claim edits", "any run on Friday"]
 
+amendments:
+  - id: 1
+    by: Dan, 28 Oct ~02:30
+    applies_before: the next enqueue
+    items:
+      - "Cut 47.6(c), the dereference block: blocking the question's reads of the locker sentences kills the lookup under every hypothesis we hold; discriminates nothing. 47.6(a) and (b) remain as written."
+      - "Tier 2 'probe for the value': do not rerun. Table what exists (x0_probe v4: results/x0_probe/{qwen35_9b,x0_probe_v4_27b,muse30b,qwen35_122b}_x0_probe_v4), CPU: docs/x0_details.md table four models x {answer digit, slot, identity} x {locker-first, locker-after}, probe vs majority / chance / layout baselines with stored intervals; beside it the lens line (J++ readout ranks the answer digit first in 8% / 13% of locker-first items on the 9B / 27B, chance 10%) and the routes result (value 0 of 300 on four models); data.csv rows probe.value.<model>.<order>, probe.slot.<model>.<order>; one Section-3 sentence, after the data."
+      - "Add 47.7 (the value: address by default, prefetched on demand?), see tests."
+      - "Batch 48 (jobs/c3/batch48.yaml) is in force; its common settings are batch 47's; Q48.x and Q47.7 in predictions/2026-10-28_dan.md before any is unsealed."
+    queue_order: "47.1 -> 47.4 -> 48.1 (9B) -> 47.7(a) -> 48.2 A -> 47.3 -> 47.2 (9B, Muse) -> 47.7(c) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> 47.6(a)(b) -> 48.2 B -> 48.4 -> 47.7(b) -> 48.6; cut from the bottom"
+    not_cut: ["47.0 (CPU)", "47.1", "47.4", "48.1 (9B)", "47.7(a)", "47.3"]
+    after_the_freeze: "everything from 47.5 down that has not started by Wed 18:00 Paris, if it runs at all"
+    new_scene_sets: "47.2, 47.3, 47.7 each get a competence report and 5 rendered prompts in the verify pack before their jobs are enqueued"
+
 tests:
   - id: "47.0"
     tier: 0 (CPU, ~1.5 h, no GPU)
@@ -232,3 +246,57 @@ tests:
         is "decodable, not used", one line in Section 3.
       - Hand-check pack views for 47.1, 47.3, 47.4 as each unseals.
       - Figures only for tests whose rule is scored; the rest stay in docs/x0_details.md.
+
+  - id: "47.7"
+    added_by: amendment 1 (Dan, 28 Oct ~02:30)
+    title: "The value: address by default, prefetched on demand?"
+    models: "9B, 27B, Muse; ~3 GPU-h total; scenes ~1 h CPU"
+    question_text: >-
+      The model keeps an address at the bridge word, not the number, when the question comes last. Does it prefetch the
+      number when it already knows the question, and if it does, is the prefetched value in the J-space?
+    a_question_first:
+      order: run first; ~1.2 GPU-h
+      scenes: >-
+        The routes scenes (another item moved; C0 sanity) with each reader's question placed before the context in the
+        same user turn: "Question: Which locker belongs to Iris's pick?\n\n<context>\n\nAnswer:" (the recall reader gets its
+        own question first). Chat rendering, same read. Competence gate 0.80 per reader on question-first prompts.
+      reads: >-
+        Routes shares under the whole change: identity / position / value; the value probe (x0_probe (a), entities held
+        out) at the bridge word, question-first vs question-last, same layer; the lens readout's rank of the answer digit
+        at the bridge word (digit atoms included), question-first vs question-last; arms: whole; without J++ at K = 25
+        with digit atoms allowed (the main test's letter-only restriction is lifted here, say so); without the random
+        part; without U.
+      rule: >-
+        Fixed in advance. "Prefetch on demand": question-first value share >= 0.15 (question-last is <= 0.05 on all four
+        models) and the value probe >= 0.6 (question-last <= 0.4), on >= 2 of 3 models. "The prefetched value is in the
+        J-space" (read only if prefetch holds): without the J++ part (digits allowed) value answers fall >= 0.3 beyond the
+        random part, and the lens ranks the digit first in >= 0.4 of items (question-last ~ 0.1); the workspace paper's
+        "surfaced to the J-space on demand", tested here. "Address regardless": value share <= 0.05 and the probe within
+        0.1 of question-last; then the model keeps an address even when it knows the question; report whether knowing the
+        question moves the lookup toward position (position share question-first minus question-last, with its interval).
+        Either outcome is a result; the second is the stronger version of "never the value".
+      dumbest_ways: >-
+        1) Question-first changes which token is the bridge (it does not; assert the patch index and show 5 prompts). 2)
+        The digit probe reads the slot through a slot-digit correlation (digits are assigned at random per scene; assert
+        independence on the generated set). 3) The gate drops with the question first (report the gate; if < 0.80, "not
+        tested").
+    c_other_formats:
+      order: run second; ~1.2 GPU-h; question-last
+      scenes: >-
+        The varied-scene generator with "another item moved" counterfactuals (new numbers not in the scene), 3 formats
+        (prose / JSON / table), locker-first, 9B / 27B / Muse.
+      reads: identity / position / value shares; without the per-format pointer refit from 45d (9B, Muse) vs random.
+      rule: >-
+        "Never the value" generalizes if value <= 0.05 in every format on every model; "a position route in JSON /
+        table" if the position share is >= 0.2 and the refit pointer's removal cuts it >= 0.3 beyond random.
+    b_word_valued:
+      order: cut first if late; ~0.8 GPU-h; 9B, Muse
+      scenes: >-
+        Lockers named by single-token colours (red, blue, green, pink, gold, grey, teal, navy) instead of digits, so the
+        value is a letter token the J++ dictionary can express; routes test question-last and question-first.
+      rule: >-
+        As (a). The read that matters: if a value route appears, does the J++ part carry it (without-J++ cuts value
+        answers >= 0.3 beyond random)? If no value appears question-last: "never the value" holds for a word value too
+        (one line, no figure).
+    question: Q47.7
+

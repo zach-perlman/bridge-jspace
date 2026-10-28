@@ -1,3 +1,10 @@
+# Night of 28 Oct: batches 47 and 48 (Dan ~02:00 / ~02:30; agent, autonomy until 09:00). Results sealed until Dan's Q47.x / Q48.x
+
+- Pre-registered before any code or run: jobs/c3/batch47.yaml (2599221f), jobs/c3/batch48.yaml (2685af0d), predictions/2026-10-28_dan.md (Q47.1-Q47.7, Q48.1-Q48.5, empty Dan lines).
+- Amendment 1 (Dan ~02:30), recorded in batch47.yaml before the next enqueue: 47.6(c) cut (non-discriminating); the value probe not rerun, tabled from x0_probe v4 (CPU, docs/x0_details.md, data.csv probe.value.* / probe.slot.*); 47.7 added (question-first routes; other formats; word-valued lockers); batch 48 in force. Queue order: 47.1 -> 47.4 -> 48.1 (9B) -> 47.7(a) -> 48.2 A -> 47.3 -> 47.2 (9B, Muse) -> 47.7(c) -> 48.3 -> 48.5 -> 47.5 -> 48.1 (Muse) -> 47.6(a)(b) -> 48.2 B -> 48.4 -> 47.7(b) -> 48.6; not cut: 47.0, 47.1, 47.4, 48.1 (9B), 47.7(a), 47.3; from 47.5 down, anything not started by Wed 18:00 is "after the freeze".
+- Code: one agent per test in its own worktree (47.1+47.5, 47.4, 47.2, 47.3, 47.6, Tier 0, 47.7, 48.1-48.5, the §2 probe table); each test sealed (per-item outputs in the job, a CPU verdict stage that refuses until Dan's line is non-empty), a verify-pack view, an as-computed paragraph in its spec. Specs are enqueued as they are committed, in the order above.
+- Depth README (Dan ~02:35): the agent updates docs/depth/README.md itself after each batch with figures and data.csv rows; docs/depth/data.csv to be built from figures/story/data.csv by script.
+
 # 27 Oct: merged into main; to the freeze (Wed 28 Oct evening) and the hand check (Thu 29 Oct) (agent). All numbers UNVERIFIED
 
 **Dates (Dan, 27 Oct ~14:40).** Experiments freeze Wed 28 Oct evening, not Tue 21:00 as written in earlier notes. The hand check is Thu 29 Oct. The box (mats, 2x H100) is kept until Thu 12:00.
