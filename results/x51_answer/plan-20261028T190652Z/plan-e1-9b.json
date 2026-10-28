@@ -1,0 +1,171 @@
+{
+ "set": "e1",
+ "target": "qwen3.5-9b",
+ "layer": 12,
+ "run": "qwen35_9b_x51_12_e1",
+ "spec": "x51_12_e1_9b",
+ "code": {
+  "sha": "038ebf1e5e7994667a5161fb2ff864eb5870dc8a",
+  "dirty": true
+ },
+ "source_gate": {
+  "pass": true,
+  "chosen": 200,
+  "org_read_accuracy": {
+   "PP": 0.95,
+   "PM": 0.8683
+  },
+  "gate": 0.8,
+  "eligible": 408
+ },
+ "counts": {
+  "source": "qwen35_9b_x0_necessity",
+  "set": "d1_topics_v3",
+  "items": 200
+ },
+ "entities": 40,
+ "arms": [
+  "whole",
+  "no_jpp",
+  "no_jpp_rand",
+  "no_jpp_A",
+  "no_jpp_A_rand",
+  "no_A",
+  "no_A_rand"
+ ],
+ "reads": 3200,
+ "delta_forwards": 400,
+ "A_tokens_per_item": {
+  "n": 200,
+  "min": 2,
+  "median": 4.0,
+  "max": 4,
+  "mean": 3.725,
+  "hist": {
+   "2": 2,
+   "3": 51,
+   "4": 147
+  }
+ },
+ "A_letter_tokens_per_item": {
+  "n": 200,
+  "min": 0,
+  "median": 0.0,
+  "max": 0,
+  "mean": 0.0,
+  "hist": {
+   "0": 200
+  }
+ },
+ "A_tokens_most_common": [
+  [
+   "2",
+   117
+  ],
+  [
+   "4",
+   101
+  ],
+  [
+   "3",
+   99
+  ],
+  [
+   "6",
+   98
+  ],
+  [
+   "8",
+   76
+  ],
+  [
+   "1",
+   72
+  ],
+  [
+   "7",
+   67
+  ],
+  [
+   "9",
+   67
+  ],
+  [
+   "5",
+   48
+  ]
+ ],
+ "answer_atoms_in_omp_25": "0 by construction: no answer token of these items is a letter token, and OMP's dictionary is the letter tokens",
+ "prompts": [
+  {
+   "key": "P2-L0-0017",
+   "bridge": "iota -> delta",
+   "A": [
+    "2",
+    "4",
+    "6",
+    "9"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of delta is six. Amy picked delta. The locker of iota is two. The locker of gamma is eight. Leo picked⟦ iota⟧. Eva picked gamma.\nWhich locker belongs to Leo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of delta is six. Amy picked iota. The locker of iota is two. The locker of gamma is eight. Leo picked⟦ delta⟧. Eva picked gamma.\nWhich locker belongs to Leo's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of delta is six. Amy picked delta. The locker of iota is two. The locker of gamma is eight. Leo picked⟦ iota⟧. Eva picked gamma.\nWhich position in the Greek alphabet does Leo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of delta is six. Amy picked iota. The locker of iota is two. The locker of gamma is eight. Leo picked⟦ delta⟧. Eva picked gamma.\nWhich position in the Greek alphabet does Leo's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0096",
+   "bridge": "bee -> spider",
+   "A": [
+    "1",
+    "5",
+    "6",
+    "8"
+   ],
+   "lookup_org": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the spider. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦ bee⟧.\nWhich locker belongs to Will's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the bee. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦ spider⟧.\nWhich locker belongs to Will's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the spider. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦ bee⟧.\nHow many legs does Will's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nThe locker of the bee is 1. Laura picked the bee. The locker of the spider is 5. The locker of the fly is 7. Ella picked the fly. Will picked the⟦ spider⟧.\nHow many legs does Will's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0142",
+   "bridge": "nitrogen -> oxygen",
+   "A": [
+    "3",
+    "6",
+    "7",
+    "8"
+   ],
+   "lookup_org": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦ nitrogen⟧. The locker of nitrogen is three.\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nAmy picked lithium. Vera picked nitrogen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦ oxygen⟧. The locker of nitrogen is three.\nWhich locker belongs to Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nAmy picked lithium. Vera picked oxygen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦ nitrogen⟧. The locker of nitrogen is three.\nWhat is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nAmy picked lithium. Vera picked nitrogen. The locker of lithium is eight. The locker of oxygen is six. Owen picked⟦ oxygen⟧. The locker of nitrogen is three.\nWhat is the atomic number of Owen's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0154",
+   "bridge": "oxygen -> helium",
+   "A": [
+    "2",
+    "3",
+    "5",
+    "8"
+   ],
+   "lookup_org": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦ oxygen⟧. Max picked helium. The locker of oxygen is five.\nWhich locker belongs to Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦ helium⟧. Max picked oxygen. The locker of oxygen is five.\nWhich locker belongs to Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦ oxygen⟧. Max picked helium. The locker of oxygen is five.\nWhat is the atomic number of Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nTara picked nitrogen. The locker of helium is three. The locker of nitrogen is two. Sean picked⟦ helium⟧. Max picked oxygen. The locker of oxygen is five.\nWhat is the atomic number of Sean's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  },
+  {
+   "key": "P2-L0-0290",
+   "bridge": "epsilon -> iota",
+   "A": [
+    "4",
+    "5",
+    "8",
+    "9"
+   ],
+   "lookup_org": "<|im_start|>user\nSara picked iota. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked⟦ epsilon⟧. Noah picked beta.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "lookup_alt": "<|im_start|>user\nSara picked epsilon. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked⟦ iota⟧. Noah picked beta.\nWhich locker belongs to Amy's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_org": "<|im_start|>user\nSara picked iota. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked⟦ epsilon⟧. Noah picked beta.\nWhich position in the Greek alphabet does Amy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "recall_alt": "<|im_start|>user\nSara picked epsilon. The locker of beta is 9. The locker of epsilon is 4. The locker of iota is 8. Amy picked⟦ iota⟧. Noah picked beta.\nWhich position in the Greek alphabet does Amy's pick have? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: "
+  }
+ ]
+}

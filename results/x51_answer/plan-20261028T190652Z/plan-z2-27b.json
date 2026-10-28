@@ -1,0 +1,256 @@
+{
+ "set": "z2",
+ "target": "qwen3.6-27b",
+ "layer": 32,
+ "run": "x51_12_z2_27b",
+ "spec": "x51_12_z2_27b",
+ "code": {
+  "sha": "038ebf1e5e7994667a5161fb2ff864eb5870dc8a",
+  "dirty": true
+ },
+ "source_gate": {
+  "pass": true,
+  "chosen": 166,
+  "org_read_accuracy": {
+   "K": 0.9900497512437811,
+   "M": 0.9303482587064676
+  },
+  "gate": 0.8
+ },
+ "counts": {
+  "source": "x50_z2_27b",
+  "items": 166,
+  "drops": {},
+  "sets": {
+   "jsuite_v2_test_chat": 74,
+   "jsuite_v2nb_test_chat": 92
+  }
+ },
+ "entities": 109,
+ "arms": [
+  "whole",
+  "no_jpp",
+  "no_jpp_rand",
+  "no_jpp_A",
+  "no_jpp_A_rand",
+  "no_A",
+  "no_A_rand"
+ ],
+ "reads": 2656,
+ "delta_forwards": 664,
+ "A_tokens_per_item": {
+  "n": 166,
+  "min": 4,
+  "median": 4.0,
+  "max": 4,
+  "mean": 4.0,
+  "hist": {
+   "4": 166
+  }
+ },
+ "A_letter_tokens_per_item": {
+  "n": 166,
+  "min": 4,
+  "median": 4.0,
+  "max": 4,
+  "mean": 4.0,
+  "hist": {
+   "4": 166
+  }
+ },
+ "A_tokens_most_common": [
+  [
+   " Africa",
+   21
+  ],
+  [
+   "Africa",
+   21
+  ],
+  [
+   " South",
+   20
+  ],
+  [
+   "South",
+   20
+  ],
+  [
+   " Europe",
+   20
+  ],
+  [
+   "Europe",
+   20
+  ],
+  [
+   " Japan",
+   15
+  ],
+  [
+   "Japan",
+   15
+  ],
+  [
+   " Asia",
+   15
+  ],
+  [
+   "Asia",
+   15
+  ],
+  [
+   " Spanish",
+   15
+  ],
+  [
+   "Spanish",
+   15
+  ],
+  [
+   " Italy",
+   13
+  ],
+  [
+   "Italy",
+   13
+  ],
+  [
+   " German",
+   13
+  ],
+  [
+   " French",
+   13
+  ],
+  [
+   "German",
+   13
+  ],
+  [
+   "French",
+   13
+  ],
+  [
+   " Italian",
+   13
+  ],
+  [
+   "Italian",
+   13
+  ],
+  [
+   "G",
+   11
+  ],
+  [
+   " Greece",
+   11
+  ],
+  [
+   " Sweden",
+   10
+  ],
+  [
+   "Sweden",
+   10
+  ],
+  [
+   " Germany",
+   9
+  ],
+  [
+   "Germany",
+   9
+  ],
+  [
+   " Spain",
+   8
+  ],
+  [
+   "Spain",
+   8
+  ],
+  [
+   " France",
+   8
+  ],
+  [
+   "France",
+   8
+  ]
+ ],
+ "answer_atoms_in_omp_25": "needs Δ (GPU forwards; no states of these items are cached): reported by the run (norms.jsonl n_answer_atoms_in_25); 0 by construction for a digit-only A (the letter dictionary holds no digit token)",
+ "prompts": [
+  {
+   "key": "jsuite_v2_test_chat|j2:cities:M-L1-Moscow-0",
+   "bridge": "Moscow -> Shanghai",
+   "A": [
+    " China",
+    " Russia",
+    "China",
+    "Russia"
+   ],
+   "lookup_org": "<|im_start|>user\nPosted by travel_notes_88:\nThe undersides of most temnospondyls are covered in rows of large ventral plates. Istanbul is in Turkey. During early stages of development, they first have only small, rounded scales. Laura Bennett moved to Lisbon last spring. Tess Garland moved to Barcelona last spring. Copenhagen is in Denmark. Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates. Lisbon is in Portugal. Barcelona is in Spain. The plates overlap each other in a way that allows a wide range of flexibility. Shanghai is in China. Ben Crowley moved to Istanbul last spring. Nina Hart moved to Copenhagen last spring. Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales. Simon Ashby moved to Shanghai last spring. Moscow is in Russia. They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin.\nHas anyone else heard about this?\n\nIn which country is the city that is home to the Kremlin and Red⟦ Square⟧? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "lookup_alt": "<|im_start|>user\nPosted by travel_notes_88:\nThe undersides of most temnospondyls are covered in rows of large ventral plates. Istanbul is in Turkey. During early stages of development, they first have only small, rounded scales. Laura Bennett moved to Lisbon last spring. Tess Garland moved to Barcelona last spring. Copenhagen is in Denmark. Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates. Lisbon is in Portugal. Barcelona is in Spain. The plates overlap each other in a way that allows a wide range of flexibility. Shanghai is in China. Ben Crowley moved to Istanbul last spring. Nina Hart moved to Copenhagen last spring. Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales. Simon Ashby moved to Shanghai last spring. Moscow is in Russia. They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin.\nHas anyone else heard about this?\n\nIn which country is the city that has a waterfront promenade called the⟦ Bund⟧? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_org": "<|im_start|>user\nPosted by travel_notes_88:\nThe undersides of most temnospondyls are covered in rows of large ventral plates. This year, Lisbon was paired with a partner city in Greece. During early stages of development, they first have only small, rounded scales. Laura Bennett moved to Lisbon last spring. Tess Garland moved to Barcelona last spring. This year, Barcelona was paired with a partner city in Belgium. Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates. This year, Copenhagen was paired with a partner city in Greece. Moscow was mentioned in this week's travel column. The plates overlap each other in a way that allows a wide range of flexibility. This year, Istanbul was paired with a partner city in Brazil. Ben Crowley moved to Istanbul last spring. Nina Hart moved to Copenhagen last spring. Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales. Simon Ashby moved to Shanghai last spring. This year, Shanghai was paired with a partner city in Ireland. They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin.\nHas anyone else heard about this?\n\nIn which country is the city that is home to the Kremlin and Red⟦ Square⟧? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_alt": "<|im_start|>user\nPosted by travel_notes_88:\nThe undersides of most temnospondyls are covered in rows of large ventral plates. This year, Lisbon was paired with a partner city in Greece. During early stages of development, they first have only small, rounded scales. Laura Bennett moved to Lisbon last spring. Tess Garland moved to Barcelona last spring. This year, Barcelona was paired with a partner city in Belgium. Fossils show, as the animals grew, the scales on the undersides of their bodies developed into large, wide ventral plates. This year, Copenhagen was paired with a partner city in Greece. Moscow was mentioned in this week's travel column. The plates overlap each other in a way that allows a wide range of flexibility. This year, Istanbul was paired with a partner city in Brazil. Ben Crowley moved to Istanbul last spring. Nina Hart moved to Copenhagen last spring. Later semiaquatic temnospondyls, such as trematosaurs and capitosaurs, have no evidence of scales. Simon Ashby moved to Shanghai last spring. This year, Shanghai was paired with a partner city in Ireland. They may have lost scales to make movement easier under water or to allow cutaneous respiration, the absorption of oxygen through the skin.\nHas anyone else heard about this?\n\nIn which country is the city that has a waterfront promenade called the⟦ Bund⟧? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  {
+   "key": "jsuite_v2_test_chat|j2:people:M-L1-Bach-0",
+   "bridge": "Bach -> Puccini",
+   "A": [
+    " German",
+    " Italian",
+    "German",
+    "Italian"
+   ],
+   "lookup_org": "<|im_start|>user\nMeeting notes, 14 March.\n- Grace Holloway spent five years writing a thesis on Aristotle.\n- Alice Moreland spent five years writing a thesis on Descartes.\n- The labyrinthodontian suborders Microsauria and Branchiosauria, both of which contain temnospondyls, were distinct from Labyrinthodonta.\n- Within Labyrinthodonta were the groups Rhachitomi, Labyrinthodonti, and Embolerimi.\n- Nina Hart spent five years writing a thesis on Gandhi.\n- Members of Rhachitomi, such as Archegosaurus and Eryops, had rhachitomous vertebrae with enlarged intercentra that displaced the pleurocentra.\n- Labyrinthodonti, such as Mastodonsaurus, Trematosaurus, and Micropholis, had lost their pleurocentra, and the intercentra made up the entire body of the vertebrae.\n- Aristotle was Greek by birth.\n- Descartes was French by birth.\n- Gandhi was Indian by birth.\n- Embolerimi had intercentra and pleurocentra that were of equal size.\n- Mark Ellison spent five years writing a thesis on Puccini.\n- Embolomeres are now identified as reptiliomorphs distantly related to temnospondyls.\n- Hokusai was Japanese by birth.\n- Maya Linden spent five years writing a thesis on Hokusai.\n- Puccini was Italian by birth.\n- Bach was German by birth.\nNext meeting in two weeks.\n\nThe composer who wrote the Brandenburg Concert⟦os⟧ was of which nationality? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "lookup_alt": "<|im_start|>user\nMeeting notes, 14 March.\n- Grace Holloway spent five years writing a thesis on Aristotle.\n- Alice Moreland spent five years writing a thesis on Descartes.\n- The labyrinthodontian suborders Microsauria and Branchiosauria, both of which contain temnospondyls, were distinct from Labyrinthodonta.\n- Within Labyrinthodonta were the groups Rhachitomi, Labyrinthodonti, and Embolerimi.\n- Nina Hart spent five years writing a thesis on Gandhi.\n- Members of Rhachitomi, such as Archegosaurus and Eryops, had rhachitomous vertebrae with enlarged intercentra that displaced the pleurocentra.\n- Labyrinthodonti, such as Mastodonsaurus, Trematosaurus, and Micropholis, had lost their pleurocentra, and the intercentra made up the entire body of the vertebrae.\n- Aristotle was Greek by birth.\n- Descartes was French by birth.\n- Gandhi was Indian by birth.\n- Embolerimi had intercentra and pleurocentra that were of equal size.\n- Mark Ellison spent five years writing a thesis on Puccini.\n- Embolomeres are now identified as reptiliomorphs distantly related to temnospondyls.\n- Hokusai was Japanese by birth.\n- Maya Linden spent five years writing a thesis on Hokusai.\n- Puccini was Italian by birth.\n- Bach was German by birth.\nNext meeting in two weeks.\n\nThe composer who wrote the opera Tos⟦ca⟧ was of which nationality? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_org": "<|im_start|>user\nMeeting notes, 14 March.\n- Grace Holloway spent five years writing a thesis on Aristotle.\n- Alice Moreland spent five years writing a thesis on Descartes.\n- The labyrinthodontian suborders Microsauria and Branchiosauria, both of which contain temnospondyls, were distinct from Labyrinthodonta.\n- Within Labyrinthodonta were the groups Rhachitomi, Labyrinthodonti, and Embolerimi.\n- Nina Hart spent five years writing a thesis on Gandhi.\n- Members of Rhachitomi, such as Archegosaurus and Eryops, had rhachitomous vertebrae with enlarged intercentra that displaced the pleurocentra.\n- Labyrinthodonti, such as Mastodonsaurus, Trematosaurus, and Micropholis, had lost their pleurocentra, and the intercentra made up the entire body of the vertebrae.\n- A reader asked a question about Bach in the letters page.\n- Puccini will be portrayed by a Chilean actor in a new film.\n- Aristotle will be portrayed by a Hungarian actor in a new film.\n- Embolerimi had intercentra and pleurocentra that were of equal size.\n- Mark Ellison spent five years writing a thesis on Puccini.\n- Embolomeres are now identified as reptiliomorphs distantly related to temnospondyls.\n- Gandhi will be portrayed by an American actor in a new film.\n- Maya Linden spent five years writing a thesis on Hokusai.\n- Hokusai will be portrayed by an Argentine actor in a new film.\n- Descartes will be portrayed by an Argentine actor in a new film.\nNext meeting in two weeks.\n\nThe composer who wrote the Brandenburg Concert⟦os⟧ was of which nationality? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_alt": "<|im_start|>user\nMeeting notes, 14 March.\n- Grace Holloway spent five years writing a thesis on Aristotle.\n- Alice Moreland spent five years writing a thesis on Descartes.\n- The labyrinthodontian suborders Microsauria and Branchiosauria, both of which contain temnospondyls, were distinct from Labyrinthodonta.\n- Within Labyrinthodonta were the groups Rhachitomi, Labyrinthodonti, and Embolerimi.\n- Nina Hart spent five years writing a thesis on Gandhi.\n- Members of Rhachitomi, such as Archegosaurus and Eryops, had rhachitomous vertebrae with enlarged intercentra that displaced the pleurocentra.\n- Labyrinthodonti, such as Mastodonsaurus, Trematosaurus, and Micropholis, had lost their pleurocentra, and the intercentra made up the entire body of the vertebrae.\n- A reader asked a question about Bach in the letters page.\n- Puccini will be portrayed by a Chilean actor in a new film.\n- Aristotle will be portrayed by a Hungarian actor in a new film.\n- Embolerimi had intercentra and pleurocentra that were of equal size.\n- Mark Ellison spent five years writing a thesis on Puccini.\n- Embolomeres are now identified as reptiliomorphs distantly related to temnospondyls.\n- Gandhi will be portrayed by an American actor in a new film.\n- Maya Linden spent five years writing a thesis on Hokusai.\n- Hokusai will be portrayed by an Argentine actor in a new film.\n- Descartes will be portrayed by an Argentine actor in a new film.\nNext meeting in two weeks.\n\nThe composer who wrote the opera Tos⟦ca⟧ was of which nationality? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  {
+   "key": "jsuite_v2nb_test_chat|j2:companies:M-L1-Lenovo-0",
+   "bridge": "Lenovo -> Gucci",
+   "A": [
+    " China",
+    " Italy",
+    "China",
+    "Italy"
+   ],
+   "lookup_org": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nPaul Whitaker spent a semester studying the history of Yamaha. Lenovo is a company from China. All of these temnospondyls were adapted to a terrestrial lifestyle. Armor may have offered protection from predators in the case of Peltobatrachus. Clara Dunmore spent a semester studying the history of Gucci. The scutes may have provided stability for the spine, as they would have limited flexibility and may have been connected by strong ligaments. Ben Crowley spent a semester studying the history of Ferrari. Maya Linden spent a semester studying the history of Volkswagen. Gucci is a company from Italy. Temnospondyls such as Sclerothorax and Eryops that may have been at least partly terrestrial also have long neural spines on top of their vertebrae that would have stabilized the spine. Volkswagen is a company from Germany. Yamaha is a company from Japan. Bony scutes are also seen in plagiosaurs, but unlike Peltobatrachus, Laidleria, Eryops, and dissorophids, these animals are thought to have been fully aquatic. Lindt is a company from Switzerland. Plagiosaurs may have inherited their armor from a terrestrial ancestor, as both Peltobatrachus and Laidleria have been considered close relatives of the group. Ferrari is a company from Italy. Owen Marsh spent a semester studying the history of Lindt.\nMore updates will follow.\n\nThe company that bought the personal computer business of IBM and makes ThinkPad⟦ laptops⟧ comes from which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "lookup_alt": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nPaul Whitaker spent a semester studying the history of Yamaha. Lenovo is a company from China. All of these temnospondyls were adapted to a terrestrial lifestyle. Armor may have offered protection from predators in the case of Peltobatrachus. Clara Dunmore spent a semester studying the history of Gucci. The scutes may have provided stability for the spine, as they would have limited flexibility and may have been connected by strong ligaments. Ben Crowley spent a semester studying the history of Ferrari. Maya Linden spent a semester studying the history of Volkswagen. Gucci is a company from Italy. Temnospondyls such as Sclerothorax and Eryops that may have been at least partly terrestrial also have long neural spines on top of their vertebrae that would have stabilized the spine. Volkswagen is a company from Germany. Yamaha is a company from Japan. Bony scutes are also seen in plagiosaurs, but unlike Peltobatrachus, Laidleria, Eryops, and dissorophids, these animals are thought to have been fully aquatic. Lindt is a company from Switzerland. Plagiosaurs may have inherited their armor from a terrestrial ancestor, as both Peltobatrachus and Laidleria have been considered close relatives of the group. Ferrari is a company from Italy. Owen Marsh spent a semester studying the history of Lindt.\nMore updates will follow.\n\nThe company that is the luxury fashion house famous for its horsebit loaf⟦ers⟧ comes from which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_org": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nPaul Whitaker spent a semester studying the history of Yamaha. Next year, Gucci opens a new regional office in Austria. All of these temnospondyls were adapted to a terrestrial lifestyle. Armor may have offered protection from predators in the case of Peltobatrachus. Clara Dunmore spent a semester studying the history of Gucci. The scutes may have provided stability for the spine, as they would have limited flexibility and may have been connected by strong ligaments. Ben Crowley spent a semester studying the history of Ferrari. Maya Linden spent a semester studying the history of Volkswagen. Next year, Volkswagen opens a new regional office in India. Temnospondyls such as Sclerothorax and Eryops that may have been at least partly terrestrial also have long neural spines on top of their vertebrae that would have stabilized the spine. Next year, Yamaha opens a new regional office in Germany. Next year, Lindt opens a new regional office in Canada. Bony scutes are also seen in plagiosaurs, but unlike Peltobatrachus, Laidleria, Eryops, and dissorophids, these animals are thought to have been fully aquatic. Next year, Ferrari opens a new regional office in Japan. Plagiosaurs may have inherited their armor from a terrestrial ancestor, as both Peltobatrachus and Laidleria have been considered close relatives of the group. The marketing class discussed Lenovo on Tuesday. Owen Marsh spent a semester studying the history of Lindt.\nMore updates will follow.\n\nThe company that bought the personal computer business of IBM and makes ThinkPad⟦ laptops⟧ comes from which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_alt": "<|im_start|>user\nREGIONAL DESK - Organizers released new details ahead of next month's events.\nPaul Whitaker spent a semester studying the history of Yamaha. Next year, Gucci opens a new regional office in Austria. All of these temnospondyls were adapted to a terrestrial lifestyle. Armor may have offered protection from predators in the case of Peltobatrachus. Clara Dunmore spent a semester studying the history of Gucci. The scutes may have provided stability for the spine, as they would have limited flexibility and may have been connected by strong ligaments. Ben Crowley spent a semester studying the history of Ferrari. Maya Linden spent a semester studying the history of Volkswagen. Next year, Volkswagen opens a new regional office in India. Temnospondyls such as Sclerothorax and Eryops that may have been at least partly terrestrial also have long neural spines on top of their vertebrae that would have stabilized the spine. Next year, Yamaha opens a new regional office in Germany. Next year, Lindt opens a new regional office in Canada. Bony scutes are also seen in plagiosaurs, but unlike Peltobatrachus, Laidleria, Eryops, and dissorophids, these animals are thought to have been fully aquatic. Next year, Ferrari opens a new regional office in Japan. Plagiosaurs may have inherited their armor from a terrestrial ancestor, as both Peltobatrachus and Laidleria have been considered close relatives of the group. The marketing class discussed Lenovo on Tuesday. Owen Marsh spent a semester studying the history of Lindt.\nMore updates will follow.\n\nThe company that is the luxury fashion house famous for its horsebit loaf⟦ers⟧ comes from which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  {
+   "key": "jsuite_v2nb_test_chat|j2:countries:M-L1-Bolivia-0",
+   "bridge": "Bolivia -> Nigeria",
+   "A": [
+    " South",
+    " Africa",
+    "South",
+    "Africa"
+   ],
+   "lookup_org": "<|im_start|>user\nMeeting notes, 14 March.\n- Bhutan is a country in Asia.\n- Nigeria is a country in Africa.\n- Bolivia is a country in South America.\n- Eddie moves into a rooming house and starts hustling for small stakes.\n- He finds Sarah again and this time she takes him in, but with reservations.\n- Maya Linden spent a whole childhood in Nigeria.\n- Charlie finds Eddie at Sarah's and tries to persuade him to go back out on the road.\n- Spain is a country in Europe.\n- Simon Ashby spent a whole childhood in Morocco.\n- Mongolia is a country in Asia.\n- Eddie refuses and Charlie realizes he plans to challenge Fats again.\n- Morocco is a country in Africa.\n- Eddie realizes that Charlie held out his percentage and becomes enraged, believing that with that money he could have rebounded to beat Fats.\n- Aaron Pryce spent a whole childhood in Spain.\n- Eddie dismisses Charlie as a scared old man and tells him to \"go lie down and die \"by himself.\n- Mark Ellison spent a whole childhood in Mongolia.\n- Nina Hart spent a whole childhood in Bhutan.\nNext meeting in two weeks.\n\nThe country that is home to the Uyuni salt⟦ flat⟧ is on which continent? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "lookup_alt": "<|im_start|>user\nMeeting notes, 14 March.\n- Bhutan is a country in Asia.\n- Nigeria is a country in Africa.\n- Bolivia is a country in South America.\n- Eddie moves into a rooming house and starts hustling for small stakes.\n- He finds Sarah again and this time she takes him in, but with reservations.\n- Maya Linden spent a whole childhood in Nigeria.\n- Charlie finds Eddie at Sarah's and tries to persuade him to go back out on the road.\n- Spain is a country in Europe.\n- Simon Ashby spent a whole childhood in Morocco.\n- Mongolia is a country in Asia.\n- Eddie refuses and Charlie realizes he plans to challenge Fats again.\n- Morocco is a country in Africa.\n- Eddie realizes that Charlie held out his percentage and becomes enraged, believing that with that money he could have rebounded to beat Fats.\n- Aaron Pryce spent a whole childhood in Spain.\n- Eddie dismisses Charlie as a scared old man and tells him to \"go lie down and die \"by himself.\n- Mark Ellison spent a whole childhood in Mongolia.\n- Nina Hart spent a whole childhood in Bhutan.\nNext meeting in two weeks.\n\nThe country that has a film industry known as N⟦ollywood⟧ is on which continent? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_org": "<|im_start|>user\nMeeting notes, 14 March.\n- Next year, the delegation from Nigeria meets in North America.\n- The quiz night included a round on Bolivia.\n- Next year, the delegation from Morocco meets in North America.\n- Eddie moves into a rooming house and starts hustling for small stakes.\n- He finds Sarah again and this time she takes him in, but with reservations.\n- Maya Linden spent a whole childhood in Nigeria.\n- Charlie finds Eddie at Sarah's and tries to persuade him to go back out on the road.\n- Next year, the delegation from Mongolia meets in Europe.\n- Simon Ashby spent a whole childhood in Morocco.\n- Next year, the delegation from Bhutan meets in North America.\n- Eddie refuses and Charlie realizes he plans to challenge Fats again.\n- Next year, the delegation from Spain meets in Asia.\n- Eddie realizes that Charlie held out his percentage and becomes enraged, believing that with that money he could have rebounded to beat Fats.\n- Aaron Pryce spent a whole childhood in Spain.\n- Eddie dismisses Charlie as a scared old man and tells him to \"go lie down and die \"by himself.\n- Mark Ellison spent a whole childhood in Mongolia.\n- Nina Hart spent a whole childhood in Bhutan.\nNext meeting in two weeks.\n\nThe country that is home to the Uyuni salt⟦ flat⟧ is on which continent? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_alt": "<|im_start|>user\nMeeting notes, 14 March.\n- Next year, the delegation from Nigeria meets in North America.\n- The quiz night included a round on Bolivia.\n- Next year, the delegation from Morocco meets in North America.\n- Eddie moves into a rooming house and starts hustling for small stakes.\n- He finds Sarah again and this time she takes him in, but with reservations.\n- Maya Linden spent a whole childhood in Nigeria.\n- Charlie finds Eddie at Sarah's and tries to persuade him to go back out on the road.\n- Next year, the delegation from Mongolia meets in Europe.\n- Simon Ashby spent a whole childhood in Morocco.\n- Next year, the delegation from Bhutan meets in North America.\n- Eddie refuses and Charlie realizes he plans to challenge Fats again.\n- Next year, the delegation from Spain meets in Asia.\n- Eddie realizes that Charlie held out his percentage and becomes enraged, believing that with that money he could have rebounded to beat Fats.\n- Aaron Pryce spent a whole childhood in Spain.\n- Eddie dismisses Charlie as a scared old man and tells him to \"go lie down and die \"by himself.\n- Mark Ellison spent a whole childhood in Mongolia.\n- Nina Hart spent a whole childhood in Bhutan.\nNext meeting in two weeks.\n\nThe country that has a film industry known as N⟦ollywood⟧ is on which continent? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  },
+  {
+   "key": "jsuite_v2nb_test_chat|j2:landmarks:M-L1-the Colosseum-0",
+   "bridge": "the Colosseum -> Table Mountain",
+   "A": [
+    " South",
+    " Italy",
+    "South",
+    "Italy"
+   ],
+   "lookup_org": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nFiona Lockwood took a guided trip to Borobudur last summer. All of these temnospondyls were adapted to a terrestrial lifestyle. Jonah Wells took a guided trip to Angel Falls last summer. Visitors travel to South Africa to see Table Mountain. Armor may have offered protection from predators in the case of Peltobatrachus. Iris Pemberton took a guided trip to Easter Island last summer. Visitors travel to Chile to see Easter Island. Visitors travel to Venezuela to see Angel Falls. Nina Hart took a guided trip to Petra last summer. The scutes may have provided stability for the spine, as they would have limited flexibility and may have been connected by strong ligaments. Temnospondyls such as Sclerothorax and Eryops that may have been at least partly terrestrial also have long neural spines on top of their vertebrae that would have stabilized the spine. Grace Holloway took a guided trip to Table Mountain last summer. Bony scutes are also seen in plagiosaurs, but unlike Peltobatrachus, Laidleria, Eryops, and dissorophids, these animals are thought to have been fully aquatic. Visitors travel to Indonesia to see Borobudur. Plagiosaurs may have inherited their armor from a terrestrial ancestor, as both Peltobatrachus and Laidleria have been considered close relatives of the group. Visitors travel to Italy to see the Colosseum. Visitors travel to Jordan to see Petra.\n\nBest,\nMarta\n\nThe landmark that is the ancient amphitheater where gladiators⟦ fought⟧ is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "lookup_alt": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nFiona Lockwood took a guided trip to Borobudur last summer. All of these temnospondyls were adapted to a terrestrial lifestyle. Jonah Wells took a guided trip to Angel Falls last summer. Visitors travel to South Africa to see Table Mountain. Armor may have offered protection from predators in the case of Peltobatrachus. Iris Pemberton took a guided trip to Easter Island last summer. Visitors travel to Chile to see Easter Island. Visitors travel to Venezuela to see Angel Falls. Nina Hart took a guided trip to Petra last summer. The scutes may have provided stability for the spine, as they would have limited flexibility and may have been connected by strong ligaments. Temnospondyls such as Sclerothorax and Eryops that may have been at least partly terrestrial also have long neural spines on top of their vertebrae that would have stabilized the spine. Grace Holloway took a guided trip to Table Mountain last summer. Bony scutes are also seen in plagiosaurs, but unlike Peltobatrachus, Laidleria, Eryops, and dissorophids, these animals are thought to have been fully aquatic. Visitors travel to Indonesia to see Borobudur. Plagiosaurs may have inherited their armor from a terrestrial ancestor, as both Peltobatrachus and Laidleria have been considered close relatives of the group. Visitors travel to Italy to see the Colosseum. Visitors travel to Jordan to see Petra.\n\nBest,\nMarta\n\nThe landmark that is the flat-topped peak that overlooks Cape⟦ Town⟧ is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_org": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nFiona Lockwood took a guided trip to Borobudur last summer. All of these temnospondyls were adapted to a terrestrial lifestyle. Jonah Wells took a guided trip to Angel Falls last summer. The quiz night included a question about the Colosseum. Armor may have offered protection from predators in the case of Peltobatrachus. Iris Pemberton took a guided trip to Easter Island last summer. The new documentary on Angel Falls comes from a film studio in Malaysia. The new documentary on Table Mountain comes from a film studio in Greece. Nina Hart took a guided trip to Petra last summer. The scutes may have provided stability for the spine, as they would have limited flexibility and may have been connected by strong ligaments. Temnospondyls such as Sclerothorax and Eryops that may have been at least partly terrestrial also have long neural spines on top of their vertebrae that would have stabilized the spine. Grace Holloway took a guided trip to Table Mountain last summer. Bony scutes are also seen in plagiosaurs, but unlike Peltobatrachus, Laidleria, Eryops, and dissorophids, these animals are thought to have been fully aquatic. The new documentary on Petra comes from a film studio in Spain. Plagiosaurs may have inherited their armor from a terrestrial ancestor, as both Peltobatrachus and Laidleria have been considered close relatives of the group. The new documentary on Borobudur comes from a film studio in Peru. The new documentary on Easter Island comes from a film studio in Brazil.\n\nBest,\nMarta\n\nThe landmark that is the ancient amphitheater where gladiators⟦ fought⟧ is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+   "recall_alt": "<|im_start|>user\nHi all,\n\nA few updates before Friday's meeting.\n\nFiona Lockwood took a guided trip to Borobudur last summer. All of these temnospondyls were adapted to a terrestrial lifestyle. Jonah Wells took a guided trip to Angel Falls last summer. The quiz night included a question about the Colosseum. Armor may have offered protection from predators in the case of Peltobatrachus. Iris Pemberton took a guided trip to Easter Island last summer. The new documentary on Angel Falls comes from a film studio in Malaysia. The new documentary on Table Mountain comes from a film studio in Greece. Nina Hart took a guided trip to Petra last summer. The scutes may have provided stability for the spine, as they would have limited flexibility and may have been connected by strong ligaments. Temnospondyls such as Sclerothorax and Eryops that may have been at least partly terrestrial also have long neural spines on top of their vertebrae that would have stabilized the spine. Grace Holloway took a guided trip to Table Mountain last summer. Bony scutes are also seen in plagiosaurs, but unlike Peltobatrachus, Laidleria, Eryops, and dissorophids, these animals are thought to have been fully aquatic. The new documentary on Petra comes from a film studio in Spain. Plagiosaurs may have inherited their armor from a terrestrial ancestor, as both Peltobatrachus and Laidleria have been considered close relatives of the group. The new documentary on Borobudur comes from a film studio in Peru. The new documentary on Easter Island comes from a film studio in Brazil.\n\nBest,\nMarta\n\nThe landmark that is the flat-topped peak that overlooks Cape⟦ Town⟧ is in which country? Answer with just the answer, nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+  }
+ ]
+}

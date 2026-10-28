@@ -1,0 +1,71 @@
+id: x51_12_e1_9b
+title: "Batch 51.12 on the 9B (L12): is it the bridge or the answer that moves through the lens? Answer-direction control on the main test E1 (the change at the bridge word; lookup and recall, the recall decisive): without the J++ part / without it with the answer directions projected out / without the answer directions alone, each against a same-size random part; lens readout at the edited token"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=;
+  uv run python scripts/x51_answer.py run --set e1 --name qwen35_9b_x51_12_e1
+question: >-
+  Is it the bridge or the answer that moves through the lens? At the edited token, does removing the change's J++
+  part cost the reader's switches because it carries the bridge entity, or because it carries the answer (the lens
+  atoms of the answer tokens)?
+why_it_matters: >-
+  Zach (19:30): at the description's last token of a never-named bridge the J++ lens reads the answer about as
+  strongly as the bridge (27B: answer top-1 ~65 %, bridge ~45 %); a lens-part effect there can be the answer moving,
+  not the bridge (Neel's confound). The same must be checked at our bridge word: if the lens reads the recall's
+  digit there, the recall's loss without the J++ part could be the answer going. On Z2 an 'answer' result withdraws
+  the (a') verdict; on E1 it changes the headline wording; either result goes on the slide.
+hypotheses:
+  Q51.12: "Dan's answer in predictions/2026-10-28_dan.md (Q51.12: entity / answer / mixed per set and model); not committed when this spec was written, so the job is sealed: per-item outputs and the arm-1 agreement only, no verdict; scripts/x51_answer.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml addendum_4, 51.12), verbatim: "Rules, fixed in advance (per model, per
+  reader). “The lens effect is the entity”: arm 2 keeps ≥ 0.7 of arm 1’s extra loss and arm 3 costs ≤ 0.10 beyond
+  random. “The lens effect is the answer”: arm 2 falls to ≤ 0.3 of arm 1 and arm 3 alone costs ≥ 0.5 of arm 1. Else:
+  mixed, report both shares." As computed (fixed before any run; Dan may override before the verdict): items = the
+  stored X0 run qwen35_9b_x0_necessity's chat items at L (x45b_binding.MAIN_RUN: the main test, two people swap
+  picks, d1_topics_v3; X0's gate 0.80 per reader and >= 150 eligible), rebuilt by x0_necessity.build_cases and
+  checked id by id: 200 items, 40 bridge entities, L12 (plan in
+  results/x51_answer/plan-20261028T190652Z/plan-e1-9b.json); the gate is the source run's, asserted from its
+  gate.json (failed = not tested). Delta = h_S - h_O at the edited token at L (the lookup's prompts; both readers'
+  prompts agree through it). P_J Delta = X0's 25-atom signed OMP part over the J++ letter-token atoms at L
+  (x0_necessity.fit, the stored runs' path). Answer directions A per item: JLens.vectors(L, ids) (unit rows: the OMP
+  dictionary's own rows for letter tokens, X0's jppdig rows for digits; not the unembedding) of the first token of
+  each answer word and of its variants (leading space, capitalised; a whitespace-only first token dropped); answer
+  words = both readers' answers on O and S (digits); |A| = 2-4 tokens per item (median 4.0); span(A) by SVD (rank
+  tol 1e-6). Arms added at the edited token at L on O (X0's AddRows), each against a random part of its own share
+  (x6_routes.removal_arms: X0's random subspace, seed 888 + L, one basis for all arms): arm 1 no_jpp = Delta - P_J
+  Delta (as run; checked against the stored run item by item, agreement.json); arm 2 no_jpp_A = Delta - (I - P_A)
+  P_J Delta (the J++ part with span(A) projected out: what is removed is the J++ part minus its component in
+  span(A); chosen over dropping answer atoms from the OMP fit, which would leave arm 2 = arm 1 whenever no answer
+  atom is among the 25, always so for digits since the letter dictionary has no digit token); arm 3 no_A = Delta -
+  P_A Delta; arm 4 no_A_rand = arm 3's random twin (without a random part of A's share). Extra loss e_k = X0's
+  excess (S_rand_k - S_k) / S_whole per reader; read: X0's chat read (top token after the digit's space token = S's
+  answer's first token). 'Keeps >= 0.7 of arm 1' = e2 / e1 >= 0.7; 'arm 3 costs <= 0.10 beyond random' = e3 <= 0.10;
+  'falls to <= 0.3 of arm 1' = e2 / e1 <= 0.3; 'arm 3 alone costs >= 0.5 of arm 1' = e3 / e1 >= 0.5. Point estimates
+  decide (EPS 1e-9 at the bars); e1 <= 0 or undefined -> can't tell; cluster-bootstrap CIs over the bridge entity
+  (10,000, seed 0), paired across arms (ratios on the same draws). Decisive cells for Q51.12: the recall (the lookup
+  beside). Beside (descriptive): per item how many of Delta's 25 OMP atoms are answer atoms (0 by construction:
+  digits are not in the letter dictionary); the lens readout at the edited token on O and S (top-1 over the
+  vocabulary: own answer / own bridge entity / neither, each reader's answer separately, the lookup's digit reported
+  on its own, ranks); X0's validity bar per reader. Code: scripts/x51_answer.py verdict (verdict.md / verdict.json)
+  and view (view.md).
+controls:
+- "a random part of the same share (X0's random subspace, seed 888 + L) beside each of the three removals"
+- "arm 1 against the stored run's no_jpp / no_jpp_rand item by item (and none / whole); agreement.json"
+- "O unedited and the whole change read with the same edits batch"
+- "the lens readout at the edited token on O and S (own answer / own bridge / neither), CPU from the run's forwards"
+n: '200 items (40 bridge entities) of qwen35_9b_x0_necessity at L12; 3200 reads'
+seeds: [888, 0]
+notes: >-
+  Batch 51 addendum 4 (Dan, 28 Oct 19:50), 51.12, e1. Sealed: the run writes manifest (before any GPU work: model
+  pin, switches, code, lens, the source run's files' sha256), plan (counts), gate (the source run's, asserted),
+  cases (with A's token ids), readout (lens top-1 and ranks at the edited token on O and S), norms (per item
+  ||Delta||, the shares of the removed parts, |A|, rank, answer atoms among the 25), outcomes (every reader x O
+  unedited and 7 arms: switched, top, route, p_org, p_alt, ld) and agreement.json; no verdict. By hand after Dan's
+  Q51.12 is committed (CPU): uv run python scripts/x51_answer.py verdict and view. Estimate from the box ledger:
+  x49_1_9b / 27b / muse ran 144 / 198 / 218 s wall for 75 items x 39 arms x 2 readers plus the loss; here 200 items
+  x 8 rows x 2 readers plus 400 forwards, two 25-atom OMP fits and the lens readout -> 0.1 h with margin (Dan's
+  brief: ~0.3 per model per set). No items, layers or reads differ from the source run.

@@ -1,0 +1,168 @@
+{
+ "set": "e1",
+ "target": "muse-glimmer-30b",
+ "layer": 26,
+ "run": "muse30_x51_12_e1",
+ "spec": "x51_12_e1_muse",
+ "code": {
+  "sha": "038ebf1e5e7994667a5161fb2ff864eb5870dc8a",
+  "dirty": true
+ },
+ "source_gate": {
+  "pass": true,
+  "chosen": 200,
+  "org_read_accuracy": {
+   "PP": 0.966,
+   "PM": 0.8906
+  },
+  "gate": 0.8,
+  "eligible": 395
+ },
+ "counts": {
+  "source": "muse30b_x0_necessity",
+  "set": "d1_topics_v3",
+  "items": 200
+ },
+ "entities": 40,
+ "arms": [
+  "whole",
+  "no_jpp",
+  "no_jpp_rand",
+  "no_jpp_A",
+  "no_jpp_A_rand",
+  "no_A",
+  "no_A_rand"
+ ],
+ "reads": 3200,
+ "delta_forwards": 400,
+ "A_tokens_per_item": {
+  "n": 200,
+  "min": 2,
+  "median": 4.0,
+  "max": 4,
+  "mean": 3.735,
+  "hist": {
+   "2": 2,
+   "3": 49,
+   "4": 149
+  }
+ },
+ "A_letter_tokens_per_item": {
+  "n": 200,
+  "min": 0,
+  "median": 0.0,
+  "max": 0,
+  "mean": 0.0,
+  "hist": {
+   "0": 200
+  }
+ },
+ "A_tokens_most_common": [
+  [
+   "2",
+   120
+  ],
+  [
+   "6",
+   109
+  ],
+  [
+   "4",
+   97
+  ],
+  [
+   "3",
+   92
+  ],
+  [
+   "8",
+   84
+  ],
+  [
+   "7",
+   78
+  ],
+  [
+   "1",
+   67
+  ],
+  [
+   "5",
+   53
+  ],
+  [
+   "9",
+   47
+  ]
+ ],
+ "answer_atoms_in_omp_25": "0 by construction: no answer token of these items is a letter token, and OMP's dictionary is the letter tokens",
+ "prompts": [
+  {
+   "key": "P2-L0-0019",
+   "bridge": "nitrogen -> oxygen",
+   "A": [
+    "4",
+    "6",
+    "7",
+    "8"
+   ],
+   "lookup_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>James picked oxygen. The locker of oxygen is four. The locker of nitrogen is six. Adam picked lithium. Kyle picked⟦ nitrogen⟧. The locker of lithium is eight.\nWhich locker belongs to Kyle's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "lookup_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>James picked nitrogen. The locker of oxygen is four. The locker of nitrogen is six. Adam picked lithium. Kyle picked⟦ oxygen⟧. The locker of lithium is eight.\nWhich locker belongs to Kyle's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>James picked oxygen. The locker of oxygen is four. The locker of nitrogen is six. Adam picked lithium. Kyle picked⟦ nitrogen⟧. The locker of lithium is eight.\nWhat is the atomic number of Kyle's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>James picked nitrogen. The locker of oxygen is four. The locker of nitrogen is six. Adam picked lithium. Kyle picked⟦ oxygen⟧. The locker of lithium is eight.\nWhat is the atomic number of Kyle's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "key": "P2-L0-0091",
+   "bridge": "oxygen -> hydrogen",
+   "A": [
+    "1",
+    "7",
+    "8"
+   ],
+   "lookup_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Frank picked hydrogen. The locker of oxygen is seven. Will picked carbon. The locker of carbon is one. The locker of hydrogen is eight. Clara picked⟦ oxygen⟧.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "lookup_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Frank picked oxygen. The locker of oxygen is seven. Will picked carbon. The locker of carbon is one. The locker of hydrogen is eight. Clara picked⟦ hydrogen⟧.\nWhich locker belongs to Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Frank picked hydrogen. The locker of oxygen is seven. Will picked carbon. The locker of carbon is one. The locker of hydrogen is eight. Clara picked⟦ oxygen⟧.\nWhat is the atomic number of Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Frank picked oxygen. The locker of oxygen is seven. Will picked carbon. The locker of carbon is one. The locker of hydrogen is eight. Clara picked⟦ hydrogen⟧.\nWhat is the atomic number of Clara's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "key": "P2-L0-0141",
+   "bridge": "bee -> elephant",
+   "A": [
+    "1",
+    "4",
+    "6"
+   ],
+   "lookup_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the bee is four. Hugo picked the elephant. Will picked the wolf. Dan picked the⟦ bee⟧. The locker of the elephant is one. The locker of the wolf is seven.\nWhich locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "lookup_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the bee is four. Hugo picked the bee. Will picked the wolf. Dan picked the⟦ elephant⟧. The locker of the elephant is one. The locker of the wolf is seven.\nWhich locker belongs to Dan's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the bee is four. Hugo picked the elephant. Will picked the wolf. Dan picked the⟦ bee⟧. The locker of the elephant is one. The locker of the wolf is seven.\nHow many legs does Dan's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>The locker of the bee is four. Hugo picked the bee. Will picked the wolf. Dan picked the⟦ elephant⟧. The locker of the elephant is one. The locker of the wolf is seven.\nHow many legs does Dan's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "key": "P2-L0-0155",
+   "bridge": "beta -> epsilon",
+   "A": [
+    "1",
+    "2",
+    "5"
+   ],
+   "lookup_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Maria picked⟦ beta⟧. The locker of beta is five. The locker of epsilon is one. The locker of alpha is seven. Luke picked alpha. Rose picked epsilon.\nWhich locker belongs to Maria's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "lookup_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Maria picked⟦ epsilon⟧. The locker of beta is five. The locker of epsilon is one. The locker of alpha is seven. Luke picked alpha. Rose picked beta.\nWhich locker belongs to Maria's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Maria picked⟦ beta⟧. The locker of beta is five. The locker of epsilon is one. The locker of alpha is seven. Luke picked alpha. Rose picked epsilon.\nWhich position in the Greek alphabet does Maria's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Maria picked⟦ epsilon⟧. The locker of beta is five. The locker of epsilon is one. The locker of alpha is seven. Luke picked alpha. Rose picked beta.\nWhich position in the Greek alphabet does Maria's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  },
+  {
+   "key": "P2-L0-0284",
+   "bridge": "delta -> epsilon",
+   "A": [
+    "3",
+    "4",
+    "5",
+    "7"
+   ],
+   "lookup_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked⟦ delta⟧. Julia picked beta. Hugo picked epsilon. The locker of epsilon is three. The locker of delta is seven. The locker of beta is four.\nWhich locker belongs to Kyle's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "lookup_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked⟦ epsilon⟧. Julia picked beta. Hugo picked delta. The locker of epsilon is three. The locker of delta is seven. The locker of beta is four.\nWhich locker belongs to Kyle's pick? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_org": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked⟦ delta⟧. Julia picked beta. Hugo picked epsilon. The locker of epsilon is three. The locker of delta is seven. The locker of beta is four.\nWhich position in the Greek alphabet does Kyle's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: ",
+   "recall_alt": "<|begin_of_text|><|start|>system<|message|>You are a helpful AI assistant.\nKnowledge cutoff: 2026-01-04.\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".<|eot|><|start|>user<|message|>Kyle picked⟦ epsilon⟧. Julia picked beta. Hugo picked delta. The locker of epsilon is three. The locker of delta is seven. The locker of beta is four.\nWhich position in the Greek alphabet does Kyle's pick have? Answer with a single digit and nothing else.<|eot|><|start|>assistant to=user<|message|>Answer: "
+  }
+ ]
+}
