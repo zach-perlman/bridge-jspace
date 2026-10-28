@@ -1,0 +1,70 @@
+id: x47_14_9b
+title: "Batch 47.14 on the 9B (L12): do addresses chain? Hall sentences, then locker sentences, then picks; the change at the bridge's locker digit (the second hop's key token) from a scene whose hall sentence sits in another hall slot; U_num refit at that token on a held-out half; the hall question and the locker question (sealed)"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.25
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x47_chain.py run --name qwen35_9b_x47_14 --why "batch 47, test 47.14 (jobs/c3/batch47.yaml, amendment 5; Q47.14): three-layer chain scenes (hall, locker, pick sentences), the change at the digit token of the bridge's locker sentence from a scene whose hall sentence sits in another hall slot; whole, without / only U_num (the hall-slot means refit at that token on a held-out half) against random parts, without J++ (letter and digit atoms) against random; the hall question and the locker question; sealed"
+question: >-
+  Does the address chain: at the second hop's key token (the digit of the bridge's locker sentence), does the model
+  hold an address for the hall sentence of that number (a slot probe reads the hall slot; the U_num part of the change
+  carries the hall question's position answers) while the locker question, answered before that token matters, does
+  not move?
+why_it_matters: >-
+  If addresses chain, a P->P->P question is answered by following one address to a token that holds the next, with no
+  lens-readable hop in between; that would explain why Zach's P->P->P chains lose ~0 under his knock-out. If the slot
+  probe at the key token is at the layout baseline, or U_num carries nothing, the second hop is made another way.
+hypotheses:
+  Q47.14: "Dan's answer in predictions/2026-10-28_dan.md (Q47.14: addresses chain yes / no, on the 9B; on Muse); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_chain.py verdict / examples refuse until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.14): "Addresses chain" if the slot probe at the number token is >= 0.80
+  (layout <= 0.6), without U_num cuts the hall question's position answers >= 0.30 beyond random, and only U_num gives
+  >= 0.15, while the locker question stays within 0.05 under every arm, on both models. Report whether the hall
+  question ever takes the value (expected 0) and whether J++ at the number token matters (expected not).
+  AS COMPUTED (written before any run; Dan may override before the run; scripts/x47_chain.py docstring): SCENES:
+  x6_routes' animal and people pools, chat rendering (tasks_v2's prompt; the hall question with "Answer with a single
+  letter and nothing else."). Three hall sentences ("Locker 5 is in hall B.", one per locker digit, single-letter halls
+  of the one-token capitals without A, I, O), then the three locker sentences, then the three picks; the three orders
+  drawn independently; digits distinct (1-9), letters distinct, the letter S introduces not in O. S = O with the hall
+  sentence naming the bridge's locker digit moved from hall slot i to hall slot j (swapped with the sentence there) and
+  its letter replaced by the new letter (x6_routes' C1 at the hall level); 500 candidates (seed 4714). READS: the key
+  token = the digit token of the bridge's locker sentence (one token, the same index in O and S, both readers' prompts
+  identical through it; else dropped and counted; plan check: none dropped). Locker question (P->P): X0's chat read
+  (the top token after a space token appended to "Answer:"); O's and S's answer the bridge's digit (it cannot switch).
+  Hall question (P->P->P): the top token right after "Answer:" (X0's word read; the token " B"); O's answer the
+  bridge's hall letter, S's the new letter. Classification of the hall answer: identity = O's letter (= original, as
+  in C1), position = the letter at hall slot j in O, value = the new letter, other. GATE: X0's competence (8 greedy
+  tokens and the read on unedited O and S, both readers; the hall question's greedy answer = the first standalone
+  capital letter of its first line); O's read accuracy >= 0.80 per reader over the 500 candidates (the test names the
+  three-step question's gate; the per-reader gate is batch 47's common setting); a miss = "not tested". Eligible:
+  both readers say and read O's and S's answers right; the first 300 in generation order. SPLIT by bridge entity
+  (seed 4715; the entities shuffled, each added to the half with fewer scenes): the fit half and the test half, so
+  U_num never sees a test scene's entity. U_NUM (fit half, before any arm): O's and S's states at the key token at
+  L12, labelled by the hall slot of the bridge digit's hall sentence in that prompt (i in O, j in S); x0_massmean's
+  layout-free method with the layout group = the locker slot the key token sits in (what the token can see without
+  binding: the three hall sentences always precede it); mu_k = hall slot k's mean; U_num = x0_massmean.mass_mean
+  (orthonormal, rank 2). ARMS (test half, on O, at the key token at L12, both readers): none; whole (Delta = h_S -
+  h_O); without U_num (Delta - U U^T Delta) and without a random part of the same share (X0's random subspace, seed
+  888 + L); only U_num (U U^T Delta) and only a random part of its share; without J++ (the layer's J++ lens over the
+  letter tokens and the ten digit tokens, signed OMP k = 25) and without a random part of its share. PROBE (verdict,
+  CPU, from the run's states.npz): x0_probe (b) on O's key-token states of every chosen scene (fit and test), target
+  = the hall slot, 5 folds by bridge entity, ridge with the inner-CV penalty; beside it chance (1/3), the training
+  folds' majority, and the layout baseline = the training folds' most frequent hall slot given the locker slot (the
+  draws are independent, so it should sit near 1/3). RULE as computed (point estimates decide, EPS 1e-9 at the bars;
+  cluster-bootstrap CIs over bridge items, 10,000, seed 0, beside): per model, holds iff probe >= 0.80 and layout <=
+  0.6 and [position share without the random part - position share without U_num] >= 0.30 and position share with
+  only U_num >= 0.15 and, for the locker question, |kept share under the arm - kept share unedited| <= 0.05 for every
+  arm (kept = the top token is O's digit). The batch: both models. Reported beside: the hall question's value share
+  under every arm (count and share); "J++ at the key token matters" iff [position without the random part - position
+  without J++] >= 0.30 (the same bar; expected not); only-U_num's random twin. Scored by hand: scripts/x47_chain.py
+  verdict.
+controls:
+- 'without U_num against a random part of the same share of the change (X0''s random subspace, seed 888 + L); only U_num against only a random part of its share'
+- 'without J++ (letter and digit atoms, k = 25) against a random part of its share'
+- 'the locker question under every arm (must stay within 0.05 of unedited: the first hop is answered before the key token matters)'
+- 'the slot probe against chance, the majority class and the layout baseline (the hall slot given the locker slot; entities held out)'
+- 'none (O unedited) under both readers; the hall question''s value share (expected 0)'
+n: 'plan check on the 9B tokenizer (28 Oct): 500 candidates, none dropped, 32 bridge animals, 23 hall letters, prompts 98 tokens, the key token at index 34 / 43 / 52 (locker slot 0 / 1 / 2: 177 / 151 / 172), hall-slot moves 70-93 per ordered pair, hall slot by locker slot balanced (43-67 per cell); 300 eligible chosen if the gate passes, ~150 fit / ~150 test'
+seeds: [4714, 4715, 888, 0]
+notes: "Batch 47, amendment 5 (Dan, 28 Oct ~03:10; queue placement after 47.2 (9B): 47.14 (9B, Muse)). SEALED: the run writes manifest, gate.json, competence.jsonl, cases.jsonl, split.json, states.npz (O's key-token states of every chosen scene, the probe's input), fit.npz (U_num and the hall-slot means), outcomes.jsonl, norms.jsonl; no verdict. By hand after Dan's Q47.14 is committed (CPU): uv run python scripts/x47_chain.py verdict --runs qwen35_9b_x47_14 muse30_x47_14 (writes results/x47_chain/x47_14-<time>/ with x47_14.md, x47_14.json and the verify-pack view examples.md: 10 random test items per run, seed 0, both readers' prompts as read with the key token marked, S beside, every arm's answer). Seeds: 4714 the scenes, 4715 the split, 888 + L the random subspace, 0 the bootstrap and the examples. The plan's 5 rendered prompts (both readers, O as read, the key token marked; S beside) are in the plan's output (uv run python scripts/x47_chain.py plan, BJ_TARGET=qwen3.5-9b) and in the agent's handoff. Agent's choices stated before the run: the hall letters exclude A, I, O; the split is by entity (stricter than 'half the scenes'); the locker question's gate is applied as the common per-reader gate. Cost from the ledger (results/jobq/ledger_sesterce-h100x2.jsonl, H100): x8_a_9b (700 competence candidates + 300 scenes with 2 forwards and ~8 reads per reader) took 458 s wall; here 500 candidates (0.45 s each ~ 225 s) + 300 scenes' states and 150 test scenes x 2 readers x 8 reads (~100 s) + load ~ 360 s = 0.10 h; estimate 0.25 GPU-h (Dan's ~1). x8_a_9b peaked at 18.9 GB."

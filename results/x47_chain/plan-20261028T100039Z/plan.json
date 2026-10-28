@@ -1,0 +1,144 @@
+{
+ "target": "qwen3.5-9b",
+ "layer": 12,
+ "prefix": "qwen35_9b_",
+ "cases": 500,
+ "dropped": {},
+ "hall_letters": [
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z"
+ ],
+ "entities": 32,
+ "key_token_index": [
+  34,
+  43,
+  52
+ ],
+ "prompt_tokens": [
+  98,
+  98
+ ],
+ "moves": {
+  "1->0": 93,
+  "2->1": 92,
+  "2->0": 91,
+  "0->2": 83,
+  "1->2": 71,
+  "0->1": 70
+ },
+ "locker_slots": {
+  "2": 172,
+  "1": 151,
+  "0": 177
+ },
+ "hall_by_locker_slot": {
+  "locker 0": {
+   "0": 48,
+   "1": 67,
+   "2": 62
+  },
+  "locker 1": {
+   "2": 57,
+   "1": 43,
+   "0": 51
+  },
+  "locker 2": {
+   "1": 54,
+   "2": 64,
+   "0": 54
+  }
+ },
+ "prompts": [
+  {
+   "scene": "H-0001",
+   "O": "Locker 2 is in hall R. Locker 8 is in hall W. Locker 4 is in hall Y. The locker of the duck is 2. The locker of the rabbit is 4. The locker of the ant is 8. Frank picked the rabbit. Carl picked the ant. David picked the duck.",
+   "S": "Locker 8 is in hall S. Locker 2 is in hall R. Locker 4 is in hall Y. The locker of the duck is 2. The locker of the rabbit is 4. The locker of the ant is 8. Frank picked the rabbit. Carl picked the ant. David picked the duck.",
+   "expect": {
+    "identity": "W",
+    "position": "R",
+    "value": "S",
+    "original": "W"
+   },
+   "locker_O_as_read": "<|im_start|>user\nLocker 2 is in hall R. Locker 8 is in hall W. Locker 4 is in hall Y. The locker of the duck is 2. The locker of the rabbit is 4. The locker of the ant is ⟦8⟧. Frank picked the rabbit. Carl picked the ant. David picked the duck.\nWhich locker belongs to Carl's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "hall_O_as_read": "<|im_start|>user\nLocker 2 is in hall R. Locker 8 is in hall W. Locker 4 is in hall Y. The locker of the duck is 2. The locker of the rabbit is 4. The locker of the ant is ⟦8⟧. Frank picked the rabbit. Carl picked the ant. David picked the duck.\nWhich hall is the locker of Carl's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "hall_S_as_read": "<|im_start|>user\nLocker 8 is in hall S. Locker 2 is in hall R. Locker 4 is in hall Y. The locker of the duck is 2. The locker of the rabbit is 4. The locker of the ant is ⟦8⟧. Frank picked the rabbit. Carl picked the ant. David picked the duck.\nWhich hall is the locker of Carl's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+  },
+  {
+   "scene": "H-0002",
+   "O": "Locker 8 is in hall F. Locker 6 is in hall R. Locker 1 is in hall W. The locker of the wolf is 8. The locker of the chicken is 1. The locker of the owl is 6. Noah picked the wolf. Iris picked the chicken. Ryan picked the owl.",
+   "S": "Locker 8 is in hall F. Locker 1 is in hall P. Locker 6 is in hall R. The locker of the wolf is 8. The locker of the chicken is 1. The locker of the owl is 6. Noah picked the wolf. Iris picked the chicken. Ryan picked the owl.",
+   "expect": {
+    "identity": "W",
+    "position": "R",
+    "value": "P",
+    "original": "W"
+   },
+   "locker_O_as_read": "<|im_start|>user\nLocker 8 is in hall F. Locker 6 is in hall R. Locker 1 is in hall W. The locker of the wolf is 8. The locker of the chicken is ⟦1⟧. The locker of the owl is 6. Noah picked the wolf. Iris picked the chicken. Ryan picked the owl.\nWhich locker belongs to Iris's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "hall_O_as_read": "<|im_start|>user\nLocker 8 is in hall F. Locker 6 is in hall R. Locker 1 is in hall W. The locker of the wolf is 8. The locker of the chicken is ⟦1⟧. The locker of the owl is 6. Noah picked the wolf. Iris picked the chicken. Ryan picked the owl.\nWhich hall is the locker of Iris's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "hall_S_as_read": "<|im_start|>user\nLocker 8 is in hall F. Locker 1 is in hall P. Locker 6 is in hall R. The locker of the wolf is 8. The locker of the chicken is ⟦1⟧. The locker of the owl is 6. Noah picked the wolf. Iris picked the chicken. Ryan picked the owl.\nWhich hall is the locker of Iris's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+  },
+  {
+   "scene": "H-0003",
+   "O": "Locker 3 is in hall H. Locker 8 is in hall J. Locker 2 is in hall K. The locker of the sheep is 3. The locker of the duck is 8. The locker of the camel is 2. Diana picked the duck. Sara picked the camel. Sam picked the sheep.",
+   "S": "Locker 2 is in hall M. Locker 8 is in hall J. Locker 3 is in hall H. The locker of the sheep is 3. The locker of the duck is 8. The locker of the camel is 2. Diana picked the duck. Sara picked the camel. Sam picked the sheep.",
+   "expect": {
+    "identity": "K",
+    "position": "H",
+    "value": "M",
+    "original": "K"
+   },
+   "locker_O_as_read": "<|im_start|>user\nLocker 3 is in hall H. Locker 8 is in hall J. Locker 2 is in hall K. The locker of the sheep is 3. The locker of the duck is 8. The locker of the camel is ⟦2⟧. Diana picked the duck. Sara picked the camel. Sam picked the sheep.\nWhich locker belongs to Sara's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "hall_O_as_read": "<|im_start|>user\nLocker 3 is in hall H. Locker 8 is in hall J. Locker 2 is in hall K. The locker of the sheep is 3. The locker of the duck is 8. The locker of the camel is ⟦2⟧. Diana picked the duck. Sara picked the camel. Sam picked the sheep.\nWhich hall is the locker of Sara's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "hall_S_as_read": "<|im_start|>user\nLocker 2 is in hall M. Locker 8 is in hall J. Locker 3 is in hall H. The locker of the sheep is 3. The locker of the duck is 8. The locker of the camel is ⟦2⟧. Diana picked the duck. Sara picked the camel. Sam picked the sheep.\nWhich hall is the locker of Sara's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+  },
+  {
+   "scene": "H-0004",
+   "O": "Locker 4 is in hall B. Locker 9 is in hall X. Locker 1 is in hall M. The locker of the goat is 9. The locker of the deer is 1. The locker of the dog is 4. Sean picked the goat. Mia picked the dog. Max picked the deer.",
+   "S": "Locker 1 is in hall M. Locker 9 is in hall X. Locker 4 is in hall U. The locker of the goat is 9. The locker of the deer is 1. The locker of the dog is 4. Sean picked the goat. Mia picked the dog. Max picked the deer.",
+   "expect": {
+    "identity": "B",
+    "position": "M",
+    "value": "U",
+    "original": "B"
+   },
+   "locker_O_as_read": "<|im_start|>user\nLocker 4 is in hall B. Locker 9 is in hall X. Locker 1 is in hall M. The locker of the goat is 9. The locker of the deer is 1. The locker of the dog is ⟦4⟧. Sean picked the goat. Mia picked the dog. Max picked the deer.\nWhich locker belongs to Mia's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "hall_O_as_read": "<|im_start|>user\nLocker 4 is in hall B. Locker 9 is in hall X. Locker 1 is in hall M. The locker of the goat is 9. The locker of the deer is 1. The locker of the dog is ⟦4⟧. Sean picked the goat. Mia picked the dog. Max picked the deer.\nWhich hall is the locker of Mia's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "hall_S_as_read": "<|im_start|>user\nLocker 1 is in hall M. Locker 9 is in hall X. Locker 4 is in hall U. The locker of the goat is 9. The locker of the deer is 1. The locker of the dog is ⟦4⟧. Sean picked the goat. Mia picked the dog. Max picked the deer.\nWhich hall is the locker of Mia's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+  },
+  {
+   "scene": "H-0005",
+   "O": "Locker 8 is in hall K. Locker 1 is in hall B. Locker 2 is in hall D. The locker of the eagle is 1. The locker of the tick is 8. The locker of the bear is 2. Dan picked the eagle. Peter picked the bear. Tara picked the tick.",
+   "S": "Locker 8 is in hall K. Locker 2 is in hall J. Locker 1 is in hall B. The locker of the eagle is 1. The locker of the tick is 8. The locker of the bear is 2. Dan picked the eagle. Peter picked the bear. Tara picked the tick.",
+   "expect": {
+    "identity": "D",
+    "position": "B",
+    "value": "J",
+    "original": "D"
+   },
+   "locker_O_as_read": "<|im_start|>user\nLocker 8 is in hall K. Locker 1 is in hall B. Locker 2 is in hall D. The locker of the eagle is 1. The locker of the tick is 8. The locker of the bear is ⟦2⟧. Dan picked the eagle. Peter picked the bear. Tara picked the tick.\nWhich locker belongs to Peter's pick? Answer with a single digit and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer: ",
+   "hall_O_as_read": "<|im_start|>user\nLocker 8 is in hall K. Locker 1 is in hall B. Locker 2 is in hall D. The locker of the eagle is 1. The locker of the tick is 8. The locker of the bear is ⟦2⟧. Dan picked the eagle. Peter picked the bear. Tara picked the tick.\nWhich hall is the locker of Peter's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:",
+   "hall_S_as_read": "<|im_start|>user\nLocker 8 is in hall K. Locker 2 is in hall J. Locker 1 is in hall B. The locker of the eagle is 1. The locker of the tick is 8. The locker of the bear is ⟦2⟧. Dan picked the eagle. Peter picked the bear. Tara picked the tick.\nWhich hall is the locker of Peter's pick in? Answer with a single letter and nothing else.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nAnswer:"
+  }
+ ]
+}
