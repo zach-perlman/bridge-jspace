@@ -136,9 +136,11 @@ V6_SUBTITLE_RETIRED = {"rule:": r"(?i)\brule:"}  # the subtitle says the mechani
 V6_FIGS += ("fig16_dose",)
 V6_PANELS["fig16_dose"] = 6
 MARK_FIGS += ("fig16_dose",)
-# Dan's 51.10 brief (28 Oct ~22:35): the last token's read and swap bars (main page, held to the v6 rules)
+# Dan's 51.10 brief (28 Oct ~22:35): the last token's read and swap bars (main page, held to the v6 rules); the per-model
+# grids are supplementary (their swap grid keeps Dan's heading "Does writing through the lens change the answer?", so
+# they stay off V6_FIGS) and are held to the mark system's hues
 V6_FIGS += ("fig17_jspace_last_token",)
-MARK_FIGS += ("fig17_jspace_last_token",)
+MARK_FIGS += ("fig17_jspace_last_token", "s17_jspace_grid_9b", "s17_jspace_grid_27b", "s17_jspace_grid_muse")
 
 
 def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:

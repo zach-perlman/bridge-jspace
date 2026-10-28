@@ -3548,6 +3548,12 @@ def f17_jspace_last_token(plt) -> None:
     B51B.build_last_token(latest_verdict(JREAD_VERDICT), "fig17_jspace_last_token")
 
 
+def s17_jspace_grids(plt) -> None:
+    from scripts import story_b51b as B51B
+
+    B51B.build_grids(latest_verdict(JREAD_VERDICT), "s17_jspace_grid")
+
+
 # v6: Fig. 4's schematic is Fig. 5's left panel; the full-width one is the supplement s04_routes_design
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
@@ -3568,6 +3574,7 @@ SUPP_FIGS = (
     s07_recall_follows_swap,
     s03_order_split,
     s14_learned_sizes,
+    s17_jspace_grids,
 )
 
 
