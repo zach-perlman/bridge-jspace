@@ -1,0 +1,63 @@
+id: x47_4_27b
+title: "Batch 47.4 on the 27B (L32): why does not every answer switch? The bridge token's change at L, the bridge token swapped at every layer up to L and at every layer, the whole pick sentence swapped at every layer; main test and clean design, both readers; SEALED until Q47.4"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.3
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=; uv run python scripts/x47_cumulative.py run --name x47_cumulative_27b --why "batch 47, test 47.4 (jobs/c3/batch47.yaml; Q47.4, sealed): cumulative patches at the bridge token on the main test's and the clean design's items at L32"
+question: >-
+  When S's bridge-token change is patched into O at L, why does not every answer switch: how much of the non-switch is
+  read before L at the bridge token, carried by the pick sentence's other tokens, or carried outside the pick sentence?
+why_it_matters: >-
+  The whole change at L switches only part of the lookups, most of all where the locker comes after the pick (x0_strata,
+  24 Oct: 0.19 on the 9B at L12, 0.09 on the 27B at L32, against 0.86 / 0.76 where the locker comes first), although S
+  itself switches them all. 47.0b gives the cheapest explanation (the margins); this is the causal one. If (d) stays far
+  below 1 in locker-first scenes for the lookup, that is the number for "the lookup's link is partly made elsewhere even
+  when the locker comes first".
+hypotheses:
+  Q47.4: "Dan's answer in predictions/2026-10-28_dan.md (Q47.4); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_cumulative.py verdict / view / figures refuse until it is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.4): descriptive, a decomposition, no bar. Per reader and order: (a)->(b) =
+  read before L at the bridge token; (b)->(c) should be ~ 0 (the patch propagates; a non-zero difference is a bug, stop
+  and report); (c)->(d) = carried by the pick sentence's other tokens; (d)->100% = carried outside the pick sentence. One
+  table, one stacked figure. As computed (fixed by the agent before any run; Dan may override before the run): Items:
+  each model's main-test run (x0_necessity, alt cf: qwen35_9b_x0_necessity, x0_necessity_27b_chat,
+  muse30b_x0_necessity; 200 scenes each) and clean-design run (45m, alt fresh: qwen35_9b_x45m_fresh, x45m_fresh_27b,
+  muse30b_x45m_fresh; every eligible scene), the scenes of its chat outcomes at the layer fixed in advance, i.e. the
+  items its unedited run made eligible (org and alt said and read right by both readers); eligibility is never recounted
+  under a patch. Asserted per item (else dropped and counted): O and S have the same length and differ only at the
+  bridge token (clean) or at the bridge token and one token of the other person's pick sentence (main); the asked pick
+  sentence covers the same positions in O and S with the same ids but the bridge's, so its person token is the same;
+  both readers' prompts agree through the last patched token. Arms on O, S's states set (not added: added differences
+  overshoot at layer after layer) from one unedited forward of S at every layer: (a) h_S - h_O added at the bridge token
+  at L (X0's whole arm); (b) the bridge token's state set to S's at block outputs 0..L and its input embedding swapped
+  (O's prompt with S's token there; "every layer <= L" counts the input of block 0 as a layer); (c) the same at block
+  outputs 0..n_layers - 1; (d) every token of the asked pick sentence set to S's at every block output, the bridge's
+  embedding swapped (the only id that differs inside the sentence); b_blocks (descriptive) = (b) without the embedding
+  swap; none (O unedited) and S read on S beside. Read: X0's chat read (the digit's space token appended; switch = the
+  top token is S's answer's first token), both readers. Groups: x45m's (locker-first = the bridge's and S's bridge's
+  locker sentences both before the asked pick; locker-after = both after; mixed in "all" only); the main test's
+  locker-first rows also split by whether the other changed pick comes first (descriptive). Terms, as shares of the
+  group's items: before L = S_b - S_a; (b)->(c) = S_c - S_b; other pick tokens = S_d - S_c; outside the pick sentence =
+  1 - S_d; they sum to the non-switch 1 - S_a. Points from counts; 95% cluster-bootstrap intervals over bridge items
+  (10,000, seed 0, every arm on the same draws). Q47.4: per model and design, the largest of before L / other pick
+  tokens / outside the pick sentence, for the lookup in locker-first scenes (point estimates). Bug check: on items whose
+  O and S agree before the bridge (every clean item; main items whose other changed pick comes after the asked one), (b)
+  and (c) may disagree on at most 2% of items per design and reader, and in the clean design (b), (c), (d) (S's own run
+  by construction) may disagree with S read on S on at most 2%; else the verdict opens with a BUG FLAG and the table is
+  not read. The run also checks states: under b_blocks the bridge token's state at every layer after L must equal S's
+  (relative distance <= 0.05) on those items, else the job fails after writing its files. In main items whose other
+  changed pick comes first, (b)->(c) is not expected to be 0 (the bridge's later states read that pick in S): reported,
+  not flagged. Consequences of the design, stated before the data: in the clean design (b) = (c) = (d) = S's own run,
+  so its non-switch is (a)->(b) alone; in the main test, (d)->100% is the other person's changed pick and everything
+  that reads it. Scored by hand after Q47.4 is committed: scripts/x47_cumulative.py verdict.
+controls:
+- '(b)->(c) ~ 0, the bug check: on items whose O and S agree before the bridge, (b) and (c) disagree on at most 2% per design and reader (else BUG FLAG at the top of the verdict)'
+- 'the state check in the run: under (b) on O''s own tokens the bridge token''s state after L equals S''s (relative distance <= 0.05) on those items, else the job fails after writing its files'
+- 'the clean design''s (b), (c), (d) are S''s own run by construction: they must read as S read on S does (at most 2% disagreeing, else BUG FLAG)'
+- '(a) against the source run''s stored whole arm, item by item; O unedited reads O''s answer; S read on S reads S''s answer'
+- 'b_blocks: (b) without the embedding swap (descriptive: what later tokens read from the raw token at block 0)'
+n: '774 items: main test 200 (x0_necessity_27b_chat at L32; 69 locker-first, 61 locker-after, 70 mixed; 97 with the other changed pick first, 16 locker-first with it after; 44 bridge items) + clean design 574 (x45m_fresh_27b; 202 locker-first, 236 locker-after, 136 mixed; 46 bridge items); none dropped (plan, 28 Oct)'
+seeds: [0, 4513]
+notes: "Batch 47 (Dan, 28 Oct ~02:00); queued first with 47.1 (batch47.yaml queue_order). SEALED: the job runs `run` only and writes manifest, plan, cases, outcomes, checks (the per-item state check) and 10 items' greedy texts per design; the log prints counts and the state check, no switch. After Dan's Q47.4 is committed, by hand (CPU): uv run python scripts/x47_cumulative.py verdict (the three runs: qwen35_9b_x47_cumulative x47_cumulative_27b muse30_x47_cumulative); view (the verify-pack view: 10 random items per design, seed 0, the prompt as the model reads it, the patched tokens marked, each arm's answer); figures --verdict <its folder>. Seeds: 0 the bootstrap and the examples, 4513 45m's fresh draws. GPU estimate from results/jobq/ledger_sesterce-h100x2.jsonl (H100 PCIe): x45p_27b (2 forwards and 2 reads of 7 rows per item) took (243.0 s wall - 28.8 s setup) / 254 items = 0.84 s per item; 47.4 does 3 forwards (O; S recording every layer; the state check) and 2 reads of 7 rows (three with edits at up to every layer), taken as 1.5x: 1.27 s x 774 items = 979 s + 29 s setup = 0.28 h, rounded up to 0.3. S's states at every layer are kept in fp32 for one item at a time (64 x ~250 tokens x 5120 x 4 B, about 0.3 GB). Batch 47.4 in all: 0.2 + 0.3 + 0.25 = 0.75 GPU-h (Dan's estimate 1.5)."
