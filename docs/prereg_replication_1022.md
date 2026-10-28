@@ -2545,3 +2545,16 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - Note 9's sweep: insert_k10 and insert_k10_rand; RM, MM, PM at 80 per word; windows of 6 from L6 to L83; scene words RM MM PM (note 10 addendum).
   - Reading: a window where PM's transfer is >= 20 with random < 10 is "a window where Bolt's lens part carries a named bridge". RM's transfer there is read by note 9's rule.
 - **Order:** 1 and 3a first (27B on GPU 0; 9B, then Lightning, on GPU 1), then 2, 3b, and 4 overnight. The second-wording replication of notes 9-10 comes at the very end (Zach).
+
+##### Amendment 58 note 11 addendum (Zach, 2026-10-28 ~19:05 UTC; before any run below. Seen: item 1's band results pooled in all 3 models, item 3a's readout on the 9B and 27B, and this addendum's mechanics smoke, 2 items)
+
+- **Why:** item 1 reads "mixed" in all 3 models, with "bridge" nowhere.
+  - The answer-free swap keeps 1-2% of k10 (9B +0.3 of +40.5; 27B +0.5 of +30.1; Lightning +0.2 of +14.5), named bridges too.
+  - But the same-size random scrub (477 atoms) also cuts 61-72% (keeps 39 / 39 / 28%), so it is too blunt to separate "the answer" from "a big cut into J-space".
+- **Added (Zach: before the Bolt sweep):** the same rule at two narrower scrubs. Each is applied per item: atoms are never chosen from the scrubbed rows, and the change is projected off them. Each has as many fixed random atoms (C, seed 6100) as its control.
+  - noansrel: the item's relation's answers (every form of every answer in its answer_vocab).
+  - noansown: X's and D's own answers only.
+  - Conditions: insert and latent k10_noansrel, _noansrelctl, k10_noansown, _noansownctl; remove_k10_noansrel; remove_k10_noansown.
+  - Runs: note 11's three donor seeds, each model's band (scripts/queues/h200_n11b_1028.sh; runs {P}nn_ans2_L{band}_s{seed}_v1).
+- **Reading (scripts/nn_ans_read.py, rows pooled with item 1's runs; fixed now):** per scrub, word and donor, item 1's rule. "Bridge" if scrub >= 2/3 of k10. "Answer" if scrub <= 1/3 of k10 and its control >= 2/3 of k10. Otherwise "mixed".
+- **Order:** after items 2 and 3b on each GPU; then the Bolt sweep (item 4); the second-wording replication last.

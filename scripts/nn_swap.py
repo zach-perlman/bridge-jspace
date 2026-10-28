@@ -37,6 +37,9 @@ jswap):
   {src}_ans            the answer alone: h_X + P_{A_XD}(h_D - h_X), A_XD the span of X's and D's own answer atoms
   {src}_ansctl         the same over as many fixed random atoms
   remove_k{k}_noans    h_X - (I - P_A) Jk'(h_X)
+  note 11 addendum, narrower scrubs (per item; atoms never chosen from the scrubbed rows; the change projected off them):
+  {src}_k{k}_noansrel / _noansrelctl   the item's relation's answers (its answer_vocab), or as many of C's atoms
+  {src}_k{k}_noansown / _noansownctl   X's and D's own answers only, or as many of C's atoms
   note 11, composition failures (--items fail: RM items whose hop 1 and hop 2 alone are right, the whole wrong):
   repair_k{k}          X's own lens part written in, from the neutral sentence about X: h_X - Jk(h_X) + Jk(h_Xn)
   repair_k{k}_rand / _rot / _noans    as the transplant's controls, with X's neutral state as the donor
@@ -159,6 +162,16 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
         U, sv, _ = torch.linalg.svd(D.atoms(rws).T.double(), full_matrices=False)
         return U[:, sv > sv[0] * 1e-6].float()
 
+    rel_cache: dict = {}
+
+    def rel_rows(j: dict) -> list[int]:  # note 11 addendum: the relation's answer atoms, cached per (relation, kind)
+        key = (j["rel"], j["kind_"])
+        if key not in rel_cache:
+            vocab = items[j["id"]]["answer_vocab"]
+            toks = {t for v in vocab for w in (v, v.lower()) for t in (*JS.forms(tok, w, j["kind_"]), S.ids(tok, " " + w)[0], S.ids(tok, w)[0])}
+            rel_cache[key] = sorted({int(row_of[t]) for t in toks if int(row_of[t]) >= 0})
+        return rel_cache[key]
+
     qa, qc = {}, {}
     if any(c.endswith(("_noans", "_noansctl")) for c in conds):
         for la in band:
@@ -236,6 +249,22 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
             own_idx = torch.tensor([o + [0] * (width - len(o)) for o in own], device="cuda")[bi]
             own_mask = torch.tensor([[1] * len(o) + [0] * (width - len(o)) for o in own], device="cuda")[bi]
             ctl_idx = c_rows[:width][None].expand(len(chunk), -1)[bi]
+            # note 11 addendum: the item's relation's answer atoms (every form of every answer in its answer_vocab) and X's
+            # and D's own, each with as many of C's atoms; the atom choice never from the scrubbed rows
+            narrow: dict = {}
+            if any(c.split("_")[-1].startswith(("noansrel", "noansown")) for c in conds):
+                rel = [rel_rows(j) for j in chunk]
+                rwidth = max(1, max(len(r) for r in rel))
+                rel_idx = torch.tensor([r + [0] * (rwidth - len(r)) for r in rel], device="cuda")[bi]
+                rel_mask = torch.tensor([[1] * len(r) + [0] * (rwidth - len(r)) for r in rel], device="cuda")[bi]
+                relc_idx = c_rows[:rwidth][None].expand(len(chunk), -1)[bi]
+
+                def excl(per_item: list[list[int]], ctl: bool) -> list:
+                    return [((bi == b).nonzero().squeeze(1), torch.cat([prot[b], c_rows[: len(r)] if ctl else torch.tensor(r, dtype=torch.long, device="cuda")]))
+                            for b, r in enumerate(per_item)]  # fmt: skip
+
+                narrow = {"noansrel": (rel_idx, rel_mask, excl(rel, False)), "noansrelctl": (relc_idx, rel_mask, excl(rel, True)),
+                          "noansown": (own_idx, own_mask, excl(own, False)), "noansownctl": (ctl_idx, own_mask, excl(own, True))}  # fmt: skip
             selfv = torch.stack([vec[("insert", chunk[b]["x"], chunk[b]["kind_"], chunk[b]["format_"])] for b in bi.tolist()]) if any(
                 c.startswith("repair") for c in conds) else None  # fmt: skip
 
@@ -252,6 +281,11 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                     rx = top_span_removal(dic[la], hx, kk, protected=G)
                     e = -rx if src == "remove" else top_span_removal(dic[la], hd, kk, protected=G) - rx
                     return hx + e - (e @ Q) @ Q.T
+                if suf in narrow:  # note 11 addendum: narrower scrubs, per item
+                    idx, msk, G = narrow[suf]
+                    rx = top_span_removal(dic[la], hx, kk, protected=G)
+                    e = -rx if src == "remove" else top_span_removal(dic[la], hd, kk, protected=G) - rx
+                    return hx + e - JS.span_proj(dic[la], e, idx, msk)
                 if suf == "rand":  # repair_k_rand
                     Q = rand[la][:, :kk]
                     return hx - (hx @ Q) @ Q.T + (hd @ Q) @ Q.T
@@ -279,7 +313,8 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                         delta[:, 0] = 0  # position 0 (the attention sink) is never edited, as SwapClamp
                         delta[~ok_rows] = 0
                         return (h.float() + delta).to(h.dtype)
-                    if cond.startswith("repair") or cond.split("_")[-1] in ("noans", "noansctl", "ans", "ansctl"):  # note 11
+                    if cond.startswith("repair") or cond.split("_")[-1] in ("noans", "noansctl", "ans", "ansctl", "noansrel", "noansrelctl",
+                                                                            "noansown", "noansownctl"):  # note 11 (and its addendum)  # fmt: skip
                         h[bi, xi] = note11(cond, la, li, h[bi, xi].float()).to(h.dtype)
                         return h
                     if cond.split("_")[0] in ("full", "lens", "rem", "remfix", "lensrand"):  # note 10: the paper's decomposition

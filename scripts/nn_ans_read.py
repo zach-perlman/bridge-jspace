@@ -5,6 +5,8 @@ bootstrap over bridges) under k10, noans, noansctl, ans, ansctl, rand and rot, w
 seed; the removal's kept share under remove_k10, remove_k10_noans and remove_k10_rot. Note 11's readings (RM, per donor;
 not read if k10 < 10): "bridge" if noans >= 2/3 k10; "answer" if noans <= 1/3 k10 and noansctl >= 2/3 k10; else
 "mixed". The answer alone "suffices" if ans >= 2/3 k10 with ansctl < 10.
+Note 11 addendum: the same rule at the narrower scrubs, noansrel (the relation's answers) and noansown (X's and D's
+own), each against its own same-size control (pass the addendum runs with the note 11 runs; rows are pooled).
 Sweep run: per word and condition, the transfer by window and its onset (the first window with transfer >= 10); "the
 bridge acts before the answer" if {src}_k10_noans's onset is at least one window earlier than {src}_ans's.
 Writes results/nn_swap/nn_ans_read/<name>.json.
@@ -52,8 +54,16 @@ def band_reading(runs: list[str]) -> dict:
             seeds = {run: per_seed[run].get(f"{word}/{src}_k10_noans", {}).get("transfer") for run in runs}
             out["reading"][f"{word}/{src}"] = {**t, "noans_share": round(t["k10_noans"] / k10, 2) if k10 else None,
                                                "verdict": verdict, "answer_alone_suffices": suffices, "noans_per_seed": seeds}  # fmt: skip
-        kept = {c: pooled.get(f"{word}/{c}", {}).get("kept") for c in ("none", "remove_k10", "remove_k10_noans", "remove_k10_rot")}
-        if kept["remove_k10_noans"] is not None:
+            for scrub in ("noansrel", "noansown"):  # note 11 addendum: the same rule at the narrower scrubs
+                s, c = (pooled.get(f"{word}/{src}_k10_{x}", {}).get("transfer") for x in (scrub, scrub + "ctl"))
+                if s is None or c is None:
+                    continue
+                v = ("not read" if k10 < 10 else "bridge" if s >= 2 / 3 * k10 else "answer" if s <= 1 / 3 * k10 and c >= 2 / 3 * k10 else "mixed")
+                out["reading"][f"{word}/{src}/{scrub}"] = {"k10": k10, scrub: s, scrub + "ctl": c, "share": round(s / k10, 2) if k10 else None,
+                                                          "ctl_share": round(c / k10, 2) if k10 else None, "verdict": v}  # fmt: skip
+        kept = {c: pooled.get(f"{word}/{c}", {}).get("kept") for c in ("none", "remove_k10", "remove_k10_noans", "remove_k10_rot",
+                                                                         "remove_k10_noansrel", "remove_k10_noansown")}  # fmt: skip
+        if kept["remove_k10_noans"] is not None or kept["remove_k10_noansrel"] is not None:
             out["reading"][f"{word}/removal_kept"] = kept
     return out
 
@@ -91,6 +101,8 @@ def main() -> None:
         for k, v in out["band"]["reading"].items():
             if k.endswith("removal_kept"):
                 print(f"{k:22s} kept {v}")
+            elif k.count("/") == 2:
+                print(f"{k:22s} {v}")
             else:
                 print(f"{k:12s} k10 {v['k10']:+5.1f}  noans {v['k10_noans']:+5.1f} ({v['noans_share']})  noansctl {v['k10_noansctl'] or 0:+5.1f}  "
                       f"ans {v['ans'] or 0:+5.1f}  ansctl {v['ansctl'] or 0:+5.1f}  rand {v['k10_rand'] or 0:+5.1f}  rot {v['k10_rot'] or 0:+5.1f}  "
