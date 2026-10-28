@@ -1,0 +1,28 @@
+{
+  "design": "main",
+  "source": "x0_necessity_27b_chat",
+  "alt": "cf",
+  "layer": 32,
+  "items_at_L": 200,
+  "dropped": {},
+  "items": 200,
+  "entities": 44,
+  "groups": {
+    "locker-first": 69,
+    "locker-after": 61,
+    "mixed": 70
+  },
+  "upstream": {
+    "True": 97,
+    "False": 103
+  },
+  "locker-first, prefix-identical": 16,
+  "pick_tokens": {
+    "5": 76,
+    "4": 119,
+    "6": 5
+  },
+  "group": "locker-first",
+  "items_in_group": 69,
+  "entities_in_group": 34
+}

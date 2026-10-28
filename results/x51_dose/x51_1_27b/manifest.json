@@ -1,0 +1,145 @@
+{
+  "exp": "x51_dose",
+  "run": "x51_1_27b",
+  "why": "Batch 51, test 51.1 (jobs/c3/batch51.yaml; Q51.1): dose curves at L32, alpha P_J Delta (alpha 0.5..3) and beta (Delta - P_J Delta) with and without U (beta 0.25..1.5), each with its random twin of the same share at the same gain, J(1,1) and J(0,0); 49.1's items (main-test locker-first scenes of x0_necessity_27b_chat); sealed",
+  "written_utc": "2026-10-28T16:46:47Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "6bc2b36877eacc7fc35bcc74ed535239283f9d5a",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "test": "51.1",
+  "spec": "jobs/c3/batch51.yaml (51.1)",
+  "question": "Q51.1 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "b5e9e3c50fa19dac26094b939581817969f7e79b4756fcf31bf0b26600fddef0",
+    "results/x0_necessity/x0_necessity_27b_chat/manifest.json": "01abe5f1c03addc9a49c1f8fff402a21065bc649202b79a14c9a8ea5746e2e5a",
+    "results/x0_necessity/x0_necessity_27b_chat/gate.json": "5f67ec85701a252b56a521f4a9c67ebc4d82b4d4c7bf5ab77e57c292f87e7410",
+    "results/x0_necessity/x0_necessity_27b_chat/cases.jsonl": "60801c7e4c29b9facf6d311cb47df60ef0fccd9cce60338025371da98debf39b",
+    "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl": "43010926899d279596071d6c92f1856e1fd71bdc26a94a824324f6ad382942d5",
+    "results/x49_gain/x49_1_27b/manifest.json": "f41b3d08a0ab9d121c134d4342ec2e36f6147b426e1655dfcd539999a6067851",
+    "results/x49_gain/x49_1_27b/cases.jsonl": "bbb38b21df26857fe9fafc1b02f9ce455ebd43fc48f585c840b2507c403dd9fb",
+    "results/x49_gain/x49_1_27b/outcomes.jsonl": "0a95de0907a0f8befc0d84efeb1f829e1da983d099582da6c4cf5f6aeed6640f",
+    "results/x49_gain/x49_1_27b/losses.jsonl": "d62577c20ea7ec02a3384f4c7d99917a0c6e570204e2a00df26716356cdaf013"
+  },
+  "source": "x0_necessity_27b_chat",
+  "x49_run": "x49_1_27b",
+  "layer": 32,
+  "rendering": "chat",
+  "group": "locker-first",
+  "k": 25,
+  "alphas": [
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    3.0
+  ],
+  "betas": [
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.5
+  ],
+  "arms": [
+    "J(0,0)",
+    "J(1,1)",
+    "J(0.5,0)",
+    "R(0.5,0)",
+    "J(1,0)",
+    "R(1,0)",
+    "J(1.5,0)",
+    "R(1.5,0)",
+    "J(2,0)",
+    "R(2,0)",
+    "J(3,0)",
+    "R(3,0)",
+    "J(0,0.25)",
+    "R(0,0.25)",
+    "J(0,0.5)",
+    "R(0,0.5)",
+    "J(0,0.75)",
+    "R(0,0.75)",
+    "J(0,1)",
+    "R(0,1)",
+    "J(0,1.5)",
+    "R(0,1.5)",
+    "J(0,0.25)-U",
+    "J(0,0.25)-RU",
+    "J(0,0.5)-U",
+    "J(0,0.5)-RU",
+    "J(0,0.75)-U",
+    "J(0,0.75)-RU",
+    "J(0,1)-U",
+    "J(0,1)-RU",
+    "J(0,1.5)-U",
+    "J(0,1.5)-RU"
+  ],
+  "arm_text": {
+    "J(α,0)": "α P_J Δ, the change's 25-atom signed OMP J++ part alone at gain α",
+    "R(α,0)": "α R Δ, R Δ a random subspace's part of Δ at P_J Δ's share of ||Δ||^2 (seed 888 + L)",
+    "J(0,β)": "β (Δ - P_J Δ), the rest alone at gain β (with the address)",
+    "R(0,β)": "β (Δ - R Δ), the random complement at the rest's share",
+    "J(0,β)-U": "β (Δ - P_J Δ - U U^T Δ), the rest without the address (49.1's J(0,2)-U at gain β)",
+    "J(0,β)-RU": "β (Δ - P_J Δ - R_U Δ), R_U Δ a random part at U U^T Δ's share (same random basis)",
+    "J(1,1)": "Δ, the whole change (X0's whole arm; 49.1's J(1,1))",
+    "J(0,0)": "O unedited"
+  },
+  "pointer": {
+    "states_run": "x0_probe_v4_27b",
+    "rank": 4,
+    "how": "x47_atoms.pointer_basis (x0_massmean.subspaces' Alf on the probe run's states), not refit"
+  },
+  "items_rule": "49.1's: the source X0 run's scenes at L (chat outcomes: the items its unedited run made eligible), rebuilt by x47_cumulative.select (ids and bridge position checked against the run's), x45m.group_of locker-first only",
+  "parts": {
+    "P_J": "x0_necessity.fit(J++ letter-token atoms at L, Δ, 25, signed)",
+    "R": "statement_positions.random_subspace_part(Δ, P_J Δ's share of ||Δ||^2, random basis seed 888 + L)",
+    "U": "U U^T Δ",
+    "R_U": "random_subspace_part at U U^T Δ's share, same basis"
+  },
+  "edit": "AddRows: the arm's vector added at the bridge word's block output at L, on O",
+  "read": "X0's chat read: O's prompt with a digit's space token appended; switch = the top token over the vocabulary is S's answer's first token",
+  "loss": "-log p(O's token after the bridge word) at the bridge word, from O's lookup prompt cut after the bridge word, under each arm; the bar: mean loss <= 2 x J(1,1)'s",
+  "gate": "the source run's (X0: 0.8 per reader on O unedited, >= 150 eligible); asserted",
+  "rule": {
+    "i": "\"the lookup is blind to the J++ part\": switch minus random <= 0.10 at every α whose plain-text loss stays under 2x the whole change's -- on all three",
+    "ii": "\"the recall reads the J++ part above its share\": at the first α where the J++ part alone switches >= 0.3, J minus random >= 0.2 -- per model",
+    "iii": "\"together only\" (Muse): (1,1) from 49.1 >= 0.8 while the best single-part dose under the loss bar stays <= 0.3"
+  },
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "order": {
+    "items": "the source run's scene order (locker-first only)",
+    "reads": "per item and reader: O's prompt under the 32 arms in arm order, batches of at most 64 rows (BJ_SUITE_BATCH); then the loss: O's lookup prompt cut after the bridge word under the same arms",
+    "batch": 64
+  },
+  "sealed": "no verdict in the job; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.1"
+}
