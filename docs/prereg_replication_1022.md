@@ -2272,3 +2272,30 @@ Note 3's v2 answer-only runs were cancelled before they started (Zach, 27 Oct, ~
   - **GPU 1:** 9B ports once its competence is written, then Lightning's, then the 27B's swap family.
   - **GPU 0:** the 27B's removal ports after its knock-out matrix.
   - **Priority within a model:** 1, 2, 3, 4, 5, 6, 7.
+
+#### Amendment 58 note 6 (Zach, 2026-10-28 00:45 UTC, before any run below; no v3 knock-out result seen; the 9B's v3 competence seen): after the ports
+
+Both GPUs are booked until about 08:00-09:00 UTC (the removal matrix, then note 5's ports). These runs follow, so no GPU
+waits. Each was approved on 27 Oct as "later": the rendering-1 replication (note 4: "rep 1 is held for replication"),
+then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / note 2 runs.
+
+- **1. Rendering-1 replication (Qwen3.6-27B, Qwen3.5-9B, Lightning):**
+  - **Data:** jsuite_v3r1_test_chat, the same bridges, starts, finals and levels as rendering 0, with its own draw of
+    templates, filler, made-up values, anchors and entity orders.
+  - **Runs:** natural_v1 competence on its K and M words plus RM (eligibility, note 4's V4 rule), then note 4's removal
+    matrix: paper10, paper10_rot, unembed10, paper10_pcasize; all words; each model's band.
+  - **Reading, fixed now:** the headline replicates in a model if, on rendering 1:
+    - start P's M − K is ≥ 10 with rotated ≤ 10; and
+    - it is within 10 points of rendering 0's.
+  - Hard read, conflict and never-named are reported beside rendering 0's, as replications of direction.
+- **2. Muse Glimmer 30B (L36-42) and Ministral 3 14B (L32-37) on v3, rendering 0:**
+  - **Runs:** note 4's competence (a) and (b), probes, and removal matrix, unchanged.
+  - **Reading:** note 4's readings per model. They are breadth: note 4's "2 of 3 models" bars stay on the three headline
+    models.
+- **3. Requeued (notes 1 and 2, unchanged):** Ministral's free-generation replies (greedy_all) and its filler/repeat
+  run; Muse's filler/repeat run. Their free-generation run finished on 27 Oct.
+- **Order (scripts/queues/h200_v3next_1028.sh), by priority:**
+  - **Now, GPU 0:** the 9B's rendering-1 competence, beside the 27B's competence chain (about 20 GB beside 70 GB).
+  - **GPU 1, after the ports queue A:** the 9B's rendering-1 removal matrix; rendering 1 for Lightning; Ministral v3;
+    then Ministral's note 1 / note 2 runs.
+  - **GPU 0, after the ports queue B:** rendering 1 for the 27B; Muse v3; then Muse's note 2 run.
