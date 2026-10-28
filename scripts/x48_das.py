@@ -154,7 +154,7 @@ def torch_gdn(hf) -> str | None:
     if gdn is None:
         return None
     ns = sys.modules[type(gdn).__module__]
-    setattr(ns, "torch_chunk_gated_delta_rule", reference_chunk_rule(gdn))  # the GDN forward reads the module global
+    vars(ns)["torch_chunk_gated_delta_rule"] = reference_chunk_rule(gdn)  # the GDN forward reads the module global
     return ns.__name__
 
 
