@@ -32,14 +32,14 @@ data-report:        ## what data we work with: counts, categories, labels, overl
 
 # Job queue on a GPU box (scripts/jobq.py): make enqueue JOB=jobs/d2/d2_ko_v1.yaml (committed tree only).
 # Which box: QUEUE=a100 (default: sesterce-a100x4, 4 GPUs), QUEUE=mats (sesterce-h100x2, 2x H100; rented 23 Oct for the
-# 122B; QUEUE=h100 is the same box) or QUEUE=helper (sesterce-helper, 1x H100 PCIe in CA, rented 26 Oct for T); each box
+# 122B; QUEUE=h100 is the same box) or QUEUE=helper (sesterce-helper2, 1x H100 80GB HBM3, rented 28 Oct ~16:10; the 26 Oct helper is gone, its ledger kept); each box
 # has its own queue and ledger (results/jobq/ledger_<host>.jsonl); queue-stats also takes QUEUE=all.
 # Example: make queue-stats QUEUE=h100
 QUEUE ?= a100
 QUEUE_HOST_a100 := sesterce-a100x4
 QUEUE_HOST_h100 := sesterce-h100x2
 QUEUE_HOST_mats := sesterce-h100x2
-QUEUE_HOST_helper := sesterce-helper
+QUEUE_HOST_helper := sesterce-helper2
 QUEUE_GPUS_a100 := 4
 QUEUE_GPUS_h100 := 2
 QUEUE_GPUS_mats := 2
