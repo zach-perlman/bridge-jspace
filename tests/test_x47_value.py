@@ -232,6 +232,9 @@ def test_moved_case_routes_are_distinct_and_s_equals_o_from_the_bridge_on(fmt):
             f["locker"][c["third"]]
         )
         assert int(c["expect"]["value"]) not in f["locker"].values()
+        # S's lookup answer is the moved bridge's new number, as in C2 (the x47_7c runs of 28 Oct had the identity
+        # number here and found no eligible case: the lookup says the value on S)
+        assert c["readers"][LK]["cf_answer"] == c["expect"]["value"] and c["readers"][LK]["answer"] == pp["answer"]
         for w in X.READERS:
             ids, pos = c["readers"][w]["ids"]["ql"], c["readers"][w]["pos"]["ql"]
             assert ids["org"][pos + 1 :] == ids["alt"][pos + 1 :] and ids["org"][pos] != ids["alt"][pos]

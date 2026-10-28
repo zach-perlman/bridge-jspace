@@ -9,6 +9,7 @@ from types import SimpleNamespace
 import pytest
 import torch
 
+from bridge_jspace import pins
 from scripts import x0_necessity as X
 from scripts import x47_cumulative as C
 from scripts import x47_depthmap as D
@@ -79,6 +80,14 @@ def test_arm_names_and_arm_of():
 def test_sampled_layers():
     assert D.sampled_layers(32, 2) == list(range(0, 31, 2))
     assert D.sampled_layers(52, 4) == [*range(0, 49, 4), 50] and D.sampled_layers(64, 4) == [*range(0, 61, 4), 62]
+
+
+def test_layer_grid_holds_the_layer_fixed_in_advance():
+    # Muse's L26 is off the every-4th grid: the run read arms[f"b{layer}"] and failed (x47_d1_muse, 28 Oct)
+    assert D.layer_grid(52, 4, 26) == [*range(0, 25, 4), 26, *range(28, 49, 4), 50]
+    assert D.layer_grid(36, 2, 12) == D.sampled_layers(36, 2) and D.layer_grid(64, 4, 32) == D.sampled_layers(64, 4)
+    for target, step in D.STEP.items():
+        assert X.PREDICTED[target] in D.layer_grid(pins.TARGETS[target]["n_layers"], step, X.PREDICTED[target])
 
 
 def _real_tokenizer():

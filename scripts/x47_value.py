@@ -366,7 +366,7 @@ def moved_case(tok, pp: dict, pm: dict, rng: random.Random) -> tuple[dict | None
         assert len(set(expect.values())) == 4, expect
         readers, pos = {}, None
         for w, it, ans in (
-            (X.LOOKUP, pp, (pp["answer"], str(locker[t]))),
+            (X.LOOKUP, pp, (pp["answer"], str(e))),  # S's lookup answer is the moved bridge's new number (as in C2)
             (X.RECALL, pm, (pm["answer"], str(values[t]))),
         ):
             ids_o, at_o = B.encode(tok, it, it["context"], x)
@@ -698,7 +698,7 @@ def stage_run(part: str, name: str, why: str, c0_min: float | None = None) -> Pa
                 ans = c["readers"][X.LOOKUP]["answer"]
                 readout.append({"scene": c["scene"], "condition": c["condition"], "rendering": r, "entity": c["bridge"],
                                 "answer": ans, "rank": order.index(ans) + 1, "top": order[0], "n_candidates": len(pool),
-                                "rank_cf_value": order.index(c["expect"].get("value", c["expect"].get("identity"))) + 1})  # fmt: skip
+                                "rank_cf_value": order.index(c["readers"][X.LOOKUP]["cf_answer"]) + 1})  # fmt: skip
         x = torch.stack(deltas)
         jpp = X.fit(jdic, x, X.K_MAIN, "signed")
         ptr = (x @ alf) @ alf.T

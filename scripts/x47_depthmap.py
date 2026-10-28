@@ -119,6 +119,12 @@ def sampled_layers(n_layers: int, step: int) -> list[int]:
     return B.q_sweep_layers(n_layers, step)
 
 
+def layer_grid(n_layers: int, step: int, layer: int) -> list[int]:
+    """The sampled layers plus the layer fixed in advance: the margins b<L> and w<L> are read at L whether or not the
+    step lands on it (Muse's L26 is between 24 and 28)."""
+    return sorted(set(sampled_layers(n_layers, step)) | {layer})
+
+
 # ---- token groups (tokenizer only) ----------------------------------------------------------------------------------
 
 
@@ -229,7 +235,7 @@ def stage_plan() -> dict:
 
     tok = x45m.tokenizer()
     target, layer = pins.TARGET, X.PREDICTED[pins.TARGET]
-    layers = sampled_layers(pins.N_LAYERS, STEP[target])
+    layers = layer_grid(pins.N_LAYERS, STEP[target], layer)
     out: dict[str, Any] = {"target": target, "layer": layer, "n_layers": pins.N_LAYERS, "layers": layers}
     for design in DESIGNS:
         items, counts = select(tok, design, C.SOURCES[design][target], layer)
@@ -314,7 +320,7 @@ def stage_run(name: str, why: str) -> Path:
     target = pins.TARGET
     assert target in STEP, f"D1 runs on {sorted(STEP)}, not {target}"
     layer, n_layers = X.PREDICTED[target], pins.N_LAYERS
-    layers = sampled_layers(n_layers, STEP[target])
+    layers = layer_grid(n_layers, STEP[target], layer)
     runs = {d: C.SOURCES[d][target] for d in DESIGNS}
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
