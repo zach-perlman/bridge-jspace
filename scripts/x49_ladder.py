@@ -85,7 +85,7 @@ K = X.K_MAIN  # the change's 25 OMP atoms
 K_TOP = 10  # Zach's top-10
 SOURCES = B.FRESH_RUN  # target -> its 45m run (the clean design)
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
-RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2_r2"}  # the first Muse run OOMed (28 Oct)
+RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2_r3"}  # the first two Muse runs OOMed (28 Oct)
 BAND = {"qwen3.5-9b": tuple(range(12, 17)), "muse-glimmer-30b": tuple(range(23, 30))}  # Zach's band; the 27B: none
 RUNGS = (1, 2, 3, 4, 5, 6)
 BRIDGE_RUNGS = (1, 2)  # the 27B's
@@ -423,20 +423,53 @@ def token_shares(h, q) -> Any:
 
 def band_dictionaries(model, lens, band: tuple[int, ...], letters) -> dict:
     """Zach's dictionaries over the band, built as ablate_v2 builds them: one W_g = W_U[letters] * the final norm's
-    gain shared by every layer, LensDictionary(W_g, J_l) per layer (x47_twodefs.zach_dictionary builds W_g per call;
-    one copy here, as a band of 7 copies would not fit beside Muse)."""
-    from bridge_jspace.ablate import LensDictionary
-
+    gain shared by every layer, a LensDictionary(W_g, J_l) per layer; W_g's rows are cast from the unembedding on
+    demand (LazyWgDictionary), as even one stored fp32 copy did not fit beside Muse."""
     if not band:
         return {}
     import torch
 
-    wg = model.hf.lm_head.weight[letters].float() * model.norm_gain()
     torch.cuda.empty_cache()
-    # chunk 4096 for the row norms: the default 32768 x d fp32 block (832 MiB on Muse, d = 6656) did not fit beside
-    # Muse's weights, W_g and the cached J_l / bases (x49_2_muse, 28 Oct: OOM); the norms are per row, so the result is
-    # the same at any chunk.
-    return {la: LensDictionary(wg, lens.J(la), chunk=4096) for la in band}
+    # W_g's rows are built from the bf16 unembedding on demand (LazyWgDictionary): a stored fp32 W_g (letters x d, ~4 GB
+    # on Muse) did not fit beside Muse's weights and the cached J_l / bases (x49_2_muse and x49_2_muse_r2, 28 Oct: OOM).
+    return {la: LazyWgDictionary(model.hf.lm_head.weight, letters, model.norm_gain(), lens.J(la)) for la in band}
+
+
+class LazyWgDictionary:
+    """LensDictionary(W_g, J) with W_g = W_U[letters].float() * gain never stored: its rows are cast from the bf16
+    unembedding chunk by chunk. The same rows as ablate_v2's W_g, so the same norms, logits and atoms (up to the order
+    of fp32 sums in a chunked matmul)."""
+
+    def __init__(self, w_u, letters, gain, J, chunk: int = 4096):
+        import torch
+
+        self.w_u, self.letters, self.gain, self.J, self.chunk = w_u, letters, gain, J, chunk
+        self.norms = torch.cat([(self.rows(self.letters[s : s + chunk]) @ J).norm(dim=-1) for s in self.starts()])
+
+    def starts(self) -> range:
+        return range(0, self.letters.numel(), self.chunk)
+
+    def rows(self, ids):
+        """W_g's rows for token ids: fp32 on the dictionary's device."""
+        return self.w_u[ids.to(self.w_u.device)].float().to(self.J.device) * self.gain.to(self.J.device)
+
+    @property
+    def n(self) -> int:
+        return self.letters.numel()
+
+    def logits(self, x):
+        """[m, d] -> [m, n], as LensDictionary.logits."""
+        import torch
+
+        y = x @ self.J.T
+        return torch.cat([y @ self.rows(self.letters[s : s + self.chunk]).T for s in self.starts()], dim=-1)
+
+    def scores(self, x):
+        return self.logits(x) / self.norms
+
+    def atoms(self, idx):
+        """Unit lens vectors for dictionary rows idx [...] -> [..., d], as LensDictionary.atoms."""
+        return (self.rows(self.letters[idx]) @ self.J) / self.norms[idx].unsqueeze(-1)
 
 
 def run_items(model, lens, items: list[dict], layers: tuple[int, ...], band: tuple[int, ...], ws, digits,

@@ -108,14 +108,14 @@ def _dic(la: int, n: int = 100, d: int = D) -> MatrixDictionary:
     return MatrixDictionary(v / v.norm(dim=1, keepdim=True))
 
 
-def test_band_dictionaries_are_ablate_v2s_with_one_shared_wg():
+def test_band_dictionaries_are_ablate_v2s_with_no_stored_wg():
     w = torch.randn(128, D, generator=torch.Generator().manual_seed(4))
     model = SimpleNamespace(
         hf=SimpleNamespace(lm_head=SimpleNamespace(weight=w)), norm_gain=lambda: torch.full((D,), 2.0)
     )
     lens = SimpleNamespace(J=lambda la: torch.eye(D) * (la + 1))
     dic = LD.band_dictionaries(model, lens, (3, 4), torch.arange(100))
-    assert dic[3].wg is dic[4].wg and torch.allclose(dic[3].wg, 2 * w[:100])
+    assert dic[3].w_u is dic[4].w_u is w and torch.allclose(dic[3].rows(dic[3].letters), 2 * w[:100])
     assert torch.allclose(dic[4].J, 5 * torch.eye(D))
     assert LD.band_dictionaries(model, lens, (), torch.arange(100)) == {}
 
@@ -479,3 +479,23 @@ def test_titles_read_the_rules():
     assert FIG.ladder_title(v((True, False, False), (True, True, False))).startswith("The recall's second copy")
     for t in (FIG.ladder_title(v((True, True, True), (False, False, True))),):
         assert len(t) <= 86
+
+
+def test_lazy_wg_dictionary_matches_the_stored_one():
+    """Muse OOM fix (28 Oct): W_g's rows cast on demand give LensDictionary's norms, scores, logits and atoms."""
+    import torch
+
+    from bridge_jspace.ablate import LensDictionary
+    from scripts.x49_ladder import LazyWgDictionary
+
+    g = torch.Generator().manual_seed(0)
+    w_u = torch.randn(50, 8, generator=g).bfloat16()
+    letters = torch.tensor([3, 7, 11, 20, 21, 40, 49])
+    gain, J = torch.rand(8, generator=g) + 0.5, torch.randn(8, 8, generator=g)
+    ref = LensDictionary(w_u[letters].float() * gain, J)
+    lazy = LazyWgDictionary(w_u, letters, gain, J, chunk=3)
+    x, idx = torch.randn(4, 8, generator=g), torch.tensor([[0, 6], [2, 3]])
+    assert lazy.n == ref.n == 7
+    for a, b in ((lazy.norms, ref.norms), (lazy.logits(x), ref.logits(x)), (lazy.scores(x), ref.scores(x)),
+                 (lazy.atoms(idx), ref.atoms(idx))):  # fmt: skip
+        torch.testing.assert_close(a, b, rtol=1e-5, atol=1e-5)
