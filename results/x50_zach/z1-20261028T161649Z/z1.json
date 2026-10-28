@@ -1,0 +1,833 @@
+{
+ "runs": [
+  "qwen35_9b_x50_z1",
+  "x50_z1_27b",
+  "muse30_x50_z1"
+ ],
+ "dan": "(a) \u00b7 60%; (b) \u00b7 40%",
+ "models": [
+  {
+   "run": "qwen35_9b_x50_z1",
+   "target": "qwen3.5-9b",
+   "layers": [
+    12
+   ],
+   "gate": {
+    "cases": 544,
+    "org_read_accuracy": {
+     "K": 0.9466911764705882,
+     "M": 0.8419117647058824
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 367,
+    "over_zach_kept": {
+     "cases": 197,
+     "org_read_accuracy": {
+      "K": 0.9543147208121827,
+      "M": 0.8781725888324873
+     },
+     "pass": true,
+     "eligible": 142
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 88
+      },
+      "cases": 270
+     },
+     "jsuite_v2nb_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 84
+      },
+      "cases": 274
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat",
+     "jsuite_v2nb_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 182,
+     "jsuite_v2nb_test_chat": 18
+    },
+    "chosen_strata": {
+     "fact-after": 100,
+     "fact-first": 100
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "12": {
+     "n": 200,
+     "entities": 120,
+     "lookup": {
+      "n": 200,
+      "entities": 120,
+      "S_whole": [
+       0.57,
+       0.5007,
+       0.6367
+      ],
+      "S_no_part": [
+       0.355,
+       0.292,
+       0.4235
+      ],
+      "S_no_rand": [
+       0.505,
+       0.4363,
+       0.5735
+      ],
+      "switched_whole": 114,
+      "valid": true,
+      "Jdep": [
+       0.3771929824561403,
+       0.27971879815100154,
+       0.4807783018867924
+      ],
+      "Rdep": [
+       0.11403508771929816,
+       0.053097345132743334,
+       0.18000450450450448
+      ],
+      "excess": [
+       0.26315789473684215,
+       0.1759137426900585,
+       0.3571428571428572
+      ],
+      "label": "through"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 120,
+      "S_whole": [
+       0.795,
+       0.7337,
+       0.8451
+      ],
+      "S_no_part": [
+       0.24,
+       0.1861,
+       0.3037
+      ],
+      "S_no_rand": [
+       0.745,
+       0.6804,
+       0.8004
+      ],
+      "switched_whole": 159,
+      "valid": true,
+      "Jdep": [
+       0.6981132075471699,
+       0.6223766924564796,
+       0.7678571428571428
+      ],
+      "Rdep": [
+       0.06289308176100639,
+       0.014703198797767233,
+       0.11042944785276076
+      ],
+      "excess": [
+       0.6352201257861635,
+       0.5555555555555557,
+       0.7115384615384615
+      ],
+      "label": "through"
+     },
+     "gap": [
+      0.37206223104932135,
+      0.2693016869095815,
+      0.4697369970843877
+     ],
+     "verdict": "the lookup follows the lens here",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 84,
+        "switch": 114,
+        "other": 2
+       },
+       "no_jpp": {
+        "original": 127,
+        "switch": 71,
+        "other": 2
+       },
+       "no_jpp_rand": {
+        "original": 98,
+        "switch": 101,
+        "other": 1
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 159,
+        "original": 32,
+        "other": 8,
+        "lure": 1
+       },
+       "no_jpp": {
+        "original": 140,
+        "switch": 48,
+        "other": 9,
+        "lure": 3
+       },
+       "no_jpp_rand": {
+        "original": 42,
+        "switch": 149,
+        "other": 8,
+        "lure": 1
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 100,
+        "whole_switch": [
+         0.78,
+         0.6808510638297872,
+         0.8640776699029126
+        ]
+       },
+       "fact-after": {
+        "n": 100,
+        "whole_switch": [
+         0.36,
+         0.2653061224489796,
+         0.45544554455445546
+        ]
+       }
+      },
+      "replicates": true,
+      "ratio": 2.166666666666667,
+      "separate": true
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    }
+   },
+   "beside": {
+    "band": "L12-16",
+    "swap": null,
+    "full": {
+     "run": "qwen35_9b_jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 142,
+      "m_minus_k": [
+       0.4788732394366197,
+       0.38311342912406743,
+       0.5755395683453237
+      ]
+     },
+     "paper10_rot": {
+      "joined": 142,
+      "m_minus_k": [
+       0.0,
+       -0.020689655172413793,
+       0.02083697552447547
+      ]
+     }
+    }
+   }
+  },
+  {
+   "run": "x50_z1_27b",
+   "target": "qwen3.6-27b",
+   "layers": [
+    32
+   ],
+   "gate": {
+    "cases": 270,
+    "org_read_accuracy": {
+     "K": 1.0,
+     "M": 0.8962962962962963
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 217,
+    "over_zach_kept": {
+     "cases": 256,
+     "org_read_accuracy": {
+      "K": 1.0,
+      "M": 0.921875
+     },
+     "pass": true,
+     "eligible": 216
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 88
+      },
+      "cases": 270
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 200
+    },
+    "chosen_strata": {
+     "fact-after": 103,
+     "fact-first": 97
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "32": {
+     "n": 200,
+     "entities": 116,
+     "lookup": {
+      "n": 200,
+      "entities": 116,
+      "S_whole": [
+       0.38,
+       0.3156,
+       0.4489
+      ],
+      "S_no_part": [
+       0.235,
+       0.1816,
+       0.2984
+      ],
+      "S_no_rand": [
+       0.34,
+       0.2779,
+       0.4081
+      ],
+      "switched_whole": 76,
+      "valid": true,
+      "Jdep": [
+       0.38157894736842113,
+       0.28,
+       0.48684210526315785
+      ],
+      "Rdep": [
+       0.10526315789473684,
+       0.03125,
+       0.18309859154929575
+      ],
+      "excess": [
+       0.2763157894736843,
+       0.17948717948717952,
+       0.381578947368421
+      ],
+      "label": "through"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 116,
+      "S_whole": [
+       0.63,
+       0.5612,
+       0.6939
+      ],
+      "S_no_part": [
+       0.21,
+       0.1593,
+       0.2716
+      ],
+      "S_no_rand": [
+       0.575,
+       0.5057,
+       0.6415
+      ],
+      "switched_whole": 126,
+      "valid": true,
+      "Jdep": [
+       0.6666666666666667,
+       0.5794373980121644,
+       0.7477477477477477
+      ],
+      "Rdep": [
+       0.08730158730158732,
+       0.023076923076922995,
+       0.15652173913043477
+      ],
+      "excess": [
+       0.5793650793650794,
+       0.49193548387096764,
+       0.663553525913339
+      ],
+      "label": "through"
+     },
+     "gap": [
+      0.3030492898913951,
+      0.16712661426267433,
+      0.42801468591161285
+     ],
+     "verdict": "the lookup follows the lens here",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 123,
+        "switch": 76,
+        "other": 1
+       },
+       "no_jpp": {
+        "original": 153,
+        "switch": 47
+       },
+       "no_jpp_rand": {
+        "original": 131,
+        "switch": 68,
+        "other": 1
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 126,
+        "original": 71,
+        "other": 3
+       },
+       "no_jpp": {
+        "original": 157,
+        "switch": 42,
+        "other": 1
+       },
+       "no_jpp_rand": {
+        "switch": 115,
+        "original": 82,
+        "other": 3
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 97,
+        "whole_switch": [
+         0.6701030927835051,
+         0.5652173913043478,
+         0.7628865979381443
+        ]
+       },
+       "fact-after": {
+        "n": 103,
+        "whole_switch": [
+         0.10679611650485436,
+         0.05102040816326531,
+         0.16666666666666666
+        ]
+       }
+      },
+      "replicates": true,
+      "ratio": 6.2746016869728205,
+      "separate": true
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    }
+   },
+   "beside": {
+    "band": "L32-40",
+    "swap": null,
+    "full": {
+     "run": "jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 199,
+      "m_minus_k": [
+       0.4623115577889447,
+       0.38349514563106796,
+       0.5424553392211963
+      ]
+     },
+     "paper10_rot": {
+      "joined": 199,
+      "m_minus_k": [
+       0.005025125628140704,
+       0.0,
+       0.015384615384615385
+      ]
+     }
+    }
+   }
+  },
+  {
+   "run": "muse30_x50_z1",
+   "target": "muse-glimmer-30b",
+   "layers": [
+    26,
+    36
+   ],
+   "gate": {
+    "cases": 280,
+    "org_read_accuracy": {
+     "K": 0.9321428571428572,
+     "M": 0.8392857142857143
+    },
+    "gate": 0.8,
+    "pass": true,
+    "eligible": 204,
+    "over_zach_kept": {
+     "cases": 204,
+     "org_read_accuracy": {
+      "K": 0.9313725490196079,
+      "M": 0.8676470588235294
+     },
+     "pass": true,
+     "eligible": 163
+    },
+    "chosen": 200,
+    "counts": {
+     "jsuite_v2_test_chat": {
+      "passages": 358,
+      "pair_drops": {},
+      "drops": {
+       "no candidate aligns (the patch token is not at one index in O and S)": 78
+      },
+      "cases": 280
+     }
+    },
+    "sets_used": [
+     "jsuite_v2_test_chat"
+    ],
+    "chosen_sets": {
+     "jsuite_v2_test_chat": 200
+    },
+    "chosen_strata": {
+     "fact-after": 101,
+     "fact-first": 99
+    }
+   },
+   "status": "tested",
+   "layer_results": {
+    "26": {
+     "n": 200,
+     "entities": 125,
+     "lookup": {
+      "n": 200,
+      "entities": 125,
+      "S_whole": [
+       0.125,
+       0.0861,
+       0.178
+      ],
+      "S_no_part": [
+       0.035,
+       0.0171,
+       0.0705
+      ],
+      "S_no_rand": [
+       0.11,
+       0.0738,
+       0.1609
+      ],
+      "switched_whole": 25,
+      "valid": false,
+      "Jdep": [
+       0.72,
+       0.52,
+       0.8928571428571429
+      ],
+      "Rdep": [
+       0.12,
+       -0.04999999999999982,
+       0.2857142857142857
+      ],
+      "excess": [
+       0.6,
+       0.3793103448275863,
+       0.8148148148148149
+      ],
+      "label": "can't tell"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 125,
+      "S_whole": [
+       0.505,
+       0.4363,
+       0.5735
+      ],
+      "S_no_part": [
+       0.05,
+       0.0274,
+       0.0896
+      ],
+      "S_no_rand": [
+       0.46,
+       0.3923,
+       0.5292
+      ],
+      "switched_whole": 101,
+      "valid": true,
+      "Jdep": [
+       0.900990099009901,
+       0.8404148936170214,
+       0.9534883720930233
+      ],
+      "Rdep": [
+       0.08910891089108908,
+       0.0,
+       0.17241379310344818
+      ],
+      "excess": [
+       0.8118811881188119,
+       0.72,
+       0.9047619047619048
+      ],
+      "label": "through"
+     },
+     "gap": [
+      0.21188118811881196,
+      -0.014579094292803765,
+      0.44361560356901364
+     ],
+     "verdict": "the lookup follows the lens here",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 173,
+        "switch": 25,
+        "other": 2
+       },
+       "no_jpp": {
+        "original": 190,
+        "switch": 7,
+        "other": 3
+       },
+       "no_jpp_rand": {
+        "original": 176,
+        "switch": 22,
+        "other": 2
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "switch": 101,
+        "original": 88,
+        "other": 10,
+        "lure": 1
+       },
+       "no_jpp": {
+        "original": 181,
+        "other": 8,
+        "switch": 10,
+        "lure": 1
+       },
+       "no_jpp_rand": {
+        "switch": 92,
+        "original": 94,
+        "other": 13,
+        "lure": 1
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 99,
+        "whole_switch": [
+         0.20202020202020202,
+         0.1188118811881188,
+         0.28865979381443296
+        ]
+       },
+       "fact-after": {
+        "n": 101,
+        "whole_switch": [
+         0.04950495049504951,
+         0.010101010101010102,
+         0.09615384615384616
+        ]
+       }
+      },
+      "replicates": true,
+      "ratio": 4.08080808080808,
+      "separate": true
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    },
+    "36": {
+     "n": 200,
+     "entities": 125,
+     "lookup": {
+      "n": 200,
+      "entities": 125,
+      "S_whole": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "S_no_part": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "S_no_rand": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "switched_whole": 0,
+      "valid": false,
+      "Jdep": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "Rdep": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "excess": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "label": "can't tell"
+     },
+     "recall": {
+      "n": 200,
+      "entities": 125,
+      "S_whole": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "S_no_part": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "S_no_rand": [
+       0.0,
+       0.0,
+       0.0188
+      ],
+      "switched_whole": 0,
+      "valid": false,
+      "Jdep": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "Rdep": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "excess": [
+       NaN,
+       NaN,
+       NaN
+      ],
+      "label": "can't tell"
+     },
+     "gap": [
+      NaN,
+      NaN,
+      NaN
+     ],
+     "verdict": "can't tell (no lookup switch under the whole change)",
+     "routes": {
+      "K": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 200
+       },
+       "no_jpp": {
+        "original": 200
+       },
+       "no_jpp_rand": {
+        "original": 200
+       }
+      },
+      "M": {
+       "none": {
+        "original": 200
+       },
+       "whole": {
+        "original": 200
+       },
+       "no_jpp": {
+        "original": 200
+       },
+       "no_jpp_rand": {
+        "original": 200
+       }
+      }
+     },
+     "order": {
+      "strata": {
+       "fact-first": {
+        "n": 99,
+        "whole_switch": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       },
+       "fact-after": {
+        "n": 101,
+        "whole_switch": [
+         0.0,
+         0.0,
+         0.0
+        ]
+       }
+      },
+      "replicates": false,
+      "ratio": NaN,
+      "separate": false
+     },
+     "hard_read": "no hard-read flag in v2 (not tested)"
+    }
+   },
+   "beside": {
+    "band": "L36-42",
+    "swap": null,
+    "full": {
+     "run": "muse30_jsuite_v2_test_chat_ko_cand2_v1",
+     "paper10": {
+      "joined": 161,
+      "m_minus_k": [
+       0.5714285714285714,
+       0.48520710059171596,
+       0.6547619047619048
+      ]
+     },
+     "paper10_rot": {
+      "joined": 161,
+      "m_minus_k": [
+       0.006211180124223602,
+       0.0,
+       0.01948051948051948
+      ]
+     }
+    }
+   }
+  }
+ ]
+}
