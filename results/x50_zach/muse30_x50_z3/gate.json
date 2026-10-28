@@ -1,0 +1,274 @@
+{
+ "cases": 98,
+ "org_read_accuracy": {
+  "K": 0.9591836734693877
+ },
+ "gate": 0.8,
+ "pass": true,
+ "eligible": 48,
+ "over_zach_kept": {
+  "cases": 17,
+  "org_read_accuracy": {
+   "K": 0.9411764705882353
+  },
+  "pass": true,
+  "eligible": 7
+ },
+ "chosen": 48,
+ "counts": {
+  "jsuite_v2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 141,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 12,
+    "not three entities (level 1)": 179,
+    "the three answers are not distinct": 2,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 1
+   },
+   "cases": 23
+  },
+  "jsuite_v2nb_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 126,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 20,
+    "not three entities (level 1)": 179,
+    "the three answers are not distinct": 5
+   },
+   "cases": 28
+  },
+  "jsuite_v2r2_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 142,
+    "the three answers are not distinct": 5,
+    "not three entities (level 1)": 179,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 12
+   },
+   "cases": 20
+  },
+  "jsuite_v2r3_test_chat": {
+   "passages": 358,
+   "pair_drops": {},
+   "drops": {
+    "a fact sentence comes after the pointer sentence": 133,
+    "not three entities (level 1)": 179,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S)": 17,
+    "the three answers are not distinct": 1,
+    "no (B, C, value) aligns (the patch token is not at one index in O and S0)": 1
+   },
+   "cases": 27
+  }
+ },
+ "sets_used": [
+  "jsuite_v2_test_chat",
+  "jsuite_v2nb_test_chat",
+  "jsuite_v2r2_test_chat",
+  "jsuite_v2r3_test_chat"
+ ],
+ "chosen_sets": {
+  "jsuite_v2_test_chat": 11,
+  "jsuite_v2nb_test_chat": 13,
+  "jsuite_v2r2_test_chat": 11,
+  "jsuite_v2r3_test_chat": 13
+ },
+ "order": [
+  [
+   "jsuite_v2_test_chat",
+   "j2:cities:P-L0-Bruges-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:P-L0-Lamborghini-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:companies:P-L0-Volvo-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:countries:P-L0-Bolivia-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:P-L0-bouillabaisse-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:P-L0-butter chicken-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:dishes:P-L0-pizza-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:P-L0-Argentina-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:P-L0-Italy-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:languages:P-L0-Turkey-0"
+  ],
+  [
+   "jsuite_v2_test_chat",
+   "j2:people:P-L0-Mozart-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:cities:P-L0-Istanbul-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:P-L0-Barilla-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:P-L0-Ferrero-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:companies:P-L0-Hyundai-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:dishes:P-L0-goulash-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:dishes:P-L0-jerk chicken-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:dishes:P-L0-mapo tofu-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:languages:P-L0-Tunisia-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:P-L0-Ibsen-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:P-L0-Pushkin-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:P-L0-Smetana-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:P-L0-Twain-0"
+  ],
+  [
+   "jsuite_v2nb_test_chat",
+   "j2:people:P-L0-Vivaldi-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:cities:P-L0-Naples-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:cities:P-L0-Shanghai-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:companies:P-L0-Lacoste-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:companies:P-L0-Lamborghini-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:companies:P-L0-Sony-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:companies:P-L0-Spotify-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:countries:P-L0-Greece-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:dishes:P-L0-guacamole-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:landmarks:P-L0-the Acropolis-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:languages:P-L0-Turkey-0"
+  ],
+  [
+   "jsuite_v2r2_test_chat",
+   "j2:people:P-L0-Picasso-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:cities:P-L0-Jaipur-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:cities:P-L0-Moscow-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:cities:P-L0-Turin-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:countries:P-L0-Sweden-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:dishes:P-L0-pizza-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:landmarks:P-L0-Uluru-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:landmarks:P-L0-the Great Barrier Reef-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:languages:P-L0-Cuba-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:languages:P-L0-Mexico-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:people:P-L0-Bach-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:people:P-L0-Lorca-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:people:P-L0-Mozart-0"
+  ],
+  [
+   "jsuite_v2r3_test_chat",
+   "j2:people:P-L0-Picasso-0"
+  ]
+ ],
+ "chosen_slot_aligned": 16,
+ "chosen_s0_right": 46
+}
