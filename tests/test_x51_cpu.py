@@ -105,6 +105,65 @@ def test_route_split_missing_route_and_other_arms():
     assert C.route_split([], "no_J", "no_J_rand", NB) == {"n": 0}
 
 
+# ---- 3. the recall under the address swap ---------------------------------------------------------------------------
+
+LEGS = {"frog": 4, "goose": 2, "spider": 8, "snake": 0}
+CTX = "The locker of the frog is 5. The locker of the goose is 3. The locker of the spider is 7."
+
+
+def _x8_rows(top_by_k: dict[int, int], kind: str = "write", s: float = 1, scene: str = "C2-1", entity: str = "frog",
+             look: str = "target") -> list[dict]:  # fmt: skip
+    """O's answer is the frog's legs (4); the token id is the digit itself (decode = str)."""
+    rows = []
+    for k, top in top_by_k.items():
+        rows.append({"scene": scene, "entity": entity, "reader": "PM", "kind": kind, "j": 0, "k": k, "s": s,
+                     "top": top, "changed": int(top != 4)})  # fmt: skip
+        rows.append({"scene": scene, "entity": entity, "reader": "PP", "kind": kind, "j": 0, "k": k, "s": s,
+                     "top": 0, "class": look})  # fmt: skip
+    return rows
+
+
+def test_recall_units_planted():
+    cases = {"C2-1": {"bridge": "frog", "context": CTX}}
+    # k = 1 (goose, 2 legs): the recall names the goose; k = 2 (spider, 8): unchanged
+    units = C.recall_units(_x8_rows({1: 2, 2: 4}), cases, LEGS, str)
+    by_k = {u["k"]: u for u in units}
+    assert by_k[1]["changed"] == 1 and by_k[1]["names_target"] == 1 and by_k[1]["informative"] == 1
+    assert by_k[2]["changed"] == 0 and by_k[2]["names_target"] == 0 and by_k[2]["lookup_target"] == 1
+    # a changed recall naming the third item is a change, not the target
+    u = C.recall_units(_x8_rows({1: 8}), cases, LEGS, str)[0]
+    assert u["changed"] == 1 and u["names_target"] == 0
+    # the bridge must be the case's and sit at slot j
+    with pytest.raises(AssertionError):
+        C.recall_units(_x8_rows({1: 2}, entity="goose"), cases, LEGS, str)
+
+
+def test_recall_informative_flag():
+    cases = {"C2-1": {"bridge": "frog", "context": CTX.replace("goose", "snake")}}
+    legs = {**LEGS, "snake": 4}  # the slot-1 item has as many legs as the frog
+    u = C.recall_units(_x8_rows({1: 4}), cases, legs, str)[0]
+    assert u["informative"] == 0 and u["changed"] == 0
+
+
+def test_dose_cells_planted():
+    units = []
+    for i in range(10):
+        for s, n_named in ((1, 2), (2, 5), (4, 9)):
+            units.append({"entity": f"e{i % 4}", "kind": "write", "s": s, "changed": int(i < n_named + 1),
+                          "names_target": int(i < n_named), "informative": int(i < 8), "lookup_target": 1})  # fmt: skip
+        units.append({"entity": f"e{i % 4}", "kind": "random", "s": 1, "changed": 0, "names_target": 0,
+                      "informative": 1, "lookup_target": 0})  # fmt: skip
+    cells = {(c["kind"], c["s"]): c for c in C.dose_cells(units, NB)}
+    assert set(cells) == {("write", 1), ("write", 2), ("write", 4), ("random", 1)}
+    assert cells[("write", 2)]["all"]["names_target"][0] == pytest.approx(0.5)
+    assert cells[("write", 2)]["all"]["changed"][0] == pytest.approx(0.6)
+    assert cells[("write", 4)]["informative"]["n"] == 8
+    assert cells[("write", 4)]["informative"]["names_target"][0] == pytest.approx(1.0)
+    assert cells[("random", 1)]["all"]["changed"][0] == 0
+    lo, hi = cells[("write", 2)]["all"]["names_target"][1:]
+    assert lo <= 0.5 <= hi
+
+
 def test_ci3_and_strip():
     assert all(math.isnan(v) for v in C.ci3(math.nan, np.zeros(3)))
     assert C.strip({"a": 1, "_d": np.zeros(2), "b": [{"_x": 1, "y": 2}]}) == {"a": 1, "b": [{"y": 2}]}

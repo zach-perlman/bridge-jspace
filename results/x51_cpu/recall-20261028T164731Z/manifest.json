@@ -1,0 +1,55 @@
+{
+  "exp": "x51_cpu",
+  "item": "recall",
+  "spec": "jobs/c3/batch51.yaml (brief, section 2)",
+  "written_utc": "2026-10-28T16:47:31Z",
+  "code": {
+    "sha": "3cb5ed021a7387be448daa2c8a2ab6fafde01fad",
+    "dirty": true
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": null,
+    "BJ_SUITE_BATCH": null,
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "script": {
+    "path": "scripts/x51_cpu.py",
+    "sha256": "b7b635bc5a625516488cf5a4ef6413c72959babc88a6f5874f1b158b9d528e71"
+  },
+  "inputs": {
+    "results/x8_write/qwen35_9b_x8_write/manifest.json": "e1b895b86ee473c2c2031bd02acf6f2b849ad78ff801af77d050436cb8db0199",
+    "results/x8_write/qwen35_9b_x8_write/outcomes.jsonl": "a0816a351fdcb02f17d5bb36627b518780da096f01df1a75a4fa4de464a52592",
+    "results/x8_write/x8_write_27b/manifest.json": "26f0da97d0ddb03ac97752ddc0997b59f516a28d2ae7f48a748083bb80c28ef8",
+    "results/x8_write/x8_write_27b/outcomes.jsonl": "4a335ba68615c5ad3ee5fcb0e8a3841aff2bf19278d0fcc31cca880a61770037",
+    "results/x8_write/muse30b_x8_write/manifest.json": "f92a18d5176d3170c60418993e4a564d4af5a7fa5c848778787c4304cfe06321",
+    "results/x8_write/muse30b_x8_write/outcomes.jsonl": "30d1af9ded8d4c6fea80942e20b31295d1debd72a6ca6cb8c3bd28e3558f7e75",
+    "results/x8_write/qwen35_9b_x8_write12/manifest.json": "040f75647b1481f1c1ae7404826973711f9aa9cbe323dac4f413f898f8a7b13a",
+    "results/x8_write/qwen35_9b_x8_write12/outcomes.jsonl": "200d332bc0303f26f037710f89fba17d8bd659da0be0f147ff15cb0d55e6f1b8",
+    "results/x8_write/x8_write12_27b/manifest.json": "cc1d8022a3208e9e01aec5e7b359f4090183936cf8774235358cc5a7880511dc",
+    "results/x8_write/x8_write12_27b/outcomes.jsonl": "b2ca29b00e4968167eb0f28baab77142f62d6fcc9ffc7f78279b5d7fce5a1d23",
+    "results/x8_write/muse30b_x8_write12/manifest.json": "bf86037d7d5aa05558204a0ca34d3b02d4bca3d342ff053d4c570b190f87027f",
+    "results/x8_write/muse30b_x8_write12/outcomes.jsonl": "6878a868674d535d9a53ea00380df148b745c60185e16aae5a68e6ab1cd28ee4",
+    "results/x6_routes/qwen35_9b_x6_routes/cases.jsonl": "7e19b2d111e9089c2251cc2ffd0ae748d0050af47a946bac2adc65ce6dc4b0e8",
+    "results/x6_routes/x6_routes_27b/cases.jsonl": "7e19b2d111e9089c2251cc2ffd0ae748d0050af47a946bac2adc65ce6dc4b0e8",
+    "results/x6_routes/muse30b_x6_routes/cases.jsonl": "fa25796a1f3a8d9063f44b8f6b063e9e02c05ee61ff27fe7ae31925e9d820eac"
+  },
+  "n_boot": 10000,
+  "seeds": {
+    "bootstrap": 0
+  },
+  "runs": {
+    "main": {
+      "qwen3.5-9b": "qwen35_9b_x8_write",
+      "qwen3.6-27b": "x8_write_27b",
+      "muse-glimmer-30b": "muse30b_x8_write"
+    },
+    "dose_x_s_star": {
+      "qwen3.5-9b": "qwen35_9b_x8_write12",
+      "qwen3.6-27b": "x8_write12_27b",
+      "muse-glimmer-30b": "muse30b_x8_write12"
+    }
+  },
+  "clusters": "bridge items",
+  "unit": "one write (scene, target slot k) per arm and s"
+}

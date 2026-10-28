@@ -437,9 +437,150 @@ def item_routes(n_boot: int = N_BOOT) -> Path:
     return out
 
 
+# ---- 3. the recall under the address swap, by dose ----------------------------------------------------------------
+
+X8_MAIN = {"qwen3.5-9b": "qwen35_9b_x8_write", "qwen3.6-27b": "x8_write_27b", "muse-glimmer-30b": "muse30b_x8_write"}
+X8_DOSE = {"qwen3.5-9b": "qwen35_9b_x8_write12", "qwen3.6-27b": "x8_write12_27b",
+           "muse-glimmer-30b": "muse30b_x8_write12"}  # fmt: skip
+
+
+def recall_units(rows: list[dict], cases: dict[str, dict], legs: dict[str, int], decode) -> list[dict]:
+    """Per write (scene, k, kind, s): the recall changed (top token not O's answer); the changed answer names the
+    swapped-in slot's item (x8_write.recall_item == 'target'); informative = the target item's legs differ from the
+    original's (else a followed pointer cannot show as a change); the lookup's class beside."""
+    from scripts import x8_write as W
+
+    look = {(r["scene"], r["k"], r["kind"], r["s"]): r["class"] for r in rows if r["reader"] == X.LOOKUP}
+    out = []
+    for r in rows:
+        if r["reader"] != X.RECALL or r["kind"] not in ("write", "random"):
+            continue
+        c = cases[r["scene"]]
+        slots = W.slots_of(c["context"])
+        assert c["bridge"] == r["entity"], f"{r['scene']}: not the routes case's bridge"
+        assert [x for x, _ in slots].index(r["entity"]) == r["j"], f"{r['scene']}: the bridge is not at slot j"
+        named = bool(r["changed"]) and W.recall_item(decode(r["top"]).strip(), slots, legs, r["j"], r["k"]) == "target"
+        out.append({"scene": r["scene"], "entity": r["entity"], "kind": r["kind"], "s": r["s"], "j": r["j"],
+                    "k": r["k"], "changed": int(r["changed"]), "names_target": int(named),
+                    "informative": int(legs[slots[r["k"]][0]] != legs[slots[r["j"]][0]]),
+                    "lookup_target": int(look[(r["scene"], r["k"], r["kind"], r["s"])] == "target")})  # fmt: skip
+    return out
+
+
+def dose_cells(units: list[dict], n_boot: int = N_BOOT) -> list[dict]:
+    """Per (kind, s): over every write and over the informative ones, the share of recalls that change and that name
+    the swapped-in slot's item, the lookup's target share beside; clusters = bridge items."""
+    out = []
+    for kind in ("write", "random"):
+        for s in sorted({u["s"] for u in units if u["kind"] == kind}):
+            cell: dict[str, Any] = {"kind": kind, "s": s}
+            for sub in ("all", "informative"):
+                us = [u for u in units if u["kind"] == kind and u["s"] == s and (sub == "all" or u["informative"])]
+                if not us:
+                    cell[sub] = {"n": 0}
+                    continue
+                keys = ("changed", "names_target", "lookup_target")
+                sw = {k: [u[k] for u in us] for k in keys}
+                rr = X.resampled_rates(sw, [u["entity"] for u in us], n_boot, BOOT_SEED)
+                cell[sub] = {"n": len(us), "entities": len({u["entity"] for u in us}),
+                             **{k: ci3(float(np.mean(sw[k])), rr[k]) for k in keys}}  # fmt: skip
+            out.append(cell)
+    return out
+
+
+def recall_model(target: str, n_boot: int = N_BOOT) -> dict[str, Any]:
+    from bridge_jspace.review import checks as RC
+    from scripts import tasks_v2 as T
+    from scripts import x8_write as W
+
+    cases = {c["scene"]: c for c in X.read_jsonl(pins.RESULTS_DIR / "x6_routes" / W.ROUTES_OF[target] / "cases.jsonl")
+             if c["condition"] == "C2"}  # fmt: skip
+    legs = T.DOMAINS["animals"].values
+    res: dict[str, Any] = {"target": target, "cases_from": W.ROUTES_OF[target], "runs": {}}
+    for fam, runs in (("pointer swap (s = multiple of mu_k - mu_j)", X8_MAIN), ("dose x s* (pairs 1-2, 2-1)", X8_DOSE)):
+        src = W.RESULTS / runs[target]
+        m = json.loads((src / "manifest.json").read_text())
+        units = recall_units(X.read_jsonl(src / "outcomes.jsonl"), cases, legs, lambda t: RC.piece(target, t))
+        res["runs"][runs[target]] = {"family": fam, "layer": m["layer"], "s_star": m.get("s_star"),
+                                     "items": m.get("items"), "cells": dose_cells(units, n_boot)}  # fmt: skip
+    return res
+
+
+def recall_figure(models: list[dict], path: Path) -> None:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(1, len(models), figsize=(3.6 * len(models), 3.3), sharey=True, squeeze=False)
+    for ax, mm in zip(axes[0], models, strict=True):
+        cells = mm["runs"][X8_MAIN[mm["target"]]]["cells"]
+        for kind, ls, mk in (("write", "-", "o"), ("random", "none", "s")):
+            cs = [c for c in cells if c["kind"] == kind]
+            xs = np.array([c["s"] for c in cs], dtype=float)
+            for key, col, name in (("changed", COLORS["blue"], "recall changes"),
+                                   ("names_target", COLORS["orange"], "names the swapped-in item")):  # fmt: skip
+                v = np.array([c["all"][key] for c in cs])
+                col = col if kind == "write" else COLORS["gray"]
+                ax.errorbar(xs + (0.05 if key == "names_target" else 0), v[:, 0],
+                            yerr=[v[:, 0] - v[:, 1], v[:, 2] - v[:, 0]], color=col, ls=ls, marker=mk, ms=5, lw=1.5,
+                            capsize=2, mfc=col if key == "changed" else "white",
+                            label=f"{name} ({'swap' if kind == 'write' else 'random, same norm'})")  # fmt: skip
+        ax.set_xticks([1, 2, 4])
+        ax.set_xlabel("dose s (x mu_k - mu_j)")
+        ax.set_title(f"{mm['target']}", fontsize=9)
+        ax.set_ylim(0, 1)
+        ax.grid(axis="y", lw=0.3, alpha=0.5)
+    axes[0][0].set_ylabel("share of writes (95% CI, bridge items)")
+    axes[0][-1].legend(fontsize=6, frameon=False)
+    fig.suptitle("The recall under the address swap, by dose (pointer-swap runs; UNVERIFIED)", fontsize=9)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def recall_lines(models: list[dict]) -> list[str]:
+    lines = ["| model | run | arm | s | writes | recall changes | names the swapped-in item | informative writes | "
+             "changes (informative) | names it (informative) | lookup to the swapped-in slot |",
+             "|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for mm in models:
+        for run, rr in mm["runs"].items():
+            for c in rr["cells"]:
+                a, i = c["all"], c["informative"]
+                lines.append(f"| {mm['target']} | {run} | {c['kind']} | {c['s']:g} | {a['n']} | {fmt(a['changed'])} | "
+                             f"{fmt(a['names_target'])} | {i['n']} | {fmt(i.get('changed'))} | "
+                             f"{fmt(i.get('names_target'))} | {fmt(a['lookup_target'])} |")  # fmt: skip
+    return lines
+
+
+def item_recall(n_boot: int = N_BOOT) -> Path:
+    from scripts import x8_write as W
+
+    srcs = [W.RESULTS / r for d in (X8_MAIN, X8_DOSE) for r in d.values()]
+    inputs = [s / f for s in srcs for f in ("manifest.json", "outcomes.jsonl")]
+    inputs += [pins.RESULTS_DIR / "x6_routes" / W.ROUTES_OF[t] / "cases.jsonl" for t in MODELS]
+    out = start("recall", inputs, {"runs": {"main": X8_MAIN, "dose_x_s_star": X8_DOSE}, "clusters": "bridge items",
+                                   "unit": "one write (scene, target slot k) per arm and s"})  # fmt: skip
+    models = [recall_model(t, n_boot) for t in MODELS]
+    lines = ["# The recall under the address swap, by dose (batch 51, CPU item 3)", "",
+             "Descriptive, after the data. Pointer-swap runs (x8_write): the routes test's C2 scenes, O unedited, "
+             "h + s (mu_k - mu_j) at the bridge word at L for both other slots k (two writes per scene); random = h + a "
+             "random vector of the same norm (s = 1, 4). The recall changes = its top token is not O's answer; names "
+             "the swapped-in item = the changed answer is the legs of the item at slot k (x8_write.recall_item, first "
+             "match target / third / original). Informative writes = the slot-k item's legs differ from the original "
+             "item's (elsewhere a followed pointer cannot show). The lookup's share sent to slot k beside. The main "
+             "runs' s is the multiple of mu_k - mu_j (1x / 2x / 4x); the x8_write12 runs (beside) write d x s*, s* "
+             "the dose at which the swap reaches the median norm of a real pointer change, on the pairs (1, 2), "
+             f"(2, 1) only. Cluster bootstrap over bridge items ({n_boot:,} resamples, seed {BOOT_SEED}, 95% "
+             "intervals). UNVERIFIED.", "", *recall_lines(models)]  # fmt: skip
+    recall_figure(models, out / "recall.png")
+    finish(out, "recall", {"models": strip(models)}, lines)
+    return out
+
+
 # ---- main ---------------------------------------------------------------------------------------------------------
 
-ITEMS = {"z1": item_z1, "routes": item_routes}
+ITEMS = {"z1": item_z1, "routes": item_routes, "recall": item_recall}
 
 
 def main() -> None:
