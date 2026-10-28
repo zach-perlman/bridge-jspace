@@ -1,0 +1,41 @@
+id: x47_6_a_9b
+title: "Batch 47.6 (a) on the 9B (L12), descriptive, cut first if late: does the last token's attention to the locker sentences follow the lookup's answer? Per full-attention layer and head, under no patch / the whole change / the change without the pointer directions / a pointer write; SEALED until Q47.6"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.2
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x47_edges.py run --part a --name qwen35_9b_x47_6_a --why "batch 47, test 47.6 a (jobs/c3/batch47.yaml; descriptive; Q47.6, sealed): attention from the last token to each locker sentence per full-attention layer and head, under none / whole change / without U / write s = 2"
+question: >-
+  On the routes scenes, does the last token's attention to the locker sentences follow the lookup's answer when the
+  change, the change without the pointer directions, or a pointer write moves that answer to another locker?
+why_it_matters: >-
+  (c) asks whether the question must read the locker sentences after L; (a) shows where and in which heads the last
+  token looks, and whether that attention moves with the answer, i.e. whether a head carries the dereference.
+hypotheses:
+  Q47.6: "Descriptive (no rule); not opened, figured or reported before Dan's Q47.6 answer in predictions/2026-10-28_dan.md is committed (scripts/x47_edges.py verdict / view / figures refuse until then)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.6 a): descriptive. Attention from the last token to each locker
+  sentence, by full-attention layer and head, under none / whole change / without U / write s = 2; score: the mass on
+  the answered locker's sentence against the other sentences; does it follow the answer? One figure per model. As
+  computed (fixed by the agent before any run; Dan may override before the run): Scenes: the routes test's C2 scenes
+  as they are (x6_routes.scenes, seed 2510, locker-first; no filler), gate 0.80 per reader on O's read, both readers
+  say and read O's and S's answers right, the first 300. Arms on O at the bridge word at L12 (block 12's output): none;
+  whole (Delta = h_S - h_O); no_U (Delta minus its projection on U, the four pointer directions of x0_massmean (Alf of
+  qwen35_9b_x0_probe_v4), not refit); no_U_rand (Delta minus a random part of the same share, X0's random subspace,
+  seed 888 + L); write1 / write2 (h + 2 (mu_k - mu_j), x8_write's write at s = 2: mu the class means behind U, j the
+  bridge's locker slot in O, k the two other slots, smaller first); rand1 / rand2 (a random direction of the write's
+  norm, seed 4761, drawn on the CPU in item order). In the same forward (X0's chat read, the digit's space token
+  appended), each full-attention block's (3, 7, ..., 31) softmax from the last token, per query head (16), summed over
+  each locker sentence's tokens (recomputed from the block's inputs: knockout.capture_attention); stored per item as
+  float16 (attention.npz). The answered locker = the O locker sentence stating the top token's digit (none: no locker
+  digit). Score per layer and head: the share of items whose largest of the three masses is on the answered locker's
+  sentence (chance 1/3), per arm, and on the items whose answer left A's locker; the heads ranked by that rate under the
+  whole change. Reported in the 47.6 verdict and one figure (scripts/x47_edges.py figures), after Q47.6 is committed.
+controls:
+- 'no_U_rand: a random part of the same share as U''s part of the change'
+- 'rand1 / rand2: a random direction of the same norm as each pointer write'
+- 'none: O unedited (the answer is A''s locker), the attention without any patch'
+n: '300 items (the first 300 eligible C2 scenes, scene order) of 700 generated; plan 28 Oct on the 9B tokenizer: locker sentences 9 + 9 + 9 tokens'
+seeds: [2510, 888, 4761, 0]
+notes: "SEALED and descriptive; cut first if late (batch47 cut_line). The job runs `run --part a` only; it writes manifest, gate, competence, cases, outcomes, norms and attention.npz ([items, 8 arms, 8 layers, 16 heads, 3 lockers] float16, ~1 MB), and prints counts. After Dan's Q47.6 is committed, by hand (CPU): uv run python scripts/x47_edges.py figures --name qwen35_9b_x47_6_a; view --name qwen35_9b_x47_6_a; the verdict includes (a)'s tables. Cost (H100 PCIe, ledger): competence on 700 C2 scenes plus load ~400 s (x8_half_9b 423 s, x8_a_9b 430 s); per item a 2-row forward to block 12 and one 8-row read with the attention recomputed in 8 blocks, ~10 row equivalents x 300 = ~3,000 rows at ~100 rows/s (x45q_9b) = ~30 s; with setup ~30 s: ~460 s = 0.13 h; 0.2 h with margin."

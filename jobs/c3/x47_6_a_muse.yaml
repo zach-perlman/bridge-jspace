@@ -1,0 +1,37 @@
+id: x47_6_a_muse
+title: "Batch 47.6 (a) on the Muse (L26), descriptive, cut first if late: does the last token's attention to the locker sentences follow the lookup's answer? Per attention layer and head, under no patch / the whole change / the change without the pointer directions / a pointer write; SEALED until Q47.6"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.25
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x47_edges.py run --part a --name muse30_x47_6_a --why "batch 47, test 47.6 a (jobs/c3/batch47.yaml; descriptive; Q47.6, sealed): attention from the last token to each locker sentence per attention layer and head, under none / whole change / without U / write s = 2"
+question: >-
+  On the routes scenes, does the last token's attention to the locker sentences follow the lookup's answer when the
+  change, the change without the pointer directions, or a pointer write moves that answer to another locker?
+why_it_matters: >-
+  (c) asks whether the question must read the locker sentences after L; (a) shows where and in which heads the last
+  token looks, and whether that attention moves with the answer, i.e. whether a head carries the dereference.
+hypotheses:
+  Q47.6: "Descriptive (no rule); not opened, figured or reported before Dan's Q47.6 answer in predictions/2026-10-28_dan.md is committed (scripts/x47_edges.py verdict / view / figures refuse until then)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.6 a): descriptive. Attention from the last token to each locker
+  sentence, by full-attention layer and head, under none / whole change / without U / write s = 2; score: the mass on
+  the answered locker's sentence against the other sentences; does it follow the answer? One figure per model. As
+  computed (fixed by the agent before any run; Dan may override before the run): as x47_6_a_9b's, at L26 with U and the
+  class means from muse30b_x0_probe_v4. Muse has no DeltaNet: all 52 blocks are softmax attention (13 global NoPE
+  blocks, 3, 7, ..., 51, and 39 sliding-window blocks whose 2048-token windows cover every prompt here, as
+  attn_knockout treats them), so every block is measured (32 query heads each), the kind recorded; the attention is
+  recomputed from each block's inputs by a port of knockout.capture_attention to Muse's attention (scale-free qk norm,
+  query scale factor, rotary embeddings on sliding blocks only, grouped keys, causal and sliding-window masks; tested
+  against eager attention weights on a tiny random Muse). Score per layer and head: the share of items whose largest
+  of the three locker masses is on the answered locker's sentence (chance 1/3), per arm and on the items whose answer
+  left A's locker; the heads ranked under the whole change. Reported in the 47.6 verdict and one figure, after Q47.6 is
+  committed.
+controls:
+- 'no_U_rand: a random part of the same share as U''s part of the change'
+- 'rand1 / rand2: a random direction of the same norm as each pointer write'
+- 'none: O unedited (the answer is A''s locker), the attention without any patch'
+n: '300 items (the first 300 eligible C2 scenes, scene order) of 700 generated; plan 28 Oct on Muse''s tokenizer: locker sentences 9 + 9 + 9 tokens'
+seeds: [2510, 888, 4761, 0]
+notes: "SEALED and descriptive; cut first if late (batch47 cut_line). The job runs `run --part a` only; it writes manifest, gate, competence, cases, outcomes, norms and attention.npz ([items, 8 arms, 52 layers, 32 heads, 3 lockers] float16, ~24 MB before compression), and prints counts. After Dan's Q47.6 is committed, by hand (CPU): uv run python scripts/x47_edges.py figures --name muse30_x47_6_a; view --name muse30_x47_6_a; the verdict includes (a)'s tables. Cost (H100 PCIe, ledger): competence on 700 C2 scenes plus load ~500 s (x8_half_muse 507 s, x8_a_muse 588 s); per item a 2-row forward to block 26 and one 8-row read with the attention recomputed in 52 blocks (~1.3x), ~11.5 row equivalents x 300 = ~3,500 rows at ~38 rows/s (x45q_muse) = ~90 s; with setup ~30 s: ~620 s = 0.17 h; 0.25 h with margin."

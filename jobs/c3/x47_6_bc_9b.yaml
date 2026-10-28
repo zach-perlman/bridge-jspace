@@ -1,0 +1,63 @@
+id: x47_6_bc_9b
+title: "Batch 47.6 (b, c) on the 9B (L12): is the pointer formed by the pick token reading the locker sentences before L, and read back from the question after L? Exact edge knock-outs on the routes scenes with a filler sentence, full-attention-only and all-layer (DeltaNet) blocks beside each other; SEALED until Q47.6"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.25
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x47_edges.py run --part bc --name qwen35_9b_x47_6_bc --why "batch 47, test 47.6 b and c (jobs/c3/batch47.yaml; Q47.6, sealed): formation (the change formed with the asked pick sentence blind to the locker sentences at 0..L) and dereference (the question blind to them at L..end), each against the same number of edges to a filler sentence"
+question: >-
+  (b) Is the pointer formed by the pick token reading the locker sentences before L: if the asked pick sentence cannot
+  read the locker sentences at layers 0..L while the change is formed, do the lookup's position answers vanish while
+  its identity answers and the recall's switch stay? (c) Is it read back from the question after L: if the question
+  cannot read the locker sentences at L..end (no patch), does the lookup fail while the recall stays right?
+why_it_matters: >-
+  The routes test says the lookup follows a position code (the pointer, U) that the lens cannot read (0.51 of the 9B's
+  C2 lookups under the whole change). Formation at the pick token from the locker sentences before L, and dereference
+  from the question after L, would give the around route end to end, neither step through the lens. Exact knock-outs
+  block only the named reads (DeltaNet included), so a fall is not a size effect of a residual edit.
+hypotheses:
+  Q47.6: "Dan's answer in predictions/2026-10-28_dan.md (Q47.6); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_edges.py verdict / view / figures refuse until it is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.6): (b) "the pointer is formed by the pick token reading the lockers" if
+  position answers fall to <= 0.10 (from 0.51 / 0.54) while identity answers stay within 0.10 and the recall's switch
+  within 0.10, on Muse and the 9B; the control within 0.10 of none. (c) "dereferenced from the question" if lookup
+  accuracy falls below 0.50 while recall accuracy stays >= 0.90, on Muse and the 9B. As computed (fixed by the agent
+  before any run; Dan may override before the run): Scenes: the routes test's C2 scenes (x6_routes.scenes, seed 2510,
+  locker-first) with one neutral filler sentence first in O and in S, identical ("A light rain began to fall just after
+  the doors were closed, and the old radio in the corner played softly through the whole day.": 27 tokens on this
+  tokenizer, the three locker sentences' total, checked per item); x6_routes.encode keeps the bridge one token at one
+  index shared by O and S (plan, 28 Oct: 700 of 700 scenes kept). Gate: O's read accuracy >= 0.80 per reader on these
+  prompts, else the model is "not tested" (never a lowered gate); eligible: both readers say and read O's and S's
+  answers right; the first 300 in scene order. Edges are (block, source token, destination token) with every source
+  before every destination; DeltaNet blocks in knockout's "value" mode (the source's values and conv taps in the value
+  channels removed, every weight kept), full-attention blocks with the pair's logits at -inf in every head; indirect
+  routes stay open. (b): the change Delta = h_S - h_O at the bridge word (block L's output) is formed with the block
+  active in both forwards that form it, O's and S's (the asked pick sentence's 5 tokens cannot read the locker
+  sentences' 27 tokens at blocks 0..L, L included); that Delta is added at the bridge word at L on O, which is read
+  unblocked, as in the routes test; none = Delta formed without a block (same batch). The decisive arms are
+  block/sentence/all (13 blocks, 1755 edges: 405 in full-attention blocks 3, 7, 11, 1350 in DeltaNet blocks) and its
+  control/sentence/all (the filler's 27 tokens as sources, the same destinations and blocks: 1755 edges). Position /
+  identity share = the share of the 300 items whose lookup answer x6_routes.classify calls position / identity; recall
+  switch = the recall's top token is S's answer. Holds on the 9B iff position(block) <= 0.10, |identity(block) -
+  identity(none)| <= 0.10, |recall(block) - recall(none)| <= 0.10, and the control within 0.10 of none on each of the
+  three (two-sided: a rise counts). Beside it, not in the rule: dests = the bridge token alone (dumbest way 2: 351
+  edges), and the full-attention-only blocks (405 / 81 edges), each with its matched control. The period of the pick
+  sentence comes after the bridge, so it cannot reach the bridge's state at L; "sentence" differs from "bridge" by the
+  person token, "picked" and "the". (c): no patch; on O, each reader's question from its first word ("Which" / "How")
+  to the last token (the appended space: 29 / 30 tokens) cannot read the locker sentences at blocks 12..31 (20 blocks:
+  15660 / 16200 edges, 3915 / 4050 of them in full-attention blocks); control: the filler, the same count. Holds on the
+  9B iff lookup accuracy (the top token is O's answer) < 0.50 and recall accuracy >= 0.90 under block/all; the control
+  and the full-attention-only blocks (3915 / 4050 edges) reported beside it, not in the rule as written. The test holds
+  iff it holds on Muse and on the 9B. Point estimates decide (EPS 1e-9 at the bars); 95% cluster-bootstrap intervals over
+  the bridge items (10,000, seed 0) beside them. Scored by hand after Q47.6 is committed: scripts/x47_edges.py verdict.
+controls:
+- 'control/<dests>/<layers> (b) and control/<layers> (c): exactly as many edges, from the filler sentence''s 27 tokens instead of the locker sentences'' 27 (same destinations, same blocks; asserted per item)'
+- 'none (b): the change formed without a block, in the same batch as the blocked ones; unedited O read beside'
+- 'none (c): O read without a block, in the same batch as the blocked rows'
+- 'the recall''s switch (b) and the recall''s accuracy (c): the check that the blocks do not break identity'
+- 'dests = the bridge token alone (b, dumbest way 2) and full-attention-only blocks (9B), each with its matched control'
+- 'pre-run check (attn_knockout.run_check on item 0): an empty knock-out is bit-exact; the last token with every other position absent reads nothing; the DeltaNet kernel path against the torch reference; else the run stops'
+n: '300 items (the first 300 eligible C2 scenes, scene order) of 700 generated; plan 28 Oct on the 9B tokenizer: 700 kept with the filler, locker sentences 9 + 9 + 9 tokens, filler 27, pick sentence 5, prompt 102 tokens as read'
+seeds: [2510, 0, 888]
+notes: "SEALED: the job runs `run --part bc` only; it writes manifest, gate, competence, check, cases (positions and every arm's edge counts), outcomes and norms (per Delta: norm, share in U, cosine with none's), and prints counts. After Dan's Q47.6 is committed, by hand (CPU): uv run python scripts/x47_edges.py verdict; uv run python scripts/x47_edges.py view --name qwen35_9b_x47_6_bc. Queue: 47.6 last in batch 47 (queue_order). Cost (H100 PCIe, ledger): the routes C2 competence on 700 scenes plus load took ~400 s on the 9B (x8_half_9b 423 s, x8_a_9b 430 s, run_s, whose reads are a few thousand rows); here per item one forward of 18 rows to block 12 (~7 full-row equivalents), 20 read rows (b) and 10 knocked rows (c) at ~1.5x, ~42 row equivalents x 300 = ~12,600 rows at ~100 rows/s (x45q_9b: ~25,300 read rows in 262 s) = ~130 s; with setup ~30 s and the check ~15 s: ~580 s = 0.16 h; 0.25 h with margin."
