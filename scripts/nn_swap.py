@@ -23,6 +23,12 @@ jswap):
                     of the residual unchanged
   clamp_null        the clamp's edit, norm-matched, along a fixed random unit direction
   remove_k{k}       (note 9 addendum, necessity) h_X - Jk(h_X) at the site, no donor; remove_k{k}_rot: h_X - Jk(h_X) R^T
+  note 10, the paper's decomposition of the patch D = h_D - h_X over S = the union of X's and D's top-10 J++ atoms:
+  full_{src}        h_D (the whole patch)
+  lens_{src}        h_X + P_S D            (the lens part only)
+  rem_{src}         h_X + D - P_S D        (the remainder only)
+  remfix_{src}      h_D - P_S h_D + P_S h_X_clean   (the remainder, the site's lens part held at its clean value)
+  lensrand_{src}    h_X + P_R D, R a fixed random 20-dim subspace (control)
 Answers: the cand2 read among the relation's answers, classed kept (X's) / donor (D's) / third / other; transfer = donor
 - third, 95% bootstrap over bridges (jswap.score), per word.
 
@@ -172,6 +178,29 @@ def run_band(a, model, tok, lens, items, jobs, band: list[int], conds: list[str]
                         delta[:, 0] = 0  # position 0 (the attention sink) is never edited, as SwapClamp
                         delta[~ok_rows] = 0
                         return (h.float() + delta).to(h.dtype)
+                    if cond.split("_")[0] in ("full", "lens", "rem", "remfix", "lensrand"):  # note 10: the paper's decomposition
+                        kind, src = cond.split("_")
+                        hx = h[bi, xi].float()
+                        hd = (ins if src == "insert" else lat)[:, li]
+                        if kind == "full":
+                            new = hd
+                        else:
+                            if kind == "lensrand":  # control: a fixed random 20-dim subspace
+                                Q = rand[la][:, :20][None].expand(hx.shape[0], -1, -1)
+                            else:  # the union of X's and D's top-10 J++ atoms at the site (one subspace for every cell)
+                                _, cx = top_span_removal(dic[la], hx, 10, protected=groups, return_chosen=True)
+                                _, cd = top_span_removal(dic[la], hd, 10, protected=groups, return_chosen=True)
+                                Q = torch.linalg.qr(dic[la].atoms(torch.cat([cx, cd], dim=1)).transpose(1, 2).double())[0].float()
+                            proj = lambda v, Q=Q: (Q @ (Q.transpose(1, 2) @ v.unsqueeze(2))).squeeze(2)  # noqa: E731
+                            if kind in ("lens", "lensrand"):
+                                new = hx + proj(hd - hx)
+                            elif kind == "rem":
+                                new = hx + (hd - hx) - proj(hd - hx)
+                            else:  # remfix: the remainder, with the site's lens part held at its clean value
+                                hc = rec[la][bi, xi]
+                                new = hd - proj(hd) + proj(hc)
+                        h[bi, xi] = new.to(h.dtype)
+                        return h
                     src, kk = cond.split("_")[0], int(cond.split("_")[1][1:])
                     hx = h[bi, xi].float()
                     if src == "remove":  # note 9 addendum: the slice erased at the site, no donor (necessity)
@@ -230,7 +259,7 @@ def main(a) -> None:
         t = JS.table(it)
         ans = lambda b, t=t: t["facts"][b][0]  # noqa: E731
         ax = ans(x)
-        if p["family"] == "PM" and a.site in ("last", "span"):
+        if p["family"] in ("PM", "PK") and a.site in ("last", "span"):
             sites = JS.spans(bridge_positions(tok, p["ids"], x))
         elif a.site == "final":
             sites = [len(p["ids"]) - 1]
@@ -267,6 +296,9 @@ def main(a) -> None:
     if a.sample_per_word:
         jobs = [j for f in a.words for k, j in enumerate(per[f])
                 if len(per[f]) <= a.sample_per_word or k in set(random.Random(f"0:{f}").sample(range(len(per[f])), a.sample_per_word))]  # fmt: skip
+    if a.sample_refs:  # note 10: the reference words (all but RM) capped at N, seeded
+        jobs = [j for f in a.words for k, j in enumerate(per[f])
+                if f == "RM" or len(per[f]) <= a.sample_refs or k in set(random.Random(f"0:{f}").sample(range(len(per[f])), a.sample_refs))]  # fmt: skip
     if a.limit:
         jobs = [j for f in a.words for j in per[f][: a.limit]]
     print(f"{len(prompts)} eligible prompts; {len(jobs)} jobs; by word {dict(collections.Counter(j['family'] for j in jobs))}; "
@@ -299,6 +331,7 @@ if __name__ == "__main__":
     ap.add_argument("--conds", nargs="+", default=None)
     ap.add_argument("--sweep", nargs="+", default=None, help="layer windows, e.g. 4-8 8-12 (one run per window)")
     ap.add_argument("--sample-per-word", type=int, default=0)
+    ap.add_argument("--sample-refs", type=int, default=0, help="note 10: cap every word but RM at N (seeded)")
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0)
     a = ap.parse_args()

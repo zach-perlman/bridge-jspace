@@ -2434,3 +2434,47 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
        remove_k10 than under remove_k10_rot. MM is reported at its description and PM at its mention (named: the 9B
        lost 47 at the mention in the v3 swap run).
 - **Runs:** scripts/queues/h200_nnadd_1028.sh, per model after its note 9 queue. The wrong-bridge test runs now (CPU).
+
+#### Amendment 58 note 10 (Zach, 2026-10-28 ~09:00 UTC, before any run below; a 2-item mechanics smoke ran first, unread): the paper's decomposition as the unifying frame; Bolt, targeted
+
+- **Why (Zach, 28 Oct: "go ahead with it all"):**
+  - Both tracks' tools are cells of one decomposition, the paper's (Gurnee et al. 2026: 61% / 28% / 6% for the J-space
+    part / the remainder / the remainder with J-space clamped).
+  - Take the real change at the entity's site (D's state from another prompt), split it into its lens part and the
+    remainder, and measure each part's effect.
+  - My swap is the lens-part cell; Dan's remove-from-the-patch is the remainder cell.
+  - The split is run on the same v3 items for recalled vs stated answers and named vs never-named bridges.
+- **Seen when this was written:** note 9's sweeps and the 9B's band results (the never-named site exists; a computed
+  bridge's slice partly carries its entity). Nothing on this decomposition.
+- **Conditions (scripts/nn_swap.py):** the patch Δ = h_D - h_X at the site, at every band layer. S is the span of the
+  union of X's and D's top-10 J++ atoms there (≤ 20 dims, one subspace for every cell).
+  - full: h_D;
+  - lens: h_X + P_S Δ;
+  - rem: h_X + Δ - P_S Δ;
+  - remfix: the remainder, with the site's lens part held at its clean value (h_D - P_S h_D + P_S h_X,clean);
+  - lensrand: the lens cell over a fixed random 20-dim subspace (control).
+- **Donors:** insert (D from the neutral sentence) and latent (D's own never-named description end).
+- **Items:**
+  - RM: all eligible.
+  - References, capped at 150 per word (seeded): MM, PM (named, recalled) and PK (named, stated).
+  - Sites: the description's or mention's last token, and the whole span.
+- **Models and layers:** the 9B at L12-16; the 27B at L32-40 and its best window L24-31; Lightning at L27-33 and its
+  best window L21-26. The best windows come from note 9's sweeps.
+- **Readings, fixed now (per model, word and site; not read if full < 10):**
+  - "Travels through the workspace" if lens ≥ 2/3 x full and remfix ≤ 1/3 x full, with lensrand < 10 (the paper's
+    pattern).
+  - "Around it" if rem ≥ 2/3 x full.
+  - Otherwise "mixed".
+  - Expected: PM through, PK flat (lookups stay). RM is the question.
+- **Order:**
+  1. After each model's note 9 jobs, this decomposition.
+  2. Muse's held v3 runs (competence variants, probes, removal matrix, filler/repeat).
+  3. Bolt, targeted.
+  4. Rendering 1, last.
+- **Bolt (Zach: "don't skip it"; benchmarks compared first):**
+  - Bolt is much stronger at reasoning (GPQA 88.8 vs 75.6) but only modestly at knowledge (AA-Omniscience 21.8 vs
+    16.6), and ≈ Lightning on our v2 tasks.
+  - It runs ~5x slower here, on both GPUs, so it is targeted. v3 competence on RM and its hops (eligibility); then
+    note 9's never-named swap at its v2 band L42-53, k = 10 / 30 / 100 with every control, references capped at 80.
+  - Disk: Bolt is ~150 GB and 125 GB is free. Ministral's (27 GB) and Muse's (56 GB) caches are dropped (Zach's OK,
+    28 Oct) after Muse's runs end. Ministral's requeued note 1 / 2 runs are dropped with it.
