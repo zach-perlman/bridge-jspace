@@ -1,0 +1,108 @@
+{
+  "dropped": {
+    "A and B have the same number of legs": 357,
+    "no three false digits outside the locker digits and the true legs": 25
+  },
+  "gate": {
+    "after": {
+      "cases": 675,
+      "org_read_accuracy": {
+        "text": 0.9985185185185185,
+        "memory": 0.96
+      },
+      "gate": 0.8,
+      "pass": true,
+      "eligible": 623,
+      "follows": {
+        "text": {
+          "org": {
+            "n": 675,
+            "instructed": 0.9985185185185185,
+            "other_source": 0.0,
+            "neither": 0.0014814814814814814,
+            "no_digit": 0.0
+          },
+          "alt": {
+            "n": 675,
+            "instructed": 1.0,
+            "other_source": 0.0,
+            "neither": 0.0,
+            "no_digit": 0.0
+          }
+        },
+        "memory": {
+          "org": {
+            "n": 675,
+            "instructed": 0.96,
+            "other_source": 0.007407407407407408,
+            "neither": 0.03259259259259259,
+            "no_digit": 0.0
+          },
+          "alt": {
+            "n": 675,
+            "instructed": 0.9688888888888889,
+            "other_source": 0.005925925925925926,
+            "neither": 0.025185185185185185,
+            "no_digit": 0.0
+          }
+        }
+      }
+    },
+    "before": {
+      "cases": 675,
+      "org_read_accuracy": {
+        "text": 1.0,
+        "memory": 0.9777777777777777
+      },
+      "gate": 0.8,
+      "pass": true,
+      "eligible": 638,
+      "follows": {
+        "text": {
+          "org": {
+            "n": 675,
+            "instructed": 1.0,
+            "other_source": 0.0,
+            "neither": 0.0,
+            "no_digit": 0.0
+          },
+          "alt": {
+            "n": 675,
+            "instructed": 1.0,
+            "other_source": 0.0,
+            "neither": 0.0,
+            "no_digit": 0.0
+          }
+        },
+        "memory": {
+          "org": {
+            "n": 675,
+            "instructed": 0.9777777777777777,
+            "other_source": 0.0014814814814814814,
+            "neither": 0.02074074074074074,
+            "no_digit": 0.0
+          },
+          "alt": {
+            "n": 675,
+            "instructed": 0.9688888888888889,
+            "other_source": 0.0014814814814814814,
+            "neither": 0.02962962962962963,
+            "no_digit": 0.0
+          }
+        }
+      }
+    }
+  },
+  "identity_dropped": {
+    "after": 0,
+    "before": 0
+  },
+  "items": {
+    "after": 300,
+    "before": 300
+  },
+  "entities": {
+    "after": 32,
+    "before": 32
+  }
+}
