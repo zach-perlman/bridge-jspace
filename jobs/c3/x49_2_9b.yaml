@@ -1,0 +1,67 @@
+id: x49_2_9b
+title: "Batch 49.2 on the 9B (L12): the removal ladder. On the changed prompt of the clean one-pick scenes, the J++ part taken out at more and more tokens and layers (bridge word at L; L..L+3; + the item's mention; + the question; every token; Zach's top-10 at every token over L12-16), each beside a random subspace of the same share per token; both readers, both sentence orders"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.25
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=;
+  uv run python scripts/x49_ladder.py run --name qwen35_9b_x49_2 --why "Batch 49, test 49.2 (jobs/c3/batch49.yaml and amendment 2; Q49.2): the removal ladder on S, clean design, rungs 1-6 (the bridge's Δ's 25 OMP atoms at L12, at L12..15 at the bridge word, + the item's mention, + the question's tokens, every token; Zach's top-10 per token over L12-16), random subspace of the same share per token beside each; sealed"
+question: >-
+  47.5 took the J++ part out at one token and one layer and the recall kept 0.97; Zach's knock-out takes the top-10 lens
+  directions out at every token over a band and the recall breaks. Where between the two does "follows" become "needs",
+  and does the lookup ever need it?
+why_it_matters: >-
+  Decides between "the recall follows the J++ part" and "needs it" as the README's verb, and whether the gap to Zach's
+  knock-out is the number of tokens (a second copy at the item's earlier mention, or the question) or the definition of
+  the part (rung 5 vs rung 6: two definitions, not one).
+hypotheses:
+  Q49.2: "Dan's answer in predictions/2026-10-28_dan.md (Q49.2, per model: 9B; Muse; three P(yes)); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x49_ladder.py verdict refuses until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch49.yaml, 49.2, with amendment 2), verbatim: "The second copy is the earlier mention":
+  rung (3) costs the recall >= 0.3 more than rung (2) in locker-first scenes (paired CI excluding 0) and rung (2)
+  already costs >= 0.3 in locker-after scenes. "Needed only when everything goes": rungs (1)-(4) each <= 0.2 and rung
+  (5) or (6) >= 0.5. "The lookup never needs it" if <= 0.1 beyond random at every rung. Design, verbatim: "Locker-first
+  clean scenes (the earlier mention exists) and locker-after clean scenes (it does not); on S; zeroing (47.5's
+  operation, per-layer lens and OMP), the random subspace of the same share beside each rung. Rungs: (1) bridge word,
+  L; (2) bridge word, L..L+3; (3) + the item's earlier mention, L..L+3; (4) + the question's tokens, L..L+3; (5) every
+  token, L..L+3; (6) every token, Zach's band (9B L12-16, Muse L23-29). Amendment 2: on rungs (3)-(5) the removal at
+  tokens other than the bridge word is the projection onto the span of the same 25 atoms (the bridge item's lens
+  identity wherever it appears), random of the same share per token; rung (6) uses Zach's top-10 per token via his code
+  path. Both readers: share of S's answers kept." As computed (fixed before any run; Dan may override before the run):
+  scenes = each model's 45m run (x0_necessity --alt fresh, chat; the clean one-pick scenes: a locker item nobody picks
+  becomes S's asked pick, only the bridge token differs), its eligible scenes at L (its gate passed; asserted), all of
+  them (9B: 417 = 186 locker-first + 231 locker-after; plan in results/x49_ladder/plan-*-qwen35_9b). Order = x0_strata's
+  'alt locker vs asked pick' (the new item's locker sentence, i.e. its earlier mention, before or after the asked pick;
+  x45p's split); x45m's both-lockers group kept per item, descriptive. "The removal" at layer l = 47.5's zeroing: the
+  state minus its projection on the span Q_l of the 25 signed-OMP atoms of Δ_l = h_S - h_O at the bridge word over the
+  J++ lens's letter-token atoms at l (x0_parts.omp_atoms; X0's picks), on the state as it arrives; at every rung token
+  the same Q_l (amendment 2). "The item's earlier mention" = the tokens of S's bridge item's name in its locker sentence
+  (character offsets; 1-2 tokens); in locker-after scenes the same sentence after the pick is used (amendment 2's
+  "wherever it appears"; the second-copy rule reads rung 2 there, so this does not touch the rule). "The question's
+  tokens" = Zach's 'question' positions (ablate_v2.question_start onward: the question sentence, the template's tail
+  and the read's appended token; ~31 on the 9B). "Every token" = every token of the read prompt (~77), the appended one
+  included, no sink skipped. Random beside rungs 1-5: per token the first k columns of X0's random basis (seed 888 + l),
+  k so they hold Q_l's share of that token's ||h_S||^2 on S's clean state at l (the reader's own read prompt). Rung 6 =
+  ablate.removal_edit("top", LensDictionary(W_U[letters] * final-norm gain, J_l), [RowSettings(protected = the dictionary
+  rows of S's clean read's top-10 tokens)], k = 10) at every token of L12..16 (ablate_v2's paper10 with --positions all,
+  its dictionary built as ablate_v2 builds it), fp32 (TF32 off); random beside: per token random_subspace_part at the share his removal
+  takes from the state as it arrives. Kept = the top token at X0's chat read of S is S's answer's first token, per
+  reader. Cost(rung) = kept(random) - kept(removal) (beyond random, as 47.5's "needed" and the lookup rule read it; raw
+  kept(none) - kept(removal) reported beside). "Second copy" = in locker-first scenes the recall's cost(3) - cost(2) >=
+  0.30 with its paired cluster-bootstrap 95% CI's lower end > 0, and in locker-after scenes the recall's cost(2) >= 0.30.
+  "Only everything" (over all scenes) = the recall's cost at rungs 1, 2, 3, 4 each <= 0.20 and max(cost(5), cost(6)) >=
+  0.50. "The lookup never needs it" (over all scenes) = the lookup's cost <= 0.10 at every rung. Per order group the
+  same numbers, descriptive. Q49.2's three answers per model are these three labels. Point estimates decide (EPS 1e-9
+  at the bars); cluster-bootstrap CIs over the bridge items (10,000 resamples, seed 0; paired for differences) beside
+  them. Code: scripts/x49_ladder.py verdict (numbers, rules).
+controls:
+- 'beside every rung, a random subspace of the same share of each token''s ||h_S||^2 (X0''s random basis, seed 888 + l); for rung 6 the share his top-10 removal takes there'
+- 'S unedited (keeps ~1 by the source run''s eligibility; reported)'
+- 'the lookup on the identical removal (its own rule)'
+- 'raw cost kept(none) - kept(removal) beside the cost beyond random'
+- 'per token and layer: the atoms'' share of ||h_S||^2 at the bridge, mention, question and every token; rung 6''s removed share per band layer'
+n: '417 clean one-pick scenes (45m''s eligible at L12, chat): 186 locker-first, 231 locker-after; 45 bridge items'
+seeds: [888, 0]
+notes: "Batch 49 (Dan, 28 Oct ~14:35, amendment 2 ~14:20), 49.2; queue item 7 (after 49.5). Sealed: the run writes manifest (switches, rungs, positions, edits, seeds), plan (counts), cases (the items with each reader's rung positions and marked S prompt), outcomes (both readers, 13 arms: none, zero1..zero6, rand1..rand6; kept, to_org, top token, p_org, p_alt, ld), norms (per item and reader: Δ's atoms' shares at the bridge per layer, the atoms' share of ||h_S||^2 at each token set and layer, rung 6's removed share per band layer for the removal and its random, the protected rows) and 10 examples' greedy texts; no verdict. The J++ lens must have maps at L12..16 (asserted). By hand after Dan's Q49.2 is committed (CPU, after all three models): uv run python scripts/x49_ladder.py verdict (the rules, the tables, the verify-pack view: 10 random items per run, seed 0, each reader's S prompt as read with each rung's tokens marked, every arm's answer and greedy text); figure: scripts/story_b49b.build_ladder(verdict_dir, out_name). Estimate from the mats box ledger (results/jobq/ledger_sesterce-h100x2.jsonl): x47_4_9b took 310 s wall (265 s run) for ~11,000 reads of the main and clean designs (7 arms x 2 readers) and 2 forwards per item; here 417 x 2 x 13 = 10,842 reads, 4 forwards per item, 25-atom OMP at 4 layers per item, and rung 6's top-10 at every token over 5 layers (~0.5 TFLOP per item and reader in fp32, ~15 s in all): ~400 s = 0.11 h -> 0.25 with margin."

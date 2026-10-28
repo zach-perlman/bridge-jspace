@@ -1,0 +1,93 @@
+{
+  "source": "qwen35_9b_x45m_fresh",
+  "layer": 12,
+  "gate": {
+    "cases": 600,
+    "org_accuracy": {
+      "PP": 0.97,
+      "PM": 0.8533
+    },
+    "said_accuracy": {
+      "PP": 0.97,
+      "PM": 0.855
+    },
+    "cand_accuracy": {
+      "PP": 0.965,
+      "PM": 0.8483
+    },
+    "pass": true,
+    "eligible": 417,
+    "enough": true,
+    "descriptive": false
+  },
+  "items_at_L": 417,
+  "dropped": {},
+  "items": 417,
+  "entities": 45,
+  "orders": {
+    "locker-first": 186,
+    "locker-after": 231
+  },
+  "group45m": {
+    "locker-first / locker-before": 151,
+    "locker-after / locker-after": 166,
+    "locker-after / mixed": 65,
+    "locker-first / mixed": 35
+  },
+  "tokens_median": {
+    "lookup": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 31.0,
+      "5": 77.0,
+      "6": 77.0
+    },
+    "recall": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 33.0,
+      "5": 81.0,
+      "6": 81.0
+    }
+  },
+  "target": "qwen3.5-9b",
+  "layers": [
+    12,
+    13,
+    14,
+    15
+  ],
+  "band": [
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "rungs": {
+    "1": "the bridge word, at L",
+    "2": "the bridge word, at L..L+3",
+    "3": "+ the item's mention in its locker sentence, L..L+3",
+    "4": "+ the question's tokens, L..L+3",
+    "5": "every token, L..L+3: the projection on the same 25 atoms (the bridge's change) at every token",
+    "6": "every token, Zach's band: his top-10 lens directions per token (his code path)"
+  },
+  "arms": [
+    "none",
+    "zero1",
+    "rand1",
+    "zero2",
+    "rand2",
+    "zero3",
+    "rand3",
+    "zero4",
+    "rand4",
+    "zero5",
+    "rand5",
+    "zero6",
+    "rand6"
+  ],
+  "reads": 10842
+}
