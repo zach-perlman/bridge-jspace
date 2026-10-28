@@ -1,0 +1,163 @@
+{
+  "exp": "x51_addr",
+  "run": "muse30_x51_11_p3",
+  "why": "Batch 51, test 51.11 (jobs/c3/batch51.yaml addendum_3; Q51.11): part 3 on muse-glimmer-30b at L26; sealed",
+  "part": 3,
+  "test": "51.11",
+  "spec": "jobs/c3/batch51.yaml (addendum_3, 51.11)",
+  "question": "Q51.11 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T21:45:58Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "1cc52791d4293b3467a5f0d2797882f962f9d077",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "layer": 26,
+  "read": "X0's chat read (the top token after a digit's space token appended to O); edits added at the bridge word at L",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "31d15f59435fe45cd29f99b47b171e2cb6cd6ca1e2efbcd1afb28a363a960821",
+    "results/x51_addr/muse30_x51_11_p1/S3/R.npz": "c5fa5e0599bd596af624d1051dff45d10ad45f582e6da63c88ab5fb6cec10e40",
+    "results/x51_addr/muse30_x51_11_p1/S3/cases.jsonl": "1f29aa8cb3f27e8573d384a1bbf591256d88d74c97a77f1619b9884943518af4",
+    "results/x51_addr/muse30_x51_11_p1/S3/competence.jsonl": "4cc06dc66d8a6f36be38f5f0ae6305f29d1d64c23ea1336e5aca0b3d6aba3dfa",
+    "results/x51_addr/muse30_x51_11_p1/S3/done.json": "7edaf03036be86f567a0fac644295ea5362381bf54f502ffab085aa9c2eea1d9",
+    "results/x51_addr/muse30_x51_11_p1/S3/fit.npz": "fab38c416fcb1086d0c82ec24f0c44094fa80c99ef3f1f650334f58510dc9760",
+    "results/x51_addr/muse30_x51_11_p1/S3/fit_scenes.jsonl": "bb96f34e72aa66d6178e96ddcf8b00d80b8c059e6eb67a069cda83bd339c35dc",
+    "results/x51_addr/muse30_x51_11_p1/S3/outcomes.jsonl": "99d4acd396a17289033f7f584bf4589d023cd66c02cd0284f723c6df420c3015",
+    "results/x51_addr/muse30_x51_11_p1/S3/pairs.json": "df684c616257e340dd1c3d346cd91fa67edebd42dc847f5d0e800d92b9e20fad",
+    "results/x51_addr/muse30_x51_11_p1/S3/reads.jsonl": "fc904970272b484c15c8bc69702b4cf59c9933281e8cae7f6cb6ef3109ec9367",
+    "results/x51_addr/muse30_x51_11_p1/S3/status.json": "cbc04b1bbacdb071c3dfbb1f75784d36e4c199887e99729ee14ea4a36a83156b",
+    "results/x51_addr/muse30_x51_11_p1/S3/stops.json": "48b739335236784dd263506b75e6564a93d0b02864410a80405845b037a1cba4",
+    "results/x51_addr/muse30_x51_11_p1/S3/train.jsonl": "5b812534e4631b812be7f0c83f967a02fbd69be98662b17f33c05f7181b9d8de",
+    "results/x51_addr/muse30_x51_11_p1/S4/R.npz": "fee6deb620e305670d7b9ccf8216f994a0c5c8704fdb280113ef37b3198f6f81",
+    "results/x51_addr/muse30_x51_11_p1/S4/cases.jsonl": "99aa27dd6339d42a145e6a5eb99d5b13cee9cd7d896350ccd7fd9a8bea4aad0d",
+    "results/x51_addr/muse30_x51_11_p1/S4/competence.jsonl": "87c4702181c206e69e0ea45f5936e0b16fe069df2884e4bcaac58bcf081a7b37",
+    "results/x51_addr/muse30_x51_11_p1/S4/done.json": "7edaf03036be86f567a0fac644295ea5362381bf54f502ffab085aa9c2eea1d9",
+    "results/x51_addr/muse30_x51_11_p1/S4/fit.npz": "70e13c74ddc4e47784e17feb78dfa329028451a100cee6ef6d77c50333dd20a1",
+    "results/x51_addr/muse30_x51_11_p1/S4/fit_scenes.jsonl": "049613ea4c85851b703570916b8594b367674566f3f030e1b2239f9ad8f5c498",
+    "results/x51_addr/muse30_x51_11_p1/S4/outcomes.jsonl": "e9d48968e9bdc3987991822cedc7f0534e2b62da213b0b7579da762a307b12e2",
+    "results/x51_addr/muse30_x51_11_p1/S4/pairs.json": "05877d68aebefeab51d91a2f2191cbbac9abae1ee42e6b49ec3c1e1cd55acfef",
+    "results/x51_addr/muse30_x51_11_p1/S4/reads.jsonl": "ef90ba8425596778248a5a4a446ca7a5b55fe3d6894c1688879fac2f86e5ade6",
+    "results/x51_addr/muse30_x51_11_p1/S4/status.json": "46f6a48d733ca1fa68d1fedfbfd235ed3254ffb703b9daf2996f1e9b4a58ed8b",
+    "results/x51_addr/muse30_x51_11_p1/S4/stops.json": "5fee9ad476eff3079fb7c290577036ca516071acad0f6b908260c820700432ed",
+    "results/x51_addr/muse30_x51_11_p1/S4/train.jsonl": "884c286a0f202f4966f97468a10f7a8a11f911028fb8d6ffaf5d74278825f125",
+    "results/x51_addr/muse30_x51_11_p1/S6/R.npz": "6123cf60c2d95a2db9337d1cc20c18d7fdbb7631eadc45bf67f3fd3586e2dbc3",
+    "results/x51_addr/muse30_x51_11_p1/S6/cases.jsonl": "4b45e6d62ae997ef37ed35f8e9b48b30eb6496941af6af9572734fd777223f76",
+    "results/x51_addr/muse30_x51_11_p1/S6/competence.jsonl": "fb057c6b1a4d0d599d37093ce95959b6974dc181d9e3df71c19c73db01070886",
+    "results/x51_addr/muse30_x51_11_p1/S6/done.json": "7edaf03036be86f567a0fac644295ea5362381bf54f502ffab085aa9c2eea1d9",
+    "results/x51_addr/muse30_x51_11_p1/S6/fit.npz": "0117c744e3f0e65617ce723a33ef78798d042636df1a5832516af104dd743d7d",
+    "results/x51_addr/muse30_x51_11_p1/S6/fit_scenes.jsonl": "ae0ff6cb85fbe147a03c138cfd59e61734fe9460ab6d1c96dd2ff64d4fe21ad0",
+    "results/x51_addr/muse30_x51_11_p1/S6/outcomes.jsonl": "6a1dfd1f4085d50b58db359938efaaf6803249b8b026d3a7ebabbeec1fa51447",
+    "results/x51_addr/muse30_x51_11_p1/S6/pairs.json": "4edafce0a18af00e26ffc6e4b9daad9578512791c25b152a3f9b7710c098b188",
+    "results/x51_addr/muse30_x51_11_p1/S6/reads.jsonl": "a4cd16103a5c608064461b53199d3f28693f138cb43b5cd30ab4683061170d3d",
+    "results/x51_addr/muse30_x51_11_p1/S6/status.json": "1e16da6c59ae474231049d1506fe7d58ea8c4174ecc0526214b36e2864d19f8a",
+    "results/x51_addr/muse30_x51_11_p1/S6/stops.json": "78c8b8843ddfa43413440548e078b40ca66bc8719905489357d34f41e56dc069",
+    "results/x51_addr/muse30_x51_11_p1/S6/train.jsonl": "13c4b48a93954d939e6ccb2fc7e13a8f804d5435268ec84cdd39336ae3febc19",
+    "results/x51_addr/muse30_x51_11_p1/S8/R.npz": "f0c6a21aa22b36fec7c5dee21dc4ecab8caa50ae43e40e45621419c445d27ba7",
+    "results/x51_addr/muse30_x51_11_p1/S8/cases.jsonl": "a028f5a0b8e85c96205df938867b8b89ae8b34ce8783ace7a5044ad3bdfa65d6",
+    "results/x51_addr/muse30_x51_11_p1/S8/competence.jsonl": "40487adf5be15219d8098b75761ca317ece3f2996d40822467167301f3f8a848",
+    "results/x51_addr/muse30_x51_11_p1/S8/done.json": "7edaf03036be86f567a0fac644295ea5362381bf54f502ffab085aa9c2eea1d9",
+    "results/x51_addr/muse30_x51_11_p1/S8/fit.npz": "ea69bf2a6b603ada9691aeec6002d600d46661854e9552a22228ae34bdd109ca",
+    "results/x51_addr/muse30_x51_11_p1/S8/fit_scenes.jsonl": "b4c7624395c4d5524bd1b95779d37785efbbcb7f48cd7f09fa125b9de03590ac",
+    "results/x51_addr/muse30_x51_11_p1/S8/outcomes.jsonl": "988f80b211df3967dc0418be171eef92649c3f5ba8caa80eb70db47e9bea2086",
+    "results/x51_addr/muse30_x51_11_p1/S8/pairs.json": "6be3b0917ef0456388f5892663c1112faa476397343c24c817ac395c6561498a",
+    "results/x51_addr/muse30_x51_11_p1/S8/reads.jsonl": "073f58cd10f52b26e42fd03155a58114d87f13c2101890cb9577e0f25f9d016d",
+    "results/x51_addr/muse30_x51_11_p1/S8/status.json": "b3970905a880c27422edfac965949972a27490301afe5a73024762f79465f6dc",
+    "results/x51_addr/muse30_x51_11_p1/S8/stops.json": "07e41447971112172ab50cd333f8a65d902e9f640160375790a6ce498b8f3954",
+    "results/x51_addr/muse30_x51_11_p1/S8/train.jsonl": "5016d4bb1f44e09b321d1be54f68853d68672ecd1b59fd4329ffdcd81f489c63"
+  },
+  "part1": "muse30_x51_11_p1",
+  "slots": [
+    6
+  ],
+  "ks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    7
+  ],
+  "pairs": {
+    "target": 360,
+    "min": 300,
+    "cap_per_ordered_pair": {
+      "3": 300,
+      "4": 200,
+      "6": 120,
+      "8": 80
+    },
+    "chunk": 8
+  },
+  "training": {
+    "method": "x51_das.train_fit (48.1's loop, early stopping on the select split's IIA every 25 steps, patience 4, micro-batch halved on CUDA OOM)",
+    "lr": 0.001,
+    "max_steps": 300,
+    "batch": 16,
+    "micro_batch": 8,
+    "target": "O's digit at slot j (the position answer) at the read position of O"
+  },
+  "bars": {
+    "own_iia": 0.8,
+    "random": 0.15,
+    "reach": 0.6,
+    "cut_one_code": 0.6,
+    "cut_partly": 0.3,
+    "different": 0.3,
+    "midpoint_works": 0.3,
+    "midpoint_none": 0.1,
+    "full_reach": 0.4
+  },
+  "doses": {
+    "swap": 2,
+    "midpoint": [
+      2,
+      4
+    ],
+    "midpoint_decisive": 2
+  },
+  "seeds": {
+    "scenes": 5110,
+    "split": 0,
+    "init": "5111 + 100 k (shuffled + 10)",
+    "shuffle": "5112 + k",
+    "random_R": "5113 + k",
+    "batches": "4803 + the R's seed",
+    "random_directions": 5114,
+    "random_subspaces": 5115,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "as_computed": "see scripts/x51_addr.py's docstring (repeated in the job specs)",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.11 answer",
+  "entity_split": {
+    "train": 19,
+    "select": 6,
+    "test": 7
+  },
+  "failed_slots": {},
+  "finished_utc": "2026-10-28T21:50:26Z"
+}
