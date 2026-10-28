@@ -1,7 +1,9 @@
-"""Batch 50, Z1 and Z2 (scripts/x50_zach.py): the K / M pairing, the counterfactual prompts on Zach's v2 passages (only
-the pointer's name / the description changes, the patch token at one index), the leak filter, the order strata, the
-rules on planted numbers, the seal, and the run stage end to end on a tiny fake model (CPU). No real model."""
+"""Batch 50, Z1, Z2 and Z3 (scripts/x50_zach.py): the K / M pairing, the counterfactual prompts on Zach's v2 passages
+(only the pointer's name / the description changes, the patch token at one index; Z3: B's and C's fact sentences swap
+slots, B's with an unstated value), the leak filter, the order strata, the route classification, the rules on planted
+numbers, the seal, and the run stage end to end on a tiny fake model (CPU). No real model."""
 
+import functools
 import json
 import math
 from types import SimpleNamespace
@@ -218,9 +220,11 @@ def test_dan_answer_reads_only_its_block(monkeypatch):
     def fake_git(text: str):
         return lambda *a, **k: SimpleNamespace(stdout=text)
 
-    blocks = "**Q50.1** (Z1) ...\n\nDan:{}\n\n**Q50.2** (Z2) ...\n\nDan:{}\n\n**Q50.3** z\n\nDan: w\n"
+    blocks = (
+        "**Q50.1** (Z1) ...\n\nDan:{}\n\n**Q50.2** (Z2) ...\n\nDan:{}\n\n**Q50.3** z\n- Position >= 0.2\n\nDan: w\n"
+    )
     monkeypatch.setattr(Z.subprocess, "run", fake_git(blocks.format("", "")))
-    assert Z.dan_answer("Q50.1") == "" and Z.dan_answer("Q50.2") == ""
+    assert Z.dan_answer("Q50.1") == "" and Z.dan_answer("Q50.2") == "" and Z.dan_answer("Q50.3") == "w"
     monkeypatch.setattr(Z.subprocess, "run", fake_git(blocks.format(" split holds 70%", "")))
     assert Z.dan_answer("Q50.1") == "split holds 70%" and Z.dan_answer("Q50.2") == ""
 
@@ -247,7 +251,7 @@ def test_verdict_and_view_are_sealed_then_written(tmp_path, monkeypatch):
 # ---- the run stage on a fake model (CPU) --------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("part", Z.PARTS)
+@pytest.mark.parametrize("part", ["z1", "z2"])
 def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch, part):
     import torch
 
@@ -291,3 +295,208 @@ def test_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch, part):
     assert torch.allclose(whole.delta[0], h["alt"][rd["pos"]] - h["org"][rd["pos"]], atol=1e-5)
     if part == "z2":
         assert (out / "desc_competence.jsonl").exists()
+
+
+# ---- Z3: routes on scattered facts ----------------------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def z3_built(tok):
+    ps, _ = Z.load_pairs(Z.SETS[0], "z3")
+    cases, why = Z.z3_cases(tok, ps)
+    assert len(cases) + sum(why.values()) == len(ps) == 358
+    return ps, cases, why
+
+
+def test_swap_slots_puts_c_in_bs_slot_and_b_with_its_new_value_in_cs():
+    ctx = "Intro. B is b. Filler. C is c. Iris picked A."
+    assert Z.swap_slots(ctx, "B is b.", "C is c.", "B is e.") == "Intro. C is c. Filler. B is e. Iris picked A."
+    assert Z.swap_slots("C is c. B is b.", "B is b.", "C is c.", "B is e.") == "B is e. C is c."
+    with pytest.raises(AssertionError):
+        Z.swap_slots("B is b. B is b. C is c.", "B is b.", "C is c.", "B is e.")
+
+
+def masked(text: str, sents: list[str], ptr: str) -> str:
+    """The text with each fact sentence replaced by '#' and the pointer sentence by 'P'."""
+    return functools.reduce(lambda u, x: u.replace(x, "#"), sents, text).replace(ptr, "P")
+
+
+def test_z3_items_follow_the_design(tok, z3_built):
+    ps, cases, why = z3_built
+    assert len(cases) >= 15 and why["not three entities (level 1)"] == 179
+    assert why["a fact sentence comes after the pointer sentence"] > 0
+    by = {p[Z.LOOKUP]["scene"]: p for p in ps}
+    for c in cases:
+        k = by[c["scene"]][Z.LOOKUP]
+        rel, w, A, B, C, v = c["relation"], c["wording"], c["bridge"], c["cf_bridge"], c["slot_of"], c["values"]
+        assert k["level"] == 0 and sorted(k["entities"]) == sorted([A, B, C]) and Z.facts_first(k)
+        assert (v["original"], v["identity"], v["position"]) == tuple(Z.fact(rel, e) for e in (A, B, C))
+        assert len(set(v.values())) == 4 and v["value"] in Z.tables().vocab(rel)
+        assert not Z.leaks(k["context"] + "\n" + k["question"], [v["value"]])  # the new value is unstated in O
+        assert list(c["readers"]) == [Z.LOOKUP]
+        rd = c["readers"][Z.LOOKUP]
+        o, s, s0 = rd["context"], rd["cf_context"], rd["c0_context"]
+        assert o == k["context"] and rd["question"] == rd["cf_question"] == k["question"]
+        p_o, p_s = Z.pointer(k, A), Z.pointer(k, B)
+        fa, fb, fc = (Z.kfact(rel, w, e) for e in (A, B, C))
+        fb_new = Z.kfact(rel, w, B, v["value"])
+        assert v["value"] in fb_new and s0 == o.replace(p_o, p_s)
+        # S: the pointer names B; C's sentence takes B's slot, B's (stating e) takes C's; nothing else moves
+        slots_o = sorted([fa, fb, fc], key=o.index)
+        slots_s = sorted([fa, fc, fb_new], key=s.index)
+        assert slots_s == [{fa: fa, fb: fc, fc: fb_new}[x] for x in slots_o]
+        assert all(s.index(x) < s.index(p_s) for x in slots_s)  # still every fact before the pointer
+        assert masked(o, [fa, fb, fc], p_o) == masked(s, [fa, fc, fb_new], p_s)
+        assert c["slots"] == {"A": slots_o.index(fa), "B": slots_o.index(fb), "C": slots_o.index(fc)}
+        # tokens: one length, the patch token = the pointer name's last token, nothing after it changes
+        org, pos = rd["ids"]["org"], rd["pos"]
+        for var, name in (("alt", B), ("alt0", B)):
+            alt = rd["ids"][var]
+            assert len(alt) == len(org)
+            changed = [i for i, (a, b) in enumerate(zip(org, alt, strict=True)) if a != b]
+            assert changed and max(changed) <= pos
+            if var == "alt0":
+                assert min(changed) >= rd["span"][0]  # S0: only the name
+            assert tok.decode(alt[rd["span"][0] : pos + 1]).strip().endswith(name.split()[-1])
+        assert tok.decode(org[rd["span"][0] : pos + 1]).strip().endswith(A.split()[-1])
+        assert rd["route_tokens"] == {r: Z.answer_tok(tok, v[r]) for r in ("original", "identity", "position", "value")}
+        assert (rd["tok_A"], rd["tok_b"], rd["tok_b0"]) == (rd["route_tokens"]["original"], rd["route_tokens"]["value"],
+                                                            rd["route_tokens"]["identity"])  # fmt: skip
+        assert [g[0] for g in Z.golds(rd)] == ["org", "alt", "alt0"]
+        assert [g[1] for g in Z.golds(rd)] == [v["original"], v["value"], v["identity"]]
+
+
+def test_z3_route_classification_is_x6_routes(z3_built):
+    from scripts import x6_routes as R
+
+    assert R.ROUTES == Z.ROUTES
+    rd = z3_built[1][0]["readers"][Z.LOOKUP]
+    for r, t in rd["route_tokens"].items():
+        assert R.classify(t, rd) == r
+    assert R.classify(max(rd["route_tokens"].values()) + 1, rd) == "other"
+
+
+def test_z3_rule_bars():
+    nan = float("nan")
+    r = Z.z3_rule(0.20, 0.05)
+    assert r["clause"] == "the address exists in scattered-fact passages" and r["value_ok"] and r["position_ge_0_2"]
+    assert r["follow_up_45d"]
+    r = Z.z3_rule(0.05, 0.06)
+    assert r["clause"].startswith("no position route in his layout") and not r["value_ok"] and not r["position_ge_0_2"]
+    assert Z.z3_rule(0.19, 0.0)["clause"].startswith("in between") and not Z.z3_rule(0.19, 0.0)["follow_up_45d"]
+    assert Z.z3_rule(nan, 0.0)["clause"].startswith("can't tell")
+
+
+def planted_z3(tmp_path, monkeypatch, *, position=0.30, value=0.0, target="qwen3.5-9b", gate_pass=True):
+    """100 passages, 25 bridge entities. C2 whole: the first `position` share answers C's fact, the next `value` share
+    the new value, the next 40 B's fact (identity), the rest A's (original); every other arm and C0's arms the original,
+    except C0 whole: identity on 60. The first 40 passages keep C's token span."""
+    monkeypatch.setattr(Z, "RESULTS", tmp_path)
+    run = Z.RUNS["z3"][target]
+    src = tmp_path / run
+    src.mkdir()
+    (src / "manifest.json").write_text(json.dumps({"model": {"target": target}, "layers": [12]}))
+    order = [[Z.Z3_SETS[0], f"s{i:03d}"] for i in range(100)]
+    (src / "gate.json").write_text(json.dumps({"pass": gate_pass, "chosen": 100, "eligible": 100, "cases": 120,
+                                               "org_read_accuracy": {"K": 0.9}, "order": order}))  # fmt: skip
+    n_pos, n_val = round(100 * position), round(100 * value)
+    rows, cases = [], []
+    for i in range(100):
+        s = f"s{i:03d}"
+        bounds = (("position", n_pos), ("value", n_pos + n_val), ("identity", n_pos + n_val + 40), ("original", 101))
+        whole = next(rt for rt, hi in bounds if i < hi)
+        base = {"scene": s, "set": Z.Z3_SETS[0], "entity": f"e{i % 25}", "cf_entity": "x", "layer": 12, "reader": "K",
+                "slot_aligned": i < 40}  # fmt: skip
+        for cd in Z.Z3_CONDS:
+            for a in ("none", *Z.ARMS):
+                rt = {("C2", "whole"): whole, ("C0", "whole"): "identity" if i < 60 else "original"}.get(
+                    (cd, a), "original"
+                )
+                rows.append({**base, "condition": cd, "arm": a, "route": rt, "switched": int(rt == "value"), "top": 7})
+        cases.append({"set": Z.Z3_SETS[0], "scene": s, "bridge": f"e{i % 25}", "cf_bridge": "B", "slot_of": "C",
+                      "answer": "a", "cf_answer": "e", "slot_aligned": i < 40,
+                      "values": {"original": "a", "identity": "b", "position": "c", "value": "e"},
+                      "readers": {"K": {"id": f"K-{s}", "answer": "a", "cf_answer": "e", "lure": None, "pos": 2,
+                                        "ids": {"org": [1, 2, 3, 4], "alt": [1, 5, 6, 4], "alt0": [1, 2, 6, 4]}}}})  # fmt: skip
+    X.write_jsonl(src / "outcomes.jsonl", rows)
+    X.write_jsonl(src / "cases.jsonl", cases)
+    return run
+
+
+def test_planted_z3_shares_and_rule(tmp_path, monkeypatch):
+    m = Z.model_result("z3", planted_z3(tmp_path, monkeypatch), n_boot=200)
+    lr = m["layer_results"][12]
+    assert m["status"] == "tested" and lr["n"] == 100 and lr["entities"] == 25 and "beside" not in m
+    w = lr["shares"]["C2"]["whole"]
+    assert [w[r][0] for r in Z.ROUTES] == [0.40, 0.30, 0.0, 0.30, 0.0]
+    assert w["position"][1] <= 0.30 <= w["position"][2]
+    assert lr["verdict"]["clause"] == "the address exists in scattered-fact passages" and lr["verdict"]["value_ok"]
+    assert lr["shares"]["C0"]["whole"]["identity"][0] == 0.60 and lr["shares"]["C2"]["no_jpp"]["original"][0] == 1.0
+    assert lr["slot_aligned"]["n"] == 40 and lr["slot_aligned"]["position"][0] == 0.75  # 30 of the first 40
+    (tmp_path / Z.RUNS["z3"]["qwen3.5-9b"]).rename(tmp_path / "old")
+    run = planted_z3(tmp_path, monkeypatch, position=0.03, value=0.10)
+    lr = Z.model_result("z3", run, n_boot=50)["layer_results"][12]
+    assert lr["verdict"]["clause"].startswith("no position route") and not lr["verdict"]["value_ok"]
+
+
+def test_z3_verdict_is_sealed_then_written(tmp_path, monkeypatch):
+    run = planted_z3(tmp_path, monkeypatch)
+    monkeypatch.setattr(Z, "dan_answer", lambda q: "")
+    with pytest.raises(AssertionError, match="sealed"):
+        Z.stage_verdict("z3", [run], n_boot=50)
+    assert [p.name for p in tmp_path.iterdir()] == [run]
+    monkeypatch.setattr(Z, "dan_answer", lambda q: "60%" if q == "Q50.3" else "")
+    out = Z.stage_verdict("z3", [run, "muse30_x50_z3"], n_boot=50, decode=lambda ids: "".join(f"<{i}>" for i in ids))
+    md = (out / "z3.md").read_text()
+    assert "Q50.3 (Dan: 60%)" in md and "| qwen3.5-9b | qwen35_9b_x50_z3 | tested | 12 | 100 (25) |" in md
+    assert "| the address exists in scattered-fact passages | True |" in md and "muse30_x50_z3 | pending" in md
+    view = (out / "view.md").read_text()
+    assert view.count("### s") == Z.N_VIEW and "S0 (C0's source" in view and "| 12 | C2 whole |" in view
+    assert (out / "z3_routes.png").exists() and json.loads((out / "z3.json").read_text())["dan"] == "60%"
+
+
+def test_z3_run_stage_end_to_end_on_a_fake_model(tok, tmp_path, monkeypatch):
+    import torch
+
+    from bridge_jspace import lens as L
+    from bridge_jspace import model as M
+    from bridge_jspace import pins
+
+    fake = FakeModel(tok, n_layers=40)
+    monkeypatch.setattr(M, "load_model", lambda: fake)
+    monkeypatch.setattr(L, "JLens", FakeLens)
+    monkeypatch.setattr(Z, "RESULTS", tmp_path)
+    monkeypatch.setattr(Z, "N_ITEMS", 3)
+    real_load = Z.load_pairs
+    monkeypatch.setattr(Z, "load_pairs", lambda s, p: (real_load(s, p)[0][:120], {}))
+    monkeypatch.setattr(Z, "competence", lambda model, cases, ws: [
+        {"scene": c["scene"], "set": c["set"], "reader": w, "variant": v, "greedy": "x", "right": True,
+         "read_right": i % 4 != 3, "top": 0}
+        for i, c in enumerate(cases) for w, rd in c["readers"].items() for v, _, _ in Z.golds(rd)])  # fmt: skip
+    out = Z.stage_run(f"{pins.RUN_PREFIX}fake_x50_z3", "z3")
+    m = json.loads((out / "manifest.json").read_text())
+    gate = json.loads((out / "gate.json").read_text())
+    assert m["items"] == 3 and m["readers"] == ["K"] and m["sets"] == list(Z.Z3_SETS) and m["rule"] == Z.RULE["z3"]
+    assert m["as_computed"] == Z.AS_COMPUTED_Z3 and "sealed" in m and m["conditions"] == Z.Z3_CONDS
+    assert gate["chosen"] == 3 and gate["chosen_s0_right"] == 3 and set(gate["org_read_accuracy"]) == {"K"}
+    assert not any(p.name.startswith(("verdict", "z3")) for p in out.iterdir())  # sealed
+    rows = X.read_jsonl(out / "outcomes.jsonl")
+    layers = Z.LAYERS[pins.TARGET]
+    assert len(rows) == 3 * 1 * len(Z.Z3_CONDS) * (1 + len(Z.ARMS)) * len(layers)
+    assert {r["condition"] for r in rows} == set(Z.Z3_CONDS) and {r["route"] for r in rows} <= set(Z.ROUTES)
+    cases = {(c["set"], c["scene"]): c for c in X.read_jsonl(out / "cases.jsonl")}
+    c = cases[tuple(gate["order"][0])]
+    rd = c["readers"]["K"]
+    for r in rows:
+        if (r["set"], r["scene"]) == (c["set"], c["scene"]):
+            from scripts import x6_routes as R
+
+            assert r["route"] == R.classify(r["top"], rd) and r["slot_aligned"] == c["slot_aligned"]
+            assert r["switched"] == int(r["top"] == (rd["tok_b"] if r["condition"] == "C2" else rd["tok_b0"]))
+    # the first two reads: the first chosen passage's C2 then C0, each the whole change h_src - h_O at the patch token
+    la = layers[0]
+    h = {v: fake.run(torch.tensor([rd["ids"][v]]), record=(la,))[1][la] for v in ("org", "alt", "alt0")}
+    reads = [e for s, e in fake.calls if len(e) == 1 + len(Z.ARMS)]
+    for edits, v in zip(reads[:2], ("alt", "alt0"), strict=True):
+        assert edits[0] == {} and edits[1][la].positions == [rd["pos"]]
+        assert torch.allclose(edits[1][la].delta[0], h[v][rd["pos"]] - h["org"][rd["pos"]], atol=1e-5)

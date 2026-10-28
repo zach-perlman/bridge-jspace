@@ -38,11 +38,27 @@ both readers say and read O's and S's answers right; the first N_ITEMS in passag
 passages whatever the gate says (gate.json records it; the verdict calls a failed gate "not tested" and shows the
 numbers as descriptive only; the same gate over Zach's own competence-kept passages is recorded beside).
 
-SEALED: the run writes per-item outputs only; `verdict` refuses until predictions/2026-10-28_dan.md holds Dan's Q50.1 (Z1)
-or Q50.2 (Z2) at HEAD; it applies the rules and writes the verify-pack view (10 random passages, seed 0) and the figure
-beside Zach's stored per-item knock-out rows (no rerun).
+Z3 (routes on scattered facts; Q50.3; the 9B and Muse). Passages: his level-0 P-start scenes (three entities, three
+stated facts of the relation), K reader only (PK: our lookup), every fact sentence before the asked person's pointer
+sentence (fact-first), the three answers distinct. With A the bridge, the other two entities are B and C (a seeded order
+per scene; the first (B, C, new value) that aligns). S (C2, x6_routes' C2): the pointer sentence names B; B's and C's
+fact sentences swap slots, B's with a new value e (a value of the relation that neither the passage nor its question
+states, nor a derived word; seeded order). Read on O under the change at B's name's last token (h_S - h_O at the pointer
+name's last token, as Z1), the lookup's answer is classified as x6_routes does (x6_routes.classify): identity = B's fact
+b (where it stands in O), position = the fact at B's new slot in O (C's fact c), value = e, original = A's fact a, other.
+C0 (descriptive, x6_routes' C0): S0 = O with only the pointer's name changed to B (Z1's counterfactual). Eligible: O and
+S (C2) said and read right (a and e); the gate and the first N_ITEMS as above; sets: his main set, then the second seed,
+then his two other renderings (jsuite_v2r2 / r3: the same facts, new passages) until N_ITEMS are eligible. Arms as
+above (the rule reads the whole change; the others descriptive). The rule (batch50.yaml, Z3): value <= 0.05; identity /
+position shares reported; position >= 0.2 -> "the address exists in scattered-fact passages"; position <= 0.05 -> "no
+position route in his layout".
+
+SEALED: the run writes per-item outputs only; `verdict` refuses until predictions/2026-10-28_dan.md holds Dan's Q50.1 (Z1),
+Q50.2 (Z2) or Q50.3 (Z3) at HEAD; it applies the rules and writes the verify-pack view (10 random passages, seed 0) and
+the figure beside Zach's stored per-item knock-out rows (no rerun; Z3: the route shares, no beside).
 
 uv run python scripts/x50_zach.py plan                                              # CPU, three tokenizers
+uv run python scripts/x50_zach.py plan --part z3                                    # CPU, one part
 BJ_TARGET=qwen3.5-9b uv run python scripts/x50_zach.py run --part z1 --name qwen35_9b_x50_z1   # GPU, sealed
 uv run python scripts/x50_zach.py verdict --part z1                                 # CPU, after Q50.1
 uv run python scripts/x50_zach.py view --part z1                                    # CPU, the view alone (sealed too)
@@ -75,14 +91,21 @@ EXP = "x50_zach"
 RESULTS = pins.RESULTS_DIR / EXP
 SPEC = pins.REPO_ROOT / "jobs" / "c3" / "batch50.yaml"
 PREDICTIONS = "predictions/2026-10-28_dan.md"
-PARTS = ("z1", "z2")
-QUESTION = {"z1": "Q50.1", "z2": "Q50.2"}
-WORDS = {"z1": ("PK", "PM"), "z2": ("MK", "MM")}  # (K final: lookup, M final: recall)
+PARTS = ("z1", "z2", "z3")
+QUESTION = {"z1": "Q50.1", "z2": "Q50.2", "z3": "Q50.3"}
+WORDS = {"z1": ("PK", "PM"), "z2": ("MK", "MM"), "z3": ("PK", "PM")}  # (K final: lookup, M final: recall); Z3 reads K
 SETS = ("jsuite_v2_test_chat", "jsuite_v2nb_test_chat")  # the main set; the second seed only if items run short
+# Z3: few passages have all three facts before the pointer (about 1 in 4 level-0 scenes), so his two other renderings of
+# v2's facts (seeds 2602 / 2603) follow the second seed, in the same "only if short" order
+Z3_SETS = (*SETS, "jsuite_v2r2_test_chat", "jsuite_v2r3_test_chat")
 TARGETS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
 LAYERS = {"qwen3.5-9b": (12,), "qwen3.6-27b": (32,), "muse-glimmer-30b": (26, 36)}
 RUNS = {p: {"qwen3.5-9b": f"qwen35_9b_x50_{p}", "qwen3.6-27b": f"x50_{p}_27b", "muse-glimmer-30b": f"muse30_x50_{p}"}
-        for p in PARTS}  # fmt: skip
+        for p in PARTS if p != "z3"}  # fmt: skip
+RUNS["z3"] = {"qwen3.5-9b": "qwen35_9b_x50_z3", "muse-glimmer-30b": "muse30_x50_z3"}  # batch50.yaml: Z3 on 9B and Muse
+Z3_CONDS = {"C2": "alt", "C0": "alt0"}  # condition -> its source prompt; C2 the test, C0 the name alone (descriptive)
+ROUTES = ("identity", "position", "value", "original", "other")  # x6_routes.ROUTES
+VALUE_MAX, POSITION_YES, POSITION_NO = 0.05, 0.20, 0.05
 READERS = ("K", "M")
 LOOKUP, RECALL = READERS
 ARMS = ("whole", "no_jpp", "no_jpp_rand")
@@ -104,7 +127,21 @@ RULE = {
            "-> \"not a lookup-difficulty effect\"."),
     "z2": ("Per model, the 47.3 rule: (a) the split holds: gap >= 0.3, lookup <= 0.10; (a') the computed bridge is handed "
            "through the lens: lookup >= 0.20; (d) in between."),
+    "z3": ("Value <= 0.05; report identity / position shares. If position >= 0.2: the address exists in scattered-fact "
+           "passages; then and only then fit a label-free address basis on a held-out half (as 45d) and run without / "
+           "only it vs random. If position <= 0.05: \"no position route in his layout\": the address is a property of "
+           "listed layouts."),
 }  # fmt: skip
+AS_COMPUTED_Z3 = (
+    "Shares = the lookup's (K) route under the whole change in C2 over the chosen passages (x6_routes.classify on the top "
+    "token: identity b, position c, value e, original a, else other), cluster bootstrap over the original bridge entity "
+    "(10,000 resamples, seed 0, 95% intervals). Point estimates decide (EPS 1e-9): position >= 0.20 -> \"the address "
+    "exists in scattered-fact passages\" (Q50.3 yes); position <= 0.05 -> \"no position route in his layout\"; else in "
+    "between (neither clause). The value check (value <= 0.05) is reported beside the clause and does not change it. "
+    "Muse: L26 and L36, both reported. Beside, descriptive: the shares under no_jpp / no_jpp_rand, C0's shares (identity "
+    "= b: the name change alone), and the position share within the passages whose moved sentence keeps C's token span. "
+    "The 45d follow-up (a label-free address basis) is not in this job: it is due only if position >= 0.2."
+)  # fmt: skip
 AS_COMPUTED = (
     "Extra loss = X0's excess = Jdep - Rdep = (S_no_jpp_rand - S_no_jpp) / S_whole per reader over the chosen passages "
     "(J++: signed OMP, k = 25); switch = the top token is the first token of the other entity's answer; gap = the M "
@@ -146,9 +183,10 @@ def fact(rel: str, e: str) -> str:
     return tables().REL2[rel]["facts"][e][0]
 
 
-def kfact(rel: str, w: int, e: str) -> str:
-    """The K passage's true-fact sentence for e (jsuite_v2.facts_items' kf)."""
-    a = fact(rel, e)
+def kfact(rel: str, w: int, e: str, value: str | None = None) -> str:
+    """The K passage's true-fact sentence for e (jsuite_v2.facts_items' kf); with `value`, the same sentence stating
+    that value instead (Z3's moved sentence)."""
+    a = fact(rel, e) if value is None else value
     return (
         tables()
         .REL2[rel]["kfact"][w]
@@ -451,6 +489,128 @@ def z2_descs(options: list[tuple[dict, list[dict]]]) -> dict[tuple[str, str, str
     return out
 
 
+def facts_first(k: dict) -> bool:
+    """Every entity's stated fact sentence comes before the asked person's pointer sentence (in the K passage)."""
+    rel, w, ctx = k["relation"], k["wording"], k["context"]
+    ptr = ctx.index(pointer(k, k["bridge"]))
+    return all(ctx.index(kfact(rel, w, e)) < ptr for e in k["entities"])
+
+
+def new_values(k: dict, used: set[str]) -> list[str]:
+    """The relation's values outside `used` that neither the K passage nor its question states (nor a derived word), in
+    a seeded order per scene."""
+    text = k["context"] + "\n" + k["question"]
+    vals = [v for v in tables().vocab(k["relation"]) if v not in used and not leaks(text, [v])]
+    random.Random(f"{CF_SEED}|z3|{k['scene']}").shuffle(vals)
+    return vals
+
+
+def swap_slots(ctx: str, fb: str, fc: str, fb_new: str) -> str:
+    """B's fact sentence `fb` and C's `fc` swap slots, B's stating its new value: B's slot gets fc, C's slot fb_new."""
+    assert ctx.count(fb) == 1, "B's fact sentence is not once in the context"
+    assert ctx.count(fc) == 1, "C's fact sentence is not once in the context"
+    (lo, lo_old, lo_new), (hi, hi_old, hi_new) = sorted([(ctx.index(fb), fb, fc), (ctx.index(fc), fc, fb_new)])
+    return ctx[:lo] + lo_new + ctx[lo + len(lo_old) : hi] + hi_new + ctx[hi + len(hi_old) :]
+
+
+def sent_tokens(tok, text: str, ctx: str, sent: str) -> list[int]:
+    """The token positions of the context's sentence `sent` in the rendered prompt."""
+    from bridge_jspace.tokens import raw_encoding
+    from scripts import statement_positions as SP
+
+    s0 = text.index(ctx) + ctx.index(sent)
+    return SP.tokens_in(raw_encoding(tok, text, offsets=True)["offset_mapping"], s0, s0 + len(sent))
+
+
+def z3_encode(tok, p: dict, b_ent: str, c_ent: str, e: str) -> tuple[dict | None, str]:
+    """The K reader's O, S (C2: the pointer names B; B's and C's fact sentences swap slots, B's with the new value e) and
+    S0 (C0: the pointer names B, nothing else changes), or the reason they do not align: the patch token (the pointer
+    name's last token) at one index in O, S and S0, nothing after it changes, S0 changes only the name, and the four
+    values (a, b, c, e) have four distinct first tokens."""
+    k = p[LOOKUP]
+    rel, x, w = k["relation"], k["bridge"], k["wording"]
+    a, b, c = fact(rel, x), fact(rel, b_ent), fact(rel, c_ent)
+    ctx, q = k["context"], k["question"]
+    sent, cf_sent = pointer(k, x), pointer(k, b_ent)
+    fb, fc, fb_new = kfact(rel, w, b_ent), kfact(rel, w, c_ent), kfact(rel, w, b_ent, e)
+    s_ctx = swap_slots(ctx, fb, fc, fb_new)
+    assert s_ctx.count(sent) == 1, "the pointer sentence is not once in the context"
+    s_ctx, s0_ctx = s_ctx.replace(sent, cf_sent), ctx.replace(sent, cf_sent)
+    texts = {"org": render(tok, k, ctx, q), "alt": render(tok, k, s_ctx, q), "alt0": render(tok, k, s0_ctx, q)}
+    ids_o, at_o = span_tokens(tok, texts["org"], ctx, sent, x)
+    if not at_o:
+        return None, "the name has no token"
+    pos, ids = at_o[-1], {"org": ids_o}
+    for v, cx in (("alt", s_ctx), ("alt0", s0_ctx)):
+        ids_v, at_v = span_tokens(tok, texts[v], cx, cf_sent, b_ent)
+        tag = "S" if v == "alt" else "S0"
+        if len(ids_v) != len(ids_o) or not at_v or at_v[-1] != pos:
+            return None, f"the patch token is not at one index in O and {tag}"
+        changed = [i for i, (u, t) in enumerate(zip(ids_o, ids_v, strict=True)) if u != t]
+        if not changed or any(i > pos for i in changed):
+            return None, f"tokens after the patch token change in {tag}"
+        if v == "alt0" and any(i < min(at_o[0], at_v[0]) for i in changed):
+            return None, "tokens outside the name change in S0"
+        ids[v] = ids_v
+    toks = {"original": answer_tok(tok, a), "identity": answer_tok(tok, b), "position": answer_tok(tok, c),
+            "value": answer_tok(tok, e)}  # fmt: skip
+    if len(set(toks.values())) < 4:
+        return None, "the four values do not have four distinct first tokens"
+    order = sorted(k["entities"], key=lambda en: ctx.index(kfact(rel, w, en)))
+    slot_o, slot_s = sent_tokens(tok, texts["org"], ctx, fc), sent_tokens(tok, texts["alt"], s_ctx, fb_new)
+    rd = {"id": k["id"], "question": q, "cf_question": q, "context": ctx, "cf_context": s_ctx, "c0_context": s0_ctx,
+          "answer": a, "cf_answer": e, "c0_answer": b, "ids": ids, "pos": pos, "span": [at_o[0], pos],
+          "tok_A": toks["original"], "tok_b": toks["value"], "tok_b0": toks["identity"], "route_tokens": toks,
+          "lure": None, "tok_lure": None}  # fmt: skip
+    case = {"part": "z3", "scene": k["scene"], "set": k.get("_set"), "relation": rel, "bridge": x, "cf_bridge": b_ent,
+            "slot_of": c_ent, "level": k["level"], "popularity": k["popularity"], "half": k.get("half"), "wording": w,
+            "answer": a, "cf_answer": e, "values": {"original": a, "identity": b, "position": c, "value": e},
+            "slots": {"A": order.index(x), "B": order.index(b_ent), "C": order.index(c_ent)},
+            "slot_tokens": {"O_C": [slot_o[0], slot_o[-1]], "S_B": [slot_s[0], slot_s[-1]]},
+            "slot_aligned": slot_o == slot_s, "readers": {LOOKUP: rd}}  # fmt: skip
+    return case, ""
+
+
+def z3_cases(tok, ps: list[dict]) -> tuple[list[dict], collections.Counter]:
+    """Z3: level-0 passages with every fact before the pointer and three distinct answers; per passage the first (B, C,
+    e) that aligns, B in the seeded entity order (others), e in the seeded value order; drops counted by reason."""
+    out, why = [], collections.Counter()
+    for p in ps:
+        k = p[LOOKUP]
+        rel = k["relation"]
+        if len(k["entities"]) != 3:
+            why["not three entities (level 1)"] += 1
+            continue
+        if leaks(k["start_desc"], [k["answer"]]):
+            why["leak: the description holds the answer"] += 1
+            continue
+        if not facts_first(k):
+            why["a fact sentence comes after the pointer sentence"] += 1
+            continue
+        cands = others(p)
+        if len(cands) != 2 or fact(rel, cands[0]) == fact(rel, cands[1]):
+            why["the three answers are not distinct"] += 1
+            continue
+        reasons, case = [], None
+        for b_ent, c_ent in (cands, cands[::-1]):
+            for e in new_values(k, {fact(rel, en) for en in k["entities"]}):
+                case, r = z3_encode(tok, p, b_ent, c_ent, e)
+                if case is not None:
+                    break
+                reasons.append(r)
+            if case is not None:
+                break
+        if case is None:
+            why[f"no (B, C, value) aligns ({reasons[0] if reasons else 'no unstated value'})"] += 1
+            continue
+        out.append(case)
+    return out, why
+
+
+def sets_of(part: str) -> tuple[str, ...]:
+    return Z3_SETS if part == "z3" else SETS
+
+
 def load_pairs(set_name: str, part: str) -> tuple[list[dict], collections.Counter]:
     from scripts import tasks_v2 as T
 
@@ -467,9 +627,15 @@ def mark(decode, ids: list[int], pos: int) -> str:
 
 def plan_one(tok, part: str) -> dict:
     out: dict[str, Any] = {}
-    for s in SETS:
+    for s in sets_of(part):
         ps, why = load_pairs(s, part)
-        if part == "z1":
+        if part == "z3":
+            cases, drop = z3_cases(tok, ps)
+            out[s] = {"passages": len(ps), "pair_drops": dict(why), "cases": len(cases), "drops": dict(drop),
+                      "slot_aligned": sum(c["slot_aligned"] for c in cases),
+                      "slots_BC": dict(collections.Counter(f"{c['slots']['B']}->{c['slots']['C']}" for c in cases)),
+                      "relations": dict(collections.Counter(c["relation"] for c in cases))}  # fmt: skip
+        elif part == "z1":
             cases, drop = z1_cases(tok, ps)
             out[s] = {"passages": len(ps), "pair_drops": dict(why), "cases": len(cases), "drops": dict(drop),
                       "strata": dict(collections.Counter(c["stratum"] for c in cases)),
@@ -490,14 +656,27 @@ def plan_one(tok, part: str) -> dict:
 def example(decode, c: dict) -> dict:
     ex = {"scene": c["scene"], "bridge": c["bridge"], "cf_bridge": c["cf_bridge"], "answer": c["answer"],
           "cf_answer": c["cf_answer"], **({"stratum": c["stratum"]} if "stratum" in c else {}),
-          **({"desc": c["desc"], "cf_desc": c["cf_desc"]} if "desc" in c else {})}  # fmt: skip
+          **({"desc": c["desc"], "cf_desc": c["cf_desc"]} if "desc" in c else {}),
+          **({"slot_of": c["slot_of"], "values": c["values"], "slots": c["slots"], "slot_aligned": c["slot_aligned"]}
+             if c.get("part") == "z3" else {})}  # fmt: skip
     for r, rd in c["readers"].items():
         ex[r] = {"id": rd["id"], "O": mark(decode, rd["ids"]["org"], rd["pos"]), "S": mark(decode, rd["ids"]["alt"], rd["pos"]),
-                 "lure": rd["lure"]}  # fmt: skip
+                 "lure": rd["lure"], **({"S0": mark(decode, rd["ids"]["alt0"], rd["pos"])} if "alt0" in rd["ids"] else {})}  # fmt: skip
     return ex
 
 
-def stage_plan(plan_dir: str | None = None) -> Path:
+def example_head(ex: dict) -> str:
+    if "values" in ex:
+        v = ex["values"]
+        return (f"### {ex['scene']}: {ex['bridge']} -> {ex['cf_bridge']}, moved to {ex['slot_of']}'s slot (slots "
+                f"{ex['slots']}, token-aligned {ex['slot_aligned']}); original {v['original']}, identity {v['identity']}, "
+                f"position {v['position']}, value {v['value']}")  # fmt: skip
+    return (f"### {ex['scene']}: {ex['bridge']} -> {ex['cf_bridge']} ({ex['answer']} -> {ex['cf_answer']})"
+            + (f", {ex['stratum']}" if "stratum" in ex else "")
+            + (f"; {ex['desc']!r} -> {ex['cf_desc']!r}" if "desc" in ex else ""))  # fmt: skip
+
+
+def stage_plan(plan_dir: str | None = None, parts: tuple[str, ...] = PARTS) -> Path:
     """On BJ_TARGET's tokenizer, per part: passages, drops by reason, strata, and 5 rendered prompt pairs (both readers,
     the patch token in ⟦…⟧), written as plan-<target>.{json,md} to plan_dir (default results/x50_zach/plan-<UTC>/; run
     once per model into one folder). Z2 is counted before its competence step (the GPU's)."""
@@ -508,22 +687,25 @@ def stage_plan(plan_dir: str | None = None) -> Path:
     out.mkdir(parents=True, exist_ok=True)
     t = pins.TARGET
     tok = x45m.tokenizer()
-    blob: dict[str, Any] = {"target": t, "code": git_state(), "sets": list(SETS), "words": WORDS, "n_items": N_ITEMS,
-                            "cf_seed": CF_SEED}  # fmt: skip
+    blob: dict[str, Any] = {"target": t, "code": git_state(), "sets": {p: list(sets_of(p)) for p in parts},
+                            "words": {p: WORDS[p] for p in parts}, "n_items": N_ITEMS, "cf_seed": CF_SEED}  # fmt: skip
     lines = [f"# x50_zach plan on {t}'s tokenizer (UNVERIFIED)", ""]
-    for part in PARTS:
+    for part in parts:
         res = plan_one(tok, part)
         blob[part] = res
         main = res[SETS[0]]
-        lines += [f"## {t} {part}", "", "main set: " + json.dumps({k: v for k, v in main.items() if k != "examples"}), "",
-                  f"second seed: {json.dumps({k: v for k, v in res[SETS[1]].items() if k != 'examples'})}", ""]  # fmt: skip
+        lines += [f"## {t} {part}", ""]
+        for s in sets_of(part):
+            lines += [f"{s}: " + json.dumps({k: v for k, v in res[s].items() if k != "examples"}), ""]
         for ex in main["examples"]:
-            lines += [f"### {ex['scene']}: {ex['bridge']} -> {ex['cf_bridge']} ({ex['answer']} -> {ex['cf_answer']})"
-                      + (f", {ex['stratum']}" if "stratum" in ex else "")
-                      + (f"; {ex['desc']!r} -> {ex['cf_desc']!r}" if "desc" in ex else ""), ""]  # fmt: skip
+            lines += [example_head(ex), ""]
             for r in READERS:
+                if r not in ex:
+                    continue
                 lines += [f"**{r}** ({ex[r]['id']}; lure {ex[r]['lure']}) O:", "", "```", ex[r]["O"], "```", "", "S:", "",
                           "```", ex[r]["S"], "```", ""]  # fmt: skip
+                if "S0" in ex[r]:
+                    lines += ["S0 (C0):", "", "```", ex[r]["S0"], "```", ""]
     (out / f"plan-{t}.json").write_text(json.dumps(blob, indent=1, ensure_ascii=False) + "\n")
     (out / f"plan-{t}.md").write_text("\n".join(lines) + "\n")
     print(out)
@@ -559,6 +741,12 @@ def desc_competence(model, prompts: list[dict]) -> list[dict]:
              "right": says(t, alts(p["relation"], p["entity"]))} for p, t in zip(prompts, texts, strict=True)]  # fmt: skip
 
 
+def golds(rd: dict) -> list[tuple[str, str, int]]:
+    """(variant, right answer, its first token) per prompt of a reader: O, S, and Z3's S0 (C0: B's stated fact)."""
+    out = [("org", rd["answer"], rd["tok_A"]), ("alt", rd["cf_answer"], rd["tok_b"])]
+    return out + ([("alt0", rd["c0_answer"], rd["tok_b0"])] if "alt0" in rd["ids"] else [])
+
+
 def competence(model, cases: list[dict], ws) -> list[dict]:
     """Unedited O and S of both readers: GEN_TOKENS greedy tokens (said right: the reply's first line holds the answer)
     and the decisive read (the top token is the answer's first token)."""
@@ -570,10 +758,10 @@ def competence(model, cases: list[dict], ws) -> list[dict]:
     with torch.no_grad():
         for c in progress(cases, "competence (passage)"):
             for w, rd in c["readers"].items():
-                ids = torch.tensor([rd["ids"]["org"], rd["ids"]["alt"]], device=model.device)
-                texts = model.generate_batch(ids, GEN_TOKENS, [{}, {}])
-                for i, (v, gold, tok_gold) in enumerate((("org", rd["answer"], rd["tok_A"]),
-                                                         ("alt", rd["cf_answer"], rd["tok_b"]))):  # fmt: skip
+                gold_of = golds(rd)
+                ids = torch.tensor([rd["ids"][v] for v, _, _ in gold_of], device=model.device)
+                texts = model.generate_batch(ids, GEN_TOKENS, [{} for _ in gold_of])
+                for i, (v, gold, tok_gold) in enumerate(gold_of):
                     logits, _ = X.read_logits(model, rd["ids"][v], [{}], "chat", [], ws)
                     top = int(logits[0].argmax())
                     rows.append({"scene": c["scene"], "set": c["set"], "reader": w, "variant": v, "greedy": texts[i],
@@ -586,9 +774,10 @@ def gate_of(cases: list[dict], comp: list[dict], kept_ids: set[str] | None = Non
     O's and S's answers right), in case order; with kept_ids, the same gate over Zach's competence-kept passages."""
     right = {(r["set"], r["scene"], r["reader"], r["variant"]): r for r in comp}
     key = lambda c, w, v: (c["set"], c["scene"], w, v)  # noqa: E731
-    acc = {w: float(np.mean([right[key(c, w, "org")]["read_right"] for c in cases])) if cases else 0.0 for w in READERS}
+    readers = tuple(cases[0]["readers"]) if cases else READERS  # Z3: the lookup alone
+    acc = {w: float(np.mean([right[key(c, w, "org")]["read_right"] for c in cases])) if cases else 0.0 for w in readers}
     ok = [c for c in cases if all(right[key(c, w, v)]["right"] and right[key(c, w, v)]["read_right"]
-                                  for w in READERS for v in ("org", "alt"))]  # fmt: skip
+                                  for w in readers for v in ("org", "alt"))]  # fmt: skip
     gate: dict[str, Any] = {"cases": len(cases), "org_read_accuracy": acc, "gate": GATE,
                             "pass": bool(cases) and all(a >= GATE - EPS for a in acc.values()), "eligible": len(ok)}  # fmt: skip
     if kept_ids is not None:
@@ -611,27 +800,32 @@ def manifest(name: str, part: str, target: str, layers: tuple[int, ...]) -> dict
     from bridge_jspace.utils import git_state
 
     inputs = {str(p.relative_to(pins.REPO_ROOT)): sha256_of(p)
-              for p in [SPEC, *(pins.DATA_DIR / "tasks_v2" / s / "items.jsonl" for s in SETS)] if p.exists()}  # fmt: skip
-    return {"exp": EXP, "run": name, "part": part, "test": part.upper(), "spec": "jobs/c3/batch50.yaml",
-            "question": f"{QUESTION[part]} ({PREDICTIONS})", "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "inputs": inputs,
-            "sets": list(SETS), "words": list(WORDS[part]), "layers": list(layers), "n_items": N_ITEMS, "gate": GATE,
-            "arms": list(ARMS), "k": X.K_MAIN, "omp": "signed", "cf_seed": CF_SEED,
-            "patch": "the last token of the pointer sentence's name" if part == "z1" else "the description's last token",
-            "read": "the top token after the prompt (his chat framing, no prefill) against the answer's first token",
-            "desc_competence": {"templates": list(DESC_TEMPLATES), "instructions": list(DESC_INSTRUCTIONS),
-                                "bar": DESC_BAR, "tokens": DESC_GEN_TOKENS} if part == "z2" else None,
-            "rule": RULE[part], "as_computed": AS_COMPUTED, "beside": BESIDE.get(target),
-            "seeds": {"cf_order": CF_SEED, "random_subspace": f"{X.SUBSPACE_SEED} + layer", "bootstrap": X.BOOT_SEED,
-                      "view": VIEW_SEED},
-            "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION[part]} answer"}  # fmt: skip
+              for p in [SPEC, *(pins.DATA_DIR / "tasks_v2" / s / "items.jsonl" for s in sets_of(part))] if p.exists()}  # fmt: skip
+    m = {"exp": EXP, "run": name, "part": part, "test": part.upper(), "spec": "jobs/c3/batch50.yaml",
+         "question": f"{QUESTION[part]} ({PREDICTIONS})", "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+         "model": pins.model_pin(), "switches": switches(), "code": git_state(), "lens": X.lens_record(), "inputs": inputs,
+         "sets": list(sets_of(part)), "words": list(WORDS[part]), "layers": list(layers), "n_items": N_ITEMS, "gate": GATE,
+         "arms": list(ARMS), "k": X.K_MAIN, "omp": "signed", "cf_seed": CF_SEED,
+         "patch": "the last token of the pointer sentence's name" if part in ("z1", "z3") else "the description's last token",
+         "read": "the top token after the prompt (his chat framing, no prefill) against the answer's first token",
+         "desc_competence": {"templates": list(DESC_TEMPLATES), "instructions": list(DESC_INSTRUCTIONS),
+                             "bar": DESC_BAR, "tokens": DESC_GEN_TOKENS} if part == "z2" else None,
+         "rule": RULE[part], "as_computed": AS_COMPUTED_Z3 if part == "z3" else AS_COMPUTED, "beside": BESIDE.get(target),
+         "seeds": {"cf_order": CF_SEED, "random_subspace": f"{X.SUBSPACE_SEED} + layer", "bootstrap": X.BOOT_SEED,
+                   "view": VIEW_SEED},
+         "sealed": f"no verdict in the run; results closed until {PREDICTIONS} holds Dan's {QUESTION[part]} answer"}  # fmt: skip
+    if part == "z3":
+        m.update({"beside": None, "readers": [LOOKUP], "conditions": Z3_CONDS, "routes": list(ROUTES),
+                  "eligible": "O and S (C2) said and read right (a and e); S0's competence recorded, not gated",
+                  "bars": {"value_max": VALUE_MAX, "position_yes": POSITION_YES, "position_no": POSITION_NO}})  # fmt: skip
+    return m
 
 
 def build(tok, model, part: str, set_name: str, out: Path) -> tuple[list[dict], dict]:
     """The set's cases for the part (Z2: after its description competence step, rows appended to out/)."""
     ps, why = load_pairs(set_name, part)
-    if part == "z1":
-        cases, drop = z1_cases(tok, ps)
+    if part in ("z1", "z3"):
+        cases, drop = (z1_cases if part == "z1" else z3_cases)(tok, ps)
         return cases, {"passages": len(ps), "pair_drops": dict(why), "drops": dict(drop), "cases": len(cases)}
     opts, drop = z2_options(tok, ps)
     prompts = desc_prompts(tok, z2_descs(opts))
@@ -672,7 +866,7 @@ def stage_run(name: str, part: str) -> Path:
 
     # the cases, set by set until N_ITEMS are eligible; the gate over every case whose competence ran
     cases, comp, counts, ok = [], [], {}, []
-    for s in SETS:
+    for s in sets_of(part):
         got, counts[s] = build(tok, model, part, s, out)
         cases += got
         comp += competence(model, got, ws)
@@ -686,6 +880,10 @@ def stage_run(name: str, part: str) -> Path:
                  "order": [[c["set"], c["scene"]] for c in chosen]})  # fmt: skip
     if part == "z1":
         gate["chosen_strata"] = dict(collections.Counter(c["stratum"] for c in chosen))
+    if part == "z3":
+        alt0 = {(r["set"], r["scene"]): r["right"] and r["read_right"] for r in comp if r["variant"] == "alt0"}
+        gate.update({"chosen_slot_aligned": sum(c["slot_aligned"] for c in chosen),
+                     "chosen_s0_right": sum(alt0[(c["set"], c["scene"])] for c in chosen)})  # fmt: skip
     X.write_jsonl(out / "competence.jsonl", comp)
     X.write_jsonl(out / "cases.jsonl", cases)
     (out / "gate.json").write_text(json.dumps(gate, indent=1) + "\n")
@@ -694,39 +892,51 @@ def stage_run(name: str, part: str) -> Path:
         print("not tested: no eligible passage", flush=True)
         return out
 
+    # Z1 / Z2: one source per reader (S); Z3: C2's S and C0's S0, each its own change
+    conds: dict[str | None, str] = dict(Z3_CONDS) if part == "z3" else {None: "alt"}
+    readers = list(chosen[0]["readers"])
     with torch.no_grad():
-        # the change per reader at the patch token, every layer in one forward per prompt
-        deltas: dict[str, list] = {r: [] for r in READERS}
+        # the change per reader (and condition) at the patch token, every layer in one forward per prompt
+        deltas: dict[tuple, list] = {(cd, r): [] for cd in conds for r in readers}
         for c in progress(chosen, f"the change at the patch token, L{list(layers)} (passage)"):
             for r, rd in c["readers"].items():
-                h = {v: model.run(torch.tensor([rd["ids"][v]], device=dev), record=layers)[1] for v in ("org", "alt")}
-                deltas[r].append(
-                    torch.stack([(h["alt"][la][rd["pos"]] - h["org"][la][rd["pos"]]).float() for la in layers])
-                )
+                h = {v: model.run(torch.tensor([rd["ids"][v]], device=dev), record=layers)[1]
+                     for v in ("org", *conds.values())}  # fmt: skip
+                for cd, v in conds.items():
+                    deltas[(cd, r)].append(
+                        torch.stack([(h[v][la][rd["pos"]] - h["org"][la][rd["pos"]]).float() for la in layers])
+                    )
         rows, norms = [], []
+        tag = lambda cd: {} if cd is None else {"condition": cd}  # noqa: E731
         for li, la in enumerate(layers):
             jdic = JLens(model, "jpp").vectors(la, model.letter_token_ids()).to(dev)
             basis = SP.random_basis(jdic.shape[1], torch.Generator().manual_seed(X.SUBSPACE_SEED + la)).to(dev)
-            arms: dict[str, dict[str, Any]] = {}
-            for r in READERS:
-                x = torch.stack([d[li] for d in deltas[r]]).to(dev)
+            arms: dict[tuple, dict[str, Any]] = {}
+            for key, ds in deltas.items():
+                x = torch.stack([d[li] for d in ds]).to(dev)
                 more, sh = R.removal_arms(x, {"jpp": X.fit(jdic, x, X.K_MAIN, "signed").to(dev)}, basis)
-                arms[r] = {"whole": x, **more}
-                assert tuple(arms[r]) == ARMS, tuple(arms[r])
-                norms += [{"scene": c["scene"], "set": c["set"], "layer": la, "reader": r, "norm": round(float(x[i].norm()), 4),
-                           "share_jpp": round(float(sh["jpp"][i]), 5)} for i, c in enumerate(chosen)]  # fmt: skip
+                arms[key] = {"whole": x, **more}
+                assert tuple(arms[key]) == ARMS, tuple(arms[key])
+                norms += [{"scene": c["scene"], "set": c["set"], "layer": la, "reader": key[1], **tag(key[0]),
+                           "norm": round(float(x[i].norm()), 4), "share_jpp": round(float(sh["jpp"][i]), 5)}
+                          for i, c in enumerate(chosen)]  # fmt: skip
             del jdic
             for i, c in enumerate(progress(chosen, f"reads at L{la} (passage)")):
                 for r, rd in c["readers"].items():
-                    cands = torch.tensor(sorted({rd["tok_A"], rd["tok_b"], *([rd["tok_lure"]] if rd["tok_lure"] else [])}),
-                                         device=dev)  # fmt: skip
-                    edits = [{}] + [{la: AddRows(arms[r][a][i : i + 1], [rd["pos"]])} for a in ARMS]
-                    logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", [], ws)
-                    for a, lg in zip(("none", *ARMS), logits, strict=True):
-                        row = X.read_row(lg, rd, cands)
-                        rows.append({"scene": c["scene"], "set": c["set"], "entity": c["bridge"], "cf_entity": c["cf_bridge"],
-                                     "relation": c["relation"], "stratum": c.get("stratum"), "layer": la, "reader": r,
-                                     "arm": a, "route": route(row["top"], rd), **row})  # fmt: skip
+                    for cd in conds:
+                        # the read's switch token: S's answer (Z3 C2: the value e; C0: B's stated fact b)
+                        rdc = {**rd, "tok_b": rd["tok_b0"]} if cd == "C0" else rd
+                        cands = torch.tensor(sorted({rdc["tok_A"], rdc["tok_b"], *([rd["tok_lure"]] if rd["tok_lure"] else []),
+                                                     *rd.get("route_tokens", {}).values()}), device=dev)  # fmt: skip
+                        edits = [{}] + [{la: AddRows(arms[(cd, r)][a][i : i + 1], [rd["pos"]])} for a in ARMS]
+                        logits, _ = X.read_logits(model, rd["ids"]["org"], edits, "chat", [], ws)
+                        for a, lg in zip(("none", *ARMS), logits, strict=True):
+                            row = X.read_row(lg, rdc, cands)
+                            rt = route(row["top"], rd) if part != "z3" else R.classify(row["top"], rd)
+                            rows.append({"scene": c["scene"], "set": c["set"], "entity": c["bridge"],
+                                         "cf_entity": c["cf_bridge"], "relation": c["relation"], "stratum": c.get("stratum"),
+                                         "layer": la, "reader": r, **tag(cd), "arm": a, "route": rt, **row,
+                                         **({"slot_aligned": c["slot_aligned"]} if part == "z3" else {})})  # fmt: skip
             X.write_jsonl(out / "outcomes.jsonl", rows)  # rewritten after each layer (a partial run keeps its rows)
     X.write_jsonl(out / "norms.jsonl", norms)
     m["items"] = len(chosen)
@@ -831,6 +1041,54 @@ def layer_result(part: str, rows: list[dict], n_boot: int) -> dict:
     return out
 
 
+def z3_rule(position: float, value: float) -> dict:
+    """Batch 50 Z3 on the C2 whole-change shares (point estimates): the position clause, the value check beside it, and
+    Q50.3's question (position >= 0.2)."""
+    if not (ok(position) and ok(value)):
+        return {"clause": "can't tell (no passages)", "value_ok": None, "position_ge_0_2": None, "follow_up_45d": False}
+    if position >= POSITION_YES - EPS:
+        clause = "the address exists in scattered-fact passages"
+    elif position <= POSITION_NO + EPS:
+        clause = "no position route in his layout: the address is a property of listed layouts"
+    else:
+        clause = "in between (0.05 < position < 0.20: neither clause)"
+    yes = bool(position >= POSITION_YES - EPS)
+    return {"clause": clause, "value_ok": bool(value <= VALUE_MAX + EPS), "position_ge_0_2": yes, "follow_up_45d": yes}
+
+
+def route_shares(rows: list[dict], keys: list[tuple], ents: list[str], n_boot: int) -> dict[str, list[float]]:
+    """Each route's share over the keyed rows, [point, lo, hi] (cluster bootstrap over the entities)."""
+    by = {(r["set"], r["scene"]): r for r in rows}
+    sw = {rt: [int(by[k]["route"] == rt) for k in keys] for rt in ROUTES}
+    rr = X.resampled_rates(sw, ents, n_boot)
+    return {rt: [float(np.mean(v)), *X.interval(rr[rt])] for rt, v in sw.items()}
+
+
+def z3_layer_result(rows: list[dict], n_boot: int) -> dict:
+    """At one layer, the lookup's route shares per condition and arm over the chosen passages; the rule on C2's whole
+    change; beside it the same within the passages whose moved sentence keeps C's token span."""
+    lk = [r for r in rows if r["reader"] == LOOKUP]
+    keys = list(dict.fromkeys((r["set"], r["scene"]) for r in lk if r["arm"] == "whole" and r["condition"] == "C2"))
+    ent = {(r["set"], r["scene"]): r["entity"] for r in lk}
+    ents = [ent[k] for k in keys]
+    shares: dict[str, dict[str, Any]] = {}
+    for cd in Z3_CONDS:
+        for a in ("none", *ARMS):
+            mine = [r for r in lk if r["condition"] == cd and r["arm"] == a]
+            if mine:
+                shares.setdefault(cd, {})[a] = route_shares(mine, keys, ents, n_boot)
+    whole = shares["C2"]["whole"]
+    c2 = [r for r in lk if r["condition"] == "C2" and r["arm"] == "whole"]
+    by_c2 = {(r["set"], r["scene"]): r for r in c2}
+    aligned = [k for k in keys if by_c2[k].get("slot_aligned")]
+    pos_aligned = (
+        route_shares(c2, aligned, [ent[k] for k in aligned], n_boot)["position"] if aligned else [math.nan] * 3
+    )
+    return {"n": len(keys), "entities": len(set(ents)), "shares": shares,
+            "verdict": z3_rule(whole["position"][0], whole["value"][0]),
+            "slot_aligned": {"n": len(aligned), "position": pos_aligned}}  # fmt: skip
+
+
 def beside(target: str, part: str, cases: list[dict], n_boot: int) -> dict:
     """Zach's stored per-item knock-out on our chosen passages of the main set (joined by item id): per passage his
     accuracy lost (none minus paper10, and minus paper10_rot) on the M item minus on the K item, mean with a cluster
@@ -883,11 +1141,14 @@ def model_result(part: str, run: str, n_boot: int = X.N_BOOT) -> dict[str, Any]:
     rows = X.read_jsonl(src / "outcomes.jsonl")
     if not rows:
         return {**base, "status": "pending" if gate.get("chosen") else "not tested", "why": "no outcome rows"}
-    layers = {la: layer_result(part, [r for r in rows if r["layer"] == la], n_boot) for la in m["layers"]
+    per_layer = z3_layer_result if part == "z3" else lambda rs, nb: layer_result(part, rs, nb)
+    layers = {la: per_layer([r for r in rows if r["layer"] == la], n_boot) for la in m["layers"]
               if any(r["layer"] == la for r in rows)}  # fmt: skip
+    status = "tested" if gate["pass"] else "not tested (gate; numbers descriptive only)"
+    if part == "z3":
+        return {**base, "status": status, "layer_results": layers}
     cases = X.read_jsonl(src / "cases.jsonl")
     chosen = {(s, sc) for s, sc in gate["order"]}
-    status = "tested" if gate["pass"] else "not tested (gate; numbers descriptive only)"
     return {
         **base,
         "status": status,
@@ -919,19 +1180,33 @@ def view(part: str, run: str, decode=None, k: int = N_VIEW, seed: int = VIEW_SEE
              f"(random.Random({seed}) over the sorted (set, scene) keys)", ""]  # fmt: skip
     for key in sorted(random.Random(seed).sample(keys, min(k, len(keys)))):
         c = cases[key]
-        extra = f", {c['stratum']}" if part == "z1" else f"; {c['desc']!r} -> {c['cf_desc']!r}"
-        lines += [
-            f"### {key[1]} ({key[0]}): {c['bridge']} -> {c['cf_bridge']} ({c['answer']} -> {c['cf_answer']}){extra}",
-            "",
-        ]
+        if part == "z3":
+            v = c["values"]
+            head = (f"{c['bridge']} -> {c['cf_bridge']}, moved to {c['slot_of']}'s slot (token-aligned "
+                    f"{c['slot_aligned']}): original {v['original']}, identity {v['identity']}, position {v['position']}, "
+                    f"value {v['value']}")  # fmt: skip
+        else:
+            extra = f", {c['stratum']}" if part == "z1" else f"; {c['desc']!r} -> {c['cf_desc']!r}"
+            head = f"{c['bridge']} -> {c['cf_bridge']} ({c['answer']} -> {c['cf_answer']}){extra}"
+        lines += [f"### {key[1]} ({key[0]}): {head}", ""]
         for w, rd in c["readers"].items():
             lines += [f"**{w}** ({rd['id']}): O's answer {rd['answer']}, S's {rd['cf_answer']}, lure {rd['lure']}", "",
                       "O, as read:", "", "```", mark(decode, rd["ids"]["org"], rd["pos"]), "```", "", "S (the source):",
-                      "", "```", mark(decode, rd["ids"]["alt"], rd["pos"]), "```", "",
-                      "| layer | arm | top token | route |", "|---|---|---|---|"]  # fmt: skip
+                      "", "```", mark(decode, rd["ids"]["alt"], rd["pos"]), "```", ""]  # fmt: skip
+            if "alt0" in rd["ids"]:
+                lines += [
+                    "S0 (C0's source, the name alone):",
+                    "",
+                    "```",
+                    mark(decode, rd["ids"]["alt0"], rd["pos"]),
+                    "```",
+                    "",
+                ]
+            lines += ["| layer | arm | top token | route |", "|---|---|---|---|"]
             for r in rows:
                 if (r["set"], r["scene"]) == key and r["reader"] == w:
-                    lines.append(f"| {r['layer']} | {r['arm']} | {decode([r['top']])!r} | {r['route']} |")
+                    arm = f"{r['condition']} {r['arm']}" if "condition" in r else r["arm"]
+                    lines.append(f"| {r['layer']} | {arm} | {decode([r['top']])!r} | {r['route']} |")
             lines.append("")
     return lines
 
@@ -968,7 +1243,96 @@ def figure(part: str, models: list[dict], path: Path) -> None:
     plt.close(fig)
 
 
+def figure_z3(models: list[dict], path: Path) -> None:
+    """The lookup's route shares under C2's whole change, per model and layer, with their intervals."""
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    labels, vals = [], []
+    for mm in models:
+        for la, lr in mm.get("layer_results", {}).items():
+            labels.append(f"{mm['target']}\nL{la} (n {lr['n']})")
+            vals.append(lr["shares"]["C2"]["whole"])
+    fig, ax = plt.subplots(figsize=(max(4.5, 2.2 * len(labels)), 3.2))
+    xs, wd = np.arange(len(labels)), 0.16
+    for j, rt in enumerate(ROUTES):
+        v = np.array([s[rt][0] for s in vals], dtype=float)
+        err = np.array([[s[rt][0] - s[rt][1], s[rt][2] - s[rt][0]] for s in vals], dtype=float).T if vals else None
+        ax.bar(xs + (j - 2) * wd, v, wd, yerr=err, label=rt, capsize=2)
+    ax.axhline(POSITION_YES, color="k", lw=0.6, ls="--")
+    ax.axhline(VALUE_MAX, color="grey", lw=0.6, ls=":")
+    ax.set_xticks(xs, labels, fontsize=8)
+    ax.set_ylim(0, 1)
+    ax.set_ylabel("share of passages")
+    ax.set_title("batch 50 Z3: the lookup's route under the whole change, his passages (UNVERIFIED)", fontsize=9)
+    ax.legend(fontsize=7, ncol=5)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def stage_verdict_z3(runs: list[str], n_boot: int = X.N_BOOT, decode=None) -> Path:
+    answer = require_answer("z3")
+    models = [model_result("z3", r, n_boot) for r in runs]
+    out = RESULTS / f"z3-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
+    out.mkdir(parents=True)
+    lines = ["# Batch 50 Z3: the routes test on Zach's passages (UNVERIFIED)", "",
+             f"{QUESTION['z3']} (Dan: {answer}). Items: his level-0 P-start K passages, all three facts before the pointer, "
+             f"sets {list(Z3_SETS)} in order until {N_ITEMS} eligible. Cluster bootstrap over the bridge entity "
+             f"({n_boot}, seed {X.BOOT_SEED}).", "", f"Rule (fixed in advance): {RULE['z3']}", "",
+             f"As computed: {AS_COMPUTED_Z3}", "",
+             "| model | run | status | layer | n (entities) | identity | position | value | original | other | value <= 0.05 "
+             "| clause | position >= 0.2 |", "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for mm in models:
+        if "layer_results" not in mm:
+            lines.append(f"| {mm['target']} | {mm['run']} | {mm['status']} ({mm.get('why', '')}) |" + " |" * 10)
+            continue
+        for la, lr in mm["layer_results"].items():
+            s, v = lr["shares"]["C2"]["whole"], lr["verdict"]
+            lines.append(f"| {mm['target']} | {mm['run']} | {mm['status']} | {la} | {lr['n']} ({lr['entities']}) | "
+                         + " | ".join(fmt(s[rt]) for rt in ROUTES)
+                         + f" | {v['value_ok']} | {v['clause']} | {v['position_ge_0_2']} |")  # fmt: skip
+    for mm in models:
+        if "layer_results" not in mm:
+            continue
+        g = mm["gate"]
+        lines += ["", f"## {mm['target']} ({mm['run']})", "",
+                  f"Gate: O's read accuracy {g['org_read_accuracy']} over {g['cases']} passages, pass {g['pass']}; "
+                  f"eligible {g['eligible']}, chosen {g['chosen']} (sets {g.get('chosen_sets')}; slot token-aligned "
+                  f"{g.get('chosen_slot_aligned')}; S0 right {g.get('chosen_s0_right')}); counts "
+                  f"{json.dumps(g.get('counts'))}.", ""]  # fmt: skip
+        for la, lr in mm["layer_results"].items():
+            lines += [f"L{la}, every condition and arm (descriptive beside the rule's C2 whole):", "",
+                      "| condition | arm | " + " | ".join(ROUTES) + " |", "|---|---|" + "---|" * len(ROUTES)]  # fmt: skip
+            for cd, arms in lr["shares"].items():
+                for a, s in arms.items():
+                    lines.append(f"| {cd} | {a} | " + " | ".join(fmt(s[rt]) for rt in ROUTES) + " |")
+            sa = lr["slot_aligned"]
+            lines += ["", f"L{la}: position share within the {sa['n']} passages whose moved sentence keeps C's token span: "
+                      f"{fmt(sa['position'])}. 45d follow-up due: {lr['verdict']['follow_up_45d']}.", ""]  # fmt: skip
+    (out / "z3.json").write_text(
+        json.dumps({"runs": runs, "dan": answer, "models": models}, indent=1, default=str) + "\n"
+    )
+    (out / "z3.md").write_text("\n".join(lines) + "\n")
+    figure_z3(models, out / "z3_routes.png")
+    ex = [
+        "# Batch 50 Z3 view (verify pack): prompts exactly as the model reads them; ⟦…⟧ the patch token. UNVERIFIED.",
+        "",
+    ]
+    for mm in models:
+        if "layer_results" in mm:
+            ex += view("z3", mm["run"], decode)
+    (out / "view.md").write_text("\n".join(ex) + "\n")
+    print("\n".join(lines))
+    print(out)
+    return out
+
+
 def stage_verdict(part: str, runs: list[str], n_boot: int = X.N_BOOT, decode=None) -> Path:
+    if part == "z3":
+        return stage_verdict_z3(runs, n_boot, decode)
     answer = require_answer(part)
     models = [model_result(part, r, n_boot) for r in runs]
     out = RESULTS / f"{part}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
@@ -1043,12 +1407,12 @@ def main() -> None:
     ap.add_argument("stage", choices=["plan", "run", "verdict", "view"])
     ap.add_argument("--part", choices=PARTS)
     ap.add_argument("--name", help="run: the run name (results/x50_zach/<name>/)")
-    ap.add_argument("--runs", nargs="+", help="verdict / view: the runs (default: the part's three)")
+    ap.add_argument("--runs", nargs="+", help="verdict / view: the runs (default: the part's models)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     ap.add_argument("--plan-dir", help="plan: the folder to write into (one per model, the same folder)")
     a = ap.parse_args()
     if a.stage == "plan":
-        stage_plan(a.plan_dir)
+        stage_plan(a.plan_dir, (a.part,) if a.part else PARTS)
         return
     assert a.part, f"{a.stage} needs --part"
     runs = a.runs or list(RUNS[a.part].values())
