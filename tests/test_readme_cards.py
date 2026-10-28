@@ -1,6 +1,6 @@
 """The depth README v6, iteration 2 (Dan, 28 Oct ~15:40): ten experiment cards with six bullet fields in a fixed order
-(E10 carries a second Result bullet, the earlier mention), one figure per card, no footers, no internal names on the
-page, and a claims table of the A and B claims with a grade each."""
+(E10 carries a second Result bullet, the earlier mention), one figure per card (E5 two, since Dan's round 3), no
+footers, no internal names on the page, and a claims table of the A and B claims with a grade each."""
 
 import re
 from pathlib import Path
@@ -55,9 +55,14 @@ def test_every_card_has_the_six_bullet_fields_in_order():
         assert found.count("Result") == (2 if cid == "E10" else 1), (cid, found)
 
 
+# Dan's figure fixes, round 3 (28 Oct 21:10): E5 shows Fig. 6b as its second figure ("the same routes by depth");
+# every other card keeps one
+FIGURES_PER_CARD = {"E5": 2}
+
+
 def test_one_figure_per_card():
     for cid, body in cards(PAGE.read_text()).items():
-        assert len(re.findall(r"!\[[^\]]+\]\(([^)]+)\)", body)) == 1, cid
+        assert len(re.findall(r"!\[[^\]]+\]\(([^)]+)\)", body)) == FIGURES_PER_CARD.get(cid, 1), cid
 
 
 def test_cards_at_most_90_words():

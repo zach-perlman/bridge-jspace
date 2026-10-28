@@ -10,6 +10,7 @@ uv run python scripts/readme_story_figures.py --out figures/drafts/v5    # a dra
 from __future__ import annotations
 
 import csv
+import itertools
 import json
 import sys
 import textwrap
@@ -3130,19 +3131,38 @@ def latest_verdict(pattern: str) -> Path:
 
 
 ANATOMY_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")  # v6: 9B, 27B, Muse (the 122B in supplements)
-ANATOMY_REDUCED = {"qwen3.6-27b"}  # 49.4: the 27B on 47.8's reduced grid, drawn hollow (Dan's 18:30 brief)
 # 47.8's bars for its l_probe and l_P (scripts/x47_anatomy.py's L_PROBE_BAR, L_P_BAR), for the legend's words only:
 # the marked layers are the verdict's rules
 PROBE_BAR, POSITION_BAR = 0.80, 0.20
+# Dan's figure fixes, round 3 (28 Oct 21:10): the three vertical marks, one line style each on every panel
+ANATOMY_MARKS = (("address formed", "l_probe", "--"), ("address used", "l_P", "-"), ("L", "layer", ":"))
+
+
+def ordinal(k: int) -> str:
+    return f"{k}{'nd' if k % 10 == 2 and k % 100 != 12 else 'th'}"  # the grids' steps: 2nd, 4th, 8th
+
+
+def grid_text(layers: list[int]) -> str:
+    """A sampled layer grid in words: 'every 4th', or 'every 8th plus L30 and L34' (a regular grid at its largest step
+    plus the layers off it)."""
+    steps = sorted({b - a for a, b in itertools.pairwise(layers)})
+    if len(steps) == 1:
+        return f"every {ordinal(steps[0])}"
+    s = steps[-1]
+    extra = [la for la in layers if la % s]
+    assert [la for la in layers if not la % s] == list(range(s, layers[-1] + 1, s)), layers
+    return f"every {ordinal(s)} plus " + " and ".join(f"L{la}" for la in extra)
 
 
 def f06b_anatomy(plt) -> None:
-    """Fig. 6b (E12): 47.8 (fixed in advance), per tested model, the lookup's answers under the whole change at each
-    sampled layer (identity / position stacked, the original answer empty, the value as a row of 0s under the bars),
-    each share's 95% interval; the recall's switches as a line with its band; the not-interpretable shading where the
-    lookup's whole change switches < S.NI_SWITCH; marks at the layer where the locker probe first reaches 0.8 (rules
-    l_probe: the address is formed), where position answers start (l_P: the address is used) and at L. One panel per
-    model, x = layer index. The full sweep (parts, probes) is the verdict folder's x47_anatomy.png."""
+    """Fig. 6b (E12, and E5's second figure): 47.8 (fixed in advance), per tested model, the lookup's answers under the
+    whole change at each sampled layer (identity / position stacked, the original answer empty, the value as a row of
+    0s under the bars), each share's 95% interval; the recall's switches as a line with its band; the not-interpretable
+    shading from the first layer where the lookup's whole change switches < S.NI_SWITCH to the model's last layer;
+    three vertical marks: the layer where the locker probe first reaches 0.8 (rules l_probe: the address is formed),
+    where position answers start (l_P: the address is used) and L. One panel per model, x = the layer itself (0 to
+    the model's depth), so a reduced grid (the 27B's, 49.4) shows in the bars' spacing; one style for every model (Dan's
+    round 3, 28 Oct 21:10). The full sweep (parts, probes) is the verdict folder's x47_anatomy.png."""
     vdir = latest_verdict("x47_anatomy/x47_8-*")
     src = str((vdir / "x47_8.json").relative_to(S.REPO))
     tested = {
@@ -3150,32 +3170,41 @@ def f06b_anatomy(plt) -> None:
     }
     models = [tested[t] for t in ANATOMY_ORDER if t in tested]
     assert 0 < len(models) <= 3, f"v6 (Dan's 18:30 brief): 9B, 27B, Muse at most, got {list(tested)}"
-    h = 5.5
+    h = 5.75
     fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, h), sharey=True, squeeze=False)
-    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 1.95 / h, bottom=1.0 / h, wspace=0.10)
-    reduced = [m["target"] for m in models if m["target"] in ANATOMY_REDUCED]
+    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 1.95 / h, bottom=1.2 / h, wspace=0.10)
     S.title(fig, "The address forms early; identity route first, position route later",
             "Bars: lookup answers under the whole change at one layer; line: recall switches; whiskers, bands: 95%.")  # fmt: skip
-    w = 0.78
     values: list[float] = []
+    grids, at_l = [], []
     for ax, m in zip(axes[0], models, strict=True):
-        layers, target, rules = m["layers"], m["target"], m["rules"]
+        layers, target, rules, depth = m["layers"], m["target"], m["rules"], m["n_layers"]
         cells = [m["cells"][str(la)] for la in layers]
         name = next(lab for t, _, lab in S.MODELS if t == target)
-        x = np.arange(len(layers))
+        short = SHORT[next(k for t, k, _ in S.MODELS if t == target)]  # full name in the first panel, short after
+        x = np.array(layers, dtype=float)
+        w = 0.85 * min(b - a for a, b in itertools.pairwise(layers))  # bar width: the grid's finest step
+        grids.append(f"{short} {grid_text(layers)}")
         ni = [c["lookup"]["switch"]["whole"][0] < S.NI_SWITCH - 1e-9 for c in cells]
         assert ni == [not c["lookup"]["interpretable"] for c in cells], f"{target}: the shading disagrees with 47.8"
-        S.not_interpretable(ax, S.spans(ni))
+        # shaded from the first layer under the bar to the model's last: every later sampled layer is under it too
+        first = next((i for i, f in enumerate(ni) if f), None)
+        assert first is None or all(ni[first:]), f"{target}: an interpretable layer after a shaded one"
+        if first is not None:
+            S.not_interpretable(ax, [(layers[first] - w / 2, depth)])
+            S.record("fig06b", target, "first layer where the lookup's whole change switches < 0.3", layers[first],
+                     source=src)  # fmt: skip
         bottom = np.zeros(len(layers))
-        hollow = target in ANATOMY_REDUCED
         for rt in ("identity", "position"):
             sh = np.array([c["lookup"]["share"]["whole"][rt] for c in cells])
-            look = {"fc": "white", "ec": S.COL[rt], "lw": 1.6} if hollow else {"color": S.COL[rt]}
-            ax.bar(x, sh[:, 0], bottom=bottom, width=w, zorder=2, **look)
-            off = -0.17 if rt == "identity" else 0.17
+            ax.bar(x, sh[:, 0], bottom=bottom, width=w, zorder=2, color=S.COL[rt])
+            off = (-0.22 if rt == "identity" else 0.22) * w
             ax.vlines(x + off, bottom + sh[:, 1], bottom + sh[:, 2], color="#1e1e1e", lw=0.9, zorder=3)
             bottom += sh[:, 0]
-        ax.bar(x, 1 - bottom, bottom=bottom, width=w, zorder=2, **S.EMPTY)  # the original answer (and other)
+        # the original answer (and other): filled light grey (Dan, 21:35), the hatch drawn again over the shaded bars
+        ax.bar(x, 1 - bottom, bottom=bottom, width=w, zorder=2, **S.ORIGINAL)
+        if first is not None:
+            S.hatch_over(ax, [(layers[first] - w / 2, depth)])
         for la, c in zip(layers, cells, strict=True):
             for rt in ("identity", "position", "value", "original"):
                 S.record("fig06b", target, f"layer {la}: lookup {rt} share (whole change)", *c["lookup"]["share"]["whole"][rt],
@@ -3183,52 +3212,51 @@ def f06b_anatomy(plt) -> None:
         values += [c["lookup"]["share"]["whole"]["value"][0] for c in cells]  # recorded above; shown in the legend
         rc = np.array([c["recall"]["switch"]["whole"] for c in cells])
         ax.fill_between(x, rc[:, 1], rc[:, 2], color=S.COL["recall"], alpha=0.18, lw=0, zorder=4)
-        ax.plot(x, rc[:, 0], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8, zorder=5,
-                mfc="white" if hollow else S.COL["recall"])  # fmt: skip
+        ax.plot(x, rc[:, 0], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8, zorder=5)
         for la, c in zip(layers, cells, strict=True):
             S.record("fig06b", target, f"layer {la}: recall switch (whole change)", *c["recall"]["switch"]["whole"],
                      n=c["recall"]["n"], source=src)  # fmt: skip
-        # probe before use: the address readable (locker probe >= 0.8, rules' l_probe; dashed) and position answers
-        # beginning (l_P; solid), named by the legend (three panels leave no room for labels above each); L under the
-        # layer axis
-        marks = (("address formed", rules["l_probe"], "--"), ("address used", rules["l_P"], "-"))
-        for key, la, ls in marks:
-            S.record("fig06b", target, f"{key}: layer", la, source=src)
-            if la is None:
-                continue
-            xi = layers.index(la)
-            ax.axvline(xi, color="#1e1e1e", ls=ls, lw=1.2, zorder=6)
-        li = layers.index(m["layer"])
-        ax.text(li, -0.13, "▲\nL", transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=S.FONT - 1,
-                weight="bold", color="#1e1e1e", linespacing=0.9)  # fmt: skip
-        step = 2 if len(layers) > 10 else 1
-        ax.set_xticks(x[::step], [str(la) for la in layers][::step])
-        ax.set_xlim(-0.6, len(layers) - 0.4)
+        # probe before use: the address readable (locker probe >= 0.8, rules' l_probe; dashed), position answers
+        # beginning (l_P; solid) and L (dotted), named by the legend (three panels leave no room for labels above
+        # each); L also under the layer axis, where it shares a layer with another mark
+        for key, field, ls in ANATOMY_MARKS:
+            la = m[field] if field == "layer" else rules[field]
+            if key != "L":
+                S.record("fig06b", target, f"{key}: layer", la, source=src)
+            if la is not None:
+                ax.axvline(la, color="#1e1e1e", ls=ls, lw=1.3, zorder=6)
+        if rules["l_P"] == m["layer"]:
+            at_l.append(short)
+        ax.text(m["layer"], -0.13, "▲\nL", transform=ax.get_xaxis_transform(), ha="center", va="top",
+                fontsize=S.FONT - 1, weight="bold", color="#1e1e1e", linespacing=0.9)  # fmt: skip
+        ax.set_xticks([round(depth * k / 4) for k in range(5)])
+        ax.set_xlim(0, depth)
         ax.set_xlabel("layer", loc="right", labelpad=6)
-        short = SHORT[next(k for t, k, _ in S.MODELS if t == target)]  # full name in the first panel, short after
         ax.text(0, 1.03, name if ax is axes[0, 0] else short, transform=ax.transAxes, ha="left", va="bottom",
                 fontsize=12, weight="bold")  # fmt: skip
-        S.panel_tag(ax, str(cells[0]["lookup"]["n"]) + " per layer", "fixed", inside=True)
+        # n per layer (the caption says so), above the frame beside the model's name: inside, its white patch would
+        # cover the tops of the bars
+        S.panel_tag(ax, str(cells[0]["lookup"]["n"]), "fixed")
         ax.set_ylim(0, 1.0)
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.spines[["top", "right"]].set_visible(False)
     axes[0, 0].set_ylabel("share of lookups / recalls")
     top = max(values, default=0.0)
     hs = [plt.Rectangle((0, 0), 1, 1, color=S.COL["identity"]), plt.Rectangle((0, 0), 1, 1, color=S.COL["position"]),
-          plt.Rectangle((0, 0), 1, 1, **S.EMPTY),
+          plt.Rectangle((0, 0), 1, 1, **S.ORIGINAL),
           plt.Line2D([], [], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8),
-          plt.Line2D([], [], color="#1e1e1e", ls="--", lw=1.2), plt.Line2D([], [], color="#1e1e1e", lw=1.2),
+          *(plt.Line2D([], [], color="#1e1e1e", ls=ls, lw=1.3) for _, _, ls in ANATOMY_MARKS),
           plt.Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["value"], lw=1.3)]  # fmt: skip
     legend(fig, hs, ["identity route", "position route", "the original answer", "recall switches",
                      f"address readable (probe ≥ {PROBE_BAR:.1f})",
-                     f"position answers begin (≥ {POSITION_BAR:.1f})",
+                     f"position answers begin (≥ {POSITION_BAR:.1f})", "L, the layer fixed in advance",
                      "value: 0.00 at every layer" if top < 0.005 else f"value: at most {top:.2f}"], 1 - 0.58 / h,
            ncol=3)  # fmt: skip
-    # Dan's 18:30 brief: the 27B from its reduced grid, hollow at the sampled layers; said in a caption line
-    if reduced:
-        names = ", ".join(SHORT[next(k for t, k, _ in S.MODELS if t == r)] for r in reduced)
-        fig.text(0.01, 0.12 / h, f"Hollow: {names}, a reduced grid of sampled layers.", ha="left", va="bottom",
-                 fontsize=S.FONT - 1, color="#555555")  # fmt: skip
+    # Dan's round 3: one style for the three models; the grid (the 27B's reduced one, 49.4) said in the caption
+    lines = [f"Layers sampled: {', '.join(grids)} (the bars' spacing); n per layer."]
+    lines += [f"{' and '.join(at_l)}: position answers begin at L (the two marks coincide)."] if at_l else []
+    fig.text(0.01, 0.1 / h, "\n".join(lines), ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555",
+             linespacing=1.25)  # fmt: skip
     S.save(fig, "fig06b_anatomy")
 
 

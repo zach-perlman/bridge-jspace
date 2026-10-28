@@ -239,7 +239,10 @@ E11_ROWS = {"bridge": "the bridge word", "pick_rest": "the rest of the pick sent
             "lk_other1_item": "other · item", "lk_other1_num": "other · number",
             "lk_other2_item": "third · item", "lk_other2_num": "third · number",
             "question": "the question", "last": "the last token"}  # fmt: skip
-E11_MARGINS = {"b": "the bridge word at\nevery layer up to l", "w": "the bridge word at\nevery layer from l on"}
+# Dan's round 3 (28 Oct 21:10): the two margin rows in plain words
+E11_MARGINS = {"b": "bridge word replaced at\nevery layer up to l\n(the whole word changed)",
+               "w": "replaced from l on\n(what later layers\nstill take from it)"}  # fmt: skip
+E11_MARGIN_GAP = (1.4, 3.8)  # extra room above the first margin row and between the two (three-line labels)
 
 
 def e11_scale(fig, x: float, y: float, reader: str, text: str) -> None:
@@ -256,9 +259,12 @@ def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str 
               target: str = "qwen3.5-9b", design: str = "clean", out_dir: Path | None = None) -> str:  # fmt: skip
     """E11 (v6): D1 + D2 (x47_depthmap's depth.json) on one model and design, one panel per sentence order (locker
     before the pick; after it). Rows: each token group as a pair, the lookup's row (purple) over the recall's (grey);
-    then D1's margins (the bridge word at every layer <= l; D2's window, every layer >= l). A cell: answers switched
-    when that group alone takes the changed prompt's state at that layer. Outlined per reader: the last layer whose
-    bridge-word cell switches >= 30% (D1 (b)) and D2's l_R (the first layer from which the window switches <= 10%)."""
+    then D1's margins (the bridge word at every layer <= l; D2's window, every layer >= l), labelled in plain words
+    (Dan's round 3, 28 Oct 21:10). A cell: answers switched when that group alone takes the changed prompt's state at
+    that layer. Outlined per reader: the last layer whose bridge-word cell switches >= 30% (D1 (b)) and D2's l_R (the
+    first layer from which the window switches <= 10%). Locker before the pick: a dashed line after the lookup's last
+    such layer (L16 on the 9B), 'the lookup reads the bridge word up to' it. The subtitle says what the map shows (Dan's
+    line); the model, the scenes and the cell go to the caption."""
     path = verdict_dir / "depth.json"
     blob = json.loads(path.read_text())
     m = next(x for x in blob["models"] if x["target"] == target and x["status"] == "tested")
@@ -267,16 +273,20 @@ def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str 
     cols = ["emb", *layers]
     xs = [0.0] + [j + 0.35 for j in range(1, len(cols))]  # a gap after the input token's column
     plt = S.setup()
-    h = 8.6
+    top_in, body_in, bottom_in = 1.45, 6.25, 1.55
+    h = top_in + body_in + bottom_in
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True)
-    fig.subplots_adjust(left=0.32, right=0.985, top=1 - 1.45 / h, bottom=0.145, wspace=0.05)
+    fig.subplots_adjust(left=0.32, right=0.985, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.05)
     S.title(fig, title or "Locker after the pick: the lookup leaves the bridge word early",
-            f"{NAME[target]}, {DESIGN_TEXT[design]}. A cell: switches when one token group takes the changed state.")  # fmt: skip
+            "The whole changed state is placed, not a part; this map shows where and when the bridge word is read, "
+            "not what is read from it")  # fmt: skip
     per_all = m["cells"][design]
     have = set().union(*(per_all[g][w]["cells"] for g, _ in E11_GROUPS for w in ("lookup", "recall")))
     groups = [g for g in D1_ROWS if any(a.startswith(f"g{g}@") for a in have)]
     rows = [*groups, *(k for k, _ in D1_MARGINS)]
-    y_of = {g: -i * E11_PITCH - (0.8 if i >= len(groups) else 0.0) for i, g in enumerate(rows)}
+    y_of = {g: -i * E11_PITCH for i, g in enumerate(groups)}
+    y_of["b"] = y_of[groups[-1]] - E11_PITCH - E11_MARGIN_GAP[0]
+    y_of["w"] = y_of["b"] - E11_PITCH - E11_MARGIN_GAP[1]
     for ax, (group, label) in zip(axes, E11_GROUPS, strict=True):
         per = per_all[group]
         for dy, w in ((0.0, "lookup"), (-1.0, "recall")):
@@ -296,6 +306,10 @@ def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str 
                 x = xs[cols.index(max(hot))]
                 ax.add_patch(Rectangle((x - 0.5, y_of["bridge"] + dy - 0.5), 1, 1, fill=False, ec="#111111", lw=1.6,
                                        zorder=4))  # fmt: skip
+                if w == "lookup" and group == "locker-first":  # Dan's round 3: the layer marked, in words
+                    ax.axvline(x + 0.5, color="#111111", lw=1.1, ls=(0, (4, 3)), zorder=5)
+                    ax.text(x + 1.0, y_of[groups[1]] + 0.4, f"the lookup reads\nthe bridge word\nup to L{max(hot)}",
+                            ha="left", va="top", fontsize=S.FONT - 1, color="#111111", zorder=6, linespacing=1.15)  # fmt: skip
             if per[w].get("l_R") is not None:
                 x = xs[cols.index(per[w]["l_R"])]
                 ax.add_patch(Rectangle((x - 0.5, y_of["w"] + dy - 0.5), 1, 1, fill=False, ec="#111111", lw=1.6,
@@ -332,11 +346,13 @@ def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str 
                      clip_on=False)  # fmt: skip
         axes[0].text(x - 0.008, (top + bot) / 2, "each locker sentence: item / number", transform=tr, ha="right",
                      va="center", fontsize=S.FONT, rotation=90)  # fmt: skip
-    fig.supxlabel("layer at which the changed prompt's state is placed", x=0.64, y=0.09, fontsize=S.FONT)
-    e11_scale(fig, 0.06, 0.05, "lookup", "lookups switched (upper row)")
-    e11_scale(fig, 0.55, 0.05, "recall", "recalls switched (lower row)")
-    fig.text(0.01, 0.012, f"Outlined, per reader: the bridge word's last layer at ≥ {HOT:.1f}; the first layer from "
-             f"which the bridge word switches ≤ {W_FLOOR:.1f}.", fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
+    fig.supxlabel("layer at which the changed prompt's state is placed", x=0.64, y=0.98 / h, fontsize=S.FONT)
+    e11_scale(fig, 0.06, 0.6 / h, "lookup", "lookups switched (upper row)")
+    e11_scale(fig, 0.55, 0.6 / h, "recall", "recalls switched (lower row)")
+    fig.text(0.01, 0.08 / h, f"{NAME[target]}, {DESIGN_TEXT[design]}. A cell: switches when one token group takes the "
+             "changed state at one layer.\nOutlined, per reader: the bridge word's last layer at "
+             f"≥ {HOT:.1f}; the first layer from which the bridge word switches ≤ {W_FLOOR:.1f}.",
+             fontsize=S.FONT - 1, color=S.COL["muted"], linespacing=1.3)  # fmt: skip
     return save(fig, out_name, out_dir)
 
 

@@ -94,13 +94,17 @@
 
 ### E5. Identity, position, never the value <a id="e5-routes"></a>
 
-- **Hypothesis.** The lookup follows the item's identity, its locker's position, or the number itself. Rule fixed in advance.
-- **Mechanics.** The change comes from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Whole change, and without the address against a random part.
+- **Hypothesis.** The lookup follows the item's identity, its locker's position, or the number. Fixed in advance.
+- **Mechanics.** The change comes from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Whole change; without the address, against a random part.
 - **Data.** Routes scenes, 300 items per model.
 - **Result.** Identity / position {{pt|rt_C2_whole_identity_9b}} / {{pt|rt_C2_whole_position_9b}} (9B), {{pt|rt_C2_whole_identity_27b}} / {{pt|rt_C2_whole_position_27b}} (27B), {{pt|rt_C2_whole_identity_muse}} / {{pt|rt_C2_whole_position_muse}} (Muse); the value never, in any format.
 - **Figure.**
 
 ![The lookup takes the identity route or the position route, never the value](figures/story/fig05_routes.png)
+
+The same routes by depth:
+
+![The address forms early; identity route first, position route later](figures/story/fig06b_anatomy.png)
 
 - **Conclusion.** The lookup reads what the item is and where it sits. Not shown: who reads the position (the dereference test is running).
 

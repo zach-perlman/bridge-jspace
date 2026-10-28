@@ -40,6 +40,10 @@ NI_SWITCH = 0.30
 NI_SHADE = {"facecolor": "#f6f6f6", "edgecolor": "#d4d4d4", "hatch": "///", "lw": 0, "zorder": 0}
 # the original answer as an empty segment: light grey stays the random control's colour alone
 EMPTY = {"facecolor": "none", "edgecolor": "#9a9a9a", "lw": 0.7}
+# Dan, 28 Oct 21:35 (Fig. 6b): the original answer as a filled segment in its own light grey (COL["original"], the
+# fixed colour for the original answer) with a thin outline, so a real share differs from the plain background between
+# sampled layers; for a figure that draws no random-control grey
+ORIGINAL = {"facecolor": COL["original"], "edgecolor": "#8c8c8c", "lw": 0.6}
 # Dan's figures brief (28 Oct ~18:30) §1, one mark system: colour = who or what (no other hue on a figure that follows
 # it), mark = the operation, panel = the model (9B, 27B, Muse). scripts/check_figure_terms.py checks MARK_FIGS' hues.
 MARK_COL = {"recall": COL["recall"], "lookup": COL["lookup"], "jpp": "#13998f", "address": COL["position"],
@@ -114,6 +118,14 @@ def not_interpretable(ax, spans: list[tuple[float, float]], y: float = 0.55) -> 
             ax.text((x0 + x1) / 2, y, "not\ninterpretable", transform=ax.get_xaxis_transform(), ha="center",
                     va="center", fontsize=FONT, color=COL["muted"], zorder=7,
                     bbox={"boxstyle": "round,pad=0.25", "fc": "white", "ec": "none"})  # fmt: skip
+
+
+def hatch_over(ax, spans: list[tuple[float, float]], zorder: float = 2.5) -> None:
+    """The not-interpretable hatch again, over what is drawn under zorder (bars), so a bar inside a shaded span shows
+    under the hatch; the hatch tiles in device space, so outside the bars it falls on not_interpretable's own lines."""
+    for x0, x1 in spans:
+        ax.axvspan(x0, x1, facecolor="none", edgecolor=NI_SHADE["edgecolor"], hatch=NI_SHADE["hatch"], lw=0,
+                   zorder=zorder)  # fmt: skip
 
 
 def spans(flags: list[bool], step: float = 1.0) -> list[tuple[float, float]]:

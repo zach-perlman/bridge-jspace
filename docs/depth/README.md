@@ -10,7 +10,7 @@
 - **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at e517d99e from the run files. Sealed and running: the gain map, one question two sources, the learned subspaces on the 27B and Muse; results land here when opened.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 34b55a91 from the run files. Sealed and running: the gain map, one question two sources, the learned subspaces on the 27B and Muse; results land here when opened.
 
 ## Setup
 
@@ -94,13 +94,17 @@
 
 ### E5. Identity, position, never the value <a id="e5-routes"></a>
 
-- **Hypothesis.** The lookup follows the item's identity, its locker's position, or the number itself. Rule fixed in advance.
-- **Mechanics.** The change comes from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Whole change, and without the address against a random part.
+- **Hypothesis.** The lookup follows the item's identity, its locker's position, or the number. Fixed in advance.
+- **Mechanics.** The change comes from a prompt where another item's locker sentence moved and took a new number; each route predicts a different locker. Whole change; without the address, against a random part.
 - **Data.** Routes scenes, 300 items per model.
 - **Result.** Identity / position 0.48<!-- src: docs/x0_numbers.json | rt_C2_whole_identity_9b --> / 0.51<!-- src: docs/x0_numbers.json | rt_C2_whole_position_9b --> (9B), 0.66<!-- src: docs/x0_numbers.json | rt_C2_whole_identity_27b --> / 0.34<!-- src: docs/x0_numbers.json | rt_C2_whole_position_27b --> (27B), 0.44<!-- src: docs/x0_numbers.json | rt_C2_whole_identity_muse --> / 0.54<!-- src: docs/x0_numbers.json | rt_C2_whole_position_muse --> (Muse); the value never, in any format.
 - **Figure.**
 
 ![The lookup takes the identity route or the position route, never the value](../../figures/story/fig05_routes.png)
+
+The same routes by depth:
+
+![The address forms early; identity route first, position route later](../../figures/story/fig06b_anatomy.png)
 
 - **Conclusion.** The lookup reads what the item is and where it sits. Not shown: who reads the position (the dereference test is running).
 

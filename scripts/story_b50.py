@@ -19,6 +19,7 @@ import sys
 import textwrap
 from pathlib import Path
 
+from matplotlib import patheffects as pe
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
@@ -31,12 +32,16 @@ from scripts import story_style as S
 MODELS = tuple((t, m, name) for t, m, name in S.MODELS if m != "122b")  # 9B, 27B, Muse
 SHORT = {"9b": "9B", "27b": "27B", "muse": "Muse"}
 INK, LOOKUP, NULL = S.MARK_COL["recall"], S.MARK_COL["lookup"], S.MARK_COL["null"]
+RECALL_AFTER = "#9a9a9a"  # the recall's lighter shade (locker after the pick): a grey, so no new hue
 CAPTION = "#555555"
 CAPTION_CHARS = 110  # caption characters per line at 10 pt in the 8.8 in column
-MUSE_BAND = "Muse's rung 6 ran at L23–29; his band is L36–42 (rerun running)"
-# the ladder's rungs in words (49.2's rung_text; rungs 5 and 6 are two definitions, not one)
-RUNGS = {1: "bridge word,\none layer", 2: "bridge word,\nfour layers", 3: "+ the earlier\nmention",
-         4: "+ the\nquestion", 5: "every token,\nfour layers", 6: "Zach's directions,\nhis band"}  # fmt: skip
+MUSE_BAND = "Muse's rung 6 ran at L23–29; his band is L36–42, where it was not run"
+# the ladder's rungs in words, two lines each: where, then what is added (49.2's rung_text; Dan's round 3, 28 Oct
+# 21:10; rungs 5 and 6 are two definitions, not one)
+RUNGS = {1: "bridge word\none layer", 2: "bridge word\nlayers L to L+3", 3: "+ the item's\nearlier mention",
+         4: "+ the\nquestion", 5: "every token\nL to L+3", 6: "every token · Zach's\ndirections · his band"}  # fmt: skip
+# the rungs' x: rung 6 (Zach's definition) set a little apart, which also gives its longer label room
+RUNG_X = {1: 1.0, 2: 2.0, 3: 3.0, 4: 4.0, 5: 5.0, 6: 6.25}
 VALID_SWITCHES = F.VALID_SWITCHES  # a lookup extra loss is drawn only on at least 30 switches (X0's validity bar)
 
 
@@ -117,74 +122,89 @@ def build_marks(out_name: str = "fig00b_marks") -> str:
 # ---- fig01d: the removal ladder ------------------------------------------------------------------------------------
 
 
+LADDER_BARS = (("recall", "locker-first", INK, -0.27, "recall, locker before the pick"),
+               ("recall", "locker-after", RECALL_AFTER, -0.01, "recall, locker after the pick"),
+               ("lookup", "all", LOOKUP, 0.27, "lookup, every scene"))  # fmt: skip
+LADDER_BAR_W = 0.25
+
+
 def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder") -> str:
-    """Fig. 1d (E2): per model, the answers lost beyond a random part of the same share (pp) when the J++ part's
-    directions are taken out of the changed prompt's own state, rung by rung (49.2's six rungs; the 27B ran rungs 1-2).
-    Recall: locker before the pick (solid) and after it (dashed); lookup: every scene. The grey bars: what the random
-    part itself costs the recall (every scene). Rung 6 (Zach's definition) stands apart from rungs 1-5 (ours)."""
+    """Fig. 1d (E2), Dan's round 3 (28 Oct 21:10): one panel per model, one column per rung (49.2's six rungs; the 27B
+    ran rungs 1-2, its other columns greyed), each column the recall's bars (locker before the pick, dark; after it, a
+    lighter shade) and the lookup's (every scene, purple): the answers lost beyond a random part of the same share (pp)
+    when the J++ part's directions are taken out of the changed prompt's own state, with 95% whiskers; on each bar a
+    grey tick at what the random part itself costs that bar's group (kept with none minus kept with the random part).
+    Rung 6 (Zach's definition) stands apart from rungs 1-5 (ours); Muse's rung 6 is marked (†) and its band said in
+    the caption."""
     src_path = verdict_dir / "x49_2.json"
     v = json.loads(src_path.read_text())
     src, fid = rel(src_path), out_name.split("_")[0]
     by = {m["target"]: m for m in v["models"] if m.get("status") == "tested"}
     plt = S.setup()
-    panel_in, gap_in, top_in, bottom_in = 1.45, 0.42, 1.75, 1.25
+    panel_in, gap_in, top_in, bottom_in = 1.5, 0.42, 1.75, 1.85
     h = top_in + 3 * panel_in + 2 * gap_in + bottom_in
     fig, axes = plt.subplots(3, 1, figsize=(S.WIDTH, h), sharex=True)
-    fig.subplots_adjust(left=0.10, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / panel_in)
+    fig.subplots_adjust(left=0.08, right=0.99, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / panel_in)
     S.title(fig, "Recall needs the J++ part once its other copies go; the lookup never",
             "The J++ part taken out of the changed prompt, rung by rung; answers lost beyond a random part")  # fmt: skip
-    series = (("recall", "locker-before", "-", "recall, locker before the pick"),
-              ("recall", "locker-after", "--", "recall, locker after the pick"),
-              ("lookup", "all", "-", "lookup, every scene"))  # fmt: skip
-    group_key = {"locker-before": "locker-first", "locker-after": "locker-after", "all": "all"}
-    dx = {"locker-before": -0.13, "locker-after": 0.0, "all": 0.13}
-    omitted = []
+    omitted, greyed = [], []
     for k, (ax, (target, m, name)) in enumerate(zip(axes, MODELS, strict=True)):
         mod = by.get(target)
         model_label(ax, m, name, k == 0)
         ax.axhline(0, color="#999999", lw=0.8, zorder=1)
         ax.axhline(10, color="#555555", lw=1.0, ls=(0, (4, 3)), zorder=1)
-        ax.text(6.62, 10, "10 pp", ha="right", va="bottom", fontsize=S.FONT - 1, color="#555555")
-        ax.axvline(5.5, color="#cccccc", lw=1.0, zorder=0)
-        ax.set_ylim(-12, 55)
+        ax.text(RUNG_X[6] + 0.7, 10, "10 pp", ha="right", va="bottom", fontsize=S.FONT - 1, color="#555555")
+        ax.axvline((RUNG_X[5] + RUNG_X[6]) / 2, color="#cccccc", lw=1.0, zorder=0)
+        ax.set_ylim(-10, 58)
         ax.set_yticks([0, 20, 40])
         ax.grid(axis="y", color="#eeeeee")
         ax.set_axisbelow(True)
         ax.tick_params(axis="x", length=0)
+        rungs = mod["rungs"] if mod else []
+        # a rung not run: its column greyed, no text in the frame (the caption says it)
+        for r in (r for r in RUNGS if r not in rungs):
+            ax.axvspan(RUNG_X[r] - 0.45, RUNG_X[r] + 0.45, color=S.COL["band"], lw=0, zorder=0)
         if mod is None:
             omitted.append(f"{SHORT[m]} (every rung)")
             continue
-        rungs = mod["rungs"]
         if len(rungs) < 6:
-            omitted.append(f"{SHORT[m]} rungs {len(rungs) + 1}–6")
-        rc = mod["cells"]["recall"]["all"]
-        own = [100 * (rc["kept"]["none"][0] - rc["kept"][f"rand{r}"][0]) for r in rungs]
-        for r, o in zip(rungs, own, strict=True):
-            S.record(fid, target, f"rung {r}: the random part's own cost to the recall, every scene (kept with none "
-                     "minus kept with the random part)", round(o / 100, 4), n=rc["n"], source=src)  # fmt: skip
-        ax.bar(rungs, own, width=0.6, color=NULL, alpha=0.55, lw=0, zorder=1)
-        for reader, group, ls, label in series:
-            cell = mod["cells"][reader][group_key[group]]
-            col = INK if reader == "recall" else LOOKUP
-            pts = []
+            greyed.append(f"{SHORT[m]} rungs {len(rungs) + 1}–6")
+        for reader, group, col, dx, label in LADDER_BARS:
+            cell = mod["cells"][reader][group]
             for r in rungs:
                 c = cell["cost"][str(r)]
-                pp = tuple(100 * x for x in c)
                 S.record(fid, target, f"rung {r}: {label}: answers lost beyond random", *[round(x, 4) for x in c],
                          n=cell["n"], source=src)  # fmt: skip
-                pts.append(pp)
-                mark(ax, r + dx[group], pp, col, "zero", hollow=m == "muse" and r == 6, ms=7)
-            ours = [(r + dx[group], p[0]) for r, p in zip(rungs, pts, strict=True) if r <= 5]  # rung 6 stands apart
-            ax.plot(*zip(*ours, strict=True), color=col, ls=ls, lw=1.6, zorder=2)
-        S.panel_tag(ax, str(rc["n"]), "fixed", inside=True)
+                own = cell["kept"]["none"][0] - cell["kept"][f"rand{r}"][0]
+                S.record(fid, target, f"rung {r}: {label}: the random part's own cost (kept with none minus kept with "
+                         "the random part)", round(own, 4), n=cell["n"], source=src)  # fmt: skip
+                x = RUNG_X[r] + dx
+                ax.bar(x, 100 * c[0], width=LADDER_BAR_W, color=col, lw=0, zorder=2)
+                ax.plot([x, x], [100 * c[1], 100 * c[2]], color="#1e1e1e", lw=1.1, zorder=3, solid_capstyle="butt")
+                ax.plot([x - LADDER_BAR_W * 0.55, x + LADDER_BAR_W * 0.55], [100 * own] * 2, color=NULL, lw=2.4,
+                        zorder=4, solid_capstyle="butt", path_effects=[pe.withStroke(linewidth=3.6, foreground="white")])  # fmt: skip
+        if m == "muse" and 6 in rungs:  # rung 6 outside Zach's band on Muse (the caption's dagger)
+            top = max(100 * mod["cells"][w][g]["cost"]["6"][2] for w, g, *_ in LADDER_BARS)
+            # above its bars' whiskers and clear of the 10 pp line
+            ax.text(RUNG_X[6], max(top, 10) + 4, "†", ha="center", va="bottom", fontsize=S.FONT + 1, color="#1e1e1e")
+        S.panel_tag(ax, str(mod["cells"]["recall"]["all"]["n"]), "fixed")
     axes[1].set_ylabel("answers lost beyond random (pp)")
-    axes[-1].set_xlim(0.5, 6.7)
-    axes[-1].set_xticks(list(RUNGS), list(RUNGS.values()))
-    hs = [Line2D([], [], color=INK, lw=1.8), Line2D([], [], color=INK, lw=1.8, ls="--"),
-          Line2D([], [], color=LOOKUP, lw=1.8), Patch(fc=NULL, alpha=0.55, ec="none")]  # fmt: skip
-    fig.legend(hs, [s[3] for s in series] + ["what a random part costs the recall"], loc="upper left",
-               bbox_to_anchor=(0.0, 1 - 0.74 / h), frameon=False, ncol=2, handlelength=2.6, columnspacing=1.6)  # fmt: skip
-    caption(fig, [f"Hollow: {MUSE_BAND}."] + ([f"Not run: {'; '.join(omitted)}."] if omitted else []), 0.42)
+    axes[-1].set_xlim(0.58, RUNG_X[6] + 0.7)
+    # half a point under the figures' 11 pt: six two-line labels across the column otherwise touch
+    axes[-1].set_xticks(list(RUNG_X.values()), list(RUNGS.values()), fontsize=S.FONT - 0.5)
+    hs = [Patch(fc=col, ec="none") for *_, col, _, _ in LADDER_BARS]
+    hs.append(Line2D([], [], color=NULL, lw=2.4, solid_capstyle="butt"))
+    fig.legend(hs, [b[4] for b in LADDER_BARS] + ["tick: what a random part (same size) costs that bar"],
+               loc="upper left", bbox_to_anchor=(0.0, 1 - 0.74 / h), frameon=False, ncol=2, handlelength=1.6,
+               columnspacing=1.6)  # fmt: skip
+    lines = ["L to L+3: L, the layer fixed in advance, and the three layers after it; the band was fixed before the "
+             "run (Fig. 6b shows how deep the bridge word is still read).",
+             "Every token: rung 5 takes out the same 25 lens directions at every token (ours); rung 6 each token's own "
+             "top-10 lens directions over Zach's band (his).",
+             f"† {MUSE_BAND}."]  # fmt: skip
+    lines += [f"Grey columns, not run: {'; '.join(greyed)}."] if greyed else []
+    lines += [f"Omitted: {'; '.join(omitted)}."] if omitted else []
+    caption(fig, lines, bottom_in - 0.8)
     S.save(fig, out_name)
     return out_name
 
@@ -198,25 +218,50 @@ def n_tag(ax, text: str) -> None:
             fontsize=S.FONT - 1, color=S.COL["muted"], zorder=8)  # fmt: skip
 
 
+def main_random_gap(target: str, m: str) -> tuple[float, str]:
+    """The main test's control for the 2 x 2's first cell: a random part of the J++ part's share taken out instead,
+    the recall's switches lost minus the lookup's (each reader's dependence on the random part at L, the point estimate
+    x0_figures.contrast subtracts), from the run's outcomes; checked against docs/x0_numbers.json's rounded rc_rdep /
+    lk_rdep. Returns (value, source)."""
+    run, la = F.MAIN_RUNS[m], F.X.PREDICTED[target]
+    path = F.X.RESULTS / run / "outcomes.jsonl"
+    rows = [r for r in F.X.read_jsonl(path) if r["rendering"] == "chat" and r["layer"] == la]
+    rdep = {}
+    for w in F.X.READERS:
+        mine = [r for r in rows if r["reader"] == w]
+        whole = [r["switched"] for r in mine if r["arm"] == "whole"]
+        rand = [r["switched"] for r in mine if r["arm"] == "no_rand" and (r["dict"], r["k"], r["omp"]) == F.X.MAIN]
+        assert whole, (target, w)
+        assert len(rand) == len(whole), (target, w, len(whole), len(rand))
+        rdep[w] = float(F.X.dependence(sum(whole) / len(whole), sum(rand) / len(rand)))
+    for w, key in ((F.X.RECALL, "rc"), (F.X.LOOKUP, "lk")):
+        stored = float(F.N[f"{key}_rdep_{m}"].replace("−", "-"))
+        assert abs(rdep[w] - stored) <= 0.005 + 1e-9, (target, key, rdep[w], stored)
+    return rdep[F.X.RECALL] - rdep[F.X.LOOKUP], str(path.relative_to(S.REPO))
+
+
 def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_by_two") -> str:
-    """Fig. 12: recall minus lookup in four cells, our operation / Zach's x our scenes / his passages, one mark per
-    model: our main-test gap (docs/x0_numbers.json, Fig. 1's); rung 6 of the ladder on our clean scenes (recall's cost
-    minus the lookup's, every scene; two separate estimates, so no joint interval); Z1's gap on his passages (a lookup
-    with fewer than 30 switches is omitted); his stored M - K rows on the same passage ids, with his rotated-direction
-    control as the grey band."""
+    """Fig. 12: recall minus lookup in four cells, our operation / Zach's x our scenes / his passages, one mark for
+    every cell and one scale (Dan's round 3, 28 Oct 21:10): our main-test gap (docs/x0_numbers.json, Fig. 1's); rung 6
+    of the ladder on our clean scenes (recall's cost minus the lookup's, every scene; two separate estimates, so no
+    joint interval); Z1's gap on his passages (a lookup with fewer than 30 switches is omitted); his stored M - K rows
+    on the same passage ids. In every cell a grey tick: the same operation with a random part of the same size (his:
+    his rotated directions), recall minus lookup. The units differ by row (said in the subtitle and the row labels)."""
     lad_path, z1_path = ladder_dir / "x49_2.json", z1_dir / "z1.json"
     lad = {m["target"]: m for m in json.loads(lad_path.read_text())["models"] if m.get("status") == "tested"}
     z1 = {m["target"]: m for m in json.loads(z1_path.read_text())["models"] if m.get("status") == "tested"}
     fid = out_name.split("_")[0]
-    omitted, hollow = [], [MUSE_BAND.replace(" (rerun running)", "")]
-    cells: dict[tuple[int, int], list] = {(0, 0): [], (0, 1): [], (1, 0): [], (1, 1): []}  # (i, v, op, hollow)
+    omitted = []
+    cells: dict[tuple[int, int], list] = {(0, 0): [], (0, 1): [], (1, 0): [], (1, 1): []}  # (i, v, control)
     ns: dict[tuple[int, int], list[str]] = {k: [] for k in cells}
-    bands = []  # (i, lo, hi): his rotated control
+    control = "the control (a random part of the same size instead), recall minus lookup"
     for i, (target, m, _) in enumerate(MODELS):
         # (0, 0) our removal on our scenes: the main test's gap (Fig. 1)
         v = F.interval(f"contrast_{m}")
         S.record(fid, target, "our removal, our scenes (main test): gap", *v, n=200, source=f"contrast_{m}")
-        cells[(0, 0)].append((i, v, "remove", False))
+        ctl, src = main_random_gap(target, m)
+        S.record(fid, target, f"our removal, our scenes (main test): {control}", round(ctl, 4), n=200, source=src)
+        cells[(0, 0)].append((i, v, ctl))
         ns[(0, 0)].append("200")
         # (0, 1) our removal on his passages: Z1's gap at our layer
         mod = z1.get(target)
@@ -231,8 +276,11 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
                 omitted.append(f"{SHORT[m]} on his passages, too few lookup switches ({sw} of {lr['n']})")
             else:
                 v = tuple(round(x, 4) for x in lr["gap"])
+                ctl = lr["recall"]["Rdep"][0] - lr["lookup"]["Rdep"][0]
                 S.record(fid, target, "our removal, his passages: gap", *v, n=lr["n"], source=rel(z1_path))
-                cells[(0, 1)].append((i, v, "remove", True))
+                S.record(fid, target, f"our removal, his passages: {control}", round(ctl, 4), n=lr["n"],
+                         source=rel(z1_path))  # fmt: skip
+                cells[(0, 1)].append((i, v, ctl))
                 ns[(0, 1)].append(str(lr["n"]))
         # (1, 0) Zach's operation on our scenes: rung 6 of the ladder, recall's cost minus the lookup's (every scene)
         mod = lad.get(target)
@@ -240,12 +288,17 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
             omitted.append(f"{SHORT[m]} under Zach's operation on our scenes, not run")
         else:
             rc, lk = (mod["cells"][w]["all"]["cost"]["6"][0] for w in ("recall", "lookup"))
+            own = {w: mod["cells"][w]["all"]["kept"]["none"][0] - mod["cells"][w]["all"]["kept"]["rand6"][0]
+                   for w in ("recall", "lookup")}  # fmt: skip
             n = mod["cells"]["recall"]["all"]["n"]
             S.record(fid, target, "Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",
                      round(rc - lk, 4), n=n, source=rel(lad_path))  # fmt: skip
-            cells[(1, 0)].append((i, (rc - lk, None, None), "zero", m == "muse"))
+            S.record(fid, target, f"Zach's operation, our scenes (rung 6): {control}, every scene (kept with none "
+                     "minus kept with the random part)", round(own["recall"] - own["lookup"], 4), n=n,
+                     source=rel(lad_path))  # fmt: skip
+            cells[(1, 0)].append((i, (rc - lk, None, None), own["recall"] - own["lookup"]))
             ns[(1, 0)].append(str(n))
-        # (1, 1) Zach's operation on his passages: his stored M - K rows, his rotated control as the band
+        # (1, 1) Zach's operation on his passages: his stored M - K rows, his rotated control
         full = (z1.get(target) or {}).get("beside", {}).get("full")
         if not full:
             omitted.append(f"{SHORT[m]}, his rows not stored")
@@ -255,29 +308,33 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
                  *[round(x, 4) for x in rot["m_minus_k"]], n=rot["joined"], source=rel(z1_path))  # fmt: skip
         S.record(fid, target, "Zach's operation, his passages: his stored recall minus lookup",
                  *[round(x, 4) for x in mk["m_minus_k"]], n=mk["joined"], source=rel(z1_path))  # fmt: skip
-        bands.append((i, rot["m_minus_k"][1], rot["m_minus_k"][2]))
-        cells[(1, 1)].append((i, tuple(mk["m_minus_k"]), "zero", False))
+        cells[(1, 1)].append((i, tuple(mk["m_minus_k"]), rot["m_minus_k"][0]))
         ns[(1, 1)].append(str(mk["joined"]))
 
-    lines = [f"Hollow: reruns tonight ({hollow[0]}; our removal on his passages, with the P final).",
+    # Dan's round 3: the footnote (the rotated control's meaning, Muse's band, the K items, the two scopes)
+    lines = ["Grey tick: the same operation with a random part of the same size instead (for his stored rows, his "
+             "rotated lens directions), recall minus lookup; every mark is already net of it except his stored rows.",
+             f"{MUSE_BAND}. K items: on his passages the lookup is his K final, the answer stated in the passage; the "
+             "rerun on his P items is pending.",
+             "The two operations differ in scope: one token at one layer vs every token over a band.",
              (f"Omitted: {'; '.join(omitted)}. " if omitted else "") + "The last rung: two separate estimates, no "
-             "joint interval. On his passages the lookup is his K final (the answer read from the passage)."]  # fmt: skip
+             "joint interval."]  # fmt: skip
     plt = S.setup()
     cell_in, gap_in, top_in = 1.75, 0.62, 1.85
     bottom_in = 0.55 + 0.19 * len(caption_lines(lines))
     h = top_in + 2 * cell_in + gap_in + bottom_in
     fig, axes = plt.subplots(2, 2, figsize=(S.WIDTH, h), sharey=True)
-    fig.subplots_adjust(left=0.24, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / cell_in,
+    fig.subplots_adjust(left=0.26, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / cell_in,
                         wspace=0.10)  # fmt: skip
     S.title(fig, "Both operations, both datasets, one direction",
-            "Recall minus lookup: how much more the recall loses than the lookup when lens directions are taken out")  # fmt: skip
-    for i, lo, hi in bands:
-        axes[1, 1].fill_between([i - 0.36, i + 0.36], [lo] * 2, [hi] * 2, color=NULL, alpha=0.6, lw=0, zorder=1)
+            "The units differ: ours in share of switches, Zach's in points. Read the sign and the order, not the size.")  # fmt: skip
     for (r, c), items in cells.items():
         ax = axes[r, c]
-        for i, v, op, holl in items:
+        for i, v, ctl in items:
             ax.bar(i, v[0], width=0.5, fc="none", ec="#9a9a9a", lw=0.9, zorder=2)
-            mark(ax, i, v, INK, op, hollow=holl, ms=8.5)
+            ax.plot([i - 0.3, i + 0.3], [ctl] * 2, color=NULL, lw=2.6, solid_capstyle="butt", zorder=3,
+                    path_effects=[pe.withStroke(linewidth=3.8, foreground="white")])  # fmt: skip
+            mark(ax, i, v, INK, "remove", ms=8.5)
             ax.text(i + 0.3, v[0], f"{v[0]:.2f}", ha="left", va="center", fontsize=S.FONT - 1, color="#333333",
                     zorder=5)  # fmt: skip
         n = ns[(r, c)]
@@ -287,28 +344,29 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
         ax.set_xlim(-0.55, 2.75)
         ax.set_xticks(range(3), [SHORT[m] for _, m, _ in MODELS])
         ax.tick_params(axis="x", length=0)
-        ax.set_ylim(-0.2, 1.05)
+        ax.set_ylim(-0.36, 1.05)
         ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         ax.grid(axis="y", color="#eeeeee")
         ax.set_axisbelow(True)
     for ax, text in ((axes[0, 0], "our scenes"), (axes[0, 1], "Zach's passages")):
         ax.set_title(text, fontsize=12, weight="bold", loc="left", pad=24)
-    for ax, text in (
-        (axes[0, 0], "our removal\n(from the\nchange)"),
-        (axes[1, 0], "Zach's\noperation\n(his lens\ndirections)"),
-    ):
-        ax.text(-0.56, 0.5, text, transform=ax.transAxes, ha="left", va="center", fontsize=12, weight="bold",
+    # the row: the operation in bold, then what it counts in Dan's words (the units)
+    for ax, head, unit in (
+        (axes[0, 0], "our removal\n(from the\nchange)", "the recall's extra loss\nminus the lookup's\n(share of switches)"),
+        (axes[1, 0], "Zach's operation\n(his lens\ndirections)", "recall answers lost\nminus lookup answers\nlost (points)"),
+    ):  # fmt: skip
+        ax.text(-0.72, 0.5, head, transform=ax.transAxes, ha="left", va="bottom", fontsize=12, weight="bold",
                 linespacing=1.05)  # fmt: skip
+        ax.text(-0.72, 0.43, unit, transform=ax.transAxes, ha="left", va="top", fontsize=S.FONT - 1,
+                color=S.COL["muted"], linespacing=1.1)  # fmt: skip
     for ax, text in ((axes[0, 0], "gap, main test"), (axes[0, 1], "gap"),
                      (axes[1, 0], "last rung of the ladder, clean scenes"),
                      (axes[1, 1], "his stored rows, same passages")):  # fmt: skip
         ax.text(0.0, 1.03, text, transform=ax.transAxes, ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555")
-    hs = [
-        Line2D([], [], marker=S.MARK["remove"], ls="", color=INK, ms=8),
-        Line2D([], [], marker=S.MARK["zero"], ls="", color=INK, ms=8),
-        Patch(fc=NULL, alpha=0.6, ec="none"),
-    ]
-    F.legend(fig, hs, ["our removal", "Zach's operation", "his rotated directions (control)"], 1 - 0.74 / h, ncol=3)
+    hs = [Line2D([], [], marker=S.MARK["remove"], ls="", color=INK, ms=8),
+          Line2D([], [], color=NULL, lw=2.6, solid_capstyle="butt")]  # fmt: skip
+    F.legend(fig, hs, ["recall minus lookup (95% whisker)", "control: a random part (same size); his: rotated directions"],
+             1 - 0.74 / h, ncol=2)  # fmt: skip
     caption(fig, lines, bottom_in - 0.45)
     S.save(fig, out_name)
     return out_name
