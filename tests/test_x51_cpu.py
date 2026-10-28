@@ -229,6 +229,81 @@ def test_concat_probe_reads_a_planted_joint_code():
     assert C.concat_label(res)["label"] == "person"
 
 
+# ---- 5. the gain fit (scripts/x51_fit.py) ---------------------------------------------------------------------------
+
+GAINS = (0.0, 0.5, 1.0, 1.5, 2.0)
+
+
+def _gain_rows(a0: float, a: float, b: float, c: float, n_items: int, seed: int = 0) -> list[dict]:
+    rng = np.random.default_rng(seed)
+    rows = []
+    for i in range(n_items):
+        for al in GAINS:
+            for be in GAINS:
+                p = 1 / (1 + np.exp(-(a0 + a * al + b * be + c * al * be)))
+                rows.append({"scene": f"s{i}", "entity": f"e{i % 40}", "reader": "PM", "arm": f"J({al:g},{be:g})",
+                             "switched": int(rng.random() < p)})  # fmt: skip
+        rows.append({"scene": f"s{i}", "entity": f"e{i % 40}", "reader": "PM", "arm": "R(2,0)", "switched": 1})
+    return rows
+
+
+def test_parse_arm_and_grid_counts():
+    from scripts import x51_fit as F
+
+    assert F.parse_arm("J(0.5,2)") == (0.5, 2.0) and F.parse_arm("J(0,0)") == (0.0, 0.0)
+    assert F.parse_arm("R(2,0)") is None and F.parse_arm("J(0,2)-U") is None and F.parse_arm("J100(2,0)") is None
+    g = F.grid_counts(_gain_rows(0, 1, 1, 0, 6))
+    assert g["succ"].shape == (6, 25) and g["rows"] == 6 * 25 and g["trials"].sum() == 150
+    assert list(g["alpha"][:5]) == [0.0] * 5 and list(g["beta"][:5]) == list(GAINS)
+
+
+def test_fit_recovers_planted_coefficients():
+    from scripts import x51_fit as F
+
+    g = F.grid_counts(_gain_rows(-3.0, 0.5, 2.0, 0.0, 400))
+    s, n = g["succ"].sum(0), g["trials"].sum(0)
+    f = F.fit_gain(g["alpha"], g["beta"], s, n, interaction=False, intercept=True)
+    assert f["converged"]
+    assert f["a0"] == pytest.approx(-3.0, abs=0.25) and f["a"] == pytest.approx(0.5, abs=0.15)
+    assert f["b"] == pytest.approx(2.0, abs=0.2) and f["b_over_a"] == pytest.approx(f["b"] / f["a"])
+    assert float(f["predict"](0.0, 0.0)[0]) == pytest.approx(1 / (1 + np.exp(-f["a0"])))
+    # as written (no intercept): P = 0.5 at the origin by construction
+    f0 = F.fit_gain(g["alpha"], g["beta"], s, n, interaction=False, intercept=False)
+    assert float(f0["predict"](0.0, 0.0)[0]) == pytest.approx(0.5) and "a0" not in f0
+    assert not F.lr_test(g["alpha"], g["beta"], s, n, intercept=True)["c_needed"]
+
+
+def test_lr_test_finds_a_planted_interaction():
+    from scripts import x51_fit as F
+
+    g = F.grid_counts(_gain_rows(-4.0, 0.2, 0.2, 2.0, 200))  # "together only": neither part alone switches
+    lrt = F.lr_test(g["alpha"], g["beta"], g["succ"].sum(0), g["trials"].sum(0), intercept=True)
+    assert lrt["c_needed"] and lrt["p"] < 1e-6 and lrt["df"] == 1
+    f1 = F.fit_gain(g["alpha"], g["beta"], g["succ"].sum(0), g["trials"].sum(0), interaction=True, intercept=True)
+    assert f1["c"] == pytest.approx(2.0, abs=0.4)
+
+
+def test_separated_data_do_not_converge():
+    from scripts import x51_fit as F
+
+    al = np.array([0.0, 0.5, 1.0, 1.5, 2.0])
+    be = np.zeros(5)
+    f = F.fit_gain(al, be, np.array([0, 0, 10, 10, 10]), np.full(5, 10), interaction=False, intercept=True)
+    assert not f["converged"]
+
+
+def test_gain_fit_bootstrap_intervals():
+    from scripts import x51_fit as F
+
+    res = F.gain_fit(_gain_rows(-3.0, 0.5, 2.0, 0.0, 200, seed=1), n_boot=60, seed=0, intercept=True)
+    assert res["n_clusters"] == 40 and res["n_rows"] == 200 * 25 and len(res["cells"]) == 25
+    lo, hi = res["ci"]["b"]
+    assert lo < res["additive"]["b"] < hi and lo < 2.0 < hi
+    assert res["nonconverged_resamples"] == {"additive": 0, "with_c": 0}
+    cell = next(c for c in res["cells"] if c["alpha"] == 0 and c["beta"] == 2)
+    assert cell["share_ci"][0] <= cell["share"] <= cell["share_ci"][1]
+
+
 def test_ci3_and_strip():
     assert all(math.isnan(v) for v in C.ci3(math.nan, np.zeros(3)))
     assert C.strip({"a": 1, "_d": np.zeros(2), "b": [{"_x": 1, "y": 2}]}) == {"a": 1, "b": [{"y": 2}]}

@@ -1,0 +1,48 @@
+{
+  "exp": "x51_cpu",
+  "item": "fit",
+  "spec": "jobs/c3/batch51.yaml (brief, section 2)",
+  "written_utc": "2026-10-28T16:53:20Z",
+  "code": {
+    "sha": "da32823bbca4429d2691dc2be3c13f78ba49d659",
+    "dirty": true
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": null,
+    "BJ_SUITE_BATCH": null,
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "script": {
+    "path": "scripts/x51_cpu.py",
+    "sha256": "153b8f1c0d2ac4d3d179d8ee9e6d22619e51862e6bf96ac8261b37d2a817d216"
+  },
+  "inputs": {
+    "results/x49_gain/qwen35_9b_x49_1/manifest.json": "c0189896b77fdf5747f82fd556246d4ca47793e4057c3f1281ad9c4e8f8ee512",
+    "results/x49_gain/qwen35_9b_x49_1/gate.json": "9d5c1df40264b7b075672a6879c10bf1b1182573c1929017cba17951357b236c",
+    "results/x49_gain/qwen35_9b_x49_1/outcomes.jsonl": "07d1dd91b0c04905d56522d95d83f4bc008e623aa5680b729cb06eec7f19ce17",
+    "results/x49_gain/x49_1_27b/manifest.json": "f41b3d08a0ab9d121c134d4342ec2e36f6147b426e1655dfcd539999a6067851",
+    "results/x49_gain/x49_1_27b/gate.json": "c43996039047e7f01252d4b9d7297d27024d420d912152045810a9198f6337a7",
+    "results/x49_gain/x49_1_27b/outcomes.jsonl": "0a95de0907a0f8befc0d84efeb1f829e1da983d099582da6c4cf5f6aeed6640f",
+    "results/x49_gain/muse30_x49_1/manifest.json": "e79aa5762675bec6d4e24fdd0a40b6b251981dea7ba4adf32753a71a9230043c",
+    "results/x49_gain/muse30_x49_1/gate.json": "a96886348ca8ebd7b9b3818c185918860e91f715b4ce248072cd3f957de67e5a",
+    "results/x49_gain/muse30_x49_1/outcomes.jsonl": "e6ff19ea6d5b1f4e7c69ea8366f1cb96ead7c353cd22d1a5fcf2b66edf250c02",
+    "scripts/x51_fit.py": "fd1cd68e8370a62dfa0446e672c1e7fe3383a1d371d023aadd7eb7ce0ec8544d"
+  },
+  "n_boot": 10000,
+  "seeds": {
+    "bootstrap": 0
+  },
+  "runs": {
+    "qwen3.5-9b": "qwen35_9b_x49_1",
+    "qwen3.6-27b": "x49_1_27b",
+    "muse-glimmer-30b": "muse30_x49_1"
+  },
+  "specs": {
+    "as written (no intercept)": false,
+    "with intercept": true
+  },
+  "c_alpha": 0.05,
+  "clusters": "bridge items",
+  "rows": "every item's J(α,β) arms (the 25 grid arms; R, -U / -RU and J100 arms left out)"
+}

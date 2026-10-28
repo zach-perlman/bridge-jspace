@@ -739,9 +739,116 @@ def item_concat(n_boot: int = N_BOOT) -> Path:
     return out
 
 
+# ---- 5. 49.1 additive vs conjunctive fit --------------------------------------------------------------------------
+
+GAIN_RUNS = {"qwen3.5-9b": "qwen35_9b_x49_1", "qwen3.6-27b": "x49_1_27b", "muse-glimmer-30b": "muse30_x49_1"}
+SPECS = {"as written (no intercept)": False, "with intercept": True}
+
+
+def fit_model(target: str, n_boot: int = N_BOOT) -> dict[str, Any]:
+    from scripts import x51_fit as F
+
+    src = pins.RESULTS_DIR / "x49_gain" / GAIN_RUNS[target]
+    m = json.loads((src / "manifest.json").read_text())
+    gate = json.loads((src / "gate.json").read_text())
+    rows = X.read_jsonl(src / "outcomes.jsonl")
+    res: dict[str, Any] = {"target": target, "run": src.name, "layer": m.get("layer"), "gate": gate, "readers": {}}
+    for w in X.READERS:
+        mine = [r for r in rows if r["reader"] == w]
+        res["readers"][w] = {spec: F.gain_fit(mine, n_boot, BOOT_SEED, icpt) for spec, icpt in SPECS.items()}
+    return res
+
+
+def fit_line(mm: dict, w: str, spec: str) -> str:
+    f = mm["readers"][w][spec]
+    a, c, lrt = f["additive"], f["with_c"], f["lrt"]
+    ci = f["ci"]
+    a0 = f" a0 {a['a0']:.2f};" if "a0" in a else ""
+    pt = lambda v, k: f"{v:.2f} [{ci[k][0]:.2f}, {ci[k][1]:.2f}]"  # noqa: E731
+    return (f"| {mm['target']} | {w} ({'lookup' if w == X.LOOKUP else 'recall'}) | {spec} | {f['n_rows']} rows, "
+            f"{f['n_clusters']} items |{a0} {pt(a['a'], 'a')} | {pt(a['b'], 'b')} | {pt(a['b_over_a'], 'b_over_a')} | "
+            f"{pt(c['c'], 'c')} | {lrt['stat']:.1f}, p {lrt['p']:.2g} | {'yes' if lrt['c_needed'] else 'no'} | "
+            f"{pt(c['b_over_a'], 'c_b_over_a')} | {a['converged'] and c['converged']}; "
+            f"{f['nonconverged_resamples']} |")  # fmt: skip
+
+
+def fit_figure(models: list[dict], path: Path) -> None:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(2, len(models), figsize=(3.6 * len(models), 6.0), sharey=True, squeeze=False)
+    grid = np.linspace(0, 2, 41)
+    for col, mm in enumerate(models):
+        for row, (axis, fixed) in enumerate((("alpha", "beta"), ("beta", "alpha"))):
+            ax = axes[row][col]
+            for w, color in zip(X.READERS, (COLORS["blue"], COLORS["orange"]), strict=True):
+                for spec, ls in zip(SPECS, (":", "-"), strict=True):
+                    f = mm["readers"][w][spec]
+                    cells = [c for c in f["cells"] if c[fixed] == 0]
+                    co = f["additive"]
+                    eta = (
+                        (co.get("a0", 0.0) + co["a"] * grid)
+                        if axis == "alpha"
+                        else (co.get("a0", 0.0) + co["b"] * grid)
+                    )
+                    ax.plot(grid, 1 / (1 + np.exp(-eta)), ls=ls, color=color, lw=1.5,
+                            label=f"{'lookup' if w == X.LOOKUP else 'recall'} fit, {spec}")  # fmt: skip
+                    if spec == "with intercept":
+                        xs = np.array([c[axis] for c in cells])
+                        v = np.array([[c["share"], *c["share_ci"]] for c in cells])
+                        ax.errorbar(xs, v[:, 0], yerr=[v[:, 0] - v[:, 1], v[:, 2] - v[:, 0]], fmt="o", color=color,
+                                    ms=5, capsize=2, lw=1)  # fmt: skip
+            ax.set_xlabel(f"{'α (J++ part)' if axis == 'alpha' else 'β (the rest)'} at {fixed} = 0")
+            ax.set_ylim(0, 1)
+            ax.grid(axis="y", lw=0.3, alpha=0.5)
+            if row == 0:
+                ax.set_title(f"{mm['target']} L{mm['layer']}", fontsize=9)
+        axes[0][0].set_ylabel("switch (observed: points, 95% CI)")
+        axes[1][0].set_ylabel("switch (observed: points, 95% CI)")
+    axes[0][-1].legend(fontsize=6, frameon=False)
+    fig.suptitle("49.1 gain grid: the additive logistic fit on the two axes (UNVERIFIED)", fontsize=9)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def item_fit(n_boot: int = N_BOOT) -> Path:
+    from scripts import x51_fit as F
+
+    srcs = [pins.RESULTS_DIR / "x49_gain" / r for r in GAIN_RUNS.values()]
+    inputs = [s / f for s in srcs for f in ("manifest.json", "gate.json", "outcomes.jsonl")]
+    inputs.append(Path(F.__file__))
+    out = start("fit", inputs, {"runs": GAIN_RUNS, "specs": SPECS, "c_alpha": F.C_ALPHA, "clusters": "bridge items",
+                                "rows": "every item's J(α,β) arms (the 25 grid arms; R, -U / -RU and J100 arms left out)"})  # fmt: skip
+    models = [fit_model(t, n_boot) for t in GAIN_RUNS]
+    lines = ["# 49.1 additive vs conjunctive fit (batch 51, CPU item 5; feeds the 51.1 figure)", "",
+             "Descriptive, after the data (49.1 opened). Per model and reader, on the item-level rows of the 25 grid arms "
+             "J(α,β) (α the J++ part's gain, β the rest's; switch = the top token is S's answer's first token), a "
+             "binomial logistic fit (scripts/x51_fit.py, maximum likelihood): logit P = a·α + b·β (additive) and "
+             "+ c·αβ (with c). Two specifications: as written in the brief (no intercept: P = 0.5 at the unedited "
+             "prompt) and with an intercept a0 (P at α = β = 0 free; the unedited prompt switches ~never, so this one "
+             "describes the grid better; both reported, the brief's first). b/a from the additive fit (and from the fit "
+             f"with c, beside). c needed = likelihood-ratio test, df 1, p < {F.C_ALPHA} (rows treated as independent: "
+             "anti-conservative under clustering; c's bootstrap interval beside). Cluster bootstrap over bridge items "
+             f"({n_boot:,} resamples, seed {BOOT_SEED}, 95% percentile intervals; every fit refit per resample; "
+             "non-converged (separated) resamples dropped and counted). UNVERIFIED.", "",
+             "| model | reader | spec | n | additive a | b | b/a | c (with c) | LRT stat | c needed | b/a (with c) | "
+             "converged; non-converged resamples |", "|---|---|---|---|---|---|---|---|---|---|---|---|"]  # fmt: skip
+    for mm in models:
+        for w in X.READERS:
+            for spec in SPECS:
+                lines.append(fit_line(mm, w, spec))
+    lines += ["", "Observed vs fitted (additive) per cell: in fit.json (models[].readers[].<spec>.cells)."]
+    fit_figure(models, out / "fit.png")
+    finish(out, "fit", {"models": strip(models)}, lines)
+    return out
+
+
 # ---- main ---------------------------------------------------------------------------------------------------------
 
-ITEMS = {"z1": item_z1, "routes": item_routes, "recall": item_recall, "concat": item_concat}
+ITEMS = {"z1": item_z1, "routes": item_routes, "recall": item_recall, "concat": item_concat, "fit": item_fit}
 
 
 def main() -> None:
