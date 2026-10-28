@@ -1,0 +1,25 @@
+{
+  "exp": "x47_margins",
+  "test": "47.0b (jobs/c3/batch47.yaml)",
+  "descriptive": true,
+  "written_utc": "2026-10-28T01:03:41Z",
+  "code": {
+    "sha": "6b908044597172a0d13d11a04e9c046b6f977573",
+    "dirty": false
+  },
+  "n_boot": 10000,
+  "seed": 0,
+  "inputs": {
+    "main test": {
+      "qwen3.5-9b": "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl",
+      "qwen3.6-27b": "results/x0_necessity/x0_necessity_27b_chat/outcomes.jsonl",
+      "muse-glimmer-30b": "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl"
+    },
+    "clean design": {
+      "qwen3.5-9b": "results/x0_necessity/qwen35_9b_x45m_fresh/outcomes.jsonl",
+      "qwen3.6-27b": "results/x0_necessity/x45m_fresh_27b/outcomes.jsonl",
+      "muse-glimmer-30b": "results/x0_necessity/muse30b_x45m_fresh/outcomes.jsonl"
+    }
+  },
+  "margin": "logit(original answer) - logit(changed answer) = -ld on arm 'none' (unedited), chat, the layer fixed in advance; switch = arm 'whole' switched (top token = the changed answer's first token)"
+}
