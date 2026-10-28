@@ -277,9 +277,9 @@ def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str 
     h = top_in + body_in + bottom_in
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.32, right=0.985, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.05)
+    # Dan (21:55): which model and scenes in the subtitle, the outline in the one caption line
     S.title(fig, title or "Locker after the pick: the lookup leaves the bridge word early",
-            "The whole changed state is placed, not a part; this map shows where and when the bridge word is read, "
-            "not what is read from it")  # fmt: skip
+            f"{NAME[target]}, {DESIGN_TEXT[design]}: the whole changed state placed in one token group at one layer")  # fmt: skip
     per_all = m["cells"][design]
     have = set().union(*(per_all[g][w]["cells"] for g, _ in E11_GROUPS for w in ("lookup", "recall")))
     groups = [g for g in D1_ROWS if any(a.startswith(f"g{g}@") for a in have)]
@@ -349,10 +349,8 @@ def build_e11(verdict_dir: Path, out_name: str = "fig03d_depth_map", title: str 
     fig.supxlabel("layer at which the changed prompt's state is placed", x=0.64, y=0.98 / h, fontsize=S.FONT)
     e11_scale(fig, 0.06, 0.6 / h, "lookup", "lookups switched (upper row)")
     e11_scale(fig, 0.55, 0.6 / h, "recall", "recalls switched (lower row)")
-    fig.text(0.01, 0.08 / h, f"{NAME[target]}, {DESIGN_TEXT[design]}. A cell: switches when one token group takes the "
-             "changed state at one layer.\nOutlined, per reader: the bridge word's last layer at "
-             f"≥ {HOT:.1f}; the first layer from which the bridge word switches ≤ {W_FLOOR:.1f}.",
-             fontsize=S.FONT - 1, color=S.COL["muted"], linespacing=1.3)  # fmt: skip
+    fig.text(0.01, 0.1 / h, f"Outlined, per reader: the bridge word's last layer at ≥ {HOT:.1f}; the first layer from "
+             f"which it switches ≤ {W_FLOOR:.1f}.", fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
     return save(fig, out_name, out_dir)
 
 

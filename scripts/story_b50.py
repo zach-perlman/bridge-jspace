@@ -36,10 +36,12 @@ RECALL_AFTER = "#9a9a9a"  # the recall's lighter shade (locker after the pick): 
 CAPTION = "#555555"
 CAPTION_CHARS = 110  # caption characters per line at 10 pt in the 8.8 in column
 MUSE_BAND = "Muse's rung 6 ran at L23–29; his band is L36–42, where it was not run"
+MUSE_DAGGER = "† Muse's rung 6 ran at L23–29, outside his band (L36–42)"  # the one caption line (Dan, 21:55)
 # the ladder's rungs in words, two lines each: where, then what is added (49.2's rung_text; Dan's round 3, 28 Oct
-# 21:10; rungs 5 and 6 are two definitions, not one)
-RUNGS = {1: "bridge word\none layer", 2: "bridge word\nlayers L to L+3", 3: "+ the item's\nearlier mention",
-         4: "+ the\nquestion", 5: "every token\nL to L+3", 6: "every token · Zach's\ndirections · his band"}  # fmt: skip
+# 21:10; rungs 5 and 6 are two definitions, not one). Dan (21:55): each rung's full meaning is in the README's Setup,
+# so the ticks stay short and leave room for the end labels
+RUNGS = {1: "bridge word\none layer", 2: "bridge word\nL to L+3", 3: "+ earlier\nmention",
+         4: "+ the\nquestion", 5: "every token\nL to L+3", 6: "Zach's lens\ndirections"}  # fmt: skip
 # the rungs' x: rung 6 (Zach's definition) set a little apart, which also gives its longer label room
 RUNG_X = {1: 1.0, 2: 2.0, 3: 3.0, 4: 4.0, 5: 5.0, 6: 6.25}
 VALID_SWITCHES = F.VALID_SWITCHES  # a lookup extra loss is drawn only on at least 30 switches (X0's validity bar)
@@ -141,7 +143,7 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder") -> str:
     src, fid = rel(src_path), out_name.split("_")[0]
     by = {m["target"]: m for m in v["models"] if m.get("status") == "tested"}
     plt = S.setup()
-    panel_in, gap_in, top_in, bottom_in = 1.5, 0.42, 1.75, 1.85
+    panel_in, gap_in, top_in, bottom_in = 1.5, 0.42, 1.75, 1.05
     h = top_in + 3 * panel_in + 2 * gap_in + bottom_in
     fig, axes = plt.subplots(3, 1, figsize=(S.WIDTH, h), sharex=True)
     fig.subplots_adjust(left=0.08, right=0.99, top=1 - top_in / h, bottom=bottom_in / h, hspace=gap_in / panel_in)
@@ -153,7 +155,7 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder") -> str:
         model_label(ax, m, name, k == 0)
         ax.axhline(0, color="#999999", lw=0.8, zorder=1)
         ax.axhline(10, color="#555555", lw=1.0, ls=(0, (4, 3)), zorder=1)
-        ax.text(RUNG_X[6] + 0.7, 10, "10 pp", ha="right", va="bottom", fontsize=S.FONT - 1, color="#555555")
+        ax.text(0.6, 10.5, "10 pp", ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555")
         ax.axvline((RUNG_X[5] + RUNG_X[6]) / 2, color="#cccccc", lw=1.0, zorder=0)
         ax.set_ylim(-10, 58)
         ax.set_yticks([0, 20, 40])
@@ -187,9 +189,17 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder") -> str:
             top = max(100 * mod["cells"][w][g]["cost"]["6"][2] for w, g, *_ in LADDER_BARS)
             # above its bars' whiskers and clear of the 10 pp line
             ax.text(RUNG_X[6], max(top, 10) + 4, "†", ha="center", va="bottom", fontsize=S.FONT + 1, color="#1e1e1e")
+        # Dan (21:50): every panel names its bars, beside the last rung it ran (the random tick: the lookup bar's)
+        last = max(rungs)
+        ends = [(100 * mod["cells"][w][g]["cost"][str(last)][0], short, col)
+                for (w, g, col, _, _), short in zip(LADDER_BARS, ("recall, before", "recall, after", "lookup"),
+                                                    strict=True)]  # fmt: skip
+        lk = mod["cells"]["lookup"]["all"]["kept"]
+        ends.append((100 * (lk["none"][0] - lk[f"rand{last}"][0]), "random (tick)", S.COL["muted"]))
+        S.end_labels(ax, RUNG_X[last] + LADDER_BARS[-1][3] + LADDER_BAR_W / 2, ends, pad=0.08)
         S.panel_tag(ax, str(mod["cells"]["recall"]["all"]["n"]), "fixed")
     axes[1].set_ylabel("answers lost beyond random (pp)")
-    axes[-1].set_xlim(0.58, RUNG_X[6] + 0.7)
+    axes[-1].set_xlim(0.58, RUNG_X[6] + 1.75)  # the end labels' room right of rung 6
     # half a point under the figures' 11 pt: six two-line labels across the column otherwise touch
     axes[-1].set_xticks(list(RUNG_X.values()), list(RUNGS.values()), fontsize=S.FONT - 0.5)
     hs = [Patch(fc=col, ec="none") for *_, col, _, _ in LADDER_BARS]
@@ -197,14 +207,10 @@ def build_ladder(verdict_dir: Path, out_name: str = "fig01d_ladder") -> str:
     fig.legend(hs, [b[4] for b in LADDER_BARS] + ["tick: what a random part (same size) costs that bar"],
                loc="upper left", bbox_to_anchor=(0.0, 1 - 0.74 / h), frameon=False, ncol=2, handlelength=1.6,
                columnspacing=1.6)  # fmt: skip
-    lines = ["L to L+3: L, the layer fixed in advance, and the three layers after it; the band was fixed before the "
-             "run (Fig. 6b shows how deep the bridge word is still read).",
-             "Every token: rung 5 takes out the same 25 lens directions at every token (ours); rung 6 each token's own "
-             "top-10 lens directions over Zach's band (his).",
-             f"† {MUSE_BAND}."]  # fmt: skip
-    lines += [f"Grey columns, not run: {'; '.join(greyed)}."] if greyed else []
-    lines += [f"Omitted: {'; '.join(omitted)}."] if omitted else []
-    caption(fig, lines, bottom_in - 0.8)
+    # Dan (21:55): one caption line; L to L+3 and the rungs' meanings are in the README's Setup
+    line = MUSE_DAGGER + "." + (f" Grey columns: not run ({'; '.join(greyed)})." if greyed else "")
+    line += f" Omitted: {'; '.join(omitted)}." if omitted else ""
+    caption(fig, [line], bottom_in - 0.75)
     S.save(fig, out_name)
     return out_name
 
@@ -267,13 +273,13 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
         mod = z1.get(target)
         lr = mod["layer_results"][str(mod["layers"][0])] if mod else None
         if lr is None:
-            omitted.append(f"{SHORT[m]}, our removal on his passages (not run)")
+            omitted.append(f"{SHORT[m]} not run")
         else:
             sw = lr["lookup"]["switched_whole"]
             S.record(fid, target, "our removal, his passages: lookup switches under the whole change", sw, n=lr["n"],
                      source=rel(z1_path))  # fmt: skip
             if sw < VALID_SWITCHES:
-                omitted.append(f"{SHORT[m]} on his passages, too few lookup switches ({sw} of {lr['n']})")
+                omitted.append(f"{SHORT[m]} too few switches")
             else:
                 v = tuple(round(x, 4) for x in lr["gap"])
                 ctl = lr["recall"]["Rdep"][0] - lr["lookup"]["Rdep"][0]
@@ -285,7 +291,7 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
         # (1, 0) Zach's operation on our scenes: rung 6 of the ladder, recall's cost minus the lookup's (every scene)
         mod = lad.get(target)
         if mod is None or 6 not in mod["rungs"]:
-            omitted.append(f"{SHORT[m]} under Zach's operation on our scenes, not run")
+            omitted.append(f"{SHORT[m]} not run")
         else:
             rc, lk = (mod["cells"][w]["all"]["cost"]["6"][0] for w in ("recall", "lookup"))
             own = {w: mod["cells"][w]["all"]["kept"]["none"][0] - mod["cells"][w]["all"]["kept"]["rand6"][0]
@@ -301,7 +307,7 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
         # (1, 1) Zach's operation on his passages: his stored M - K rows, his rotated control
         full = (z1.get(target) or {}).get("beside", {}).get("full")
         if not full:
-            omitted.append(f"{SHORT[m]}, his rows not stored")
+            omitted.append(f"{SHORT[m]} rows not stored")
             continue
         rot, mk = full["paper10_rot"], full["paper10"]
         S.record(fid, target, "Zach's operation, his passages: his rotated-direction control, recall minus lookup",
@@ -311,14 +317,9 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
         cells[(1, 1)].append((i, tuple(mk["m_minus_k"]), rot["m_minus_k"][0]))
         ns[(1, 1)].append(str(mk["joined"]))
 
-    # Dan's round 3: the footnote (the rotated control's meaning, Muse's band, the K items, the two scopes)
-    lines = ["Grey tick: the same operation with a random part of the same size instead (for his stored rows, his "
-             "rotated lens directions), recall minus lookup; every mark is already net of it except his stored rows.",
-             f"{MUSE_BAND}. K items: on his passages the lookup is his K final, the answer stated in the passage; the "
-             "rerun on his P items is pending.",
-             "The two operations differ in scope: one token at one layer vs every token over a band.",
-             (f"Omitted: {'; '.join(omitted)}. " if omitted else "") + "The last rung: two separate estimates, no "
-             "joint interval."]  # fmt: skip
+    # Dan (21:55): one caption line, Muse's dagger and the empty cells; the grey tick's meaning is the legend's and the
+    # README's Setup, the K items and the two scopes are E1's card and Zach's report
+    lines = [MUSE_DAGGER + ". Empty cells: " + ("; ".join(omitted) if omitted else "none") + "."]
     plt = S.setup()
     cell_in, gap_in, top_in = 1.75, 0.62, 1.85
     bottom_in = 0.55 + 0.19 * len(caption_lines(lines))
@@ -337,6 +338,12 @@ def build_two_by_two(ladder_dir: Path, z1_dir: Path, out_name: str = "fig12_two_
             mark(ax, i, v, INK, "remove", ms=8.5)
             ax.text(i + 0.3, v[0], f"{v[0]:.2f}", ha="left", va="center", fontsize=S.FONT - 1, color="#333333",
                     zorder=5)  # fmt: skip
+            if (r, c) == (1, 0) and MODELS[i][1] == "muse":  # the caption line's dagger
+                ax.text(i, max(v[0], ctl) + 0.12, "†", ha="center", va="bottom", fontsize=S.FONT + 1, color="#1e1e1e")
+        if items:  # Dan (21:50): each cell names its grey tick, under the first one
+            i, _, ctl = items[0]
+            ax.text(i, ctl - 0.05, "rotated" if (r, c) == (1, 1) else "random", ha="center", va="top",
+                    fontsize=S.LABEL_PT, color=S.COL["muted"], zorder=5)  # fmt: skip
         n = ns[(r, c)]
         n_tag(ax, f"{n[0]} per model" if len(n) == 3 and len(set(n)) == 1 else ", ".join(n))
     for ax in axes.flat:

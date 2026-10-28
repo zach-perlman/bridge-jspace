@@ -115,7 +115,7 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
     models = vblob["models"]
     plt = S.setup()
     rows = [(t, m) for t, m, _ in MODELS if t in models]
-    row_in, top_in, bottom_in = 0.85, 1.75, 2.45
+    row_in, top_in, bottom_in = 0.85, 1.75, 0.95
     h = top_in + row_in * len(rows) + bottom_in
     fig, axes = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True, sharex=True)
     fig.subplots_adjust(left=0.19, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.08)
@@ -182,8 +182,6 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
     assert len(n_rand) == 1, n_rand
     assert len(words) == 1, words
     n_rand, ordinal = n_rand.pop(), words.pop()
-    examples = ("first", "next", "2")  # the caption's examples of the position words
-    assert set(examples) <= set(ordinal), ordinal
     # Dan's round 3: the swap's arrow ends inside the strip, the item change's far right, on both panels
     for t, _ in rows:
         assert abs(raw[t]["pointer"][2]) < 1, (t, raw[t])
@@ -201,6 +199,9 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
            fontsize=S.FONT, zorder=4)  # fmt: skip
     a.text(1.4, y0 - ARROW_DY - 0.08, "item change: far outside", ha="left", va="top", color=IDENTITY,
            fontsize=S.FONT, zorder=4)  # fmt: skip
+    # Dan (21:50): the right panel names its arrows too
+    b.text(1.4, y0 + ARROW_DY, "address swap", ha="left", va="center", color=ADDRESS, fontsize=S.FONT, zorder=4)
+    b.text(1.4, y0 - ARROW_DY - 0.08, "item change", ha="left", va="top", color=IDENTITY, fontsize=S.FONT, zorder=4)
     for ax, title, xlabel in (
         (a, "Rank through the lens", "how far above random vectors the lens\nranks the word, in units of the strip (z)"),
         (b, "Share rebuilt", f"how far above random vectors {K} lens\ndirections rebuild it, in units of the strip (z)"),
@@ -229,26 +230,11 @@ def build_verbal(verbal_dir: Path, report_dir: Path, out_name: str = "fig07b_ver
                            (lens["top5_ordinal"], "47.10: lens top-5 holds the right ordinal (report prompt)",
                             lens["n"])):  # fmt: skip
         S.record("e8_report", m["target"], quantity, *v, n=n, source=rsrc)
-    short = SHORT[next(mm for tt, mm, _ in MODELS if tt == m["target"])]
     hs = [Line2D([], [], color=ADDRESS, lw=2.4, marker=">", ms=8),
           Line2D([], [], color=IDENTITY, lw=2.4, marker=">", ms=8), Patch(fc=BAND_GREY, ec="none")]  # fmt: skip
     F.legend(fig, hs, ["address swap", "item change (the positive control)", "random vectors' 95%"], 1 - 0.74 / h,
              ncol=3)  # fmt: skip
-    dev = max(abs(e - s) for row in S.ROWS if row["figure"] == out_name and ": z = " in row["quantity"]
-              for e, s in ((row["lo"], -1), (row["hi"], 1)))  # fmt: skip
-    shares = "; ".join(f"{raw[t]['pointer'][0]:.2f} / {raw[t]['pointer'][1]:.2f} ({SHORT[m]})" for t, m in rows)
-    caption(fig, [
-        f"Grey strip: {n_rand} random vectors of the same norm, read the same way; the strip is where 95% of them land "
-        f"(z is centred on their median, so each row's own 95% range sits within {dev:.2f} of the strip's edges).",
-        "Left: z = (ln m − ln r) / w, with r the median rank over the cases of the new item's name (item change) or "
-        f"of the best-ranked of {len(ordinal)} position words such as {', '.join(examples)} (address swap), m the "
-        "random vectors' median of the same, w half their 95% range of ln rank.",
-        "Right: z = (share − m) / w, with m the random vectors' median share and w half their 95% range. The swap's "
-        f"share against that median: {shares}.",
-        f"Asked to say the position, the {short} never has the right ordinal word in the lens's top five "
-        f"({lens['top5_ordinal'][0]:.2f}, n = {lens['n']}), yet loses {rd['alf']['excess'][0]:.2f} of its "
-        "reports without the address (extra loss, beyond a random part).",
-    ], 1.55)  # fmt: skip
+    # Dan (21:55): no caption; z and the strip are defined in the README's Setup, the 27B's report is E8's Result
     S.save(fig, out_name)
     return out_name
 
@@ -277,13 +263,13 @@ def build_transfer(out_name: str = "fig09a_transfer") -> str:
     fewer than 30 lookups is omitted and listed in the caption; the 9B's natural run had its gate lowered after the data
     (hollow, the figure's one meaning of hollow)."""
     plt = S.setup()
-    top_in, body_in, bottom_in = 1.55, 3.3, 1.6
+    top_in, body_in, bottom_in = 1.55, 3.3, 1.05
     h = top_in + body_in + bottom_in
     fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, h), sharey=True)
     fig.subplots_adjust(left=0.16, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
     S.title(fig, "The split carries over to other texts",
             "Extra loss without the J++ part, beyond a random part (same size), by text format")  # fmt: skip
-    omitted, hollow = [], []
+    omitted: list[tuple[str, str]] = []
     for k, (ax, (target, m, name)) in enumerate(zip(axes, MODELS, strict=True)):
         S.extra_axis(ax)
         ax.set_title(name if k == 0 else SHORT[m], fontsize=12, weight="bold", loc="left")
@@ -291,15 +277,13 @@ def build_transfer(out_name: str = "fig09a_transfer") -> str:
         for i, (sc, _) in enumerate(FORMATS):
             sw = cells[F.X.LOOKUP].get((sc, "switched"))
             after = sc == "natural" and bool(cells[F.X.LOOKUP].get(("x5", "after")))
-            if after:
-                hollow.append(f"{SHORT[m]} natural passages")
             for w, col, dy, word in ((F.X.RECALL, INK, 0.16, "recall"), (F.X.LOOKUP, LOOKUP, -0.16, "lookup")):
                 v = cells[w].get((sc, "jpp"))
                 if v is None:
-                    omitted.append(f"{SHORT[m]} {LABEL[sc]}, {word} (not run)")
+                    omitted.append(("not run", f"{SHORT[m]} {LABEL[sc]} {word}"))
                     continue
                 if w == F.X.LOOKUP and sw is not None and sw[0] < F.VALID_SWITCHES:
-                    omitted.append(f"{SHORT[m]} {LABEL[sc]} lookup, too few switches ({sw[0]} of {sw[1]})")
+                    omitted.append(("too few switches", f"{SHORT[m]} {LABEL[sc]} lookup"))
                     S.record("fig09a", target, f"{sc}: lookup switches with the whole change", sw[0], n=sw[1],
                              source=cells[w][(sc, "src")])  # fmt: skip
                     continue
@@ -318,9 +302,11 @@ def build_transfer(out_name: str = "fig09a_transfer") -> str:
     hs = [Line2D([], [], marker="o", ls="", color=INK, ms=7), Line2D([], [], marker="o", ls="", color=LOOKUP, ms=7),
           Patch(fc=S.COL["band"], ec="none")]  # fmt: skip
     F.legend(fig, hs, ["recall", "lookup", "the lookup's 0.10 bar"], 1 - 0.74 / h, ncol=3)
-    lines = [f"Hollow: {', '.join(sorted(set(hollow)))}, gate lowered to 0.75 after the data."] if hollow else []
-    lines += [f"Omitted: {'; '.join(omitted)}."] if omitted else []
-    caption(fig, lines, bottom_in - 0.62)
+    # Dan (21:55): one caption line, the omitted cells; hollow (a gate lowered after the data) is in the README's Setup
+    why = {r: [c for rr, c in omitted if rr == r] for r, _ in omitted}
+    line = "; ".join(f"omitted, {r}: {', '.join(cs)}" for r, cs in why.items())
+    if line:
+        caption(fig, [line[0].upper() + line[1:] + "."], bottom_in - 0.62)
     S.save(fig, out_name)
     return out_name
 

@@ -1167,6 +1167,9 @@ def f03_order(plt) -> None:
             a.plot([xr, xr], [r[1], r[2]], color=S.COL["recall"], lw=1.2, zorder=4)
             a.plot([xr], [r[0]], "D", ms=5.5, color=S.COL["recall"], mec="white", mew=0.6, zorder=5)
             a.text(x, -0.04, f"locker {order}\nthe pick", ha="center", va="top", fontsize=S.FONT - 1, linespacing=1.0)
+            if i == 0 and j == 0:  # Dan (21:50): the panel names its two marks, on its first pair
+                a.text(xr + 0.06, r[0], "recall", ha="left", va="center", fontsize=S.LABEL_PT, color=S.COL["recall"])
+                a.text(x, p / 2, "lookup", ha="center", va="center", rotation=90, fontsize=S.LABEL_PT, color="white")
             for what in ("lookup", "recall"):
                 v0, v1, v2, nn, _ = sw[(order, what)]
                 S.record("fig03", target, f"{what}s switched by the whole change, locker sentence {order} the pick",
@@ -1202,6 +1205,8 @@ def f03_order(plt) -> None:
             zb.text(x, hi + 0.02, f"{p:.2f}", ha="center", va="bottom", fontsize=S.FONT - 1, color=S.COL["lookup"],
                     weight="bold")  # fmt: skip
             zb.text(x, -0.05, label, ha="center", va="top", fontsize=S.FONT - 1, linespacing=1.0)
+            if i == 0 and j == 0:  # Dan (21:50): the panel names its bars
+                zb.text(x, p / 2, "lookup", ha="center", va="center", rotation=90, fontsize=S.LABEL_PT, color="white")
             S.record("fig03", target, f"Zach's passages, L{la}: lookups switched by the whole change, {key}",
                      round(p, 4), round(lo, 4), round(hi, 4), strata[key]["n"], source=zsrc)  # fmt: skip
             zns.append(strata[key]["n"])
@@ -1268,10 +1273,14 @@ def f03_order(plt) -> None:
         nq.append(str(mod["sanity"]["pass"]))
         ticks += [at(0), at(la), at(last)]
         tick_labels += ["0", str(la), str(last)]
-        if k == 0:  # the copy's line labelled on the first block (the dashed line: the legend)
+        if k == 0:  # the copy's line labelled on the first block
             peak = max(cells, key=lambda c: c["ls"][0])
             b.text(at(peak["layer"]) + 0.05, peak["ls"][0] + 0.05, "the change copied into\nthe locker sentences", va="bottom",
                    fontsize=S.FONT - 1, color=S.COL["lookup"], linespacing=1.0)  # fmt: skip
+        if k == 1:  # Dan (21:50): the panel names its dashed line too, under the 27B's plateau (empty there)
+            b.text(at(cells[0]["layer"]) + 0.02, 0.45, "change at the\nbridge word", va="center", ha="left",
+                   fontsize=S.FONT - 1, color=S.COL["lookup"], linespacing=1.0, zorder=4,
+                   bbox={"boxstyle": "square,pad=0.1", "fc": "white", "ec": "none"})  # fmt: skip
     b.set_xlim(-0.06, (len(Q_MODELS) - 1) * BLOCK + 1.06)
     b.set_xticks(ticks, tick_labels)
     b.set_ylim(-0.03, 1.05)
@@ -1811,7 +1820,8 @@ def f05_routes(plt) -> None:
     bar for the position answers without a random part of the same size; the value's share (0.00 on every row) in the
     legend, not as a box per row (v6 iteration 2). Under the plot, the three routes defined in one line (Dan's Fig. 4 /
     5 brief). The 122B and the keep-only arms are in s05."""
-    h, cap = 5.75, 0.35  # cap: the definitions line under the plot (inches)
+    # Dan (21:55): no line under the plot; the routes are defined once, in the README's Setup
+    h, cap = 5.45, 0.05
     fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, "The lookup takes the identity route or the position route, never the value",
             "Left: where each route sends the lookup. Right: lookup answers with the change placed at L.",
@@ -1819,7 +1829,6 @@ def f05_routes(plt) -> None:
     left_ax = fig.add_axes((0.01, (0.22 + cap) / h, 0.40, 3.75 / h))
     routes_drawing(plt, left_ax)
     left_ax.text(0, 1.015, "The routes test", transform=left_ax.transAxes, fontsize=12, weight="bold", va="bottom")
-    S.fit(fig, fig.text(0.01, 0.12 / h, ROUTES_DEFINED, ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555"))
     ax = fig.add_axes((0.625, (0.54 + cap) / h, 0.355, 3.24 / h))
     models = [(t, m) for t, m, _ in S.MODELS if m != "122b"]  # v6: the 122B in supplements only
     gap, y, ticks, labels, ns, values = 2.75, 0.0, [], [], [], []
@@ -2026,6 +2035,10 @@ def f07_writes(plt) -> None:
         S.record("fig07", target, "the locker probe's layout baseline, locker-first scenes", *r["layout"], n=r["n"],
                  source=src)  # fmt: skip
         ns_a.append(str(r["n"]))
+        if i == 0:  # Dan (21:50): the panel names its two bars, on its first row
+            a.text(0.03, -i + 0.13, "probe", va="center", fontsize=S.LABEL_PT, color="white", zorder=4)
+            a.text(max(r["layout"][0], r["layout"][2]) + 0.27, -i - 0.24, "layout", va="center", fontsize=S.LABEL_PT,
+                   color=S.COL["muted"])  # fmt: skip
     a.set_yticks([0, -1, -2], names)
     a.set_ylim(-2.55, 0.5)
 
@@ -2045,6 +2058,12 @@ def f07_writes(plt) -> None:
                 assert stated[0] == round(row["share"]["position"][0], 2), (k, N[k])
             hbar(b, y + 0.08, got["share"]["position"], S.COL["position"], 0.26)
             hbar(b, y - 0.15, rand["share"]["position"], S.COL["control"], 0.10)
+            if i == 0 and j == 0:  # Dan (21:50): the panel names its two bars, on its first row
+                gp, rp = got["share"]["position"], rand["share"]["position"]
+                b.text(max(gp[0], gp[2]) + 0.22, y + 0.08, "position answers", va="center", fontsize=S.LABEL_PT,
+                       color="#1e1e1e")  # fmt: skip
+                b.text(max(rp[0], rp[2]) + 0.22, y - 0.15, "random", va="center", fontsize=S.LABEL_PT,
+                       color=S.COL["muted"])  # fmt: skip
             if j == 0:
                 ns_b.append(str(got["n"]))
             ticks.append(y)
@@ -3263,7 +3282,7 @@ def f06b_anatomy(plt) -> None:
     S.title(fig, "The address forms early; identity route first, position route later",
             "Bars: lookup answers under the whole change at one layer; line: recall switches; whiskers, bands: 95%.")  # fmt: skip
     values: list[float] = []
-    grids, at_l = [], []
+    at_l: list[str] = []
     for ax, m in zip(axes[0], models, strict=True):
         layers, target, rules, depth = m["layers"], m["target"], m["rules"], m["n_layers"]
         cells = [m["cells"][str(la)] for la in layers]
@@ -3271,7 +3290,6 @@ def f06b_anatomy(plt) -> None:
         short = SHORT[next(k for t, k, _ in S.MODELS if t == target)]  # full name in the first panel, short after
         x = np.array(layers, dtype=float)
         w = 0.85 * min(b - a for a, b in itertools.pairwise(layers))  # bar width: the grid's finest step
-        grids.append(f"{short} {grid_text(layers)}")
         ni = [c["lookup"]["switch"]["whole"][0] < S.NI_SWITCH - 1e-9 for c in cells]
         assert ni == [not c["lookup"]["interpretable"] for c in cells], f"{target}: the shading disagrees with 47.8"
         # shaded from the first layer under the bar to the model's last: every later sampled layer is under it too
@@ -3300,6 +3318,17 @@ def f06b_anatomy(plt) -> None:
         rc = np.array([c["recall"]["switch"]["whole"] for c in cells])
         ax.fill_between(x, rc[:, 1], rc[:, 2], color=S.COL["recall"], alpha=0.18, lw=0, zorder=4)
         ax.plot(x, rc[:, 0], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8, zorder=5)
+        # Dan (21:50): every panel names its line and its first bar: "recall" right of the line where it falls through
+        # one half, "identity route" inside the first (all-identity) bar
+        k = next((i for i, v in enumerate(rc[:, 0]) if v < 0.8), len(layers) - 1)
+        ax.text(x[k] + 0.6 * w, 0.8, "recall", ha="left", va="center", fontsize=S.LABEL_PT, color=S.COL["recall"],
+                zorder=7, bbox={"boxstyle": "square,pad=0.1", "fc": "white", "ec": "none"})  # fmt: skip
+        # the identity label in the first all-identity bar clear of the vertical marks
+        marks = [v for v in (m["layer"], rules["l_probe"], rules["l_P"]) if v is not None]
+        j = next((i for i, c in enumerate(cells) if c["lookup"]["share"]["whole"]["identity"][0] >= 0.9
+                  and all(abs(x[i] - v) > w for v in marks)), 0)  # fmt: skip
+        ax.text(x[j], 0.5, "identity route", ha="center", va="center", rotation=90, fontsize=S.LABEL_PT,
+                color="white", zorder=7)  # fmt: skip
         for la, c in zip(layers, cells, strict=True):
             S.record("fig06b", target, f"layer {la}: recall switch (whole change)", *c["recall"]["switch"]["whole"],
                      n=c["recall"]["n"], source=src)  # fmt: skip
@@ -3339,11 +3368,10 @@ def f06b_anatomy(plt) -> None:
                      f"position answers begin (≥ {POSITION_BAR:.1f})", "L, the layer fixed in advance",
                      "value: 0.00 at every layer" if top < 0.005 else f"value: at most {top:.2f}"], 1 - 0.58 / h,
            ncol=3)  # fmt: skip
-    # Dan's round 3: one style for the three models; the grid (the 27B's reduced one, 49.4) said in the caption
-    lines = [f"Layers sampled: {', '.join(grids)} (the bars' spacing); n per layer."]
-    lines += [f"{' and '.join(at_l)}: position answers begin at L (the two marks coincide)."] if at_l else []
-    fig.text(0.01, 0.1 / h, "\n".join(lines), ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555",
-             linespacing=1.25)  # fmt: skip
+    # Dan (21:55): one caption line, where two marks coincide; the sampled grid shows in the bars' spacing
+    if at_l:
+        fig.text(0.01, 0.1 / h, f"{' and '.join(at_l)}: position answers begin at L (the two marks coincide).",
+                 ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555")  # fmt: skip
     S.save(fig, "fig06b_anatomy")
 
 

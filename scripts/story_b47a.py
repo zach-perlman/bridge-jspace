@@ -402,6 +402,9 @@ def build_routes_lens(verdict_dir: Path, out_name: str, title: str | None = None
                 ax.fill_between([lo, hi], [y - 0.24] * 2, [y + 0.24] * 2, color=S.MARK_COL["null"], alpha=0.6, lw=0,
                                 zorder=1)  # fmt: skip
                 ax.plot([c["random"][0]] * 2, [y - 0.24, y + 0.24], color="#8a8a8a", lw=1.0, zorder=1.5)
+                if t == models[0][0] and i == 0:  # Dan (21:50): every panel names the grey band, on its top row
+                    ax.text((lo + hi) / 2, y + 0.3, "random", ha="center", va="bottom", fontsize=S.LABEL_PT,
+                            color=S.COL["muted"], zorder=5)  # fmt: skip
                 ax.plot([f[1], f[2]], [y, y], color=col, lw=1.6, zorder=3, solid_capstyle="butt")
                 ax.plot([f[0]], [y], S.MARK["remove"], ms=7, color=col, zorder=4)
                 value_label(ax, y, f[0], col)
@@ -658,7 +661,7 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
     fig, axes = frame(
         title or six_title(v),
         "Routes test with six lockers, held-out half; one shift vector added at the bridge word (twice a real change)",
-        tuple(1.0 for _ in shown), 2.3, legend=legend, left=0.12, bottom_in=1.45, wrap=False)  # fmt: skip
+        tuple(1.0 for _ in shown), 2.3, legend=legend, left=0.12, bottom_in=1.15, wrap=False)  # fmt: skip
     for ax, (target, m) in zip(axes, shown, strict=True):
         mod = by[target]
         ax.set_title(F.name_of(m) if ax is axes[0] else F.SHORT[m], fontsize=S.FONT, weight="bold", loc="left")
@@ -701,19 +704,16 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
                 if k == starts[-1]:
                     ends.append((r[0], "shift" if key == "shift" else "random",
                                  col if key == "shift" else S.COL["muted"]))  # fmt: skip
-        from scripts.story_b51 import end_labels
-
-        end_labels(ax, starts[-1] + 0.12, ends, fig.get_figheight(), pad=0.18)
+        S.end_labels(ax, starts[-1] + 0.12, ends, pad=0.18)
         rule, pca = mod["rules"][SIX_DOSE], mod["pca"]
         S.record(fid, target, "47.2: pairwise writes reaching 25% (dose 2)", rule["pairs_reaching"], n=rule["pairs"],
                  source=source)  # fmt: skip
         S.record(fid, target, "47.2: Spearman of the first PCA axis with the locker", pca["spearman_pc1_slot"],
                  source=source)  # fmt: skip
-        ax.text(0.0, -0.33, SIX_LABEL.get(mod["label"], mod["label"]), transform=ax.transAxes, ha="left", va="top",
-                weight="bold")  # fmt: skip
-        ax.text(0.0, -0.45, f"locker pairs moved at ≥ 0.25: {rule['pairs_reaching']} of {rule['pairs']}\nfirst PCA "
-                f"axis vs locker: ρ = {pca['spearman_pc1_slot']:.2f}", transform=ax.transAxes, ha="left", va="top",
-                color=S.COL["muted"])  # fmt: skip
+        # Dan (21:55): one line under each panel, the evidence for "its own code" (the reading is the title's)
+        ax.text(0.0, -0.36, f"pairs moved ≥ 0.25: {rule['pairs_reaching']} of {rule['pairs']}; PCA axis ρ = "
+                f"{pca['spearman_pc1_slot']:.2f}", transform=ax.transAxes, ha="left", va="top",
+                fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
     axes[0].set_ylabel("lookups moved one\nlocker on (share)")
     S.save(fig, out_name)
     return out_name

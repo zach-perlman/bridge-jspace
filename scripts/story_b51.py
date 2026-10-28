@@ -25,48 +25,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts import story_style as S
-from scripts.story_b50 import INK, LOOKUP, MODELS, NULL, SHORT, caption, caption_lines, rel
+from scripts.story_b50 import INK, LOOKUP, MODELS, NULL, SHORT, caption, rel
 
 ADDRESS = S.MARK_COL["address"]
-LABEL_PT = S.FONT - 1  # the end labels' size
+LABEL_PT = S.LABEL_PT
 NAME = {t: name for t, _, name in MODELS}
-
-
-def spread(ys: list[float], gap: float, lo: float, hi: float) -> list[float]:
-    """Label heights near ys (same order), at least gap apart and inside [lo, hi]: overlapping neighbours are pushed
-    apart about their midpoint until none overlap."""
-    order = sorted(range(len(ys)), key=lambda i: ys[i])
-    p = [ys[i] for i in order]
-    for _ in range(200):
-        moved = False
-        for i in range(1, len(p)):
-            if p[i] - p[i - 1] < gap - 1e-9:
-                mid = (p[i] + p[i - 1]) / 2
-                p[i - 1], p[i] = mid - gap / 2, mid + gap / 2
-                moved = True
-        if p and p[0] < lo:
-            p = [y + lo - p[0] for y in p]
-            moved = True
-        if p and p[-1] > hi:
-            p = [y - (p[-1] - hi) for y in p]
-            moved = True
-        if not moved:
-            break
-    out = [0.0] * len(ys)
-    for i, y in zip(order, p, strict=True):
-        out[i] = y
-    return out
-
-
-def end_labels(ax, x: float, items: list[tuple[float, str, str]], fig_h: float, pad: float = 0.06) -> None:
-    """Direct labels left-aligned at x (data units), each near its line's last value, nudged apart: items are (y, text,
-    colour). The gap is one label line in data units, from the axes' height in inches."""
-    lo, hi = ax.get_ylim()
-    height_in = ax.get_position().height * fig_h
-    gap = (LABEL_PT * 1.45 / 72) * (hi - lo) / height_in
-    ys = spread([y for y, _, _ in items], gap, lo + gap / 2, hi - gap / 2)
-    for (_, text, col), y in zip(items, ys, strict=True):
-        ax.text(x + pad, y, text, color=col, fontsize=LABEL_PT, va="center", ha="left", zorder=6, clip_on=False)
 
 
 def whisker_line(ax, xs, vals, col: str, marker: str, dx: float = 0.0, ls: str = "-", hollow: bool = False,
@@ -102,6 +65,13 @@ def key(x: float) -> str:
     return f"{x:g}"
 
 
+def shaded_any(blob: dict) -> bool:
+    """Whether any tested model has a single-part arm whose plain-text loss passes the verdict's bar (the caption's
+    one line, and the room for it, only then)."""
+    arms = [f"J({key(a)},0)" for a in blob["alphas"]] + [f"J(0,{key(b)})" for b in blob["betas"]]
+    return any(not m["loss"]["under_bar"][arm] for m in blob["models"] if m["status"] == "tested" for arm in arms)
+
+
 def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
     """Fig. 16 (51.1, fixed in advance), one row per model (9B, 27B, Muse). A: the J++ part added by itself at dose α
     (× its size in the change): the recall's and the lookup's switches minus those of a random part of the same share
@@ -118,7 +88,7 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
     tested = {m["target"]: m for m in blob["models"] if m["status"] == "tested"}
     rows = [(t, m) for t, m, _ in MODELS if t in tested]
     plt = S.setup()
-    top_in, row_in, gap_in, bottom_in = 1.75, 1.75, 0.7, 2.05
+    top_in, row_in, gap_in, bottom_in = 1.75, 1.75, 0.7, 0.75 + 0.3 * bool(shaded_any(blob))
     h = top_in + len(rows) * row_in + (len(rows) - 1) * gap_in + bottom_in
     fig, axes = plt.subplots(len(rows), 2, figsize=(S.WIDTH, h), squeeze=False,
                              gridspec_kw={"width_ratios": [1, 1], "hspace": gap_in / row_in})  # fmt: skip
@@ -129,7 +99,7 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
          "switches beyond a random part (same size)")  # fmt: skip
     head(fig, axes[0, 1].get_position().x0, 1.05, "B  The rest by itself",
          "lookups switched, with and without the address")  # fmt: skip
-    shaded, failing, extra = [], [], {}
+    shaded: list[str] = []
     for r, (target, m) in enumerate(rows):
         mod = tested[target]
         n, rd, loss = mod["n"], mod["readers"], mod["loss"]
@@ -168,11 +138,10 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
         fails = [float(x) for x in mod["rules"]["i"]["alphas_failing"]]
         last = diffs["lookup"][-1][0]
         look = "lookup" if alphas[-1] not in fails else f"lookup {last:.2f}"
-        failing += [f"{SHORT[m]} {diffs['lookup'][alphas.index(x)][0]:.2f} at dose {key(x)}" for x in fails]
         S.record(out_name, target, "51.1 (i): doses where the lookup passes 0.10 beyond random", len(fails), source=src)
-        end_labels(a, alphas[-1], [(diffs["recall"][-1][0], "recall", INK), (last, look, LOOKUP),
-                                   (0.0, "random", S.COL["muted"]), (LOOKUP_BAR, "lookup bar", LOOKUP)], h,
-                   pad=0.16)  # fmt: skip
+        S.end_labels(a, alphas[-1], [(diffs["recall"][-1][0], "recall", INK), (last, look, LOOKUP),
+                                   (0.0, "random", S.COL["muted"]), (LOOKUP_BAR, "lookup bar", LOOKUP)],
+                     pad=0.16)  # fmt: skip
         # ---- B: the rest by itself, with and without the address
         lk = rd["lookup"]["rate"]
         series = (("", "the rest", LOOKUP, S.MARK["add"], -0.012),
@@ -198,15 +167,7 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
         b.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
         b.grid(axis="y", color="#eeeeee")
         b.set_axisbelow(True)
-        end_labels(b, betas[-1], ends, h, pad=0.09)
-        # the caption's sentence: the recall under the rest and under a random complement of its share, at dose 1
-        rc = rd["recall"]["rate"]
-        extra[target] = (rc["J(0,1)"], rc["R(0,1)"])
-        S.record(
-            out_name, target, "51.1: recalls switched, the rest by itself at dose 1", *rc["J(0,1)"], n=n, source=src
-        )
-        S.record(out_name, target, "51.1: recalls switched, a random complement of the rest's share at dose 1",
-                 *rc["R(0,1)"], n=n, source=src)  # fmt: skip
+        S.end_labels(b, betas[-1], ends, pad=0.09)
         S.record(out_name, target, "51.1: doses whose plain-text loss passes 2x the whole change's",
                  sum(not ok for ok in loss["under_bar"].values()), source=src)  # fmt: skip
         for ax in (a, b):
@@ -215,24 +176,9 @@ def build_dose(verdict_dir: Path, out_name: str = "fig16_dose") -> str:
         if r == len(rows) - 1:
             a.set_xlabel("dose of the J++ part (×)", loc="left")
             b.set_xlabel("dose of the rest (×)", loc="left")
-    j1 = " / ".join(f"{extra[t][0][0]:.2f}" for t, _ in rows)
-    r1 = " / ".join(f"{extra[t][1][0]:.2f}" for t, _ in rows)
-    # one caption line per sentence group, each short enough not to wrap inside "J++ part" (the glossary's matcher)
-    lines = [
-        f"A: grey band, a random part of the J++ part's share at the same dose; dotted, the lookup's bar ({LOOKUP_BAR:.2f}).",
-        f"Ring: the first dose where the J++ part by itself switches at least {RECALL_SWITCH:.1f} of recalls; the rule "
-        f"asks {RECALL_BAR:.1f} beyond random there.",
-        "B: without the address against without a random part of the address's share. The rest also switches recalls "
-        f"at dose 1 ({j1}), fewer than a random complement of its share ({r1}).",
-        (
-            "No dose's plain-text loss passes twice the whole change's; none is shaded."
-            if not shaded
-            else f"Shaded, plain-text loss over twice the whole change's: {', '.join(shaded)}."
-        )
-        + " Whiskers: 95% (cluster bootstrap over bridge items).",
-    ]
-    assert not any(w.endswith("J++") for w in caption_lines(lines)), caption_lines(lines)
-    caption(fig, lines, bottom_in - 0.6)
+    # Dan (21:55): definitions live in the README's Setup; one caption line only where this figure needs it
+    if shaded:
+        caption(fig, [f"Shaded: plain-text loss over twice the whole change's ({', '.join(shaded)})."], bottom_in - 0.6)
     S.save(fig, out_name)
     return out_name
 
@@ -257,7 +203,7 @@ def build_learned(verdict_dir: Path, out_name: str = "fig14_learned") -> str:
     models = {m["target"]: m for m in blob["models"]}
     rows = [t for t, _, _ in MODELS if t in models]
     plt = S.setup()
-    top_in, row_in, bottom_in = 1.6, 1.05, 1.75
+    top_in, row_in, bottom_in = 1.6, 1.05, 1.05
     h = top_in + row_in * len(rows) + bottom_in
     fig, (a, b) = plt.subplots(1, 2, figsize=(S.WIDTH, h), sharey=True, gridspec_kw={"width_ratios": [1.25, 1]})
     fig.subplots_adjust(left=0.215, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.10)
@@ -267,7 +213,7 @@ def build_learned(verdict_dir: Path, out_name: str = "fig14_learned") -> str:
     head(fig, b.get_position().x0, 0.98, "B  The hand-built address",
          "share of its energy inside each subspace")  # fmt: skip
     dy, half = 0.19, 0.07
-    ns, whole, rand_e = [], [], []
+    ns, whole = [], []
     for i, t in enumerate(rows):
         ad = models[t]["address"]
         te, geo = ad["test"], ad["geometry"]
@@ -295,15 +241,16 @@ def build_learned(verdict_dir: Path, out_name: str = "fig14_learned") -> str:
         # direct labels on every row, each next to its mark: the learned address's above its mark (the shuffled
         # one's whisker can reach its left)
         a.text(own[0], y + dy + 0.13, "learned address", color=ADDRESS, fontsize=LABEL_PT, ha="right", va="bottom")
-        a.text(shuf[2] + 0.03, y + dy, "shuffled", color=S.COL["muted"], fontsize=LABEL_PT, ha="left", va="center")
+        a.text(
+            shuf[2] + 0.03, y + dy, "shuffled pairs", color=S.COL["muted"], fontsize=LABEL_PT, ha="left", va="center"
+        )
         a.text(max(cross[2], 0.02) + 0.03, y - dy, "recall moved", color=INK, fontsize=LABEL_PT, ha="left",
                va="center")  # fmt: skip
         # B: the hand-built address's energy inside each subspace
         g, gs, gr = geo[f"R_pos_k{k}"], geo[f"shuf_pos_k{k}"], geo[f"rand_k{k}"]
         assert abs(g["cos2_U"] - models[t]["rules_51_3"]["address_cos2_U_k4"]) < 1e-9, t
-        rand_e.append(g["random_expectation"])
         for yy, v, col, label in ((y + dy, g["cos2_U"], ADDRESS, "learned"),
-                                  (y - dy, gs["cos2_U"], NULL, "shuffled")):  # fmt: skip
+                                  (y - dy, gs["cos2_U"], NULL, "shuffled pairs")):  # fmt: skip
             b.barh(yy, v, height=2 * half + 0.04, color=col, lw=0, zorder=2)
             b.text(v + 0.015, yy, f"{v:.2f} {label}", color=ADDRESS if col == ADDRESS else S.COL["muted"],
                    fontsize=LABEL_PT, va="center", ha="left")  # fmt: skip
@@ -329,17 +276,15 @@ def build_learned(verdict_dir: Path, out_name: str = "fig14_learned") -> str:
     nt = ", ".join(map(str, ns))
     n_tag(a, f"n = {nt} pairs  ●")
     n_tag(b, f"n = {nt} pairs  ●")
-    # which models' whole change moves the recall on these pairs at all (>= 0.10): the caption names them
-    movers = [SHORT[m] for (t, m, _), x in zip([r for r in MODELS if r[0] in rows], whole, strict=True) if x >= 0.10]
-    rand_txt = " / ".join(dict.fromkeys(f"{x:.3f}" for x in rand_e))
-    caption(fig, [
-        "Grey bands: a random subspace of four directions; in B it holds " + rand_txt + " of the hand-built address's "
-        "energy. Shuffled: four directions learned on pairs with their answers shuffled.",
-        f"Recall moved: on the same pairs the whole change moves the recall in {' / '.join(f'{x:.2f}' for x in whole)} "
-        "of them" + (f", so only the {movers[0]}'s recall has a move to carry." if len(movers) == 1 else "."),
-        "All three models from one run with more pairs than the earlier 9B run, which it replaces; the sizes and each "
-        "reader's own subspace: the supplement. Whiskers: 95% (cluster bootstrap over bridge items).",
-    ], bottom_in - 0.6)  # fmt: skip
+    # Dan (21:55): one caption line, only what this figure needs (the rest is in the README's Setup)
+    caption(
+        fig,
+        [
+            f"Recall moved: the whole change itself moves the recall in {' / '.join(f'{x:.2f}' for x in whole)} of "
+            "these pairs."
+        ],
+        bottom_in - 0.6,
+    )
     S.save(fig, out_name)
     return out_name
 
@@ -362,14 +307,13 @@ def build_sizes(verdict_dir: Path, out_name: str = "s14_learned_sizes") -> str:
     models = {m["target"]: m for m in blob["models"]}
     cols = [(t, m) for t, m, _ in MODELS if t in models]
     plt = S.setup()
-    top_in, row_in, gap_in, bottom_in = 1.4, 1.45, 0.85, 1.45
+    top_in, row_in, gap_in, bottom_in = 1.4, 1.45, 0.85, 0.75
     h = top_in + len(SUBSPACES) * row_in + (len(SUBSPACES) - 1) * gap_in + bottom_in
     fig, axes = plt.subplots(len(SUBSPACES), len(cols), figsize=(S.WIDTH, h), sharey=True, squeeze=False,
                              gridspec_kw={"hspace": gap_in / row_in})  # fmt: skip
     fig.subplots_adjust(left=0.075, right=0.975, top=1 - top_in / h, bottom=bottom_in / h, wspace=0.12)
-    S.title(fig, "Learned subspaces by size: the lookup's switch fits in sixteen directions, the recall's in more",
-            "Share of test pairs whose switch a subspace learned on the change carries, by its number of directions",
-            limit=100)  # fmt: skip
+    S.title(fig, "Sixteen learned directions carry the lookup's switch; the recall needs more",
+            "Share of test pairs whose switch a learned subspace carries, by its number of directions", limit=80)  # fmt: skip
     for r, (name, heading, col) in enumerate(SUBSPACES):
         for c, (t, m) in enumerate(cols):
             ax, mod = axes[r, c], models[t]
@@ -396,7 +340,7 @@ def build_sizes(verdict_dir: Path, out_name: str = "s14_learned_sizes") -> str:
             S.record(out_name, t, f"51.3: {name}, the k the rule read", chosen, source=src)
             ax.set_xlim(-0.3, len(ks) - 1 + 1.25)
             ax.set_ylim(-0.03, 1.05)
-            end_labels(ax, len(ks) - 1, ends, h, pad=0.22)
+            S.end_labels(ax, len(ks) - 1, ends, pad=0.22)
             ax.set_xticks(x, [str(k) for k in ks])
             ax.spines["bottom"].set_bounds(0, len(ks) - 1)
             ax.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
@@ -411,11 +355,5 @@ def build_sizes(verdict_dir: Path, out_name: str = "s14_learned_sizes") -> str:
             if r == len(SUBSPACES) - 1:
                 ax.set_xlabel("directions (k)")
     axes[len(SUBSPACES) // 2, 0].set_ylabel("share of test pairs")
-    caption(fig, [
-        "Lookup and recall: each reader's switch to the changed prompt's answer on pooled identity pairs; the learned "
-        "address: the lookup's position switch on pairs that move the item's locker. Shuffled: the same learned on "
-        "pairs with their answers shuffled. Ring: the size the rule read. Whiskers: 95% (cluster bootstrap over "
-        "bridge items).",
-    ], bottom_in - 0.6)  # fmt: skip
     S.save(fig, out_name, supp=True)
     return out_name

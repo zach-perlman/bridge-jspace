@@ -189,6 +189,46 @@ def empty(ax, text: str) -> None:
     ax.text(0.5, 0.5, text, transform=ax.transAxes, ha="center", va="center", fontsize=FONT, color=COL["muted"])
 
 
+LABEL_PT = FONT - 1  # a direct label's size
+
+
+def spread(ys: list[float], gap: float, lo: float, hi: float) -> list[float]:
+    """Label heights near ys (same order), at least gap apart and inside [lo, hi]: overlapping neighbours are pushed
+    apart about their midpoint until none overlap."""
+    order = sorted(range(len(ys)), key=lambda i: ys[i])
+    p = [ys[i] for i in order]
+    for _ in range(200):
+        moved = False
+        for i in range(1, len(p)):
+            if p[i] - p[i - 1] < gap - 1e-9:
+                mid = (p[i] + p[i - 1]) / 2
+                p[i - 1], p[i] = mid - gap / 2, mid + gap / 2
+                moved = True
+        if p and p[0] < lo:
+            p = [y + lo - p[0] for y in p]
+            moved = True
+        if p and p[-1] > hi:
+            p = [y - (p[-1] - hi) for y in p]
+            moved = True
+        if not moved:
+            break
+    out = [0.0] * len(ys)
+    for i, y in zip(order, p, strict=True):
+        out[i] = y
+    return out
+
+
+def end_labels(ax, x: float, items: list[tuple[float, str, str]], pad: float = 0.06, size: float = LABEL_PT) -> None:
+    """Dan's rethink (28 Oct ~21:50): every panel names its lines itself. Direct labels left-aligned at x + pad (data
+    units), each near its series' last value and nudged apart by one label line: items are (y, text, colour)."""
+    lo, hi = ax.get_ylim()
+    height_in = ax.get_position().height * ax.figure.get_figheight()
+    gap = (size * 1.45 / 72) * (hi - lo) / height_in
+    ys = spread([y for y, _, _ in items], gap, lo + gap / 2, hi - gap / 2)
+    for (_, text, col), y in zip(items, ys, strict=True):
+        ax.text(x + pad, y, text, color=col, fontsize=size, va="center", ha="left", zorder=6, clip_on=False)
+
+
 def save(fig, name: str, supp: bool = False) -> None:
     out = SUPP if supp else OUT
     out.mkdir(parents=True, exist_ok=True)

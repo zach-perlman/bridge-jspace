@@ -10,7 +10,7 @@
 - **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 17afc818 from the run files. Sealed and running: the gain map, one question two sources, the learned subspaces on the 27B and Muse; results land here when opened.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at 559405d1 from the run files. Sealed and running: the gain map, one question two sources, the learned subspaces on the 27B and Muse; results land here when opened.
 
 ## Setup
 
@@ -24,6 +24,15 @@
 - **The J++ part**: the 25 lens directions that best rebuild the change. **A random part**: random directions of the same share of the change.
 - **Extra loss**: switches lost without a part minus those lost without its random part. **Gap**: the recall's extra loss minus the lookup's.
 - **The address**: four directions at the bridge word that code where the item's locker sentence sits.
+
+**Reading the figures.**
+
+- **Beyond random**: an effect minus that of the same operation with a random part of the same share (the grey band, strip or tick at zero; for Zach's stored rows, his rotated directions).
+- **Whiskers and bands**: 95% intervals, cluster bootstrap over bridge items. **● / ○** beside n: rule fixed in advance / read after the data; a hollow mark: a gate lowered after the data. **Dashed or dotted line**: a rule's bar. Cells not run, failing a gate or under 30 switches are left out.
+- **L**: the layer fixed in advance per model; **L to L+3**: L and the three layers after it.
+- **Identity route**: the lookup names the item's own locker; **position route**: the locker now at the item's old place; **value**: the new number.
+- **Rungs** (E2's ladder): the J++ part taken out at the bridge word at L, then over L to L+3, plus the earlier mention, plus the question, then at every token over L to L+3; the last rung is Zach's: each token's own top-10 lens directions over his band.
+- **Dose (×)**: a part's size relative to its size in the change; a **ring** marks the dose or size a rule reads. **z** (E8's figure): distance from 200 random vectors in units of half their 95% range; the grey strip spans −1 to 1.
 
 ## Claims
 
@@ -51,6 +60,8 @@
 ![Both operations, both datasets, one direction](../../figures/story/fig12_two_by_two.png)
 
 ![The split carries over to other texts](../../figures/story/fig09a_transfer.png)
+
+![By itself the J++ part moves the recall; the rest moves the lookup](../../figures/story/fig16_dose.png)
 
 ### E1. The conflict test: who follows which part <a id="e1-conflict"></a>
 

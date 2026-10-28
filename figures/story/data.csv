@@ -3065,8 +3065,6 @@ fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a ra
 fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.75",0.05333333333333334,0.0125,0.1044776119402985,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1",0.56,0.46067046126552336,0.6666666666666666,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,qwen3.5-9b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1.5",0.96,0.9104477611940298,1.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
-fig16_dose,qwen3.5-9b,"51.1: recalls switched, the rest by itself at dose 1",0.7333333333333333,0.625,0.8360655737704918,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
-fig16_dose,qwen3.5-9b,"51.1: recalls switched, a random complement of the rest's share at dose 1",0.96,0.9146341463414634,1.0,75,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,qwen3.5-9b,51.1: doses whose plain-text loss passes 2x the whole change's,0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,qwen3.6-27b,"51.1 A: recall switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.014492753623188406,0.0,0.046875,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,qwen3.6-27b,"51.1 A: recall switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.014492753623188406,0.0,0.046153846153846156,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
@@ -3095,8 +3093,6 @@ fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a r
 fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.75",0.0,0.0,0.0,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1",0.11594202898550725,0.043478260869565216,0.2037037037037037,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,qwen3.6-27b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1.5",0.5797101449275363,0.4861111111111111,0.6716417910447762,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
-fig16_dose,qwen3.6-27b,"51.1: recalls switched, the rest by itself at dose 1",0.13043478260869565,0.06060606060606061,0.21621621621621623,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
-fig16_dose,qwen3.6-27b,"51.1: recalls switched, a random complement of the rest's share at dose 1",0.6811594202898551,0.5714285714285714,0.7777777777777778,69,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,qwen3.6-27b,51.1: doses whose plain-text loss passes 2x the whole change's,0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,muse-glimmer-30b,"51.1 A: recall switches with the J++ part by itself at dose 0.5, minus a random part (same size) at the same dose",0.0,0.0,0.0,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,muse-glimmer-30b,"51.1 A: recall switches with the J++ part by itself at dose 1, minus a random part (same size) at the same dose",0.029411764705882353,0.0,0.07575757575757576,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
@@ -3125,8 +3121,6 @@ fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself withou
 fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 0.75",0.29411764705882354,0.18181818181818182,0.4259335154826957,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1",0.6617647058823529,0.5405405405405406,0.7894736842105263,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,muse-glimmer-30b,"51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1.5",0.8088235294117647,0.7076923076923077,0.8947368421052632,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
-fig16_dose,muse-glimmer-30b,"51.1: recalls switched, the rest by itself at dose 1",0.23529411764705882,0.12941176470588237,0.3728813559322034,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
-fig16_dose,muse-glimmer-30b,"51.1: recalls switched, a random complement of the rest's share at dose 1",0.4852941176470588,0.36363636363636365,0.6119402985074627,68,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 fig16_dose,muse-glimmer-30b,51.1: doses whose plain-text loss passes 2x the whole change's,0,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
 s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
