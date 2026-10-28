@@ -1,0 +1,41 @@
+{
+ "target": "qwen3.6-27b",
+ "layer": 32,
+ "e1_delta": {
+  "max_abs_delta_lookup_minus_recall": 0.75,
+  "max_abs_delta": 8.96875,
+  "max_rel_norm_lookup_minus_recall": 0.03438575938344002,
+  "median_rel_norm_lookup_minus_recall": 0.0
+ },
+ "z2_delta": {},
+ "letters": 242132,
+ "e1_PP_fit_max_abs_diff": 0.0,
+ "e1_x0_share_max_abs_gap": 5.0000000000050004e-06,
+ "e1_x0_share_items": 50,
+ "e1_51_12_answer_atoms_items_agree": [
+  50,
+  50
+ ],
+ "e1_x0_atoms_same_25_items": [
+  3,
+  3
+ ],
+ "e1_recall_delta_atoms_in_common": {
+  "all_25": 37,
+  "items": 50,
+  "min": 4,
+  "median": 25.0
+ },
+ "z2_K_fit_max_abs_diff": 0.0,
+ "z2_M_fit_max_abs_diff": 0.0,
+ "z2_x0_share_max_abs_gap": null,
+ "z2_x0_share_items": 0,
+ "z2_51_12_answer_atoms_items_agree": [
+  100,
+  100
+ ],
+ "z2_x0_atoms_same_25_items": [
+  0,
+  0
+ ]
+}
