@@ -74,8 +74,11 @@ JOINT_RETIRED = {
 # panels; "swap" not "write", "address" not "pointer", and none of iteration 2's retired strings
 V6_FIGS = (
     "fig00_setup",
+    "fig00b_marks",
     "fig01_split",
     "fig01c_zeroing",
+    "fig01d_ladder",
+    "fig12_two_by_two",
     "fig05b_identity_outside",
     "fig05_routes",
     "fig07_writes",
@@ -92,7 +95,20 @@ V6_FIGS = (
 # E6's probe, remove / add, swap; E8's read-through, share rebuilt, report (Dan's v6 iteration 2: at most three)
 V6_PANELS = {"fig07_writes": 3, "fig07b_verbal": 3,
              # kept on the page as they were, smaller (Dan's v6 iteration 2): their panels stay
-             "fig05c_described_bridge": 3, "fig09_transfer": 8}  # fmt: skip
+             "fig05c_described_bridge": 3, "fig09_transfer": 8,
+             # Dan's figures brief (28 Oct ~18:30): one panel per model (9B, 27B, Muse); the 2 x 2; Fig. 3's panel on
+             # Zach's passages
+             "fig01d_ladder": 3, "fig06b_anatomy": 3, "fig12_two_by_two": 4, "fig03_order": 3}  # fmt: skip
+# Dan's figures brief (28 Oct ~18:30) §1 and §5.1: a cell that was not run, failed its gate or had too few switches is
+# left out and listed in one caption line under the plot; these words never stand inside a frame (a text drawn in an
+# axes) of a main-page figure
+FRAME_RETIRED = {"cannot report": r"(?i)\bcannot report\b", "not run": r"(?i)\bnot run\b",
+                 "not tested": r"(?i)\bnot tested\b"}  # fmt: skip
+# main-page figures that still draw a cell's status in the frame until their restyle (the brief's step 3 splits Fig. 9
+# and redraws Fig. 7b); remove each as it is redrawn
+FRAME_PENDING = {"fig07b_verbal", "fig09_transfer"}
+# §1, colour = who or what: the figures drawn in the mark system use story_style.MARK_COL's hues and greys only
+MARK_FIGS = ("fig00b_marks", "fig01d_ladder", "fig12_two_by_two", "fig03_order")
 V6_RETIRED = {"pointer": r"(?i)\bpointers?\b", "write": r"(?i)\bwrit(?:e|es|ten|ing)\b|\bwrote\b",
               # Dan's v6 iteration 2 (28 Oct ~15:40): words no README figure draws (title, subtitle, legend, ticks,
               # annotations); the part is named, never "it"; test numbers and run names belong to predictions/
@@ -134,6 +150,60 @@ def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tupl
     out += [(where, text, term) for where, text in texts if where in V6_FIGS
             for term, rx in V6_RETIRED.items() if re.search(rx, text)]  # fmt: skip
     return out
+
+
+def frame_style(layout: dict[str, dict], names) -> list[tuple[str, str, str]]:
+    """(figure, text, rule) for each FRAME_RETIRED word drawn inside a frame of a main-page figure (names), and for
+    each hue a MARK_FIGS figure draws outside story_style.MARK_COL. layout: figure_texts' (its "in_frame" and "hues")."""
+    from scripts import story_style as S
+
+    palette = {colour_key(c) for c in S.MARK_COL.values()}
+    out = [(name, text, f"{term} inside a frame") for name in names if name not in FRAME_PENDING
+           for text in layout.get(name, {}).get("in_frame", []) for term, rx in FRAME_RETIRED.items()
+           if re.search(rx, text)]  # fmt: skip
+    out += [(name, hue, "hue outside the mark system") for name in MARK_FIGS
+            for hue in sorted(layout.get(name, {}).get("hues", set()) - palette)]  # fmt: skip
+    return out
+
+
+def colour_key(c) -> str:
+    """A colour as '#rrggbb' (alpha dropped), or '' for a grey (r = g = b within 6 of 255), white and black included."""
+    from matplotlib.colors import to_hex, to_rgb
+
+    r, g, b = (round(255 * x) for x in to_rgb(c))
+    return "" if max(r, g, b) - min(r, g, b) <= 6 else to_hex((r / 255, g / 255, b / 255))
+
+
+def figure_hues(fig) -> set[str]:
+    """The non-grey colours a figure draws: lines and their marks, patches, collections and texts (fully transparent
+    ones and 'none' left out)."""
+    import numpy as np
+    from matplotlib.collections import Collection
+    from matplotlib.lines import Line2D
+    from matplotlib.patches import Patch
+    from matplotlib.text import Text
+
+    found = []
+    for a in fig.findobj():
+        if not a.get_visible():
+            continue
+        if isinstance(a, Line2D):
+            found += [a.get_color(), a.get_markerfacecolor(), a.get_markeredgecolor()]
+        elif isinstance(a, Patch):
+            found += [a.get_facecolor(), a.get_edgecolor()]
+        elif isinstance(a, Collection):
+            found += [tuple(c) for c in np.atleast_2d(a.get_facecolors())] + [
+                tuple(c) for c in np.atleast_2d(a.get_edgecolors())]  # fmt: skip
+        elif isinstance(a, Text) and a.get_text().strip():
+            found.append(a.get_color())
+    keep = set()
+    for c in found:
+        if c is None or (isinstance(c, str) and c.lower() == "none"):
+            continue
+        if not isinstance(c, str) and len(c) == 4 and c[3] == 0:
+            continue
+        keep.add(colour_key(c))
+    return keep - {""}
 
 
 def retired(texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
@@ -219,7 +289,9 @@ def figure_texts(layout: dict[str, dict] | None = None) -> list[tuple[str, str]]
         if layout is not None:
             sub = next((t.get_text() for t in drawn if getattr(t, S.SUBTITLE, False)), "")
             panels = [ax for ax in fig.axes if not getattr(ax, S.INSET, False)]  # a marked inset is not a panel
-            layout[stem] = {"title": fig.get_suptitle(), "subtitle": sub, "panels": len(panels)}
+            in_frame = [t.get_text() for ax in fig.axes for t in ax.texts if t.get_text().strip()]
+            layout[stem] = {"title": fig.get_suptitle(), "subtitle": sub, "panels": len(panels), "in_frame": in_frame,
+                            "hues": figure_hues(fig) if stem in MARK_FIGS else set()}  # fmt: skip
 
     saved = (Figure.savefig, S.OUT, S.SUPP, list(S.ROWS))
     with tempfile.TemporaryDirectory() as tmp, matplotlib.rc_context():
@@ -242,10 +314,11 @@ def main(argv: list[str] | None = None) -> int:
     drawn = figure_texts(layout)
     hits = retired(caption_texts() + drawn + joint)
     joint_hits = joint_retired(joint + root_readme_texts())
-    v6_hits = v6_style(layout, drawn)
+    from scripts import readme_story_figures as F
+
+    v6_hits = v6_style(layout, drawn) + frame_style(layout, F.README_NAMES)
     for where, text, term in hits + joint_hits + v6_hits:
         print(f"{where}: {term!r} in {text!r}")
-    from scripts import readme_story_figures as F
 
     pending = sorted(
         n for n in F.README_NAMES if n not in V6_FIGS and re.search(r"\d", layout.get(n, {}).get("title", ""))

@@ -40,6 +40,15 @@ NI_SWITCH = 0.30
 NI_SHADE = {"facecolor": "#f6f6f6", "edgecolor": "#d4d4d4", "hatch": "///", "lw": 0, "zorder": 0}
 # the original answer as an empty segment: light grey stays the random control's colour alone
 EMPTY = {"facecolor": "none", "edgecolor": "#9a9a9a", "lw": 0.7}
+# Dan's figures brief (28 Oct ~18:30) §1, one mark system: colour = who or what (no other hue on a figure that follows
+# it), mark = the operation, panel = the model (9B, 27B, Muse). scripts/check_figure_terms.py checks MARK_FIGS' hues.
+MARK_COL = {"recall": COL["recall"], "lookup": COL["lookup"], "jpp": "#13998f", "address": COL["position"],
+            "identity": COL["identity"], "null": COL["control"]}  # fmt: skip
+MARK = {"remove": "o", "zero": "X", "add": "D", "swap": "^", "whole": "s"}
+MARK_TEXT = {"remove": "removed from the change", "zero": "taken out of a prompt's own state",
+             "add": "added by itself", "swap": "the swap", "whole": "the whole state copied"}  # fmt: skip
+MARK_COL_TEXT = {"recall": "recall", "lookup": "lookup", "jpp": "the J++ part", "address": "the address",
+                 "identity": "identity", "null": "a random part (same size)"}  # fmt: skip
 STATUS_GLYPH = {"fixed": "●", "after": "○"}
 STATUS_TEXT = {"fixed": "fixed in advance", "after": "after the data"}
 SUBTITLE = "story_subtitle"  # the attribute title() sets on the subtitle's Text

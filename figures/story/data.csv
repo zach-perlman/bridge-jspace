@@ -215,6 +215,12 @@ fig03,muse-glimmer-30b,"lookups switched by the whole change, locker sentence be
 fig03,muse-glimmer-30b,"recalls switched by the whole change, locker sentence before the pick",0.5109,0.4104,0.6105,92,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig03,muse-glimmer-30b,"lookups switched by the whole change, locker sentence after the pick",0.0926,0.0511,0.1621,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
 fig03,muse-glimmer-30b,"recalls switched by the whole change, locker sentence after the pick",0.6481,0.5544,0.7317,108,results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl
+fig03,qwen3.5-9b,"Zach's passages, L12: lookups switched by the whole change, fact-first",0.78,0.6809,0.8641,100,results/x50_zach/z1-20261028T161649Z/z1.json
+fig03,qwen3.5-9b,"Zach's passages, L12: lookups switched by the whole change, fact-after",0.36,0.2653,0.4554,100,results/x50_zach/z1-20261028T161649Z/z1.json
+fig03,qwen3.6-27b,"Zach's passages, L32: lookups switched by the whole change, fact-first",0.6701,0.5652,0.7629,97,results/x50_zach/z1-20261028T161649Z/z1.json
+fig03,qwen3.6-27b,"Zach's passages, L32: lookups switched by the whole change, fact-after",0.1068,0.051,0.1667,103,results/x50_zach/z1-20261028T161649Z/z1.json
+fig03,muse-glimmer-30b,"Zach's passages, L26: lookups switched by the whole change, fact-first",0.202,0.1188,0.2887,99,results/x50_zach/z1-20261028T161649Z/z1.json
+fig03,muse-glimmer-30b,"Zach's passages, L26: lookups switched by the whole change, fact-after",0.0495,0.0101,0.0962,101,results/x50_zach/z1-20261028T161649Z/z1.json
 fig03,qwen3.5-9b,"45q, layer 0: the bridge-word change (lookups switched)",0.9950248756218906,0.9852216748768473,1.0,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
 fig03,qwen3.5-9b,"45q, layer 4: the bridge-word change (lookups switched)",0.9303482587064676,0.900497512437811,0.9580846161080979,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
 fig03,qwen3.5-9b,"45q, layer 8: the bridge-word change (lookups switched)",0.3582089552238806,0.29743589743589743,0.41624365482233505,201,results/x45b_binding/x45q-sweep-20261027T005346Z/sweep.json
@@ -815,150 +821,197 @@ fig06,muse-glimmer-30b,layer 30: recall J++ extra loss,0.012048192771084376,-0.0
 fig06,muse-glimmer-30b,layer 32: recall J++ extra loss,0.5312499999999999,0.42422958397534666,0.65855044345898,200,muse30b_x0_necessity_depth
 fig06,muse-glimmer-30b,"layer 13: position share (another item moved, whole change)",0.043333333333333335,0.02090256309515194,0.06927785399021828,300,muse30b_x6_routes_l13
 fig06,muse-glimmer-30b,"layer 26: position share (another item moved, whole change)",0.5433333333333333,0.49195879635933265,0.5962148086423427,300,muse30b_x6_routes
-fig06b,qwen3.5-9b,layer 2: lookup identity share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 2: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 2: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 2: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 4: lookup identity share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 4: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 4: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 4: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 6: lookup identity share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 6: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 6: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 6: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 8: lookup identity share (whole change),0.98,0.9601769911504425,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 8: lookup position share (whole change),0.02,0.0,0.03982300884955752,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 8: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 8: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 10: lookup identity share (whole change),0.98,0.9658536585365853,0.9945652173913043,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 10: lookup position share (whole change),0.02,0.005434782608695652,0.03414634146341464,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 10: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 10: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 12: lookup identity share (whole change),0.49,0.43577981651376146,0.5476190476190477,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 12: lookup position share (whole change),0.51,0.4523809523809524,0.5642201834862385,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 12: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 12: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 14: lookup identity share (whole change),0.415,0.3576148906281357,0.47794233259341473,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 14: lookup position share (whole change),0.555,0.49425120288692864,0.605001050420168,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 14: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 14: lookup original share (whole change),0.03,0.009389671361502348,0.05917159763313609,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 16: lookup identity share (whole change),0.135,0.08804905660377359,0.18269230769230768,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 16: lookup position share (whole change),0.325,0.28494467366841714,0.3712871287128713,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 16: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 16: lookup original share (whole change),0.54,0.4670039580491514,0.6111111111111112,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 18: lookup identity share (whole change),0.02,0.0,0.04736904464953853,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 18: lookup position share (whole change),0.04,0.010810810810810811,0.06787330316742081,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 18: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 18: lookup original share (whole change),0.94,0.8883720930232558,0.9885714285714285,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 20: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 20: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 20: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 20: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 22: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 22: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 22: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 22: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 24: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 24: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 24: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 24: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 26: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 26: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 26: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 26: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 28: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 28: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 28: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 28: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 30: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 30: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 30: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 30: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 2: recall switch (whole change),0.99,0.9754901960784313,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 4: recall switch (whole change),0.99,0.9754901960784313,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 6: recall switch (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 8: recall switch (whole change),0.995,0.9854368932038835,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 10: recall switch (whole change),0.985,0.9716981132075472,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 12: recall switch (whole change),0.83,0.7784076265229616,0.8802395209580839,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 14: recall switch (whole change),0.73,0.6558690330477356,0.7961790986204607,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 16: recall switch (whole change),0.17,0.10245901639344263,0.25766871165644173,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 18: recall switch (whole change),0.03,0.008968609865470852,0.06172839506172839,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 20: recall switch (whole change),0.01,0.0,0.029416115558649432,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 22: recall switch (whole change),0.005,0.0,0.017964071856287425,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 24: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 26: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 28: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,layer 30: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,address formed: layer,4,,,,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,qwen3.5-9b,address used: layer,12,,,,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 2: lookup identity share (whole change),0.99,0.9738562091503268,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 2: lookup position share (whole change),0.01,0.0,0.026143790849673203,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 2: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 2: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 6: lookup identity share (whole change),0.995,0.9811320754716981,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 6: lookup position share (whole change),0.005,0.0,0.018867924528301886,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 6: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 6: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 10: lookup identity share (whole change),0.985,0.967741935483871,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 10: lookup position share (whole change),0.015,0.0,0.03225806451612903,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 10: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 10: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 14: lookup identity share (whole change),0.96,0.9315789473684211,0.9787234042553191,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 14: lookup position share (whole change),0.04,0.02127659574468085,0.06842105263157895,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 14: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 14: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 18: lookup identity share (whole change),0.82,0.7751472211998528,0.8707910474809714,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 18: lookup position share (whole change),0.18,0.12920895251902864,0.22485277880014723,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 18: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 18: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 22: lookup identity share (whole change),0.635,0.5586592178770949,0.7068985565356856,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 22: lookup position share (whole change),0.36,0.2903225806451613,0.43452458863126403,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 22: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 22: lookup original share (whole change),0.005,0.0,0.015957446808510637,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 26: lookup identity share (whole change),0.415,0.34177215189873417,0.4820558375634517,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 26: lookup position share (whole change),0.565,0.5,0.6363636363636364,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 26: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 26: lookup original share (whole change),0.02,0.0,0.044027469478357346,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 30: lookup identity share (whole change),0.115,0.06716292697585896,0.15625,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 30: lookup position share (whole change),0.17,0.12177121771217712,0.22656510416666664,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 30: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 30: lookup original share (whole change),0.715,0.6265816219339251,0.8041264386625211,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 34: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 34: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 34: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 34: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 38: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 38: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 38: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 38: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 42: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 42: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 42: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 42: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 46: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 46: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 46: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 46: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 50: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 50: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 50: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 50: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 2: recall switch (whole change),0.925,0.8818544615576479,0.9766081871345029,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 6: recall switch (whole change),0.925,0.8818544615576479,0.9766081871345029,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 10: recall switch (whole change),0.93,0.8953488372093024,0.978572383498854,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 14: recall switch (whole change),0.94,0.9066666666666666,0.9820386013686911,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 18: recall switch (whole change),0.93,0.9013452914798207,0.9655172413793104,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 22: recall switch (whole change),0.72,0.682117507216845,0.770949720670391,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 26: recall switch (whole change),0.23,0.15263157894736842,0.3055591537132988,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 30: recall switch (whole change),0.05,0.016736401673640166,0.10055948563683845,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 34: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 38: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 42: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 46: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,layer 50: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,address formed: layer,6,,,,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
-fig06b,muse-glimmer-30b,address used: layer,22,,,,results/x47_anatomy/x47_8-20261028T114551Z/x47_8.json
+fig06b,qwen3.5-9b,layer 2: lookup identity share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 2: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 2: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 2: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 4: lookup identity share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 4: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 4: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 4: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 6: lookup identity share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 6: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 6: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 6: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 8: lookup identity share (whole change),0.98,0.9601769911504425,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 8: lookup position share (whole change),0.02,0.0,0.03982300884955752,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 8: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 8: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 10: lookup identity share (whole change),0.98,0.9658536585365853,0.9945652173913043,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 10: lookup position share (whole change),0.02,0.005434782608695652,0.03414634146341464,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 10: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 10: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 12: lookup identity share (whole change),0.49,0.43577981651376146,0.5476190476190477,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 12: lookup position share (whole change),0.51,0.4523809523809524,0.5642201834862385,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 12: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 12: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 14: lookup identity share (whole change),0.415,0.3576148906281357,0.47794233259341473,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 14: lookup position share (whole change),0.555,0.49425120288692864,0.605001050420168,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 14: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 14: lookup original share (whole change),0.03,0.009389671361502348,0.05917159763313609,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 16: lookup identity share (whole change),0.135,0.08804905660377359,0.18269230769230768,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 16: lookup position share (whole change),0.325,0.28494467366841714,0.3712871287128713,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 16: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 16: lookup original share (whole change),0.54,0.4670039580491514,0.6111111111111112,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 18: lookup identity share (whole change),0.02,0.0,0.04736904464953853,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 18: lookup position share (whole change),0.04,0.010810810810810811,0.06787330316742081,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 18: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 18: lookup original share (whole change),0.94,0.8883720930232558,0.9885714285714285,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 20: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 20: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 20: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 20: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 22: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 22: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 22: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 22: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 24: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 24: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 24: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 24: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 26: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 26: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 26: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 26: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 28: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 28: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 28: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 28: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 30: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 30: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 30: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 30: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 2: recall switch (whole change),0.99,0.9754901960784313,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 4: recall switch (whole change),0.99,0.9754901960784313,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 6: recall switch (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 8: recall switch (whole change),0.995,0.9854368932038835,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 10: recall switch (whole change),0.985,0.9716981132075472,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 12: recall switch (whole change),0.83,0.7784076265229616,0.8802395209580839,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 14: recall switch (whole change),0.73,0.6558690330477356,0.7961790986204607,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 16: recall switch (whole change),0.17,0.10245901639344263,0.25766871165644173,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 18: recall switch (whole change),0.03,0.008968609865470852,0.06172839506172839,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 20: recall switch (whole change),0.01,0.0,0.029416115558649432,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 22: recall switch (whole change),0.005,0.0,0.017964071856287425,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 24: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 26: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 28: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,layer 30: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,address formed: layer,4,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.5-9b,address used: layer,12,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 8: lookup identity share (whole change),1.0,1.0,1.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 8: lookup position share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 8: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 8: lookup original share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 16: lookup identity share (whole change),1.0,1.0,1.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 16: lookup position share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 16: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 16: lookup original share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 24: lookup identity share (whole change),1.0,1.0,1.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 24: lookup position share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 24: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 24: lookup original share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 30: lookup identity share (whole change),0.62,0.5434782608695652,0.6875,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 30: lookup position share (whole change),0.38,0.3125,0.45652173913043476,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 30: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 30: lookup original share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 32: lookup identity share (whole change),0.6666666666666666,0.6048387096774194,0.7116564417177914,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 32: lookup position share (whole change),0.32666666666666666,0.2875,0.376814381270903,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 32: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 32: lookup original share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 34: lookup identity share (whole change),0.7,0.6375838926174496,0.7739130434782608,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 34: lookup position share (whole change),0.2866666666666667,0.2158273381294964,0.34965034965034963,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 34: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 34: lookup original share (whole change),0.006666666666666667,0.0,0.01935483870967742,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 40: lookup identity share (whole change),0.19333333333333333,0.14705882352941177,0.24324324324324326,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 40: lookup position share (whole change),0.12666666666666668,0.07913669064748201,0.16483516483516483,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 40: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 40: lookup original share (whole change),0.68,0.6028321826123714,0.76,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 48: lookup identity share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 48: lookup position share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 48: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 48: lookup original share (whole change),1.0,1.0,1.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 56: lookup identity share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 56: lookup position share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 56: lookup value share (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 56: lookup original share (whole change),1.0,1.0,1.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 8: recall switch (whole change),1.0,1.0,1.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 16: recall switch (whole change),1.0,1.0,1.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 24: recall switch (whole change),0.9933333333333333,0.9817073170731707,1.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 30: recall switch (whole change),0.8266666666666667,0.7916666666666666,0.8627450980392157,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 32: recall switch (whole change),0.5,0.3081395348837209,0.7477477477477478,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 34: recall switch (whole change),0.25333333333333335,0.11493781797625778,0.4645669291338583,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 40: recall switch (whole change),0.006666666666666667,0.0,0.023531727651690565,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 48: recall switch (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,layer 56: recall switch (whole change),0.0,0.0,0.0,150,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,address formed: layer,8,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,qwen3.6-27b,address used: layer,30,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 2: lookup identity share (whole change),0.99,0.9738562091503268,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 2: lookup position share (whole change),0.01,0.0,0.026143790849673203,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 2: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 2: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 6: lookup identity share (whole change),0.995,0.9811320754716981,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 6: lookup position share (whole change),0.005,0.0,0.018867924528301886,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 6: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 6: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 10: lookup identity share (whole change),0.985,0.967741935483871,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 10: lookup position share (whole change),0.015,0.0,0.03225806451612903,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 10: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 10: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 14: lookup identity share (whole change),0.96,0.9315789473684211,0.9787234042553191,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 14: lookup position share (whole change),0.04,0.02127659574468085,0.06842105263157895,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 14: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 14: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 18: lookup identity share (whole change),0.82,0.7751472211998528,0.8707910474809714,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 18: lookup position share (whole change),0.18,0.12920895251902864,0.22485277880014723,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 18: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 18: lookup original share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 22: lookup identity share (whole change),0.635,0.5586592178770949,0.7068985565356856,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 22: lookup position share (whole change),0.36,0.2903225806451613,0.43452458863126403,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 22: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 22: lookup original share (whole change),0.005,0.0,0.015957446808510637,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 26: lookup identity share (whole change),0.415,0.34177215189873417,0.4820558375634517,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 26: lookup position share (whole change),0.565,0.5,0.6363636363636364,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 26: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 26: lookup original share (whole change),0.02,0.0,0.044027469478357346,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 30: lookup identity share (whole change),0.115,0.06716292697585896,0.15625,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 30: lookup position share (whole change),0.17,0.12177121771217712,0.22656510416666664,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 30: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 30: lookup original share (whole change),0.715,0.6265816219339251,0.8041264386625211,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 34: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 34: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 34: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 34: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 38: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 38: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 38: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 38: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 42: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 42: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 42: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 42: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 46: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 46: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 46: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 46: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 50: lookup identity share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 50: lookup position share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 50: lookup value share (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 50: lookup original share (whole change),1.0,1.0,1.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 2: recall switch (whole change),0.925,0.8818544615576479,0.9766081871345029,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 6: recall switch (whole change),0.925,0.8818544615576479,0.9766081871345029,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 10: recall switch (whole change),0.93,0.8953488372093024,0.978572383498854,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 14: recall switch (whole change),0.94,0.9066666666666666,0.9820386013686911,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 18: recall switch (whole change),0.93,0.9013452914798207,0.9655172413793104,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 22: recall switch (whole change),0.72,0.682117507216845,0.770949720670391,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 26: recall switch (whole change),0.23,0.15263157894736842,0.3055591537132988,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 30: recall switch (whole change),0.05,0.016736401673640166,0.10055948563683845,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 34: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 38: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 42: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 46: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,layer 50: recall switch (whole change),0.0,0.0,0.0,200,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,address formed: layer,6,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
+fig06b,muse-glimmer-30b,address used: layer,22,,,,results/x47_anatomy/x47_8-20261028T154518Z/x47_8.json
 fig07,qwen3.5-9b,"the locker probe at the bridge word, locker-first scenes",0.9683377308707124,0.9563252146517103,0.9795457449279851,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 fig07,qwen3.5-9b,"the locker probe's layout baseline, locker-first scenes",0.5303430079155673,0.5037591635338347,0.5562351008557457,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 fig07,qwen3.6-27b,"the locker probe at the bridge word, locker-first scenes",0.9894459102902374,0.9817905918057663,0.995907508979035,758,results/x0_probe/x0_probe_v4_27b/probe-20261024T172424Z/probe.json
@@ -2687,6 +2740,78 @@ fig15,qwen3.5-9b,47.6 (b) block/sentence/all: lookup identity share,0.21,0.17142
 fig15,qwen3.5-9b,47.6: the rule's bar (whole change's identity share less 0.10),0.42666666666666664,,,,results/x47_edges/x47_6-20261028T113107Z/verdict.json
 fig15,muse-glimmer-30b,47.6 (b) block/sentence/all: lookup identity share,0.16333333333333333,0.12972880730559913,0.20233463035019456,300,results/x47_edges/x47_6-20261028T113107Z/verdict.json
 fig15,muse-glimmer-30b,47.6: the rule's bar (whole change's identity share less 0.10),0.31333333333333335,,,,results/x47_edges/x47_6-20261028T113107Z/verdict.json
+fig01d,qwen3.5-9b,"rung 1: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",-0.0024,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0072,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.048,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0504,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0336,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0054,0.0,0.019,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0699,0.0333,0.1135,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: recall, locker before the pick: answers lost beyond random",0.3925,0.3081,0.4737,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: recall, locker before the pick: answers lost beyond random",0.4194,0.3518,0.4842,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: recall, locker before the pick: answers lost beyond random",0.4194,0.3448,0.5,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: recall, locker before the pick: answers lost beyond random",0.4194,0.3151,0.5241,186,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: recall, locker after the pick: answers lost beyond random",0.0519,0.0213,0.0944,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: recall, locker after the pick: answers lost beyond random",0.3983,0.3095,0.5082,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: recall, locker after the pick: answers lost beyond random",0.4242,0.3409,0.5238,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: recall, locker after the pick: answers lost beyond random",0.4632,0.3787,0.557,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: recall, locker after the pick: answers lost beyond random",0.4545,0.3684,0.5464,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: recall, locker after the pick: answers lost beyond random",0.2121,0.1462,0.3102,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 1: lookup, every scene: answers lost beyond random",0.0048,0.0,0.0111,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 2: lookup, every scene: answers lost beyond random",-0.0072,-0.017,0.0,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 3: lookup, every scene: answers lost beyond random",-0.0096,-0.0194,-0.0022,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 4: lookup, every scene: answers lost beyond random",-0.0072,-0.0205,0.0069,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 5: lookup, every scene: answers lost beyond random",-0.0168,-0.031,-0.0044,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.5-9b,"rung 6: lookup, every scene: answers lost beyond random",-0.0168,-0.0321,-0.0023,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0035,,,574,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0035,,,574,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0079,0.0,0.019,254,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0276,0.0077,0.051,254,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: recall, locker after the pick: answers lost beyond random",0.05,0.0273,0.0793,320,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: recall, locker after the pick: answers lost beyond random",0.2625,0.1919,0.3387,320,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 1: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,574,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,qwen3.6-27b,"rung 2: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,574,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0024,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0049,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0122,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0147,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0073,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: the random part's own cost to the recall, every scene (kept with none minus kept with the random part)",0.0269,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: recall, locker before the pick: answers lost beyond random",0.0337,0.0054,0.073,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: recall, locker before the pick: answers lost beyond random",0.0506,0.0102,0.1066,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: recall, locker before the pick: answers lost beyond random",0.1517,0.0795,0.2284,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: recall, locker before the pick: answers lost beyond random",0.1798,0.1148,0.2458,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: recall, locker before the pick: answers lost beyond random",0.1854,0.1118,0.2632,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: recall, locker before the pick: answers lost beyond random",-0.0169,-0.0667,0.0362,178,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: recall, locker after the pick: answers lost beyond random",0.0476,0.0193,0.0909,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: recall, locker after the pick: answers lost beyond random",0.1515,0.1012,0.2155,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: recall, locker after the pick: answers lost beyond random",0.2121,0.148,0.2874,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: recall, locker after the pick: answers lost beyond random",0.2251,0.1623,0.2949,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: recall, locker after the pick: answers lost beyond random",0.2208,0.161,0.2873,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: recall, locker after the pick: answers lost beyond random",0.0087,-0.0075,0.0279,231,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 1: lookup, every scene: answers lost beyond random",0.0,0.0,0.0,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 2: lookup, every scene: answers lost beyond random",-0.0049,-0.0134,0.0,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 3: lookup, every scene: answers lost beyond random",-0.0049,-0.0134,0.0,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 4: lookup, every scene: answers lost beyond random",-0.0122,-0.0254,0.0,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 5: lookup, every scene: answers lost beyond random",-0.0122,-0.0237,-0.0028,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig01d,muse-glimmer-30b,"rung 6: lookup, every scene: answers lost beyond random",-0.0098,-0.0197,-0.0022,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig12,qwen3.5-9b,"our removal, our scenes (main test): gap",0.53,0.42,0.61,200,contrast_9b
+fig12,qwen3.5-9b,"our removal, his passages: lookup switches under the whole change",114,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,qwen3.5-9b,"our removal, his passages: gap",0.3721,0.2693,0.4697,200,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,qwen3.5-9b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.3213,,,417,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig12,qwen3.5-9b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0,-0.0207,0.0208,142,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,qwen3.5-9b,"Zach's operation, his passages: his stored recall minus lookup",0.4789,0.3831,0.5755,142,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,qwen3.6-27b,"our removal, our scenes (main test): gap",0.6,0.5,0.69,200,contrast_27b
+fig12,qwen3.6-27b,"our removal, his passages: lookup switches under the whole change",76,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,qwen3.6-27b,"our removal, his passages: gap",0.303,0.1671,0.428,200,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,qwen3.6-27b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.005,0.0,0.0154,199,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,qwen3.6-27b,"Zach's operation, his passages: his stored recall minus lookup",0.4623,0.3835,0.5425,199,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,muse-glimmer-30b,"our removal, our scenes (main test): gap",0.85,0.68,0.98,200,contrast_muse
+fig12,muse-glimmer-30b,"our removal, his passages: lookup switches under the whole change",25,,,200,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,muse-glimmer-30b,"Zach's operation, our scenes (rung 6): recall's cost minus the lookup's, every scene",0.0073,,,409,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+fig12,muse-glimmer-30b,"Zach's operation, his passages: his rotated-direction control, recall minus lookup",0.0062,0.0,0.0195,161,results/x50_zach/z1-20261028T161649Z/z1.json
+fig12,muse-glimmer-30b,"Zach's operation, his passages: his stored recall minus lookup",0.5714,0.4852,0.6548,161,results/x50_zach/z1-20261028T161649Z/z1.json
 s01,qwen3.5-9b,main test (two people swap picks): lookup extra loss,-0.03,-0.08,0.03,,lk_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): recall extra loss,0.5,0.41,0.57,,rc_excess_9b
 s01,qwen3.5-9b,main test (two people swap picks): gap,0.53,,,,contrast_9b

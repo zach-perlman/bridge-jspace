@@ -189,3 +189,48 @@ def test_a_marked_inset_is_not_a_panel():
     fig.add_axes((0.1, 0.1, 0.8, 0.8))
     S.inset(fig, (0.6, 0.6, 0.2, 0.2))
     assert len([a for a in fig.axes if not getattr(a, S.INSET, False)]) == 1
+
+
+# Dan's figures brief (28 Oct ~18:30): no cell status inside a frame; the mark system's hues only
+
+
+@pytest.mark.parametrize("text", ["cannot report (gate)", "not run", "Not tested", "27B: not run"])
+def test_frame_style_catches_a_status_inside_a_frame(text):
+    hits = C.frame_style({"fig01d_ladder": {"in_frame": [text]}}, ["fig01d_ladder"])
+    assert [r for *_, r in hits] and all(r.endswith("inside a frame") for *_, r in hits), hits
+
+
+def test_frame_style_leaves_captions_pending_figures_and_other_pages_alone():
+    assert not C.frame_style({"fig01d_ladder": {"in_frame": ["too few switches (10 of 60)", "n = 417"]}},
+                             ["fig01d_ladder"])  # fmt: skip
+    pending = next(iter(C.FRAME_PENDING))
+    assert not C.frame_style({pending: {"in_frame": ["not run"]}}, [pending])
+    assert not C.frame_style({"s01_split_all_scene_sets": {"in_frame": ["not run"]}}, ["fig01d_ladder"])
+
+
+def test_colour_key_treats_greys_as_no_hue():
+    from scripts import story_style as S
+
+    assert C.colour_key("#3a3a3a") == "" and C.colour_key("white") == "" and C.colour_key((0, 0, 0, 0.5)) == ""
+    assert C.colour_key(S.MARK_COL["lookup"]) == S.MARK_COL["lookup"].lower()
+
+
+def test_figure_hues_finds_a_stray_colour_and_frame_style_flags_it():
+    import matplotlib
+
+    matplotlib.use("Agg")
+    from matplotlib.figure import Figure
+
+    from scripts import story_style as S
+
+    fig = Figure()
+    ax = fig.add_subplot()
+    ax.plot([0, 1], [0, 1], color=S.MARK_COL["recall"])
+    ax.bar([0], [1], color=S.MARK_COL["null"], alpha=0.5)
+    ax.plot([0.5], [0.5], "X", color=S.MARK_COL["lookup"])
+    assert C.figure_hues(fig) == {S.MARK_COL["lookup"].lower()}
+    ax.plot([0.2], [0.2], "o", color="#2ca02c")
+    hues = C.figure_hues(fig)
+    assert "#2ca02c" in hues
+    hits = C.frame_style({C.MARK_FIGS[0]: {"hues": hues}}, [])
+    assert [(t, r) for _, t, r in hits] == [("#2ca02c", "hue outside the mark system")]

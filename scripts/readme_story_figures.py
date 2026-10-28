@@ -1123,22 +1123,25 @@ BLOCK = 1.3  # Fig. 3 (b): one block per model on one axis, each block the model
 def f03_order(plt) -> None:
     """E10 (v6), two panels, 9B / 27B / Muse. (a) After the data: the share of lookups (purple bars) and recalls (grey
     dots) the whole change at the bridge word switches in the main test, the locker sentence before vs after the asked
-    pick, with 95% Wilson intervals. (b) 45q (clean scenes, the locker after the pick): the lookups switched by layer,
+    pick, with 95% Wilson intervals. (b) Z1 (Dan's 18:30 brief, fixed in advance): the same on Zach's passages, the
+    lookup's switch under the whole change at our layer, the bridge's fact sentence before vs after the sentence naming
+    the bridge. (c) 45q (clean scenes, the locker after the pick): the lookups switched by layer,
     the bridge-word change (dashed) against the copy of the changed prompt's states into the locker sentences (solid);
     the sweep after the data (open marks), the rule's arms fixed in advance (filled: at L the bridge-word change and the
     copy, at L/2 the copy); one block per model on one axis, x = the layer index (ticks 0, L, the last layer swept).
     The old Fig. 3 with the 122B and its extra-loss panel: figures/supp/s03_order_split; the old Fig. 3b stays
     fig03b_layers until the README drops it."""
-    h = 8.15
+    h = 10.8
     fig = plt.figure(figsize=(S.WIDTH, h))
 
     def box(left: float, width: float, top_in: float, bottom_in: float) -> tuple[float, float, float, float]:
         return (left, 1 - bottom_in / h, width, (bottom_in - top_in) / h)
 
     S.title(fig, "Locker after the pick: the link is made in the locker sentences",
-            "A: switches under the bridge-word change, by sentence order. B: locker after the pick, by layer.")  # fmt: skip
+            "A, B: switches under the bridge-word change, by sentence order (ours, Zach's). C: by layer.")  # fmt: skip
     a = fig.add_axes(box(0.11, 0.86, 1.95, 3.7))
-    b = fig.add_axes(box(0.11, 0.81, 5.0, 7.25))
+    zb = fig.add_axes(box(0.11, 0.86, 5.0, 6.4))
+    b = fig.add_axes(box(0.11, 0.81, 7.65, 9.9))
 
     # (a) the order split
     w = 0.34
@@ -1174,8 +1177,41 @@ def f03_order(plt) -> None:
                 weight="bold", pad=26)  # fmt: skip
     S.panel_tag(a, f"{min(ns)}–{max(ns)} per bar", "after")
 
-    # (b) 45q: the link made in the locker sentences, by layer
-    b.set_title("B  Locker after the pick: lookups switched, by layer", loc="left", fontsize=12, weight="bold", pad=26)
+    # (b) Z1 on Zach's passages (the order split fixed after the gate, before the data): the lookup's switch under the
+    # whole change, the bridge's fact sentence before vs after the sentence that names the bridge, at our layer
+    zdir = latest_verdict("x50_zach/z1-*")
+    zsrc = rel(zdir / "z1.json")
+    zns = []
+    for i, mod in enumerate(sorted((x for x in json.loads((zdir / "z1.json").read_text())["models"]
+                                    if x["status"] == "tested"), key=lambda x: [t for t, _, _ in V6_MODELS].index(x["target"]))):  # fmt: skip
+        target, la = mod["target"], str(mod["layers"][0])  # our layer (the Muse's L36 has no lookup switch)
+        m = next(k for t, k, _ in S.MODELS if t == target)
+        strata = mod["layer_results"][la]["order"]["strata"]
+        for j, (key, label) in enumerate((("fact-first", "fact\nfirst"), ("fact-after", "fact\nafter"))):
+            x = i + (j - 0.5) * 0.42
+            p, lo, hi = strata[key]["whole_switch"]
+            zb.bar(x, p, width=w, color=S.COL["lookup"], zorder=2)
+            zb.plot([x, x], [lo, hi], color="#1e1e1e", lw=1.2, zorder=3)
+            zb.text(x, hi + 0.02, f"{p:.2f}", ha="center", va="bottom", fontsize=S.FONT - 1, color=S.COL["lookup"],
+                    weight="bold")  # fmt: skip
+            zb.text(x, -0.05, label, ha="center", va="top", fontsize=S.FONT - 1, linespacing=1.0)
+            S.record("fig03", target, f"Zach's passages, L{la}: lookups switched by the whole change, {key}",
+                     round(p, 4), round(lo, 4), round(hi, 4), strata[key]["n"], source=zsrc)  # fmt: skip
+            zns.append(strata[key]["n"])
+        zb.text(i, -0.36, NAMES[m], ha="center", va="top", fontsize=S.FONT, weight="bold")
+    zb.set_xlim(-0.6, len(V6_MODELS) - 0.4)
+    zb.set_ylim(0, 1.05)
+    zb.set_xticks([])
+    zb.set_yticks([0, 0.5, 1], ["0", "0.5", "1"])
+    zb.set_ylabel("lookups switched\n(share)")
+    zb.grid(axis="y", color="#eeeeee")
+    zb.set_axisbelow(True)
+    zb.set_title("B  On Zach's passages too: the fact sentence before vs after the bridge's sentence", loc="left",
+                 fontsize=12, weight="bold", pad=26)  # fmt: skip
+    S.panel_tag(zb, f"{min(zns)}–{max(zns)} per bar", "fixed")
+
+    # (c) 45q: the link made in the locker sentences, by layer
+    b.set_title("C  Locker after the pick: lookups switched, by layer", loc="left", fontsize=12, weight="bold", pad=26)
     q = LANDED.get("45q")
     if not q:
         S.empty(b, "not run")
@@ -3042,6 +3078,7 @@ def latest_verdict(pattern: str) -> Path:
 
 
 ANATOMY_ORDER = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")  # v6: 9B, 27B, Muse (the 122B in supplements)
+ANATOMY_REDUCED = {"qwen3.6-27b"}  # 49.4: the 27B on 47.8's reduced grid, drawn hollow (Dan's 18:30 brief)
 # 47.8's bars for its l_probe and l_P (scripts/x47_anatomy.py's L_PROBE_BAR, L_P_BAR), for the legend's words only:
 # the marked layers are the verdict's rules
 PROBE_BAR, POSITION_BAR = 0.80, 0.20
@@ -3060,10 +3097,11 @@ def f06b_anatomy(plt) -> None:
         m["target"]: m for m in json.loads((vdir / "x47_8.json").read_text())["models"] if m["status"] == "tested"
     }
     models = [tested[t] for t in ANATOMY_ORDER if t in tested]
-    assert 0 < len(models) <= 2, f"v6: at most two panels, got {list(tested)}"
+    assert 0 < len(models) <= 3, f"v6 (Dan's 18:30 brief): 9B, 27B, Muse at most, got {list(tested)}"
     h = 5.5
     fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, h), sharey=True, squeeze=False)
-    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 2.25 / h, bottom=0.7 / h, wspace=0.10)
+    fig.subplots_adjust(left=0.085, right=0.985, top=1 - 1.95 / h, bottom=1.0 / h, wspace=0.10)
+    reduced = [m["target"] for m in models if m["target"] in ANATOMY_REDUCED]
     S.title(fig, "The address forms early; the lookup goes by identity, then by position",
             "Bars: lookup answers under the whole change at one layer; line: recall switches; whiskers, bands: 95%.")  # fmt: skip
     w = 0.78
@@ -3077,9 +3115,11 @@ def f06b_anatomy(plt) -> None:
         assert ni == [not c["lookup"]["interpretable"] for c in cells], f"{target}: the shading disagrees with 47.8"
         S.not_interpretable(ax, S.spans(ni))
         bottom = np.zeros(len(layers))
+        hollow = target in ANATOMY_REDUCED
         for rt in ("identity", "position"):
             sh = np.array([c["lookup"]["share"]["whole"][rt] for c in cells])
-            ax.bar(x, sh[:, 0], bottom=bottom, color=S.COL[rt], width=w, zorder=2)
+            look = {"fc": "white", "ec": S.COL[rt], "lw": 1.6} if hollow else {"color": S.COL[rt]}
+            ax.bar(x, sh[:, 0], bottom=bottom, width=w, zorder=2, **look)
             off = -0.17 if rt == "identity" else 0.17
             ax.vlines(x + off, bottom + sh[:, 1], bottom + sh[:, 2], color="#1e1e1e", lw=0.9, zorder=3)
             bottom += sh[:, 0]
@@ -3091,23 +3131,21 @@ def f06b_anatomy(plt) -> None:
         values += [c["lookup"]["share"]["whole"]["value"][0] for c in cells]  # recorded above; shown in the legend
         rc = np.array([c["recall"]["switch"]["whole"] for c in cells])
         ax.fill_between(x, rc[:, 1], rc[:, 2], color=S.COL["recall"], alpha=0.18, lw=0, zorder=4)
-        ax.plot(x, rc[:, 0], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8, zorder=5)
+        ax.plot(x, rc[:, 0], color=S.COL["recall"], marker="D", ms=4.5, lw=1.8, zorder=5,
+                mfc="white" if hollow else S.COL["recall"])  # fmt: skip
         for la, c in zip(layers, cells, strict=True):
             S.record("fig06b", target, f"layer {la}: recall switch (whole change)", *c["recall"]["switch"]["whole"],
                      n=c["recall"]["n"], source=src)  # fmt: skip
-        # probe before use: where the address is formed (locker probe >= 0.8) and where it is used (position answers
-        # start), labelled above the panel; L under the layer axis
-        # (data.csv quantity, drawn label): the address readable (locker probe >= 0.8, rules' l_probe) and position
-        # answers beginning (l_P), labelled above the panel; L under the layer axis
-        marks = (("address formed", "address\nreadable", rules["l_probe"], "--"),
-                 ("address used", "position\nanswers begin", rules["l_P"], "-"))  # fmt: skip
-        for key, label, la, ls in marks:
+        # probe before use: the address readable (locker probe >= 0.8, rules' l_probe; dashed) and position answers
+        # beginning (l_P; solid), named by the legend (three panels leave no room for labels above each); L under the
+        # layer axis
+        marks = (("address formed", rules["l_probe"], "--"), ("address used", rules["l_P"], "-"))
+        for key, la, ls in marks:
             S.record("fig06b", target, f"{key}: layer", la, source=src)
             if la is None:
                 continue
             xi = layers.index(la)
             ax.axvline(xi, color="#1e1e1e", ls=ls, lw=1.2, zorder=6)
-            ax.text(xi, 1.02, label, ha="center", va="bottom", fontsize=S.FONT, color="#1e1e1e", linespacing=1.0)
         li = layers.index(m["layer"])
         ax.text(li, -0.13, "▲\nL", transform=ax.get_xaxis_transform(), ha="center", va="top", fontsize=S.FONT - 1,
                 weight="bold", color="#1e1e1e", linespacing=0.9)  # fmt: skip
@@ -3116,7 +3154,7 @@ def f06b_anatomy(plt) -> None:
         ax.set_xlim(-0.6, len(layers) - 0.4)
         ax.set_xlabel("layer", loc="right", labelpad=6)
         short = SHORT[next(k for t, k, _ in S.MODELS if t == target)]  # full name in the first panel, short after
-        ax.text(0, 1.16, name if ax is axes[0, 0] else short, transform=ax.transAxes, ha="left", va="bottom",
+        ax.text(0, 1.03, name if ax is axes[0, 0] else short, transform=ax.transAxes, ha="left", va="bottom",
                 fontsize=12, weight="bold")  # fmt: skip
         S.panel_tag(ax, str(cells[0]["lookup"]["n"]) + " per layer", "fixed", inside=True)
         ax.set_ylim(0, 1.0)
@@ -3134,6 +3172,11 @@ def f06b_anatomy(plt) -> None:
                      f"position answers begin (≥ {POSITION_BAR:.1f})",
                      "value: 0.00 at every layer" if top < 0.005 else f"value: at most {top:.2f}"], 1 - 0.58 / h,
            ncol=3)  # fmt: skip
+    # Dan's 18:30 brief: the 27B from its reduced grid, hollow at the sampled layers; said in a caption line
+    if reduced:
+        names = ", ".join(SHORT[next(k for t, k, _ in S.MODELS if t == r)] for r in reduced)
+        fig.text(0.01, 0.12 / h, f"Hollow: {names}, a reduced grid of sampled layers.", ha="left", va="bottom",
+                 fontsize=S.FONT - 1, color="#555555")  # fmt: skip
     S.save(fig, "fig06b_anatomy")
 
 
@@ -3235,6 +3278,29 @@ def f_batch47(plt) -> None:
     batch47_figures(plt)
 
 
+# Dan's figures brief (28 Oct ~18:30): the mark legend, the removal ladder (E2, replacing fig01c) and the 2 x 2
+LADDER_VERDICT = "x49_ladder/x49_2-*"
+Z1_VERDICT = "x50_zach/z1-*"
+
+
+def f00b_marks(plt) -> None:
+    from scripts import story_b50 as B50
+
+    B50.build_marks("fig00b_marks")
+
+
+def f01d_ladder(plt) -> None:
+    from scripts import story_b50 as B50
+
+    B50.build_ladder(latest_verdict(LADDER_VERDICT), "fig01d_ladder")
+
+
+def f12_two_by_two(plt) -> None:
+    from scripts import story_b50 as B50
+
+    B50.build_two_by_two(latest_verdict(LADDER_VERDICT), latest_verdict(Z1_VERDICT), "fig12_two_by_two")
+
+
 def s_batch47(plt) -> None:
     batch47_figures(plt, BATCH47_SUPP, supp=True)
 
@@ -3242,7 +3308,7 @@ def s_batch47(plt) -> None:
 # v6: Fig. 4's schematic is Fig. 5's left panel; the full-width one is the supplement s04_routes_design
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f05_routes,
                f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
-               f_batch47, f15_mechanisms)  # fmt: skip
+               f_batch47, f15_mechanisms, f00b_marks, f01d_ladder, f12_two_by_two)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
     s01b_one_pick,
@@ -3260,14 +3326,16 @@ SUPP_FIGS = (
 )
 
 
-# the README's main figures in page order (Dan's v6 iteration 2, 28 Oct ~15:40): exactly these fourteen
-README_NAMES = ("fig00_setup", "fig01_split", "fig01c_zeroing", "fig05b_identity_outside", "fig05_routes", "fig07_writes",
-                "fig09b_six_lockers", "fig07b_verbal", "fig03_order", "fig03d_depth_map", "fig06b_anatomy",
-                "fig11_scorecard", "fig05c_described_bridge", "fig09_transfer")  # fmt: skip
+# the README's main figures in page order (Dan's v6 iteration 2, 28 Oct ~15:40; his figures brief, ~18:30: fig00b, the
+# ladder in fig01c's place, the 2 x 2), at most fourteen: fig05c (Part IV, now a link) and fig11 (the breadth page's,
+# not on the depth page) moved to the second sheet
+README_NAMES = ("fig00_setup", "fig00b_marks", "fig12_two_by_two", "fig01_split", "fig01d_ladder",
+                "fig05b_identity_outside", "fig05_routes", "fig07_writes", "fig09b_six_lockers", "fig07b_verbal",
+                "fig03_order", "fig03d_depth_map", "fig06b_anatomy", "fig09_transfer")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/story/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers", "fig03c_earlier_mention",
-              "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig15_mechanisms",
+              "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig11_scorecard", "fig15_mechanisms",
               *(n for n in BATCH47 if n not in README_NAMES),
               "supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
               "supp/s02_parts_all", "supp/s03_order_split", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants",
