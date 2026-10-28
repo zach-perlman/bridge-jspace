@@ -219,6 +219,32 @@ def test_colour_key_treats_greys_as_no_hue():
     assert C.colour_key(S.MARK_COL["lookup"]) == S.MARK_COL["lookup"].lower()
 
 
+# Dan's restructure brief (28 Oct 22:20) §6: no internal ids in the README body
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["test 47.5", "49.2's ladder", "51.11 sealed", "Z1 on his passages", "C0 holds", "P2-L0 scenes", "x0_necessity",
+     "x45p verdict", "rung 6", "Rungs 1-4", "batch 47", "Amendment 2"],
+)  # fmt: skip
+def test_the_readme_id_lint_catches_each_internal_id(text):
+    assert C.readme_ids([("example", text)]), text
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["0.47 [0.41, 0.57]", "47.5%", "the ladder's fifth step", "Zach's operation", "the routes scenes", "9B / 27B / Muse",
+     "L to L+3", "the change at L", "200 random vectors", "C10"],
+)  # fmt: skip
+def test_the_readme_id_lint_passes_page_words(text):
+    assert not C.readme_ids([("example", text)]), C.readme_ids([("example", text)])
+
+
+def test_readme_body_lines_skip_comments_link_targets_and_the_where_line():
+    page = "a <!-- src: x | 47.5: key -->\n[fig](results/x0_necessity/a.png)\nwhere things live: results/x47_zero\n"
+    assert [t for _, t in C.readme_body_lines(page)] == ["a ", "[fig]()"]
+
+
 def test_figure_hues_finds_a_stray_colour_and_frame_style_flags_it():
     import matplotlib
 

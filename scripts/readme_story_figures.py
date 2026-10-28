@@ -1647,34 +1647,30 @@ def s03d_q(plt, by: dict, sweep: dict, link: dict, verdict_dir: Path, sweep_dir:
 
 
 P_ROWS = (("a1", "(1) without the J++ part\nat the bridge word"),
-          ("a2", "(2) (1), and without it at\nthe earlier mention"),
+          ("a2", "(2) (1), and without the\nJ++ part at the earlier mention"),
           ("a3", "(3) (1), and without a random\npart (same size) there"),
-          ("a4", "(4) (1), and without it at\nanother item's mention"))  # fmt: skip
+          ("a4", "(4) (1), and as in (2) at\nanother item's mention"))  # fmt: skip
 
 
 def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     """45p (results/x45p/x45p-*, fixed in advance): clean one-pick scenes whose new item's locker sentence comes before
-    the asked pick; one panel per model, one row per arm (Fig. 2's style): the recall's switches lost against arm (1),
-    and the lookup's, with 95% intervals (both filled, apart by colour); arm (1)'s own switches as text. Story Fig. 3c if the
-    rule holds, else figures/supp/s03c (titled with the null). Returns the saved name."""
+    the asked pick; one panel per model (9B, 27B, Muse: no 122B run), one row per arm (Fig. 2's style): the recall's
+    switches lost against arm (1), and the lookup's, with 95% intervals (both filled, apart by colour); arm (1)'s own
+    switches as text. The rule and n are the README card's (a main-page figure since Dan's restructure brief, 28 Oct
+    22:20: a one-line subtitle, v6). Story Fig. 3c if the rule holds, else figures/supp/s03c (titled with the null).
+    Returns the saved name."""
     v = json.loads((verdict_dir / "x45p.json").read_text())
     by = {m["target"]: m for m in v["models"]}
     label = v["verdict"]["label"]
     holds = label == "holds"
     default = "The recall reads the item's earlier mention when its locker came first" if holds else (
         "No sign the recall reads the earlier mention (rule not met)")  # fmt: skip
-    fig, axes = plt.subplots(1, 4, figsize=(S.WIDTH, 5.6), sharey=True)
-    fig.subplots_adjust(left=0.30, right=0.975, top=0.62, bottom=0.12, wspace=0.12)
-    ns = " / ".join(
-        str(by[t]["readers"]["recall"]["n"]) if t in by and "readers" in by[t] else "–" for t, _ in Q_MODELS
-    )
-    S.title(fig, title or default,
-            "Clean one-pick scenes, the new item's locker before the pick (n = "
-            f"{ns} on the 9B / 27B / Muse).\nSwitches lost (%): 1 − switches under the arm / under (1), 95% intervals. Rule, "
-            "fixed in advance:\n(2) loses at least 0.2 more than (3) and 0.15 more than (4), on 2 of 3 models:\n"
-            f"{label}, {v['verdict']['models_holding']} of {v['verdict']['models']}.", limit=86)  # fmt: skip
+    fig, axes = plt.subplots(1, 3, figsize=(S.WIDTH, 4.6), sharey=True)
+    fig.subplots_adjust(left=0.30, right=0.975, top=0.72, bottom=0.14, wspace=0.12)
+    S.title(fig, title or default, "Clean one-pick scenes, the new item's locker before the pick: switches lost against "
+            "arm (1)")  # fmt: skip
     src = rel(verdict_dir / "x45p.json")
-    for ax, (target, m, _) in zip(axes, S.MODELS, strict=True):
+    for ax, (target, m, _) in zip(axes, CARD_MODELS, strict=True):
         ax.set_title(name_of(m), fontsize=S.FONT, weight="bold")
         ax.set_xlim(-20, 100)
         ax.axvline(0, color="#999999", lw=0.8, zorder=1)
@@ -1706,7 +1702,7 @@ def f03c_p(plt, verdict_dir: Path, title: str | None = None) -> str:
     fig.supxlabel("switches lost (%)", x=0.62, y=0.01, fontsize=S.FONT)
     legend(fig, [plt.Line2D([], [], marker="o", ls="", color=S.COL["recall"], ms=8),
                  plt.Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8)],
-           ["recall", "lookup"], 0.73)  # fmt: skip
+           ["recall", "lookup"], 0.83)  # fmt: skip
     name = "fig03c_earlier_mention" if holds else "s03c_earlier_mention"
     S.save(fig, name, supp=not holds)
     return name
@@ -3538,6 +3534,84 @@ def batch47_numbers() -> None:
                  source=src)  # fmt: skip
 
 
+# the runs behind the README's data catalogue (Dan's restructure brief, 28 Oct 22:20), 9B / 27B / Muse
+CATALOGUE_RUNS = {
+    "clean one-pick": ("x0_necessity", {"qwen3.5-9b": "qwen35_9b_x45m_fresh", "qwen3.6-27b": "x45m_fresh_27b",
+                                        "muse-glimmer-30b": "muse30b_x45m_fresh"}, ""),
+    "routes": ("x6_routes", {"qwen3.5-9b": "qwen35_9b_x6_routes", "qwen3.6-27b": "x6_routes_27b",
+                             "muse-glimmer-30b": "muse30b_x6_routes"}, "C2"),
+    "six-locker": ("x47_six", {"qwen3.5-9b": "qwen35_9b_x47_2", "muse-glimmer-30b": "muse30_x47_2"}, "M6"),
+}  # fmt: skip
+
+
+def card_numbers() -> None:
+    """Numbers the README's data catalogue and Part I cards quote that no figure records (Dan's README restructure
+    brief, 28 Oct 22:20), each from its run files: the scenes each prompt set used per model; the conflict test's
+    answer-direction control (the recall rows of 51.12's opened verdict); the rule labels of the dose curves and the
+    removal ladder. Run after the figures: the varied and natural counts are Fig. 9a's own n (S.ROWS)."""
+    for name, (exp, runs, prefix) in CATALOGUE_RUNS.items():
+        for target, run in runs.items():
+            path = pins.RESULTS_DIR / exp / run / "outcomes.jsonl"
+            scenes = {r["scene"] for r in X.read_jsonl(path) if r["scene"].startswith(prefix)}
+            S.record("catalogue", target, f"{name} scenes: scenes used", len(scenes), source=rel(path))
+    for target, (_, (nat_ptr, nat)) in TRANSFER_RUNS.items():
+        if target == "qwen3.5-122b-a10b":
+            continue
+        base = pins.RESULTS_DIR / "x5_natural"
+        run = next(r for r in (nat_ptr, nat) if (base / r / "outcomes.jsonl").exists())  # transfer_cells' choice
+        gate = json.loads((base / run / "gate.json").read_text())
+        S.record("catalogue", target, "natural passages: scenes eligible", gate["eligible"],
+                 source=rel(base / run / "gate.json"))  # fmt: skip
+    fig09a = {(r["model"], r["quantity"]): r for r in S.ROWS if r["figure"] == "fig09a"}
+    for target, _, _ in CARD_MODELS:
+        rows = [fig09a[(target, f"recall extra loss without the J++ part: {f}")] for f in ("prose", "json", "table")]
+        S.record("catalogue", target, "varied scenes: scenes used (prose, JSON and table)", sum(r["n"] for r in rows),
+                 source=rows[0]["source"])  # fmt: skip
+        r = fig09a[(target, "recall extra loss without the J++ part: natural")]
+        S.record("catalogue", target, "natural passages: scenes used (fact first)", r["n"], source=r["source"])
+    for z, what in (("z1", "named bridge"), ("z2", "described bridge")):
+        v = latest_verdict(f"x50_zach/{z}-*") / f"{z}.json"
+        for m in json.loads(v.read_text())["models"]:
+            S.record("catalogue", m["target"], f"Zach's passages, {what}: passages used", m["gate"]["chosen"],
+                     source=rel(v))  # fmt: skip
+    v = latest_verdict("x51_answer/x51_12-*") / "verdict.json"
+    for m in json.loads(v.read_text())["models"]:
+        if m["set"] != "e1":
+            continue
+        rc = m["readers"]["recall"]
+        S.record("conflict_answer", m["target"], "main test, recall: share of its loss kept when the lens part keeps "
+                 "the answer words' directions", *rc["share2"], n=rc["n"], source=rel(v))  # fmt: skip
+        S.record("conflict_answer", m["target"], "main test, recall: switches lost beyond random without the answer "
+                 "words' directions only", *rc["extra"]["3"], n=rc["n"], source=rel(v))  # fmt: skip
+        S.record("conflict_answer", m["target"], "main test, recall: items whose answer word ranks below the lens's "
+                 "top 50 at the bridge word", *rc["check"]["not_read"], n=rc["n"], source=rel(v))  # fmt: skip
+        S.record("conflict_answer", m["target"], "main test, recall: the rule's label (page words)",
+                 ANSWER_LABEL[rc["key"]], source=rel(v))  # fmt: skip
+    v = latest_verdict("x51_dose/x51_1-*") / "verdict.json"
+    for m in json.loads(v.read_text())["models"]:
+        S.record("dose_rules", m["target"], "dose curves: main-test scenes, locker sentences first", m["n"],
+                 source=rel(v))  # fmt: skip
+        S.record("dose_rules", m["target"], "(i) the lookup is blind to the J++ part", m["rules"]["i"]["label"],
+                 source=rel(v))  # fmt: skip
+        S.record("dose_rules", m["target"], "(ii) the recall reads the J++ part above its share",
+                 m["rules"]["ii"]["recall"]["label"], source=rel(v))  # fmt: skip
+        S.record("dose_rules", m["target"], "(iii) together only", m["rules"]["iii"]["recall"]["label"], source=rel(v))
+    v = latest_verdict(LADDER_VERDICT) / "x49_2.json"
+    for m in json.loads(v.read_text())["models"]:
+        rules = m["rules"] or {}
+        for key, what in (("second_copy", "the second copy is the earlier mention"),
+                          ("only_everything", "needed only when everything goes"),
+                          ("lookup", "the lookup never needs it")):  # fmt: skip
+            label = ("yes" if rules[key] else "no") if key in rules else "not run (bridge-word steps only)"
+            S.record("ladder_rules", m["target"], what, label, source=rel(v))
+
+
+CARD_MODELS = tuple(m for m in S.MODELS if m[1] != "122b")  # 9B, 27B, Muse
+# 51.12's verdict keys in the page's words (the verdict's own label stays in verdict.json)
+ANSWER_LABEL = {"entity": "the item", "answer": "the answer", "mixed": "mixed", "na": "can't tell",
+                "not_read": "the answer word is not read"}  # fmt: skip
+
+
 def f15_mechanisms(plt) -> None:
     """Fig. 15 (E15, v6): the five failed mechanism tests in one panel, from their newest verdicts."""
     from scripts import story_b48 as B48
@@ -3660,16 +3734,18 @@ SUPP_FIGS = (
 # ladder in fig01c's place, the 2 x 2, Fig. 9 split into 9a here and 9b in Part IV), at most fourteen: fig05c (Part IV,
 # now a link), fig11 (the breadth page's, not on the depth page), fig09b_refit (Part IV, a link), fig13 and fig14 (the
 # Appendix) moved to the second sheet; Dan decides. His Fig. 5b / 5d brief (~20:30): E3's card shows Fig. 5d, and
-# Fig. 5b (the main test's parts) goes to the second sheet, linked from E1, to keep the sheet at fourteen
-README_NAMES = ("fig00_setup", "fig00b_marks", "fig12_two_by_two", "fig09a_transfer", "fig01_split", "fig01d_ladder",
-                "fig05d_routes_lens", "fig05_routes", "fig07_writes", "fig09b_six_lockers", "fig07b_verbal",
-                "fig03_order", "fig03d_depth_map", "fig06b_anatomy")  # fmt: skip
+# Fig. 5b (the main test's parts) goes to the second sheet, linked from E1, to keep the sheet at fourteen. Dan's
+# restructure brief (28 Oct 22:20): one figure per card, every page figure on this sheet in page order; Part I's cards
+# show the dose curves (Fig. 16) and the earlier mention (Fig. 3c), the 2 x 2 moves to Part V
+README_NAMES = ("fig00_setup", "fig00b_marks", "fig01_split", "fig09a_transfer", "fig16_dose", "fig01d_ladder",
+                "fig03c_earlier_mention", "fig05d_routes_lens", "fig05_routes", "fig06b_anatomy", "fig07_writes",
+                "fig09b_six_lockers", "fig07b_verbal", "fig03_order", "fig03d_depth_map",
+                "fig12_two_by_two")  # fmt: skip
 # the draft set's second sheet: every other figure still drawn (the figures/story/ ones off the main sheet keep their
 # files and links), the supplementary figures (README Appendix A) and docs/x0_details.md's figures
-SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers", "fig03c_earlier_mention",
+SHEET_MORE = ("fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03b_layers",
               "fig06_depth", "fig08_first_locker", "fig10_what_is_left", "fig11_scorecard", "fig15_mechanisms",
               "fig13_attention", "fig14_learned", "fig09b_refit", "fig09_transfer",
-              "fig16_dose",  # Part I's dose curves: here until Dan picks the main-sheet figure it replaces
               *(n for n in BATCH47 if n not in README_NAMES),
               "supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",
               "supp/s02_parts_all", "supp/s03_order_split", "supp/s03b_layers_45b", "supp/s03d_link_copy_variants",
@@ -3724,6 +3800,7 @@ def main(argv: list[str] | None = None) -> None:
         f(plt)
     probe_rows()
     batch47_numbers()
+    card_numbers()
     check_scorecard_keys(S.OUT / "scorecard.csv")
     check_scorecard_keys(S.OUT / "claims_scorecard.csv")
     S.write_data()

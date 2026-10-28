@@ -5,34 +5,142 @@
 
 ## In one minute
 
-- **In a conflict the recall follows the part of the bridge word the lens reads; the lookup does not** [A]. The recall does not need that part at one layer [B].
-- **The lookup follows the item's identity or its locker's position, never the number** [A]; its identity route runs outside the lens on all three models [B].
-- **The position is an address:** readable early, used late, removable, swappable, one code per slot, not verbalizable [A/B].
+- **The recall follows the part of the bridge word the lens reads; the lookup follows the rest** [A]. The recall has other copies, so it does not need that part at one layer [B].
+- **The lookup goes by which item it is or where its locker sits, never by the number** [A]; its "which item" runs outside the lens [B].
+- **Where the locker sits is an address:** readable early, used late, removable, swappable, one code per locker, invisible to the lens [A/B].
 - **What did not hold:** four mechanism tests, a person mark at the locker sentence, blocking the pick sentence [✗].
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at {{head}} from the run files. Sealed and running: what the address is apart from how we built it (its size, whether other methods find it, its shape); results land here when opened.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Muse Glimmer 30B (another family), and Qwen3.5-122B-A10B (FP8) on the first tests; 28 Oct 2026. Unverified until hand-checked. Built at {{head}} from the run files. Sealed and running: what the address is apart from how we built it (its size, whether other methods find it, its shape); results land here when opened. Restructure in progress (Dan, 28 Oct 22:20): Parts II-VI keep their previous format until they move to the card template.
 
-## Setup
+## The question and the setup
 
 ![One prompt, two questions about the same bridge word](figures/story/fig00_setup.png)
-*Fig. 0.*
+*The running example: one prompt, its two questions and the changed prompt.*
+
+- **The prompt** (a main-test scene): "The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium."
+- **The lookup** asks "Which locker belongs to Eric's pick?" (3, found in the prompt). **The recall** asks "What is the atomic number of Eric's pick?" (6, from memory).
+- **The bridge** is the word both questions pass through: "carbon", Eric's pick.
+- **The changed prompt** swaps the two picks, so Eric picks oxygen and the answers become 7 and 8.
+- **The question:** what does each reader take from the bridge word, and how much of it can the J++ lens read?
+
+## How to read this page
+
+**Methods**, named the same way in every card:
+
+- **The change**: at the bridge word and one layer, the changed prompt's state minus the original's, added to the original prompt's run (Eric's "carbon" moves towards "oxygen"). A reader **switches** if it then gives the changed prompt's answer.
+- **The lens part** (on the figures, "the J++ part"): the 25 directions of the J++ lens that best rebuild the change. **A random part**: random directions with the same share of the change. **The rest**: the change without the lens part.
+- **Conflict test**: the change with one part taken out; both readers read the same changed word, so each shows which part it follows.
+- **Part alone**: one part added by itself, at a **dose** (a multiple of its size in the change).
+- **Zeroing**: a part taken out of the changed prompt's own state, nothing added; a reader **keeps** or loses the changed prompt's answer.
+- **Swap and state copy**: a swap replaces one code at the bridge word by another's; a state copy moves the changed prompt's states at chosen tokens and layers into the original.
+- **Probe, lens readout, layer sweep**: a linear read-out trained on states; the lens's top words at a token; one test repeated over layers.
+
+Every removal and every addition is matched by the same operation on a random part of the same size; only the difference between them is about the named part.
+
+**Measures**, defined once:
+
+- **Switches lost beyond a random part** (the figures' "extra loss"): switches lost without a part minus those lost without its random part, as a share of the whole change's switches. **The gap**: the recall's minus the lookup's.
+- **Answers lost beyond random** (zeroing): answers kept with the random part taken out minus those kept with the lens part taken out.
+- **L**: the layer fixed in advance, {{num|layer_9b}} / {{num|layer_27b}} / {{num|layer_muse}} on the 9B / 27B / Muse; **L to L+3**: L and the three layers after it.
+- **Identity route**: the lookup names the item's own locker; **position route**: the locker now at the item's old place; **value**: the new number.
+- **The address**: four directions at the bridge word that code where the item's locker sentence sits (Part III).
+- **Rules** are quoted as committed, internal metric names replaced by these terms; "after the data" marks a rule or gate set after results were seen.
+
+**Reading the figures**:
 
 ![How to read the figures: colour is who, the mark is what was done](figures/story/fig00b_marks.png)
+*Colour says which reader or part; the mark says what was done to it.*
 
-- **Lookup**: "Which locker belongs to Iris's pick?" (answer in the prompt). **Recall**: "How many legs does Iris's pick have?" (answer from memory).
-- **Bridge**: the word at the pick ("frog"). **The change**: the bridge word's state from a changed prompt minus the original's, added at one layer; a reader **switches** to the changed prompt's answer.
-- **The J++ part**: the 25 lens directions that best rebuild the change. **A random part**: random directions of the same share of the change.
-- **Extra loss**: switches lost without a part minus those lost without its random part. **Gap**: the recall's extra loss minus the lookup's.
-- **The address**: four directions at the bridge word that code where the item's locker sentence sits.
+- **Whiskers and bands**: {{q|95%}} intervals, cluster bootstrap over bridge items. **● / ○** beside n: rule fixed in advance / read after the data; a hollow mark: a gate lowered after the data.
+- **Beyond random**: the grey band, strip or tick at zero (for Zach's stored rows, his rotated directions). **Dashed or dotted line**: a rule's bar. Cells not run, failing a gate or under 30 switches are left out.
+- **Dose (×)**: a part's size relative to its size in the change; a **ring** marks the dose a rule reads. **z** (the lens-blindness figure): distance from 200 random vectors in units of half their {{q|95%}} range; the grey strip spans −1 to 1.
 
-**Reading the figures.**
+## Data: the prompt sets
 
-- **Beyond random**: an effect minus that of the same operation with a random part of the same share (the grey band, strip or tick at zero; for Zach's stored rows, his rotated directions).
-- **Whiskers and bands**: {{q|95%}} intervals, cluster bootstrap over bridge items. **● / ○** beside n: rule fixed in advance / read after the data; a hollow mark: a gate lowered after the data. **Dashed or dotted line**: a rule's bar. Cells not run, failing a gate or under 30 switches are left out.
-- **L**: the layer fixed in advance per model; **L to L+3**: L and the three layers after it.
-- **Identity route**: the lookup names the item's own locker; **position route**: the locker now at the item's old place; **value**: the new number.
-- **Rungs** (E2's ladder): the J++ part taken out at the bridge word at L, then over L to L+3, plus the earlier mention, plus the question, then at every token over L to L+3; the last rung is Zach's: each token's own top-10 lens directions over his band.
-- **Dose (×)**: a part's size relative to its size in the change; a **ring** marks the dose or size a rule reads. **z** (E8's figure): distance from 200 random vectors in units of half their {{q|95%}} range; the grey strip spans −1 to 1.
+Every prompt is read in the model's chat template, thinking off, the reply begun with "Answer:"; in the digit sets each question ends "Answer with a single digit and nothing else."
+
+| Set | What it is | The changed prompt differs in | n (9B / 27B / Muse) | Gate; one-token answers | Used by |
+|---|---|---|---|---|---|
+| Main test | six sentences: three lockers and three picks, in shuffled order | two people swap picks (two pick sentences) | {{num|n_9b}} / {{num|n_27b}} / {{num|n_muse}} | both readers right on the original prompts at least 0.80 of the time; digits, one token | the conflict test, zeroing, the dose curves |
+| Clean one-pick | the main test plus a locker for an item nobody picks | the asked pick becomes that item (one token) | {{dp|catalogue|9b|clean one-pick scenes: scenes used}} / {{dp|catalogue|27b|clean one-pick scenes: scenes used}} / {{dp|catalogue|muse|clean one-pick scenes: scenes used}} | as above; digits | the ladder, the earlier mention, the order tests, the token map |
+| Routes scenes | three lockers, then three picks | another item's locker sentence trades places with a third and gets a new number; the asked pick becomes that item | {{dp|catalogue|9b|routes scenes: scenes used}} / {{dp|catalogue|27b|routes scenes: scenes used}} / {{dp|catalogue|muse|routes scenes: scenes used}} | as above; digits | the routes test; removing, adding and swapping the address |
+| Six-locker scenes | six lockers, then three picks | the item's own locker sentence moves to another place and gets a new number; the pick stays | {{dp|catalogue|9b|six-locker scenes: scenes used}} / – / {{dp|catalogue|muse|six-locker scenes: scenes used}} | as above; digits | one code per locker |
+| Varied scenes | prose, JSON or markdown tables; up to nine items, look-alike names, filler, paraphrased questions | the asked pick | {{dp|catalogue|9b|varied scenes: scenes used (prose, JSON and table)}} / {{dp|catalogue|27b|varied scenes: scenes used (prose, JSON and table)}} / {{dp|catalogue|muse|varied scenes: scenes used (prose, JSON and table)}} | per format and level; failing cells left out; digits | the split in other texts, the refit address |
+| Natural passages | notes, news, forum posts and emails with distractor sentences | the one sentence binding a person to the bridge | {{dp|catalogue|9b|natural passages: scenes eligible}} / {{dp|catalogue|27b|natural passages: scenes eligible}} / {{dp|catalogue|muse|natural passages: scenes eligible}} | as above, the 9B's lowered after the data; words, read by their first token | the split in natural text |
+| Zach's passages | his passages: a named or a described bridge; the final fact stated in the lookup's passage, left out of the recall's | the sentence naming the bridge, or the description | named {{dp|catalogue|9b|Zach's passages, named bridge: passages used}} / {{dp|catalogue|27b|Zach's passages, named bridge: passages used}} / {{dp|catalogue|muse|Zach's passages, named bridge: passages used}}; described {{dp|catalogue|9b|Zach's passages, described bridge: passages used}} / {{dp|catalogue|27b|Zach's passages, described bridge: passages used}} / {{dp|catalogue|muse|Zach's passages, described bridge: passages used}} | per reader; words, read by their first token; about a third of the bridge names are several tokens | Part V |
+
+One item per set, copied from the run files (the original prompt; → the changed prompt's answer):
+
+**Main test** (all three models; the page's running example):
+
+```
+The locker of carbon is 3. The locker of helium is 5. The locker of oxygen is 7. Hugo picked oxygen. Eric picked carbon. Eva picked helium.
+Changed: Hugo picked carbon. Eric picked oxygen.
+Lookup: Which locker belongs to Eric's pick?        3 → 7
+Recall: What is the atomic number of Eric's pick?   6 → 8
+```
+
+**Clean one-pick** (all three models):
+
+```
+The locker of the cow is 3. The locker of the eagle is 5. The locker of the owl is 4. The locker of the fox is 1. Jack picked the cow. Tara picked the fox. Diana picked the owl.
+Changed: Jack picked the eagle.
+Lookup: Which locker belongs to Jack's pick?   3 → 5
+Recall: How many legs does Jack's pick have?   4 → 2
+```
+
+**Routes scenes** (9B and 27B):
+
+```
+The locker of the pig is 3. The locker of the butterfly is 4. The locker of the horse is 7. Finn picked the butterfly. Mia picked the horse. Luke picked the pig.
+Changed: The locker of the horse is 1. The locker of the butterfly is 4. The locker of the pig is 3. Finn picked the horse.
+Lookup: Which locker belongs to Finn's pick?   4 → 1; identity route 7, position route 3, value 1
+Recall: How many legs does Finn's pick have?   6 → 4
+```
+
+**Six-locker scenes** (9B):
+
+```
+The locker of the camel is 7. The locker of the rabbit is 4. The locker of the dog is 6. The locker of the beetle is 3. The locker of the mouse is 2. The locker of the fox is 9. Vera picked the fox. Oscar picked the rabbit. Lily picked the camel.
+Changed: The locker of the beetle is 3. ... The locker of the camel is 5. ...
+Lookup: Which locker belongs to Lily's pick?   7 → 5; identity route 7, position route 3, value 5
+```
+
+**Varied scenes** (JSON, all three models):
+
+```
+Tool output from get_lockers:
+[{"item": "fly", "locker": 2}, {"item": "elephant", "locker": 9}, {"item": "camel", "locker": 6}, {"item": "ant", "locker": 4}, {"item": "duck", "locker": 3}, {"item": "rabbit", "locker": 7}]
+Tool output from get_picks:
+[{"name": "Nina", "pick": "elephant"}, ..., {"name": "Eve", "pick": "duck"}, {"name": "Carl", "pick": "ant"}, {"name": "Paul", "pick": "fly"}]
+Changed: {"name": "Eve", "pick": "ant"}
+Lookup: Which locker belongs to Eve's pick?   3 → 4
+Recall: How many legs does Eve's pick have?   2 → 6
+```
+
+**Natural passages** (all three models):
+
+```
+Meeting notes, 14 March.
+- The delegation from Kenya announced that its next meeting will take place in Asia.
+- Hannah Kerr was raised in Finland.
+- The delegation from Bolivia announced that its next meeting will take place in North America.
+- Tess Garland was raised in Bolivia.
+- Paul Whitaker was raised in Kenya.
+(and four distractor lines)
+Changed: Tess Garland was raised in Kenya.
+Lookup: Which continent will host the next meeting of the delegation from the country where Tess Garland was raised?   North America → Asia
+Recall: Which continent is the country where Tess Garland was raised in?   South America → Africa
+```
+
+**Zach's passages** (named bridge, 9B; excerpt of the lookup's passage):
+
+```
+Posted by travel_notes_88: Uzbekistan is a country in Asia. ... Laura Bennett spent a whole childhood in Vietnam. ... Poland is a country in Europe. ... Eli Thornton spent a whole childhood in Poland. ... Vietnam is a country in Asia.
+Changed: Eli Thornton spent a whole childhood in Vietnam.
+Both readers: The country of Eli Thornton's childhood is on which continent?   Europe → Asia
+(the recall's passage drops the "is a country in" sentences)
+```
 
 ## Claims
 
@@ -51,41 +159,187 @@
 | 11 | Lookups the change at L misses were read from the bridge word before L | 9B, Muse | **B** | carried before L {{dp|e11_before_l|9b|47.4: main, locker after the pick: lookups carried by the bridge word before L}} / {{dp|e11_before_l|muse|47.4: main, locker after the pick: lookups carried by the bridge word before L}} | no |
 | 12 | Identity route early, position route late; the address is readable before it is used | 9B, 27B, Muse | **B** | address overlap across depth {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}} | no |
 
-*Grades: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null.* Weaker and failed results are in Part IV; pending tests under Status.
+*Grades: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null.* Weaker and failed results are in Part VI; pending tests under Status.
 
-## Part I. What each reader follows at the bridge word
+## Part I. The two readers: lookup and recall
 
-*The recall follows the part the lens reads; the lookup follows the rest.*
+*The two readers weight different parts of one word, and the recall has copies elsewhere.*
 
-![Both operations, both datasets, one direction](figures/story/fig12_two_by_two.png)
+### In a conflict, which part of the bridge word does each reader follow?
+
+- **Question.** In a conflict, which part of the bridge word does each reader follow?
+- **Why we asked.** Both readers pass through the same word; if they took the same thing from it, the lens part would matter to both alike.
+- **Data.** Main test, {{num|n_9b}} / {{num|n_27b}} / {{num|n_muse}} scenes per model, the first in which both readers answer both prompts right; the gate passed on all three.
+- **Method.** The change at the bridge word at L, on the original prompt (Eric's "carbon" moves towards "oxygen"):
+  - the whole change, which sets the switches each arm can lose;
+  - without the lens part; control: without a random part;
+  - specificity: without the lens part but keeping its directions for both readers' answer words ("six", "eight"), and without those answer directions only, each against a random part of their share; and the lens's rank of the answer word at the bridge word.
+- **Rule, fixed in advance.** "Confirmed if the lookup loses at most 0.10 beyond random and the recall loses at least 0.30 of its switches without the lens part; killed if the lookup loses at least 0.20 or the recall under 0.20." Specificity: "the lens effect is the item if the recall keeps at least 0.7 of its loss with the answer directions kept and loses at most 0.10 beyond random without them only". Before that result was opened, the answer directions became number words (digits are not in the lens) and a check of the answer word's rank was put first.
+- **Result.**
+
+  | | 9B | 27B | Muse |
+  |---|---|---|---|
+  | recall: switches lost beyond a random part | {{num|rc_excess_9b}} | {{num|rc_excess_27b}} | {{num|rc_excess_muse}} |
+  | recall: switches lost, not net of random | {{num|rc_jdep_9b}} | {{num|rc_jdep_27b}} | {{num|rc_jdep_muse}} |
+  | lookup: switches lost beyond a random part | {{num|lk_excess_9b}} | {{num|lk_excess_27b}} | {{num|lk_excess_muse}} |
+  | the rule | {{num|verdict_9b}} | {{num|verdict_27b}} | {{num|verdict_muse}} |
+  | recall: share of its loss kept with the answer directions kept | {{d|conflict_answer|9b|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|27b|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} | {{d|conflict_answer|muse|main test, recall: share of its loss kept when the lens part keeps the answer words' directions}} |
+  | recall: switches lost beyond random without the answer directions only | {{d|conflict_answer|9b|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|27b|main test, recall: switches lost beyond random without the answer words' directions only}} | {{d|conflict_answer|muse|main test, recall: switches lost beyond random without the answer words' directions only}} |
+  | recall: answer word outside the lens's top 50 at the bridge word | {{d|conflict_answer|9b|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|27b|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} | {{d|conflict_answer|muse|main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word}} |
+  | the specificity rule | {{dp|conflict_answer|9b|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|27b|main test, recall: the rule's label (page words)}} | {{dp|conflict_answer|muse|main test, recall: the rule's label (page words)}} |
+
+- **Read.**
+  - The recall follows the part of the bridge word the lens reads; the lookup follows the rest, fully on the 9B and Muse, mostly on the 27B.
+  - What the recall follows is the item, not its answer: keeping the answer's lens directions keeps almost all of the recall's loss.
+- **Caveats.**
+  - Following is not needing: a part is taken out of an added change at one layer (see "Does the recall need the lens part, or only follow it?").
+  - The 27B's lookup misses its bar, and loses {{pt|lk_excess_k100_27b}} beyond random when 100 lens directions go (an open question).
+  - On Muse the answer word is almost never near the top of the lens readout, so the rule's first case decides there.
+
+![The recall follows the lens part of the bridge word; the lookup mostly does not](figures/story/fig01_split.png)
+*Switches lost without the lens part beyond a random part, per reader and model, main test at L; whiskers: {{q|95%}} intervals; grey band: the lookup's 0.10 bar.*
+
+### Does the split hold in other texts?
+
+- **Question.** Does the split hold in other texts?
+- **Why we asked.** The main test is one template; the split could belong to that layout rather than to the two readers.
+- **Data.** Varied scenes, {{dp|catalogue|9b|varied scenes: scenes used (prose, JSON and table)}} / {{dp|catalogue|27b|varied scenes: scenes used (prose, JSON and table)}} / {{dp|catalogue|muse|varied scenes: scenes used (prose, JSON and table)}}; natural passages, {{dp|catalogue|9b|natural passages: scenes eligible}} / {{dp|catalogue|27b|natural passages: scenes eligible}} / {{dp|catalogue|muse|natural passages: scenes eligible}} (the figure shows the {{dp|catalogue|9b|natural passages: scenes used (fact first)}} / {{dp|catalogue|27b|natural passages: scenes used (fact first)}} / {{dp|catalogue|muse|natural passages: scenes used (fact first)}} whose fact comes first); the 9B's natural gate was lowered after the data.
+- **Method.** The conflict test unchanged, at L: without the lens part; control: without a random part.
+- **Rule, fixed in advance.** Varied scenes, pooled: "holds if the lookup loses at most 0.10 beyond random (upper bound at most 0.20) and the gap is at least 0.20 (lower bound at least 0.10); fails if the lookup loses at least 0.20." Natural passages: "holds if the gap is at least 0.30 with its lower bound at least 0.15; fails at 0.10 or below; otherwise mixed."
+- **Result.**
+
+  | | 9B | 27B | Muse |
+  |---|---|---|---|
+  | varied: lookup, switches lost beyond a random part | {{num|x0b_lk_excess_9b}} | {{num|x0b_lk_excess_27b}} | {{num|x0b_lk_excess_muse}} |
+  | varied: the gap | {{num|x0b_c_9b}} | {{num|x0b_c_27b}} | {{num|x0b_c_muse}} |
+  | varied: the rule | {{num|x0b_verdict_9b}} | {{num|x0b_verdict_27b}} | {{num|x0b_verdict_muse}} |
+  | natural: recall, switches lost beyond a random part | {{num|natg75_rc_excess_9b}} | {{num|nat_rc_excess_27b}} | {{num|nat_rc_excess_muse}} |
+  | natural: lookup, switches lost beyond a random part | {{num|natg75_lk_excess_9b}} | {{num|nat_lk_excess_27b}} | {{num|nat_lk_excess_muse}} |
+  | natural: the rule | after the data | {{num|nat_label_27b}} | {{num|nat_label_muse}} |
+
+- **Read.**
+  - In prose, JSON and tables the recall follows the lens part and the lookup does not, on all three models.
+  - In natural passages the recall follows it on all three; the 27B's lookup follows it too, so there the split is mixed.
+- **Caveats.**
+  - In natural passages few lookups switch on Muse ({{num|nat_lk_whole_sw_muse}} under the whole change), and the figure leaves the 9B's and Muse's lookup cells out.
+  - The 9B's natural run had its gate lowered after the data.
 
 ![The split carries over to other texts](figures/story/fig09a_transfer.png)
+*Switches lost without the lens part beyond a random part, by text format, for the recall and the lookup; "simple scenes" are the scenes the address was fit on; natural passages with the fact first; hollow: the 9B's lowered gate; grey band: the lookup's 0.10 bar.*
 
-![By itself the J++ part moves the recall; the rest moves the lookup](figures/story/fig16_dose.png)
+### Does each part, added by itself, move its reader?
 
-### E1. The conflict test: who follows which part <a id="e1-conflict"></a>
+- **Question.** Does each part, added by itself, move its reader?
+- **Why we asked.** The conflict test takes a part away; a reader that follows a part should also move when only that part is added.
+- **Data.** Main test, the scenes whose locker sentences come before the picks: {{dp|dose_rules|9b|dose curves: main-test scenes, locker sentences first}} / {{dp|dose_rules|27b|dose curves: main-test scenes, locker sentences first}} / {{dp|dose_rules|muse|dose curves: main-test scenes, locker sentences first}}.
+- **Method.** At the bridge word at L, on the original prompt:
+  - the lens part alone at doses from 0.5 to 3; control: a random part of the same share at the same dose;
+  - the rest alone at doses from 0.25 to 1.5; control: the change without a random part of the lens part's share;
+  - the rest without the address; control: the rest without a random part of the address's share;
+  - each dose's plain-text loss at the bridge word is checked against twice the whole change's; no dose passed it.
+- **Rule, fixed in advance.** "(i) The lookup is blind to the lens part: switches minus random at most 0.10 at every dose whose plain-text loss stays under twice the whole change's, on all three. (ii) The recall reads the lens part above its share: at the first dose where the lens part alone switches at least 0.3, minus random at least 0.2, per model. (iii) Together only (Muse): the whole change at least 0.8 while the best single part stays at most 0.3."
+- **Result.**
 
-- **Hypothesis.** Without the J++ part the recall loses switches beyond random, the lookup does not (gap at least 0.3, lookup at most 0.10; fixed in advance).
-- **Mechanics.** The bridge word's change at layer L: whole, without the J++ part, or without a random part of its share.
-- **Data.** The main test (two people swap picks), 200 items per model.
-- **Result.** Recall {{num|rc_excess_9b}} / {{num|rc_excess_27b}} / {{num|rc_excess_muse}}; lookup {{num|lk_excess_9b}} / {{num|lk_excess_27b}} / {{num|lk_excess_muse}} (9B / 27B / Muse). Held on all three by the gap; the 27B misses the strict lookup bar.
-- **Figure.**
+  | | 9B | 27B | Muse |
+  |---|---|---|---|
+  | recall: lens part alone minus random, at dose 1.5 | {{d|fig16_dose|9b|51.1 A: recall switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose}} | {{d|fig16_dose|27b|51.1 A: recall switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose}} | {{d|fig16_dose|muse|51.1 A: recall switches with the J++ part by itself at dose 1.5, minus a random part (same size) at the same dose}} |
+  | recall: the same at dose 3 | {{d|fig16_dose|9b|51.1 A: recall switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose}} | {{d|fig16_dose|27b|51.1 A: recall switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose}} | {{d|fig16_dose|muse|51.1 A: recall switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose}} |
+  | lookup: lens part alone minus random, at dose 3 | {{d|fig16_dose|9b|51.1 A: lookup switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose}} | {{d|fig16_dose|27b|51.1 A: lookup switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose}} | {{d|fig16_dose|muse|51.1 A: lookup switches with the J++ part by itself at dose 3, minus a random part (same size) at the same dose}} |
+  | (i) the lookup is blind to the lens part | {{dp|dose_rules|9b|(i) the lookup is blind to the J++ part}} | {{dp|dose_rules|27b|(i) the lookup is blind to the J++ part}} | {{dp|dose_rules|muse|(i) the lookup is blind to the J++ part}} |
+  | (ii) the recall reads it above its share | {{dp|dose_rules|9b|(ii) the recall reads the J++ part above its share}} | {{dp|dose_rules|27b|(ii) the recall reads the J++ part above its share}} | {{dp|dose_rules|muse|(ii) the recall reads the J++ part above its share}} |
+  | lookups switched by the rest alone, dose 1 | {{d|fig16_dose|9b|51.1 B: lookups switched, the rest by itself, dose 1}} | {{d|fig16_dose|27b|51.1 B: lookups switched, the rest by itself, dose 1}} | {{d|fig16_dose|muse|51.1 B: lookups switched, the rest by itself, dose 1}} |
+  | the same without the address | {{d|fig16_dose|9b|51.1 B: lookups switched, the rest by itself without the address, dose 1}} | {{d|fig16_dose|27b|51.1 B: lookups switched, the rest by itself without the address, dose 1}} | {{d|fig16_dose|muse|51.1 B: lookups switched, the rest by itself without the address, dose 1}} |
+  | the same without a random part of the address's share | {{d|fig16_dose|9b|51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1}} | {{d|fig16_dose|27b|51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1}} | {{d|fig16_dose|muse|51.1 B: lookups switched, the rest by itself without a random part of the address's share, dose 1}} |
 
-![Recall follows the J++ part of the bridge; the lookup mostly does not](figures/story/fig01_split.png)
+  Rule (iii) on Muse: {{dp|dose_rules|muse|(iii) together only}}.
+- **Read.**
+  - Added by itself, the lens part moves the recall more than a random part of its size does, on all three models.
+  - It moves the 9B's and Muse's lookups no more than random; the 27B's lookup moves a little at the highest dose.
+  - The rest by itself moves the lookup; on the 9B and Muse most of that goes when the address is removed from it, far more than with a random part.
+- **Caveats.**
+  - At high doses random parts switch readers too, so a negative lookup value means the random part moved it more, not that the lens part pushes back.
+  - On the 27B, removing the address from the rest costs no more than removing a random part of its share.
+  - One layer, and only scenes whose lockers come first.
 
-- **Conclusion.** The readers weight [different parts](figures/story/fig05b_identity_outside.png) of one word. Not shown: that the recall needs the part (E2).
+![By itself the lens part moves the recall; the rest moves the lookup](figures/story/fig16_dose.png)
+*Left: switches with the lens part alone minus a random part of the same size, by dose; rings mark the dose rule (ii) reads. Right: lookups switched by the rest alone, without the address, and without a random part. Rows: 9B, 27B, Muse.*
 
-### E2. Followed, not needed at one layer <a id="e2-followed"></a>
+### Does the recall need the lens part, or only follow it?
 
-- **Hypothesis.** Only the recall needs the J++ part, and only once its other copies go. Fixed in advance.
-- **Mechanics.** The J++ part's directions taken out at the bridge word at L, then also over four layers, the earlier mention, the question and every token; against a random part.
-- **Data.** Main test; clean scenes for the rungs.
-- **Result.** At L the recall keeps {{dp|fig01c|9b|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} / {{dp|fig01c|27b|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}} / {{dp|fig01c|muse|47.5: recall's answers kept at L, the J++ part's 25 directions taken out}}. Also without the earlier mention it loses {{d|fig01d|9b|rung 3: recall, locker before the pick: answers lost beyond random}} (9B), {{d|fig01d|muse|rung 3: recall, locker before the pick: answers lost beyond random}} (Muse); the lookup nothing at any rung.
-- **Figure.**
+- **Question.** Does the recall need the lens part, or only follow it?
+- **Why we asked.** The conflict test says the recall follows the lens part; following is not the same as needing it.
+- **Data.** Zeroing: main test, {{num|n_9b}} / {{num|n_27b}} / {{num|n_muse}} scenes. The ladder: clean one-pick scenes, {{dp|catalogue|9b|clean one-pick scenes: scenes used}} / {{dp|catalogue|27b|clean one-pick scenes: scenes used}} / {{dp|catalogue|muse|clean one-pick scenes: scenes used}}; the 27B ran the first two steps only.
+- **Method.** In the changed prompt's own run, nothing added, the lens part's directions are taken out, each step against a random part with the same share of the state:
+  - zeroing, the ladder's first step: at the bridge word at L;
+  - second step: at the bridge word over L to L+3;
+  - third: also at the item's earlier mention, in its locker sentence;
+  - fourth: also at the question's tokens;
+  - fifth: at every token over L to L+3;
+  - sixth, Zach's definition: at every token, each token's own top-10 lens directions over his layers.
+- **Rule, fixed in advance.** Zeroing: "followed, not needed at one layer if the recall keeps at least 0.80 of its answers, within 0.10 of the random arm; needed if it loses at least 0.30 beyond random." The ladder: "(a) the second copy is the earlier mention: the third step costs the recall at least 0.3 more than the second where the locker comes first, and the second already costs at least 0.3 where it comes after; (b) needed only when everything goes: steps one to four each at most 0.2, and the fifth or sixth at least 0.5; (c) the lookup never needs it: at most 0.1 beyond random at every step."
+- **Result.**
 
-![Recall needs the J++ part once its other copies go; the lookup never](figures/story/fig01d_ladder.png)
+  | | 9B | 27B | Muse |
+  |---|---|---|---|
+  | zeroing: recall answers lost beyond random | {{d|fig01c|9b|47.5: recall's answers kept, random part minus J++ part taken out (L)}} | {{d|fig01c|27b|47.5: recall's answers kept, random part minus J++ part taken out (L)}} | {{d|fig01c|muse|47.5: recall's answers kept, random part minus J++ part taken out (L)}} |
+  | zeroing: the rule | {{dp|fig01c|9b|47.5: the rule's reading (recall at L)}} | {{dp|fig01c|27b|47.5: the rule's reading (recall at L)}} | {{dp|fig01c|muse|47.5: the rule's reading (recall at L)}} |
+  | recall, locker first, second step | {{d|fig01d|9b|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 2: recall, locker before the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 2: recall, locker before the pick: answers lost beyond random}} |
+  | recall, locker first, third step | {{d|fig01d|9b|rung 3: recall, locker before the pick: answers lost beyond random}} | – | {{d|fig01d|muse|rung 3: recall, locker before the pick: answers lost beyond random}} |
+  | recall, locker after, second step | {{d|fig01d|9b|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|27b|rung 2: recall, locker after the pick: answers lost beyond random}} | {{d|fig01d|muse|rung 2: recall, locker after the pick: answers lost beyond random}} |
+  | recall, locker first, fifth step | {{d|fig01d|9b|rung 5: recall, locker before the pick: answers lost beyond random}} | – | {{d|fig01d|muse|rung 5: recall, locker before the pick: answers lost beyond random}} |
+  | (a) the second copy is the earlier mention | {{dp|ladder_rules|9b|the second copy is the earlier mention}} | {{dp|ladder_rules|27b|the second copy is the earlier mention}} | {{dp|ladder_rules|muse|the second copy is the earlier mention}} |
+  | (b) needed only when everything goes | {{dp|ladder_rules|9b|needed only when everything goes}} | {{dp|ladder_rules|27b|needed only when everything goes}} | {{dp|ladder_rules|muse|needed only when everything goes}} |
+  | (c) the lookup never needs it | {{dp|ladder_rules|9b|the lookup never needs it}} | {{dp|ladder_rules|27b|the lookup never needs it}} | {{dp|ladder_rules|muse|the lookup never needs it}} |
 
-- **Conclusion.** Followed at one layer, needed once other copies go. Not shown: Zach's band on Muse (not run).
+- **Read.**
+  - At one layer the recall keeps nearly all its answers: it follows the lens part without needing it there.
+  - Over four layers and at the earlier mention the 9B's recall loses many answers; where the locker comes first, the earlier mention holds the second copy.
+  - On Muse every step costs less, and Zach's definition costs nothing.
+  - The lookup never needs the lens part.
+- **Caveats.**
+  - The 27B ran only the bridge-word steps.
+  - Muse's sixth step ran outside Zach's layer band.
+  - Rule (b) fails: the recall's loss grows step by step rather than appearing only when everything goes.
+
+![Recall needs the lens part once its other copies go; the lookup never](figures/story/fig01d_ladder.png)
+*Answers lost beyond a random part as the lens part's directions are taken out of the changed prompt, step by step; the recall split by sentence order, the lookup over every scene; ticks: what the random part itself costs.*
+
+### Does the recall also read the item's earlier mention?
+
+- **Question.** Does the recall also read the item's earlier mention?
+- **Why we asked.** The ladder's third step points to a second copy where the locker sentence comes first; the earlier mention is the item's own word there.
+- **Data.** Clean one-pick scenes whose new item's locker sentence comes before the asked pick: {{num|x45p_n_9b}} / {{num|x45p_n_27b}} / {{num|x45p_n_muse}}.
+- **Method.** At L, on the original prompt:
+  - (1) the change without its lens part at the bridge word, as in the conflict test;
+  - (2) (1), and the new item's tokens in its locker sentence without their own lens part;
+  - (3) (1), and the same tokens without a random part of the same share: the control for (2);
+  - (4) (1), and another item's tokens without their lens part: the control for the item.
+- **Rule, fixed in advance.** "The recall reads the earlier mention if its switch loss in (2) exceeds (3) by at least 0.2 and (4) by at least 0.15, on at least two of three models; a model whose (1) switches fewer than 30 recalls is not tested." A loss is one minus the switches under the arm over those under (1).
+- **Result.**
+
+  | | 9B | 27B | Muse |
+  |---|---|---|---|
+  | recalls switched under (1) | {{dp|fig03c|9b|45p, (1): recalls switched}} | {{dp|fig03c|27b|45p, (1): recalls switched}} | {{dp|fig03c|muse|45p, (1): recalls switched}} |
+  | recall: loss in (2) minus (3) | {{num|x45p_d23_9b}} | {{num|x45p_d23_27b}} | {{num|x45p_d23_muse}} |
+  | recall: loss in (2) minus (4) | {{num|x45p_d24_9b}} | {{num|x45p_d24_27b}} | {{num|x45p_d24_muse}} |
+  | lookup: loss in (2) | {{d|fig03c|9b|45p, a2: lookup switches lost against (1)}} | {{d|fig03c|27b|45p, a2: lookup switches lost against (1)}} | {{d|fig03c|muse|45p, a2: lookup switches lost against (1)}} |
+
+  The rule holds on {{num|x45p_held}} models.
+- **Read.**
+  - The recall reads the item's lens part at its earlier mention as well as at the bridge word, on all three models.
+  - The same removal at another item's mention costs nothing, so the effect belongs to the item.
+  - The lookup does not read the earlier mention this way.
+- **Caveats.**
+  - Only scenes with the locker first; after the pick there is no earlier mention.
+  - Few recalls switch under (1) on the 27B and Muse, so their intervals are wide.
+  - Zeroing finds a weaker second copy on Muse (previous card): the two operations disagree in size there.
+
+![The recall reads the item's earlier mention when its locker came first](figures/story/fig03c_earlier_mention.png)
+*Recall and lookup switches lost against arm (1), per arm; clean one-pick scenes with the locker first; whiskers: {{q|95%}} intervals; 9B, 27B, Muse.*
+
+## Part II. Identity: which item the lookup reads
+
+*"Which item" is lens-readable for the recall, and the lookup's copy of it sits outside the lens.*
 
 ### E3. The lookup's identity route runs outside the lens <a id="e3-identity"></a>
 
@@ -99,10 +353,6 @@
 
 - **Conclusion.** The identity route survives the loss of lens directions 26-100 on all three models and of 1-25 on the 9B and Muse; on the 27B the two slices are redundant copies. Not shown: the identity code itself.
 
-## Part II. What the lookup reads
-
-*The lookup reads which item it is and an address for where its locker sits, never the number.*
-
 ### E5. Identity, position, never the value <a id="e5-routes"></a>
 
 - **Hypothesis.** The lookup follows the item's identity, its locker's position, or the number. Fixed in advance.
@@ -112,12 +362,17 @@
 - **Figure.**
 
 ![The lookup takes the identity route or the position route, never the value](figures/story/fig05_routes.png)
+*The design is drawn on the setup figure's items; the routes test's own scenes are animals.*
 
 The same routes by depth:
 
 ![The address forms early; identity route first, position route later](figures/story/fig06b_anatomy.png)
 
 - **Conclusion.** The lookup reads what the item is and where it sits. Not shown: who reads the position (the dereference test is running).
+
+## Part III. The address: where the item's locker sits
+
+*The lookup's second input is a code for where the locker sentence sits.*
 
 ### E6. The address: probe, remove, add, swap <a id="e6-address"></a>
 
@@ -141,7 +396,7 @@ The same routes by depth:
 
 ![Six lockers: each locker has its own code, no single shift](figures/story/fig09b_six_lockers.png)
 
-- **Conclusion.** Order is readable; each slot is its own target. Not shown: whether the code is shared across item kinds (Part IV).
+- **Conclusion.** Order is readable; each slot is its own target. Not shown: whether the code is shared across item kinds (Part VI).
 
 ### E8. The lens is blind to the address <a id="e8-blind"></a>
 
@@ -155,9 +410,9 @@ The same routes by depth:
 
 - **Conclusion.** A lens monitor sees which item is at the bridge, not where the model will look. Not shown: a probe-based monitor.
 
-## Part III. Where and when
+## Part IV. Where and when the link is made
 
-*The link to the locker is made where the order puts it, and the bridge word is read up to a depth where position takes over.*
+*The bridge word can only point back, so the order decides where the link is made, and the address is written early and used late.*
 
 ### E10. Sentence order: where the link is made <a id="e10-order"></a>
 
@@ -165,7 +420,6 @@ The same routes by depth:
 - **Mechanics.** Main test split by order; clean scenes; copies into the locker sentences per layer.
 - **Data.** 200 items per model.
 - **Result.** Lookups switch in {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}} of locker-first scenes, {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}} otherwise; the copy carries {{pt|x45q_c_9b}} / {{pt|x45q_c_27b}} / {{pt|x45q_c_muse}}.
-- **Result.** Locker first, the recall also reads the earlier mention: the J++ part removed there costs {{pt|x45p_d23_9b}}-{{pt|x45p_d23_muse}} more switches than random.
 - **Figure.**
 
 ![Locker after the pick: the link is made in the locker sentences](figures/story/fig03_order.png)
@@ -196,13 +450,22 @@ The same routes by depth:
 
 - **Conclusion.** The address: written early, read late; position grows with depth on the main test too (candidate).
 
-## Part IV. Weaker results and what did not hold
+## Part V. Other datasets and operations
+
+*Our removal on Zach's passages and his operation on our scenes.*
+
+- His lookup passages state a true fact; reruns with made-up-fact passages are queued.
+- The two operations differ in scope, so only their sign and their order are comparable.
+
+![Both operations, both datasets, one direction](figures/story/fig12_two_by_two.png)
+
+## Part VI. What did not hold
 
 *Harder prompts keep the split in part, and every mechanism we proposed for why failed.*
 
 **Weaker results.**
 
-- **A described bridge** ("the one known for honey"; rule fixed in advance): the split holds on the 9B and Muse (gap {{dp|fig05c|9b|47.3: gap (recall's extra loss minus the lookup's)}} / {{dp|fig05c|muse|47.3: gap (recall's extra loss minus the lookup's)}}); on the 27B the lookup follows the lens too ({{dp|fig05c|27b|47.3: lookup's extra loss without the J++ part}}). Few bridge items ([figure](figures/story/fig05c_described_bridge.png)).
+- **A described bridge** ("the one known for honey"; rule fixed in advance): the split holds on the 9B and Muse (gap {{dp|fig05c|9b|47.3: gap (recall's extra loss minus the lookup's)}} / {{dp|fig05c|muse|47.3: gap (recall's extra loss minus the lookup's)}}); on the 27B the lookup follows the lens too ({{dp|fig05c|27b|47.3: lookup's extra loss without the J++ part}}). Few bridge items ([figure](figures/story/fig05c_described_bridge.png); its example is another scene from the same set).
 
 - **One question under two instructions** ("from the passage" / "from what you know"; 27B only, the others miss the gate): both instructions lose most switches without the J++ part and many without the address and the outside identity. With no instruction the 27B answers from the passage.
 - **The address must be refit per text format:** fit on simple scenes it costs the lookup {{num|tptr_varied_range}} in varied scenes; refit it reaches {{pt|x45d_table_9b}}-{{pt|x45d_prose_9b}} (9B) and {{pt|x45d_prose_muse}}-{{pt|x45d_table_muse}} (Muse), at most {{pt|x45d_table_27b}} on the 27B ([figure](figures/story/fig09b_refit.png)).
@@ -240,4 +503,4 @@ Models bind entities to attributes in context (Feng & Steinhardt 2023) and track
 
 ## Appendix A. Links
 
-Every number on this page carries a source comment into figures/story/data.csv or docs/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](docs/figures_contact_sheet.png). Supplementary figures: [every scene set](figures/supp/s01_split_all_scene_sets.png), [the settings](figures/story/fig01b_settings.png), [every part](figures/supp/s02_parts_all.png), [parts of the same size](figures/story/fig02_specificity.png), [the 27B with more directions](figures/story/fig02b_k_curve.png), [the J++ part taken out at one layer](figures/story/fig01c_zeroing.png), [a described bridge](figures/story/fig05c_described_bridge.png), [the order split with every model](figures/supp/s03_order_split.png), [the layer sweep](figures/story/fig03b_layers.png), [the link copy variants](figures/supp/s03d_link_copy_variants.png), [the lookups the change misses](figures/supp/s03e_cumulative.png), [the depth candidate on the main test](figures/story/fig06_depth.png), [the address across depth](figures/story/fig06c_address_depth.png), [the recall follows the swap](figures/supp/s07_recall_follows_swap.png), [the lens readout of the swap](figures/supp/s07b_lens_readout.png), [the lookup's errors](figures/story/fig07c_probe_errors.png), [the first locker](figures/story/fig08_first_locker.png), [the first sentence and the moves](figures/supp/s08b_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](figures/supp/s04_routes_design.png), [every routes arm](figures/supp/s05_routes_all_arms.png), [the blocked pick sentence](figures/story/fig09c_formation.png), [chained addresses](figures/story/fig09d_chain.png), [what is left of the route](figures/story/fig10_what_is_left.png), [attribute probe and MLPs](figures/story/fig10b_enrichment.png), [binding](figures/story/fig10c_binding.png), [heads](figures/story/fig10d_heads.png), [second route](figures/story/fig10e_second_route.png), [the mechanism tests](figures/story/fig15_mechanisms.png), [attention follows the swapped address](figures/story/fig13_attention.png), [learned subspaces](figures/story/fig14_learned.png), [Muse's learned subspaces](figures/supp/s12_das_muse.png), [the transfer on every model](figures/story/fig09_transfer.png). Earlier figures: [figures/status_2026-10-25/](figures/status_2026-10-25/).
+Every number on this page carries a source comment into figures/story/data.csv or docs/x0_numbers.json; where things live: run files under results/, job specs under jobs/c3/, scripts under scripts/. All figures on one page: [the contact sheet](docs/figures_contact_sheet.png). Supplementary figures: [every scene set](figures/supp/s01_split_all_scene_sets.png), [the settings](figures/story/fig01b_settings.png), [every part](figures/supp/s02_parts_all.png), [parts of the same size](figures/story/fig02_specificity.png), [the 27B with more directions](figures/story/fig02b_k_curve.png), [the J++ part taken out at one layer](figures/story/fig01c_zeroing.png), [the main test's parts](figures/story/fig05b_identity_outside.png), [a described bridge](figures/story/fig05c_described_bridge.png), [the order split with every model](figures/supp/s03_order_split.png), [the layer sweep](figures/story/fig03b_layers.png), [the link copy variants](figures/supp/s03d_link_copy_variants.png), [the lookups the change misses](figures/supp/s03e_cumulative.png), [the depth candidate on the main test](figures/story/fig06_depth.png), [the address across depth](figures/story/fig06c_address_depth.png), [the recall follows the swap](figures/supp/s07_recall_follows_swap.png), [the lens readout of the swap](figures/supp/s07b_lens_readout.png), [the lookup's errors](figures/story/fig07c_probe_errors.png), [the first locker](figures/story/fig08_first_locker.png), [the first sentence and the moves](figures/supp/s08b_pointer_moves_and_neutral_sentence.png), [the routes test drawn large](figures/supp/s04_routes_design.png), [every routes arm](figures/supp/s05_routes_all_arms.png), [the blocked pick sentence](figures/story/fig09c_formation.png), [chained addresses](figures/story/fig09d_chain.png), [what is left of the route](figures/story/fig10_what_is_left.png), [attribute probe and MLPs](figures/story/fig10b_enrichment.png), [binding](figures/story/fig10c_binding.png), [heads](figures/story/fig10d_heads.png), [second route](figures/story/fig10e_second_route.png), [the mechanism tests](figures/story/fig15_mechanisms.png), [attention follows the swapped address](figures/story/fig13_attention.png), [learned subspaces](figures/story/fig14_learned.png), [Muse's learned subspaces](figures/supp/s12_das_muse.png), [the transfer on every model](figures/story/fig09_transfer.png). Earlier figures: [figures/status_2026-10-25/](figures/status_2026-10-25/).

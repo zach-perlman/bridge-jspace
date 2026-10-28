@@ -16,6 +16,9 @@ Checked on the root README.md (its prose, alt texts and captions; HTML
 comments, code spans and link targets left out) and on the joint figures (figures/shared/: scripts/joint_figures.py's
 five and scripts/shared_grid.py's two grids), whose drawn texts also get RETIRED.
 
+Dan's restructure brief (28 Oct 22:20) adds README_IDS: internal ids (47.x, Z1, C0, P2-L0, x0_necessity, rung 6, batch,
+amendment) anywhere in docs/depth/README.md's visible text, except the Appendix's "where things live" line.
+
 uv run python scripts/check_figure_terms.py
 """
 
@@ -141,6 +144,36 @@ MARK_FIGS += ("fig16_dose",)
 # they stay off V6_FIGS) and are held to the mark system's hues
 V6_FIGS += ("fig17_jspace_last_token",)
 MARK_FIGS += ("fig17_jspace_last_token", "s17_jspace_grid_9b", "s17_jspace_grid_27b", "s17_jspace_grid_muse")
+# Dan's restructure brief (28 Oct 22:20): the earlier mention's card shows Fig. 3c, one panel per model (9B, 27B, Muse)
+V6_FIGS += ("fig03c_earlier_mention",)
+V6_PANELS["fig03c_earlier_mention"] = 3
+# The same brief, §6: no internal ids in the README body (prose, headings, captions): batch test ids (47.x, 49.x,
+# 51.x), Zach's test names (Z1-Z3), scene-set codes (C0-C2, P2-L0), run names (x0_necessity), the ladder's "rung 6",
+# "batch", "amendment". Ids live only in the Appendix's "where things live" line and in source comments.
+README_IDS = {
+    "test id": r"\b(?:4\d|5[0-9])\.\d+[a-z]?\b(?![\d%])",
+    "Zach's test name": r"\bZ\d\b",
+    "scene-set code": r"\bC[0-9]\b|\bP\d-L\d\b",
+    "run name": r"\bx\d+(?:[a-z]+\b|[a-z]?_\w+)",
+    "rung number": r"(?i)\brungs? \d",
+    "batch": r"(?i)\bbatch(?:es)?\b",
+    "amendment": r"(?i)\bamendments?\b",
+}
+README_PAGE = REPO / "docs" / "depth" / "README.md"
+
+
+def readme_body_lines(text: str) -> list[tuple[str, str]]:
+    """(where, line) for the README's visible lines: source comments and link targets left out, and the Appendix's
+    "where things live" line (the one place for paths and ids) skipped."""
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+    text = re.sub(r"(\]\()[^)]*\)", r"\1)", text)
+    return [(f"{README_PAGE.name} l.{i}", line) for i, line in enumerate(text.splitlines(), 1)
+            if line.strip() and "where things live" not in line]  # fmt: skip
+
+
+def readme_ids(lines: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
+    """(where, line, kind) for each internal id on a README body line."""
+    return [(where, line, kind) for where, line in lines for kind, rx in README_IDS.items() if re.search(rx, line)]
 
 
 def v6_style(layout: dict[str, dict], texts: list[tuple[str, str]]) -> list[tuple[str, str, str]]:
@@ -335,7 +368,8 @@ def main(argv: list[str] | None = None) -> int:
     from scripts import readme_story_figures as F
 
     v6_hits = v6_style(layout, drawn) + frame_style(layout, F.README_NAMES)
-    for where, text, term in hits + joint_hits + v6_hits:
+    id_hits = readme_ids(readme_body_lines(README_PAGE.read_text())) if README_PAGE.exists() else []
+    for where, text, term in hits + joint_hits + v6_hits + id_hits:
         print(f"{where}: {term!r} in {text!r}")
 
     pending = sorted(
@@ -344,8 +378,9 @@ def main(argv: list[str] | None = None) -> int:
     if pending:  # reported, not failed: these titles wait for their v6 restyle
         print(f"check_figure_terms: README titles with a digit, not yet in V6_FIGS: {', '.join(pending)}")
     print(f"check_figure_terms: {len(hits)} retired term(s); {len(joint_hits)} joint-story term(s) "
-          f"(root README and figures/shared/); {len(v6_hits)} v6 style break(s) ({', '.join(V6_FIGS)})")  # fmt: skip
-    return 1 if hits or joint_hits or v6_hits else 0
+          f"(root README and figures/shared/); {len(v6_hits)} v6 style break(s) ({', '.join(V6_FIGS)}); "
+          f"{len(id_hits)} internal id(s) in the depth README's body")  # fmt: skip
+    return 1 if hits or joint_hits or v6_hits or id_hits else 0
 
 
 if __name__ == "__main__":

@@ -4598,6 +4598,62 @@ e11_before_l,muse-glimmer-30b,"47.4: main, locker after the pick: lookups carrie
 e11_before_l,muse-glimmer-30b,"47.4: clean, locker after the pick: lookups carried by the bridge word before L",1.0,1.0,1.0,170,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question last",0.439873417721519,0.389879691283293,0.49505031650706055,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
 e14_question_first,qwen3.6-27b,"47.7(a): value probe at the bridge word, question first",0.6645569620253164,0.6082074930987695,0.7216126656848306,,results/x47_value/x47_7a-20261028T131819Z/x47_7a.json
+catalogue,qwen3.5-9b,clean one-pick scenes: scenes used,417,,,,results/x0_necessity/qwen35_9b_x45m_fresh/outcomes.jsonl
+catalogue,qwen3.6-27b,clean one-pick scenes: scenes used,574,,,,results/x0_necessity/x45m_fresh_27b/outcomes.jsonl
+catalogue,muse-glimmer-30b,clean one-pick scenes: scenes used,409,,,,results/x0_necessity/muse30b_x45m_fresh/outcomes.jsonl
+catalogue,qwen3.5-9b,routes scenes: scenes used,300,,,,results/x6_routes/qwen35_9b_x6_routes/outcomes.jsonl
+catalogue,qwen3.6-27b,routes scenes: scenes used,300,,,,results/x6_routes/x6_routes_27b/outcomes.jsonl
+catalogue,muse-glimmer-30b,routes scenes: scenes used,300,,,,results/x6_routes/muse30b_x6_routes/outcomes.jsonl
+catalogue,qwen3.5-9b,six-locker scenes: scenes used,300,,,,results/x47_six/qwen35_9b_x47_2/outcomes.jsonl
+catalogue,muse-glimmer-30b,six-locker scenes: scenes used,300,,,,results/x47_six/muse30_x47_2/outcomes.jsonl
+catalogue,qwen3.5-9b,natural passages: scenes eligible,83,,,,results/x5_natural/qwen35_9b_x5_natural_g75/gate.json
+catalogue,qwen3.6-27b,natural passages: scenes eligible,137,,,,results/x5_natural/x5_natural_ptr_27b/gate.json
+catalogue,muse-glimmer-30b,natural passages: scenes eligible,60,,,,results/x5_natural/muse30b_x5_natural_ptr/gate.json
+catalogue,qwen3.5-9b,"varied scenes: scenes used (prose, JSON and table)",1010,,,,results/x0b_generalize/qwen35_9b_x0b_v2_ptr/outcomes.jsonl
+catalogue,qwen3.5-9b,natural passages: scenes used (fact first),41,,,,results/x5_natural/qwen35_9b_x5_natural_g75/outcomes.jsonl
+catalogue,qwen3.6-27b,"varied scenes: scenes used (prose, JSON and table)",1635,,,,results/x0b_generalize/x0b_v2_ptr_27b/outcomes.jsonl
+catalogue,qwen3.6-27b,natural passages: scenes used (fact first),75,,,,results/x5_natural/x5_natural_ptr_27b/outcomes.jsonl
+catalogue,muse-glimmer-30b,"varied scenes: scenes used (prose, JSON and table)",1389,,,,results/x0b_generalize/muse30b_x0b_v2_ptr/outcomes.jsonl
+catalogue,muse-glimmer-30b,natural passages: scenes used (fact first),28,,,,results/x5_natural/muse30b_x5_natural_ptr/outcomes.jsonl
+catalogue,qwen3.5-9b,"Zach's passages, named bridge: passages used",200,,,,results/x50_zach/z1-20261028T161649Z/z1.json
+catalogue,qwen3.6-27b,"Zach's passages, named bridge: passages used",200,,,,results/x50_zach/z1-20261028T161649Z/z1.json
+catalogue,muse-glimmer-30b,"Zach's passages, named bridge: passages used",200,,,,results/x50_zach/z1-20261028T161649Z/z1.json
+catalogue,qwen3.5-9b,"Zach's passages, described bridge: passages used",158,,,,results/x50_zach/z2-20261028T162710Z/z2.json
+catalogue,qwen3.6-27b,"Zach's passages, described bridge: passages used",166,,,,results/x50_zach/z2-20261028T162710Z/z2.json
+catalogue,muse-glimmer-30b,"Zach's passages, described bridge: passages used",157,,,,results/x50_zach/z2-20261028T162710Z/z2.json
+conflict_answer,qwen3.5-9b,"main test, recall: share of its loss kept when the lens part keeps the answer words' directions",0.9489795918367347,0.9032258064516131,0.9896907216494845,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,qwen3.5-9b,"main test, recall: switches lost beyond random without the answer words' directions only",0.0,0.0,0.0,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,qwen3.5-9b,"main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",0.565,0.4692737430167598,0.6595772529798373,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,qwen3.5-9b,"main test, recall: the rule's label (page words)",the item,,,,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,qwen3.6-27b,"main test, recall: share of its loss kept when the lens part keeps the answer words' directions",0.927927927927928,0.8469387755102042,0.9894736842105264,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,qwen3.6-27b,"main test, recall: switches lost beyond random without the answer words' directions only",0.02666666666666669,0.006329113924050556,0.05369127516778516,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,qwen3.6-27b,"main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",0.79,0.715975755761748,0.863909634055265,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,qwen3.6-27b,"main test, recall: the rule's label (page words)",the item,,,,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,muse-glimmer-30b,"main test, recall: share of its loss kept when the lens part keeps the answer words' directions",0.9333333333333333,0.8536585365853656,0.9999999999999997,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,muse-glimmer-30b,"main test, recall: switches lost beyond random without the answer words' directions only",-0.00847457627118645,-0.048545374865156615,0.029126213592232997,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,muse-glimmer-30b,"main test, recall: items whose answer word ranks below the lens's top 50 at the bridge word",0.995,0.9837837837837838,1.0,200,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+conflict_answer,muse-glimmer-30b,"main test, recall: the rule's label (page words)",the answer word is not read,,,,results/x51_answer/x51_12-20261028T201842Z/verdict.json
+dose_rules,qwen3.5-9b,"dose curves: main-test scenes, locker sentences first",75,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,qwen3.5-9b,(i) the lookup is blind to the J++ part,yes,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,qwen3.5-9b,(ii) the recall reads the J++ part above its share,yes,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,qwen3.5-9b,(iii) together only,no,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,qwen3.6-27b,"dose curves: main-test scenes, locker sentences first",69,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,qwen3.6-27b,(i) the lookup is blind to the J++ part,no,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,qwen3.6-27b,(ii) the recall reads the J++ part above its share,yes,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,qwen3.6-27b,(iii) together only,no,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,muse-glimmer-30b,"dose curves: main-test scenes, locker sentences first",68,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,muse-glimmer-30b,(i) the lookup is blind to the J++ part,yes,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,muse-glimmer-30b,(ii) the recall reads the J++ part above its share,yes,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+dose_rules,muse-glimmer-30b,(iii) together only,no,,,,results/x51_dose/x51_1-20261028T170335Z/verdict.json
+ladder_rules,qwen3.5-9b,the second copy is the earlier mention,yes,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_rules,qwen3.5-9b,needed only when everything goes,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_rules,qwen3.5-9b,the lookup never needs it,yes,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_rules,qwen3.6-27b,the second copy is the earlier mention,not run (bridge-word steps only),,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_rules,qwen3.6-27b,needed only when everything goes,not run (bridge-word steps only),,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_rules,qwen3.6-27b,the lookup never needs it,not run (bridge-word steps only),,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_rules,muse-glimmer-30b,the second copy is the earlier mention,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_rules,muse-glimmer-30b,needed only when everything goes,no,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
+ladder_rules,muse-glimmer-30b,the lookup never needs it,yes,,,,results/x49_ladder/x49_2-20261028T161612Z/x49_2.json
 numbers,,layer_9b,12,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,n_9b,200,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
 numbers,,ents_9b,40,,,,results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl
