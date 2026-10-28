@@ -40,7 +40,7 @@
 | 9 | The lens cannot read the address | 9B, 27B, Muse | **B** | share rebuilt {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} | no |
 | 10 | The bridge word redirects the lookup only when its locker sentence came first | 9B, 27B, Muse | **A** | locker first {{num|lk_order_before_muse}}-{{num|lk_order_before_122b}}, after {{num|lk_order_after_27b}}-{{num|lk_order_after_9b}}; copy {{pt|x45q_c_9b}} / {{pt|x45q_c_27b}} / {{pt|x45q_c_muse}} | no |
 | 11 | Lookups the change at L misses were read from the bridge word before L | 9B, Muse | **B** | carried before L {{dp|e11_before_l|9b|47.4: main, locker after the pick: lookups carried by the bridge word before L}} / {{dp|e11_before_l|muse|47.4: main, locker after the pick: lookups carried by the bridge word before L}} | no |
-| 12 | Identity route early, position route late; the address is readable before it is used | 9B, Muse | **B** | address overlap across depth {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}} | no |
+| 12 | Identity route early, position route late; the address is readable before it is used | 9B, 27B, Muse | **B** | address overlap across depth {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}} | no |
 
 *Grades: **A**, a rule fixed in advance held on at least three models with a specificity control and a variant design; **B**, on two models, or three with one operation, or descriptive on three with a random null.* Weaker and failed results are in Part IV; pending tests under Status.
 
@@ -74,7 +74,7 @@
 
 ![Recall needs the J++ part once its other copies go; the lookup never](figures/story/fig01d_ladder.png)
 
-- **Conclusion.** Followed at one layer, needed once other copies go. Not shown: Zach's band on Muse (rerun running).
+- **Conclusion.** Followed at one layer, needed once other copies go. Not shown: Zach's band on Muse (not run).
 
 ### E3. The lookup's identity route runs outside the lens <a id="e3-identity"></a>
 
@@ -177,13 +177,13 @@ The same routes by depth:
 
 - **Hypothesis.** The lookup drops the J++ part by the time it takes up the address, which is readable earlier; never the value. Fixed in advance.
 - **Mechanics.** The change's parts per sampled layer against random parts, and a slot probe.
-- **Data.** Routes scenes split in halves; 9B, Muse.
+- **Data.** Routes scenes split in halves; 9B, Muse, 27B (fewer layers).
 - **Result.** Identity early, position in the last window, never the value; the probe reads the address 8 (9B) / 16 (Muse) layers before position starts; it settles late (mean overlap {{dp|fig06c|9b|D4: the address's mean overlap over every pair of window layers}} / {{dp|fig06c|muse|D4: the address's mean overlap over every pair of window layers}}).
 - **Figure.**
 
 ![The address forms early; identity route first, position route later](figures/story/fig06b_anatomy.png)
 
-- **Conclusion.** The address: written early, read late; position grows with depth on the main test too (candidate). Not shown: the 27B.
+- **Conclusion.** The address: written early, read late; position grows with depth on the main test too (candidate).
 
 ## Part IV. Weaker results and what did not hold
 
