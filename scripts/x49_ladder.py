@@ -85,7 +85,7 @@ K = X.K_MAIN  # the change's 25 OMP atoms
 K_TOP = 10  # Zach's top-10
 SOURCES = B.FRESH_RUN  # target -> its 45m run (the clean design)
 MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
-RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2_r3"}  # the first two Muse runs OOMed (28 Oct)
+RUNS = {"qwen3.5-9b": "qwen35_9b_x49_2", "qwen3.6-27b": "x49_2_27b", "muse-glimmer-30b": "muse30_x49_2_r4"}  # the first three Muse runs OOMed (28 Oct)
 BAND = {"qwen3.5-9b": tuple(range(12, 17)), "muse-glimmer-30b": tuple(range(23, 30))}  # Zach's band; the 27B: none
 RUNGS = (1, 2, 3, 4, 5, 6)
 BRIDGE_RUNGS = (1, 2)  # the 27B's
@@ -494,7 +494,9 @@ def run_items(model, lens, items: list[dict], layers: tuple[int, ...], band: tup
         for v in ("org", "alt"):
             rec = model.run(torch.tensor([ids[v]], device=dev), record=layers)[1]
             for la in layers:
-                h[v][la].append(rec[la][c["pos"]].float())
+                # a copy: rec is fp32 already, so .float() was a row view that kept every prompt's [seq, d] states
+                # alive (~20 GB on Muse: x49_2_muse, _r2, _r3 OOM)
+                h[v][la].append(rec[la][c["pos"]].clone())
     bases = {la: SP.random_basis(int(h["alt"][layers[0]][0].shape[0]),
                                  torch.Generator().manual_seed(X.SUBSPACE_SEED + la)).to(dev)
              for la in sorted({*layers, *band})}  # fmt: skip
