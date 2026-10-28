@@ -64,6 +64,47 @@ def test_z1_is_sealed(monkeypatch):
         C.item_z1(NB)
 
 
+# ---- 2. route split -------------------------------------------------------------------------------------------------
+
+
+def _route_rows(spec: list[tuple[str, str, str]], part: str = "no_jpp", rand: str = "no_jpp_rand") -> list[dict]:
+    """One scene per (whole route, route without the part, route without its random twin); entity per scene."""
+    rows = []
+    for i, routes in enumerate(spec):
+        for a, rt in zip(("whole", part, rand), routes, strict=True):
+            rows.append({"scene": f"C2-{i}", "entity": f"e{i % 7}", "arm": a, "route": rt, "reader": "PP",
+                         "condition": "C2"})  # fmt: skip
+    return rows
+
+
+def test_route_split_planted():
+    # 10 identity items: J++ removal sends 8 to 'original', random keeps all -> extra loss 0.8
+    # 5 position items: both keep 4 of 5 -> extra loss 0; 3 'other' items ignored
+    spec = ([("identity", "original", "identity")] * 8 + [("identity", "identity", "identity")] * 2
+            + [("position", "position", "position")] * 4 + [("position", "other", "other")]
+            + [("other", "other", "other")] * 3)  # fmt: skip
+    c = C.route_split(_route_rows(spec), "no_jpp", "no_jpp_rand", NB)
+    assert c["n"] == 18 and c["whole_routes"] == {"identity": 10, "position": 5, "other": 3}
+    assert c["identity"]["n"] == 10 and c["position"]["n"] == 5
+    assert c["identity"]["keep_without_part"][0] == pytest.approx(0.2)
+    assert c["identity"]["keep_without_rand"][0] == pytest.approx(1.0)
+    assert c["identity"]["extra_loss"][0] == pytest.approx(0.8)
+    assert c["position"]["extra_loss"][0] == pytest.approx(0.0)
+    assert c["identity_minus_position"][0] == pytest.approx(0.8)
+    assert c["identity"]["without_part_goes_to"] == {"original": 8, "identity": 2}
+    lo, hi = c["identity"]["extra_loss"][1:]
+    assert lo <= 0.8 <= hi
+
+
+def test_route_split_missing_route_and_other_arms():
+    spec = [("identity", "identity", "original")] * 4
+    c = C.route_split(_route_rows(spec, "no_J", "no_J_rand"), "no_J", "no_J_rand", NB)
+    assert c["identity"]["extra_loss"][0] == pytest.approx(-1.0)
+    assert c["position"]["n"] == 0 and math.isnan(c["position"]["extra_loss"][0])
+    assert math.isnan(c["identity_minus_position"][0])
+    assert C.route_split([], "no_J", "no_J_rand", NB) == {"n": 0}
+
+
 def test_ci3_and_strip():
     assert all(math.isnan(v) for v in C.ci3(math.nan, np.zeros(3)))
     assert C.strip({"a": 1, "_d": np.zeros(2), "b": [{"_x": 1, "y": 2}]}) == {"a": 1, "b": [{"y": 2}]}

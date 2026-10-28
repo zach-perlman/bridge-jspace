@@ -1,0 +1,2915 @@
+{
+ "models": [
+  {
+   "target": "qwen3.5-9b",
+   "layer": 12,
+   "sources": {
+    "main": {
+     "run": "qwen35_9b_x6_routes",
+     "gate_pass": true,
+     "J++ k = 25": {
+      "n": 300,
+      "entities": 31,
+      "whole_routes": {
+       "identity": 144,
+       "position": 153,
+       "original": 3
+      },
+      "identity": {
+       "n": 144,
+       "entities": 30,
+       "keep_without_part": [
+        0.7152777777777778,
+        0.6470490196078431,
+        0.7876712328767124
+       ],
+       "keep_without_rand": [
+        0.8402777777777778,
+        0.7741935483870968,
+        0.906835909287881
+       ],
+       "extra_loss": [
+        0.125,
+        0.06622516556291391,
+        0.18666867469879525
+       ],
+       "without_part_goes_to": {
+        "identity": 103,
+        "position": 35,
+        "original": 6
+       }
+      },
+      "position": {
+       "n": 153,
+       "entities": 29,
+       "keep_without_part": [
+        0.9607843137254902,
+        0.9276291952707855,
+        0.9870967741935484
+       ],
+       "keep_without_rand": [
+        0.8758169934640523,
+        0.8216503639672429,
+        0.923076923076923
+       ],
+       "extra_loss": [
+        -0.08496732026143794,
+        -0.1282051282051282,
+        -0.04402515723270439
+       ],
+       "without_part_goes_to": {
+        "position": 147,
+        "original": 4,
+        "identity": 2
+       }
+      },
+      "identity_minus_position": [
+       0.20996732026143794,
+       0.1425285226433507,
+       0.2802574237560194
+      ]
+     }
+    },
+    "47.1": {
+     "run": "qwen35_9b_x6_routes_x47_1",
+     "gate_pass": true,
+     "J++ k = 25": {
+      "n": 300,
+      "entities": 31,
+      "whole_routes": {
+       "identity": 144,
+       "position": 153,
+       "original": 3
+      },
+      "identity": {
+       "n": 144,
+       "entities": 30,
+       "keep_without_part": [
+        0.7152777777777778,
+        0.6470490196078431,
+        0.7876712328767124
+       ],
+       "keep_without_rand": [
+        0.8402777777777778,
+        0.776913407821229,
+        0.904
+       ],
+       "extra_loss": [
+        0.125,
+        0.06617647058823539,
+        0.1870515200742632
+       ],
+       "without_part_goes_to": {
+        "identity": 103,
+        "position": 35,
+        "original": 6
+       }
+      },
+      "position": {
+       "n": 153,
+       "entities": 29,
+       "keep_without_part": [
+        0.9607843137254902,
+        0.9276291952707855,
+        0.9870967741935484
+       ],
+       "keep_without_rand": [
+        0.8758169934640523,
+        0.8216503639672429,
+        0.923076923076923
+       ],
+       "extra_loss": [
+        -0.08496732026143794,
+        -0.1282051282051282,
+        -0.04402515723270439
+       ],
+       "without_part_goes_to": {
+        "position": 147,
+        "original": 4,
+        "identity": 2
+       }
+      },
+      "identity_minus_position": [
+       0.20996732026143794,
+       0.140070179428164,
+       0.28474798363475323
+      ]
+     },
+     "J++ k = 100": {
+      "n": 300,
+      "entities": 31,
+      "whole_routes": {
+       "identity": 144,
+       "position": 153,
+       "original": 3
+      },
+      "identity": {
+       "n": 144,
+       "entities": 30,
+       "keep_without_part": [
+        0.24305555555555555,
+        0.17791411042944785,
+        0.3202627144607843
+       ],
+       "keep_without_rand": [
+        0.4166666666666667,
+        0.35000000000000003,
+        0.49242424242424243
+       ],
+       "extra_loss": [
+        0.17361111111111113,
+        0.09090909090909094,
+        0.25000000000000006
+       ],
+       "without_part_goes_to": {
+        "original": 55,
+        "other": 1,
+        "identity": 35,
+        "position": 53
+       }
+      },
+      "position": {
+       "n": 153,
+       "entities": 29,
+       "keep_without_part": [
+        0.6078431372549019,
+        0.527270256916996,
+        0.6894409937888198
+       ],
+       "keep_without_rand": [
+        0.28104575163398693,
+        0.21088435374149658,
+        0.35714285714285715
+       ],
+       "extra_loss": [
+        -0.326797385620915,
+        -0.42666878980891726,
+        -0.22655537180656946
+       ],
+       "without_part_goes_to": {
+        "position": 93,
+        "original": 60
+       }
+      },
+      "identity_minus_position": [
+       0.5004084967320261,
+       0.389104450106214,
+       0.615438002402996
+      ]
+     },
+     "atoms 26-100": {
+      "n": 300,
+      "entities": 31,
+      "whole_routes": {
+       "identity": 144,
+       "position": 153,
+       "original": 3
+      },
+      "identity": {
+       "n": 144,
+       "entities": 30,
+       "keep_without_part": [
+        0.6875,
+        0.6357615894039735,
+        0.7482529375386519
+       ],
+       "keep_without_rand": [
+        0.7986111111111112,
+        0.7338129496402879,
+        0.8655493540699862
+       ],
+       "extra_loss": [
+        0.11111111111111116,
+        0.06338028169014087,
+        0.1610738255033558
+       ],
+       "without_part_goes_to": {
+        "identity": 99,
+        "position": 32,
+        "original": 13
+       }
+      },
+      "position": {
+       "n": 153,
+       "entities": 29,
+       "keep_without_part": [
+        0.8823529411764706,
+        0.8320610687022901,
+        0.9261363636363636
+       ],
+       "keep_without_rand": [
+        0.9019607843137255,
+        0.8561631516704443,
+        0.9424504658568227
+       ],
+       "extra_loss": [
+        0.019607843137254943,
+        -0.033557046979865834,
+        0.07843137254901955
+       ],
+       "without_part_goes_to": {
+        "position": 135,
+        "original": 15,
+        "identity": 3
+       }
+      },
+      "identity_minus_position": [
+       0.09150326797385622,
+       0.018351537696225387,
+       0.1642867109634552
+      ]
+     }
+    },
+    "anatomy": {
+     "run": "qwen35_9b_x47_anatomy",
+     "gate_pass": true,
+     "fixed_layer": 12,
+     "by_layer": {
+      "2": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 200
+       },
+       "identity": {
+        "n": 200,
+        "entities": 11,
+        "keep_without_part": [
+         0.075,
+         0.037656341386601885,
+         0.11570465419747714
+        ],
+        "keep_without_rand": [
+         0.15,
+         0.09895218615879828,
+         0.20958083832335328
+        ],
+        "extra_loss": [
+         0.075,
+         0.046296296296296294,
+         0.11347517730496454
+        ],
+        "without_part_goes_to": {
+         "original": 184,
+         "identity": 15,
+         "position": 1
+        }
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "4": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 200
+       },
+       "identity": {
+        "n": 200,
+        "entities": 11,
+        "keep_without_part": [
+         0.02,
+         0.0,
+         0.04878048780487805
+        ],
+        "keep_without_rand": [
+         0.035,
+         0.0,
+         0.08018930985773381
+        ],
+        "extra_loss": [
+         0.015000000000000003,
+         0.0,
+         0.03333333333333333
+        ],
+        "without_part_goes_to": {
+         "original": 196,
+         "identity": 4
+        }
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "6": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 200
+       },
+       "identity": {
+        "n": 200,
+        "entities": 11,
+        "keep_without_part": [
+         0.025,
+         0.0,
+         0.055
+        ],
+        "keep_without_rand": [
+         0.065,
+         0.022857142857142857,
+         0.11214953271028037
+        ],
+        "extra_loss": [
+         0.04,
+         0.009949017289788682,
+         0.07425742574257425
+        ],
+        "without_part_goes_to": {
+         "original": 195,
+         "identity": 5
+        }
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "8": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 196,
+        "position": 4
+       },
+       "identity": {
+        "n": 196,
+        "entities": 11,
+        "keep_without_part": [
+         0.3520408163265306,
+         0.28,
+         0.4248737046632124
+        ],
+        "keep_without_rand": [
+         0.40816326530612246,
+         0.334762618380449,
+         0.4908277731442869
+        ],
+        "extra_loss": [
+         0.056122448979591844,
+         0.01895734597156401,
+         0.10144927536231885
+        ],
+        "without_part_goes_to": {
+         "original": 113,
+         "identity": 69,
+         "position": 14
+        }
+       },
+       "position": {
+        "n": 4,
+        "entities": 3,
+        "keep_without_part": [
+         0.25,
+         0.0,
+         0.5
+        ],
+        "keep_without_rand": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "extra_loss": [
+         -0.25,
+         -0.5,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 1,
+         "original": 3
+        }
+       },
+       "identity_minus_position": [
+        0.30612244897959184,
+        0.035325311942959,
+        0.5603015075376885
+       ]
+      },
+      "10": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 196,
+        "position": 4
+       },
+       "identity": {
+        "n": 196,
+        "entities": 11,
+        "keep_without_part": [
+         0.49489795918367346,
+         0.4221082476603199,
+         0.5669311632437698
+        ],
+        "keep_without_rand": [
+         0.673469387755102,
+         0.5888324873096447,
+         0.7577651882763975
+        ],
+        "extra_loss": [
+         0.17857142857142855,
+         0.14102422907488982,
+         0.21739130434782616
+        ],
+        "without_part_goes_to": {
+         "original": 87,
+         "identity": 97,
+         "position": 12
+        }
+       },
+       "position": {
+        "n": 4,
+        "entities": 4,
+        "keep_without_part": [
+         0.75,
+         0.25,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.75,
+         0.25,
+         1.0
+        ],
+        "extra_loss": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 3,
+         "original": 1
+        }
+       },
+       "identity_minus_position": [
+        0.17857142857142855,
+        0.14102564102564097,
+        0.2173583662714098
+       ]
+      },
+      "12": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 98,
+        "position": 102
+       },
+       "identity": {
+        "n": 98,
+        "entities": 11,
+        "keep_without_part": [
+         0.7653061224489796,
+         0.6881720430107526,
+         0.8333333333333333
+        ],
+        "keep_without_rand": [
+         0.7346938775510204,
+         0.6723797640653358,
+         0.7894736842105263
+        ],
+        "extra_loss": [
+         -0.030612244897959107,
+         -0.06504065040650397,
+         0.010992063492063515
+        ],
+        "without_part_goes_to": {
+         "identity": 75,
+         "position": 20,
+         "original": 3
+        }
+       },
+       "position": {
+        "n": 102,
+        "entities": 11,
+        "keep_without_part": [
+         0.9607843137254902,
+         0.9313706780422092,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.9509803921568627,
+         0.9127503462235007,
+         1.0
+        ],
+        "extra_loss": [
+         -0.009803921568627527,
+         -0.056455416920267856,
+         0.025423728813559258
+        ],
+        "without_part_goes_to": {
+         "position": 98,
+         "original": 2,
+         "identity": 1,
+         "other": 1
+        }
+       },
+       "identity_minus_position": [
+        -0.02080832332933158,
+        -0.08461894085757739,
+        0.06451612903225812
+       ]
+      },
+      "14": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 83,
+        "position": 111,
+        "original": 6
+       },
+       "identity": {
+        "n": 83,
+        "entities": 11,
+        "keep_without_part": [
+         0.8313253012048193,
+         0.7435897435897436,
+         0.9090909090909091
+        ],
+        "keep_without_rand": [
+         0.7710843373493976,
+         0.6666666666666666,
+         0.8596532218396458
+        ],
+        "extra_loss": [
+         -0.06024096385542166,
+         -0.09638554216867479,
+         -0.02409638554216864
+        ],
+        "without_part_goes_to": {
+         "identity": 69,
+         "position": 10,
+         "original": 4
+        }
+       },
+       "position": {
+        "n": 111,
+        "entities": 11,
+        "keep_without_part": [
+         0.9459459459459459,
+         0.9166666666666666,
+         0.9777777777777779
+        ],
+        "keep_without_rand": [
+         0.9369369369369369,
+         0.9081632653061226,
+         0.9680893279297536
+        ],
+        "extra_loss": [
+         -0.009009009009009028,
+         -0.04166666666666663,
+         0.02127659574468077
+        ],
+        "without_part_goes_to": {
+         "position": 105,
+         "identity": 2,
+         "original": 4
+        }
+       },
+       "identity_minus_position": [
+        -0.05123195484641263,
+        -0.10641656606927319,
+        0.0024717159532523683
+       ]
+      },
+      "16": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 108,
+        "position": 65,
+        "identity": 27
+       },
+       "identity": {
+        "n": 27,
+        "entities": 9,
+        "keep_without_part": [
+         0.8518518518518519,
+         0.7272727272727273,
+         0.96
+        ],
+        "keep_without_rand": [
+         0.7777777777777778,
+         0.6,
+         0.9473684210526316
+        ],
+        "extra_loss": [
+         -0.07407407407407407,
+         -0.16666666666666663,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "identity": 23,
+         "original": 3,
+         "position": 1
+        }
+       },
+       "position": {
+        "n": 65,
+        "entities": 11,
+        "keep_without_part": [
+         0.9692307692307692,
+         0.9367088607594937,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.9230769230769231,
+         0.8611111111111112,
+         1.0
+        ],
+        "extra_loss": [
+         -0.0461538461538461,
+         -0.08197282730743327,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 63,
+         "original": 2
+        }
+       },
+       "identity_minus_position": [
+        -0.02792022792022797,
+        -0.14297331372605349,
+        0.07462686567164178
+       ]
+      },
+      "18": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 188,
+        "position": 8,
+        "identity": 4
+       },
+       "identity": {
+        "n": 4,
+        "entities": 2,
+        "keep_without_part": [
+         0.75,
+         0.0,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.75,
+         0.0,
+         1.0
+        ],
+        "extra_loss": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "identity": 3,
+         "original": 1
+        }
+       },
+       "position": {
+        "n": 8,
+        "entities": 4,
+        "keep_without_part": [
+         0.875,
+         0.7,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.875,
+         0.7,
+         1.0
+        ],
+        "extra_loss": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 7,
+         "original": 1
+        }
+       },
+       "identity_minus_position": [
+        0.0,
+        0.0,
+        0.0
+       ]
+      },
+      "20": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "22": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "24": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "26": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "28": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "30": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "target": "qwen3.6-27b",
+   "layer": 32,
+   "sources": {
+    "main": {
+     "run": "x6_routes_27b",
+     "gate_pass": true,
+     "J++ k = 25": {
+      "n": 300,
+      "entities": 32,
+      "whole_routes": {
+       "identity": 197,
+       "position": 101,
+       "original": 1,
+       "other": 1
+      },
+      "identity": {
+       "n": 197,
+       "entities": 31,
+       "keep_without_part": [
+        0.6852791878172588,
+        0.640493323291129,
+        0.7384615384615385
+       ],
+       "keep_without_rand": [
+        0.9847715736040609,
+        0.967741935483871,
+        1.0
+       ],
+       "extra_loss": [
+        0.29949238578680204,
+        0.25,
+        0.3426972886005171
+       ],
+       "without_part_goes_to": {
+        "identity": 135,
+        "original": 26,
+        "position": 36
+       }
+      },
+      "position": {
+       "n": 101,
+       "entities": 29,
+       "keep_without_part": [
+        0.900990099009901,
+        0.8421052631578948,
+        0.9565217391304348
+       ],
+       "keep_without_rand": [
+        0.8415841584158416,
+        0.7666666666666667,
+        0.9042553191489361
+       ],
+       "extra_loss": [
+        -0.05940594059405946,
+        -0.14414630977130974,
+        0.01111423220973785
+       ],
+       "without_part_goes_to": {
+        "position": 91,
+        "original": 10
+       }
+      },
+      "identity_minus_position": [
+       0.3588983263808615,
+       0.26329614722969036,
+       0.4602486651618575
+      ]
+     }
+    },
+    "47.1": {
+     "run": "x6_routes_x47_1_27b",
+     "gate_pass": true,
+     "J++ k = 25": {
+      "n": 300,
+      "entities": 32,
+      "whole_routes": {
+       "identity": 197,
+       "position": 101,
+       "original": 1,
+       "other": 1
+      },
+      "identity": {
+       "n": 197,
+       "entities": 31,
+       "keep_without_part": [
+        0.6852791878172588,
+        0.640493323291129,
+        0.7384615384615385
+       ],
+       "keep_without_rand": [
+        0.9847715736040609,
+        0.967741935483871,
+        1.0
+       ],
+       "extra_loss": [
+        0.29949238578680204,
+        0.25,
+        0.3426972886005171
+       ],
+       "without_part_goes_to": {
+        "identity": 135,
+        "original": 26,
+        "position": 36
+       }
+      },
+      "position": {
+       "n": 101,
+       "entities": 29,
+       "keep_without_part": [
+        0.900990099009901,
+        0.8421052631578948,
+        0.9565217391304348
+       ],
+       "keep_without_rand": [
+        0.8415841584158416,
+        0.7666666666666667,
+        0.9042553191489361
+       ],
+       "extra_loss": [
+        -0.05940594059405946,
+        -0.14414630977130974,
+        0.01111423220973785
+       ],
+       "without_part_goes_to": {
+        "position": 91,
+        "original": 10
+       }
+      },
+      "identity_minus_position": [
+       0.3588983263808615,
+       0.26329614722969036,
+       0.4602486651618575
+      ]
+     },
+     "J++ k = 100": {
+      "n": 300,
+      "entities": 32,
+      "whole_routes": {
+       "identity": 197,
+       "position": 101,
+       "original": 1,
+       "other": 1
+      },
+      "identity": {
+       "n": 197,
+       "entities": 31,
+       "keep_without_part": [
+        0.18781725888324874,
+        0.1413598338265422,
+        0.2372093023255814
+       ],
+       "keep_without_rand": [
+        0.8883248730964467,
+        0.8390804597701149,
+        0.9341317365269461
+       ],
+       "extra_loss": [
+        0.700507614213198,
+        0.6428490627020038,
+        0.7579625105430009
+       ],
+       "without_part_goes_to": {
+        "original": 148,
+        "identity": 37,
+        "position": 12
+       }
+      },
+      "position": {
+       "n": 101,
+       "entities": 29,
+       "keep_without_part": [
+        0.48514851485148514,
+        0.3653804347826087,
+        0.5978288883908561
+       ],
+       "keep_without_rand": [
+        0.4752475247524752,
+        0.35714285714285715,
+        0.5887850467289719
+       ],
+       "extra_loss": [
+        -0.00990099009900991,
+        -0.13542631172839512,
+        0.09565217391304343
+       ],
+       "without_part_goes_to": {
+        "position": 49,
+        "other": 1,
+        "original": 51
+       }
+      },
+      "identity_minus_position": [
+       0.7104086043122079,
+       0.5997595884573237,
+       0.8392887605319831
+      ]
+     },
+     "atoms 26-100": {
+      "n": 300,
+      "entities": 32,
+      "whole_routes": {
+       "identity": 197,
+       "position": 101,
+       "original": 1,
+       "other": 1
+      },
+      "identity": {
+       "n": 197,
+       "entities": 31,
+       "keep_without_part": [
+        0.9441624365482234,
+        0.9170506912442397,
+        0.9704469718922052
+       ],
+       "keep_without_rand": [
+        0.9847715736040609,
+        0.967741935483871,
+        1.0
+       ],
+       "extra_loss": [
+        0.04060913705583746,
+        0.01578947368421046,
+        0.06763285024154597
+       ],
+       "without_part_goes_to": {
+        "identity": 186,
+        "original": 4,
+        "position": 7
+       }
+      },
+      "position": {
+       "n": 101,
+       "entities": 29,
+       "keep_without_part": [
+        0.8415841584158416,
+        0.7666666666666666,
+        0.90625
+       ],
+       "keep_without_rand": [
+        0.8217821782178217,
+        0.7362599206349206,
+        0.892156862745098
+       ],
+       "extra_loss": [
+        -0.01980198019801982,
+        -0.07058823529411762,
+        0.026315789473684292
+       ],
+       "without_part_goes_to": {
+        "position": 85,
+        "identity": 12,
+        "original": 2,
+        "other": 2
+       }
+      },
+      "identity_minus_position": [
+       0.06041111725385728,
+       0.006128779777817464,
+       0.12144422900236075
+      ]
+     }
+    },
+    "anatomy": {
+     "run": "x49_4_anatomy_27b",
+     "gate_pass": true,
+     "fixed_layer": 32,
+     "by_layer": {
+      "8": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "identity": 150
+       },
+       "identity": {
+        "n": 150,
+        "entities": 7,
+        "keep_without_part": [
+         0.54,
+         0.3630952380952381,
+         0.7096774193548387
+        ],
+        "keep_without_rand": [
+         0.7466666666666667,
+         0.57892322549493,
+         0.8830428343586239
+        ],
+        "extra_loss": [
+         0.20666666666666667,
+         0.13157894736842102,
+         0.2928571428571428
+        ],
+        "without_part_goes_to": {
+         "original": 69,
+         "identity": 81
+        }
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "16": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "identity": 150
+       },
+       "identity": {
+        "n": 150,
+        "entities": 7,
+        "keep_without_part": [
+         0.013333333333333334,
+         0.0,
+         0.036585365853658534
+        ],
+        "keep_without_rand": [
+         0.02,
+         0.0,
+         0.054878048780487805
+        ],
+        "extra_loss": [
+         0.006666666666666666,
+         0.0,
+         0.01829268292682927
+        ],
+        "without_part_goes_to": {
+         "original": 148,
+         "identity": 2
+        }
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "24": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "identity": 150
+       },
+       "identity": {
+        "n": 150,
+        "entities": 7,
+        "keep_without_part": [
+         0.9333333333333333,
+         0.8907103825136612,
+         0.9753086419753086
+        ],
+        "keep_without_rand": [
+         0.9733333333333334,
+         0.9517241379310345,
+         0.99375
+        ],
+        "extra_loss": [
+         0.040000000000000036,
+         0.0062893081761006275,
+         0.07752750313326814
+        ],
+        "without_part_goes_to": {
+         "identity": 140,
+         "original": 5,
+         "position": 4,
+         "other": 1
+        }
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "30": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "identity": 93,
+        "position": 57
+       },
+       "identity": {
+        "n": 93,
+        "entities": 7,
+        "keep_without_part": [
+         0.7634408602150538,
+         0.6269095238095239,
+         0.8933333333333332
+        ],
+        "keep_without_rand": [
+         0.8602150537634409,
+         0.8041237113402062,
+         0.9218749999999999
+        ],
+        "extra_loss": [
+         0.09677419354838712,
+         0.010624865678057142,
+         0.18556701030927825
+        ],
+        "without_part_goes_to": {
+         "identity": 71,
+         "original": 8,
+         "position": 14
+        }
+       },
+       "position": {
+        "n": 57,
+        "entities": 7,
+        "keep_without_part": [
+         0.9824561403508771,
+         0.9523809523809524,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.9649122807017544,
+         0.9259259259259259,
+         1.0
+        ],
+        "extra_loss": [
+         -0.01754385964912275,
+         -0.05769230769230782,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 56,
+         "original": 1
+        }
+       },
+       "identity_minus_position": [
+        0.11431805319750987,
+        0.03336067815149024,
+        0.19259259259259276
+       ]
+      },
+      "32": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "identity": 100,
+        "position": 49,
+        "other": 1
+       },
+       "identity": {
+        "n": 100,
+        "entities": 7,
+        "keep_without_part": [
+         0.68,
+         0.6276595744680851,
+         0.7708482142857142
+        ],
+        "keep_without_rand": [
+         0.8,
+         0.736842105263158,
+         0.8785046728971962
+        ],
+        "extra_loss": [
+         0.12,
+         0.061224489795918324,
+         0.19047619047619047
+        ],
+        "without_part_goes_to": {
+         "identity": 68,
+         "original": 15,
+         "position": 17
+        }
+       },
+       "position": {
+        "n": 49,
+        "entities": 7,
+        "keep_without_part": [
+         0.8775510204081632,
+         0.7391304347826088,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.8367346938775511,
+         0.7173913043478262,
+         0.9565217391304347
+        ],
+        "extra_loss": [
+         -0.04081632653061218,
+         -0.09302325581395354,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 43,
+         "original": 4,
+         "identity": 2
+        }
+       },
+       "identity_minus_position": [
+        0.16081632653061217,
+        0.10472027972027975,
+        0.22521739130434792
+       ]
+      },
+      "34": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "identity": 105,
+        "position": 43,
+        "other": 1,
+        "original": 1
+       },
+       "identity": {
+        "n": 105,
+        "entities": 7,
+        "keep_without_part": [
+         0.6571428571428571,
+         0.5595238095238095,
+         0.7619047619047619
+        ],
+        "keep_without_rand": [
+         0.7904761904761904,
+         0.7222222222222222,
+         0.8541666666666666
+        ],
+        "extra_loss": [
+         0.1333333333333333,
+         0.05333333333333323,
+         0.23809523809523814
+        ],
+        "without_part_goes_to": {
+         "identity": 69,
+         "original": 16,
+         "position": 20
+        }
+       },
+       "position": {
+        "n": 43,
+        "entities": 7,
+        "keep_without_part": [
+         0.9302325581395349,
+         0.8484848484848485,
+         0.9833333333333333
+        ],
+        "keep_without_rand": [
+         0.8604651162790697,
+         0.7368034055727554,
+         0.9444444444444445
+        ],
+        "extra_loss": [
+         -0.06976744186046513,
+         -0.15384615384615385,
+         -0.016129032258064502
+        ],
+        "without_part_goes_to": {
+         "position": 40,
+         "original": 2,
+         "identity": 1
+        }
+       },
+       "identity_minus_position": [
+        0.20310077519379843,
+        0.09872408293460933,
+        0.340200570812602
+       ]
+      },
+      "40": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "identity": 29,
+        "original": 102,
+        "position": 19
+       },
+       "identity": {
+        "n": 29,
+        "entities": 7,
+        "keep_without_part": [
+         0.896551724137931,
+         0.7272727272727273,
+         0.9767441860465117
+        ],
+        "keep_without_rand": [
+         0.9310344827586207,
+         0.8180976430976431,
+         1.0
+        ],
+        "extra_loss": [
+         0.03448275862068961,
+         0.0,
+         0.1578947368421053
+        ],
+        "without_part_goes_to": {
+         "identity": 26,
+         "original": 3
+        }
+       },
+       "position": {
+        "n": 19,
+        "entities": 6,
+        "keep_without_part": [
+         0.7368421052631579,
+         0.5454545454545454,
+         0.8421052631578947
+        ],
+        "keep_without_rand": [
+         0.7894736842105263,
+         0.5833333333333334,
+         0.9090909090909091
+        ],
+        "extra_loss": [
+         0.052631578947368474,
+         0.0,
+         0.18181818181818188
+        ],
+        "without_part_goes_to": {
+         "position": 14,
+         "other": 1,
+         "original": 3,
+         "identity": 1
+        }
+       },
+       "identity_minus_position": [
+        -0.01814882032667886,
+        -0.15241758241758238,
+        0.125
+       ]
+      },
+      "48": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "original": 150
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "56": {
+       "n": 150,
+       "entities": 7,
+       "whole_routes": {
+        "original": 150
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      }
+     }
+    }
+   }
+  },
+  {
+   "target": "muse-glimmer-30b",
+   "layer": 26,
+   "sources": {
+    "main": {
+     "run": "muse30b_x6_routes",
+     "gate_pass": true,
+     "J++ k = 25": {
+      "n": 300,
+      "entities": 32,
+      "whole_routes": {
+       "position": 163,
+       "identity": 131,
+       "original": 6
+      },
+      "identity": {
+       "n": 131,
+       "entities": 32,
+       "keep_without_part": [
+        0.9007633587786259,
+        0.8558536902286904,
+        0.9453160511363636
+       ],
+       "keep_without_rand": [
+        0.9007633587786259,
+        0.8571428571428571,
+        0.9482758620689654
+       ],
+       "extra_loss": [
+        0.0,
+        -0.034482758620689724,
+        0.0390625
+       ],
+       "without_part_goes_to": {
+        "identity": 118,
+        "original": 5,
+        "position": 8
+       }
+      },
+      "position": {
+       "n": 163,
+       "entities": 31,
+       "keep_without_part": [
+        0.9877300613496932,
+        0.9693251533742331,
+        1.0
+       ],
+       "keep_without_rand": [
+        0.9570552147239264,
+        0.9076923076923077,
+        0.9940484995773459
+       ],
+       "extra_loss": [
+        -0.030674846625766805,
+        -0.08227848101265822,
+        0.0065359477124183885
+       ],
+       "without_part_goes_to": {
+        "position": 161,
+        "identity": 1,
+        "original": 1
+       }
+      },
+      "identity_minus_position": [
+       0.030674846625766805,
+       -0.023240467987803035,
+       0.09391826954879885
+      ]
+     }
+    },
+    "47.1": {
+     "run": "muse30_x6_routes_x47_1",
+     "gate_pass": true,
+     "J++ k = 25": {
+      "n": 300,
+      "entities": 32,
+      "whole_routes": {
+       "position": 163,
+       "identity": 131,
+       "original": 6
+      },
+      "identity": {
+       "n": 131,
+       "entities": 32,
+       "keep_without_part": [
+        0.9007633587786259,
+        0.8558536902286904,
+        0.9453160511363636
+       ],
+       "keep_without_rand": [
+        0.9007633587786259,
+        0.8571428571428571,
+        0.9482758620689654
+       ],
+       "extra_loss": [
+        0.0,
+        -0.034482758620689724,
+        0.0390625
+       ],
+       "without_part_goes_to": {
+        "identity": 118,
+        "original": 5,
+        "position": 8
+       }
+      },
+      "position": {
+       "n": 163,
+       "entities": 31,
+       "keep_without_part": [
+        0.9877300613496932,
+        0.9693251533742331,
+        1.0
+       ],
+       "keep_without_rand": [
+        0.9570552147239264,
+        0.9076923076923077,
+        0.9940484995773459
+       ],
+       "extra_loss": [
+        -0.030674846625766805,
+        -0.08227848101265822,
+        0.0065359477124183885
+       ],
+       "without_part_goes_to": {
+        "position": 161,
+        "identity": 1,
+        "original": 1
+       }
+      },
+      "identity_minus_position": [
+       0.030674846625766805,
+       -0.023240467987803035,
+       0.09391826954879885
+      ]
+     },
+     "J++ k = 100": {
+      "n": 300,
+      "entities": 32,
+      "whole_routes": {
+       "position": 163,
+       "identity": 131,
+       "original": 6
+      },
+      "identity": {
+       "n": 131,
+       "entities": 32,
+       "keep_without_part": [
+        0.8015267175572519,
+        0.7364341085271318,
+        0.8688524590163934
+       ],
+       "keep_without_rand": [
+        0.8396946564885496,
+        0.78,
+        0.9017857142857143
+       ],
+       "extra_loss": [
+        0.03816793893129766,
+        0.008620689655172487,
+        0.07142857142857129
+       ],
+       "without_part_goes_to": {
+        "identity": 105,
+        "original": 19,
+        "position": 7
+       }
+      },
+      "position": {
+       "n": 163,
+       "entities": 31,
+       "keep_without_part": [
+        0.901840490797546,
+        0.843020972847924,
+        0.9510499011857708
+       ],
+       "keep_without_rand": [
+        0.8220858895705522,
+        0.7573953619909503,
+        0.8813559322033898
+       ],
+       "extra_loss": [
+        -0.07975460122699385,
+        -0.12195121951219512,
+        -0.03658536585365857
+       ],
+       "without_part_goes_to": {
+        "position": 147,
+        "original": 13,
+        "identity": 3
+       }
+      },
+      "identity_minus_position": [
+       0.11792254015829151,
+       0.07351517518250786,
+       0.16253963373857935
+      ]
+     },
+     "atoms 26-100": {
+      "n": 300,
+      "entities": 32,
+      "whole_routes": {
+       "position": 163,
+       "identity": 131,
+       "original": 6
+      },
+      "identity": {
+       "n": 131,
+       "entities": 32,
+       "keep_without_part": [
+        0.8549618320610687,
+        0.8128931451612903,
+        0.9022556390977443
+       ],
+       "keep_without_rand": [
+        0.916030534351145,
+        0.8738643764246175,
+        0.9590163934426229
+       ],
+       "extra_loss": [
+        0.06106870229007633,
+        0.015748031496063075,
+        0.10738255033557054
+       ],
+       "without_part_goes_to": {
+        "identity": 112,
+        "original": 11,
+        "position": 8
+       }
+      },
+      "position": {
+       "n": 163,
+       "entities": 31,
+       "keep_without_part": [
+        0.9447852760736196,
+        0.896774193548387,
+        0.9818181818181818
+       ],
+       "keep_without_rand": [
+        0.9754601226993865,
+        0.9415118679050568,
+        1.0
+       ],
+       "extra_loss": [
+        0.030674846625766916,
+        0.0,
+        0.06748466257668717
+       ],
+       "without_part_goes_to": {
+        "position": 154,
+        "identity": 4,
+        "original": 5
+       }
+      },
+      "identity_minus_position": [
+       0.03039385566430941,
+       -0.022058945297864403,
+       0.08135215347240679
+      ]
+     }
+    },
+    "anatomy": {
+     "run": "muse30_x47_anatomy",
+     "gate_pass": true,
+     "fixed_layer": 26,
+     "by_layer": {
+      "2": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 198,
+        "position": 2
+       },
+       "identity": {
+        "n": 198,
+        "entities": 11,
+        "keep_without_part": [
+         0.9343434343434344,
+         0.9067357512953368,
+         0.9587644026682838
+        ],
+        "keep_without_rand": [
+         0.9797979797979798,
+         0.9627659574468085,
+         0.9947916666666666
+        ],
+        "extra_loss": [
+         0.045454545454545414,
+         0.018633540372670843,
+         0.07229043834914124
+        ],
+        "without_part_goes_to": {
+         "identity": 185,
+         "position": 1,
+         "original": 12
+        }
+       },
+       "position": {
+        "n": 2,
+        "entities": 2,
+        "keep_without_part": [
+         0.5,
+         0.0,
+         1.0
+        ],
+        "keep_without_rand": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "extra_loss": [
+         0.5,
+         0.0,
+         1.0
+        ],
+        "without_part_goes_to": {
+         "position": 1,
+         "identity": 1
+        }
+       },
+       "identity_minus_position": [
+        -0.4545454545454546,
+        -0.9727569169960474,
+        0.06818181818181823
+       ]
+      },
+      "6": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 199,
+        "position": 1
+       },
+       "identity": {
+        "n": 199,
+        "entities": 11,
+        "keep_without_part": [
+         0.8492462311557789,
+         0.7756377551020408,
+         0.8978504089050432
+        ],
+        "keep_without_rand": [
+         0.8944723618090452,
+         0.8486203780928552,
+         0.9397604306113342
+        ],
+        "extra_loss": [
+         0.045226130653266305,
+         0.014218009478673022,
+         0.09090909090909094
+        ],
+        "without_part_goes_to": {
+         "identity": 169,
+         "original": 30
+        }
+       },
+       "position": {
+        "n": 1,
+        "entities": 1,
+        "keep_without_part": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "keep_without_rand": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "extra_loss": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 1
+        }
+       },
+       "identity_minus_position": [
+        0.045226130653266305,
+        0.019492265350669096,
+        0.0953442523506216
+       ]
+      },
+      "10": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 197,
+        "position": 3
+       },
+       "identity": {
+        "n": 197,
+        "entities": 11,
+        "keep_without_part": [
+         0.6040609137055838,
+         0.5333333333333334,
+         0.6535087719298246
+        ],
+        "keep_without_rand": [
+         0.7208121827411168,
+         0.6372966238737996,
+         0.7836570945945945
+        ],
+        "extra_loss": [
+         0.11675126903553301,
+         0.07027027027027022,
+         0.16556291390728484
+        ],
+        "without_part_goes_to": {
+         "identity": 119,
+         "original": 65,
+         "position": 13
+        }
+       },
+       "position": {
+        "n": 3,
+        "entities": 3,
+        "keep_without_part": [
+         0.6666666666666666,
+         0.0,
+         1.0
+        ],
+        "keep_without_rand": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "extra_loss": [
+         0.33333333333333337,
+         0.0,
+         1.0
+        ],
+        "without_part_goes_to": {
+         "position": 2,
+         "identity": 1
+        }
+       },
+       "identity_minus_position": [
+        -0.21658206429780036,
+        -0.9096045197740114,
+        0.15337946179587283
+       ]
+      },
+      "14": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 192,
+        "position": 8
+       },
+       "identity": {
+        "n": 192,
+        "entities": 11,
+        "keep_without_part": [
+         0.6979166666666666,
+         0.6034414340448823,
+         0.7714312466559657
+        ],
+        "keep_without_rand": [
+         0.7447916666666666,
+         0.6685393258426966,
+         0.809302818289318
+        ],
+        "extra_loss": [
+         0.046875,
+         0.005777883604834524,
+         0.09090909090909094
+        ],
+        "without_part_goes_to": {
+         "identity": 134,
+         "original": 40,
+         "position": 18
+        }
+       },
+       "position": {
+        "n": 8,
+        "entities": 7,
+        "keep_without_part": [
+         0.625,
+         0.33269230769230823,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.625,
+         0.33269230769230823,
+         1.0
+        ],
+        "extra_loss": [
+         0.0,
+         0.0,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 5,
+         "identity": 2,
+         "original": 1
+        }
+       },
+       "identity_minus_position": [
+        0.046875,
+        0.005777883604834524,
+        0.09090909090909094
+       ]
+      },
+      "18": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "identity": 164,
+        "position": 36
+       },
+       "identity": {
+        "n": 164,
+        "entities": 11,
+        "keep_without_part": [
+         0.7195121951219512,
+         0.6257476993865031,
+         0.8010752688172043
+        ],
+        "keep_without_rand": [
+         0.7560975609756098,
+         0.6829226240538266,
+         0.8208114054007419
+        ],
+        "extra_loss": [
+         0.03658536585365857,
+         -0.00885054080629303,
+         0.09142944250871088
+        ],
+        "without_part_goes_to": {
+         "identity": 118,
+         "position": 41,
+         "original": 5
+        }
+       },
+       "position": {
+        "n": 36,
+        "entities": 10,
+        "keep_without_part": [
+         0.9166666666666666,
+         0.75,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.9166666666666666,
+         0.7916666666666667,
+         1.0
+        ],
+        "extra_loss": [
+         0.0,
+         -0.05714285714285727,
+         0.1071428571428571
+        ],
+        "without_part_goes_to": {
+         "position": 33,
+         "original": 2,
+         "identity": 1
+        }
+       },
+       "identity_minus_position": [
+        0.03658536585365857,
+        -0.06439756608639571,
+        0.10050523760574226
+       ]
+      },
+      "22": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "position": 72,
+        "identity": 127,
+        "original": 1
+       },
+       "identity": {
+        "n": 127,
+        "entities": 11,
+        "keep_without_part": [
+         0.9212598425196851,
+         0.8740157480314961,
+         0.9655172413793105
+        ],
+        "keep_without_rand": [
+         0.9291338582677166,
+         0.8593721064814813,
+         0.9841269841269841
+        ],
+        "extra_loss": [
+         0.007874015748031482,
+         -0.040322580645161255,
+         0.052240025363379204
+        ],
+        "without_part_goes_to": {
+         "identity": 117,
+         "position": 10
+        }
+       },
+       "position": {
+        "n": 72,
+        "entities": 11,
+        "keep_without_part": [
+         0.9861111111111112,
+         0.9574392097264437,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.9583333333333334,
+         0.9146341463414633,
+         1.0
+        ],
+        "extra_loss": [
+         -0.02777777777777779,
+         -0.07407407407407418,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 71,
+         "identity": 1
+        }
+       },
+       "identity_minus_position": [
+        0.03565179352580927,
+        -0.038461538461538325,
+        0.10241147671494048
+       ]
+      },
+      "26": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "position": 113,
+        "identity": 83,
+        "original": 4
+       },
+       "identity": {
+        "n": 83,
+        "entities": 11,
+        "keep_without_part": [
+         0.9036144578313253,
+         0.823529411764706,
+         0.9622641509433962
+        ],
+        "keep_without_rand": [
+         0.927710843373494,
+         0.863013698630137,
+         0.9824637023593465
+        ],
+        "extra_loss": [
+         0.02409638554216864,
+         -0.017857142857142905,
+         0.08571428571428574
+        ],
+        "without_part_goes_to": {
+         "identity": 75,
+         "position": 8
+        }
+       },
+       "position": {
+        "n": 113,
+        "entities": 11,
+        "keep_without_part": [
+         0.9823008849557522,
+         0.959016393442623,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.9734513274336283,
+         0.9473684210526316,
+         1.0
+        ],
+        "extra_loss": [
+         -0.008849557522123908,
+         -0.02877870780298831,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "position": 111,
+         "identity": 2
+        }
+       },
+       "identity_minus_position": [
+        0.03294594306429255,
+        -0.014960964681194464,
+        0.10860429446735856
+       ]
+      },
+      "30": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 143,
+        "position": 34,
+        "identity": 23
+       },
+       "identity": {
+        "n": 23,
+        "entities": 8,
+        "keep_without_part": [
+         0.9565217391304348,
+         0.8125000000000001,
+         1.0
+        ],
+        "keep_without_rand": [
+         0.9130434782608695,
+         0.7856366459627329,
+         1.0
+        ],
+        "extra_loss": [
+         -0.0434782608695653,
+         -0.09677419354838723,
+         0.0
+        ],
+        "without_part_goes_to": {
+         "original": 1,
+         "identity": 22
+        }
+       },
+       "position": {
+        "n": 34,
+        "entities": 11,
+        "keep_without_part": [
+         0.9705882352941176,
+         0.9285714285714285,
+         1.0
+        ],
+        "keep_without_rand": [
+         1.0,
+         1.0,
+         1.0
+        ],
+        "extra_loss": [
+         0.02941176470588236,
+         0.0,
+         0.07142857142857151
+        ],
+        "without_part_goes_to": {
+         "position": 33,
+         "original": 1
+        }
+       },
+       "identity_minus_position": [
+        -0.07289002557544766,
+        -0.1682027649769584,
+        0.0
+       ]
+      },
+      "34": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "38": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "42": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "46": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      },
+      "50": {
+       "n": 200,
+       "entities": 11,
+       "whole_routes": {
+        "original": 200
+       },
+       "identity": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "position": {
+        "n": 0,
+        "entities": 0,
+        "keep_without_part": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "keep_without_rand": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "extra_loss": [
+         NaN,
+         NaN,
+         NaN
+        ],
+        "without_part_goes_to": {}
+       },
+       "identity_minus_position": [
+        NaN,
+        NaN,
+        NaN
+       ]
+      }
+     }
+    }
+   }
+  }
+ ]
+}

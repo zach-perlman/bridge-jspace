@@ -1,0 +1,91 @@
+{
+  "exp": "x51_cpu",
+  "item": "routes",
+  "spec": "jobs/c3/batch51.yaml (brief, section 2)",
+  "written_utc": "2026-10-28T16:45:11Z",
+  "code": {
+    "sha": "f78015b46ad33489b21fa505444974e7ee26ab93",
+    "dirty": true
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": null,
+    "BJ_SUITE_BATCH": null,
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "script": {
+    "path": "scripts/x51_cpu.py",
+    "sha256": "74bcc953913a163e8e43dd8605fe522029ac63ff9134972a041136eadb8223b5"
+  },
+  "inputs": {
+    "results/x6_routes/qwen35_9b_x6_routes/manifest.json": "dc68a57ee42f8f1506a1b8a8271e0aae494a496efa7471881e73f88e6c872b99",
+    "results/x6_routes/qwen35_9b_x6_routes/gate.json": "a33fd9ace698da7364f8e386b83db343faf59ef0a09d77afa93245f4b355bfe0",
+    "results/x6_routes/qwen35_9b_x6_routes/outcomes.jsonl": "92e7555272a78aeb6be16af73591fa82bd5bf665844dedde690ba42f3ffc15e2",
+    "results/x6_routes/x6_routes_27b/manifest.json": "920e5c9ee649293b5a686499837de8c666b75ff7834451f4054e2513a8cd0f95",
+    "results/x6_routes/x6_routes_27b/gate.json": "3f122d7387723dcc4371a257df3f771d387936219f67c12a2cdf85b391678221",
+    "results/x6_routes/x6_routes_27b/outcomes.jsonl": "50a2cad7fe9fa2e660051f1cf79867dee4a63e31e7782acdbf0a9bccb8935d94",
+    "results/x6_routes/muse30b_x6_routes/manifest.json": "dba348b237caef6e60a0e0cc989ce6bf18aef9b486211492ab5bf425a1c83f56",
+    "results/x6_routes/muse30b_x6_routes/gate.json": "37949f0376f7684322247903324699bff0991f4947c8a5a834f65a1bb86ef4b6",
+    "results/x6_routes/muse30b_x6_routes/outcomes.jsonl": "08e7cb0eda6debda00aae4724489969fdd9bb41a2307db3ed7a22cf373a3e47f",
+    "results/x6_routes/qwen35_9b_x6_routes_x47_1/manifest.json": "cd88cf08d4fbafd2cc1f3c6c7babfc0bde2e97bf987182885f321140012cae1f",
+    "results/x6_routes/qwen35_9b_x6_routes_x47_1/gate.json": "5f3ea8640ac2e19e5e9bfbd387d9b398e856338ae73ad95ee4a5e290c71e1e35",
+    "results/x6_routes/qwen35_9b_x6_routes_x47_1/outcomes.jsonl": "f18780e06906e8ebf1fdfca11ca8d44d761867743f53672ab8dc9b029765ff0f",
+    "results/x6_routes/x6_routes_x47_1_27b/manifest.json": "e1ca2d2bac54827d60c38c65f32945861e30dce7b83c9be425a171a5a4709489",
+    "results/x6_routes/x6_routes_x47_1_27b/gate.json": "e899022148f82a8ec8578c3a2418b9a3bfe5fbcb8761dcc3a64b18c7a8d97afe",
+    "results/x6_routes/x6_routes_x47_1_27b/outcomes.jsonl": "dea9dbe43b35d84430386b048d96677c194ae091edac36a19431d97165f6e9aa",
+    "results/x6_routes/muse30_x6_routes_x47_1/manifest.json": "803c144d6eb1720a71121cd8b82ff717c068f6125cfd72b684f5628943f8fdb1",
+    "results/x6_routes/muse30_x6_routes_x47_1/gate.json": "2daef01767ceb4c56f58794932ceb01bd1826540027a23ed64cc12920815c09c",
+    "results/x6_routes/muse30_x6_routes_x47_1/outcomes.jsonl": "d194de93d215996d83af7be0c7dc1fff095eb1f762b0fa371afde24c4b16d10f",
+    "results/x47_anatomy/qwen35_9b_x47_anatomy/manifest.json": "a796f8fd2a8bb875e2269a6986d51bfcd61cff993a35490bdf868b01a7deb7b1",
+    "results/x47_anatomy/qwen35_9b_x47_anatomy/gate.json": "ba920a011ba1018a7bf1e4e768af95e7382fea22ddd46a5405e971d613653fe1",
+    "results/x47_anatomy/qwen35_9b_x47_anatomy/outcomes.jsonl": "578ed92fddd19ad85cd054e57520c3d22ac8d224f2b3485ce625dbbc3afe8bc3",
+    "results/x47_anatomy/x49_4_anatomy_27b/manifest.json": "f654a24f53f54a15a17f08fd7820013e4dc4569896d5b6f6e5d76aa968c63272",
+    "results/x47_anatomy/x49_4_anatomy_27b/gate.json": "47ccb1e9f5e52f5e5fc33581cd3cd193a7574628eb0cacaa160e3616a7f29097",
+    "results/x47_anatomy/x49_4_anatomy_27b/outcomes.jsonl": "892d87ea09a2f1f17ed69b582cc4f3cd97791f4ad9fed05b86a8c7b7c578e5c0",
+    "results/x47_anatomy/muse30_x47_anatomy/manifest.json": "55973e5cfe688e3f5107f97ff6f3f543b7c89a12c5cb0639eeb53151815db888",
+    "results/x47_anatomy/muse30_x47_anatomy/gate.json": "36338b9540392f057bc0b717f9098a2afe5ec8901e799ef3bdc887f6df9d2fea",
+    "results/x47_anatomy/muse30_x47_anatomy/outcomes.jsonl": "044da40f2e52f0472dfced028784172e20a508b8ec2e73157ec503d5a4a5e6d1"
+  },
+  "n_boot": 10000,
+  "seeds": {
+    "bootstrap": 0
+  },
+  "runs": {
+    "main": {
+      "qwen3.5-9b": "qwen35_9b_x6_routes",
+      "qwen3.6-27b": "x6_routes_27b",
+      "muse-glimmer-30b": "muse30b_x6_routes"
+    },
+    "47.1": {
+      "qwen3.5-9b": "qwen35_9b_x6_routes_x47_1",
+      "qwen3.6-27b": "x6_routes_x47_1_27b",
+      "muse-glimmer-30b": "muse30_x6_routes_x47_1"
+    },
+    "anatomy": {
+      "qwen3.5-9b": "qwen35_9b_x47_anatomy",
+      "qwen3.6-27b": "x49_4_anatomy_27b",
+      "muse-glimmer-30b": "muse30_x47_anatomy"
+    }
+  },
+  "condition": "C2",
+  "reader": "PP",
+  "clusters": "bridge items (entity)",
+  "parts_47_1": {
+    "J++ k = 25": [
+      "no_jpp",
+      "no_jpp_rand"
+    ],
+    "J++ k = 100": [
+      "no_jpp100",
+      "no_jpp100_rand"
+    ],
+    "atoms 26-100": [
+      "no_jpp26_100",
+      "no_jpp26_100_rand"
+    ]
+  },
+  "anatomy_part": [
+    "no_J",
+    "no_J_rand"
+  ]
+}

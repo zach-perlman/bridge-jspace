@@ -27,6 +27,7 @@ uv run python scripts/x51_cpu.py z1        # likewise routes / recall / concat /
 from __future__ import annotations
 
 import argparse
+import collections
 import hashlib
 import json
 import math
@@ -257,9 +258,188 @@ def item_z1(n_boot: int = N_BOOT) -> Path:
     return out
 
 
+# ---- 2. route split of the lookup's J++ dependence ----------------------------------------------------------------
+
+MODELS = ("qwen3.5-9b", "qwen3.6-27b", "muse-glimmer-30b")
+ROUTES_MAIN = {"qwen3.5-9b": "qwen35_9b_x6_routes", "qwen3.6-27b": "x6_routes_27b",
+               "muse-glimmer-30b": "muse30b_x6_routes"}  # fmt: skip
+ROUTES_471 = {"qwen3.5-9b": "qwen35_9b_x6_routes_x47_1", "qwen3.6-27b": "x6_routes_x47_1_27b",
+              "muse-glimmer-30b": "muse30_x6_routes_x47_1"}  # fmt: skip
+ANATOMY = {"qwen3.5-9b": "qwen35_9b_x47_anatomy", "qwen3.6-27b": "x49_4_anatomy_27b",
+           "muse-glimmer-30b": "muse30_x47_anatomy"}  # fmt: skip
+PARTS_471 = {"J++ k = 25": ("no_jpp", "no_jpp_rand"), "J++ k = 100": ("no_jpp100", "no_jpp100_rand"),
+             "atoms 26-100": ("no_jpp26_100", "no_jpp26_100_rand")}  # fmt: skip
+SPLIT_ROUTES = ("identity", "position")
+LOOKUP_CONDITION = "C2"
+FIG_MIN_N = 10  # the by-layer figure leaves out a route's point when fewer items take it (the table keeps them)
+
+
+def route_split(rows: list[dict], part: str, rand: str, n_boot: int = N_BOOT) -> dict[str, Any]:
+    """The lookup's rows of one condition and layer (arms whole / part / rand): per route r in SPLIT_ROUTES, the items
+    whose whole-change answer takes route r; their share keeping r without the part and without its random twin; the
+    extra loss = keep(rand) - keep(part) (X0's excess with S_whole = 1 on these items); identity minus position on the
+    same draws (clusters = bridge items, joint over both subsets). Also every route's share under the whole change and
+    where the items' answers go without the part."""
+    by = {(r["scene"], r["arm"]): r for r in rows}
+    scenes = [s for s in dict.fromkeys(r["scene"] for r in rows) if all((s, a) in by for a in ("whole", part, rand))]
+    ents = [by[(s, "whole")]["entity"] for s in scenes]
+    if not scenes:
+        return {"n": 0}
+    whole = {s: by[(s, "whole")]["route"] for s in scenes}
+    sw: dict[str, list[int]] = {}
+    for rt in SPLIT_ROUTES:
+        sw[f"{rt}|in"] = [int(whole[s] == rt) for s in scenes]
+        for a in (part, rand):
+            sw[f"{rt}|{a}"] = [int(whole[s] == rt and by[(s, a)]["route"] == rt) for s in scenes]
+    rr = X.resampled_rates(sw, ents, n_boot, BOOT_SEED)
+    out: dict[str, Any] = {"n": len(scenes), "entities": len(set(ents)),
+                           "whole_routes": dict(collections.Counter(whole.values()))}  # fmt: skip
+    draws = {}
+    for rt in SPLIT_ROUTES:
+        n_rt = sum(sw[f"{rt}|in"])
+        with np.errstate(divide="ignore", invalid="ignore"):
+            den = np.where(rr[f"{rt}|in"] > 0, rr[f"{rt}|in"], np.nan)
+            keep_r = {a: rr[f"{rt}|{a}"] / den for a in (part, rand)}
+        keep = {a: sum(sw[f"{rt}|{a}"]) / n_rt if n_rt else math.nan for a in (part, rand)}
+        draws[rt] = keep_r[rand] - keep_r[part]
+        out[rt] = {"n": n_rt, "entities": len({e for e, x in zip(ents, sw[f"{rt}|in"], strict=True) if x}),
+                   "keep_without_part": ci3(keep[part], keep_r[part]), "keep_without_rand": ci3(keep[rand], keep_r[rand]),
+                   "extra_loss": ci3(keep[rand] - keep[part], draws[rt]),
+                   "without_part_goes_to": dict(collections.Counter(by[(s, part)]["route"] for s in scenes
+                                                                    if whole[s] == rt))}  # fmt: skip
+    a, b = SPLIT_ROUTES
+    out["identity_minus_position"] = ci3(out[a]["extra_loss"][0] - out[b]["extra_loss"][0], draws[a] - draws[b])
+    return out
+
+
+def lookup_rows(path: Path, layer: int | None = None) -> list[dict]:
+    return [r for r in X.read_jsonl(path) if r["reader"] == X.LOOKUP and r.get("condition") == LOOKUP_CONDITION
+            and (layer is None or r.get("layer") == layer)]  # fmt: skip
+
+
+def routes_model(target: str, n_boot: int = N_BOOT) -> dict[str, Any]:
+    res: dict[str, Any] = {"target": target, "layer": X.PREDICTED[target], "sources": {}}
+    main = pins.RESULTS_DIR / "x6_routes" / ROUTES_MAIN[target]
+    m = json.loads((main / "manifest.json").read_text())
+    assert m["layer"] == X.PREDICTED[target], (main, m["layer"])
+    gate = json.loads((main / "gate.json").read_text())["gate"][LOOKUP_CONDITION]
+    res["sources"]["main"] = {"run": main.name, "gate_pass": gate["pass"],
+                              "J++ k = 25": route_split(lookup_rows(main / "outcomes.jsonl"), "no_jpp", "no_jpp_rand", n_boot)}  # fmt: skip
+    s471 = pins.RESULTS_DIR / "x6_routes" / ROUTES_471[target]
+    gate = json.loads((s471 / "gate.json").read_text())["gate"][LOOKUP_CONDITION]
+    rows = lookup_rows(s471 / "outcomes.jsonl")
+    res["sources"]["47.1"] = {"run": s471.name, "gate_pass": gate["pass"],
+                              **{p: route_split(rows, a, b, n_boot) for p, (a, b) in PARTS_471.items()}}  # fmt: skip
+    an = pins.RESULTS_DIR / "x47_anatomy" / ANATOMY[target]
+    am = json.loads((an / "manifest.json").read_text())
+    gate = json.loads((an / "gate.json").read_text())["gate"][LOOKUP_CONDITION]
+    rows = lookup_rows(an / "outcomes.jsonl")
+    res["sources"]["anatomy"] = {"run": an.name, "gate_pass": gate["pass"], "fixed_layer": am["fixed_layer"],
+                                 "by_layer": {str(la): route_split([r for r in rows if r["layer"] == la], "no_J", "no_J_rand", n_boot)
+                                              for la in sorted({r["layer"] for r in rows if r["layer"] is not None})}}  # fmt: skip
+    return res
+
+
+def routes_line(target: str, src: str, layer: Any, part: str, c: dict) -> str:
+    if not c.get("n"):
+        return f"| {target} | {src} | {layer} | {part} | 0 | | | | | | |"
+    i, p = c["identity"], c["position"]
+    return (f"| {target} | {src} | {layer} | {part} | {c['n']} | {i['n']} | {fmt(i['extra_loss'])} | {p['n']} | "
+            f"{fmt(p['extra_loss'])} | {fmt(c['identity_minus_position'])} | {c['whole_routes']} |")  # fmt: skip
+
+
+def routes_figure(models: list[dict], path: Path) -> None:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    fig, axes = plt.subplots(1, 1 + len(models), figsize=(3.6 * (1 + len(models)), 3.4), squeeze=False)
+    ax = axes[0][0]
+    xs = np.arange(len(models))
+    for j, (rt, col) in enumerate(zip(SPLIT_ROUTES, (COLORS["blue"], COLORS["orange"]), strict=True)):
+        v = [mm["sources"]["main"]["J++ k = 25"][rt]["extra_loss"] for mm in models]
+        pt = np.array([x[0] for x in v])
+        err = np.array([[x[0] - x[1], x[2] - x[0]] for x in v]).T
+        ax.bar(xs + (j - 0.5) * 0.36, pt, 0.34, yerr=err, color=col, capsize=2, label=f"{rt}-route items",
+               error_kw={"lw": 0.8})  # fmt: skip
+    ax.set_xticks(xs, [f"{mm['target']}\nL{mm['layer']}" for mm in models], fontsize=7)
+    ax.axhline(0, color="k", lw=0.6)
+    ax.set_ylabel("extra loss without J++ (beyond random)")
+    ax.set_title("routes C2, the lookup, at L", fontsize=9)
+    ax.legend(fontsize=7, frameon=False)
+    for ax, mm in zip(axes[0][1:], models, strict=True):
+        bl = mm["sources"]["anatomy"]["by_layer"]
+        las = [int(la) for la in bl]
+        for rt, col in zip(SPLIT_ROUTES, (COLORS["blue"], COLORS["orange"]), strict=True):
+            v = np.array([bl[str(la)][rt]["extra_loss"] if bl[str(la)].get(rt, {}).get("n", 0) >= FIG_MIN_N
+                          else [np.nan] * 3 for la in las])  # fmt: skip
+            ax.plot(las, v[:, 0], "-o", color=col, ms=4, lw=1.5, label=rt)
+            ax.fill_between(las, v[:, 1], v[:, 2], color=col, alpha=0.15, lw=0)
+        ax.axvline(mm["sources"]["anatomy"]["fixed_layer"], color=COLORS["gray"], lw=0.8, ls=":")
+        ax.axhline(0, color="k", lw=0.6)
+        ax.set_xlabel("layer")
+        ax.set_title(f"{mm['target']}: anatomy by layer", fontsize=8)
+    fig.suptitle(f"The lookup's extra loss without J++ by route (95% CI, bridge items; by layer only routes with >= "
+                 f"{FIG_MIN_N} items; UNVERIFIED)", fontsize=9)  # fmt: skip
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
+
+
+def item_routes(n_boot: int = N_BOOT) -> Path:
+    srcs = ([pins.RESULTS_DIR / "x6_routes" / r for d in (ROUTES_MAIN, ROUTES_471) for r in d.values()]
+            + [pins.RESULTS_DIR / "x47_anatomy" / r for r in ANATOMY.values()])  # fmt: skip
+    inputs = [s / f for s in srcs for f in ("manifest.json", "gate.json", "outcomes.jsonl")]
+    out = start("routes", inputs, {"runs": {"main": ROUTES_MAIN, "47.1": ROUTES_471, "anatomy": ANATOMY},
+                                   "condition": LOOKUP_CONDITION, "reader": X.LOOKUP, "clusters": "bridge items (entity)",
+                                   "parts_47_1": PARTS_471, "anatomy_part": ["no_J", "no_J_rand"]})  # fmt: skip
+    models = [routes_model(t, n_boot) for t in MODELS]
+    head = (
+        "| model | source | layer | part | C2 items | identity-route n | identity extra loss | position-route n | "
+        "position extra loss | identity - position | routes under the whole change |"
+    )
+    sep = "|---|---|---|---|---|---|---|---|---|---|---|"
+    lines = ["# Route split of the lookup's J++ dependence (batch 51, CPU item 2)", "",
+             "Descriptive, after the data. Routes scenes, condition C2 (Iris picked B; B's and C's locker sentences "
+             "swapped, B -> a new digit), the lookup (PP), X0's chat read. An item's route = its lookup answer under the "
+             "whole change (x6_routes.classify: identity = B's new locker digit, position = C's digit at B's old slot). "
+             "On the items of each route: extra loss = share still taking that route without a random part of the "
+             "part's share minus share still taking it without the part (X0's excess with S_whole = 1 on these items). "
+             f"Cluster bootstrap over bridge items ({n_boot:,} resamples, seed {BOOT_SEED}, 95% intervals; the two "
+             "routes' subsets on the same draws, so identity - position is paired). Sources: the routes run of record "
+             "(J++ k = 25 at L), the 47.1 run (C2; J++ at k = 25 and 100, atoms 26-100 with 1-25 kept), the 47.8 / 49.4 "
+             "anatomy (its test half, the layer's own 25 atoms, every sampled layer). UNVERIFIED.", "",
+             "## At the fixed layer", "", head, sep]  # fmt: skip
+    for mm in models:
+        s = mm["sources"]
+        lines.append(routes_line(mm["target"], f"{s['main']['run']} (gate {s['main']['gate_pass']})", mm["layer"],
+                                 "J++ k = 25", s["main"]["J++ k = 25"]))  # fmt: skip
+        for p in PARTS_471:
+            lines.append(routes_line(mm["target"], f"{s['47.1']['run']} (gate {s['47.1']['gate_pass']})", mm["layer"],
+                                     p, s["47.1"][p]))  # fmt: skip
+        fl = str(s["anatomy"]["fixed_layer"])
+        if fl in s["anatomy"]["by_layer"]:
+            lines.append(routes_line(mm["target"], f"{s['anatomy']['run']} (gate {s['anatomy']['gate_pass']})", fl,
+                                     "J++ k = 25 (layer's own)", s["anatomy"]["by_layer"][fl]))  # fmt: skip
+    lines += ["", "## The anatomy by layer (one-layer removal, the layer's own 25 atoms)", "", head, sep]
+    for mm in models:
+        a = mm["sources"]["anatomy"]
+        for la, c in a["by_layer"].items():
+            lines.append(routes_line(mm["target"], a["run"], la, "J++ k = 25", c))
+    lines += ["", "Where the identity-route items' answers go without J++ (routes run of record):", ""]
+    for mm in models:
+        c = mm["sources"]["main"]["J++ k = 25"]
+        lines.append(f"- {mm['target']}: identity items -> {c['identity']['without_part_goes_to']}; position items -> "
+                     f"{c['position']['without_part_goes_to']}")  # fmt: skip
+    routes_figure(models, out / "routes.png")
+    finish(out, "routes", {"models": strip(models)}, lines)
+    return out
+
+
 # ---- main ---------------------------------------------------------------------------------------------------------
 
-ITEMS = {"z1": item_z1}
+ITEMS = {"z1": item_z1, "routes": item_routes}
 
 
 def main() -> None:
