@@ -81,7 +81,8 @@ K_WIDE = 100  # dumbest way 2
 WIDE_TARGETS = ("qwen3.5-9b",)
 GAINS = (0.0, 0.5, 1.0, 1.5, 2.0)
 CORNERS = ((0.0, 1.0), (1.0, 0.0), (2.0, 0.0), (0.0, 2.0))
-RAND_RULE_CORNERS = ((1.0, 0.0), (2.0, 0.0))  # "random corners <= 0.15", as computed (module docstring)
+RAND_RULE_CORNERS = ((1.0, 0.0), (2.0, 0.0))  # "random corners <= 0.15": Dan's reading (amendment 3, ~15:40)
+MATCHED_CORNERS, MATCHED_TOL = ((0.0, 1.0), (0.0, 2.0)), 0.10  # matched-share controls (amendment 3), reported
 N_PROMPTS = 5  # the plan's rendered prompts
 EPS = 1e-9  # a value exactly at a bar counts as at the bar
 REC_J, REC_NOU, RAND_MAX = 0.5, 0.5, 0.15  # (a), the recall
@@ -480,8 +481,12 @@ def rule(recall: dict[str, float], lookup: dict[str, float]) -> dict:
                "a_prime": cond["recall J(0,2) >= 0.5"] and cond["recall J(0,2)-U <= 0.2"]}  # fmt: skip
     holds = [k for k in ("a", "b", "a_prime") if clauses[k]]
     literal = a_core and all(rc[gname("R", a, b)] <= RAND_MAX + EPS for a, b in CORNERS)
+    # Dan (amendment 3, ~15:40): R(0,1) and R(0,2) are matched-share controls, not nulls: within 0.10 of their J cells
+    matched = {f"{w} R({a:g},{b:g}) within {MATCHED_TOL} of J": abs(x[gname("R", a, b)] - x[gname("J", a, b)]) <= MATCHED_TOL + EPS
+               for w, x in (("recall", rc), ("lookup", lk)) for a, b in MATCHED_CORNERS}  # fmt: skip
     return {"conditions": cond, "clauses": clauses, "holds": holds,
-            "label": " and ".join(LABELS[k] for k in holds) or LABELS["c"], "a_literal_all_four_corners": literal}  # fmt: skip
+            "label": " and ".join(LABELS[k] for k in holds) or LABELS["c"], "a_literal_all_four_corners": literal,
+            "matched_share_controls": matched}  # fmt: skip
 
 
 def loss_numbers(losses: list[dict], names: list[str], n_boot: int = X.N_BOOT, seed: int = X.BOOT_SEED) -> dict:

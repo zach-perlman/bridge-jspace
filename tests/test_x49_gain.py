@@ -404,3 +404,14 @@ def test_the_committed_predictions_file_has_the_q49_1_block():
     if not text:
         pytest.skip("the predictions file is not in this checkout's HEAD")
     assert f"**{G.QUESTION}**" in text and isinstance(G.dan_answer(), str)
+
+
+def test_matched_share_controls_are_read_within_a_tenth_of_their_cells():
+    # Dan (batch 49 amendment 3): R(0,1), R(0,2) are matched-share controls, within 0.10 of J(0,1), J(0,2)
+    grid = {G.gname("J", a, b): 0.5 for a in G.GAINS for b in G.GAINS}
+    grid.update({G.gname("R", a, b): 0.0 for a, b in G.CORNERS})
+    grid[G.NOU] = 0.5
+    rc, lk = dict(grid), dict(grid)
+    rc[G.gname("R", 0, 1)], rc[G.gname("R", 0, 2)] = 0.55, 0.30
+    m = G.rule(rc, lk)["matched_share_controls"]
+    assert m["recall R(0,1) within 0.1 of J"] and not m["recall R(0,2) within 0.1 of J"]
