@@ -44,7 +44,7 @@ seeds:
 - 888
 - 2510
 - 4707
-notes: 'Batch 47 amendment 1 (Dan 28 Oct ~02:30), cut first if late (queue slot after 48.4). Estimate from the ledger as 47.7(a),
+notes: 'SUPERSEDED (batch 49 amendment 1, Dan 28 Oct ~14:10; jobs/c3/batch49.yaml): cut, never run (or stopped). Batch 47 amendment 1 (Dan 28 Oct ~02:30), cut first if late (queue slot after 48.4). Estimate from the ledger as 47.7(a),
   with competence on 1,400 cases x 2 readers x 2 renderings (no stored rows: the colour prompts are new) and 600 items x (6
   forwards + 4 reads of 6 rows): 9B 0.6, Muse 0.8 GPU-h (Dan''s figure for (b): ~0.8 in total; the arithmetic says ~1.4).
   Writes as 47.7(a); no verdict. By hand after Dan''s Q47.7: uv run python scripts/x47_value.py verdict --part b --runs qwen35_9b_x47_7b

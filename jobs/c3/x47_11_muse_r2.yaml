@@ -1,0 +1,64 @@
+id: x47_11_muse_r2
+title: "Batch 47.11 on Muse (L26): is the pointer item-agnostic? Routes scenes (another item moved) with fruits and names as the items beside animals, matched digits / people / slots; U fit on animals, not refit: without U vs random, only U; a per-type refit U' on half the scenes as the fallback; SEALED until Q47.11"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.35
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x47_agnostic.py run --name muse30_x47_agnostic_r2 --why "batch 47, test 47.11 (jobs/c3/batch47.yaml amendment 4; Q47.11, sealed): routes scenes with animals, fruits and names as the items; U fit on animals not refit, without U vs random, only U; the refit U' per type on half the scenes beside; Muse at L26"
+question: >-
+  Is the pointer item-agnostic: does U, the address directions fit on animal scenes, carry the lookup's position route
+  on scenes whose items are fruits or people's names as it does on animals (without U cuts position answers >= 0.3
+  beyond random, within 0.1 of the animal result; only U sends >= 0.15 of lookups to the position), or is the code slot
+  x type (only a U' refit on that type's scenes does)?
+why_it_matters: >-
+  The pointer is read as an address, not as part of the item's identity (47.0: not verbalizable; 45a / 45e: layout-free,
+  item-specific controls fail). An address should not care what is stored at it. If U transfers to objects and names
+  unchanged, the slot code is one code for any item; if only a per-type refit works, the "address" is entangled with
+  the item type and the account needs a weaker word. On Muse the stored animal fall is 0.27, under the rule's 0.3 bar:
+  the in-job animal reference says whether that is the design or the model.
+hypotheses:
+  Q47.11: "Dan's answer in predictions/2026-10-28_dan.md (Q47.11, per model: yes / no on the 9B; on Muse); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x47_agnostic.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.11), verbatim: ""An address, not an animal code" if without U cuts
+  position answers >= 0.3 beyond random on both new item types (within 0.1 of the animal result), and only-U gives
+  position >= 0.15. If it fails, refit U per item type and report both: the code is slot x type."
+  As computed (fixed before any run; Dan may override before the run): Scenes: x6_routes' layout (three locker
+  sentences first, then three picks; C2, another item moved: Iris picks B in S, B's and C's locker sentences swapped,
+  B's number new, S's digits disjoint from O's), 700 generated per type, three item types in one job: animals (the
+  routes test's 32 one-token animals; the in-job reference), fruits (the one-token fruits of a fixed 30-word list, 20
+  on this tokenizer; the recall asks "What color is <p>'s pick?", a one-word read), names (suite_v1's 59 one-token
+  people's names as the items, "The locker of Alice is 5." / "Iris picked Alice.", the three items never among the
+  scene's three pickers; no attribute fact exists for a name, so the recall is skipped and said so). Matched: per
+  scene index the five digits, the three people, the slot order and the pick order come from one shared stream (seed
+  4711); only the items come from the type's own stream. Gate 0.80 per reader per type: O's read accuracy (X0's chat
+  read: the digit's space token appended for a digit reader, nothing for the word reader) over the type's generated
+  scenes; the items are the first 300 scenes in generator order on which the lookup says and reads O's and S's
+  answers right (a failed lookup gate = the type is "not tested"); the recall is read on those of them it gets right
+  too, where its gate passed (reported, not in the rule; a failed recall gate does not stop the lookup test). Arms at
+  the bridge word at L26 (Δ = h_S - h_O added on O; switch = the top token is S's answer's first token; the lookup's
+  top token classified identity / position / value / original / other): whole; no_alf = Δ - U U^T Δ vs no_alf_rand =
+  Δ minus a random part of U's share of ||Δ||^2 (X0's random subspace, seed 888 + L); keep_alf = U U^T Δ vs
+  keep_alf_rand. U = x47_atoms.pointer_basis (x0_massmean's layout-free mass-mean slot directions on the probe's fresh
+  animal scenes, muse30b_x0_probe_v4; never refit). The fallback, always computed, read only where the rule fails:
+  per type a seeded split (seed 4712) of the chosen items into a fit half and a test half; U' = x0_massmean.mass_mean
+  of O's bridge-word states by the O bridge's locker slot on the fit half (rank 2); no_refit / no_refit_rand /
+  keep_refit / keep_refit_rand read on the test half only. Reading: per type, position share = the share of its
+  lookup items whose top token is the position route's digit; fall = position share(no_alf_rand) - position
+  share(no_alf), paired cluster bootstrap over the O bridge item (10,000, seed 0) beside the point; the animal result =
+  the same job's animal type (the stored routes run muse30b_x6_routes, fall 0.27, only-U 0.29, reported beside). A
+  new type holds if fall >= 0.3, |fall - fall_animals| <= 0.1 and the only-U position share >= 0.15 (point estimates,
+  EPS 1e-9). Q47.11 on this model: yes if fruits and names both hold; no otherwise; "not tested" if the animal type or
+  a new type failed its lookup gate. Where a type fails, its refit's reading on the test half with the same bars
+  (fall' >= 0.3, keep' >= 0.15): "slot x type" if the refit passes where the fixed U did not. Scored by hand after
+  Dan's Q47.11 is committed: scripts/x47_agnostic.py verdict.
+controls:
+- 'no_alf_rand: a random part of U''s share of ||Δ||^2 removed (X0''s random subspace, seed 888 + L); keep_alf_rand: that part alone'
+- 'the animal type in the same job (the reference the rule compares to), and the stored routes run''s numbers beside it'
+- 'the recall (legs / colour) on the same patch where its gate passed; none for names (said so)'
+- 'the refit U'' per type on half the scenes, read on the other half: the fallback the rule names'
+- "per item: the share of ||Δ||^2 held by U and by the refit basis U' (norms.jsonl); per type: cos^2 between U and U', the held-out slot read-out of U' (refit.json)"
+n: '300 lookup items per type (animals, fruits, names) of 700 generated each, where the lookup gate passes; plan check (CPU, tokenizer): 700 / 700 / 700 scenes generated, drops only "A and B share their fact" (animals 486, fruits 124); pools 32 animals, 20 fruits, 59 names on this tokenizer'
+seeds: [4711, 4712, 888, 0]
+notes: "Re-enqueued (r2, 28 Oct ~14:20) behind 48.1 9B in batch 49 amendment 1's order (jobs/c3/batch49.yaml); the first id was cancelled from pending before it ran. Batch 47 amendment 4 (Dan, 28 Oct ~03:00); queue position after 47.3 (batch47.yaml amendment 4 queue_order). SEALED: the run writes manifest, gate (the competence report: O read accuracy per reader and type, chosen items), competence, cases, outcomes (every arm's top token and route, both readers), norms and refit.json, no verdict. The competence report is the first thing the job prints (the plan on the Mac has no GPU: it checked the pools, the single-token lists on both tokenizers and 5 rendered prompts per type). By hand after Dan's Q47.11 is committed (CPU): uv run python scripts/x47_agnostic.py verdict (both runs) and view (10 random items per type, seed 0, prompts as read, the bridge word marked, every arm's answer). Reads per item: lookup 6 rows (10 on the test half), recall the same where read. GPU estimate from results/jobq/ledger_sesterce-h100x2.jsonl: x45k_muse_q2 (routes C0 + C2: competence on 1,400 scenes, then 600 items x 2 readers x 13 rows) took 943 s; this job: competence on 2,100 scenes but 3,500 reader-prompts (names have one reader) vs 2,800, and ~12,000 read rows vs 15,600; taken as 1.15x = ~1,100 s + 30 s setup = 0.31 h -> 0.35. Dan's estimate 0.6. BJ_TARGET=muse-glimmer-30b reads the pointer basis from results/x0_probe/muse30b_x0_probe_v4 (as x47_1_muse does)."

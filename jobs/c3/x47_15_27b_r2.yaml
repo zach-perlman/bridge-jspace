@@ -1,0 +1,72 @@
+id: x47_15_27b_r2
+title: "Batch 47.15 on the 27B (L32): one question, two sources. Routes scenes with a false-legs sentence per item; 'How many legs does <person>'s pick have?' from the text / from memory / no instruction; the change at the bridge word whole, without J++, without U + I (each against a random part), only J++, only U + I; SEALED until Q47.15"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.6
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=;
+  uv run python scripts/x47_source.py run --name x47_15_27b_r2 --why "batch 47, test 47.15 (jobs/c3/batch47.yaml, amendment 5; Q47.15, sealed): locker-first routes scenes (C2) plus one false-legs sentence per item after the picks (and, reported, before them); the legs question from the text / from memory / with no instruction; the change at the bridge word at L32 whole, without J++, without U + I, each against a random part of its share, only J++, only U + I; S's unedited read beside" &&
+  uv run python scripts/x47_source.py competence --name x47_15_27b_r2
+question: >-
+  When the same question ("How many legs does Iris's pick have?") is answered from the passage (a false digit stated
+  there) or from memory (the true legs), does the part of the bridge word's change that carries the answer follow the
+  source (from the text like a lookup: U + I needed, J++ not; from memory like a recall: J++ needed, U + I not), or the
+  question (the same split under both instructions)?
+why_it_matters: >-
+  The main test's reader and answer source are confounded: the lookup question is always answered from the prompt, the
+  recall from memory. Here one question can be answered either way and an instruction picks the source, so the J++ /
+  around-the-lens split can be attributed to the source or to the question.
+hypotheses:
+  Q47.15: "Dan's answer in predictions/2026-10-28_dan.md (Q47.15, per model: 27B; 9B; Muse, and the preferred source with no instruction); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x47_source.py verdict refuses until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.15), verbatim: ""The part follows the source": under from the text, the
+  answer behaves like a lookup (extra loss without J++ <= 0.10; without U + I >= 0.30 beyond random); under from
+  memory, like a recall (without J++ >= 0.30; without U + I <= 0.10); same scenes, same question; holds on >= 2 of 3
+  models. "The part follows the question": both instructions give the same split; then the readers' difference in the
+  main test was never about the source; report it as such. No-instruction condition: classify each item's unedited
+  answer as text or memory; the split within each class should match its instructed twin (descriptive; a check that
+  the instruction is not doing something else)." As computed (fixed before any run; Dan may override before the run):
+  scenes = x6_routes' C2 scenes (seed 2510, 700 generated; Iris's pick A -> B in S, B's and C's locker sentences
+  swapped, B's digit new; --condition C0 is the option "only the pick changes"), each plus three attribute sentences
+  "The <item> has <n> legs." with per-scene false digits (seed 4715 + scene id) drawn from 1-9 outside O's and S's
+  locker digits and outside all three items' true legs, distinct, in a seeded order independent of the locker order;
+  placement after (lockers, picks, attributes) decides, before (lockers, attributes, picks) is reported (dumbest way 2);
+  a base scene is kept only if it encodes in both placements. The question is the routes recall question; the
+  instruction ("Answer using only the passage." / "Ignore the passage; answer from what you know.") goes in the user
+  turn right after the question and before X0's digit instruction, so the three conditions share every token through
+  the end of the passage and the bridge is one token at one index in O, S and every condition (asserted per scene,
+  dumbest way 1); the read is X0's chat read (the top token after a space appended), the last token in every condition
+  (its index per condition recorded). Answers: text O -> A's false digit, S -> B's; memory O -> A's true legs, S -> B's.
+  Gate per placement, over every candidate scene: O's unedited read right in >= 0.80 under EACH instruction; eligible =
+  O and S said and read right under both instructions; the first 300 in generator order whose bridge entities have
+  class means (x0_massmean entity_means of x0_probe_v4_27b; drops counted). Refusal share (dumbest way 3, in gate.json):
+  per instruction and prompt, the share of unedited reads following the instruction / the other source / neither, and
+  of greedy texts with no digit. Edits at the bridge word at L32 on O, read by all three conditions (the change depends
+  on the shared prefix only): whole; without the J++ part (signed OMP, k = 25, the lens's letter-token atoms); without a
+  random part of its share (X0's random subspace, seed 888 + L); without the U + I part = the projection of the change
+  on span(U, I), U the 4 pointer directions (x0_massmean Alf of x0_probe_v4_27b, never refit), I = mu_B - mu_A
+  orthogonalized against the scene's 25 J++ atoms (x6_routes --identity's idout; the arm is x6's alf+idout); without a
+  random part of its share; only J++ / only U + I, each beside a random part of its share; S unedited (arm source).
+  Switch = the top token is S's answer under the condition (text: B's false digit; memory: B's true legs; no
+  instruction: B's digit of the class of the item's unedited O and S answers, both in that class). Extra loss of a part
+  = (1 - S_no_part / S_whole) - (1 - S_no_rand / S_whole), point estimates (EPS 1e-9 at the bars), paired
+  cluster-bootstrap CIs over the bridge items (10,000, seed 0) beside them. A condition is "like a lookup" if without
+  J++ <= 0.10 and without U + I >= 0.30; "like a recall" if without J++ >= 0.30 and without U + I <= 0.10; "can't tell"
+  if its whole cell is invalid (X0: S_whole < 0.30 or fewer than 30 switches); else "neither". Per model (placement
+  after): "follows the source" if text is like a lookup and memory like a recall; "follows the question" if both give
+  the same label (lookup or recall); else neither; a model whose gate fails is not tested. Batch: follows the source on
+  >= 2 of 3 models; else follows the question on >= 2 of 3 (the same count, as computed). No-instruction check
+  (descriptive): per class, the same numbers and label, matched against the instructed twin's; the preferred source =
+  the larger class share of the unedited O answers over the chosen items (text / memory, CI beside). Scored by hand:
+  scripts/x47_source.py verdict (label, model_rule, batch_rule).
+controls:
+- 'every removed or kept part against a random part of the same share of ||Δ||^2 (X0''s random subspace, seed 888 + L)'
+- 'the same scenes and the same question under both instructions (the items are chosen jointly: eligible under both)'
+- 'no instruction as a third condition (which source the model prefers unprompted; the split within each class against its instructed twin)'
+- 'placement before (the attribute sentences before the picks, addressable by the bridge word) beside placement after'
+- 'S unedited (arm source) and O unedited (arm none) beside every arm; the gate and refusal shares per instruction'
+n: 'up to 300 eligible scenes per placement (of 700 generated C2 scenes), where the gate passes; cluster bootstrap over the bridge items'
+seeds: [2510, 4715, 888, 0]
+notes: "Re-enqueued (r2, 28 Oct ~14:20) behind 48.1 9B in batch 49 amendment 1's order (jobs/c3/batch49.yaml); the first id was cancelled from pending before it ran. Batch 47 amendment 5 (Dan, 28 Oct ~03:10): 47.15 runs first of the three new tests, after 47.12 (27B, 9B, Muse in that order). Sealed: the run writes manifest, gate.json (gate, refusal shares, drops, items), cases.jsonl (per scene: the prompts' ids per condition, the false and true legs, the unedited answers' classes, chosen), competence.jsonl, outcomes.jsonl (per item, condition and arm: the top token, what it is, switched under text / memory), norms.jsonl (per item: ||Δ|| and the shares of J++, U + I, U alone, I alone and the random twins) and examples_greedy.jsonl (10 random items, seed 0); no verdict. The competence stage after the run prints the gate and refusal shares only (unsealed: it decides whether the test is read at all). By hand after Dan's Q47.15 is committed (CPU, after all three models): uv run python scripts/x47_source.py verdict --runs x47_15_27b qwen35_9b_x47_15 muse30_x47_15 (the rule, both placements, the no-instruction check and the verify-pack view: 10 random items, seed 0, prompts as read with the bridge word marked, every arm's answer and greedy text). Cost: competence over 2 placements x 700 scenes x 3 conditions (O and S generated together, 8 tokens, then each read alone), 2 forwards per item for Δ, and 11 rows per condition per item (10 O rows in one batch, S alone) for up to 600 items. Estimate from the mats box ledger (results/jobq/ledger_sesterce-h100x2.jsonl): x45k_27b_q2 (C0 + C2: competence over 1400 scenes x 2 readers, then 600 items x 2 readers x 13 rows) took 1517 s, x45p_27b (178 items x 2 readers x 7 rows + Δ) 243 s including the load; from these ~0.26 s per competence reader-scene and ~0.04 s per read row: competence 1400 x 3 x 0.26 = 1090 s, reads 600 x 3 x 11 x 0.04 = 790 s, Δ and greedy ~100 s, load ~100 s: ~2100 s = 0.58 h -> 0.6 (Dan's estimate ~1 GPU-h)."

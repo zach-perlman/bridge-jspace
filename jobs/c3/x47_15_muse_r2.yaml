@@ -1,0 +1,55 @@
+id: x47_15_muse_r2
+title: "Batch 47.15 on Muse (L26): one question, two sources. Routes scenes with a false-legs sentence per item; 'How many legs does <person>'s pick have?' from the text / from memory / no instruction; the change at the bridge word whole, without J++, without U + I (each against a random part), only J++, only U + I; SEALED until Q47.15"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.5
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=;
+  uv run python scripts/x47_source.py run --name muse30_x47_15_r2 --why "batch 47, test 47.15 (jobs/c3/batch47.yaml, amendment 5; Q47.15, sealed): locker-first routes scenes (C2) plus one false-legs sentence per item after the picks (and, reported, before them); the legs question from the text / from memory / with no instruction; the change at the bridge word at L26 whole, without J++, without U + I, each against a random part of its share, only J++, only U + I; S's unedited read beside" &&
+  uv run python scripts/x47_source.py competence --name muse30_x47_15_r2
+question: >-
+  When the same question ("How many legs does Iris's pick have?") is answered from the passage (a false digit stated
+  there) or from memory (the true legs), does the part of the bridge word's change that carries the answer follow the
+  source (from the text like a lookup: U + I needed, J++ not; from memory like a recall: J++ needed, U + I not), or the
+  question (the same split under both instructions)?
+why_it_matters: >-
+  The main test's reader and answer source are confounded: the lookup question is always answered from the prompt, the
+  recall from memory. Here one question can be answered either way and an instruction picks the source, so the J++ /
+  around-the-lens split can be attributed to the source or to the question.
+hypotheses:
+  Q47.15: "Dan's answer in predictions/2026-10-28_dan.md (Q47.15, per model: 27B; 9B; Muse, and the preferred source with no instruction); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x47_source.py verdict refuses until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.15), verbatim: ""The part follows the source": under from the text, the
+  answer behaves like a lookup (extra loss without J++ <= 0.10; without U + I >= 0.30 beyond random); under from
+  memory, like a recall (without J++ >= 0.30; without U + I <= 0.10); same scenes, same question; holds on >= 2 of 3
+  models. "The part follows the question": both instructions give the same split; then the readers' difference in the
+  main test was never about the source; report it as such. No-instruction condition: classify each item's unedited
+  answer as text or memory; the split within each class should match its instructed twin (descriptive; a check that
+  the instruction is not doing something else)." As computed: as jobs/c3/x47_15_27b.yaml, on Muse at L26 with the
+  pointer directions and class means of muse30b_x0_probe_v4 (x0_massmean Alf and entity_means, never refit; Muse's
+  class means miss some routes entities: in x6_routes --identity 10 of 300 C2 items were dropped, here the drop comes
+  before the first 300 are chosen and is counted): scenes = x6_routes' C2 scenes (seed 2510, 700 generated) plus three
+  false-legs sentences per scene (seed 4715 + scene id; digits of 1-9 outside O's and S's locker digits and every item's
+  true legs, distinct); placement after decides, before is reported; the instruction in the user turn after the
+  question and before the digit instruction (the bridge index and the passage's tokens shared across the conditions,
+  asserted); gate 0.80 per instruction on O's unedited read; eligible = O and S said and read right under both
+  instructions, the first 300 with class means; arms whole, without J++ (k = 25) / without U + I (span of U and idout),
+  each against a random part of its share (seed 888 + L), only J++ / only U + I with random twins, S unedited; switch =
+  the top token is S's answer under the condition; extra loss = (1 - S_no_part / S_whole) - (1 - S_no_rand / S_whole),
+  point estimates, EPS 1e-9; like a lookup if without J++ <= 0.10 and without U + I >= 0.30, like a recall if without
+  J++ >= 0.30 and without U + I <= 0.10, can't tell on an invalid cell (S_whole < 0.30 or < 30 switches), else neither;
+  follows the source if text is like a lookup and memory like a recall, follows the question if both give the same
+  label; the batch on >= 2 of 3 models; cluster-bootstrap CIs over the bridge items (10,000, seed 0); the
+  no-instruction check per class against its instructed twin and the preferred source (the larger class share of the
+  unedited O answers). Scored by hand: scripts/x47_source.py verdict.
+controls:
+- 'every removed or kept part against a random part of the same share of ||Δ||^2 (X0''s random subspace, seed 888 + L)'
+- 'the same scenes and the same question under both instructions (the items are chosen jointly: eligible under both)'
+- 'no instruction as a third condition (which source the model prefers unprompted; the split within each class against its instructed twin)'
+- 'placement before (the attribute sentences before the picks, addressable by the bridge word) beside placement after'
+- 'S unedited (arm source) and O unedited (arm none) beside every arm; the gate and refusal shares per instruction'
+n: 'up to 300 eligible scenes per placement (of 700 generated C2 scenes), where the gate passes; cluster bootstrap over the bridge items'
+seeds: [2510, 4715, 888, 0]
+notes: "Re-enqueued (r2, 28 Oct ~14:20) behind 48.1 9B in batch 49 amendment 1's order (jobs/c3/batch49.yaml); the first id was cancelled from pending before it ran. Batch 47 amendment 5 (Dan, 28 Oct ~03:10): 47.15 runs first of the three new tests, after 47.12 (27B, 9B, Muse in that order). Sealed as x47_15_27b: per-item outputs, no verdict; the competence stage after the run prints the gate and refusal shares only. Muse's chat template carries a dated system turn (the same in every prompt of a run; the bridge index is asserted within the run). The first linalg call is warmed before the model loads (x6_routes.warm_cusolver: Muse's 45k runs failed in cusolver on a full GPU). By hand after Dan's Q47.15 is committed: uv run python scripts/x47_source.py verdict --runs x47_15_27b qwen35_9b_x47_15 muse30_x47_15. Estimate from the mats box ledger: Muse's routes-style jobs run at ~0.85 of the 27B's time (x45k_muse_q5 1292 s vs x45k_27b_q2 1517 s; x45p_muse 196 s vs 243 s), so 0.85 x ~2100 s = ~1800 s = 0.5 h."
