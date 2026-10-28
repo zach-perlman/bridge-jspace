@@ -10,7 +10,7 @@
 - **The pointer is narrow:** it marks the first locker in a clean layout; naming an item first moves the lookup to identity. About half of the route around the lens is unexplained.
 - **For monitoring:** a lens on the bridge word shows which item is there, not where the model will read its answer.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at 9f7c40a5 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at d5f69311 from the run files.
 
 ## Setup
 
@@ -33,7 +33,7 @@
 ![Recall follows the J++ part of the bridge; the lookup mostly does not](../../figures/story/fig01_split.png)
 *Fig. 1.*
 
-- **Followed, not needed at one layer** (fixed in advance): taking the J++ part out of the changed prompt's state at a single layer leaves almost every recall answer in place on three models, so by our rule the recall follows the part rather than needs it.
+- **Followed, not needed at one layer** (fixed in advance): removing the J++ part from the changed prompt at one layer leaves almost every recall answer, so by our rule the recall follows it.
 
 ![The J++ part zeroed at one layer: the recall keeps its answers](../../figures/story/fig01c_zeroing.png)
 *Fig. 1c.*
@@ -76,7 +76,7 @@
 ![The recall reads the item's earlier mention when its locker came first](../../figures/story/fig03c_earlier_mention.png)
 *Fig. 3c.*
 
-- **Token by token and layer by layer (9B, fixed in advance):** both readers read the bridge word up to about layer 16, then the question and the last token carry the answer; with the locker after the pick no single locker-sentence token carries the lookup at one layer. The recall stops reading the bridge word at layer 24, before Zach's late band.
+- **Token by layer (fixed in advance, 9B and Muse):** both readers read the bridge word to about layer 16 (9B) / 28 (Muse), then the question and last token carry the answer; no single locker-sentence token carries the lookup at one layer.
 
 ![The lookup reads the bridge word to layer 16, the recall to layer 14](../../figures/story/fig03d_depth_map.png)
 *Fig. 3d.*
@@ -106,21 +106,24 @@
 ![The lookup's identity route lies outside the lens, not in directions 26-100](../../figures/story/fig05b_identity_outside.png)
 *Fig. 5b.*
 
-- **A described bridge** ("the one known for honey"; fixed in advance): the split holds on the 9B and Muse; on the 27B the lookup follows the J++ part too. The lookup never takes the value.
+- **A described bridge** ("the one known for honey"; fixed in advance): the split holds on the 9B and Muse, not on the 27B; never the value.
 
 ![A described bridge: the split holds on the 9B and Muse, not on the 27B](../../figures/story/fig05c_described_bridge.png)
 *Fig. 5c.*
 
 - **A probe reads the value at the bridge word weakly, the slot almost perfectly** (after the data): value 0.27 / 0.40 / 0.25 (chance 0.11), slot 0.97 / 0.99 / 0.92 ([table](../x0_details.md)); the routes test never takes it.
-- **Position appears with depth (candidate):** at an early layer the change moves the lookup by identity only, inside J++ on the Qwens; position answers appear a few layers later.
+- **Position appears with depth (candidate):** at early layers the change gives identity answers, position from about L (Fig. 6, main test; tested in advance on the 9B and Muse, Fig. 6b).
 
 ![Position answers appear with depth, once the lookup stops needing the J++ part](../../figures/story/fig06_depth.png)
 *Fig. 6.*
 
-- **Tested in advance (9B, Muse):** at early layers the change gives identity answers; position starts at L on the 9B, a few layers before on Muse; the slot probe reads the address earlier.
-
 ![With depth the change moves the lookup by identity, then by position](../../figures/story/fig06b_anatomy.png)
 *Fig. 6b.*
+
+- **The address changes code early, then settles** (fixed in advance, 9B and Muse): fit per layer, it overlaps little with the next layer's early, much later.
+
+![The address is re-encoded early in depth and settles in later layers](../../figures/story/fig06c_address_depth.png)
+*Fig. 6c.*
 
 ## 4. The pointer can be removed and written
 
@@ -168,6 +171,11 @@
 
 ![Blocking the pick sentence from the lockers removes most switches, not only position](../../figures/story/fig09c_formation.png)
 *Fig. 9c.*
+
+- **Addresses do not clearly chain** (fixed in advance): a probe reads the hall at the locker's number, but removing the hall address costs barely more than a random part of its large share.
+
+![The hall is readable at the locker digit, yet a random part cuts nearly as much](../../figures/story/fig09d_chain.png)
+*Fig. 9d.*
 
 - **About half of the route is unexplained:** removing J++, the pointer and identity outside J++ together leaves few lookups on the 9B and 27B (table), yet against a wrong-pair direction it cuts identity answers only 0.08 / 0.14 more (bar 0.15, fixed in advance): partly specific on the Qwens, not on Muse.
 

@@ -1,0 +1,50 @@
+{
+  "gate": {
+    "json": {
+      "cases": 84,
+      "org_read_accuracy": {
+        "ql": {
+          "PP": 0.9523809523809523,
+          "PM": 0.7857142857142857
+        }
+      },
+      "gate_renderings": [
+        "ql"
+      ],
+      "pass": false,
+      "eligible": 45,
+      "used": 0
+    },
+    "prose": {
+      "cases": 163,
+      "org_read_accuracy": {
+        "ql": {
+          "PP": 0.9877300613496932,
+          "PM": 0.8650306748466258
+        }
+      },
+      "gate_renderings": [
+        "ql"
+      ],
+      "pass": true,
+      "eligible": 119,
+      "used": 119
+    },
+    "table": {
+      "cases": 192,
+      "org_read_accuracy": {
+        "ql": {
+          "PP": 1.0,
+          "PM": 0.8385416666666666
+        }
+      },
+      "gate_renderings": [
+        "ql"
+      ],
+      "pass": true,
+      "eligible": 118,
+      "used": 118
+    }
+  },
+  "chosen": 237
+}
