@@ -651,8 +651,9 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
     v = json.loads(src.read_text())
     by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
     shown = [(t, m) for t, m in TARGETS if t in by]
-    legend = ([Line2D([], [], marker="o", ls="", color=S.COL["lookup"], ms=8),
-               Line2D([], [], marker="o", ls="", color=S.COL["control"], ms=8)],
+    # the shift vector is added at the bridge word: the mark system's diamond (Dan's 18:30 brief), not the removal dot
+    legend = ([Line2D([], [], marker=S.MARK["add"], ls="", color=S.COL["lookup"], ms=7),
+               Line2D([], [], marker=S.MARK["add"], ls="", color=S.COL["control"], ms=7)],
               ["the shift vector", "a random part (same size)"])  # fmt: skip
     fig, axes = frame(
         title or six_title(v),
@@ -676,11 +677,14 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
             continue
         n_lockers = int(mod["slots"])
         starts = list(range(1, n_lockers))
-        ax.set_xlim(0.45, n_lockers - 0.45)
+        # room right of the last start locker for each series' direct label (Dan's rethink: every panel labelled)
+        ax.set_xlim(0.45, n_lockers + 0.55)
+        ax.spines["bottom"].set_bounds(starts[0], starts[-1])
         ax.set_xticks(starts, [ORD[k] for k in starts])
         ax.set_xlabel("start locker")
         ax.axhline(0.25, color=BAR, lw=1.0, ls=(0, (4, 3)), zorder=1)
-        ax.text(n_lockers - 0.5, 0.27, "≥ 0.25", ha="right", va="bottom", color=BAR)
+        ax.text(n_lockers + 0.5, 0.27, "≥ 0.25", ha="right", va="bottom", color=BAR)
+        ends: list[tuple[float, str, str]] = []
         for k in starts:
             cell = mod["cells"]["shifts"].get(f"{SIX_DOSE}|v|{k}")
             if cell is None:
@@ -691,9 +695,15 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
                 if r is None:
                     continue
                 ax.plot([k + dx] * 2, [r[1], r[2]], color=col, lw=1.6, zorder=2)
-                ax.plot([k + dx], [r[0]], "o", ms=8, color=col, zorder=3)
+                ax.plot([k + dx], [r[0]], S.MARK["add"], ms=7, color=col, zorder=3)
                 S.record(fid, target, f"47.2: lookups sent one locker on from the {ORD[k]} locker, {what}, dose 2",
                          *cell[key], n=cell["n"], source=source)  # fmt: skip
+                if k == starts[-1]:
+                    ends.append((r[0], "shift" if key == "shift" else "random",
+                                 col if key == "shift" else S.COL["muted"]))  # fmt: skip
+        from scripts.story_b51 import end_labels
+
+        end_labels(ax, starts[-1] + 0.12, ends, fig.get_figheight(), pad=0.18)
         rule, pca = mod["rules"][SIX_DOSE], mod["pca"]
         S.record(fid, target, "47.2: pairwise writes reaching 25% (dose 2)", rule["pairs_reaching"], n=rule["pairs"],
                  source=source)  # fmt: skip
@@ -701,7 +711,7 @@ def build_six(verdict_dir: Path, out_name: str, title: str | None = None) -> str
                  source=source)  # fmt: skip
         ax.text(0.0, -0.33, SIX_LABEL.get(mod["label"], mod["label"]), transform=ax.transAxes, ha="left", va="top",
                 weight="bold")  # fmt: skip
-        ax.text(0.0, -0.45, f"locker pairs moved at ≥ 0.25:{rule['pairs_reaching']} of {rule['pairs']}\nfirst PCA "
+        ax.text(0.0, -0.45, f"locker pairs moved at ≥ 0.25: {rule['pairs_reaching']} of {rule['pairs']}\nfirst PCA "
                 f"axis vs locker: ρ = {pca['spearman_pc1_slot']:.2f}", transform=ax.transAxes, ha="left", va="top",
                 color=S.COL["muted"])  # fmt: skip
     axes[0].set_ylabel("lookups moved one\nlocker on (share)")

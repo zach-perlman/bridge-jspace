@@ -311,6 +311,8 @@ def build_transfer(out_name: str = "fig09a_transfer") -> str:
                          source=cells[w][(sc, "src")])  # fmt: skip
                 if w == F.X.LOOKUP and v[0] >= EXCEPTION:
                     ax.text(v[2] + 0.04, -i + dy, f"{v[0]:.2f}", va="center", fontsize=S.FONT - 1, color=col)
+                if i == 0:  # Dan's rethink (~21:45): each panel names its two series at its first row
+                    ax.text(max(v[2], 0.0) + 0.05, -i + dy, word, va="center", fontsize=S.FONT - 1, color=col)
         rows_axis(ax, [lab for _, lab in FORMATS], k == 0)
         ax.grid(axis="x", color="#eeeeee")
     hs = [Line2D([], [], marker="o", ls="", color=INK, ms=7), Line2D([], [], marker="o", ls="", color=LOOKUP, ms=7),
