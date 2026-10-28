@@ -1,0 +1,274 @@
+{
+ "R_k1": {
+  "best_step": 74,
+  "best_dev_iia": 0.5,
+  "stopped_at": 174,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.4167
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.4667
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.5
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.45
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.4667
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.4833
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.4667
+   }
+  ],
+  "n_dev": 60,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k2": {
+  "best_step": 124,
+  "best_dev_iia": 0.7333,
+  "stopped_at": 224,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.4333
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.55
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.5333
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.5833
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.7333
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.7167
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.7
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.7333
+   },
+   {
+    "step": 224,
+    "dev_iia": 0.7167
+   }
+  ],
+  "n_dev": 60,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k3": {
+  "best_step": 249,
+  "best_dev_iia": 0.8167,
+  "stopped_at": 299,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.4667
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.4833
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.6
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.7167
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.7667
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.7833
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.8
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.8
+   },
+   {
+    "step": 224,
+    "dev_iia": 0.8
+   },
+   {
+    "step": 249,
+    "dev_iia": 0.8167
+   },
+   {
+    "step": 274,
+    "dev_iia": 0.8167
+   },
+   {
+    "step": 299,
+    "dev_iia": 0.8167
+   }
+  ],
+  "n_dev": 60,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k4": {
+  "best_step": 149,
+  "best_dev_iia": 0.8167,
+  "stopped_at": 249,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.4833
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.7333
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.7667
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.7167
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.8
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.8167
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.7667
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.7833
+   },
+   {
+    "step": 224,
+    "dev_iia": 0.7833
+   },
+   {
+    "step": 249,
+    "dev_iia": 0.8
+   }
+  ],
+  "n_dev": 60,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k5": {
+  "best_step": 74,
+  "best_dev_iia": 0.8333,
+  "stopped_at": 174,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.5667
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.7333
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.8333
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.8167
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.8
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.8333
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.8
+   }
+  ],
+  "n_dev": 60,
+  "micro": 8,
+  "oom_micro_tried": []
+ },
+ "R_k7": {
+  "best_step": 99,
+  "best_dev_iia": 0.85,
+  "stopped_at": 199,
+  "evals": [
+   {
+    "step": 24,
+    "dev_iia": 0.5833
+   },
+   {
+    "step": 49,
+    "dev_iia": 0.7833
+   },
+   {
+    "step": 74,
+    "dev_iia": 0.8333
+   },
+   {
+    "step": 99,
+    "dev_iia": 0.85
+   },
+   {
+    "step": 124,
+    "dev_iia": 0.8333
+   },
+   {
+    "step": 149,
+    "dev_iia": 0.8333
+   },
+   {
+    "step": 174,
+    "dev_iia": 0.8167
+   },
+   {
+    "step": 199,
+    "dev_iia": 0.85
+   }
+  ],
+  "n_dev": 60,
+  "micro": 8,
+  "oom_micro_tried": []
+ }
+}
