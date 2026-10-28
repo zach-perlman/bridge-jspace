@@ -1,0 +1,123 @@
+{
+  "rand_k2": {
+    "k": 2,
+    "cos2_U": 0.000643,
+    "cos2_W": null,
+    "random_expectation": 0.000391,
+    "angles_vs_U": [
+      87.308,
+      88.906
+    ],
+    "angles_vs_W": null
+  },
+  "rand_k4": {
+    "k": 4,
+    "cos2_U": 0.001022,
+    "cos2_W": null,
+    "random_expectation": 0.000781,
+    "angles_vs_U": [
+      87.504,
+      87.892,
+      88.476,
+      89.347
+    ],
+    "angles_vs_W": null
+  },
+  "rand_k8": {
+    "k": 8,
+    "cos2_U": 0.001908,
+    "cos2_W": null,
+    "random_expectation": 0.001563,
+    "angles_vs_U": [
+      86.711,
+      86.876,
+      88.134,
+      88.99
+    ],
+    "angles_vs_W": null
+  },
+  "R_pos_k2": {
+    "k": 2,
+    "cos2_U": 0.228372,
+    "cos2_W": null,
+    "random_expectation": 0.000391,
+    "angles_vs_U": [
+      40.068,
+      55.07
+    ],
+    "angles_vs_W": null
+  },
+  "shuf_pos_k2": {
+    "k": 2,
+    "cos2_U": 0.128672,
+    "cos2_W": null,
+    "random_expectation": 0.000391,
+    "angles_vs_U": [
+      44.987,
+      83.094
+    ],
+    "angles_vs_W": null
+  },
+  "R_pos_k4": {
+    "k": 4,
+    "cos2_U": 0.225667,
+    "cos2_W": null,
+    "random_expectation": 0.000781,
+    "angles_vs_U": [
+      40.476,
+      55.403,
+      87.869,
+      89.089
+    ],
+    "angles_vs_W": null
+  },
+  "shuf_pos_k4": {
+    "k": 4,
+    "cos2_U": 0.119833,
+    "cos2_W": null,
+    "random_expectation": 0.000781,
+    "angles_vs_U": [
+      47.803,
+      80.555,
+      88.066,
+      89.397
+    ],
+    "angles_vs_W": null
+  },
+  "R_pos_k8": {
+    "k": 8,
+    "cos2_U": 0.215315,
+    "cos2_W": null,
+    "random_expectation": 0.001563,
+    "angles_vs_U": [
+      43.321,
+      56.255,
+      81.533,
+      87.623
+    ],
+    "angles_vs_W": null
+  },
+  "shuf_pos_k8": {
+    "k": 8,
+    "cos2_U": 0.167559,
+    "cos2_W": null,
+    "random_expectation": 0.001563,
+    "angles_vs_U": [
+      46.594,
+      64.891,
+      82.508,
+      88.211
+    ],
+    "angles_vs_W": null
+  },
+  "d": 5120,
+  "rank_U": 4,
+  "rank_W": null,
+  "rank_Ufit": 2,
+  "U_vs_W": {
+    "cos2_U_in_W": null,
+    "cos2_W_in_U": null,
+    "angles": null
+  },
+  "U_vs_Ufit_cos2": 0.268292
+}

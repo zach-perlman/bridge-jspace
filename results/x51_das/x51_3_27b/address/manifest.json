@@ -1,0 +1,46 @@
+{
+  "exp": "x51_das",
+  "run": "x51_3_27b",
+  "part": "address (49.8's file layout; the run's manifest is ../manifest.json)",
+  "layer": 32,
+  "ks": [
+    2,
+    4,
+    8
+  ],
+  "k_rule": 4,
+  "model": {
+    "target": "qwen3.6-27b"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DAS_GDN": "torch",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "routes_run": "x6_routes_27b",
+  "U": {
+    "states_run": "x0_probe_v4_27b",
+    "rank": 4,
+    "info": {
+      "states_run": "x0_probe_v4_27b",
+      "n": 758,
+      "rank": {
+        "A": 4,
+        "V": 8,
+        "AV": 12,
+        "Alf": 4,
+        "Id": 45
+      },
+      "layout_groups": {
+        "groups": 31,
+        "items_kept": 758,
+        "singletons_dropped": 0
+      },
+      "A_Alf_overlap": 0.7122102385666326
+    }
+  },
+  "W": "absent: results/x47_six/x47_2_27b/fit.npz (no 47.2 run of qwen3.6-27b; every W read is None)"
+}
