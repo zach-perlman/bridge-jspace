@@ -90,7 +90,7 @@
 ![Each route predicts a different locker](figures/story/fig04_routes_design.png)
 *Fig. 4.*
 
-- **The lookup never takes the number itself, and splits between identity and position:** the 27B leans on identity, the 9B and Muse on position. **Adding only the J++ part gives no identity answers**, so even the identity route runs mostly outside J++.
+- **The lookup never takes the number itself, and splits between identity and position:** the 27B leans on identity, the 9B and Muse on position; never the number in prose, JSON or tables either (fixed in advance, six of nine model-format sets past the gate). **Adding only the J++ part gives no identity answers**, so even the identity route runs mostly outside J++.
 
 ![The lookup follows identity or position, never the value](figures/story/fig05_routes.png)
 *Fig. 5.*
