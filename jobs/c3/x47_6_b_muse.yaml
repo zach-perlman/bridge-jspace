@@ -1,0 +1,49 @@
+id: x47_6_b_muse
+title: "Batch 47.6 (b) on the Muse (L26): is the pointer formed by the pick token reading the locker sentences before L? Exact edge knock-outs on the routes scenes with a filler sentence; part (c) dropped (Dan, amendment 1); SEALED until Q47.6"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.25
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x47_edges.py run --part b --name muse30_x47_6_b --why "batch 47, test 47.6 b (jobs/c3/batch47.yaml; Q47.6, sealed; part c dropped by Dan's amendment 1): formation, the change formed with the asked pick sentence blind to the locker sentences at 0..L, against the same number of edges to a filler sentence"
+question: >-
+  Is the pointer formed by the pick token reading the locker sentences before L: if the asked pick sentence cannot
+  read the locker sentences at layers 0..L while the change is formed, do the lookup's position answers vanish while
+  its identity answers and the recall's switch stay?
+why_it_matters: >-
+  The routes test says the lookup follows a position code (the pointer, U) that the lens cannot read (0.54 of Muse's
+  C2 lookups under the whole change). Formation at the pick token from the locker sentences before L would place the
+  first step of the around route, not through the lens. Exact knock-outs block only the named reads, so a fall is not
+  a size effect of a residual edit. Part (c), the dereference block, was dropped by Dan (amendment 1, ~02:30): blocking
+  the question's reads of the locker sentences kills the lookup under every hypothesis.
+hypotheses:
+  Q47.6: "Dan's answer in predictions/2026-10-28_dan.md (Q47.6, formation only); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_edges.py verdict / view / figures refuse until it is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.6 b; (c) dropped by Dan's amendment 1, batch48.yaml): "the pointer is
+  formed by the pick token reading the lockers" if position answers fall to <= 0.10 (from 0.51 / 0.54) while identity
+  answers stay within 0.10 and the recall's switch within 0.10, on Muse and the 9B; the control within 0.10 of none.
+  As computed (fixed by the agent before any run; Dan may override before the run): as x47_6_b_9b's, with Muse's
+  numbers. Scenes: the routes test's C2 scenes (seed 2510, locker-first) with the filler sentence first in O and in S,
+  identical (27 tokens on Muse's tokenizer too, the three locker sentences' total; plan 28 Oct: 700 of 700 scenes
+  kept, prompt 137 tokens as read, far below the sliding window of 2048, asserted). Gate 0.80 per reader on O's read,
+  else "not tested"; the first 300 eligible. Every Muse block is softmax attention (13 global NoPE blocks and 39
+  sliding-window blocks, whose windows cover every prompt here, as attn_knockout treats them), so "all" is the only
+  layer set: a pair's logits at -inf in every head. Delta = h_S - h_O at the bridge word (block 26's output), formed
+  with the block active in both forwards (the asked pick sentence's 5 tokens cannot read the locker sentences' 27
+  tokens at blocks 0..26), added at the bridge word at L on O, read unblocked; none = the same without a block.
+  Decisive: block/sentence/all (3645 edges) and control/sentence/all (the filler, 3645 edges). Holds on Muse iff
+  position(block) <= 0.10, |identity(block) - identity(none)| <= 0.10, |recall(block) - recall(none)| <= 0.10, and the
+  control within 0.10 of none on each of the three (two-sided). Beside it: dests = the bridge token alone (729 edges)
+  with its control. No (c) arm runs (the --with-c flag is off). The test holds iff it holds on Muse and on the 9B.
+  Point estimates decide (EPS 1e-9); 95% cluster-bootstrap intervals over the bridge items (10,000, seed 0) beside
+  them. Muse's recall follows S in only 0.21 of the routes C2 items under the whole change (muse30b_x6_routes), so its
+  recall-switch clause compares small rates. Scored by hand after Q47.6 is committed: scripts/x47_edges.py verdict.
+controls:
+- 'control/<dests>/all: exactly as many edges, from the filler sentence''s 27 tokens instead of the locker sentences'' 27 (same destinations, same blocks; asserted per item)'
+- 'none: the change formed without a block, in the same batch as the blocked ones; unedited O read beside'
+- 'the recall''s switch: the check that the block does not break identity (dumbest way 1)'
+- 'dests = the bridge token alone (dumbest way 2) with its matched control'
+- 'pre-run check (attn_knockout.run_check on item 0): an empty knock-out is bit-exact; the last token with every other position absent reads nothing; else the run stops'
+n: '300 items (the first 300 eligible C2 scenes, scene order) of 700 generated; plan 28 Oct on Muse''s tokenizer (with its chat-template edits): 700 kept with the filler, locker sentences 9 + 9 + 9 tokens, filler 27, pick sentence 5'
+seeds: [2510, 0, 888]
+notes: "Supersedes x47_6_bc_muse (never enqueued): Dan's amendment 1 (~02:30) dropped part (c). SEALED: the job runs `run --part b` only; it writes manifest, gate, competence, check, cases, outcomes and norms, and prints counts. After Dan's Q47.6 is committed, by hand (CPU): uv run python scripts/x47_edges.py verdict; uv run python scripts/x47_edges.py view --name muse30_x47_6_b. Queue: 47.6(b) after 48.1 (Muse) in batch48's merged_priority. Cost (H100 PCIe, ledger): the routes C2 competence on 700 scenes plus load ~500 s on Muse (x8_half_muse 507 s, x8_a_muse 588 s, run_s); here per item one forward of 10 rows to block 26 (~5 full-row equivalents) and 12 read rows, ~17 row equivalents x 300 = ~5,100 rows at ~38 rows/s (x45q_muse: ~38,000 reads in 999 s) = ~135 s; with setup ~30 s and the check ~20 s: ~685 s = 0.19 h; 0.25 h with margin (the dropped (c) arms were ~6 knocked rows per item, ~50 s)."

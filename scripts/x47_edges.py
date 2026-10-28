@@ -1,6 +1,9 @@
 """x47_edges (batch 47, test 47.6; jobs/c3/batch47.yaml, design and rules fixed in advance; Q47.6 in
-predictions/2026-10-28_dan.md): where is the pointer formed, and where is it dereferenced? Exact edge knock-outs
-(bridge_jspace.knockout, the code scripts/attn_knockout.py runs) on the routes test's scenes (scripts/x6_routes.py).
+predictions/2026-10-28_dan.md): where is the pointer formed? Exact edge knock-outs (bridge_jspace.knockout, the code
+scripts/attn_knockout.py runs) on the routes test's scenes (scripts/x6_routes.py). Part (c), the dereference block, was
+dropped by Dan (amendment 1, 28 Oct ~02:30: blocking the question's reads of the locker sentences kills the lookup
+under every hypothesis, so it discriminates nothing); its code stays behind `run --with-c`, unexercised and not in
+any rule.
 
 Scenes. The routes test's C2 scenes (x6_routes.scenes, seed 2510; locker-first: three locker sentences, then three pick
 sentences): O = the original prompt (Iris picked A), S = the changed one (Iris picked B; B's and C's locker sentences
@@ -36,25 +39,22 @@ token alone, "bridge") cannot read the locker sentences at layers 0..L, in both 
 S's, the same positions); then that change is added at the bridge word at L on O, read unblocked, as in the routes
 test. Arms: none (Delta, no block), block/<dests>/<layers>, control/<dests>/<layers> (the filler as sources); the
 unedited read beside. The routes classification (lookup) and the recall's switch.
-(c) dereference (rule): no patch; on O, the question tokens (from the question's first word, "Which" / "How", to the
-last token, the appended space) cannot read the locker sentences at layers L..end; control: the filler. Lookup and
-recall accuracy (top token = O's answer).
+(c) dereference (DROPPED; `--with-c` only, descriptive): no patch; on O, the question tokens (from the question's first
+word, "Which" / "How", to the last token, the appended space) cannot read the locker sentences at layers L..end;
+control: the filler. Lookup and recall accuracy (top token = O's answer). Never in the rule.
 
-Rules (stage verdict; point estimates, EPS 1e-9 at the bars; cluster-bootstrap CIs over the bridge items, 10,000
-resamples, seed 0, beside them):
-  formation, per model, decisive arms block/sentence/all and control/sentence/all: position share <= 0.10, |identity -
-  identity(none)| <= 0.10, |recall switch - recall switch(none)| <= 0.10, and the control within 0.10 of none on each
-  of the three. Holds for the test if it holds on Muse and on the 9B.
-  dereference, per model, decisive arm block/all: lookup accuracy < 0.50 and recall accuracy >= 0.90; on Muse and the
-  9B. Its control (control/all) is reported beside it (not in the rule as written).
+Rule (stage verdict; point estimates, EPS 1e-9 at the bars; cluster-bootstrap CIs over the bridge items, 10,000
+resamples, seed 0, beside them): formation, per model, decisive arms block/sentence/all and control/sentence/all:
+position share <= 0.10, |identity - identity(none)| <= 0.10, |recall switch - recall switch(none)| <= 0.10, and the
+control within 0.10 of none on each of the three. Holds for the test if it holds on Muse and on the 9B.
 SEALED: the run writes per-item files only and prints counts. verdict, view (the verify-pack view: 10 random items,
 seed 0, the prompt as the model reads it with the patch, sources and destinations marked, every arm's answer) and
 figures ((a), one per model) refuse until predictions/2026-10-28_dan.md holds Dan's committed answer to Q47.6.
 
 uv run python scripts/x47_edges.py plan                                                  # CPU, the target's tokenizer
-BJ_TARGET=qwen3.5-9b uv run python scripts/x47_edges.py run --part bc --name qwen35_9b_x47_6_bc   # GPU (sealed)
+BJ_TARGET=qwen3.5-9b uv run python scripts/x47_edges.py run --part b --name qwen35_9b_x47_6_b     # GPU (sealed)
 uv run python scripts/x47_edges.py verdict                                               # CPU, after Dan's Q47.6
-uv run python scripts/x47_edges.py view --name qwen35_9b_x47_6_bc                        # CPU, after Dan's Q47.6
+uv run python scripts/x47_edges.py view --name qwen35_9b_x47_6_b                         # CPU, after Dan's Q47.6
 uv run python scripts/x47_edges.py figures --name qwen35_9b_x47_6_a                      # CPU, after Dan's Q47.6
 """
 
@@ -102,14 +102,13 @@ WRITE_S, RAND_SEED = 2.0, 4761  # (a): x8_write's write at s = 2; the random dir
 A_ARMS = ("none", "whole", "no_U", "no_U_rand", "write1", "write2", "rand1", "rand2")
 ROUTES = R.ROUTES
 FALL_TO, NEAR = 0.10, 0.10  # formation: position share at most 0.10; identity, recall switch, control within 0.10
-LOOKUP_BELOW, RECALL_MIN = 0.50, 0.90  # dereference
 EPS = 1e-9  # a value exactly at a bar counts as at the bar
 DECISIVE_B, CONTROL_B = "block/sentence/all", "control/sentence/all"
-DECISIVE_C, CONTROL_C = "block/all", "control/all"
+C_ARMS = ("block/all", "control/all")  # (c), dropped: descriptive arms of a --with-c run, never in a rule
 POSITION_REF = {"qwen3.5-9b": 0.51, "muse-glimmer-30b": 0.54}  # the routes runs' C2 whole-change position share
 MODELS = ("muse-glimmer-30b", "qwen3.5-9b")
-RUNS = {"qwen3.5-9b": {"a": "qwen35_9b_x47_6_a", "bc": "qwen35_9b_x47_6_bc"},
-        "muse-glimmer-30b": {"a": "muse30_x47_6_a", "bc": "muse30_x47_6_bc"}}  # fmt: skip
+RUNS = {"qwen3.5-9b": {"a": "qwen35_9b_x47_6_a", "b": "qwen35_9b_x47_6_b"},
+        "muse-glimmer-30b": {"a": "muse30_x47_6_a", "b": "muse30_x47_6_b"}}  # fmt: skip
 N_EXAMPLES = 10
 
 
@@ -248,8 +247,9 @@ def formation_arms(p: dict, sets: dict, kinds: list[str]) -> dict[str, dict]:
 
 
 def dereference_arms(p: dict, sets: dict, kinds: list[str], reader: str) -> dict[str, dict]:
-    """(c)'s blocks for one reader: block/<layers> (sources the locker sentences) and control/<layers> (the filler),
-    dests the reader's question to the last token, layers L..end of the set; counts matched (asserted)."""
+    """(c)'s blocks for one reader (dropped; --with-c only): block/<layers> (sources the locker sentences) and
+    control/<layers> (the filler), dests the reader's question to the last token, layers L..end of the set; counts
+    matched (asserted)."""
     lockers = sorted(t for s in p["lockers"] for t in s)
     assert len(p["filler"]) == len(lockers), f"filler {len(p['filler'])} tokens, lockers {len(lockers)}"
     dst = p["question"][reader]
@@ -284,9 +284,9 @@ def config_kinds_of(target: str) -> list[str]:
     return AK.config_kinds(cfg.get("text_config", cfg))
 
 
-def stage_plan(n_gen: int = R.N_GEN) -> dict:
+def stage_plan(n_gen: int = R.N_GEN, with_c: bool = False) -> dict:
     """Tokenizer only: the plain and filler cases, drops, the positions' token counts, every arm's edge counts (the
-    distinct values over the items) and one example (seed 0) with its marks. No model, no result."""
+    distinct values over the items; (c)'s with --with-c only) and one example (seed 0) with its marks. No model."""
     tok = tokenizer()
     target, layer = pins.TARGET, X.PREDICTED[pins.TARGET]
     kinds = config_kinds_of(target)
@@ -305,7 +305,7 @@ def stage_plan(n_gen: int = R.N_GEN) -> dict:
         counts["prompt tokens (lookup, read)"][len(c["readers"][LK]["ids"]["org"]) + len(c["space"])] += 1
         for a, e in formation_arms(p, sets, kinds).items():
             counts[f"(b) {a} edges"][e["edges"]] += 1
-        for w in X.READERS:
+        for w in X.READERS if with_c else ():
             counts[f"question tokens ({READER_NAME[w]})"][len(p["question"][w])] += 1
             for a, e in dereference_arms(p, sets, kinds, w).items():
                 counts[f"(c) {READER_NAME[w]} {a} edges"][e["edges"]] += 1
@@ -504,22 +504,27 @@ def eligible(model, cases: list[dict], out: Path, n: int = R.N_ITEMS):
     return (ok[:n] if gate["pass"] else []), gate, digits
 
 
-def manifest(name: str, part: str, why: str, layer: int, kinds: list[str]) -> dict:
+def manifest(name: str, part: str, why: str, layer: int, kinds: list[str], with_c: bool = False) -> dict:
     from bridge_jspace.utils import git_state
 
     sets = layer_sets(kinds, layer)
+    arms: dict[str, list[str]] = (
+        {"a": list(A_ARMS)}
+        if part == "a"
+        else {"b": ["unedited", "none", *formation_arms(_toy_positions(), sets, kinds)]}
+    )
+    if with_c:  # dropped (Dan, amendment 1): descriptive arms only, never in a rule
+        arms["c"] = ["none", *dereference_arms(_toy_positions(), sets, kinds, LK)]
     return {"exp": EXP, "run": name, "why": why, "written_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "model": pins.model_pin(), "switches": switches(), "code": git_state(), "test": "47.6", "part": part,
             "spec": "jobs/c3/batch47.yaml (47.6)", "question": f"{QUESTION} ({PREDICTIONS})",
             "inputs": {str(SPEC.relative_to(pins.REPO_ROOT)): X.sha256_of(SPEC)},
             "layer": layer, "condition": COND, "n": R.N_ITEMS, "n_gen": R.N_GEN, "gate": X.GATE,
-            "layer_kinds": kinds, "layer_sets": sets, "filler": FILLER if part == "bc" else None,
+            "layer_kinds": kinds, "layer_sets": sets, "filler": FILLER if part == "b" else None,
             "pointer_from": R.STATES[pins.TARGET], "knockout_mode": "value",
             "knockout": (sys.modules["bridge_jspace.knockout"].__doc__ or "").split("\n\n")[1],
-            "arms": {"a": list(A_ARMS)} if part == "a" else
-                    {"b": ["unedited", "none", *formation_arms(_toy_positions(), sets, kinds)],
-                     "c": ["none", *dereference_arms(_toy_positions(), sets, kinds, LK)]},
-            "decisive": {"b": [DECISIVE_B, CONTROL_B], "c": [DECISIVE_C, CONTROL_C]},
+            "arms": arms, "with_c": with_c, "decisive": {"b": [DECISIVE_B, CONTROL_B]},
+            "dropped": "(c) dereference, Dan's amendment 1 (28 Oct ~02:30): run only with --with-c, descriptive",
             "read": "X0's chat read: the prompt with a digit's space token appended, the top token",
             "seeds": {"scenes": R.SEED, "random_subspace": f"{X.SUBSPACE_SEED} + layer (CPU)", "write_random": RAND_SEED,
                       "bootstrap": X.BOOT_SEED, "examples": X.EXAMPLES_SEED}, "n_boot": X.N_BOOT, "write_s": WRITE_S,
@@ -532,7 +537,8 @@ def _toy_positions() -> dict:
             "question": {LK: [16, 17], RC: [16, 17]}}  # fmt: skip
 
 
-def stage_run(part: str, name: str, why: str) -> Path:
+def stage_run(part: str, name: str, why: str, with_c: bool = False) -> Path:
+    """part a or b; with_c adds the dropped (c) arms (descriptive, never in a rule) to a part-b run."""
     import torch
 
     from bridge_jspace.knockout import layer_kinds
@@ -543,7 +549,8 @@ def stage_run(part: str, name: str, why: str) -> Path:
     from scripts import suite_v1 as S
     from scripts import x0_massmean as MM
 
-    assert part in ("a", "bc"), part
+    assert part in ("a", "b"), part
+    assert part == "b" or not with_c, "--with-c is a part-b option"
     pins.check_run_name(name)
     target = pins.TARGET
     assert target in RUNS, f"47.6 runs on {sorted(RUNS)}, not {target}"
@@ -551,7 +558,7 @@ def stage_run(part: str, name: str, why: str) -> Path:
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     kinds = config_kinds_of(target)
-    m = manifest(name, part, why, layer, kinds)
+    m = manifest(name, part, why, layer, kinds, with_c)
     (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     print("wrote", out / "manifest.json", flush=True)
     R.warm_cusolver()
@@ -563,7 +570,7 @@ def stage_run(part: str, name: str, why: str) -> Path:
     base = plain_cases(tok, R.N_GEN)
     dropped: collections.Counter = collections.Counter()
     cases = base
-    if part == "bc":
+    if part == "b":
         cases, dropped = filler_cases(tok, base)
     pos_of = {c["scene"]: spans(tok, c) for c in cases}
     longest = max(len(c["readers"][w]["ids"]["org"]) + len(c["space"]) for c in cases for w in X.READERS)
@@ -581,7 +588,7 @@ def stage_run(part: str, name: str, why: str) -> Path:
     keep_case = []
     digit_token = lambda d: S.answer_token(tok, d, "digit")  # noqa: E731
     with torch.no_grad():
-        if part == "bc":
+        if part == "b":
             first = chosen[0]
             p0 = pos_of[first["scene"]]
             pseudo = {"ids": first["readers"][LK]["ids"]["org"] + first["space"],
@@ -592,7 +599,7 @@ def stage_run(part: str, name: str, why: str) -> Path:
             check = AK.run_check(model, pseudo, kinds)
             (out / "check.json").write_text(json.dumps(check, indent=2) + "\n")
             assert check["passed"], "the knock-out's pre-run check failed (check.json); not running"
-            for c in progress(chosen, f"47.6 (b, c) at L{layer} (item)"):
+            for c in progress(chosen, f"47.6 (b) at L{layer} (item)"):
                 p = pos_of[c["scene"]]
                 b_arms = formation_arms(p, sets, kinds)
                 lk_ids = c["readers"][LK]["ids"]
@@ -618,6 +625,8 @@ def stage_run(part: str, name: str, why: str) -> Path:
                     assert lg is not None
                     for a, x in zip(arms_b, lg, strict=True):
                         rows.append(row_of("b", c, w, a, x, rd, digits, digit_token))
+                    if not with_c:  # (c) dropped (Dan, amendment 1); the arms below run only with --with-c
+                        continue
                     c_arms = dereference_arms(p, sets, kinds, w)
                     arms_c = ["none", *c_arms]
                     knocks_c = [None] + [(c_arms[a]["layers"], c_arms[a]["src"], c_arms[a]["dst"]) for a in c_arms]
@@ -625,7 +634,7 @@ def stage_run(part: str, name: str, why: str) -> Path:
                     assert lg is not None
                     for a, x in zip(arms_c, lg, strict=True):
                         rows.append(row_of("c", c, w, a, x, rd, digits, digit_token))
-                keep_case.append(case_record(c, p, sets, kinds))
+                keep_case.append(case_record(c, p, sets, kinds, with_c=with_c))
         else:
             mu = {k: torch.tensor(v, dtype=torch.float32, device=model.device)
                   for k, v in MM.pointer_means(R.STATES[target]).items()}  # fmt: skip
@@ -692,13 +701,15 @@ def row_of(part: str, c: dict, reader: str, arm: str, lg, rd: dict, digits, digi
             "route": R.classify(top, c) if reader == LK else None, "slot": slot_of_answer(top, c, digit_token)}  # fmt: skip
 
 
-def case_record(c: dict, p: dict, sets: dict, kinds: list[str], with_edges: bool = True) -> dict:
-    """What the verdict and view read back: the case (no space ids), its positions and each arm's edge counts."""
+def case_record(c: dict, p: dict, sets: dict, kinds: list[str], with_edges: bool = True, with_c: bool = False) -> dict:
+    """What the verdict and view read back: the case, its positions and each arm's edge counts ((c)'s with with_c)."""
     rec = {k: v for k, v in c.items()}
     rec["spans"] = p
     if with_edges:
-        rec["edges"] = {"b": edge_table(formation_arms(p, sets, kinds)),
-                        "c": {READER_NAME[w]: edge_table(dereference_arms(p, sets, kinds, w)) for w in X.READERS}}  # fmt: skip
+        edges: dict[str, Any] = {"b": edge_table(formation_arms(p, sets, kinds))}
+        if with_c:
+            edges["c"] = {READER_NAME[w]: edge_table(dereference_arms(p, sets, kinds, w)) for w in X.READERS}
+        rec["edges"] = edges
     return rec
 
 
@@ -768,20 +779,13 @@ def formation(lk: dict, rc: dict) -> dict:
             "values": {f"{a}|{k}": get(a, k) for a in ("none", DECISIVE_B, CONTROL_B) for k in ("position", "identity", "recall")}}  # fmt: skip
 
 
-def dereference(lk: dict, rc: dict) -> dict:
-    """(c)'s rule on one model (point estimates): lookup accuracy under the decisive block below 0.50 and recall
-    accuracy at least 0.90."""
-    a_lk, a_rc = lk["_p"][f"{DECISIVE_C}|right"], rc["_p"][f"{DECISIVE_C}|right"]
-    clauses = {"lookup_below": a_lk < LOOKUP_BELOW - EPS, "recall_kept": a_rc >= RECALL_MIN - EPS}
-    return {"holds": all(clauses.values()), "clauses": clauses, "values": {"lookup": a_lk, "recall": a_rc,
-            "control_lookup": lk["_p"][f"{CONTROL_C}|right"], "control_recall": rc["_p"][f"{CONTROL_C}|right"]}}  # fmt: skip
-
-
 ROUTE_KEYS = {rt: (lambda r, rt=rt: r["route"] == rt) for rt in ROUTES}
+RIGHT = {"right": lambda r: r["right"]}
 
 
-def bc_result(run: str, n_boot: int = X.N_BOOT) -> dict:
-    """One model's (b, c) run: pending (no files), not tested (gate), or its tables and the two rules."""
+def b_result(run: str, n_boot: int = X.N_BOOT) -> dict:
+    """One model's (b) run: pending (no files), not tested (gate), or its tables and the formation rule; a --with-c
+    run's (c) accuracy tables beside them (descriptive, dropped from the rule)."""
     src = RESULTS / run
     if not (src / "manifest.json").exists():
         return {"run": run, "status": "pending", "why": "no run here"}
@@ -794,17 +798,18 @@ def bc_result(run: str, n_boot: int = X.N_BOOT) -> dict:
     rows = X.read_jsonl(src / "outcomes.jsonl")
     b_lk = table(rows, "b", LK, ROUTE_KEYS, n_boot)
     b_rc = table(rows, "b", RC, {"switched": lambda r: r["switched"]}, n_boot)
-    c_lk = table(rows, "c", LK, {"right": lambda r: r["right"]}, n_boot)
-    c_rc = table(rows, "c", RC, {"right": lambda r: r["right"]}, n_boot)
+    with_c = any(r["part"] == "c" for r in rows)
+    c_tables = ({"lookup": strip(table(rows, "c", LK, RIGHT, n_boot)), "recall": strip(table(rows, "c", RC, RIGHT, n_boot))}
+                if with_c else None)  # fmt: skip
     norms = X.read_jsonl(src / "norms.jsonl")
     med = {a: {k: float(np.median([n[a][k] for n in norms])) for k in ("norm", "share_U", "cos_none")}
            for a in norms[0] if a != "scene"} if norms else {}  # fmt: skip
     cases = X.read_jsonl(src / "cases.jsonl")
-    edges = {"b": cases[0]["edges"]["b"], "c": cases[0]["edges"]["c"]} if cases else {}
+    edges = cases[0]["edges"] if cases else {}
     same = all(c["edges"] == cases[0]["edges"] for c in cases)
     out = {**base, "status": "tested", "n": b_lk["n"], "entities": b_lk["entities"],
-           "formation": formation(b_lk, b_rc), "dereference": dereference(c_lk, c_rc),
-           "b": {"lookup": strip(b_lk), "recall": strip(b_rc)}, "c": {"lookup": strip(c_lk), "recall": strip(c_rc)},
+           "formation": formation(b_lk, b_rc),
+           "b": {"lookup": strip(b_lk), "recall": strip(b_rc)}, "c": c_tables,
            "b_diffs": {a: {k: diff(b_lk, a, "none", k) for k in ("position", "identity")} | {"recall": diff(b_rc, a, "none", "switched")}
                        for a in b_lk["arms"] if a not in ("none", "unedited")},
            "norms_median": med, "edges_item0": edges, "edges_same_every_item": same,
@@ -868,35 +873,31 @@ def fmt(v: list) -> str:
 def stage_verdict(runs: dict[str, dict[str, str]] | None = None, n_boot: int = X.N_BOOT) -> Path:
     answer = require_answer()
     runs = runs or RUNS
-    res = {t: bc_result(runs[t]["bc"], n_boot) for t in MODELS}
+    res = {t: b_result(runs[t]["b"], n_boot) for t in MODELS}
     ares = {t: a_result(runs[t]["a"], n_boot) for t in MODELS}
     for t, r in res.items():
         assert r["status"] != "tested" or r["target"] == t, f"{r['run']} is a {r['target']} run, not {t}'s"
     tested = {t: r for t, r in res.items() if r["status"] == "tested"}
-    verdict = {}
-    for rule in ("formation", "dereference"):
-        held = [t for t, r in tested.items() if r[rule]["holds"]]
-        verdict[rule] = {"held_on": held, "holds": len(held) == len(MODELS),
-                         "not_tested_or_pending": [t for t in MODELS if t not in tested]}  # fmt: skip
+    held = [t for t, r in tested.items() if r["formation"]["holds"]]
+    verdict = {"formation": {"held_on": held, "holds": len(held) == len(MODELS),
+                             "not_tested_or_pending": [t for t in MODELS if t not in tested]}}  # fmt: skip
     out = RESULTS / f"x47_6-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
     out.mkdir(parents=True)
     yn = lambda b: "yes" if b else "no"  # noqa: E731
-    lines = ["# 47.6: where is the pointer formed and dereferenced? (edge knock-outs)", "",
+    lines = ["# 47.6: where is the pointer formed? (edge knock-outs)", "",
              f"Batch 47, test 47.6 (jobs/c3/batch47.yaml; {QUESTION}, Dan: {answer}). Routes C2 scenes with the filler "
              f"sentence first; L = the layer fixed in advance; cluster bootstrap over bridge items ({n_boot}, seed "
-             f"{X.BOOT_SEED}); point estimates decide. UNVERIFIED.", "",
+             f"{X.BOOT_SEED}); point estimates decide. Part (c) was dropped by Dan (amendment 1) before any run. "
+             "UNVERIFIED.", "",
              f"**Formation** (block/sentence/all: the pick sentence cannot read the locker sentences at 0..L, both "
              f"forwards that form the change): {'holds' if verdict['formation']['holds'] else 'does not hold'} (holds on "
-             f"{', '.join(verdict['formation']['held_on']) or 'none'}).",
-             f"**Dereference** (block/all: the question cannot read the locker sentences at L..end, no patch): "
-             f"{'holds' if verdict['dereference']['holds'] else 'does not hold'} (holds on "
-             f"{', '.join(verdict['dereference']['held_on']) or 'none'}).", ""]  # fmt: skip
+             f"{', '.join(verdict['formation']['held_on']) or 'none'}).", ""]  # fmt: skip
     for t in MODELS:
         r = res[t]
         if r["status"] != "tested":
             lines += [f"## {t}: {r['status']} ({r.get('why', '')})", ""]
             continue
-        f, d = r["formation"], r["dereference"]
+        f = r["formation"]
         lines += [f"## {t} (L{r['layer']}, n = {r['n']} items, {r['entities']} bridge items)", "",
                   f"(b) routes (lookup) and the recall's switch per arm; the routes runs' whole-change position share "
                   f"was {r['position_reference']}.", "",
@@ -925,17 +926,15 @@ def stage_verdict(runs: dict[str, dict[str, str]] | None = None, n_boot: int = X
             for a, v in r["norms_median"].items()
         ]
         lines += ["", f"Formation clauses: {', '.join(f'{k} {yn(v)}' for k, v in f['clauses'].items())} -> "
-                  f"**{'holds' if f['holds'] else 'does not hold'}**.", "",
-                  "(c) accuracy per arm (top token = O's answer).", "", "| arm | lookup | recall |", "|---|---|---|"]  # fmt: skip
-        lines += [f"| {a} | {fmt(r['c']['lookup']['rate'][f'{a}|right'])} | {fmt(r['c']['recall']['rate'][f'{a}|right'])} |"
-                  for a in r["c"]["lookup"]["arms"]]  # fmt: skip
-        lines += ["", f"Dereference clauses: lookup below {LOOKUP_BELOW} {yn(d['clauses']['lookup_below'])}, recall at "
-                  f"least {RECALL_MIN} {yn(d['clauses']['recall_kept'])} -> **{'holds' if d['holds'] else 'does not hold'}**"
-                  f" (control, not in the rule: lookup {d['values']['control_lookup']:.2f}, recall "
-                  f"{d['values']['control_recall']:.2f}).", "",
-                  f"Edges per arm (item 0; every item the same: {yn(r['edges_same_every_item'])}): "
-                  + "; ".join(f"(b) {a} {e['edges']}" for a, e in r["edges_item0"]["b"].items()) + "; "
-                  + "; ".join(f"(c) {w} {a} {e['edges']}" for w, v in r["edges_item0"]["c"].items() for a, e in v.items())
+                  f"**{'holds' if f['holds'] else 'does not hold'}**.", ""]  # fmt: skip
+        if r["c"]:  # a --with-c run: (c) accuracy, descriptive (dropped from the rule)
+            lines += ["(c) accuracy per arm (top token = O's answer); dropped by Dan, descriptive only.", "",
+                      "| arm | lookup | recall |", "|---|---|---|"]  # fmt: skip
+            lines += [f"| {a} | {fmt(r['c']['lookup']['rate'][f'{a}|right'])} | {fmt(r['c']['recall']['rate'][f'{a}|right'])} |"
+                      for a in r["c"]["lookup"]["arms"]] + [""]  # fmt: skip
+        lines += [f"Edges per arm (item 0; every item the same: {yn(r['edges_same_every_item'])}): "
+                  + "; ".join(f"(b) {a} {e['edges']}" for a, e in r["edges_item0"]["b"].items())
+                  + "".join(f"; (c) {w} {a} {e['edges']}" for w, v in r["edges_item0"].get("c", {}).items() for a, e in v.items())
                   + ".", ""]  # fmt: skip
     lines += ["## (a) attention from the last token to the locker sentences (descriptive)", ""]
     for t in MODELS:
@@ -955,7 +954,7 @@ def stage_verdict(runs: dict[str, dict[str, str]] | None = None, n_boot: int = X
         lines += [f"| {h['layer']} | {h['head']} | " + " | ".join(str(h.get(x, "-")) for x in A_ARMS) + " |"
                   for h in a["top_heads_moved_whole"]]  # fmt: skip
         lines.append("")
-    blob = {"answer": answer, "verdict": verdict, "bc": res, "a": ares}
+    blob = {"answer": answer, "verdict": verdict, "b": res, "a": ares}
     (out / "verdict.json").write_text(json.dumps(blob, indent=1, default=str) + "\n")
     (out / "verdict.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
@@ -1100,18 +1099,20 @@ def stage_figures(name: str) -> Path:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "view", "figures"])
-    ap.add_argument("--part", choices=["a", "bc"], help="run: (a) the attention measurement, or (b) and (c)")
+    ap.add_argument("--part", choices=["a", "b"], help="run: (a) the attention measurement, or (b) formation")
+    ap.add_argument("--with-c", action="store_true",
+                    help="run / plan: also the dropped (c) dereference arms (descriptive, never in a rule)")  # fmt: skip
     ap.add_argument("--name", help="run / view / figures: the run name (results/x47_edges/<name>/)")
     ap.add_argument("--why", default="batch 47, test 47.6 (jobs/c3/batch47.yaml; Q47.6, sealed)")
     ap.add_argument("--n-gen", type=int, default=R.N_GEN, help="plan: scenes generated per condition")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
     a = ap.parse_args()
     if a.stage == "plan":
-        stage_plan(a.n_gen)
+        stage_plan(a.n_gen, a.with_c)
     elif a.stage == "run":
         assert a.part, "run needs --part"
         assert a.name, "run needs --name"
-        stage_run(a.part, a.name, a.why)
+        stage_run(a.part, a.name, a.why, a.with_c)
     elif a.stage == "verdict":
         stage_verdict(n_boot=a.n_boot)
     elif a.stage == "view":

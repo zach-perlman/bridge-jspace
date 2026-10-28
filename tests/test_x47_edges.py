@@ -1,6 +1,7 @@
 """x47_edges (batch 47, test 47.6): the edge sets (sources, destinations, layers, matched counts), the positions on the
 target's tokenizer, the batched forward (adds, knock-outs, record) on test_knockout's tiny Qwen3.5 hybrid, Muse
-Glimmer's attention capture against eager attention weights, the two rules on planted rows, and the seal."""
+Glimmer's attention capture against eager attention weights, the formation rule on planted rows, and the seal. Part
+(c) is dropped (Dan, amendment 1): its edge sets and --with-c path are tested so the kept code stays alive; no rule."""
 
 from __future__ import annotations
 
@@ -307,10 +308,11 @@ def tiny_target(tok):
     return Model(hf, tok, [], frozenset(), torch.zeros(1, dtype=torch.bool))
 
 
-@pytest.mark.parametrize("part", ["bc", "a"])
-def test_run_end_to_end_on_a_tiny_model(tok, tmp_path, monkeypatch, part):
+@pytest.mark.parametrize(("part", "with_c"), [("b", False), ("a", False), ("b", True)])
+def test_run_end_to_end_on_a_tiny_model(tok, tmp_path, monkeypatch, part, with_c):
     """stage_run's glue on CPU: the 9B's layer pattern and L12, three items, every arm's rows, the edge counts and the
-    attention array in the files the verdict, view and figure read; then those stages read them."""
+    attention array in the files the verdict, view and figure read; then those stages read them. (c) only with the
+    flag (dropped by Dan; the default run writes no part-c row)."""
     import bridge_jspace.model as BM
     from scripts import x0_massmean as MM
     from scripts import x6_routes as R
@@ -332,7 +334,7 @@ def test_run_end_to_end_on_a_tiny_model(tok, tmp_path, monkeypatch, part):
         E, "eligible", lambda model, cases, out, n: (cases[:n], {"pass": True, "eligible": len(cases)}, digits)
     )
     name = f"qwen35_9b_x47_6_{part}"
-    out = E.stage_run(part, name, "test")
+    out = E.stage_run(part, name, "test", with_c)
     m = json.loads((out / "manifest.json").read_text())
     assert m["items"] == 3
     assert m["layer"] == 12
@@ -343,21 +345,24 @@ def test_run_end_to_end_on_a_tiny_model(tok, tmp_path, monkeypatch, part):
     decode = lambda ids: tok.decode(ids, skip_special_tokens=False)  # noqa: E731
     view = (E.stage_view(name, decode=decode) / "view.md").read_text()
     assert "⟦patch: " in view
-    if part == "bc":
+    if part == "b":
         assert (out / "check.json").exists()
-        assert len(rows) == 3 * 2 * (10 + 5)  # per reader: unedited, none, 8 formation arms; none, 4 dereference arms
-        assert {r["arm"] for r in rows if r["part"] == "c"} == {
-            "none",
-            "block/all",
-            "control/all",
-            "block/attn",
-            "control/attn",
-        }
+        assert m["with_c"] == with_c
+        n_c = 5 if with_c else 0  # (c): none and 4 dereference arms per reader, with the flag only
+        assert len(rows) == 3 * 2 * (10 + n_c)  # per reader: unedited, none, 8 formation arms
+        assert {r["arm"] for r in rows if r["part"] == "c"} == (
+            {"none", "block/all", "control/all", "block/attn", "control/attn"} if with_c else set()
+        )
         e = cases[0]["edges"]
         assert e["b"]["block/sentence/all"]["edges"] == e["b"]["control/sentence/all"]["edges"] == 1755
-        assert e["c"]["lookup"]["block/all"]["edges"] == 27 * len(cases[0]["spans"]["question"][LK]) * 20
-        res = E.bc_result(name, 50)
+        assert ("c" in e) == with_c
+        assert ("c" in m["arms"]) == with_c
+        if with_c:
+            assert e["c"]["lookup"]["block/all"]["edges"] == 27 * len(cases[0]["spans"]["question"][LK]) * 20
+        res = E.b_result(name, 50)
         assert res["status"] == "tested"
+        assert "dereference" not in res
+        assert (res["c"] is not None) == with_c
         assert set(res["formation"]["clauses"]) == {"position_fell", "identity_within", "recall_within",
                                                      "control_position_within", "control_identity_within",
                                                      "control_recall_within"}  # fmt: skip
@@ -400,10 +405,12 @@ def b_rows(n: int, block: dict, control: dict | None = None) -> list[dict]:
 
 
 def c_rows(n: int, lookup: float, recall: float) -> list[dict]:
+    """(c) rows of a --with-c run (dropped from the rule; the verdict shows them descriptively)."""
     rows = []
+    block, control = E.C_ARMS
     for i in range(n):
         u = (i + 0.5) / n
-        for arm, (a_lk, a_rc) in {"none": (1, 1), E.DECISIVE_C: (lookup, recall), E.CONTROL_C: (1, 1)}.items():
+        for arm, (a_lk, a_rc) in {"none": (1, 1), block: (lookup, recall), control: (1, 1)}.items():
             base = {"part": "c", "scene": f"s{i}", "entity": f"e{i % 25}", "arm": arm, "switched": 0, "route": None}
             rows.append({**base, "reader": LK, "right": int(u < a_lk)})
             rows.append({**base, "reader": RC, "right": int(u < a_rc)})
@@ -414,11 +421,6 @@ def rule_b(rows):
     return E.formation(
         E.table(rows, "b", LK, E.ROUTE_KEYS, 200), E.table(rows, "b", RC, {"switched": lambda r: r["switched"]}, 200)
     )
-
-
-def rule_c(rows):
-    keys = {"right": lambda r: r["right"]}
-    return E.dereference(E.table(rows, "c", LK, keys, 200), E.table(rows, "c", RC, keys, 200))
 
 
 def test_formation_holds_when_position_falls_and_the_rest_stays():
@@ -451,15 +453,6 @@ def test_formation_fails_on_each_clause(block, control, fails):
     assert [k for k, v in f["clauses"].items() if not v] == [fails]
 
 
-def test_dereference_rule():
-    assert rule_c(c_rows(100, 0.40, 0.95))["holds"]
-    assert not rule_c(c_rows(100, 0.50, 0.95))["holds"]  # "below 0.50": 0.50 is not below
-    d = rule_c(c_rows(100, 0.40, 0.89))
-    assert not d["holds"]
-    assert d["clauses"] == {"lookup_below": True, "recall_kept": False}
-    assert rule_c(c_rows(100, 0.0, 0.90))["holds"]  # 0.90 counts as at the bar
-
-
 def test_table_refuses_a_missing_arm():
     rows = [
         r
@@ -479,7 +472,7 @@ Dan: followed (80%)
 
 **Q47.6** (47.6 b, c) Is the pointer formed ...
 
-Answer per model: Muse; 9B (formation, dereference). Rule: jobs/c3/batch47.yaml, 47.6.
+Answer per model: Muse; 9B (formation). Rule: jobs/c3/batch47.yaml, 47.6.
 
 Dan:{answer}
 """
@@ -507,10 +500,12 @@ def test_cpu_stages_refuse_until_the_answer(monkeypatch, stage):
         call[stage]()
 
 
-def write_bc(root, run, target, rows, layer):
+def write_b(root, run, target, rows, layer):
+    """A fake part-b run; (c) edge counts recorded iff the rows hold part-c rows (a --with-c run)."""
+    with_c = any(r["part"] == "c" for r in rows)
     d = root / run
     d.mkdir(parents=True)
-    (d / "manifest.json").write_text(json.dumps({"model": {"target": target}, "layer": layer, "part": "bc"}))
+    (d / "manifest.json").write_text(json.dumps({"model": {"target": target}, "layer": layer, "part": "b"}))
     X.write_jsonl(d / "outcomes.jsonl", rows)
     arms = ("none", E.DECISIVE_B, E.CONTROL_B)
     X.write_jsonl(d / "norms.jsonl", [{"scene": f"s{i}", **{a: {"norm": 1.0, "share_U": 0.1, "cos_none": 1.0} for a in arms}}
@@ -518,27 +513,34 @@ def write_bc(root, run, target, rows, layer):
     p = positions()
     kinds = [FULL] * 52
     sets = E.layer_sets(kinds, layer)
-    edges = {"b": E.edge_table(E.formation_arms(p, sets, kinds)),
-             "c": {E.READER_NAME[w]: E.edge_table(E.dereference_arms(p, sets, kinds, w)) for w in X.READERS}}  # fmt: skip
+    edges: dict = {"b": E.edge_table(E.formation_arms(p, sets, kinds))}
+    if with_c:
+        edges["c"] = {E.READER_NAME[w]: E.edge_table(E.dereference_arms(p, sets, kinds, w)) for w in X.READERS}
     X.write_jsonl(d / "cases.jsonl", [{"scene": f"s{i}", "edges": edges} for i in range(3)])
 
 
 def test_verdict_on_fake_runs(tmp_path, monkeypatch):
+    """Formation is the only rule; a --with-c run's (c) rows show as a descriptive table and decide nothing."""
     monkeypatch.setattr(E, "RESULTS", tmp_path)
-    monkeypatch.setattr(E, "dan_answer", lambda rev="HEAD": "Muse: formation no, dereference yes (60%)")
+    monkeypatch.setattr(E, "dan_answer", lambda rev="HEAD": "Muse: formation no (60%)")
     good_b = b_rows(60, {"position": 0.0, "identity": 0.5, "recall": 0.9})
-    write_bc(tmp_path, "muse30_x47_6_bc", "muse-glimmer-30b", good_b + c_rows(60, 0.3, 0.95), 26)
-    write_bc(tmp_path, "qwen35_9b_x47_6_bc", "qwen3.5-9b", good_b + c_rows(60, 0.6, 0.95), 12)
+    bad_b = b_rows(60, {"position": 0.3, "identity": 0.5, "recall": 0.9})
+    write_b(tmp_path, "muse30_x47_6_b", "muse-glimmer-30b", good_b + c_rows(60, 0.3, 0.95), 26)
+    write_b(tmp_path, "qwen35_9b_x47_6_b", "qwen3.5-9b", bad_b, 12)
     fake_a_run(tmp_path)  # the 9B's (a) run; Muse's is pending
     out = E.stage_verdict(n_boot=100)
     blob = json.loads((out / "verdict.json").read_text())
     v = blob["verdict"]
-    assert v["formation"]["holds"]
-    assert sorted(v["formation"]["held_on"]) == ["muse-glimmer-30b", "qwen3.5-9b"]
-    assert not v["dereference"]["holds"]
-    assert v["dereference"]["held_on"] == ["muse-glimmer-30b"]
+    assert list(v) == ["formation"]
+    assert not v["formation"]["holds"]
+    assert v["formation"]["held_on"] == ["muse-glimmer-30b"]
+    assert blob["b"]["muse-glimmer-30b"]["c"] is not None
+    assert blob["b"]["qwen3.5-9b"]["c"] is None
     md = (out / "verdict.md").read_text()
     assert "Muse: formation no" in md
+    assert "Dereference" not in md
+    assert md.count("(c) accuracy per arm") == 1  # Muse's --with-c rows, descriptive
+    assert "| block/all | 0.30 [" in md
     assert blob["a"]["qwen3.5-9b"]["status"] == "tested"
     assert blob["a"]["muse-glimmer-30b"]["status"] == "pending"
     assert "| 7 | 0 | " in md  # (a): the planted head leads the table
@@ -547,9 +549,9 @@ def test_verdict_on_fake_runs(tmp_path, monkeypatch):
 def test_verdict_counts_a_missed_gate_as_not_tested(tmp_path, monkeypatch):
     monkeypatch.setattr(E, "RESULTS", tmp_path)
     monkeypatch.setattr(E, "dan_answer", lambda rev="HEAD": "x")
-    good = b_rows(40, {"position": 0.0, "identity": 0.5, "recall": 0.9}) + c_rows(40, 0.2, 0.95)
-    write_bc(tmp_path, "muse30_x47_6_bc", "muse-glimmer-30b", good, 26)
-    d = tmp_path / "qwen35_9b_x47_6_bc"
+    good = b_rows(40, {"position": 0.0, "identity": 0.5, "recall": 0.9})
+    write_b(tmp_path, "muse30_x47_6_b", "muse-glimmer-30b", good, 26)
+    d = tmp_path / "qwen35_9b_x47_6_b"
     d.mkdir()
     (d / "manifest.json").write_text(json.dumps({"model": {"target": "qwen3.5-9b"}, "layer": 12, "not_tested": "gate"}))
     v = json.loads((E.stage_verdict(n_boot=50) / "verdict.json").read_text())["verdict"]
@@ -601,9 +603,9 @@ def test_a_result_finds_the_following_head_and_the_figure_is_written(tmp_path, m
 def test_view_marks_every_span_and_lists_every_arm(tmp_path, monkeypatch):
     monkeypatch.setattr(E, "RESULTS", tmp_path)
     monkeypatch.setattr(E, "dan_answer", lambda rev="HEAD": "x")
-    d = tmp_path / "muse30_x47_6_bc"
+    d = tmp_path / "muse30_x47_6_b"
     d.mkdir()
-    (d / "manifest.json").write_text(json.dumps({"model": {"target": "muse-glimmer-30b"}, "layer": 26, "part": "bc"}))
+    (d / "manifest.json").write_text(json.dumps({"model": {"target": "muse-glimmer-30b"}, "layer": 26, "part": "b"}))
     p = positions()
     readers = {w: {"question": "q?", "answer": "8", "cf_answer": "7", "ids": {"org": list(range(105 if w == LK else 106)), "alt": []}}
                for w in X.READERS}  # fmt: skip
@@ -613,7 +615,7 @@ def test_view_marks_every_span_and_lists_every_arm(tmp_path, monkeypatch):
     rows = [{"part": "b", "scene": "s0", "reader": w, "arm": a, "top": 3, "route": "identity" if w == LK else None,
              "slot": 1, "switched": 1, "right": 0} for w in X.READERS for a in ("none", E.DECISIVE_B)]  # fmt: skip
     X.write_jsonl(d / "outcomes.jsonl", rows)
-    out = E.stage_view("muse30_x47_6_bc", decode=lambda ids: " ".join(str(i) for i in ids))
+    out = E.stage_view("muse30_x47_6_b", decode=lambda ids: " ".join(str(i) for i in ids))
     text = (out / "view.md").read_text()
     for mark in ("⟦filler: ", "⟦src-locker3: ", "⟦dst-b: ", "⟦patch: ", "⟦dst-c: "):
         assert mark in text
