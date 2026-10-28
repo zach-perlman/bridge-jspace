@@ -2580,6 +2580,49 @@ def latest_verdict(pattern: str) -> Path:
     return found[-1]
 
 
+def f06b_anatomy(plt) -> None:
+    """Fig. 6b: 47.8 (fixed in advance), the lookup's answers under the whole change at each sampled layer (identity /
+    position / unchanged), the recall's switch beside, L marked; one panel per tested model. The full sweep (parts,
+    probes) is the verdict folder's x47_anatomy.png."""
+    vdir = latest_verdict("x47_anatomy/x47_8-*")
+    src = str((vdir / "x47_8.json").relative_to(S.REPO))
+    models = [m for m in json.loads((vdir / "x47_8.json").read_text())["models"] if m["status"] == "tested"]
+    fig, axes = plt.subplots(1, len(models), figsize=(S.WIDTH, 4.3), sharey=True)
+    fig.subplots_adjust(left=0.09, right=0.985, top=0.62, bottom=0.14, wspace=0.12)
+    S.title(fig, "With depth the change moves the lookup by identity, then by position",
+            "Lookup answers under the whole change placed at one layer (bars), recall switches (line); routes test,\n"
+            "another item moved, locker before the pick. Fixed in advance; the value never appears.")  # fmt: skip
+    for ax, m in zip(np.atleast_1d(axes), models, strict=True):
+        layers, target = m["layers"], m["target"]
+        name = next(lab for t, _, lab in S.MODELS if t == target)
+        x = np.arange(len(layers))
+        bottom = np.zeros(len(layers))
+        for rt in ("identity", "position", "original"):
+            v = np.array([m["cells"][str(la)]["lookup"]["share"]["whole"][rt][0] for la in layers])
+            ax.bar(x, v, bottom=bottom, color=S.COL[rt], width=0.8, label=rt if rt != "original" else "original answer")
+            bottom += v
+            for la, cell in zip(layers, (m["cells"][str(la)] for la in layers), strict=True):
+                S.record("fig06b", target, f"layer {la}: lookup {rt} share (whole change)",
+                         *cell["lookup"]["share"]["whole"][rt], source=src)  # fmt: skip
+        rc = [m["cells"][str(la)]["recall"]["switch"]["whole"] for la in layers]
+        ax.plot(x, [r[0] for r in rc], color=S.COL["recall"], marker="D", ms=5, lw=2, label="recall switches")
+        for la, r in zip(layers, rc, strict=True):
+            S.record("fig06b", target, f"layer {la}: recall switch (whole change)", *r, source=src)
+        li = layers.index(m["layer"])
+        ax.axvline(li, color=S.COL["muted"], ls=":", lw=1)
+        ax.text(li + 0.15, 1.02, "L", color=S.COL["muted"], va="bottom")
+        step = 2 if len(layers) > 10 else 1
+        ax.set_xticks(x[::step], [str(la) for la in layers][::step])
+        ax.set_xlabel("layer")
+        ax.set_title(name, fontweight="bold")
+        ax.set_ylim(0, 1.08)
+        ax.spines[["top", "right"]].set_visible(False)
+    np.atleast_1d(axes)[0].set_ylabel("share of lookups / recalls")
+    handles, labels = np.atleast_1d(axes)[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper left", bbox_to_anchor=(0.01, 0.79), ncol=4, frameon=False)
+    S.save(fig, "fig06b_anatomy")
+
+
 # Batch 47/48 figures (28 Oct, after Dan's answers at fca83082): name -> (module, builder, verdict folder, title).
 # A title is set where the builder's default, built from the verdict's labels, reads stronger than the data.
 BATCH47 = {
@@ -2632,7 +2675,7 @@ def s_batch47(plt) -> None:
 
 
 README_FIGS = (f00_setup, f01_split, f01b_settings, f02_specificity, f02b_k, f03_order, f03b, f03c, f04_routes_design, f05_routes,
-               f06_depth, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
+               f06_depth, f06b_anatomy, f07_writes, f07b_verbal, f08_first_locker, f09_transfer, f10_left, f11_scorecard,
                f_batch47)  # fmt: skip
 SUPP_FIGS = (
     s01_split,
@@ -2649,7 +2692,7 @@ SUPP_FIGS = (
 
 README_NAMES = ("fig00_setup", "fig01_split", "fig01b_settings", "fig02_specificity", "fig02b_k_curve", "fig03_order", "fig03b_layers",
                 "fig03c_earlier_mention",
-                "fig04_routes_design", "fig05_routes", "fig06_depth", "fig07_writes", "fig07b_verbal", "fig08_first_locker",
+                "fig04_routes_design", "fig05_routes", "fig06_depth", "fig06b_anatomy", "fig07_writes", "fig07b_verbal", "fig08_first_locker",
                 "fig09_transfer", "fig10_what_is_left", "fig11_scorecard", *BATCH47)  # fmt: skip
 # the draft set's second sheet: the supplementary figures (README Appendix A) and docs/x0_details.md's figures
 SHEET_MORE = ("supp/s01_split_all_scene_sets", "supp/s01b_one_pick_duplicate", "supp/s01c_no_chat_template",

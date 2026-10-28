@@ -10,7 +10,7 @@
 - **The pointer is narrow:** it marks the first locker in a clean layout; naming an item first moves the lookup to identity. About half of the route around the lens is unexplained.
 - **For monitoring:** a lens on the bridge word shows which item is there, not where the model will read its answer.
 
-**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at 92e521b2 from the run files.
+**Status.** Qwen3.5-9B, Qwen3.6-27B, Qwen3.5-122B-A10B (FP8) and Muse Glimmer 30B (another family); 28 Oct 2026. Unverified until hand-checked (Section 8). Built at 02dab4ae from the run files.
 
 ## Setup
 
@@ -116,6 +116,11 @@
 
 ![Position answers appear with depth, once the lookup stops needing the J++ part](../../figures/story/fig06_depth.png)
 *Fig. 6.*
+
+- **Tested in advance (9B, Muse):** at early layers the change gives identity answers; position starts at L on the 9B, a few layers before on Muse; the slot probe reads the address earlier.
+
+![With depth the change moves the lookup by identity, then by position](../../figures/story/fig06b_anatomy.png)
+*Fig. 6b.*
 
 ## 4. The pointer can be removed and written
 

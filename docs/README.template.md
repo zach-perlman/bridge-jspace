@@ -117,6 +117,11 @@
 ![Position answers appear with depth, once the lookup stops needing the J++ part](figures/story/fig06_depth.png)
 *Fig. 6.*
 
+- **Tested in advance (9B, Muse):** at early layers the change gives identity answers; position starts at L on the 9B, a few layers before on Muse; the slot probe reads the address earlier.
+
+![With depth the change moves the lookup by identity, then by position](figures/story/fig06b_anatomy.png)
+*Fig. 6b.*
+
 ## 4. The pointer can be removed and written
 
 *Removal after the data, replicated in advance on the 9B and Muse; routes arms and writes fixed in advance, their recall split after the data.*
