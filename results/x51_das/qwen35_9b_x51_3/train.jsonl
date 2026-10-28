@@ -1,0 +1,312 @@
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 0, "loss": 4.028, "batch_acc": 0.0}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 24, "loss": 1.3811, "batch_acc": 0.5625, "dev_iia": 0.3974}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 25, "loss": 2.2239, "batch_acc": 0.3125}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 49, "loss": 0.8128, "batch_acc": 0.75, "dev_iia": 0.6538}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 50, "loss": 1.0364, "batch_acc": 0.625}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 74, "loss": 0.454, "batch_acc": 0.8125, "dev_iia": 0.8333}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 75, "loss": 0.2965, "batch_acc": 0.875}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 99, "loss": 0.6984, "batch_acc": 0.8125, "dev_iia": 0.8333}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 100, "loss": 0.5566, "batch_acc": 0.6875}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 124, "loss": 0.3775, "batch_acc": 0.875, "dev_iia": 0.8462}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 125, "loss": 0.7469, "batch_acc": 0.6875}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 149, "loss": 0.3933, "batch_acc": 0.8125, "dev_iia": 0.859}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 150, "loss": 0.7468, "batch_acc": 0.75}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 174, "loss": 0.2047, "batch_acc": 1.0, "dev_iia": 0.8333}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 175, "loss": 0.5736, "batch_acc": 0.875}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 199, "loss": 0.1206, "batch_acc": 1.0, "dev_iia": 0.8333}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 200, "loss": 0.1427, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 224, "loss": 0.5566, "batch_acc": 0.875, "dev_iia": 0.8205}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 225, "loss": 0.5239, "batch_acc": 0.8125}
+{"part": "identity", "R": "R_PP_k4", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 4, "step": 249, "loss": 0.6572, "batch_acc": 0.8125, "dev_iia": 0.8462}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 0, "loss": 3.9487, "batch_acc": 0.25}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 24, "loss": 3.7597, "batch_acc": 0.125, "dev_iia": 0.0513}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 25, "loss": 3.7861, "batch_acc": 0.125}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 49, "loss": 3.442, "batch_acc": 0.125, "dev_iia": 0.0513}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 50, "loss": 3.3763, "batch_acc": 0.0}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 74, "loss": 3.3038, "batch_acc": 0.1875, "dev_iia": 0.0769}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 75, "loss": 3.525, "batch_acc": 0.0625}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 99, "loss": 3.3385, "batch_acc": 0.1875, "dev_iia": 0.0769}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 100, "loss": 4.0896, "batch_acc": 0.0625}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 124, "loss": 3.1789, "batch_acc": 0.125, "dev_iia": 0.0641}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 125, "loss": 3.3889, "batch_acc": 0.25}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 149, "loss": 3.2232, "batch_acc": 0.25, "dev_iia": 0.1154}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 150, "loss": 2.7645, "batch_acc": 0.375}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 174, "loss": 3.0093, "batch_acc": 0.1875, "dev_iia": 0.0641}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 175, "loss": 3.4589, "batch_acc": 0.125}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 199, "loss": 2.4658, "batch_acc": 0.1875, "dev_iia": 0.1026}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 200, "loss": 2.3982, "batch_acc": 0.375}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 224, "loss": 2.7282, "batch_acc": 0.125, "dev_iia": 0.0897}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 225, "loss": 2.4615, "batch_acc": 0.25}
+{"part": "identity", "R": "shuf_PP_k4", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 4, "step": 249, "loss": 3.0264, "batch_acc": 0.0625, "dev_iia": 0.1154}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 0, "loss": 4.4337, "batch_acc": 0.0}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 24, "loss": 1.0526, "batch_acc": 0.6875, "dev_iia": 0.859}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 25, "loss": 0.9648, "batch_acc": 0.75}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 49, "loss": 0.0913, "batch_acc": 1.0, "dev_iia": 0.9744}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 50, "loss": 0.1677, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 74, "loss": 0.0593, "batch_acc": 1.0, "dev_iia": 0.9872}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 75, "loss": 0.0864, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 99, "loss": 0.0973, "batch_acc": 1.0, "dev_iia": 0.9872}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 100, "loss": 0.1242, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 124, "loss": 0.0711, "batch_acc": 1.0, "dev_iia": 0.9872}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 125, "loss": 0.051, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 149, "loss": 0.0836, "batch_acc": 1.0, "dev_iia": 0.9872}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 150, "loss": 0.0499, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PP_k16", "reader": "PP", "shuffled": false, "n_rows": 352, "k": 16, "step": 174, "loss": 0.0504, "batch_acc": 1.0, "dev_iia": 0.9872}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 0, "loss": 4.5181, "batch_acc": 0.25}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 24, "loss": 4.0118, "batch_acc": 0.0625, "dev_iia": 0.1154}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 25, "loss": 4.2149, "batch_acc": 0.125}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 49, "loss": 3.1016, "batch_acc": 0.0625, "dev_iia": 0.1154}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 50, "loss": 2.2775, "batch_acc": 0.3125}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 74, "loss": 2.9957, "batch_acc": 0.0625, "dev_iia": 0.1282}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 75, "loss": 2.3593, "batch_acc": 0.1875}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 99, "loss": 2.1256, "batch_acc": 0.375, "dev_iia": 0.0641}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 100, "loss": 2.2235, "batch_acc": 0.3125}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 124, "loss": 2.4482, "batch_acc": 0.1875, "dev_iia": 0.1282}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 125, "loss": 2.3226, "batch_acc": 0.25}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 149, "loss": 1.8193, "batch_acc": 0.4375, "dev_iia": 0.1154}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 150, "loss": 2.0345, "batch_acc": 0.5625}
+{"part": "identity", "R": "shuf_PP_k16", "reader": "PP", "shuffled": true, "n_rows": 352, "k": 16, "step": 174, "loss": 1.7442, "batch_acc": 0.5625, "dev_iia": 0.0897}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 0, "loss": 4.112, "batch_acc": 0.0}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 24, "loss": 2.8253, "batch_acc": 0.1875, "dev_iia": 0.2405}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 25, "loss": 1.7411, "batch_acc": 0.5}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 49, "loss": 1.2985, "batch_acc": 0.625, "dev_iia": 0.4304}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 50, "loss": 2.071, "batch_acc": 0.4375}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 74, "loss": 1.3454, "batch_acc": 0.6875, "dev_iia": 0.5696}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 75, "loss": 1.2358, "batch_acc": 0.6875}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 99, "loss": 2.032, "batch_acc": 0.5625, "dev_iia": 0.6329}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 100, "loss": 1.6078, "batch_acc": 0.5}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 124, "loss": 1.3171, "batch_acc": 0.6875, "dev_iia": 0.6203}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 125, "loss": 1.8627, "batch_acc": 0.4375}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 149, "loss": 0.4197, "batch_acc": 0.8125, "dev_iia": 0.6456}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 150, "loss": 1.102, "batch_acc": 0.75}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 174, "loss": 0.9095, "batch_acc": 0.8125, "dev_iia": 0.6329}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 175, "loss": 0.4223, "batch_acc": 0.8125}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 199, "loss": 1.227, "batch_acc": 0.625, "dev_iia": 0.6203}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 200, "loss": 1.0614, "batch_acc": 0.75}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 224, "loss": 1.8297, "batch_acc": 0.5625, "dev_iia": 0.6456}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 225, "loss": 1.152, "batch_acc": 0.75}
+{"part": "identity", "R": "R_PM_k4", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 4, "step": 249, "loss": 1.2616, "batch_acc": 0.6875, "dev_iia": 0.6456}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 0, "loss": 3.5718, "batch_acc": 0.25}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 24, "loss": 3.3908, "batch_acc": 0.1875, "dev_iia": 0.0886}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 25, "loss": 3.0753, "batch_acc": 0.1875}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 49, "loss": 2.8012, "batch_acc": 0.25, "dev_iia": 0.1392}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 50, "loss": 2.3309, "batch_acc": 0.375}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 74, "loss": 2.6928, "batch_acc": 0.375, "dev_iia": 0.1392}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 75, "loss": 2.547, "batch_acc": 0.4375}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 99, "loss": 2.9569, "batch_acc": 0.3125, "dev_iia": 0.1899}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 100, "loss": 3.0888, "batch_acc": 0.25}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 124, "loss": 2.6057, "batch_acc": 0.375, "dev_iia": 0.1139}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 125, "loss": 2.2635, "batch_acc": 0.4375}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 149, "loss": 2.761, "batch_acc": 0.25, "dev_iia": 0.1392}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 150, "loss": 2.1588, "batch_acc": 0.4375}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 174, "loss": 2.8878, "batch_acc": 0.1875, "dev_iia": 0.2025}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 175, "loss": 2.4359, "batch_acc": 0.25}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 199, "loss": 1.8248, "batch_acc": 0.5625, "dev_iia": 0.1266}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 200, "loss": 1.9279, "batch_acc": 0.3125}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 224, "loss": 1.1726, "batch_acc": 0.625, "dev_iia": 0.2025}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 225, "loss": 1.6581, "batch_acc": 0.5625}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 249, "loss": 2.2669, "batch_acc": 0.4375, "dev_iia": 0.1392}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 250, "loss": 1.916, "batch_acc": 0.375}
+{"part": "identity", "R": "shuf_PM_k4", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 4, "step": 274, "loss": 1.6135, "batch_acc": 0.5625, "dev_iia": 0.1519}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 0, "loss": 3.7334, "batch_acc": 0.0}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 24, "loss": 2.1283, "batch_acc": 0.3125, "dev_iia": 0.4177}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 25, "loss": 1.5875, "batch_acc": 0.5}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 49, "loss": 0.8747, "batch_acc": 0.6875, "dev_iia": 0.8481}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 50, "loss": 0.3252, "batch_acc": 0.9375}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 74, "loss": 0.2959, "batch_acc": 0.9375, "dev_iia": 0.8987}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 75, "loss": 0.3229, "batch_acc": 0.875}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 99, "loss": 0.2345, "batch_acc": 1.0, "dev_iia": 0.8734}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 100, "loss": 0.2488, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 124, "loss": 0.2028, "batch_acc": 1.0, "dev_iia": 0.8734}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 125, "loss": 0.1273, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 149, "loss": 0.0968, "batch_acc": 1.0, "dev_iia": 0.9114}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 150, "loss": 0.1219, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 174, "loss": 0.0756, "batch_acc": 1.0, "dev_iia": 0.9114}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 175, "loss": 0.1526, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 199, "loss": 0.1104, "batch_acc": 1.0, "dev_iia": 0.9114}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 200, "loss": 0.1059, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 224, "loss": 0.0915, "batch_acc": 1.0, "dev_iia": 0.9114}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 225, "loss": 0.0883, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k16", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 16, "step": 249, "loss": 0.057, "batch_acc": 1.0, "dev_iia": 0.8987}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 0, "loss": 3.7092, "batch_acc": 0.125}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 24, "loss": 3.0271, "batch_acc": 0.25, "dev_iia": 0.2405}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 25, "loss": 2.173, "batch_acc": 0.3125}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 49, "loss": 2.055, "batch_acc": 0.3125, "dev_iia": 0.2658}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 50, "loss": 2.4403, "batch_acc": 0.375}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 74, "loss": 2.158, "batch_acc": 0.375, "dev_iia": 0.3165}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 75, "loss": 2.2309, "batch_acc": 0.3125}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 99, "loss": 1.9189, "batch_acc": 0.5, "dev_iia": 0.2278}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 100, "loss": 2.2323, "batch_acc": 0.5}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 124, "loss": 1.5746, "batch_acc": 0.5, "dev_iia": 0.3038}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 125, "loss": 1.1588, "batch_acc": 0.5625}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 149, "loss": 1.3639, "batch_acc": 0.6875, "dev_iia": 0.2278}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 150, "loss": 1.167, "batch_acc": 0.625}
+{"part": "identity", "R": "shuf_PM_k16", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 16, "step": 174, "loss": 1.8304, "batch_acc": 0.4375, "dev_iia": 0.2278}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 0, "loss": 3.8089, "batch_acc": 0.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 24, "loss": 0.5216, "batch_acc": 0.8125, "dev_iia": 0.7722}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 25, "loss": 0.9321, "batch_acc": 0.75}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 49, "loss": 0.1493, "batch_acc": 1.0, "dev_iia": 0.8354}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 50, "loss": 0.1925, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 74, "loss": 0.0857, "batch_acc": 1.0, "dev_iia": 0.9241}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 75, "loss": 0.1413, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 99, "loss": 0.1789, "batch_acc": 1.0, "dev_iia": 0.9114}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 100, "loss": 0.3548, "batch_acc": 0.9375}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 124, "loss": 0.089, "batch_acc": 1.0, "dev_iia": 0.9367}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 125, "loss": 0.1444, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 149, "loss": 0.1007, "batch_acc": 1.0, "dev_iia": 0.9241}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 150, "loss": 0.0973, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 174, "loss": 0.0692, "batch_acc": 1.0, "dev_iia": 0.9241}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 175, "loss": 0.0508, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 199, "loss": 0.0802, "batch_acc": 1.0, "dev_iia": 0.9494}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 200, "loss": 0.0801, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 224, "loss": 0.075, "batch_acc": 1.0, "dev_iia": 0.9494}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 225, "loss": 0.0405, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 249, "loss": 0.0465, "batch_acc": 1.0, "dev_iia": 0.962}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 250, "loss": 0.0446, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 274, "loss": 0.0244, "batch_acc": 1.0, "dev_iia": 0.9494}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 275, "loss": 0.0915, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k64", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 64, "step": 299, "loss": 0.0235, "batch_acc": 1.0, "dev_iia": 0.9494}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 0, "loss": 4.0882, "batch_acc": 0.0625}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 24, "loss": 2.1303, "batch_acc": 0.4375, "dev_iia": 0.1646}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 25, "loss": 1.9969, "batch_acc": 0.5}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 49, "loss": 2.4644, "batch_acc": 0.375, "dev_iia": 0.2025}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 50, "loss": 2.2951, "batch_acc": 0.4375}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 74, "loss": 2.9177, "batch_acc": 0.3125, "dev_iia": 0.1772}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 75, "loss": 1.5826, "batch_acc": 0.5625}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 99, "loss": 1.7268, "batch_acc": 0.5, "dev_iia": 0.2405}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 100, "loss": 1.3092, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 124, "loss": 1.3778, "batch_acc": 0.6875, "dev_iia": 0.1519}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 125, "loss": 0.8497, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 149, "loss": 1.3006, "batch_acc": 0.625, "dev_iia": 0.2025}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 150, "loss": 1.4555, "batch_acc": 0.625}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 174, "loss": 0.6641, "batch_acc": 0.875, "dev_iia": 0.2532}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 175, "loss": 0.4603, "batch_acc": 1.0}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 199, "loss": 1.381, "batch_acc": 0.4375, "dev_iia": 0.2785}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 200, "loss": 0.943, "batch_acc": 0.75}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 224, "loss": 0.9293, "batch_acc": 0.75, "dev_iia": 0.3038}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 225, "loss": 0.6572, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 249, "loss": 1.1495, "batch_acc": 0.75, "dev_iia": 0.2405}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 250, "loss": 1.0545, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 274, "loss": 1.2198, "batch_acc": 0.5625, "dev_iia": 0.2532}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 275, "loss": 0.591, "batch_acc": 0.875}
+{"part": "identity", "R": "shuf_PM_k64", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 64, "step": 299, "loss": 0.5731, "batch_acc": 0.8125, "dev_iia": 0.2911}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 0, "loss": 4.1141, "batch_acc": 0.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 24, "loss": 0.21, "batch_acc": 0.9375, "dev_iia": 0.9241}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 25, "loss": 0.2825, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 49, "loss": 0.1562, "batch_acc": 1.0, "dev_iia": 0.9367}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 50, "loss": 0.1458, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 74, "loss": 0.1204, "batch_acc": 1.0, "dev_iia": 0.962}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 75, "loss": 0.1402, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 99, "loss": 0.0887, "batch_acc": 1.0, "dev_iia": 0.962}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 100, "loss": 0.0922, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 124, "loss": 0.0631, "batch_acc": 1.0, "dev_iia": 0.9873}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 125, "loss": 0.0879, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 149, "loss": 0.0773, "batch_acc": 1.0, "dev_iia": 0.9873}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 150, "loss": 0.0625, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 174, "loss": 0.0582, "batch_acc": 1.0, "dev_iia": 0.9747}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 175, "loss": 0.0639, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 199, "loss": 0.1194, "batch_acc": 1.0, "dev_iia": 0.962}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 200, "loss": 0.1134, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 224, "loss": 0.0571, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 225, "loss": 0.0524, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 249, "loss": 0.0362, "batch_acc": 1.0, "dev_iia": 0.962}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 250, "loss": 0.0404, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 274, "loss": 0.0516, "batch_acc": 1.0, "dev_iia": 0.9494}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 275, "loss": 0.0479, "batch_acc": 1.0}
+{"part": "identity", "R": "R_PM_k128", "reader": "PM", "shuffled": false, "n_rows": 345, "k": 128, "step": 299, "loss": 0.037, "batch_acc": 1.0, "dev_iia": 0.9494}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 0, "loss": 2.2854, "batch_acc": 0.4375}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 24, "loss": 2.4859, "batch_acc": 0.375, "dev_iia": 0.2025}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 25, "loss": 2.3085, "batch_acc": 0.375}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 49, "loss": 2.1731, "batch_acc": 0.5, "dev_iia": 0.2152}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 50, "loss": 2.3253, "batch_acc": 0.375}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 74, "loss": 2.0318, "batch_acc": 0.375, "dev_iia": 0.2278}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 75, "loss": 1.7051, "batch_acc": 0.5625}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 99, "loss": 1.6104, "batch_acc": 0.5625, "dev_iia": 0.2025}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 100, "loss": 1.006, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 124, "loss": 1.9534, "batch_acc": 0.5625, "dev_iia": 0.2152}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 125, "loss": 1.3373, "batch_acc": 0.625}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 149, "loss": 1.1996, "batch_acc": 0.625, "dev_iia": 0.1899}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 150, "loss": 1.0223, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 174, "loss": 1.3116, "batch_acc": 0.625, "dev_iia": 0.2785}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 175, "loss": 1.6931, "batch_acc": 0.5625}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 199, "loss": 0.8903, "batch_acc": 0.6875, "dev_iia": 0.3291}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 200, "loss": 1.0411, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 224, "loss": 0.9768, "batch_acc": 0.75, "dev_iia": 0.3038}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 225, "loss": 1.0447, "batch_acc": 0.625}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 249, "loss": 0.7717, "batch_acc": 0.75, "dev_iia": 0.2405}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 250, "loss": 1.3527, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 274, "loss": 0.7268, "batch_acc": 0.875, "dev_iia": 0.2278}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 275, "loss": 1.4495, "batch_acc": 0.6875}
+{"part": "identity", "R": "shuf_PM_k128", "reader": "PM", "shuffled": true, "n_rows": 345, "k": 128, "step": 299, "loss": 0.7288, "batch_acc": 0.8125, "dev_iia": 0.2405}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 0, "loss": 3.9045, "batch_acc": 0.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 24, "loss": 0.477, "batch_acc": 0.8125, "dev_iia": 0.7879}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 25, "loss": 0.3783, "batch_acc": 0.9375}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 49, "loss": 0.9241, "batch_acc": 0.75, "dev_iia": 0.8333}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 50, "loss": 0.9412, "batch_acc": 0.8125}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 74, "loss": 0.3465, "batch_acc": 0.9375, "dev_iia": 0.9545}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 75, "loss": 0.1185, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 99, "loss": 0.1547, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 100, "loss": 0.1049, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 124, "loss": 0.0632, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 125, "loss": 0.1066, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 149, "loss": 0.094, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 150, "loss": 0.0823, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 174, "loss": 0.0704, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 175, "loss": 0.1155, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k2", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 2, "step": 199, "loss": 0.0629, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 0, "loss": 4.9583, "batch_acc": 0.0625}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 24, "loss": 3.6309, "batch_acc": 0.0, "dev_iia": 0.1212}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 25, "loss": 4.8451, "batch_acc": 0.0}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 49, "loss": 3.8422, "batch_acc": 0.0625, "dev_iia": 0.1515}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 50, "loss": 3.2438, "batch_acc": 0.25}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 74, "loss": 3.1016, "batch_acc": 0.125, "dev_iia": 0.1364}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 75, "loss": 3.7876, "batch_acc": 0.0625}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 99, "loss": 3.6081, "batch_acc": 0.0, "dev_iia": 0.1364}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 100, "loss": 2.5095, "batch_acc": 0.125}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 124, "loss": 3.32, "batch_acc": 0.125, "dev_iia": 0.1515}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 125, "loss": 2.7622, "batch_acc": 0.0}
+{"part": "address", "R": "shuf_pos_k2", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 2, "step": 149, "loss": 2.5799, "batch_acc": 0.25, "dev_iia": 0.1364}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 0, "loss": 4.0075, "batch_acc": 0.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 24, "loss": 0.82, "batch_acc": 0.75, "dev_iia": 0.8939}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 25, "loss": 0.3693, "batch_acc": 0.875}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 49, "loss": 0.1089, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 50, "loss": 0.1059, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 74, "loss": 0.0988, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 75, "loss": 0.1069, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 99, "loss": 0.1178, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 100, "loss": 0.1003, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 124, "loss": 0.0851, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 125, "loss": 0.0605, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k4", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 4, "step": 149, "loss": 0.0688, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 0, "loss": 4.3882, "batch_acc": 0.125}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 24, "loss": 3.5437, "batch_acc": 0.1875, "dev_iia": 0.1364}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 25, "loss": 4.0301, "batch_acc": 0.1875}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 49, "loss": 3.544, "batch_acc": 0.125, "dev_iia": 0.0909}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 50, "loss": 3.5962, "batch_acc": 0.125}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 74, "loss": 3.2357, "batch_acc": 0.0625, "dev_iia": 0.1212}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 75, "loss": 3.8553, "batch_acc": 0.0625}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 99, "loss": 2.4393, "batch_acc": 0.25, "dev_iia": 0.1061}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 100, "loss": 3.0706, "batch_acc": 0.1875}
+{"part": "address", "R": "shuf_pos_k4", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 4, "step": 124, "loss": 3.1113, "batch_acc": 0.3125, "dev_iia": 0.1061}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 0, "loss": 4.217, "batch_acc": 0.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 24, "loss": 0.1266, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 25, "loss": 0.1691, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 49, "loss": 0.1213, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 50, "loss": 0.1151, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 74, "loss": 0.0898, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 75, "loss": 0.105, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 99, "loss": 0.0687, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 100, "loss": 0.0676, "batch_acc": 1.0}
+{"part": "address", "R": "R_pos_k8", "reader": "PP", "shuffled": false, "n_rows": 174, "k": 8, "step": 124, "loss": 0.0578, "batch_acc": 1.0, "dev_iia": 1.0}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 0, "loss": 4.4004, "batch_acc": 0.1875}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 24, "loss": 3.1421, "batch_acc": 0.1875, "dev_iia": 0.1515}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 25, "loss": 2.8186, "batch_acc": 0.3125}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 49, "loss": 2.4502, "batch_acc": 0.4375, "dev_iia": 0.2121}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 50, "loss": 3.8941, "batch_acc": 0.125}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 74, "loss": 2.2459, "batch_acc": 0.25, "dev_iia": 0.1364}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 75, "loss": 2.7894, "batch_acc": 0.3125}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 99, "loss": 2.3933, "batch_acc": 0.375, "dev_iia": 0.1364}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 100, "loss": 2.8127, "batch_acc": 0.1875}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 124, "loss": 2.2849, "batch_acc": 0.4375, "dev_iia": 0.1061}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 125, "loss": 2.7207, "batch_acc": 0.3125}
+{"part": "address", "R": "shuf_pos_k8", "reader": "PP", "shuffled": true, "n_rows": 174, "k": 8, "step": 149, "loss": 1.9071, "batch_acc": 0.3125, "dev_iia": 0.0909}

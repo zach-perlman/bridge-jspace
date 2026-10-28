@@ -1,0 +1,52 @@
+{
+  "exp": "x51_das",
+  "run": "qwen35_9b_x51_3",
+  "part": "address (49.8's file layout; the run's manifest is ../manifest.json)",
+  "layer": 12,
+  "ks": [
+    2,
+    4,
+    8
+  ],
+  "k_rule": 4,
+  "model": {
+    "target": "qwen3.5-9b"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DAS_GDN": "torch",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "routes_run": "qwen35_9b_x6_routes",
+  "U": {
+    "states_run": "qwen35_9b_x0_probe_v4",
+    "rank": 4,
+    "info": {
+      "states_run": "qwen35_9b_x0_probe_v4",
+      "n": 758,
+      "rank": {
+        "A": 4,
+        "V": 8,
+        "AV": 12,
+        "Alf": 4,
+        "Id": 45
+      },
+      "layout_groups": {
+        "groups": 31,
+        "items_kept": 758,
+        "singletons_dropped": 0
+      },
+      "A_Alf_overlap": 0.7249048684052313
+    }
+  },
+  "W": {
+    "run": "qwen35_9b_x47_2",
+    "slots": 6,
+    "rank": 5,
+    "file": "results/x47_six/qwen35_9b_x47_2/fit.npz",
+    "sha256": "74687ee895327b94a42a6869b8dcaf2a8a2ac2c2738abf00e37b724db0a50b74"
+  }
+}
