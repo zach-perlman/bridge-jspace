@@ -1,0 +1,66 @@
+id: x51_1_9b
+title: "Batch 51.1 on the 9B (L12): dose curves with a matched random part at every dose. At the bridge word, the change's J++ part alone at alpha in {0.5, 1, 1.5, 2, 3} and the rest alone at beta in {0.25, 0.5, 0.75, 1, 1.5} (with and without the address), each against a random part of the same share at the same gain; J(1,1) for the loss bar; 49.1's locker-first main-test items, both readers"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 0.1
+depends_on: []
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=;
+  uv run python scripts/x51_dose.py run --name qwen35_9b_x51_1 --why "Batch 51, test 51.1 (jobs/c3/batch51.yaml; Q51.1): dose curves at L12, alpha P_J Delta (alpha 0.5..3) and beta (Delta - P_J Delta) with and without U (beta 0.25..1.5), each with its random twin of the same share at the same gain, J(1,1) and J(0,0); 49.1's items (main-test locker-first scenes of qwen35_9b_x0_necessity); sealed"
+question: >-
+  Does the lookup stay blind to the change's J++ part at every dose under the loss bar, and does the recall read the
+  J++ part above its share? Each reader's switch as a function of one part's gain, against a random part of the same
+  share at the same gain.
+why_it_matters: >-
+  49.1 compared the parts at gains 0..2 with random parts only at four corners; a blind lookup at one dose could be a
+  dose too small. Dose curves with a matched random part at every dose separate "the lookup cannot read the J++ part"
+  from "the J++ part is too small at gain 1", and give the readers' relative weights on the two parts (the fit's b/a).
+hypotheses:
+  Q51.1: "Dan's answer in predictions/2026-10-28_dan.md (Q51.1: (i) per model 9B / 27B / Muse; (ii) per model; (iii) Muse yes / no); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x51_dose.py verdict and view refuse until the answer is committed."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch51.yaml, 51.1), verbatim: (i) "The lookup is blind to the J++ part": switch minus
+  random <= 0.10 at every alpha whose plain-text loss stays under 2x the whole change's -- on all three. (ii) "The recall
+  reads the J++ part above its share": at the first alpha where the J++ part alone switches >= 0.3, J minus random >=
+  0.2 -- per model. (iii) "Together only" (Muse): (1,1) from 49.1 >= 0.8 while the best single-part dose under the loss
+  bar stays <= 0.3. Output: one figure, four curves per model (two readers x two parts), random dashed, the loss bar
+  marked; a per-model, per-reader fit logit(switch) = a alpha + b beta (+ c alpha beta), report b/a and whether c is
+  needed. As computed (fixed before any run; Dan may override before the verdict): items, layer and parts are 49.1's
+  (scripts/x49_gain.py, imported): the main test's eligible items of qwen35_9b_x0_necessity at L12 (chat; X0's gate
+  0.80 per reader on O unedited and >= 150 eligible, asserted from its gate.json), rebuilt by x47_cumulative.select,
+  locker-first only: 75 items, 32 bridge items, the same items in the same order as qwen35_9b_x49_1 (plan in
+  results/x51_dose/plan-20261028T162252Z). Delta = h_S - h_O at the bridge word at L; P_J Delta = X0's 25-atom signed OMP
+  part over the J++ letter-token atoms at L; R Delta = X0's random part at P_J Delta's share of ||Delta||^2 (random basis
+  seed 888 + L); U = x47_atoms.pointer_basis (rank 4, never refit), R_U Delta the random part at U U^T Delta's share.
+  Arms (added at the bridge word at L on O, X0's AddRows; 32 arms): J(alpha,0) = alpha P_J Delta and its twin R(alpha,0)
+  = alpha R Delta; J(0,beta) = beta (Delta - P_J Delta) and its twin R(0,beta) = beta (Delta - R Delta) (the random
+  complement at the rest's share, 49.1's R(0,b)); without the address J(0,beta)-U = beta (Delta - P_J Delta - U U^T Delta)
+  (49.1's J(0,2)-U at gain beta, as written) and its twin J(0,beta)-RU = beta (Delta - P_J Delta - R_U Delta); J(1,1) =
+  Delta and J(0,0) = O unedited. The J and R arms are computed with 49.1's expression, so the cells both tests share are
+  the same floats. Switch = X0's chat read (top token = S's answer's first token). Plain-text loss = 49.1's: -log p(O's
+  token after the bridge word) at the bridge word, O's lookup prompt cut after the bridge word; the loss bar: an arm is
+  under it when its mean loss over the items <= 2 x J(1,1)'s mean loss (this run's J(1,1)). (i) is read on the lookup,
+  J(alpha,0) - R(alpha,0) at every alpha whose J(alpha,0) is under the bar; no alpha under the bar = undecided; "on all
+  three" = yes on each of the three models. (ii) is read on the recall (the lookup beside): the first alpha in ascending
+  order with J(alpha,0) >= 0.3; it is not conditioned on the loss bar (whether that alpha is under it is reported); no
+  alpha reaching 0.3 = no. (iii) is decisive on Muse's recall (the lookup and the 9B / 27B beside): (1,1) = the stored
+  49.1 run's J(1,1) switch rate on the same items (results/x49_gain/<run>/outcomes.jsonl); single parts = J(alpha,0) and
+  J(0,beta) under the bar (the -U arms are reported, not counted); no single dose under the bar = undecided. Point
+  estimates decide (EPS 1e-9 at the bars); cluster-bootstrap CIs over the bridge items (10,000, seed 0) beside, paired
+  for J minus random. Fit (descriptive): binomial logistic regression with an intercept, logit(switch) = a0 + a alpha +
+  b beta (+ c alpha beta) (the intercept added because O unedited does not switch; without it the fit puts O at 0.5),
+  on every J cell with the address of this run (alpha axis, beta axis, (1,1), (0,0)) plus 49.1's 5x5 grid cells on the
+  same items that this run does not repeat (16 cells; 28 cells in all), Newton-IRLS with an L2 penalty of 1.0 on a, b,
+  c (not a0) so a reader that never switches along one axis keeps finite coefficients; b/a from the additive fit; "c is
+  needed" when c's 95% cluster-bootstrap CI (the same 10,000 draws over bridge items, seed 0) excludes 0; the naive
+  likelihood-ratio statistic (reads treated as independent, anti-conservative) beside. Code: scripts/x51_dose.py
+  verdict (rule_blind, rule_above, rule_together, logistic_fit; figure dose_curves.png) and view (verify pack).
+controls:
+- "a random part of the same share at the same gain beside every dose of the J++ part (R(alpha,0)) and of the rest (R(0,beta))"
+- "a random part of U's share removed in place of U beside every dose of the rest without the address (J(0,beta)-RU)"
+- "J(0,0) = O unedited (reads O's answer by eligibility; reported) and J(1,1) = X0's whole arm (against the source run's stored switches and 49.1's J(1,1), item by item; reported)"
+- "the lookup on the identical edits"
+- "plain-text loss at the bridge word under every arm; the loss bar 2x J(1,1)'s mean"
+n: '75 main-test scenes with the locker before the pick (32 bridge items), 49.1''s items at L12, chat'
+seeds: [888, 0]
+notes: "Batch 51 (Dan, 28 Oct 17:10), 51.1, mats queue: 9B -> 27B -> Muse. Sealed: the run writes manifest (switches, U's record, the 49.1 run's files' sha256), plan (counts), gate (the source run's, asserted), cases, outcomes (both readers, 32 arms; switched, top token, role, p_org, p_alt, ld), norms (per item: ||Delta||, the shares of ||Delta||^2 of P_J Delta, its random twin, U U^T Delta, its random twin and U U^T P_J Delta), losses (per item and arm) and 10 examples' greedy texts (seed 0, every arm); no verdict. By hand after Dan's Q51.1 is committed (CPU, after all three models): uv run python scripts/x51_dose.py verdict (verdict.md / verdict.json: rules (i)-(iii) per model, every arm's rate and loss with CIs, J minus random per dose, the fits, the checks; dose_curves.png) and uv run python scripts/x51_dose.py view (view.md: 5 rendered prompts per model, 10 random rows per arm, seed 0). Estimate from the box ledger (results/jobq/ledger_*.jsonl): x49_1_9b ran 143.6 s wall (104.8 s run) for 75 items x 39 arms (2 readers + the loss); here 32 arms on the same items ~ 120 s wall -> 0.1 h with margin (Dan's brief: ~0.5)."
