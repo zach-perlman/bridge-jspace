@@ -1,0 +1,77 @@
+{
+  "target": "qwen3.6-27b",
+  "layer": 32,
+  "x8_run": "x8_write_27b",
+  "routes_run": "x6_routes_27b",
+  "items": 300,
+  "entities": 32,
+  "fit_items": 150,
+  "read_items": 150,
+  "fit_entities": 16,
+  "read_entities": 16,
+  "pairs": 600,
+  "read_pairs": 300,
+  "x8_s2_target_share": {
+    "all": 0.24166666666666667,
+    "fit": 0.2633333333333333,
+    "read": 0.22
+  },
+  "x8_s2_switched_pairs": {
+    "fit": 79,
+    "read": 66
+  },
+  "recorded_layers": [
+    35,
+    39,
+    43,
+    47,
+    51,
+    55,
+    59,
+    63
+  ],
+  "skipped_linear_layers": [
+    33,
+    34,
+    36,
+    37,
+    38,
+    40,
+    41,
+    42,
+    44,
+    45,
+    46,
+    48,
+    49,
+    50,
+    52,
+    53,
+    54,
+    56,
+    57,
+    58,
+    60,
+    61,
+    62
+  ],
+  "n_heads": 24,
+  "n_kv": 4,
+  "head_dim": 256,
+  "recorded_heads": 192,
+  "sliding_window": null,
+  "max_read_len": 75,
+  "question_tokens": {
+    "8": 300
+  },
+  "locker_sentence_tokens": {
+    "9": 900
+  },
+  "forwards": {
+    "pass1_lookup_captured": 1500,
+    "pass1_recall_reads": 1500,
+    "states": 300,
+    "ablation_reads": 2700,
+    "competence_reads": "x8_write.eligible over the routes generator's C2 scenes (as x8)"
+  }
+}

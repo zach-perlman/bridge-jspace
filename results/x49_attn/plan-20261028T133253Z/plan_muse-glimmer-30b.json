@@ -1,0 +1,70 @@
+{
+  "target": "muse-glimmer-30b",
+  "layer": 26,
+  "x8_run": "muse30b_x8_write",
+  "routes_run": "muse30b_x6_routes",
+  "items": 300,
+  "entities": 32,
+  "fit_items": 157,
+  "read_items": 143,
+  "fit_entities": 16,
+  "read_entities": 16,
+  "pairs": 600,
+  "read_pairs": 286,
+  "x8_s2_target_share": {
+    "all": 0.515,
+    "fit": 0.49044585987261147,
+    "read": 0.541958041958042
+  },
+  "x8_s2_switched_pairs": {
+    "fit": 154,
+    "read": 155
+  },
+  "recorded_layers": [
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ],
+  "skipped_linear_layers": [],
+  "n_heads": 32,
+  "n_kv": 2,
+  "head_dim": 128,
+  "recorded_heads": 800,
+  "sliding_window": 2048,
+  "max_read_len": 110,
+  "question_tokens": {
+    "8": 300
+  },
+  "locker_sentence_tokens": {
+    "9": 900
+  },
+  "forwards": {
+    "pass1_lookup_captured": 1500,
+    "pass1_recall_reads": 1500,
+    "states": 300,
+    "ablation_reads": 2574,
+    "competence_reads": "x8_write.eligible over the routes generator's C2 scenes (as x8)"
+  }
+}

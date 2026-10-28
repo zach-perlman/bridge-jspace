@@ -1,0 +1,65 @@
+{
+  "target": "qwen3.5-9b",
+  "layer": 12,
+  "x8_run": "qwen35_9b_x8_write",
+  "routes_run": "qwen35_9b_x6_routes",
+  "items": 300,
+  "entities": 31,
+  "fit_items": 135,
+  "read_items": 165,
+  "fit_entities": 15,
+  "read_entities": 16,
+  "pairs": 600,
+  "read_pairs": 330,
+  "x8_s2_target_share": {
+    "all": 0.4583333333333333,
+    "fit": 0.4703703703703704,
+    "read": 0.4484848484848485
+  },
+  "x8_s2_switched_pairs": {
+    "fit": 127,
+    "read": 148
+  },
+  "recorded_layers": [
+    15,
+    19,
+    23,
+    27,
+    31
+  ],
+  "skipped_linear_layers": [
+    13,
+    14,
+    16,
+    17,
+    18,
+    20,
+    21,
+    22,
+    24,
+    25,
+    26,
+    28,
+    29,
+    30
+  ],
+  "n_heads": 16,
+  "n_kv": 4,
+  "head_dim": 256,
+  "recorded_heads": 80,
+  "sliding_window": null,
+  "max_read_len": 75,
+  "question_tokens": {
+    "8": 300
+  },
+  "locker_sentence_tokens": {
+    "9": 900
+  },
+  "forwards": {
+    "pass1_lookup_captured": 1500,
+    "pass1_recall_reads": 1500,
+    "states": 300,
+    "ablation_reads": 2970,
+    "competence_reads": "x8_write.eligible over the routes generator's C2 scenes (as x8)"
+  }
+}
