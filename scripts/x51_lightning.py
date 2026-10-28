@@ -96,9 +96,18 @@ PREREQ_RULE = ("Batch 52 prerequisite (jobs/c3/batch52.yaml part C, Dan's words)
                "every 4th layer)\". As computed: the gate = X0's (unedited org accuracy under X0's top-token read >= 0.80 "
                "for both readers) on the first 60 main-test scenes in scene order; the sweep = the whole change at the "
                "bridge word on 60 dev scenes (51.6's split: random.Random(0).sample of the eligible scenes) at L2, L6, ..., "
-               "L50; the layer = the earliest where both readers' switch rates are >= 0.3 (point estimates, EPS 1e-9); "
-               f"none: \"{NO_LAYER}\" and the column is cancelled")  # fmt: skip
+               "L50; the layer by amendment 1 (PICK_RULE: the earliest layer where both readers' switch rates are >= 0.3 "
+               "at relative depth >= 0.25); every swept layer's rates, passing status and the bridge word's lens "
+               f"readability recorded; none: \"{NO_LAYER}\" and the column is cancelled")  # fmt: skip
 NO_PREDICTION = "no prediction: the layer is a design choice fixed by the published rule (batch 52 addendum)"
+MIN_DEPTH = 0.25  # amendment 1: the pick's relative depth l / n_layers (Lightning: 52 blocks -> l >= 13, so L14 on)
+PICK_RULE = ("jobs/c3/batch52.yaml amendment_1 (Dan, 29 Oct ~00:50 Paris, before any sweep ran), verbatim: \"earliest "
+             "layer passing the gate at relative depth >= 0.25; tie-break = highest lens readability of the bridge "
+             "word\". As computed: passing = both readers' whole-change switch rates >= 0.3 on the 60 dev scenes (point "
+             "estimates, EPS 1e-9); relative depth = l / 52; readability = the J++ lens readout at the bridge word of "
+             "O's and S's lookup prompts, the share of the 120 rows whose own bridge token is its top-1 over the "
+             "vocabulary (then the lower median rank); distinct swept layers leave 'earliest' no tie, so the tie-break "
+             "is recorded per layer and not used")  # fmt: skip
 # r2 (coordinator for Dan, 29 Oct ~01:10 Paris, to be flagged at 02:00, reversible): nem35l_x52_layer failed the
 # 60-scene gate (lookup 0.883, recall 0.783) while X0's gate on all 516 scenes passed (0.957 / 0.816); --gate main
 # decides on the main test's gate verbatim (X0's: 0.80 per reader on all scenes, >= 150 eligible), the 60-scene gate
@@ -458,15 +467,55 @@ def gate_first(cases: list[dict], comp: list[dict], n: int | None = None) -> dic
             "pass": len(first) == n and bool(acc) and all(a >= X.GATE for a in acc.values())}  # fmt: skip
 
 
-def layer_record(rows: list[dict], n_boot: int = X.N_BOOT) -> dict:
-    """layer.json's body from step 1's rows: the rates with cluster-bootstrap CIs, every passing layer, the pick."""
+def readability(model, lens, cases: list[dict], layers: tuple[int, ...]) -> dict[int, dict]:
+    """Amendment 1's tie-break measure, per layer: the J++ lens readout (lens.readout, full vocabulary) at the bridge
+    word of O's and of S's lookup prompt, each scored on its own bridge token: the share of the 2n rows where that
+    token is the lens's top-1, the share in the top 5, and the median rank (1 = top). Unedited forwards only."""
+    import torch
+
+    ranks: dict[int, list[int]] = {la: [] for la in layers}
+    with torch.no_grad():
+        for c in cases:
+            ids = c["readers"][X.LOOKUP]["ids"]
+            for v in ("org", "alt"):
+                tok = int(ids[v][c["pos"]])
+                rec = model.run(torch.tensor([ids[v]], device=model.device), record=tuple(layers))[1]
+                for la in layers:
+                    lg = lens.readout(rec[la][c["pos"]].float()[None], la)[0].float()
+                    ranks[la].append(int((lg > lg[tok]).sum()) + 1)
+    return {la: {"n": len(r), "top1": float(np.mean([x == 1 for x in r])), "top5": float(np.mean([x <= 5 for x in r])),
+                 "median_rank": float(np.median(r))} for la, r in ranks.items()}  # fmt: skip
+
+
+def pick_layer_a1(rates: dict[int, dict[str, float]], read: dict[int, dict], n_layers: int) -> int | None:
+    """Amendment 1 (Dan ~00:50, before any sweep): the earliest layer passing (both readers >= 0.3) at relative depth
+    l / n_layers >= 0.25; tie-break = the highest lens readability of the bridge word (top-1 share, then the lower
+    median rank). Swept layers are distinct, so 'earliest' leaves no tie and the tie-break is recorded, not used."""
+    ok = [la for la in passing_layers(rates) if la / n_layers >= MIN_DEPTH - EPS]
+    if not ok:
+        return None
+    tied = [la for la in ok if la == min(ok)]
+    return max(tied, key=lambda la: (read[la]["top1"], -read[la]["median_rank"]))
+
+
+def layer_record(rows: list[dict], read: dict[int, dict], n_layers: int, n_boot: int = X.N_BOOT) -> dict:
+    """layer.json's body: per swept layer the rates with cluster-bootstrap CIs, whether both readers pass, whether its
+    relative depth is >= 0.25, the bridge word's lens readability; every candidate; amendment 1's pick."""
     rates = step1_rates(rows)
-    layer = pick_layer(rates)
-    return {"status": "done" if layer is not None else "no layer passes", "layer": layer,
-            "label": f"L{layer}" if layer is not None else NO_LAYER, "passing_layers": passing_layers(rates),
+    layer = pick_layer_a1(rates, read, n_layers)
+    passing = passing_layers(rates)
+    cand = [la for la in passing if la / n_layers >= MIN_DEPTH - EPS]
+    ci = step1_numbers(rows, n_boot)
+    per = {str(la): {"depth": round(la / n_layers, 4), "passes": la in passing, "deep_enough": la / n_layers >= MIN_DEPTH - EPS,
+                     "candidate": la in cand, **{READER_NAME[w]: ci[la][w] for w in X.READERS},
+                     "readability": read.get(la)} for la in sorted(rates)}  # fmt: skip
+    label = f"L{layer}" if layer is not None else (NO_LAYER if not passing else
+                                                   f"{NO_LAYER} at relative depth >= {MIN_DEPTH}")  # fmt: skip
+    return {"status": "done" if layer is not None else "no layer passes", "layer": layer, "label": label,
+            "rule": PICK_RULE, "n_layers": n_layers, "passing_layers": passing, "candidates": cand,
             "rates": {str(k): {READER_NAME[w]: v[w] for w in X.READERS} for k, v in rates.items()},
-            "rates_ci": {str(k): {READER_NAME[w]: v[w] for w in X.READERS}
-                         for k, v in step1_numbers(rows, n_boot).items()}}  # fmt: skip
+            "rates_ci": {str(k): {READER_NAME[w]: v[w] for w in X.READERS} for k, v in ci.items()},
+            "per_layer": per}  # fmt: skip
 
 
 def committed_layer(run: str = LAYER_RUN, rev: str = "HEAD") -> int:
@@ -498,12 +547,19 @@ def prereq_md(rec: dict, gate: dict) -> list[str]:
              f"scenes ({decides[1]}): {g.get('org_accuracy')}, pass {g.get('pass')}; eligible {gate['eligible']}; dev "
              f"{len(gate['dev'])}, test (for the coverage runs) {len(gate['test'])}.", "",
              f"**Layer: {rec.get('label')}**", ""]  # fmt: skip
-    if rec.get("rates_ci"):
-        lines += [f"Every passing layer: {rec['passing_layers']}.", "",
-                  "| layer | lookup switch [CI] | recall switch [CI] | both >= 0.3 |", "|---|---|---|---|"]  # fmt: skip
-        for la, v in rec["rates_ci"].items():
-            both = all(v[w][0] >= SWITCH_MIN - EPS for w in ("lookup", "recall"))
-            lines.append(f"| L{la} | {fmt(v['lookup'])} | {fmt(v['recall'])} | {'yes' if both else ''} |")
+    if rec.get("per_layer"):
+        lines += [f"Pick rule: {rec['rule']}.", "", f"Every passing layer: {rec['passing_layers']}; candidates "
+                  f"(relative depth >= {MIN_DEPTH}): {rec['candidates']}.", "",
+                  "| layer | depth | lookup switch [CI] | recall switch [CI] | both >= 0.3 | depth >= 0.25 | lens top-1 "
+                  "(bridge word) | median rank |", "|---|---|---|---|---|---|---|---|"]  # fmt: skip
+        for la, v in rec["per_layer"].items():
+            r = v.get("readability") or {}
+            lines.append(f"| L{la}{' (pick)' if int(la) == rec.get('layer') else ''} | {v['depth']:.2f} | "
+                         f"{fmt(v['lookup'])} | {fmt(v['recall'])} | {'yes' if v['passes'] else ''} | "
+                         f"{'yes' if v['deep_enough'] else ''} | {r.get('top1', float('nan')):.2f} | "
+                         f"{r.get('median_rank', float('nan')):g} |")  # fmt: skip
+        lines += ["", "The conflict result at every swept layer comes from the Lightning conflict-test run (all 13 "
+                  "layers, deciding at the pick), not from this sweep."]  # fmt: skip
     return lines
 
 
@@ -587,7 +643,8 @@ def stage_prereq(name: str, why: str, n_boot: int = X.N_BOOT, gate_mode: str = "
         with torch.no_grad():
             rows1 = step1_reads(model, dev, LAYERS4, deltas(model, dev, LAYERS4), digits)
         X.write_jsonl(out / "step1_outcomes.jsonl", rows1)
-        rec = layer_record(rows1, n_boot)
+        read = readability(model, lens, dev, LAYERS4)
+        rec = layer_record(rows1, read, pins.TARGETS[pins.TARGET]["n_layers"], n_boot)
     rec |= {"n_dev": len(dev), "layers": list(LAYERS4), "rule": PREREQ_RULE, "prediction": NO_PREDICTION,
             "prereq_gate": gate_mode, "gate60_pass": g60["pass"], "main_gate_pass": bool(gate[RENDERING]["pass"])}  # fmt: skip
     (out / "layer.json").write_text(json.dumps(rec, indent=2) + "\n")

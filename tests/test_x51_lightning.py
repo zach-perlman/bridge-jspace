@@ -21,6 +21,16 @@ LAST = max(L6.LAYERS)
 class Lens51(FakeLens):
     source_layers = tuple(range(LAST + 1))
 
+    def readout(self, h, layer):
+        """Fake lens logits over the fake model's 128 tokens (a fixed random map per layer)."""
+        w = torch.randn(128, h.shape[-1], generator=torch.Generator().manual_seed(100 + layer))
+        return h.float() @ w.T
+
+
+def _first_deep(n_layers: int) -> int:
+    """Amendment 1's pick when every swept layer passes: the first at relative depth >= 0.25."""
+    return min(la for la in L6.LAYERS4 if la / n_layers >= 0.25)
+
 
 def _case(i: int) -> dict:
     """A main-test case as build_cases writes it: both readers' prompts agree through the bridge word (position 4); S
@@ -211,6 +221,15 @@ def test_prereq_layers_are_every_4th_with_lens_maps():
     assert L6.N_GATE == 60 and L6.PREREQ_RUN.startswith("nem35l_")
 
 
+def test_amendment_1_pick_is_the_earliest_passing_layer_at_depth_quarter():
+    read = {la: {"top1": 0.5, "median_rank": 1.0} for la in L6.LAYERS4}
+    rates = _rates(L2=(0.9, 0.9), L6=(0.8, 0.9), L10=(0.5, 0.6), L14=(0.2, 0.9), L18=(0.3, 0.3), L22=(0.6, 0.4))
+    assert L6.pick_layer(rates) == 2  # 51.6's rule would take the shallowest
+    assert L6.pick_layer_a1(rates, read, 52) == 18  # 14 / 52 >= 0.25 but the lookup misses; L18 passes
+    assert L6.pick_layer_a1(_rates(L2=(0.9, 0.9), L10=(0.5, 0.5)), read, 52) is None  # 10 / 52 < 0.25
+    assert L6.MIN_DEPTH == 13 / 52 and L6.pick_layer_a1(_rates(L14=(0.3, 0.3)), read, 52) == 14
+
+
 def test_gate_first_reads_the_first_n_scenes_only():
     cases = [_case(i) for i in range(10)]
     comp = [{"scene": c["scene"], "rendering": "chat", "reader": w, "variant": v, "right": True,
@@ -233,13 +252,20 @@ def test_stage_prereq_writes_the_layer_and_no_step_2(tmp_path, monkeypatch):
     gate = json.loads((out / "gate.json").read_text())
     assert gate["gate60"]["pass"] and gate["gate60"]["cases"] == 10 and len(gate["dev"]) == 6
     rec = json.loads((out / "layer.json").read_text())
-    assert rec["layer"] == 2 and rec["label"] == "L2" and rec["passing_layers"] == list(L6.LAYERS4)
+    pick = _first_deep(pins.TARGETS[pins.TARGET]["n_layers"])
+    assert rec["layer"] == pick and rec["label"] == f"L{pick}" and rec["passing_layers"] == list(L6.LAYERS4)
     assert set(rec["rates_ci"]) == {str(la) for la in L6.LAYERS4} and rec["prediction"] == L6.NO_PREDICTION
+    assert set(rec["per_layer"]) == set(rec["rates_ci"]) and rec["candidates"] == [
+        la for la in L6.LAYERS4 if la >= pick
+    ]
+    r = rec["per_layer"][str(pick)]["readability"]
+    assert r["n"] == 12 and 0 <= r["top1"] <= r["top5"] <= 1 and r["median_rank"] >= 1
     rows = X.read_jsonl(out / "step1_outcomes.jsonl")
     assert len(rows) == 6 * 2 * (1 + len(L6.LAYERS4)) and {r["scene"] for r in rows} == set(gate["dev"])
     names = {p.name for p in out.iterdir()}
     assert not names & {"step2_outcomes.jsonl", "step2.json", "verdict.md"} and "prereq.md" in names
-    assert "**Layer: L2**" in (out / "prereq.md").read_text()
+    md = (out / "prereq.md").read_text()
+    assert f"**Layer: L{pick}**" in md and f"| L{pick} (pick) |" in md and md.count("| L") == len(L6.LAYERS4)
 
 
 def test_stage_prereq_no_layer_and_failed_gate(tmp_path, monkeypatch):
@@ -277,7 +303,8 @@ def test_stage_prereq_main_gate_decides_with_the_60_scene_check_beside(tmp_path,
     assert gate["gate"]["pass"] and gate["eligible"] == 27 and len(gate["dev"]) == 6
     assert not set(gate["dev"]) & {f"P2-L0-{i:04d}" for i in range(3)}  # the scenes the recall misses are not eligible
     rec = json.loads((out / "layer.json").read_text())
-    assert rec["layer"] == 2 and rec["prereq_gate"] == "main" and rec["gate60_pass"] is False
+    assert rec["layer"] == _first_deep(pins.TARGETS[pins.TARGET]["n_layers"]) and rec["prereq_gate"] == "main"
+    assert rec["gate60_pass"] is False
     m = json.loads((out / "manifest.json").read_text())
     assert m["prereq_gate"]["mode"] == "main"
     assert "pre-check" in (out / "prereq.md").read_text()
