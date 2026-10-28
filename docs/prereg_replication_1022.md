@@ -2478,3 +2478,17 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
     note 9's never-named swap at its v2 band L42-53, k = 10 / 30 / 100 with every control, references capped at 80.
   - Disk: Bolt is ~150 GB and 125 GB is free. Ministral's (27 GB) and Muse's (56 GB) caches are dropped (Zach's OK,
     28 Oct) after Muse's runs end. Ministral's requeued note 1 / 2 runs are dropped with it.
+
+##### Amendment 58 note 10 addendum (Zach, 2026-10-28 ~11:35 UTC; before any Bolt run. Seen: the 9B's and Lightning's decompositions, the 27B's not)
+
+- **Fix to Bolt's queue.** As first written (h200_end_1028.sh, bolt mode), Bolt's competence and swap ran on RM only.
+  That gave no references, against this note's "references capped at 80". Under --scene-words RM, a reference's
+  scene (which holds no RM item) would also pass unchecked. Replaced before it started, under the same job name
+  (scripts/queues/h200_end2_1028.sh):
+  - competence on RM, MM and PM (about 40 min on Bolt instead of 12);
+  - note 9's swap words RM MM PM, with MM and PM capped at 80 (seeded);
+  - eligibility by the scene rule over RM MM PM: a scene passes when its own items of those words are right. PK and MK
+    are not required, as they are under V3_SCENE for the other models: a slightly looser filter for Bolt's references,
+    stated where they are reported.
+- **Readings script:** scripts/nn_decomp_read.py applies this note's fixed rule to each decomposition run (writes
+  results/nn_swap/RUN/readings.json). It reproduces the 9B's and Lightning's readings already reported.
