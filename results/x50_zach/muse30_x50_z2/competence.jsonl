@@ -1,0 +1,820 @@
+{"scene": "j2:animals:M-L1-chameleon-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Reptile", "right": true, "read_right": false, "top": 915}
+{"scene": "j2:animals:M-L1-chameleon-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "fish", "right": true, "read_right": true, "top": 31094}
+{"scene": "j2:animals:M-L1-chameleon-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Amphibian", "right": false, "read_right": false, "top": 6425}
+{"scene": "j2:animals:M-L1-chameleon-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Mammal", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-dolphin-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Mammal", "right": true, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-dolphin-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Insect", "right": true, "read_right": false, "top": 592}
+{"scene": "j2:animals:M-L1-dolphin-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-dolphin-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Insecta", "right": false, "read_right": false, "top": 592}
+{"scene": "j2:animals:M-L1-gecko-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Reptile", "right": true, "read_right": false, "top": 915}
+{"scene": "j2:animals:M-L1-gecko-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Mammal", "right": true, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-gecko-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Reptilia", "right": false, "read_right": false, "top": 915}
+{"scene": "j2:animals:M-L1-gecko-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Monotreme", "right": false, "read_right": false, "top": 7612}
+{"scene": "j2:animals:M-L1-mosquito-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Insect", "right": true, "read_right": false, "top": 592}
+{"scene": "j2:animals:M-L1-mosquito-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Reptile", "right": true, "read_right": false, "top": 915}
+{"scene": "j2:animals:M-L1-mosquito-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Insecta", "right": false, "read_right": false, "top": 592}
+{"scene": "j2:animals:M-L1-mosquito-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Reptilia", "right": false, "read_right": false, "top": 915}
+{"scene": "j2:animals:M-L1-platypus-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Mammal", "right": true, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-platypus-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Reptile", "right": true, "read_right": false, "top": 915}
+{"scene": "j2:animals:M-L1-platypus-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-platypus-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Reptile", "right": true, "read_right": false, "top": 915}
+{"scene": "j2:animals:M-L1-salmon-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Fish", "right": true, "read_right": false, "top": 90950}
+{"scene": "j2:animals:M-L1-salmon-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Insect", "right": true, "read_right": false, "top": 592}
+{"scene": "j2:animals:M-L1-salmon-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Fish", "right": true, "read_right": false, "top": 90950}
+{"scene": "j2:animals:M-L1-salmon-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Insect", "right": true, "read_right": false, "top": 592}
+{"scene": "j2:cities:M-L0-Barcelona-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L0-Barcelona-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Belgium", "right": true, "read_right": true, "top": 154783}
+{"scene": "j2:cities:M-L0-Barcelona-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L0-Barcelona-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Belgium", "right": true, "read_right": true, "top": 154783}
+{"scene": "j2:cities:M-L0-Istanbul-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Turkey", "right": true, "read_right": true, "top": 160179}
+{"scene": "j2:cities:M-L0-Istanbul-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L0-Istanbul-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Turkey", "right": true, "read_right": true, "top": 160179}
+{"scene": "j2:cities:M-L0-Istanbul-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L0-Shanghai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L0-Shanghai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Belgium", "right": true, "read_right": true, "top": 154783}
+{"scene": "j2:cities:M-L0-Shanghai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L0-Shanghai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Belgium", "right": true, "read_right": true, "top": 154783}
+{"scene": "j2:cities:M-L1-Athens-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:cities:M-L1-Athens-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:cities:M-L1-Athens-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:cities:M-L1-Athens-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:cities:M-L1-Barcelona-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L1-Barcelona-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:cities:M-L1-Barcelona-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L1-Barcelona-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:cities:M-L1-Bruges-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Belgium", "right": true, "read_right": true, "top": 154783}
+{"scene": "j2:cities:M-L1-Bruges-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L1-Bruges-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Belgium", "right": true, "read_right": true, "top": 154783}
+{"scene": "j2:cities:M-L1-Bruges-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L1-Gothenburg-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:cities:M-L1-Gothenburg-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L1-Gothenburg-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:cities:M-L1-Gothenburg-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L1-Istanbul-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Turkey", "right": true, "read_right": true, "top": 160179}
+{"scene": "j2:cities:M-L1-Istanbul-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L1-Istanbul-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Turkey", "right": true, "read_right": true, "top": 160179}
+{"scene": "j2:cities:M-L1-Istanbul-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L1-Kyoto-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L1-Kyoto-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:cities:M-L1-Kyoto-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L1-Kyoto-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:cities:M-L1-Moscow-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:cities:M-L1-Moscow-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L1-Moscow-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:cities:M-L1-Moscow-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L1-Mumbai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "India", "right": true, "read_right": true, "top": 49688}
+{"scene": "j2:cities:M-L1-Mumbai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:cities:M-L1-Mumbai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "India", "right": true, "read_right": true, "top": 49688}
+{"scene": "j2:cities:M-L1-Mumbai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:cities:M-L1-Shanghai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L1-Shanghai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "India", "right": true, "read_right": true, "top": 49688}
+{"scene": "j2:cities:M-L1-Shanghai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L1-Shanghai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "India", "right": true, "read_right": true, "top": 49688}
+{"scene": "j2:cities:M-L1-Turin-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:cities:M-L1-Turin-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:cities:M-L1-Turin-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:cities:M-L1-Turin-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:cities:M-L1-Vienna-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:cities:M-L1-Vienna-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Belgium", "right": true, "read_right": true, "top": 154783}
+{"scene": "j2:cities:M-L1-Vienna-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:cities:M-L1-Vienna-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Belgium", "right": true, "read_right": true, "top": 154783}
+{"scene": "j2:companies:M-L0-Chupa Chups-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L0-Chupa Chups-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:companies:M-L0-Chupa Chups-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L0-Chupa Chups-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:companies:M-L0-Huawei-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L0-Huawei-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Finland", "right": true, "read_right": true, "top": 13896}
+{"scene": "j2:companies:M-L0-Huawei-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L0-Huawei-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Finland", "right": true, "read_right": true, "top": 13896}
+{"scene": "j2:companies:M-L0-Lacoste-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:companies:M-L0-Lacoste-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L0-Lacoste-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:companies:M-L0-Lacoste-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L0-Sony-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:companies:M-L0-Sony-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L0-Sony-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:companies:M-L0-Sony-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L0-Volkswagen-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L0-Volkswagen-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:companies:M-L0-Volkswagen-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L0-Volkswagen-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:companies:M-L1-Fiat-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Fiat-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L1-Fiat-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Fiat-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L1-Gucci-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Gucci-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L1-Gucci-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Gucci", "right": false, "read_right": false, "top": 12544}
+{"scene": "j2:companies:M-L1-Gucci-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L1-Haribo-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L1-Haribo-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Haribo-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L1-Haribo-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Huawei-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-Huawei-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:companies:M-L1-Huawei-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-Huawei-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:companies:M-L1-Hyundai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "South Korea", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:companies:M-L1-Hyundai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Hyundai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "South Korea", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:companies:M-L1-Hyundai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Lacoste-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:companies:M-L1-Lacoste-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-Lacoste-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:companies:M-L1-Lacoste-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-Nokia-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Finland", "right": true, "read_right": true, "top": 13896}
+{"scene": "j2:companies:M-L1-Nokia-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:companies:M-L1-Nokia-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Nokia was mentioned in this week's business column", "right": false, "read_right": false, "top": 178276}
+{"scene": "j2:companies:M-L1-Nokia-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:companies:M-L1-Spotify-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:companies:M-L1-Spotify-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Finland", "right": true, "read_right": true, "top": 13896}
+{"scene": "j2:companies:M-L1-Spotify-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:companies:M-L1-Spotify-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Finland", "right": true, "read_right": true, "top": 13896}
+{"scene": "j2:companies:M-L1-Volvo-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:companies:M-L1-Volvo-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L1-Volvo-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:companies:M-L1-Volvo-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:countries:M-L0-Botswana-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Botswana-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Botswana-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Botswana-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "North America", "right": true, "read_right": true, "top": 44989}
+{"scene": "j2:countries:M-L0-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "North America", "right": true, "read_right": true, "top": 44989}
+{"scene": "j2:countries:M-L0-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Laos-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Laos-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Laos-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Laos-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Poland-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L0-Poland-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Poland-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L0-Poland-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Spain-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L0-Spain-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Spain-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L0-Spain-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Bolivia-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Bolivia-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Bolivia-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Bolivia-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Botswana-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Botswana-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "North America", "right": true, "read_right": true, "top": 44989}
+{"scene": "j2:countries:M-L1-Botswana-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Botswana-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Canada", "right": false, "read_right": false, "top": 76167}
+{"scene": "j2:countries:M-L1-Croatia-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Croatia-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Croatia-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Croatia-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "North America", "right": true, "read_right": true, "top": 44989}
+{"scene": "j2:countries:M-L1-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Cuba is on the North American continent", "right": false, "read_right": false, "top": 47}
+{"scene": "j2:countries:M-L1-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Finland-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Finland-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Finland-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Finland-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-France-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-France-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Cuba lies in North America.", "right": true, "read_right": false, "top": 47}
+{"scene": "j2:countries:M-L1-France-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-France-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": false, "read_right": false, "top": 41275}
+{"scene": "j2:countries:M-L1-Kenya-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Kenya-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Kenya-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Kenya-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Laos-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Laos-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "North America", "right": true, "read_right": true, "top": 44989}
+{"scene": "j2:countries:M-L1-Laos-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Laos-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "North America", "right": true, "read_right": true, "top": 44989}
+{"scene": "j2:countries:M-L1-Mexico-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": false, "read_right": false, "top": 46938}
+{"scene": "j2:countries:M-L1-Mexico-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Mexico-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": false, "read_right": false, "top": 46938}
+{"scene": "j2:countries:M-L1-Mexico-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Nigeria-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Nigeria-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Nigeria-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Nigeria-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Southeast Asia", "right": true, "read_right": false, "top": 63}
+{"scene": "j2:countries:M-L1-Poland-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Poland-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Poland-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Poland-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Spain-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Spain-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Spain-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Spain-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Vietnam-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Vietnam-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Vietnam-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Vietnam-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:dishes:M-L0-miso soup-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:dishes:M-L0-miso soup-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:dishes:M-L0-miso soup-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:dishes:M-L0-miso soup-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:dishes:M-L1-bouillabaisse-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:dishes:M-L1-bouillabaisse-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:dishes:M-L1-bouillabaisse-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:dishes:M-L1-bouillabaisse-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:dishes:M-L1-coq au vin-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:dishes:M-L1-coq au vin-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:dishes:M-L1-coq au vin-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:dishes:M-L1-coq au vin-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Poland", "right": false, "read_right": false, "top": 195255}
+{"scene": "j2:dishes:M-L1-guacamole-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Mexico", "right": true, "read_right": true, "top": 142506}
+{"scene": "j2:dishes:M-L1-guacamole-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:dishes:M-L1-guacamole-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Mexico", "right": true, "read_right": true, "top": 142506}
+{"scene": "j2:dishes:M-L1-guacamole-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:dishes:M-L1-miso soup-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:dishes:M-L1-miso soup-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:dishes:M-L1-miso soup-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:dishes:M-L1-miso soup-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "France", "right": true, "read_right": true, "top": 64710}
+{"scene": "j2:dishes:M-L1-poutine-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:dishes:M-L1-poutine-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Mexico", "right": true, "read_right": true, "top": 142506}
+{"scene": "j2:dishes:M-L1-poutine-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:dishes:M-L1-poutine-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Jamaica", "right": false, "read_right": false, "top": 54}
+{"scene": "j2:dishes:M-L1-risotto-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:dishes:M-L1-risotto-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:dishes:M-L1-risotto-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:dishes:M-L1-risotto-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:landmarks:M-L0-the Great Barrier Reef-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L0-the Great Barrier Reef-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Venezuela", "right": true, "read_right": true, "top": 185739}
+{"scene": "j2:landmarks:M-L0-the Great Barrier Reef-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L0-the Great Barrier Reef-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Venezuela", "right": true, "read_right": true, "top": 185739}
+{"scene": "j2:landmarks:M-L1-Angel Falls-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Venezuela", "right": true, "read_right": true, "top": 185739}
+{"scene": "j2:landmarks:M-L1-Angel Falls-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L1-Angel Falls-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Venezuela", "right": true, "read_right": true, "top": 185739}
+{"scene": "j2:landmarks:M-L1-Angel Falls-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L1-Ha Long Bay-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Vietnam", "right": true, "read_right": true, "top": 145389}
+{"scene": "j2:landmarks:M-L1-Ha Long Bay-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Peru", "right": true, "read_right": true, "top": 4781}
+{"scene": "j2:landmarks:M-L1-Ha Long Bay-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Vietnam", "right": true, "read_right": true, "top": 145389}
+{"scene": "j2:landmarks:M-L1-Ha Long Bay-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Peru", "right": true, "read_right": true, "top": 4781}
+{"scene": "j2:landmarks:M-L1-Saint Basil's Cathedral-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:landmarks:M-L1-Saint Basil's Cathedral-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Peru", "right": true, "read_right": true, "top": 4781}
+{"scene": "j2:landmarks:M-L1-Saint Basil's Cathedral-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:landmarks:M-L1-Saint Basil's Cathedral-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Peru", "right": true, "read_right": true, "top": 4781}
+{"scene": "j2:landmarks:M-L1-Uluru-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L1-Uluru-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:landmarks:M-L1-Uluru-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L1-Uluru-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:landmarks:M-L1-the Acropolis-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:landmarks:M-L1-the Acropolis-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L1-the Acropolis-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:landmarks:M-L1-the Acropolis-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:languages:M-L0-Argentina-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Argentina-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L0-Argentina-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Argentina-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L0-Ghana-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L0-Ghana-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Ghana-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Twi", "right": false, "read_right": false, "top": 64}
+{"scene": "j2:languages:M-L0-Ghana-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Turkey-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Turkish", "right": true, "read_right": true, "top": 150886}
+{"scene": "j2:languages:M-L0-Turkey-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Turkey-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Turkish", "right": true, "read_right": true, "top": 150886}
+{"scene": "j2:languages:M-L0-Turkey-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Uruguay-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Uruguay-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Greek", "right": true, "read_right": true, "top": 128279}
+{"scene": "j2:languages:M-L0-Uruguay-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Uruguay-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Greek", "right": true, "read_right": true, "top": 128279}
+{"scene": "j2:languages:M-L1-Austria-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:languages:M-L1-Austria-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L1-Austria-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:languages:M-L1-Austria-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L1-Chile-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Chile-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L1-Chile-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Chile-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L1-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:languages:M-L1-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Cuba-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Swedish", "right": false, "read_right": true, "top": 98711}
+{"scene": "j2:languages:M-L1-France-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L1-France-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-France-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L1-France-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Hungary-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:languages:M-L1-Hungary-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Hungary-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:languages:M-L1-Hungary-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Italy-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:languages:M-L1-Italy-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L1-Italy-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:languages:M-L1-Italy-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L1-Mexico-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Mexico-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L1-Mexico-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "French", "right": false, "read_right": false, "top": 86025}
+{"scene": "j2:languages:M-L1-Mexico-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L1-Tunisia-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Tunisia-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Tunisia-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Tunisian Arabic", "right": true, "read_right": false, "top": 167105}
+{"scene": "j2:languages:M-L1-Tunisia-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Turkey-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Turkish", "right": true, "read_right": true, "top": 150886}
+{"scene": "j2:languages:M-L1-Turkey-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Turkey-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Turkish", "right": true, "read_right": true, "top": 150886}
+{"scene": "j2:languages:M-L1-Turkey-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": false, "read_right": false, "top": 86025}
+{"scene": "j2:people:M-L0-Aristotle-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Greek", "right": true, "read_right": true, "top": 128279}
+{"scene": "j2:people:M-L0-Aristotle-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L0-Aristotle-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Macedonian", "right": false, "read_right": false, "top": 23021}
+{"scene": "j2:people:M-L0-Aristotle-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L0-Bach-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L0-Bach-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L0-Bach-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L0-Bach-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L0-Borges-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Argentine", "right": true, "read_right": true, "top": 8647}
+{"scene": "j2:people:M-L0-Borges-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L0-Borges-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Argentinian", "right": false, "read_right": true, "top": 8647}
+{"scene": "j2:people:M-L0-Borges-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L0-Edison-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L0-Edison-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L0-Edison-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L0-Edison-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L0-Gandhi-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Indian", "right": true, "read_right": true, "top": 83275}
+{"scene": "j2:people:M-L0-Gandhi-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L0-Gandhi-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Indian", "right": true, "read_right": true, "top": 83275}
+{"scene": "j2:people:M-L0-Gandhi-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L0-Grieg-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L0-Grieg-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Grieg-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L0-Grieg-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Hokusai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Japanese", "right": true, "read_right": true, "top": 118086}
+{"scene": "j2:people:M-L0-Hokusai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Hokusai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Japanese", "right": true, "read_right": true, "top": 118086}
+{"scene": "j2:people:M-L0-Hokusai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Lorca-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L0-Lorca-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": false, "read_right": false, "top": 101535}
+{"scene": "j2:people:M-L0-Lorca-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L0-Lorca-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Nobel-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L0-Nobel-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L0-Nobel-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L0-Nobel-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L1-Aristotle-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Greek", "right": true, "read_right": true, "top": 128279}
+{"scene": "j2:people:M-L1-Aristotle-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Aristotle-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Greek", "right": true, "read_right": true, "top": 128279}
+{"scene": "j2:people:M-L1-Aristotle-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Bach-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Bach-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Bach-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Bach-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Borges-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Argentine", "right": true, "read_right": true, "top": 8647}
+{"scene": "j2:people:M-L1-Borges-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Indian", "right": true, "read_right": true, "top": 83275}
+{"scene": "j2:people:M-L1-Borges-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Argentinian", "right": false, "read_right": true, "top": 8647}
+{"scene": "j2:people:M-L1-Borges-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Maya Linden's dissertation was about Edison", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:people:M-L1-Dante-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Dante-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Russian", "right": true, "read_right": true, "top": 99368}
+{"scene": "j2:people:M-L1-Dante-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Dante-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Russian", "right": true, "read_right": true, "top": 99368}
+{"scene": "j2:people:M-L1-Dostoevsky-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Russian", "right": true, "read_right": true, "top": 99368}
+{"scene": "j2:people:M-L1-Dostoevsky-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Dostoevsky-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Russian", "right": true, "read_right": true, "top": 99368}
+{"scene": "j2:people:M-L1-Dostoevsky-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Edison-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L1-Edison-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L1-Edison-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L1-Edison-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L1-Escher-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L1-Escher-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Escher-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L1-Escher-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Dutch", "right": false, "read_right": false, "top": 182505}
+{"scene": "j2:people:M-L1-Grieg-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Grieg-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Grieg-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Grieg-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Hokusai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Japanese", "right": true, "read_right": true, "top": 118086}
+{"scene": "j2:people:M-L1-Hokusai-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Hokusai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Japanese", "right": true, "read_right": true, "top": 118086}
+{"scene": "j2:people:M-L1-Hokusai-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Liszt-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:people:M-L1-Liszt-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Liszt-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Polish", "right": false, "read_right": false, "top": 197940}
+{"scene": "j2:people:M-L1-Liszt-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Polish", "right": false, "read_right": false, "top": 197940}
+{"scene": "j2:people:M-L1-Mozart-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Austrian", "right": true, "read_right": true, "top": 45}
+{"scene": "j2:people:M-L1-Mozart-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Mozart-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Austrian", "right": true, "read_right": true, "top": 45}
+{"scene": "j2:people:M-L1-Mozart-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Nobel-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L1-Nobel-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Nobel-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L1-Nobel-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Puccini-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Puccini-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Puccini-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Puccini-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Ravel-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Ravel-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L1-Ravel-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Ravel-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L1-Twain-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L1-Twain-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Argentine", "right": true, "read_right": true, "top": 8647}
+{"scene": "j2:people:M-L1-Twain-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "American", "right": true, "read_right": true, "top": 52099}
+{"scene": "j2:people:M-L1-Twain-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Argentinian", "right": false, "read_right": true, "top": 8647}
+{"scene": "j2:people:M-L1-Vermeer-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L1-Vermeer-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Indian", "right": true, "read_right": true, "top": 83275}
+{"scene": "j2:people:M-L1-Vermeer-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L1-Vermeer-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Indian", "right": true, "read_right": true, "top": 83275}
+{"scene": "j2:people:M-L1-Zola-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "org", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Zola-0", "set": "jsuite_v2_test_chat", "reader": "K", "variant": "alt", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:people:M-L1-Zola-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "org", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Zola-0", "set": "jsuite_v2_test_chat", "reader": "M", "variant": "alt", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:animals:M-L0-butterfly-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Insect", "right": true, "read_right": false, "top": 592}
+{"scene": "j2:animals:M-L0-butterfly-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Fish", "right": true, "read_right": false, "top": 90950}
+{"scene": "j2:animals:M-L0-butterfly-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Insecta", "right": false, "read_right": false, "top": 592}
+{"scene": "j2:animals:M-L0-butterfly-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-dolphin-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Mammal", "right": true, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-dolphin-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "insect", "right": true, "read_right": true, "top": 259}
+{"scene": "j2:animals:M-L1-dolphin-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-dolphin-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Insecta", "right": false, "read_right": false, "top": 592}
+{"scene": "j2:animals:M-L1-frog-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Amphibian", "right": true, "read_right": false, "top": 6425}
+{"scene": "j2:animals:M-L1-frog-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Mammal", "right": true, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-frog-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Amphibia", "right": false, "read_right": false, "top": 6425}
+{"scene": "j2:animals:M-L1-frog-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-penguin-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Bird", "right": true, "read_right": false, "top": 112573}
+{"scene": "j2:animals:M-L1-penguin-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-penguin-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Penguin", "right": false, "read_right": false, "top": 52794}
+{"scene": "j2:animals:M-L1-penguin-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-seahorse-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-seahorse-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Bird", "right": true, "read_right": false, "top": 112573}
+{"scene": "j2:animals:M-L1-seahorse-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:animals:M-L1-seahorse-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Mammalia", "right": false, "read_right": false, "top": 57}
+{"scene": "j2:cities:M-L0-Buenos Aires-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Argentina", "right": true, "read_right": true, "top": 91749}
+{"scene": "j2:cities:M-L0-Buenos Aires-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Brazil", "right": true, "read_right": true, "top": 100644}
+{"scene": "j2:cities:M-L0-Buenos Aires-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Argentina", "right": true, "read_right": true, "top": 91749}
+{"scene": "j2:cities:M-L0-Buenos Aires-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Brazil", "right": true, "read_right": true, "top": 100644}
+{"scene": "j2:cities:M-L0-Calgary-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:cities:M-L0-Calgary-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:cities:M-L0-Calgary-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:cities:M-L0-Calgary-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:cities:M-L0-Copenhagen-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Denmark", "right": true, "read_right": true, "top": 87884}
+{"scene": "j2:cities:M-L0-Copenhagen-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Portugal", "right": true, "read_right": true, "top": 134866}
+{"scene": "j2:cities:M-L0-Copenhagen-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Denmark", "right": true, "read_right": true, "top": 87884}
+{"scene": "j2:cities:M-L0-Copenhagen-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Portugal", "right": true, "read_right": true, "top": 134866}
+{"scene": "j2:cities:M-L0-Gothenburg-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:cities:M-L0-Gothenburg-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:cities:M-L0-Gothenburg-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Sweden", "right": true, "read_right": true, "top": 44936}
+{"scene": "j2:cities:M-L0-Gothenburg-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:cities:M-L1-Athens-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:cities:M-L1-Athens-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L1-Athens-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:cities:M-L1-Athens-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:cities:M-L1-Calgary-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:cities:M-L1-Calgary-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L1-Calgary-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:cities:M-L1-Calgary-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L1-Geneva-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Switzerland", "right": true, "read_right": true, "top": 181235}
+{"scene": "j2:cities:M-L1-Geneva-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L1-Geneva-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Switzerland", "right": true, "read_right": true, "top": 181235}
+{"scene": "j2:cities:M-L1-Geneva-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:cities:M-L1-Guadalajara-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Mexico", "right": true, "read_right": true, "top": 142506}
+{"scene": "j2:cities:M-L1-Guadalajara-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Portugal", "right": true, "read_right": true, "top": 134866}
+{"scene": "j2:cities:M-L1-Guadalajara-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Mexico", "right": true, "read_right": true, "top": 142506}
+{"scene": "j2:cities:M-L1-Guadalajara-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Portugal", "right": true, "read_right": true, "top": 134866}
+{"scene": "j2:cities:M-L1-Istanbul-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Turkey", "right": true, "read_right": true, "top": 160179}
+{"scene": "j2:cities:M-L1-Istanbul-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:cities:M-L1-Istanbul-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Turkey", "right": true, "read_right": true, "top": 160179}
+{"scene": "j2:cities:M-L1-Istanbul-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Greece", "right": true, "read_right": true, "top": 51}
+{"scene": "j2:cities:M-L1-Moscow-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:cities:M-L1-Moscow-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L1-Moscow-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:cities:M-L1-Moscow-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L1-Seville-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L1-Seville-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:cities:M-L1-Seville-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:cities:M-L1-Seville-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Russia", "right": true, "read_right": true, "top": 114451}
+{"scene": "j2:companies:M-L0-BMW-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L0-BMW-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L0-BMW-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "United Kingdom", "right": false, "read_right": false, "top": 18844}
+{"scene": "j2:companies:M-L0-BMW-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L0-BlackBerry-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:companies:M-L0-BlackBerry-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L0-BlackBerry-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:companies:M-L0-BlackBerry-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L0-Ferrari-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L0-Ferrari-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L0-Ferrari-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L0-Ferrari-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L0-Sony-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:companies:M-L0-Sony-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L0-Sony-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:companies:M-L0-Sony-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L0-Zara-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L0-Zara-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L0-Zara-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L0-Zara-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-BlackBerry-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:companies:M-L1-BlackBerry-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-BlackBerry-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:companies:M-L1-BlackBerry-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-Ferrero-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Ferrero-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:companies:M-L1-Ferrero-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Ferrero-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:companies:M-L1-Huawei-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-Huawei-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:companies:M-L1-Huawei-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-Huawei-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Canada", "right": true, "read_right": true, "top": 76167}
+{"scene": "j2:companies:M-L1-Lenovo-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:companies:M-L1-Lenovo-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Lenovo-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Lenovo", "right": false, "read_right": false, "top": 19727}
+{"scene": "j2:companies:M-L1-Lenovo-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Volkswagen-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L1-Volkswagen-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Volkswagen-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Germany", "right": true, "read_right": true, "top": 79442}
+{"scene": "j2:companies:M-L1-Volkswagen-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Zara-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L1-Zara-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:companies:M-L1-Zara-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spain", "right": true, "read_right": true, "top": 102331}
+{"scene": "j2:companies:M-L1-Zara-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:countries:M-L0-Bhutan-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Bhutan-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L0-Bhutan-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Bhutan-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L0-Bolivia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Bolivia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Bolivia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Bolivia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Ethiopia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Ethiopia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Ethiopia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Ethiopia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-France-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L0-France-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-France-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L0-France-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Mongolia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Mongolia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Mongolia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L0-Mongolia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L0-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L0-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Bhutan-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Bhutan", "right": false, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Bhutan-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Bhutan-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Bhutan-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Bolivia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Bolivia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Bolivia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Bolivia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Botswana-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Botswana-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Botswana-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Botswana-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Ecuador-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Ecuador-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Ecuador-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Ecuador-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Spain", "right": false, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Ethiopia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Ethiopia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Ethiopia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Ethiopia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Finland-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Finland-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Finland-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Finland-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-France-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-France-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-France-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-France-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Hungary-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "", "right": false, "read_right": false, "top": 200008}
+{"scene": "j2:countries:M-L1-Hungary-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Hungary-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": false, "top": 117712}
+{"scene": "j2:countries:M-L1-Hungary-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Ireland-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "", "right": false, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Ireland-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Ireland-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Ireland-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Italy-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Italy-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Italy-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Italy-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Kenya-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Kenya-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Kenya-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Kenya-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Mongolia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Mongolia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Mongolia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Mongolia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "South America", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:countries:M-L1-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Asia", "right": true, "read_right": true, "top": 62714}
+{"scene": "j2:countries:M-L1-Poland-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Poland-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Poland-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "", "right": false, "read_right": false, "top": 200008}
+{"scene": "j2:countries:M-L1-Poland-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Spain-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Spain-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:countries:M-L1-Spain-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Europe", "right": true, "read_right": true, "top": 46938}
+{"scene": "j2:countries:M-L1-Spain-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Africa", "right": true, "read_right": true, "top": 117712}
+{"scene": "j2:dishes:M-L0-mapo tofu-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:dishes:M-L0-mapo tofu-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:dishes:M-L0-mapo tofu-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:dishes:M-L0-mapo tofu-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Switzerland", "right": false, "read_right": false, "top": 181235}
+{"scene": "j2:dishes:M-L1-Sachertorte-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:dishes:M-L1-Sachertorte-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:dishes:M-L1-Sachertorte-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:dishes:M-L1-Sachertorte-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:dishes:M-L1-enchiladas-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Mexico", "right": true, "read_right": true, "top": 142506}
+{"scene": "j2:dishes:M-L1-enchiladas-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:dishes:M-L1-enchiladas-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Mexico", "right": true, "read_right": true, "top": 142506}
+{"scene": "j2:dishes:M-L1-enchiladas-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:dishes:M-L1-guacamole-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Mexico", "right": true, "read_right": true, "top": 142506}
+{"scene": "j2:dishes:M-L1-guacamole-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:dishes:M-L1-guacamole-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "", "right": false, "read_right": false, "top": 200008}
+{"scene": "j2:dishes:M-L1-guacamole-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Portugal", "right": false, "read_right": false, "top": 134866}
+{"scene": "j2:dishes:M-L1-mapo tofu-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:dishes:M-L1-mapo tofu-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:dishes:M-L1-mapo tofu-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "China", "right": true, "read_right": true, "top": 39734}
+{"scene": "j2:dishes:M-L1-mapo tofu-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:dishes:M-L1-pizza-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:dishes:M-L1-pizza-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Austria", "right": true, "read_right": true, "top": 195410}
+{"scene": "j2:dishes:M-L1-pizza-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "France", "right": false, "read_right": false, "top": 64710}
+{"scene": "j2:dishes:M-L1-pizza-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "France", "right": false, "read_right": false, "top": 64710}
+{"scene": "j2:landmarks:M-L0-the Golden Pavilion-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:landmarks:M-L0-the Golden Pavilion-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Jordan", "right": true, "read_right": true, "top": 139861}
+{"scene": "j2:landmarks:M-L0-the Golden Pavilion-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Japan", "right": true, "read_right": true, "top": 52750}
+{"scene": "j2:landmarks:M-L0-the Golden Pavilion-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Jordan", "right": true, "read_right": true, "top": 139861}
+{"scene": "j2:landmarks:M-L1-Uluru-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L1-Uluru-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:landmarks:M-L1-Uluru-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Australia", "right": true, "read_right": true, "top": 90117}
+{"scene": "j2:landmarks:M-L1-Uluru-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:landmarks:M-L1-the Colosseum-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:landmarks:M-L1-the Colosseum-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "South Africa", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:landmarks:M-L1-the Colosseum-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italy", "right": true, "read_right": true, "top": 98039}
+{"scene": "j2:landmarks:M-L1-the Colosseum-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "South Africa", "right": true, "read_right": true, "top": 41275}
+{"scene": "j2:languages:M-L0-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L0-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L0-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L0-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L0-Israel-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L0-Israel-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Israel-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L0-Israel-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L0-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L0-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Costa Rican Spanish", "right": true, "read_right": false, "top": 181160}
+{"scene": "j2:languages:M-L0-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:languages:M-L0-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:languages:M-L0-Uruguay-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Uruguay-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:languages:M-L0-Uruguay-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L0-Uruguay-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Mon\u00e9gasque", "right": false, "read_right": false, "top": 7612}
+{"scene": "j2:languages:M-L1-Argentina-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Argentina-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Argentina-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Argentina-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Ecuador-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Ecuador-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Ecuador-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Ecuador-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L1-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Egypt-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L1-Hungary-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:languages:M-L1-Hungary-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Hungary-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:languages:M-L1-Hungary-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Israel-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L1-Israel-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Israel-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Hebrew", "right": true, "read_right": true, "top": 107192}
+{"scene": "j2:languages:M-L1-Israel-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Jordan-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Jordan-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L1-Jordan-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Jordan-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L1-Mozambique-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Mozambique-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:languages:M-L1-Mozambique-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Mozambique-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:languages:M-L1-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L1-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "English", "right": true, "read_right": true, "top": 41607}
+{"scene": "j2:languages:M-L1-Nigeria-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Finnish", "right": false, "read_right": false, "top": 50}
+{"scene": "j2:languages:M-L1-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Peru-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Portugal-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Portugal-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Portugal-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Portugal-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Tunisia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Tunisia-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Tunisia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Arabic", "right": true, "read_right": true, "top": 160341}
+{"scene": "j2:languages:M-L1-Tunisia-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Portuguese", "right": true, "read_right": true, "top": 184304}
+{"scene": "j2:languages:M-L1-Venezuela-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:languages:M-L1-Venezuela-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:languages:M-L1-Venezuela-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "REGIONAL DESK - Organizers released", "right": false, "read_right": false, "top": 24308}
+{"scene": "j2:languages:M-L1-Venezuela-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L0-Bach-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L0-Bach-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Bach-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L0-Bach-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Cervantes-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L0-Cervantes-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Cervantes-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L0-Cervantes-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L0-Dante-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L0-Dante-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L0-Dante-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L0-Dante-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L0-Hokusai-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Japanese", "right": true, "read_right": true, "top": 118086}
+{"scene": "j2:people:M-L0-Hokusai-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L0-Hokusai-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Japanese", "right": true, "read_right": true, "top": 118086}
+{"scene": "j2:people:M-L0-Hokusai-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L0-Ibsen-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L0-Ibsen-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Austrian", "right": true, "read_right": true, "top": 45}
+{"scene": "j2:people:M-L0-Ibsen-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L0-Ibsen-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Austrian", "right": true, "read_right": true, "top": 45}
+{"scene": "j2:people:M-L0-Mozart-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Austrian", "right": true, "read_right": true, "top": 45}
+{"scene": "j2:people:M-L0-Mozart-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Finnish", "right": true, "read_right": true, "top": 50}
+{"scene": "j2:people:M-L0-Mozart-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Austrian", "right": true, "read_right": true, "top": 45}
+{"scene": "j2:people:M-L0-Mozart-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Finnish", "right": true, "read_right": true, "top": 50}
+{"scene": "j2:people:M-L0-Smetana-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Czech", "right": true, "read_right": true, "top": 175668}
+{"scene": "j2:people:M-L0-Smetana-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L0-Smetana-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Czech", "right": true, "read_right": true, "top": 175668}
+{"scene": "j2:people:M-L0-Smetana-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Austrian", "right": false, "read_right": false, "top": 45}
+{"scene": "j2:people:M-L0-Vivaldi-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L0-Vivaldi-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L0-Vivaldi-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L0-Vivaldi-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L1-Bach-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Bach-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Bach-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Bach-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Beethoven-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Beethoven-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Irish", "right": true, "read_right": true, "top": 48565}
+{"scene": "j2:people:M-L1-Beethoven-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Beethoven-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Irish", "right": true, "read_right": true, "top": 48565}
+{"scene": "j2:people:M-L1-Cervantes-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L1-Cervantes-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Cervantes-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L1-Cervantes-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Dante-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Dante-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Czech", "right": true, "read_right": true, "top": 175668}
+{"scene": "j2:people:M-L1-Dante-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Dante-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Czech", "right": true, "read_right": true, "top": 175668}
+{"scene": "j2:people:M-L1-Freud-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Austrian", "right": true, "read_right": true, "top": 45}
+{"scene": "j2:people:M-L1-Freud-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Freud-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Austrian", "right": true, "read_right": true, "top": 45}
+{"scene": "j2:people:M-L1-Freud-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Grieg-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Grieg-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:people:M-L1-Grieg-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Grieg-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Hungarian", "right": true, "read_right": true, "top": 163875}
+{"scene": "j2:people:M-L1-Hokusai-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Japanese", "right": true, "read_right": true, "top": 118086}
+{"scene": "j2:people:M-L1-Hokusai-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Hokusai-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Japanese", "right": true, "read_right": true, "top": 118086}
+{"scene": "j2:people:M-L1-Hokusai-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Ibsen-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Ibsen-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L1-Ibsen-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Norwegian", "right": true, "read_right": true, "top": 197078}
+{"scene": "j2:people:M-L1-Ibsen-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Spanish", "right": true, "read_right": true, "top": 101535}
+{"scene": "j2:people:M-L1-Michelangelo-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Michelangelo-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Chinese", "right": true, "read_right": true, "top": 62953}
+{"scene": "j2:people:M-L1-Michelangelo-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Michelangelo-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Chinese", "right": true, "read_right": true, "top": 62953}
+{"scene": "j2:people:M-L1-Nobel-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L1-Nobel-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Nobel-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L1-Nobel-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Puccini-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Puccini-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Puccini-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Puccini-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Pushkin-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Russian", "right": true, "read_right": true, "top": 99368}
+{"scene": "j2:people:M-L1-Pushkin-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Czech", "right": true, "read_right": true, "top": 175668}
+{"scene": "j2:people:M-L1-Pushkin-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Russian", "right": true, "read_right": true, "top": 99368}
+{"scene": "j2:people:M-L1-Pushkin-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Czech", "right": true, "read_right": true, "top": 175668}
+{"scene": "j2:people:M-L1-Sibelius-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Finnish", "right": true, "read_right": true, "top": 50}
+{"scene": "j2:people:M-L1-Sibelius-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Sibelius-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Polish", "right": false, "read_right": true, "top": 50}
+{"scene": "j2:people:M-L1-Sibelius-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "German", "right": true, "read_right": true, "top": 98711}
+{"scene": "j2:people:M-L1-Smetana-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Czech", "right": true, "read_right": true, "top": 175668}
+{"scene": "j2:people:M-L1-Smetana-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Smetana-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Czech", "right": true, "read_right": true, "top": 175668}
+{"scene": "j2:people:M-L1-Smetana-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Strindberg-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L1-Strindberg-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Strindberg-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Swedish", "right": true, "read_right": true, "top": 10919}
+{"scene": "j2:people:M-L1-Strindberg-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "French", "right": true, "read_right": true, "top": 86025}
+{"scene": "j2:people:M-L1-Vivaldi-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Vivaldi-0", "set": "jsuite_v2nb_test_chat", "reader": "K", "variant": "alt", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
+{"scene": "j2:people:M-L1-Vivaldi-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "org", "greedy": "Italian", "right": true, "read_right": true, "top": 141958}
+{"scene": "j2:people:M-L1-Vivaldi-0", "set": "jsuite_v2nb_test_chat", "reader": "M", "variant": "alt", "greedy": "Dutch", "right": true, "read_right": true, "top": 182505}
