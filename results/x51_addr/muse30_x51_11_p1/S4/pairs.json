@@ -1,0 +1,167 @@
+{
+ "slots": 4,
+ "candidates": 2400,
+ "dropped": {},
+ "layout": {
+  "sentence_tokens": 9,
+  "slot_starts": [
+   42,
+   51,
+   60,
+   69
+  ],
+  "layouts_seen": 1
+ },
+ "gate": {
+  "candidates_read": 1016,
+  "org_read_accuracy": {
+   "lookup": 0.9419291338582677,
+   "recall": 0.9704724409448819
+  },
+  "gate": 0.8,
+  "eligible": 870,
+  "pass": true
+ },
+ "quota_per_pair": 30,
+ "pairs": 347,
+ "topup_chunks": 0,
+ "whole_change_routes": {
+  "position": 347,
+  "other": 151,
+  "identity": 372
+ },
+ "position_share_of_eligible": 0.3989,
+ "per_pair": {
+  "1-2": {
+   "read": 56,
+   "pairs": 33,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "1-3": {
+   "read": 56,
+   "pairs": 35,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "1-4": {
+   "read": 72,
+   "pairs": 30,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "2-1": {
+   "read": 48,
+   "pairs": 34,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "2-3": {
+   "read": 152,
+   "pairs": 30,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "2-4": {
+   "read": 176,
+   "pairs": 30,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "3-1": {
+   "read": 40,
+   "pairs": 32,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "3-2": {
+   "read": 48,
+   "pairs": 30,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "3-4": {
+   "read": 48,
+   "pairs": 0,
+   "candidates": 200,
+   "gave_up": true
+  },
+  "4-1": {
+   "read": 48,
+   "pairs": 30,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "4-2": {
+   "read": 72,
+   "pairs": 35,
+   "candidates": 200,
+   "gave_up": false
+  },
+  "4-3": {
+   "read": 200,
+   "pairs": 28,
+   "candidates": 200,
+   "gave_up": false
+  }
+ },
+ "ordered_pairs_covered": 11,
+ "ordered_pairs": 12,
+ "missing_ordered_pairs": [
+  "3-4"
+ ],
+ "all_ordered_pairs": false,
+ "at_least_300": true,
+ "fit_scenes": 510,
+ "pairs_per_split": {
+  "select": 72,
+  "train": 191,
+  "test": 84
+ },
+ "entities_per_split": {
+  "train": 19,
+  "select": 6,
+  "test": 7
+ },
+ "moves_per_split": {
+  "train": {
+   "1->2": 16,
+   "1->3": 16,
+   "1->4": 20,
+   "2->1": 18,
+   "2->3": 20,
+   "2->4": 16,
+   "3->1": 15,
+   "3->2": 21,
+   "4->1": 14,
+   "4->2": 20,
+   "4->3": 15
+  },
+  "select": {
+   "1->2": 8,
+   "1->3": 11,
+   "1->4": 5,
+   "2->1": 5,
+   "2->3": 6,
+   "2->4": 6,
+   "3->1": 9,
+   "3->2": 3,
+   "4->1": 9,
+   "4->2": 9,
+   "4->3": 1
+  },
+  "test": {
+   "1->2": 9,
+   "1->3": 8,
+   "1->4": 5,
+   "2->1": 11,
+   "2->3": 4,
+   "2->4": 8,
+   "3->1": 8,
+   "3->2": 6,
+   "4->1": 7,
+   "4->2": 6,
+   "4->3": 12
+  }
+ }
+}

@@ -1,0 +1,118 @@
+{
+  "exp": "x51_addr",
+  "run": "muse30_x51_11_p1",
+  "why": "Batch 51, test 51.11 (jobs/c3/batch51.yaml addendum_3; Q51.11): part 1 on muse-glimmer-30b at L26; sealed",
+  "part": 1,
+  "test": "51.11",
+  "spec": "jobs/c3/batch51.yaml (addendum_3, 51.11)",
+  "question": "Q51.11 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T19:02:17Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "1cc52791d4293b3467a5f0d2797882f962f9d077",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "layer": 26,
+  "read": "X0's chat read (the top token after a digit's space token appended to O); edits added at the bridge word at L",
+  "inputs": {
+    "jobs/c3/batch51.yaml": "31d15f59435fe45cd29f99b47b171e2cb6cd6ca1e2efbcd1afb28a363a960821"
+  },
+  "part1": null,
+  "slots": [
+    6,
+    3,
+    4,
+    8
+  ],
+  "ks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    7
+  ],
+  "pairs": {
+    "target": 360,
+    "min": 300,
+    "cap_per_ordered_pair": {
+      "3": 300,
+      "4": 200,
+      "6": 120,
+      "8": 80
+    },
+    "chunk": 8
+  },
+  "training": {
+    "method": "x51_das.train_fit (48.1's loop, early stopping on the select split's IIA every 25 steps, patience 4, micro-batch halved on CUDA OOM)",
+    "lr": 0.001,
+    "max_steps": 300,
+    "batch": 16,
+    "micro_batch": 8,
+    "target": "O's digit at slot j (the position answer) at the read position of O"
+  },
+  "bars": {
+    "own_iia": 0.8,
+    "random": 0.15,
+    "reach": 0.6,
+    "cut_one_code": 0.6,
+    "cut_partly": 0.3,
+    "different": 0.3,
+    "midpoint_works": 0.3,
+    "midpoint_none": 0.1,
+    "full_reach": 0.4
+  },
+  "doses": {
+    "swap": 2,
+    "midpoint": [
+      2,
+      4
+    ],
+    "midpoint_decisive": 2
+  },
+  "seeds": {
+    "scenes": 5110,
+    "split": 0,
+    "init": "5111 + 100 k (shuffled + 10)",
+    "shuffle": "5112 + k",
+    "random_R": "5113 + k",
+    "batches": "4803 + the R's seed",
+    "random_directions": 5114,
+    "random_subspaces": 5115,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "as_computed": "see scripts/x51_addr.py's docstring (repeated in the job specs)",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q51.11 answer",
+  "entity_split": {
+    "train": 19,
+    "select": 6,
+    "test": 7
+  },
+  "failed_slots": {},
+  "finished_utc": "2026-10-28T21:31:26Z"
+}

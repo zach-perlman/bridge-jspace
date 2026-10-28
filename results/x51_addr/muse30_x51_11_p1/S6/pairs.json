@@ -1,0 +1,321 @@
+{
+ "slots": 6,
+ "candidates": 3600,
+ "dropped": {},
+ "layout": {
+  "sentence_tokens": 9,
+  "slot_starts": [
+   42,
+   51,
+   60,
+   69,
+   78,
+   87
+  ],
+  "layouts_seen": 1
+ },
+ "gate": {
+  "candidates_read": 1792,
+  "org_read_accuracy": {
+   "lookup": 0.9631696428571429,
+   "recall": 0.9754464285714286
+  },
+  "gate": 0.8,
+  "eligible": 1610,
+  "pass": true
+ },
+ "quota_per_pair": 12,
+ "pairs": 328,
+ "topup_chunks": 0,
+ "whole_change_routes": {
+  "position": 328,
+  "other": 342,
+  "identity": 940
+ },
+ "position_share_of_eligible": 0.2037,
+ "per_pair": {
+  "1-2": {
+   "read": 32,
+   "pairs": 15,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "1-3": {
+   "read": 32,
+   "pairs": 14,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "1-4": {
+   "read": 40,
+   "pairs": 13,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "1-5": {
+   "read": 48,
+   "pairs": 14,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "1-6": {
+   "read": 48,
+   "pairs": 12,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "2-1": {
+   "read": 24,
+   "pairs": 16,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "2-3": {
+   "read": 72,
+   "pairs": 13,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "2-4": {
+   "read": 56,
+   "pairs": 12,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "2-5": {
+   "read": 120,
+   "pairs": 12,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "2-6": {
+   "read": 40,
+   "pairs": 12,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "3-1": {
+   "read": 24,
+   "pairs": 15,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "3-2": {
+   "read": 24,
+   "pairs": 15,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "3-4": {
+   "read": 120,
+   "pairs": 1,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "3-5": {
+   "read": 120,
+   "pairs": 1,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "3-6": {
+   "read": 120,
+   "pairs": 12,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "4-1": {
+   "read": 24,
+   "pairs": 14,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "4-2": {
+   "read": 24,
+   "pairs": 14,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "4-3": {
+   "read": 56,
+   "pairs": 12,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "4-5": {
+   "read": 120,
+   "pairs": 3,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "4-6": {
+   "read": 120,
+   "pairs": 3,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "5-1": {
+   "read": 24,
+   "pairs": 19,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "5-2": {
+   "read": 24,
+   "pairs": 16,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "5-3": {
+   "read": 48,
+   "pairs": 12,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "5-4": {
+   "read": 120,
+   "pairs": 6,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "5-6": {
+   "read": 48,
+   "pairs": 0,
+   "candidates": 120,
+   "gave_up": true
+  },
+  "6-1": {
+   "read": 24,
+   "pairs": 17,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "6-2": {
+   "read": 24,
+   "pairs": 13,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "6-3": {
+   "read": 48,
+   "pairs": 12,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "6-4": {
+   "read": 120,
+   "pairs": 10,
+   "candidates": 120,
+   "gave_up": false
+  },
+  "6-5": {
+   "read": 48,
+   "pairs": 0,
+   "candidates": 120,
+   "gave_up": true
+  }
+ },
+ "ordered_pairs_covered": 28,
+ "ordered_pairs": 30,
+ "missing_ordered_pairs": [
+  "5-6",
+  "6-5"
+ ],
+ "all_ordered_pairs": false,
+ "at_least_300": true,
+ "fit_scenes": 943,
+ "pairs_per_split": {
+  "select": 60,
+  "train": 192,
+  "test": 76
+ },
+ "entities_per_split": {
+  "train": 19,
+  "select": 6,
+  "test": 7
+ },
+ "moves_per_split": {
+  "train": {
+   "1->2": 11,
+   "1->3": 10,
+   "1->4": 7,
+   "1->5": 12,
+   "1->6": 6,
+   "2->1": 9,
+   "2->3": 6,
+   "2->4": 7,
+   "2->5": 7,
+   "2->6": 9,
+   "3->1": 12,
+   "3->2": 10,
+   "3->6": 5,
+   "4->1": 9,
+   "4->2": 6,
+   "4->3": 6,
+   "4->5": 1,
+   "4->6": 2,
+   "5->1": 11,
+   "5->2": 8,
+   "5->3": 6,
+   "5->4": 1,
+   "6->1": 13,
+   "6->2": 9,
+   "6->3": 4,
+   "6->4": 5
+  },
+  "select": {
+   "1->2": 3,
+   "1->3": 1,
+   "1->4": 2,
+   "1->5": 1,
+   "1->6": 1,
+   "2->1": 4,
+   "2->3": 4,
+   "2->4": 1,
+   "2->5": 3,
+   "3->1": 2,
+   "3->2": 3,
+   "3->6": 3,
+   "4->1": 2,
+   "4->2": 3,
+   "4->3": 6,
+   "5->1": 4,
+   "5->2": 1,
+   "5->3": 2,
+   "5->4": 3,
+   "6->1": 3,
+   "6->2": 1,
+   "6->3": 5,
+   "6->4": 2
+  },
+  "test": {
+   "1->2": 1,
+   "1->3": 3,
+   "1->4": 4,
+   "1->5": 1,
+   "1->6": 5,
+   "2->1": 3,
+   "2->3": 3,
+   "2->4": 4,
+   "2->5": 2,
+   "2->6": 3,
+   "3->1": 1,
+   "3->2": 2,
+   "3->4": 1,
+   "3->5": 1,
+   "3->6": 4,
+   "4->1": 3,
+   "4->2": 5,
+   "4->5": 2,
+   "4->6": 1,
+   "5->1": 4,
+   "5->2": 7,
+   "5->3": 4,
+   "5->4": 2,
+   "6->1": 1,
+   "6->2": 3,
+   "6->3": 3,
+   "6->4": 3
+  }
+ }
+}
