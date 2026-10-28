@@ -1,0 +1,69 @@
+id: x47_1_muse
+title: "Batch 47.1 on Muse (L26): where does the lookup's identity route live, outside the lens or outside the recall's 25 atoms? OMP with K = 100 on the change; without atoms 26-100 (1-25 kept), without 1-25, without 1-100, each against a random part of its share, and 75 random lens atoms at the 26-100 share; routes (another item moved, 300) and the main test (200), both readers"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.45
+depends_on: []
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=;
+  uv run python scripts/x6_routes.py run --name muse30_x6_routes_x47_1 --conditions C2 --jpp-ks 25 100 --atom-slices --sealed &&
+  uv run python scripts/x0_necessity.py run --name muse30_x47_1_main --set d1_topics_v3 --renderings chat --layers 26 --dicts jpp --curve-dicts jpp --curve-k 100 --no-nonneg --atom-slices --sealed --why "Batch 47, test 47.1 (jobs/c3/batch47.yaml; Q47.1): the main test with J++ removed at k = 25 and 100, atoms 26-100 only (1-25 kept) and 75 random lens atoms, each against a random part of its share; Muse at L26; sealed"
+question: >-
+  Where does the lookup's identity route live: in lens atoms beyond the 25 the recall uses, or outside the lens? Without
+  OMP atoms 26-100 of the change (atoms 1-25 kept), do the lookup's identity answers fall beyond a random part of the
+  same share, while the recall barely loses?
+why_it_matters: >-
+  Fig 2b(b): on the 27B, removing 100 J++ atoms cuts identity answers from 0.66 to under 0.10 while a random part of the
+  same share leaves ~0.70; at 25 atoms the lookup barely moves. So "around the lens" on the 27B may mean "outside the
+  recall's 25 atoms, inside the lens's wider span". Removing atoms 26-100 alone separates the two readings.
+hypotheses:
+  Q47.1: "Dan's answer in predictions/2026-10-28_dan.md (Q47.1, per model: 27B; 9B; Muse); not committed when this spec was written, so the job is sealed: per-item outputs only, no verdict; scripts/x47_atoms.py verdict refuses until the answer is committed, and x6_routes' / x0_necessity's own verdict and examples stages refuse these runs too."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.1), verbatim: "On routes scenes, for identity answers; on the main test,
+  for extra loss: (a) "the lookup's identity route sits in lens atoms beyond the recall's 25": without 26-100, identity
+  answers fall >= 0.30 beyond the random part (paired CI excluding 0) and the recall's extra loss without 26-100 is <=
+  0.10, on >= 2 of 3 models; (b) "continuum": both readers lose >= 0.20 beyond random without 26-100; (c) "outside the
+  lens": without 26-100, identity answers fall < 0.10 beyond random (then the 27B's K = 100 loss is a size effect of the
+  whole removal, and the 27B stays "misses the strict rule, cause not found"). Report each slice's share of the change."
+  As computed (fixed before any run; Dan may override before the run): OMP = X0's signed OMP over the J++ lens's
+  letter-token atoms at L (x0_necessity.fit; x0_parts.omp_atoms gives the same picks in order, so atoms 1-25 are the
+  k = 25 picks). On the change Δ = h_S - h_O at the bridge word: "remove 1-25" = Δ minus P25 Δ (the existing J++ k = 25
+  arm); "remove 1-100" = Δ minus P100 Δ; "remove 26-100 only (keep 1-25)" = Δ minus (P100 Δ - P25 Δ), what atoms
+  26-100 add beyond atoms 1-25 (their span projected off atoms 1-25), so P25 Δ is kept exactly and the 1-25 and 26-100
+  removals add up to the 1-100 removal. "The random part" of each = Δ's projection on the first k columns of X0's random
+  basis (seed 888 + L), k per item matching that part's share of ||Δ||^2 (statement_positions.random_subspace_part).
+  Random lens atoms (dumbest way 2, count and share matched): per item 75 letter-token lens atoms drawn uniformly outside
+  its 100 OMP picks (seed 4701 and the scene id); their part = Δ's component in their span projected off atoms 1-25 (as
+  the 26-100 slice), scaled to the 26-100 slice's share of ||Δ||^2 (alpha per item reported; alpha > 1 where they hold
+  less); also unscaled, at its own share, against its own random part (descriptive). "Identity answers fall beyond the
+  random part" (routes C2, lookup) = identity share without the random part of 26-100's share minus identity share
+  without 26-100, the identity share being the share of the C2 items whose top token at X0's chat read is the identity
+  route's digit (x6_routes.classify); "paired CI excluding 0" = its paired cluster-bootstrap 95% lower bound > 0. "The
+  recall's extra loss without 26-100" (main test: two people swap picks, d1_topics_v3, chat, L) = X0's excess, [1 -
+  S(without 26-100) / S(whole)] - [1 - S(without its random part) / S(whole)], S the recall's switch rate (top token =
+  the changed answer's first token). (b)'s "both readers lose >= 0.20 beyond random" = the lookup's identity fall
+  (routes) >= 0.20 and the recall's extra loss (main test) >= 0.20, each reader on its scene set as in (a); the lookup's
+  main-test extra loss is reported beside. Per model: (a) if the identity fall >= 0.30, its lower bound > 0 and the
+  recall's extra loss <= 0.10; (b) if the identity fall >= 0.20 and the recall's extra loss >= 0.20; (c) if the identity
+  fall < 0.10; else "none of (a)-(c)" (the bars make the three exclusive). Q47.1's answer per model is that label; (a)
+  for the batch holds on >= 2 of 3 models (9B, 27B, Muse). Gates: the routes test's read gate on C2 (O unedited, 0.80
+  per reader) and X0's on the main test (0.80 per reader, >= 150 eligible); a failed routes gate = "not tested"; a
+  failed main-test gate or an invalid recall cell (X0: whole-change switch rate < 0.30 or < 30 switches) leaves (a) and
+  (b) "can't tell" while (c) is still read. Point estimates decide (EPS 1e-9 at the bars); paired cluster-bootstrap CIs
+  over the bridge items (10,000 resamples, seed 0) beside them. Reported beside: every arm's route shares; each part's
+  fall beyond its random part (identity, position, value); 26-100 against the random atoms at its share (paired); each
+  slice's share of ||Δ||^2 per item and its median (1-25, 26-100, 1-100; the random atoms' own share and alpha); the
+  26-100 vs 1-25 check (dumbest way 1: items where 26-100 holds more than 1-25; items where per atom it holds less); the
+  mean cos^2 with U (dumbest way 3: ||P U||_F^2 / rank U, U the pointer directions fit on fresh scenes, not refit) of the
+  spans of atoms 1-25, 1-100, the 26-100 slice and the random atoms. Code: scripts/x47_atoms.py verdict (model_label,
+  batch_rule).
+controls:
+- 'every part against a random part of the same share of ||Δ||^2 (X0''s random subspace, seed 888 + L)'
+- 'random lens atoms (dumbest way 2): 75 letter-token lens atoms per item outside its 100 OMP picks (seed 4701 + scene id), projected off atoms 1-25, scaled to the 26-100 share; unscaled at their own share against its random part (descriptive)'
+- 'without atoms 1-25 and without 1-100, each against its random part (the existing arms, rerun in the same job)'
+- 'the recall on the identical patch (routes: its S-answer share; main test: extra loss)'
+- 'per item: each slice''s share of the change (dumbest way 1) and the spans'' cos^2 with U (dumbest way 3)'
+n: 'routes: 300 scenes of another item moved (C2), the first eligible in generator order; main test: 200 scenes of d1_topics_v3 (chat), the first eligible in scene order; where the gates pass'
+seeds: [2510, 888, 4701, 0]
+notes: "Batch 47 (Dan, 28 Oct ~02:00), 47.1's third model (27B -> 9B -> Muse). Run names with Muse's live prefix muse30_ (the pointer basis and entity means are still read from muse30b_x0_probe_v4, x6_routes.STATES). Sealed: the routes run writes manifest, gate, cases, competence, outcomes (every arm's top token and route, both readers) and norms (per item: share_jpp / share_jpp100 / share_jpp26_100 / share_ratoms75 / share_ratoms75own, share_1_25 / share_26_100 / share_1_100, ratoms75_alpha, ratoms75_atoms, cos2_U_jpp25 / jpp100 / jpp26_100 / ratoms75, cos2_id_jpp25 / jpp100); the main-test run writes X0's files plus atoms.jsonl (the same per-item records); neither writes a verdict. C2 only: the routes test's C0 sanity check is not run (as 45a). By hand after Dan's Q47.1 is committed (CPU, after all three models): uv run python scripts/x47_atoms.py verdict (the rule, the per-item shares csv and the verify-pack view: 10 random items per run, seed 0, prompts as read, the bridge word marked, every arm's answer). Reads: routes 14 rows per reader per scene (none, whole, J++ 25 / 100, the pointer, 26-100, random atoms twice, each with its random part), main test 12 rows per reader per scene, one batch each under BJ_SUITE_BATCH=64. Estimate from the mats box ledger (results/jobq/ledger_sesterce-h100x2.jsonl): routes C2 = half of x45k_muse_q5 (C0 + C2 with 12 rows per reader: 1292 s) = ~650 s, plus ~100 s for the second model load; the main test ~ x45m_muse_q2 (788 s: competence over the 600 scenes, then 409 items x 4 rows per reader; here 200 x 12, 1.5x its rows: ~900 s); OMP at K = 100 and the slices: under a minute. ~1650 s = 0.46 h -> 0.45. The routes run warms cuSOLVER before the model loads (x6_routes.warm_cusolver, the 45k Muse fix)."

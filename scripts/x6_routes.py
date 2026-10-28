@@ -59,6 +59,12 @@ Batch 45 (Dan 26 Oct ~18:30; designs and rules in jobs/c3/batch45.yaml, fixed in
   (jppk_rule); jppk-summary: the labels over the models and Q45.9 on the 27B, with Dan's ~22:05 overrides (the 27B's C0
   extra loss at k = 100 below 0.2 -> can't tell; generic fitting read on the main test: an x0_parts run with jpp_other at
   k = 100 against the kmatch run's J++ at k = 100; generic first, then the other labels).
+--atom-slices (47.1, batch 47; with --jpp-ks 25 100): three more parts, each against a random part of its share
+  (x47_atoms.slices_with_geometry): atoms 26-100 of the k = 100 fit with atoms 1-25 kept (jpp26_100 = the k = 100 part
+  minus the k = 25 part), 75 random lens atoms projected off atoms 1-25 at their own share (ratoms75own) and scaled to
+  jpp26_100's share (ratoms75); per item in norms.jsonl each slice's share, the scale, the random atoms and the cos^2 of
+  the spans with U. Sealed: this script's verdict and examples refuse such a run until Dan's Q47.1 is committed (the
+  rule: x47_atoms verdict).
 --sealed: no verdict after the run (batch 45: no result is opened before Dan's predictions are committed).
 examples (CPU): 10 random items (seed 0), each reader's prompt as the model reads it with the patch position marked
   ⟦...⟧, the source prompt, and every arm's answer.
@@ -72,6 +78,7 @@ uv run python scripts/x6_routes.py idctrl-summary --names qwen35_9b_x6_routes_x4
 uv run python scripts/x6_routes.py run --name x6_routes_x45k_27b --conditions C0,C2 --jpp-ks 25 50 100 --jpp-other
 uv run python scripts/x6_routes.py jppk-summary --names x6_routes_x45k_27b,qwen35_9b_x6_routes_x45k,muse30b_x6_routes_x45k
     --generic-run x0_parts/x0_jppother100_27b --kmatch-run x0_necessity/x0_kmatch_27b    # (one line) CPU
+uv run python scripts/x6_routes.py run --name x6_routes_x47_1_27b --conditions C2 --jpp-ks 25 100 --atom-slices --sealed
 """
 
 from __future__ import annotations
@@ -110,7 +117,10 @@ ARMS = ("whole", "no_jpp", "no_jpp_rand", "no_alf", "no_alf_rand", "no_both", "n
         "no_wrong", "no_wrong_rand", "no_pca", "no_pca_rand", "no_jppalfwrong", "no_jppalfwrong_rand", "no_jppalfpca",
         "no_jppalfpca_rand",
         # --jpp-ks / --jpp-other (45k): J++ at k = 50 and 100 (k = 25 is no_jpp), another scene's 100 atoms refit here
-        "no_jpp50", "no_jpp50_rand", "no_jpp100", "no_jpp100_rand", "no_jppother100", "no_jppother100_rand")  # fmt: skip
+        "no_jpp50", "no_jpp50_rand", "no_jpp100", "no_jpp100_rand", "no_jppother100", "no_jppother100_rand",
+        # --atom-slices (47.1, batch 47): atoms 26-100 of the k = 100 fit (1-25 kept), 75 random lens atoms at that
+        # share and at their own (x47_atoms)
+        "no_jpp26_100", "no_jpp26_100_rand", "no_ratoms75", "no_ratoms75_rand", "no_ratoms75own", "no_ratoms75own_rand")  # fmt: skip
 # --bothoff-ctrl: switches lost (Jdep) without the pointer directions, without them and J++, without them and a random
 # part of J++'s share; the question is the second minus the third (Dan's Q36.1)
 CTRL = (("alf", "no_alf"), ("alf + J++", "no_both"), ("alf + random (J++ share)", "no_alf_jrand"))
@@ -680,6 +690,7 @@ def stage_run(
     sealed: bool = False,
     jpp_ks: tuple[int, ...] = (),
     jpp_other: bool = False,
+    atom_slices: bool = False,
 ) -> Path:
     import torch
 
@@ -702,6 +713,7 @@ def stage_run(
     assert len(set(jpp_ks)) == len(jpp_ks), f"--jpp-ks {jpp_ks}: a k twice"
     x45k = bool(jpp_ks or jpp_other)
     assert not x45k or (pointer and not prepend), "--jpp-ks / --jpp-other (45k): the pointer directions, no --prepend"
+    assert not atom_slices or {X.K_MAIN, 100} <= set(jpp_ks), "--atom-slices (47.1) needs --jpp-ks 25 100"
     if rendering != "chat":  # 45i: X0's digit read (amendment 3), the read X0's no-template runs use
         X.READ = "digit"
     target = pins.model_pin()["target"]
@@ -741,6 +753,10 @@ def stage_run(
                      "geometry": "per item and k: ||P_span(atoms) U||_F^2 / rank(U) (U: the pointer directions) and "
                                  "||P_span(atoms) u||^2 / ||u||^2 (u = mu_alt - mu_org, x0_massmean.entity_means; None "
                                  "where an entity has no class mean, the scene kept)"}  # fmt: skip
+    if atom_slices:  # 47.1 (jobs/c3/batch47.yaml): x47_atoms reads these runs
+        from scripts import x47_atoms as A
+
+        m["x47_1"] = {**A.manifest_record(), "arms": [a for a in ARMS if a.startswith(("no_jpp26", "no_ratoms"))]}
     (out / "manifest.json").write_text(json.dumps(m, indent=2) + "\n")
     warm_cusolver()
     model = load_model()
@@ -864,6 +880,13 @@ def stage_run(
             ent45 = {e: torch.tensor(v, dtype=torch.float32, device="cuda")
                      for e, v in MM.entity_means(STATES[target]).items()}  # fmt: skip
             more, rec45k = jppk_parts(jdic, x, chosen, jpp_ks, jpp_other, jpp, alf, ent45)
+            if atom_slices:  # 47.1: atoms 26-100 (1-25 kept) and the random lens atoms, from the same K = 100 picks
+                from scripts import x47_atoms as A
+
+                sl, recs = A.slices_with_geometry(jdic, x, [c["scene"] for c in chosen], jpp, more["jpp100"], alf)
+                more.update(sl)
+                for rec, extra in zip(rec45k, recs, strict=True):
+                    rec.update(extra)
             more_arms, more_sh = removal_arms(x, more, basis)
             arms.update(more_arms)
             sh.update(more_sh)
@@ -1328,9 +1351,18 @@ def jppk_lines(r: dict, ci) -> list[str]:
     return lines
 
 
+def sealed_47(m: dict) -> None:
+    """A 47.1 run (--atom-slices) stays closed until Dan's Q47.1 is committed (x47_atoms.require_answer)."""
+    if m.get("x47_1"):
+        from scripts import x47_atoms as A
+
+        A.require_answer(A.QUESTION)
+
+
 def stage_verdict(name: str, n_boot: int = X.N_BOOT) -> Path:
     src = RESULTS / name
     m = json.loads((src / "manifest.json").read_text())
+    sealed_47(m)
     rows = X.read_jsonl(src / "outcomes.jsonl")
     norms = X.read_jsonl(src / "norms.jsonl")
     out = src / f"verdict-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}"
@@ -1479,6 +1511,7 @@ def stage_examples(name: str, k: int = N_EXAMPLES, seed: int = EXAMPLES_SEED, de
     (default: the pinned tokenizer.json of the run's model)."""
     src = RESULTS / name
     m = json.loads((src / "manifest.json").read_text())
+    sealed_47(m)
     if decode is None:
         from bridge_jspace.review import checks as RC
 
@@ -1644,6 +1677,8 @@ def main() -> None:
     ap.add_argument("--jpp-ks", nargs="+", type=int, default=[], choices=JPP_KS,
                     help="run: 45k's J++ removed at these atom counts, each against its random part (25: no_jpp)")  # fmt: skip
     ap.add_argument("--jpp-other", action="store_true", help=f"run: 45k's jpp_other at k = {JPP_OTHER_K}")
+    ap.add_argument("--atom-slices", action="store_true",
+                    help="run (with --jpp-ks 25 100): 47.1's atoms 26-100 and random lens atoms, each against its random part")  # fmt: skip
     ap.add_argument("--names", default="", help="idctrl-summary / jppk-summary: the runs, comma-separated")
     ap.add_argument("--generic-run", default=None, help="jppk-summary: <exp>/<name>, x0_parts jpp_other at k = 100")
     ap.add_argument("--kmatch-run", default=None, help="jppk-summary: <exp>/<name>, x0_necessity J++ at k = 100")
@@ -1685,6 +1720,7 @@ def main() -> None:
             sealed=a.sealed,
             jpp_ks=tuple(a.jpp_ks),
             jpp_other=a.jpp_other,
+            atom_slices=a.atom_slices,
         )
     if a.stage == "verdict" or not (a.smoke or a.sealed):
         stage_verdict(a.name, a.n_boot)

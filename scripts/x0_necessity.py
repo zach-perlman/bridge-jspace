@@ -203,6 +203,10 @@ ALT = "cf"  # the alt: the generator's cf (two picks swap; X0) or "single" (only
 FRESH_SEED = 4513  # 45m's draws per scene (item, digit, slot), each from its own stream keyed by the scene id
 CURVE_ALL = False  # the k curve at every layer, not only the predicted one (after data)
 NONNEG = True  # the non-negative J++ arm at the predicted layer (45m leaves it out to keep the run small)
+# 47.1 (batch 47, --atom-slices; needs J++ at k = 100 in the curve): at the predicted layer, atoms 26-100 of the k = 100
+# fit with atoms 1-25 kept and 75 random lens atoms (at that share and at their own), each against a random part of its
+# share (x47_atoms); per item in atoms.jsonl each slice's share, the scale and the cos^2 of the spans with U
+SLICES = False
 Arm = tuple[str, int, str, str]  # (dictionary, k, fit, arm)
 WHOLE: Arm = ("-", 0, "-", "whole")
 MAIN = ("jpp", K_MAIN, "signed")  # the decisive dictionary, k and fit
@@ -574,6 +578,10 @@ def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predi
     digits = torch.tensor(digit_ids(tok), device="cuda")
     letters = model.letter_token_ids()
     rend = cases[0]["rendering"]
+    if SLICES:  # 47.1: the pointer directions U for the spans' cos^2 (fit on fresh scenes, not refit)
+        from scripts import x47_atoms as A
+
+        alf47 = torch.tensor(A.pointer_basis(pins.TARGET), dtype=torch.float32, device="cuda")
     with torch.no_grad():
         deltas, readout = [], []
         for c in progress(cases, f"{rend}: Δ at the bridge's word (case)"):
@@ -595,20 +603,26 @@ def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predi
                 specs += [(name, k, "signed") for name in CURVE_DICTS for k in K_CURVE if name not in K_OF]
                 specs += [("jpp", K_MAIN, "nonneg")] if "jpp" in DICTS and NONNEG else []
             basis = SP.random_basis(x.shape[1], torch.Generator().manual_seed(SUBSPACE_SEED + la)).to("cuda")
-            shares = []
+            shares, atom_recs = [], []
             for name in dict.fromkeys(s[0] for s in specs):
                 dic = dictionary(name, la, model, lens, letters)
-                for _, k, omp in (s for s in specs if s[0] == name):
-                    part = fit(dic, x, k, omp)
+                parts = {(name, k, omp): fit(dic, x, k, omp) for _, k, omp in (s for s in specs if s[0] == name)}
+                if SLICES and name == "jpp" and la == predicted:  # 47.1: from the same K = 100 picks as the k = 100 fit
+                    sl, recs = A.slices_with_geometry(dic, x, [c["scene"] for c in cases], parts[("jpp", A.K_KEEP, "signed")],
+                                                      parts[("jpp", A.K_ALL, "signed")], alf47)  # fmt: skip
+                    parts.update({A.SLICE_KEYS[p]: v for p, v in sl.items()})
+                    atom_recs += [{"scene": c["scene"], "rendering": rend, "layer": la, **r}
+                                  for c, r in zip(cases, recs, strict=True)]  # fmt: skip
+                for (d_, k, omp), part in parts.items():
                     share = part.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
                     rand = SP.random_subspace_part(x, share, basis)
-                    arms[(name, k, omp, "no_part")] = x - part
-                    arms[(name, k, omp, "no_rand")] = x - rand
+                    arms[(d_, k, omp, "no_part")] = x - part
+                    arms[(d_, k, omp, "no_rand")] = x - rand
                     rshare = rand.norm(dim=-1) ** 2 / (x.norm(dim=-1) ** 2).clamp_min(1e-30)
-                    shares += [{"scene": c["scene"], "rendering": rend, "layer": la, "dict": name, "k": k, "omp": omp,
+                    shares += [{"scene": c["scene"], "rendering": rend, "layer": la, "dict": d_, "k": k, "omp": omp,
                                 "share": round(float(share[i]), 5), "rand_share": round(float(rshare[i]), 5)}
                                for i, c in enumerate(cases)]  # fmt: skip
-                del dic
+                del dic, parts
                 torch.cuda.empty_cache()
             keys = list(arms)
             rows, ex_rows = [], []
@@ -627,7 +641,8 @@ def run_rendering(model, lens, cases: list[dict], layers: tuple[int, ...], predi
                         texts = model.generate_batch(gen, GEN_TOKENS, [edits[1 + keys.index(a)] for a in EXAMPLE_ARMS])
                         ex_rows += [{**base, "arm": "/".join(map(str, a)), "greedy": t}
                                     for a, t in zip(EXAMPLE_ARMS, texts, strict=True)]  # fmt: skip
-            for fname, part_rows in (("outcomes.jsonl", rows), ("shares.jsonl", shares), ("examples.jsonl", ex_rows)):
+            files = [("outcomes.jsonl", rows), ("shares.jsonl", shares), ("examples.jsonl", ex_rows)]
+            for fname, part_rows in files + ([("atoms.jsonl", atom_recs)] if SLICES else []):
                 with (out / fname).open("a") as f:
                     f.writelines(json.dumps(r) + "\n" for r in part_rows)
 
@@ -643,8 +658,24 @@ def order_record() -> dict:
                           "then each one's read alone (a batch of 1)",
             "delta": "per scene: one unbatched forward of org and of alt",
             "reads": f"per scene, reader and layer: the unedited row, then the arms in their fixed order (whole; per "
-                     f"dictionary, k, fit: no_part, no_rand), in batches of at most {P.BATCH} rows (BJ_SUITE_BATCH)",
+                     f"dictionary, k, fit: no_part, no_rand; with --atom-slices 47.1's parts after J++'s), in batches of "
+                     f"at most {P.BATCH} rows (BJ_SUITE_BATCH)",
             "batch": P.BATCH}  # fmt: skip
+
+
+def x47_record() -> dict:
+    """47.1's record in an --atom-slices run's manifest (x47_atoms reads the run), with the parts' (dict, k, fit) keys."""
+    from scripts import x47_atoms as A
+
+    return {**A.manifest_record(), "keys": {p: list(key) for p, key in A.SLICE_KEYS.items()}}
+
+
+def sealed_47(m: dict) -> None:
+    """A 47.1 run (--atom-slices) stays closed until Dan's Q47.1 is committed (x47_atoms.require_answer)."""
+    if m.get("x47_1"):
+        from scripts import x47_atoms as A
+
+        A.require_answer(A.QUESTION)
 
 
 def lens_record() -> dict:
@@ -663,6 +694,9 @@ def stage_run(
     pins.check_run_name(name)
     assert chat.FORMAT == "chat", "X0 renders its raw prompts itself: run with BJ_FORMAT unset"
     assert predicted in layers, f"the predicted layer {predicted} is not in {layers}"
+    assert not SLICES or ("jpp" in DICTS and "jpp" in CURVE_DICTS and 100 in K_CURVE and "jpp" not in K_OF), (
+        "--atom-slices (47.1) needs J++ at k = 25 and in the curve at k = 100 (--dicts jpp --curve-dicts jpp --curve-k 100)"
+    )
     out = RESULTS / name
     out.mkdir(parents=True, exist_ok=False)
     items = pins.DATA_DIR / "tasks_v2" / set_name / "items.jsonl"
@@ -684,6 +718,7 @@ def stage_run(
          "order": order_record(),
          **({"fresh": {"seed": FRESH_SEED, "design": "jobs/c3/batch45.yaml, 45m", "draws": "x0_necessity.fresh_pair"}}
             if ALT == "fresh" else {}),
+         "atom_slices": SLICES, **({"x47_1": x47_record()} if SLICES else {}),
          "seeds": {"random_dictionary": f"{RAND_DICT_SEED} + layer (CPU)", "random_subspace": f"{SUBSPACE_SEED} + layer (CPU)",
                    "bootstrap": BOOT_SEED, "examples": EXAMPLES_SEED},
          "design": "jobs/c3/X0.md"}  # fmt: skip
@@ -775,6 +810,7 @@ def fmt3(v: list) -> str:
 def write_verdict(run: str, n_boot: int = N_BOOT) -> Path:
     src = RESULTS / run
     m = json.loads((src / "manifest.json").read_text())
+    sealed_47(m)
     rows = read_jsonl(src / "outcomes.jsonl")
     gate = json.loads((src / "gate.json").read_text())
     rends = tuple(m.get("renderings", RENDERINGS))
@@ -925,7 +961,7 @@ def figures(verdict_dir: Path) -> list[Path]:
 
 
 def main() -> None:
-    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT, NONNEG, N_ITEMS  # the manifest records them
+    global CURVE_DICTS, K_CURVE, READ, DESCRIPTIVE, ALT, CURVE_ALL, DICTS, READOUT, NONNEG, N_ITEMS, SLICES  # the manifest records them
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", choices=["plan", "run", "verdict", "figures"])
     ap.add_argument("--name", required=True, help="run name (results/x0_necessity/<name>/)")
@@ -953,10 +989,13 @@ def main() -> None:
                     help="run: amendment 3, run on the items right even if the gate fails (labeled descriptive)")  # fmt: skip
     ap.add_argument("--sealed", action="store_true",
                     help="run: no verdict or figures after the run (batch 45: sealed until Dan's predictions)")  # fmt: skip
+    ap.add_argument("--atom-slices", action="store_true",
+                    help="run: 47.1's atoms 26-100 (1-25 kept) and random lens atoms at L (needs --curve-k 100)")  # fmt: skip
     a = ap.parse_args()
     CURVE_DICTS, K_CURVE = tuple(a.curve_dicts), tuple(a.curve_k)
     READ, DESCRIPTIVE, ALT, CURVE_ALL = a.read, a.descriptive, a.alt, a.curve_all_layers
     DICTS, READOUT, NONNEG, N_ITEMS = tuple(a.dicts), a.readout, not a.no_nonneg, a.n_items
+    SLICES = a.atom_slices
     if a.stage == "plan":  # tokenizer only
         from scripts import statement_positions as SP
 
