@@ -1,0 +1,67 @@
+id: x47_16_9b
+title: "Batch 47.16 on the 9B (L12): does the address survive distance? Routes C2 scenes with k = 0 / 5 / 20 / 50 neutral sentences between the lockers and the picks; the gate per k (stop at the first failure); the whole change, without U vs random, x8's pointer swap at s = 2 vs random, the slot probe and the code's shift beta at the bridge word (sealed)"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 1.0
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP=; uv run python scripts/x47_distance.py run --name qwen35_9b_x47_16 --why "batch 47, test 47.16 (jobs/c3/batch47.yaml, amendment 5; Q47.16): x6_routes' C2 scenes with k neutral filler sentences between the locker sentences and the pick sentences, k = 0, 5, 20, 50 (the gate recomputed per k, stop at the first failure); at the bridge word: the whole change, without U against random, x8's pointer swap at s = 2 against a random direction, O's states for the slot probe and the code's shift beta; sealed"
+question: >-
+  Does the address at the bridge word survive distance from the locker sentences: as k neutral sentences separate the
+  lockers from the picks, do the position share under the whole change, the slot probe and the pointer swap's success
+  stay (distance-robust), does the lookup move from position to identity while still answering (address near, identity
+  far), or does the model stop answering (breaks at k)? And does the code's shift beta stay <= 0.25 (Fig 8c at scale)?
+why_it_matters: >-
+  The pointer counts mentions, not tokens (Fig 8c: one neutral sentence shifts the code by beta ~ 0.15, not 1). A
+  distance-robust address at 600 tokens says the lookup's route is an order code that does not decay with distance; a
+  hand-over to identity at distance says the address is a near-field device; a break at some k bounds where any of
+  this applies.
+hypotheses:
+  Q47.16: "Dan's answer in predictions/2026-10-28_dan.md (Q47.16: distance-robust / address near, identity far / breaks (at which k), on the 9B; on Muse); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_distance.py verdict / examples refuse until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.16): "Distance-robust address": position share and the probe within
+  0.10 of k = 0 at every k, swap success within 0.15. "Address near, identity far": position share falls >= 0.20 and
+  identity rises by as much by k = 50 while accuracy stays >= 0.8. "Breaks": accuracy falls below the gate at some k
+  (report the k; the test stops there). Also a check of Fig 8c at scale: the code's shift beta across k stays <= 0.25
+  (counts mentions, not tokens). AS COMPUTED (written before any run; Dan may override before the run;
+  scripts/x47_distance.py docstring): SCENES: x6_routes' C2 scenes (its generator, seed 2510: the routes runs' own
+  base scenes; the first 420 C2 candidates) with k neutral filler sentences between the last locker sentence and the
+  first pick sentence of O and S alike, k in {0, 5, 20, 50}. Fillers: a fixed pool of 60 sentences (no item, person,
+  digit, number word, locker / pick / hall wording; checked against the target's pools in the plan and in the run);
+  per base scene one seeded draw (seed 4716 keyed by the scene) of 50, of which the first k are inserted, so the
+  blocks nest (k = 5 is a prefix of k = 20 is a prefix of k = 50). Each variant re-encoded with x6_routes.encode
+  (the bridge word one token at one index shared by O and S; both readers' prompts the same through it; else
+  dropped and counted; plan check: none dropped). GATE per k, in order 0, 5, 20, 50: X0's competence on every
+  candidate at k (8 greedy tokens and the read, unedited O and S, both readers); O's read accuracy >= 0.80 per reader;
+  at the first failing k the job records it (gate.json stopped_at) and skips the larger ks. CHOSEN: the first 300
+  base scenes (generation order) eligible at every k that passed (both readers say and read O's and S's answers
+  right), so the k cells are paired. ARMS at each passed k (on O, at the bridge word at L12, both readers): none;
+  whole (Delta = h_S - h_O); without U (the fresh-scene pointer basis, x0_massmean.subspaces' Alf on
+  qwen35_9b_x0_probe_v4, not refit) and without a random part of U's share (X0's random subspace, seed 888 + L);
+  x8_write's pointer swap at s = 2, h + 2 (mu_t - mu_j) for both other slots t (j = the bridge's locker slot in O;
+  mu = pointer_means, not refit), each against a random direction of the same norm (seed 4717 keyed by the scene and
+  t). Lookup answers classified identity / position / value / original / other (x6_routes) and, under the swap,
+  target / original / third / other (x8_write). O's bridge-word state at every k is saved (states.npz). PROBE
+  (verdict, CPU): x0_probe (b) at the bridge word on O's states at each k, target = the bridge's locker slot, 5 folds
+  by bridge entity; chance, majority and the layout baseline beside (the layout is the same for every scene at a k,
+  so it equals the majority). BETA: x8 order's B2 convention, beta_k = <U U^T (h_k - h_0), mu_{j-1} - mu_j> /
+  ||mu_{j-1} - mu_j||^2 for j in {1, 2}, the same base scene at k = 0 as the reference (j = 0 has no B2 step; the j +
+  1 step's beta_next recorded beside, descriptive); the mean over scenes with a cluster-bootstrap CI. RULE as
+  computed (point estimates decide, EPS 1e-9 at the bars; cluster-bootstrap CIs over bridge items, 10,000, seed 0,
+  beside), per model, the first label that applies: "breaks at k" if the gate failed at some k; "distance-robust
+  address" if at every tested k |position share(whole, k) - position share(whole, 0)| <= 0.10, |probe(k) - probe(0)|
+  <= 0.10 and |swap target share(k) - swap target share(0)| <= 0.15 (the swap's target share pooled over the two
+  targets); "address near, identity far" if position(0) - position(50) >= 0.20, identity(50) - identity(0) >= 0.20
+  and both readers' O read accuracy at k = 50 >= 0.8; else "none of the three". Fig 8c at scale holds if mean beta
+  <= 0.25 at every k > 0. Reported beside: the recall's kept share per arm and k (collateral), the swap's target
+  share against its random direction, U's cut of position beyond random per k, the k = 0 cell against the routes
+  run's C2 whole-change split (descriptive). Scored by hand: scripts/x47_distance.py verdict.
+controls:
+- 'without U against a random part of the same share of the change (X0''s random subspace, seed 888 + L), per k'
+- 'the pointer swap at s = 2 against a random direction of the same norm (one per scene and target, seed 4717), per k'
+- 'the gate per k on every candidate (O read accuracy >= 0.80 per reader), the stop rule; lookup and recall accuracy unedited reported per k'
+- 'the slot probe against chance, the majority class and the layout baseline, entities held out, per k'
+- 'the same base scenes at every k (paired); k = 0 against the routes run''s C2 cell (descriptive); the recall''s kept share under every arm (collateral)'
+n: 'plan check on the 9B tokenizer (28 Oct): 420 base C2 scenes (32 bridge animals), none dropped at any k; prompt tokens 74 / 128-141 / 305-330 / 672-692 at k = 0 / 5 / 20 / 50, the filler block 0 / 54-67 (median 61) / 231-256 (243) / 598-618 (608) tokens, fillers 10-15 tokens each; the bridge token at index 33-43 / 89-110 / 264-299 / 636-659; 300 jointly eligible base scenes chosen if the gates pass (routes: 573 of 700 C2 eligible on the 9B)'
+seeds: [2510, 4716, 4717, 888, 0]
+notes: "Batch 47, amendment 5 (Dan, 28 Oct ~03:10; queue placement after 47.7(c): 47.16 (9B, Muse)). SEALED: the run writes manifest, gate.json (gates per k, stopped_at, skipped, chosen), competence.jsonl, cases.jsonl, states.npz (O's bridge-word states per k), outcomes.jsonl, norms.jsonl, beta.jsonl; no verdict. By hand after Dan's Q47.16 is committed (CPU): uv run python scripts/x47_distance.py verdict --runs qwen35_9b_x47_16 muse30_x47_16 (writes results/x47_distance/x47_16-<time>/ with x47_16.md, x47_16.json and the verify-pack view examples.md: 10 random chosen base scenes per run, seed 0, at every tested k, both readers' prompts as read with the bridge word marked, S beside, every arm's answer). Seeds: 2510 the scenes (x6_routes), 4716 the fillers, 4717 the random directions, 888 + L the random subspace, 0 the bootstrap and the examples. The plan's 5 rendered prompts (base scene 1 at k = 0, 5, 20, 50, the lookup's O as read; base scene 2 at k = 50, the recall's) are in the plan's output (uv run python scripts/x47_distance.py plan, BJ_TARGET=qwen3.5-9b) and in the agent's handoff. x6_routes --filler-tokens inserts one filler sentence; the k-sentence block is rendered in this script (x6_routes untouched). Cost from the ledger (results/jobq/ledger_sesterce-h100x2.jsonl, H100): x45a_9b (5 variants x 700 competence candidates + 1,500 read scenes, prompts ~80 tokens) took 2,621 s. Here 4 x 420 = 1,680 competence candidates and up to 4 x 300 read scenes, with prompts of 74 / 135 / 318 / 682 tokens (mean ~300, x3.8 the routes' length): between 0.58 x 2,621 s = 1,500 s if the cost is per case and 3.8 x that = 5,700 s if it is per token; the 8-token greedy competence step is mostly per case, the reads per token: estimate ~3,000 s = 0.85 h, 1.0 GPU-h with the load (Dan's ~0.6; a stop at k = 50 cuts the longest quarter). x45a_9b peaked at 31.1 GB; reads are 8 rows of at most ~700 tokens; mem_gb 40."
