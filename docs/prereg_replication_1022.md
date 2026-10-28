@@ -2299,3 +2299,14 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
   - **GPU 1, after the ports queue A:** the 9B's rendering-1 removal matrix; rendering 1 for Lightning; Ministral v3;
     then Ministral's note 1 / note 2 runs.
   - **GPU 0, after the ports queue B:** rendering 1 for the 27B; Muse v3; then Muse's note 2 run.
+
+#### Amendment 58 note 7 (Zach, 2026-10-28 01:16 UTC, before any run below; order only, designs unchanged)
+
+- **Change:** rendering-1 replication moves to the end of the queues (Zach: "can't that wait to the end?"). Muse,
+  Ministral and the requeued note 1 / note 2 runs come first; SOCRATES joins ahead of it once its design is approved.
+- **Exception:** the 9B's rendering-1 removal matrix started at 01:11 on idle GPU 0 capacity (`h200v3n0b`) and runs to
+  completion.
+- **New queues:**
+  - `h200v3nA-1028-0118`, GPU 1 after the ports: Ministral v3, its note 1 / note 2 runs, then rendering 1 for the 9B
+    (skipped if done) and Lightning.
+  - `h200v3nB-1028-0118`, GPU 0 after the ports: Muse v3 and its note 2 run, then rendering 1 for the 27B.
