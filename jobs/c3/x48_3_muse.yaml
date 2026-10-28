@@ -1,0 +1,60 @@
+id: x48_3_muse
+title: "Batch 48.3 on the Muse (L26): why locker-after lookups ignore the bridge word. Which person picked the item, probed at the locker sentence's item and number tokens (locker-after vs locker-first); the person contrast's J++ share; the contrast written at another person's locker sentence, read by the lookup and the recall"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 0.15
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x48_bind.py run --name muse30_x48_bind --why "batch 48, test 48.3 (jobs/c3/batch48.yaml; Q48.3): states at every locker sentence's item and number tokens of the main-test and 45m scenes at L26 (the probe is fit at the verdict), the person mass-mean contrast fit on half the bridge entities, its J++ k = 25 share beside random directions', and s (mu_asked - mu_picker) at s = 1, 2 written at another person's locker sentence on the other half, against a random vector of the same norm; both readers; sealed"
+question: >-
+  In locker-after scenes, is the person -> item binding made forward at the locker sentence, outside the lens: can a
+  probe read which of the scene's three people picked the item at the locker sentence's item / number token (and not
+  where the sentence precedes the pick), does the person contrast sit outside the J++ part, and does writing the asked
+  person's contrast at another person's locker sentence send the lookup to that sentence's locker? Does the recall move
+  with it?
+why_it_matters: >-
+  The account (jobs/c3/batch48.yaml) says that when the locker comes after the pick the binding is made forward at the
+  locker sentence, so the bridge word is not read at L there (hence the lookup's low switch rate under the bridge-word
+  change in locker-after scenes); a write at the locker sentence that redirects the lookup, with the probe and the lens
+  share, tests that part of the account directly. Whether the recall moves too says whether the sentence binds the
+  locker address only or the whole "Iris's pick = frog".
+hypotheses:
+  Q48.3: "Dan's answer in predictions/2026-10-28_dan.md (Q48.3); not committed when this spec was written, so the run is sealed: no probe, rates or verdict in the job (scripts/x48_bind.py verdict refuses until the answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch48.yaml, 48.3): "forward binding at the locker sentence, outside the lens" if the
+  probe >= 0.85 in locker-after and <= 0.5 in locker-first; the lens share of the person contrast <= 2x a random
+  direction's; the write sends >= 0.3 of lookups to the written item's locker (random <= 0.05), on both models.
+  As computed (fixed before any run; Dan may override before the run): scenes = the Muse's main-test run (muse30b_x0_necessity, two picks swap) and its 45m run
+  (muse30b_x45m_fresh, the clean design), their chat scenes at L26; locker-after / locker-first = the asked item's
+  locker sentence after / before the asked pick (main test: x0_strata's 'org locker vs asked pick'; 45m: x45m's
+  grouping, mixed scenes only in the descriptive cells). The probe: which of the scene's three people (the generator's
+  pickers, by name) picked the item, a ridge probe (x0_probe's, one-hot over the training rows' names, the prediction
+  the best-scoring of the scene's three names, chance 1/3), fit at the verdict on the stored states with the
+  sentence's item held out (5 folds, entities shuffled by seed 0), trained and scored within each stratum (after:
+  the sentence follows its picker's pick; before: it precedes it); the rule's cells are the asked item's sentence in
+  locker-after and in locker-first scenes, every locker sentence with a picker reported beside, and the after-trained
+  probe on the before states ("transfer"). Lens share: mu_name per token = the mean state over the after sentences of
+  half A (the bridge entities split in two by seed 0, balanced on locker-after scenes); the written contrast mu_asked -
+  mu_picker; its signed-OMP k = 25 share over the J++ atoms at L26 (X.fit as X0), the median over the written scenes,
+  against the mean share of 20 Gaussian directions (seed 4803 + L). The write: on locker-after scenes of half B, the
+  first locker sentence in context order whose item another person picked and which comes after both that person's
+  pick and the asked pick (item and number one token each: the Muse tokenizer splits some item names in two, those
+  candidates are dropped and counted); at its item and number tokens, each token's own contrast times s = 1, 2 (unit =
+  the contrast's norm); the random control a Gaussian vector of the same norm per token (seed 4803); X0's chat read;
+  the lookup's top token = the written item's locker digit counts as sent (target), O's answer as original; the
+  recall's = the written item's attribute number (scenes whose attribute equals the bridge's are left out of the
+  recall's rate and counted). The probe and lens clauses are evaluated per token (item, number) and hold on a model at
+  at least one token (both reported); the write clause at some s with its random control at the same s; the batch
+  holds if both models hold. "Does the write move the recall too": the same bars on the recall's target rate. Unedited
+  accuracies (arm none) reported. Cluster-bootstrap CIs over bridge entities (10,000, seed 0) beside every rate; the
+  rule on point estimates (EPS 1e-9 at the bars). Scored by hand: scripts/x48_bind.py verdict.
+controls:
+- 'locker-first scenes: the same probe where the sentence precedes the pick (chance by construction; <= 0.5)'
+- 'the lens share of 20 random Gaussian directions (seed 4803 + L) against the contrast''s'
+- 'a random vector of the write''s norm at the same tokens, at s = 1 and 2'
+- 'O unedited (arm none): both readers'' unedited accuracies reported'
+- 'the contrast fit on half the bridge entities (A), written on the other half (B); the split recorded in plan.json'
+- 'the person names are the generator''s pickers (scene_facts) and must match the pick sentences; every written token decodes exactly to its item / number (one token each), else the scene is dropped and counted'
+n: 'plan check on the Muse tokenizer (28 Oct): 609 scenes (200 main + 409 45m at L26), none dropped; 278 locker-after (A 141 / B 137), 105 write candidates in B (72 locker-after B scenes have no other person''s locker sentence after both picks, 3 have a two-token item); 59 names; 948 after / 879 before sentence states (50 item tokens of two tokens: the state at the last one); 44 bridge entities'
+seeds: [0, 4803, 4513]
+notes: "Batch 48 (Dan, 28 Oct ~02:30), test 48.3; merged priority after 47.2. Sealed: the run writes manifest, plan, cases, probe_rows + states.npz (the states at every locker sentence's tokens), contrasts.json (per-write norms and J++ shares, the random directions' shares, the fit counts), outcomes (per item, arm and reader: the top token and its class) and 10 example scenes' greedy texts; no probe, rates or verdict. By hand after Dan's Q48.3 is committed: uv run python scripts/x48_bind.py verdict --runs qwen35_9b_x48_bind muse30_x48_bind (CPU). Seeds: 0 the entity halves, the probe's folds, the bootstrap and the examples; 4803 the random vectors (+ L for the random directions); 4513 45m's fresh draws. Cost (ledger, sesterce-h100x2): x45p_muse (178 scenes, 2 recorded forwards + 2 reads of 7 rows each, 10 greedy examples) ran 167 s; this run: 609 recorded forwards + 105 scenes x 2 readers x one 5-row read + 10 x 2 greedy, about 600 forward-equivalents against 45p's ~700: ~3-4 min with the load; 0.15 GPU-h with margin. Run name prefix muse30_ (pins.check_run_name; the older muse30b_ runs it reads are main's)."
