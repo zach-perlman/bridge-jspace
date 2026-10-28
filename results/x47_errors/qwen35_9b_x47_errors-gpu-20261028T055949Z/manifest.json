@@ -1,0 +1,26 @@
+{
+  "exp": "x47_errors",
+  "stage": "gpu",
+  "run": "qwen35_9b_x47_errors",
+  "written_utc": "2026-10-28T05:59:49Z",
+  "why": "batch 47, test 47.13 (jobs/c3/batch47.yaml; Q47.13, sealed): the lens's top item",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "code": {
+    "head": "12b33f9480ad526bd89ee97ae1159d091fe61358",
+    "dirty_files": [],
+    "untracked_scripts": [],
+    "code_diff_sha256": null
+  },
+  "lens": "jpp",
+  "sources": {
+    "x0b": "x0b_generalize/qwen35_9b_x0b_v2",
+    "named": "x0_probe/qwen35_9b_x0_probe_v4"
+  }
+}

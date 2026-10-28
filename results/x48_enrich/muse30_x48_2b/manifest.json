@@ -1,0 +1,210 @@
+{
+  "exp": "x48_enrich",
+  "run": "muse30_x48_2b",
+  "why": "batch 48, test 48.2 design B (jobs/c3/batch48.yaml; Q48.2): the MLP writes at the bridge token mean-ablated for layers l > L26, against the asked person's token and against layers l <= 13 at the bridge token; both readers on unedited prompts; sealed",
+  "design": "B",
+  "test": "48.2",
+  "written_utc": "2026-10-28T05:32:07Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "6ec206345cfeb5826cae5e886a4b63fefe38646a",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "spec": "jobs/c3/batch48.yaml (48.2)",
+  "question": "Q48.2 (predictions/2026-10-28_dan.md)",
+  "main_run": "muse30b_x0_necessity",
+  "layer": 26,
+  "n_layers": 52,
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/muse30b_x0_necessity/manifest.json": "79717f28d048118abb3140e643e59d95bc4a3c893532c42efd4faee5ce08f0d0",
+    "results/x0_necessity/muse30b_x0_necessity/cases.jsonl": "6438c92866d69cc4b18966a86d6187690a5e614d1ae93ec3a90c49d7ab893e33",
+    "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl": "043d4c017bceb4db04c2b729d5e10b406ec6a34572ff7939bd27a21d2bdb4703"
+  },
+  "items_rule": "the main-test X0 run's chat items at L (every scene with a whole-arm read), rebuilt with X.build_cases (alt = cf) and checked against the run's ids",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the top token",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.2 answer",
+  "arms": {
+    "none": "O unedited",
+    "bridge_late": "MLP writes at the bridge token mean-ablated, layers l > L",
+    "person_late": "MLP writes at the asked person's token mean-ablated, layers l > L (control 1)",
+    "bridge_early": "MLP writes at the bridge token mean-ablated, layers l <= L / 2 (control 2)"
+  },
+  "arm_layers": {
+    "bridge_late": [
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
+    ],
+    "person_late": [
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
+    ],
+    "bridge_early": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  "module_counts": {
+    "bridge_late": 25,
+    "person_late": 25,
+    "bridge_early": 14
+  },
+  "hooked": {
+    "module": {
+      "post_feedforward_layernorm": 52
+    },
+    "mlp_class": [
+      "MuseGlimmerTextMLP"
+    ],
+    "hooked_class": [
+      "MuseGlimmerTextCenteredRMSNorm"
+    ],
+    "block_kinds": {
+      "full_attention": 52
+    },
+    "kinds": [
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention"
+    ]
+  },
+  "mean": "per layer and role, the mean MLP write over the items' unedited O prompts at the role's position (bridge: the bridge token; person: the last token of the asked person's name in the asked pick sentence)",
+  "ablation": "a forward hook on the block's MLP write module replaces its output at the position by the mean, on the prompt's forward only",
+  "accuracy": "the share of items whose top token at the read is O's answer",
+  "rule": "the recall's retrieval runs through the bridge token's late MLPs if recall accuracy falls >= 0.4 under bridge_late while lookup accuracy stays within 0.1, and both controls stay within 0.1 for both readers"
+}

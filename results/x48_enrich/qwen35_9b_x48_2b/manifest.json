@@ -1,0 +1,172 @@
+{
+  "exp": "x48_enrich",
+  "run": "qwen35_9b_x48_2b",
+  "why": "batch 48, test 48.2 design B (jobs/c3/batch48.yaml; Q48.2): the MLP writes at the bridge token mean-ablated for layers l > L12, against the asked person's token and against layers l <= 6 at the bridge token; both readers on unedited prompts; sealed",
+  "design": "B",
+  "test": "48.2",
+  "written_utc": "2026-10-28T05:29:14Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "6ec206345cfeb5826cae5e886a4b63fefe38646a",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "spec": "jobs/c3/batch48.yaml (48.2)",
+  "question": "Q48.2 (predictions/2026-10-28_dan.md)",
+  "main_run": "qwen35_9b_x0_necessity",
+  "layer": 12,
+  "n_layers": 32,
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/qwen35_9b_x0_necessity/manifest.json": "1c8b61e521a05eddce8e886ee91b3dbf7bb8fa549f3246d6875d871a9db5e6b2",
+    "results/x0_necessity/qwen35_9b_x0_necessity/cases.jsonl": "e9eebbf8966cccd63f4d072e2fab85fedce9569ffbaac2db6c3c068fb4489212",
+    "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl": "2e5ba92b65dafa4d077fbcb663805d6e219108a325c9cf6265800adff7f9f834"
+  },
+  "items_rule": "the main-test X0 run's chat items at L (every scene with a whole-arm read), rebuilt with X.build_cases (alt = cf) and checked against the run's ids",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the top token",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.2 answer",
+  "arms": {
+    "none": "O unedited",
+    "bridge_late": "MLP writes at the bridge token mean-ablated, layers l > L",
+    "person_late": "MLP writes at the asked person's token mean-ablated, layers l > L (control 1)",
+    "bridge_early": "MLP writes at the bridge token mean-ablated, layers l <= L / 2 (control 2)"
+  },
+  "arm_layers": {
+    "bridge_late": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "person_late": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "bridge_early": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "module_counts": {
+    "bridge_late": 19,
+    "person_late": 19,
+    "bridge_early": 7
+  },
+  "hooked": {
+    "module": {
+      "mlp": 32
+    },
+    "mlp_class": [
+      "Qwen3_5MLP"
+    ],
+    "hooked_class": [
+      "Qwen3_5MLP"
+    ],
+    "block_kinds": {
+      "linear_attention": 24,
+      "full_attention": 8
+    },
+    "kinds": [
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention"
+    ]
+  },
+  "mean": "per layer and role, the mean MLP write over the items' unedited O prompts at the role's position (bridge: the bridge token; person: the last token of the asked person's name in the asked pick sentence)",
+  "ablation": "a forward hook on the block's MLP write module replaces its output at the position by the mean, on the prompt's forward only",
+  "accuracy": "the share of items whose top token at the read is O's answer",
+  "rule": "the recall's retrieval runs through the bridge token's late MLPs if recall accuracy falls >= 0.4 under bridge_late while lookup accuracy stays within 0.1, and both controls stay within 0.1 for both readers"
+}

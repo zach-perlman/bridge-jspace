@@ -1,0 +1,100 @@
+{
+  "target": "qwen3.5-9b",
+  "layer": 12,
+  "runs": {
+    "main": {
+      "run": "qwen35_9b_x0_necessity",
+      "scenes_at_L": 200,
+      "groups": {
+        "after": 100,
+        "before": 100
+      }
+    },
+    "45m": {
+      "run": "qwen35_9b_x45m_fresh",
+      "scenes_at_L": 417,
+      "groups": {
+        "before": 151,
+        "after": 166,
+        "mixed": 100
+      }
+    }
+  },
+  "dropped": {},
+  "scenes": 617,
+  "entities": 46,
+  "halves": {
+    "A": [
+      "ant",
+      "bear",
+      "butterfly",
+      "camel",
+      "chicken",
+      "cow",
+      "crow",
+      "deer",
+      "dog",
+      "duck",
+      "epsilon",
+      "eta",
+      "fox",
+      "frog",
+      "gamma",
+      "goose",
+      "hydrogen",
+      "iota",
+      "nitrogen",
+      "owl",
+      "pig",
+      "spider",
+      "theta",
+      "tick",
+      "tiger",
+      "turkey",
+      "wolf"
+    ],
+    "B": [
+      "alpha",
+      "bee",
+      "beetle",
+      "beta",
+      "carbon",
+      "cat",
+      "delta",
+      "eagle",
+      "elephant",
+      "fly",
+      "goat",
+      "helium",
+      "horse",
+      "lion",
+      "lithium",
+      "mouse",
+      "oxygen",
+      "rabbit",
+      "sheep"
+    ]
+  },
+  "locker_after": {
+    "scenes": 266,
+    "A": 140,
+    "B": 126
+  },
+  "write_candidates_B": 98,
+  "write_dropped": {
+    "no other person's locker sentence after both picks": 67
+  },
+  "names": 59,
+  "strata": {
+    "after": 933,
+    "before": 918
+  },
+  "numbers": {
+    "digits": 333,
+    "words": 284
+  },
+  "exact": {
+    "item: one token": 2268,
+    "number: one token": 2268
+  }
+}

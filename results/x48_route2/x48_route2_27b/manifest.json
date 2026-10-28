@@ -1,0 +1,100 @@
+{
+  "exp": "x48_route2",
+  "run": "x48_route2_27b",
+  "why": "batch 48, test 48.5 (jobs/c3/batch48.yaml; Q48.5): on 45m's locker-first scenes, the bridge-word change without its J++ part plus the pointer write mu_k - mu_j at s = 2 to each other slot k, against the write alone and against a random vector of the write's norm; the recall classified by the attribute it names; sealed",
+  "written_utc": "2026-10-28T03:58:58Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "86a467f5d781b14b342f439908c1cfa42b368d4d",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "test": "48.5",
+  "spec": "jobs/c3/batch48.yaml (48.5)",
+  "question": "Q48.5 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/x45m_fresh_27b/manifest.json": "81532062c323053fd4c50fd77b1177d0d7fd34c166a6b18ccc7f63e1f1d53b22",
+    "results/x0_necessity/x45m_fresh_27b/cases.jsonl": "038ff4ff994328764607b4daa9e7b06cfa8098775a75f6a116cbb6c52389d334",
+    "results/x0_necessity/x45m_fresh_27b/outcomes.jsonl": "cae7973b9d0aa8fed9a2e47dfc3a1db711b21d7472f30d79208857d80808542e"
+  },
+  "run_45m": "x45m_fresh_27b",
+  "layer": 32,
+  "k": 25,
+  "omp": "signed",
+  "s": 2.0,
+  "mu_from": "x0_probe_v4_27b",
+  "step_norms": {
+    "0-1": 13.5685,
+    "0-2": 16.787,
+    "0-3": 21.3156,
+    "1-0": 13.5685,
+    "1-2": 8.394,
+    "1-3": 14.6106,
+    "2-0": 16.787,
+    "2-1": 8.394,
+    "2-3": 7.8953,
+    "3-0": 21.3156,
+    "3-1": 14.6106,
+    "3-2": 7.8953
+  },
+  "write_norms": {
+    "0-1": 27.137,
+    "0-2": 33.574,
+    "0-3": 42.6312,
+    "1-0": 27.137,
+    "1-2": 16.788,
+    "1-3": 29.2212,
+    "2-0": 33.574,
+    "2-1": 16.788,
+    "2-3": 15.7906,
+    "3-0": 42.6312,
+    "3-1": 29.2212,
+    "3-2": 15.7906
+  },
+  "arms": {
+    "none": "O unedited",
+    "whole": "h_S - h_O at the bridge token (45m's whole arm, rerun)",
+    "a1": "(i) the change minus its J++ part (k = 25, signed)",
+    "w<k>": "(ii) a1 plus s (mu_k - mu_j), s = 2",
+    "p<k>": "(iii) the write alone",
+    "r<k>": "(iv) a1 plus a random vector of the write's norm"
+  },
+  "write_position": "the bridge token of O's prompt (c['pos']), every arm, at L",
+  "slots": "each other slot k of the four (three writes per scene; j = the asked item's locker slot in O)",
+  "items_rule": "45p's items (the new item's locker before the asked pick; O and S the same but for the bridge word) whose original item's locker is before the asked pick too",
+  "informative": "slot k's item is neither the original nor the changed item and its attribute differs from both of theirs; the rule counts informative writes, all writes reported beside",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the recall's top token classified by the attribute it matches (slot k's item / original / changed / other, first match); the lookup's by locker number",
+  "rule": "the recall's second route is the address if under (ii) the recall names slot k's item in >= 0.3 of the informative writes with the random vector (iv) <= 0.05 (point estimates), on >= 2 of 3 models",
+  "decisive_reader": "PM",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_directions": 4401,
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.5 answer"
+}

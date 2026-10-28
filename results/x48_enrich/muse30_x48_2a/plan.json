@@ -1,0 +1,69 @@
+{
+  "main_run": "muse30b_x0_necessity",
+  "set": "d1_topics_v3",
+  "layer": 26,
+  "items": 200,
+  "entities": 40,
+  "domains": {
+    "elements": 86,
+    "greek": 46,
+    "animals": 68
+  },
+  "person_tokens": {
+    "1": 181,
+    "2": 19
+  },
+  "training_scenes": {
+    "animals": {
+      "scenes": 176,
+      "entities": 31,
+      "classes": [
+        "2",
+        "4",
+        "6",
+        "8"
+      ]
+    },
+    "elements": {
+      "scenes": 200,
+      "entities": 6,
+      "classes": [
+        "1",
+        "2",
+        "3",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    "greek": {
+      "scenes": 154,
+      "entities": 7,
+      "classes": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "7",
+        "8"
+      ]
+    }
+  },
+  "probe_layers": [
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    51
+  ]
+}

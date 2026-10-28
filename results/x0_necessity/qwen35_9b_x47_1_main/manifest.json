@@ -1,0 +1,126 @@
+{
+  "exp": "x0_necessity",
+  "run": "qwen35_9b_x47_1_main",
+  "why": "Batch 47, test 47.1 (jobs/c3/batch47.yaml; Q47.1): the main test with J++ removed at k = 25 and 100, atoms 26-100 only (1-25 kept) and 75 random lens atoms, each against a random part of its share; 9B at L12; sealed",
+  "written_utc": "2026-10-28T02:37:35Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "4ea17687f63a21b15610de9a51863df6d84d98d4",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "set": "d1_topics_v3",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/X0.md": "515ccc97e15ed9719d542fcbd2b1903a77dac981899a7947bed80404fa5e5113"
+  },
+  "layers": [
+    12
+  ],
+  "predicted": 12,
+  "renderings": [
+    "chat"
+  ],
+  "dicts": [
+    "jpp"
+  ],
+  "k": 25,
+  "k_of": {},
+  "k_curve": {
+    "dicts": [
+      "jpp"
+    ],
+    "k": [
+      100
+    ]
+  },
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "gate": 0.8,
+  "position": "bridge_word (the asked person's pick, one token)",
+  "read": {
+    "decisive": "the top token over the vocabulary is the alt answer's first token (Dan, 24 Oct)",
+    "chat": "one forward of the prompt with a digit's space token appended (23 Oct)",
+    "raw": "the first non-whitespace token of the greedy continuation of the prompt ending 'Answer:' (no trailing space; at most 4 forwards)",
+    "cand": "the alt answer's first token ranks first among the digit tokens (descriptive)",
+    "mode": "first",
+    "digit": "amendment 3: the step of the first digit token in 8 greedy tokens (non-chat renderings, when mode is digit)"
+  },
+  "descriptive": false,
+  "alt": "cf",
+  "curve_all_layers": false,
+  "readout": false,
+  "nonneg_arm": false,
+  "order": {
+    "scenes": "sorted by scene id (build_cases); the eligible ones in that order, the first N_ITEMS kept; the kept ids in gate.json 'order'",
+    "competence": "per scene, reader and rendering: org and alt generated together (one batch of 2 rows), then each one's read alone (a batch of 1)",
+    "delta": "per scene: one unbatched forward of org and of alt",
+    "reads": "per scene, reader and layer: the unedited row, then the arms in their fixed order (whole; per dictionary, k, fit: no_part, no_rand; with --atom-slices 47.1's parts after J++'s), in batches of at most 64 rows (BJ_SUITE_BATCH)",
+    "batch": 64
+  },
+  "atom_slices": true,
+  "x47_1": {
+    "test": "47.1",
+    "spec": "jobs/c3/batch47.yaml",
+    "question": "Q47.1 (predictions/2026-10-28_dan.md)",
+    "k_keep": 25,
+    "k_all": 100,
+    "omp": "signed (X.fit); atoms in OMP order (x0_parts.omp_atoms), the first 25 being the k = 25 picks",
+    "parts": {
+      "jpp26_100": "P100 \u0394 - P25 \u0394 (X.fit at 100 minus at 25): atoms 26-100's span projected off atoms 1-25",
+      "ratoms75own": "\u0394's component in the span of 75 random letter-token lens atoms (outside the item's 100 OMP picks) projected off atoms 1-25",
+      "ratoms75": "ratoms75own scaled to jpp26_100's share of ||\u0394||^2 (alpha per item)"
+    },
+    "random_atoms_seed": "4701 and the scene id (x47_atoms.random_atoms)",
+    "random_parts": "X0's random subspace at each part's share of ||\u0394||^2, seed 888 + layer",
+    "sealed": "no verdict in the job; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.1",
+    "keys": {
+      "jpp26_100": [
+        "jpp26_100",
+        75,
+        "slice"
+      ],
+      "ratoms75": [
+        "ratoms75",
+        75,
+        "scaled"
+      ],
+      "ratoms75own": [
+        "ratoms75own",
+        75,
+        "own"
+      ]
+    }
+  },
+  "seeds": {
+    "random_dictionary": "777 + layer (CPU)",
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "design": "jobs/c3/X0.md"
+}

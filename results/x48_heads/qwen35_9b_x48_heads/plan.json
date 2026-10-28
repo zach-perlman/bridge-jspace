@@ -1,0 +1,38 @@
+{
+  "main_run": "qwen35_9b_x0_necessity",
+  "layer": 12,
+  "items_at_L": 200,
+  "locker vs asked pick": {
+    "org after, alt after": 68,
+    "org before, alt before": 75,
+    "org after, alt before": 32,
+    "org before, alt after": 25
+  },
+  "items": 75,
+  "entities": 32,
+  "max_read_len": 77,
+  "target": "qwen3.5-9b",
+  "candidate_layers": [
+    15,
+    19,
+    23,
+    27,
+    31
+  ],
+  "config_full_attention": [
+    15,
+    19,
+    23,
+    27,
+    31
+  ],
+  "layer_types": {
+    "linear_attention": 24,
+    "full_attention": 8
+  },
+  "sliding_window": null,
+  "n_heads": 16,
+  "n_kv": 4,
+  "head_dim": 256,
+  "candidate_heads": 80
+}

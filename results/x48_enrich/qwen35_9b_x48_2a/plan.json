@@ -1,0 +1,67 @@
+{
+  "main_run": "qwen35_9b_x0_necessity",
+  "set": "d1_topics_v3",
+  "layer": 12,
+  "items": 200,
+  "entities": 40,
+  "domains": {
+    "elements": 76,
+    "greek": 56,
+    "animals": 68
+  },
+  "person_tokens": {
+    "1": 185,
+    "2": 15
+  },
+  "training_scenes": {
+    "animals": {
+      "scenes": 200,
+      "entities": 32,
+      "classes": [
+        "2",
+        "4",
+        "6",
+        "8"
+      ]
+    },
+    "elements": {
+      "scenes": 200,
+      "entities": 6,
+      "classes": [
+        "1",
+        "2",
+        "3",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    "greek": {
+      "scenes": 200,
+      "entities": 8,
+      "classes": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "7",
+        "8",
+        "9"
+      ]
+    }
+  },
+  "probe_layers": [
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    31
+  ]
+}

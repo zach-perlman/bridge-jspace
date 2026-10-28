@@ -1,0 +1,51 @@
+{
+  "main": {
+    "design": "main",
+    "source": "qwen35_9b_x0_necessity",
+    "alt": "cf",
+    "layer": 12,
+    "items_at_L": 200,
+    "dropped": {},
+    "items": 200,
+    "entities": 40,
+    "groups": {
+      "locker-after": 68,
+      "locker-first": 75,
+      "mixed": 57
+    },
+    "upstream": {
+      "False": 92,
+      "True": 108
+    },
+    "locker-first, prefix-identical": 15,
+    "pick_tokens": {
+      "5": 81,
+      "4": 118,
+      "6": 1
+    }
+  },
+  "clean": {
+    "design": "clean",
+    "source": "qwen35_9b_x45m_fresh",
+    "alt": "fresh",
+    "layer": 12,
+    "items_at_L": 417,
+    "dropped": {},
+    "items": 417,
+    "entities": 45,
+    "groups": {
+      "locker-first": 151,
+      "locker-after": 166,
+      "mixed": 100
+    },
+    "upstream": {
+      "False": 417
+    },
+    "locker-first, prefix-identical": 151,
+    "pick_tokens": {
+      "5": 172,
+      "4": 237,
+      "6": 8
+    }
+  }
+}

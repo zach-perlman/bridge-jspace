@@ -1,0 +1,74 @@
+{
+  "exp": "x47_verbal",
+  "test": "47.0 (jobs/c3/batch47.yaml)",
+  "run": "x47_verbal_27b",
+  "descriptive": true,
+  "sealed": false,
+  "written_utc": "2026-10-28T03:22:56Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "4ea17687f63a21b15610de9a51863df6d84d98d4",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "layer": 32,
+  "s": 2.0,
+  "n_items": 100,
+  "n_rand": 200,
+  "ks": [
+    25,
+    100
+  ],
+  "id_max": 50,
+  "seeds": {
+    "random": 4701,
+    "scenes": 2510,
+    "examples": 0,
+    "bootstrap": 0
+  },
+  "mu_from": "x0_probe_v4_27b",
+  "items_from": "results/x8_write/x8_write_27b",
+  "ordinal": [
+    "first",
+    "second",
+    "third",
+    "1",
+    "2",
+    "3",
+    "next",
+    "last",
+    "earlier",
+    "later",
+    "before",
+    "after",
+    "one",
+    "two",
+    "three"
+  ],
+  "read_check": {
+    "items": 100,
+    "same_top_as_x8": 100
+  }
+}

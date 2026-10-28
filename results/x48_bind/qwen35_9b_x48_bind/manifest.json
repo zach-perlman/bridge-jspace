@@ -1,0 +1,84 @@
+{
+  "exp": "x48_bind",
+  "run": "qwen35_9b_x48_bind",
+  "why": "batch 48, test 48.3 (jobs/c3/batch48.yaml; Q48.3): states at every locker sentence's item and number tokens of the main-test and 45m scenes at L12 (the probe is fit at the verdict), the person mass-mean contrast fit on half the bridge entities, its J++ k = 25 share beside random directions', and s (mu_asked - mu_picker) at s = 1, 2 written at another person's locker sentence on the other half, against a random vector of the same norm; both readers; sealed",
+  "written_utc": "2026-10-28T03:51:24Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "86a467f5d781b14b342f439908c1cfa42b368d4d",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "test": "48.3",
+  "spec": "jobs/c3/batch48.yaml (48.3)",
+  "question": "Q48.3 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/qwen35_9b_x0_necessity/manifest.json": "1c8b61e521a05eddce8e886ee91b3dbf7bb8fa549f3246d6875d871a9db5e6b2",
+    "results/x0_necessity/qwen35_9b_x0_necessity/cases.jsonl": "e9eebbf8966cccd63f4d072e2fab85fedce9569ffbaac2db6c3c068fb4489212",
+    "results/x0_necessity/qwen35_9b_x0_necessity/outcomes.jsonl": "2e5ba92b65dafa4d077fbcb663805d6e219108a325c9cf6265800adff7f9f834",
+    "results/x0_necessity/qwen35_9b_x45m_fresh/manifest.json": "fea181692f83b1688897957c692711da44df2648e960e14e5f33f27d88624b2c",
+    "results/x0_necessity/qwen35_9b_x45m_fresh/cases.jsonl": "038ff4ff994328764607b4daa9e7b06cfa8098775a75f6a116cbb6c52389d334",
+    "results/x0_necessity/qwen35_9b_x45m_fresh/outcomes.jsonl": "a647424e642a5787c03cf28b0227730fa91b5a8b6d9790f5ea6ef8b5ff09d08d"
+  },
+  "sources": {
+    "main": "qwen35_9b_x0_necessity",
+    "45m": "qwen35_9b_x45m_fresh"
+  },
+  "layer": 12,
+  "arms": {
+    "none": "O unedited",
+    "w1": "s = 1 (mu_Iris - mu_Jack) at the written sentence's item and number tokens",
+    "w2": "s = 2 (mu_Iris - mu_Jack)",
+    "r1": "a random vector of the s = 1 write's norm, per token",
+    "r2": "a random vector of the s = 2 write's norm, per token"
+  },
+  "s": [
+    1.0,
+    2.0
+  ],
+  "tokens": [
+    "item",
+    "number"
+  ],
+  "k": 25,
+  "omp": "signed",
+  "random_dirs": 20,
+  "items_rule": "the scenes of both runs' chat outcomes at L; groups: main by x0_strata's org locker vs asked pick, 45m by x45m.group_of; the write on locker-after scenes of half B with a candidate",
+  "means": "per picker name and token, the mean state over the after sentences of half A (MIN_FIT states)",
+  "write": "at the written sentence's item and number tokens, s * (mu_asked - mu_picker) per token; random: a Gaussian vector of the same norm per token (seed RAND_SEED, drawn in item order)",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the top token classified",
+  "rule": "forward binding at the locker sentence, outside the lens: probe >= 0.85 in locker-after and <= 0.5 in locker-first; the person contrast's J++ share (k = 25) <= 2x a random direction's; the write sends >= 0.3 of lookups to the written item's locker (random <= 0.05); on both models",
+  "seeds": {
+    "split": 0,
+    "random": 4803,
+    "random_dirs": "4803 + layer",
+    "bootstrap": 0,
+    "examples": 0,
+    "fresh_draws": 4513
+  },
+  "n_boot": 10000,
+  "sealed": "no probe, rates or verdict in the run; closed until predictions/2026-10-28_dan.md holds Dan's Q48.3 answer"
+}

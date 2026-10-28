@@ -1,0 +1,45 @@
+{
+  "gate": {
+    "C0": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "ql": {
+          "PP": 1.0,
+          "PM": 0.9428571428571428
+        },
+        "qf": {
+          "PP": 1.0,
+          "PM": 0.9471428571428572
+        }
+      },
+      "gate_renderings": [
+        "ql",
+        "qf"
+      ],
+      "pass": true,
+      "eligible": 556,
+      "used": 300
+    },
+    "C2": {
+      "cases": 700,
+      "org_read_accuracy": {
+        "ql": {
+          "PP": 1.0,
+          "PM": 0.9428571428571428
+        },
+        "qf": {
+          "PP": 1.0,
+          "PM": 0.9471428571428572
+        }
+      },
+      "gate_renderings": [
+        "ql",
+        "qf"
+      ],
+      "pass": true,
+      "eligible": 553,
+      "used": 300
+    }
+  },
+  "chosen": 600
+}

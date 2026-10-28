@@ -1,0 +1,91 @@
+{
+  "exp": "x47_value",
+  "run": "muse30_x47_7b",
+  "part": "b",
+  "why": "batch 47, test 47.7(b) (jobs/c3/batch47.yaml; Q47.7): the routes scenes with colours as locker values, question-last and question-first, every arm in both renderings, the lookup read as a word; the probe and the lens's colour rank; sealed",
+  "written_utc": "2026-10-28T08:23:35Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "d122c08a2187204d64260b4debc3cc055d832d36",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "test": "47.7(b)",
+  "spec": "jobs/c3/batch47.yaml (47.7, amendment 1)",
+  "question": "Q47.7 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce"
+  },
+  "layer": 26,
+  "k": 25,
+  "omp": "signed",
+  "dictionary": "J++ lens atoms of the letter tokens and the digit tokens (the main test's letter-only restriction lifted)",
+  "arms": {
+    "qf": [
+      "whole",
+      "no_jpp",
+      "no_jpp_rand",
+      "no_alf",
+      "no_alf_rand"
+    ],
+    "ql": [
+      "whole",
+      "no_jpp",
+      "no_jpp_rand",
+      "no_alf",
+      "no_alf_rand"
+    ]
+  },
+  "gate": 0.8,
+  "gate_renderings": [
+    "ql",
+    "qf"
+  ],
+  "n_per_group": 300,
+  "alf_from": "muse30b_x0_probe_v4",
+  "pcf_from": null,
+  "random_part": "X0's random subspace, seed 888 + layer, at each part's share of ||change||^2",
+  "change": "h_S - h_O at the bridge word at L; question-first: per reader from its own prompts; question-last: from the lookup's prompt (the readers' prefixes equal), read by both",
+  "read": "the top token at the read step (a digit's space token appended; a word answer read right after 'Answer:')",
+  "probe_states": "the lookup's O state at the bridge word per rendering (states.npz; x0_probe's (a) at the verdict)",
+  "readout": "the lens vectors (unit=False) of the value pool's tokens at that state: the rank of O's answer",
+  "c0": {
+    "reference": null,
+    "tolerance": 0.1,
+    "c0_min": 0.5,
+    "stop": "recorded in c0_check.json, the run does not stop (sealed); the verdict labels a failed model"
+  },
+  "rule": "as (a); if a value route appears, does the J++ part carry it (without-J++ cuts value answers >= 0.3 beyond random)? if no value appears question-last, never the value holds for a word value too",
+  "seeds": {
+    "scenes": 2510,
+    "independence": 4707,
+    "move": 4708,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.7 answer"
+}

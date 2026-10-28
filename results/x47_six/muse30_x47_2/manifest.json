@@ -1,0 +1,105 @@
+{
+  "exp": "x47_six",
+  "run": "muse30_x47_2",
+  "why": "batch 47, test 47.2 (jobs/c3/batch47.yaml; Q47.2): six-locker routes moves (the bridge's locker sentence moved from slot i to slot j, every ordered pair), the layout-free slot means fit on a held-out half, then on the other half the slot subspace and the old U removed against random parts, pairwise writes mu_t - mu_i, and the shift v = mean_k (mu_k+1 - mu_k) from every start slot; sealed",
+  "test": "47.2",
+  "spec": "jobs/c3/batch47.yaml (47.2)",
+  "question": "Q47.2 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T04:18:04Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "86a467f5d781b14b342f439908c1cfa42b368d4d",
+    "dirty": true
+  },
+  "layer": 26,
+  "read": "X0's chat read (the top token after a digit's space token appended to O)",
+  "slots_try": [
+    6,
+    5
+  ],
+  "gate": 0.8,
+  "n": {
+    "candidates_per_pair": 40,
+    "per_pair": 20,
+    "c0_candidates": 150,
+    "c0": 100
+  },
+  "seeds": {
+    "scenes": 4702,
+    "split": 4721,
+    "random_directions": 4723,
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "doses": [
+    1,
+    2
+  ],
+  "decisive_dose": 2,
+  "arms": {
+    "none": "O unedited",
+    "whole": "the whole change h_S - h_O at the bridge word",
+    "no_slot": "(i) the whole change without its part in the slot subspace W (fit on the held-out half)",
+    "no_slot_rand": "(i) the whole change without a random part of W's share",
+    "no_U": "(iv) the whole change without its part in the old 4-d pointer basis U",
+    "no_U_rand": "(iv) the whole change without a random part of U's share",
+    "write": "(ii) s units along mu_t - mu_i (i: the bridge's slot in O; t: the target)",
+    "random": "a random direction of s units (the writes' control)",
+    "v": "(iii) s units along v = mean_k (mu_{k+1} - mu_k), target i + 1",
+    "vrev": "(iii) s units along -v, target i - 1",
+    "v12": "(dumbest way 2) s units along mu_2 - mu_1 as a shift, target i + 1",
+    "vno12": "(dumbest way 2) s units along v without the first step, target i + 1"
+  },
+  "U_from": "muse30b_x0_probe_v4",
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.2 answer",
+  "slots": 6,
+  "tested": true,
+  "fallback": {
+    "six_failed_gate": false,
+    "used": 6,
+    "note": "six slots passed the competence gate"
+  },
+  "items": {
+    "fit": 300,
+    "test": 300,
+    "c0": 100
+  },
+  "fit": {
+    "states": 600,
+    "dropped_singletons": 0,
+    "per_slot": {
+      "1": 100,
+      "2": 100,
+      "3": 100,
+      "4": 100,
+      "5": 100,
+      "6": 100
+    },
+    "groups": {
+      "LLLLLL.": 176,
+      "LLLLLL": 250,
+      "LLLLLL..": 174
+    },
+    "W_rank": 5
+  },
+  "unit": {
+    "value": 70.350830078125,
+    "rule": "the median over the test half of ||W W^T Delta|| (Delta = h_S - h_O at the bridge word); a write at dose s has norm s * unit",
+    "fit_half_median": 70.31141662597656
+  }
+}

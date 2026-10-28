@@ -1,0 +1,108 @@
+{
+  "exp": "x48_enrich",
+  "run": "muse30_x48_2a",
+  "why": "batch 48, test 48.2 design A (jobs/c3/batch48.yaml; Q48.2): legs probes at the bridge token (and the last token) at layers L, L+2, ..., last, entities held out, read under the main test's arms at L26; sealed",
+  "design": "A",
+  "test": "48.2",
+  "written_utc": "2026-10-28T04:41:33Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "6ec206345cfeb5826cae5e886a4b63fefe38646a",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "spec": "jobs/c3/batch48.yaml (48.2)",
+  "question": "Q48.2 (predictions/2026-10-28_dan.md)",
+  "main_run": "muse30b_x0_necessity",
+  "layer": 26,
+  "n_layers": 52,
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/muse30b_x0_necessity/manifest.json": "79717f28d048118abb3140e643e59d95bc4a3c893532c42efd4faee5ce08f0d0",
+    "results/x0_necessity/muse30b_x0_necessity/cases.jsonl": "6438c92866d69cc4b18966a86d6187690a5e614d1ae93ec3a90c49d7ab893e33",
+    "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl": "043d4c017bceb4db04c2b729d5e10b406ec6a34572ff7939bd27a21d2bdb4703"
+  },
+  "items_rule": "the main-test X0 run's chat items at L (every scene with a whole-arm read), rebuilt with X.build_cases (alt = cf) and checked against the run's ids",
+  "read": "X0's chat read: the prompt with a digit's space token appended; the top token",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.2 answer",
+  "probe_layers": [
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    51
+  ],
+  "positions": {
+    "bridge": "the asked person's bridge token",
+    "last": "the recall's read position (the appended space token)"
+  },
+  "arms": {
+    "none": "O unedited",
+    "alt": "S unedited (the changed prompt)",
+    "whole": "the whole change h_S - h_O at the bridge token at L",
+    "no_jpp": "the change minus its J++ part (signed OMP, k = 25) at the bridge token at L",
+    "no_rand": "the change minus a random part of the J++ part's share at the bridge token at L"
+  },
+  "k": 25,
+  "omp": "signed",
+  "random_part": "X0's random subspace, seed 888 + layer, at the J++ part's share of ||Δ||^2",
+  "states": "the recall reader's prompt (+ space) under each arm, at the probe layers, bridge and last token, fp16",
+  "training": "every chat scene of the set, O unedited: the same states, labels = the bridge item's number (animals: legs); one probe per domain; the rule's domain is animals (the others have one entity per class: descriptive)",
+  "rule_domain": "animals",
+  "probe": {
+    "kind": "one-hot ridge on standardized states (x0_probe.ridge), penalty by entity-held-out CV",
+    "folds": 5,
+    "split_seed": 0,
+    "penalties": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ]
+  },
+  "fraction": "(m(arm) - m(O)) / (m(S) - m(O)) clipped to [0, 1], m = score(changed class) - score(original class) from the probe trained without the original's and the changed item's entity folds; items with a non-positive unedited gap are not read",
+  "branch": "bridge if the animals probe's held-out accuracy reaches 2x chance at some probed layer, else last",
+  "rule": "J++ keys the enrichment if, at every probed layer >= L + 4 where the legs probe (animals, entities held out) reads the attribute (held-out accuracy >= 2x chance), the probe moves >= 0.6 of the way under whole and under no_rand and <= 0.3 under no_jpp (the paired CI of no_rand - no_jpp excluding 0), on both models; if the probe reads the attribute at no layer at the bridge token, the same at the last token",
+  "seeds_more": {
+    "random_subspace": "888 + layer",
+    "split": 0
+  }
+}

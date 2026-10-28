@@ -1,0 +1,37 @@
+{
+  "run_45m": "x45m_fresh_27b",
+  "layer": 32,
+  "items_at_L": 574,
+  "alt locker vs asked pick": {
+    "before": 254,
+    "after": 320
+  },
+  "dropped": {},
+  "items": 202,
+  "entities": 41,
+  "tokens": {
+    "new 1, control 1": 254
+  },
+  "control": {
+    "before the new item, before the asked pick": 115,
+    "after the new item, before the asked pick": 132,
+    "after the new item, after the asked pick": 7
+  },
+  "45p_items": 254,
+  "org locker vs asked pick": {
+    "before": 202,
+    "after": 52
+  },
+  "writes": 606,
+  "informative_writes": 316,
+  "j": {
+    "3": 36,
+    "0": 47,
+    "1": 57,
+    "2": 62
+  },
+  "uninformative_by_reason": {
+    "the same attribute as the original's or the changed item's": 88,
+    "the changed item's slot": 202
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "exp": "x48_heads",
+  "run": "muse30_x48_heads",
+  "why": "batch 48, test 48.4 (jobs/c3/batch48.yaml; Q48.4): on the main run's locker-first scenes, the five heads at layers > L with the most last-token-to-bridge attention; r = ||W_OV x|| / ||x|| for the J++ part, the rest, the address and a random part of J++'s share; sealed",
+  "written_utc": "2026-10-28T04:23:02Z",
+  "model": {
+    "target": "muse-glimmer-30b",
+    "repo": "meta-models/Muse-Glimmer-30B",
+    "revision": "cec94fcfd6512f2cfe708138c32533b346ea4f69",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "muse-glimmer-30b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "muse-glimmer-30b",
+    "lens_sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "code": {
+    "sha": "86a467f5d781b14b342f439908c1cfa42b368d4d",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "local",
+      "cache/muse-glimmer-30b/lenses/jpp/Muse-Glimmer-30B_jpp_lens.pt",
+      "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+    ],
+    "sha256": "90fc5e52e8d765b729c4f894273fec5084fd3030db38b1b9b187cf67a1df8a12"
+  },
+  "test": "48.4",
+  "spec": "jobs/c3/batch48.yaml (48.4)",
+  "question": "Q48.4 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch48.yaml": "1cf289725d9ce1571ab36c5b027d63ecd79c85b0d9bcd620c369036c0a3cdd28",
+    "results/x0_necessity/muse30b_x0_necessity/manifest.json": "79717f28d048118abb3140e643e59d95bc4a3c893532c42efd4faee5ce08f0d0",
+    "results/x0_necessity/muse30b_x0_necessity/cases.jsonl": "6438c92866d69cc4b18966a86d6187690a5e614d1ae93ec3a90c49d7ab893e33",
+    "results/x0_necessity/muse30b_x0_necessity/outcomes.jsonl": "043d4c017bceb4db04c2b729d5e10b406ec6a34572ff7939bd27a21d2bdb4703",
+    "results/x0_probe/muse30b_x0_probe_v4/states.npz": "b7ff95e331c520817523d839d536b251a3a63d58efa7831c5c1c0cbb91654848"
+  },
+  "main_run": "muse30b_x0_necessity",
+  "layer": 26,
+  "states_run": "muse30b_x0_probe_v4",
+  "k": 25,
+  "omp": "signed",
+  "parts": {
+    "jpp": "the J++ part of Delta (signed OMP, k = 25, J++ lens atoms at L, letter tokens)",
+    "rest": "Delta minus its J++ part",
+    "address": "U U^T Delta, U = x0_massmean's Alf (4 pointer directions on the x0_probe_v4 states; not refit)",
+    "random": "a random part of J++'s share (X0's random subspace, seed 888 + layer)"
+  },
+  "items_rule": "the main run's chat scenes read at L, kept where both the org and the alt item's locker sentence come before the asked pick (x0_strata); unedited",
+  "delta": "h_alt - h_org at the bridge word at L, X0's two forwards (no read suffix)",
+  "attention": "one forward of the reader's org prompt with X0's read suffix appended; per candidate layer the softmax attention from the last token to the bridge token, per query head, recomputed from the layer's inputs (capture_last_attention); the lookup's selects the heads, the recall's is beside",
+  "candidate_layers_rule": "layers > L whose token mixer is softmax attention over the whole prompt: the 9B's full_attention layers; on Muse every layer (sliding window 2048 > every prompt, asserted; its config's full_attention = NoPE layers, reported)",
+  "head_selection": "the 5 (layer, head) with the largest mean lookup mass over items; ties: the lower layer, then the lower head",
+  "w_ov": {
+    "ov": "W_O[:, h*hd:(h+1)*hd] @ W_V[g*hd:(g+1)*hd, :], g = h // (n_heads / n_kv); the rule's",
+    "ov_gain": "ov @ diag(1 + input_layernorm.weight): the block's input RMSNorm gain folded in (beside)",
+    "excluded": "the q/k norms (not on the value path), the sigmoid output gate (query-token dependent), the per-token 1/rms of the input norm (a scalar, cancels in r)"
+  },
+  "r": "||W_OV x|| / ||x|| per item and part; stored for every candidate head (r_all.npz) and per item for the five (r_items.jsonl)",
+  "rule": "a head reads the rest if r(rest) >= 2 r(J++) with r(random) between them or below both (r(random) <= r(rest)), medians over items, W_OV = W_O W_V; a model holds on at least 3 of its 5 heads; the batch holds if both models hold",
+  "decisive_variant": "ov",
+  "seeds": {
+    "bootstrap": 0,
+    "examples": 0,
+    "random_subspace": "888 + layer"
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q48.4 answer"
+}

@@ -1,0 +1,51 @@
+{
+  "main": {
+    "design": "main",
+    "source": "muse30b_x0_necessity",
+    "alt": "cf",
+    "layer": 26,
+    "items_at_L": 200,
+    "dropped": {},
+    "items": 200,
+    "entities": 40,
+    "groups": {
+      "locker-after": 69,
+      "mixed": 63,
+      "locker-first": 68
+    },
+    "upstream": {
+      "False": 103,
+      "True": 97
+    },
+    "locker-first, prefix-identical": 16,
+    "pick_tokens": {
+      "5": 79,
+      "4": 117,
+      "6": 4
+    }
+  },
+  "clean": {
+    "design": "clean",
+    "source": "muse30b_x45m_fresh",
+    "alt": "fresh",
+    "layer": 26,
+    "items_at_L": 409,
+    "dropped": {},
+    "items": 409,
+    "entities": 44,
+    "groups": {
+      "locker-first": 143,
+      "locker-after": 170,
+      "mixed": 96
+    },
+    "upstream": {
+      "False": 409
+    },
+    "locker-first, prefix-identical": 143,
+    "pick_tokens": {
+      "5": 169,
+      "4": 233,
+      "6": 7
+    }
+  }
+}

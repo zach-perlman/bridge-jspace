@@ -1,0 +1,140 @@
+{
+  "colours": {
+    "single_token": [
+      "red",
+      "blue",
+      "green",
+      "pink",
+      "gold",
+      "grey",
+      "teal",
+      "navy"
+    ],
+    "dropped": []
+  },
+  "cases": {
+    "C0": 700,
+    "C2": 700
+  },
+  "dropped": {
+    "A and B have the same number of legs": 407
+  },
+  "slot_value_independence_O": {
+    "n": 700,
+    "chi2": 4.983,
+    "df": 14,
+    "p": 0.9835082458770614,
+    "cramers_v": 0.0597,
+    "rows": [
+      "0",
+      "1",
+      "2"
+    ],
+    "cols": [
+      "blue",
+      "gold",
+      "green",
+      "grey",
+      "navy",
+      "pink",
+      "red",
+      "teal"
+    ],
+    "table": [
+      [
+        27,
+        26,
+        29,
+        33,
+        27,
+        26,
+        28,
+        32
+      ],
+      [
+        26,
+        24,
+        24,
+        28,
+        29,
+        26,
+        33,
+        28
+      ],
+      [
+        36,
+        32,
+        30,
+        28,
+        27,
+        26,
+        34,
+        41
+      ]
+    ],
+    "independent": true
+  },
+  "slot_value_independence_S_C2": {
+    "n": 700,
+    "chi2": 23.754,
+    "df": 14,
+    "p": 0.06146926536731634,
+    "cramers_v": 0.1303,
+    "rows": [
+      "0",
+      "1",
+      "2"
+    ],
+    "cols": [
+      "blue",
+      "gold",
+      "green",
+      "grey",
+      "navy",
+      "pink",
+      "red",
+      "teal"
+    ],
+    "table": [
+      [
+        33,
+        30,
+        24,
+        26,
+        33,
+        30,
+        23,
+        32
+      ],
+      [
+        20,
+        28,
+        30,
+        33,
+        44,
+        33,
+        39,
+        27
+      ],
+      [
+        26,
+        24,
+        37,
+        32,
+        26,
+        34,
+        23,
+        13
+      ]
+    ],
+    "independent": true
+  },
+  "bridge_shift_qf_minus_ql": {
+    "lookup": {
+      "20": 1400
+    },
+    "recall": {
+      "21": 1400
+    }
+  }
+}

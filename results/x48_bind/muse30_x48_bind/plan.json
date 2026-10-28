@@ -1,0 +1,100 @@
+{
+  "target": "muse-glimmer-30b",
+  "layer": 26,
+  "runs": {
+    "main": {
+      "run": "muse30b_x0_necessity",
+      "scenes_at_L": 200,
+      "groups": {
+        "after": 108,
+        "before": 92
+      }
+    },
+    "45m": {
+      "run": "muse30b_x45m_fresh",
+      "scenes_at_L": 409,
+      "groups": {
+        "before": 143,
+        "after": 170,
+        "mixed": 96
+      }
+    }
+  },
+  "dropped": {},
+  "scenes": 609,
+  "entities": 44,
+  "halves": {
+    "A": [
+      "bee",
+      "beta",
+      "butterfly",
+      "camel",
+      "cow",
+      "deer",
+      "duck",
+      "epsilon",
+      "fox",
+      "frog",
+      "gamma",
+      "horse",
+      "lion",
+      "lithium",
+      "mouse",
+      "nitrogen",
+      "owl",
+      "oxygen",
+      "pig",
+      "rabbit",
+      "tiger",
+      "turkey"
+    ],
+    "B": [
+      "alpha",
+      "ant",
+      "bear",
+      "carbon",
+      "cat",
+      "chicken",
+      "crow",
+      "delta",
+      "dog",
+      "eagle",
+      "elephant",
+      "eta",
+      "fly",
+      "goat",
+      "goose",
+      "helium",
+      "hydrogen",
+      "sheep",
+      "spider",
+      "theta",
+      "tick",
+      "wolf"
+    ]
+  },
+  "locker_after": {
+    "scenes": 278,
+    "A": 141,
+    "B": 137
+  },
+  "write_candidates_B": 105,
+  "write_dropped": {
+    "no other person's locker sentence after both picks": 72,
+    "the candidate sentence's tokens are not one token each": 3
+  },
+  "names": 59,
+  "strata": {
+    "after": 948,
+    "before": 879
+  },
+  "numbers": {
+    "digits": 314,
+    "words": 295
+  },
+  "exact": {
+    "item: one token": 2186,
+    "number: one token": 2236,
+    "item: not one token": 50
+  }
+}

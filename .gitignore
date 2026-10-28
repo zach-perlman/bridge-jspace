@@ -24,3 +24,5 @@ examples/**/slices/
 /review/seed-*/
 # failed runs' partial dirs (Dan, 27 Oct): kept locally, not committed; jobq pull skips them
 results/_failed/
+# 48.2 A's probe states (84-286 MB each, over GitHub's 100 MB file limit): kept locally and on the box, not committed
+results/x48_enrich/*/states_*.npz

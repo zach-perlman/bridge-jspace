@@ -1,0 +1,188 @@
+{
+  "exp": "x47_cue",
+  "run": "x47_cue_27b",
+  "test": "47.3",
+  "spec": "jobs/c3/batch47.yaml (47.3)",
+  "question": "Q47.3 (predictions/2026-10-28_dan.md)",
+  "written_utc": "2026-10-28T03:37:28Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "85e2fa300acea3a1cc5529015d84435a4ec8413f",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.6-27b/jpp/Salesforce-wikitext/Qwen3.6-27B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "inputs": {
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce"
+  },
+  "layer": 32,
+  "frame": "{p} picked the one known for {cue}.",
+  "cue_candidates": {
+    "ant": [
+      "colonies"
+    ],
+    "bee": [
+      "honey"
+    ],
+    "cat": [
+      "purring",
+      "curiosity"
+    ],
+    "chicken": [
+      "clucking",
+      "eggs"
+    ],
+    "cow": [
+      "mooing",
+      "milk"
+    ],
+    "dog": [
+      "barking",
+      "loyalty"
+    ],
+    "eagle": [
+      "soaring"
+    ],
+    "elephant": [
+      "trumpeting",
+      "ivory",
+      "memory"
+    ],
+    "fox": [
+      "cunning"
+    ],
+    "frog": [
+      "croaking",
+      "ponds"
+    ],
+    "goat": [
+      "bleating",
+      "climbing"
+    ],
+    "horse": [
+      "neighing",
+      "galloping",
+      "racing"
+    ],
+    "lion": [
+      "roaring",
+      "mane"
+    ],
+    "mouse": [
+      "squeaking",
+      "cheese"
+    ],
+    "owl": [
+      "hooting",
+      "wisdom"
+    ],
+    "pig": [
+      "oinking",
+      "bacon"
+    ],
+    "rabbit": [
+      "hopping",
+      "carrots"
+    ],
+    "sheep": [
+      "wool"
+    ],
+    "spider": [
+      "webs"
+    ],
+    "tick": [
+      "Lyme"
+    ],
+    "turkey": [
+      "gobbling",
+      "Thanksgiving"
+    ],
+    "wolf": [
+      "howling",
+      "packs"
+    ],
+    "zebra": [
+      "stripes"
+    ]
+  },
+  "cue_templates": [
+    [
+      "{p} picked the one known for {cue}.",
+      "Which animal did {p} pick?"
+    ],
+    [
+      "{p} picked the one known for {cue}.",
+      "What animal is {p}'s pick?"
+    ],
+    [
+      "{p} picked the one known for {cue}.",
+      "Name the animal {p} picked."
+    ],
+    [
+      "{p} chose the one known for {cue}.",
+      "Which animal did {p} choose?"
+    ],
+    [
+      "{p}'s pick is the one known for {cue}.",
+      "Which animal is it?"
+    ]
+  ],
+  "cue_people": 2,
+  "cue_bar": 0.9,
+  "cue_min": 3,
+  "n_gen": 700,
+  "n_items": 300,
+  "gate": 0.8,
+  "arms": [
+    "whole",
+    "no_jpp",
+    "no_jpp_rand",
+    "no_alf",
+    "no_alf_rand",
+    "no_pcf",
+    "no_pcf_rand"
+  ],
+  "k": 25,
+  "omp": "signed",
+  "pointer_U": "x0_massmean Alf of results/x0_probe/x0_probe_v4_27b (not refit)",
+  "pcf": "x7_pcf's method at the cue token: centered PCA, rank 4, over the fit half's pairs (A's locker sentence trades places with B's and with C's, digits kept); the rule reads the test half",
+  "read": "X0's chat read: the top token after the digit's space token",
+  "rule": "(a) \"the split holds for a recalled bridge\": gap >= 0.3 and lookup extra loss <= 0.10; (a') \"a recalled bridge is handed through the lens\": lookup extra loss >= 0.20 (then the lens's rule, \"flexible computation routes through the J-space\", holds here and not for stated bridges; report it as the more interesting outcome, not as a failure); (b) \"never the value\": value <= 0.05; (c) \"a pointer at the cue token\": U' removal cuts position answers >= 0.30 beyond random. Report Zach's M->P numbers beside (toy suite: 12 / -2 / 0).",
+  "as_computed": "Extra loss = X0's excess = Jdep - Rdep = (S_no_jpp_rand - S_no_jpp) / S_whole over the chosen scenes (J++: signed OMP, k = 25). Recall switch: the top token is S's answer (B's legs). Lookup switch: the lookup follows the change, its answer is identity (b), position (c) or value (e). S's own answer is the value, which the routes test has never seen the lookup give; the main test's switch (identity and position coincide there) is the closest reading of the rule's 'lookup extra loss'. gap = the recall's extra loss minus the lookup's, on the same cluster-bootstrap draws. (a) gap >= 0.3 and lookup extra loss <= 0.10; (a') lookup extra loss >= 0.20; (b) the lookup's value share under the whole change <= 0.05; (c) on the chosen scenes of P_cf's test half, the position share without a random part of U''s share minus the position share without U' >= 0.30 (shares of scenes, not of the whole change's position answers). Point estimates decide (EPS 1e-9); cluster bootstrap over the bridge item A (10,000 resamples, seed 0), 95% intervals beside; X0's validity bar (S_whole >= 0.30 and >= 30 switches) reported per reader, not in the rule; an extra loss with no switch under the whole change is undefined and its clause does not hold. Each model on its own; a model whose gate (0.80 per reader) or cue competence fails is not tested.",
+  "seeds": {
+    "scenes": 2510,
+    "cue_people": 4703,
+    "split": 0,
+    "decoy": 4704,
+    "random_subspace": "888 + layer",
+    "bootstrap": 0,
+    "view": 0
+  },
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.3 answer",
+  "items": 300,
+  "items_per_half": {
+    "fit": 148,
+    "test": 152
+  }
+}
