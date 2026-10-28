@@ -1,0 +1,69 @@
+{
+ "target": "qwen3.5-9b",
+ "layer": 12,
+ "condition": "C2",
+ "n_gen": 700,
+ "cases": {
+  "after": 675,
+  "before": 675
+ },
+ "base_scenes": 675,
+ "dropped": {
+  "A and B have the same number of legs": 357,
+  "no three false digits outside the locker digits and the true legs": 25
+ },
+ "entities": 32,
+ "bridge_index": {
+  "after": {
+   "38": 234,
+   "33": 217,
+   "43": 224
+  },
+  "before": {
+   "59": 234,
+   "54": 217,
+   "64": 224
+  }
+ },
+ "read_index": {
+  "after": {
+   "text": [
+    102
+   ],
+   "memory": [
+    106
+   ],
+   "none": [
+    96
+   ]
+  },
+  "before": {
+   "text": [
+    102
+   ],
+   "memory": [
+    106
+   ],
+   "none": [
+    96
+   ]
+  }
+ },
+ "false_digits": {
+  "1": 319,
+  "8": 234,
+  "6": 140,
+  "3": 303,
+  "9": 295,
+  "7": 287,
+  "2": 99,
+  "5": 321,
+  "4": 27
+ },
+ "checks": "check_case passed on every case (bridge index shared by O, S and the three conditions; the passage's tokens shared; answer digits distinct; false digits outside the locker digits and the true legs; placement after keeps the routes scene's bridge index)",
+ "identity_means": {
+  "states_run": "qwen35_9b_x0_probe_v4",
+  "entities_without_mean": [],
+  "cases_dropped_per_placement": 0
+ }
+}

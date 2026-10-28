@@ -1,0 +1,71 @@
+{
+ "target": "muse-glimmer-30b",
+ "layer": 26,
+ "condition": "C2",
+ "n_gen": 700,
+ "cases": {
+  "after": 674,
+  "before": 674
+ },
+ "base_scenes": 674,
+ "dropped": {
+  "A and B have the same number of legs": 479,
+  "no three false digits outside the locker digits and the true legs": 26
+ },
+ "entities": 32,
+ "bridge_index": {
+  "after": {
+   "93": 214,
+   "88": 217,
+   "83": 243
+  },
+  "before": {
+   "114": 214,
+   "109": 217,
+   "104": 243
+  }
+ },
+ "read_index": {
+  "after": {
+   "text": [
+    145
+   ],
+   "memory": [
+    149
+   ],
+   "none": [
+    139
+   ]
+  },
+  "before": {
+   "text": [
+    145
+   ],
+   "memory": [
+    149
+   ],
+   "none": [
+    139
+   ]
+  }
+ },
+ "false_digits": {
+  "3": 295,
+  "7": 325,
+  "6": 168,
+  "9": 283,
+  "8": 220,
+  "1": 314,
+  "5": 302,
+  "4": 24,
+  "2": 91
+ },
+ "checks": "check_case passed on every case (bridge index shared by O, S and the three conditions; the passage's tokens shared; answer digits distinct; false digits outside the locker digits and the true legs; placement after keeps the routes scene's bridge index)",
+ "identity_means": {
+  "states_run": "muse30b_x0_probe_v4",
+  "entities_without_mean": [
+   "zebra"
+  ],
+  "cases_dropped_per_placement": 28
+ }
+}
