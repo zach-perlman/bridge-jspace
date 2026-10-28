@@ -2615,3 +2615,11 @@ then Muse and Ministral on v3, then Ministral's and Muse's cancelled note 1 / no
     - "the lookup needs the lens part at the site" if kept under remove_k10_rot minus kept under remove_k10 is >= 10 (interval above 0).
   - **Clamp:** "the name coordinates carry something beyond the answer" if clamp_noans transfers (donor − third, RM) >= 10 with clamp_null < 10. "Not beyond the answer" if clamp_noans <= 1/3 of the clamp.
 - **Order:** after rendering A on each GPU (27B on GPU 0; 9B, then Lightning, on GPU 1).
+
+##### Amendment 58 note 13 addendum (Zach's OK pending; written 2026-10-28 ~20:40 UTC, before any MP swap result exists. Seen: the 9B's MP competence only)
+
+- **Proposed:** note 13's MP readings are also made on the four relations where every passage entity shares the description's role noun (cities, companies, films, landmarks: 342 of 468 items).
+  - In people items (126), the other entities have different roles, so the role noun alone ("the actor cast as the novelist") can pick the bridge without resolving the description.
+  - The 9B's competence on the four relations: guess 31% (chance 33%); both hops right and whole right 217; both hops right and whole wrong 55.
+- **If Zach approves:** the shared-role reading is primary, and the all-items reading (as note 13 fixed it) is reported beside it. If not, the all-items reading stays primary, with the shared-role one beside it.
+- **Scoring:** scripts/nn_mp_read.py --relations cities companies films landmarks.
