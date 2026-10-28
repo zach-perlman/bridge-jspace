@@ -46,9 +46,10 @@ def main(run: str, set_name: str) -> None:
             return JS.pfact_value(t["pfact"][it["wording"]], it["context"], e, it["answer_vocab"], the=True)
         return t["facts"][e][0]
 
+    right = {r["id"] for r in rows if r["condition"] == "none" and r["cls"] == "kept"}  # as jswap.score: items right unedited
     cells = collections.defaultdict(lambda: collections.Counter())
     for r in rows:
-        if "xsrc" not in r:
+        if "xsrc" not in r or r["id"] not in right:
             continue
         it = items[r["id"]]
         src = r["ssrc"] if r["condition"] == "swap_srel" else r["xsrc"]
