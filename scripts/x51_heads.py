@@ -681,9 +681,10 @@ def beside(m: dict, items: list[dict], n_boot: int) -> dict:
     target = m["model"]["target"]
     S = source_run(target)
     a, s_items = S["a"], S["items"]
-    assert [it["scene"] for it in s_items] == [it["scene"] for it in items], "49.7's items differ from this run's"
+    # this run's items are 49.7's that stayed eligible here (run stage); 49.7's pairs on dropped items are left out
+    ours = {it["scene"] for it in items}
     p_item, p_k = np.asarray(a["pair_item"]).astype(int), np.asarray(a["pair_k"]).astype(int)
-    read = np.array([s_items[i]["half"] == "read" for i in p_item])
+    read = np.array([s_items[i]["half"] == "read" and s_items[i]["scene"] in ours for i in p_item])
     lk = {(r["scene"], r["k"]): r["class"] for r in S["rows"] if r["reader"] == X.LOOKUP and r["arm"] == "swap"}
     y = np.array([lk[(s_items[i]["scene"], int(k))] == "target" for i, k in zip(p_item, p_k, strict=True)])[read]
     ents = [s_items[i]["entity"] for i in p_item[read]]
