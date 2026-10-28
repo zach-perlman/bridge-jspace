@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from matplotlib.colors import to_rgba
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -1723,78 +1724,74 @@ def s01c(plt) -> None:
         s01c_nochat(plt, LANDED["45i"])
 
 
+# Dan's Fig. 4 / 5 brief (28 Oct ~20:30): one three-box drawing of the routes test, readable at card width, on Fig. 5
+# (in full, with the definitions line) and, small, on Fig. 5d so the route colours mean the same on both; Fig. 4 (the
+# supplement s04) draws the full one larger. Each predicted locker in its route's colour (the lookup is asked on the
+# original prompt: identity and position name its lockers, the value the changed prompt's new number); the moved
+# sentence outlined dark; the original answer empty, as in Fig. 5's bars.
+ROUTES_DEFINED = ("identity route: the item's own locker; position route: the locker now at the item's old place; "
+                  "value: the new number")  # fmt: skip
+MOVED_EDGE = "#1e1e1e"
+
+
+def routes_drawing(plt, ax, small: bool = False) -> None:
+    """The routes test on ax (axis off, x and y 0-100): the original and the changed prompt as three lockers each.
+    Full: route labels over the original prompt's predicted lockers ("identity route → 3", ...), "value → 7" under the
+    moved sentence, a note on the move and the two pick sentences. Small (Fig. 5d): the boxes and their colours only."""
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0, 100)
+    ax.set_xticks([])  # no hidden tick labels left for the overlap checks
+    ax.set_yticks([])
+    ax.axis("off")
+    fs = S.FONT - 2 if small else S.FONT
+    xs = (45, 67, 89) if small else (38, 62, 86)
+    w, h = (20, 34) if small else (21.5, 11)
+    rows = (("original prompt", 58 if small else 64, (("duck", "4"), ("rabbit", "3"), ("goose", "2")),
+             "Beth picked the goose."),
+            ("changed prompt", 6 if small else 30, (("rabbit", "7"), ("duck", "4"), ("goose", "2")),
+             "Beth picked the rabbit."))  # fmt: skip
+    # (row, column) -> (route colour, label): the lockers each route predicts
+    fill = {(0, 0): (ROUTE_COL["position"], "position\nroute"), (0, 1): (ROUTE_COL["identity"], "identity\nroute"),
+            (1, 0): (ROUTE_COL["value"], "value")}  # fmt: skip
+    for r, (label, y, lockers, pick) in enumerate(rows):
+        ax.text(0, y + h / 2, label.replace(" ", "\n"), fontsize=fs, weight="bold", va="center", linespacing=1.0)
+        for c, (x, (item, digit)) in enumerate(zip(xs, lockers, strict=True)):
+            col = fill.get((r, c), (None, ""))[0]
+            if small and col == ROUTE_COL["value"]:  # Fig. 5d draws no value: its colour stays off the mark system
+                col = None
+            moved = (r, c) == (1, 0)
+            empty = (r, c) == (0, 2)  # the original answer
+            # a light wash of the route's colour under the text, its full colour on the edge; the moved one dark
+            face = to_rgba(col, 0.25) if col else ("white" if empty else "#f5f5f5")
+            ax.add_patch(plt.Rectangle((x - w / 2, y), w, h, fc=face, zorder=2,
+                                       ec=MOVED_EDGE if moved else col or ("#9a9a9a" if empty else "#bbbbbb"),
+                                       lw=2.2 if moved or col else 1.0, ls=(0, (3, 1.5)) if moved else "-"))  # fmt: skip
+            ax.text(x, y + h / 2, f"{item}: {digit}", ha="center", va="center", fontsize=fs, zorder=3)
+        if not small:
+            ax.text(100, y - 4.5, pick, ha="right", va="center", fontsize=fs - 1, style="italic")
+    if small:
+        return
+    y0, y1 = rows[0][1], rows[1][1]
+    for (r, c), (col, text) in fill.items():
+        above = r == 0
+        ax.text(xs[c], y0 + h + 9 if above else y1 - 8, text, ha="center", va="center", fontsize=fs, color=col,
+                weight="bold", linespacing=1.0)  # fmt: skip
+    ax.text(xs[2], y0 + h + 9, "original\nanswer", ha="center", va="center", fontsize=fs, color="#7f7f7f",
+            weight="bold", linespacing=1.0)  # fmt: skip
+    ax.text(xs[0] + w / 2 + 3, y1 - 17, "the moved sentence:\nfirst place, new number", ha="left", va="center",
+            fontsize=fs - 1, color=MOVED_EDGE, linespacing=1.05)  # fmt: skip
+
+
 def f04_routes_design(plt) -> None:
-    """The routes test: the original and the changed prompt as three lockers each; the changed prompt's moved sentence
-    highlighted; an arrow from each route to the locker it predicts."""
-    fig = plt.figure(figsize=(S.WIDTH, 4.6))
-    ax = fig.add_axes((0, 0, 1, 0.82))
-    ax.set_xlim(0, 100)
-    ax.set_ylim(0, 60)
-    ax.axis("off")
+    """Fig. 4 (the supplement s04, linked once from the README; Dan's Fig. 4 / 5 brief): Fig. 5's drawing, larger, with
+    the definitions line."""
+    h = 4.6
+    fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, "Each route predicts a different locker",
-            "The change at 'goose' comes from the changed prompt's 'rabbit';\n"
-            "the lookup is asked on the original prompt.")  # fmt: skip
-    col_x = [24 + 19.5 * j for j in range(3)]  # the three lockers' centres
-    for j, name in enumerate(("first locker", "second locker", "third locker")):
-        ax.text(col_x[j], 57, name, ha="center", va="center", fontsize=S.FONT, color=S.COL["muted"])
-    rows = (("original", 34, [("duck", "4"), ("rabbit", "3"), ("goose", "2")], "Beth picked the goose."),
-            ("changed", 18, [("rabbit", "7"), ("duck", "4"), ("goose", "2")], "Beth picked the rabbit."))  # fmt: skip
-    for label, y, lockers, pick in rows:
-        ax.text(1, y + 3, f"{label}\nprompt", fontsize=S.FONT, weight="bold", va="center")
-        for j, (item, digit) in enumerate(lockers):
-            moved = label == "changed" and item == "rabbit"
-            ax.add_patch(plt.Rectangle((col_x[j] - 9, y), 18, 6, fc="#fff1dc" if moved else "#f5f5f5",
-                                       ec=S.COL["position"] if moved else "#bbbbbb", lw=1.8 if moved else 1))  # fmt: skip
-            ax.text(col_x[j], y + 3, f"{item}: {digit}", ha="center", va="center", fontsize=S.FONT)
-        ax.text(75, y + 3, pick, fontsize=S.FONT, va="center")
-    # identity, position and the original answer point down at the original prompt's lockers; value points up at the
-    # changed prompt's
-    for route, digit, col, j, y_label, y_box in (("position", "4", S.COL["position"], 0, 47, 40.2),
-                                                 ("identity", "3", S.COL["identity"], 1, 47, 40.2),
-                                                 ("original answer", "2", "#7f7f7f", 2, 47, 40.2),
-                                                 ("value", "7", S.COL["value"], 0, 6, 17.8)):  # fmt: skip
-        ax.text(col_x[j], y_label, f"{route} → {digit}", fontsize=S.FONT + 1, weight="bold", color=col, ha="center",
-                va="center", bbox=dict(boxstyle="round,pad=0.3", fc="white", ec=col, lw=1.4))  # fmt: skip
-        start = y_label - 2.6 if y_label > y_box else y_label + 2.6
-        ax.annotate("", (col_x[j], y_box), (col_x[j], start), arrowprops=dict(arrowstyle="->", color=col, lw=1.6))
-    ax.text(col_x[0] + 13, 6, "the moved sentence: first place, new number", fontsize=S.FONT, color=S.COL["position"],
-            va="center")  # fmt: skip
-    # v6: Fig. 5's left panel draws this design; the full-width schematic stays as a supplement
+            "The change at 'goose' comes from the changed prompt's 'rabbit'; the lookup is asked on the original prompt.")  # fmt: skip
+    routes_drawing(plt, fig.add_axes((0.12, 0.55 / h, 0.62, 1 - 1.35 / h)))
+    S.fit(fig, fig.text(0.01, 0.18 / h, ROUTES_DEFINED, ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555"))
     S.save(fig, "s04_routes_design", supp=True)
-
-
-def routes_design_panel(plt, ax) -> None:
-    """Fig. 5's left panel: f04_routes_design's schematic at half width. The original and the changed prompt as three
-    lockers each (the changed prompt's moved sentence outlined in orange); identity, position and the original answer
-    point down at the original prompt's lockers, the value up at the changed prompt's new number."""
-    ax.set_xlim(0, 100)
-    ax.set_ylim(0, 103)
-    ax.axis("off")
-    col_x = (35, 61, 87)
-    for x, name in zip(col_x, ("first", "second", "third"), strict=True):
-        ax.text(x, 98, name, ha="center", va="center", fontsize=S.FONT, color=S.COL["muted"])
-    ax.text(1, 98, "locker", ha="left", va="center", fontsize=S.FONT, color=S.COL["muted"])
-    rows = (("original\nprompt", 57, (("duck", "4"), ("rabbit", "3"), ("goose", "2")), "Beth picked the goose."),
-            ("changed\nprompt", 33, (("rabbit", "7"), ("duck", "4"), ("goose", "2")), "Beth picked the rabbit."))  # fmt: skip
-    for label, y, lockers, pick in rows:
-        ax.text(1, y + 5, label, fontsize=S.FONT, weight="bold", va="center", linespacing=1.0)
-        for x, (item, digit) in zip(col_x, lockers, strict=True):
-            moved = label.startswith("changed") and item == "rabbit"
-            ax.add_patch(plt.Rectangle((x - 11, y), 22, 10, fc="#fff1dc" if moved else "#f5f5f5",
-                                       ec=S.COL["position"] if moved else "#bbbbbb", lw=1.8 if moved else 1))  # fmt: skip
-            ax.text(x, y + 5, f"{item}: {digit}", ha="center", va="center", fontsize=S.FONT)
-        ax.text(100, y - 5, pick, ha="right", va="center", fontsize=S.FONT, style="italic")
-    for route, digit, col, j in (("position", "4", S.COL["position"], 0), ("identity", "3", S.COL["identity"], 1),
-                                 ("original\nanswer", "2", "#7f7f7f", 2)):  # fmt: skip
-        ax.text(col_x[j], 83, f"{route}\nroute → {digit}" if "\n" not in route else f"{route} → {digit}", ha="center",
-                va="center", fontsize=S.FONT, color=col, linespacing=1.0,
-                bbox={"boxstyle": "round,pad=0.2", "fc": "white", "ec": col, "lw": 1.3})  # fmt: skip
-        ax.annotate("", (col_x[j], 67.5), (col_x[j], 75.5), arrowprops={"arrowstyle": "->", "color": col, "lw": 1.5})
-    ax.text(col_x[0], 12, "value → 7", ha="center", va="center", fontsize=S.FONT, color=S.COL["value"],
-            bbox={"boxstyle": "round,pad=0.2", "fc": "white", "ec": S.COL["value"], "lw": 1.3})  # fmt: skip
-    ax.annotate(
-        "", (col_x[0], 32.5), (col_x[0], 17), arrowprops={"arrowstyle": "->", "color": S.COL["value"], "lw": 1.5}
-    )
 
 
 # Fig. 5's result rows (v6): the arm, its label, and the random control drawn as a thin light grey bar under it (the
@@ -1807,19 +1804,22 @@ ROUTE_RUNS = {"9b": ("qwen35_9b_x6_routes", "qwen35_9b_x6_routes_keeponly"),
 
 
 def f05_routes(plt) -> None:
-    """Fig. 5 (E5, v6): left, the routes design (routes_design_panel); right, another item moved, at the layer fixed in
+    """Fig. 5 (E5, v6): left, the routes test drawn (routes_drawing); right, another item moved, at the layer fixed in
     advance, per model (9B, 27B, Muse) two stacked rows of lookup answers, whole change and without the address, each
     identity / position share with its 95% interval, the original answer empty; under the second row a thin light grey
     bar for the position answers without a random part of the same size; the value's share (0.00 on every row) in the
-    legend, not as a box per row (v6 iteration 2). The 122B and the keep-only arms are in s05."""
-    fig = plt.figure(figsize=(S.WIDTH, 5.4))
+    legend, not as a box per row (v6 iteration 2). Under the plot, the three routes defined in one line (Dan's Fig. 4 /
+    5 brief). The 122B and the keep-only arms are in s05."""
+    h, cap = 5.75, 0.35  # cap: the definitions line under the plot (inches)
+    fig = plt.figure(figsize=(S.WIDTH, h))
     S.title(fig, "The lookup takes the identity route or the position route, never the value",
             "Left: where each route sends the lookup. Right: lookup answers with the change placed at L.",
             limit=80)  # fmt: skip
-    left_ax = fig.add_axes((0.01, 0.04, 0.40, 0.70))
-    routes_design_panel(plt, left_ax)
+    left_ax = fig.add_axes((0.01, (0.22 + cap) / h, 0.40, 3.75 / h))
+    routes_drawing(plt, left_ax)
     left_ax.text(0, 1.015, "The routes test", transform=left_ax.transAxes, fontsize=12, weight="bold", va="bottom")
-    ax = fig.add_axes((0.625, 0.10, 0.355, 0.60))
+    S.fit(fig, fig.text(0.01, 0.12 / h, ROUTES_DEFINED, ha="left", va="bottom", fontsize=S.FONT - 1, color="#555555"))
+    ax = fig.add_axes((0.625, (0.54 + cap) / h, 0.355, 3.24 / h))
     models = [(t, m) for t, m, _ in S.MODELS if m != "122b"]  # v6: the 122B in supplements only
     gap, y, ticks, labels, ns, values = 2.75, 0.0, [], [], [], []
     for target, m in models:
@@ -1871,7 +1871,6 @@ def f05_routes(plt) -> None:
     ax.set_xlabel("share of lookups")
     ax.text(-0.5, 1.09, "Lookup answers at L", transform=ax.transAxes, fontsize=12, weight="bold", va="bottom")
     S.panel_tag(ax, ", ".join(ns), "fixed")
-    S.panel_tag(left_ax, None, None)
     top = max(values, default=0.0)
     value_label = "value: 0.00 in every row" if top < 0.005 else f"value: at most {top:.2f}"
     hs = [plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["identity"]), plt.Rectangle((0, 0), 1, 1, color=ROUTE_COL["position"]),
@@ -1879,7 +1878,7 @@ def f05_routes(plt) -> None:
           plt.Rectangle((0, 0), 1, 1, fc="white", ec=S.COL["value"], lw=1.3)]  # fmt: skip
     legend(fig, hs, ["identity route", "position route", "the original answer", "position, a random part removed",
                      value_label],
-           0.888, ncol=3)  # fmt: skip
+           1 - 0.605 / h, ncol=3)  # fmt: skip
     S.save(fig, "fig05_routes")
 
 

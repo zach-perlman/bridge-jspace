@@ -356,7 +356,9 @@ def build_routes_lens(verdict_dir: Path, out_name: str, title: str | None = None
     identity-route and position-route answers lost beyond a random part of the same share, with 95% intervals (the
     verdict's routes falls); behind each row, as a grey band, what that random part itself costs the route (whole change
     minus without it, 95% interval; recomputed from the routes run's per-item rows, whose falls are checked against the
-    verdict first); the 0.10 band; the 27B's 1-100 identity bar labelled as redundant copies, with its numbers."""
+    verdict first); the 0.10 band; the 27B's 1-100 identity bar labelled as redundant copies, with its numbers. At the
+    top right, Fig. 5's drawing of the routes test, small (readme_story_figures.routes_drawing), for the routes'
+    colours."""
     src = verdict_dir / "x47_1.json"
     v = json.loads(src.read_text())
     by, fid, source = by_target(v["models"]), fig_id(out_name), F.rel(src)
@@ -364,7 +366,7 @@ def build_routes_lens(verdict_dir: Path, out_name: str, title: str | None = None
     omitted = [F.SHORT[m] for t, m in TARGETS if (t, m) not in models]
     gap = 3.4  # rows from one model's identity row to the next's (two rows and room for the 27B's label)
     ys = {t: -k * gap for k, (t, _) in enumerate(models)}
-    row_in, top_in, bottom_in = 0.34, 1.62, 0.85 + 0.2 * bool(omitted)
+    row_in, top_in, bottom_in = 0.34, 2.0, 0.85 + 0.2 * bool(omitted)
     body = (gap * (len(models) - 1) + 1 + 1.2) * row_in
     h = top_in + body + bottom_in
     plt = S.setup()
@@ -438,11 +440,11 @@ def build_routes_lens(verdict_dir: Path, out_name: str, title: str | None = None
     n_txt = ", ".join(str(n) for n in sorted(ns))
     axes[-1].text(1.0, 1.10, f"n = {n_txt} per model  {S.STATUS_GLYPH['fixed']}", transform=axes[-1].transAxes,
                   ha="right", va="bottom", fontsize=S.FONT - 1, color=S.COL["muted"])  # fmt: skip
-    hs = [Line2D([], [], marker=S.MARK["remove"], ls="", color=S.MARK_COL["identity"], ms=7),
-          Line2D([], [], marker=S.MARK["remove"], ls="", color=S.MARK_COL["address"], ms=7),
-          Patch(fc=S.MARK_COL["null"], alpha=0.6, ec="none"), Patch(fc=S.COL["band"], ec="none")]  # fmt: skip
-    F.legend(fig, hs, ["identity route", "position route", "what a random part (same size) itself costs",
-                       "the 0.10 bar"], 1 - 0.74 / h, ncol=2)  # fmt: skip
+    # the routes' colours from Fig. 5's drawing, small (Dan's Fig. 4 / 5 brief): blue the item's own locker, orange
+    # the locker now at its old place; the row labels say the rest
+    F.routes_drawing(S.setup(), S.inset(fig, (0.585, 1 - 1.5 / h, 0.39, 0.74 / h)), small=True)
+    hs = [Patch(fc=S.MARK_COL["null"], alpha=0.6, ec="none"), Patch(fc=S.COL["band"], ec="none")]
+    F.legend(fig, hs, ["what a random part (same size)\nitself costs", "the 0.10 bar"], 1 - 0.74 / h, ncol=1)
     if omitted:
         fig.text(0.01, 0.2 / h, f"Not run: {', '.join(omitted)}.", ha="left", va="bottom", fontsize=S.FONT - 1,
                  color=S.COL["muted"])  # fmt: skip
