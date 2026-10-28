@@ -131,7 +131,7 @@
 ### E8. The lens is blind to the address <a id="e8-blind"></a>
 
 - **Hypothesis.** Through the J++ lens an address swap looks like a random draw. Descriptive.
-- **Mechanics.** The swap against 200 random draws: the best rank of any position word and the share the lens rebuilds; an identity change as control.
+- **Mechanics.** The swap against 200 random draws: any position word's best rank and the share rebuilt; an identity change as control.
 - **Data.** 200 cases per model.
 - **Result.** The lens rebuilds {{dp|fig07b_verbal|9b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|27b|47.0 (b) share rebuilt by 25 lens directions: pointer}} / {{dp|fig07b_verbal|muse|47.0 (b) share rebuilt by 25 lens directions: pointer}} of the swap, as for random draws. Asked for the position, the 27B's lens top five hold the right ordinal in {{dp|e8_report|27b|47.10: lens top-5 holds the right ordinal (report prompt)}} of reports, yet it loses {{dp|e8_report|27b|47.10: the report's extra loss without the address}} without the address.
 - **Figure.**
