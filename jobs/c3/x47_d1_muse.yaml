@@ -1,0 +1,74 @@
+id: x47_d1_muse
+title: "Batch 47 amendment 3, D1 + D2 on Muse (L26): the token x layer causal map (S's state placed into O at one token group and one layer, every 4th layer), with 47.4's cumulative arms as margins, and window patching (the bridge at every layer >= l); main test and clean design, both readers; SEALED until Q-depth"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.8
+command: >-
+  export BJ_TARGET=muse-glimmer-30b BJ_DEVICE_MAP=; uv run python scripts/x47_depthmap.py run --name muse30_x47_depthmap --why "batch 47, amendment 3 (jobs/c3/batch47.yaml; D1 + D2, Q-depth, sealed): the token x layer map and window patching on the main test's and the clean design's items at L26"
+question: >-
+  Where and when does each reader read the change: at which token group and which layer does placing S's state into O
+  switch the answer? In locker-after scenes, does the lookup's mass sit at the locker sentences rather than the bridge
+  word? In locker-first scenes, does the lookup's bridge-word mass end before the recall's, and does the recall have a
+  second hot token at the item's earlier mention? After which layer is the bridge word no longer read (D2's l_R)?
+why_it_matters: >-
+  47.4 asked why not every answer switches; D1 answers it as causal tracing for our two readers (the mass at other
+  tokens and layers), and D2 gives one depth number per reader (the read-out layer) to set against Zach's late
+  "question" band on the same model.
+hypotheses:
+  Q-depth: "Dan's answer in predictions/2026-10-28_dan.md (Q-depth: D1 (a), (b), (c) and D2 yes / no per model); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_depthmap.py verdict / view / figures refuse until it is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, D1 and D2). D1: (a) in locker-after scenes the lookup's mass sits at the
+  locker sentences, not at the bridge word, at every layer (bridge-word cells <= 0.25 everywhere; some locker-sentence
+  cell >= 0.5); (b) in locker-first scenes the lookup's bridge-word mass ends before the recall's (the last layer with
+  bridge-word switch >= 0.3 is earlier for the lookup, by >= 2 layers on the 9B, >= 4 on Muse); (c) the recall's map
+  has a second hot token, the item's earlier mention, in locker-first scenes (>= 0.3 at some layer), absent in
+  locker-after. D2: "the handover from the mention to the question" if l_R(recall) lies at or below the start of Zach's
+  late band on the 9B and 27B (9B L26-29, 27B L52-60). As computed (fixed by the agent before any run; Dan may
+  override before the run): Items: x47_cumulative's (the main test's X0 run at L, Muse's main-test X0 run (muse30b_x0_necessity, pre-merge name), its 200
+  scenes, the mixed ones in "all" only; the 45m clean-design run Muse's 45m run (muse30b_x45m_fresh, pre-merge name), its locker-first and
+  locker-after scenes, its 96 mixed scenes left out for the budget), with x47_cumulative's asserts (O and S the same
+  length, changed only at the bridge (clean) or the bridge and one token of the other person's pick (main); the asked
+  pick sentence at the same positions with the same ids but the bridge's; the readers' prompts equal through the last
+  patched context token). Order groups: x45m's (locker-first = the bridge's and S's bridge's locker sentences both
+  before the asked pick; locker-after = both after). Both readers; their prompts differ from the question on, so S's
+  states are taken per reader (one unedited forward of S and of O per reader and item, the read's space token
+  appended). Layers: 0, 4, ..., 48, 50 (every 4th; the last block's output is read by nothing). Cells: S's block-l output
+  set (exp04's SetRows, not added) into O at one token group, O's own tokens; token groups by character overlap in the
+  rendered prompt: bridge (the bridge word); pick_rest (the asked pick sentence without the bridge and the person);
+  person (the asked person's token); per locker sentence its item token(s) and its number token(s), the sentences named
+  by role (lk_org = O's bridge's, lk_cf = S's bridge's: the added one in the clean design, the other person's original
+  pick's in the main test; lk_other1, lk_other2 = the rest in context order); question (from the question's first token
+  to the end of the prompt, the template's closing tokens and 'Answer:' included); last (the read position, the
+  appended space token). The bridge is the only group whose token id differs between O and S; its row has one more
+  cell, emb = O's prompt with S's token at the bridge and no state placed (the input embedding; block 0's input as a
+  layer). Every other group's tokens are identical in O and S, and S's state there still differs downstream of the
+  bridge: a cell measures what those tokens have read. In the main test the other person's changed pick is in no group;
+  S's states at every group after it carry it too (it is what 47.4's (d)->100% measured), and in main items where that
+  pick comes first the b margin and the bridge cells differ from the clean design's by it. Margins: b<l> = the bridge
+  swapped at every layer <= l (blocks 0..l and its input embedding), one per sampled l; d = the whole asked pick sentence
+  swapped at every layer (and the bridge's embedding). D2: w<l> = S's state set at the bridge at every block output >= l
+  (O's tokens; the complement of b), one per sampled l; l_R per reader = the first sampled l at which the w curve is
+  <= 0.1 (none: not reached). Beside them: none (O unedited), a (47.4's (a): h_S - h_O added at the bridge at L; X0's
+  whole arm) and S read on S. Cell value = the switch rate over the order group's items (X0's chat read; switch = the
+  top token is S's answer's first token), 95% cluster-bootstrap intervals over bridge items (10,000, seed 0, every arm
+  on the same draws). Rules on point estimates: (a) every bridge cell (emb and every sampled layer) <= 0.25 and some
+  lk_* item or number cell at any layer >= 0.5, on the lookup's locker-after map; (b) the last sampled layer with the
+  lookup's bridge cell >= 0.3 is earlier than the recall's by >= 2 on the 9B (>= 4 on Muse and the 27B), locker-first;
+  a reader with no such layer: the rule does not hold; (c) the recall's lk_cf item cell >= 0.3 at some layer in
+  locker-first and < 0.3 at every layer in locker-after; D2: l_R(recall) over all the design's items <= 26 on the 9B
+  (52 on the 27B; Muse has no band: reported). Each rule is scored on each design; the Q-depth answer per model reads
+  the clean design (one token differs; its b, d and w0 arms are S's own run by construction), the main test beside it.
+  Consequences of the design stated before the data: in the clean design the emb cell, every b<l>, d and w0 equal S
+  read on S; in main items whose other changed pick comes after the asked one, b<l> at the last layer equals d. 47.4's
+  state check stays: under the bridge swap at blocks 0..L the bridge's state after L must be S's (relative distance <=
+  0.05) on items whose O and S agree before the bridge, else the job fails after writing its files. Scored by hand
+  after Q-depth is committed: scripts/x47_depthmap.py verdict.
+controls:
+- 'S read on S (every edited arm''s ceiling) and O unedited (its floor); (a) 47.4''s change at L beside the map'
+- 'the clean design: the emb cell, every b<l>, d and w0 are S''s own run by construction (the only changed token swapped at every depth); reported as a check'
+- 'the state check in the run: under the bridge swap at blocks 0..L the bridge''s state after L equals S''s (relative distance <= 0.05) on prefix-identical items, else the job fails after writing its files'
+- 'the margins b<l> (bridge at every layer <= l) and w<l> (>= l) bracket the single-layer bridge cells: a single cell can switch at most what the cumulative arms do'
+n: '513 items: main test 200 (Muse''s main-test X0 run at L26; 68 locker-first, 69 locker-after, 63 mixed; 40 bridge items; 11 token groups, 187 reads per reader and item) + clean design 313 (Muse''s 45m run; 143 locker-first, 170 locker-after, 96 mixed left out; 41 bridge items; 13 token groups, 215 reads); none dropped; 209,390 reads in all (plan, 28 Oct)'
+seeds: [0, 4513]
+notes: "Batch 47, amendment 3 (Dan, 28 Oct ~02:50); replaces x47_4_muse (superseded, not run); amendment 3's queue: ... -> 47.3 -> D1+D2 (Muse) -> 47.8 (Muse) -> .... SEALED: the job runs `run` only and writes manifest, plan, cases, outcomes (one row per item and reader with every arm's read), checks (the state check) and 10 items' greedy texts per design for the fixed arms, b<L>, w<L> and the emb cell; the log prints counts and the state check, no switch. After Dan's Q-depth is committed, by hand (CPU): uv run python scripts/x47_depthmap.py verdict (the three runs: qwen35_9b_x47_depthmap x47_depthmap_27b muse30_x47_depthmap: the rules, l_R, the maps as tables); view (the verify-pack view: 10 random items per design, seed 0, the prompt as the model reads it, every token group marked, each listed arm's answer); figures --verdict <its folder> (two heatmaps per model, order group and design: lookup and recall, token group x layer, with the margins; story_style's look, saved beside the verdict). Seeds: 0 the bootstrap and the examples, 4513 45m's fresh draws. Design decisions recorded (the agent's, from 47.4; Dan may override): (1) the bridge's input embedding is swapped in the b and d margins and the emb cell ('every layer' counts block 0's input), single-layer cells place a block output only; (2) the clean design can show the bridge's depth profile and the other groups' reads but its cumulative arms are S's own run (one token differs), so the main test is where the other person's pick shows up outside the pick sentence; (3) tolerances: the state check's relative distance 0.05; l_R's floor 0.1 and the rules' bars as Dan wrote them, point estimates with EPS 1e-9. GPU estimate from results/jobq/ledger_sesterce-h100x2.jsonl (H100 PCIe): Muse's 45q run read 205 items x 2 readers x 93 arms = 38,130 batched reads in (1028.3 - 29.4) s = 0.0262 s per read; here 209,390 reads x 0.0262 = 5,486 s, plus 5 forwards per item (513 x 5 x ~0.12 s = 308 s) and setup 29 s = 1.62 h, rounded up to 1.8 (Dan's ~2 for Muse; reduce: drop the main test's 63 mixed scenes first, if the box is short). D2's rule is not scored on Muse (Zach gave no band): l_R reported. S's states at every layer are kept in fp32 for one prompt at a time (52 x ~150 tokens x 5120 x 4 B, about 160 MB). BJ_TARGET=muse-glimmer-30b reads Muse's own main-test and 45m runs (x47_cumulative.SOURCES)."
