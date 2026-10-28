@@ -2710,43 +2710,80 @@ s03e_cumulative,muse-glimmer-30b,"47.4 clean, locker-first, recall: before_L",0.
 s03e_cumulative,muse-glimmer-30b,"47.4 clean, locker-first, recall: propagation",0.0,0.0,0.0,143,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
 s03e_cumulative,muse-glimmer-30b,"47.4 clean, locker-first, recall: pick_other",0.0,0.0,0.0,143,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
 s03e_cumulative,muse-glimmer-30b,"47.4 clean, locker-first, recall: outside",0.0,0.0,0.0,143,results/x47_cumulative/x47_4-20261028T113105Z/x47_4.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under a random subspace, k = 1",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under a random subspace, k = 4",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under a random subspace, k = 16",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under a random subspace, k = 64",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under a shuffled subspace, k = 1",0.25,0.0,0.6,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under a shuffled subspace, k = 4",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under a shuffled subspace, k = 16",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under a shuffled subspace, k = 64",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under the lookup's subspace, k = 1",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under the lookup's subspace, k = 4",0.625,0.375,1.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under the lookup's subspace, k = 16",0.625,0.375,1.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under the lookup's subspace, k = 64",0.75,0.4,1.0,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, lookup's switches under the other reader's subspace (k = 16)",0.125,0.0,0.6,8,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under a random subspace, k = 1",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under a random subspace, k = 4",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under a random subspace, k = 16",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under a random subspace, k = 64",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under a shuffled subspace, k = 1",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under a shuffled subspace, k = 4",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under a shuffled subspace, k = 16",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under a shuffled subspace, k = 64",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under the recall's subspace, k = 1",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under the recall's subspace, k = 4",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under the recall's subspace, k = 16",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under the recall's subspace, k = 64",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, recall's switches under the other reader's subspace (k = 16)",0.2,0.0,0.75,5,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,48.1: rule (a) holds,0,,,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,48.1: rule (b) holds,0,,,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,48.1: rule (c) holds,0,,,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,48.1: rule (d) holds,0,,,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,48.1: no small subspace (fallback),0,,,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, the recall's subspace: share inside the J++ part",0.03048277777777778,0.014924799999999998,0.03787282352941176,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, the lookup's subspace: share inside the J++ part",0.012554888888888886,0.0097426,0.014987799999999999,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, a random subspace: share inside the J++ part",0.003951777777777778,0.0033017999999999997,0.0042082,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, the lookup's subspace: overlap with the pointer (cos²)",0.245742,,,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, the lookup's subspace: share outside the J++ part, pointer and input-embedding directions",0.610851,0.5791246000000001,0.6330165555555556,,results/x48_das/verdict-20261028T113110Z/verdict.json
-s12,muse-glimmer-30b,"48.1, the lookup's subspace only: identity answers, another item moved",0.09,0.03636363636363636,0.1509433962264151,,results/x48_das/verdict-20261028T113110Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under a random subspace, k = 1",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under a random subspace, k = 4",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under a random subspace, k = 16",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under a random subspace, k = 64",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under a shuffled subspace, k = 1",0.05555555555555555,0.0,0.15789473684210525,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under a shuffled subspace, k = 4",0.2222222222222222,0.07142857142857142,0.46153846153846156,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under a shuffled subspace, k = 16",0.0,0.0,0.0,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under a shuffled subspace, k = 64",0.16666666666666666,0.0,0.2692307692307692,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under the lookup's subspace, k = 1",0.3888888888888889,0.08333333333333333,0.5555555555555556,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under the lookup's subspace, k = 4",0.5,0.23076923076923078,0.65,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under the lookup's subspace, k = 16",0.7222222222222222,0.5384615384615384,0.9,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under the lookup's subspace, k = 64",0.6666666666666666,0.5333333333333333,0.7777777777777778,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, lookup's switches under the other reader's subspace (k = 4)",0.3333333333333333,0.11764705882352941,0.6,18,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under a random subspace, k = 1",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under a random subspace, k = 4",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under a random subspace, k = 16",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under a random subspace, k = 64",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under a shuffled subspace, k = 1",0.05263157894736842,0.0,0.15384615384615385,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under a shuffled subspace, k = 4",0.0,0.0,0.0,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under a shuffled subspace, k = 16",0.05263157894736842,0.0,0.17647058823529413,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under a shuffled subspace, k = 64",0.10526315789473684,0.0,0.24,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under the recall's subspace, k = 1",0.15789473684210525,0.0,0.2857142857142857,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under the recall's subspace, k = 4",0.15789473684210525,0.0,0.2857142857142857,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under the recall's subspace, k = 16",0.2631578947368421,0.0,0.5,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under the recall's subspace, k = 64",0.3157894736842105,0.0625,0.52,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, recall's switches under the other reader's subspace (k = 1)",0.05263157894736842,0.0,0.12,19,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,48.1: rule (a) holds,0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,48.1: rule (b) holds,0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,48.1: rule (c) holds,0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,48.1: rule (d) holds,0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,48.1: no small subspace (fallback),0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under a random subspace, k = 1",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under a random subspace, k = 4",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under a random subspace, k = 16",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under a random subspace, k = 64",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under a shuffled subspace, k = 1",0.25,0.0,0.6,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under a shuffled subspace, k = 4",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under a shuffled subspace, k = 16",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under a shuffled subspace, k = 64",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under the lookup's subspace, k = 1",0.0,0.0,0.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under the lookup's subspace, k = 4",0.625,0.375,1.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under the lookup's subspace, k = 16",0.625,0.375,1.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under the lookup's subspace, k = 64",0.75,0.4,1.0,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, lookup's switches under the other reader's subspace (k = 16)",0.125,0.0,0.6,8,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under a random subspace, k = 1",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under a random subspace, k = 4",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under a random subspace, k = 16",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under a random subspace, k = 64",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under a shuffled subspace, k = 1",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under a shuffled subspace, k = 4",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under a shuffled subspace, k = 16",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under a shuffled subspace, k = 64",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under the recall's subspace, k = 1",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under the recall's subspace, k = 4",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under the recall's subspace, k = 16",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under the recall's subspace, k = 64",0.0,0.0,0.0,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, recall's switches under the other reader's subspace (k = 16)",0.2,0.0,0.75,5,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,48.1: rule (a) holds,0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,48.1: rule (b) holds,0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,48.1: rule (c) holds,0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,48.1: rule (d) holds,0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,48.1: no small subspace (fallback),0,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, the recall's subspace: share inside the J++ part",0.04856678947368421,0.0340365794117647,0.060353586206896556,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, the lookup's subspace: share inside the J++ part",0.007140578947368421,0.005844588235294119,0.007817962962962964,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, a random subspace: share inside the J++ part",0.0067018947368421055,0.006241746574074074,0.007462818181818182,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, the lookup's subspace: overlap with the pointer (cos²)",0.12981,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, the lookup's subspace: share outside the J++ part, pointer and input-embedding directions",0.47236500000000003,0.4715001764705882,0.47349240000000004,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,qwen3.5-9b,"48.1, the lookup's subspace only: identity answers, another item moved",0.06,0.00980392156862745,0.1276595744680851,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, the recall's subspace: share inside the J++ part",0.03048277777777778,0.014924799999999998,0.03787282352941176,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, the lookup's subspace: share inside the J++ part",0.012554888888888886,0.0097426,0.014987799999999999,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, a random subspace: share inside the J++ part",0.003951777777777778,0.0033017999999999997,0.0042082,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, the lookup's subspace: overlap with the pointer (cos²)",0.245742,,,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, the lookup's subspace: share outside the J++ part, pointer and input-embedding directions",0.610851,0.5791246000000001,0.6330165555555556,,results/x48_das/verdict-20261028T134153Z/verdict.json
+s12,muse-glimmer-30b,"48.1, the lookup's subspace only: identity answers, another item moved",0.09,0.03636363636363636,0.1509433962264151,,results/x48_das/verdict-20261028T134153Z/verdict.json
 probe,qwen3.5-9b,probe.value.9b.locker-first,0.2704485488126649,0.23641684813179104,0.30677367551616386,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 probe,qwen3.5-9b,probe.value.majority.9b.locker-first,0.09894459102902374,0.07152844911222445,0.12922248194431957,758,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
 probe,qwen3.5-9b,probe.value.chance.9b,0.1111,,,,results/x0_probe/qwen35_9b_x0_probe_v4/probe-20261024T172340Z/probe.json
