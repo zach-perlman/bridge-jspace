@@ -1,0 +1,444 @@
+{
+ "batch": 52,
+ "built_at": "e766aae8",
+ "utc": "20261028T234315Z",
+ "models": [
+  "qwen3.6-27b",
+  "nemotron-3.5-lightning",
+  "qwen3.5-9b",
+  "muse-glimmer-30b",
+  "nemotron-3.5-bolt"
+ ],
+ "rows": [
+  {
+   "row": "1. Conflict test (main test; whole / without the J++ part / without a random part, at L)",
+   "rule": "X0 (jobs/c3/x0_necessity_27b_chat.yaml): confirmed iff lookup extra loss <= 0.10 and recall Jdep >= 0.30; killed iff lookup >= 0.20 or recall < 0.20",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "verdict": "not confirmed at L32 (lookup 0.14 [0.08, 0.20] > 0.10; recall 0.74 [0.66, 0.80]); n 200",
+     "sources": [
+      "results/x0_necessity/x0_necessity_27b_chat/verdict-20261024T135446Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "45s smoke only (plumbing on 8 scenes; gate on all 516 scenes: lookup 0.957, recall 0.816, pass). missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer()",
+     "sources": [
+      "results/x45s/nem35l_x45s_smoke/report.md",
+      "results/x0_necessity/nem35l_x45s_smoke_main/gate.json"
+     ]
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "confirmed at L12 (lookup -0.03 [-0.08, 0.03]; recall 0.50 [0.41, 0.57]); n 200",
+     "sources": [
+      "results/x0_necessity/qwen35_9b_x0_necessity/verdict-20261024T135419Z"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "confirmed at L26 (lookup -0.10 [-0.15, -0.04]; recall 0.75 [0.61, 0.87]); n 200",
+     "sources": [
+      "results/x0_necessity/muse30b_x0_necessity/verdict-20261026T001148Z"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "cancelled",
+     "verdict": "cancelled: no J++ lens file on any box (mats, speedup, another: cache/nemotron-3.5-bolt/lenses/jpp/ absent, 28 Oct ~23:15 UTC; the H200 box it was fit on is unreachable; no hub copy under zachperlman20). Dan's rule: no lens file -> the column is cancelled",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "2. Answer control (the conflict test's specificity: the lens part without / with only the answer words' directions; the answer word's lens rank at the bridge word)",
+   "rule": "51.12 E1 (jobs/c3/batch51.yaml, r2 amendment): the lens effect is the entity if the recall keeps >= 0.7 of its loss with the answer directions kept and loses <= 0.10 beyond random without them only; 'not read' if the answer word ranks > 50 on >= 90 % of items",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "verdict": "recall: the lens effect is the entity (keeps 0.93, answer-only 0.03); n 200",
+     "sources": [
+      "results/x51_answer/x51_12-20261028T201842Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer()",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "recall: the lens effect is the entity (keeps 0.95, answer-only 0.00); n 200",
+     "sources": [
+      "results/x51_answer/x51_12-20261028T201842Z/verdict.md"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "recall: the answer word is not read at the bridge word (rank > 50 on 100 %); arms beside: the entity; n 200",
+     "sources": [
+      "results/x51_answer/x51_12-20261028T201842Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "cancelled",
+     "verdict": "cancelled: no J++ lens file on any box (mats, speedup, another: cache/nemotron-3.5-bolt/lenses/jpp/ absent, 28 Oct ~23:15 UTC; the H200 box it was fit on is unreachable; no hub copy under zachperlman20). Dan's rule: no lens file -> the column is cancelled",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "3. Routes test (identity / position / value; without the address vs a random part; the address alone)",
+   "rule": "x6_routes (E5/E6): the lookup follows identity, position or value; removing the address stops position answers; keep-only creates them",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "verdict": "identity 0.66 / position 0.34 / value 0.00; no address 0.06 vs random 0.25; address alone 0.09 (fails); n 300",
+     "sources": [
+      "results/x6_routes/x6_routes_27b/verdict-20261025T105901Z",
+      "results/x6_routes/x6_routes_keeponly_27b"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer()",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "identity 0.48 / position 0.51 / value 0.00; no address 0.08 vs random 0.54; alone 0.26",
+     "sources": [
+      "results/x6_routes/qwen35_9b_x6_routes/verdict-20261025T104535Z",
+      "results/x6_routes/qwen35_9b_x6_routes_keeponly"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "identity 0.44 / position 0.54 / value 0.00; no address 0.27 vs random 0.55; alone 0.29",
+     "sources": [
+      "results/x6_routes/muse30b_x6_routes/verdict-20261026T004455Z"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "cancelled",
+     "verdict": "cancelled: no J++ lens file on any box (mats, speedup, another: cache/nemotron-3.5-bolt/lenses/jpp/ absent, 28 Oct ~23:15 UTC; the H200 box it was fit on is unreachable; no hub copy under zachperlman20). Dan's rule: no lens file -> the column is cancelled",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "4. Address swap by dose (mu_k - mu_j at the bridge word, s = 1 / 2 / 4, vs a random vector of its norm)",
+   "rule": "x8_write (Q44.1-44.3): target minus random at s = 1; s = 2 = a real change's size",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "verdict": "lookup to the written locker s=1/2/4: 0.01 / 0.24 / 0.50 (random <= 0.01); Q44.1-3 no",
+     "sources": [
+      "results/x8_write/x8_write_27b/verdict-20261026T125548Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer()",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "0.05 / 0.52 / 0.52 (random <= 0.01); Q44.1-3 no",
+     "sources": [
+      "results/x8_write/qwen35_9b_x8_write/verdict-20261026T110254Z/verdict.md"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "0.02 / 0.46 / 0.73 (random 0.00); Q44.1-3 no",
+     "sources": [
+      "results/x8_write/muse30b_x8_write/verdict-20261026T141141Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "cancelled",
+     "verdict": "cancelled: no J++ lens file on any box (mats, speedup, another: cache/nemotron-3.5-bolt/lenses/jpp/ absent, 28 Oct ~23:15 UTC; the H200 box it was fit on is unreachable; no hub copy under zachperlman20). Dan's rule: no lens file -> the column is cancelled",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "5. Order split and copy test (the conflict test split by sentence order; the changed prompt's locker-sentence states copied in at L)",
+   "rule": "split: descriptive (after the data); copy test 45q (jobs/c3/batch45.yaml): the link is made in the locker sentences if (c) or (d) switches >= half of the lookups S switches while (a) <= 0.25",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "verdict": "lookups switch 76 % locker-first vs 9 % after; copy (c) 0.74 [0.68, 0.80]: holds",
+     "sources": [
+      "results/x0_composition/split-by-order-20261026T173323Z/split.md",
+      "results/x45b_binding/x45q-20261027T005345Z/x45q.md"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "split: CPU from the conflict test's outcomes once it lands; copy test: not testable under the existing rule unless the clean design's gate passes (45s smoke: recall 0.751 < 0.80 on the clean one-pick scenes)",
+     "sources": [
+      "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json"
+     ]
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "86 % vs 19 %; copy (c) 0.70 [0.65, 0.74]: holds",
+     "sources": [
+      "results/x0_composition/split-by-order-20261026T173323Z/split.md",
+      "results/x45b_binding/x45q-20261027T005345Z/x45q.md"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "65 % vs 9 %; copy (c) 0.76 [0.70, 0.81]: holds",
+     "sources": [
+      "results/x0_composition/split-by-order-20261026T173323Z/split.md",
+      "results/x45b_binding/x45q-20261027T005345Z/x45q.md"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "cancelled",
+     "verdict": "cancelled: no J++ lens file on any box (mats, speedup, another: cache/nemotron-3.5-bolt/lenses/jpp/ absent, 28 Oct ~23:15 UTC; the H200 box it was fit on is unreachable; no hub copy under zachperlman20). Dan's rule: no lens file -> the column is cancelled",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "6. Anatomy by layer (the change's parts per layer against random parts; slot probe)",
+   "rule": "47.8 (jobs/c3/batch47.yaml): l_J, l_P, l_probe; (a) handoff, (b) address before use, (c) identity leaves the lens, (d) never the value",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "running",
+     "verdict": "partial on record: reduced grid (9 of 15 layers: L8-56 every 8th + L30/32/34), 150 scenes; (a) yes gap 14, (b) yes, (c) no, (d) yes. Full grid (every 4th L4-L60) running: x47_8_27b on mats, run x47_anatomy_27b (enqueued by the coordinator 29 Oct)",
+     "sources": [
+      "results/x47_anatomy/x47_8-20261028T154518Z/x47_8.md",
+      "results/x47_anatomy/x49_4_anatomy_27b"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer()",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "every 2nd L2-L30, 200 scenes: (a) yes gap 0, (b) yes, (c) no, (d) yes",
+     "sources": [
+      "results/x47_anatomy/x47_8-20261028T154518Z/x47_8.md"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "every 4th L2-L50, 200 scenes: (a) yes gap 20, (b) yes, (c) no, (d) yes",
+     "sources": [
+      "results/x47_anatomy/x47_8-20261028T154518Z/x47_8.md"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "not applicable",
+     "verdict": "not applicable: tier 4 runs only the first five rows (and the column is cancelled: no lens file)",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "7. Ladder (the J++ part removed from the changed prompt rung by rung, rungs 1-6)",
+   "rule": "49.2 (jobs/c3/batch49.yaml): (a) second copy = the earlier mention; (b) needed only when everything goes; (c) the lookup never needs it",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "queued",
+     "verdict": "partial on record: rungs 1-2 only (no rule). Rungs 1-6 with rung 6 over Zach's 27B band L32-40: x52_ladder_27b on another (after x47_2_27b)",
+     "sources": [
+      "results/x49_ladder/x49_2-20261028T161612Z/x49_2.md",
+      "jobs/c3/x52_ladder_27b.yaml"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer(); needs the clean design (its gate failed on the 45s smoke: recall 0.751)",
+     "sources": [
+      "results/x0_necessity/nem35l_x45s_smoke_clean/gate.json"
+     ]
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "(a) yes, (b) no, (c) yes; n 417",
+     "sources": [
+      "results/x49_ladder/x49_2-20261028T161612Z/x49_2.md"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "queued",
+     "verdict": "on record (a) no, (b) no, (c) yes, n 409, rung 6 at L23-29 (outside Zach's band). Rung 6 inside his band L36-42: x52_ladder_muse on mats (tier 3)",
+     "sources": [
+      "results/x49_ladder/x49_2-20261028T161612Z/x49_2.md",
+      "jobs/c3/x52_ladder_muse.yaml"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "not applicable",
+     "verdict": "not applicable: tier 4 runs only the first five rows (and the column is cancelled: no lens file)",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "8. Lens readout with the item-change control (the address swap read through the J++ lens vs 200 random draws; an identity change as the positive control)",
+   "rule": "47.0: descriptive (verbalizable or not)",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "verdict": "not verbalizable (rebuilt 0.94x random; identity control 5.16x)",
+     "sources": [
+      "results/x47_verbal/summary-20261028T033646Z/verbal.md"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer(); needs the routes test's items (x8_write)",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "not verbalizable (1.16x; identity 4.42x)",
+     "sources": [
+      "results/x47_verbal/summary-20261028T033646Z/verbal.md"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "not verbalizable (1.22x; identity 8.62x)",
+     "sources": [
+      "results/x47_verbal/summary-20261028T033646Z/verbal.md"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "not applicable",
+     "verdict": "not applicable: tier 4 runs only the first five rows (and the column is cancelled: no lens file)",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "9. Last-token read / write (lens readout and probes per layer at the last token and the pick token; the lens swap vs the whole-state patch)",
+   "rule": "51.10 (jobs/c3/batch51.yaml addendum_2): (a) in J-space, (b) readable not used, (c) routes around, (d) not represented",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "verdict": "last token: recall (b) readable, not used; lookup none of the four",
+     "sources": [
+      "results/x51_jread/x51_10-20261028T190608Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer()",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "last token: recall (b); lookup (c) routes around J-space",
+     "sources": [
+      "results/x51_jread/x51_10-20261028T190608Z/verdict.md"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "last token: recall (b); lookup none of the four",
+     "sources": [
+      "results/x51_jread/x51_10-20261028T190608Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "not applicable",
+     "verdict": "not applicable: tier 4 runs only the first five rows (and the column is cancelled: no lens file)",
+     "sources": []
+    }
+   }
+  },
+  {
+   "row": "10. Attention under the swap (the question's / last token's attention to the lockers under the address swap, s = 2, vs a random vector)",
+   "rule": "49.7 (jobs/c3/batch49.yaml): follows / elsewhere / distributed; necessity of the best head",
+   "cells": {
+    "qwen3.6-27b": {
+     "status": "done",
+     "verdict": "neither; distributed: no",
+     "sources": [
+      "results/x49_attn/x49_7-20261028T154511Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-lightning": {
+     "status": "missing",
+     "verdict": "missing: spec after the layer (x52_lightning_layer, running on speedup) is committed; the cell reads it through x51_lightning.committed_layer(); full attention only at 6 of 52 blocks (5, 12, 19, 26, 33, 42)",
+     "sources": []
+    },
+    "qwen3.5-9b": {
+     "status": "done",
+     "verdict": "neither; distributed: no",
+     "sources": [
+      "results/x49_attn/x49_7-20261028T154511Z/verdict.md"
+     ]
+    },
+    "muse-glimmer-30b": {
+     "status": "done",
+     "verdict": "neither; distributed: no",
+     "sources": [
+      "results/x49_attn/x49_7-20261028T154511Z/verdict.md"
+     ]
+    },
+    "nemotron-3.5-bolt": {
+     "status": "not applicable",
+     "verdict": "not applicable: tier 4 runs only the first five rows (and the column is cancelled: no lens file)",
+     "sources": []
+    }
+   }
+  }
+ ],
+ "outside": [
+  {
+   "row": "Six lockers: one code per locker (E7, 47.2)",
+   "qwen3.6-27b": "running: x47_2_27b on another",
+   "qwen3.5-9b": "done",
+   "muse-glimmer-30b": "done",
+   "sources": [
+    "results/x47_six/x47_2-20261028T113102Z"
+   ]
+  },
+  {
+   "row": "Token by layer map (E11, 47.D1)",
+   "qwen3.6-27b": "running: x47_d1_27b on mats (run x47_depthmap_27b)",
+   "qwen3.5-9b": "done",
+   "muse-glimmer-30b": "done",
+   "sources": [
+    "results/x47_depthmap/depth-20261028T120525Z"
+   ]
+  }
+ ],
+ "prerequisites": {
+  "nemotron-3.5-lightning": "lens present on speedup, sha 3306b6e4 = pin, J++ (LN rule, 32 prompts), maps L0-50, d_model 2688, held-out pass@10 0.587 vs logit 0.443; Zach's band L27-33; weights a9904d24 14/14 shards on speedup; gate (45s smoke, all 516 scenes) lookup 0.957 / recall 0.816; layer: x52_lightning_layer running on speedup (every 4th layer L2-L50, 60 dev scenes, earliest where both switch >= 0.3)",
+  "nemotron-3.5-bolt": "cancelled: no J++ lens file on any box (mats, speedup, another: cache/nemotron-3.5-bolt/lenses/jpp/ absent, 28 Oct ~23:15 UTC; the H200 box it was fit on is unreachable; no hub copy under zachperlman20). Dan's rule: no lens file -> the column is cancelled; fit on mats by arithmetic only: bf16 snapshot 149.8 GB = 139.5 GiB of 159 GiB, ~10 GiB headroom per GPU, unmeasured"
+ },
+ "counts": {
+  "qwen3.6-27b": {
+   "done": 8,
+   "running": 1,
+   "queued": 1
+  },
+  "nemotron-3.5-lightning": {
+   "missing": 10
+  },
+  "qwen3.5-9b": {
+   "done": 10
+  },
+  "muse-glimmer-30b": {
+   "done": 9,
+   "queued": 1
+  },
+  "nemotron-3.5-bolt": {
+   "cancelled": 5,
+   "not applicable": 5
+  }
+ }
+}
