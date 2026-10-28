@@ -6,7 +6,8 @@ kind of description, the bridge also named once in passing) and PM (named; edite
 Site: RM / MM, the last token of the description in the question (--site last) or every description token (--site
 span); PM, the last token of each mention of the bridge X. --site qmark: the question's "?" token; --site final: the
 prompt's last token (both for every word; exp11 / exp14 read latent bridges at the last token from mid-late layers).
-Donor D: another bridge of X's relation with a different answer and an eligible RM prompt of its own (seeded per item);
+Donor D: another bridge of X's relation with a different answer, an eligible RM prompt of its own, and a name token
+different from X's (many names share a first token; the clamp needs distinct name directions); seeded per item;
 third: a random other answer of the relation (the chance of landing on any one answer).
 Donor vectors, at every band layer:
   insert   D's residual at its last token in jswap_pointer's neutral sentence ("A reader asked a question about D ...")
@@ -238,7 +239,8 @@ def main(a) -> None:
             continue
         rng = random.Random(p["id"])
         ok_name = lambda e: not (e.lower().startswith(x.lower()) or x.lower().startswith(e.lower()))  # noqa: E731
-        donors = sorted(b for (r, b) in rm_by if r == rel and b != x and ans(b) != ax and ok_name(b))
+        tx = name_token(model, tok, x)  # the clamp needs distinct name directions: no donor whose name token is X's
+        donors = sorted(b for (r, b) in rm_by if r == rel and b != x and ans(b) != ax and ok_name(b) and name_token(model, tok, b) != tx)
         if not donors:
             continue
         dn = rng.choice(donors)
@@ -251,7 +253,7 @@ def main(a) -> None:
         if not npos:
             continue
         jobs.append({**p, "x": x, "d": dn, "rel": rel, "sites": sites, "kind_": kind, "format_": it["format"], "neutral": (nids, npos[0]),
-                     "lat_id": lat_p["id"], "lat_ids": lat_p["ids"], "lat_pos": lat_pos, "tx": name_token(model, tok, x), "td": name_token(model, tok, dn),
+                     "lat_id": lat_p["id"], "lat_ids": lat_p["ids"], "lat_pos": lat_pos, "tx": tx, "td": name_token(model, tok, dn),
                      "fx": JS.forms(tok, ax, kind), "fd": JS.forms(tok, ans(dn), kind), "ft": JS.forms(tok, at, kind), "ax": ax, "ad": ans(dn), "at": at})  # fmt: skip
     per = collections.defaultdict(list)
     for j in jobs:
