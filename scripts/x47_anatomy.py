@@ -449,7 +449,8 @@ def read_labels(layers: tuple[int, ...], arms: tuple[str, ...]) -> list[tuple[in
 # ---- GPU ----------------------------------------------------------------------------------------------------------
 
 
-def stage_run(name: str, why: str, n_boot: int = X.N_BOOT) -> Path:
+def stage_run(name: str, why: str, n_boot: int = X.N_BOOT, layers: tuple[int, ...] | None = None) -> Path:
+    """layers: a sweep other than LAYERS[target] (49.4, the 27B's reduced grid); recorded in the manifest."""
     import torch
 
     from bridge_jspace import chat
@@ -464,7 +465,7 @@ def stage_run(name: str, why: str, n_boot: int = X.N_BOOT) -> Path:
     assert chat.FORMAT == "chat", "47.8 renders chat prompts: run with BJ_FORMAT unset"
     target = pins.TARGET
     assert target in LAYERS, f"47.8 runs on {sorted(LAYERS)}, not {target}"
-    layers, n_test, fixed = LAYERS[target], N_TEST[target], X.PREDICTED[target]
+    layers, n_test, fixed = tuple(layers or LAYERS[target]), N_TEST[target], X.PREDICTED[target]
     assert fixed in layers, f"the fixed layer L{fixed} is not in the sweep {layers}"
     pins.check_lens_layers(layers)
     cached = locker_layers(layers)
@@ -1097,12 +1098,13 @@ def main() -> None:
     ap.add_argument("--runs", nargs="+", default=list(RUNS.values()), help="verdict / view: the 47.8 runs")
     ap.add_argument("--verdict", type=Path, help="figures: the verdict folder (results/x47_anatomy/x47_8-<UTC>)")
     ap.add_argument("--n-boot", type=int, default=X.N_BOOT)
+    ap.add_argument("--layers", type=int, nargs="+", help="run: a sweep other than the target's default (49.4)")
     a = ap.parse_args()
     if a.stage == "plan":
         stage_plan()
     elif a.stage == "run":
         assert a.name, "run needs --name"
-        stage_run(a.name, a.why, a.n_boot)
+        stage_run(a.name, a.why, a.n_boot, tuple(a.layers) if a.layers else None)
     elif a.stage == "verdict":
         stage_verdict(a.runs, a.n_boot)
     elif a.stage == "view":

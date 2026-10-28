@@ -1,0 +1,59 @@
+id: x49_4_27b
+title: "Batch 49.4 (47.8 reduced) on the 27B (L32; every 8th layer L8-L56 plus L30, L32, L34 (9 layers)): layer anatomy of the switch. Routes scenes (another item moved; the sanity swap), locker-first, split by bridge entity into a fit half and a test half; per layer the J++ / address (U_l) / identity-outside-J++ (I_l) parts of the bridge word's change, keep-only and without arms each against a random part of the same share, both readers, the probes and the refits; the D4 cache; SEALED until Q47.8"
+thread: C3
+gpus: 1
+mem_gb: 75
+est_gpu_hours: 1.5
+command: >-
+  export BJ_TARGET=qwen3.6-27b BJ_DEVICE_MAP=; uv run python scripts/x47_anatomy.py run --name x49_4_anatomy_27b --layers 8 16 24 30 32 34 40 48 56 --why "batch 49, test 49.4 (jobs/c3/batch49.yaml; 47.8's arms and rules, Q47.8, sealed): the 27B's layer anatomy, reduced grid L8-L56 every 8th plus L30, L32, L34, 150 test scenes"
+question: >-
+  As depth increases, what does a change at the bridge word move, and through which part: the lens-readable identity
+  (the J++ part), the identity outside the lens (I_l), the address (U_l), or nothing? Does the lookup stop needing the
+  lens part before or when it starts using the address (handoff), does the address form before it is used, does the
+  identity leave the lens by L, and is the value never taken at any depth?
+why_it_matters: >-
+  The coarse version (Fig 6: 4-5 layers, J++ and position only) left the depth picture a candidate: Q35.1 held on the
+  9B and failed on the 27B by about 4 layers. One sweep with every part, both readers and the probes shows the around
+  route forming layer by layer and turns Fig 6's "after the data" readings into the rule-based readings (a)-(d). The
+  cached fit-half states and per-layer refits also feed D4 (address persistence, lens identity vs the embedding, the
+  cross-track alignment table) on the CPU.
+hypotheses:
+  Q47.8: "Dan's answer in predictions/2026-10-28_dan.md (Q47.8); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x47_anatomy.py verdict / view / figures refuse until it is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, 47.8; per model, the rest descriptive). l_J = the first layer from which the
+  lookup's extra loss without J++ stays <= 0.10; l_P = the first layer where the position share under the whole change
+  is >= 0.20; l_probe = the first layer where the slot probe is >= 0.80. (a) Handoff: l_P >= l_J, report l_P - l_J
+  (Q35.1's failure on the 27B predicts a gap of about 4 layers there). (b) The address forms before it is used: l_probe
+  <= l_P on every model; if the probe reaches 0.80 only after l_P, say so. (c) Identity leaves the lens: identity share
+  with only-J++ >= 0.5 at the earliest interpretable layer and <= 0.1 by L, while identity with only-I_l rises to >= 0.3
+  by L, on >= 2 of 3 models; report the crossing layer. (d) Never the value, at any depth: value <= 0.05 at every
+  interpretable layer. (e) The recall side: the layer window where the whole change switches the recall >= 0.5, and
+  whether without-J++ costs it >= 0.3 throughout that window (the recall's own onset layer reported beside l_J). 'Not
+  interpretable' where the whole change switches < 30% of a reader. As computed (fixed by the agent before any run; Dan
+  may override before the run): Scenes: x6_routes' generator (seed 2510; locker-first), conditions C2 and C0, X0's gate
+  (0.80 per reader on unedited scenes) and eligibility; the eligible C2 scenes split by bridge entity (seed 0; entities
+  in a seeded order fill the test half to N_TEST scenes, the rest form the fit half, >= 150 or the run stops). Per sweep
+  layer, from one forward of O and of S per scene: on the fit half the layout-free slot means and U_l (mass-mean basis;
+  rank 2 with three lockers, the spec's rank 4 is not reachable here), the entity means over O and S bridge-word states
+  and Id_l, x0_probe's three probes (entities held out), the refit's held-out slot / entity accuracy on the test half,
+  the lens's top-10 rate for the bridge token; on the test half Delta = h_S - h_O and its parts J (signed OMP, 25 atoms
+  of the layer's J++ lens, letter tokens), U (projection on U_l), I (rank-1 along mu_S - mu_O orthogonalised against the
+  scene's atoms; zero where an entity has no mean, the scene left out of the I cells), W_E's 25-atom part and its
+  overlap with J (D4). Random parts of the same share per scene: random lens atoms (seed 777 + l) for J, X0's random
+  subspace (seed 888 + l) for U and I. Arms: none, whole, keep_X, keep_X_rand, no_X, no_X_rand for X in J, U, I; C0
+  scenes none and whole. Reads: X0's chat read, both readers; lookup answers classified identity / position / value /
+  original / other, recall answers changed / original / slot item / other. Verdict (CPU, after Q47.8): per model and
+  layer, shares and extra losses (X.cell) with cluster-bootstrap CIs over bridge entities (10,000, seed 0); the lookup's
+  switch = identity + position + value, the recall's = changed; not interpretable where the whole change switches <
+  0.30; l_J, l_P, l_probe and rules (a)-(e) as the spec words them, point estimates, EPS 1e-9. C0 check at L: the whole
+  change's lookup switch within 0.10 of the one-pick reference (Muse: >= 0.5), else the job fails after writing its
+  files.
+controls:
+- 'every keep-only and without arm paired with a random part of the same share of the change per scene: random lens atoms (seed 777 + layer) for the J++ part, X0''s random subspace (seed 888 + layer) for U_l and I_l; the achieved random shares recorded per scene (norms.jsonl)'
+- 'the sanity swap C0 (Iris picks the other item, nothing moves) read under the whole change at every layer; at L its lookup switch rate must be within 0.10 of the one-pick reference (Muse: >= 0.5), else the job fails after writing its files'
+- 'the fit half and the test half share no bridge entity (split.json); the refits'' held-out slot / entity accuracy on the test half and the lens''s top-10 rate per layer are reported beside the arms (dumbest ways 1 and 3)'
+- 'none (O unedited) read beside every arm; layers where the whole change switches < 30% of a reader are shaded and not read (dumbest way 2)'
+- 'the recall reader on the same scenes and arms: changed item / original item / the item at the target slot / other'
+n: '150 test scenes (C2, another item moved) and their C0 base scenes; the fit half every other eligible C2 scene up to 250 (at least 150, else the run stops); plan on the 9B tokenizer (28 Oct): 700 C2 scenes generated, 32 bridge entities (10 to the test half, 22 to the fit half when all are eligible); x6_routes'' eligibility on the 9B was 573 of 700'
+seeds: [0, 777, 888, 2510]
+notes: "Batch 49 test 49.4 (Dan 28 Oct brief; queue item 10 in amendment 1): x47_8_27b with the reduced grid passed by --layers (9 of 15 layers; 150 scenes as before); est 1.8 x 9/15 = 1.1 GPU-h by 47.8's own estimate, Dan's 1.5 kept. Read beside the 9B and Muse (47.8): a position window at all? identity in the lens longer? Batch 47 amendment 2 (Dan, 28 Oct ~02:40); batch47.yaml amendment 3 queue order: after 48.1 (Muse), before D1 (27B); after the freeze unless the queue is ahead. SEALED: the job runs `run` only and writes manifest, competence, gate, split, cases, fit.json (probes, held-out accuracies, lens top-10, median shares per layer), norms.jsonl (per scene and layer: shares, random shares, atoms, the W_E-25 / J++-25 overlaps, the J++ share of U_l and of the identity direction), outcomes.jsonl, 10 items' greedy texts at L, c0_check.json and cache/ (fit_states.npz: the fit half's O and S bridge-word states at every sweep layer fp16 and the locker sentences' item and number tokens every 8th layer for the first 160 fit scenes; bases.npz: U_l, Id_l, slot / entity / layout means per layer) for D4. After Dan's Q47.8 is committed, by hand (CPU): uv run python scripts/x47_anatomy.py verdict (the three runs: qwen35_9b_x47_anatomy x47_anatomy_27b muse30_x47_anatomy), view (10 random test items, seed 0: O and S contexts, every arm's answer at L, the whole change by layer), figures --verdict <its folder>. Seeds: 0 the split, the bootstrap and the examples; 777 + layer the random lens atoms; 888 + layer the random subspace; 2510 the scenes. GPU estimate: per-layer rows: 1 + 15 x 13 = 196 per scene and reader; 150 x 2 x 196 = 58,800 rows + C0 150 x 2 x 16 = 4,800 rows = 63,600 rows in 600 + 300 read calls; forwards: fit 250 x 2 + test 150 x 2 + C0 150 x 2 = 1,100 recording 15 layers. The 27B's x45e_27b_dom (580 cases) took 1922 s against the 9B's 1008 s: 1.9x the 9B's per-call costs. Sum: forwards 1,100 x 0.5 = 550 s; test reads 600 x 1.9 = 1,140 s; C0 reads 300 x 0.6 = 180 s; competence 760 s; per-layer fits ~40 s x 15 = 600 s; setup 30 s: ~3,260 s = 0.9 h, rounded up to 1.8 (Dan's estimate 3; the 27B's 64 layers make the recording forwards the slowest). Cache size on this model: about 75 MB of states (250 x 15 x 5120 x fp16 x 2) + 80 MB of locker tokens; if that is too much for results/, cut N_LOCKER or LOCKER_STEP in scripts/x47_anatomy.py before enqueue."

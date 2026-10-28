@@ -620,3 +620,18 @@ def test_preview_models_have_the_contract(monkeypatch):
         for q, pts in m["rows"].items():
             assert all(isinstance(la, int) and len(v) == 3 for la, v in pts.items()), q
     assert pins.RESULTS_DIR.exists()
+
+
+def test_run_takes_a_reduced_layer_grid(fake_run):
+    # 49.4 (batch 49): the 27B's anatomy on a reduced grid passed on the command line; the fixed layer must be in it
+    out = A.stage_run(f"{pins_run_prefix()}fake_x47_anatomy_reduced", "test", n_boot=50, layers=(2, 6))
+    m = json.loads((out / "manifest.json").read_text())
+    assert m["layers"] == [2, 6]
+    with pytest.raises(AssertionError, match="fixed layer"):
+        A.stage_run(f"{pins_run_prefix()}fake_x47_anatomy_nofixed", "test", n_boot=50, layers=(2, 10))
+
+
+def pins_run_prefix() -> str:
+    from bridge_jspace import pins
+
+    return pins.RUN_PREFIX
