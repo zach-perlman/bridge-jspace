@@ -1,0 +1,55 @@
+{
+  "source": "muse30b_x45m_fresh",
+  "layer": 26,
+  "gate": {
+    "cases": 565,
+    "org_accuracy": {
+      "PP": 0.9681,
+      "PM": 0.885
+    },
+    "said_accuracy": {
+      "PP": 0.9699,
+      "PM": 0.8779
+    },
+    "cand_accuracy": {
+      "PP": 0.9681,
+      "PM": 0.885
+    },
+    "pass": true,
+    "eligible": 409,
+    "enough": true,
+    "descriptive": false
+  },
+  "items_at_L": 409,
+  "dropped": {},
+  "items": 409,
+  "entities": 44,
+  "orders": {
+    "locker-first": 178,
+    "locker-after": 231
+  },
+  "group45m": {
+    "locker-first / locker-before": 143,
+    "locker-after / locker-after": 170,
+    "locker-after / mixed": 61,
+    "locker-first / mixed": 35
+  },
+  "tokens_median": {
+    "lookup": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 28.0,
+      "5": 112.0,
+      "6": 112.0
+    },
+    "recall": {
+      "1": 1.0,
+      "2": 1.0,
+      "3": 2.0,
+      "4": 30.0,
+      "5": 115.0,
+      "6": 115.0
+    }
+  }
+}

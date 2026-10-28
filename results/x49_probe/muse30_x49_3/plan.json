@@ -1,0 +1,50 @@
+{
+  "target": "muse-glimmer-30b",
+  "layers": [
+    13,
+    26
+  ],
+  "run": "muse30b_x45m_fresh",
+  "scenes_at_L": 409,
+  "dropped": {},
+  "scenes": 409,
+  "entities": 44,
+  "groups": {
+    "before": 143,
+    "after": 170,
+    "mixed": 96
+  },
+  "rows": 1227,
+  "rows_by_stratum": {
+    "before": 592,
+    "after": 635
+  },
+  "rule_cell_rows": {
+    "after (locker-after scenes)": 170,
+    "before (locker-first scenes)": 143
+  },
+  "tokens": 9717,
+  "keys": {
+    "w:The": 1227,
+    "w:locker": 1227,
+    "w:of": 1227,
+    "item": 1227,
+    "w:is": 1227,
+    "number": 1227,
+    "w:.": 1227,
+    "w:space": 624,
+    "w:the": 465,
+    "item_pre": 39
+  },
+  "keys_in_rule": [
+    "item",
+    "number",
+    "w:.",
+    "w:The",
+    "w:is",
+    "w:locker",
+    "w:of",
+    "w:space"
+  ],
+  "names": 59
+}

@@ -1,0 +1,130 @@
+{
+  "exp": "x49_das_pos",
+  "run": "qwen35_9b_x49_das_pos",
+  "why": "batch 49, test 49.8 (jobs/c3/batch49.yaml, amendment 1; Q49.8): DAS at the bridge word at L12 on routes position counterfactuals (x6_routes C1 pairs the stored whole change sends to the position answer); R_pos at k = 2, 4, 8, random and shuffled-target baselines; U's and W's energy inside R_pos, the recall's cross read; sealed",
+  "written_utc": "2026-10-28T15:03:18Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DAS_GDN": "torch",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "90210687baeeb3fa286bf8dd0be71b5362421a7b",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "test": "49.8",
+  "spec": "jobs/c3/batch49.yaml (49.8)",
+  "question": "Q49.8 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch49.yaml": "7206f809c2b4989cb6cd81fd7500b4ec74ca182fe65adf13473def9eef91638a",
+    "results/x6_routes/qwen35_9b_x6_routes/manifest.json": "dc68a57ee42f8f1506a1b8a8271e0aae494a496efa7471881e73f88e6c872b99",
+    "results/x6_routes/qwen35_9b_x6_routes/cases.jsonl": "7e19b2d111e9089c2251cc2ffd0ae748d0050af47a946bac2adc65ce6dc4b0e8",
+    "results/x6_routes/qwen35_9b_x6_routes/outcomes.jsonl": "92e7555272a78aeb6be16af73591fa82bd5bf665844dedde690ba42f3ffc15e2"
+  },
+  "routes_run": "qwen35_9b_x6_routes",
+  "condition": "C1",
+  "layer": 12,
+  "ks": [
+    2,
+    4,
+    8
+  ],
+  "k_rule": 4,
+  "training": {
+    "loss": "cross-entropy of the position answer's token (O's locker digit at the slot the bridge's sentence occupies in S) at the read position (the appended space) of the O prompt under h_O + R R^T (h_S - h_O) at the bridge token at L; x48_das.train_subspace",
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "steps": 300,
+    "batch": 16,
+    "micro_batch": 8,
+    "batching": "each step 16 training rows drawn without replacement (seed 4803 + the R's seed)",
+    "parametrization": "torch.nn.utils.parametrizations.orthogonal on Linear(k, d).weight [d, k]",
+    "init_seed": "49 + 100 * k (shuffled: + 10)",
+    "shuffled_targets": "the training rows' targets permuted once, seed 4981 + k",
+    "random_R": "QR of a seeded Gaussian, seed 4982 + k"
+  },
+  "pairs": "qwen35_9b_x6_routes's C1 scenes read under the whole change, those whose stored whole change sent the lookup to the position answer; split by bridge entity 60 / 20 / 20 (train / select / test), seed 0",
+  "read": "X0's chat read (a digit's space token appended, the top token); the lookup's switch = the position answer (own-IIA); the recall's move = its top token is not O's answer (cross read)",
+  "geometry": "per pair and R (x48_das.geometry_row): energy; the share of R R^T Delta inside the pair's 25 / 100 signed-OMP J++ atoms, its 25 W_E atoms, U, W, U_fit, and outside the union (J++-25, U, W_E-25); per R: ||R^T U||_F^2 / rank U, the same for W, principal angles vs U and W; U vs W",
+  "U": {
+    "states_run": "qwen35_9b_x0_probe_v4",
+    "rank": 4,
+    "info": {
+      "states_run": "qwen35_9b_x0_probe_v4",
+      "n": 758,
+      "rank": {
+        "A": 4,
+        "V": 8,
+        "AV": 12,
+        "Alf": 4,
+        "Id": 45
+      },
+      "layout_groups": {
+        "groups": 31,
+        "items_kept": 758,
+        "singletons_dropped": 0
+      },
+      "A_Alf_overlap": 0.7249048684052313
+    }
+  },
+  "W": {
+    "run": "qwen35_9b_x47_2",
+    "slots": 6,
+    "rank": 5,
+    "file": "results/x47_six/qwen35_9b_x47_2/fit.npz",
+    "sha256": "74687ee895327b94a42a6869b8dcaf2a8a2ac2c2738abf00e37b724db0a50b74"
+  },
+  "arms": [
+    "none",
+    "whole",
+    "R_pos_k2",
+    "rand_k2",
+    "shuf_pos_k2",
+    "R_pos_k4",
+    "rand_k4",
+    "shuf_pos_k4",
+    "R_pos_k8",
+    "rand_k8",
+    "shuf_pos_k8"
+  ],
+  "rule": {
+    "ours": "at k = 4, >= 0.6 of U's energy lies in R_pos (random k/d ~ 0.001), own-IIA >= 0.6 and the recall's cross-IIA <= 0.1",
+    "two_codes": "own-IIA >= 0.6 but U's energy in R_pos <= 0.2; then report which one the writes used (47.2's slot-specific result: W) and the angle between them",
+    "no_mediator": "own-IIA < 0.6",
+    "in_between": "none of the above"
+  },
+  "as_computed": "every rule at k = 4 on the test entities' pairs: own-IIA = the share of test pairs whose lookup top token under R_pos is the position answer (O's locker digit at the slot the bridge's sentence occupies in S); U's energy in R_pos = ||R_pos^T U||_F^2 / rank U (x6_routes.mean_cos2; a random R: k / d); the recall's cross-IIA = the share of test pairs whose recall top token under R_pos is not O's answer (the item is the same in O and S, so any move is collateral); point estimates at the bars (EPS 1e-9), cluster-bootstrap CIs over bridge entities (10,000, seed 0) beside them; exactly one label holds: ours, else two codes, else no mediator (own-IIA < 0.6), else in between; own-IIA / the whole change's rerun position share beside; the select split reported, not used to choose k",
+  "seeds": {
+    "split": 0,
+    "init": 49,
+    "shuffle": 4981,
+    "random_R": 4982,
+    "batches": 4803,
+    "bootstrap": 0,
+    "examples": 0,
+    "routes_scenes": 2510
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the run; results closed until predictions/2026-10-28_dan.md holds Dan's Q49.8 answer",
+  "gdn_kernel": "torch reference (BJ_DAS_GDN=torch; transformers.models.qwen3_5.modeling_qwen3_5.torch_chunk_gated_delta_rule replaced)"
+}

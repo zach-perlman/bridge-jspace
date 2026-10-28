@@ -1,0 +1,58 @@
+{
+  "exp": "x49_probe",
+  "run": "qwen35_9b_x49_3",
+  "why": "batch 49, test 49.3 (jobs/c3/batch49.yaml; Q49.3, sealed): the 9B's clean-design scenes (qwen35_9b_x45m_fresh) at L12; O's states at L6 and L12 at every token of every locker sentence with a picker and the sentence mean (the probes are fit at the verdict)",
+  "written_utc": "2026-10-28T15:16:58Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "90210687baeeb3fa286bf8dd0be71b5362421a7b",
+    "dirty": true
+  },
+  "test": "49.3",
+  "spec": "jobs/c3/batch49.yaml (49.3)",
+  "question": "Q49.3 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch49.yaml": "7206f809c2b4989cb6cd81fd7500b4ec74ca182fe65adf13473def9eef91638a",
+    "results/x0_necessity/qwen35_9b_x45m_fresh/manifest.json": "fea181692f83b1688897957c692711da44df2648e960e14e5f33f27d88624b2c",
+    "results/x0_necessity/qwen35_9b_x45m_fresh/cases.jsonl": "038ff4ff994328764607b4daa9e7b06cfa8098775a75f6a116cbb6c52389d334",
+    "results/x0_necessity/qwen35_9b_x45m_fresh/outcomes.jsonl": "a647424e642a5787c03cf28b0227730fa91b5a8b6d9790f5ea6ef8b5ff09d08d"
+  },
+  "source": "qwen35_9b_x45m_fresh",
+  "layer": 12,
+  "layers": [
+    6,
+    12
+  ],
+  "rendering": "chat",
+  "scenes": "the clean-design run's chat scenes at L (48.3's scene_item); groups by x45m.group_of",
+  "states": "O (the lookup's prompt), every token of every locker sentence with a picker, and the sentence mean (fp32 mean, stored fp16), at L // 2 and L",
+  "probes": {
+    "picker": "(i) the picker, of the scene's three people (chance 1/3)",
+    "asked": "(ii) picked by the asked person, binary (balanced accuracy, chance 0.5)",
+    "identity": "(iii) the picked item's identity, of the scene's locker items (chance 1/4)"
+  },
+  "rule": "\"Distributed person mark\": pooled (i) >= 0.85 with every per-token (i) <= 0.6. \"A picked-flag, not a person\": (ii) >= 0.85 pooled or at some token while (i) <= 0.5. \"Neither at the sentence\": both at chance; the link is made elsewhere. Controls: locker-first scenes must be at chance for (i), (ii); the other items' locker sentences beside.",
+  "chance_margin": 0.1,
+  "key_share": 0.5,
+  "seeds": {
+    "folds": 0,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no probe in the run; closed until predictions/2026-10-28_dan.md holds Dan's Q49.3 answer"
+}

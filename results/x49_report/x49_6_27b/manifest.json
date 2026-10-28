@@ -1,0 +1,61 @@
+{
+  "exp": "x49_report",
+  "run": "x49_6_27b",
+  "why": "batch 49, test 49.6 (jobs/c3/batch49.yaml; Q49.6, sealed): the report reworded twice on 47.10's 500 C0 scenes, O only, question-last; greedy text, the top token and the candidate read per scene and wording",
+  "written_utc": "2026-10-28T15:14:40Z",
+  "model": {
+    "target": "qwen3.6-27b",
+    "repo": "Qwen/Qwen3.6-27B",
+    "revision": "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.6-27b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.6-27b",
+    "lens_sha256": "bbef480b41028e156c4aa3c334ad32d1b76a4017ef3a7245eecf776bf2b58f8f"
+  },
+  "code": {
+    "sha": "60689148dd9a5d0689b1e0b1ebac49cbf6718297",
+    "dirty": true
+  },
+  "test": "49.6",
+  "spec": "jobs/c3/batch49.yaml (49.6)",
+  "question": "Q49.6 (predictions/2026-10-28_dan.md)",
+  "inputs": {
+    "jobs/c3/batch49.yaml": "6e234f34b00b5be4cc1018fa81a0ca6b99104ded8c15fd2aa7bd6e0592168672"
+  },
+  "scenes": "47.10's: x6_routes.scenes C0 (seed 2510), 500 generated, x47_report.build_items' drops; O only",
+  "orders": {
+    "last": "question-last: the question after the context (tasks_v2's prompt, as every routes test)"
+  },
+  "wordings": {
+    "position": {
+      "question": "Was the locker of {p}'s pick listed in position 1, 2 or 3 of the list?",
+      "kind": "digit"
+    },
+    "sentence": {
+      "question": "Which of the three locker sentences - the first, the second or the third - gives the locker of {p}'s pick?",
+      "kind": "word"
+    }
+  },
+  "read": "X0's chat read (47.10's): a digit wording with the space token appended, the word wording right after 'Answer:'; said = 47.10's said on 8 greedy tokens; read = the top token is the answer token; cand = the highest of the three answer tokens",
+  "reference": {
+    "runs": {
+      "qwen3.6-27b": "x47_report_27b",
+      "qwen3.5-9b": "qwen35_9b_x47_report"
+    },
+    "what": "47.10's report / report_digit, question-last, O (competence.jsonl)"
+  },
+  "rule": "slot 1's read accuracy (question-last) <= 0.2 under both wordings on the 9B: keep as an appendix curiosity; above 0.2 under either: drop",
+  "seeds": {
+    "scenes": 2510,
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no rates in the run; closed until predictions/2026-10-28_dan.md holds Dan's Q49.6 answer"
+}

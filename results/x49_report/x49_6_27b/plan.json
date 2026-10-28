@@ -1,0 +1,37 @@
+{
+  "generated_C0": 500,
+  "items": 500,
+  "entities": 32,
+  "dropped": {
+    "A and B have the same number of legs": 236
+  },
+  "slot_of_O_bridge": {
+    "2": 173,
+    "1": 180,
+    "0": 147
+  },
+  "slot_of_S_bridge": {
+    "1": 152,
+    "2": 173,
+    "0": 175
+  },
+  "orders": [
+    "last"
+  ],
+  "wordings": {
+    "position": {
+      "question": "Was the locker of {p}'s pick listed in position 1, 2 or 3 of the list?",
+      "kind": "digit"
+    },
+    "sentence": {
+      "question": "Which of the three locker sentences - the first, the second or the third - gives the locker of {p}'s pick?",
+      "kind": "word"
+    }
+  },
+  "true_slot": {
+    "1": 147,
+    "2": 180,
+    "3": 173
+  },
+  "target": "qwen3.6-27b"
+}
