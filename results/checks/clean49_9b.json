@@ -1,0 +1,601 @@
+{
+ "what": "batch 49, test 49.5: the 9B's headline cells rerun from a clean checkout (job x49_5_9b), compared row by row with the runs of record",
+ "test": "49.5",
+ "job": "x49_5_9b",
+ "written_at": "7665a4d8",
+ "comparisons": [
+  {
+   "test": "main test",
+   "exp": "x0_necessity",
+   "record_run": "qwen35_9b_x0_necessity",
+   "clean_run": "qwen35_9b_clean49_x0_necessity",
+   "record_code": {
+    "sha": "502b920fa2d72975e1cff43f258ebc4488698642",
+    "dirty": true
+   },
+   "clean_code": {
+    "sha": "90210687baeeb3fa286bf8dd0be71b5362421a7b",
+    "dirty": true
+   },
+   "key": [
+    "scene",
+    "rendering",
+    "layer",
+    "reader",
+    "upstream",
+    "dict",
+    "k",
+    "omp",
+    "arm"
+   ],
+   "fields": [
+    "switched",
+    "cand_switched",
+    "cand_org_first",
+    "role",
+    "ws_skipped"
+   ],
+   "rows_record": 37600,
+   "rows_clean": 37600,
+   "shared": 37600,
+   "only_record": 0,
+   "only_clean": 0,
+   "only_record_first": [],
+   "only_clean_first": [],
+   "duplicate_keys": {
+    "record": 0,
+    "clean": 0
+   },
+   "differing": {
+    "switched": 0,
+    "cand_switched": 0,
+    "cand_org_first": 0,
+    "role": 0,
+    "ws_skipped": 0
+   },
+   "fields_missing": {},
+   "max_abs_diff": {
+    "p_org": 0.0,
+    "p_alt": 0.0,
+    "ld": 0.0
+   },
+   "examples": [],
+   "identical": true
+  },
+  {
+   "test": "routes",
+   "exp": "x6_routes",
+   "record_run": "qwen35_9b_x6_routes",
+   "clean_run": "qwen35_9b_clean49_x6_routes",
+   "record_code": {
+    "sha": "dc9992a7a39f41fdd324c31f71ffbfe7e62bccf0",
+    "dirty": true
+   },
+   "clean_code": {
+    "sha": "90210687baeeb3fa286bf8dd0be71b5362421a7b",
+    "dirty": true
+   },
+   "key": [
+    "scene",
+    "condition",
+    "reader",
+    "arm"
+   ],
+   "fields": [
+    "top",
+    "route",
+    "switched",
+    "cand_switched",
+    "cand_org_first",
+    "role"
+   ],
+   "rows_record": 10800,
+   "rows_clean": 10800,
+   "shared": 10800,
+   "only_record": 0,
+   "only_clean": 0,
+   "only_record_first": [],
+   "only_clean_first": [],
+   "duplicate_keys": {
+    "record": 0,
+    "clean": 0
+   },
+   "differing": {
+    "top": 0,
+    "route": 0,
+    "switched": 0,
+    "cand_switched": 0,
+    "cand_org_first": 0,
+    "role": 0
+   },
+   "fields_missing": {},
+   "max_abs_diff": {
+    "p_org": 0.0,
+    "p_alt": 0.0,
+    "ld": 0.0
+   },
+   "examples": [],
+   "identical": true
+  },
+  {
+   "test": "only-U",
+   "exp": "x6_routes",
+   "record_run": "qwen35_9b_x6_routes_keeponly",
+   "clean_run": "qwen35_9b_clean49_x6_routes_keeponly",
+   "record_code": {
+    "sha": "3d42857c1f748c9a5d7805303ccf29bd8bcf6bd2",
+    "dirty": true
+   },
+   "clean_code": {
+    "sha": "90210687baeeb3fa286bf8dd0be71b5362421a7b",
+    "dirty": true
+   },
+   "key": [
+    "scene",
+    "condition",
+    "reader",
+    "arm"
+   ],
+   "fields": [
+    "top",
+    "route",
+    "switched",
+    "cand_switched",
+    "cand_org_first",
+    "role"
+   ],
+   "rows_record": 12000,
+   "rows_clean": 12000,
+   "shared": 12000,
+   "only_record": 0,
+   "only_clean": 0,
+   "only_record_first": [],
+   "only_clean_first": [],
+   "duplicate_keys": {
+    "record": 0,
+    "clean": 0
+   },
+   "differing": {
+    "top": 0,
+    "route": 0,
+    "switched": 0,
+    "cand_switched": 0,
+    "cand_org_first": 0,
+    "role": 0
+   },
+   "fields_missing": {},
+   "max_abs_diff": {
+    "p_org": 0.0,
+    "p_alt": 0.0,
+    "ld": 0.0
+   },
+   "examples": [],
+   "identical": true
+  },
+  {
+   "test": "47.5 zeroing",
+   "exp": "x47_zero",
+   "record_run": "qwen35_9b_x47_5",
+   "clean_run": "qwen35_9b_clean49_x47_5",
+   "record_code": {
+    "sha": "86a467f5d781b14b342f439908c1cfa42b368d4d",
+    "dirty": true
+   },
+   "clean_code": {
+    "sha": "90210687baeeb3fa286bf8dd0be71b5362421a7b",
+    "dirty": true
+   },
+   "key": [
+    "scene",
+    "reader",
+    "arm"
+   ],
+   "fields": [
+    "kept",
+    "to_org",
+    "cand_kept",
+    "top",
+    "role"
+   ],
+   "rows_record": 2000,
+   "rows_clean": 2000,
+   "shared": 2000,
+   "only_record": 0,
+   "only_clean": 0,
+   "only_record_first": [],
+   "only_clean_first": [],
+   "duplicate_keys": {
+    "record": 0,
+    "clean": 0
+   },
+   "differing": {
+    "kept": 0,
+    "to_org": 0,
+    "cand_kept": 0,
+    "top": 0,
+    "role": 0
+   },
+   "fields_missing": {},
+   "max_abs_diff": {
+    "p_org": 0.0,
+    "p_alt": 0.0,
+    "ld": 0.0
+   },
+   "examples": [],
+   "identical": true
+  },
+  {
+   "test": "47.8 anatomy",
+   "exp": "x47_anatomy",
+   "record_run": "qwen35_9b_x47_anatomy",
+   "clean_run": "qwen35_9b_clean49_x47_anatomy",
+   "record_code": {
+    "sha": "840f31b9e278a986811e48054d01cb759df6e210",
+    "dirty": true
+   },
+   "clean_code": {
+    "sha": "90210687baeeb3fa286bf8dd0be71b5362421a7b",
+    "dirty": true
+   },
+   "record_scope": "layer in (None, 10, 12)",
+   "key": [
+    "scene",
+    "condition",
+    "reader",
+    "layer",
+    "arm"
+   ],
+   "fields": [
+    "route",
+    "switched",
+    "top",
+    "top_text",
+    "cand_switched",
+    "cand_org_first",
+    "role"
+   ],
+   "rows_record": 11988,
+   "rows_clean": 11988,
+   "shared": 11988,
+   "only_record": 0,
+   "only_clean": 0,
+   "only_record_first": [],
+   "only_clean_first": [],
+   "duplicate_keys": {
+    "record": 0,
+    "clean": 0
+   },
+   "differing": {
+    "route": 36,
+    "switched": 18,
+    "top": 38,
+    "top_text": 38,
+    "cand_switched": 19,
+    "cand_org_first": 30,
+    "role": 28
+   },
+   "fields_missing": {},
+   "max_abs_diff": {
+    "p_org": 0.15840000000000004,
+    "p_alt": 0.15999999999999998,
+    "ld": 0.75
+   },
+   "examples": [
+    {
+     "key": {
+      "scene": "C2-0003",
+      "condition": "C2",
+      "reader": "PM",
+      "layer": 10,
+      "arm": "no_U_rand"
+     },
+     "differs": {
+      "route": [
+       "other",
+       "changed"
+      ],
+      "switched": [
+       0,
+       1
+      ],
+      "top": [
+       21,
+       17
+      ],
+      "top_text": [
+       "6",
+       "2"
+      ],
+      "role": [
+       "other",
+       "b"
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0006",
+      "condition": "C2",
+      "reader": "PM",
+      "layer": 12,
+      "arm": "no_U"
+     },
+     "differs": {
+      "cand_org_first": [
+       0,
+       1
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0012",
+      "condition": "C2",
+      "reader": "PM",
+      "layer": 10,
+      "arm": "no_J_rand"
+     },
+     "differs": {
+      "cand_switched": [
+       1,
+       0
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0018",
+      "condition": "C2",
+      "reader": "PM",
+      "layer": 12,
+      "arm": "no_U"
+     },
+     "differs": {
+      "cand_org_first": [
+       1,
+       0
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0019",
+      "condition": "C2",
+      "reader": "PM",
+      "layer": 12,
+      "arm": "no_U_rand"
+     },
+     "differs": {
+      "cand_org_first": [
+       1,
+       0
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0045",
+      "condition": "C2",
+      "reader": "PP",
+      "layer": 12,
+      "arm": "no_J_rand"
+     },
+     "differs": {
+      "cand_org_first": [
+       1,
+       0
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0057",
+      "condition": "C2",
+      "reader": "PP",
+      "layer": 10,
+      "arm": "no_J_rand"
+     },
+     "differs": {
+      "route": [
+       "identity",
+       "position"
+      ],
+      "top": [
+       16,
+       17
+      ],
+      "top_text": [
+       "1",
+       "2"
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0080",
+      "condition": "C2",
+      "reader": "PP",
+      "layer": 12,
+      "arm": "no_U_rand"
+     },
+     "differs": {
+      "route": [
+       "position",
+       "identity"
+      ],
+      "top": [
+       21,
+       19
+      ],
+      "top_text": [
+       "6",
+       "4"
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0103",
+      "condition": "C2",
+      "reader": "PM",
+      "layer": 10,
+      "arm": "no_J_rand"
+     },
+     "differs": {
+      "route": [
+       "original",
+       "changed"
+      ],
+      "switched": [
+       0,
+       1
+      ],
+      "top": [
+       21,
+       19
+      ],
+      "top_text": [
+       "6",
+       "4"
+      ],
+      "cand_org_first": [
+       1,
+       0
+      ],
+      "role": [
+       "A",
+       "b"
+      ]
+     }
+    },
+    {
+     "key": {
+      "scene": "C2-0143",
+      "condition": "C2",
+      "reader": "PM",
+      "layer": 12,
+      "arm": "no_U"
+     },
+     "differs": {
+      "cand_org_first": [
+       1,
+       0
+      ]
+     }
+    }
+   ],
+   "identical": false
+  }
+ ],
+ "cells": [
+  {
+   "cell": "Main test gap (recall extra loss minus lookup extra loss), L12, chat",
+   "test": "main test",
+   "record": 0.5260333575054387,
+   "n_record": 200,
+   "clean": 0.5260333575054387,
+   "n_clean": 200,
+   "same": true
+  },
+  {
+   "cell": "Routes, another item moved, whole change: identity share",
+   "test": "routes",
+   "record": 0.48,
+   "n_record": 300,
+   "clean": 0.48,
+   "n_clean": 300,
+   "same": true
+  },
+  {
+   "cell": "Routes, another item moved, whole change: position share",
+   "test": "routes",
+   "record": 0.51,
+   "n_record": 300,
+   "clean": 0.51,
+   "n_clean": 300,
+   "same": true
+  },
+  {
+   "cell": "Routes, another item moved, whole change: value share",
+   "test": "routes",
+   "record": 0.0,
+   "n_record": 300,
+   "clean": 0.0,
+   "n_clean": 300,
+   "same": true
+  },
+  {
+   "cell": "Pointer directions removed: position share",
+   "test": "routes",
+   "record": 0.08333333333333333,
+   "n_record": 300,
+   "clean": 0.08333333333333333,
+   "n_clean": 300,
+   "same": true
+  },
+  {
+   "cell": "A random part of their size removed: position share",
+   "test": "routes",
+   "record": 0.5433333333333333,
+   "n_record": 300,
+   "clean": 0.5433333333333333,
+   "n_clean": 300,
+   "same": true
+  },
+  {
+   "cell": "Only the pointer directions added (only-U): position share",
+   "test": "only-U",
+   "record": 0.26,
+   "n_record": 300,
+   "clean": 0.26,
+   "n_clean": 300,
+   "same": true
+  },
+  {
+   "cell": "Only a random part of their size added: position share",
+   "test": "only-U",
+   "record": 0.0,
+   "n_record": 300,
+   "clean": 0.0,
+   "n_clean": 300,
+   "same": true
+  },
+  {
+   "cell": "47.5: recall answers kept, J++ atoms zeroed at L12",
+   "test": "47.5 zeroing",
+   "record": 0.975,
+   "n_record": 200,
+   "clean": 0.975,
+   "n_clean": 200,
+   "same": true
+  },
+  {
+   "cell": "47.5: recall answers kept, random subspace zeroed at L12",
+   "test": "47.5 zeroing",
+   "record": 1.0,
+   "n_record": 200,
+   "clean": 1.0,
+   "n_clean": 200,
+   "same": true
+  },
+  {
+   "cell": "47.8: position share under the whole change at L10",
+   "test": "47.8 anatomy",
+   "record": 0.02,
+   "n_record": 200,
+   "clean": 0.015,
+   "n_clean": 200,
+   "same": false
+  },
+  {
+   "cell": "47.8: position share under the whole change at L12",
+   "test": "47.8 anatomy",
+   "record": 0.51,
+   "n_record": 200,
+   "clean": 0.515,
+   "n_clean": 200,
+   "same": false
+  }
+ ],
+ "all_identical": false
+}

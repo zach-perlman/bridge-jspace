@@ -1,0 +1,83 @@
+{
+  "exp": "x47_zero",
+  "run": "qwen35_9b_clean49_x47_5",
+  "why": "batch 49, test 49.5 (jobs/c3/batch49.yaml): clean-checkout rerun of qwen35_9b_x47_5, same command (47.5: on S, the bridge word's state without its projection on Δ's 25 OMP atoms at L12 and at L12..15, against a random subspace of the same share)",
+  "written_utc": "2026-10-28T15:47:31Z",
+  "model": {
+    "target": "qwen3.5-9b",
+    "repo": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "attn": "sdpa",
+    "prompt_format": "chat"
+  },
+  "switches": {
+    "target": "qwen3.5-9b",
+    "BJ_DEVICE_MAP": "",
+    "BJ_SUITE_BATCH": "64",
+    "BJ_TARGET": "qwen3.5-9b",
+    "lens_sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "code": {
+    "sha": "90210687baeeb3fa286bf8dd0be71b5362421a7b",
+    "dirty": true
+  },
+  "lens": {
+    "name": "jpp",
+    "source": [
+      "neuronpedia/jacobian-lens",
+      "qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+      "e166deb5ad540932100ef803c8c9bcc2a5453694"
+    ],
+    "sha256": "8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5"
+  },
+  "test": "47.5",
+  "spec": "jobs/c3/batch47.yaml (47.5)",
+  "question": "Q47.5 (predictions/2026-10-28_dan.md)",
+  "set": "d1_topics_v3",
+  "rendering": "chat",
+  "inputs": {
+    "data/tasks_v2/d1_topics_v3/items.jsonl": "364c234bda17f194a6bbd2392b35fd0616cf19c1d88e1b9ab6825440894cfb1b",
+    "jobs/c3/batch47.yaml": "e1a71ab545df30c66ff629ef4568ba6b0257af3b7d16badc1c1e840ebce8f3ce"
+  },
+  "layer": 12,
+  "layers": [
+    12,
+    13,
+    14,
+    15
+  ],
+  "k": 25,
+  "omp": "signed (x0_parts.omp_atoms, X0's k = 25 picks)",
+  "arms": {
+    "none": "S unedited",
+    "zero_L": "at L, S's bridge-word state without its projection on Δ_L's 25 OMP atoms",
+    "rand_L": "at L, without its projection on a random subspace of the same share of ||h_S||^2",
+    "zero_L3": "the same zeroing at L, L+1, L+2, L+3 (per-layer lens, Δ_l and OMP)",
+    "rand_L3": "the random subspace of the same share at L..L+3"
+  },
+  "edit": "ProjectOut: h <- h - (h Q) Q^T at the bridge word, on the state as it arrives",
+  "random_part": "the first k columns of X0's random basis (seed 888 + layer), k per item matching the atoms' share of ||h_S||^2 on S's clean state at that layer",
+  "read": "X0's chat read of S: the prompt with a digit's space token appended; kept = the top token is S's answer's first token",
+  "gate": 0.8,
+  "n": {
+    "items": 200,
+    "min": 150
+  },
+  "order": {
+    "scenes": "sorted by scene id (build_cases); the eligible ones in that order, the first N_ITEMS kept; the kept ids in gate.json 'order'",
+    "competence": "per scene, reader and rendering: org and alt generated together (one batch of 2 rows), then each one's read alone (a batch of 1)",
+    "delta": "per scene: one unbatched forward of org and of alt",
+    "reads": "per item and reader: S's prompt under the arms in ARMS order, in batches of at most 64 rows",
+    "batch": 64
+  },
+  "rule": "\"followed, not needed at one layer\" if the recall keeps >= 0.80 of its answers under the zeroing, within 0.10 of the random arm; \"needed\" if it loses >= 0.30 beyond random. The lookup reported beside. Whatever the result, the README's verb for the main test becomes \"follows / reads\" unless \"needed\" holds on all three",
+  "decisive": "the recall at L (one layer)",
+  "seeds": {
+    "random_subspace": "888 + layer (CPU)",
+    "bootstrap": 0,
+    "examples": 0
+  },
+  "n_boot": 10000,
+  "sealed": "no verdict in the job; results closed until predictions/2026-10-28_dan.md holds Dan's Q47.5"
+}

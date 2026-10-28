@@ -1,0 +1,342 @@
+{
+ "layers": [
+  10,
+  12
+ ],
+ "per_layer": {
+  "10": {
+   "n_fit": 250,
+   "held_out": {
+    "slot": 1.0,
+    "slot_chance": 0.3333333333333333,
+    "entity": 0.81,
+    "entity_n": 200,
+    "entity_chance": 0.03225806451612903,
+    "rank_U": 2,
+    "rank_Id": 30
+   },
+   "probes": {
+    "answer digit": {
+     "n": 250,
+     "entities": 20,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      0.001,
+      0.01,
+      0.001,
+      1.0,
+      0.01
+     ],
+     "probe": [
+      0.2,
+      0.15810181053168432,
+      0.2393178893178893
+     ],
+     "majority": [
+      0.12,
+      0.07904878302475557,
+      0.15833333333333333
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.08000000000000002,
+      0.02100620582961219,
+      0.1401524001699235
+     ]
+    },
+    "locker sentence": {
+     "n": 250,
+     "entities": 20,
+     "classes": 3,
+     "chance": 0.3333,
+     "penalties": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.316,
+      0.26637014960067745,
+      0.36666666666666664
+     ],
+     "structure": [
+      0.292,
+      0.25,
+      0.33624454148471616
+     ],
+     "layout": [
+      0.292,
+      0.25,
+      0.33624454148471616
+     ],
+     "best_baseline": "chance",
+     "probe_minus_best": [
+      0.6666666666666667,
+      0.6666666666666667,
+      0.6666666666666667
+     ]
+    },
+    "bridge identity": {
+     "n": 250,
+     "entities": 20,
+     "classes": 20,
+     "chance": 0.05,
+     "penalties": [
+      1.0,
+      0.1,
+      0.1,
+      1.0,
+      1.0
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.092,
+      0.0,
+      0.2749003984063745
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.908,
+      0.7250996015936255,
+      1.0
+     ]
+    }
+   },
+   "lens_top10": 0.6160000562667847,
+   "entities_with_mean": 31,
+   "I_missing": 1,
+   "median_share": {
+    "J": 0.24012,
+    "U": 0.13567,
+    "I": 0.16607,
+    "WE": 0.11016
+   },
+   "median_share_rand": {
+    "J": 0.24015,
+    "U": 0.135,
+    "I": 0.16585
+   },
+   "jpp_share_of_U": 0.008266188453995146,
+   "jpp_share_of_I": 0.3122066180904523,
+   "WE_inside_J_median": 0.042203000000000004,
+   "J_inside_WE_median": 0.0427625,
+   "entities": [
+    "ant",
+    "bear",
+    "bee",
+    "beetle",
+    "butterfly",
+    "camel",
+    "cat",
+    "chicken",
+    "cow",
+    "crow",
+    "deer",
+    "dog",
+    "duck",
+    "eagle",
+    "elephant",
+    "fly",
+    "fox",
+    "frog",
+    "goat",
+    "goose",
+    "horse",
+    "lion",
+    "mouse",
+    "owl",
+    "pig",
+    "rabbit",
+    "sheep",
+    "spider",
+    "tiger",
+    "turkey",
+    "wolf"
+   ],
+   "layouts": [
+    "LLL",
+    "LLL.",
+    "LLL.."
+   ]
+  },
+  "12": {
+   "n_fit": 250,
+   "held_out": {
+    "slot": 1.0,
+    "slot_chance": 0.3333333333333333,
+    "entity": 0.725,
+    "entity_n": 200,
+    "entity_chance": 0.03225806451612903,
+    "rank_U": 2,
+    "rank_Id": 30
+   },
+   "probes": {
+    "answer digit": {
+     "n": 250,
+     "entities": 20,
+     "classes": 9,
+     "chance": 0.1111,
+     "penalties": [
+      0.01,
+      0.1,
+      0.01,
+      0.1,
+      0.001
+     ],
+     "probe": [
+      0.276,
+      0.21804511278195488,
+      0.3333333333333333
+     ],
+     "majority": [
+      0.12,
+      0.07904878302475557,
+      0.15833333333333333
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.15600000000000003,
+      0.09268245597513888,
+      0.21755725190839698
+     ]
+    },
+    "locker sentence": {
+     "n": 250,
+     "entities": 20,
+     "classes": 3,
+     "chance": 0.3333,
+     "penalties": [
+      10.0,
+      10.0,
+      100.0,
+      10.0,
+      10.0
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.316,
+      0.26637014960067745,
+      0.36666666666666664
+     ],
+     "structure": [
+      0.292,
+      0.25,
+      0.33624454148471616
+     ],
+     "layout": [
+      0.292,
+      0.25,
+      0.33624454148471616
+     ],
+     "best_baseline": "chance",
+     "probe_minus_best": [
+      0.6666666666666667,
+      0.6666666666666667,
+      0.6666666666666667
+     ]
+    },
+    "bridge identity": {
+     "n": 250,
+     "entities": 20,
+     "classes": 20,
+     "chance": 0.05,
+     "penalties": [
+      1.0,
+      0.1,
+      0.1,
+      1.0,
+      0.1
+     ],
+     "probe": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "majority": [
+      0.092,
+      0.0,
+      0.2749003984063745
+     ],
+     "best_baseline": "majority",
+     "probe_minus_best": [
+      0.908,
+      0.7250996015936255,
+      1.0
+     ]
+    }
+   },
+   "lens_top10": 0.36400002241134644,
+   "entities_with_mean": 31,
+   "I_missing": 1,
+   "median_share": {
+    "J": 0.18251,
+    "U": 0.1721,
+    "I": 0.12126,
+    "WE": 0.10609
+   },
+   "median_share_rand": {
+    "J": 0.18282,
+    "U": 0.17244,
+    "I": 0.1209
+   },
+   "jpp_share_of_U": 0.008738872426139015,
+   "jpp_share_of_I": 0.22650449246231155,
+   "WE_inside_J_median": 0.029096,
+   "J_inside_WE_median": 0.0303355,
+   "entities": [
+    "ant",
+    "bear",
+    "bee",
+    "beetle",
+    "butterfly",
+    "camel",
+    "cat",
+    "chicken",
+    "cow",
+    "crow",
+    "deer",
+    "dog",
+    "duck",
+    "eagle",
+    "elephant",
+    "fly",
+    "fox",
+    "frog",
+    "goat",
+    "goose",
+    "horse",
+    "lion",
+    "mouse",
+    "owl",
+    "pig",
+    "rabbit",
+    "sheep",
+    "spider",
+    "tiger",
+    "turkey",
+    "wolf"
+   ],
+   "layouts": [
+    "LLL",
+    "LLL.",
+    "LLL.."
+   ]
+  }
+ }
+}
