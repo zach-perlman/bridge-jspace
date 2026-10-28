@@ -54,6 +54,7 @@ import argparse
 import collections
 import json
 import math
+import os
 import random
 import re
 import statistics
@@ -82,8 +83,9 @@ QUESTION, QUESTION_DEPTH = "Q48.1", "Q-depth"
 # the stored main-test runs the pairs come from (chat rendering, the generator's cf, the layer fixed in advance)
 MAIN_RUN = {"qwen3.5-9b": "qwen35_9b_x0_necessity", "muse-glimmer-30b": "muse30b_x0_necessity",
             "qwen3.6-27b": "x0_necessity_27b_chat"}  # fmt: skip
-RUNS = {"qwen3.5-9b": "qwen35_9b_x48_das", "muse-glimmer-30b": "muse30_x48_das", "qwen3.6-27b": "x48_das_27b"}
-DEPTH_RUNS = {"qwen3.5-9b": ["qwen35_9b_x48_das", "qwen35_9b_x47_d3"]}
+# the 9B's runs are the r2 retries (BJ_DAS_GDN=torch): the first x48_1_9b failed in fla's backward (28 Oct)
+RUNS = {"qwen3.5-9b": "qwen35_9b_x48_das_r2", "muse-glimmer-30b": "muse30_x48_das", "qwen3.6-27b": "x48_das_27b"}
+DEPTH_RUNS = {"qwen3.5-9b": ["qwen35_9b_x48_das_r2", "qwen35_9b_x47_d3_r2"]}
 RENDERING = "chat"
 KS = (1, 4, 16, 64)
 K_LOW = 16  # rule (a): own-IIA >= 0.7 at some k <= 16
@@ -134,6 +136,26 @@ AS_COMPUTED_D3 = (
 
 
 # ---- pairs (tokenizer only) ---------------------------------------------------------------------------------------
+
+
+GDN_ENV = "BJ_DAS_GDN"
+
+
+def torch_gdn(hf) -> str | None:
+    """With BJ_DAS_GDN=torch, the linear-attention layers' chunked gated delta rule runs transformers' torch reference
+    instead of fla: fla 0.5.2's backward refuses on Hopper with Triton 3.6 (wrong gradients, fla #640; x48_1_9b,
+    28 Oct), and DAS needs that backward. Returns the patched module's name; None when the switch is off or the model
+    has no gated DeltaNet (Muse)."""
+    if os.environ.get(GDN_ENV, "") != "torch":
+        return None
+    from bridge_jspace.knockout import reference_chunk_rule
+
+    gdn = next((mod for mod in hf.modules() if type(mod).__name__.endswith("GatedDeltaNet")), None)
+    if gdn is None:
+        return None
+    ns = sys.modules[type(gdn).__module__]
+    setattr(ns, "torch_chunk_gated_delta_rule", reference_chunk_rule(gdn))  # the GDN forward reads the module global
+    return ns.__name__
 
 
 def rebuild(tok, set_name: str, alt: str) -> list[dict]:
@@ -677,6 +699,9 @@ def stage_run(name: str, why: str, layers: tuple[int, ...] | None = None, depth:
 
     R.warm_cusolver()
     model = load_model()
+    if (patched := torch_gdn(model.hf)) is not None:
+        m["gdn_kernel"] = f"torch reference ({GDN_ENV}=torch; {patched}.torch_chunk_gated_delta_rule replaced)"
+        (out / "manifest.json").write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n")
     for p in model.hf.parameters():  # the DAS gradient reaches R only; no weight gradients are stored
         p.requires_grad_(False)
     tok = model.tokenizer

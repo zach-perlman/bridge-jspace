@@ -536,3 +536,37 @@ def test_verdict_and_depth_stages_on_the_fake_runs(fake_env, monkeypatch):
     assert "leaves the lens" in (dv / "depth.md").read_text()
     with pytest.raises(AssertionError, match="two runs"):
         D.stage_depth([main.name, main.name], n_boot=50)
+
+
+def _tiny_gdn():
+    from transformers.models.qwen3_5 import configuration_qwen3_5 as cq
+    from transformers.models.qwen3_5 import modeling_qwen3_5 as mq
+
+    cfg = cq.Qwen3_5TextConfig(hidden_size=32, linear_num_key_heads=2, linear_num_value_heads=2, linear_key_head_dim=8,
+                               linear_value_head_dim=8, num_hidden_layers=1, num_attention_heads=2, num_key_value_heads=1,
+                               head_dim=16, intermediate_size=64, vocab_size=64)  # fmt: skip
+    return mq, torch.nn.Sequential(mq.Qwen3_5GatedDeltaNet(cfg, 0))
+
+
+def test_torch_gdn_switch_off_leaves_the_kernel(monkeypatch):
+    mq, hf = _tiny_gdn()
+    monkeypatch.delenv(D.GDN_ENV, raising=False)
+    rule = mq.torch_chunk_gated_delta_rule
+    assert D.torch_gdn(hf) is None and mq.torch_chunk_gated_delta_rule is rule
+    assert D.torch_gdn(torch.nn.Sequential(torch.nn.Linear(2, 2))) is None
+
+
+def test_torch_gdn_switch_puts_the_torch_reference_in_and_keeps_the_output(monkeypatch):
+    # x48_1_9b (28 Oct): fla's gated backward refuses on Hopper with Triton 3.6; the switch routes the GDN layers to
+    # transformers' own differentiable torch reference, which must compute the same rule and carry gradients
+    mq, hf = _tiny_gdn()
+    monkeypatch.setattr(mq, "torch_chunk_gated_delta_rule", mq.torch_chunk_gated_delta_rule)  # restored after the test
+    x = torch.randn(1, 5, 32, requires_grad=True)
+    before = hf[0](x).detach()
+    monkeypatch.setenv(D.GDN_ENV, "torch")
+    assert D.torch_gdn(hf) == mq.__name__
+    assert mq.torch_chunk_gated_delta_rule.__name__ == "torch_chunk_gated_delta_rule"
+    after = hf[0](x)
+    torch.testing.assert_close(after.detach(), before, rtol=1e-4, atol=1e-5)
+    after.sum().backward()
+    assert x.grad is not None and torch.isfinite(x.grad).all()

@@ -1,0 +1,42 @@
+id: x47_d3_9b_r2
+title: "Batch 47 D3 on the 9B (amendment 3): DAS at four layers, the two layers beside 48.1's L12 (L6 = L/2, L24 = 3L/4); R_lookup and R_recall per k, own-IIA, cross-IIA, energy inside the layer's J++-25 part, cos^2 with U_l refit at the layer; the fourth layer (l_R - 2, from D2) in x47_d3_9b_lr"
+thread: C3
+gpus: 1
+mem_gb: 40
+est_gpu_hours: 2.0
+depends_on: [x48_1_9b_r2]
+command: >-
+  export BJ_TARGET=qwen3.5-9b BJ_DEVICE_MAP= BJ_DAS_GDN=torch; uv run python scripts/x48_das.py run --name qwen35_9b_x47_d3_r2 --layers 6 24 --depth --why "batch 47 amendment 3, D3 (jobs/c3/batch47.yaml; Q-depth): 48.1's DAS at L6 and L24 on the same pairs and split (L12 from qwen35_9b_x48_das_r2); no shuffled baselines, no routes read; sealed"
+question: >-
+  Does the lookup's mediating subspace at the bridge word leave the lens with depth (inside J++ at L/2, outside at L),
+  and does the recall's stay inside the lens at every layer where it mediates?
+why_it_matters: >-
+  48.1 says what the two subspaces are at one layer. D3 says whether the lookup's identity code starts as the lens's
+  (the token's semantic identity, shared with the recall) and moves out of it by L, or was never there: one number per
+  layer for the "leaves the lens" story of the depth block (D1, D2, D4).
+hypotheses:
+  Q-depth: "Dan's D3 answer in predictions/2026-10-28_dan.md (Q-depth: the lookup's subspace leaves the lens with depth yes / no; the recall's stays yes / no); not committed when this spec was written, so the run is sealed: no verdict in the job (scripts/x48_das.py depth refuses until the Q-depth answer is committed)."
+decision_rule: >-
+  Fixed in advance (jobs/c3/batch47.yaml, D3): "the lookup's subspace leaves the lens with depth" if R_lookup's energy
+  inside J++ falls from >= 0.4 at L/2 to <= 0.2 at L while own-IIA stays >= 0.6; "the recall's stays" if R_recall's
+  share stays >= 0.4 at every layer where its IIA >= 0.6.
+  As computed (fixed before any run; Dan may override): the same pairs, split, k values, training and reads as
+  jobs/c3/x48_1_9b.yaml at each listed layer (the states cached at that layer, the J++ atoms at that layer); the L12 row
+  comes from qwen35_9b_x48_das, L6 and L24 from this run, l_R - 2 from x47_d3_9b_lr. Per layer and reader the chosen k
+  as in 48.1 (the select split at that layer). "R_lookup's energy inside J++" = the test-pair mean of the share of
+  ||R R^T Delta||^2 inside the span of the pair's 25 signed-OMP J++ atoms at that layer, at the chosen k; "leaves the
+  lens" = that share >= 0.4 at L6 and <= 0.2 at L12 with the lookup's test own-IIA >= 0.6 at both; "the recall's stays"
+  = among the layers run where the recall's test own-IIA >= 0.6, every one has its share >= 0.4 (none: not tested).
+  cos^2 with U_l = ||R^T U_l||_F^2 / rank(U_l), U_l the pointer directions refit at the layer on the train-split pairs'
+  h_O by the original bridge's locker-sentence index (x0_massmean.mass_mean, rank classes - 1; the probe run's U only
+  exists at L12, reported there beside U_fit with their mean cos^2). Cluster-bootstrap CIs over bridge entities (10,000,
+  seed 0) beside every point estimate. Scored by hand: scripts/x48_das.py depth --runs qwen35_9b_x48_das qwen35_9b_x47_d3
+  [qwen35_9b_x47_d3_lr] (EPS 1e-9 at the bars).
+controls:
+- 'untrained random R of the same k at each layer (seed 4802 + k): its energy inside J++-25 and cos^2 with U_l beside every trained R'
+- 'cross-IIA at each layer: R_lookup read by the recall, R_recall read by the lookup'
+- 'the whole change and O unedited reread at each layer on the select and test pairs (IIA / S_whole reported)'
+- 'the same pairs and entity split at every layer (pairs.json of each run must match)'
+n: 'the 9B''s 48.1 pairs: 75 locker-first pairs (32 bridge entities); lookup 44 / 10 / 18, recall 46 / 10 / 19 (train / select / test) at each layer'
+seeds: [0, 48, 4802, 4803]
+notes: "Retry (r2, 28 Oct ~11:40): the first x48_1_9b (06:15) failed in the first backward: fla 0.5.2 refuses the gated chunk backward on Hopper with Triton 3.6 (wrong gradients, fla #640). This run sets BJ_DAS_GDN=torch: the 9B's linear-attention layers run transformers' torch reference of the same rule (differentiable, tested equal on CPU in tests/test_x48_das.py), recorded in the manifest (gdn_kernel) and the switches; slower, estimate doubled. Batch 47 amendment 3 (Dan ~02:50), D3, extends 48.1 on the 9B (+1 GPU-h); queued after 47.8 (9B). Four layers = L6, L12, L24, l_R - 2: L12 is 48.1's job (not rerun), L6 and L24 here, l_R - 2 waits for D2's value in jobs/c3/x47_d3_9b_lr.yaml (a placeholder spec; fill the layer and enqueue). Sealed: the run writes manifest, pairs, cases, states_L6.pt / states_L24.pt, R.pt (per layer: every R, U_fit), train.jsonl, geometry.jsonl, readouts.json (per layer), outcomes.jsonl; no shuffled baselines, no routes read, no verdict. Cost (ledger arithmetic): 2 layers x 4 k x 2 readers = 16 trainings x 300 steps x 16 rows = 9,600 micro-batches of 8 x ~0.3 s = 0.8 h (as the 9B's 48.1 training; L6's backward runs through more layers, L24's through fewer); reads 2 x 28 pairs x 2 readers x 14 arms = 1,568 + 300 state forwards ~60 s; load ~2 min; total ~0.9 h, est 1.0."
